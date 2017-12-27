@@ -22,7 +22,7 @@ class CommitteeRepository extends EntityRepository
     const ONLY_APPROVED = 1;
     const INCLUDE_UNAPPROVED = 2;
 
-    public function count(): int
+    public function countElements(): int
     {
         return (int) $this
             ->createQueryBuilder('c')
