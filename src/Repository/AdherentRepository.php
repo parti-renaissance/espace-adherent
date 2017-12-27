@@ -30,6 +30,9 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class AdherentRepository extends EntityRepository implements UserLoaderInterface, UserProviderInterface
 {
     use NearbyTrait;
+    use UuidEntityRepositoryTrait {
+        findOneByUuid as findOneByValidUuid;
+    }
 
     const CITIZEN_INITIATIVE_RADIUS = 2;
     const CITIZEN_INITIATIVE_SUPERVISOR_RADIUS = 5;
