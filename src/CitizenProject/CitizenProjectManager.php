@@ -483,7 +483,19 @@ class CitizenProjectManager
         $committeeSupport->approve();
 
         if ($flush) {
-            $this->getManager()->persist($committeeSupport);
+            $this->getManager()->flush();
+        }
+    }
+
+    public function deleteCommitteeSupport(Committee $committee, bool $flush = true): void
+    {
+        if (!$committeeSupport = $this->getCitizenProjectCommitteeSupportRepository()->findByCommittee($committee)) {
+            throw new \RuntimeException('No CommitteeSupport found for committee '.$committee->getName());
+        }
+
+        $this->getManager()->remove($committeeSupport);
+
+        if ($flush) {
             $this->getManager()->flush();
         }
     }

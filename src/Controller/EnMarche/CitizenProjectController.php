@@ -171,16 +171,18 @@ class CitizenProjectController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $committeeUuid = $user->getMemberships()->getCommitteeSupervisorMemberships()->last()->getCommitteeUuid();
+            $committee = $this->getDoctrine()->getRepository(Committee::class)->findOneByUuid($committeeUuid);
 
             try {
                 $citizenProjectManager->approveCommitteeSupport(
-                    $this->getDoctrine()->getRepository(Committee::class)->findOneByUuid($committeeUuid),
+                    $committee,
                     $citizenProject
                 );
                 $flashMessage = sprintf('Votre comité soutient maintenant le projet citoyen %s', $citizenProject->getName());
             } catch (CitizenProjectCommitteeSupportAlreadySupportException $committeeSupportAlreadySupportException) {
+                $citizenProjectManager->deleteCommitteeSupport($committee);
                 $flashMessage = sprintf(
-                    'Votre comité %s soutient déjà le projet citoyen %s',
+                    'Votre comité %s ne soutient plus le projet citoyen %s',
                     $committeeSupportAlreadySupportException->getCommittee()->getName(),
                     $committeeSupportAlreadySupportException->getCitizenProject()->getName()
                 );
