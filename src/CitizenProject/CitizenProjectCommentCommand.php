@@ -27,6 +27,11 @@ class CitizenProjectCommentCommand
      */
     private $content;
 
+    /**
+     * @var bool
+     */
+    private $sendMail;
+
     public function __construct(CitizenProject $citizenProject, ?Adherent $author)
     {
         $this->citizenProject = $citizenProject;
@@ -51,5 +56,15 @@ class CitizenProjectCommentCommand
     public function setContent(?string $content): void
     {
         $this->content = $content;
+    }
+
+    public function isSendMail(): ?bool
+    {
+        return $this->sendMail;
+    }
+
+    public function setSendMail(?bool $sendMail): void
+    {
+        $this->sendMail = $sendMail;
     }
 }

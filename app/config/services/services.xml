@@ -25,7 +25,9 @@
 				<argument type="service" id="app.glide" />
 			</call>
 		</service>
-		<service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true" />
+		<service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true">
+			<argument key="$mailer" type="service" id="app.mailer.transactional"/>
+		</service>
 		<service id="AppBundle\CitizenProject\Voter\AdministrateCitizenProjectVoter">
 			<tag name="security.voter" priority="-1000"/>
 		</service>
@@ -34,5 +36,9 @@
 		<service id="AppBundle\Report\ReportManager" />
 		<service id="AppBundle\Form\ReportCommandType"/>
 		<service id="AppBundle\Report\ReportCreationCommandHandler"/>
+
+		<!-- Form -->
+		<service id="AppBundle\Form\CitizenProjectCommentCommandType"/>
+		<service id="AppBundle\Form\CitizenProjectCommandType"/>
 	</services>
 </container>
