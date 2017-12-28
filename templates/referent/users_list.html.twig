@@ -188,7 +188,12 @@
                                 </small>
                                 <br />
                                 <small>
-                                    {{ user.isCommitteeSupervisor ? 'Animateur local' : user.isCommitteeHost ? 'Co-animateur local' : '' }}
+                                    {% set is_host = user.isCommitteeHost %}
+                                    {%- if user.isCommitteeSupervisor -%}
+                                        Animateur local
+                                        {{- is_host ? ' / ' : '' -}}
+                                    {%- endif -%}
+                                    {{- is_host ? 'Co-animateur local' : '' -}}
                                 </small>
                             {% endif %}
                         </td>
