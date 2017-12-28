@@ -3,7 +3,6 @@
     <div class="citizen-project__card b__nudge--top-40">
         <h3>Nous recherchons</h3>
         <ul class="citizen-project__skills">
-            <li>Toutes les bonnes volontés</li>
             {% if citizen_project.skills|length > 0 %}
                 {% for skill in citizen_project.skills  %}
                     <li>{{skill}}</li>
