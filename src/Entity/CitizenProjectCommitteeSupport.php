@@ -76,6 +76,8 @@ class CitizenProjectCommitteeSupport
 
         $this->requestedAt = $requestedAt;
         $this->approvedAt = $approvedAt;
+
+        $this->citizenProject->addCommitteeSupport($this);
     }
 
     public function getCommittee(): Committee
