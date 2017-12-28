@@ -267,7 +267,5 @@
             <tag name="form.type" />
         </service>
 
-        <service public="false" autoconfigure="true" autowire="true" id="AppBundle\Form\CitizenProjectCommandType"/>
-
     </services>
 </container>

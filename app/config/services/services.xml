@@ -39,7 +39,9 @@
 				<argument type="service" id="app.glide" />
 			</call>
 		</service>
-		<service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true" />
+		<service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true">
+			<argument key="$mailer" type="service" id="app.mailer.transactional"/>
+		</service>
 		<service id="AppBundle\CitizenProject\Voter\AdministrateCitizenProjectVoter">
 			<tag name="security.voter" priority="-1000"/>
 		</service>
@@ -53,6 +55,10 @@
 		<service id="AppBundle\Command\ImportTimelineCommand" />
 		<service id="AppBundle\Timeline\MeasureManager" />
 		<service id="AppBundle\Timeline\TimelineFactory" />
+
+                <!-- Form -->
+		<service id="AppBundle\Form\CitizenProjectCommentCommandType"/>
+		<service id="AppBundle\Form\CitizenProjectCommandType"/>
 
 		<!-- Event -->
 		<service id="AppBundle\Event\EventRegistrationSubscriber" >
