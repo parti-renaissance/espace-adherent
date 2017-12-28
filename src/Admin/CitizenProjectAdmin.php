@@ -154,6 +154,9 @@ class CitizenProjectAdmin extends AbstractAdmin
                 ])
                 ->add('proposedSolution', null, [
                     'label' => 'Solution du problème',
+                    'filter_emojis' => true,
+                    'purify_html' => true,
+                    'attr' => ['class' => 'ck-editor'],
                 ])
                 ->add('skills', EntityType::class, [
                     'class' => CitizenProjectSkill::class,
