@@ -59,6 +59,8 @@ class CitizenProjectCommand
 
     public $assistanceNeeded = false;
 
+    public $removeImage = false;
+
     /**
      * @Assert\NotBlank
      * @Assert\Length(max=500)
@@ -250,5 +252,10 @@ class CitizenProjectCommand
     public function setImage(?UploadedFile $image): void
     {
         $this->image = $image;
+    }
+
+    public function isRemoveImage(): bool
+    {
+        return $this->removeImage;
     }
 }

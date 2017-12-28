@@ -32,7 +32,11 @@ class CitizenProjectCreationCommandHandler
     {
         $adherent = $command->getAdherent();
         $citizenProject = $this->factory->createFromCitizenProjectCreationCommand($command);
-        $this->citizenProjectManager->addImage($citizenProject);
+
+        // Uploads an image
+        if (null !== $command->getImage()) {
+            $this->citizenProjectManager->addImage($citizenProject);
+        }
 
         $command->setCitizenProject($citizenProject);
 
