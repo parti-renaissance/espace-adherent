@@ -31,7 +31,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($factory->createFromArray([
             'keywords' => 'emmanuel macron',
             'title' => 'Emmanuel Macron - Ce que je suis',
-            'slug' => 'emmanuel-macron-ce-que-je-suis',
+            'slug' => 'emmanuel-macron',
             'description' => $description,
             'content' => trim(self::$ceQueJeSuis),
             'media' => $media,
@@ -40,7 +40,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($factory->createFromArray([
             'keywords' => 'emmanuel macron révolution',
             'title' => 'Emmanuel Macron - Révolution',
-            'slug' => 'emmanuel-macron-revolution',
+            'slug' => 'emmanuel-macron/revolution',
             'description' => $description,
             'content' => file_get_contents(__DIR__.'/../content.md'),
             'media' => $media,
@@ -49,7 +49,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($factory->createFromArray([
             'keywords' => 'mouvement en marche',
             'title' => 'Le mouvement - Nos valeurs',
-            'slug' => 'le-mouvement-nos-valeurs',
+            'slug' => 'le-mouvement',
             'description' => $description,
             'content' => trim(self::$nosValeurs),
             'media' => $media,
@@ -58,7 +58,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($factory->createFromArray([
             'keywords' => 'mouvement en marche organisation porte-parole',
             'title' => 'Le mouvement - Notre organisation',
-            'slug' => 'le-mouvement-notre-organisation',
+            'slug' => 'le-mouvement/notre-organisation',
             'description' => $description,
             'content' => file_get_contents(__DIR__.'/../organization.html'),
             'media' => $media,
@@ -67,7 +67,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($factory->createFromArray([
             'keywords' => 'mouvement en marche organisation comité comités',
             'title' => 'Le mouvement - Les comités',
-            'slug' => 'le-mouvement-les-comites',
+            'slug' => 'le-mouvement/les-comites',
             'description' => $description,
             'content' => file_get_contents(__DIR__.'/../content.md'),
             'media' => $media,
@@ -76,7 +76,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($factory->createFromArray([
             'keywords' => 'mouvement en marche bénévole volontaire',
             'title' => 'Le mouvement - Devenez bénévole',
-            'slug' => 'le-mouvement-devenez-benevole',
+            'slug' => 'le-mouvement/devenez-benevole',
             'description' => $description,
             'content' => file_get_contents(__DIR__.'/../content.md'),
             'media' => $media,
@@ -138,7 +138,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
 
         $manager->persist($factory->createFromArray([
             'title' => 'Action talents - Accueil',
-            'slug' => 'action-talents-home',
+            'slug' => 'action-talents',
             'description' => $description,
             'content' => file_get_contents(__DIR__.'/../action-talents/home.html'),
             'media' => $media,
@@ -146,7 +146,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
 
         $manager->persist($factory->createFromArray([
             'title' => 'Action talents - Candidater',
-            'slug' => 'action-talents-apply',
+            'slug' => 'action-talents/candidater',
             'description' => $description,
             'content' => file_get_contents(__DIR__.'/../action-talents/apply.html'),
             'media' => $media,
@@ -154,9 +154,17 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
 
         $manager->persist($factory->createFromArray([
             'title' => 'Carrières',
-            'slug' => 'jobs',
+            'slug' => 'nos-offres',
             'description' => $description,
             'content' => 'Voici nos offres d\'emplois et stages',
+            'media' => $media,
+        ]));
+
+        $manager->persist($factory->createFromArray([
+            'title' => 'Test Static Page',
+            'slug' => 'emmanuelle-macron/test',
+            'description' => $description,
+            'content' => 'Voici un test pour les pages statiques',
             'media' => $media,
         ]));
 

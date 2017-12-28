@@ -3,8 +3,8 @@
 namespace AppBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,18 +25,20 @@ class PageAdmin extends AbstractAdmin
         if (null === $this->getSubject()->getId()) {
             $formMapper
                 ->with('Title', ['class' => 'col-md-12'])
-                    ->add('title', TextType::class, [
-                        'label' => 'Titre',
-                        'filter_emojis' => true,
-                    ])
-                    ->add('slug', TextType::class, [
-                        'label' => 'URL de publication',
-                        'help' => 'Ne spécifier que la fin : http://en-marche.fr/[votre-valeur]<br />Doit être unique',
-                    ])
+                ->add('slug', TextType::class, [
+                    'label' => 'URL de publication',
+                    'help' => 'Ne spécifier que la fin : http://en-marche.fr/[votre-valeur]<br />Doit être unique',
+                ])
                 ->end();
         }
 
         $formMapper
+            ->with('Title', ['class' => 'col-md-12'])
+                ->add('title', TextType::class, [
+                    'label' => 'Titre',
+                    'filter_emojis' => true,
+                ])
+            ->end()
             ->with('Contenu', ['class' => 'col-md-8'])
                 ->add('description', TextareaType::class, [
                     'label' => 'Description',
@@ -87,6 +89,9 @@ class PageAdmin extends AbstractAdmin
             ])
             ->add('updatedAt', null, [
                 'label' => 'Date de dernière mise à jour',
+            ])
+            ->add('slug', null, [
+                'label' => 'Slug',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

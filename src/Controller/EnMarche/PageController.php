@@ -49,7 +49,7 @@ class PageController extends Controller
     /**
      * @Route("/emmanuel-macron", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron")
      * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('emmanuel-macron-ce-que-je-suis')")
+     * @Entity("page", expr="repository.findOneBySlug('emmanuel-macron')")
      */
     public function emmanuelMacronAction(Page $page)
     {
@@ -59,7 +59,7 @@ class PageController extends Controller
     /**
      * @Route("/emmanuel-macron/revolution", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_revolution")
      * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('emmanuel-macron-revolution')")
+     * @Entity("page", expr="repository.findOneBySlug('emmanuel-macron/revolution')")
      */
     public function emmanuelMacronRevolutionAction(Page $page)
     {
@@ -80,7 +80,7 @@ class PageController extends Controller
     /**
      * @Route("/le-mouvement", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement")
      * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('le-mouvement-nos-valeurs')")
+     * @Entity("page", expr="repository.findOneBySlug('le-mouvement')")
      */
     public function mouvementValeursAction(Page $page)
     {
@@ -90,7 +90,7 @@ class PageController extends Controller
     /**
      * @Route("/le-mouvement/notre-organisation", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement_notre_organisation")
      * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('le-mouvement-notre-organisation')")
+     * @Entity("page", expr="repository.findOneBySlug('le-mouvement/notre-organisation')")
      */
     public function mouvementOrganisationAction(Page $page)
     {
@@ -109,7 +109,7 @@ class PageController extends Controller
     /**
      * @Route("/le-mouvement/les-comites", name="page_le_mouvement_les_comites")
      * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('le-mouvement-les-comites')")
+     * @Entity("page", expr="repository.findOneBySlug('le-mouvement/les-comites')")
      */
     public function mouvementComitesAction(Page $page)
     {
@@ -119,7 +119,7 @@ class PageController extends Controller
     /**
      * @Route("/le-mouvement/devenez-benevole", name="page_le_mouvement_devenez_benevole")
      * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('le-mouvement-devenez-benevole')")
+     * @Entity("page", expr="repository.findOneBySlug('le-mouvement/devenez-benevole')")
      */
     public function mouvementBenevoleAction(Page $page)
     {
@@ -176,7 +176,7 @@ class PageController extends Controller
     /**
      * @Route("/action-talents", defaults={"_enable_campaign_silence"=true}, name="page_action_talents")
      * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('action-talents-home')")
+     * @Entity("page", expr="repository.findOneBySlug('action-talents')")
      */
     public function actionTalentsAction(Page $page)
     {
@@ -186,7 +186,7 @@ class PageController extends Controller
     /**
      * @Route("/action-talents/candidater", defaults={"_enable_campaign_silence"=true}, name="page_action_talents_apply")
      * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('action-talents-apply')")
+     * @Entity("page", expr="repository.findOneBySlug('action-talents/candidater')")
      */
     public function actionTalentsApplicationAction(Page $page)
     {
@@ -196,10 +196,18 @@ class PageController extends Controller
     /**
      * @Route("/nos-offres", defaults={"_enable_campaign_silence"=true}, name="page_jobs")
      * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('jobs')")
+     * @Entity("page", expr="repository.findOneBySlug('nos-offres')")
      */
     public function jobsAction(Page $page)
     {
         return $this->render('page/jobs.html.twig', ['page' => $page]);
+    }
+
+    /**
+     * @Entity("page", expr="repository.findOneBySlug(slug)")
+     */
+    public function showPageAction(Page $page = null)
+    {
+        return $this->render('page/layout.html.twig', ['page' => $page]);
     }
 }

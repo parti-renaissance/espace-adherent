@@ -70,6 +70,7 @@ class PageControllerTest extends SqliteWebTestCase
         yield ['/action-talents/candidater'];
         yield ['/nos-offres'];
         yield ['/candidatures-delegue-general-et-bureau-executif'];
+        yield ['/s/emmanuelle-macron/test'];
     }
 
     protected function setUp()

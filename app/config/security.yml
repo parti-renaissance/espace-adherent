@@ -17,6 +17,7 @@ security:
 
         ROLE_ADMIN_CONTENT:
             - ROLE_APP_ADMIN_ARTICLE_ALL
+            - ROLE_APP_ADMIN_PAGE_CREATE
             - ROLE_APP_ADMIN_PAGE_LIST
             - ROLE_APP_ADMIN_PAGE_EDIT
             - ROLE_APP_ADMIN_FACEBOOK_VIDEO_ALL
