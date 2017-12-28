@@ -8,6 +8,7 @@ use AppBundle\Entity\CitizenProject;
 use AppBundle\Events;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\CitizenProjectApprovalConfirmationMessage;
+use AppBundle\Mailer\Message\CitizenProjectCommentMessage;
 use AppBundle\Mailer\Message\CitizenProjectCreationConfirmationMessage;
 use AppBundle\Mailer\Message\CitizenProjectCreationNotificationMessage;
 use AppBundle\Mailer\Message\CitizenProjectNewFollowerMessage;
@@ -65,6 +66,15 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         ));
     }
 
+    public function sendCommentCreatedEmail(CitizenProjectCommentEvent $commentCreatedEvent): void
+    {
+        if ($commentCreatedEvent->isSendMail()) {
+            foreach ($this->getOptinCitizenProjectFollowersChunks($commentCreatedEvent->getCitizenProject()) as $chunk) {
+                $this->mailer->sendMessage(CitizenProjectCommentMessage::create($chunk, $commentCreatedEvent->getComment()));
+            }
+        }
+    }
+
     public function sendAdherentNotificationCreation(Adherent $adherent, CitizenProject $citizenProject, Adherent $creator): void
     {
         $this->mailer->sendMessage(CitizenProjectCreationNotificationMessage::create($adherent, $citizenProject, $creator));
@@ -107,12 +117,21 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         }
     }
 
+    private function getOptinCitizenProjectFollowersChunks(CitizenProject $committee): array
+    {
+        return array_chunk(
+            $this->manager->getCitizenProjectMembers($committee)->toArray(),
+            MailerService::PAYLOAD_MAXSIZE
+        );
+    }
+
     public static function getSubscribedEvents()
     {
         return [
             Events::CITIZEN_PROJECT_CREATED => ['onCitizenProjectCreation', -128],
             Events::CITIZEN_PROJECT_APPROVED => ['onCitizenProjectApprove', -128],
             Events::CITIZEN_PROJECT_FOLLOWER_ADDED => ['onCitizenProjectFollowerAdded', -128],
+            Events::CITIZEN_PROJECT_COMMENT_CREATED => ['sendCommentCreatedEmail', -128],
         ];
     }
 }
