@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Election;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\ProcurationProfileType;
@@ -28,7 +29,9 @@ class ProcurationController extends Controller
      */
     public function landingAction(): Response
     {
-        return $this->render('procuration/landing.html.twig');
+        return $this->render('procuration/landing.html.twig', [
+            'next_election' => $this->getDoctrine()->getRepository(Election::class)->findComingNextElection(),
+        ]);
     }
 
     /**

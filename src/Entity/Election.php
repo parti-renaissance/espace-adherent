@@ -9,8 +9,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
  * @ORM\Table(name="elections")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ElectionRepository")
  *
  * @UniqueEntity("name")
  */
@@ -34,6 +34,15 @@ class Election
      * @Assert\Length(max=255)
      */
     private $name = '';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank
+     */
+    private $introduction = '';
 
     /**
      * @var string|null
@@ -71,6 +80,16 @@ class Election
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getIntroduction(): string
+    {
+        return $this->introduction;
+    }
+
+    public function setIntroduction(string $introduction): void
+    {
+        $this->introduction = $introduction;
     }
 
     public function getPlace(): ?string

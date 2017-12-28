@@ -14,39 +14,41 @@
                     <a href="{{ path('homepage') }}" class="text--logo link--no-decor text--white">En Marche !</a>
                 </div>
                 <div class="procuration__header--inner l__wrapper--slim">
-                    <h1 class="text--larger">
-                        Chaque vote compte.
-                    </h1>
-                    <h2 class="text--medium b__nudge--top l__hide--on-mobile b__nudge--bottom-small">
-                        Les élections législatives ont lieu les 11 et 18 juin 2017 en France (3 et 17 juin pour les Français de l'étranger du continent Américain et 4 et 18 juin pour les autres Français de l'étranger).
-                    </h2>
-                    <div class="text--body">Si vous ne votez pas en France métropolitaine, <a href="https://www.service-public.fr/particuliers/actualites/A10598" class="link--white">renseignez-vous sur les dates</a>.</div>
+                    {% if next_election %}
+                        {{ next_election.introduction|raw }}
+                    {% else %}
+                        No coming election, TODO.
+                    {% endif %}
                 </div>
             </section>
             <section class="procuration__content l__wrapper--500 l__col space--60-0 text--center">
-                <div class="b__nudge--bottom-60">
-                    <h2 class="text--medium text--bold b__nudge--bottom-small">
-                        Je suis présent(e) à une ou plusieurs dates des élections
-                    </h2>
-                    <div class="b__nudge--bottom text--summary">
-                        Je veux voter au nom d'un(e) citoyen(ne) de ma ville.
+                {% if next_election %}
+                    <div class="b__nudge--bottom-60">
+                        <h2 class="text--medium text--bold b__nudge--bottom-small">
+                            Je suis présent(e) à une ou plusieurs dates des élections
+                        </h2>
+                        <div class="b__nudge--bottom text--summary">
+                            Je veux voter au nom d'un(e) citoyen(ne) de ma ville.
+                        </div>
+                        <a href="{{ path('app_procuration_proxy_proposal') }}" class="btn btn--primary">
+                            Je me porte mandataire
+                        </a>
                     </div>
-                    <a href="{{ path('app_procuration_proxy_proposal') }}" class="btn btn--primary">
-                        Je me porte mandataire
-                    </a>
-                </div>
-                <div>
-                    <h2 class="text--medium text--bold b__nudge--bottom-small">
-                        Je ne suis pas présent(e) à une ou plusieurs dates des élections
-                    </h2>
-                    <div class="b__nudge--bottom text--summary">
-                        Un(e) habitant(e) de ma ville va voter en mon nom.
-                    </div>
+                    <div>
+                        <h2 class="text--medium text--bold b__nudge--bottom-small">
+                            Je ne suis pas présent(e) à une ou plusieurs dates des élections
+                        </h2>
+                        <div class="b__nudge--bottom text--summary">
+                            Un(e) habitant(e) de ma ville va voter en mon nom.
+                        </div>
 
-                    <a href="{{ path('app_procuration_index') }}" class="btn btn--blue">
-                        Je donne procuration
-                    </a>
-                </div>
+                        <a href="{{ path('app_procuration_index') }}" class="btn btn--blue">
+                            Je donne procuration
+                        </a>
+                    </div>
+                {% else %}
+                    No coming election, TODO.
+                {% endif %}
             </section>
         </div>
     </main>
