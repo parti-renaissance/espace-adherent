@@ -3,6 +3,7 @@
 namespace AppBundle\CitizenProject;
 
 use AppBundle\Address\PostAddressFactory;
+use AppBundle\Entity\CitizenProject;
 use AppBundle\Events;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -50,11 +51,25 @@ class CitizenProjectUpdateCommandHandler
             $command->getCommittees(),
             $command->getImage()
         );
-        $this->citizenProjectManager->addImage($citizenProject);
+
+        $this->doUpdateImage($command, $citizenProject);
 
         $this->manager->persist($citizenProject);
         $this->manager->flush();
 
         $this->dispatcher->dispatch(Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($citizenProject));
+    }
+
+    private function doUpdateImage(CitizenProjectCommand $command, CitizenProject $citizenProject): void
+    {
+        // Uploads an image
+        if (null !== $command->getImage()) {
+            $this->citizenProjectManager->addImage($citizenProject);
+        }
+
+        // Removes an image
+        if ($command->isRemoveImage() && $citizenProject->hasImageUploaded()) {
+            $this->citizenProjectManager->removeImage($citizenProject);
+        }
     }
 }
