@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\CitizenProject;
 
+use AppBundle\CitizenProject\CitizenProjectCommentEvent;
 use AppBundle\CitizenProject\CitizenProjectFollowerAddedEvent;
 use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
 use AppBundle\CitizenProject\CitizenProjectWasApprovedEvent;
@@ -13,6 +14,7 @@ use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Entity\CitizenProjectComment;
 use AppBundle\Mailer\MailerService;
 use Doctrine\Common\Collections\ArrayCollection;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
@@ -118,13 +120,47 @@ class CitizenProjectMessageNotifierTest extends TestCase
         $citizenProjectMessageNotifier->onCitizenProjectFollowerAdded($followerAddedEvent);
     }
 
+    public function testSendFollowerNotificationWhenAdministratorAddCommentToCitizenProject()
+    {
+        $producer = $this->createMock(ProducerInterface::class);
+        $mailer = $this->createMock(MailerService::class);
+        $member = $this->createAdministrator(LoadAdherentData::ADHERENT_2_UUID);
+        $comment = $this->createComment();
+        $manager = $this->createManager(null, $member);
+        $citizenProject = $this->createCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID, 'Paris 8e');
+        $committeeManager = $this->createMock(CommitteeManager::class);
+        $router = $this->createMock(RouterInterface::class);
+
+        $manager
+            ->expects($this->once())
+            ->method('getCitizenProjectMembers')
+            ->willReturn(new AdherentCollection())
+        ;
+        $mailer
+            ->expects($this->once())
+            ->method('sendMessage')
+        ;
+
+        $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($producer, $manager, $mailer, $committeeManager, $router);
+        $commentCreatedEvent = new CitizenProjectCommentEvent($citizenProject, $comment, true);
+        $citizenProjectMessageNotifier->sendCommentCreatedEmail($commentCreatedEvent);
+    }
+
     private function createCitizenProject(string $uuid, string $cityName): CitizenProject
     {
         $citizenProjectUuid = Uuid::fromString($uuid);
 
         $citizenProject = $this->createMock(CitizenProject::class);
-        $citizenProject->expects($this->any())->method('getUuid')->willReturn($citizenProjectUuid);
-        $citizenProject->expects($this->any())->method('getCityName')->willReturn($cityName);
+        $citizenProject
+            ->expects($this->any())
+            ->method('getUuid')
+            ->willReturn($citizenProjectUuid)
+        ;
+        $citizenProject
+            ->expects($this->any())
+            ->method('getCityName')
+            ->willReturn($cityName)
+        ;
 
         return $citizenProject;
     }
@@ -139,12 +175,50 @@ class CitizenProjectMessageNotifierTest extends TestCase
         return $administrator;
     }
 
-    private function createManager(?Adherent $administrator = null): CitizenProjectManager
+    private function createAuthor(): Adherent
+    {
+        $administrator = $this->createMock(Adherent::class);
+        $administrator
+            ->expects($this->any())
+            ->method('getFirstName')
+            ->willReturn('Pierre')
+        ;
+
+        return $administrator;
+    }
+
+    private function createComment(): CitizenProjectComment
+    {
+        $administrator = $this->createMock(CitizenProjectComment::class);
+        $administrator
+            ->expects($this->any())
+            ->method('getContent')
+            ->willReturn('Mon message')
+        ;
+        $administrator
+            ->expects($this->any())
+            ->method('getAuthor')
+            ->willReturn($this->createAuthor())
+        ;
+
+        return $administrator;
+    }
+
+    private function createManager(?Adherent $administrator = null, ?Adherent $member = null): CitizenProjectManager
     {
         $manager = $this->createMock(CitizenProjectManager::class);
 
         if ($administrator) {
             $manager->expects($this->any())->method('getCitizenProjectCreator')->willReturn($administrator);
+        }
+        if ($member) {
+            $membres = new AdherentCollection();
+            $membres->add($member);
+            $manager
+                ->expects($this->any())
+                ->method('getCitizenProjectMembers')
+                ->willReturn($membres)
+            ;
         }
 
         return $manager;
