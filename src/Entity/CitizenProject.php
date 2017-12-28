@@ -151,6 +151,13 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     private $image;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(length=255, nullable=true)
+     */
+    private $imageName;
+
+    /**
      * @var CitizenAction|null
      */
     private $nextAction;
@@ -393,7 +400,7 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
 
     public function getImagePath(): string
     {
-        return sprintf('images/citizen_projects/%s.jpg', $this->getUuid());
+        return sprintf('images/citizen_projects/%s', $this->getImageName());
     }
 
     public function getAssetImagePath(): string
@@ -419,6 +426,21 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     public function setImage(?UploadedFile $image): void
     {
         $this->image = $image;
+    }
+
+    public function setImageName(?UploadedFile $image): void
+    {
+        $this->imageName = null === $image ? null :
+            sprintf('%s.%s',
+                md5(sprintf('%s@%s', $this->getUuid(), $image->getClientOriginalName())),
+                $image->getClientOriginalExtension()
+            )
+        ;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
     }
 
     public function hasImageUploaded(): bool

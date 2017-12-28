@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\CitizenProject\CitizenProjectCommand;
+use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use AppBundle\Form\DataTransformer\CitizenProjectSkillTransformer;
@@ -36,6 +37,8 @@ class CitizenProjectCommandType extends AbstractType
             throw new InvalidConfigurationException('A pre set data is required in '.__CLASS__);
         }
 
+        $citizenProject = $command->getCitizenProject();
+
         $builder
             ->add('name', TextType::class, [
                 'filter_emojis' => true,
@@ -53,7 +56,6 @@ class CitizenProjectCommandType extends AbstractType
             ])
             ->add('image', FileType::class, [
                 'required' => false,
-                'label' => false,
             ])
             ->add('problem_description', TextareaType::class, [
                 'property_path' => 'problemDescription',
@@ -133,6 +135,13 @@ class CitizenProjectCommandType extends AbstractType
         $builder->get('skills')->addModelTransformer($this->citizenProjectSkillTransformer);
         $builder->get('committees')->addModelTransformer($this->committeeTransformer);
         $builder->get('address')->remove('address');
+
+        if ($citizenProject instanceof CitizenProject && $citizenProject->hasImageUploaded()) {
+            $builder->add('remove_image', CheckboxType::class, [
+                'property_path' => 'removeImage',
+                'required' => false,
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

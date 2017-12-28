@@ -498,14 +498,54 @@ class CitizenProjectManager
         return $this->getCitizenProjectRepository()->hasCitizenProjectInStatus($adherent, $status);
     }
 
+    /**
+     * Uploads and saves the citizen project image.
+     *
+     * @param CitizenProject $citizenProject
+     */
     public function addImage(CitizenProject $citizenProject): void
     {
-        // Save citizen project image to cloud storage
-        if ($citizenProject->getImage() instanceof UploadedFile) {
-            $pathImage = $citizenProject->getImagePath();
-            $this->storage->put($pathImage, file_get_contents($citizenProject->getImage()->getPathname()));
-            $this->glide->deleteCache($pathImage);
-            $citizenProject->setImageUploaded(true);
+        if (!$citizenProject->getImage() instanceof UploadedFile) {
+            throw new \RuntimeException(sprintf('The image must be an instance of %s', UploadedFile::class));
         }
+
+        // Clears the old image if needed
+        if (null !== $citizenProject->getImageName() && $oldImagePath = $citizenProject->getImagePath()) {
+            $this->storage->delete($oldImagePath);
+        }
+
+        $citizenProject->setImageName($citizenProject->getImage());
+        $path = $citizenProject->getImagePath();
+
+        // Uploads the file : creates or updates if exists
+        $this->storage->put($path, file_get_contents($citizenProject->getImage()->getPathname()));
+
+        // Clears the cache file
+        $this->glide->deleteCache($path);
+
+        $citizenProject->setImageUploaded(true);
+    }
+
+    /**
+     * Removes the citizen project image.
+     *
+     * @param CitizenProject $citizenProject
+     */
+    public function removeImage(CitizenProject $citizenProject): void
+    {
+        if (null === $citizenProject->getImageName()) {
+            throw new \RuntimeException('This Citizen Project does not contain an image.');
+        }
+
+        $path = $citizenProject->getImagePath();
+
+        // Deletes the file
+        $this->storage->delete($path);
+
+        // Clears the cache file
+        $this->glide->deleteCache($path);
+
+        $citizenProject->setImageName(null);
+        $citizenProject->setImageUploaded(false);
     }
 }
