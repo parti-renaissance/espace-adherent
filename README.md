@@ -21,11 +21,6 @@ Questions ? Besoin d'aide ? Rejoignez-nous dans notre [Slack](https://publicslac
 [Remerciez](https://github.com/symfony/thanks) la communauté open-source PHP, qui a rendu ce projet possible, en
 lancant `composer thanks` à la racine du projet, une fois téléchargé.
 
-## Nous recrutons 💼
-
-* [UX Engineer](https://bit.ly/em-ux-engineer)
-* [Développeur PHP Symfony Backend Confirmé](https://drive.google.com/file/d/0B6U1BXjEEhI2TkFqNXFtRHBldGs/view)
-
 
 ------------------------------------
 
@@ -47,8 +42,3 @@ Questions? Need help? Say hello in our [Slack](https://publicslack.com/slacks/en
 
 Give [thanks](https://github.com/symfony/thanks) to the open-source PHP community, which made this project
 possible, by running `composer thanks` in the project root once downloaded!
-
-## We're hiring 💼
-
-* [UX Engineer](https://bit.ly/em-ux-engineer)
-* [Senior Backend PHP Symfony Developer](https://drive.google.com/file/d/0B6U1BXjEEhI2TkFqNXFtRHBldGs/view)
