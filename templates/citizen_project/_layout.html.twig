@@ -34,10 +34,13 @@
         <header class="background--purple space--60-0">
             <div class="l__wrapper l__col text--white">
                 <div class="b__nudge--bottom-larger">
-                    <ul class="text--small b__nudge--bottom-tiny list__links">
+                    <ul class="text--small b__nudge--bottom-tiny list__links list__links--vertical-align list__links--margin-right">
                         <li class="text--body text--small text--uppercase">Projet citoyen</li>
+                        {% if citizen_project.isFeatured %}
+                            <li class="citizen_project_featured newbtn--orange newbtn--smaller">Nos coups de cœur</li>
+                        {% endif %}
                         {% if citizen_project.approvedCommitteeSupports|length > 0 %}
-                            <li>{{ 'citizen_project.committees_count'|transchoice(citizen_project.approvedCommitteeSupports|length) }}</li>
+                            <li class="newbtn--orange newbtn--smaller">{{ 'citizen_project.committees_count'|transchoice(citizen_project.approvedCommitteeSupports|length) }}</li>
                         {% endif %}
                     </ul>
                     <h2 class="text--larger" id="citizen-project-name">

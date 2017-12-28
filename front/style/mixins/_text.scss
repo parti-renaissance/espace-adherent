@@ -400,6 +400,16 @@ $text--size-extra-large: 48px;
         }
     }
 
+    &__links--vertical-align {
+        align-items: center;
+    }
+
+    &__links--margin-right {
+        li {
+            margin-right: 15px;
+        }
+    }
+
     &__links--row {
         flex-direction: row;
         align-items: center;

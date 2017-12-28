@@ -343,6 +343,30 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
     }
 
+    public function testFeaturedCitizenProject()
+    {
+        /** @var CitizenProject $citizenProject */
+        $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
+        $citizenProjectUrl = '/projets-citoyens/le-projet-citoyen-a-paris-8';
+        $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
+
+        $this->assertFalse($citizenProject->isFeatured());
+        $this->assertSame(0, $crawler->filter('.citizen_project_featured')->count());
+
+        $citizenProject->setFeatured(true);
+
+        $this->manager->flush();
+        $this->manager->clear();
+
+        $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
+
+        $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
+
+        $this->assertTrue($citizenProject->isFeatured());
+        $this->assertSame(1, $crawler->filter('.citizen_project_featured')->count());
+        $this->assertSame('Nos coups de cœur', trim($crawler->filter('.citizen_project_featured')->text()));
+    }
+
     private function assertSeeComments(array $comments)
     {
         foreach ($comments as $position => $comment) {
