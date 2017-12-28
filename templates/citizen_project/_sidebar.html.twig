@@ -78,7 +78,11 @@
                 {{ form_widget(form_committee_support) }}
                 <div>
                     <button type="submit" id="committee-confirm-support" class="newbtn newbtn--hollow newbtn--smaller">
-                        Notre comité souhaite aussi soutenir ce projet
+                        {% if citizen_project.isSupportedByCommitteeUuid(app.user.memberships.committeeSupervisorMemberships.last.committeeUuid.toString) %}
+                            Retirer mon soutien à ce projet
+                        {% else %}
+                            Notre comité souhaite aussi soutenir ce projet
+                        {% endif %}
                     </button>
                 </div>
             </form>

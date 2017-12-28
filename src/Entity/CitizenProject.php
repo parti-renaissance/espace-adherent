@@ -256,6 +256,17 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
         return $this->phone;
     }
 
+    public function isSupportedByCommitteeUuid(string $committeeUuid): bool
+    {
+        foreach ($this->committeeSupports as $committeeSupport) {
+            if ($committeeSupport->isApproved() && $committeeSupport->getCommittee()->uuid->toString() === $committeeUuid) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @return CitizenProjectCommitteeSupport[]|Collection
      */
@@ -311,7 +322,7 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
             }
         }
 
-        $this->committeeSupports->add(new CitizenProjectCommitteeSupport($this, $committee));
+        $this->addCommitteeSupport(new CitizenProjectCommitteeSupport($this, $committee));
     }
 
     public function removeCommitteeSupport(Committee $committee): void

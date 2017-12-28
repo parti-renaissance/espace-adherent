@@ -178,15 +178,14 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
         $flash = $crawler->filter('#notice-flashes');
         $this->assertSame(1, count($flash));
-        $this->assertSame(sprintf('Votre comité %s soutient déjà le projet citoyen %s',
+        $this->assertSame(sprintf('Votre comité %s ne soutient plus le projet citoyen %s',
             $committee->getName(),
             $citizenProject->getName()
         ), trim($flash->text()));
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/projets-citoyens/%s', $citizenProject->getSlug()));
         $committeeOnSupport = $crawler->filter('#support-committee')->filter('li');
-        $this->assertSame(1, $committeeOnSupport->count());
-        $this->assertSame(trim($committeeOnSupport->first()->text()), $committee->getName());
+        $this->assertSame(0, $committeeOnSupport->count());
 
         $citizenProject->removeCommitteeSupport($committee);
         $this->manager->flush();
@@ -209,11 +208,11 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
         $this->client->request(Request::METHOD_GET, sprintf('/projets-citoyens/%s', $citizenProject->getSlug()));
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->client->submit($crawler->selectButton('Notre comité souhaite aussi soutenir ce projet')->form());
+        $this->client->submit($crawler->selectButton('Retirer mon soutien à ce projet')->form());
         $crawler = $this->client->followRedirect();
         $flash = $crawler->filter('#notice-flashes');
         $this->assertCount(1, $flash);
-        $this->assertSame(sprintf('Votre comité %s soutient déjà le projet citoyen %s',
+        $this->assertSame(sprintf('Votre comité %s ne soutient plus le projet citoyen %s',
             $committee->getName(),
             $citizenProject->getName()
         ), trim($flash->text()));
