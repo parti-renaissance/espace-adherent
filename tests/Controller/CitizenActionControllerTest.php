@@ -25,7 +25,7 @@ class CitizenActionControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/action-citoyenne/2017-12-30-projet-citoyen-3/ical');
 
         $this->isSuccessful($response = $this->client->getResponse());
-        $this->assertSame('attachment; filename='.$citizenAction->getFinishAt()->format('Y-m-d').'-projet-citoyen-3.ics', $response->headers->get('Content-Disposition'));
+        $this->assertSame(sprintf('attachment; filename=%s-projet-citoyen-3.ics', $citizenAction->getFinishAt()->format('Y-m-d')), $response->headers->get('Content-Disposition'));
         $this->assertSame('text/calendar; charset=UTF-8', $response->headers->get('Content-Type'));
 
         $currentDate = date('Ymd\THis\Z');
