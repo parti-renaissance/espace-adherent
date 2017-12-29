@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadElectionData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadProcurationData;
 use AppBundle\Entity\ProcurationProxy;
@@ -30,6 +31,43 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
     /** @var ProcurationProxyRepository */
     private $procurationProxyRepostitory;
+
+    public function testLandingWithoutComingElection()
+    {
+        $this->loadFixtures([]); // We need empty tables for this test only
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/procuration');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame(
+            'No coming election, TODO.',
+            trim($crawler->filter('.procuration__header--inner')->text())
+        );
+        $this->assertSame(
+            'No coming election, TODO.',
+            trim($crawler->filter('.procuration__content')->text())
+        );
+    }
+
+    public function testLanding()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/procuration');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame(
+            'Chaque vote compte.',
+            trim($crawler->filter('.procuration__header--inner > h1')->text())
+        );
+        $this->assertSame(
+            'L\'élection législative partielle pour la 1ère circonscription du Val-d\'Oise aura lieu les 28 janvier et 4 février 2018.',
+            trim($crawler->filter('.procuration__header--inner > h2')->text())
+        );
+        $this->assertSame(
+            'Si vous ne votez pas en France métropolitaine, renseignez-vous sur les dates.',
+            trim($crawler->filter('.procuration__header--inner > div.text--body')->text())
+        );
+        $this->assertCount(1, $crawler->filter('.procuration__content a:contains("Je me porte mandataire")'));
+    }
 
     public function testProcurationRequest()
     {
@@ -400,6 +438,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
             LoadAdherentData::class,
             LoadHomeBlockData::class,
             LoadProcurationData::class,
+            LoadElectionData::class,
         ]);
 
         $this->procurationRequestRepostitory = $this->getProcurationRequestRepository();
