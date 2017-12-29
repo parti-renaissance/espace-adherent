@@ -99,7 +99,13 @@
         <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-conditions">
             {{ form_widget(form.conditions) }}
             {% block _form_conditions_label %}
-                <label class="form form__label" for="membership_request_conditions"><span><strong>Oui, j'adhère à la <a href="charte.pdf" target="_blank">charte et j'ai pris connaissance des règles de fonctionnement d'En Marche !</a> <sup>*</sup></strong></span></label>
+                <label class="form form__label" for="membership_request_conditions">
+                    <span>
+                        <strong>
+                            Oui, j'adhère à la <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/charte_des_valeurs.pdf" target="_blank">Charte des Valeurs</a> ainsi qu'aux <a href="{{ path('page_mentions_legales') }}" target="_blank">Conditions Générales d'Utilisation</a> du site et j’ai pris connaissance des <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/regles_de_fonctionnement_LaREM.pdf" target="_blank">règles de fonctionnement</a> de La République En Marche.
+                        </strong>
+                    </span>
+                </label>
             {% endblock %}
             {{ form_errors(form.conditions) }}
         </div>
