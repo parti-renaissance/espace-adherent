@@ -34,7 +34,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
     const CITIZEN_INITIATIVE_RADIUS = 2;
     const CITIZEN_INITIATIVE_SUPERVISOR_RADIUS = 5;
 
-    public function count(): int
+    public function countElements(): int
     {
         return (int) $this
             ->createQueryBuilder('a')

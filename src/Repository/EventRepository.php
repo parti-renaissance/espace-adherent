@@ -23,7 +23,7 @@ class EventRepository extends EntityRepository
         findOneByUuid as findOneByValidUuid;
     }
 
-    public function count(bool $onlyPublished = true): int
+    public function countElements(bool $onlyPublished = true): int
     {
         $qb = $this
             ->createQueryBuilder('e')
