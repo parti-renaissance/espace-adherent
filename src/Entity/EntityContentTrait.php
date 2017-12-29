@@ -14,6 +14,7 @@ trait EntityContentTrait
      * @ORM\Column(length=100)
      *
      * @Assert\NotBlank
+     * @Assert\Length(max=100)
      *
      * @Algolia\Attribute
      */
@@ -25,6 +26,7 @@ trait EntityContentTrait
      * @ORM\Column(length=100, unique=true)
      *
      * @Assert\NotBlank
+     * @Assert\Length(max=100)
      *
      * @Algolia\Attribute
      */
@@ -55,6 +57,8 @@ trait EntityContentTrait
      * @var string|null
      *
      * @ORM\Column(length=255, nullable=true)
+     *
+     * @Assert\Length(max=255)
      *
      * @Algolia\Attribute
      */
