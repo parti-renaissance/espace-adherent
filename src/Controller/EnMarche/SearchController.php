@@ -66,7 +66,7 @@ class SearchController extends Controller
     }
 
     /**
-     * @Route("/projets-citoyens", name="app_search_citizen_projects")
+     * @Route("/recherche/projets-citoyens", name="app_search_citizen_projects")
      * @Method("GET")
      */
     public function searchCitizenProjectsAction(Request $request)
