@@ -3,14 +3,20 @@ version: "2"
 services:
     ## en-marche.fr
     ###############
-    enmarche.dev:
+    app:
+        networks:
+          default:
+            aliases:
+              - enmarche.dev
+              - enmarche.code
+              - enmarche.local
         build:
             context: docker/dev
         depends_on:
             - enmarche_db
             - enmarche_redis
-            - auth.enmarche.dev
-            - api.enmarche.dev
+            - auth
+            - api
             - rabbitmq
         volumes:
             - .:/app
@@ -25,8 +31,14 @@ services:
 
     ## auth.en-marche.fr
     ####################
-    auth.enmarche.dev:
+    auth:
         image: larem/auth.en-marche.fr
+        networks:
+          default:
+            aliases:
+              - auth.enmarche.dev
+              - auth.enmarche.code
+              - auth.enmarche.local
         volumes:
           - ./.env.auth:/app/.env
         depends_on:
@@ -34,8 +46,14 @@ services:
 
     ## api.en-marche.fr
     ####################
-    api.enmarche.dev:
+    api:
         image: larem/api.en-marche.fr
+        networks:
+          default:
+            aliases:
+              - api.enmarche.dev
+              - api.enmarche.code
+              - api.enmarche.local
         volumes:
           - ./.env.api:/app/.env
         depends_on:
