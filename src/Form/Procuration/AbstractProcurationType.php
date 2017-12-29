@@ -1,7 +1,10 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Form\Procuration;
 
+use AppBundle\Form\GenderType;
+use AppBundle\Form\UnitedNationsCountryType;
+use AppBundle\Procuration\ElectionContext;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -13,7 +16,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractProcurationType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $years = range(date('Y') - 17, date('Y') - 120);
+
+        $resolver
+            ->setDefaults([
+                'translation_domain' => false,
+                'years' => array_combine($years, $years),
+            ])
+            ->setRequired('election_context')
+            ->setAllowedTypes('election_context', ElectionContext::class)
+        ;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('gender', GenderType::class)
@@ -53,15 +70,5 @@ abstract class AbstractProcurationType extends AbstractType
                 ],
             ])
         ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $years = range((int) date('Y') - 17, (int) date('Y') - 120);
-
-        $resolver->setDefaults([
-            'translation_domain' => false,
-            'years' => array_combine($years, $years),
-        ]);
     }
 }

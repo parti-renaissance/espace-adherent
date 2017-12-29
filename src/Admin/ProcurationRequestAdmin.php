@@ -110,7 +110,7 @@ class ProcurationRequestAdmin extends AbstractAdmin
                     'choices' => [
                         'Parce que je réside dans une commune différente de celle où je suis inscrit(e) sur une liste électorale' => ProcurationRequest::REASON_RESIDENCY,
                         'Parce que je suis en vacances' => ProcurationRequest::REASON_HOLIDAYS,
-                        'En raison d’obligations professionnelles' => ProcurationRequest::REASON_PROFESIONNAL,
+                        'En raison d’obligations professionnelles' => ProcurationRequest::REASON_PROFESSIONAL,
                         'En raison d’un handicap' => ProcurationRequest::REASON_HANDICAP,
                         'Pour raison de santé' => ProcurationRequest::REASON_HEALTH,
                         'En raison d’assistance apportée à une personne malade ou infirme' => ProcurationRequest::REASON_HELP,

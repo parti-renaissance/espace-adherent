@@ -35,7 +35,7 @@
 		</service>
 
 		<!-- Procuration -->
-		<service id="AppBundle\Procuration\ProcurationRequestSession" />
+		<service id="AppBundle\Procuration\ProcurationSession" />
 
 		<!-- Report -->
 		<service id="AppBundle\Report\ReportManager" />
