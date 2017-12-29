@@ -162,7 +162,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
 
         $manager->persist($factory->createFromArray([
             'title' => 'Test Static Page',
-            'slug' => 'emmanuelle-macron/test',
+            'slug' => 'emmanuel-macron/test',
             'description' => $description,
             'content' => 'Voici un test pour les pages statiques',
             'media' => $media,
