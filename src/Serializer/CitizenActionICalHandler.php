@@ -23,15 +23,15 @@ class CitizenActionICalHandler implements SubscribingHandlerInterface
         ];
     }
 
-    public function serialize(IcalSerializationVisitor $visitor, CitizenAction $citizenAction): void
+    public static function serialize(IcalSerializationVisitor $visitor, CitizenAction $citizenAction): void
     {
         $data = [
             'VEVENT' => [
                 'UID' => $citizenAction->getUuid()->toString(),
                 'SUMMARY' => $citizenAction->getName(),
                 'DESCRIPTION' => $citizenAction->getDescription(),
-                'DTSTART' => $this->formatDate($citizenAction->getBeginAt()),
-                'DTEND' => $this->formatDate($citizenAction->getFinishAt()),
+                'DTSTART' => self::formatDate($citizenAction->getBeginAt()),
+                'DTEND' => self::formatDate($citizenAction->getFinishAt()),
                 'LOCATION' => $citizenAction->getInlineFormattedAddress(),
             ],
         ];
@@ -48,7 +48,7 @@ class CitizenActionICalHandler implements SubscribingHandlerInterface
         $visitor->setRoot($data);
     }
 
-    private function formatDate(\DateTimeInterface $date): string
+    private static function formatDate(\DateTimeInterface $date): string
     {
         return $date->format('Ymd\THis');
     }
