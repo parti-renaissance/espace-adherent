@@ -9,17 +9,18 @@ class CommitteeCreationConfirmationMessage extends Message
 {
     public static function create(Adherent $adherent, string $city): self
     {
-        $message = new self(
+        return new self(
             Uuid::uuid4(),
             '54689',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Votre comité sera bientôt en ligne'
+            'Votre comité sera bientôt en ligne',
+            [
+                'committee_city' => $city,
+            ],
+            [
+                'target_firstname' => self::escape($adherent->getFirstName()),
+            ]
         );
-
-        $message->setVar('target_firstname', self::escape($adherent->getFirstName()));
-        $message->setVar('committee_city', $city);
-
-        return $message;
     }
 }
