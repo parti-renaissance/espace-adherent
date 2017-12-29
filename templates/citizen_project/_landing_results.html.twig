@@ -1,0 +1,25 @@
+{% for citizen_project in results %}
+    <div class="citizen_project_thumb">
+        <img src="{{ asset(citizen_project.imagePath) }}" alt="{{ citizen_project.name }}">
+        <h1 class="citizen_project_thumb_name">{{ citizen_project.name }}</h1>
+        <p>{{ citizen_project.subtitle }}</p>
+        <p class="citizen_project_thumb_creator">{{ include('components/user.html.twig') }}Par
+            <strong>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {{ citizen_project.creator }}
+            {% else %}
+                {{ citizen_project.creator.partialName }}
+            {% endif %}
+            </strong>
+        </p>
+
+        {% if citizen_project.skills|length > 0 %}
+            <p>Nous recherchons</p>
+            <ul class="citizen-project__skills">
+                {% for skill in citizen_project.skills  %}
+                    <li>{{skill}}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+{% endfor %}

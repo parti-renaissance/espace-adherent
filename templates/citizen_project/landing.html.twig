@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places"></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function(di) {
+            var cityInput = dom('#city-search-input'),
+                cityDisplay = dom('#city-search-display'),
+                btnChangeCity = dom('#change-city'),
+                waitQueue;
+
+            on(btnChangeCity, 'click', toogleCityInput);
+
+            function toogleCityInput() {
+                if (!!( cityDisplay.offsetWidth || cityDisplay.offsetHeight || cityDisplay.getClientRects().length )) {
+                    cityDisplay.style.display = 'none';
+                    cityInput.style.display = 'inline';
+                } else {
+                    cityDisplay.innerHTML = cityInput.value;
+                    cityDisplay.style.display = 'inline';
+                    cityInput.style.display = 'none';
+                }
+            }
+
+            function fetchResults() {
+                // setTimeout avoids sending all HTTP request while the user is typing
+                clearTimeout(waitQueue);
+                waitQueue = setTimeout(function() {
+                    di.get('api').getCitizenProjectLandingPage(cityInput.value, function (response) {
+                        if (response instanceof XMLHttpRequest) {
+                            dom('#search-results').innerHTML = '<div class="text--body text--center l__wrapper">Aucun résultat pour ces critères de recherche.</div>';
+
+                            return;
+                        }
+
+                        dom('#search-results').innerHTML = response;
+                    });
+                }, 200);
+            }
+            autocomplete = new google.maps.places.Autocomplete(cityInput, {
+                types: ['(cities)'],
+            });
+
+            google.maps.event.addListener(autocomplete, 'place_changed', toogleCityInput);
+            google.maps.event.addListener(autocomplete, 'place_changed', fetchResults);
+
+            fetchResults();
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <header class="background--purple space--60-0">
+        <div class="l__wrapper l__col text--white">
+            <div class="b__nudge--bottom-larger">
+                <h1 class="text--larger">Démarer votre projet</h1>
+                <h2 class="b__nudge--top-5">ou engagez-vous dans les projets citoyens déjà lancés</h2>
+                <img src="" alt="">
+            </div>
+        </div>
+    </header>
+
+    <div class="l__wrapper l__row l__row--top l__row--h-stretch l__tablet--col">
+        <div class="l__wrapper">
+            <div class="text--larger text--bold">Des projets à rejoindre autour de <span id="city-search-display">{{ city }}</span> <input style="display: none;" type="text" value="{{ city }}" id="city-search-input"> <span id="change-city" class="btn">Changer lieu</span></div>
+            <div id="search-results">
+                <div class="text--body text--center l__wrapper">Chargements en cours...</div>
+            </div>
+
+            <div class="text--center l__wrapper">
+                <a class="newbtn" href="{{ path('app_search_citizen_projects') }}">Tous les projets</a>
+            </div>
+
+            <hr>
+
+            <div class="l__wrapper space--60-0 text--center">
+                <p class="text--large text--bold">Les projets citoyens sont des actions locales qui visent à améliorer concrètement notre quotidien en réunissant la force et les compétences de toutes et tous. </p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="background--purple l__wrapper space--60-0 text--center">
+        <img src="" alt="">
+        <p class="text--large text--bold">Envie d'agir autrement près de chez vous ?</p>
+        <p class="text--large text--bold">Lancez votre projet local !</p>
+        <form id="start-creation-citizen-project" action="{{ path('app_adherent_create_citizen_project') }}" method="GET">
+            <input type="text" name="name" placeholder="Le titre court et descriptif de mon projet">
+            <button type="submit">Prochaine étape</button>
+        </form>
+    </div>
+
+    <div class="text--center">
+        <video src=""></video>
+    </div>
+    
+
+
+
+
+
+{% endblock %}
