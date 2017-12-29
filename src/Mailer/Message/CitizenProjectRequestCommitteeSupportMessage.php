@@ -15,16 +15,19 @@ class CitizenProjectRequestCommitteeSupportMessage extends Message
             '263222',
             $committeeSupervisor->getEmailAddress(),
             $committeeSupervisor->getFullName(),
-            'Un projet citoyen a besoin du soutien de votre comité !'
+            'Un projet citoyen a besoin du soutien de votre comité !',
+            [
+                'citizen_project_name' => self::escape($citizenProject->getName()),
+                'citizen_project_host_firstname' => self::escape($citizenProject->getCreator() ? $citizenProject->getCreator()->getFirstName() : ''),
+                'citizen_project_host_lastname' => self::escape($citizenProject->getCreator() ? $citizenProject->getCreator()->getLastName() : ''),
+                'validation_url' => self::escape($validationUrl),
+            ],
+            [
+                'target_firstname' => self::escape($committeeSupervisor->getFirstName() ?? ''),
+            ]
         );
 
         $message->setSenderEmail('projetscitoyens@en-marche.fr');
-
-        $message->setVar('target_firstname', self::escape($committeeSupervisor->getFirstName() ?? ''));
-        $message->setVar('citizen_project_name', self::escape($citizenProject->getName()));
-        $message->setVar('citizen_project_host_firstname', self::escape($citizenProject->getCreator() ? $citizenProject->getCreator()->getFirstName() : ''));
-        $message->setVar('citizen_project_host_lastname', self::escape($citizenProject->getCreator() ? $citizenProject->getCreator()->getLastName() : ''));
-        $message->setVar('validation_url', self::escape($validationUrl));
 
         return $message;
     }

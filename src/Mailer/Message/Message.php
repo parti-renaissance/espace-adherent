@@ -49,17 +49,6 @@ abstract class Message
         $this->addRecipient($recipientEmail, $recipientName, $recipientVars);
     }
 
-    /**
-     * Sets a common shared variable.
-     *
-     * @param string $name  The variable name
-     * @param string $value The variable value
-     */
-    protected function setVar(string $name, $value): void
-    {
-        $this->vars[$name] = (string) $value;
-    }
-
     final public function getUuid(): UuidInterface
     {
         return $this->uuid;
