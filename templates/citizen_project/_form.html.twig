@@ -1,4 +1,14 @@
 <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#citizen_project_image_clear").click(function () {
+            $("#citizen_project_image").val('');
+
+            return false;
+        });
+    });
+</script>
+
 {{ form_errors(form) }}
 
 <div class="form__new" id="field-name">
@@ -50,6 +60,7 @@
     {% endif %}
     {{ form_errors(form.image) }}
     {{ form_widget(form.image) }}
+    <button id="citizen_project_image_clear">Annuler</button>
     <div class="field-image-info">
         <div>JPEG ou PNG - 50 Mo maximum</div>
         <div>Au moins 1024x576 pixels - format 16:9</div>
