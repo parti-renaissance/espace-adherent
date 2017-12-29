@@ -206,7 +206,7 @@ class PageController extends Controller
     /**
      * @Entity("page", expr="repository.findOneBySlug(slug)")
      */
-    public function showPageAction(Page $page = null)
+    public function showPageAction(Page $page)
     {
         return $this->render('page/layout.html.twig', ['page' => $page]);
     }
