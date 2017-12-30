@@ -116,6 +116,7 @@ $text--size-extra-large: 48px;
 }
 
 @mixin text--logo {
+    font-family: $font-gillsans;
     @include text--bold;
     font-family: $font-gillsans;
     font-size: $text--size-medium--large;
@@ -378,8 +379,6 @@ $text--size-extra-large: 48px;
         display: flex;
 
         li {
-            letter-spacing: 0.3px;
-            font-family: $font-roboto;
             font-size: $text--size-small;
 
             h4 {

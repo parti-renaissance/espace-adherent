@@ -4,13 +4,12 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 7px 15px;
+    padding: 8px 18px;
     background: white;
     border: 1px solid black;
     color: black;
-    text-transform: uppercase;
-    font-size: $text--size-small;
-    letter-spacing: 1.5px;
+    border-radius: 4px;
+    @include text--small;
     transition: all 0.45s;
     box-sizing: border-box;
     font-family: $font-gillsans;
@@ -18,8 +17,8 @@
 
     &:hover {
         background: black;
-        border-color: black;
         color: white;
+        transform: translateY(-1px);
     }
 
     &:disabled,
@@ -30,7 +29,6 @@
         border-color: $gray;
         cursor: not-allowed;
     }
-}
 
 @mixin newbtn {
     cursor: pointer;
@@ -50,20 +48,52 @@
     font-family: $font-roboto;
     background-color: $newblue;
 
-    &:hover {
-        background: $newblue--hover;
-        color: white;
-        transform: translateY(-1px);
+    &--smaller {
+        padding: 5px 15px;
+        @include text--small;
     }
 
-    &:disabled,
-    &:disabled:hover {
-        opacity: 0.7;
-        background: $gray--light;
-        color: $black--half;
-        border-color: $gray;
-        cursor: not-allowed;
+    &--light {
+        color: $dark;
+        border: 1px solid $gray--light;
+        background-color: white;
+
+        &:hover {
+            background: white;
+            border-color: $newblue;
+            color: $newblue;
+        }
     }
+
+    &--brick {
+        background: $brick;
+        color: white;
+        border: 1px solid $brick;
+    }
+
+    &--brick-hollow {
+        border-color: $brick;
+        color: $brick;
+
+        &:hover {
+            border-color: $brick;
+            background: $brick;
+            color: white;
+        }
+    }
+
+    // used for the board member area
+    // &--green {
+    //     background-color: $newgreen;
+    //     color: white;
+    //     border-color: $newgreen;
+    //
+    //     &:hover {
+    //         background-color: $error;
+    //         border-color: $error;
+    //         color: white;
+    //     }
+    // }
 }
 
 @mixin btn--primary {
@@ -181,8 +211,6 @@
 
     &--large-and-medium {
         @include text--medium-small;
-        letter-spacing: 1.9px;
-        font-family: $font-gillsans;
         max-width: 300px;
         width: 100%;
         height: 75px;
@@ -191,13 +219,11 @@
     &--large {
         padding: 0 25px;
         font-size: $text--size-large;
-        letter-spacing: 3.5px;
         height: 70px;
 
         @media(max-width: $mobile) {
           padding: 0 18px;
           font-size: $text--size-medium--small;
-          letter-spacing: 2px;
           height: 50px;
         }
     }

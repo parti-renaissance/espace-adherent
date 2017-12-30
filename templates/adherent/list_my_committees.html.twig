@@ -1,6 +1,6 @@
 {% if committees|length == 0 %}
     <li>
-        <a class="text--medium-small" href="{{ path('app_search_committees') }}">Rejoindre un comité</a>
+        <a href="{{ path('app_search_committees') }}">Rejoindre un comité</a>
     </li>
 {% endif %}
 {% if committees|length == 1 %}
@@ -10,7 +10,7 @@
 {% endif %}
 {% if committees|length > 1 %}
     <li>
-        <a class="text--medium-small" href="">Mes comités</a>
+        <a href="">Mes comités</a>
         <div style="display: none;">
             <ul>
                 {% for committee in committees %}
