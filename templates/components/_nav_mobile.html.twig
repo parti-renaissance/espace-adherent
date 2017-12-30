@@ -89,46 +89,46 @@
                 {% endif %}
                 {% if not app.user %}
                     <li>
-                        <a class="text--medium-small" href="{{ path('page_le_mouvement') }}">Le Mouvement</a>
+                        <a href="{{ path('page_le_mouvement') }}">Le Mouvement</a>
                     </li>
                 {% endif %}
                 <li>
-                    <a class="text--medium-small" href="{{ path('articles_list', {'category': 'tout'}) }}">Actualités</a>
+                    <a href="{{ path('articles_list', {'category': 'tout'}) }}">Actualités</a>
                 </li>
-                <li class="text--medium-small">
+                <li>
                     <a href="{{ path('page_campus') }}">Campus</a>
                 </li>
-                <li class="text--medium-small">
-                    <a href="{{ path('app_search_events') }}">Évènements</a>
+                <li>
+                    <a href="{{ path('app_search_events') }}">Événements</a>
                 </li>
                 {% if app.user and not is_granted('ROLE_ADHERENT') %}
                     <li>
-                        <a class="text--medium-small" href="{{ path('app_register_fully') }}">Devenir adhérent(e)</a>
+                        <a href="{{ path('app_register_fully') }}">Devenir adhérent(e)</a>
                     </li>
                 {% endif %}
                 {{ adherent_committees }}
                 {% if is_granted('ROLE_REFERENT') %}
                     <li>
-                        <a class="text--medium-small" href="{{ path('app_referent_users') }}">Espace référent</a>
+                        <a href="{{ path('app_referent_users') }}">Espace référent</a>
                     </li>
                 {% endif %}
                 {% if is_granted('ROLE_BOARD_MEMBER') %}
                     <li>
-                        <a class="text--medium-small" href="{{ path('app_board_member_home') }}">Espace membre du Conseil</a>
+                        <a href="{{ path('app_board_member_home') }}">Espace membre du Conseil</a>
                     </li>
                 {% endif %}
                 {% if is_granted('ROLE_COORDINATOR') %}
-                    <li class="text--small">
+                    <li>
                         <a href="{{ path('app_coordinator_committees', { 's': constant('AppBundle\\Entity\\Committee::PENDING') }) }}">Espace coordinateur régional</a>
                     </li>
                 {% endif %}
                 {% if is_granted('ROLE_PROCURATION_MANAGER') %}
-                    <li class="text--small">
+                    <li>
                         <a href="{{ path('app_procuration_manager_index') }}">Espace responsable procuration</a>
                     </li>
                 {% endif %}
                 {% if is_granted('ROLE_LEGISLATIVE_CANDIDATE') %}
-                    <li class="text--small">
+                    <li>
                         <a href="{{ path('app_legislative_candidates_platform') }}" target="_blank">
                             Espace candidat aux législatives
                         </a>
@@ -136,11 +136,11 @@
                 {% endif %}
                 {% if app.user and (is_granted('ROLE_ADHERENT') or is_granted('ROLE_HOST')) %}
                     <li>
-                        <a class="text--medium-small" href="{{ path('app_documents_index') }}">Mon kit</a>
+                        <a href="{{ path('app_documents_index') }}">Mes documents</a>
                     </li>
                 {% endif %}
                 {% if not app.user %}
-                    <li class="text--medium-small">
+                    <li>
                         <a href="{{ path('donation_index') }}">Donner</a>
                     </li>
                 {% endif %}
