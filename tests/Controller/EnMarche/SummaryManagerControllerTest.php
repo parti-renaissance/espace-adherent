@@ -744,8 +744,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
             'summary[skills][1][name]' => $skill2,
         ]);
 
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $formErrors = $crawler->filter('.form__errors li');
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertSame(1, $formErrors->count());
         $this->assertSame('Vous devez saisir au maximum 200 caractères.', $formErrors->text());
     }
