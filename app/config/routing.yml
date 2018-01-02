@@ -96,3 +96,12 @@ app_redirecting:
     host:     "%app_host%"
     resource: "@AppBundle/Controller/RedirectingController.php"
     type:     "annotation"
+
+# This route must be loaded the last to prevent an override
+app_static_page:
+    host:    "%app_host%"
+    path:    /{slug}
+    methods: GET
+    defaults: { _controller: 'AppBundle:EnMarche/Page:showPage' }
+    requirements:
+        slug: .+

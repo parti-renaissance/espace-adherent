@@ -20,7 +20,7 @@
 {% endblock %}
 
 {% block page_title 'Le mouvement - Notre organisation' %}
-{% block canonical_url url('page_le_mouvement_notre_organisation') %}
+{% block canonical_url url('app_static_page', { slug: 'le-mouvement/notre-organisation' }) %}
 {% block meta_description page.description %}
 {% block meta_twitter_description page.twitterDescription ?: page.description %}
 

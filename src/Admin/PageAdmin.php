@@ -38,6 +38,10 @@ class PageAdmin extends AbstractAdmin
 
         $formMapper
             ->with('Contenu', ['class' => 'col-md-8'])
+                ->add('pageTitle', TextareaType::class, [
+                    'label' => 'Titre de la page',
+                    'filter_emojis' => true,
+                ])
                 ->add('description', TextareaType::class, [
                     'label' => 'Description',
                     'filter_emojis' => true,

@@ -9,7 +9,7 @@
 {% block redirection %}
     <div class="background--darker">
         <div class="l__wrapper space--10-0">
-            <a href="{{ path('page_le_mouvement_notre_organisation') }}" class="back-to-list icon--with-text text--summary link--white">
+            <a href="{{ path('app_static_page', { slug: 'le-mouvement/notre-organisation' }) }}" class="back-to-list icon--with-text text--summary link--white">
                 {{ include('components/caret--left.html.twig') }}
                 Retour au site &nbsp;<strong><em>En Marche !</em></strong>
             </a>
@@ -34,7 +34,7 @@
 
     <div class="l__wrapper--medium b__nudge--bottom-large legislatives__form">
         <div class="label text--summary text--block text--uppercase">
-          Rechercher par :
+            Rechercher par :
         </div>
 
         <input type="text" id="search" placeholder="Nom ou prénom..." />
@@ -68,13 +68,13 @@
                 <a href="{{ path('our_referents_referent', {'slug': referent.slug}) }}"
                    title="{{ referent.fullName }}"
                    class="legislatives__trombi__item__visual link--no-decor progressive-background"
-                    {% if referent.profilePicture  %}
-                        data-sd="{{ media_asset(referent.profilePicture, {'w': 50, 'q': 20}) }}"
-                        data-hd="{{ media_asset(referent.profilePicture, {'w': 640, 'q': 70}) }}"
-                    {% else  %}
-                        data-sd="{{ static_asset('legislatives/unknown-referent.jpg', {'w': 50, 'q': 20}) }}"
-                        data-hd="{{ static_asset('legislatives/unknown-referent.jpg', {'w': 320, 'q': 70}) }}"
-                   {% endif %}
+                        {% if referent.profilePicture  %}
+                            data-sd="{{ media_asset(referent.profilePicture, {'w': 50, 'q': 20}) }}"
+                            data-hd="{{ media_asset(referent.profilePicture, {'w': 640, 'q': 70}) }}"
+                        {% else  %}
+                            data-sd="{{ static_asset('legislatives/unknown-referent.jpg', {'w': 50, 'q': 20}) }}"
+                            data-hd="{{ static_asset('legislatives/unknown-referent.jpg', {'w': 320, 'q': 70}) }}"
+                        {% endif %}
                 >
                     <div class="text--white">
                         <h1 class="text--medium-small">{{ referent.fullName }}</h1>

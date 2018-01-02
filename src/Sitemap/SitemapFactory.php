@@ -9,6 +9,7 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Media;
 use AppBundle\Entity\OrderArticle;
+use AppBundle\Entity\Page;
 use AppBundle\Repository\MediaRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Psr\Cache\CacheItemPoolInterface;
@@ -169,6 +170,7 @@ class SitemapFactory
             $sitemap = new Sitemap();
             $this->addArticlesCategories($sitemap);
             $this->addPages($sitemap);
+            $this->addStaticPages($sitemap);
             $this->addArticles($sitemap);
             $sitemap->add($this->generateUrl('app_explainer_index'), null, ChangeFrequency::NEVER, 0.5);
             $this->addOrderArticles($sitemap);
@@ -283,22 +285,27 @@ class SitemapFactory
 
     private function addPages(Sitemap $sitemap)
     {
-        $sitemap->add($this->generateUrl('page_emmanuel_macron'), null, ChangeFrequency::WEEKLY, 0.6);
-        $sitemap->add($this->generateUrl('page_emmanuel_macron_revolution'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('program_index'), null, ChangeFrequency::WEEKLY, 0.6);
-        $sitemap->add($this->generateUrl('page_le_mouvement'), null, ChangeFrequency::WEEKLY, 0.6);
-        $sitemap->add($this->generateUrl('page_le_mouvement_notre_organisation'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('map_committees'), null, ChangeFrequency::WEEKLY, 0.6);
-        $sitemap->add($this->generateUrl('page_le_mouvement_les_comites'), null, ChangeFrequency::WEEKLY, 0.6);
-        $sitemap->add($this->generateUrl('page_le_mouvement_devenez_benevole'), null, ChangeFrequency::WEEKLY, 0.6);
-        $sitemap->add($this->generateUrl('page_mentions_legales'), null, ChangeFrequency::WEEKLY, 0.2);
-        $sitemap->add($this->generateUrl('page_politique_cookies'), null, ChangeFrequency::WEEKLY, 0.2);
         $sitemap->add($this->generateUrl('page_campus'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_mooc'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_campus_internet'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_emmanuel_macron_videos'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_elles_marchent'), null, ChangeFrequency::WEEKLY, 0.6);
-        $sitemap->add($this->generateUrl('page_action_talents_apply'), null, ChangeFrequency::WEEKLY, 0.6);
+    }
+
+    private function addStaticPages(Sitemap $sitemap)
+    {
+        $pages = $this->manager->getRepository(Page::class)->findAll();
+
+        foreach ($pages as $page) {
+            $sitemap->add(
+                $this->generateUrl('app_static_page', ['category' => $page->getSlug()]),
+                null,
+                ChangeFrequency::WEEKLY,
+                0.2
+            );
+        }
     }
 
     private function addArticles(Sitemap $sitemap)

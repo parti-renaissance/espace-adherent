@@ -105,8 +105,8 @@
             <nav class="gtm__navigation__desktop l__wrapper l__row l__row--h-stretch space--20-0 l__hide--on-small-laptop">
                 <ul class="list__links list__links--row list__links--no-decor list__links--nav">
                     <li><h1><a href="{{ path('homepage') }}">En Marche !</a></h1></li>
-                    <li class="text--medium-small">
-                        <a href="{{ path('page_le_mouvement') }}">Le Mouvement</a>
+                    <li>
+                        <a class="text--medium-small" href="{{ path('app_static_page', { slug: 'le-mouvement-nos-valeurs' }) }}">Le Mouvement</a>
                     </li>
                     <li class="text--medium-small">
                         <a href="{{ path('page_campus') }}">Campus</a>
@@ -114,8 +114,8 @@
                     <li class="text--medium-small">
                         <a href="{{ path('app_search_events') }}">Événements</a>
                     </li>
-                    <li class="text--medium-small" >
-                        <a href="{{ path('articles_list', {category: 'tout'}) }}">Actualités</a>
+                    <li>
+                        <a class="text--medium-small" href="{{ path('articles_list', {'category': 'tout'}) }}">Actualités</a>
                     </li>
                     <li {% if not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
                         <a href="javascript:void(0)" class="je-cherche">
@@ -346,7 +346,7 @@
                                 <li class="text--small"><a href="{{ path('app_adherent_logout') }}">Déconnexion</a></li>
                                 <hr>
                             {% endif %}
-                            <li class="text--medium-small"><a href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
+                            <li class="text--medium-small"><a href="{{ path('app_static_page', { slug: 'le-mouvement-nos-valeurs' }) }}">Le Mouvement</a></li>
                             <li class="text--medium-small">
                                 <a href="{{ path('page_campus') }}">Campus</a>
                             </li>
@@ -435,17 +435,17 @@
                         <ul class="list__links list__links--col list__links--no-decor">
                             <li>
                                 <h4>
-                                    <a href="{{ path('page_le_mouvement') }}" class="text--bold text--medium-small">Le Mouvement</a>
+                                    <a href="{{ path('app_static_page', { slug: 'le-mouvement-nos-valeurs' }) }}" class="text--bold text--medium-small">Le Mouvement</a>
                                 </h4>
                             </li>
                             <li>
-                                <a href="{{ path('page_le_mouvement') }}">Qui sommes-nous ?</a>
+                                <a href="{{ path('app_static_page', { slug: 'le-mouvement-nos-valeurs' }) }}">Qui sommes-nous ?</a>
                             </li>
                             <li>
-                                <a href="{{ path('page_le_mouvement_notre_organisation') }}">Notre organisation</a>
+                                <a href="{{ path('app_static_page', { slug: 'le-mouvement-notre-organisation' }) }}">Notre organisation</a>
                             </li>
                             <li>
-                                <a href="{{ path('page_emmanuel_macron') }}">Emmanuel Macron</a>
+                                <a href="{{ path('app_static_page', { slug: 'emmanuel-macron-ce-que-je-suis' }) }}">Emmanuel Macron</a>
                             </li>
                             <li>
                                 <a href="{{ path('legislatives_homepage') }}" target="_blank" rel="noopener noreferrer">
@@ -454,10 +454,10 @@
                             </li>
                             {% if not campaign_expired %}
                                 <li>
-                                    <a href="{{ path('page_le_mouvement_les_comites') }}">Les comités</a>
+                                    <a href="{{ path('app_static_page', { slug: 'le-mouvement-les-comites' }) }}">Les comités</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a>
+                                    <a href="{{ path('app_static_page', { slug: 'le-mouvement-devenez-benevole' }) }}">Devenez bénévole</a>
                                 </li>
                                 <li>
                                     <a href="{{ path('map_committees') }}">La carte des comités</a>
@@ -495,7 +495,7 @@
                         </ul>
                         <ul class="list__links list__links--col list__links--no-decor">
                             {% if not campaign_expired %}
-                                <li><h4><a href="{{ path('page_le_mouvement_devenez_benevole') }}" class="text--bold text--medium-small">S'engager</a></h4></li>
+                                <li><h4><a href="{{ path('app_static_page', { slug: 'le-mouvement-devenez-benevole' }) }}" class="text--bold text--medium-small">S'engager</a></h4></li>
                                 <li><a href="{{ path('app_membership_register') }}">Adhérer en ligne</a></li>
                                 <li><a href="https://storage.googleapis.com/en-marche-fr/bulletin-d-adhesion-EMa.pdf">Adhérer par courrier</a></li>
                             {% else %}
@@ -532,9 +532,9 @@
                             <li><a href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a></li>
                             <li><a href="https://contact.en-marche.fr" target="_blank" rel="noopener noreferrer">Écrivez-nous</a></li>
                             <li><a href="{{ path('articles_list', {category: 'communiques'}) }}">Presse</a></li>
-                            <li><a href="{{ path('page_jobs') }}">Nos offres</a></li>
-                            <li><a href="{{ path('page_mentions_legales') }}">Mentions Légales</a></li>
-                            <li><a href="{{ path('page_politique_cookies') }}">Politique de Cookies</a></li>
+                            <li><a href="{{ path('app_static_page', { slug: 'jobs' }) }}">Nos offres</a></li>
+                            <li><a href="{{ path('app_static_page', { slug: 'mentions-legales' }) }}">Mentions Légales</a></li>
+                            <li><a href="{{ path('app_static_page', { slug: 'politique-cookies' }) }}">Politique de Cookies</a></li>
                             <li>En Marche &copy;</li>
                         </ul>
                     </div>
