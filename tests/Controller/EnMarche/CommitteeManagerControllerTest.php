@@ -156,7 +156,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
                 ],
                 'beginAt' => [
                     'date' => [
-                        'year' => '2017',
+                        'year' => date('Y'),
                         'month' => '3',
                         'day' => '2',
                     ],
@@ -167,7 +167,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
                 ],
                 'finishAt' => [
                     'date' => [
-                        'year' => '2017',
+                        'year' => date('Y'),
                         'month' => '3',
                         'day' => '1',
                     ],
