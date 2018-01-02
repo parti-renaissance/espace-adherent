@@ -162,7 +162,6 @@ class Summary
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\Language", mappedBy="summary", indexBy="id", cascade={"all"}, orphanRemoval=true)
      *
      * @Assert\Valid
-     * @Assert\Count(min=1)
      */
     private $languages;
 

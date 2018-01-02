@@ -190,7 +190,7 @@ class SummaryType extends AbstractType
             ->setDefaults([
                 'data_class' => Summary::class,
                 'validation_groups' => function (Options $options) {
-                    return $options['step'];
+                    return ['Default', $options['step']];
                 },
                 'error_mapping' => [
                     'validAvailabilities' => 'availabilities',
