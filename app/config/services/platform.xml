@@ -60,11 +60,6 @@
         </service>
 
         <!-- Adherents -->
-        <service id="app.adherent_manager" class="AppBundle\Membership\AdherentManager">
-            <argument type="service" id="app.repository.adherent"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-        </service>
-
         <service id="app.membership_request_handler" class="AppBundle\Membership\MembershipRequestHandler">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.membership.adherent_factory"/>
@@ -72,15 +67,7 @@
             <argument type="service" id="router"/>
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="app.committee.manager"/>
-            <argument type="service" id="app.event.registration_manager"/>
-            <argument type="service" id="AppBundle\CitizenInitiative\CitizenInitiativeManager"/>
-            <argument type="service" id="AppBundle\CitizenAction\CitizenActionManager"/>
-            <argument type="service" id="AppBundle\Event\EventManager"/>
-            <argument type="service" id="app.committee.feed_manager"/>
-            <argument type="service" id="app.activity_subscription.manager"/>
-            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
-            <argument type="service" id="AppBundle\Report\ReportManager"/>
+            <argument type="service" id="AppBundle\Membership\AdherentRegistry"/>
         </service>
 
         <service id="app.adherent_change_password_handler" class="AppBundle\Membership\AdherentChangePasswordHandler">
@@ -96,7 +83,7 @@
         </service>
 
         <service id="app.adherent_account_activation_handler" class="AppBundle\Membership\AdherentAccountActivationHandler">
-            <argument type="service" id="app.adherent_manager"/>
+            <argument type="service" id="AppBundle\Membership\AdherentManager"/>
             <argument type="service" id="app.committee.manager"/>
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="app.security.authentication_utils"/>
@@ -302,7 +289,7 @@
         <service id="app.event.message_notifier" class="AppBundle\Event\EventMessageNotifier">
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="app.committee.manager"/>
-            <argument type="service" id="app.adherent_manager"/>
+            <argument type="service" id="AppBundle\Membership\AdherentManager"/>
             <argument type="service" id="router"/>
             <tag name="kernel.event_subscriber"/>
         </service>
@@ -351,7 +338,7 @@
 
         <service id="app.citizen_initiative.message_notifier" class="AppBundle\CitizenInitiative\CitizenInitiativeMessageNotifier">
             <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="app.adherent_manager"/>
+            <argument type="service" id="AppBundle\Membership\AdherentManager"/>
             <argument type="service" id="router"/>
             <tag name="kernel.event_subscriber"/>
         </service>

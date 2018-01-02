@@ -148,7 +148,7 @@ class AdherentControllerTest extends MysqlWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
-        $adherent = $this->getAdherentRepository()->findByEmail('carl999@example.fr');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
         $oldLatitude = $adherent->getLatitude();
         $oldLongitude = $adherent->getLongitude();
 
@@ -273,7 +273,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         // We need to reload the manager reference to get the updated data
         /** @var Adherent $adherent */
-        $adherent = $this->client->getContainer()->get('doctrine')->getManager()->getRepository(Adherent::class)->findByEmail('new.email@address.com');
+        $adherent = $this->client->getContainer()->get('doctrine')->getManager()->getRepository(Adherent::class)->findOneByEmail('new.email@address.com');
 
         $this->assertSame('female', $adherent->getGender());
         $this->assertSame('Jean Dupont', $adherent->getFullName());
@@ -328,7 +328,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte/centres-d-interet', $this->client);
 
         /* @var Adherent $adherent */
-        $adherent = $this->getAdherentRepository()->findByEmail('carl999@example.fr');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
 
         $this->assertSame(array_values($chosenInterests), $adherent->getInterests());
 
@@ -389,7 +389,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
     public function testAdherentSetEmailNotifications()
     {
-        $adherent = $this->getAdherentRepository()->findByEmail('carl999@example.fr');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
 
         $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
         $this->assertTrue($adherent->hasSubscribedReferentsEmails());
@@ -434,7 +434,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte/preferences-des-emails', $this->client);
 
         $this->manager->clear();
-        $adherent = $this->getAdherentRepository()->findByEmail('carl999@example.fr');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
 
         $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
         $this->assertTrue($adherent->hasSubscribedReferentsEmails());
@@ -776,7 +776,7 @@ class AdherentControllerTest extends MysqlWebTestCase
     public function testAdherentTerminatesMembership()
     {
         /** @var Adherent $adherent */
-        $adherentBeforeUnregistration = $this->getAdherentRepository()->findByEmail('michel.vasseur@example.ch');
+        $adherentBeforeUnregistration = $this->getAdherentRepository()->findOneByEmail('michel.vasseur@example.ch');
 
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
 
@@ -834,7 +834,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame('2 adhérents', $crawler->filter('.committee-members')->text());
 
         /** @var Adherent $adherent */
-        $adherent = $this->getAdherentRepository()->findByEmail('michel.vasseur@example.ch');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('michel.vasseur@example.ch');
 
         $this->assertNull($adherent);
 

@@ -38,7 +38,7 @@ class ImportBoardMemberCommand extends ContainerAwareCommand
      */
     private $roleRepository;
 
-    private $emailNotFound;
+    private $notFoundEmails;
 
     protected function configure()
     {
@@ -55,7 +55,7 @@ class ImportBoardMemberCommand extends ContainerAwareCommand
         $this->boardMemberRepository = $this->em->getRepository(BoardMember::class);
         $this->adherentRepository = $this->em->getRepository(Adherent::class);
         $this->roleRepository = $this->em->getRepository(Role::class);
-        $this->emailNotFound = [];
+        $this->notFoundEmails = [];
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -95,9 +95,9 @@ class ImportBoardMemberCommand extends ContainerAwareCommand
         $this->em->commit();
 
         $output->writeln('Import finish');
-        if (0 < count($this->emailNotFound)) {
-            $output->writeln('The following email adress are not found in DB');
-            foreach ($this->emailNotFound as $email) {
+        if ($this->notFoundEmails) {
+            $output->writeln('The following email adresses were not found in DB');
+            foreach ($this->notFoundEmails as $email) {
                 $output->writeln($email);
             }
         }
@@ -180,8 +180,8 @@ class ImportBoardMemberCommand extends ContainerAwareCommand
     private function createAndPersistBoardMember(array $rows): void
     {
         foreach ($rows as $row) {
-            if (null === ($adherent = $this->adherentRepository->findByEmail($row['email']))) {
-                $this->emailNotFound[] = $row['email'];
+            if (!$adherent = $this->adherentRepository->findOneByEmail($row['email'])) {
+                $this->notFoundEmails[] = $row['email'];
 
                 continue;
             }

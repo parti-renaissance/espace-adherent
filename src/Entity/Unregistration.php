@@ -75,6 +75,19 @@ class Unregistration
         $this->unregisteredAt = new \DateTime('now');
     }
 
+    public static function createFromAdherent(Adherent $adherent): self
+    {
+        $unregistration = new self(
+            $adherent->getUuid(),
+            ['autre'],
+            'Adhérent supprimé par l\'administrateur',
+            $adherent->getRegisteredAt(),
+            $adherent->getPostAddress()->getPostalCode()
+        );
+
+        return $unregistration;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

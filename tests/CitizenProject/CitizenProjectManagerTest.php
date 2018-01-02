@@ -127,10 +127,10 @@ class CitizenProjectManagerTest extends MysqlWebTestCase
 
         $this->assertSame(4, $adherents->count());
 
-        $adherent = $this->getAdherentRepository()->findByEmail('francis.brioul@yahoo.com');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('francis.brioul@yahoo.com');
         $adherent->setCitizenProjectCreationEmailSubscriptionRadius(AdherentEmailSubscription::DISTANCE_100KM);
 
-        $adherent = $this->getAdherentRepository()->findByEmail('referent@en-marche-dev.fr');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('referent@en-marche-dev.fr');
         $adherent->setCitizenProjectCreationEmailSubscriptionRadius(AdherentEmailSubscription::DISTANCE_100KM);
 
         $this->getManagerRegistry()->getManager()->flush();

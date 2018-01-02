@@ -495,7 +495,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $manager = $this->get('app.committee.manager');
 
         $this->authenticateAsAdherent($this->client, 'martine.lindt@gmail.com', 'politique2017');
-        $adherent = $this->getAdherentRepository()->findByEmail('martine.lindt@gmail.com');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('martine.lindt@gmail.com');
         $committee = $this->getCommitteeRepository()->findOneByName('En Marche - Comité de Berlin');
 
         $this->client->request('GET', '/espace-adherent/creer-mon-comite');
@@ -522,7 +522,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
 
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
 
-        $adherent = $this->getAdherentRepository()->findByEmail('michel.vasseur@example.ch');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('michel.vasseur@example.ch');
         $manager->unfollowCommittee($adherent, $this->getCommitteeRepository()->findOneByName('En Marche - Suisse'));
 
         $committee = $this->get('app.committee.factory')->createFromArray([

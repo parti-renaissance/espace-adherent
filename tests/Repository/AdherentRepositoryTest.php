@@ -88,7 +88,7 @@ class AdherentRepositoryTest extends SqliteWebTestCase
     public function testSearchBoardMembers(array $filters, array $results)
     {
         $filter = BoardMemberFilter::createFromArray($filters);
-        $excludedMember = $this->getAdherentRepository()->findByEmail('kiroule.p@blabla.tld');
+        $excludedMember = $this->getAdherentRepository()->findOneByEmail('kiroule.p@blabla.tld');
 
         $boardMembers = $this->repository->searchBoardMembers($filter, $excludedMember);
 
@@ -105,7 +105,7 @@ class AdherentRepositoryTest extends SqliteWebTestCase
     public function testPaginateBoardMembers(array $filters, array $results)
     {
         $filter = BoardMemberFilter::createFromArray($filters);
-        $excludedMember = $this->getAdherentRepository()->findByEmail('kiroule.p@blabla.tld');
+        $excludedMember = $this->getAdherentRepository()->findOneByEmail('kiroule.p@blabla.tld');
 
         $boardMembers = $this->repository->paginateBoardMembers($filter, $excludedMember);
 
