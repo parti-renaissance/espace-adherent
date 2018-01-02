@@ -109,12 +109,12 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $data['citizen_initiative']['name'] = 'Mon initiative';
         $data['citizen_initiative']['beginAt']['date']['day'] = 14;
         $data['citizen_initiative']['beginAt']['date']['month'] = 12;
-        $data['citizen_initiative']['beginAt']['date']['year'] = 2017;
+        $data['citizen_initiative']['beginAt']['date']['year'] = date('Y');
         $data['citizen_initiative']['beginAt']['time']['hour'] = 9;
         $data['citizen_initiative']['beginAt']['time']['minute'] = 0;
         $data['citizen_initiative']['finishAt']['date']['day'] = 15;
         $data['citizen_initiative']['finishAt']['date']['month'] = 12;
-        $data['citizen_initiative']['finishAt']['date']['year'] = 2017;
+        $data['citizen_initiative']['finishAt']['date']['year'] = date('Y');
         $data['citizen_initiative']['finishAt']['time']['hour'] = 18;
         $data['citizen_initiative']['finishAt']['time']['minute'] = 0;
         $data['citizen_initiative']['place'] = 'Fablab';
