@@ -52,6 +52,7 @@ class CitizenProjectCommandType extends AbstractType
                 'attr' => ['maxlength' => 60],
             ])
             ->add('category', EventCategoryType::class, [
+                'placeholder' => 'Choisir une catégorie',
                 'class' => CitizenProjectCategory::class,
             ])
             ->add('image', FileType::class, [
