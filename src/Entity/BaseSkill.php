@@ -25,8 +25,8 @@ abstract class BaseSkill
      *
      * @ORM\Column
      *
-     * @Assert\NotBlank
-     * @Assert\Length(min=2, max=200)
+     * @Assert\NotBlank(groups={"skills"})
+     * @Assert\Length(min=2, max=200, groups={"skills"})
      */
     private $name = '';
 

@@ -88,6 +88,7 @@
 {% block _summary_skills_entry_name_row %}
     {% spaceless %}
         <div class="summary-skill">
+            {{ block('form_errors') }}
             <span class="skill-remove">X</span>
             <span class="skill-value">&nbsp;{% if value is not empty %}{{ value }}{% endif %}</span>
             {{ block('hidden_widget') }}

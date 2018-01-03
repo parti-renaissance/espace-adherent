@@ -726,6 +726,34 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
     /**
      * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
      */
+    public function testAddSkillWithMoreThan200Characters(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/skills');
+
+        $skill1 = 'Plomberie';
+        $skill2 = 'Une compétence qui fait plus de 200 caractèters ne doit pas faire une 500................................................................................................................................';
+
+        $skillCollection = $crawler->filter('#summary_skills')->getNode(0);
+        $this->appendCollectionFormPrototype($skillCollection, '0');
+        $this->appendCollectionFormPrototype($skillCollection, '1');
+
+        $crawler = $this->client->submit($crawler->filter('form[name=summary]')->form(), [
+            'summary[skills][0][name]' => $skill1,
+            'summary[skills][1][name]' => $skill2,
+        ]);
+
+        $formErrors = $crawler->filter('.form__errors li');
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertSame(1, $formErrors->count());
+        $this->assertSame('Vous devez saisir au maximum 200 caractères.', $formErrors->text());
+    }
+
+    /**
+     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
+     */
     public function testStepSynthesisWithoutSummary()
     {
         $summariesCount = count($this->getSummaryRepository()->findAll());
