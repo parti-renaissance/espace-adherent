@@ -10,6 +10,7 @@ use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\EventRegistrationType;
+use Doctrine\ORM\EntityNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -84,7 +85,11 @@ class CitizenActionController extends Controller
             throw $this->createAccessDeniedException('Invalid CSRF protection token to unfollow citizen action.');
         }
 
-        $this->get(CitizenActionManager::class)->unregisterFromCitizenAction($citizenAction, $this->getUser());
+        try {
+            $this->get(CitizenActionManager::class)->unregisterFromCitizenAction($citizenAction, $this->getUser());
+        } catch (EntityNotFoundException $e) {
+            return new JsonResponse(['error' => 'Impossible d\'exécuter la désinscription de l\'action citoyenne, votre inscription n\'est pas trouvée.', Response::HTTP_NOT_FOUND]);
+        }
 
         return new JsonResponse();
     }

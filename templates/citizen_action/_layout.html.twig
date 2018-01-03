@@ -17,8 +17,12 @@
                 di.get('api').unregisterFromCitizenAction(
                     '{{ citizen_action.slug }}',
                     unregistrationButton.getAttribute('data-csrf-token'),
-                    function (result) {
-                        window.location.reload();
+                    function (data) {
+                        if (data.hasOwnProperty('error')) {
+                            dom('#unregistration_error').textContent = data.error;
+                        } else {
+                            window.location.reload();
+                        }
                     }
                 );
             });
@@ -93,6 +97,7 @@
                         </li>
                     </ul>
                 </div>
+                <div id="unregistration_error"></div>
             </div>
         </header>
 

@@ -55,7 +55,7 @@ CONTENT;
         $this->assertRegExp(sprintf('/%s/', $icalRegex), $response->getContent());
     }
 
-    public function testUnregistrationAction(): void
+    public function testUnregistrationSuccessfulAction(): void
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
 
@@ -64,6 +64,7 @@ CONTENT;
         $citizenAction = $this->getRepository(CitizenAction::class)->findOneBy(['uuid' => $uuid]);
 
         $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s', $citizenAction->getSlug()));
+
         $unregistrationButton = $this->client->getCrawler()->filter('#citizen_action-unregistration');
 
         $this->assertSame('Se désinscrire', trim($unregistrationButton->text()));

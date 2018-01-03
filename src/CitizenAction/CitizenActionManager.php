@@ -10,6 +10,7 @@ use AppBundle\Event\EventRegistrationManager;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Repository\EventRegistrationRepository;
+use Doctrine\ORM\EntityNotFoundException;
 
 class CitizenActionManager
 {
@@ -96,10 +97,12 @@ class CitizenActionManager
 
     public function unregisterFromCitizenAction(CitizenAction $citizenAction, Adherent $adherent): void
     {
-        $registration = $this->eventRegistrationManager->searchRegistration($citizenAction, $adherent->getEmailAddress(), $adherent);
-
-        if ($registration) {
+        if ($registration = $this->eventRegistrationManager->searchRegistration($citizenAction, $adherent->getEmailAddress(), $adherent)) {
             $this->eventRegistrationManager->remove($registration);
+        } else {
+            throw new EntityNotFoundException(
+                sprintf('Unable to find event registration by CitizenAction UUID (%s) and adherent UUID (%s)', $citizenAction->getUuid()->toString(), $adherent->getUuid()->toString())
+            );
         }
     }
 }
