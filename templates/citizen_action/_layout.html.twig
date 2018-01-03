@@ -22,7 +22,7 @@
                         <div class="citizen-action-organizer text--body text--white">
                             Organisé par <span class="text--bold">{{ is_granted('IS_AUTHENTICATED_FULLY') ? citizen_action.organizer.fullName : citizen_action.organizer.partialName }}</span>
                             {% if citizen_action.citizenProject is defined %}
-                                de l'initiative citoyenne
+                                du projet citoyen
                                 <a class="link--white" href="{{ path('app_citizen_project_show', {slug: citizen_action.citizenProject.slug}) }}">
                                     {{- citizen_action.citizenProject.name -}}
                                 </a>
