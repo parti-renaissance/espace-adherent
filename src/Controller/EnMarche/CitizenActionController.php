@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -71,6 +72,21 @@ class CitizenActionController extends Controller
             'citizen_action' => $citizenAction,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/{slug}/desinscription", name="app_citizen_action_unregistration")
+     * @Method("GET|POST")
+     */
+    public function unregistrationAction(Request $request, CitizenAction $citizenAction): Response
+    {
+        if (!$this->isCsrfTokenValid('citizen_action.unregistration', $request->request->get('token'))) {
+            throw $this->createAccessDeniedException('Invalid CSRF protection token to unfollow citizen action.');
+        }
+
+        $this->get(CitizenActionManager::class)->unregisterFromCitizenAction($citizenAction, $this->getUser());
+
+        return new JsonResponse();
     }
 
     /**

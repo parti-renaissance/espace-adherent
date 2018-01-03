@@ -6,6 +6,7 @@ use AppBundle\Collection\EventRegistrationCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\EventRegistration;
+use AppBundle\Event\EventRegistrationManager;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Repository\EventRegistrationRepository;
@@ -15,15 +16,18 @@ class CitizenActionManager
     private $citizenActionRepository;
     private $eventRegistrationRepository;
     private $adherentRepository;
+    private $eventRegistrationManager;
 
     public function __construct(
         CitizenActionRepository $citizenActionRepository,
         EventRegistrationRepository $eventRegistrationRepository,
-        AdherentRepository $adherentRepository
+        AdherentRepository $adherentRepository,
+        EventRegistrationManager $eventRegistrationManager
     ) {
         $this->citizenActionRepository = $citizenActionRepository;
         $this->eventRegistrationRepository = $eventRegistrationRepository;
         $this->adherentRepository = $adherentRepository;
+        $this->eventRegistrationManager = $eventRegistrationManager;
     }
 
     public function removeOrganizerCitizenActions(Adherent $adherent): void
@@ -88,5 +92,14 @@ class CitizenActionManager
         }
 
         return $eventsRegistrationHydrated;
+    }
+
+    public function unregisterFromCitizenAction(CitizenAction $citizenAction, Adherent $adherent): void
+    {
+        $registration = $this->eventRegistrationManager->searchRegistration($citizenAction, $adherent->getEmailAddress(), $adherent);
+
+        if ($registration) {
+            $this->eventRegistrationManager->remove($registration);
+        }
     }
 }
