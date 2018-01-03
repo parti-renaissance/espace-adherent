@@ -39,7 +39,7 @@ class CitizenActionManagerController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $action = $this->get(CitizenActionCommandHandler::class)->handle($command);
 
-            $this->get('app.event.registration_handler')->handle(new EventRegistrationCommand($action, $this->getUser()));
+            $this->get('app.event.registration_handler')->handle(new EventRegistrationCommand($action, $this->getUser()), false);
             $this->addFlash('info', $this->get('translator')->trans('citizen_action.creation.success'));
 
             return $this->redirectToRoute('app_citizen_action_show', [

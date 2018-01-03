@@ -13,6 +13,7 @@ use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Mailer\Message\EventNotificationMessage;
 use AppBundle\Mailer\Message\CommitteeMessageNotificationMessage;
+use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
@@ -253,6 +254,8 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $this->assertSame('Mercredi 2 mars 2022, 9h30', $crawler->filter('.committee-event-date')->text());
         $this->assertSame('6 rue Neyret, 69001 Lyon 1er', $crawler->filter('.committee-event-address')->text());
         $this->assertSame('Cette journée sera consacrée à un grand débat sur la question écologique.', $crawler->filter('.committee-event-description')->text());
+
+        $this->assertCountMails(1, EventRegistrationConfirmationMessage::class, 'gisele-berthoux@caramail.com');
     }
 
     public function testAuthenticatedCommitteeHostCanPostMessages()

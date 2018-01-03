@@ -2,30 +2,26 @@
 
 namespace AppBundle\Event;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use AppBundle\Events;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class EventRegistrationCommandHandler
 {
+    private $dispatcher;
     private $factory;
     private $manager;
-    private $mailer;
-    private $urlGenerator;
 
     public function __construct(
+        EventDispatcherInterface $dispatcher,
         EventRegistrationFactory $factory,
-        EventRegistrationManager $manager,
-        MailerService $mailer,
-        UrlGeneratorInterface $urlGenerator
+        EventRegistrationManager $manager
     ) {
+        $this->dispatcher = $dispatcher;
         $this->factory = $factory;
         $this->manager = $manager;
-        $this->mailer = $mailer;
-        $this->urlGenerator = $urlGenerator;
     }
 
-    public function handle(EventRegistrationCommand $command): void
+    public function handle(EventRegistrationCommand $command, bool $sendMail = true): void
     {
         $registration = $this->manager->searchRegistration(
             $command->getEvent(),
@@ -40,16 +36,10 @@ class EventRegistrationCommandHandler
 
         $this->manager->create($registration = $this->factory->createFromCommand($command));
 
-        $this->mailer->sendMessage(EventRegistrationConfirmationMessage::createFromRegistration(
+        $this->dispatcher->dispatch(Events::EVENT_REGISTRATION_CREATED, new EventRegistrationEvent(
             $registration,
-            $eventLink = $this->generateUrl('app_event_show', [
-                'slug' => $command->getEvent()->getSlug(),
-            ])
-        ));
-    }
-
-    private function generateUrl(string $route, array $params = []): string
-    {
-        return $this->urlGenerator->generate($route, $params, UrlGeneratorInterface::ABSOLUTE_URL);
+            $command->getEvent()->getSlug(),
+            $sendMail)
+        );
     }
 }

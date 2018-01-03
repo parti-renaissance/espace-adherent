@@ -9,6 +9,7 @@ use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
 use AppBundle\DataFixtures\ORM\LoadReferentManagedUserData;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\ReferentManagedUsersMessage;
+use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
 use AppBundle\Repository\ReferentManagedUsersMessageRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -121,6 +122,8 @@ class ReferentControllerTest extends SqliteWebTestCase
         $this->assertSame('Pilgerweg 58, 8802 Kilchberg, Suisse', $this->client->getCrawler()->filter('span.committee-event-address')->text());
         $this->assertSame('Premier événement en Suisse', $this->client->getCrawler()->filter('div.committee-event-description')->text());
         $this->assertContains('1 inscrit', $this->client->getCrawler()->filter('div.committee-event-attendees')->html());
+
+        $this->assertCountMails(1, EventRegistrationConfirmationMessage::class, 'referent@en-marche-dev.fr');
     }
 
     public function testSearchUserToSendMail()
