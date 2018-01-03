@@ -18,6 +18,7 @@ class EventCategoryType extends AbstractType
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('e')
                     ->where('e.status = :status')
+                    ->orderBy('e.name', 'ASC')
                     ->setParameter('status', EventCategory::ENABLED);
             },
         ]);
