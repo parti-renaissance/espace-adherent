@@ -478,11 +478,15 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $errors = $this->client->getCrawler()->filter('.form__errors');
 
-        $this->assertSame(6, $errors->count());
+        $this->assertSame(7, $errors->count());
 
         $this->assertSame(
             'Cette valeur ne doit pas être vide.',
             $this->client->getCrawler()->filter('#field-name > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Cette valeur ne doit pas être nulle.',
+            $this->client->getCrawler()->filter('#field-category > .form__errors > li')->text()
         );
         $this->assertSame(
             'Cette valeur ne doit pas être vide.',
@@ -510,7 +514,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $data['citizen_project']['subtitle'] = 'test';
         $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
 
-        $this->assertSame(6, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame(7, $this->client->getCrawler()->filter('.form__errors')->count());
         $this->assertSame(
             'Vous devez saisir au moins 2 caractères.',
             $this->client->getCrawler()->filter('#field-name > .form__errors > li')->text()

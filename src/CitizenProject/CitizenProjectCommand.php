@@ -53,6 +53,10 @@ class CitizenProjectCommand
      */
     public $phone;
 
+    /**
+     * @Assert\NotNull
+     * @Assert\Type("AppBundle\Entity\CitizenProjectCategory")
+     */
     public $category;
 
     public $committeeSupports;

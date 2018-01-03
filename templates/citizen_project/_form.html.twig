@@ -12,8 +12,8 @@
 {{ form_errors(form) }}
 
 <div class="form__new" id="field-name">
-    {{ form_errors(form.name) }}
     {{ form_label(form.name, 'Donnez un titre à votre projet :', {label_attr: {class: 'label__header--large'}}) }}
+    {{ form_errors(form.name) }}
     {{ form_widget(form.name, {
         attr: {
             'class': 'form--full',
@@ -24,8 +24,8 @@
 </div>
 
 <div class="form__new" id="field-subtitle">
-    {{ form_errors(form.subtitle) }}
     {{ form_label(form.subtitle, 'Et un sous-titre :', {label_attr: {class: 'label__header--large'}}) }}
+    {{ form_errors(form.subtitle) }}
     {{ form_widget(form.subtitle, {
         'attr': {
             'class': 'form--full',
@@ -36,8 +36,8 @@
 </div>
 
 <div class="form__new" id="field-category">
-    {{ form_errors(form.category) }}
     {{ form_label(form.category, 'Choisissez une catégorie :', {label_attr: {class: 'label__header--large'}}) }}
+    {{ form_errors(form.category) }}
     {{ form_widget(form.category, {
         attr: {
             class: 'form--full',
@@ -69,8 +69,8 @@
 </div>
 
 <div class="form__new" id="field-problem-description">
-    {{ form_errors(form.problem_description) }}
     {{ form_label(form.problem_description, 'À quelle problématique locale répond votre projet ?', {label_attr: {class: 'label__header--large'}}) }}
+    {{ form_errors(form.problem_description) }}
     {{ form_widget(form.problem_description, {
         'attr': {
             'class': 'form--full form__field--textarea-120',
@@ -85,8 +85,8 @@
 </div>
 
 <div class="form__new" id="field-proposed-solution">
-    {{ form_errors(form.proposed_solution) }}
     {{ form_label(form.proposed_solution, 'Comment répondez-vous à cette problématique ?', {label_attr: {class:'label__header--large'}}) }}
+    {{ form_errors(form.proposed_solution) }}
     {{ form_widget(form.proposed_solution, {
         'attr': {
             'class': 'form--full form__field--textarea-120',
@@ -96,8 +96,8 @@
 </div>
 
 <div class="form__new" id="field-required-means">
-    {{ form_errors(form.required_means) }}
     {{ form_label(form.required_means, 'Quelle est votre feuille de route ?', {label_attr: {class: 'label__header--large'}}) }}
+    {{ form_errors(form.required_means) }}
     {{ form_widget(form.required_means, {
         'attr': {
             'class': 'form--full form__field--textarea-120',
@@ -116,8 +116,8 @@
 </div>
 
 <div class="form__new" id="citizen-project-address">
-    {{ form_errors(form.address) }}
     {{ form_label(form.address, 'Autour de quelle ville se déroulera ce projet ?', {label_attr: {class: 'label__header--large'}}) }}
+    {{ form_errors(form.address) }}
     <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
         <div class="register__form__zip_code register__form--third" id="field-postal-code-city">
             {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Code postal' } }) }}
@@ -157,8 +157,8 @@
     </div>
 </div>
 <div class="form__new">
-    {{ form_errors(form.assistance_content) }}
     {{ form_label(form.assistance_content, 'En quoi l\'équipe d\'accompagnement peut-elle m\'aider ?', {'label_attr': { class: 'label__header--large' }}) }}
+    {{ form_errors(form.assistance_content) }}
     {{ form_widget(form.assistance_content, {
         'attr': {
             'class': 'form--full form__field--textarea-120'
