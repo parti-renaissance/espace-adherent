@@ -39,6 +39,7 @@ class CitizenProjectCategorySkill
      * @var CitizenProjectSkill
      *
      * @ORM\ManyToOne(targetEntity="CitizenProjectSkill")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $skill;
 
