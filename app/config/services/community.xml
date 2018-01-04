@@ -77,8 +77,6 @@
         </service>
 
         <!-- Procuration -->
-        <service id="app.procuration.factory" class="AppBundle\Procuration\ProcurationFactory" />
-
         <service id="app.procuration.proxy_message_factory" class="AppBundle\Procuration\ProcurationProxyMessageFactory" public="false">
             <argument type="service" id="app.routing.remote_url_generator" />
             <argument>%procurations_reply_to_email%</argument>

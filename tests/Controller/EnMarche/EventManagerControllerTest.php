@@ -28,6 +28,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
     public function testAnonymousUserCannotEditEvent($path)
     {
         $this->client->request('GET', $path);
+
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
     }
 
@@ -37,6 +38,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
     public function testRegisteredAdherentUserCannotFoundPagesOfCancelledEvent($path)
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+
         $this->redirectionEventNotPublishTest($path);
     }
 
@@ -47,12 +49,12 @@ class EventManagerControllerTest extends SqliteWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
         $this->client->request('GET', $path);
+
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
     public function provideHostProtectedPages()
     {
-        $uuid = LoadEventData::EVENT_1_UUID;
         $slug = date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne';
 
         return [
@@ -63,7 +65,6 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
     public function provideCancelledInaccessiblePages()
     {
-        $uuid = LoadEventData::EVENT_6_UUID;
         $slug = date('Y-m-d', strtotime('+60 days')).'-reunion-de-reflexion-parisienne-annule';
 
         return [
@@ -79,7 +80,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/modifier');
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->isSuccessful($this->client->getResponse());
 
         $this->client->submit($crawler->selectButton('Enregistrer')->form([
             'committee_event' => [
@@ -123,6 +124,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
         // Follow the redirect and check the adherent can see the committee page
         $crawler = $this->client->followRedirect();
+
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertContains('L\'événement a bien été modifié.', $crawler->filter('#notice-flashes')->text());
         $this->assertSame('Débat sur l\'écologie | En Marche !', $crawler->filter('title')->text());
@@ -147,15 +149,16 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
         // Follow the redirect and check the adherent can see the committee page
         $crawler = $this->client->followRedirect();
+
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        static::assertContains('L\'événement a bien été annulé.', $crawler->filter('#notice-flashes')->text());
+        $this->assertContains('L\'événement a bien été annulé.', $crawler->filter('#notice-flashes')->text());
 
         $messages = $this->getEmailRepository()->findMessages(EventCancellationMessage::class);
         /** @var EventCancellationMessage $message */
         $message = array_shift($messages);
 
         // Two mails have been sent
-        static::assertCount(2, $message->getRecipients());
+        $this->assertCount(2, $message->getRecipients());
     }
 
     public function testCommitteeHostCanEditEvent()
@@ -164,16 +167,17 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
         $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/modifier');
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->isSuccessful($this->client->getResponse());
     }
 
     public function testOrganizerCanSeeRegistrations()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+
         $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
-        $this->assertTrue($this->seeMembersList($crawler, 2));
+        $this->assertTrue($this->seeMembersList($crawler, 2), 'There should be 2 members in the list.');
     }
 
     public function testOrganizerCanExportRegistrationsWithWrongUuids()
@@ -196,6 +200,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
     public function testOrganizerCanExportRegistrations()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+
         $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
@@ -209,7 +214,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
             'exports' => json_encode($uuids),
         ]);
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->isSuccessful($this->client->getResponse());
         $this->assertCount(3, explode("\n", $this->client->getResponse()->getContent()));
 
         // Try to illegally export an adherent data
@@ -220,7 +225,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
             'exports' => json_encode($uuids),
         ]);
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->isSuccessful($this->client->getResponse());
         $this->assertCount(3, explode("\n", $this->client->getResponse()->getContent()));
 
         $this->client->request(Request::METHOD_POST, $exportUrl, [
@@ -248,7 +253,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
             'contacts' => json_encode($uuids),
         ]);
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->isSuccessful($this->client->getResponse());
 
         // Try to post with an empty message
         $crawler = $this->client->request(Request::METHOD_POST, $contactUrl, [
@@ -257,7 +262,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
             'message' => ' ',
         ]);
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->isSuccessful($this->client->getResponse());
         $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('.form__errors > .form__error')->text());
 
         $this->client->request(Request::METHOD_POST, $contactUrl, [
@@ -322,14 +327,13 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
     private function redirectionEventNotPublishTest($url)
     {
-        $this->client->request(Request::METHOD_GET, '/evenements/2017-04-29-rassemblement-des-soutiens-regionaux-a-la-candidature-de-macron/inscription');
+        $this->client->request(Request::METHOD_GET, $url);
 
-        $this->assertStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client);
+        $this->assertClientIsRedirectedTo('/evenements', $this->client, false, true);
 
-        $this->assertClientIsRedirectedTo('/evenements', $this->client);
         $this->client->followRedirect();
 
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->isSuccessful($this->client->getResponse());
     }
 
     protected function setUp()
