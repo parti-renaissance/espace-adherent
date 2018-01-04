@@ -70,8 +70,16 @@
             </div>
         {% endif %}
 
-        <div class="text--body text--dark" id="citizen-project-description">
-            {{ citizen_project.problemDescription }}
+        <div class="text--body text--dark" id="citizen-project-problem-description">
+            <p>{{ citizen_project.problemDescription }}</p>
+        </div>
+
+        <div class="text--body text--dark" id="citizen-project-proposed-solution">
+            <p>{{ citizen_project.proposedSolution }}</p>
+        </div>
+
+        <div class="text--body text--dark" id="citizen-project-required-means">
+            <p>{{ citizen_project.requiredMeans }}</p>
         </div>
 
         <ul id="citizen-project-menu" class="citizen-project__menu list__links list__links--left list__links--row">

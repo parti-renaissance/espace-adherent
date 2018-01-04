@@ -46,10 +46,18 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
     public function testAdherentCanSeeCitizenProject(): void
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
+
+        /** @var CitizenProject $citizenProject */
+        $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/projets-citoyens/%s', $citizenProject->getSlug()));
+
         $this->isSuccessful($this->client->getResponse());
         $this->assertTrue($this->seeReportLink());
         $this->assertFalse($this->seeCommentSection());
+
+        $this->assertContains($citizenProject->getProblemDescription(), $crawler->filter('#citizen-project-problem-description > p')->text());
+        $this->assertContains($citizenProject->getProposedSolution(), $crawler->filter('#citizen-project-proposed-solution > p')->text());
+        $this->assertContains($citizenProject->getRequiredMeans(), $crawler->filter('#citizen-project-required-means > p')->text());
     }
 
     public function testAdministratorCanSeeUnapprovedCitizenProject(): void
