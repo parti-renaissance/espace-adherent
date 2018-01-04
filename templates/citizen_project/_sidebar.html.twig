@@ -5,7 +5,7 @@
         <ul class="citizen-project__skills">
             {% if citizen_project.skills|length > 0 %}
                 {% for skill in citizen_project.skills  %}
-                    <li>{{skill}}</li>
+                    <li>{{ skill }}</li>
                 {% endfor %}
             {% else %}
                 Aucune compétence pour l'instant

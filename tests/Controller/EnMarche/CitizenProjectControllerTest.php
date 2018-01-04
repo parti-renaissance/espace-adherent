@@ -426,11 +426,11 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertSame(SearchParametersFilter::DEFAULT_CITY, trim($crawler->filter('#city-search-display')->text()));
         $this->assertSame(SearchParametersFilter::DEFAULT_CITY, trim($crawler->filter('#city-search-input')->attr('value')));
 
-        $citzenProjectName = 'Le titre de mon prochain CP';
+        $citizenProjectName = 'Le titre de mon prochain CP';
 
         $this->client->submit(
             $this->client->getCrawler()->selectButton('Prochaine étape')->form([
-                'name' => $citzenProjectName,
+                'name' => $citizenProjectName,
             ])
         );
 
@@ -444,10 +444,10 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
             '_adherent_password' => 'secret!12345',
         ]));
 
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/creer-mon-projet-citoyen?name='.rawurlencode($citzenProjectName), $this->client);
+        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/creer-mon-projet-citoyen?name='.rawurlencode($citizenProjectName), $this->client);
         $crawler = $this->client->followRedirect();
 
-        $this->assertSame($citzenProjectName, $crawler->filter('#citizen_project_name')->attr('value'));
+        $this->assertSame($citizenProjectName, $crawler->filter('#citizen_project_name')->attr('value'));
     }
 
     public function testCitizenProjectLandingPageAuthenticateUser()
@@ -461,16 +461,16 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertSame($adherent->getCityName(), trim($crawler->filter('#city-search-display')->text()));
         $this->assertSame($adherent->getCityName(), trim($crawler->filter('#city-search-input')->attr('value')));
 
-        $citzenProjectName = 'Mon super CP !';
+        $citizenProjectName = 'Mon super CP !';
 
         $crawler = $this->client->submit(
             $this->client->getCrawler()->selectButton('Prochaine étape')->form([
-                'name' => $citzenProjectName,
+                'name' => $citizenProjectName,
             ])
         );
 
         $this->assertSame('/espace-adherent/creer-mon-projet-citoyen', $this->client->getRequest()->getPathInfo());
-        $this->assertSame($citzenProjectName, $crawler->filter('#citizen_project_name')->attr('value'));
+        $this->assertSame($citizenProjectName, $crawler->filter('#citizen_project_name')->attr('value'));
     }
 
     public function testCitizenProjectLandingPageResultAnonymous()

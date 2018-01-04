@@ -5,11 +5,7 @@
         <p>{{ citizen_project.subtitle }}</p>
         <p class="citizen_project_thumb_creator">{{ include('components/user.html.twig') }}Par
             <strong>
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                {{ citizen_project.creator }}
-            {% else %}
-                {{ citizen_project.creator.partialName }}
-            {% endif %}
+            {{ is_granted('IS_AUTHENTICATED_FULLY') ? citizen_project.creator : citizen_project.creator.partialName }}
             </strong>
         </p>
 
@@ -17,7 +13,7 @@
             <p>Nous recherchons</p>
             <ul class="citizen-project__skills">
                 {% for skill in citizen_project.skills  %}
-                    <li>{{skill}}</li>
+                    <li>{{ skill }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
