@@ -239,7 +239,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/projets-citoyens/%s', $citizenProject->getSlug()));
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->client->submit($crawler->selectButton('Notre comité souhaite aussi soutenir ce projet')->form());
+        $this->client->submit($crawler->selectButton('Soutenir ce projet avec mon comité')->form());
         $crawler = $this->client->followRedirect();
         $flash = $crawler->filter('#notice-flashes');
         $this->assertCount(1, $flash);
