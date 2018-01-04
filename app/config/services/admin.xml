@@ -541,6 +541,36 @@
 
         <!--
         ######################################################
+        # Timeline
+        ######################################################
+         -->
+
+        <service id="app.admin.timeline_profile" class="AppBundle\Admin\TimelineProfileAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Profils" group="Timeline" />
+
+            <argument />
+            <argument>AppBundle\Entity\Timeline\Profile</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.timeline_theme" class="AppBundle\Admin\TimelineThemeAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Thèmes" group="Timeline" />
+
+            <argument />
+            <argument>AppBundle\Entity\Timeline\Theme</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.timeline_measure" class="AppBundle\Admin\TimelineMeasureAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Mesures" group="Timeline" />
+
+            <argument />
+            <argument>AppBundle\Entity\Timeline\Measure</argument>
+            <argument />
+        </service>
+
+        <!--
+        ######################################################
         # Data Transformer
         ######################################################
          -->
