@@ -55,16 +55,14 @@
                                 </div>
                                 {% if event.type and event.isCitizenInitiative %}
                                     {% if event.organizer %}
-                                        <div class="text--body"><span class="text--bold">Initiative citoyenne</span> organisée par l'adhérent <span class="text--bold">{{ event.organizer.fullName }}</span></div>
+                                        <div class="text--body"><span class="text--bold">Initiative citoyenne</span> organisée par l'adhérent <span class="text--bold">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span></div>
                                     {% else %}
                                         <div class="text--body"><span class="text--bold">Initiative citoyenne</span> organisée par un ancien adhérent</div>
                                     {% endif %}
                                 {% elseif event.committee %}
                                     <div class="text--body">Organisé par le comité <span class="text--bold">{{ event.committee.name }}</span></div>
-                                {% elseif event.organizer and event.organizer.isReferent %}
-                                    <div class="text--body">Organisé par un <span class="text--bold">Référent En Marche</span> ({{ event.organizer.fullName }})</div>
                                 {% elseif event.organizer %}
-                                    <div class="text--body">Organisé par <span class="text--bold">{{ event.organizer.fullName }}</span></div>
+                                    <div class="text--body">Organisé par <span class="text--bold">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span></div>
                                 {% endif %}
                             </div>
 
