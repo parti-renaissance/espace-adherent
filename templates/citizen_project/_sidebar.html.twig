@@ -7,6 +7,8 @@
                 {% for skill in citizen_project.skills  %}
                     <li>{{skill}}</li>
                 {% endfor %}
+            {% else %}
+                Aucune compétence pour l'instant
             {% endif %}
         </ul>
     </div>
@@ -71,6 +73,8 @@
                 <li class="text--body">
                     {{ committeeSupport.committee }}
                 </li>
+            {% else %}
+                Aucun comité en soutien pour l'instant
             {% endfor %}
         </ul>
         {% if is_granted('ROLE_SUPERVISOR') %}
@@ -81,7 +85,7 @@
                         {% if citizen_project.isSupportedByCommitteeUuid(app.user.memberships.committeeSupervisorMemberships.last.committeeUuid.toString) %}
                             Retirer mon soutien à ce projet
                         {% else %}
-                            Notre comité souhaite aussi soutenir ce projet
+                            Soutenir ce projet avec mon comité
                         {% endif %}
                     </button>
                 </div>
