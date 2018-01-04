@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Timeline\Measure;
+use AppBundle\Timeline\MeasureManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -13,6 +14,15 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TimelineMeasureAdmin extends AbstractAdmin
 {
+    private $measureManager;
+
+    public function __construct($code, $class, $baseControllerName, MeasureManager $measureManager)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->measureManager = $measureManager;
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -38,7 +48,8 @@ class TimelineMeasureAdmin extends AbstractAdmin
                     'label' => 'Mise en avant (32)',
                     'required' => false,
                 ])
-            ->end();
+            ->end()
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -47,7 +58,8 @@ class TimelineMeasureAdmin extends AbstractAdmin
             ->add('title', null, [
                 'label' => 'Titre',
                 'show_filter' => true,
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -72,6 +84,15 @@ class TimelineMeasureAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
+    }
+
+    /**
+     * @param Measure $object
+     */
+    public function preUpdate($object)
+    {
+        $this->measureManager->preUpdate($object);
     }
 }

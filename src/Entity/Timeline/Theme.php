@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="timeline_themes")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\Timeline\ThemeRepository")
  */
 class Theme implements EntityMediaInterface
 {
@@ -33,8 +33,8 @@ class Theme implements EntityMediaInterface
      *
      * @ORM\Column(length=100)
      *
-     * @Assert\Length(max=100)
      * @Assert\NotBlank
+     * @Assert\Length(max=100)
      *
      * @Algolia\Attribute
      */
@@ -45,8 +45,8 @@ class Theme implements EntityMediaInterface
      *
      * @ORM\Column(length=100, unique=true)
      *
-     * @Assert\Length(max=100)
      * @Assert\NotBlank
+     * @Assert\Length(max=100)
      *
      * @Algolia\Attribute
      */

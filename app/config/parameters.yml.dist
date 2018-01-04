@@ -48,6 +48,7 @@ parameters:
     env(ALGOLIA_FRONT_API_KEY): ~
     env(ALGOLIA_BACK_API_KEY):  ~
     env(ALGOLIA_BLACKLIST):     ~
+    env(ALGOLIA_INDEX_PREFIX):  'dev'
 
     env(LEGISLATIVES_PLATFORM): https://www.google.fr
 
