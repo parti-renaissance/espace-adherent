@@ -28,7 +28,12 @@
                 waitQueue = setTimeout(function() {
                     di.get('api').getCitizenProjectLandingPage(cityInput.value, function (response) {
                         if (response instanceof XMLHttpRequest) {
-                            dom('#search-results').innerHTML = '<div class="text--body text--center l__wrapper">Aucun résultat pour ces critères de recherche.</div>';
+                            var errorText = 'Aucun résultat pour ces critères de recherche.';
+                            if (JSON.parse(response.responseText).hasOwnProperty('error')) {
+                                errorText = JSON.parse(response.responseText).error;
+                            }
+
+                            dom('#search-results').innerHTML = '<div class="text--body text--center l__wrapper">'+errorText+'</div>';
 
                             return;
                         }
@@ -93,10 +98,5 @@
     <div class="text--center">
         <video src=""></video>
     </div>
-    
-
-
-
-
 
 {% endblock %}

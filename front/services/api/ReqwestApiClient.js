@@ -199,8 +199,8 @@ export default class ReqwestApiClient {
             callback(response);
         });
 
-        request.fail(() => {
-            callback(null);
+        request.fail((response) => {
+            callback(response);
         });
     }
 }

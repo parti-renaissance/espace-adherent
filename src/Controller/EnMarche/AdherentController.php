@@ -179,7 +179,7 @@ class AdherentController extends Controller
     public function createCitizenProjectAction(Request $request): Response
     {
         $command = CitizenProjectCreationCommand::createFromAdherent($user = $this->getUser());
-        if ($name = $request->get('name', false)) {
+        if ($name = $request->query->get('name', false)) {
             $command->name = $name;
         }
         $form = $this->createForm(CitizenProjectCommandType::class, $command);

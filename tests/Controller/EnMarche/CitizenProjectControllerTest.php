@@ -426,11 +426,11 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertSame(SearchParametersFilter::DEFAULT_CITY, trim($crawler->filter('#city-search-display')->text()));
         $this->assertSame(SearchParametersFilter::DEFAULT_CITY, trim($crawler->filter('#city-search-input')->attr('value')));
 
-        $citzenProjectName = 'Le titre de mon prochain CP';
+        $citizenProjectName = 'Le titre de mon prochain CP';
 
         $this->client->submit(
             $this->client->getCrawler()->selectButton('Prochaine étape')->form([
-                'name' => $citzenProjectName,
+                'name' => $citizenProjectName,
             ])
         );
 
@@ -444,10 +444,10 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
             '_adherent_password' => 'secret!12345',
         ]));
 
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/creer-mon-projet-citoyen?name='.rawurlencode($citzenProjectName), $this->client);
+        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/creer-mon-projet-citoyen?name='.rawurlencode($citizenProjectName), $this->client);
         $crawler = $this->client->followRedirect();
 
-        $this->assertSame($citzenProjectName, $crawler->filter('#citizen_project_name')->attr('value'));
+        $this->assertSame($citizenProjectName, $crawler->filter('#citizen_project_name')->attr('value'));
     }
 
     public function testCitizenProjectLandingPageAuthenticateUser()
@@ -461,16 +461,16 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertSame($adherent->getCityName(), trim($crawler->filter('#city-search-display')->text()));
         $this->assertSame($adherent->getCityName(), trim($crawler->filter('#city-search-input')->attr('value')));
 
-        $citzenProjectName = 'Mon super CP !';
+        $citizenProjectName = 'Mon super CP !';
 
         $crawler = $this->client->submit(
             $this->client->getCrawler()->selectButton('Prochaine étape')->form([
-                'name' => $citzenProjectName,
+                'name' => $citizenProjectName,
             ])
         );
 
         $this->assertSame('/espace-adherent/creer-mon-projet-citoyen', $this->client->getRequest()->getPathInfo());
-        $this->assertSame($citzenProjectName, $crawler->filter('#citizen_project_name')->attr('value'));
+        $this->assertSame($citizenProjectName, $crawler->filter('#citizen_project_name')->attr('value'));
     }
 
     public function testCitizenProjectLandingPageResultAnonymous()
@@ -500,26 +500,22 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
     public function testCitizenProjectLandingPageResultAuthenticate()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
-        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/landing/results?city=evry', [], [], [
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/landing/results?city=evry', [], [], [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ]);
 
-        $this->assertSame(3, $crawler->filter('.citizen_project_thumb')->count());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $thumb1 = $crawler->filter('.citizen_project_thumb')->first();
+        $content = $this->client->getResponse()->getContent();
 
-        $this->assertSame('Formation en ligne ouverte à tous à Évry', trim($thumb1->filter('.citizen_project_thumb_name')->text()));
-        $this->assertContains('Francis Brioul', trim($thumb1->filter('.citizen_project_thumb_creator')->text()));
-
-        $thumb2 = $crawler->filter('.citizen_project_thumb')->eq(1);
-
-        $this->assertSame('Le projet citoyen à Paris 8', trim($thumb2->filter('.citizen_project_thumb_name')->text()));
-        $this->assertContains('Jacques Picard', trim($thumb2->filter('.citizen_project_thumb_creator')->text()));
-
-        $thumb3 = $crawler->filter('.citizen_project_thumb')->eq(2);
-
-        $this->assertSame('Le projet citoyen à Marseille', trim($thumb3->filter('.citizen_project_thumb_name')->text()));
-        $this->assertContains('Benjamin Duroc', trim($thumb3->filter('.citizen_project_thumb_creator')->text()));
+        $this->assertNotEmpty($content);
+        $this->assertSame(3, substr_count($content, '<div class="citizen_project_thumb search__citizen_project__box">'));
+        $this->assertContains('<h1 class="citizen_project_thumb_name">Formation en ligne ouverte à tous à Évry</h1>', $content);
+        $this->assertContains('Francis Brioul', $content);
+        $this->assertContains('<h1 class="citizen_project_thumb_name">Le projet citoyen à Paris 8</h1>', $content);
+        $this->assertContains('Jacques Picard', $content);
+        $this->assertContains('<h1 class="citizen_project_thumb_name">Le projet citoyen à Marseille</h1>', $content);
+        $this->assertContains('Benjamin Duroc', $content);
     }
 
     private function assertSeeComments(array $comments)

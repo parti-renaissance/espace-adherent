@@ -1,15 +1,11 @@
 {% for citizen_project in results %}
-    <div class="citizen_project_thumb">
+    <div class="citizen_project_thumb search__citizen_project__box">
         <img src="{{ asset(citizen_project.imagePath) }}" alt="{{ citizen_project.name }}">
         <h1 class="citizen_project_thumb_name">{{ citizen_project.name }}</h1>
         <p>{{ citizen_project.subtitle }}</p>
         <p class="citizen_project_thumb_creator">{{ include('components/user.html.twig') }}Par
             <strong>
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                {{ citizen_project.creator }}
-            {% else %}
-                {{ citizen_project.creator.partialName }}
-            {% endif %}
+            {{ is_granted('IS_AUTHENTICATED_FULLY') ? citizen_project.creator : citizen_project.creator.partialName }}
             </strong>
         </p>
 
@@ -17,9 +13,11 @@
             <p>Nous recherchons</p>
             <ul class="citizen-project__skills">
                 {% for skill in citizen_project.skills  %}
-                    <li>{{skill}}</li>
+                    <li>{{ skill }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
+        <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}"
+           class="search__citizen_project__box__link"></a>
     </div>
 {% endfor %}

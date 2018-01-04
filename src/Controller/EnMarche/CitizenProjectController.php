@@ -295,7 +295,7 @@ class CitizenProjectController extends Controller
                 'results' => $results,
             ]);
         } catch (GeocodingException $exception) {
-            $response = new Response();
+            $response = new JsonResponse(['error' => $this->get('translator')->trans('search.geocoding.exception')], Response::HTTP_NOT_FOUND);
         }
 
         return $response;
