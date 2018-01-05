@@ -291,8 +291,6 @@ class CitizenProjectController extends Controller
             $results = $citizenProjectManager->findNearCitizenProjectByCoordinates($search->getCityCoordinates());
             dump($results);
             $citizenProjectManager->injectCitizenProjectCreator($results);
-            dump('AFTER');
-            dump($results);die;
 
             $response = $this->render('citizen_project/_landing_results.html.twig', [
                 'results' => $results,
