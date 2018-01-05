@@ -2,20 +2,15 @@
 
 namespace AppBundle\Algolia;
 
-use Algolia\AlgoliaSearchBundle\Indexer\Indexer;
 use Algolia\AlgoliaSearchBundle\Indexer\ManualIndexer as BaseManualIndexer;
-use Doctrine\ORM\EntityManagerInterface;
 
 class ManualIndexer implements ManualIndexerInterface
 {
-    /**
-     * @var BaseManualIndexer
-     */
     private $algolia;
 
-    public function __construct(Indexer $algolia, EntityManagerInterface $em)
+    public function __construct(BaseManualIndexer $algolia)
     {
-        $this->algolia = $algolia->getManualIndexer($em);
+        $this->algolia = $algolia;
     }
 
     public function index($entities, array $options = []): void

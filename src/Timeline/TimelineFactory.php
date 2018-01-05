@@ -43,13 +43,11 @@ class TimelineFactory
 
     public function createTheme(string $title, string $description, string $imageUrl, bool $isFeatured = false): Theme
     {
-        return Theme::create(
-            $title,
-            $this->slugify($title),
-            $description,
-            $this->createMedia("Timeline - Thème $title", $imageUrl),
-            $isFeatured
-        );
+        $theme = new Theme($title, $this->slugify($title), $description, $isFeatured);
+
+        $theme->setMedia($this->createMedia("Timeline - Thème $title", $imageUrl));
+
+        return $theme;
     }
 
     private function createMedia(string $name, string $path): Media

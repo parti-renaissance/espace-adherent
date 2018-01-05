@@ -92,7 +92,7 @@ class ReferentControllerTest extends SqliteWebTestCase
         $data['committee_event']['beginAt']['date']['day'] = 14;
         $data['committee_event']['beginAt']['date']['month'] = 6;
         $data['committee_event']['beginAt']['date']['year'] = date('Y');
-        $data['committee_event']['beginAt']['time']['hour'] = date('H');
+        $data['committee_event']['beginAt']['time']['hour'] = preg_replace('/0/', '', date('H'), 1);
         $data['committee_event']['beginAt']['time']['minute'] = 0;
         $data['committee_event']['finishAt']['date']['day'] = 15;
         $data['committee_event']['finishAt']['date']['month'] = 6;

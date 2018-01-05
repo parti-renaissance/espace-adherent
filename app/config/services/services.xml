@@ -24,7 +24,14 @@
 		<service id="AppBundle\Membership\AdherentRegistry" public="true" />
 
 		<!-- Algolia -->
-		<service id="AppBundle\Algolia\ManualIndexer" />
+		<service id="AppBundle\Algolia\ManualIndexer">
+			<argument type="service">
+				<service class="Algolia\AlgoliaSearchBundle\Ìndexer\ManualIndexer">
+					<factory service="algolia.indexer" method="getManualIndexer" />
+					<argument type="service" id="doctrine.orm.entity_manager" />
+				</service>
+			</argument>
+		</service>
 
 		<!-- CitizenProject -->
 		<service id="AppBundle\CitizenProject\CitizenProjectManager">

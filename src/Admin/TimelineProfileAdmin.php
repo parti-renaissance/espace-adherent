@@ -13,8 +13,6 @@ class TimelineProfileAdmin extends AbstractAdmin
 {
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $slugEditable = null === $this->getSubject()->getTitle();
-
         $formMapper
             ->with('Méta-données', ['class' => 'col-md-8'])
                 ->add('title', TextType::class, [
@@ -25,8 +23,7 @@ class TimelineProfileAdmin extends AbstractAdmin
             ->with('Publication', ['class' => 'col-md-4'])
                 ->add('slug', null, [
                     'label' => 'URL de publication',
-                    'disabled' => !$slugEditable,
-                    'help' => $slugEditable ? 'Ne spécifier que la fin : http://en-marche.fr/timeline/profil/[votre-valeur]<br />Doit être unique' : 'Non modifiable car publié',
+                    'help' => 'Ne spécifier que la fin : http://en-marche.fr/timeline/profil/[votre-valeur]<br />Doit être unique',
                 ])
             ->end()
             ->with('Contenu', ['class' => 'col-md-12'])
@@ -35,7 +32,8 @@ class TimelineProfileAdmin extends AbstractAdmin
                     'required' => false,
                     'filter_emojis' => true,
                 ])
-            ->end();
+            ->end()
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -44,7 +42,8 @@ class TimelineProfileAdmin extends AbstractAdmin
             ->add('title', null, [
                 'label' => 'Titre',
                 'show_filter' => true,
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -59,6 +58,7 @@ class TimelineProfileAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }
