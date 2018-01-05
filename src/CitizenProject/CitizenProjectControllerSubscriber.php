@@ -17,8 +17,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class CitizenProjectControllerSubscriber implements EventSubscriberInterface
 {
-    const DEPARTMENT_CODES = ['13', '16', '19', '29', '30', '34', '38', '47', '54', '56', '73', '78', '79', '80', '81', '83', '84', '87', '89', '91', '92'];
-    const POSTAL_CODES = ['75005', '75006', '75017', '75018'];
+    public const UNAUTHORIZED_DEPARTMENT_CODES = ['971', '972', '973', '974', '975', '976', '984', '986', '987', '988'];
 
     private $urlGenerator;
     private $tokenStorage;
@@ -71,11 +70,8 @@ class CitizenProjectControllerSubscriber implements EventSubscriberInterface
         }
 
         $postalCode = $user->getPostalCode();
-        if (in_array($postalCode, self::POSTAL_CODES, true)) {
-            return true;
-        }
 
-        return in_array(substr($postalCode, 0, 2), self::DEPARTMENT_CODES, true);
+        return !in_array(substr($postalCode, 0, 3), self::UNAUTHORIZED_DEPARTMENT_CODES, true);
     }
 
     public static function getSubscribedEvents()
