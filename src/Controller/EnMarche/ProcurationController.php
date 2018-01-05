@@ -5,13 +5,13 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Election;
 use AppBundle\Entity\ProcurationProxy;
-use AppBundle\Exception\InvalidUuidException;
-use AppBundle\Form\ProcurationProfileType;
-use AppBundle\Form\ProcurationElectionsType;
-use AppBundle\Form\ProcurationProxyType;
-use AppBundle\Form\ProcurationVoteType;
 use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Procuration\ProcurationRequestSession;
+use AppBundle\Exception\InvalidUuidException;
+use AppBundle\Form\Procuration\ProcurationProxyType;
+use AppBundle\Form\Procuration\ProcurationRequestType;
+use AppBundle\Form\Procuration\ElectionContextType;
+use AppBundle\Procuration\ElectionContext;
+use AppBundle\Procuration\ProcurationSession;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -27,96 +27,100 @@ class ProcurationController extends Controller
      * @Route(defaults={"_enable_campaign_silence"=true}, name="app_procuration_landing")
      * @Method("GET")
      */
-    public function landingAction(): Response
+    public function landingAction(ProcurationSession $procurationSession): Response
     {
+        $procurationSession->endRequest(); // Back to landing should reset the flow
+
         return $this->render('procuration/landing.html.twig', [
             'next_election' => $this->getDoctrine()->getRepository(Election::class)->findComingNextElection(),
         ]);
     }
 
     /**
-     * @Route("/je-demande", defaults={"_enable_campaign_silence"=true}, name="app_procuration_index")
-     * @Method("GET")
-     */
-    public function indexAction(Request $request, ProcurationRequestSession $procurationSession): Response
-    {
-        $procurationSession->start();
-
-        return $this->render('procuration/index.html.twig', [
-            'has_error' => $request->query->getBoolean('has_error'),
-            'form' => $this->createForm(ProcurationVoteType::class, $procurationSession->getCurrentModel())->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/je-demande/mon-lieu-de-vote", defaults={"_enable_campaign_silence"=true}, name="app_procuration_request_vote")
+     * @Route(
+     *     "/choisir/{action}",
+     *     defaults={"_enable_campaign_silence"=true},
+     *     requirements={"action"=AppBundle\Procuration\ElectionContext::CONTROLLER_ACTION_REQUIREMENT},
+     *     name="app_procuration_choose_election"
+     * )
      * @Method("GET|POST")
      */
-    public function voteAction(Request $request, ProcurationRequestSession $procurationSession): Response
+    public function chooseElectionAction(Request $request, string $action, ProcurationSession $procurationSession): Response
     {
-        $form = $this->createForm(ProcurationVoteType::class, $procurationSession->getCurrentModel())
+        $form = $this->createForm(ElectionContextType::class)
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->redirectToRoute('app_procuration_request_profile');
+            $procurationSession->setElectionContext($form->getData());
+
+            if (ElectionContext::ACTION_REQUEST === $action) {
+                return $this->redirectToRoute('app_procuration_request', ['step' => ProcurationRequest::STEP_URI_VOTE]);
+            }
+
+            return $this->redirectToRoute('app_procuration_proxy_proposal');
         }
 
-        return $this->render('procuration/vote.html.twig', [
-            'form' => $form->createView(),
+        return $this->render('procuration/choose_election.html.twig', [
+            'action' => $action,
+            'elections_form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/je-demande/mes-coordonnees", defaults={"_enable_campaign_silence"=true}, name="app_procuration_request_profile")
+     * @Route("/je-demande", defaults={"_enable_campaign_silence"=true}, name="app_procuration_index_legacy")
+     * @Route(
+     *     "/je-demande/{step}",
+     *     defaults={"_enable_campaign_silence"=true},
+     *     requirements={"step"="mon-lieu-de-vote|mes-coordonnees|ma-procuration"},
+     *     name="app_procuration_request"
+     * )
      * @Method("GET|POST")
      */
-    public function profileAction(Request $request, ProcurationRequestSession $procurationSession): Response
+    public function requestAction(Request $request, ProcurationSession $procurationSession, ?string $step, string $_route): Response
     {
-        $procurationRequest = $procurationSession->getCurrentModel();
-
-        if ($this->getUser() instanceof Adherent) {
-            $procurationRequest->importAdherentData($this->getUser());
+        if ('app_procuration_index_legacy' === $_route) {
+            return $this->redirectToRoute('app_procuration_request', ['step' => ProcurationRequest::STEP_URI_VOTE], Response::HTTP_MOVED_PERMANENTLY);
         }
 
-        $form = $this->createForm(ProcurationProfileType::class, $procurationRequest)
+        if (!$procurationSession->hasElectionContext()) {
+            return $this->redirectToRoute('app_procuration_choose_election', ['action' => ElectionContext::ACTION_REQUEST]);
+        }
+
+        $user = $this->getUser();
+        $procurationRequest = $procurationSession->getCurrentRequest();
+
+        if (ProcurationRequest::STEP_URI_PROFILE === $step && $user instanceof Adherent) {
+            $procurationRequest->importAdherentData($user);
+        }
+
+        if ($finalStep = ProcurationRequest::isFinalStepUri($step)) {
+            $procurationRequest->recaptcha = $request->request->get('g-recaptcha-response');
+        }
+
+        $form = $this->createForm(ProcurationRequestType::class, $procurationRequest, [
+            'step_uri' => $step,
+            'election_context' => $procurationSession->getElectionContext(),
+        ])
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->redirectToRoute('app_procuration_request_elections');
+            if ($finalStep) {
+                $manager = $this->getDoctrine()->getManager();
+
+                $manager->persist($procurationRequest);
+                $manager->flush();
+                $procurationSession->endRequest();
+
+                return $this->redirectToRoute('app_procuration_request_thanks');
+            }
+
+            return $this->redirectToRoute('app_procuration_request', ['step' => ProcurationRequest::getNextStepUri($step)]);
         }
 
-        return $this->render('procuration/profile.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/je-demande/ma-procuration", defaults={"_enable_campaign_silence"=true}, name="app_procuration_request_elections")
-     * @Method("GET|POST")
-     */
-    public function electionsAction(Request $request, ProcurationRequestSession $procurationSession): Response
-    {
-        $procurationRequest = $procurationSession->getCurrentModel();
-        $procurationRequest->recaptcha = (string) $request->request->get('g-recaptcha-response');
-
-        $form = $this->createForm(ProcurationElectionsType::class, $procurationRequest)
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $this->getDoctrine()->getManager();
-
-            $manager->persist($procurationRequest);
-            $manager->flush();
-            $procurationSession->end();
-
-            return $this->redirectToRoute('app_procuration_request_thanks');
-        }
-
-        return $this->render('procuration/elections.html.twig', [
-            'form' => $form->createView(),
+        return $this->render(sprintf('procuration/%s.html.twig', ProcurationRequest::getStepForUri($step)), [
+            'procuration_form' => $form->createView(),
         ]);
     }
 
@@ -133,8 +137,12 @@ class ProcurationController extends Controller
      * @Route("/je-propose", defaults={"_enable_campaign_silence"=true}, name="app_procuration_proxy_proposal")
      * @Method("GET|POST")
      */
-    public function proxyProposalAction(Request $request): Response
+    public function proxyProposalAction(Request $request, ProcurationSession $procurationSession): Response
     {
+        if (!$procurationSession->hasElectionContext()) {
+            return $this->redirectToRoute('app_procuration_choose_election', ['action' => ElectionContext::ACTION_PROPOSAL]);
+        }
+
         $referent = null;
 
         if ($referentUuid = $request->query->get('uuid')) {
@@ -157,7 +165,9 @@ class ProcurationController extends Controller
             $proposal->importAdherentData($user);
         }
 
-        $form = $this->createForm(ProcurationProxyType::class, $proposal)
+        $form = $this->createForm(ProcurationProxyType::class, $proposal, [
+            'election_context' => $procurationSession->getElectionContext(),
+        ])
             ->handleRequest($request)
         ;
 
@@ -172,7 +182,7 @@ class ProcurationController extends Controller
         }
 
         return $this->render('procuration/proposal.html.twig', [
-            'form' => $form->createView(),
+            'procuration_form' => $form->createView(),
         ]);
     }
 
@@ -194,7 +204,7 @@ class ProcurationController extends Controller
     public function myRequestAction(ProcurationRequest $request, string $token): Response
     {
         if ($token !== $request->generatePrivateToken()) {
-            throw $this->createNotFoundException();
+            throw $this->createNotFoundException('Invalid token.');
         }
 
         return $this->render('procuration/my_request.html.twig', [

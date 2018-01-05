@@ -1,0 +1,79 @@
+{% extends 'procuration/_layout.html.twig' %}
+
+{% block page_title 'Procuration En Marche !' %}
+{% block meta_description 'Chaque vote compte. Donnez ou proposez procuration avec En Marche !' %}
+
+{% set is_request = constant('AppBundle\\Procuration\\ElectionContext::ACTION_REQUEST') is same as(action) %}
+
+{% block procuration_content %}
+    <section class="procuration__content l__wrapper l__row l__row--top l__row--h-stretch-around l__tablet--col space--60-0">
+        {{ form_start(elections_form) }}
+            <div>
+                <div class="text--body b__nudge--top-large">
+                    {% if is_request %}
+                        <h2 class="b__nudge--bottom">Un de nos volontaires peut porter votre voix</h2>
+                        Si vous n’avez pas de proche de confiance qui pourrait voter pour vous dans votre commune, nous
+                        pouvons trouver quelqu’un qui portera votre voix. Remplissez simplement le formulaire.
+                        Attention, la procuration doit ensuite parvenir à votre bureau de vote, ce qui prend plusieurs jours.
+                        Effectuez donc votre démarche rapidement !
+                    {% else %}
+                        <h2 class="b__nudge--bottom">Proposez-vous en tant que mandataire, à qui un citoyen de votre ville peut donner procuration.</h2>
+                        Attention : si vous n'êtes pas en France métropolitaine, votre date de vote peut varier.
+                    {% endif %}
+                </div>
+                <div class="text--body text--medium-small">
+                    Les élections suivantes auront bientôt lieu :<br>
+                    {{ form_errors(elections_form.elections) }}
+                    {{ form_widget(elections_form.elections) }}
+                    {% if is_request %}
+                        <strong>Vous serez absent(e) à une de ces dates ? Pensez à donner procuration !</strong>
+                    {% else %}
+                        <strong>Vous serez présent(e) à une de ces dates ? Pensez à proposer une procuration !</strong>
+                    {% endif %}
+                    <div class="text--summary b__nudge--top-10">
+                        Attention : si vous n'êtes pas en France métropolitaine, votre date de vote peut varier.
+                    </div>
+                </div>
+                <div class="text--body b__nudge--top-50">
+                    <h2>Comment ça marche ?</h2>
+                    <ol>
+                        <li>
+                            Cochez les élections qui vous concernent au-dessus. Et cliquez sur "Continuer".
+                        </li>
+                        {% if is_request %}
+                            <li>
+                                Remplissez le formulaire en indiquant vos coordonnées et votre bureau de vote.
+                            </li>
+                            <li>
+                                <em>En Marche !</em> recherche une personne de confiance dans votre commune disponible le jour du vote.
+                            </li>
+                            <li>
+                                Vous recevrez d'ici quelques jours toutes les informations pour compléter le formulaire CERFA avec les coordonnées de la personne qui votera en votre nom.
+                            </li>
+                            <li>
+                                Le jour de l'élection, un électeur <em>En Marche !</em> vote en votre nom.
+                            </li>
+                        {% else %}
+                            <li>
+                                Vous remplissez le formulaire en indiquant vos coordonnées et disponibilités.
+                            </li>
+                            <li>
+                                En cas de demande de procuration, vous êtes mis en relation avec les personnes
+                                absentes les jours de vote.
+                            </li>
+                            <li>
+                                Vous votez en leur nom.
+                            </li>
+                        {% endif %}
+                    </ol>
+                    <a href="{{ asset('en-marche_fiches-procurations.pdf') }}" target="_blank">En savoir plus &raquo;</a>
+                </div>
+            </div>
+
+            {{ form_widget(elections_form.choose, { label: 'Continuer' }) }}
+
+        {{ form_end(elections_form) }}
+    </section>
+
+    {{ include('procuration/legal.html.twig', { elections: elections_form.vars.elections|join(', ') }, with_context=false) }}
+{% endblock %}

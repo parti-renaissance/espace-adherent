@@ -6,6 +6,8 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
@@ -21,15 +23,39 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 class ProcurationRequest
 {
-    const REASON_PROFESIONNAL = 'profesionnal';
-    const REASON_HANDICAP = 'handicap';
-    const REASON_HEALTH = 'health';
-    const REASON_HELP = 'help';
-    const REASON_TRAINING = 'training';
-    const REASON_HOLIDAYS = 'holidays';
-    const REASON_RESIDENCY = 'residency';
-
     use EntityTimestampableTrait;
+    use ElectionRoundsCollectionTrait;
+
+    public const REASON_PROFESSIONAL = 'profesionnal';
+    public const REASON_HANDICAP = 'handicap';
+    public const REASON_HEALTH = 'health';
+    public const REASON_HELP = 'help';
+    public const REASON_TRAINING = 'training';
+    public const REASON_HOLIDAYS = 'holidays';
+    public const REASON_RESIDENCY = 'residency';
+
+    public const STEP_VOTE = 'vote';
+    public const STEP_PROFILE = 'profile';
+    public const STEP_ELECTION_ROUNDS = 'election_rounds';
+    public const STEP_THANKS = 'thanks';
+
+    public const STEP_URI_VOTE = 'mon-lieu-de-vote';
+    public const STEP_URI_PROFILE = 'mes-coordonnees';
+    public const STEP_URI_ELECTION_ROUNDS = 'ma-procuration';
+    public const STEP_URI_THANKS = 'merci';
+
+    public const STEPS = [
+        self::STEP_URI_VOTE => self::STEP_VOTE,
+        self::STEP_URI_PROFILE => self::STEP_PROFILE,
+        self::STEP_URI_ELECTION_ROUNDS => self::STEP_ELECTION_ROUNDS,
+    ];
+
+    public const STEP_URIS = [
+        1 => self::STEP_URI_VOTE,
+        2 => self::STEP_URI_PROFILE,
+        3 => self::STEP_URI_ELECTION_ROUNDS,
+        4 => self::STEP_URI_THANKS,
+    ];
 
     /**
      * @ORM\Column(type="integer")
@@ -256,16 +282,26 @@ class ProcurationRequest
     private $electionLegislativeSecondRound = false;
 
     /**
+     * @var ElectionRound[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ElectionRound")
+     * @ORM\JoinTable(name="procuration_requests_to_election_rounds")
+     *
+     * @Assert\Count(min=1, minMessage="procuration.election_rounds.min_count", groups={"election_rounds"})
+     */
+    private $electionRounds;
+
+    /**
      * @var string
      *
      * @ORM\Column(length=15)
      *
-     * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"elections"})
+     * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"election_rounds"})
      * @Assert\Choice(
      *      callback={"AppBundle\Entity\ProcurationRequest", "getReasons"},
      *      message="common.gender.invalid_choice",
      *      strict=true,
-     *      groups={"profile"}
+     *      groups={"election_rounds"}
      * )
      */
     private $reason = self::REASON_RESIDENCY;
@@ -302,6 +338,7 @@ class ProcurationRequest
     public function __construct()
     {
         $this->phone = static::createPhoneNumber();
+        $this->electionRounds = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -316,7 +353,7 @@ class ProcurationRequest
             self::REASON_HEALTH,
             self::REASON_HELP,
             self::REASON_HOLIDAYS,
-            self::REASON_PROFESIONNAL,
+            self::REASON_PROFESSIONAL,
             self::REASON_RESIDENCY,
             self::REASON_TRAINING,
         ];
@@ -767,5 +804,30 @@ class ProcurationRequest
     public function remind(): void
     {
         ++$this->reminded;
+    }
+
+    public static function getStepForUri(string $stepUri): string
+    {
+        if (!isset(self::STEPS[$stepUri])) {
+            throw new \InvalidArgumentException(sprintf('Invalid step uri "%s". Valid step uris are: "%s".', $stepUri, implode('", "', self::STEP_URIS)));
+        }
+
+        return self::STEPS[$stepUri];
+    }
+
+    public static function getNextStepUri(string $currentStepUri): ?string
+    {
+        if (false === $step = array_search($currentStepUri, self::STEP_URIS, true)) {
+            throw new \InvalidArgumentException(sprintf('Invalid step "%s". Valid steps are: "%s".', $currentStepUri, implode('", "', self::STEP_URIS)));
+        }
+
+        return self::STEP_URIS[++$step] ?? null;
+    }
+
+    public static function isFinalStepUri(string $currentStepUri): bool
+    {
+        $stepUris = array_keys(self::STEPS);
+
+        return $currentStepUri === end($stepUris);
     }
 }

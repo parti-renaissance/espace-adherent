@@ -34,11 +34,14 @@ trait ControllerTestTrait
         $this->assertSame($statusCode, $response->getStatusCode(), $message);
     }
 
-    public function assertClientIsRedirectedTo(string $path, Client $client, $withSchemes = false)
+    public function assertClientIsRedirectedTo(string $path, Client $client, bool $withSchemes = false, bool $permanent = false)
     {
+        $response = $client->getResponse();
+
+        $this->assertResponseStatusCode($permanent ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND, $response);
         $this->assertSame(
             $withSchemes ? $client->getRequest()->getSchemeAndHttpHost().$path : $path,
-            $client->getResponse()->headers->get('location')
+            $response->headers->get('location')
         );
     }
 
