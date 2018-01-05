@@ -1,4 +1,17 @@
 .citizen-projects {
+    &__landing {
+        header {
+            background-image: linear-gradient(115deg, $newblue, $pink-light);
+
+            h2 {
+                @include text--medium-large;
+                font-weight: 300;
+                margin-top: 5px;
+                letter-spacing: 0;
+            }
+        }
+    }
+
     &__create {
         background: $gray--white;
 

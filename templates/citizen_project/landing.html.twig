@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
 
+{% block banner '' %}
+{% block page_title 'Agissez près de chez vous !' %}
+
 {% block javascripts %}
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places"></script>
     <script type="text/javascript">
@@ -55,34 +58,32 @@
 {% endblock %}
 
 {% block content %}
-    <header class="background--purple space--60-0">
+<section class="citizen-projects__landing">
+    <header class="space--100-0">
         <div class="l__wrapper l__col text--white">
-            <div class="b__nudge--bottom-larger">
-                <h1 class="text--larger">Démarer votre projet</h1>
-                <h2 class="b__nudge--top-5">ou engagez-vous dans les projets citoyens déjà lancés</h2>
-                <img src="" alt="">
-            </div>
+            <h1 class="text--extra-large">Agissez près de chez vous !</h1>
+            <h2>Proposez votre projet citoyen ou rejoignez un projet déjà lancé</h2>
+            <img src="" alt="">
         </div>
     </header>
 
-    <div class="l__wrapper l__row l__row--top l__row--h-stretch l__tablet--col">
-        <div class="l__wrapper">
-            <div class="text--larger text--bold">Des projets à rejoindre autour de <span id="city-search-display">{{ city }}</span> <input style="display: none;" type="text" value="{{ city }}" id="city-search-input"> <span id="change-city" class="btn">Changer lieu</span></div>
-            <div id="search-results">
-                <div class="text--body text--center l__wrapper">Chargements en cours...</div>
-            </div>
-
-            <div class="text--center l__wrapper">
-                <a class="newbtn" href="{{ path('app_search_citizen_projects') }}">Tous les projets</a>
-            </div>
-
-            <hr>
-
-            <div class="l__wrapper space--60-0 text--center">
-                <p class="text--large text--bold">Les projets citoyens sont des actions locales qui visent à améliorer concrètement notre quotidien en réunissant la force et les compétences de toutes et tous. </p>
-            </div>
-
+    <div class="l__wrapper space--60-0">
+        <div class="text--large text--bold">Des projets à rejoindre autour de <span id="city-search-display">{{ city }}</span> <input style="display: none;" type="text" value="{{ city }}" id="city-search-input"> <span id="change-city" class="btn">Changer lieu</span></div>
+        <div id="search-results">
+            <div class="text--body text--center l__wrapper">Soupoudrer de perlimpinpin...</div>
         </div>
+        <div class="text--center">
+            <a class="newbtn" href="{{ path('app_search_citizen_projects') }}">Tous les projets</a>
+        </div>
+    </div>
+
+
+    <hr>
+
+    <div class="l__wrapper space--60-0 text--center">
+        <p class="text--large text--bold">
+            Les projets citoyens sont des actions locales qui visent à améliorer concrètement notre quotidien en réunissant la force et les compétences de toutes et tous.
+        </p>
     </div>
 
     <div class="background--purple l__wrapper space--60-0 text--center">
@@ -98,5 +99,8 @@
     <div class="text--center">
         <video src=""></video>
     </div>
+
+</section>
+
 
 {% endblock %}
