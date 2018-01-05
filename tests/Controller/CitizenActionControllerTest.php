@@ -55,7 +55,7 @@ CONTENT;
         $this->assertRegExp(sprintf('/%s/', $icalRegex), $response->getContent());
     }
 
-    public function testUnregistrationSuccessfulAction(): void
+    public function testUnregistrationSuccessful(): void
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
 
@@ -80,6 +80,36 @@ CONTENT;
 
         $this->assertSame('S\'inscrire', $this->client->getCrawler()->filter('a.newbtn--orange')->text());
         $this->assertNull($this->getEventRegistrationRepository()->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_3_UUID));
+    }
+
+    public function testUnregistrationFailed(): void
+    {
+        $this->markTestSkipped('Need to fix different token problem');
+
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+
+        $this->client->disableReboot();
+        $uuid = LoadCitizenActionData::CITIZEN_ACTION_4_UUID;
+        /** @var CitizenAction $citizenAction */
+        $citizenAction = $this->getRepository(CitizenAction::class)->findOneBy(['uuid' => $uuid]);
+
+        $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s', $citizenAction->getSlug()));
+
+        $this->assertSame('S\'inscrire', $this->client->getCrawler()->filter('a.newbtn--orange')->text());
+        $this->assertNull($this->getEventRegistrationRepository()->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_2_UUID));
+
+        $csrfToken = $this->container->get('security.csrf.token_manager')->getToken('citizen_action.unregistration');
+        $this->client->request(Request::METHOD_POST, sprintf('/action-citoyenne/%s/desinscription', $citizenAction->getSlug()), [
+            'token' => $csrfToken,
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+        // Impossible d'exécuter la désinscription de l'action citoyenne, votre registration n'est pas trouvée.
+
+        $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s', $citizenAction->getSlug()));
+
+        $this->assertSame('S\'inscrire', $this->client->getCrawler()->filter('a.newbtn--orange')->text());
+        $this->assertNull($this->getEventRegistrationRepository()->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_2_UUID));
     }
 
     protected function setUp()

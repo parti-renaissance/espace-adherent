@@ -81,8 +81,8 @@ class CitizenActionController extends Controller
      */
     public function unregistrationAction(Request $request, CitizenAction $citizenAction): Response
     {
-        if (!$this->isCsrfTokenValid('citizen_action.unregistration', $request->request->get('token'))) {
-            throw $this->createAccessDeniedException('Invalid CSRF protection token to unfollow citizen action.');
+        if (!$this->isCsrfTokenValid('citizen_action.unregistration', $token = $request->request->get('token'))) {
+            throw $this->createAccessDeniedException('Invalid CSRF protection token to unregister from the citizen action.');
         }
 
         try {
