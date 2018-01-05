@@ -113,6 +113,13 @@ class Measure
      */
     private $profiles;
 
+    /**
+     * @param string      $title
+     * @param string      $status
+     * @param Profile[]   $profiles
+     * @param string|null $link
+     * @param bool|null   $isGlobal
+     */
     public function __construct(
         string $title,
         string $status,

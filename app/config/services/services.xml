@@ -23,6 +23,9 @@
 		<service id="AppBundle\Membership\AdherentManager" />
 		<service id="AppBundle\Membership\AdherentRegistry" public="true" />
 
+		<!-- Algolia -->
+		<service id="AppBundle\Algolia\ManualIndexer" />
+
 		<!-- CitizenProject -->
 		<service id="AppBundle\CitizenProject\CitizenProjectManager">
 			<call method="setGlide">
@@ -41,6 +44,7 @@
 
 		<!-- Timeline -->
 		<service id="AppBundle\Command\ImportTimelineCommand" />
+		<service id="AppBundle\Timeline\MeasureManager" />
 		<service id="AppBundle\Timeline\TimelineFactory" />
 	</services>
 </container>

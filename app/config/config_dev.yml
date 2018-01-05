@@ -21,6 +21,10 @@ services:
         class: 'Tests\AppBundle\Test\Recaptcha\DummyRecaptchaApiClient'
         public: false
 
+    AppBundle\Algolia\ManualIndexer:
+        class: 'Tests\AppBundle\Test\Algolia\DummyManualIndexer'
+        public: false
+
 framework:
     router:
         resource: "%kernel.root_dir%/config/routing_dev.yml"
