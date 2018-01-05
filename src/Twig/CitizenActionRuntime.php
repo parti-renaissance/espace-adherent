@@ -25,4 +25,9 @@ class CitizenActionRuntime
     {
         return $this->authorizationChecker->isGranted(CitizenActionPermissions::REGISTER, $citizenAction);
     }
+
+    public function canUnregisterFromCitizenAction(CitizenAction $citizenAction): bool
+    {
+        return $this->authorizationChecker->isGranted(CitizenActionPermissions::UNREGISTER, $citizenAction);
+    }
 }

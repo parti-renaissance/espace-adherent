@@ -8,7 +8,7 @@
     {{ parent() }}
     <script type="text/javascript">
         Kernel.onLoad(function(di) {
-            {% if is_granted('ROLE_ADHERENT') %}
+            {% if can_unregister_citizen_action(citizen_action) %}
             var unregistrationButton = dom('#citizen_action-unregistration');
 
             unregistrationButton && on(unregistrationButton, 'click', function () {
@@ -70,7 +70,7 @@
                             L'action citoyenne est complète
                         {% elseif can_register_citizen_action(citizen_action) %}
                             <a class="newbtn newbtn--orange" href="{{ path("app_citizen_action_attend", {slug: citizen_action.slug}) }}">S'inscrire</a>
-                        {% else %}
+                        {% elseif can_unregister_citizen_action(citizen_action) %}
                             <button type="button"
                                     id="citizen_action-unregistration"
                                     class="newbtn newbtn--orange b__nudge--right-large"

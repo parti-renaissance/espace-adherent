@@ -97,12 +97,12 @@ class CitizenActionManager
 
     public function unregisterFromCitizenAction(CitizenAction $citizenAction, Adherent $adherent): void
     {
-        if ($registration = $this->eventRegistrationManager->searchRegistration($citizenAction, $adherent->getEmailAddress(), $adherent)) {
-            $this->eventRegistrationManager->remove($registration);
-        } else {
+        if (!$registration = $this->eventRegistrationManager->searchRegistration($citizenAction, $adherent->getEmailAddress(), $adherent)) {
             throw new EntityNotFoundException(
                 sprintf('Unable to find event registration by CitizenAction UUID (%s) and adherent UUID (%s)', $citizenAction->getUuid()->toString(), $adherent->getUuid()->toString())
             );
         }
+
+        $this->eventRegistrationManager->remove($registration);
     }
 }

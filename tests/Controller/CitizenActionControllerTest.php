@@ -104,7 +104,6 @@ CONTENT;
         ]);
 
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
-        // Impossible d'exécuter la désinscription de l'action citoyenne, votre registration n'est pas trouvée.
 
         $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s', $citizenAction->getSlug()));
 

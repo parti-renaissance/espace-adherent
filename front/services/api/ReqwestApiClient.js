@@ -153,8 +153,8 @@ export default class ReqwestApiClient {
             callback(JSON.parse(response));
         });
 
-        request.fail(() => {
-            callback(null);
+        request.fail((response) => {
+            callback(JSON.parse(response));
         });
     }
 
