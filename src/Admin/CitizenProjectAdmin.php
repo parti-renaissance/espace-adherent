@@ -158,6 +158,11 @@ class CitizenProjectAdmin extends AbstractAdmin
                     'purify_html' => true,
                     'attr' => ['class' => 'ck-editor'],
                 ])
+                ->add('requiredMeans', null, [
+                    'label' => 'Feuille de route',
+                    'filter_emojis' => true,
+                    'purify_html' => true,
+                ])
                 ->add('skills', EntityType::class, [
                     'class' => CitizenProjectSkill::class,
                     'label' => 'Compétences',
