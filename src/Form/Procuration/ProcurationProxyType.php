@@ -1,8 +1,9 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Form\Procuration;
 
 use AppBundle\Entity\ProcurationProxy;
+use AppBundle\Form\UnitedNationsCountryType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -12,7 +13,19 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 
 class ProcurationProxyType extends AbstractProcurationType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
+
+        $resolver
+            ->setDefaults([
+                'data_class' => ProcurationProxy::class,
+                'validation_groups' => ['front'],
+            ])
+        ;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
 
@@ -30,11 +43,8 @@ class ProcurationProxyType extends AbstractProcurationType
                 'filter_emojis' => true,
             ])
             ->add('voteOffice', TextType::class)
-            ->add('electionLegislativeFirstRound', CheckboxType::class, [
-                'required' => false,
-            ])
-            ->add('electionLegislativeSecondRound', CheckboxType::class, [
-                'required' => false,
+            ->add('electionRounds', ElectionRoundsChoiceType::class, [
+                'election_context' => $options['election_context'],
             ])
             ->add('inviteSourceName', TextType::class, [
                 'required' => false,
@@ -60,15 +70,7 @@ class ProcurationProxyType extends AbstractProcurationType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        parent::configureOptions($resolver);
-
-        $resolver->setDefault('data_class', ProcurationProxy::class);
-        $resolver->setDefault('validation_groups', ['front']);
-    }
-
-    public function getBlockPrefix(): string
+    public function getBlockPrefix()
     {
         return 'app_procuration_proposal';
     }

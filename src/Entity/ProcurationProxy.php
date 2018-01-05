@@ -6,11 +6,12 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Table(name="procuration_proxies")
@@ -21,6 +22,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class ProcurationProxy
 {
     use EntityTimestampableTrait;
+    use ElectionRoundsCollectionTrait;
 
     /**
      * @ORM\Column(type="integer")
@@ -264,6 +266,16 @@ class ProcurationProxy
     private $electionLegislativeSecondRound = false;
 
     /**
+     * @var ElectionRound[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ElectionRound")
+     * @ORM\JoinTable(name="procuration_proxies_to_election_rounds")
+     *
+     * @Assert\Count(min=1, minMessage="procuration.election_rounds.min_count", groups={"front"})
+     */
+    private $electionRounds;
+
+    /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
@@ -300,6 +312,7 @@ class ProcurationProxy
     {
         $this->referent = $referent;
         $this->phone = static::createPhoneNumber();
+        $this->electionRounds = new ArrayCollection();
 
         if (!$this->referent) {
             $this->disabled = true;
@@ -322,32 +335,6 @@ class ProcurationProxy
         }
 
         return $phone;
-    }
-
-    /**
-     * @Assert\Callback(groups={"elections"}, groups={"front"})
-     *
-     * @param ExecutionContextInterface $context
-     */
-    public function validateElectionsChosen(ExecutionContextInterface $context)
-    {
-        if ($this->electionPresidentialFirstRound) {
-            return;
-        }
-
-        if ($this->electionPresidentialSecondRound) {
-            return;
-        }
-
-        if ($this->electionLegislativeFirstRound) {
-            return;
-        }
-
-        if ($this->electionLegislativeSecondRound) {
-            return;
-        }
-
-        $context->addViolation('Vous devez choisir au moins une élection');
     }
 
     public function importAdherentData(Adherent $adherent)
