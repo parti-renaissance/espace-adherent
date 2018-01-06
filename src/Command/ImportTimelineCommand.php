@@ -5,7 +5,6 @@ namespace AppBundle\Command;
 use AppBundle\Entity\Timeline\Measure;
 use AppBundle\Entity\Timeline\Profile;
 use AppBundle\Entity\Timeline\Theme;
-use AppBundle\Entity\Timeline\ThemeMeasure;
 use AppBundle\Timeline\TimelineFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -49,7 +48,6 @@ class ImportTimelineCommand extends Command
         $this->importProfiles($input, $output);
         $this->importThemes($input, $output);
         $this->importMeasures($input, $output);
-        $this->importFeaturedThemeMeasures($input, $output);
 
         $this->em->commit();
 
@@ -209,22 +207,18 @@ class ImportTimelineCommand extends Command
                 $title,
                 Measure::STATUSES[$status],
                 $relatedProfiles,
+                $relatedThemes,
                 $link,
                 !empty($isGlobal)
             );
 
             $this->em->persist($measure);
 
-            foreach ($relatedThemes as $theme) {
-                $this->em->persist(new ThemeMeasure($theme, $measure, false));
-            }
-
             ++$count;
 
             if (0 === ($count % 50)) {
                 $this->em->flush();
                 $this->em->clear(Measure::class);
-                $this->em->clear(ThemeMeasure::class);
 
                 $output->writeln(sprintf('Saved %d measures.', $count));
             }
@@ -234,40 +228,6 @@ class ImportTimelineCommand extends Command
         $this->em->clear();
 
         $output->writeln(sprintf('Saved %d measures.', $count));
-    }
-
-    public function importFeaturedThemeMeasures(InputInterface $input, OutputInterface $output): void
-    {
-        $savedThemes = $this->getThemes();
-        $measureRepository = $this->em->getRepository(Measure::class);
-
-        $themesUrl = $input->getArgument('themesUrl');
-
-        $output->writeln(['', sprintf('Starting featured theme measures import from "%s".', $themesUrl)]);
-
-        foreach ($this->parseCSV($themesUrl) as $index => $row) {
-            $themeTitle = $row[0];
-            $measureTitles = [$row[4], $row[5], $row[6]];
-
-            $theme = $savedThemes[$themeTitle];
-
-            foreach ($measureTitles as $measureTitle) {
-                if (!$measure = $measureRepository->findOneByTitle($measureTitle)) {
-                    throw new \RuntimeException(sprintf(
-                        'Measure "%s" does not exist for theme "%s".',
-                        $measureTitle,
-                        $themeTitle
-                    ));
-                }
-
-                $theme->setFeaturedMeasure($measure);
-            }
-        }
-
-        $this->em->flush();
-        $this->em->clear();
-
-        $output->writeln('Saved featured theme measures.');
     }
 
     private function parseCSV(string $filepath): array

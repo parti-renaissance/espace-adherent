@@ -184,30 +184,31 @@ class LoadTimelineData extends AbstractFixture
         }
 
         foreach (self::THEMES as $reference => $metadatas) {
-            $theme = new Theme();
-            $theme->setTitle($metadatas['title']);
-            $theme->setSlug($metadatas['slug']);
-            $theme->setDescription($metadatas['description']);
-            $theme->setFeatured($metadatas['featured'] ?? false);
+            $theme = new Theme(
+                $metadatas['title'],
+                $metadatas['slug'],
+                $metadatas['description'],
+                $metadatas['featured'] ?? false
+            );
 
             $this->addReference($reference, $theme);
 
             $manager->persist($theme);
         }
 
-        foreach (self::MEASURES as $reference => $metadatas) {
-            $profiles = [];
-            foreach ($metadatas['profiles'] as $profileReference) {
-                $profiles[] = $this->getReference($profileReference);
-            }
+        $manager->flush();
 
-            $measure = new Measure(
+        foreach (self::MEASURES as $reference => $metadatas) {
+            $manager->persist(new Measure(
                 $metadatas['title'],
                 $metadatas['status'],
-                $profiles
-            );
-
-            $manager->persist($measure);
+                array_map(function (string $profileReference) {
+                    return $this->getReference($profileReference);
+                }, $metadatas['profiles']),
+                array_map(function (string $themeReference) {
+                    return $this->getReference($themeReference);
+                }, $metadatas['themes'])
+            ));
         }
 
         $manager->flush();

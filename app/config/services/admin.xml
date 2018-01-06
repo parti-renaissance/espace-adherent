@@ -566,7 +566,7 @@
 
             <argument />
             <argument>AppBundle\Entity\Timeline\Measure</argument>
-            <argument />
+            <argument>AppBundle\Controller\Admin\AdminTimelineMeasureController</argument>
             <argument type="service" id="AppBundle\Timeline\MeasureManager" />
         </service>
 
