@@ -285,11 +285,16 @@ class Measure
         $this->savedThemes = clone $this->themes;
     }
 
+    private function getSavedThemes(): Collection
+    {
+        return $this->savedThemes ?? new ArrayCollection();
+    }
+
     public function getThemesToIndex(): ArrayCollection
     {
         $themes = new ArrayCollection();
 
-        foreach (array_merge($this->savedThemes->toArray(), $this->themes->toArray()) as $theme) {
+        foreach (array_merge($this->getSavedThemes()->toArray(), $this->themes->toArray()) as $theme) {
             if (!$themes->contains($theme)) {
                 $themes->add($theme);
             }
