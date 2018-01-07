@@ -6,19 +6,6 @@
 	<services>
 		<defaults autowire="true" autoconfigure="true" public="false" />
 
-		<prototype namespace="AppBundle\CitizenProject\Voter\" resource="../../../src/CitizenProject/Voter" />
-		<prototype namespace="AppBundle\Report\Voter\" resource="../../../src/Report/Voter" />
-
-		<prototype namespace="AppBundle\CitizenAction\Voter\" resource="../../../src/CitizenAction/Voter/" />
-
-		<prototype namespace="AppBundle\Controller\" resource="../../../src/Controller/" public="true">
-			<tag name="controller.service_arguments" />
-		</prototype>
-
-		<prototype namespace="AppBundle\Controller\Admin\" resource="../../../src/Controller/Admin" public="true">
-			<tag name="controller.service_arguments" />
-		</prototype>
-
 		<!-- Adherents -->
 		<service id="AppBundle\Membership\AdherentManager" />
 		<service id="AppBundle\Membership\AdherentRegistry" public="true" />
@@ -39,6 +26,15 @@
 				<argument type="service" id="app.glide" />
 			</call>
 		</service>
+
+		<!-- Controller -->
+		<prototype namespace="AppBundle\Controller\" resource="../../../src/Controller/">
+			<tag name="controller.service_arguments" />
+		</prototype>
+		<prototype namespace="AppBundle\Controller\Admin\" resource="../../../src/Controller/Admin" public="true">
+			<tag name="controller.service_arguments" />
+		</prototype>
+
 		<service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true" />
 		<service id="AppBundle\CitizenProject\Voter\AdministrateCitizenProjectVoter">
 			<tag name="security.voter" priority="-1000"/>
@@ -51,6 +47,9 @@
 		<service id="AppBundle\Report\ReportManager" />
 		<service id="AppBundle\Form\ReportCommandType"/>
 		<service id="AppBundle\Report\ReportCreationCommandHandler"/>
+
+		<!-- Security -->
+		<prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter" />
 
 		<!-- Timeline -->
 		<service id="AppBundle\Command\ImportTimelineCommand" />
