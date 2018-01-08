@@ -302,7 +302,7 @@ class Measure
     /**
      * @Algolia\Attribute
      */
-    public function title(): array
+    public function titles(): array
     {
         foreach (['fr', 'en'] as $locale) {
             /* @var $translation MeasureTranslation */

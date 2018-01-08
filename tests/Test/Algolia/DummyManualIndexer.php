@@ -37,6 +37,5 @@ class DummyManualIndexer implements ManualIndexerInterface
         } elseif (is_object($entities)) {
             $this->logger->info(sprintf("[algolia] $action entity \"%s\".", get_class($entities)));
         }
-
     }
 }

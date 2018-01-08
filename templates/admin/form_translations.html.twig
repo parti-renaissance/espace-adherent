@@ -7,7 +7,7 @@
             {% for translationsFields in form %}
                 {% set locale = translationsFields.vars.name %}
 
-                <li class="{% if app.request.locale == locale %}active {% endif %}{% if not translationsFields.vars.valid %}error{% endif %}">
+                <li class="{% if app.request.locale is same as(locale) %}active {% endif %}{% if not translationsFields.vars.valid %}error{% endif %}">
                     <a href="#" data-toggle="tab" data-target=".{{ translationsFields.vars.id }}_a2lix_translationsFields-{{ locale }}">
                         {{ locale|capitalize }}
                         {% if form.vars.default_locale == locale %}[Default]{% endif %}

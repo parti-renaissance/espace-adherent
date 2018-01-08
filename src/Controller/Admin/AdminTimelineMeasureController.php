@@ -12,7 +12,8 @@ class AdminTimelineMeasureController extends Controller
     /**
      * @I18nDoctrine
      */
-    public function listAction() {
+    public function listAction()
+    {
         return parent::listAction();
     }
 

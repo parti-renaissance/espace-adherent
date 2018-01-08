@@ -5,7 +5,9 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Entity\Timeline\Measure;
 use AppBundle\Entity\Timeline\MeasureTranslation;
 use AppBundle\Entity\Timeline\Profile;
+use AppBundle\Entity\Timeline\ProfileTranslation;
 use AppBundle\Entity\Timeline\Theme;
+use AppBundle\Entity\Timeline\ThemeTranslation;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -13,59 +15,149 @@ class LoadTimelineData extends AbstractFixture
 {
     const PROFILES = [
         'TP001' => [
-            'title' => 'Chef d\'entreprise',
-            'slug' => 'chef-d-entreprise',
-            'description' => 'Les mesures pour chefs d\'entreprise.',
+            'title' => [
+                'fr' => 'Chef d\'entreprise',
+                'en' => 'Entrepreneur',
+            ],
+            'slug' => [
+                'fr' => 'chef-d-entreprise',
+                'en' => 'entrepreneur',
+            ],
+            'description' => [
+                'fr' => 'Les mesures pour chefs d\'entreprise.',
+                'en' => 'Measures for entrepreneurs.',
+            ],
         ],
         'TP002' => [
-            'title' => '12-25 ans',
-            'slug' => '12-25-ans',
-            'description' => 'Les profils de 12 à 25ans.',
+            'title' => [
+                'fr' => '12-25 ans',
+                'en' => '12-25 years',
+            ],
+            'slug' => [
+                'fr' => '12-25-ans',
+                'en' => '12-25-years',
+            ],
+            'description' => [
+                'fr' => 'Les profils de 12 à 25ans.',
+                'en' => 'Profiles from 12 to 25 years old.',
+            ],
         ],
         'TP003' => [
-            'title' => '25-35 ans',
-            'slug' => '25-35-ans',
-            'description' => 'Les profils de 25 à 35ans.',
+            'title' => [
+                'fr' => '25-35 ans',
+                'en' => '25-35 years',
+            ],
+            'slug' => [
+                'fr' => '25-35-ans',
+                'en' => '25-35-years',
+            ],
+            'description' => [
+                'fr' => 'Les profils de 25 à 35ans.',
+                'en' => 'Profiles from 25 to 35 years old.',
+            ],
         ],
         'TP004' => [
-            'title' => '35-45 ans',
-            'slug' => '35-45-ans',
-            'description' => 'Les profils de 35 à 45ans.',
+            'title' => [
+                'fr' => '35-45 ans',
+                'en' => '35-45 years',
+            ],
+            'slug' => [
+                'fr' => '35-45-ans',
+                'en' => '35-45-years',
+            ],
+            'description' => [
+                'fr' => 'Les profils de 35 à 45ans.',
+                'en' => 'Profiles from 35 to 45 years old.',
+            ],
         ],
         'TP005' => [
-            'title' => '45 ans et plus',
-            'slug' => '45-ans-et-plus',
-            'description' => 'Les profils de 45ans et plus.',
+            'title' => [
+                'fr' => '45 ans et plus',
+                'en' => '45 years and over',
+            ],
+            'slug' => [
+                'fr' => '45-ans-et-plus',
+                'en' => '45-years-and-over',
+            ],
+            'description' => [
+                'fr' => 'Les profils de 45ans et plus.',
+                'en' => 'Profiles of 45 years and over.',
+            ],
         ],
     ];
 
     const THEMES = [
         'TT001' => [
-            'title' => 'Action publique et fonction publique',
-            'slug' => 'action-et-fonction-publique',
-            'description' => 'Action publique et fonction publique.',
+            'title' => [
+                'fr' => 'Action publique et fonction publique',
+                'en' => 'Public action and public service',
+            ],
+            'slug' => [
+                'fr' => 'action-et-fonction-publique',
+                'en' => 'public-action-and-public-service',
+            ],
+            'description' => [
+                'fr' => 'Action publique et fonction publique',
+                'en' => 'Public action and public service',
+            ],
             'featured' => true,
         ],
         'TT002' => [
-            'title' => 'Alternance / Apprentissage',
-            'slug' => 'alternance-apprentissage',
-            'description' => 'Alternance / Apprentissage.',
+            'title' => [
+                'fr' => 'Alternance / Apprentissage',
+                'en' => 'Alternation / Apprenticeship',
+            ],
+            'slug' => [
+                'fr' => 'alternance-apprentissage',
+                'en' => 'alternation-apprenticeship',
+            ],
+            'description' => [
+                'fr' => 'Alternance / Apprentissage',
+                'en' => 'Alternation / Apprenticeship',
+            ],
         ],
         'TT003' => [
-            'title' => 'Agriculture',
-            'slug' => 'agriculture',
-            'description' => 'Agriculture.',
+            'title' => [
+                'fr' => 'Agriculture',
+                'en' => 'Agriculture',
+            ],
+            'slug' => [
+                'fr' => 'agriculture',
+                'en' => 'agriculture',
+            ],
+            'description' => [
+                'fr' => 'Agriculture',
+                'en' => 'Agriculture',
+            ],
             'featured' => true,
         ],
         'TT004' => [
-            'title' => 'Culture',
-            'slug' => 'culture',
-            'description' => 'Culture.',
+            'title' => [
+                'fr' => 'Culture',
+                'en' => 'Culture',
+            ],
+            'slug' => [
+                'fr' => 'culture',
+                'en' => 'culture',
+            ],
+            'description' => [
+                'fr' => 'Culture',
+                'en' => 'Culture',
+            ],
         ],
         'TT005' => [
-            'title' => 'Défense',
-            'slug' => 'defense',
-            'description' => 'Défense.',
+            'title' => [
+                'fr' => 'Défense',
+                'en' => 'Defense',
+            ],
+            'slug' => [
+                'fr' => 'defense',
+                'en' => 'defense',
+            ],
+            'description' => [
+                'fr' => 'Défense',
+                'en' => 'Defense',
+            ],
         ],
     ];
 
@@ -228,7 +320,20 @@ class LoadTimelineData extends AbstractFixture
     public function load(ObjectManager $manager)
     {
         foreach (self::PROFILES as $reference => $metadatas) {
-            $profil = new Profile($metadatas['title'], $metadatas['slug'], $metadatas['description']);
+            $profil = new Profile();
+
+            $profil->addTranslation(new ProfileTranslation(
+                'fr',
+                $metadatas['title']['fr'],
+                $metadatas['slug']['fr'],
+                $metadatas['description']['fr']
+            ));
+            $profil->addTranslation(new ProfileTranslation(
+                'en',
+                $metadatas['title']['en'],
+                $metadatas['slug']['en'],
+                $metadatas['description']['en']
+            ));
 
             $this->addReference($reference, $profil);
 
@@ -236,12 +341,20 @@ class LoadTimelineData extends AbstractFixture
         }
 
         foreach (self::THEMES as $reference => $metadatas) {
-            $theme = new Theme(
-                $metadatas['title'],
-                $metadatas['slug'],
-                $metadatas['description'],
-                $metadatas['featured'] ?? false
-            );
+            $theme = new Theme($metadatas['featured'] ?? false);
+
+            $theme->addTranslation(new ThemeTranslation(
+                'fr',
+                $metadatas['title']['fr'],
+                $metadatas['slug']['fr'],
+                $metadatas['description']['fr']
+            ));
+            $theme->addTranslation(new ThemeTranslation(
+                'en',
+                $metadatas['title']['en'],
+                $metadatas['slug']['en'],
+                $metadatas['description']['en']
+            ));
 
             $this->addReference($reference, $theme);
 

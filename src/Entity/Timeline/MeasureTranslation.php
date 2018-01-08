@@ -5,11 +5,14 @@ namespace AppBundle\Entity\Timeline;
 use A2lix\I18nDoctrineBundle\Doctrine\Interfaces\OneLocaleInterface;
 use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translation;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="timeline_measure_translations")
+ *
+ * @UniqueEntity(fields={"locale", "title"}, errorPath="title")
  */
 class MeasureTranslation implements OneLocaleInterface
 {
@@ -36,7 +39,7 @@ class MeasureTranslation implements OneLocaleInterface
         return $this->title;
     }
 
-    public function setTitle(string $title): void
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }

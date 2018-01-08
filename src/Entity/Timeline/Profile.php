@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Timeline;
 
+use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -12,6 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Profile
 {
+    use Translatable;
+
     /**
      * @var int
      *
@@ -24,52 +27,17 @@ class Profile
     private $id;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(length=100)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
-     *
-     * @Algolia\Attribute
+     * @Assert\Valid
      */
-    private $title;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(length=100, unique=true)
-     *
-     * @Assert\NotBlank
-     *
-     * @Algolia\Attribute
-     */
-    private $slug;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
-     *
-     * @Algolia\Attribute
-     */
-    private $description;
-
-    public function __construct(
-        string $title = null,
-        string $slug = null,
-        string $description = null
-    ) {
-        $this->title = $title;
-        $this->slug = $slug;
-        $this->description = $description;
-    }
+    protected $translations;
 
     public function __toString()
     {
-        return $this->title ?? '';
+        if ($translation = $this->getTranslation('fr')) {
+            return $translation->getTitle();
+        }
+
+        return '';
     }
 
     public function getId(): ?int
@@ -77,33 +45,12 @@ class Profile
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    private function getTranslation(string $locale): ?ProfileTranslation
     {
-        return $this->title;
-    }
+        $translation = $this->translations->filter(function (ProfileTranslation $translation) use ($locale) {
+            return $locale === $translation->getLocale();
+        })->first();
 
-    public function setTitle(string $title): void
-    {
-        $this->title = $title;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): void
-    {
-        $this->slug = $slug;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): void
-    {
-        $this->description = $description;
+        return $translation ? $translation : null;
     }
 }

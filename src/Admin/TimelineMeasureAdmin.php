@@ -50,7 +50,6 @@ class TimelineMeasureAdmin extends AbstractAdmin
                     'label' => false,
                     'default_locale' => ['fr'],
                     'locales' => ['fr', 'en'],
-                    //'required_locales' => ['fr', 'en'],
                     'fields' => [
                         'title' => [
                             'label' => 'Titre',
@@ -143,7 +142,6 @@ class TimelineMeasureAdmin extends AbstractAdmin
             ])
         ;
     }
-
 
     /**
      * @param Measure $object
