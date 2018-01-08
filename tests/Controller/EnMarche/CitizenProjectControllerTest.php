@@ -473,23 +473,49 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertSame($citizenProjectName, $crawler->filter('#citizen_project_name')->attr('value'));
     }
 
-    public function testCitizenProjectLandingPageResultAnonymous()
+//    public function testCitizenProjectLandingPageResultAnonymous()
+//    {
+//        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/landing/results?city=paris', [], [], [
+//            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+//        ]);
+//
+//        $this->assertSame(3, $crawler->filter('.citizen_project_thumb')->count());
+//
+//        $thumb1 = $crawler->filter('.citizen_project_thumb')->first();
+//
+//        $this->assertSame('Le projet citoyen à Paris 8', trim($thumb1->filter('.citizen_project_thumb_name')->text()));
+//        $this->assertContains('Jacques P.', trim($thumb1->filter('.citizen_project_thumb_creator')->text()));
+//
+//        $thumb2 = $crawler->filter('.citizen_project_thumb')->eq(1);
+//
+//        $this->assertSame('Formation en ligne ouverte à tous à Évry', trim($thumb2->filter('.citizen_project_thumb_name')->text()));
+//        $this->assertContains('Francis B.', trim($thumb2->filter('.citizen_project_thumb_creator')->text()));
+//
+//        $thumb3 = $crawler->filter('.citizen_project_thumb')->eq(2);
+//
+//        $this->assertSame('Le projet citoyen à Marseille', trim($thumb3->filter('.citizen_project_thumb_name')->text()));
+//        $this->assertContains('Benjamin D.', trim($thumb3->filter('.citizen_project_thumb_creator')->text()));
+//    }
+
+    public function testCitizenProjectLandingPageResultAuthenticate()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/landing/results?city=paris', [], [], [
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/landing/results?city=evry', [], [], [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ]);
 
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(3, $crawler->filter('.citizen_project_thumb')->count());
 
         $thumb1 = $crawler->filter('.citizen_project_thumb')->first();
 
-        $this->assertSame('Le projet citoyen à Paris 8', trim($thumb1->filter('.citizen_project_thumb_name')->text()));
-        $this->assertContains('Jacques P.', trim($thumb1->filter('.citizen_project_thumb_creator')->text()));
+        $this->assertSame('Formation en ligne ouverte à tous à Évry', trim($thumb1->filter('.citizen_project_thumb_name')->text()));
+        $this->assertContains('Francis Brioul', trim($thumb1->filter('.citizen_project_thumb_creator')->text()));
 
         $thumb2 = $crawler->filter('.citizen_project_thumb')->eq(1);
 
-        $this->assertSame('Formation en ligne ouverte à tous à Évry', trim($thumb2->filter('.citizen_project_thumb_name')->text()));
-        $this->assertContains('Francis B.', trim($thumb2->filter('.citizen_project_thumb_creator')->text()));
+        $this->assertSame('Le projet citoyen à Paris 8', trim($thumb2->filter('.citizen_project_thumb_name')->text()));
+        $this->assertContains('Jacques Picard', trim($thumb2->filter('.citizen_project_thumb_creator')->text()));
 
         $thumb3 = $crawler->filter('.citizen_project_thumb')->eq(2);
 
