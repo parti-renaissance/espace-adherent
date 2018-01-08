@@ -132,6 +132,11 @@ jemarche.postal_code.not_blank: Vous devez entrer un code postal.
 jemarche.postal_code.invalid: Ce code postal n'est pas valide.
 
 #
+# Election
+#
+election.rounds.min_count: Une élection doit avoir au moins un tour.
+
+#
 # Procuration
 #
 procuration.election_context.min_count: Vous devez choisir au moins une élection.

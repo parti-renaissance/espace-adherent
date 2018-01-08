@@ -58,7 +58,7 @@ class Election
      *
      * @ORM\OneToMany(targetEntity="ElectionRound", mappedBy="election", cascade={"all"}, orphanRemoval=true)
      *
-     * @Assert\Count(min=1)
+     * @Assert\Count(min=1, minMessage="election.rounds.min_count")
      */
     private $rounds;
 
