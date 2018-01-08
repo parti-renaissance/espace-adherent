@@ -45,15 +45,6 @@ class Election
     private $introduction = '';
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
-     */
-    private $place;
-
-    /**
      * @var ElectionRound[]|Collection
      *
      * @ORM\OneToMany(targetEntity="ElectionRound", mappedBy="election", cascade={"all"}, orphanRemoval=true)
@@ -90,16 +81,6 @@ class Election
     public function setIntroduction(string $introduction): void
     {
         $this->introduction = $introduction;
-    }
-
-    public function getPlace(): ?string
-    {
-        return $this->place;
-    }
-
-    public function setPlace(?string $place): void
-    {
-        $this->place = $place;
     }
 
     /**
