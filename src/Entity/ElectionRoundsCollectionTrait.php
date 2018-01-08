@@ -55,4 +55,9 @@ trait ElectionRoundsCollectionTrait
     {
         $this->electionRounds->removeElement($round);
     }
+
+    public function hasElectionRound(ElectionRound $round): bool
+    {
+        return $this->electionRounds->contains($round);
+    }
 }

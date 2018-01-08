@@ -23,7 +23,7 @@
             {% endif %}
         </div>
     {% else %}
-        <div class="text--body text--center b__nudge--bottom-large">
+        <div class="text--body text--center b__nudge--bottom-large procuration_requests_total_count">
             {% if constant('PROCESSED', filters) == filters.status %}
                 {{ '{1} Vous avez une demande de procuration traitée.|[2, Inf[ Vous avez %count% demandes de procuration traitées.'|transchoice(total_count) }}
             {% else %}
@@ -46,7 +46,7 @@
             </tr>
             </thead>
             <tbody id="requests-list">
-            {{ include('procuration_manager/_requests_list.html.twig') }}
+                {{ include('procuration_manager/_requests_list.html.twig') }}
             </tbody>
         </table>
         {% if total_count > filters.limit %}

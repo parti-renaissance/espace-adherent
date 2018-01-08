@@ -14,22 +14,44 @@ use PHPUnit\Framework\TestCase;
 
 class ProcurationProxyMessageFactoryTest extends TestCase
 {
+    /**
+     * @var RemoteUrlGenerator|\PHPUnit_Framework_MockObject_MockObject
+     */
     private $urlGenerator;
 
     /**
-     * @var ProcurationProxyMessageFactory
+     * @var ProcurationProxyMessageFactory|\PHPUnit_Framework_MockObject_MockObject
      */
     private $factory;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->urlGenerator = $this->createMock(RemoteUrlGenerator::class);
+        $this->factory = new ProcurationProxyMessageFactory($this->urlGenerator, 'procurations@en-marche-dev.fr');
+    }
+
+    protected function tearDown()
+    {
+        $this->urlGenerator = null;
+        $this->factory = null;
+
+        parent::tearDown();
+    }
 
     public function testCreateProxyCancelledMessage()
     {
         $this->urlGenerator->expects($this->never())->method('generate');
 
-        $message = $this->factory->createProxyCancelledMessage(
-            $this->createProcurationRequestMock('Marie Bénédicte', 'Dumont', 'marieb.dumont@gmail.tld'),
-            $this->createProcurationProxyMock('Monique', 'Clairefontaine', 'monique@en-marche-dev.fr'),
-            $this->createAdherentMock('john@smith.tld')
-        );
+        $request = $this->createProcurationRequestMock('Marie Bénédicte', 'Dumont', 'marieb.dumont@gmail.tld');
+        $request
+            ->expects($this->once())
+            ->method('getFoundProxy')
+            ->willReturn($this->createProcurationProxyMock('Monique', 'Clairefontaine', 'monique@en-marche-dev.fr'))
+        ;
+
+        $message = $this->factory->createProxyCancelledMessage($request, $this->createAdherentMock('john@smith.tld'));
 
         $this->assertInstanceOf(ProcurationProxyCancelledMessage::class, $message);
         $this->assertSame('procurations@en-marche-dev.fr', $message->getReplyTo());
@@ -58,18 +80,25 @@ class ProcurationProxyMessageFactoryTest extends TestCase
     {
         $url = 'https://en-marche.fr/procuration/3/2839f66263bca70ff077d8e47fbdf783';
 
-        $this
-            ->urlGenerator
+        $this->urlGenerator
             ->expects($this->once())
             ->method('generate')
             ->willReturn($url)
         ;
 
-        $message = $this->factory->createProxyFoundMessage(
-            $this->createAdherentMock('john@smith.tld'),
-            $this->createProcurationRequestMock('Marie Bénédicte', 'Dumont', 'marieb.dumont@gmail.tld', '0102030405'),
-            $this->createProcurationProxyMock('Monique', 'Clairefontaine', 'monique@en-marche-dev.fr', '0607080910')
-        );
+        $request = $this->createProcurationRequestMock('Marie Bénédicte', 'Dumont', 'marieb.dumont@gmail.tld', '0102030405');
+        $request
+            ->expects($this->once())
+            ->method('getFoundProxy')
+            ->willReturn($this->createProcurationProxyMock('Monique', 'Clairefontaine', 'monique@en-marche-dev.fr', '0607080910'))
+        ;
+        $request
+            ->expects($this->once())
+            ->method('getFoundBy')
+            ->willReturn($this->createAdherentMock('john@smith.tld'))
+        ;
+
+        $message = $this->factory->createProxyFoundMessage($request);
 
         $this->assertInstanceOf(ProcurationProxyFoundMessage::class, $message);
         $this->assertSame('procurations@en-marche-dev.fr', $message->getReplyTo());
@@ -136,21 +165,5 @@ class ProcurationProxyMessageFactoryTest extends TestCase
         $adherent->expects($this->any())->method('getEmailAddress')->willReturn($email);
 
         return $adherent;
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->urlGenerator = $this->createMock(RemoteUrlGenerator::class);
-        $this->factory = new ProcurationProxyMessageFactory($this->urlGenerator, 'procurations@en-marche-dev.fr');
-    }
-
-    protected function tearDown()
-    {
-        $this->urlGenerator = null;
-        $this->factory = null;
-
-        parent::tearDown();
     }
 }

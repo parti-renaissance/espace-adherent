@@ -24,10 +24,10 @@
         <div class="l__col--grow-1 b__nudge--right">
             <label>
                 Tour concerné :<br />
-                <select name="{{ constant('PARAMETER_TYPE', filters) }}" class="form form__field form--full">
-                    <option value="" {{ filters.type is empty ? 'selected="selected"' }}></option>
-                    {% for code, label in filters.types %}
-                        <option value="{{ code }}" {{ filters.type == code ? 'selected="selected"' }}>{{ label }}</option>
+                <select name="{{ constant('PARAMETER_ELECTION_ROUND', filters) }}" class="form form__field form--full">
+                    <option value="" {{ filters.electionRound is empty ? 'selected="selected"' }}></option>
+                    {% for id, label in election_rounds %}
+                        <option value="{{ id }}" {{ filters.electionRound is same as(id) ? 'selected="selected"' }}>{{ label }}</option>
                     {% endfor %}
                 </select>
             </label>

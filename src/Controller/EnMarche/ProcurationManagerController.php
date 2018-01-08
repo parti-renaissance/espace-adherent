@@ -2,11 +2,14 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Entity\ElectionRound;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Exception\ProcurationException;
 use AppBundle\Procuration\Filter\ProcurationProxyProposalFilters;
 use AppBundle\Procuration\Filter\ProcurationRequestFilters;
+use AppBundle\Procuration\ProcurationManager;
+use AppBundle\Repository\ProcurationRequestRepository;
 use Doctrine\DBAL\Driver\DriverException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -14,6 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -25,10 +29,10 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class ProcurationManagerController extends Controller
 {
     /**
-     * @Route(name="app_procuration_manager_index")
+     * @Route(name="app_procuration_manager_requests")
      * @Method("GET")
      */
-    public function indexAction(Request $request): Response
+    public function requestsAction(Request $request, ProcurationManager $manager): Response
     {
         try {
             $filters = ProcurationRequestFilters::fromQueryString($request);
@@ -37,12 +41,12 @@ class ProcurationManagerController extends Controller
         }
 
         $user = $this->getUser();
-        $manager = $this->get('app.procuration.manager');
 
         return $this->render('procuration_manager/requests.html.twig', [
             'requests' => $manager->getProcurationRequests($user, $filters),
             'total_count' => $manager->countProcurationRequests($user, $filters),
             'filters' => $filters,
+            'election_rounds' => $this->getDoctrine()->getRepository(ElectionRound::class)->getAllRoundsAsChoices(),
         ]);
     }
 
@@ -50,7 +54,7 @@ class ProcurationManagerController extends Controller
      * @Route("/plus", name="app_procuration_manager_requests_list", condition="request.isXmlHttpRequest()")
      * @Method("GET")
      */
-    public function requestsMoreAction(Request $request): Response
+    public function requestsMoreAction(Request $request, ProcurationManager $manager): Response
     {
         try {
             $filters = ProcurationRequestFilters::fromQueryString($request);
@@ -58,7 +62,7 @@ class ProcurationManagerController extends Controller
             throw new BadRequestHttpException('Unexpected procuration request in the query string.', $e);
         }
 
-        if (!$requests = $this->get('app.procuration.manager')->getProcurationRequests($this->getUser(), $filters)) {
+        if (!$requests = $manager->getProcurationRequests($this->getUser(), $filters)) {
             return new Response();
         }
 
@@ -71,7 +75,7 @@ class ProcurationManagerController extends Controller
      * @Route("/mandataires", name="app_procuration_manager_proposals")
      * @Method("GET")
      */
-    public function proposalsAction(Request $request): Response
+    public function proposalsAction(Request $request, ProcurationManager $manager): Response
     {
         try {
             $filters = ProcurationProxyProposalFilters::fromQueryString($request);
@@ -80,12 +84,12 @@ class ProcurationManagerController extends Controller
         }
 
         $user = $this->getUser();
-        $manager = $this->get('app.procuration.manager');
 
         return $this->render('procuration_manager/proposals.html.twig', [
             'proxies' => $manager->getProcurationProxyProposals($user, $filters),
             'total_count' => $manager->countProcurationProxyProposals($user, $filters),
             'filters' => $filters,
+            'election_rounds' => $this->getDoctrine()->getRepository(ElectionRound::class)->getAllRoundsAsChoices(),
         ]);
     }
 
@@ -93,7 +97,7 @@ class ProcurationManagerController extends Controller
      * @Route("/mandataires/plus", name="app_procuration_manager_proposals_list", condition="request.isXmlHttpRequest()")
      * @Method("GET")
      */
-    public function proposalsMoreAction(Request $request): Response
+    public function proposalsMoreAction(Request $request, ProcurationManager $manager): Response
     {
         try {
             $filters = ProcurationProxyProposalFilters::fromQueryString($request);
@@ -101,7 +105,7 @@ class ProcurationManagerController extends Controller
             throw new BadRequestHttpException('Unexpected procuration proxy proposal filters in the query string.', $e);
         }
 
-        if (!$proxies = $this->get('app.procuration.manager')->getProcurationProxyProposals($this->getUser(), $filters)) {
+        if (!$proxies = $manager->getProcurationProxyProposals($this->getUser(), $filters)) {
             return new Response();
         }
 
@@ -113,20 +117,18 @@ class ProcurationManagerController extends Controller
     /**
      * @Route(
      *     "/mandataires/{id}/{action}",
-     *     requirements={"id"="\d+", "action"="activer|desactiver"},
+     *     requirements={ "id"="\d+", "action"=AppBundle\Entity\ProcurationProxy::ACTIONS_URI_REGEX },
      *     name="app_procuration_manager_proposal_transform"
      * )
      * @Method("GET")
      */
-    public function proposalTransformAction(int $id, string $action): Response
+    public function proposalTransformAction(int $id, string $action, ProcurationManager $manager): Response
     {
-        $manager = $this->get('app.procuration.manager');
-
         if (!$proxy = $manager->getProcurationProxyProposal($id, $this->getUser())) {
             throw $this->createNotFoundException(sprintf('No proposal found for id %d.', $id));
         }
 
-        if ('desactiver' === $action) {
+        if (ProcurationProxy::ACTION_DISABLE === $action) {
             $manager->disableProcurationProxy($proxy);
             $this->addFlash('info', $this->get('translator')->trans('procuration_manager.disabled.success'));
         } else {
@@ -145,10 +147,8 @@ class ProcurationManagerController extends Controller
      * )
      * @Method("GET")
      */
-    public function requestAction(int $id): Response
+    public function requestAction(int $id, ProcurationManager $manager): Response
     {
-        $manager = $this->get('app.procuration.manager');
-
         if (!$request = $manager->getProcurationRequest($id, $this->getUser())) {
             throw $this->createNotFoundException(sprintf('No procuration request found for id %d.', $id));
         }
@@ -162,23 +162,22 @@ class ProcurationManagerController extends Controller
     /**
      * @Route(
      *     "/demande/{id}/{action}/{token}",
-     *     requirements={"id"="\d+", "action"="traiter|detraiter"},
+     *     requirements={"id"="\d+", "action"=AppBundle\Entity\ProcurationRequest::ACTIONS_URI_REGEX},
      *     name="app_procuration_manager_request_transform"
      * )
      * @Method("GET")
      */
-    public function requestTransformAction(int $id, string $action, string $token): Response
+    public function requestTransformAction(int $id, string $action, string $token, ProcurationManager $manager): Response
     {
         if (!$this->isCsrfTokenValid('request_action', $token)) {
             throw $this->createNotFoundException('Invalid token.');
         }
 
-        $manager = $this->get('app.procuration.manager');
         if (!$request = $manager->getProcurationRequest($id, $this->getUser())) {
             throw $this->createNotFoundException(sprintf('No request found for id %d.', $id));
         }
 
-        if ('traiter' === $action) {
+        if (ProcurationRequest::ACTION_PROCESS === $action) {
             $manager->processProcurationRequest($request);
             $this->addFlash('info', $this->get('translator')->trans('procuration_manager.process.success'));
         } else {
@@ -206,7 +205,7 @@ class ProcurationManagerController extends Controller
             throw $this->createNotFoundException(sprintf('User is not allowed to managed the request with id %d.', $request->getId()));
         }
 
-        if ($proxy->isDisabled() || !$request->isProxyMatching($proxy)) {
+        if ($proxy->isDisabled() || !$proxy->matchesRequest($request)) {
             throw $this->createNotFoundException('No proxy for this request.');
         }
 
@@ -215,24 +214,15 @@ class ProcurationManagerController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                $this->get('app.procuration.process_handler')->process($this->getUser(), $request, $proxy);
+            return $this->tryRedirectCatchingDeadLock(function () use ($request, $proxy) {
+                $this->get(ProcurationManager::class)->processProcurationRequest($request, $proxy, $this->getUser(), true);
                 $this->addFlash('info', $this->get('translator')->trans('procuration_manager.associate.success'));
 
                 return $this->redirectToRoute('app_procuration_manager_request', ['id' => $request->getId()]);
-            } catch (\Exception $e) {
-                if ($e instanceof DriverException && stripos($e->getMessage(), 'deadlock')) {
-                    // Let the user retry
-                    $this->addFlash('info', $this->get('translator')->trans('procuration_manager.db_error'));
-
-                    return $this->redirectToRoute('app_procuration_manager_request_associate', [
-                        'id' => $request->getId(),
-                        'proxyId' => $proxy->getId(),
-                    ]);
-                }
-
-                throw $e;
-            }
+            }, 'app_procuration_manager_request_associate', [
+                'id' => $request->getId(),
+                'proxyId' => $proxy->getId(),
+            ]);
         }
 
         return $this->render('procuration_manager/associate.html.twig', [
@@ -250,15 +240,13 @@ class ProcurationManagerController extends Controller
      * )
      * @Method("GET|POST")
      */
-    public function requestDessociateAction(Request $sfRequest, ProcurationRequest $request): Response
+    public function requestDessociateAction(Request $sfRequest, ProcurationRequest $request, ProcurationRequestRepository $repository): Response
     {
         if (!$request->hasFoundProxy()) {
-            throw $this->createNotFoundException('This request already has a proxy.');
+            throw $this->createNotFoundException('This request has no proxy.');
         }
 
-        $manager = $this->getDoctrine()->getManager();
-
-        if (!$manager->getRepository(ProcurationRequest::class)->isManagedBy($this->getUser(), $request)) {
+        if (!$repository->isManagedBy($this->getUser(), $request)) {
             throw $this->createNotFoundException('Request is not managed by the current user.');
         }
 
@@ -266,21 +254,12 @@ class ProcurationManagerController extends Controller
         $form->handleRequest($sfRequest);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                $this->get('app.procuration.process_handler')->unprocess($this->getUser(), $request);
+            return $this->tryRedirectCatchingDeadLock(function () use ($request) {
+                $this->get(ProcurationManager::class)->unprocessProcurationRequest($request, $this->getUser(), true);
                 $this->addFlash('info', $this->get('translator')->trans('procuration_manager.deassociate.success'));
 
                 return $this->redirectToRoute('app_procuration_manager_request', ['id' => $request->getId()]);
-            } catch (\Exception $e) {
-                if ($e instanceof DriverException && stripos($e->getMessage(), 'deadlock')) {
-                    // Let the user retry
-                    $this->addFlash('info', $this->get('translator')->trans('procuration_manager.db_error'));
-
-                    return $this->redirectToRoute('app_procuration_manager_request_deassociate', ['id' => $request->getId()]);
-                }
-
-                throw $e;
-            }
+            }, 'app_procuration_manager_request_deassociate', ['id' => $request->getId()]);
         }
 
         return $this->render('procuration_manager/deassociate.html.twig', [
@@ -288,5 +267,21 @@ class ProcurationManagerController extends Controller
             'request' => $request,
             'proxy' => $request->getFoundProxy(),
         ]);
+    }
+
+    private function tryRedirectCatchingDeadLock(callable $try, string $retryRoute, array $retryParams): RedirectResponse
+    {
+        try {
+            return $try();
+        } catch (DriverException $e) {
+            if (stripos($e->getMessage(), 'deadlock')) {
+                // Let the user retry
+                $this->addFlash('info', $this->get('translator')->trans('procuration_manager.db_error'));
+
+                return $this->redirectToRoute($retryRoute, $retryParams);
+            }
+
+            throw $e;
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 {% block procuration_manager_content %}
     <div class="text--summary b__nudge--bottom-large">
-        <a href="{{ path('app_procuration_manager_request', {'id': request.id}) }}" class="back-to-list icon--with-text">
+        <a href="{{ path('app_procuration_manager_request', { id: request.id }) }}" class="back-to-list icon--with-text">
             {{ include('components/caret--left.html.twig') }}
             Retour à la demande
         </a>
@@ -80,32 +80,15 @@
                 Scrutins concernés
             </div>
             <div class="profile-value">
-                {{ include('procuration_manager/_ballots.html.twig', {
-                    'legislative_first_round': request.electionLegislativeFirstRound,
-                    'legislative_second_round': request.electionLegislativeSecondRound,
+                {{ include('procuration_manager/_election_rounds.html.twig', {
+                    rounds: request.electionRounds,
                 }, with_context=false) }}
             </div>
 
             <div class="profile-label">
                 Raison de la demande
             </div>
-            <div class="profile-value">
-                {% if request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_RESIDENCY') %}
-                    En raison de mon lieu de résidence
-                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_HOLIDAYS') %}
-                    Vacances
-                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_PROFESIONNAL') %}
-                    Obligations professionnelles
-                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_HANDICAP') %}
-                    En raison d'un handicap
-                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_HEALTH') %}
-                    Pour raison de santé
-                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_HELP') %}
-                    Assistance apportée à une personne
-                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_TRAINING') %}
-                    Obligations de formation
-                {% endif %}
-            </div>
+            {{ include('procuration/_request_reasons.html.twig', { request: request }, with_context=false) }}
         </div>
 
         <div class="procuration-manager__associate__col">
@@ -168,21 +151,10 @@
                 Disponibilités
             </div>
             <div class="profile-value">
-                {% if proxy.electionPresidentialFirstRound and proxy.electionPresidentialSecondRound %}
-                    Présidentielle : 1er et 2nd tour<br />
-                {% elseif proxy.electionPresidentialFirstRound %}
-                    Présidentielle : 1er tour<br />
-                {% elseif proxy.electionPresidentialSecondRound %}
-                    Présidentielle : 2nd tour<br />
-                {% endif %}
-
-                {% if proxy.electionLegislativeFirstRound and proxy.electionLegislativeSecondRound %}
-                    Législatives : 1er et 2nd tour<br />
-                {% elseif proxy.electionLegislativeFirstRound %}
-                    Législatives : 1er tour<br />
-                {% elseif proxy.electionLegislativeSecondRound %}
-                    Législatives : 2nd tour<br />
-                {% endif %}
+                {{ include('procuration_manager/_matching_election_rounds.html.twig', {
+                    proxy_rounds: proxy.availableRounds,
+                    request: proxy.foundRequest,
+                }, with_context=false) }}
             </div>
         </div>
     </div>
@@ -197,7 +169,7 @@
                 Désassocier
             </button>
 
-            <a href="{{ path('app_procuration_manager_request', {'id': request.id}) }}" class="btn">
+            <a href="{{ path('app_procuration_manager_request', { id: request.id }) }}" class="btn">
                 Retour
             </a>
         </form>
