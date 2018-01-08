@@ -2,7 +2,7 @@
 
 {% block procuration_manager_content %}
     <div class="text--summary b__nudge--bottom-large">
-        <a href="{{ path('app_procuration_manager_index') }}" class="back-to-list icon--with-text">
+        <a href="{{ path('app_procuration_manager_requests') }}" class="back-to-list icon--with-text">
             {{ include('components/caret--left.html.twig') }}
             Retour à la liste
         </a>
@@ -12,17 +12,17 @@
         <span id="request-title">Demande de procuration n°{{ request.id }}</span>
 
         {% if request.hasFoundProxy %}
-            <a href="{{ path('app_procuration_manager_request_deassociate', {id: request.id}) }}"
+            <a href="{{ path('app_procuration_manager_request_deassociate', { id: request.id }) }}"
                class="btn btn--small procuration-manager__request__process" id="request-deassociate">
                 Désassocier de {{ request.foundProxy.firstNames }} {{ request.foundProxy.lastName }}
             </a>
         {% elseif request.processed %}
-            <a href="{{ path('app_procuration_manager_request_transform', {id: request.id, action: 'detraiter', token: csrf_token('request_action')}) }}"
+            <a href="{{ path('app_procuration_manager_request_transform', { id: request.id, action: constant('ACTION_UNPROCESS', request), token: csrf_token('request_action') }) }}"
                class="btn btn--small procuration-manager__request__process">
                 Marquer "En attente"
             </a>
         {% else %}
-            <a href="{{ path('app_procuration_manager_request_transform', {id: request.id, action: 'traiter', token: csrf_token('request_action')}) }}"
+            <a href="{{ path('app_procuration_manager_request_transform', { id: request.id, action: constant('ACTION_PROCESS', request), token: csrf_token('request_action') }) }}"
                class="btn btn--small procuration-manager__request__process">
                 Marquer "Traitée manuellement"
             </a>
@@ -95,32 +95,15 @@
                 Scrutins concernés
             </div>
             <div class="profile-value">
-                {{ include('procuration_manager/_ballots.html.twig', {
-                    legislative_first_round: request.electionLegislativeFirstRound,
-                    legislative_second_round: request.electionLegislativeSecondRound,
+                {{ include('procuration_manager/_election_rounds.html.twig', {
+                    rounds: request.electionRounds,
                 }, with_context=false) }}
             </div>
 
             <div class="profile-label">
                 Raison de la demande
             </div>
-            <div class="profile-value" id="request-reason">
-                {% if request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_RESIDENCY') %}
-                    En raison de mon lieu de résidence
-                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_HOLIDAYS') %}
-                    Vacances
-                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_PROFESIONNAL') %}
-                    Obligations professionnelles
-                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_HANDICAP') %}
-                    En raison d'un handicap
-                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_HEALTH') %}
-                    Pour raison de santé
-                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_HELP') %}
-                    Assistance apportée à une personne
-                {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_TRAINING') %}
-                    Obligations de formation
-                {% endif %}
-            </div>
+            {{ include('procuration/_request_reasons.html.twig', { request: request }, with_context=false) }}
         </div>
 
         <div class="procuration-manager__request__col-right">
@@ -189,9 +172,9 @@
                         Disponibilités
                     </div>
                     <div class="profile-value">
-                        {{ include('procuration_manager/_ballots.html.twig', {
-                            legislative_first_round: request.foundProxy.electionLegislativeFirstRound,
-                            legislative_second_round: request.foundProxy.electionLegislativeSecondRound,
+                        {{ include('procuration_manager/_matching_election_rounds.html.twig', {
+                            proxy_rounds: request.foundProxy.electionRounds,
+                            request: request,
                         }, with_context=false) }}
                     </div>
                 {% endif %}
@@ -199,18 +182,18 @@
                 <h4 class="b__nudge--bottom">
                     Mandataires trouvés dans la même commune
                 </h4>
-
-                {% if matchingProxies|length  == 0 %}
+                {% set proxies_count = matchingProxies|length %}
+                {% if proxies_count is same as(0) %}
                     <div class="text--body b__nudge--bottom-large">
                         Aucun mandataire trouvé pour cette demande.
                     </div>
                 {% else %}
                     <div class="text--body b__nudge--bottom-large">
-                        {% if matchingProxies|length == 1 %}
+                        {% if proxies_count is same as(1) %}
                             1 mandataire semble correspondre à cette demande.<br />
                             N'hésitez pas à le contacter pour confirmer ses disponibilités.
                         {% else %}
-                            {{ matchingProxies|length }} mandataires semblent correspondre à cette demande.<br />
+                            {{ proxies_count }} mandataires semblent correspondre à cette demande.<br />
                             N'hésitez pas à les contacter pour confirmer leurs disponibilités.
                         {% endif %}
                     </div>
@@ -230,7 +213,7 @@
 
                             <tr>
                                 <td style="border: 0;"></td>
-                                <td colspan="3" class="datagrid__table__col--left datagrid__table__col--top" style="border: 0;">
+                                <td colspan="3" class="datagrid__table__col--left datagrid__table__col--top proxy_name" style="border: 0;">
                                     <strong>{{ proxy.firstNames }} {{ proxy.lastName }}</strong>
                                     {% if proxy.reliabilityDescription %}
                                         ({{ proxy.reliabilityDescription }})
@@ -253,9 +236,9 @@
                                     {% endif %}
                                     <br />
                                     <em>Disponibilités :</em><br />
-                                    {{ include('procuration_manager/_ballots.html.twig', {
-                                        legislative_first_round: proxy.electionLegislativeFirstRound,
-                                        legislative_second_round: proxy.electionLegislativeSecondRound,
+                                    {{ include('procuration_manager/_matching_election_rounds.html.twig', {
+                                        proxy_rounds: proxy.availableRounds,
+                                        request: request,
                                     }, with_context=false) }}
                                 </td>
                                 <td class="datagrid__table__col--left">

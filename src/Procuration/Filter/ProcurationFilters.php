@@ -9,26 +9,18 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class ProcurationFilters
 {
-    const PER_PAGE = 30;
+    public const PARAMETER_CITY = 'city';
+    public const PARAMETER_COUNTRY = 'country';
+    public const PARAMETER_PAGE = 'page';
+    public const PARAMETER_ELECTION_ROUND = 'round';
+    public const PARAMETER_STATUS = 'status';
 
-    const PARAMETER_CITY = 'city';
-    const PARAMETER_COUNTRY = 'country';
-    const PARAMETER_PAGE = 'page';
-    const PARAMETER_TYPE = 'type';
-    const PARAMETER_STATUS = 'status';
-
-    const TYPE_LEGISLATIVE_1_ROUND = 'electionLegislativeFirstRound';
-    const TYPE_LEGISLATIVE_2_ROUND = 'electionLegislativeSecondRound';
-
-    const TYPES = [
-        self::TYPE_LEGISLATIVE_1_ROUND => 'Législatives : 1er tour',
-        self::TYPE_LEGISLATIVE_2_ROUND => 'Législatives : 2nd tour',
-    ];
+    private const PER_PAGE = 30;
 
     private $currentPage;
     private $country;
     private $city;
-    private $type;
+    private $electionRound;
     private $status;
 
     final private function __construct()
@@ -47,8 +39,8 @@ abstract class ProcurationFilters
             $filters->setCity($city);
         }
 
-        if ($type = $request->query->get(self::PARAMETER_TYPE)) {
-            $filters->setType($type);
+        if ($round = $request->query->get(self::PARAMETER_ELECTION_ROUND)) {
+            $filters->setElectionRound($round);
         }
 
         if ($status = $request->query->get(self::PARAMETER_STATUS)) {
@@ -111,35 +103,24 @@ abstract class ProcurationFilters
         return $this->city;
     }
 
-    public function setType(string $type): void
+    public function setElectionRound(?int $round): void
     {
-        $this->type = isset(self::TYPES[$type]) ? $type : null;
+        $this->electionRound = $round;
+    }
+
+    public function getElectionRound(): ?int
+    {
+        return $this->electionRound;
     }
 
     public function setStatus(string $status): void
     {
-        if (empty($status)) {
-            $this->status = null;
-
-            return;
-        }
-
-        $this->status = $status;
+        $this->status = $status ?: null;
     }
 
-    public function getStatus(): string
+    public function getStatus(): ?string
     {
         return $this->status;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function getTypes(): array
-    {
-        return self::TYPES;
     }
 
     public function getCountries(): array
@@ -149,28 +130,40 @@ abstract class ProcurationFilters
 
     public function hasData(): bool
     {
-        return $this->country || $this->city || $this->type;
+        return $this->country || $this->city || $this->electionRound;
     }
 
     public function apply(QueryBuilder $qb, string $alias): void
     {
         if ($this->country) {
-            $qb->andWhere(sprintf('%s.voteCountry = :filterVotreCountry', $alias));
-            $qb->setParameter('filterVotreCountry', $this->country);
+            $qb
+                ->andWhere("$alias.voteCountry = :filterVotreCountry")
+                ->setParameter('filterVotreCountry', $this->country)
+            ;
         }
 
         if ($this->city) {
             if (is_numeric($this->city)) {
-                $qb->andWhere(sprintf('%s.votePostalCode LIKE :filterVoteCity', $alias));
-                $qb->setParameter('filterVoteCity', $this->city.'%');
+                $qb
+                    ->andWhere("$alias.votePostalCode LIKE :filterVoteCity")
+                    ->setParameter('filterVoteCity', $this->city.'%')
+                ;
             } else {
-                $qb->andWhere(sprintf('LOWER(%s.voteCityName) LIKE :filterVoteCity', $alias));
-                $qb->setParameter('filterVoteCity', '%'.strtolower($this->city).'%');
+                $qb
+                    ->andWhere("LOWER($alias.voteCityName) LIKE :filterVoteCity")
+                    ->setParameter('filterVoteCity', '%'.strtolower($this->city).'%')
+                ;
             }
         }
 
-        if ($this->type) {
-            $qb->andWhere(sprintf('%s.%s = true', $alias, $this->type));
+        $qb->leftJoin("$alias.electionRounds", 'rounds');
+        $qb->addSelect('rounds');
+
+        if ($this->electionRound) {
+            $qb
+                ->andWhere(":round MEMBER OF $alias.electionRounds")
+                ->setParameter('round', $this->electionRound)
+            ;
         }
 
         $qb
@@ -194,8 +187,8 @@ abstract class ProcurationFilters
             $parameters[self::PARAMETER_CITY] = $this->city;
         }
 
-        if ($this->type) {
-            $parameters[self::PARAMETER_TYPE] = $this->type;
+        if ($this->electionRound) {
+            $parameters[self::PARAMETER_ELECTION_ROUND] = $this->electionRound;
         }
 
         if ($this->status) {

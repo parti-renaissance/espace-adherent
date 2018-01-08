@@ -56,6 +56,10 @@ class ProcurationRequest
         4 => self::STEP_URI_THANKS,
     ];
 
+    public const ACTION_PROCESS = 'traiter';
+    public const ACTION_UNPROCESS = 'detraiter';
+    public const ACTIONS_URI_REGEX = self::ACTION_PROCESS.'|'.self::ACTION_UNPROCESS;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -345,31 +349,6 @@ class ProcurationRequest
         return 'Demande de procuration de '.$this->lastName.' '.$this->firstNames;
     }
 
-    public static function getReasons(): array
-    {
-        return [
-            self::REASON_HANDICAP,
-            self::REASON_HEALTH,
-            self::REASON_HELP,
-            self::REASON_HOLIDAYS,
-            self::REASON_PROFESSIONAL,
-            self::REASON_RESIDENCY,
-            self::REASON_TRAINING,
-        ];
-    }
-
-    private static function createPhoneNumber(int $countryCode = 33, string $number = null): PhoneNumber
-    {
-        $phone = new PhoneNumber();
-        $phone->setCountryCode($countryCode);
-
-        if ($number) {
-            $phone->setNationalNumber($number);
-        }
-
-        return $phone;
-    }
-
     public function importAdherentData(Adherent $adherent): void
     {
         $this->gender = $adherent->getGender();
@@ -390,7 +369,7 @@ class ProcurationRequest
         $this->foundProxy = $procurationProxy;
         $this->foundBy = $procurationFoundBy;
         $this->processed = true;
-        $this->processedAt = new \DateTime();
+        $this->processedAt = new \DateTimeImmutable();
 
         if ($procurationProxy) {
             $procurationProxy->setFoundRequest($this);
@@ -406,27 +385,6 @@ class ProcurationRequest
         $this->foundProxy = null;
         $this->processed = false;
         $this->processedAt = null;
-    }
-
-    public function isProxyMatching(ProcurationProxy $proxy): bool
-    {
-        if ($this->voteCountry !== $proxy->getVoteCountry()) {
-            return false;
-        }
-
-        if ('FR' === $this->voteCountry && 0 !== strpos($proxy->getVotePostalCode(), substr($this->votePostalCode, 0, 2))) {
-            return false;
-        }
-
-        if ($this->electionLegislativeFirstRound && !$proxy->getElectionLegislativeFirstRound()) {
-            return false;
-        }
-
-        if ($this->electionLegislativeSecondRound && !$proxy->getElectionLegislativeSecondRound()) {
-            return false;
-        }
-
-        return true;
     }
 
     public function generatePrivateToken(): ?string
@@ -639,7 +597,7 @@ class ProcurationRequest
         return $this->electionLegislativeSecondRound;
     }
 
-    public function getElectionsRoundsCount(): int
+    public function getElectionRoundsCount(): int
     {
         return $this->electionRounds->count();
     }
@@ -739,5 +697,30 @@ class ProcurationRequest
         $stepUris = array_keys(self::STEPS);
 
         return $currentStepUri === end($stepUris);
+    }
+
+    public static function getReasons(): array
+    {
+        return [
+            self::REASON_HANDICAP,
+            self::REASON_HEALTH,
+            self::REASON_HELP,
+            self::REASON_HOLIDAYS,
+            self::REASON_PROFESSIONAL,
+            self::REASON_RESIDENCY,
+            self::REASON_TRAINING,
+        ];
+    }
+
+    private static function createPhoneNumber(int $countryCode = 33, string $number = null): PhoneNumber
+    {
+        $phone = new PhoneNumber();
+        $phone->setCountryCode($countryCode);
+
+        if ($number) {
+            $phone->setNationalNumber($number);
+        }
+
+        return $phone;
     }
 }

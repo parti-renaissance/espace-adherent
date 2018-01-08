@@ -24,6 +24,10 @@ class ProcurationProxy
     use EntityTimestampableTrait;
     use ElectionRoundsCollectionTrait;
 
+    public const ACTION_ENABLE = 'activer';
+    public const ACTION_DISABLE = 'desactiver';
+    public const ACTIONS_URI_REGEX = self::ACTION_ENABLE.'|'.self::ACTION_DISABLE;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -348,55 +352,11 @@ class ProcurationProxy
         $this->city = $adherent->getCity();
         $this->setCityName($adherent->getCityName());
         $this->country = $adherent->getCountry();
-
-        if ($adherent->getPhone()) {
-            $this->phone = $adherent->getPhone();
-        }
-
-        if ($adherent->getBirthdate()) {
-            $this->birthdate = $adherent->getBirthdate();
-        }
+        $this->phone = $adherent->getPhone();
+        $this->birthdate = $adherent->getBirthdate();
     }
 
-    public function getRemainingAvailabilities(): array
-    {
-        $availabilities = [
-            'presidential' => [
-                'first' => $this->getElectionPresidentialFirstRound(),
-                'second' => $this->getElectionPresidentialSecondRound(),
-            ],
-            'legislatives' => [
-                'first' => $this->getElectionLegislativeFirstRound(),
-                'second' => $this->getElectionLegislativeSecondRound(),
-            ],
-        ];
-
-        $request = $this->getFoundRequest();
-
-        if (!$request) {
-            return $availabilities;
-        }
-
-        if ($request->getElectionPresidentialFirstRound()) {
-            $availabilities['presidential']['first'] = false;
-        }
-
-        if ($request->getElectionPresidentialSecondRound()) {
-            $availabilities['presidential']['second'] = false;
-        }
-
-        if ($request->getElectionLegislativeFirstRound()) {
-            $availabilities['legislatives']['first'] = false;
-        }
-
-        if ($request->getElectionLegislativeSecondRound()) {
-            $availabilities['legislatives']['second'] = false;
-        }
-
-        return $availabilities;
-    }
-
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -406,7 +366,7 @@ class ProcurationProxy
         return $this->referent;
     }
 
-    public function setReferent(Adherent $referent = null)
+    public function setReferent(Adherent $referent = null): void
     {
         $this->referent = $referent;
     }
@@ -416,7 +376,7 @@ class ProcurationProxy
         return $this->reliability;
     }
 
-    public function setReliability(?int $reliability)
+    public function setReliability(?int $reliability): void
     {
         $this->reliability = $reliability;
     }
@@ -426,17 +386,17 @@ class ProcurationProxy
         return $this->reliabilityDescription;
     }
 
-    public function setReliabilityDescription(?string $reliabilityDescription)
+    public function setReliabilityDescription(?string $reliabilityDescription): void
     {
         $this->reliabilityDescription = $reliabilityDescription;
     }
 
-    public function getGender()
+    public function getGender(): ?string
     {
         return $this->gender;
     }
 
-    public function setGender($gender)
+    public function setGender(?string $gender): void
     {
         $this->gender = $gender;
     }
@@ -446,7 +406,7 @@ class ProcurationProxy
         return $this->lastName;
     }
 
-    public function setLastName(?string $lastName)
+    public function setLastName(?string $lastName): void
     {
         $this->lastName = $lastName;
     }
@@ -456,7 +416,7 @@ class ProcurationProxy
         return $this->firstNames;
     }
 
-    public function setFirstNames(?string $firstNames)
+    public function setFirstNames(?string $firstNames): void
     {
         $this->firstNames = $firstNames;
     }
@@ -466,7 +426,7 @@ class ProcurationProxy
         return $this->address;
     }
 
-    public function setAddress(?string $address)
+    public function setAddress(?string $address): void
     {
         $this->address = $address;
     }
@@ -476,17 +436,17 @@ class ProcurationProxy
         return $this->postalCode;
     }
 
-    public function setPostalCode(?string $postalCode)
+    public function setPostalCode(?string $postalCode): void
     {
         $this->postalCode = $postalCode;
     }
 
-    public function getCity()
+    public function getCity(): ?string
     {
         return $this->city;
     }
 
-    public function setCity(?string $cityCode)
+    public function setCity(?string $cityCode): void
     {
         $this->city = $cityCode;
 
@@ -496,12 +456,12 @@ class ProcurationProxy
         }
     }
 
-    public function getCityName()
+    public function getCityName(): ?string
     {
         return $this->cityName;
     }
 
-    public function setCityName(?string $cityName)
+    public function setCityName(?string $cityName): void
     {
         if ($cityName) {
             $this->cityName = $cityName;
@@ -513,17 +473,17 @@ class ProcurationProxy
         return $this->country;
     }
 
-    public function setCountry(?string $country)
+    public function setCountry(?string $country): void
     {
         $this->country = $country;
     }
 
-    public function getPhone()
+    public function getPhone(): ?PhoneNumber
     {
         return $this->phone;
     }
 
-    public function setPhone($phone)
+    public function setPhone(?PhoneNumber $phone): void
     {
         $this->phone = $phone;
     }
@@ -533,17 +493,17 @@ class ProcurationProxy
         return $this->emailAddress;
     }
 
-    public function setEmailAddress(?string $emailAddress)
+    public function setEmailAddress(?string $emailAddress): void
     {
         $this->emailAddress = $emailAddress;
     }
 
-    public function getBirthdate()
+    public function getBirthdate(): ?\DateTimeInterface
     {
         return $this->birthdate;
     }
 
-    public function setBirthdate($birthdate)
+    public function setBirthdate(?\DateTimeInterface $birthdate): void
     {
         $this->birthdate = $birthdate;
     }
@@ -553,17 +513,17 @@ class ProcurationProxy
         return $this->votePostalCode;
     }
 
-    public function setVotePostalCode(?string $votePostalCode)
+    public function setVotePostalCode(?string $votePostalCode): void
     {
         $this->votePostalCode = $votePostalCode;
     }
 
-    public function getVoteCity()
+    public function getVoteCity(): ?string
     {
         return $this->voteCity;
     }
 
-    public function setVoteCity(?string $cityCode)
+    public function setVoteCity(?string $cityCode): void
     {
         $this->voteCity = $cityCode;
 
@@ -573,12 +533,12 @@ class ProcurationProxy
         }
     }
 
-    public function getVoteCityName()
+    public function getVoteCityName(): ?String
     {
         return $this->voteCityName;
     }
 
-    public function setVoteCityName(?string $voteCityName)
+    public function setVoteCityName(?string $voteCityName): void
     {
         if ($voteCityName) {
             $this->voteCityName = $voteCityName;
@@ -590,7 +550,7 @@ class ProcurationProxy
         return $this->voteCountry;
     }
 
-    public function setVoteCountry(?string $voteCountry)
+    public function setVoteCountry(?string $voteCountry): void
     {
         $this->voteCountry = $voteCountry;
     }
@@ -610,19 +570,9 @@ class ProcurationProxy
         return $this->electionPresidentialFirstRound;
     }
 
-    public function setElectionPresidentialFirstRound(bool $electionPresidentialFirstRound)
-    {
-        $this->electionPresidentialFirstRound = $electionPresidentialFirstRound;
-    }
-
     public function getElectionPresidentialSecondRound(): bool
     {
         return $this->electionPresidentialSecondRound;
-    }
-
-    public function setElectionPresidentialSecondRound(bool $electionPresidentialSecondRound)
-    {
-        $this->electionPresidentialSecondRound = $electionPresidentialSecondRound;
     }
 
     public function getElectionLegislativeFirstRound(): bool
@@ -630,19 +580,23 @@ class ProcurationProxy
         return $this->electionLegislativeFirstRound;
     }
 
-    public function setElectionLegislativeFirstRound(bool $electionLegislativeFirstRound)
-    {
-        $this->electionLegislativeFirstRound = $electionLegislativeFirstRound;
-    }
-
     public function getElectionLegislativeSecondRound(): bool
     {
         return $this->electionLegislativeSecondRound;
     }
 
-    public function setElectionLegislativeSecondRound(bool $electionLegislativeSecondRound)
+    /**
+     * @return ElectionRound[]|Collection
+     */
+    public function getAvailableRounds(): Collection
     {
-        $this->electionLegislativeSecondRound = $electionLegislativeSecondRound;
+        if (!$this->foundRequest) {
+            return $this->electionRounds;
+        }
+
+        return $this->electionRounds->filter(function (ElectionRound $round) {
+            return $this->foundRequest->hasElectionRound($round);
+        });
     }
 
     public function getFoundRequest(): ?ProcurationRequest
@@ -650,7 +604,7 @@ class ProcurationProxy
         return $this->foundRequest;
     }
 
-    public function setFoundRequest(ProcurationRequest $foundRequest = null)
+    public function setFoundRequest(ProcurationRequest $foundRequest = null): void
     {
         $this->foundRequest = $foundRequest;
     }
@@ -660,7 +614,7 @@ class ProcurationProxy
         return $this->disabled;
     }
 
-    public function setDisabled(bool $disabled)
+    public function setDisabled(bool $disabled): void
     {
         $this->disabled = $disabled;
     }
@@ -680,7 +634,7 @@ class ProcurationProxy
         return $this->inviteSourceName;
     }
 
-    public function setInviteSourceName(string $inviteSourceName = null)
+    public function setInviteSourceName(?string $inviteSourceName): void
     {
         $this->inviteSourceName = $inviteSourceName;
     }
@@ -690,8 +644,27 @@ class ProcurationProxy
         return $this->inviteSourceFirstName;
     }
 
-    public function setInviteSourceFirstName(string $inviteSourceFirstName = null)
+    public function setInviteSourceFirstName(?string $inviteSourceFirstName): void
     {
         $this->inviteSourceFirstName = $inviteSourceFirstName;
+    }
+
+    public function matchesRequest(ProcurationRequest $request): bool
+    {
+        if ($this->voteCountry !== $request->getVoteCountry()) {
+            return false;
+        }
+
+        if ('FR' === $this->voteCountry && 0 !== strpos($request->getVotePostalCode(), substr($this->votePostalCode, 0, 2))) {
+            return false;
+        }
+
+        foreach ($request->getElectionRounds() as $round) {
+            if (!$this->electionRounds->contains($round)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

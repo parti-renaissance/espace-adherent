@@ -46,10 +46,7 @@ class ProcurationRequestRepository extends EntityRepository
                 'pr.voteCity AS request_voteCity',
                 'pr.voteCityName AS request_voteCityName',
                 'pr.voteCountry AS request_voteCountry',
-                'pr.electionPresidentialFirstRound AS request_electionPresidentialFirstRound',
-                'pr.electionPresidentialSecondRound AS request_electionPresidentialSecondRound',
-                'pr.electionLegislativeFirstRound AS request_electionLegislativeFirstRound',
-                'pr.electionLegislativeSecondRound AS request_electionLegislativeSecondRound',
+                'GROUP_CONCAT(er.label SEPARATOR \'\\n\') AS request_electionRounds',
                 'pr.reason AS request_reason',
                 'pr.processedAt AS request_processedAt',
 
@@ -74,6 +71,7 @@ class ProcurationRequestRepository extends EntityRepository
                 'pp.electionLegislativeSecondRound AS proposal_electionLegislativeSecondRound'
             )
             ->join('pr.foundProxy', 'pp')
+            ->leftJoin('pr.electionRounds', 'er')
             ->getQuery()
             ->getArrayResult()
         ;
@@ -85,10 +83,14 @@ class ProcurationRequestRepository extends EntityRepository
             return [];
         }
 
-        $this->addAndWhereManagedBy($qb = $this->createQueryBuilder('pr'), $manager);
+        $qb = $this->createQueryBuilder('pr');
+
         $filters->apply($qb, 'pr');
 
-        $requests = $qb->getQuery()->getArrayResult();
+        $requests = $this->addAndWhereManagedBy($qb, $manager)
+            ->getQuery()
+            ->getArrayResult()
+        ;
 
         if ($filters->matchUnprocessedRequests()) {
             return $this->findRequests($requests);
@@ -110,10 +112,15 @@ class ProcurationRequestRepository extends EntityRepository
             return 0;
         }
 
-        $this->addAndWhereManagedBy($qb = $this->createQueryBuilder('pr')->select('COUNT(pr.id)'), $manager);
+        $qb = $this->createQueryBuilder('pr');
+
         $filters->apply($qb, 'pr');
 
-        return (int) $qb->getQuery()->getSingleScalarResult();
+        return (int) $this->addAndWhereManagedBy($qb, $manager)
+            ->select('COUNT(DISTINCT pr.id)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 
     /**
@@ -129,13 +136,12 @@ class ProcurationRequestRepository extends EntityRepository
 
         $qb = $this->_em->createQueryBuilder();
 
-        $proxiesCountQueryTemplate = $qb
-            ->select('COUNT(pp)')
+        $qb
+            ->select('COUNT(DISTINCT pp.id)')
             ->from('AppBundle:ProcurationProxy', 'pp')
             ->andWhere('pp.foundRequest IS NULL')
             ->andWhere('pp.disabled = 0')
             ->andWhere('pp.reliability >= 0')
-            ->andWhere($this->createNotMatchingCount().' = 0')
             ->andWhere($qb->expr()->orX(
                 $qb->expr()->andX(
                     'pp.voteCountry = \'FR\'',
@@ -147,20 +153,15 @@ class ProcurationRequestRepository extends EntityRepository
                     'pp.voteCountry = :voteCountry'
                 )
             ))
-            ->getQuery()
         ;
 
         foreach ($requests as $key => $request) {
-            $proxiesCountQuery = clone $proxiesCountQueryTemplate;
-            $proxiesCountQuery->setParameters([
-                'votePostalCodePrefix' => substr($request['votePostalCode'], 0, 2),
-                'voteCityName' => $request['voteCityName'],
-                'voteCountry' => $request['voteCountry'],
-                'electionPresidentialFirstRound' => $request['electionPresidentialFirstRound'],
-                'electionPresidentialSecondRound' => $request['electionPresidentialSecondRound'],
-                'electionLegislativeFirstRound' => $request['electionLegislativeFirstRound'],
-                'electionLegislativeSecondRound' => $request['electionLegislativeSecondRound'],
-            ]);
+            $proxiesCountQuery = $this->andWhereRoundsMatch(clone $qb, $request['electionRounds'])
+                ->getQuery()
+            ;
+            $proxiesCountQuery->setParameter('votePostalCodePrefix', substr($request['votePostalCode'], 0, 2));
+            $proxiesCountQuery->setParameter('voteCityName', $request['voteCityName']);
+            $proxiesCountQuery->setParameter('voteCountry', $request['voteCountry']);
 
             $requests[$key] = [
                 'data' => $request,
@@ -180,11 +181,13 @@ class ProcurationRequestRepository extends EntityRepository
         $qb = $this->createQueryBuilder('pr')
             ->select('COUNT(pr)')
             ->where('pr.id = :id')
-            ->setParameter('id', $procurationRequest->getId());
+            ->setParameter('id', $procurationRequest->getId())
+        ;
 
-        $this->addAndWhereManagedBy($qb, $procurationManager);
-
-        return (bool) $qb->getQuery()->getSingleScalarResult();
+        return (bool) $this->addAndWhereManagedBy($qb, $procurationManager)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 
     public function findRemindersBatchToSend($offset = 0, $limit = 25): array
@@ -219,7 +222,7 @@ class ProcurationRequestRepository extends EntityRepository
         ;
     }
 
-    private function addAndWhereManagedBy(QueryBuilder $qb, Adherent $procurationManager): void
+    private function addAndWhereManagedBy(QueryBuilder $qb, Adherent $procurationManager): QueryBuilder
     {
         $codesFilter = $qb->expr()->orX();
 
@@ -232,7 +235,6 @@ class ProcurationRequestRepository extends EntityRepository
                         $qb->expr()->like('pr.votePostalCode', ':code'.$key)
                     )
                 );
-
                 $qb->setParameter('code'.$key, $code.'%');
             } else {
                 // Country
@@ -241,24 +243,22 @@ class ProcurationRequestRepository extends EntityRepository
             }
         }
 
-        $qb->andWhere($codesFilter);
+        return $qb->andWhere($codesFilter);
     }
 
-    private function createNotMatchingCount(): string
+    private function andWhereRoundsMatch(QueryBuilder $qb, array $electionRounds): QueryBuilder
     {
-        $elections = [
-            'electionPresidentialFirstRound',
-            'electionPresidentialSecondRound',
-            'electionLegislativeFirstRound',
-            'electionLegislativeSecondRound',
-        ];
-
-        $notMatchingCount = [];
-
-        foreach ($elections as $election) {
-            $notMatchingCount[] = sprintf('(CASE WHEN (:%s = TRUE AND pp.%s = FALSE) THEN 1 ELSE 0 END)', $election, $election);
+        if (!$electionRounds) {
+            return $qb;
         }
 
-        return implode(' + ', $notMatchingCount);
+        $matches = [];
+
+        foreach ($electionRounds as $i => $round) {
+            $matches[] = ":round_$i MEMBER OF pp.electionRounds";
+            $qb->setParameter("round_$i", $round['id']);
+        }
+
+        return $qb->andWhere($qb->expr()->andX(...$matches));
     }
 }

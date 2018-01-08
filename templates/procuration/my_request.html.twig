@@ -11,10 +11,10 @@
         </h2>
 
         <div class="text--center b__nudge--bottom-large">
-            {% if request.electionsRoundsCount is same as(0) %}
+            {% if request.electionRoundsCount is same as(0) %}
                 <strong>Cette procuration ne concerne aucun scrutin.</strong>
             {% else %}
-                <strong>Cette procuration concerne {{ '{1} le tour de scrutin suivant|[2,Inf[ les tours de scrutins suivants'|transchoice(request.electionsRoundsCount) }} :</strong>
+                <strong>Cette procuration concerne {{ '{1} le tour de scrutin suivant|[2,Inf[ les tours de scrutins suivants'|transchoice(request.electionRoundsCount) }} :</strong>
                 <ul class="concerned-election_rounds">
                     {% for round in request.electionRoundLabels %}
                         <li>{{ round }}</li>
@@ -100,14 +100,14 @@
                     {{ request.postalCode }} {{ request.cityName }} {{ request.country }}
                 </div>
 
-                {% if request.electionsRoundsCount is same as(0) %}
+                {% if request.electionRoundsCount is same as(0) %}
                     <div class="profile-label">
                         Aucun scrutin concerné
                     </div>
                     <div class="profile-value"></div>
                 {% else %}
                     <div class="profile-label">
-                        {{ '{1} Scrutin concerné|[2,Inf[ Scrutins concernés'|transchoice(request.electionsRoundsCount) }} :
+                        {{ '{1} Scrutin concerné|[2,Inf[ Scrutins concernés'|transchoice(request.electionRoundsCount) }} :
                     </div>
                     <div class="profile-value">
                         {% for round in request.electionRoundLabels %}
@@ -119,23 +119,7 @@
                 <div class="profile-label">
                     Raison de la demande
                 </div>
-                <div class="profile-value">
-                    {% if request.reason == constant('REASON_RESIDENCY', request) %}
-                        En raison de mon lieu de résidence
-                    {% elseif request.reason == constant('REASON_HOLIDAYS', request) %}
-                        Vacances
-                    {% elseif request.reason == constant('REASON_PROFESSIONAL', request) %}
-                        Obligations professionnelles
-                    {% elseif request.reason == constant('REASON_HANDICAP', request) %}
-                        En raison d'un handicap
-                    {% elseif request.reason == constant('REASON_HEALTH', request) %}
-                        Pour raison de santé
-                    {% elseif request.reason == constant('REASON_HELP', request) %}
-                        Assistance apportée à une personne
-                    {% elseif request.reason == constant('REASON_TRAINING', request) %}
-                        Obligations de formation
-                    {% endif %}
-                </div>
+                {{ include('procuration/_request_reasons.html.twig', { request: request }, with_context=false) }}
             </div>
 
             <div class="procuration-manager__associate__col">
