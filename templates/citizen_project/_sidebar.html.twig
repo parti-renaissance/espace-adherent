@@ -4,7 +4,7 @@
         <h3>Nous recherchons</h3>
         <ul class="citizen-project__skills">
             {% if citizen_project.skills|length > 0 %}
-                {% for skill in citizen_project.skills  %}
+                {% for skill in citizen_project.skills %}
                     <li>{{ skill }}</li>
                 {% endfor %}
             {% else %}
