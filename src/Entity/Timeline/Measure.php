@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Timeline;
 
+use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,9 +13,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="timeline_measures")
  * @ORM\Entity
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class Measure
 {
+    use Translatable;
+
     public const TITLE_MAX_LENGTH = 100;
 
     public const STATUS_UPCOMING = 'UPCOMING';
@@ -39,18 +44,6 @@ class Measure
      * @Algolia\Attribute
      */
     private $id;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(length=100)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=Measure::TITLE_MAX_LENGTH)
-     *
-     * @Algolia\Attribute
-     */
-    private $title;
 
     /**
      * @var string|null
@@ -130,6 +123,11 @@ class Measure
     private $savedThemes;
 
     /**
+     * @Assert\Valid
+     */
+    protected $translations;
+
+    /**
      * @param string      $title
      * @param string      $status
      * @param Profile[]   $profiles
@@ -138,40 +136,33 @@ class Measure
      * @param bool|null   $isGlobal
      */
     public function __construct(
-        string $title = null,
         string $status = null,
         array $profiles = [],
         array $themes = [],
         string $link = null,
         bool $isMajor = false
     ) {
-        $this->title = $title;
         $this->status = $status;
         $this->link = $link;
         $this->major = $isMajor;
         $this->profiles = new ArrayCollection($profiles);
         $this->themes = new ArrayCollection($themes);
         $this->savedThemes = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     public function __toString()
     {
-        return $this->title ?? '';
+        if ($translation = $this->getTranslation('fr')) {
+            return $translation->getTitle();
+        }
+
+        return '';
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): void
-    {
-        $this->title = $title;
     }
 
     public function getLink(): ?string
@@ -306,5 +297,29 @@ class Measure
         return array_map(function (Profile $profile) {
             return $profile->getId();
         }, $this->profiles->toArray());
+    }
+
+    /**
+     * @Algolia\Attribute
+     */
+    public function title(): array
+    {
+        foreach (['fr', 'en'] as $locale) {
+            /* @var $translation MeasureTranslation */
+            if ($translation = $this->getTranslation($locale)) {
+                $titles[$locale] = $translation->getTitle();
+            }
+        }
+
+        return $titles ?? [];
+    }
+
+    private function getTranslation(string $locale): ?MeasureTranslation
+    {
+        $translation = $this->translations->filter(function (MeasureTranslation $translation) use ($locale) {
+            return $locale === $translation->getLocale();
+        })->first();
+
+        return $translation ? $translation : null;
     }
 }

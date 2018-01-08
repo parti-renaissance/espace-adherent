@@ -1,0 +1,31 @@
+{% extends "A2lixTranslationFormBundle::default.html.twig" %}
+
+{% block a2lix_translations_widget %}
+    {{ form_errors(form) }}
+    <div class="a2lix_translations tabbable">
+        <ul class="a2lix_translationsLocales nav nav-tabs">
+            {% for translationsFields in form %}
+                {% set locale = translationsFields.vars.name %}
+
+                <li class="{% if app.request.locale == locale %}active {% endif %}{% if not translationsFields.vars.valid %}error{% endif %}">
+                    <a href="#" data-toggle="tab" data-target=".{{ translationsFields.vars.id }}_a2lix_translationsFields-{{ locale }}">
+                        {{ locale|capitalize }}
+                        {% if form.vars.default_locale == locale %}[Default]{% endif %}
+                        {% if translationsFields.vars.required %}*{% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div class="a2lix_translationsFields tab-content">
+            {% for translationsFields in form %}
+                {% set locale = translationsFields.vars.name %}
+
+                <div class="{{ translationsFields.vars.id }}_a2lix_translationsFields-{{ locale }} tab-pane {% if app.request.locale == locale %}active{% endif %} {% if not form.vars.valid %}sonata-ba-field-error{% endif %}">
+                    {{ form_errors(translationsFields) }}
+                    {{ form_widget(translationsFields) }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

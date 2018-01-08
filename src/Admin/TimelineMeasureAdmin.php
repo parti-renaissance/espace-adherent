@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin;
 
+use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use AppBundle\Entity\Timeline\Measure;
 use AppBundle\Timeline\MeasureManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -23,14 +24,41 @@ class TimelineMeasureAdmin extends AbstractAdmin
         $this->measureManager = $measureManager;
     }
 
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery();
+        $alias = $query->getRootAlias();
+
+        $query
+            ->leftJoin("$alias.translations", 'translations')
+            ->addSelect('translations')
+            ->leftJoin("$alias.themes", 'themes')
+            ->addSelect('themes')
+            ->leftJoin("$alias.profiles", 'profiles')
+            ->addSelect('profiles')
+        ;
+
+        return $query;
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Méta-données', ['class' => 'col-md-6'])
-                ->add('title', TextType::class, [
-                    'label' => 'Titre',
-                    'filter_emojis' => true,
+            ->with('Traductions', ['class' => 'col-md-6'])
+                ->add('translations', TranslationsType::class, [
+                    'by_reference' => false,
+                    'label' => false,
+                    'default_locale' => ['fr'],
+                    'locales' => ['fr', 'en'],
+                    //'required_locales' => ['fr', 'en'],
+                    'fields' => [
+                        'title' => [
+                            'label' => 'Titre',
+                        ],
+                    ],
                 ])
+            ->end()
+            ->with('Méta-données', ['class' => 'col-md-6'])
                 ->add('link', null, [
                     'label' => 'Lien',
                     'required' => false,
@@ -58,10 +86,6 @@ class TimelineMeasureAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('title', null, [
-                'label' => 'Titre',
-                'show_filter' => true,
-            ])
             ->add('profiles', null, [
                 'label' => 'Profils',
                 'show_filter' => true,
@@ -89,8 +113,10 @@ class TimelineMeasureAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('title', null, [
-                'label' => 'Nom',
+            ->addIdentifier('title', TextType::class, [
+                'virtual_field' => true,
+                'label' => 'Titre',
+                'template' => 'admin/timeline/measure/list_title.html.twig',
             ])
             ->add('profiles', TextType::class, [
                 'label' => 'Profils',
@@ -98,7 +124,7 @@ class TimelineMeasureAdmin extends AbstractAdmin
             ->add('themes', TextType::class, [
                 'label' => 'Thèmes',
             ])
-            ->add('updated', null, [
+            ->add('updatedAt', null, [
                 'label' => 'Date de modification',
             ])
             ->add('status', TextType::class, [
@@ -118,11 +144,28 @@ class TimelineMeasureAdmin extends AbstractAdmin
         ;
     }
 
+
+    /**
+     * @param Measure $object
+     */
+    public function postPersist($object)
+    {
+        $this->measureManager->postPersist($object);
+    }
+
     /**
      * @param Measure $object
      */
     public function postUpdate($object)
     {
         $this->measureManager->postUpdate($object);
+    }
+
+    /**
+     * @param Measure $object
+     */
+    public function postRemove($object)
+    {
+        $this->measureManager->postRemove($object);
     }
 }

@@ -28,6 +28,10 @@ class AppKernel extends Kernel
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Cocur\Slugify\Bridge\Symfony\CocurSlugifyBundle(),
 
+            // A2lix
+            new A2lix\I18nDoctrineBundle\A2lixI18nDoctrineBundle(),
+            new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
+
             // Sonata
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),
