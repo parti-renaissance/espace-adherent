@@ -80,7 +80,7 @@ class CitizenProjectController extends Controller
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->get(CitizenProjectCommentCreationCommandHandler::class)->handle($commentCommand);
-                $this->addFlash('info', 'Ton commentaire a été ajoutée');
+                $this->addFlash('info', 'Votre commentaire a bien été publié.');
 
                 return $this->redirectToRoute('app_citizen_project_show_comments', ['slug' => $citizenProject->getSlug()]);
             }
