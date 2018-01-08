@@ -139,6 +139,25 @@ export default class ReqwestApiClient {
         });
     }
 
+    unregisterFromCitizenAction(citizenActionSlug, token, callback) {
+        let request = this._reqwest({
+            url: '/action-citoyenne/'+citizenActionSlug+'/desinscription',
+            type: 'html',
+            method: 'post',
+            data: {
+                'token': token
+            }
+        });
+
+        request.then((response) => {
+            callback(JSON.parse(response));
+        });
+
+        request.fail((response) => {
+            callback(JSON.parse(response));
+        });
+    }
+
     _createRequest(callback, parameters) {
         let request = this._reqwest(parameters);
 

@@ -6,6 +6,30 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script type="text/javascript">
+        Kernel.onLoad(function(di) {
+            {% if can_unregister_citizen_action(citizen_action) %}
+            var unregistrationButton = dom('#citizen_action-unregistration');
+
+            unregistrationButton && on(unregistrationButton, 'click', function () {
+                unregistrationButton.disabled = true;
+
+                di.get('api').unregisterFromCitizenAction(
+                    '{{ citizen_action.slug }}',
+                    unregistrationButton.getAttribute('data-csrf-token'),
+                    function (data) {
+                        if (data.hasOwnProperty('error')) {
+                            dom('#unregistration_error').textContent = data.error;
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                );
+            });
+            {% endif %}
+        });
+
+    </script>
 {% endblock %}
 {% block content %}
     <main class="citizen_action">
@@ -46,8 +70,13 @@
                             L'action citoyenne est complète
                         {% elseif can_register_citizen_action(citizen_action) %}
                             <a class="newbtn newbtn--orange" href="{{ path("app_citizen_action_attend", {slug: citizen_action.slug}) }}">S'inscrire</a>
-                        {% else %}
-                            Vous êtes inscrit à cette action citoyenne
+                        {% elseif can_unregister_citizen_action(citizen_action) %}
+                            <button type="button"
+                                    id="citizen_action-unregistration"
+                                    class="newbtn newbtn--orange b__nudge--right-large"
+                                    data-csrf-token="{{ csrf_token('citizen_action.unregistration') }}">
+                                Se désinscrire
+                            </button>
                         {% endif %}
                     </div>
 
@@ -68,6 +97,7 @@
                         </li>
                     </ul>
                 </div>
+                <div id="unregistration_error"></div>
             </div>
         </header>
 
