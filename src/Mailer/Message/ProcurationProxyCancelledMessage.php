@@ -3,14 +3,14 @@
 namespace AppBundle\Mailer\Message;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use Ramsey\Uuid\Uuid;
 
 final class ProcurationProxyCancelledMessage extends Message
 {
-    public static function create(ProcurationRequest $request, ProcurationProxy $proxy, ?Adherent $procurationManager): self
+    public static function create(ProcurationRequest $request, ?Adherent $referent): self
     {
+        $proxy = $request->getFoundProxy();
         $message = new self(
             Uuid::uuid4(),
             '120189',
@@ -27,9 +27,11 @@ final class ProcurationProxyCancelledMessage extends Message
         $message->setSenderName('Procuration En Marche !');
         $message->addCC($proxy->getEmailAddress());
 
-        if ($procurationManager) {
-            $message->addCC($procurationManager->getEmailAddress());
-            $message->setReplyTo($procurationManager->getEmailAddress());
+        $referent = $referent ?: $request->getFoundBy();
+
+        if ($referent) {
+            $message->addCC($referent->getEmailAddress());
+            $message->setReplyTo($referent->getEmailAddress());
         } else {
             $message->setReplyTo('procurations@en-marche.fr');
         }

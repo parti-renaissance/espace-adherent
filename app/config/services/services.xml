@@ -43,11 +43,21 @@
             <argument type="service" id="app.mailer.transactional" />
         </service>
 
+		<!-- EventListener -->
+		<service id="AppBundle\EventListener\ProcurationMailerSubscriber">
+			<argument key="$mailer" type="service" id="app.mailer.transactional" />
+		</service>
+		<service id="AppBundle\EventListener\RegistrationCompletedSubscriber">
+			<argument type="service" id="old_sound_rabbit_mq.enmarche_sync_user_create_producer" />
+		</service>
+
         <!-- Form -->
         <service id="AppBundle\Form\CitizenProjectCommentCommandType"/>
         <service id="AppBundle\Form\CitizenProjectCommandType"/>
 
 		<!-- Procuration -->
+		<service id="AppBundle\Procuration\ProcurationManager" public="true" />
+		<service id="AppBundle\Procuration\ProcurationRequestSerializer" />
 		<service id="AppBundle\Procuration\ProcurationSession" />
 
 		<!-- Report -->

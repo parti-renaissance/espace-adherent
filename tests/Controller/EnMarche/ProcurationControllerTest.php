@@ -6,7 +6,6 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadElectionData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadProcurationData;
-use AppBundle\Entity\Election;
 use AppBundle\Entity\ElectionRound;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
@@ -397,7 +396,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
     {
         $this->setElectionContext(ElectionContext::ACTION_PROPOSAL);
 
-        $initialProcurationProxyCount = 4;
+        $initialProcurationProxyCount = 5;
 
         $this->assertCount($initialProcurationProxyCount, $this->procurationProxyRepostitory->findAll(), 'There should not be any proposal at the moment');
 
@@ -584,7 +583,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
     public function testProcurationProposalNotUniqueEmailBirthdate()
     {
-        $initialProcurationProxyCount = 4;
+        $initialProcurationProxyCount = 5;
 
         $this->assertCount($initialProcurationProxyCount, $this->procurationProxyRepostitory->findAll(), 'There should not be any proposal at the moment');
 

@@ -2,8 +2,6 @@
 
 namespace AppBundle\Mailer\Message;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Utils\PhoneNumberFormatter;
 use Ramsey\Uuid\Uuid;
@@ -11,11 +9,10 @@ use Ramsey\Uuid\Uuid;
 final class ProcurationProxyFoundMessage extends Message
 {
     public static function create(
-        Adherent $procurationManager,
         ProcurationRequest $request,
-        ProcurationProxy $proxy,
         string $infosUrl
     ): self {
+        $proxy = $request->getFoundProxy();
         $message = new self(
             Uuid::uuid4(),
             '120187',
@@ -36,7 +33,7 @@ final class ProcurationProxyFoundMessage extends Message
         );
 
         $message->setSenderName('Procuration En Marche !');
-        $message->addCC($procurationManager->getEmailAddress());
+        $message->addCC($request->getFoundBy()->getEmailAddress());
         $message->addCC($proxy->getEmailAddress());
         $message->setReplyTo($proxy->getEmailAddress());
 

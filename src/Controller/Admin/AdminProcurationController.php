@@ -2,8 +2,11 @@
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationRequest;
+use AppBundle\Procuration\ProcurationManager;
+use AppBundle\Procuration\ProcurationRequestSerializer;
+use AppBundle\Repository\AdherentRepository;
+use AppBundle\Repository\ProcurationRequestRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -25,12 +28,10 @@ class AdminProcurationController extends Controller
      * @Method("GET")
      * @Security("has_role('ROLE_ADMIN_PROCURATIONS')")
      */
-    public function referentsInvitationUrlsAction(): Response
+    public function referentsInvitationUrlsAction(AdherentRepository $repository): Response
     {
-        $referents = $this->getDoctrine()->getRepository(Adherent::class)->findReferents();
-
         return $this->render('admin/procuration/referents_invitation_urls.html.twig', [
-            'referents' => $referents,
+            'referents' => $repository->findReferents(),
         ]);
     }
 
@@ -39,12 +40,9 @@ class AdminProcurationController extends Controller
      * @Method("GET")
      * @Security("has_role('ROLE_ADMIN_PROCURATIONS')")
      */
-    public function exportMailsAction(): Response
+    public function exportMailsAction(ProcurationRequestRepository $repository, ProcurationRequestSerializer $serializer): Response
     {
-        $requests = $this->getDoctrine()->getRepository(ProcurationRequest::class)->findAllForExport();
-        $exported = $this->get('app.procuration.request_serializer')->serialize($requests);
-
-        return new Response($exported, 200, [
+        return new Response($serializer->serialize($repository->findAllForExport()), 200, [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="procurations-matched.csv"',
         ]);
@@ -64,11 +62,12 @@ class AdminProcurationController extends Controller
         }
 
         $form = $this->createForm(FormType::class);
-        $form->add('submit', SubmitType::class);
-        $form->handleRequest($sfRequest);
+        $form->add('submit', SubmitType::class)
+            ->handleRequest($sfRequest)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.procuration.process_handler')->unprocess(null, $request);
+            $this->get(ProcurationManager::class)->unprocessProcurationRequest($request);
 
             return $this->redirectAfterDeassociation($sfRequest);
         }

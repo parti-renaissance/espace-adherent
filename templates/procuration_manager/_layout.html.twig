@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title 'Espace responsable procuration' %}
-{% block canonical_url url('app_procuration_manager_index') %}
+{% block canonical_url url('app_procuration_manager_requests') %}
 
 {% block content %}
     <main>
@@ -18,36 +18,36 @@
             <div class="l__wrapper procuration-manager__content">
                 {% set pages = [
                     {
-                        'route': 'app_procuration_manager_index',
-                        'status': constant('AppBundle\\Procuration\\Filter\\ProcurationRequestFilters::UNPROCESSED'),
-                        'label': 'Demandes à traiter'
+                        route: 'app_procuration_manager_requests',
+                        status: constant('AppBundle\\Procuration\\Filter\\ProcurationRequestFilters::UNPROCESSED'),
+                        label: 'Demandes à traiter'
                     },
                     {
-                        'route': 'app_procuration_manager_index',
-                        'status': constant('AppBundle\\Procuration\\Filter\\ProcurationRequestFilters::PROCESSED'),
-                        'label': 'Demandes traitées'
+                        route: 'app_procuration_manager_requests',
+                        status: constant('AppBundle\\Procuration\\Filter\\ProcurationRequestFilters::PROCESSED'),
+                        label: 'Demandes traitées'
                     },
                     {
-                        'route': 'app_procuration_manager_proposals',
-                        'status': constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::UNASSOCIATED'),
-                        'label': 'Mandataires disponibles'
+                        route: 'app_procuration_manager_proposals',
+                        status: constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::UNASSOCIATED'),
+                        label: 'Mandataires disponibles'
                     },
                     {
-                        'route': 'app_procuration_manager_proposals',
-                        'status': constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::ASSOCIATED'),
-                        'label': 'Mandataires traités'
+                        route: 'app_procuration_manager_proposals',
+                        status: constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::ASSOCIATED'),
+                        label: 'Mandataires traités'
                     },
                     {
-                        'route': 'app_procuration_manager_proposals',
-                        'status': constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::DISABLED'),
-                        'label': 'Mandataires désactivés'
+                        route: 'app_procuration_manager_proposals',
+                        status: constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::DISABLED'),
+                        label: 'Mandataires désactivés'
                     }
                 ] %}
 
                 <ul class="procuration-manager__tabs">
                     {% for page in pages %}
                         <li class="{{ app.request.attributes.get('_route') == page.route and filters.status == page.status ? 'active' : '' }}">
-                            <a href="{{ path(page.route, {'status': page.status }) }}">
+                            <a href="{{ path(page.route, { status: page.status }) }}">
                                 {{ page.label }}
                             </a>
                         </li>

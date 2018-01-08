@@ -221,7 +221,33 @@ class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
             '75008-75108',
             null,
             'Gymnase de Iéna',
-            array_merge($presidentialElections->getRounds()->toArray(), $legislativeElections->getRounds()->toArray()),
+            array_merge(
+                $presidentialElections->getRounds()->toArray(),
+                $legislativeElections->getRounds()->toArray(),
+                $partialLegislativeElections->getRounds()->toArray()
+            ),
+            5,
+            'Responsable procuration'
+        ));
+
+        $manager->persist($this->createProxyProposal(
+            $referent,
+            'female',
+            'Léa',
+            'Bouquet',
+            'lea.bouquet@exemple.org',
+            '18, avenue de la République',
+            '75010',
+            '75010-75110',
+            null,
+            '33 673839259',
+            '1982-02-21',
+            'FR',
+            '75010',
+            '75010-75110',
+            null,
+            'École de la République',
+            $partialLegislativeElections->getRounds(),
             5,
             'Responsable procuration'
         ));

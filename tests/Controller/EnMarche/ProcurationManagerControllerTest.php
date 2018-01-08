@@ -3,10 +3,12 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadElectionData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadProcurationData;
 use AppBundle\Procuration\Filter\ProcurationProxyProposalFilters;
 use AppBundle\Procuration\Filter\ProcurationRequestFilters;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -19,12 +21,20 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
+    private const SUBJECT_REQUEST = 'demandes? de procuration';
+    private const SUBJECT_PROPOSAL = 'propositions? de mandataires?';
+    private const SUBJECTS = [
+        self::SUBJECT_REQUEST,
+        self::SUBJECT_PROPOSAL,
+    ];
+
     /**
      * @dataProvider providePages
      */
     public function testProcurationManagerBackendIsForbiddenAsAnonymous(string $path)
     {
         $this->client->request(Request::METHOD_GET, $path);
+
         $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/connexion', $this->client);
     }
 
@@ -36,6 +46,7 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
 
         $this->client->request(Request::METHOD_GET, $path);
+
         $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
     }
 
@@ -54,6 +65,7 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
         $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration/demande/4');
+
         $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
     }
 
@@ -63,16 +75,20 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
 
         // Requests list
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration');
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->isSuccessful($this->client->getResponse());
 
         $this->assertCount(3, $crawler->filter('.datagrid__table tbody tr'));
+        $this->assertProcurationTotalCount($crawler, self::SUBJECT_REQUEST, 3, 'à traiter');
 
         // Request page
         $linkNode = $crawler->filter('#request-link-3');
+
         $this->assertCount(1, $linkNode);
 
         $crawler = $this->client->click($linkNode->link());
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->isSuccessful($this->client->getResponse());
 
         // I see request data
         $this->assertSame('Demande de procuration n°3', trim($crawler->filter('#request-title')->text()));
@@ -88,16 +104,19 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('Pour raison de santé', trim($crawler->filter('#request-reason')->text()));
 
         // I see request potential proxies
-        $proxies = $crawler->filter('.datagrid__table tbody tr td strong');
-        $this->assertSame('Maxime Michaux', trim($proxies->first()->text()));
-        $this->assertSame('Jean-Michel Carbonneau', trim($proxies->last()->text()));
+        $proxies = $crawler->filter('.datagrid__table tbody tr td.proxy_name strong');
+
+        $this->assertSame('Jean-Michel Carbonneau', trim($proxies->first()->text()));
+        $this->assertSame('Maxime Michaux', trim($proxies->last()->text()));
 
         // Associate the request with the proxy
         $linkNode = $crawler->filter('#associate-link-2');
+
         $this->assertCount(1, $linkNode);
 
         $crawler = $this->client->click($linkNode->link());
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->isSuccessful($this->client->getResponse());
 
         // I see proxy data
         $this->assertSame('Monsieur Jean-Michel Carbonneau', trim($crawler->filter('#proxy-author')->text()));
@@ -110,29 +129,38 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->assertSame('75018 Paris 20e FR', trim($crawler->filter('#proxy-city')->text()));
 
         $this->client->submit($crawler->filter('form[name=app_associate]')->form());
+
         $this->assertClientIsRedirectedTo('/espace-responsable-procuration/demande/3', $this->client);
+
         $crawler = $this->client->followRedirect();
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->isSuccessful($this->client->getResponse());
 
         $this->assertSame('Demande associée à Jean-Michel Carbonneau', trim($crawler->filter('.procuration-manager__request__col-right h4')->text()));
 
         // Deassociate
         $linkNode = $crawler->filter('#request-deassociate');
+
         $this->assertCount(1, $linkNode);
 
         $crawler = $this->client->click($linkNode->link());
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->isSuccessful($this->client->getResponse());
 
         $this->client->submit($crawler->filter('form[name=app_deassociate]')->form());
+
         $this->assertClientIsRedirectedTo('/espace-responsable-procuration/demande/3', $this->client);
+
         $crawler = $this->client->followRedirect();
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->isSuccessful($this->client->getResponse());
 
         $this->assertSame('Demande en attente', trim($crawler->filter('.procuration-manager__request__col-left h4')->text()));
 
-        $proxies = $crawler->filter('.datagrid__table tbody tr td strong');
-        $this->assertSame('Maxime Michaux', trim($proxies->first()->text()));
-        $this->assertSame('Jean-Michel Carbonneau', trim($proxies->last()->text()));
+        $proxies = $crawler->filter('.datagrid__table tbody tr td.proxy_name strong');
+
+        $this->assertSame('Jean-Michel Carbonneau', trim($proxies->first()->text()));
+        $this->assertSame('Maxime Michaux', trim($proxies->last()->text()));
     }
 
     public function testProcurationManagerProxiesList()
@@ -140,11 +168,26 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration/mandataires');
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertProcurationTotalCount($crawler, self::SUBJECT_PROPOSAL, 3, 'disponible');
+        $this->assertCount(3, $crawler->filter('.datagrid__table tbody tr'));
+        $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Léa Bouquet")'));
         $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Jean-Michel Carbonneau")'));
         $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Maxime Michaux")'));
+    }
+
+    public function testProcurationManagerProxiesListAssociated()
+    {
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration/mandataires?status=associated');
+
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertProcurationTotalCount($crawler, self::SUBJECT_PROPOSAL, 2, 'associée');
+        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+        $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Romain Gentil")'));
+        $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Benjamin Robitaille")'));
     }
 
     public function testFilterProcurationRequestsList()
@@ -152,33 +195,54 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration');
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertProcurationTotalCount($crawler, self::SUBJECT_REQUEST, 3, 'à traiter');
         $this->assertCount(3, $crawler->filter('.datagrid__table tbody tr'));
 
         $formValues = [
             ProcurationRequestFilters::PARAMETER_COUNTRY => null,
             ProcurationRequestFilters::PARAMETER_CITY => null,
-            ProcurationRequestFilters::PARAMETER_TYPE => null,
+            ProcurationRequestFilters::PARAMETER_ELECTION_ROUND => null,
         ];
 
         $form = $crawler->selectButton('Filtrer')->form();
         $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationRequestFilters::PARAMETER_COUNTRY => 'GB']));
+
         $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
 
         $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationRequestFilters::PARAMETER_COUNTRY => 'FR']));
+
         $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
 
         $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationRequestFilters::PARAMETER_CITY => 'Paris']));
+
         $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
 
         $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationRequestFilters::PARAMETER_CITY => '75']));
+
         $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
 
-        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationRequestFilters::PARAMETER_TYPE => ProcurationRequestFilters::TYPE_LEGISLATIVE_1_ROUND]));
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationRequestFilters::PARAMETER_ELECTION_ROUND => 3]));
+
         $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
 
         $crawler = $this->client->click($crawler->selectLink('Annuler')->link());
+
         $this->assertCount(3, $crawler->filter('.datagrid__table tbody tr'));
+    }
+
+    public function testProcurationManagerRequestsListProcessed()
+    {
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration?status=processed');
+
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertProcurationTotalCount($crawler, self::SUBJECT_REQUEST, 2, 'traitée');
+        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+        $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("William Brunelle")'));
+        $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Alice Delavega")'));
     }
 
     public function testFilterProcurationProxyProposalsList()
@@ -186,41 +250,49 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration/mandataires');
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertProcurationTotalCount($crawler, self::SUBJECT_PROPOSAL, 3, 'disponible');
+        $this->assertCount(3, $crawler->filter('.datagrid__table tbody tr'));
 
         $formValues = [
             ProcurationProxyProposalFilters::PARAMETER_COUNTRY => null,
             ProcurationProxyProposalFilters::PARAMETER_CITY => null,
-            ProcurationProxyProposalFilters::PARAMETER_TYPE => null,
+            ProcurationProxyProposalFilters::PARAMETER_ELECTION_ROUND => null,
         ];
 
         $form = $crawler->selectButton('Filtrer')->form();
         $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_COUNTRY => 'GB']));
+
         $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
 
         $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_COUNTRY => 'FR']));
-        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+
+        $this->assertCount(3, $crawler->filter('.datagrid__table tbody tr'));
 
         $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_CITY => 'Nantes']));
+
         $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
 
         $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_CITY => '44']));
+
         $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
 
         $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_CITY => '18e']));
+
         $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
 
         $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_CITY => '75018']));
+
         $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
 
-        // Presidential first round is disabled at the moment
-        //
-        //$crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_TYPE => ProcurationProxyProposalFilters::TYPE_PRESIDENTIAL_1_ROUND]));
-        //$this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_ELECTION_ROUND => 5]));
+
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
 
         $crawler = $this->client->click($crawler->selectLink('Annuler')->link());
-        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+
+        $this->assertCount(3, $crawler->filter('.datagrid__table tbody tr'));
     }
 
     protected function setUp()
@@ -230,6 +302,7 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->init([
             LoadAdherentData::class,
             LoadHomeBlockData::class,
+            LoadElectionData::class,
             LoadProcurationData::class,
         ]);
     }
@@ -239,5 +312,26 @@ class ProcurationManagerControllerTest extends SqliteWebTestCase
         $this->kill();
 
         parent::tearDown();
+    }
+
+    private function assertProcurationTotalCount(Crawler $crawler, string $subject, int $count, string $status): void
+    {
+        if (self::SUBJECT_REQUEST === $subject) {
+            $message = $crawler->filter('.procuration_requests_total_count');
+        } elseif (self::SUBJECT_PROPOSAL === $subject) {
+            $message = $crawler->filter('.procuration_proposals_total_count');
+        } else {
+            throw new \InvalidArgumentException(sprintf('Expected one of "%s" or "%s", but got "%s".', implode('", "', self::SUBJECTS), $subject));
+        }
+
+        $regexp = sprintf(
+            'Vous avez %s %s %ss?.',
+            $count > 1 ? $count : 'une',
+            $subject,
+            $status
+        );
+
+        $this->assertCount(1, $message);
+        $this->assertRegExp("/^$regexp\$/", trim($message->text()));
     }
 }
