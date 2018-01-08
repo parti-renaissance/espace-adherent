@@ -15,7 +15,7 @@ class Version20171228161433 extends AbstractMigration
     public function postUp(Schema $schema)
     {
         $this->connection->executeQuery(
-            'UPDATE citizen_projects SET image_name = CONCAT(uuid, \'.jpg\') WHERE image_uploaded = ?'
+            'UPDATE citizen_projects SET image_name = CONCAT(uuid, \'.jpg\') WHERE image_uploaded = ?',
             [true],
             [\PDO::PARAM_BOOL]
         );
