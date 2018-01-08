@@ -38,7 +38,7 @@ class SearchControllerTest extends MysqlWebTestCase
     public function providerPathSearchPage()
     {
         return [
-            ['/recherche/projets-citoyens'],
+            ['/projets-citoyens'],
             ['/evenements'],
             ['/comites'],
             ['/recherche'],
