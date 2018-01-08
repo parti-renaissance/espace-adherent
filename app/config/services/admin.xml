@@ -298,6 +298,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.election" class="AppBundle\Admin\ElectionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Élections" group="Territoire" />
+
+            <argument />
+            <argument>AppBundle\Entity\Election</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.board_member_roles" class="AppBundle\Admin\BoardMemberRoleAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Rôles des membres du Conseil" group="Territoire" />
 
