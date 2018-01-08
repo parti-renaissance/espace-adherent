@@ -13,6 +13,8 @@ use AppBundle\Entity\Committee;
 use AppBundle\Exception\CitizenProjectCommitteeSupportAlreadySupportException;
 use AppBundle\Exception\CitizenProjectNotApprovedException;
 use AppBundle\Form\CitizenProjectCommentCommandType;
+use AppBundle\Geocoder\Exception\GeocodingException;
+use AppBundle\Search\SearchParametersFilter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -261,5 +263,41 @@ class CitizenProjectController extends Controller
                 'csrf_token' => (string) $this->get('security.csrf.token_manager')->getToken('citizen_project.follow'),
             ],
         ]);
+    }
+
+    /**
+     * @Route("", name="app_citizen_project_landing")
+     * @Method("GET")
+     */
+    public function landingAction(): Response
+    {
+        $city = $this->getUser() ? $this->getUser()->getCityName() : SearchParametersFilter::DEFAULT_CITY;
+
+        return $this->render('citizen_project/landing.html.twig', [
+            'city' => $city,
+        ]);
+    }
+
+    /**
+     * @Route("/landing/results", name="app_citizen_project_landing_result", condition="request.isXmlHttpRequest() and request.query.get('city')")
+     * @Method("GET")
+     */
+    public function landingPageResultAction(Request $request, CitizenProjectManager $citizenProjectManager): Response
+    {
+        $search = $this->get(SearchParametersFilter::class);
+        $search->setCity($request->query->get('city'));
+
+        try {
+            $results = $citizenProjectManager->findNearCitizenProjectByCoordinates($search->getCityCoordinates());
+            $citizenProjectManager->injectCitizenProjectCreator($results);
+
+            $response = $this->render('citizen_project/_landing_results.html.twig', [
+                'results' => $results,
+            ]);
+        } catch (GeocodingException $exception) {
+            $response = new JsonResponse(['error' => $this->get('translator')->trans('search.geocoding.exception')], Response::HTTP_NOT_FOUND);
+        }
+
+        return $response;
     }
 }

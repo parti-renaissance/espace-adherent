@@ -6,12 +6,15 @@ use AppBundle\Coordinator\Filter\CitizenProjectFilter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseGroup;
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Geocoder\Coordinates;
 use AppBundle\Search\SearchParametersFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Ramsey\Uuid\UuidInterface;
 
 class CitizenProjectRepository extends BaseGroupRepository
 {
+    use NearbyTrait;
+
     /**
      * Returns the total number of approved citizen projects.
      *
@@ -145,5 +148,15 @@ class CitizenProjectRepository extends BaseGroupRepository
         return array_map(function (UuidInterface $uuid) {
             return $uuid->toString();
         }, array_column($query->getArrayResult(), 'uuid'));
+    }
+
+    public function findNearCitizenProjectByCoordinates(Coordinates $coordinates, int $limit = 3): array
+    {
+        return $this
+            ->createNearbyQueryBuilder($coordinates)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

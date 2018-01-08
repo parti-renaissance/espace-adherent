@@ -1,0 +1,27 @@
+{% for citizen_project in results %}
+    <li class="citizen-projects__landing__card">
+        <img src="{{ asset(citizen_project.imagePath) }}" alt="{{ citizen_project.name }}">
+        <div class="l__col l__col--v-stretch">
+            <div>
+                <h3 class="text--medium-small">{{ citizen_project.name }}</h3>
+                <h4 class="text--normal text--gray">{{ citizen_project.subtitle }}</h4>
+                <div class="citizen-projects__landing__card__creator text--small b__nudge--top-10"><span class="text--gray">Par</span>
+                    {{ is_granted('IS_AUTHENTICATED_FULLY') ? citizen_project.creator : citizen_project.creator.partialName }}
+                </div>
+            </div>
+
+            <div>
+                {% if citizen_project.skills|length > 0 %}
+                    <div class="text--gray text--small b__nudge--bottom-small">Nous recherchons :</div>
+                    <ul class="citizen-project__skills">
+                        {% for skill in citizen_project.skills %}
+                            <li>{{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+        <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}"
+           class="search__citizen_project__box__link"></a>
+    </li>
+{% endfor %}
