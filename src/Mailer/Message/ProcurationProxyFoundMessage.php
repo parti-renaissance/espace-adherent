@@ -25,7 +25,7 @@ final class ProcurationProxyFoundMessage extends Message
             [
                 'target_firstname' => self::escape($request->getFirstNames()),
                 'info_link' => $infosUrl,
-                'elections' => implode(', ', $request->getElections()),
+                'elections' => implode(', ', $request->getElectionRoundLabels()),
                 'voter_first_name' => self::escape($proxy->getFirstNames()),
                 'voter_last_name' => self::escape($proxy->getLastName()),
                 'voter_phone' => PhoneNumberFormatter::format($proxy->getPhone()),

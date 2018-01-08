@@ -13,7 +13,6 @@ use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Table(name="procuration_requests")
@@ -371,24 +370,6 @@ class ProcurationRequest
         return $phone;
     }
 
-    /**
-     * @Assert\Callback(groups={"elections"})
-     *
-     * @param ExecutionContextInterface $context
-     */
-    public function validateChosenElections(ExecutionContextInterface $context): void
-    {
-        if ($this->electionLegislativeFirstRound) {
-            return;
-        }
-
-        if ($this->electionLegislativeSecondRound) {
-            return;
-        }
-
-        $context->addViolation('Vous devez choisir au moins une élection');
-    }
-
     public function importAdherentData(Adherent $adherent): void
     {
         $this->gender = $adherent->getGender();
@@ -400,20 +381,14 @@ class ProcurationRequest
         $this->setCity($adherent->getCity());
         $this->cityName = $adherent->getCityName();
         $this->country = $adherent->getCountry();
-
-        if ($adherent->getPhone()) {
-            $this->phone = $adherent->getPhone();
-        }
-
-        if ($adherent->getBirthdate()) {
-            $this->birthdate = $adherent->getBirthdate();
-        }
+        $this->phone = $adherent->getPhone();
+        $this->birthdate = $adherent->getBirthdate();
     }
 
-    public function process(ProcurationProxy $procurationProxy = null, Adherent $procurationBy = null): void
+    public function process(ProcurationProxy $procurationProxy = null, Adherent $procurationFoundBy = null): void
     {
         $this->foundProxy = $procurationProxy;
-        $this->foundBy = $procurationBy;
+        $this->foundBy = $procurationFoundBy;
         $this->processed = true;
         $this->processedAt = new \DateTime();
 
@@ -649,19 +624,9 @@ class ProcurationRequest
         return $this->electionPresidentialFirstRound;
     }
 
-    public function setElectionPresidentialFirstRound(bool $electionPresidentialFirstRound): void
-    {
-        $this->electionPresidentialFirstRound = $electionPresidentialFirstRound;
-    }
-
     public function getElectionPresidentialSecondRound(): bool
     {
         return $this->electionPresidentialSecondRound;
-    }
-
-    public function setElectionPresidentialSecondRound(bool $electionPresidentialSecondRound): void
-    {
-        $this->electionPresidentialSecondRound = $electionPresidentialSecondRound;
     }
 
     public function getElectionLegislativeFirstRound(): bool
@@ -669,76 +634,21 @@ class ProcurationRequest
         return $this->electionLegislativeFirstRound;
     }
 
-    public function setElectionLegislativeFirstRound(bool $electionLegislativeFirstRound): void
-    {
-        $this->electionLegislativeFirstRound = $electionLegislativeFirstRound;
-    }
-
     public function getElectionLegislativeSecondRound(): bool
     {
         return $this->electionLegislativeSecondRound;
     }
 
-    public function setElectionLegislativeSecondRound(bool $electionLegislativeSecondRound): void
-    {
-        $this->electionLegislativeSecondRound = $electionLegislativeSecondRound;
-    }
-
     public function getElectionsRoundsCount(): int
     {
-        $count = 0;
-        if ($this->electionPresidentialFirstRound) {
-            ++$count;
-        }
-
-        if ($this->electionPresidentialSecondRound) {
-            ++$count;
-        }
-
-        if ($this->electionLegislativeFirstRound) {
-            ++$count;
-        }
-
-        if ($this->electionLegislativeSecondRound) {
-            ++$count;
-        }
-
-        return $count;
+        return $this->electionRounds->count();
     }
 
-    public function getElections(): array
+    public function getElectionRoundLabels(): array
     {
-        return array_filter([$this->getElectionsPresidential(), $this->getElectionsLegislative()]);
-    }
-
-    public function getElectionsPresidential(): ?string
-    {
-        if ($this->electionPresidentialFirstRound && $this->electionPresidentialSecondRound) {
-            return 'Présidentielle : 1er et 2nd tour (23 avril et 7 mai)';
-        }
-        if ($this->electionPresidentialFirstRound) {
-            return 'Présidentielle : 1er tour (23 avril)';
-        }
-        if ($this->electionPresidentialSecondRound) {
-            return 'Présidentielle : 2nd tour (7 mai)';
-        }
-
-        return null;
-    }
-
-    public function getElectionsLegislative(): ?string
-    {
-        if ($this->electionLegislativeFirstRound && $this->electionLegislativeSecondRound) {
-            return 'Législatives : 1er et 2nd tour';
-        }
-        if ($this->electionLegislativeFirstRound) {
-            return 'Législatives : 1er tour';
-        }
-        if ($this->electionLegislativeSecondRound) {
-            return 'Législatives : 2nd tour';
-        }
-
-        return null;
+        return array_map(function (ElectionRound $round) {
+            return $round->getLabel();
+        }, $this->electionRounds->toArray());
     }
 
     public function getReason(): ?string

@@ -15,6 +15,7 @@ use AppBundle\Procuration\ProcurationSession;
 use AppBundle\Repository\ProcurationProxyRepository;
 use AppBundle\Repository\ProcurationRequestRepository;
 use libphonenumber\PhoneNumber;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -172,10 +173,11 @@ class ProcurationControllerTest extends SqliteWebTestCase
     {
         $this->setElectionContext();
 
+        $initialProcurationRequestCount = 6;
         $procurationRequest = new ProcurationRequest();
 
         $this->assertCurrentProcurationRequestSameAs($procurationRequest);
-        $this->assertCount(5, $this->procurationRequestRepostitory->findAll());
+        $this->assertCount($initialProcurationRequestCount, $this->procurationRequestRepostitory->findAll());
 
         // Initial form
         $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-demande/'.ProcurationRequest::STEP_URI_VOTE);
@@ -308,7 +310,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
         // Procuration request should have been saved
         /* @var ProcurationRequest $request */
-        $this->assertCount(6, $requests = $this->procurationRequestRepostitory->findAll());
+        $this->assertCount($initialProcurationRequestCount + 1, $requests = $this->procurationRequestRepostitory->findAll());
         $this->assertInstanceOf(ProcurationRequest::class, $request = end($requests));
 
         $this->assertSame('FR', $request->getVoteCountry());
@@ -339,6 +341,35 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
         $procurationRequest = new ProcurationRequest();
 
+        $this->assertCurrentProcurationRequestSameAs($procurationRequest);
+
+        // Initial form
+        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-demande/'.ProcurationRequest::STEP_URI_VOTE);
+
+        $this->isSuccessful($this->client->getResponse());
+
+        $this->client->submit($crawler->selectButton('Je continue')->form([
+            'app_procuration_request' => [
+                'voteCountry' => 'FR',
+                'votePostalCode' => '92110',
+                'voteCity' => '92110-92024',
+                'voteCityName' => '',
+                'voteOffice' => 'TestOfficeName',
+            ],
+        ]));
+
+        $this->assertClientIsRedirectedTo('/procuration/je-demande/'.ProcurationRequest::STEP_URI_PROFILE, $this->client);
+
+        $procurationRequest->setVoteCountry('FR');
+        $procurationRequest->setVotePostalCode('92110');
+        $procurationRequest->setVoteCity('92110-92024');
+        $procurationRequest->setVoteCityName('');
+        $procurationRequest->setVoteOffice('TestOfficeName');
+
+        $this->assertCurrentProcurationRequestSameAs($procurationRequest);
+
+        $this->client->followRedirect();
+
         // Request should have been hydrated by user data
         $procurationRequest->setGender('female');
         $procurationRequest->setFirstNames('Lucie');
@@ -366,8 +397,9 @@ class ProcurationControllerTest extends SqliteWebTestCase
     {
         $this->setElectionContext(ElectionContext::ACTION_PROPOSAL);
 
-        // There should not be any proposal at the moment
-        $this->assertCount(3, $this->procurationProxyRepostitory->findAll());
+        $initialProcurationProxyCount = 4;
+
+        $this->assertCount($initialProcurationProxyCount, $this->procurationProxyRepostitory->findAll(), 'There should not be any proposal at the moment');
 
         // Initial form
         $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-propose?uuid='.LoadAdherentData::ADHERENT_8_UUID);
@@ -449,10 +481,8 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->client->followRedirect();
 
         $this->isSuccessful($this->client->getResponse());
-
-        // Procuration request should have been saved
         /* @var ProcurationProxy $proposal */
-        $this->assertCount(4, $proposals = $this->procurationProxyRepostitory->findAll());
+        $this->assertCount($initialProcurationProxyCount + 1, $proposals = $this->procurationProxyRepostitory->findAll(), 'Procuration request should have been saved');
         $this->assertInstanceOf(ProcurationProxy::class, $proposal = end($proposals));
 
         $this->assertSame('FR', $proposal->getVoteCountry());
@@ -476,7 +506,9 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
     public function testProcurationRequestNotUniqueEmailBirthDate()
     {
-        $this->assertCount(5, $this->procurationRequestRepostitory->findAll());
+        $initialProcurationRequestCount = 6;
+
+        $this->assertCount($initialProcurationRequestCount, $this->procurationRequestRepostitory->findAll());
 
         $this->setElectionContext();
 
@@ -547,15 +579,14 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->client->followRedirect();
 
         $this->isSuccessful($this->client->getResponse());
-
-        // Procuration request should have been saved
-        $this->assertCount(6, $this->procurationRequestRepostitory->findAll());
+        $this->assertCount($initialProcurationRequestCount + 1, $this->procurationRequestRepostitory->findAll(), 'Procuration request should have been saved');
     }
 
     public function testProcurationProposalNotUniqueEmailBirthdate()
     {
-        // There should not be any proposal at the moment
-        $this->assertCount(3, $this->procurationProxyRepostitory->findAll());
+        $initialProcurationProxyCount = 4;
+
+        $this->assertCount($initialProcurationProxyCount, $this->procurationProxyRepostitory->findAll(), 'There should not be any proposal at the moment');
 
         $this->setElectionContext();
 
@@ -602,9 +633,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->client->followRedirect();
 
         $this->isSuccessful($this->client->getResponse());
-
-        // Procuration request should have been saved
-        $this->assertCount(4, $this->procurationProxyRepostitory->findAll());
+        $this->assertCount($initialProcurationProxyCount + 1, $this->procurationProxyRepostitory->findAll(), 'Procuration request should have been saved');
     }
 
     public function testProcurationProposalManagerUuid()
@@ -614,6 +643,35 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->client->request(Request::METHOD_GET, '/procuration/je-propose?uuid='.LoadAdherentData::ADHERENT_4_UUID);
 
         $this->isSuccessful($this->client->getResponse());
+    }
+
+    public function testMyRequestRequiresProcessedRequest()
+    {
+        $this->client->request(Request::METHOD_GET, '/procuration/ma-demande/4/'.(Uuid::uuid4()->toString()));
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
+    public function testMyRequestRequiresValidToken()
+    {
+        $this->client->request(Request::METHOD_GET, '/procuration/ma-demande/5/'.(Uuid::uuid4()->toString()));
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
+    public function testMyRequest()
+    {
+        /** @var ProcurationRequest $procurationRequest */
+        $procurationRequest = $this->procurationRequestRepostitory->find(5);
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/ma-demande/5/'.$procurationRequest->generatePrivateToken());
+
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertCount(4, $rounds = $crawler->filter('.concerned-election_rounds li'));
+        $this->assertSame('1er tour des éléctions présidentielles 2017', $rounds->eq(0)->text());
+        $this->assertSame('2e tour des éléctions présidentielles 2017', $rounds->eq(1)->text());
+        $this->assertSame('1er tour des éléctions législatives 2017', $rounds->eq(2)->text());
+        $this->assertSame('2e tour des éléctions législatives 2017', $rounds->eq(3)->text());
     }
 
     protected function setUp()
@@ -658,9 +716,9 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->client->followRedirect();
     }
 
-    private function assertCurrentProcurationRequestSameAs(ProcurationRequest $request): void
+    private function assertCurrentProcurationRequestSameAs(ProcurationRequest $expectedRequest): void
     {
-        $this->assertEquals($this->client->getContainer()->get(ProcurationSession::class)->getCurrentRequest(), $request);
+        $this->assertEquals($expectedRequest, $this->client->getContainer()->get(ProcurationSession::class)->getCurrentRequest());
     }
 
     private function createPhoneNumber(string $country, string $number): PhoneNumber

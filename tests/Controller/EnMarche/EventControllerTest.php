@@ -330,9 +330,13 @@ class EventControllerTest extends MysqlWebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/evenements/'.LoadEventData::EVENT_5_UUID.'/'.date('Y-m-d', strtotime('+17 days')).'-reunion-de-reflexion-marseillaise');
 
-        $this->assertStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client);
+        $this->assertClientIsRedirectedTo(
+            '/evenements/'.date('Y-m-d', strtotime('+17 days')).'-reunion-de-reflexion-marseillaise',
+            $this->client,
+            false,
+            true
+        );
 
-        $this->assertClientIsRedirectedTo('/evenements/'.date('Y-m-d', strtotime('+17 days')).'-reunion-de-reflexion-marseillaise', $this->client);
         $this->client->followRedirect();
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
@@ -342,12 +346,11 @@ class EventControllerTest extends MysqlWebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/evenements/2017-04-29-rassemblement-des-soutiens-regionaux-a-la-candidature-de-macron/inscription');
 
-        $this->assertStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client);
+        $this->assertClientIsRedirectedTo('/evenements', $this->client, false, true);
 
-        $this->assertClientIsRedirectedTo('/evenements', $this->client);
         $this->client->followRedirect();
 
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->isSuccessful($this->client->getResponse());
     }
 
     public function testEventWithSpecialCharInTitle()
