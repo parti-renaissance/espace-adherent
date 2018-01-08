@@ -6,19 +6,6 @@
 	<services>
 		<defaults autowire="true" autoconfigure="true" public="false" />
 
-		<prototype namespace="AppBundle\CitizenProject\Voter\" resource="../../../src/CitizenProject/Voter" />
-		<prototype namespace="AppBundle\Report\Voter\" resource="../../../src/Report/Voter" />
-
-		<prototype namespace="AppBundle\CitizenAction\Voter\" resource="../../../src/CitizenAction/Voter/" />
-
-		<prototype namespace="AppBundle\Controller\" resource="../../../src/Controller/" public="true">
-			<tag name="controller.service_arguments" />
-		</prototype>
-
-		<prototype namespace="AppBundle\Controller\Admin\" resource="../../../src/Controller/Admin" public="true">
-			<tag name="controller.service_arguments" />
-		</prototype>
-
 		<!-- Adherents -->
 		<service id="AppBundle\Membership\AdherentManager" />
 		<service id="AppBundle\Membership\AdherentRegistry" public="true" />
@@ -34,17 +21,31 @@
 		</service>
 
 		<!-- CitizenProject -->
+        <service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true">
+            <argument key="$mailer" type="service" id="app.mailer.transactional"/>
+        </service>
 		<service id="AppBundle\CitizenProject\CitizenProjectManager">
 			<call method="setGlide">
 				<argument type="service" id="app.glide" />
 			</call>
 		</service>
-		<service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true">
-			<argument key="$mailer" type="service" id="app.mailer.transactional"/>
-		</service>
-		<service id="AppBundle\CitizenProject\Voter\AdministrateCitizenProjectVoter">
-			<tag name="security.voter" priority="-1000"/>
-		</service>
+
+		<!-- Controller -->
+		<prototype namespace="AppBundle\Controller\" resource="../../../src/Controller/">
+			<tag name="controller.service_arguments" />
+		</prototype>
+		<prototype namespace="AppBundle\Controller\Admin\" resource="../../../src/Controller/Admin" public="true">
+			<tag name="controller.service_arguments" />
+		</prototype>
+
+        <!-- Event -->
+        <service id="AppBundle\Event\EventRegistrationSubscriber" >
+            <argument type="service" id="app.mailer.transactional" />
+        </service>
+
+        <!-- Form -->
+        <service id="AppBundle\Form\CitizenProjectCommentCommandType"/>
+        <service id="AppBundle\Form\CitizenProjectCommandType"/>
 
 		<!-- Procuration -->
 		<service id="AppBundle\Procuration\ProcurationSession" />
@@ -54,18 +55,12 @@
 		<service id="AppBundle\Form\ReportCommandType"/>
 		<service id="AppBundle\Report\ReportCreationCommandHandler"/>
 
+		<!-- Security -->
+		<prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter" />
+
 		<!-- Timeline -->
 		<service id="AppBundle\Command\ImportTimelineCommand" />
 		<service id="AppBundle\Timeline\MeasureManager" />
 		<service id="AppBundle\Timeline\TimelineFactory" />
-
-        <!-- Form -->
-		<service id="AppBundle\Form\CitizenProjectCommentCommandType"/>
-		<service id="AppBundle\Form\CitizenProjectCommandType"/>
-
-		<!-- Event -->
-		<service id="AppBundle\Event\EventRegistrationSubscriber" >
-			<argument type="service" id="app.mailer.transactional" />
-		</service>
 	</services>
 </container>
