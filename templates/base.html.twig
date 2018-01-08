@@ -454,20 +454,17 @@
                             </li>
                             {% if not campaign_expired %}
                                 <li>
-                                    <a href="{{ path('page_le_mouvement_les_comites') }}">Les comités</a>
+                                    <a href="{{ path('page_le_mouvement_les_comites') }}">Comités</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('app_search_events') }}">Événements</a>
                                 </li>
                                 <li>
                                     <a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a>
                                 </li>
-                                <li>
-                                    <a href="{{ path('map_committees') }}">La carte des comités</a>
-                                </li>
-                                <li>
-                                    <a href="{{ path('map_events') }}">La carte des événements</a>
-                                </li>
                             {% endif %}
                             <li>
-                                <a href="{{ path('page_elles_marchent') }}">Elles Marchent</a>
+                                <a rel="noopener noreferrer" href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/charte_des_valeurs.pdf">Charte des valeurs</a>
                             </li>
                         </ul>
                         <ul class="list__links list__links--col list__links--no-decor">
@@ -518,6 +515,7 @@
                             <li><h4><a href="https://twitter.com/hashtag/TousEnMarche" class="text--bold text--medium-small" target="_blank" rel="noopener noreferrer">#TousEnMarche</a></h4></li>
                             <li><a href="https://boutique.en-marche.fr" target="_blank" rel="noopener noreferrer">La Boutique</a></li>
                             <li><a href="{{ path('app_facebook_index') }}">Filtre photo Facebook</a></li>
+                            <li><a href="{{ path('page_elles_marchent') }}">Elles Marchent</a></li>
                             <li><a href="https://lesjam.fr/" target="_blank" rel="noopener noreferrer">Les Jeunes avec Macron</a></li>
                         </ul>
                         <ul class="list__links list__links--col list__links--no-decor">
