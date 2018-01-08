@@ -77,7 +77,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->assertSame('Élodie Dutemps', $resultRow->eq(3)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
         $this->assertSame('15, F, Singapour', $resultRow->eq(3)->filter('li')->eq(1)->filter('div')->eq(1)->text());
         $this->assertSame('Referent Referent', $resultRow->eq(4)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
-        $this->assertSame('55, M, Melun', $resultRow->eq(4)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertSame('56, M, Melun', $resultRow->eq(4)->filter('li')->eq(1)->filter('div')->eq(1)->text());
 
         // Gender
         $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form(['g' => 'male']));
