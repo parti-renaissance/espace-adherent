@@ -23,7 +23,12 @@ class RegisterCitizenActionVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        return $subject instanceof CitizenAction && CitizenActionPermissions::REGISTER === $attribute;
+        $attributes = [
+            CitizenActionPermissions::REGISTER,
+            CitizenActionPermissions::UNREGISTER,
+        ];
+
+        return in_array(strtoupper($attribute), $attributes, true) && $subject instanceof CitizenAction;
     }
 
     /**
@@ -31,8 +36,16 @@ class RegisterCitizenActionVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        return
-            $token->getUser() instanceof Adherent
-            && !$this->eventRegistrationManager->findByAdherentEmailAndEvent($token->getUser()->getEmailAddress(), $subject);
+        $adherent = $token->getUser();
+        if (!$adherent instanceof Adherent) {
+            return false;
+        }
+
+        $registration = $this->eventRegistrationManager->findByAdherentEmailAndEvent($token->getUser()->getEmailAddress(), $subject);
+        if (CitizenActionPermissions::REGISTER === $attribute) {
+            return !$registration;
+        }
+
+        return (bool) $registration;
     }
 }

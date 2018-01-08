@@ -13,6 +13,7 @@ class CitizenActionExtension extends AbstractExtension
             // Permissions
             new TwigFunction('can_create_citizen_action', [CitizenActionRuntime::class, 'canCreateCitizenActionFor']),
             new TwigFunction('can_register_citizen_action', [CitizenActionRuntime::class, 'canRegisterOnCitizenAction']),
+            new TwigFunction('can_unregister_citizen_action', [CitizenActionRuntime::class, 'canUnregisterFromCitizenAction']),
         ];
     }
 }
