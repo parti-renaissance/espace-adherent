@@ -10,7 +10,15 @@ class Version20171228161433 extends AbstractMigration
     public function up(Schema $schema)
     {
         $this->addSql('ALTER TABLE citizen_projects ADD image_name VARCHAR(255) DEFAULT NULL');
-        $this->addSql('UPDATE citizen_projects SET image_name = CONCAT(uuid, \'.jpg\') WHERE image_uploaded = 1');
+    }
+
+    public function postUp(Schema $schema)
+    {
+        $this->connection->executeQuery(
+            'UPDATE citizen_projects SET image_name = CONCAT(uuid, \'.jpg\') WHERE image_uploaded = ?'
+            [true],
+            [\PDO::PARAM_BOOL]
+        );
     }
 
     public function down(Schema $schema)
