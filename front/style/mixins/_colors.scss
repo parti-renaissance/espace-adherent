@@ -18,7 +18,7 @@ $error: #EE324A;
 $success: $green;
 
 // New Colors
-$newblue: #185FCA;
+$newblue: #265edd;
 $newblue--hover: #024fc1;
 $newgreen: #00e28c;
 $purple: #6F80FF;
@@ -30,7 +30,7 @@ $strawberry: #FF4863;
 $darker: #222;
 $dark: #444;
 $gray--dark: #666;
-$gray--muted: #999;
+$gray--muted: #888;
 $black--half: rgba(0, 0, 0, .5);
 $gray: #BCBCBC;
 $gray--light: #E5E5E5;
@@ -193,6 +193,10 @@ $gradient--menu: linear-gradient(to right, rgba(white, 0), white);
 
 .background--pink {
     background-color: $pink;
+}
+
+.background--pink-light {
+    background-color: $pink-light;
 }
 
 .background--purple {
