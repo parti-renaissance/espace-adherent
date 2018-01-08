@@ -10,7 +10,6 @@ use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCommitteeSupport;
 use AppBundle\Entity\CitizenProjectComment;
-use AppBundle\Geocoder\Coordinates;
 use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Repository\CitizenProjectCommentRepository;
 use AppBundle\Entity\CitizenProjectMembership;
@@ -560,10 +559,5 @@ class CitizenProjectManager
 
         $citizenProject->setImageName(null);
         $citizenProject->setImageUploaded(false);
-    }
-
-    public function findNearCitizenProjectByCoordinates(Coordinates $coordinates, int $limit = 3): array
-    {
-        return $this->getCitizenProjectRepository()->findNearCitizenProjectByCoordinates($coordinates, $limit);
     }
 }
