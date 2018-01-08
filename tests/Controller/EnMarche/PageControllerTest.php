@@ -47,7 +47,7 @@ class PageControllerTest extends SqliteWebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/le-mouvement/legislatives');
 
-        $this->assertClientIsRedirectedTo('https://legislatives.en-marche.fr', $this->client);
+        $this->assertClientIsRedirectedTo('https://legislatives.en-marche.fr', $this->client, false, true);
     }
 
     public function providePages()

@@ -22,19 +22,18 @@ class ArticleControllerTest extends SqliteWebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/article/outre-mer');
 
-        $this->assertResponseStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/articles/actualites/outre-mer', $this->client, false, true);
 
-        $this->assertClientIsRedirectedTo('/articles/actualites/outre-mer', $this->client);
         $this->client->followRedirect();
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
+        $this->isSuccessful($this->client->getResponse());
     }
 
     public function testArticlePublished()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/articles/actualites/outre-mer');
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
+        $this->isSuccessful($response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
         $this->assertContains('<img src="/assets/images/article.jpg', $this->client->getResponse()->getContent());
     }
@@ -43,7 +42,7 @@ class ArticleControllerTest extends SqliteWebTestCase
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/articles/discours/sans-image');
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
+        $this->isSuccessful($response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
         $this->assertNotContains('<img src="/assets/images/article.jpg', $this->client->getResponse()->getContent());
     }
@@ -51,6 +50,7 @@ class ArticleControllerTest extends SqliteWebTestCase
     public function testArticleDraft()
     {
         $this->client->request(Request::METHOD_GET, '/articles/actualites/brouillon');
+
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
@@ -72,8 +72,7 @@ class ArticleControllerTest extends SqliteWebTestCase
             ->setMethods(['isPaginationValid'])
             ->getMock();
 
-        $actual = $reflectionMethod->invoke($articleController, $articlesCount, $requestedPageNumber, 5);
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals($expected, $reflectionMethod->invoke($articleController, $articlesCount, $requestedPageNumber, 5));
     }
 
     public function dataProviderIsPaginationValid(): array
@@ -91,7 +90,8 @@ class ArticleControllerTest extends SqliteWebTestCase
     public function testRssFeed()
     {
         $this->client->request(Request::METHOD_GET, '/feed.xml');
-        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
+
+        $this->isSuccessful($response = $this->client->getResponse());
         $this->assertSame('application/rss+xml', $response->headers->get('Content-Type'));
     }
 
@@ -99,21 +99,19 @@ class ArticleControllerTest extends SqliteWebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/articles/tribunes/mes-opinions');
 
-        $this->assertResponseStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/articles/opinions/mes-opinions', $this->client, false, true);
 
-        $this->assertClientIsRedirectedTo('/articles/opinions/mes-opinions', $this->client);
         $this->client->followRedirect();
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
+        $this->isSuccessful($this->client->getResponse());
 
         $this->client->request(Request::METHOD_GET, '/articles/tribunes/not-exist');
 
-        $this->assertResponseStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/articles/opinions/not-exist', $this->client, false, true);
 
-        $this->assertClientIsRedirectedTo('/articles/opinions/not-exist', $this->client);
         $this->client->followRedirect();
 
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $response = $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
     protected function setUp()

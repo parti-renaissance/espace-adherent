@@ -11,26 +11,14 @@
         </h2>
 
         <div class="text--center b__nudge--bottom-large">
-            {% if 0 == request.electionsRoundsCount %}
+            {% if request.electionsRoundsCount is same as(0) %}
                 <strong>Cette procuration ne concerne aucun scrutin.</strong>
             {% else %}
                 <strong>Cette procuration concerne {{ '{1} le tour de scrutin suivant|[2,Inf[ les tours de scrutins suivants'|transchoice(request.electionsRoundsCount) }} :</strong>
-                <ul>
-                    {% if request.electionPresidentialFirstRound and request.electionPresidentialSecondRound %}
-                        <li>Présidentielle : 1<sup>er</sup> et 2<sup>nd</sup> tours</li>
-                    {% elseif request.electionPresidentialFirstRound %}
-                        <li>Présidentielle : 1<sup>er</sup> tour</li>
-                    {% elseif request.electionPresidentialSecondRound %}
-                        <li>Présidentielle : 2<sup>nd</sup> tour</li>
-                    {% endif %}
-
-                    {% if request.electionLegislativeFirstRound and request.electionLegislativeSecondRound %}
-                        <li>Législatives : 1<sup>er</sup> et 2<sup>nd</sup> tours</li>
-                    {% elseif request.electionLegislativeFirstRound %}
-                        <li>Législatives : 1<sup>er</sup> tour</li>
-                    {% elseif request.electionLegislativeSecondRound %}
-                        <li>Législatives : 2<sup>nd</sup> tour</li>
-                    {% endif %}
+                <ul class="concerned-election_rounds">
+                    {% for round in request.electionRoundLabels %}
+                        <li>{{ round }}</li>
+                    {% endfor %}
                 </ul>
             {% endif %}
         </div>
@@ -112,7 +100,7 @@
                     {{ request.postalCode }} {{ request.cityName }} {{ request.country }}
                 </div>
 
-                {% if 0 == request.electionsRoundsCount %}
+                {% if request.electionsRoundsCount is same as(0) %}
                     <div class="profile-label">
                         Aucun scrutin concerné
                     </div>
@@ -122,21 +110,9 @@
                         {{ '{1} Scrutin concerné|[2,Inf[ Scrutins concernés'|transchoice(request.electionsRoundsCount) }} :
                     </div>
                     <div class="profile-value">
-                        {% if request.electionPresidentialFirstRound and request.electionPresidentialSecondRound %}
-                            Présidentielle : 1<sup>er</sup> et 2<sup>nd</sup> tours<br />
-                        {% elseif request.electionPresidentialFirstRound %}
-                            Présidentielle : 1<sup>er</sup> tour<br />
-                        {% elseif request.electionPresidentialSecondRound %}
-                            Présidentielle : 2<sup>nd</sup> tour<br />
-                        {% endif %}
-
-                        {% if request.electionLegislativeFirstRound and request.electionLegislativeSecondRound %}
-                            Législatives : 1<sup>er</sup> et 2<sup>nd</sup> tours<br />
-                        {% elseif request.electionLegislativeFirstRound %}
-                            Législatives : 1<sup>er</sup> tour<br />
-                        {% elseif request.electionLegislativeSecondRound %}
-                            Législatives : 2<sup>nd</sup> tour<br />
-                        {% endif %}
+                        {% for round in request.electionRoundLabels %}
+                            <li>{{ round }}</li>
+                        {% endfor %}
                     </div>
                 {% endif %}
 
@@ -144,19 +120,19 @@
                     Raison de la demande
                 </div>
                 <div class="profile-value">
-                    {% if request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_RESIDENCY') %}
+                    {% if request.reason == constant('REASON_RESIDENCY', request) %}
                         En raison de mon lieu de résidence
-                    {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_HOLIDAYS') %}
+                    {% elseif request.reason == constant('REASON_HOLIDAYS', request) %}
                         Vacances
-                    {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_PROFESIONNAL') %}
+                    {% elseif request.reason == constant('REASON_PROFESSIONAL', request) %}
                         Obligations professionnelles
-                    {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_HANDICAP') %}
+                    {% elseif request.reason == constant('REASON_HANDICAP', request) %}
                         En raison d'un handicap
-                    {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_HEALTH') %}
+                    {% elseif request.reason == constant('REASON_HEALTH', request) %}
                         Pour raison de santé
-                    {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_HELP') %}
+                    {% elseif request.reason == constant('REASON_HELP', request) %}
                         Assistance apportée à une personne
-                    {% elseif request.reason == constant('AppBundle\\Entity\\ProcurationRequest::REASON_TRAINING') %}
+                    {% elseif request.reason == constant('REASON_TRAINING', request) %}
                         Obligations de formation
                     {% endif %}
                 </div>

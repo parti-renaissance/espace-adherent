@@ -559,12 +559,16 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/initiative-citoyenne/'.LoadCitizenInitiativeData::CITIZEN_INITIATIVE_4_UUID.'/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville');
 
-        $this->assertStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client);
+        $this->assertClientIsRedirectedTo(
+            '/initiative-citoyenne/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville',
+            $this->client,
+            false,
+            true
+        );
 
-        $this->assertClientIsRedirectedTo('/initiative-citoyenne/'.date('Y-m-d', strtotime('+11 days')).'-nettoyage-de-la-ville', $this->client);
         $this->client->followRedirect();
 
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->isSuccessful($this->client->getResponse());
     }
 
     protected function setUp()
