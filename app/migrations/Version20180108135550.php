@@ -49,7 +49,6 @@ SQL
     {
         // Profiles
         $this->addSql('ALTER TABLE timeline_profiles ADD title VARCHAR(100) NOT NULL COLLATE utf8_unicode_ci, ADD slug VARCHAR(100) NOT NULL COLLATE utf8_unicode_ci, ADD description LONGTEXT NOT NULL COLLATE utf8_unicode_ci');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_DB00DE3B989D9B62 ON timeline_profiles (slug)');
         $this->addSql(<<<'SQL'
             UPDATE timeline_profiles profile
             INNER JOIN timeline_profile_translations translation
@@ -58,11 +57,11 @@ SQL
             SET profile.title = translation.title, profile.slug = translation.slug, profile.description = translation.description
 SQL
         );
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_DB00DE3B989D9B62 ON timeline_profiles (slug)');
         $this->addSql('DROP TABLE timeline_profile_translations');
 
         // Themes
         $this->addSql('ALTER TABLE timeline_themes ADD title VARCHAR(100) NOT NULL COLLATE utf8_unicode_ci, ADD slug VARCHAR(100) NOT NULL COLLATE utf8_unicode_ci, ADD description LONGTEXT NOT NULL COLLATE utf8_unicode_ci');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_8ADDB8F6989D9B62 ON timeline_themes (slug)');
         $this->addSql(<<<'SQL'
             UPDATE timeline_themes theme
             INNER JOIN timeline_theme_translations translation
@@ -71,6 +70,7 @@ SQL
             SET theme.title = translation.title, theme.slug = translation.slug, theme.description = translation.description
 SQL
         );
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_8ADDB8F6989D9B62 ON timeline_themes (slug)');
         $this->addSql('DROP TABLE timeline_theme_translations');
 
         // Measures
