@@ -9,6 +9,7 @@ final class Events
     public const EVENT_CREATED = 'event_created';
     public const EVENT_UPDATED = 'event_updated';
     public const EVENT_CANCELLED = 'event_cancelled';
+    public const EVENT_REGISTRATION_CREATED = 'event_registration_created';
     public const CITIZEN_ACTION_CREATED = 'citizen_action_created';
     public const CITIZEN_ACTION_UPDATED = 'citizen_action_updated';
     public const CITIZEN_INITIATIVE_CREATED = 'citizen_initiative_created';

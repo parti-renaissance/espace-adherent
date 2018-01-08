@@ -279,10 +279,9 @@
         </service>
 
         <service id="app.event.registration_handler" class="AppBundle\Event\EventRegistrationCommandHandler">
+            <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.event.registration_factory"/>
             <argument type="service" id="app.event.registration_manager"/>
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="app.routing.remote_url_generator"/>
         </service>
         <service alias="app.event.registration_handler" id="AppBundle\Event\EventRegistrationCommandHandler" />
 

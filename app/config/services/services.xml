@@ -53,5 +53,10 @@
 		<service id="AppBundle\Command\ImportTimelineCommand" />
 		<service id="AppBundle\Timeline\MeasureManager" />
 		<service id="AppBundle\Timeline\TimelineFactory" />
+
+		<!-- Event -->
+		<service id="AppBundle\Event\EventRegistrationSubscriber" >
+			<argument type="service" id="app.mailer.transactional" />
+		</service>
 	</services>
 </container>
