@@ -45,6 +45,51 @@ class Profile
         return $this->id;
     }
 
+    /**
+     * @Algolia\Attribute
+     */
+    public function titles(): array
+    {
+        foreach (['fr', 'en'] as $locale) {
+            /* @var $translation ThemeTranslation */
+            if ($translation = $this->getTranslation($locale)) {
+                $titles[$locale] = $translation->getTitle();
+            }
+        }
+
+        return $titles ?? [];
+    }
+
+    /**
+     * @Algolia\Attribute
+     */
+    public function slugs(): array
+    {
+        foreach (['fr', 'en'] as $locale) {
+            /* @var $translation ThemeTranslation */
+            if ($translation = $this->getTranslation($locale)) {
+                $slugs[$locale] = $translation->getSlug();
+            }
+        }
+
+        return $slugs ?? [];
+    }
+
+    /**
+     * @Algolia\Attribute
+     */
+    public function descriptions(): array
+    {
+        foreach (['fr', 'en'] as $locale) {
+            /* @var $translation ThemeTranslation */
+            if ($translation = $this->getTranslation($locale)) {
+                $descriptions[$locale] = $translation->getDescription();
+            }
+        }
+
+        return $descriptions ?? [];
+    }
+
     private function getTranslation(string $locale): ?ProfileTranslation
     {
         $translation = $this->translations->filter(function (ProfileTranslation $translation) use ($locale) {
