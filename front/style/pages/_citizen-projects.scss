@@ -1,4 +1,82 @@
 .citizen-projects {
+    &__landing {
+        header {
+            background-image: linear-gradient(115deg, $newblue, $pink-light);
+
+            h2 {
+                @include text--medium-large;
+                font-weight: 300;
+                margin-top: 5px;
+                letter-spacing: 0;
+            }
+        }
+
+        &__nearby input {
+            border: 0;
+            @include text--large;
+            font-weight: bold;
+            font-family: $font-gillsans;
+            color: $purple;
+            border-bottom: 1px solid $gray--light;
+        }
+
+        &__create {
+            input {
+                @include text--medium-small;
+                border: solid 4px $newblue;
+                border-radius: 3px;
+                padding: 22px;
+                width: 340px;
+            }
+
+            button, a {
+                @include text--medium-small;
+                @include newbtn;
+                padding: 29px 20px 24px;
+                margin-left: -8px;
+            }
+        }
+
+        &__grid {
+            font-family: $font-roboto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 40px 0;
+
+            @media (max-width: $tablet) {
+                flex-direction: column;
+            }
+        }
+
+        &__card {
+            width: 31%;
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+            list-style: none;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            transition: all .2s;
+
+            &:hover {
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+            }
+
+            @media (max-width: $tablet) {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            > div {
+                height: 275px;
+
+                @media (max-width: $mobile) {
+                    height: auto;
+                }
+            }
+        }
+    }
+
     &__create {
         background: $gray--white;
 

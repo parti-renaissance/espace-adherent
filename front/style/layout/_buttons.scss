@@ -40,7 +40,7 @@
     text-align: center;
     border-radius: 3px;
     border: 1px solid transparent;
-    padding: 18px 30px;
+    padding: 19px 30px 18px;
     font-weight: bold;
     background: white;
     color: white;
@@ -53,7 +53,6 @@
     &:hover {
         background: $newblue--hover;
         color: white;
-        transform: translateY(-1px);
     }
 
     &:disabled,
@@ -199,6 +198,23 @@
           font-size: $text--size-medium--small;
           letter-spacing: 2px;
           height: 50px;
+        }
+    }
+
+    &--functional {
+        padding: 5px 10px;
+        font-family: $font-roboto;
+        font-weight: normal;
+        text-transform: none;
+        letter-spacing: 0;
+        border: 1px solid $gray--light;
+        color: $newblue;
+        border-radius: 3px;
+
+        &:hover {
+            background-color: $gray--lighter;
+            color: $newblue;
+            border-color: $gray;
         }
     }
 
