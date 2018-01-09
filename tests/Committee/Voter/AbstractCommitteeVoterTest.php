@@ -7,10 +7,10 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\AdherentFactory;
+use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -50,9 +50,12 @@ abstract class AbstractCommitteeVoterTest extends TestCase
         return new AnonymousToken('heah', $this->getMockBuilder(UserInterface::class)->getMock());
     }
 
-    protected function createAuthenticatedToken(UserInterface $adherent): UsernamePasswordToken
+    protected function createAuthenticatedToken(UserInterface $adherent): OAuthToken
     {
-        return new UsernamePasswordToken($adherent, $adherent->getPassword(), 'users_db', $adherent->getRoles());
+        $token = new OAuthToken('1234', $adherent->getRoles());
+        $token->setUser($adherent);
+
+        return $token;
     }
 
     protected function createAdherentFromUuidAndEmail(string $uuid, string $email = null): Adherent
@@ -60,7 +63,6 @@ abstract class AbstractCommitteeVoterTest extends TestCase
         return $this->adherentFactory->createFromArray([
             'uuid' => $uuid,
             'email' => $email ?? 'pablo@picasso.tld',
-            'password' => 'pa$$w0r4',
             'gender' => 'male',
             'first_name' => 'Pablo',
             'last_name' => 'Picasso',

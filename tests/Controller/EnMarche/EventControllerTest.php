@@ -88,7 +88,7 @@ class EventControllerTest extends MysqlWebTestCase
 
     public function testRegisteredAdherentUserCanRegisterToEvent()
     {
-        $crawler = $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $crawler = $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
 
         $crawler = $this->client->click($crawler->selectLink('Rejoindre un comité')->link());
 
@@ -127,7 +127,7 @@ class EventControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('2 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
 
-        $this->client->click($crawler->selectLink('Mes événements')->link());
+        $this->client->click($crawler->selectLink('Mes activités')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertContains('Réunion de réflexion parisienne', $this->client->getResponse()->getContent());
@@ -135,7 +135,7 @@ class EventControllerTest extends MysqlWebTestCase
 
     public function testCantRegisterToAFullEvent()
     {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
 
         $eventUrl = '/evenements/'.date('Y-m-d', strtotime('+17 days')).'-reunion-de-reflexion-marseillaise';
         $crawler = $this->client->request('GET', $eventUrl);
@@ -161,7 +161,7 @@ class EventControllerTest extends MysqlWebTestCase
 
     public function testAdherentCanInviteToEvent()
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
         $eventUrl = sprintf('/evenements/%s', $slug = $event->getSlug());
 
@@ -290,7 +290,7 @@ class EventControllerTest extends MysqlWebTestCase
 
     public function testAttendConfirmationAsAdherent()
     {
-        $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com', 'Champion20');
+        $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com');
 
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
         $registration = $this->getEventRegistrationRepository()->findAdherentRegistration(LoadEventData::EVENT_3_UUID, LoadAdherentData::ADHERENT_7_UUID);

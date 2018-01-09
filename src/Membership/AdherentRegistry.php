@@ -55,35 +55,37 @@ class AdherentRegistry
         $this->registrationManager = $registrationManager;
     }
 
-    public function unregister(Adherent $adherent, Unregistration $unregistration): void
+    public function unregister(Adherent $adherent, Unregistration $unregistration, bool $removeAccount): void
     {
         $token = $this->em->getRepository(AdherentActivationToken::class)->findOneBy(['adherentUuid' => $adherent->getUuid()->toString()]);
         $summary = $this->em->getRepository(Summary::class)->findOneForAdherent($adherent);
 
         $this->em->beginTransaction();
-
         $this->em->persist($unregistration);
-        $this->removeAdherentMemberShips($adherent);
-        $this->citizenActionManager->removeOrganizerCitizenActions($adherent);
-        $this->citizenInitiativeManager->removeOrganizerCitizenInitiatives($adherent);
-        $this->eventManager->removeOrganizerEvents($adherent);
-        $this->registrationManager->anonymizeAdherentRegistrations($adherent);
-        $this->committeeFeedManager->removeAuthorItems($adherent);
-        $this->activitySubscriptionManager->removeAdherentActivities($adherent);
-        $this->citizenProjectManager->removeAuthorItems($adherent);
-        $this->reportManager->anonymAuthorReports($adherent);
 
-        if ($token) {
-            $this->em->remove($token);
+        if ($removeAccount) {
+            $this->removeAdherentMemberShips($adherent);
+            $this->citizenActionManager->removeOrganizerCitizenActions($adherent);
+            $this->citizenInitiativeManager->removeOrganizerCitizenInitiatives($adherent);
+            $this->eventManager->removeOrganizerEvents($adherent);
+            $this->registrationManager->anonymizeAdherentRegistrations($adherent);
+            $this->committeeFeedManager->removeAuthorItems($adherent);
+            $this->activitySubscriptionManager->removeAdherentActivities($adherent);
+            $this->citizenProjectManager->removeAuthorItems($adherent);
+            $this->reportManager->anonymAuthorReports($adherent);
+
+            if ($token) {
+                $this->em->remove($token);
+            }
+
+            if ($summary) {
+                $this->em->remove($summary);
+            }
+
+            $this->em->remove($adherent);
         }
 
-        if ($summary) {
-            $this->em->remove($summary);
-        }
-
-        $this->em->remove($adherent);
         $this->em->flush();
-
         $this->em->commit();
     }
 

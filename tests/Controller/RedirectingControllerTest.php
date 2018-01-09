@@ -35,8 +35,6 @@ class RedirectingControllerTest extends SqliteWebTestCase
         yield 'Emmanuel Macron' => ['/emmanuel-macron/', '/emmanuel-macron'];
         yield 'Le mouvement' => ['/le-mouvement/', '/le-mouvement'];
         yield 'Actualités' => ['/articles/actualites/', '/articles/actualites'];
-        yield 'Inscription' => ['/inscription/', '/inscription'];
-        yield 'Inscription with parameters' => ['/inscription/?param1=value1&param2=value2', '/inscription?param1=value1&param2=value2'];
     }
 
     protected function setUp()

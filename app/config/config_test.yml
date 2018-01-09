@@ -33,12 +33,13 @@ services:
         class: 'AppBundle\CitizenProject\CitizenProjectControllerSubscriber'
         public: false
 
+    need_sync_user.event_subscriber:
+        class: 'Tests\AppBundle\EventListener\DummyEventListener'
+
 parameters:
     env(DATABASE_NAME): "enmarche_test"
     env(RECAPTCHA_PUBLIC_KEY): 'TEST_RECAPTCHA_PUBLIC_KEY'
-    app_host: enmarche.dev
-    amp_host: m.enmarche.dev
-    legislatives_host: legislatives.enmarche.dev
+    env(AUTH_LOGIN_URL): 'http://example.com/login'
     adherent_interests:
         agriculture: Agriculture
         culture: Culture

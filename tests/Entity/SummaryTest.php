@@ -105,7 +105,7 @@ class SummaryTest extends TestCase
     public function createSummary(): Summary
     {
         return Summary::createFromMember(
-            new Adherent(Uuid::uuid4(), 'fake@example.org', '', 'male', 'Fake', 'Member', new \DateTime('-30 years'), '', PostAddress::createFrenchAddress('92 bld Victor Hugo', '92110-92024')),
+            new Adherent(Uuid::uuid4(), 'fake@example.org', 'male', 'Fake', 'Member', new \DateTime('-30 years'), '', PostAddress::createFrenchAddress('92 bld Victor Hugo', '92110-92024')),
             'fake.member'
         );
     }

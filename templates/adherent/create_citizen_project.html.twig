@@ -44,7 +44,7 @@
                         <div class="form__new" id="field-personal-phone">
                             <label class="label__header--large">Vérifier mes informations</label>
                             <div>Mon e-mail : {{ app.user.emailAddress }}</div>
-                            <a href="{{ path('app_adherent_profile') }}" class="link--blue">Modifier</a>
+                            <a href="{{ path('app_user_profile') }}" class="link--blue">Modifier</a>
                         </div>
 
                         {% if form.cgu is defined %}
@@ -58,6 +58,11 @@
                                 {{ form_errors(form.cgu) }}
                             </div>
                         {% endif %}
+
+                        <p class="wrong-personal-infos">
+                            Ces informations ne sont pas justes ?
+                            <a href="{{ path('app_user_profile') }}">Éditez-les</a>.
+                        </p>
 
                         {% if form.data_processing is defined %}
                             <div class="form__new form__new__checkbox">

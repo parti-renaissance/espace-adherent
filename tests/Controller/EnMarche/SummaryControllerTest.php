@@ -32,7 +32,7 @@ class SummaryControllerTest extends SqliteWebTestCase
      */
     public function testUnpublishedSummaryAreNotFound(string $slug)
     {
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
         $this->client->request(Request::METHOD_GET, '/membre/'.$slug);
 
         $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
@@ -42,12 +42,12 @@ class SummaryControllerTest extends SqliteWebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');
 
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedToAuth();
     }
 
     public function testAccessAndDisplaySummaryPage()
     {
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');
 

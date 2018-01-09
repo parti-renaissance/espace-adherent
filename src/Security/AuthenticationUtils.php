@@ -33,16 +33,6 @@ final class AuthenticationUtils
 
     public function authenticateAdmin(UserInterface $user)
     {
-        $this->doAuthenticateUser($user, 'admins_db');
-    }
-
-    public function authenticateAdherent(UserInterface $user)
-    {
-        $this->doAuthenticateUser($user, 'users_db');
-    }
-
-    private function doAuthenticateUser(UserInterface $user, string $provider)
-    {
-        return $this->tokenStorage->setToken(new UsernamePasswordToken($user, '', $provider, $user->getRoles()));
+        return $this->tokenStorage->setToken(new UsernamePasswordToken($user, '', 'admin_db', $user->getRoles()));
     }
 }

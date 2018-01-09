@@ -138,7 +138,6 @@ class CommitteeMembershipTest extends TestCase
         return new Adherent(
             Uuid::fromString(self::ADHERENT_UUID),
             'foo@bar.com',
-            'password',
             'male',
             'Jean',
             'Dupont',

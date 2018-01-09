@@ -157,7 +157,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
     public function testUnsupportedAdherentType(string $attribute)
     {
         $committee = $this->createCommittee(self::ADHERENT_2_UUID);
-        $token = $this->createAuthenticatedToken(new User('foobar', 'password', ['ROLE_ADHERENT']));
+        $token = $this->createAuthenticatedToken(new User('foobar', 'password', ['ROLE_USER', 'ROLE_ADHERENT']));
 
         $this->assertSame(
             VoterInterface::ACCESS_DENIED,

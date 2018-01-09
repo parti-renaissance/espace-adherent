@@ -45,7 +45,7 @@
                 <div class="l__row">
                     <a href="{{ path('donation_index') }}" class="btn btn--primary b__nudge--right">Donner</a>
                     <div class="nav__user">
-                        <a href="{{ path('app_adherent_login') }}" class="icon--with-text nav__user__name">
+                        <a href="{{ path('hwi_oauth_service_redirect', {service: 'auth'}) }}" class="icon--with-text nav__user__name">
                             {{ include('components/user.html.twig') }}
                             Aller sur la plateforme
                         </a>
