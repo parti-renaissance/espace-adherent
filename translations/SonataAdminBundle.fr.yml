@@ -2,3 +2,7 @@
 # CRUD
 #
 link_action_create: Nouveau
+
+locale:
+    fr: Français
+    en: Anglais

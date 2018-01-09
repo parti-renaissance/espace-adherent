@@ -125,7 +125,7 @@ class Measure
     /**
      * @Assert\Valid
      */
-    protected $translations;
+    private $translations;
 
     /**
      * @param string      $title

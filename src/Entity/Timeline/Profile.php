@@ -29,7 +29,7 @@ class Profile
     /**
      * @Assert\Valid
      */
-    protected $translations;
+    private $translations;
 
     public function __toString()
     {

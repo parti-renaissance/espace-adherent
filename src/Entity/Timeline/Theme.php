@@ -56,7 +56,7 @@ class Theme implements EntityMediaInterface
     /**
      * @Assert\Valid
      */
-    protected $translations;
+    private $translations;
 
     public function __construct(
         bool $featured = false
@@ -196,6 +196,6 @@ class Theme implements EntityMediaInterface
             return $locale === $translation->getLocale();
         })->first();
 
-        return $translation ? $translation : null;
+        return $translation ?: null;
     }
 }

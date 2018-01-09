@@ -7,9 +7,16 @@
             {% for translationsFields in form %}
                 {% set locale = translationsFields.vars.name %}
 
-                <li class="{% if app.request.locale is same as(locale) %}active {% endif %}{% if not translationsFields.vars.valid %}error{% endif %}">
+                {% set classes = [] %}
+                {% if app.request.locale is same as(locale) %}
+                    {% set classes = classes|merge(['active']) %}
+                {% endif %}
+                {% if not translationsFields.vars.valid %}
+                    {% set classes = classes|merge(['error']) %}
+                {% endif %}
+                <li{% if classes|length %} class="{{ classes|join(' ') }}"{% endif %}>
                     <a href="#" data-toggle="tab" data-target=".{{ translationsFields.vars.id }}_a2lix_translationsFields-{{ locale }}">
-                        {{ locale|capitalize }}
+                        {{ ('locale.' ~ locale)|trans({}, 'SonataAdminBundle') }}
                         {% if form.vars.default_locale == locale %}[Default]{% endif %}
                         {% if translationsFields.vars.required %}*{% endif %}
                     </a>
@@ -21,7 +28,14 @@
             {% for translationsFields in form %}
                 {% set locale = translationsFields.vars.name %}
 
-                <div class="{{ translationsFields.vars.id }}_a2lix_translationsFields-{{ locale }} tab-pane {% if app.request.locale == locale %}active{% endif %} {% if not form.vars.valid %}sonata-ba-field-error{% endif %}">
+                {% set classes = [translationsFields.vars.id ~ '_a2lix_translationsFields-' ~ locale] %}
+                {% if app.request.locale is same as(locale) %}
+                    {% set classes = classes|merge(['active']) %}
+                {% endif %}
+                {% if not form.vars.valid %}
+                    {% set classes = class|merge(['sonata-ba-field-error']) %}
+                {% endif %}
+                <div class="tab-pane {{ classes|join(' ') }}">
                     {{ form_errors(translationsFields) }}
                     {{ form_widget(translationsFields) }}
                 </div>
