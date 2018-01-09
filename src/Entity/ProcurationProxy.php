@@ -567,7 +567,7 @@ class ProcurationProxy
         }
 
         return $this->electionRounds->filter(function (ElectionRound $round) {
-            return $this->foundRequest->hasElectionRound($round);
+            return !$this->foundRequest->hasElectionRound($round);
         });
     }
 

@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/procuration")
+ * @Security("is_granted('ROLE_ADMIN_PROCURATIONS')")
  */
 class AdminProcurationController extends Controller
 {
@@ -26,7 +27,6 @@ class AdminProcurationController extends Controller
      *
      * @Route("/referents-invitation-urls", name="app_admin_procuration_referents_invitations_urls")
      * @Method("GET")
-     * @Security("has_role('ROLE_ADMIN_PROCURATIONS')")
      */
     public function referentsInvitationUrlsAction(AdherentRepository $repository): Response
     {
@@ -38,7 +38,6 @@ class AdminProcurationController extends Controller
     /**
      * @Route("/export")
      * @Method("GET")
-     * @Security("has_role('ROLE_ADMIN_PROCURATIONS')")
      */
     public function exportMailsAction(ProcurationRequestRepository $repository, ProcurationRequestSerializer $serializer): Response
     {
@@ -53,7 +52,6 @@ class AdminProcurationController extends Controller
      *
      * @Route("/request/{id}/deassociate", name="app_admin_procuration_request_deassociate")
      * @Method("GET|POST")
-     * @Security("has_role('ROLE_ADMIN_PROCURATIONS')")
      */
     public function deassociateAction(Request $sfRequest, ProcurationRequest $request): Response
     {
@@ -61,8 +59,8 @@ class AdminProcurationController extends Controller
             return $this->redirectAfterDeassociation($sfRequest);
         }
 
-        $form = $this->createForm(FormType::class);
-        $form->add('submit', SubmitType::class)
+        $form = $this->createForm(FormType::class)
+            ->add('submit', SubmitType::class)
             ->handleRequest($sfRequest)
         ;
 

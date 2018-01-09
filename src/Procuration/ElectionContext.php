@@ -18,10 +18,10 @@ class ElectionContext implements \Serializable
      */
     private $elections = [];
 
-    private $cachedElectionIds;
+    private $cachedElectionIds = [];
 
     /**
-     * @return int[]|null
+     * @return int[]
      */
     public function getCachedIds(): ?array
     {
