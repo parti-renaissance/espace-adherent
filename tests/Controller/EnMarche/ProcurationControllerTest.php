@@ -324,10 +324,6 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->assertSame('69001', $request->getPostalCode());
         $this->assertSame('Lyon 1er', $request->getCityName());
         $this->assertSame('6 rue Neyret', $request->getAddress());
-        $this->assertFalse($request->getElectionPresidentialFirstRound());
-        $this->assertFalse($request->getElectionPresidentialSecondRound());
-        $this->assertFalse($request->getElectionLegislativeFirstRound());
-        $this->assertFalse($request->getElectionLegislativeSecondRound());
         $this->assertEquals([$this->getRepository(ElectionRound::class)->find(5)], $request->getElectionRounds()->toArray());
         $this->assertSame(ProcurationRequest::REASON_HEALTH, $request->getReason());
     }
@@ -496,10 +492,6 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->assertSame('69001', $proposal->getPostalCode());
         $this->assertSame('Lyon 1er', $proposal->getCityName());
         $this->assertSame('6 rue Neyret', $proposal->getAddress());
-        $this->assertFalse($proposal->getElectionPresidentialFirstRound());
-        $this->assertFalse($proposal->getElectionPresidentialSecondRound());
-        $this->assertFalse($proposal->getElectionLegislativeFirstRound());
-        $this->assertFalse($proposal->getElectionLegislativeSecondRound());
         $this->assertEquals([$this->getRepository(ElectionRound::class)->find(5)], $proposal->getElectionRounds()->toArray());
     }
 
@@ -680,8 +672,8 @@ class ProcurationControllerTest extends SqliteWebTestCase
         $this->init([
             LoadAdherentData::class,
             LoadHomeBlockData::class,
-            LoadProcurationData::class,
             LoadElectionData::class,
+            LoadProcurationData::class,
         ]);
 
         $this->procurationRequestRepostitory = $this->getProcurationRequestRepository();

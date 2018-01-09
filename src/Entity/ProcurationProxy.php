@@ -242,34 +242,6 @@ class ProcurationProxy
     private $voteOffice = '';
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $electionPresidentialFirstRound = false;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $electionPresidentialSecondRound = false;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $electionLegislativeFirstRound = false;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $electionLegislativeSecondRound = false;
-
-    /**
      * @var ElectionRound[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ElectionRound")

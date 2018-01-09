@@ -24,7 +24,6 @@ class LoadElectionData implements FixtureInterface
     Si vous ne votez pas en France métropolitaine, <a href="https://www.service-public.fr/particuliers/actualites/A10598" class="link--white">renseignez-vous sur les dates</a>.
 </div>
 INTRODUCTION
-            , 'France'
         );
         $this->createRound(
             $presidentialElections,
@@ -52,7 +51,6 @@ INTRODUCTION
     Si vous ne votez pas en France métropolitaine, <a href="https://www.service-public.fr/particuliers/actualites/A10598" class="link--white">renseignez-vous sur les dates</a>.
 </div>
 INTRODUCTION
-            , 'France'
         );
         $this->createRound(
             $legislativeElections,
@@ -80,7 +78,6 @@ INTRODUCTION
     Si vous ne votez pas en France métropolitaine, <a href="https://www.service-public.fr/particuliers/actualites/A10598" class="link--white">renseignez-vous sur les dates</a>.
 </div>
 INTRODUCTION
-            , 'France'
         );
         $nextTime = new \DateTime('next sunday'); // We need this election to always be in the future for tests to pass
         $this->createRound(
@@ -102,12 +99,11 @@ INTRODUCTION
         $manager->flush();
     }
 
-    private function createElection(string $name, string $introduction, string $place): Election
+    private function createElection(string $name, string $introduction): Election
     {
         $election = new Election();
         $election->setName($name);
         $election->setIntroduction($introduction);
-        $election->setPlace($place);
 
         return $election;
     }
