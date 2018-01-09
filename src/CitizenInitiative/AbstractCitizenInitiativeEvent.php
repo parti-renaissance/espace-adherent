@@ -4,9 +4,11 @@ namespace AppBundle\CitizenInitiative;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenInitiative;
+use AppBundle\Geocoder\GeocodableEntityEventInterface;
+use AppBundle\Geocoder\GeocodableInterface;
 use Symfony\Component\EventDispatcher\Event;
 
-abstract class AbstractCitizenInitiativeEvent extends Event
+abstract class AbstractCitizenInitiativeEvent extends Event implements GeocodableEntityEventInterface
 {
     private $author;
     private $initiative;
@@ -23,6 +25,11 @@ abstract class AbstractCitizenInitiativeEvent extends Event
     }
 
     public function getCitizenInitiative(): CitizenInitiative
+    {
+        return $this->initiative;
+    }
+
+    public function getGeocodableEntity(): GeocodableInterface
     {
         return $this->initiative;
     }

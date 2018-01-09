@@ -3,9 +3,11 @@
 namespace AppBundle\CitizenAction;
 
 use AppBundle\Entity\CitizenAction;
+use AppBundle\Geocoder\GeocodableEntityEventInterface;
+use AppBundle\Geocoder\GeocodableInterface;
 use Symfony\Component\EventDispatcher\Event;
 
-class CitizenActionEvent extends Event
+class CitizenActionEvent extends Event implements GeocodableEntityEventInterface
 {
     private $action;
 
@@ -15,6 +17,11 @@ class CitizenActionEvent extends Event
     }
 
     public function getCitizenAction(): CitizenAction
+    {
+        return $this->action;
+    }
+
+    public function getGeocodableEntity(): GeocodableInterface
     {
         return $this->action;
     }
