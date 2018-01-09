@@ -6,6 +6,7 @@ use AppBundle\Committee\CommitteeEvent as BaseEvent;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
+use AppBundle\Geocoder\GeocodableInterface;
 
 class EventUpdatedEvent extends BaseEvent
 {
@@ -26,6 +27,11 @@ class EventUpdatedEvent extends BaseEvent
     }
 
     public function getEvent(): Event
+    {
+        return $this->event;
+    }
+
+    public function getGeocodableEntity(): GeocodableInterface
     {
         return $this->event;
     }

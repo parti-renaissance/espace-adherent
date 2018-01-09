@@ -3,9 +3,11 @@
 namespace AppBundle\Committee;
 
 use AppBundle\Entity\Committee;
+use AppBundle\Geocoder\GeocodableEntityEventInterface;
+use AppBundle\Geocoder\GeocodableInterface;
 use Symfony\Component\EventDispatcher\Event;
 
-class CommitteeEvent extends Event
+class CommitteeEvent extends Event implements GeocodableEntityEventInterface
 {
     private $committee;
 
@@ -15,6 +17,11 @@ class CommitteeEvent extends Event
     }
 
     public function getCommittee()
+    {
+        return $this->committee;
+    }
+
+    public function getGeocodableEntity(): GeocodableInterface
     {
         return $this->committee;
     }

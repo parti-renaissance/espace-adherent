@@ -37,7 +37,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         $this->assertNull($adherent->getLongitude());
 
         $this->manager->expects($this->once())->method('flush');
-        $this->subscriber->onAdherentAccountRegistrationCompleted(new AdherentAccountWasCreatedEvent($adherent));
+        $this->subscriber->updateCoordinates(new AdherentAccountWasCreatedEvent($adherent));
 
         $this->assertSame(48.901058, $adherent->getLatitude());
         $this->assertSame(2.318325, $adherent->getLongitude());
@@ -52,7 +52,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         $this->assertNull($adherent->getLongitude());
 
         $this->manager->expects($this->never())->method('flush');
-        $this->subscriber->onAdherentAccountRegistrationCompleted(new AdherentAccountWasCreatedEvent($adherent));
+        $this->subscriber->updateCoordinates(new AdherentAccountWasCreatedEvent($adherent));
 
         $this->assertNull($adherent->getLatitude());
         $this->assertNull($adherent->getLongitude());
@@ -63,7 +63,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         $adherent = $this->createAdherent('92 bld Victor Hugo');
 
         $this->manager->expects($this->once())->method('flush');
-        $this->subscriber->onAdherentAccountRegistrationCompleted(new AdherentAccountWasCreatedEvent($adherent));
+        $this->subscriber->updateCoordinates(new AdherentAccountWasCreatedEvent($adherent));
 
         $this->assertSame(48.901058, $adherent->getLatitude());
         $this->assertSame(2.318325, $adherent->getLongitude());
@@ -99,7 +99,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         $this->assertNull($committee->getLongitude());
 
         $this->manager->expects($this->once())->method('flush');
-        $this->subscriber->onCommitteeCreated(new CommitteeWasCreatedEvent($committee, $this->createAdherent('92 bld Victor Hugo')));
+        $this->subscriber->updateCoordinates(new CommitteeWasCreatedEvent($committee, $this->createAdherent('92 bld Victor Hugo')));
 
         $this->assertSame(45.7713288, $committee->getLatitude());
         $this->assertSame(4.8288758, $committee->getLongitude());
@@ -114,7 +114,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         $this->assertNull($committee->getLongitude());
 
         $this->manager->expects($this->never())->method('flush');
-        $this->subscriber->onCommitteeCreated(new CommitteeWasCreatedEvent($committee, $this->createAdherent('92 bld Victor Hugo')));
+        $this->subscriber->updateCoordinates(new CommitteeWasCreatedEvent($committee, $this->createAdherent('92 bld Victor Hugo')));
 
         $this->assertNull($committee->getLatitude());
         $this->assertNull($committee->getLongitude());
@@ -129,7 +129,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         $this->assertNull($citizenProject->getLongitude());
 
         $this->manager->expects($this->once())->method('flush');
-        $this->subscriber->onCitizenProjectCreated(new CitizenProjectWasCreatedEvent($citizenProject, $this->createAdherent('92 bld Victor Hugo')));
+        $this->subscriber->updateCoordinates(new CitizenProjectWasCreatedEvent($citizenProject, $this->createAdherent('92 bld Victor Hugo')));
 
         $this->assertSame(45.7713288, $citizenProject->getLatitude());
         $this->assertSame(4.8288758, $citizenProject->getLongitude());
@@ -144,7 +144,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         $this->assertNull($citizenProject->getLongitude());
 
         $this->manager->expects($this->never())->method('flush');
-        $this->subscriber->onCitizenProjectCreated(new CitizenProjectWasCreatedEvent($citizenProject, $this->createAdherent('92 bld Victor Hugo')));
+        $this->subscriber->updateCoordinates(new CitizenProjectWasCreatedEvent($citizenProject, $this->createAdherent('92 bld Victor Hugo')));
 
         $this->assertNull($citizenProject->getLatitude());
         $this->assertNull($citizenProject->getLongitude());
@@ -159,7 +159,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         $this->assertNull($citizenProject->getLongitude());
 
         $this->manager->expects($this->never())->method('flush');
-        $this->subscriber->onCitizenProjectCreated(new CitizenProjectWasCreatedEvent($citizenProject, $this->createAdherent('92 bld Victor Hugo')));
+        $this->subscriber->updateCoordinates(new CitizenProjectWasCreatedEvent($citizenProject, $this->createAdherent('92 bld Victor Hugo')));
 
         $this->assertNull($citizenProject->getLatitude());
         $this->assertNull($citizenProject->getLongitude());

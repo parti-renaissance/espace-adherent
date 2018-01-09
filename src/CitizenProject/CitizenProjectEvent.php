@@ -3,9 +3,11 @@
 namespace AppBundle\CitizenProject;
 
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Geocoder\GeocodableEntityEventInterface;
+use AppBundle\Geocoder\GeocodableInterface;
 use Symfony\Component\EventDispatcher\Event;
 
-class CitizenProjectEvent extends Event
+class CitizenProjectEvent extends Event implements GeocodableEntityEventInterface
 {
     private $citizenProject;
 
@@ -15,6 +17,11 @@ class CitizenProjectEvent extends Event
     }
 
     public function getCitizenProject()
+    {
+        return $this->citizenProject;
+    }
+
+    public function getGeocodableEntity(): GeocodableInterface
     {
         return $this->citizenProject;
     }
