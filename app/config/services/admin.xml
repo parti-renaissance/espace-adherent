@@ -558,7 +558,7 @@
 
             <argument />
             <argument>AppBundle\Entity\Timeline\Profile</argument>
-            <argument />
+            <argument>AppBundle\Controller\Admin\AdminTimelineProfileController</argument>
         </service>
 
         <service id="app.admin.timeline_theme" class="AppBundle\Admin\TimelineThemeAdmin">
@@ -566,7 +566,7 @@
 
             <argument />
             <argument>AppBundle\Entity\Timeline\Theme</argument>
-            <argument />
+            <argument>AppBundle\Controller\Admin\AdminTimelineThemeController</argument>
         </service>
 
         <service id="app.admin.timeline_measure" class="AppBundle\Admin\TimelineMeasureAdmin">

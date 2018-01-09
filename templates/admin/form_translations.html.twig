@@ -33,7 +33,7 @@
                     {% set classes = classes|merge(['active']) %}
                 {% endif %}
                 {% if not form.vars.valid %}
-                    {% set classes = class|merge(['sonata-ba-field-error']) %}
+                    {% set classes = classes|merge(['sonata-ba-field-error']) %}
                 {% endif %}
                 <div class="tab-pane {{ classes|join(' ') }}">
                     {{ form_errors(translationsFields) }}

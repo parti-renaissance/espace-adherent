@@ -26,6 +26,9 @@ class Theme implements EntityMediaInterface
     use EntityMediaTrait;
     use Translatable;
 
+    public const DEFAULT_LOCALE = 'fr';
+    public const LOCALES_TO_INDEX = ['fr', 'en'];
+
     /**
      * @var int
      *
@@ -54,13 +57,14 @@ class Theme implements EntityMediaInterface
     private $measures;
 
     /**
+     * @var ThemeTranslation[]|Collection
+     *
      * @Assert\Valid
      */
     private $translations;
 
-    public function __construct(
-        bool $featured = false
-    ) {
+    public function __construct(bool $featured = false)
+    {
         $this->featured = $featured;
         $this->measures = new ArrayCollection();
         $this->translations = new ArrayCollection();
@@ -68,7 +72,7 @@ class Theme implements EntityMediaInterface
 
     public function __toString()
     {
-        if ($translation = $this->getTranslation('fr')) {
+        if ($translation = $this->getTranslation(self::DEFAULT_LOCALE)) {
             return $translation->getTitle();
         }
 
@@ -150,8 +154,7 @@ class Theme implements EntityMediaInterface
      */
     public function titles(): array
     {
-        foreach (['fr', 'en'] as $locale) {
-            /* @var $translation ThemeTranslation */
+        foreach (self::LOCALES_TO_INDEX as $locale) {
             if ($translation = $this->getTranslation($locale)) {
                 $titles[$locale] = $translation->getTitle();
             }
@@ -165,8 +168,7 @@ class Theme implements EntityMediaInterface
      */
     public function slugs(): array
     {
-        foreach (['fr', 'en'] as $locale) {
-            /* @var $translation ThemeTranslation */
+        foreach (self::LOCALES_TO_INDEX as $locale) {
             if ($translation = $this->getTranslation($locale)) {
                 $slugs[$locale] = $translation->getSlug();
             }
@@ -180,8 +182,7 @@ class Theme implements EntityMediaInterface
      */
     public function descriptions(): array
     {
-        foreach (['fr', 'en'] as $locale) {
-            /* @var $translation ThemeTranslation */
+        foreach (self::LOCALES_TO_INDEX as $locale) {
             if ($translation = $this->getTranslation($locale)) {
                 $descriptions[$locale] = $translation->getDescription();
             }

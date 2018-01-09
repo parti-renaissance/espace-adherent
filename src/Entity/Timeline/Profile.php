@@ -4,6 +4,8 @@ namespace AppBundle\Entity\Timeline;
 
 use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -14,6 +16,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Profile
 {
     use Translatable;
+
+    public const DEFAULT_LOCALE = 'fr';
+    public const LOCALES_TO_INDEX = ['fr', 'en'];
 
     /**
      * @var int
@@ -27,13 +32,20 @@ class Profile
     private $id;
 
     /**
+     * @var ProfileTranslation[]|Collection
+     *
      * @Assert\Valid
      */
     private $translations;
 
+    public function __construct()
+    {
+        $this->translations = new ArrayCollection();
+    }
+
     public function __toString()
     {
-        if ($translation = $this->getTranslation('fr')) {
+        if ($translation = $this->getTranslation(self::DEFAULT_LOCALE)) {
             return $translation->getTitle();
         }
 
@@ -50,8 +62,7 @@ class Profile
      */
     public function titles(): array
     {
-        foreach (['fr', 'en'] as $locale) {
-            /* @var $translation ThemeTranslation */
+        foreach (self::LOCALES_TO_INDEX as $locale) {
             if ($translation = $this->getTranslation($locale)) {
                 $titles[$locale] = $translation->getTitle();
             }
@@ -65,8 +76,7 @@ class Profile
      */
     public function slugs(): array
     {
-        foreach (['fr', 'en'] as $locale) {
-            /* @var $translation ThemeTranslation */
+        foreach (self::LOCALES_TO_INDEX as $locale) {
             if ($translation = $this->getTranslation($locale)) {
                 $slugs[$locale] = $translation->getSlug();
             }
@@ -80,8 +90,7 @@ class Profile
      */
     public function descriptions(): array
     {
-        foreach (['fr', 'en'] as $locale) {
-            /* @var $translation ThemeTranslation */
+        foreach (self::LOCALES_TO_INDEX as $locale) {
             if ($translation = $this->getTranslation($locale)) {
                 $descriptions[$locale] = $translation->getDescription();
             }
@@ -96,6 +105,6 @@ class Profile
             return $locale === $translation->getLocale();
         })->first();
 
-        return $translation ? $translation : null;
+        return $translation ? : null;
     }
 }

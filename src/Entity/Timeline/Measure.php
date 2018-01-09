@@ -34,6 +34,9 @@ class Measure
         'Reporté' => self::STATUS_DEFERRED,
     ];
 
+    public const DEFAULT_LOCALE = 'fr';
+    public const LOCALES_TO_INDEX = ['fr', 'en'];
+
     /**
      * @var int
      *
@@ -123,6 +126,8 @@ class Measure
     private $savedThemes;
 
     /**
+     * @var MeasureTranslation[]|Collection
+     *
      * @Assert\Valid
      */
     private $translations;
@@ -153,7 +158,7 @@ class Measure
 
     public function __toString()
     {
-        if ($translation = $this->getTranslation('fr')) {
+        if ($translation = $this->getTranslation(self::DEFAULT_LOCALE)) {
             return $translation->getTitle();
         }
 
@@ -304,8 +309,7 @@ class Measure
      */
     public function titles(): array
     {
-        foreach (['fr', 'en'] as $locale) {
-            /* @var $translation MeasureTranslation */
+        foreach (self::LOCALES_TO_INDEX as $locale) {
             if ($translation = $this->getTranslation($locale)) {
                 $titles[$locale] = $translation->getTitle();
             }

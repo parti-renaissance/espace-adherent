@@ -1,7 +1,7 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {% set titles = object.title %}
+    {% set titles = object.titles %}
 
     {% if titles.fr is defined %}
         {{ titles.fr }}
