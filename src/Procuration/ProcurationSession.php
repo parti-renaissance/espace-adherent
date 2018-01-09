@@ -58,8 +58,9 @@ class ProcurationSession
 
     public function setElectionContext(ElectionContext $context)
     {
-        $this->session->set(self::ELECTION_CONTEXT_KEY, serialize($context));
         // Context has changed, reset
+        $this->endRequest();
+        $this->session->set(self::ELECTION_CONTEXT_KEY, \serialize($context));
         $this->startRequest();
     }
 }
