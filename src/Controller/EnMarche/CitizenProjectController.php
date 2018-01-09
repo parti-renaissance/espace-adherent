@@ -269,11 +269,13 @@ class CitizenProjectController extends Controller
      * @Route("", name="app_citizen_project_landing")
      * @Method("GET")
      */
-    public function landingAction(): Response
+    public function landingAction(CitizenProjectManager $citizenProjectManager): Response
     {
         $city = $this->getUser() ? $this->getUser()->getCityName() : SearchParametersFilter::DEFAULT_CITY;
+        $citizenProjects = $this->getUser() ? $citizenProjectManager->getAdherentCitizenProjectsAdministrator($this->getUser()) : [];
 
         return $this->render('citizen_project/landing.html.twig', [
+            'citizen_project' => $citizenProjects[0] ?? null,
             'city' => $city,
         ]);
     }

@@ -154,6 +154,8 @@ class CitizenProjectRepository extends BaseGroupRepository
     {
         return $this
             ->createNearbyQueryBuilder($coordinates)
+            ->where('n.status = :status')
+            ->setParameter('status', BaseGroup::APPROVED)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()

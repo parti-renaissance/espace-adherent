@@ -145,7 +145,6 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'created_at' => '2017-09-18 09:14:45',
             'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
         ]);
-        $citizenProject7->approved('2017-03-19 13:43:26');
         $this->addReference('citizen-project-7', $citizenProject7);
 
         $citizenProject8 = $citizenProjectFactory->createFromArray([

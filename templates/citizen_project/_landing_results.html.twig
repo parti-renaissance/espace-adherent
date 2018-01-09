@@ -1,6 +1,10 @@
 {% for citizen_project in results %}
     <li class="citizen-projects__landing__card">
-        <img src="{{ asset(citizen_project.imagePath) }}" alt="{{ citizen_project.name }}">
+        {% if citizen_project.hasImageUploaded %}
+            <div class="search__citizen_project__image">
+                <img src="{{ asset(citizen_project.assetImagePath) }}" alt="{{ citizen_project.name }}"/>
+            </div>
+        {% endif %}
         <div class="l__col l__col--v-stretch">
             <div>
                 <h3 class="text--medium-small">{{ citizen_project.name }}</h3>

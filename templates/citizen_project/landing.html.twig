@@ -68,13 +68,13 @@
     <header class="space--100-0">
         <div class="l__wrapper l__col text--white">
             <h1 class="text--extra-large">Agissez près de chez vous !</h1>
-            <h2>Proposez votre projet citoyen ou rejoignez un projet déjà lancé</h2>
+            <h2>Proposez votre projet citoyen ou rejoignez un projet</h2>
         </div>
     </header>
 
     <div class="l__wrapper space--60-0 citizen-projects__landing__nearby">
         <div class="text--large text--bold">
-            Des projets à rejoindre autour de <span id="city-search-display">{{ city }}</span>
+            Les projets citoyens à rejoindre autour de <span id="city-search-display">{{ city }}</span>
             <input style="display: none;" type="text" value="{{ city }}" id="city-search-input">
             <span id="change-city" class="text--default btn btn--functional">Changer lieu</span>
             <span id="save-city" class="text--default btn btn--functional" style="display: none">Sauvegarder</span>
@@ -95,7 +95,7 @@
 
     <div class="l__wrapper--narrow space--60-0 text--center">
         <p class="text--medium-large text--bold">
-            Les projets citoyens sont des actions locales qui visent à améliorer concrètement notre quotidien en réunissant la force et les compétences de toutes et tous.
+            Les projets citoyens sont des actions locales qui visent à améliorer concrètement le quotidien des habitants dans son quartier, son village, en réunissant la force et les compétences de tous ceux qui veulent agir.
         </p>
     </div>
 
@@ -104,18 +104,22 @@
             <div class="l__row">
                 {{ include('components/projets-citoyens.html.twig') }}
                 <div class="b__nudge--left-large text--large text--bold text--blue">
-                    Envie d'agir autrement près de chez vous ?
-                    Lancez votre projet citoyen !
+                    Envie d'agir près de chez vous ?<br />
+                    {{ citizen_project ? 'Faites grandir votre projet !' : 'Lancez votre projet citoyen !' }}
                 </div>
             </div>
             <div class="text--center">
-                <form id="start-creation-citizen-project" action="{{ path('app_adherent_create_citizen_project') }}" method="GET" class="b__nudge--top">
-                    <input type="text" name="name" placeholder="Le titre court et descriptif de mon projet">
-                    <button type="submit">
-                        Prochaine étape
-                        {{ include('components/arrow--right.html.twig') }}
-                    </button>
-                </form>
+                {% if citizen_project %}
+                    <a href="{{ path('app_citizen_project_show', { slug: citizen_project.slug }) }}">Voir mon projet {{ include('components/arrow--right.html.twig') }}</a>
+                {% else %}
+                    <form id="start-creation-citizen-project" action="{{ path('app_adherent_create_citizen_project') }}" method="GET" class="b__nudge--top">
+                        <input type="text" name="name" placeholder="Quel est le nom (court) de votre projet ?">
+                        <button type="submit">
+                            Prochaine étape
+                            {{ include('components/arrow--right.html.twig') }}
+                        </button>
+                    </form>
+                {% endif %}
             </div>
         </div>
     </div>

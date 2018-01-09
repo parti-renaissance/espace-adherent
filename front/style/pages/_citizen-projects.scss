@@ -29,7 +29,7 @@
                 width: 340px;
             }
 
-            button {
+            button, a {
                 @include text--medium-small;
                 @include newbtn;
                 padding: 29px 20px 24px;

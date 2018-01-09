@@ -470,8 +470,8 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
         $thumb3 = $crawler->filter('.citizen-projects__landing__card')->eq(2);
 
-        $this->assertSame('Le projet citoyen à Marseille', trim($thumb3->filter('h3')->text()));
-        $this->assertContains('Benjamin D.', trim($thumb3->filter('.citizen-projects__landing__card__creator')->text()));
+        $this->assertSame('Le projet citoyen à Dammarie-les-Lys', trim($thumb3->filter('h3')->text()));
+        $this->assertContains('Francis B.', trim($thumb3->filter('.citizen-projects__landing__card__creator')->text()));
     }
 
     public function testCitizenProjectLandingPageResultAuthenticate()
@@ -496,9 +496,8 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
         $thumb3 = $crawler->filter('.citizen-projects__landing__card')->eq(2);
 
-        // This test fails only in CircleCI, need investigation
-//        $this->assertSame('Le projet citoyen à Marseille', trim($thumb3->filter('h3')->text()));
-//        $this->assertContains('Benjamin Duroc', trim($thumb3->filter('.citizen-projects__landing__card__creator')->text()));
+        $this->assertSame('Le projet citoyen à Dammarie-les-Lys', trim($thumb3->filter('h3')->text()));
+        $this->assertContains('Francis Brioul', trim($thumb3->filter('.citizen-projects__landing__card__creator')->text()));
     }
 
     public function testCitizenProjectLandingPageAuthenticateUser()
