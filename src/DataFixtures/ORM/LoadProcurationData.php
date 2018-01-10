@@ -17,9 +17,9 @@ class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
     {
         $electionsRepository = $manager->getRepository(Election::class);
 
-        $presidentialElections = $electionsRepository->find(1);
-        $legislativeElections = $electionsRepository->find(2);
-        $partialLegislativeElections = $electionsRepository->find(3);
+        $presidentialElections = $electionsRepository->findOneBy(['name' => 'Élections Présidentielles 2017']);
+        $legislativeElections = $electionsRepository->findOneBy(['name' => 'Élections Législatives 2017']);
+        $partialLegislativeElections = $electionsRepository->findOneBy(['name' => 'Élection législative partielle pour la 1ère circonscription du Val-d\'Oise']);
 
         $manager->persist($this->createRequest(
             'male',

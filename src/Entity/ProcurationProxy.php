@@ -28,6 +28,9 @@ class ProcurationProxy
     public const ACTION_DISABLE = 'desactiver';
     public const ACTIONS_URI_REGEX = self::ACTION_ENABLE.'|'.self::ACTION_DISABLE;
 
+    private const NO_AVAILABLE_ROUND = 'Aucun';
+    private const ALL_AVAILABLE_ROUNDS = 'Tous les tours proposés';
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -537,26 +540,6 @@ class ProcurationProxy
         $this->voteOffice = $voteOffice;
     }
 
-    public function getElectionPresidentialFirstRound(): bool
-    {
-        return $this->electionPresidentialFirstRound;
-    }
-
-    public function getElectionPresidentialSecondRound(): bool
-    {
-        return $this->electionPresidentialSecondRound;
-    }
-
-    public function getElectionLegislativeFirstRound(): bool
-    {
-        return $this->electionLegislativeFirstRound;
-    }
-
-    public function getElectionLegislativeSecondRound(): bool
-    {
-        return $this->electionLegislativeSecondRound;
-    }
-
     /**
      * @return ElectionRound[]|Collection
      */
@@ -569,6 +552,21 @@ class ProcurationProxy
         return $this->electionRounds->filter(function (ElectionRound $round) {
             return !$this->foundRequest->hasElectionRound($round);
         });
+    }
+
+    public function getAvailableRoundsAsString(): string
+    {
+        $availableRounds = $this->getAvailableRounds();
+
+        if ($this->electionRounds->count() === $availableRounds->count()) {
+            return self::ALL_AVAILABLE_ROUNDS;
+        }
+
+        if ($availableRounds->isEmpty()) {
+            return self::NO_AVAILABLE_ROUND;
+        }
+
+        return implode("\n", $availableRounds->toArray());
     }
 
     public function getFoundRequest(): ?ProcurationRequest

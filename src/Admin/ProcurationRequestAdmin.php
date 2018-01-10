@@ -94,17 +94,8 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Procuration', ['class' => 'col-md-6'])
-                ->add('electionPresidentialFirstRound', null, [
-                    'label' => 'Présidentielle - 1er tour',
-                ])
-                ->add('electionPresidentialSecondRound', null, [
-                    'label' => 'Présidentielle - 2ème tour',
-                ])
-                ->add('electionLegislativeFirstRound', null, [
-                    'label' => 'Législatives - 1er tour',
-                ])
-                ->add('electionLegislativeSecondRound', null, [
-                    'label' => 'Législatives - 2ème tour',
+                ->add('electionRounds', null, [
+                    'label' => 'Tours',
                 ])
                 ->add('reason', ChoiceType::class, [
                     'choices' => [
@@ -170,20 +161,8 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Procuration', ['class' => 'col-md-4'])
-                ->add('electionPresidentialFirstRound', null, [
-                    'label' => 'Présidentielle - 1er tour',
-                ])
-                ->add('electionPresidentialSecondRound', null, [
-                    'label' => 'Présidentielle - 2ème tour',
-                ])
-                ->add('electionLegislativeFirstRound', null, [
-                    'label' => 'Législatives - 1er tour',
-                ])
-                ->add('electionLegislativeSecondRound', null, [
-                    'label' => 'Législatives - 2ème tour',
-                ])
-                ->add('reason', null, [
-                    'label' => 'Raison',
+                ->add('electionRounds', null, [
+                    'label' => 'Tours',
                 ])
             ->end();
     }

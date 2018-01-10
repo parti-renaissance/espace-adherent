@@ -24,10 +24,6 @@ class ElectionAdmin extends AbstractAdmin
                 'filter_emojis' => true,
                 'purify_html' => true,
             ])
-            ->add('place', TextType::class, [
-                'label' => 'Lieu',
-                'required' => false,
-            ])
             ->add('rounds', CollectionType::class, [
                 'label' => 'Tours',
                 'entry_type' => ElectionRoundType::class,
