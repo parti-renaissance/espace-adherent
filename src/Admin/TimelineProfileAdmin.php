@@ -4,27 +4,22 @@ namespace AppBundle\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use AppBundle\Entity\Timeline\Profile;
+use AppBundle\Form\EventListener\EmptyTranslationRemoverListener;
+use AppBundle\Timeline\ProfileManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
-use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TimelineProfileAdmin extends AbstractAdmin
 {
-    public function createQuery($context = 'list')
+    private $profileManager;
+
+    public function __construct($code, $class, $baseControllerName, ProfileManager $profileManager)
     {
-        $query = parent::createQuery();
-        $alias = $query->getRootAlias();
+        parent::__construct($code, $class, $baseControllerName);
 
-        $query
-            ->leftJoin("$alias.translations", 'translations')
-            ->addSelect('translations')
-        ;
-
-        return $query;
+        $this->profileManager = $profileManager;
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -34,8 +29,6 @@ class TimelineProfileAdmin extends AbstractAdmin
                 ->add('translations', TranslationsType::class, [
                     'by_reference' => false,
                     'label' => false,
-                    'default_locale' => [Profile::DEFAULT_LOCALE],
-                    'locales' => Profile::LOCALES_TO_INDEX,
                     'fields' => [
                         'title' => [
                             'label' => 'Titre',
@@ -51,6 +44,11 @@ class TimelineProfileAdmin extends AbstractAdmin
                     ],
                 ])
             ->end()
+        ;
+
+        $formMapper
+            ->getFormBuilder()
+            ->addEventSubscriber(new EmptyTranslationRemoverListener())
         ;
     }
 
@@ -73,7 +71,7 @@ class TimelineProfileAdmin extends AbstractAdmin
     {
         $listMapper
             ->addIdentifier('title', null, [
-                'label' => 'Nom',
+                'label' => 'Titre',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
@@ -83,5 +81,29 @@ class TimelineProfileAdmin extends AbstractAdmin
                 ],
             ])
         ;
+    }
+
+    /**
+     * @param Profile $object
+     */
+    public function postPersist($object)
+    {
+        $this->profileManager->postPersist($object);
+    }
+
+    /**
+     * @param Profile $object
+     */
+    public function postUpdate($object)
+    {
+        $this->profileManager->postUpdate($object);
+    }
+
+    /**
+     * @param Profile $object
+     */
+    public function postRemove($object)
+    {
+        $this->profileManager->postRemove($object);
     }
 }

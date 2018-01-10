@@ -2,23 +2,20 @@
 
 namespace AppBundle\Entity\Timeline;
 
-use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\EntityTranslatableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="timeline_profiles")
  * @ORM\Entity
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class Profile
 {
-    use Translatable;
-
-    public const DEFAULT_LOCALE = 'fr';
-    public const LOCALES_TO_INDEX = ['fr', 'en'];
+    use EntityTranslatableTrait;
 
     /**
      * @var int
@@ -31,13 +28,6 @@ class Profile
      */
     private $id;
 
-    /**
-     * @var ProfileTranslation[]|Collection
-     *
-     * @Assert\Valid
-     */
-    private $translations;
-
     public function __construct()
     {
         $this->translations = new ArrayCollection();
@@ -45,7 +35,8 @@ class Profile
 
     public function __toString()
     {
-        if ($translation = $this->getTranslation(self::DEFAULT_LOCALE)) {
+        /* @var $translation ProfileTranslation */
+        if ($translation = $this->translate()) {
             return $translation->getTitle();
         }
 
@@ -62,8 +53,9 @@ class Profile
      */
     public function titles(): array
     {
-        foreach (self::LOCALES_TO_INDEX as $locale) {
-            if ($translation = $this->getTranslation($locale)) {
+        foreach ($this->getLocales() as $locale) {
+            /* @var $translation ProfileTranslation */
+            if ($translation = $this->translate($locale)) {
                 $titles[$locale] = $translation->getTitle();
             }
         }
@@ -76,8 +68,9 @@ class Profile
      */
     public function slugs(): array
     {
-        foreach (self::LOCALES_TO_INDEX as $locale) {
-            if ($translation = $this->getTranslation($locale)) {
+        foreach ($this->getLocales() as $locale) {
+            /* @var $translation ProfileTranslation */
+            if ($translation = $this->translate($locale)) {
                 $slugs[$locale] = $translation->getSlug();
             }
         }
@@ -90,21 +83,13 @@ class Profile
      */
     public function descriptions(): array
     {
-        foreach (self::LOCALES_TO_INDEX as $locale) {
-            if ($translation = $this->getTranslation($locale)) {
+        foreach ($this->getLocales() as $locale) {
+            /* @var $translation ProfileTranslation */
+            if ($translation = $this->translate($locale)) {
                 $descriptions[$locale] = $translation->getDescription();
             }
         }
 
         return $descriptions ?? [];
-    }
-
-    private function getTranslation(string $locale): ?ProfileTranslation
-    {
-        $translation = $this->translations->filter(function (ProfileTranslation $translation) use ($locale) {
-            return $locale === $translation->getLocale();
-        })->first();
-
-        return $translation ? : null;
     }
 }

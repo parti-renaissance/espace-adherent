@@ -2,15 +2,15 @@
 
 namespace AppBundle\Repository\Timeline;
 
-use AppBundle\Entity\Timeline\Theme;
+use AppBundle\Entity\Timeline\Measure;
 use Doctrine\ORM\EntityRepository;
 
-class ThemeRepository extends EntityRepository
+class MeasureRepository extends EntityRepository
 {
-    public function findOneByTitle(string $title): ?Theme
+    public function findOneByTitle(string $title): ?Measure
     {
-        return $this->createQueryBuilder('theme')
-            ->join('theme.translations', 'translations')
+        return $this->createQueryBuilder('measure')
+            ->join('measure.translations', 'translations')
             ->where('translations.title = :title')
             ->setParameter('title', $title)
             ->getQuery()

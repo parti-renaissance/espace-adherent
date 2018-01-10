@@ -3,26 +3,27 @@
 namespace AppBundle\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
-use AppBundle\Entity\Timeline\Profile;
+use AppBundle\Entity\Timeline\Theme;
+use AppBundle\Form\EventListener\EmptyTranslationRemoverListener;
+use AppBundle\Timeline\ThemeManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TimelineThemeAdmin extends AbstractAdmin
 {
-    public function createQuery($context = 'list')
+    private $themeManager;
+
+    public function __construct($code, $class, $baseControllerName, ThemeManager $themeManager)
     {
-        $query = parent::createQuery();
-        $alias = $query->getRootAlias();
+        parent::__construct($code, $class, $baseControllerName);
 
-        $query
-            ->leftJoin("$alias.translations", 'translations')
-            ->addSelect('translations')
-        ;
-
-        return $query;
+        $this->themeManager = $themeManager;
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -32,8 +33,6 @@ class TimelineThemeAdmin extends AbstractAdmin
                 ->add('translations', TranslationsType::class, [
                     'by_reference' => false,
                     'label' => false,
-                    'default_locale' => [Profile::DEFAULT_LOCALE],
-                    'locales' => Profile::LOCALES_TO_INDEX,
                     'fields' => [
                         'title' => [
                             'label' => 'Titre',
@@ -60,14 +59,69 @@ class TimelineThemeAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
+
+        $formMapper
+            ->getFormBuilder()
+            ->addEventSubscriber(new EmptyTranslationRemoverListener())
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('translations.title', null, [
+            ->add('title', CallbackFilter::class, [
                 'label' => 'Titre',
                 'show_filter' => true,
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $qb
+                        ->join("$alias.translations", 'translations')
+                        ->andWhere('translations.title LIKE :title')
+                        ->setParameter('title', '%'.$value['value'].'%')
+                    ;
+
+                    return true;
+                },
+            ])
+            ->add('slug', CallbackFilter::class, [
+                'label' => 'URL',
+                'show_filter' => true,
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $qb
+                        ->join("$alias.translations", 'translations')
+                        ->andWhere('translations.slug LIKE :slug')
+                        ->setParameter('slug', '%'.$value['value'].'%')
+                    ;
+
+                    return true;
+                },
+            ])
+            ->add('description', CallbackFilter::class, [
+                'label' => 'Description',
+                'show_filter' => true,
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $qb
+                        ->join("$alias.translations", 'translations')
+                        ->andWhere('translations.description LIKE :description')
+                        ->setParameter('description', '%'.$value['value'].'%')
+                    ;
+
+                    return true;
+                },
             ])
             ->add('featured', null, [
                 'label' => 'Mise en avant',
@@ -84,8 +138,10 @@ class TimelineThemeAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'template' => 'admin/timeline/theme/list_image.html.twig',
             ])
-            ->addIdentifier('title', null, [
+            ->addIdentifier('title', TextType::class, [
                 'label' => 'Titre',
+                'virtual_field' => true,
+                'template' => 'admin/timeline/theme/list_title.html.twig',
             ])
             ->add('featured', null, [
                 'label' => 'Mise en avant',
@@ -98,5 +154,29 @@ class TimelineThemeAdmin extends AbstractAdmin
                 ],
             ])
         ;
+    }
+
+    /**
+     * @param Theme $object
+     */
+    public function postPersist($object)
+    {
+        $this->themeManager->postPersist($object);
+    }
+
+    /**
+     * @param Theme $object
+     */
+    public function postUpdate($object)
+    {
+        $this->themeManager->postUpdate($object);
+    }
+
+    /**
+     * @param Theme $object
+     */
+    public function postRemove($object)
+    {
+        $this->themeManager->postRemove($object);
     }
 }

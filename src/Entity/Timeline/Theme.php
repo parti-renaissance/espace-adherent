@@ -2,14 +2,13 @@
 
 namespace AppBundle\Entity\Timeline;
 
-use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\EntityMediaInterface;
 use AppBundle\Entity\EntityMediaTrait;
+use AppBundle\Entity\EntityTranslatableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="timeline_themes")
@@ -24,10 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Theme implements EntityMediaInterface
 {
     use EntityMediaTrait;
-    use Translatable;
-
-    public const DEFAULT_LOCALE = 'fr';
-    public const LOCALES_TO_INDEX = ['fr', 'en'];
+    use EntityTranslatableTrait;
 
     /**
      * @var int
@@ -56,13 +52,6 @@ class Theme implements EntityMediaInterface
      */
     private $measures;
 
-    /**
-     * @var ThemeTranslation[]|Collection
-     *
-     * @Assert\Valid
-     */
-    private $translations;
-
     public function __construct(bool $featured = false)
     {
         $this->featured = $featured;
@@ -72,7 +61,8 @@ class Theme implements EntityMediaInterface
 
     public function __toString()
     {
-        if ($translation = $this->getTranslation(self::DEFAULT_LOCALE)) {
+        /* @var $translation ThemeTranslation */
+        if ($translation = $this->translate()) {
             return $translation->getTitle();
         }
 
@@ -154,8 +144,9 @@ class Theme implements EntityMediaInterface
      */
     public function titles(): array
     {
-        foreach (self::LOCALES_TO_INDEX as $locale) {
-            if ($translation = $this->getTranslation($locale)) {
+        foreach ($this->getLocales() as $locale) {
+            /* @var $translation ThemeTranslation */
+            if ($translation = $this->translate($locale)) {
                 $titles[$locale] = $translation->getTitle();
             }
         }
@@ -168,8 +159,9 @@ class Theme implements EntityMediaInterface
      */
     public function slugs(): array
     {
-        foreach (self::LOCALES_TO_INDEX as $locale) {
-            if ($translation = $this->getTranslation($locale)) {
+        foreach ($this->getLocales() as $locale) {
+            /* @var $translation ThemeTranslation */
+            if ($translation = $this->translate($locale)) {
                 $slugs[$locale] = $translation->getSlug();
             }
         }
@@ -182,21 +174,13 @@ class Theme implements EntityMediaInterface
      */
     public function descriptions(): array
     {
-        foreach (self::LOCALES_TO_INDEX as $locale) {
-            if ($translation = $this->getTranslation($locale)) {
+        foreach ($this->getLocales() as $locale) {
+            /* @var $translation ThemeTranslation */
+            if ($translation = $this->translate($locale)) {
                 $descriptions[$locale] = $translation->getDescription();
             }
         }
 
         return $descriptions ?? [];
-    }
-
-    private function getTranslation(string $locale): ?ThemeTranslation
-    {
-        $translation = $this->translations->filter(function (ThemeTranslation $translation) use ($locale) {
-            return $locale === $translation->getLocale();
-        })->first();
-
-        return $translation ?: null;
     }
 }

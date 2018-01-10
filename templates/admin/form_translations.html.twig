@@ -17,7 +17,6 @@
                 <li{% if classes|length %} class="{{ classes|join(' ') }}"{% endif %}>
                     <a href="#" data-toggle="tab" data-target=".{{ translationsFields.vars.id }}_a2lix_translationsFields-{{ locale }}">
                         {{ ('locale.' ~ locale)|trans({}, 'SonataAdminBundle') }}
-                        {% if form.vars.default_locale == locale %}[Default]{% endif %}
                         {% if translationsFields.vars.required %}*{% endif %}
                     </a>
                 </li>

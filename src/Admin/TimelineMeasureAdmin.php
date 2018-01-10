@@ -4,11 +4,15 @@ namespace AppBundle\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use AppBundle\Entity\Timeline\Measure;
+use AppBundle\Form\EventListener\EmptyTranslationRemoverListener;
 use AppBundle\Timeline\MeasureManager;
+use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -24,32 +28,12 @@ class TimelineMeasureAdmin extends AbstractAdmin
         $this->measureManager = $measureManager;
     }
 
-    public function createQuery($context = 'list')
-    {
-        $query = parent::createQuery();
-        $alias = $query->getRootAlias();
-
-        $query
-            ->leftJoin("$alias.translations", 'translations')
-            ->addSelect('translations')
-            ->leftJoin("$alias.themes", 'themes')
-            ->addSelect('themes')
-            ->leftJoin("$alias.profiles", 'profiles')
-            ->addSelect('profiles')
-        ;
-
-        return $query;
-    }
-
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->with('Traductions', ['class' => 'col-md-6'])
                 ->add('translations', TranslationsType::class, [
-                    'by_reference' => false,
                     'label' => false,
-                    'default_locale' => ['fr'],
-                    'locales' => ['fr', 'en'],
                     'fields' => [
                         'title' => [
                             'label' => 'Titre',
@@ -80,19 +64,64 @@ class TimelineMeasureAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
+
+        $formMapper
+            ->getFormBuilder()
+            ->addEventSubscriber(new EmptyTranslationRemoverListener())
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('title', CallbackFilter::class, [
+                'label' => 'Titre',
+                'show_filter' => true,
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $qb
+                        ->join("$alias.translations", 'translations')
+                        ->andWhere('translations.title LIKE :title')
+                        ->setParameter('title', '%'.$value['value'].'%')
+                    ;
+
+                    return true;
+                },
+            ])
             ->add('profiles', null, [
                 'label' => 'Profils',
                 'show_filter' => true,
-            ], null, ['multiple' => true])
+            ], null, [
+                'multiple' => true,
+                'query_builder' => function (EntityRepository $repository) {
+                    return $repository
+                        ->createQueryBuilder('profile')
+                        ->select('profile, translations')
+                        ->join('profile.translations', 'translations')
+                        ->where('translations.locale = :locale')
+                        ->setParameter('locale', 'fr')
+                    ;
+                },
+            ])
             ->add('themes', null, [
                 'label' => 'Thèmes',
                 'show_filter' => true,
-            ], null, ['multiple' => true])
+            ], null, [
+                'multiple' => true,
+                'query_builder' => function (EntityRepository $repository) {
+                    return $repository
+                        ->createQueryBuilder('theme')
+                        ->select('theme, translations')
+                        ->join('theme.translations', 'translations')
+                        ->where('translations.locale = :locale')
+                        ->setParameter('locale', 'fr')
+                    ;
+                },
+            ])
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',
                 'show_filter' => true,
@@ -113,8 +142,8 @@ class TimelineMeasureAdmin extends AbstractAdmin
     {
         $listMapper
             ->addIdentifier('title', TextType::class, [
-                'virtual_field' => true,
                 'label' => 'Titre',
+                'virtual_field' => true,
                 'template' => 'admin/timeline/measure/list_title.html.twig',
             ])
             ->add('profiles', TextType::class, [

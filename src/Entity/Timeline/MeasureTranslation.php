@@ -2,8 +2,8 @@
 
 namespace AppBundle\Entity\Timeline;
 
-use A2lix\I18nDoctrineBundle\Doctrine\Interfaces\OneLocaleInterface;
 use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translation;
+use AppBundle\Entity\EntityTranslationInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity(fields={"locale", "title"}, errorPath="title")
  */
-class MeasureTranslation implements OneLocaleInterface
+class MeasureTranslation implements EntityTranslationInterface
 {
     use Translation;
 
@@ -42,5 +42,10 @@ class MeasureTranslation implements OneLocaleInterface
     public function setTitle(?string $title): void
     {
         $this->title = $title;
+    }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->title);
     }
 }

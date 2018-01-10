@@ -2,8 +2,8 @@
 
 namespace AppBundle\Entity\Timeline;
 
-use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\EntityTranslatableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,13 +12,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="timeline_measures")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\Timeline\MeasureRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
 class Measure
 {
-    use Translatable;
+    use EntityTranslatableTrait;
 
     public const TITLE_MAX_LENGTH = 100;
 
@@ -33,9 +33,6 @@ class Measure
         'Fait' => self::STATUS_DONE,
         'Reporté' => self::STATUS_DEFERRED,
     ];
-
-    public const DEFAULT_LOCALE = 'fr';
-    public const LOCALES_TO_INDEX = ['fr', 'en'];
 
     /**
      * @var int
@@ -110,7 +107,7 @@ class Measure
     /**
      * @var Theme[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Timeline\Theme")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Timeline\Theme", inversedBy="measures")
      * @ORM\JoinTable(
      *     name="timeline_themes_measures",
      *     joinColumns={
@@ -126,14 +123,6 @@ class Measure
     private $savedThemes;
 
     /**
-     * @var MeasureTranslation[]|Collection
-     *
-     * @Assert\Valid
-     */
-    private $translations;
-
-    /**
-     * @param string      $title
      * @param string      $status
      * @param Profile[]   $profiles
      * @param Theme[]     $themes
@@ -158,7 +147,8 @@ class Measure
 
     public function __toString()
     {
-        if ($translation = $this->getTranslation(self::DEFAULT_LOCALE)) {
+        /* @var $translation MeasureTranslation */
+        if ($translation = $this->translate()) {
             return $translation->getTitle();
         }
 
@@ -271,21 +261,21 @@ class Measure
         return self::STATUS_DEFERRED === $this->status;
     }
 
-    public function equals(self $measure): bool
-    {
-        return $measure->title === $this->title;
-    }
-
     public function saveCurrentThemes(): void
     {
         $this->savedThemes = clone $this->themes;
+    }
+
+    private function getSavedThemes(): Collection
+    {
+        return $this->savedThemes ?? new ArrayCollection();
     }
 
     public function getThemesToIndex(): ArrayCollection
     {
         $themes = new ArrayCollection();
 
-        foreach (array_merge($this->savedThemes->toArray(), $this->themes->toArray()) as $theme) {
+        foreach (array_merge($this->getSavedThemes()->toArray(), $this->themes->toArray()) as $theme) {
             if (!$themes->contains($theme)) {
                 $themes->add($theme);
             }
@@ -309,21 +299,13 @@ class Measure
      */
     public function titles(): array
     {
-        foreach (self::LOCALES_TO_INDEX as $locale) {
-            if ($translation = $this->getTranslation($locale)) {
+        foreach ($this->getLocales() as $locale) {
+            /* @var $translation MeasureTranslation */
+            if ($translation = $this->translate($locale)) {
                 $titles[$locale] = $translation->getTitle();
             }
         }
 
         return $titles ?? [];
-    }
-
-    private function getTranslation(string $locale): ?MeasureTranslation
-    {
-        $translation = $this->translations->filter(function (MeasureTranslation $translation) use ($locale) {
-            return $locale === $translation->getLocale();
-        })->first();
-
-        return $translation ? $translation : null;
     }
 }

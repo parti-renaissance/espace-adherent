@@ -2,9 +2,9 @@
 
 namespace AppBundle\Entity\Timeline;
 
-use A2lix\I18nDoctrineBundle\Doctrine\Interfaces\OneLocaleInterface;
 use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translation;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\EntityTranslationInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity(fields={"locale", "title"}, errorPath="title")
  * @UniqueEntity(fields={"locale", "slug"}, errorPath="slug")
  */
-class ThemeTranslation implements OneLocaleInterface
+class ThemeTranslation implements EntityTranslationInterface
 {
     use Translation;
 
@@ -91,5 +91,10 @@ class ThemeTranslation implements OneLocaleInterface
     public function setDescription(?string $description): void
     {
         $this->description = $description;
+    }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->title) && empty($this->slug) && empty($this->description);
     }
 }

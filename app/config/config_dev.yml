@@ -24,6 +24,8 @@ services:
     AppBundle\Algolia\ManualIndexer:
         class: 'Tests\AppBundle\Test\Algolia\DummyManualIndexer'
         public: false
+        arguments:
+            - "@doctrine.orm.entity_manager"
 
 framework:
     router:

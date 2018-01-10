@@ -200,7 +200,7 @@ class LoadTimelineData extends AbstractFixture
         ],
         'TM005' => [
             'title' => [
-                'fr' => 'Rendre les  ministres comptables du respect de la dépense publique',
+                'fr' => 'Rendre les ministres comptables du respect de la dépense publique',
                 'en' => 'Make ministers accountable for respecting public spending',
             ],
             'status' => Measure::STATUS_IN_PROGRESS,
