@@ -25,15 +25,15 @@ version: "2"
 #    pma:
 #        image: phpmyadmin/phpmyadmin
 #        depends_on:
-#            - enmarche_db
+#            - db
 #        environment:
-#            PMA_HOST: enmarche_db
+#            PMA_HOST: db
 #            PMA_USER: root
 #            PMA_PASSWORD: root
 #            VIRTUAL_HOST: pma.enmarche.dev
 #            VIRTUAL_PORT: 80
 
-#    enmarche_db:
+#    db:
 #        ports:
 #            - "3306:3306"
 

@@ -13,13 +13,13 @@ services:
         build:
             context: docker/dev
         depends_on:
-            - enmarche_db
+            - db
             - enmarche_redis
             - rabbitmq
         volumes:
             - .:/app
 
-    enmarche_db:
+    db:
         image: mysql:5.7
         environment:
             MYSQL_ROOT_PASSWORD: root
