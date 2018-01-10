@@ -74,7 +74,6 @@ class CitizenProjectCommandType extends AbstractType
             ->add('required_means', TextareaType::class, [
                 'property_path' => 'requiredMeans',
                 'filter_emojis' => true,
-                'purify_html' => true,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 500],
             ])
@@ -89,7 +88,6 @@ class CitizenProjectCommandType extends AbstractType
             ->add('assistance_content', TextareaType::class, [
                 'required' => false,
                 'property_path' => 'assistanceContent',
-                'purify_html' => true,
                 'filter_emojis' => true,
                 'attr' => ['maxlength' => 300],
             ])
