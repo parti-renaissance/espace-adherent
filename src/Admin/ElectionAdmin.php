@@ -22,7 +22,6 @@ class ElectionAdmin extends AbstractAdmin
             ->add('introduction', TextareaType::class, [
                 'label' => 'Introduction',
                 'filter_emojis' => true,
-                'purify_html' => true,
             ])
             ->add('rounds', CollectionType::class, [
                 'label' => 'Tours',
