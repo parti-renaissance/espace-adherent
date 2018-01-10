@@ -1,0 +1,5 @@
+{% if urlProfilePicture %}
+    <img src="{{ urlProfilePicture }}" />
+{% else %}
+    {{ include('components/user.html.twig') }}
+{% endif %}

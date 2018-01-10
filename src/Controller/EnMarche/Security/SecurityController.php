@@ -17,13 +17,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-/**
- * @Route("/espace-adherent")
- */
-class AdherentSecurityController extends Controller
+class SecurityController extends Controller
 {
     /**
-     * @Route("/connexion", name="app_adherent_login")
+     * @Route("/connexion", name="app_user_login")
      * @Method("GET")
      */
     public function loginAction(): Response
@@ -45,7 +42,7 @@ class AdherentSecurityController extends Controller
     }
 
     /**
-     * @Route("/connexion/check", name="app_adherent_login_check")
+     * @Route("/connexion/check", name="app_user_login_check")
      * @Method("POST")
      */
     public function loginCheckAction()
@@ -124,7 +121,7 @@ class AdherentSecurityController extends Controller
                 $this->get('app.adherent_reset_password_handler')->reset($adherent, $resetPasswordToken, $newPassword);
                 $this->addFlash('info', $this->get('translator')->trans('adherent.reset_password.success'));
 
-                return $this->redirectToRoute('app_adherent_profile');
+                return $this->redirectToRoute('app_user_profile');
             } catch (AdherentTokenExpiredException $e) {
                 $this->addFlash('info', $this->get('translator')->trans('adherent.reset_password.expired_key'));
             }

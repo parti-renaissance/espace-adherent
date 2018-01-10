@@ -29,7 +29,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
     public function testAuthenticationIsSuccessful()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/connexion');
+        $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(1, $crawler->filter('form[name="app_login"]'));
@@ -48,7 +48,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(2, $crawler->selectLink('Carl Mirabeau')->count());
+        $this->assertSame(1, $crawler->selectLink('Carl Mirabeau')->count());
 
         $this->client->click($crawler->selectLink('Déconnexion')->link());
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
@@ -63,7 +63,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
      */
     public function testLoginCheckFails($username, $password)
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/connexion');
+        $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(1, $crawler->filter('form[name="app_login"]'));
@@ -75,7 +75,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client, true);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client, true);
 
         $crawler = $this->client->followRedirect();
 
@@ -104,7 +104,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
     public function testRetrieveForgotPasswordAction()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
+        $crawler = $this->client->request(Request::METHOD_GET, '/mot-de-passe-oublie');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -114,7 +114,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
     public function testRetrieveForgotPasswordActionWithEmptyEmail()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
+        $crawler = $this->client->request(Request::METHOD_GET, '/mot-de-passe-oublie');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -129,7 +129,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
     public function testRetrieveForgotPasswordActionWithUnknownEmail()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
+        $crawler = $this->client->request(Request::METHOD_GET, '/mot-de-passe-oublie');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -149,7 +149,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
     public function testRetrieveForgotPasswordActionWithKnownEmailSendEmail()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mot-de-passe-oublie');
+        $crawler = $this->client->request(Request::METHOD_GET, '/mot-de-passe-oublie');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -177,7 +177,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
         $this->assertNull($token->getUsageDate());
 
-        $resetPasswordUrl = sprintf('/espace-adherent/changer-mot-de-passe/%s/%s', $adherent->getUuid(), $token->getValue());
+        $resetPasswordUrl = sprintf('/changer-mot-de-passe/%s/%s', $adherent->getUuid(), $token->getValue());
         $crawler = $client->request(Request::METHOD_GET, $resetPasswordUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
@@ -194,7 +194,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         ]);
 
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentResetPasswordConfirmationMessage::class, 'michelle.dufour@example.ch'), 'A confirmation email should have been sent.');
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte', $client);
+        $this->assertClientIsRedirectedTo('/parametres/mon-compte', $client);
 
         $client->followRedirect();
 

@@ -67,11 +67,11 @@ a {
     }
 
     &.link--newblue { // temporary until we update our color palette
-        color: $newblue;
+        color: $blue--dark;
         border-color: transparent;
 
         &:hover {
-            border-color: $newblue;
+            border-color: $blue--dark;
         }
     }
 

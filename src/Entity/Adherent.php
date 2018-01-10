@@ -247,7 +247,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function getRoles(): array
     {
-        $roles = ['ROLE_ADHERENT'];
+        $roles = ['ROLE_USER', 'ROLE_ADHERENT'];
 
         if ($this->isReferent()) {
             $roles[] = 'ROLE_REFERENT';

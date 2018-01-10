@@ -1,7 +1,7 @@
 .citizen-projects {
     &__landing {
         header {
-            background-image: linear-gradient(115deg, $newblue, $pink-light);
+            background-image: linear-gradient(115deg, $blue--dark, $pink--light);
 
             h2 {
                 @include text--medium-large;
@@ -24,7 +24,7 @@
         &__create {
             input {
                 @include text--medium-small;
-                border: solid 4px $newblue;
+                border: solid 4px $blue--dark;
                 border-radius: 3px;
                 padding: 22px;
                 width: 340px;
@@ -133,7 +133,7 @@
         li {
             border-radius: 50px;
             background-color: $gray--lighter;
-            color: $newblue;
+            color: $blue--dark;
             display: inline-block;
             @include text--small;
             padding: 2px 10px;
@@ -150,8 +150,8 @@
 
             .active {
                 font-weight: bold;
-                color: $newblue;
-                border-bottom: 6px solid $newblue;
+                color: $blue--dark;
+                border-bottom: 6px solid $blue--dark;
             }
 
             a {

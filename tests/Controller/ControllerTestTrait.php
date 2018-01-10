@@ -46,14 +46,14 @@ trait ControllerTestTrait
 
     public function logout(Client $client)
     {
-        $client->request(Request::METHOD_GET, '/espace-adherent/deconnexion');
+        $client->request(Request::METHOD_GET, '/deconnexion');
 
         return $client->followRedirect();
     }
 
     public function authenticateAsAdherent(Client $client, string $emailAddress, string $password)
     {
-        $crawler = $client->request(Request::METHOD_GET, '/espace-adherent/connexion');
+        $crawler = $client->request(Request::METHOD_GET, '/connexion');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
 
