@@ -12,12 +12,12 @@
 {{ form_errors(form) }}
 
 <div class="form__new" id="field-name">
-    {{ form_label(form.name, 'Donnez un titre à votre projet :', {label_attr: {class: 'label__header--large'}}) }}
+    {{ form_label(form.name, 'Donnez un nom à votre projet :', {label_attr: {class: 'label__header--large'}}) }}
     {{ form_errors(form.name) }}
     {{ form_widget(form.name, {
         attr: {
             'class': 'form--full',
-            'placeholder': 'Le titre court et accrocheur de mon projet',
+            'placeholder': 'Un nom court et clair',
         }
     }) }}
     <small>Ex. "Un stage pour tous"</small>
@@ -29,25 +29,25 @@
     {{ form_widget(form.subtitle, {
         'attr': {
             'class': 'form--full',
-            'placeholder': 'Un sous-titre explicatif du titre',
+            'placeholder': 'Un sous-titre explicatif',
         }
     }) }}
     <small>Ex. "Aider les élèves de 3e à trouver un stage en entreprise"</small>
 </div>
 
 <div class="form__new" id="field-category">
-    {{ form_label(form.category, 'Choisissez une catégorie :', {label_attr: {class: 'label__header--large'}}) }}
+    {{ form_label(form.category, 'Choisissez le thème de votre projet :', {label_attr: {class: 'label__header--large'}}) }}
     {{ form_errors(form.category) }}
     {{ form_widget(form.category, {
         attr: {
             class: 'form--full',
-            placeholder: 'Choisissez une catégorie',
+            placeholder: 'Sélectionnez un thème',
         }
     }) }}
 </div>
 
 <div class="form__new" id="field-image">
-    <label class="label__header--large">Ajouter une image : <span>(Optionnel)</span></label>
+    <label class="label__header--large">Ajoutez une image d'illustration : <span>(Optionnel)</span></label>
     <label class="label__header--image">Veuillez sélectionner une image sur votre ordinateur.</label>
     {% if citizen_project is defined and citizen_project.hasImageUploaded %}
         <div class="citizen_project_form__picture_preview">
@@ -60,12 +60,11 @@
     {% endif %}
     {{ form_errors(form.image) }}
     {{ form_widget(form.image) }}
-    <button id="citizen_project_image_clear">Annuler</button>
     <div class="field-image-info">
         <div>JPEG ou PNG - 50 Mo maximum</div>
         <div>Au moins 1024x576 pixels - format 16:9</div>
     </div>
-    <small>Choisissez une image sans texte, représentative de votre projet et dont vous détenez les droits.</small>
+    <small>Choisissez une image sans texte, représentative de votre projet et libre de droit.</small>
 </div>
 
 <div class="form__new" id="field-problem-description">
@@ -74,29 +73,29 @@
     {{ form_widget(form.problem_description, {
         'attr': {
             'class': 'form--full form__field--textarea-120',
-            'placeholder': 'Quelques lignes qui décrivent aux autres votre problématique',
+            'placeholder': 'Décrivez en 1 ou 2 phrases le problème local auquel vous proposez de répondre.',
         }
     }) }}
     <small>
-        Ex. "Les collégiens ont à effectuer un stage d'observation en classe de 3e ou de 4e
+        Ex. "Les collégiens doivent effectuer un stage d'observation en classe de 3e ou de 4e
         pour les aider à déterminer leur orientation professionnelle mais
-        ils ont parfois du mal à trouver ce stage en dehors de leur réseau famillial."
+        ils ont parfois du mal à le trouver en dehors de leur réseau famillial."
     </small>
 </div>
 
 <div class="form__new" id="field-proposed-solution">
-    {{ form_label(form.proposed_solution, 'Comment répondez-vous à cette problématique ?', {label_attr: {class:'label__header--large'}}) }}
+    {{ form_label(form.proposed_solution, 'Comment votre projet tend à répondre à ce problème ?', {label_attr: {class:'label__header--large'}}) }}
     {{ form_errors(form.proposed_solution) }}
     {{ form_widget(form.proposed_solution, {
         'attr': {
             'class': 'form--full form__field--textarea-120',
-            'placeholder': 'Un court paragraphe sur la ou les solutions que vous envisagez',
+            'placeholder': 'Un court paragraphe sur la ou les solutions que vous proposez',
         }
     }) }}
 </div>
 
 <div class="form__new" id="field-required-means">
-    {{ form_label(form.required_means, 'Quelle est votre feuille de route ?', {label_attr: {class: 'label__header--large'}}) }}
+    {{ form_label(form.required_means, 'Quel est votre plan d\'action ?', {label_attr: {class: 'label__header--large'}}) }}
     {{ form_errors(form.required_means) }}
     {{ form_widget(form.required_means, {
         'attr': {
@@ -147,17 +146,41 @@
     </div>
 </div>
 
+<div class="form__new" id="citizen-project-phone">
+    <div class="register__form__phone">
+        {{ form_label(form.required_means, 'Votre téléphone :', {label_attr: {class: 'label__header--large'}}) }}
+        <div class="l__row l__row--top l__row--h-stretch">
+            {{ form_widget(form.phone.country) }}
+            {{ form_widget(form.phone.number, {attr: {placeholder: 'Téléphone' }}) }}
+        </div>
+        <div class="text--summary text--small text--gray b__nudge--top-10 b__nudge--bottom">
+            Nous vous contacterons sur ce numéro, il sera uniquement mis à disposition de nos équipes départementales.
+        </div>
+    </div>
+    {{ form_errors(form.phone) }}
+</div>
+
+<div class="form__new" id="field-personal-phone">
+    <label class="label__header--large">Vérifiez votre e-mail :</label>
+    <div>
+        <div>{{ app.user.emailAddress }}</div>
+        <a href="{{ path('app_adherent_profile') }}" class="link--blue" target="_blank">Modifier</a>
+    </div>
+
+</div>
+
 <div class="form__new form__new__checkbox" id="field-assistance-needed">
     <div>
         {{ form_errors(form.assistance_needed) }}
         {{ form_widget(form.assistance_needed) }}
         <label for="{{ form.assistance_needed.vars.id }}">
-            Je sollicite un accompagnement personalisé de l'équipe des projets citoyens
+            Je sollicite un accompagnement personnalisé de l'équipe Projet citoyens de La République En Marche <span class="text--gray text--italic">(Optionnel)</span>
         </label>
     </div>
 </div>
+
 <div class="form__new">
-    {{ form_label(form.assistance_content, 'En quoi l\'équipe d\'accompagnement peut-elle m\'aider ?', {'label_attr': { class: 'label__header--large' }}) }}
+    {{ form_label(form.assistance_content, 'En quoi l\'équipe d\'accompagnement peut-elle vous aider ?', {'label_attr': { class: 'label__header--small' }}) }}
     {{ form_errors(form.assistance_content) }}
     {{ form_widget(form.assistance_content, {
         'attr': {
@@ -166,14 +189,4 @@
     }) }}
 </div>
 
-<div class="l__row l__row--top l__row--h-stretch l__mobile--col" id="citizen-project-phone">
-    <div class="l__col l__col--top register__form__phone">
-        {{ form_label(form.phone, 'Téléphone', {label_attr: {class: 'text--gray'}}) }}
-        <div class="l__row l__row--top l__row--h-stretch">
-            {{ form_widget(form.phone.country) }}
-            {{ form_widget(form.phone.number, {attr: {placeholder: 'Téléphone' }}) }}
-        </div>
-        <p>Nous vous contacterons sur ce numéro, il sera uniquement mis à disposition de nos équipes départementales.</p>
-    </div>
-    {{ form_errors(form.phone) }}
-</div>
+<hr/>

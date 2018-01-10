@@ -83,6 +83,10 @@
         .form__new {
             margin-bottom: 40px;
 
+            &.form__new__checkbox {
+                margin-bottom: 15px;
+            }
+
             input,
             textarea,
             select {
@@ -101,8 +105,20 @@
                 border: 1px dashed #ddd;
                 background-color: white;
                 position: relative;
-                padding: 50px 20px;
+                padding: 80px 20px;
                 font-size: 16px;
+                margin-top: -28px;
+            }
+
+            .field-image-info {
+                color: $gray--muted;
+                position: relative;
+                margin-top: -75px;
+                text-align: center;
+
+                & + small {
+                    margin-top: 35px;
+                }
             }
         }
 
@@ -116,7 +132,7 @@
             font-family: $font-roboto;
             @include text--small;
             margin-top: 8px;
-            color: $dark;
+            color: $gray--muted;
             display: block;
         }
     }
