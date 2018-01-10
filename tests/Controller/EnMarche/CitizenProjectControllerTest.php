@@ -34,7 +34,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
     public function testAnonymousUserCannotSeeAPendingCitizenProject(): void
     {
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille');
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
     }
 
     public function testAdherentCannotSeeUnapprovedCitizenProject(): void
@@ -173,7 +173,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ]);
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client, true);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client, true);
 
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/comite/autocompletion?term=pa', [], [], [
@@ -436,7 +436,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
         $this->assertSame('/espace-adherent/creer-mon-projet-citoyen', $this->client->getRequest()->getPathInfo());
 
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
         $crawler = $this->client->followRedirect();
 
         $this->client->submit($crawler->selectButton('Je me connecte')->form([

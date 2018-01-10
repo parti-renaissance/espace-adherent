@@ -37,7 +37,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/initiative-citoyenne/creer');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
     }
 
     public function testAnonymousUserSeePartialName()
@@ -356,7 +356,7 @@ class CitizenInitiativeControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('2 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
 
-        $this->client->click($crawler->selectLink('Mes événements')->link());
+        $this->client->click($crawler->selectLink('Mes activités')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertContains('Nettoyage de la ville', $this->client->getResponse()->getContent());
