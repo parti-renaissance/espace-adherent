@@ -62,6 +62,11 @@ class ElectionRound
      */
     private $date;
 
+    public function __toString(): string
+    {
+        return $this->label;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

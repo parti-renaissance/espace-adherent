@@ -26,7 +26,6 @@ class ElectionRoundType extends AbstractType
             ->add('label', TextType::class)
             ->add('description', TextType::class, [
                 'filter_emojis' => true,
-                'purify_html' => true,
             ])
             ->add('date', DateType::class)
         ;

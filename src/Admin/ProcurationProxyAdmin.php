@@ -108,20 +108,12 @@ class ProcurationProxyAdmin extends AbstractAdmin
                     'label' => 'Bureau de vote',
                 ])
             ->end()
-            ->with('Disponibilités', ['class' => 'col-md-6'])
-                ->add('electionPresidentialFirstRound', null, [
-                    'label' => 'Présidentielle - 1er tour',
+            ->with('Tours', ['class' => 'col-md-6'])
+                ->add('electionRounds', null, [
+                    'label' => 'Proposés',
                 ])
-                ->add('electionPresidentialSecondRound', null, [
-                    'label' => 'Présidentielle - 2ème tour',
-                ])
-                ->add('electionLegislativeFirstRound', null, [
-                    'label' => 'Législatives - 1er tour',
-                ])
-                ->add('electionLegislativeSecondRound', null, [
-                    'label' => 'Législatives - 2ème tour',
-                ])
-            ->end();
+            ->end()
+        ;
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
@@ -173,20 +165,15 @@ class ProcurationProxyAdmin extends AbstractAdmin
                     'label' => 'Bureau de vote',
                 ])
             ->end()
-            ->with('Disponibilités', ['class' => 'col-md-4'])
-                ->add('electionPresidentialFirstRound', null, [
-                    'label' => 'Présidentielle - 1er tour',
+            ->with('Tours', ['class' => 'col-md-6'])
+                ->add('electionRounds', null, [
+                    'label' => 'Proposés',
                 ])
-                ->add('electionPresidentialSecondRound', null, [
-                    'label' => 'Présidentielle - 2ème tour',
+                ->add('availableRoundsAsString', null, [
+                    'label' => 'Disponibles',
                 ])
-                ->add('electionLegislativeFirstRound', null, [
-                    'label' => 'Législatives - 1er tour',
-                ])
-                ->add('electionLegislativeSecondRound', null, [
-                    'label' => 'Législatives - 2ème tour',
-                ])
-            ->end();
+            ->end()
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -203,6 +190,9 @@ class ProcurationProxyAdmin extends AbstractAdmin
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
+            ])
+            ->add('electionRounds', null, [
+                'label' => 'Tours',
             ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date',

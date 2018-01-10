@@ -549,26 +549,6 @@ class ProcurationRequest
         $this->voteOffice = $voteOffice;
     }
 
-    public function getElectionPresidentialFirstRound(): bool
-    {
-        return $this->electionPresidentialFirstRound;
-    }
-
-    public function getElectionPresidentialSecondRound(): bool
-    {
-        return $this->electionPresidentialSecondRound;
-    }
-
-    public function getElectionLegislativeFirstRound(): bool
-    {
-        return $this->electionLegislativeFirstRound;
-    }
-
-    public function getElectionLegislativeSecondRound(): bool
-    {
-        return $this->electionLegislativeSecondRound;
-    }
-
     public function getElectionRoundsCount(): int
     {
         return $this->electionRounds->count();

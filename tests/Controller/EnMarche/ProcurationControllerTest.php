@@ -85,8 +85,12 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(
+            'La procuration avecLa République En Marche !',
+            trim($crawler->filter('.procuration__header--outer h2')->text())
+        );
+        $this->assertSame(
             'Un de nos volontaires peut porter votre voix',
-            $crawler->filter('h2')->text()
+            trim($crawler->filter('.procuration__content h2')->text())
         );
         $this->assertCount(1, $crawler->filter('#election_context_elections input[type="checkbox"]'));
         $this->assertSame(
@@ -120,8 +124,12 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(
-            'Proposez-vous en tant que mandataire, à qui un citoyen de votre ville peut donner procuration.',
-            $crawler->filter('h2')->text()
+            'La procuration avecLa République En Marche !',
+            trim($crawler->filter('.procuration__header--outer h2')->text())
+        );
+        $this->assertSame(
+            'Portez la voix d\'un citoyen de votre ville',
+            trim($crawler->filter('.procuration__content h2')->text())
         );
         $this->assertCount(1, $crawler->filter('#election_context_elections input[type="checkbox"]'));
         $this->assertSame(
