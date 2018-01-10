@@ -6,7 +6,6 @@ use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
 use AppBundle\DataFixtures\ORM\LoadRedirectionData;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
@@ -22,7 +21,7 @@ class HomeControllerTest extends SqliteWebTestCase
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/');
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
+        $this->isSuccessful($response = $this->client->getResponse());
 
         // Articles
         // $this->assertSame(1, $crawler->filter('html:contains("« Je viens échanger, comprendre et construire. »")')->count());
@@ -37,7 +36,7 @@ class HomeControllerTest extends SqliteWebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/health');
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
+        $this->isSuccessful($this->client->getResponse());
     }
 
     /**
@@ -47,7 +46,7 @@ class HomeControllerTest extends SqliteWebTestCase
     {
         $this->client->request(Request::METHOD_GET, $page);
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
+        $this->isSuccessful($this->client->getResponse());
     }
 
     public function provideSitemaps()
@@ -67,11 +66,11 @@ class HomeControllerTest extends SqliteWebTestCase
     public function testDynamicRedirections()
     {
         $this->client->request(Request::METHOD_GET, '/dynamic-redirection-301');
-        $this->assertResponseStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/dynamic-redirection-301-target', $this->client);
+
+        $this->assertClientIsRedirectedTo('/dynamic-redirection-301-target', $this->client, false, true);
 
         $this->client->request(Request::METHOD_GET, '/dynamic-redirection-302');
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+
         $this->assertClientIsRedirectedTo('/dynamic-redirection-302-target', $this->client);
     }
 

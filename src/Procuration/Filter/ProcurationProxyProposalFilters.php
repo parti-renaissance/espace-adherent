@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProcurationProxyProposalFilters extends ProcurationFilters
 {
-    const UNASSOCIATED = 'unassociated';
-    const ASSOCIATED = 'associated';
-    const DISABLED = 'disabled';
+    public const UNASSOCIATED = 'unassociated';
+    public const ASSOCIATED = 'associated';
+    public const DISABLED = 'disabled';
 
     public static function fromQueryString(Request $request)
     {
@@ -25,7 +25,7 @@ class ProcurationProxyProposalFilters extends ProcurationFilters
         $status = mb_strtolower(trim($status));
 
         if (!in_array($status, [self::ASSOCIATED, self::UNASSOCIATED, self::DISABLED])) {
-            throw new ProcurationException(sprintf('Unexpected procuration proxy proposal type "%s".', $status));
+            throw new ProcurationException(sprintf('Unexpected procuration proxy proposal status "%s".', $status));
         }
 
         parent::setStatus($status);
@@ -37,20 +37,20 @@ class ProcurationProxyProposalFilters extends ProcurationFilters
 
         $status = $this->getStatus();
         if (self::UNASSOCIATED === $status) {
-            $qb->andWhere(sprintf('%s.foundRequest IS NULL', $alias));
+            $qb->andWhere("$alias.foundRequest IS NULL");
         } elseif (self::ASSOCIATED === $status) {
-            $qb->andWhere(sprintf('%s.foundRequest IS NOT NULL', $alias));
+            $qb->andWhere("$alias.foundRequest IS NOT NULL");
         } elseif (self::DISABLED === $status) {
             $qb
-                ->andWhere(sprintf('%s.disabled = :disabled', $alias))
+                ->andWhere("$alias.disabled = :disabled")
                 ->setParameter('disabled', 1)
             ;
         }
 
         $qb
-            ->addOrderBy(sprintf('%s.createdAt', $alias), 'DESC')
-            ->addOrderBy(sprintf('%s.lastName', $alias), 'ASC')
-            ->andWhere(sprintf('%s.reliability >= 0', $alias))
+            ->addOrderBy("$alias.createdAt", 'DESC')
+            ->addOrderBy("$alias.lastName", 'ASC')
+            ->andWhere("$alias.reliability >= 0")
         ;
     }
 }

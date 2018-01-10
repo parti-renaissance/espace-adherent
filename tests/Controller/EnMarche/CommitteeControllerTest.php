@@ -28,12 +28,11 @@ class CommitteeControllerTest extends MysqlWebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/comites/'.LoadAdherentData::COMMITTEE_3_UUID.'/en-marche-dammarie-les-lys');
 
-        $this->assertStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client);
+        $this->assertClientIsRedirectedTo('/comites/en-marche-dammarie-les-lys', $this->client, false, true);
 
-        $this->assertClientIsRedirectedTo('/comites/en-marche-dammarie-les-lys', $this->client);
         $this->client->followRedirect();
 
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->isSuccessful($this->client->getResponse());
     }
 
     public function testAnonymousUserIsNotAllowedToFollowCommittee()

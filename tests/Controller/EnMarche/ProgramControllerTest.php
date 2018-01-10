@@ -23,7 +23,7 @@ class ProgramControllerTest extends SqliteWebTestCase
     {
         $this->client->request(Request::METHOD_GET, $path);
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->isSuccessful($this->client->getResponse());
     }
 
     public function provideActions()
@@ -40,7 +40,7 @@ class ProgramControllerTest extends SqliteWebTestCase
     {
         $this->client->request(Request::METHOD_GET, $path);
 
-        $this->assertClientIsRedirectedTo('/emmanuel-macron/le-programme', $this->client);
+        $this->assertClientIsRedirectedTo('/emmanuel-macron/le-programme', $this->client, false, true);
     }
 
     public function provideRedirectActions()

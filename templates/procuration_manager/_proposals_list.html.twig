@@ -27,9 +27,9 @@
             </span>
         </td>
         <td class="datagrid__table__col--left">
-            {{ include('procuration_manager/_ballots.html.twig', {
-                'legislative_first_round': proxy.remainingAvailabilities.legislatives.first,
-                'legislative_second_round': proxy.remainingAvailabilities.legislatives.second,
+            {{ include('procuration_manager/_matching_election_rounds.html.twig', {
+                proxy_rounds: proxy.availableRounds,
+                request: proxy.foundRequest,
             }, with_context=false) }}
         </td>
         <td class="datagrid__table__col--hide-mobile">
@@ -38,7 +38,7 @@
         <td>
             {% if proxy.foundRequest %}
                 Associé à la<br />
-                demande n°<a href="{{ path('app_procuration_manager_request', {'id': proxy.foundRequest.id}) }}">{{ proxy.foundRequest.id }}</a>
+                demande n°<a href="{{ path('app_procuration_manager_request', { id: proxy.foundRequest.id }) }}">{{ proxy.foundRequest.id }}</a>
             {% elseif proxy.disabled %}
                 Désactivé<br />
                 (n'est plus associable)
@@ -48,11 +48,11 @@
         </td>
         <td>
             {% if proxy.disabled %}
-                <a href="{{ path('app_procuration_manager_proposal_transform', {'id': proxy.id, 'action': 'activer'}) }}">
+                <a href="{{ path('app_procuration_manager_proposal_transform', { id: proxy.id, action: constant('ACTION_ENABLE', proxy) }) }}">
                     Réactiver
                 </a>
             {% else %}
-                <a href="{{ path('app_procuration_manager_proposal_transform', {'id': proxy.id, 'action': 'desactiver'}) }}">
+                <a href="{{ path('app_procuration_manager_proposal_transform', { id: proxy.id, action: constant('ACTION_DISABLE', proxy) }) }}">
                     Désactiver
                 </a>
             {% endif %}

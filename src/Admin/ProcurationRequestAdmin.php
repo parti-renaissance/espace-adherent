@@ -94,23 +94,14 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Procuration', ['class' => 'col-md-6'])
-                ->add('electionPresidentialFirstRound', null, [
-                    'label' => 'Présidentielle - 1er tour',
-                ])
-                ->add('electionPresidentialSecondRound', null, [
-                    'label' => 'Présidentielle - 2ème tour',
-                ])
-                ->add('electionLegislativeFirstRound', null, [
-                    'label' => 'Législatives - 1er tour',
-                ])
-                ->add('electionLegislativeSecondRound', null, [
-                    'label' => 'Législatives - 2ème tour',
+                ->add('electionRounds', null, [
+                    'label' => 'Tours',
                 ])
                 ->add('reason', ChoiceType::class, [
                     'choices' => [
                         'Parce que je réside dans une commune différente de celle où je suis inscrit(e) sur une liste électorale' => ProcurationRequest::REASON_RESIDENCY,
                         'Parce que je suis en vacances' => ProcurationRequest::REASON_HOLIDAYS,
-                        'En raison d’obligations professionnelles' => ProcurationRequest::REASON_PROFESIONNAL,
+                        'En raison d’obligations professionnelles' => ProcurationRequest::REASON_PROFESSIONAL,
                         'En raison d’un handicap' => ProcurationRequest::REASON_HANDICAP,
                         'Pour raison de santé' => ProcurationRequest::REASON_HEALTH,
                         'En raison d’assistance apportée à une personne malade ou infirme' => ProcurationRequest::REASON_HELP,
@@ -170,20 +161,8 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Procuration', ['class' => 'col-md-4'])
-                ->add('electionPresidentialFirstRound', null, [
-                    'label' => 'Présidentielle - 1er tour',
-                ])
-                ->add('electionPresidentialSecondRound', null, [
-                    'label' => 'Présidentielle - 2ème tour',
-                ])
-                ->add('electionLegislativeFirstRound', null, [
-                    'label' => 'Législatives - 1er tour',
-                ])
-                ->add('electionLegislativeSecondRound', null, [
-                    'label' => 'Législatives - 2ème tour',
-                ])
-                ->add('reason', null, [
-                    'label' => 'Raison',
+                ->add('electionRounds', null, [
+                    'label' => 'Tours',
                 ])
             ->end();
     }

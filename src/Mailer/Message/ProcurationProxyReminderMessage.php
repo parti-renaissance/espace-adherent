@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 final class ProcurationProxyReminderMessage extends Message
 {
-    public static function create(ProcurationRequest $request, string $infosUrl): self
+    public static function create(ProcurationRequest $request, string $infoUrl): self
     {
         $message = new self(
             Uuid::uuid4(),
@@ -16,7 +16,7 @@ final class ProcurationProxyReminderMessage extends Message
             $request->getEmailAddress(),
             null,
             'RAPPEL : votre procuration',
-            self::createRecipientVariables($request, $infosUrl)
+            self::createRecipientVariables($request, $infoUrl)
         );
 
         $message->setSenderName('Procuration En Marche !');
@@ -24,14 +24,14 @@ final class ProcurationProxyReminderMessage extends Message
         return $message;
     }
 
-    public static function createRecipientVariables(ProcurationRequest $request, string $infosUrl)
+    public static function createRecipientVariables(ProcurationRequest $request, string $infoUrl)
     {
         $proxy = $request->getFoundProxy();
 
         return [
             'target_firstname' => self::escape($request->getFirstNames()),
-            'info_link' => $infosUrl,
-            'elections' => implode(', ', $request->getElections()),
+            'info_link' => $infoUrl,
+            'elections' => implode(', ', $request->getElectionRoundLabels()),
             'voter_first_name' => self::escape($proxy->getFirstNames()),
             'voter_last_name' => self::escape($proxy->getLastName()),
             'voter_phone' => PhoneNumberFormatter::format($proxy->getPhone()),

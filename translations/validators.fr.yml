@@ -132,8 +132,16 @@ jemarche.postal_code.not_blank: Vous devez entrer un code postal.
 jemarche.postal_code.invalid: Ce code postal n'est pas valide.
 
 #
+# Election
+#
+election.rounds.min_count: Une élection doit avoir au moins un tour.
+
+#
 # Procuration
 #
+procuration.election_context.min_count: Vous devez choisir au moins une élection.
+procuration.election_rounds.min_count: Vous devez choisir au moins un tour d'élection.
+
 procuration.last_name.not_blank: Votre nom de naissance est requis.
 procuration.last_name.min_length: Votre nom de naissance doit comporter au moins 2 caractères.
 procuration.last_name.max_length: Votre nom de naissance ne peut pas dépasser 50 caractères.

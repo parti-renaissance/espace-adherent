@@ -8,10 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProcurationRequestFilters extends ProcurationFilters
 {
-    const PARAMETER_STATUS = 'status';
-
-    const PROCESSED = 'processed';
-    const UNPROCESSED = 'unprocessed';
+    public const PROCESSED = 'processed';
+    public const UNPROCESSED = 'unprocessed';
 
     public static function fromQueryString(Request $request)
     {
@@ -26,7 +24,7 @@ class ProcurationRequestFilters extends ProcurationFilters
         $status = mb_strtolower(trim($status));
 
         if ($status && !in_array($status, [self::PROCESSED, self::UNPROCESSED], true)) {
-            throw new ProcurationException(sprintf('Unexpected procuration request type "%s".', $status));
+            throw new ProcurationException(sprintf('Unexpected procuration request status "%s".', $status));
         }
 
         parent::setStatus($status);
@@ -38,20 +36,20 @@ class ProcurationRequestFilters extends ProcurationFilters
 
         if ($this->matchUnprocessedRequests()) {
             $qb
-                ->andWhere(sprintf('%s.processed = :flag AND %s.processedAt IS NULL', $alias, $alias))
+                ->andWhere("$alias.processed = :flag AND $alias.processedAt IS NULL")
                 ->setParameter('flag', 0)
             ;
         } else {
             $qb
-                ->andWhere(sprintf('%s.processed = :flag AND %s.processedAt IS NOT NULL', $alias, $alias))
+                ->andWhere("$alias.processed = :flag AND $alias.processedAt IS NOT NULL")
                 ->setParameter('flag', 1)
             ;
         }
 
         $qb
-            ->orderBy(sprintf('%s.processed', $alias), 'ASC')
-            ->addOrderBy(sprintf('%s.createdAt', $alias), 'DESC')
-            ->addOrderBy(sprintf('%s.lastName', $alias), 'ASC')
+            ->orderBy("$alias.processed", 'ASC')
+            ->addOrderBy("$alias.createdAt", 'DESC')
+            ->addOrderBy("$alias.lastName", 'ASC')
         ;
     }
 

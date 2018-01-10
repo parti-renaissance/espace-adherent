@@ -5,7 +5,6 @@ namespace Tests\AppBundle\Controller;
 use AppBundle\DataFixtures\ORM\LoadArticleData;
 use AppBundle\DataFixtures\ORM\LoadPageData;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\SqliteWebTestCase;
 
 /**
@@ -22,12 +21,11 @@ class RedirectingControllerTest extends SqliteWebTestCase
     {
         $this->client->request(Request::METHOD_GET, $uri);
 
-        $this->assertResponseStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo($redirectUri, $this->client);
+        $this->assertClientIsRedirectedTo($redirectUri, $this->client, false, true);
 
         $this->client->followRedirect();
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->isSuccessful($this->client->getResponse());
     }
 
     public function provideUrlsAndRedirections()

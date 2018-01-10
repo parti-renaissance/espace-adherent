@@ -2,8 +2,11 @@
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationRequest;
+use AppBundle\Procuration\ProcurationManager;
+use AppBundle\Procuration\ProcurationRequestSerializer;
+use AppBundle\Repository\AdherentRepository;
+use AppBundle\Repository\ProcurationRequestRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -15,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/procuration")
+ * @Security("is_granted('ROLE_ADMIN_PROCURATIONS')")
  */
 class AdminProcurationController extends Controller
 {
@@ -23,28 +27,21 @@ class AdminProcurationController extends Controller
      *
      * @Route("/referents-invitation-urls", name="app_admin_procuration_referents_invitations_urls")
      * @Method("GET")
-     * @Security("has_role('ROLE_ADMIN_PROCURATIONS')")
      */
-    public function referentsInvitationUrlsAction(): Response
+    public function referentsInvitationUrlsAction(AdherentRepository $repository): Response
     {
-        $referents = $this->getDoctrine()->getRepository(Adherent::class)->findReferents();
-
         return $this->render('admin/procuration/referents_invitation_urls.html.twig', [
-            'referents' => $referents,
+            'referents' => $repository->findReferents(),
         ]);
     }
 
     /**
      * @Route("/export")
      * @Method("GET")
-     * @Security("has_role('ROLE_ADMIN_PROCURATIONS')")
      */
-    public function exportMailsAction(): Response
+    public function exportMailsAction(ProcurationRequestRepository $repository, ProcurationRequestSerializer $serializer): Response
     {
-        $requests = $this->getDoctrine()->getRepository(ProcurationRequest::class)->findAllForExport();
-        $exported = $this->get('app.procuration.request_serializer')->serialize($requests);
-
-        return new Response($exported, 200, [
+        return new Response($serializer->serialize($repository->findAllForExport()), 200, [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="procurations-matched.csv"',
         ]);
@@ -55,7 +52,6 @@ class AdminProcurationController extends Controller
      *
      * @Route("/request/{id}/deassociate", name="app_admin_procuration_request_deassociate")
      * @Method("GET|POST")
-     * @Security("has_role('ROLE_ADMIN_PROCURATIONS')")
      */
     public function deassociateAction(Request $sfRequest, ProcurationRequest $request): Response
     {
@@ -63,12 +59,13 @@ class AdminProcurationController extends Controller
             return $this->redirectAfterDeassociation($sfRequest);
         }
 
-        $form = $this->createForm(FormType::class);
-        $form->add('submit', SubmitType::class);
-        $form->handleRequest($sfRequest);
+        $form = $this->createForm(FormType::class)
+            ->add('submit', SubmitType::class)
+            ->handleRequest($sfRequest)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.procuration.process_handler')->unprocess(null, $request);
+            $this->get(ProcurationManager::class)->unprocessProcurationRequest($request);
 
             return $this->redirectAfterDeassociation($sfRequest);
         }

@@ -6,11 +6,11 @@
     <script type="text/javascript">
         Kernel.onLoad(function() {
             App.createVoteLocationSelector(
-                '{{ form.voteCountry.vars.id }}',
-                '{{ form.votePostalCode.vars.id }}',
-                '{{ form.voteCity.vars.id }}',
-                '{{ form.voteCityName.vars.id }}',
-                '{{ form.voteOffice.vars.id }}'
+                '{{ procuration_form.voteCountry.vars.id }}',
+                '{{ procuration_form.votePostalCode.vars.id }}',
+                '{{ procuration_form.voteCity.vars.id }}',
+                '{{ procuration_form.voteCityName.vars.id }}',
+                '{{ procuration_form.voteOffice.vars.id }}'
             );
         });
     </script>
@@ -29,42 +29,42 @@
                     Attention : votre lieu de vote n’est pas forcément le même que votre lieu de résidence.
                 </div>
 
-                {{ form_errors(form) }}
+                {{ form_errors(procuration_form) }}
 
                 <div class="form__row">
-                    {{ form_label(form.voteCountry, 'Le pays où je suis inscrit sur les listes électorales') }}
-                    {{ form_errors(form.voteCountry) }}
-                    {{ form_widget(form.voteCountry, { 'attr': { 'class': 'form--full' } }) }}
+                    {{ form_label(procuration_form.voteCountry, 'Le pays où je suis inscrit sur les listes électorales') }}
+                    {{ form_errors(procuration_form.voteCountry) }}
+                    {{ form_widget(procuration_form.voteCountry, { attr: { class: 'form--full' } }) }}
                 </div>
 
                 <div class="form__row">
-                    {{ form_label(form.votePostalCode, 'Le code postal où je vote') }}
-                    {{ form_errors(form.votePostalCode) }}
-                    {{ form_widget(form.votePostalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
+                    {{ form_label(procuration_form.votePostalCode, 'Le code postal où je vote') }}
+                    {{ form_errors(procuration_form.votePostalCode) }}
+                    {{ form_widget(procuration_form.votePostalCode, { attr: { class: 'form--full', placeholder: 'Code postal' } }) }}
                 </div>
 
                 <div class="form__row">
                     <span id="vote-label-city-name">
-                        {{ form_label(form.voteCity, 'La ville dans laquelle je vote') }}
+                        {{ form_label(procuration_form.voteCity, 'La ville dans laquelle je vote') }}
                     </span>
                     <span id="vote-label-consulate" style="display: none;">
-                        {{ form_label(form.voteCity, 'Le consulat ou l\'ambassade dans lequel ou laquelle je vote') }}
+                        {{ form_label(procuration_form.voteCity, 'Le consulat ou l\'ambassade dans lequel ou laquelle je vote') }}
                     </span>
-                    {{ form_widget(form.voteCity) }}
-                    {{ form_widget(form.voteCityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
-                    {{ form_errors(form.voteCity) }}
+                    {{ form_widget(procuration_form.voteCity) }}
+                    {{ form_widget(procuration_form.voteCityName, { attr: { class: 'form--full', placeholder: 'Ville' } }) }}
+                    {{ form_errors(procuration_form.voteCity) }}
                 </div>
 
                 <div class="form__row">
-                    {{ form_label(form.voteOffice, 'Nom ou localisation de votre bureau de vote') }}
-                    {{ form_errors(form.voteOffice) }}
-                    {{ form_widget(form.voteOffice, { 'attr': { 'class': 'form--full', 'placeholder': 'Bureau de vote' } }) }}
+                    {{ form_label(procuration_form.voteOffice, 'Nom ou localisation de votre bureau de vote') }}
+                    {{ form_errors(procuration_form.voteOffice) }}
+                    {{ form_widget(procuration_form.voteOffice, { attr: { class: 'form--full', placeholder: 'Bureau de vote' } }) }}
                     <div class="text--body text--small b__nudge--top-10">
                         Connaître votre bureau de vote nous permettra de trouver une personne qui pourra s’y rendre.
                     </div>
                 </div>
 
-                {{ form_rest(form) }}
+                {{ form_rest(procuration_form) }}
 
                 <div class="text--center b__nudge--top-large">
                     <button type="submit" class="btn btn--blue">

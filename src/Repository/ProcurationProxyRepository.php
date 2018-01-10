@@ -34,23 +34,31 @@ class ProcurationProxyRepository extends EntityRepository
             return [];
         }
 
-        $this->addAndWhereManagedBy($qb = $this->createQueryBuilder('pp'), $manager);
+        $qb = $this->createQueryBuilder('pp');
+
         $filters->apply($qb, 'pp');
 
-        return $qb->getQuery()->getResult();
+        return $this->addAndWhereManagedBy($qb, $manager)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
-    public function countMatchingProposals(Adherent $manager, ProcurationProxyProposalFilters $filters): int
+    public function countMatchingProposals(Adherent $manager, ProcurationProxyProposalFilters $filters)
     {
         if (!$manager->isProcurationManager()) {
             return 0;
         }
 
-        $qb = $this->createQueryBuilder('pp')->select('COUNT(pp.id)')->andWhere('pp.reliability >= 0');
-        $this->addAndWhereManagedBy($qb, $manager);
+        $qb = $this->createQueryBuilder('pp');
+
         $filters->apply($qb, 'pp');
 
-        return (int) $qb->getQuery()->getSingleScalarResult();
+        return $this->addAndWhereManagedBy($qb, $manager)
+            ->select('COUNT(DISTINCT pp.id)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 
     public function isManagedBy(Adherent $procurationManager, ProcurationProxy $proxy): bool
@@ -66,9 +74,10 @@ class ProcurationProxyRepository extends EntityRepository
             ->setParameter('id', $proxy->getId())
         ;
 
-        $this->addAndWhereManagedBy($qb, $procurationManager);
-
-        return (bool) $qb->getQuery()->getSingleScalarResult();
+        return (bool) $this->addAndWhereManagedBy($qb, $procurationManager)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 
     /**
@@ -98,20 +107,16 @@ class ProcurationProxyRepository extends EntityRepository
             ->setParameter('voteCityName', $procurationRequest->getVoteCityName())
             ->setParameter('voteCountry', $procurationRequest->getVoteCountry())
             ->orderBy('score', 'DESC')
-            ->addOrderBy('pp.lastName', 'ASC');
+            ->addOrderBy('pp.lastName', 'ASC')
+        ;
 
-        if ($procurationRequest->getElectionLegislativeFirstRound()) {
-            $qb->andWhere('pp.electionLegislativeFirstRound = TRUE');
-        }
-
-        if ($procurationRequest->getElectionLegislativeSecondRound()) {
-            $qb->andWhere('pp.electionLegislativeSecondRound = TRUE');
-        }
-
-        return $qb->getQuery()->getResult();
+        return $this->andWhereMatchingRounds($qb, $procurationRequest)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
-    private function addAndWhereManagedBy(QueryBuilder $qb, Adherent $procurationManager)
+    private function addAndWhereManagedBy(QueryBuilder $qb, Adherent $procurationManager): QueryBuilder
     {
         $codesFilter = $qb->expr()->orX();
 
@@ -133,25 +138,28 @@ class ProcurationProxyRepository extends EntityRepository
             }
         }
 
-        $qb->andWhere($codesFilter);
+        return $qb->andWhere($codesFilter);
     }
 
-    private function createMatchingScore(QueryBuilder $qb, ProcurationRequest $procurationRequest)
+    private function andWhereMatchingRounds(QueryBuilder $qb, ProcurationRequest $procurationRequest): QueryBuilder
     {
-        $elections = [
-            'electionLegislativeFirstRound',
-            'electionLegislativeSecondRound',
-        ];
-
-        $score = [];
-
-        foreach ($elections as $election) {
-            $score[] = sprintf('(CASE WHEN (pp.%s = :%s) THEN 1 ELSE 0 END)', $election, $election);
+        $matches = [];
+        foreach ($procurationRequest->getElectionRounds() as $i => $round) {
+            $matches[] = $qb->expr()->andX(":round_$i MEMBER OF pp.electionRounds");
+            $qb->setParameter("round_$i", $round->getId());
         }
 
-        $qb->setParameter('electionLegislativeFirstRound', $procurationRequest->getElectionLegislativeFirstRound());
-        $qb->setParameter('electionLegislativeSecondRound', $procurationRequest->getElectionLegislativeSecondRound());
+        return $qb->andWhere($qb->expr()->andX(...$matches));
+    }
 
-        return implode(' + ', $score);
+    private function createMatchingScore(QueryBuilder $qb, ProcurationRequest $procurationRequest): string
+    {
+        foreach ($procurationRequest->getElectionRounds() as $i => $round) {
+            $score[] = "(CASE WHEN (:round_$i MEMBER OF pp.electionRounds) THEN 1 ELSE 0 END)";
+
+            $qb->setParameter("round_$i", $round->getId());
+        }
+
+        return implode(' + ', $score ?? []);
     }
 }

@@ -12,7 +12,7 @@
 
     Votre lien d'invitation (à partager uniquement aux mandataires de confiance) :<br />
     <input type="text" class="form form--full form__field"
-           value="{{ url('app_procuration_proxy_proposal', {'uuid': app.user.uuid.toString}) }}" />
+           value="{{ url('app_procuration_proxy_proposal', { uuid: app.user.uuid.toString }) }}" />
 
     <hr />
 
@@ -25,19 +25,19 @@
             {% if constant('UNASSOCIATED', filters) == filters.status %}
                 Vous n'avez pas encore de proposition de mandataire disponible.
             {% elseif constant('ASSOCIATED', filters) == filters.status %}
-                Vous n'avez pas encore de proposition de mandataire associé à une demande de procuration.
+                Vous n'avez pas encore de proposition de mandataire associée à une demande de procuration.
             {% else %}
-                Vous n'avez pas encore de proposition de mandataire désactivé.
+                Vous n'avez pas encore de proposition de mandataire désactivée.
             {% endif %}
         </div>
     {% else %}
-        <div class="text--body text--center b__nudge--bottom-large">
+        <div class="text--body text--center b__nudge--bottom-large procuration_proposals_total_count">
             {% if constant('UNASSOCIATED', filters) == filters.status %}
                 {{ '{1} Vous avez une proposition de mandataire disponible.|[2, Inf[ Vous avez %count% propositions de mandataires disponibles.'|transchoice(total_count) }}
             {% elseif constant('ASSOCIATED', filters) == filters.status %}
-                {{ '{1} Vous avez une proposition de mandataire associé.|[2, Inf[ Vous avez %count% propositions de mandataires associés.'|transchoice(total_count) }}
+                {{ '{1} Vous avez une proposition de mandataire associée.|[2, Inf[ Vous avez %count% propositions de mandataires associées.'|transchoice(total_count) }}
             {% else %}
-                {{ '{1} Vous avez une proposition de mandataire désactivé.|[2, Inf[ Vous avez %count% propositions de mandataires désactivés.'|transchoice(total_count) }}
+                {{ '{1} Vous avez une proposition de mandataire désactivée.|[2, Inf[ Vous avez %count% propositions de mandataires désactivées.'|transchoice(total_count) }}
             {% endif %}
         </div>
     {% endif %}
