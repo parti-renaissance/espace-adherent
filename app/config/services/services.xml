@@ -71,8 +71,8 @@
 		<!-- Timeline -->
 		<service id="AppBundle\Command\ImportTimelineCommand" />
 		<service id="AppBundle\Timeline\MeasureManager" />
-        <service id="AppBundle\Timeline\ThemeManager" />
+		<service id="AppBundle\Timeline\ThemeManager" />
 		<service id="AppBundle\Timeline\TimelineFactory" />
-        <service id="AppBundle\Timeline\ProfileManager" />
+		<service id="AppBundle\Timeline\ProfileManager" />
 	</services>
 </container>
