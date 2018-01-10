@@ -1,24 +1,33 @@
 version: "2"
 
 services:
+    ## en-marche.fr
+    ###############
     app:
+        networks:
+          default:
+            aliases:
+              - enmarche.dev
+              - enmarche.code
+              - enmarche.local
         build:
             context: docker/dev
         depends_on:
-            - db
-            - redis
+            - enmarche_db
+            - enmarche_redis
+            - rabbitmq
         volumes:
             - .:/app
-            - /app/var/cache
-            - /app/var/sessions
 
-    db:
+    enmarche_db:
         image: mysql:5.7
         environment:
             MYSQL_ROOT_PASSWORD: root
 
-    redis:
+    enmarche_redis:
         image: redis:3.2
 
+    ## common
+    ####################
     rabbitmq:
         image: rabbitmq:3-management
