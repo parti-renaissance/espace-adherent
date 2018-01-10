@@ -294,7 +294,6 @@ class ProcurationProxy
         $this->electionRounds = new ArrayCollection();
 
         if (!$this->referent) {
-            $this->disabled = true;
             $this->reliability = -1;
         }
     }
