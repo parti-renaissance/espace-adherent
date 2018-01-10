@@ -474,6 +474,11 @@ input[type=date]::-webkit-inner-spin-button {
             font-weight: bold;
         }
 
+        &.label__header--small {
+            font-family: $font-roboto;
+            @include text--small;
+        }
+
         &.label__header--large {
             font-family: $font-gillsans;
             @include text--medium-small;
@@ -488,6 +493,18 @@ input[type=date]::-webkit-inner-spin-button {
                 font-family: $font-roboto;
                 @include text--default;
             }
+        }
+
+        &.label__header--image {
+            display: inline-block;
+            @include text--medium-small;
+            color: $newblue;
+            font-weight: bold;
+            top: 38px;
+            position: relative;
+            z-index: 100;
+            width: 100%;
+            text-align: center;
         }
     }
 
@@ -559,11 +576,11 @@ input[type=date]::-webkit-inner-spin-button {
 
         input[type="checkbox"] {
             width: 20px;
+            flex: none;
         }
 
         label {
             order: 2;
-            @include text--small;
         }
     }
 }

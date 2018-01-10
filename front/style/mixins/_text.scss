@@ -101,7 +101,6 @@ $text--size-extra-large: 48px;
 
 @mixin text--body {
     font-family: $font-roboto;
-    letter-spacing: .3px;
     line-height: 1.5;
     font-size: $text--size-default;
     @include breakword;
@@ -109,7 +108,6 @@ $text--size-extra-large: 48px;
 
 @mixin text--summary {
     font-family: $font-roboto;
-    letter-spacing: .3px;
     line-height: 1.4;
     font-size: $text--size-small;
     font-weight: 400;
