@@ -29,6 +29,11 @@ class EventRegistration
     private $firstName;
 
     /**
+     * @ORM\Column(length=50)
+     */
+    private $lastName;
+
+    /**
      * @ORM\Column
      */
     private $emailAddress;
@@ -57,8 +62,8 @@ class EventRegistration
         UuidInterface $uuid,
         BaseEvent $event,
         string $firstName,
+        string $lastName,
         string $emailAddress,
-        ?string $postalCode = null,
         bool $newsletterSubscriber = false,
         UuidInterface $adherentUuid = null,
         string $createdAt = 'now'
@@ -66,8 +71,8 @@ class EventRegistration
         $this->uuid = $uuid;
         $this->event = $event;
         $this->firstName = $firstName;
+        $this->lastName = $lastName;
         $this->emailAddress = $emailAddress;
-        $this->postalCode = $postalCode;
         $this->newsletterSubscriber = $newsletterSubscriber;
         $this->adherentUuid = $adherentUuid;
         $this->createdAt = new \DateTime($createdAt);
@@ -81,6 +86,11 @@ class EventRegistration
     public function getFirstName(): string
     {
         return $this->firstName;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
     }
 
     public function getEmailAddress(): string

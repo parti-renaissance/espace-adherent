@@ -6,6 +6,9 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadCitizenActionData;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\EventRegistration;
+use AppBundle\Mailer\Message\CitizenActionRegistrationConfirmationMessage;
+use AppBundle\Repository\EventRegistrationRepository;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -18,11 +21,68 @@ class CitizenActionControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
 
+    /** @var EventRegistrationRepository */
+    private $repository;
+
+    public function testAnonymousUserCannotRegisterToCitizenAction()
+    {
+        $eventUrl = '/action-citoyenne/'.date('Y-m-d', strtotime('tomorrow')).'-projet-citoyen-3';
+        $crawler = $this->client->request('GET', $eventUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('1 inscrit', trim($crawler->filter('#members h3')->text()));
+        $this->assertSame(0, $crawler->filter('.citizen_action header a:contains("S\'inscrire")')->count());
+
+        $this->client->request('GET', $eventUrl.'/inscription');
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client, true);
+    }
+
+    public function testRegisteredAdherentUserCanRegisterToCitizenAction()
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+
+        $eventUrl = '/action-citoyenne/'.date('Y-m-d', strtotime('tomorrow')).'-projet-citoyen-3';
+        $crawler = $this->client->request('GET', $eventUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('1 inscrit', trim($crawler->filter('#members h3')->text()));
+
+        $crawler = $this->client->click($crawler->selectLink("S'inscrire")->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('Benjamin', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
+        $this->assertSame('Duroc', $crawler->filter('#field-last-name > input[type="text"]')->attr('value'));
+        $this->assertSame('benjyd@aol.com', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
+        $this->assertSame(1, $crawler->filter('#field-accept-terms')->count());
+        // Adherent is already subscribed to mails
+        $this->assertSame(0, $crawler->filter('#field-newsletter-subscriber')->count());
+
+        $this->client->submit($crawler->selectButton("Je m'inscris")->form());
+
+        $this->assertInstanceOf(EventRegistration::class, $this->getEventRegistrationRepository()->findGuestRegistration(LoadCitizenActionData::CITIZEN_ACTION_3_UUID, 'benjyd@aol.com'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenActionRegistrationConfirmationMessage::class, 'benjyd@aol.com'));
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, 'Votre inscription est confirmée.'));
+        $this->assertContains('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
+
+        $crawler = $this->client->click($crawler->selectLink('Retour')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('2 inscrits', trim($crawler->filter('#members h3')->text()));
+    }
+
     public function testExportIcalAction(): void
     {
         $uuid = LoadCitizenActionData::CITIZEN_ACTION_3_UUID;
         /** @var CitizenAction $citizenAction */
-        $citizenAction = $this->getRepository(CitizenAction::class)->findOneBy(['uuid' => $uuid]);
+        $citizenAction = $this->getCitizenActionRepository()->findOneBy(['uuid' => $uuid]);
 
         $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s/ical', $citizenAction->getSlug()));
 
@@ -61,14 +121,14 @@ CONTENT;
 
         $uuid = LoadCitizenActionData::CITIZEN_ACTION_3_UUID;
         /** @var CitizenAction $citizenAction */
-        $citizenAction = $this->getRepository(CitizenAction::class)->findOneBy(['uuid' => $uuid]);
+        $citizenAction = $this->getCitizenActionRepository()->findOneBy(['uuid' => $uuid]);
 
         $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s', $citizenAction->getSlug()));
 
         $unregistrationButton = $this->client->getCrawler()->filter('#citizen_action-unregistration');
 
         $this->assertSame('Se désinscrire', trim($unregistrationButton->text()));
-        $this->assertInstanceOf(EventRegistration::class, $this->getEventRegistrationRepository()->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_3_UUID));
+        $this->assertInstanceOf(EventRegistration::class, $this->repository->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_3_UUID));
 
         $this->client->request(Request::METHOD_POST, sprintf('/action-citoyenne/%s/desinscription', $citizenAction->getSlug()), [
             'token' => $unregistrationButton->attr('data-csrf-token'),
@@ -79,7 +139,7 @@ CONTENT;
         $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s', $citizenAction->getSlug()));
 
         $this->assertSame('S\'inscrire', $this->client->getCrawler()->filter('a.newbtn--orange')->text());
-        $this->assertNull($this->getEventRegistrationRepository()->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_3_UUID));
+        $this->assertNull($this->repository->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_3_UUID));
     }
 
     public function testUnregistrationFailed(): void
@@ -96,7 +156,7 @@ CONTENT;
         $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s', $citizenAction->getSlug()));
 
         $this->assertSame('S\'inscrire', $this->client->getCrawler()->filter('a.newbtn--orange')->text());
-        $this->assertNull($this->getEventRegistrationRepository()->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_2_UUID));
+        $this->assertNull($this->repository->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_2_UUID));
 
         $csrfToken = $this->container->get('security.csrf.token_manager')->getToken('citizen_action.unregistration');
         $this->client->request(Request::METHOD_POST, sprintf('/action-citoyenne/%s/desinscription', $citizenAction->getSlug()), [
@@ -108,7 +168,18 @@ CONTENT;
         $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s', $citizenAction->getSlug()));
 
         $this->assertSame('S\'inscrire', $this->client->getCrawler()->filter('a.newbtn--orange')->text());
-        $this->assertNull($this->getEventRegistrationRepository()->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_2_UUID));
+        $this->assertNull($this->repository->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_2_UUID));
+    }
+
+    private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)
+    {
+        $flash = $crawler->filter('#notice-flashes');
+
+        if ($message) {
+            $this->assertSame($message, trim($flash->text()));
+        }
+
+        return 1 === count($flash);
     }
 
     protected function setUp()
@@ -118,11 +189,15 @@ CONTENT;
         $this->init([
             LoadCitizenActionData::class,
         ]);
+
+        $this->repository = $this->getEventRegistrationRepository();
     }
 
     protected function tearDown()
     {
         $this->kill();
+
+        $this->repository = null;
 
         parent::tearDown();
     }

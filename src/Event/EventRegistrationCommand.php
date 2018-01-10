@@ -28,24 +28,24 @@ class EventRegistrationCommand
 
     /**
      * @Assert\NotBlank
+     * @Assert\Length(min=2, max=50)
+     */
+    private $lastName;
+
+    /**
+     * @Assert\NotBlank
      * @Assert\Email
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     private $emailAddress;
-
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=15)
-     */
-    private $postalCode;
     private $newsletterSubscriber;
     private $registrationUuid;
 
     public function __construct(BaseEvent $event, Adherent $adherent = null)
     {
         $this->event = $event;
-        $this->newsletterSubscriber = false;
         $this->registrationUuid = Uuid::uuid4();
+        $this->newsletterSubscriber = false;
 
         if ($adherent) {
             $this->setAdherent($adherent);
@@ -56,8 +56,8 @@ class EventRegistrationCommand
     {
         $this->adherent = $adherent;
         $this->firstName = $adherent->getFirstName();
+        $this->lastName = $adherent->getLastName();
         $this->emailAddress = $adherent->getEmailAddress();
-        $this->postalCode = $adherent->getPostalCode();
         $this->newsletterSubscriber = $adherent->hasSubscribedMainEmails();
     }
 
@@ -76,6 +76,16 @@ class EventRegistrationCommand
         $this->firstName = $firstName;
     }
 
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
     public function getEmailAddress(): ?string
     {
         return $this->emailAddress;
@@ -84,16 +94,6 @@ class EventRegistrationCommand
     public function setEmailAddress(string $emailAddress)
     {
         $this->emailAddress = mb_strtolower($emailAddress);
-    }
-
-    public function getPostalCode(): ?string
-    {
-        return $this->postalCode;
-    }
-
-    public function setPostalCode(string $postalCode)
-    {
-        $this->postalCode = $postalCode;
     }
 
     public function isNewsletterSubscriber(): bool
