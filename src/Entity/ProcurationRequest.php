@@ -80,7 +80,7 @@ class ProcurationRequest
      * The user who associated the found proxy.
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
-     * @ORM\JoinColumn(name="procuration_request_found_by_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="procuration_request_found_by_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $foundBy;
 

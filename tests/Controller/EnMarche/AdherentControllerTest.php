@@ -777,12 +777,15 @@ class AdherentControllerTest extends MysqlWebTestCase
         yield 'BoardMember' => ['carl999@example.fr', 'secret!12345'];
     }
 
-    public function testAdherentTerminatesMembership()
+    /**
+     * @dataProvider provideAdherentCredentials
+     */
+    public function testAdherentTerminatesMembership(string $userEmail, string $password, string $uuid, int $nbComments, string $committee, int $nbFollowers)
     {
         /** @var Adherent $adherent */
-        $adherentBeforeUnregistration = $this->getAdherentRepository()->findOneByEmail('michel.vasseur@example.ch');
+        $adherentBeforeUnregistration = $this->getAdherentRepository()->findOneByEmail($userEmail);
 
-        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, $userEmail, $password);
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
 
@@ -804,10 +807,10 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame(1, $errors->count());
         $this->assertSame('Afin de confirmer la suppression de votre compte, veuillez sélectionner la raison pour laquelle vous quittez le mouvement.', $errors->eq(0)->text());
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', 'en-marche-suisse'));
-        $this->assertSame('3 adhérents', $crawler->filter('.committee-members')->text());
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', $committee));
+        $this->assertSame("$nbFollowers adhérents", $crawler->filter('.committee-members')->text());
 
-        $this->assertCount(2, $this->getCitizenProjectCommentRepository()->findForAuthor($adherentBeforeUnregistration));
+        $this->assertCount($nbComments, $this->getCitizenProjectCommentRepository()->findForAuthor($adherentBeforeUnregistration));
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte/desadherer');
         $reasons = $this->client->getContainer()->getParameter('adherent_unregistration_reasons');
@@ -831,19 +834,20 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame(0, $errors->count());
         $this->assertSame('Votre adhésion et votre compte En Marche ont bien été supprimés et vos données personnelles effacées de notre base.', trim($crawler->filter('#is_not_adherent h1')->eq(0)->text()));
 
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(AdherentTerminateMembershipMessage::class, 'michel.vasseur@example.ch'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(AdherentTerminateMembershipMessage::class, $userEmail));
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', 'en-marche-suisse'));
+        --$nbFollowers;
 
-        $this->assertSame('2 adhérents', $crawler->filter('.committee-members')->text());
+        $this->assertSame("$nbFollowers adhérents", $crawler->filter('.committee-members')->text());
 
         /** @var Adherent $adherent */
-        $adherent = $this->getAdherentRepository()->findOneByEmail('michel.vasseur@example.ch');
+        $adherent = $this->getAdherentRepository()->findOneByEmail($userEmail);
 
         $this->assertNull($adherent);
 
         /** @var Unregistration $unregistration */
-        $unregistration = $this->getRepository(Unregistration::class)->findOneByUuid(LoadAdherentData::ADHERENT_13_UUID);
+        $unregistration = $this->getRepository(Unregistration::class)->findOneByUuid($uuid);
 
         $this->assertSame(array_values($chosenReasons), $unregistration->getReasons());
         $this->assertSame('Je me désinscris', $unregistration->getComment());
@@ -852,6 +856,14 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame($adherentBeforeUnregistration->getUuid()->toString(), $unregistration->getUuid()->toString());
         $this->assertSame($adherentBeforeUnregistration->getPostalCode(), $unregistration->getPostalCode());
         $this->assertCount(0, $this->getCitizenProjectCommentRepository()->findForAuthor($adherentBeforeUnregistration));
+    }
+
+    public function provideAdherentCredentials()
+    {
+        return [
+            'adherent 1' => ['michel.vasseur@example.ch', 'secret!12345', LoadAdherentData::ADHERENT_13_UUID, 2, 'en-marche-suisse', 3],
+            'adherent 2' => ['luciole1989@spambox.fr', 'EnMarche2017', LoadAdherentData::ADHERENT_4_UUID, 1, 'en-marche-paris-8', 4],
+        ];
     }
 
     protected function setUp()

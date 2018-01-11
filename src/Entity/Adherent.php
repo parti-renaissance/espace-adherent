@@ -158,21 +158,21 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     /**
      * @var CoordinatorManagedArea[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CoordinatorManagedArea", mappedBy="adherent", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CoordinatorManagedArea", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
      */
     private $coordinatorManagedAreas;
 
     /**
      * @var ProcurationManagedArea|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ProcurationManagedArea", mappedBy="adherent", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ProcurationManagedArea", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
      */
     private $procurationManagedArea;
 
     /**
      * @var BoardMember|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\BoardMember\BoardMember", mappedBy="adherent", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\BoardMember\BoardMember", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
      */
     private $boardMember;
 
