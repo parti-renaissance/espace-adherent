@@ -355,7 +355,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('2 acteurs', $crawler->filter('#followers > h3')->text());
+        $this->assertContains('2 participants', $crawler->filter('#followers > .citizen-project__card__title')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -373,7 +373,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('3 acteurs', $crawler->filter('#followers > h3')->text());
+        $this->assertContains('3 participants', $crawler->filter('#followers > .citizen-project__card__title')->text());
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertTrue($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -388,7 +388,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('2 acteurs', $crawler->filter('#followers > h3')->text());
+        $this->assertContains('2 participants', $crawler->filter('#followers > .citizen-project__card__title')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -456,9 +456,9 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ]);
 
-        $this->assertSame(3, $crawler->filter('.citizen-projects__landing__card')->count());
+        $this->assertSame(3, $crawler->filter('.search__citizen_project__box')->count());
 
-        $thumb1 = $crawler->filter('.citizen-projects__landing__card')->first();
+        $thumb1 = $crawler->filter('.search__citizen_project__box')->first();
 
         $this->assertSame('Le projet citoyen à Paris 8', trim($thumb1->filter('h3')->text()));
         $this->assertContains('Jacques P.', trim($thumb1->filter('.citizen-projects__landing__card__creator')->text()));

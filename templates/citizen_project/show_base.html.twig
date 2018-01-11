@@ -51,7 +51,7 @@
 
     {% if not citizen_project.isApproved %}
         <section>
-            <div class="citizen_project__waiting-for-approval">
+            <div class="citizen-project__waiting-for-approval">
                 Votre projet citoyen est en attente de validation par les équipes d'En Marche !
                 Vous serez alerté(e) par e-mail quand nous l'aurons accepté.
             </div>
@@ -63,12 +63,6 @@
         </section>
     {% else %}
         <h1 class="space--20-0 b__nudge--top-40">À propos</h1>
-
-        {% if citizen_project.hasImageUploaded %}
-            <div class="search__results__picture">
-                <img style="max-width: 100%" src="{{ asset(citizen_project.getAssetImagePath) }}" />
-            </div>
-        {% endif %}
 
         <div class="text--body text--dark" id="citizen-project-problem-description">
             <p>{{ citizen_project.problemDescription }}</p>
@@ -85,7 +79,7 @@
         <ul id="citizen-project-menu" class="citizen-project__menu list__links list__links--left list__links--row">
             {% set currentRoute = app.request.attributes.get('_route') %}
             <li>
-                <a class="{{ currentRoute == 'app_citizen_project_show' ? 'active' }}" href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}">À venir</a>
+                <a class="{{ currentRoute == 'app_citizen_project_show' ? 'active' }}" href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}">Actions terrain à venir</a>
             </li>
             {% if can_see_comment_citizen_project(citizen_project) %}
             <li>

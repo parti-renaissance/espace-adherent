@@ -108,10 +108,19 @@
 }
 
 .citizen-project {
+    header > div {
+        background-position: right center;
+        background-repeat: no-repeat;
+        background-size: contain;
+
+        @media (max-width: $tablet) {
+            background: $purple;
+        }
+    }
+
     &__aside {
         h3 {
-            @include text--medium-small;
-            font-family: $font-gillsans;
+            @include text--default;
             margin-bottom: 5px;
         }
     }

@@ -15,8 +15,11 @@
     margin: 0 0 100px 0;
 
     &__waiting-for-approval {
+        font-family: $font-roboto;
+        @include text--default;
         margin-top: 20px;
-        background: #fcecc2;
+        color: $dark;
+        background: $yellow;
         padding: 5px 10px;
     }
 
