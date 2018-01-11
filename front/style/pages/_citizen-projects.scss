@@ -37,6 +37,13 @@
                 margin-left: -8px;
             }
         }
+
+        &__grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 40px 0;
+        }
     }
 
     &__create {
