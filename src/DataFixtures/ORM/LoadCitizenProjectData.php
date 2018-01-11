@@ -61,7 +61,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_6_UUID,
             'created_at' => '2017-10-12 18:34:12',
-            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
+            'address' => NullablePostAddress::createFrenchAddress('26 Boulevard Louis Guichoux', '13003-13203', 43.325543, 5.376076),
             'phone' => '33 673643424',
         ]);
         $this->addReference('citizen-project-2', $citizenProject2);
@@ -126,7 +126,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_9_UUID,
             'created_at' => '2017-09-18 20:12:33',
-            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
+            'address' => NullablePostAddress::createFrenchAddress('28 Boulevard Louis Guichoux', '13003-13203', 43.32560, 5.376207),
             'phone' => '33 234823644',
         ]);
         $citizenProject6->approved('2017-10-19 09:17:24');
@@ -143,7 +143,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_10_UUID,
             'created_at' => '2017-09-18 09:14:45',
-            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
+            'address' => NullablePostAddress::createFrenchAddress('34 Boulevard Louis Guichoux', '13003-13203', 43.325524, 5.376792),
         ]);
         $this->addReference('citizen-project-7', $citizenProject7);
 
@@ -158,7 +158,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'assistance_needed' => false,
             'created_by' => LoadAdherentData::ADHERENT_11_UUID,
             'created_at' => '2017-10-10 17:34:18',
-            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
+            'address' => NullablePostAddress::createFrenchAddress('32 Boulevard Louis Guichoux', '13003-13203', 43.325534, 5.376733),
         ]);
         $citizenProject8->approved('2017-10-10 18:23:18');
         $this->addReference('citizen-project-8', $citizenProject8);
