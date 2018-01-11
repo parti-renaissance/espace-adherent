@@ -237,6 +237,13 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        api_me:
+            pattern: ^/api/me$
+            stateless: true
+            guard:
+                authenticators:
+                    - 'AppBundle\OAuth\OAuthAuthenticator'
+
         admin:
             context: main_context
             pattern: ^/admin

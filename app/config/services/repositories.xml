@@ -158,5 +158,30 @@
             <argument>AppBundle\Entity\Timeline\Theme</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
+
+        <service id="AppBundle\Repository\OAuth\AccessTokenRepository" public="false">
+            <factory service="doctrine" method="getRepository" />
+            <argument>AppBundle\Entity\OAuth\AccessToken</argument>
+        </service>
+
+        <service id="AppBundle\Repository\OAuth\AuthorizationCodeRepository" public="false">
+            <factory service="doctrine" method="getRepository" />
+            <argument>AppBundle\Entity\OAuth\AuthorizationCode</argument>
+        </service>
+
+        <service id="AppBundle\Repository\OAuth\RefreshTokenRepository" public="false">
+            <factory service="doctrine" method="getRepository" />
+            <argument>AppBundle\Entity\OAuth\RefreshToken</argument>
+        </service>
+
+        <service id="AppBundle\Repository\OAuth\ClientRepository" public="false">
+            <factory service="doctrine" method="getRepository" />
+            <argument>AppBundle\Entity\OAuth\Client</argument>
+        </service>
+
+        <service id="AppBundle\Repository\OAuth\UserAuthorizationRepository" public="false">
+            <factory service="doctrine" method="getRepository" />
+            <argument>AppBundle\Entity\OAuth\UserAuthorization</argument>
+        </service>
     </services>
 </container>

@@ -16,6 +16,8 @@ $yellow-hover: #c4d02a;
 $orange: #ff7822;
 $error: #EE324A;
 $success: $green;
+$info: #FFF878;
+$border-form: #E6ECF0;
 
 // New Colors
 $newblue: #265edd;
@@ -25,6 +27,8 @@ $purple: #6F80FF;
 $orange: #ff6955;
 $pink-light: #F8BCBC;
 $strawberry: #FF4863;
+$cta: #1254d8;
+$cta-hover: #0251C0;
 
 // Grays
 $darker: #222;
@@ -36,6 +40,9 @@ $gray: #BCBCBC;
 $gray--light: #E5E5E5;
 $gray--lighter: #F6F6F6;
 $gray--white: #FAFAFA;
+$text--gray: #666666;
+$bg--gray: #F5F5F5;
+$border-gray: #F1F1F1;
 
 // Social Media
 $facebook: #3b5998;
@@ -96,6 +103,9 @@ $gradient--menu: linear-gradient(to right, rgba(white, 0), white);
     opacity: $opacity;
 }
 
+@mixin transition {
+    transition: all 0.2s;
+}
 
 // SVGs
 @mixin color($color) {

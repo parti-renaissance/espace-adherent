@@ -76,6 +76,18 @@
     }
 }
 
+@mixin btn--secondary {
+    background-color: transparent;
+    border-color: $border-form;
+    color: $text--gray;
+    display: inline-block;
+    text-align: center;
+
+    &:hover {
+        background-color: $bg--gray;
+    }
+}
+
 @mixin btn--green {
     background: $green;
     border-color: $green;
