@@ -67,7 +67,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeCommentSection());
-        $this->assertFalse($this->seeReportLink());
+        $this->assertTrue($this->seeReportLink());
     }
 
     public function testAdministratorCanSeeACitizenProject(): void
@@ -275,7 +275,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         // Authenticate as the administrator (host)
         $crawler = $this->authenticateAsAdherent($this->client, 'lolodie.dutemps@hotnix.tld', 'politique2017');
         $crawler = $this->client->click($crawler->selectLink('En Marche - Projet citoyen')->link());
-        $crawler = $this->client->click($crawler->selectLink('Tous >')->link());
+        $crawler = $this->client->click($crawler->selectLink('Voir')->link());
 
         $token = $crawler->filter('#members-contact-token')->attr('value');
         $uuids = (array) $crawler->filter('input[name="members[]"]')->attr('value');
@@ -355,7 +355,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('2 participants', $crawler->filter('#followers > .citizen-project__card__title')->text());
+        $this->assertContains('2 participants', $crawler->filter('#followers .citizen-project__card__title')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -373,7 +373,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('3 participants', $crawler->filter('#followers > .citizen-project__card__title')->text());
+        $this->assertContains('3 participants', $crawler->filter('#followers .citizen-project__card__title')->text());
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertTrue($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -388,7 +388,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('2 participants', $crawler->filter('#followers > .citizen-project__card__title')->text());
+        $this->assertContains('2 participants', $crawler->filter('#followers .citizen-project__card__title')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -463,12 +463,12 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertSame('Le projet citoyen à Paris 8', trim($thumb1->filter('h3')->text()));
         $this->assertContains('Jacques P.', trim($thumb1->filter('.citizen-projects__landing__card__creator')->text()));
 
-        $thumb2 = $crawler->filter('.citizen-projects__landing__card')->eq(1);
+        $thumb2 = $crawler->filter('.search__citizen_project__box')->eq(1);
 
         $this->assertSame('Formation en ligne ouverte à tous à Évry', trim($thumb2->filter('h3')->text()));
         $this->assertContains('Francis B.', trim($thumb2->filter('.citizen-projects__landing__card__creator')->text()));
 
-        $thumb3 = $crawler->filter('.citizen-projects__landing__card')->eq(2);
+        $thumb3 = $crawler->filter('.search__citizen_project__box')->eq(2);
 
         $this->assertSame('Le projet citoyen à Dammarie-les-Lys', trim($thumb3->filter('h3')->text()));
         $this->assertContains('Francis B.', trim($thumb3->filter('.citizen-projects__landing__card__creator')->text()));
@@ -482,19 +482,19 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         ]);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(3, $crawler->filter('.citizen-projects__landing__card')->count());
+        $this->assertSame(3, $crawler->filter('.search__citizen_project__box')->count());
 
-        $thumb1 = $crawler->filter('.citizen-projects__landing__card')->first();
+        $thumb1 = $crawler->filter('.search__citizen_project__box')->first();
 
         $this->assertSame('Formation en ligne ouverte à tous à Évry', trim($thumb1->filter('h3')->text()));
         $this->assertContains('Francis Brioul', trim($thumb1->filter('.citizen-projects__landing__card__creator')->text()));
 
-        $thumb2 = $crawler->filter('.citizen-projects__landing__card')->eq(1);
+        $thumb2 = $crawler->filter('.search__citizen_project__box')->eq(1);
 
         $this->assertSame('Le projet citoyen à Paris 8', trim($thumb2->filter('h3')->text()));
         $this->assertContains('Jacques Picard', trim($thumb2->filter('.citizen-projects__landing__card__creator')->text()));
 
-        $thumb3 = $crawler->filter('.citizen-projects__landing__card')->eq(2);
+        $thumb3 = $crawler->filter('.search__citizen_project__box')->eq(2);
 
         $this->assertSame('Le projet citoyen à Dammarie-les-Lys', trim($thumb3->filter('h3')->text()));
         $this->assertContains('Francis Brioul', trim($thumb3->filter('.citizen-projects__landing__card__creator')->text()));
@@ -574,7 +574,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
     private function seeReportLink(): bool
     {
         try {
-            $this->client->getCrawler()->selectLink('Signaler')->link();
+            $this->client->getCrawler()->selectLink('Signaler ce projet')->link();
         } catch (\InvalidArgumentException $e) {
             return false;
         }
