@@ -1,0 +1,12 @@
+<div>
+    {% for citizen_project in citizen_projects %}
+    <div>
+       <a style="color:#185fca;text-decoration:none;" href="{{ url('app_citizen_project_show', { slug: citizen_project.slug }) }}" title="{{ citizen_project.name }}">
+           <h2>{{ citizen_project.name }}</h2>
+       </a>
+       <div>{{ citizen_project.subtitle }}</div>
+       <div>{{ citizen_project.cityName }}</div>
+    </div>
+    <br/>
+    {% endfor %}
+</div>

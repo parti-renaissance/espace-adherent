@@ -145,6 +145,50 @@ class CitizenProjectRepository extends BaseGroupRepository
         ;
     }
 
+    /**
+     * Finds all citizen projects around an Adherent.
+     *
+     * @param Adherent $adherent
+     * @param int      $limit         Limit of number of citizen projects to return
+     * @param int      $approvedSince Duration in format Time since the citizen projects have been approved
+     *
+     * @return CitizenProject[]
+     */
+    public function findNearByCitizenProjectsForAdherent(
+        Adherent $adherent,
+        int $limit,
+        ?string $approvedSince
+    ): array {
+        $qb = $this
+            ->createNearbyQueryBuilder(new Coordinates($adherent->getLatitude(), $adherent->getLongitude()))
+        ;
+
+        if ($adherent->getCitizenProjectCreationEmailSubscriptionRadius() > 0) {
+            $qb
+                ->andWhere($this->getNearbyExpression().' <= :distance_max')
+                ->setParameter('distance_max', $adherent->getCitizenProjectCreationEmailSubscriptionRadius())
+            ;
+        }
+
+        if (null !== $approvedSince && false !== strtotime($approvedSince)) {
+            $dateMin = new \DateTime('now');
+            $dateMin->modify("-$approvedSince");
+
+            $qb
+                ->andWhere('n.approvedAt >= :dateMin')
+                ->setParameter('dateMin', $dateMin->format('Y-m-d'))
+            ;
+        }
+
+        return $qb
+            ->andWhere('n.status = :status')
+            ->setParameter('status', CitizenProject::APPROVED)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+         ;
+    }
+
     public function hasCitizenProjectInStatus(Adherent $adherent, array $status): bool
     {
         $nb = $this->createQueryBuilder('cp')

@@ -512,4 +512,25 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             return $uuid->toString();
         }, array_column($query->getArrayResult(), 'uuid'));
     }
+
+    public function findAdherentsUuidByCitizenProjectCreationEmailSubscription(?int $offset = 0): array
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->select('a.uuid')
+            ->where('a.status = :status')
+            ->setParameter('status', Adherent::ENABLED)
+            ->andWhere('a.citizenProjectCreationEmailSubscriptionRadius != :radius')
+            ->setParameter('radius', Adherent::DISABLED_CITIZEN_PROJECT_EMAIL)
+            ->andWhere('a.postAddress.latitude IS NOT NULL')
+            ->andWhere('a.postAddress.longitude IS NOT NULL')
+        ;
+
+        if (null !== $offset) {
+            $qb->setFirstResult($offset);
+        }
+
+        return array_map(function (UuidInterface $uuid) {
+            return $uuid->toString();
+        }, array_column($qb->getQuery()->getArrayResult(), 'uuid'));
+    }
 }
