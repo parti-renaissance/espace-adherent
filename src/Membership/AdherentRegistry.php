@@ -93,7 +93,9 @@ class AdherentRegistry
 
         foreach ($adherent->getMemberships() as $membership) {
             $committee = $committeeRepository->findOneBy(['uuid' => $membership->getCommitteeUuid()->toString()]);
-            $this->committeeManager->unfollowCommittee($adherent, $committee, false);
+            if ($committee) {
+                $this->committeeManager->unfollowCommittee($adherent, $committee, false);
+            }
         }
     }
 }
