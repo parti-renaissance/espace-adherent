@@ -75,6 +75,13 @@
             </label>
         </div>
 
+        <div class="form__row form__checkbox form__checkbox--large">
+            <input type="checkbox" required="required" id="donation_check_nationality" />
+            <label for="donation_check_nationality">
+                Je certifie être de nationalité française ou résider fiscalement en France.
+            </label>
+        </div>
+
         {{ form_widget(form.submit, { 'attr': { 'class': 'btn--large-and-medium btn--primary' } }) }}
 
         <p class="text--summary text--smallest text--gray b__nudge--top-50 text--left">
