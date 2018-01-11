@@ -7,12 +7,12 @@
         {% endif %}
         <div class="search__citizen_project__meta">
 
-            <h2 class="text--medium-small">
+            <h3 class="text--medium-small">
                 {{ citizen_project.name }}
-            </h2>
-            <div class="text--gray b__nudge--top-5">{{ citizen_project.subTitle }}</div>
+            </h3>
+            <div class="text--gray b__nudge--top-5">{{ citizen_project.subtitle }}</div>
 
-            <div class="text--small text--gray b__nudge--top">
+            <div class="text--small text--gray b__nudge--top-10">
                     Par <span class="text--dark">{{ citizen_project.creator ? citizen_project.creator.fullName : 'un anonyme' }}</span> à
                     {{ citizen_project.cityName }}
             </div>

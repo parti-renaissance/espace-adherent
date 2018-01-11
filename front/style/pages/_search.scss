@@ -252,7 +252,24 @@
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
             position: relative;
             border-top: 1px solid $gray--white;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            list-style: none;
+
+            &:hover {
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+
+                h2 {
+                    color: $newblue;
+                }
+            }
+
+            @media (max-width: $tablet) {
+                width: 48%;
+            }
+
+            @media (max-width: $mobile) {
+                width: 100%;
+            }
 
             &__link {
                 position: absolute;
@@ -282,7 +299,7 @@
                 background-color: $gray--lighter;
                 color: $newblue;
                 border-radius: 50px;
-                margin-right: 5px;
+                margin: 0 7px 7px;
             }
         }
     }
