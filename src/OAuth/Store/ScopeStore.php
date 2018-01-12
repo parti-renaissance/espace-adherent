@@ -33,7 +33,7 @@ class ScopeStore implements ScopeRepositoryInterface
         }
 
         $unvalidScopes = array_diff(
-            array_map(function(Scope $scope) {return $scope->getIdentifier();}, $scopes), // Scopes asked by the client
+            array_map(function (Scope $scope) {return $scope->getIdentifier(); }, $scopes), // Scopes asked by the client
             $clientEntity->getScopes() // Scopes allowed for the client
         );
 

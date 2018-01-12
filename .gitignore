@@ -5,8 +5,6 @@
 /templates/amp/style.css.twig
 /build/
 /node_modules/
-!/var/cache/.gitkeep
-!/var/.gitkeep
 /var/
 /vendor/
 /web/bundles/

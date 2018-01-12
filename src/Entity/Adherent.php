@@ -68,6 +68,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      * @ORM\Column
      *
      * @JMS\Groups({"user_profile", "public"})
+     * @JMS\SerializedName("emailAddress")
      */
     private $emailAddress;
 
@@ -264,6 +265,16 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public static function createUuid(string $email): UuidInterface
     {
         return Uuid::uuid5(Uuid::NAMESPACE_OID, $email);
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("uuid"),
+     * @JMS\Groups({"user_profile", "public"})
+     */
+    public function getUuidAsString(): string
+    {
+        return $this->getUuid()->toString();
     }
 
     public function getRoles(): array
