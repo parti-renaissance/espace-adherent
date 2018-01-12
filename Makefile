@@ -6,7 +6,7 @@ PHPCSFIXER?=$(RUN) php -d memory_limit=1024m vendor/bin/php-cs-fixer
 
 .DEFAULT_GOAL := help
 .PHONY: help start stop reset db db-diff db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt
-.PHONY: lj build up perm deps cc phpcs phpcsfix tty fix-keys-perms
+.PHONY: lj build up perm deps cc phpcs phpcsfix tty
 
 help:
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
