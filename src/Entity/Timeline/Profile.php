@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="timeline_profiles")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\Timeline\ProfileRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -53,14 +53,20 @@ class Profile
      */
     public function titles(): array
     {
-        foreach ($this->getLocales() as $locale) {
-            /* @var $translation ProfileTranslation */
-            if ($translation = $this->translate($locale)) {
-                $titles[$locale] = $translation->getTitle();
-            }
+        /* @var $french ProfileTranslation */
+        if (!$french = $this->translate('fr')) {
+            return [];
         }
 
-        return $titles ?? [];
+        /* @var $english ProfileTranslation */
+        if (!$english = $this->translate('en')) {
+            $english = $french;
+        }
+
+        return [
+            'fr' => $french->getTitle(),
+            'en' => $english->getTitle(),
+        ];
     }
 
     /**
@@ -68,14 +74,20 @@ class Profile
      */
     public function slugs(): array
     {
-        foreach ($this->getLocales() as $locale) {
-            /* @var $translation ProfileTranslation */
-            if ($translation = $this->translate($locale)) {
-                $slugs[$locale] = $translation->getSlug();
-            }
+        /* @var $french ProfileTranslation */
+        if (!$french = $this->translate('fr')) {
+            return [];
         }
 
-        return $slugs ?? [];
+        /* @var $english ProfileTranslation */
+        if (!$english = $this->translate('en')) {
+            $english = $french;
+        }
+
+        return [
+            'fr' => $french->getSlug(),
+            'en' => $english->getSlug(),
+        ];
     }
 
     /**
@@ -83,13 +95,19 @@ class Profile
      */
     public function descriptions(): array
     {
-        foreach ($this->getLocales() as $locale) {
-            /* @var $translation ProfileTranslation */
-            if ($translation = $this->translate($locale)) {
-                $descriptions[$locale] = $translation->getDescription();
-            }
+        /* @var $french ProfileTranslation */
+        if (!$french = $this->translate('fr')) {
+            return [];
         }
 
-        return $descriptions ?? [];
+        /* @var $english ProfileTranslation */
+        if (!$english = $this->translate('en')) {
+            $english = $french;
+        }
+
+        return [
+            'fr' => $french->getDescription(),
+            'en' => $english->getDescription(),
+        ];
     }
 }

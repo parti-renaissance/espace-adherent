@@ -144,14 +144,20 @@ class Theme implements EntityMediaInterface
      */
     public function titles(): array
     {
-        foreach ($this->getLocales() as $locale) {
-            /* @var $translation ThemeTranslation */
-            if ($translation = $this->translate($locale)) {
-                $titles[$locale] = $translation->getTitle();
-            }
+        /* @var $french ThemeTranslation */
+        if (!$french = $this->translate('fr')) {
+            return [];
         }
 
-        return $titles ?? [];
+        /* @var $english ThemeTranslation */
+        if (!$english = $this->translate('en')) {
+            $english = $french;
+        }
+
+        return [
+            'fr' => $french->getTitle(),
+            'en' => $english->getTitle(),
+        ];
     }
 
     /**
@@ -159,14 +165,20 @@ class Theme implements EntityMediaInterface
      */
     public function slugs(): array
     {
-        foreach ($this->getLocales() as $locale) {
-            /* @var $translation ThemeTranslation */
-            if ($translation = $this->translate($locale)) {
-                $slugs[$locale] = $translation->getSlug();
-            }
+        /* @var $french ThemeTranslation */
+        if (!$french = $this->translate('fr')) {
+            return [];
         }
 
-        return $slugs ?? [];
+        /* @var $english ThemeTranslation */
+        if (!$english = $this->translate('en')) {
+            $english = $french;
+        }
+
+        return [
+            'fr' => $french->getSlug(),
+            'en' => $english->getSlug(),
+        ];
     }
 
     /**
@@ -174,13 +186,19 @@ class Theme implements EntityMediaInterface
      */
     public function descriptions(): array
     {
-        foreach ($this->getLocales() as $locale) {
-            /* @var $translation ThemeTranslation */
-            if ($translation = $this->translate($locale)) {
-                $descriptions[$locale] = $translation->getDescription();
-            }
+        /* @var $french ThemeTranslation */
+        if (!$french = $this->translate('fr')) {
+            return [];
         }
 
-        return $descriptions ?? [];
+        /* @var $english ThemeTranslation */
+        if (!$english = $this->translate('en')) {
+            $english = $french;
+        }
+
+        return [
+            'fr' => $french->getDescription(),
+            'en' => $english->getDescription(),
+        ];
     }
 }

@@ -25,7 +25,10 @@ services:
         class: 'Tests\AppBundle\Test\Algolia\DummyManualIndexer'
         public: false
         arguments:
-            - "@doctrine.orm.entity_manager"
+            - !service
+                class: 'Tests\AppBundle\Test\Algolia\DummyIndexer'
+                arguments:
+                    - '@doctrine.orm.entity_manager'
 
 framework:
     router:

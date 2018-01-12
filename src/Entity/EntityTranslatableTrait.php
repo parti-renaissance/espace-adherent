@@ -17,12 +17,8 @@ trait EntityTranslatableTrait
      */
     private $translations;
 
-    public function translate(string $locale = null): ?EntityTranslationInterface
+    public function translate(string $locale = 'fr'): ?EntityTranslationInterface
     {
-        if (!$locale) {
-            $locale = $this->getDefaultLocale();
-        }
-
         $translation = $this->translations->filter(
             function (EntityTranslationInterface $translation) use ($locale) {
                 return $locale === $translation->getLocale();
@@ -32,10 +28,8 @@ trait EntityTranslatableTrait
         return $translation ?: null;
     }
 
-    public function removeEmptyTranslations(): void
+    public function removeEmptyTranslations(array $optionalLocales): void
     {
-        $optionalLocales = array_diff_key($this->getLocales(), [$this->getDefaultLocale()]);
-
         foreach ($optionalLocales as $optionalLocale) {
             $this->removeTranslationIfEmpty($optionalLocale);
         }
@@ -51,15 +45,5 @@ trait EntityTranslatableTrait
         if ($translation->isEmpty()) {
             $this->removeTranslation($translation);
         }
-    }
-
-    private function getLocales(): array
-    {
-        return ['fr', 'en'];
-    }
-
-    private function getDefaultLocale(): string
-    {
-        return 'fr';
     }
 }

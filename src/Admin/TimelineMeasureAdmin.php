@@ -20,12 +20,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class TimelineMeasureAdmin extends AbstractAdmin
 {
     private $measureManager;
+    private $emptyTranslationRemoverListener;
 
-    public function __construct($code, $class, $baseControllerName, MeasureManager $measureManager)
+    public function __construct($code, $class, $baseControllerName, MeasureManager $measureManager, EmptyTranslationRemoverListener $emptyTranslationRemoverListener)
     {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->measureManager = $measureManager;
+        $this->emptyTranslationRemoverListener = $emptyTranslationRemoverListener;
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -67,7 +69,7 @@ class TimelineMeasureAdmin extends AbstractAdmin
 
         $formMapper
             ->getFormBuilder()
-            ->addEventSubscriber(new EmptyTranslationRemoverListener())
+            ->addEventSubscriber($this->emptyTranslationRemoverListener)
         ;
     }
 

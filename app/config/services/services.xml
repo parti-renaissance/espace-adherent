@@ -70,6 +70,10 @@
 
 		<!-- Timeline -->
 		<service id="AppBundle\Command\ImportTimelineCommand" />
+        <service id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener">
+            <argument>%locales%</argument>
+            <argument>%locale%</argument>
+        </service>
 		<service id="AppBundle\Timeline\MeasureManager" />
 		<service id="AppBundle\Timeline\ThemeManager" />
 		<service id="AppBundle\Timeline\TimelineFactory" />

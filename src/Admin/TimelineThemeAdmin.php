@@ -18,12 +18,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class TimelineThemeAdmin extends AbstractAdmin
 {
     private $themeManager;
+    private $emptyTranslationRemoverListener;
 
-    public function __construct($code, $class, $baseControllerName, ThemeManager $themeManager)
+    public function __construct($code, $class, $baseControllerName, ThemeManager $themeManager, EmptyTranslationRemoverListener $emptyTranslationRemoverListener)
     {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->themeManager = $themeManager;
+        $this->emptyTranslationRemoverListener = $emptyTranslationRemoverListener;
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -62,7 +64,7 @@ class TimelineThemeAdmin extends AbstractAdmin
 
         $formMapper
             ->getFormBuilder()
-            ->addEventSubscriber(new EmptyTranslationRemoverListener())
+            ->addEventSubscriber($this->emptyTranslationRemoverListener)
         ;
     }
 

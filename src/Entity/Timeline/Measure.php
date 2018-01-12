@@ -299,13 +299,19 @@ class Measure
      */
     public function titles(): array
     {
-        foreach ($this->getLocales() as $locale) {
-            /* @var $translation MeasureTranslation */
-            if ($translation = $this->translate($locale)) {
-                $titles[$locale] = $translation->getTitle();
-            }
+        /* @var $french MeasureTranslation */
+        if (!$french = $this->translate('fr')) {
+            return [];
         }
 
-        return $titles ?? [];
+        /* @var $english MeasureTranslation */
+        if (!$english = $this->translate('en')) {
+            $english = $french;
+        }
+
+        return [
+            'fr' => $french->getTitle(),
+            'en' => $english->getTitle(),
+        ];
     }
 }

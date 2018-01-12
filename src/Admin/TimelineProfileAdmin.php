@@ -14,12 +14,14 @@ use Sonata\AdminBundle\Form\FormMapper;
 class TimelineProfileAdmin extends AbstractAdmin
 {
     private $profileManager;
+    private $emptyTranslationRemoverListener;
 
-    public function __construct($code, $class, $baseControllerName, ProfileManager $profileManager)
+    public function __construct($code, $class, $baseControllerName, ProfileManager $profileManager, EmptyTranslationRemoverListener $emptyTranslationRemoverListener)
     {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->profileManager = $profileManager;
+        $this->emptyTranslationRemoverListener = $emptyTranslationRemoverListener;
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -48,7 +50,7 @@ class TimelineProfileAdmin extends AbstractAdmin
 
         $formMapper
             ->getFormBuilder()
-            ->addEventSubscriber(new EmptyTranslationRemoverListener())
+            ->addEventSubscriber($this->emptyTranslationRemoverListener)
         ;
     }
 

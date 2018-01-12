@@ -7,6 +7,7 @@ imports:
 
 parameters:
     locale:                      fr
+    locales:                     [fr, en]
     pattern_uuid:                '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}'
     pattern_sha1:                '[0-9A-Fa-f]{40}'
     pattern_coordinate:          '-?\d+(\.\d{1,7})?'
@@ -144,8 +145,8 @@ stof_doctrine_extensions:
             timestampable: true
 
 a2lix_translation_form:
-    locales: [fr, en]
-    required_locales: [fr]
+    locales: "%locales%"
+    required_locales: ["%locale%"]
     templating: "admin/form_translations.html.twig"
 
 lexik_paybox:
