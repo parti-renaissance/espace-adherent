@@ -80,14 +80,14 @@ class ClientAdmin extends AbstractAdmin
                     'label' => 'Demander l\'autorisation de connexion sur cette application',
                 ])
                 ->add('allowedGrantTypes', 'array', [
-                    'label' => 'client.allowedGrantTypes.label',
+                    'label' => 'Grant Types OAuth2',
                     'template' => 'admin/oauth/client/_show_allowedGrantTypes.html.twig',
                 ])
                 ->add('uuid', null, [
-                    'label' => 'client.uuid.label',
+                    'label' => 'Consumer Key (API Key)',
                 ])
                 ->add('secret', null, [
-                    'label' => 'client.secret.label',
+                    'label' => 'Consumer Secret (API Secret)',
                 ])
             ->end()
         ;
@@ -105,8 +105,8 @@ class ClientAdmin extends AbstractAdmin
             ->add('askUserForAuthorization', ChoiceType::class, [
                 'label' => 'Demander l\'autorisation de connexion sur cette application',
                 'choices' => [
-                    'global.yes' => true,
-                    'global.no' => false,
+                    'Oui' => true,
+                    'Non' => false,
                 ],
             ])
             ->add('allowedGrantTypes', GrantTypesType::class, ['error_bubbling' => false])

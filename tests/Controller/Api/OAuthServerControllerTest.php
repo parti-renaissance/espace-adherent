@@ -253,7 +253,7 @@ class OAuthServerControllerTest extends MysqlWebTestCase
         ]));
         $this->client->followRedirect();
 
-        $urlWithoutRedirectUri = str_replace('&redirect_uri=https%3A%2F%2Fen-marche.fr%2Fsession', '', $this->createAuthorizeUrl());
+        $urlWithoutRedirectUri = str_replace('&redirect_uri=http%3A%2F%2Fclient-oauth.docker%3A8000%2Fclient%2Freceive_authcode', '', $this->createAuthorizeUrl());
 
         $this->client->request(Request::METHOD_GET, $urlWithoutRedirectUri);
         $response = $this->client->getResponse();
@@ -263,7 +263,7 @@ class OAuthServerControllerTest extends MysqlWebTestCase
 
     public function testOAuthAuthenticationIsSuccessfulWithoutAskingUserAuthorization(): void
     {
-        $authorizeUrl = $this->createAuthorizeUrl('f80ce2df-af6d-4ce4-8239-04cfcefd5a19');
+        $authorizeUrl = $this->createAuthorizeUrl('661cc3b7-322d-4441-a510-ab04eda71737');
         $this->client->request(Request::METHOD_GET, $authorizeUrl);
         $response = $this->client->getResponse();
         static::assertTrue($response->isRedirect('http://'.$this->hosts['app'].'/espace-adherent/connexion'));

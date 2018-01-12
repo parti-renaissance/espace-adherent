@@ -576,7 +576,7 @@
         ######################################################
          -->
 
-        <service id="AppBundle\Admin\OAuth\ClientAdmin">
+        <service id="app.admin.client" class="AppBundle\Admin\OAuth\ClientAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Client" group="OAuth" />
 
             <argument />
