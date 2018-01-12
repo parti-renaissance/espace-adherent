@@ -64,7 +64,7 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.membership.adherent_factory"/>
             <argument type="service" id="app.address.post_address_factory"/>
-            <argument type="service" id="router"/>
+            <argument type="service" id="AppBundle\OAuth\CallbackManager"/>
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="AppBundle\Membership\AdherentRegistry"/>
@@ -358,6 +358,12 @@
         <!-- Donation Frequency -->
         <service id="AppBundle\Validator\PayboxSubscriptionValidator">
             <tag name="validator.constraint_validator" />
+        </service>
+
+        <!-- User subscriber (Sync with API) -->
+        <service autowire="true" id="AppBundle\Membership\EventListener\UserSubscriber">
+            <argument key="$producer" type="service" id="old_sound_rabbit_mq.user_sync_api_producer"/>
+            <tag name="kernel.event_subscriber"/>
         </service>
     </services>
 </container>
