@@ -13,7 +13,7 @@ class DummyIndexer extends Indexer
     public $deletions = [];
 
     /**
-     * @var $manualIndexer ManualIndexer
+     * @var ManualIndexer
      */
     private $manualIndexer;
 
