@@ -8,6 +8,9 @@ use AppBundle\DataFixtures\ORM\LoadTimelineData;
 use AppBundle\Entity\Timeline\Measure;
 use AppBundle\Entity\Timeline\Profile;
 use AppBundle\Entity\Timeline\Theme;
+use AppBundle\Repository\Timeline\MeasureRepository;
+use AppBundle\Repository\Timeline\ProfileRepository;
+use AppBundle\Repository\Timeline\ThemeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -20,9 +23,24 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
 
+    /**
+     * @var ManualIndexer
+     */
     private $manualIndexer;
+
+    /**
+     * @var MeasureRepository
+     */
     private $measureRepository;
+
+    /**
+     * @var ThemeRepository
+     */
     private $themeRepository;
+
+    /**
+     * @var ProfileRepository
+     */
     private $profileRepository;
 
     public function testIndexedThemesAfterMeasureUpdate()
@@ -78,10 +96,10 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
             'link' => '',
             'status' => 'IN_PROGRESS',
             'major' => false,
-            'profileIds' => [
-                $this->profileRepository->findOneByTitle(LoadTimelineData::PROFILES['TP002']['title']['fr'])->getId(),
-                $this->profileRepository->findOneByTitle(LoadTimelineData::PROFILES['TP003']['title']['fr'])->getId(),
-            ],
+            'profileIds' => $this->getProfileIdsByTitles([
+                LoadTimelineData::PROFILES['TP002']['title']['fr'],
+                LoadTimelineData::PROFILES['TP003']['title']['fr'],
+            ]),
             'titles' => [
                 'fr' => LoadTimelineData::MEASURES['TM001']['title']['fr'],
                 'en' => LoadTimelineData::MEASURES['TM001']['title']['en'],
@@ -108,13 +126,13 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
                 LoadTimelineData::MEASURES['TM008']['title']['fr'],
                 LoadTimelineData::MEASURES['TM012']['title']['fr'],
             ]),
-            'profileIds' => [
-                $this->profileRepository->findOneByTitle(LoadTimelineData::PROFILES['TP002']['title']['fr'])->getId(),
-                $this->profileRepository->findOneByTitle(LoadTimelineData::PROFILES['TP003']['title']['fr'])->getId(),
-                $this->profileRepository->findOneByTitle(LoadTimelineData::PROFILES['TP004']['title']['fr'])->getId(),
-                $this->profileRepository->findOneByTitle(LoadTimelineData::PROFILES['TP001']['title']['fr'])->getId(),
-                $this->profileRepository->findOneByTitle(LoadTimelineData::PROFILES['TP005']['title']['fr'])->getId(),
-            ],
+            'profileIds' => $this->getProfileIdsByTitles([
+                LoadTimelineData::PROFILES['TP002']['title']['fr'],
+                LoadTimelineData::PROFILES['TP003']['title']['fr'],
+                LoadTimelineData::PROFILES['TP004']['title']['fr'],
+                LoadTimelineData::PROFILES['TP001']['title']['fr'],
+                LoadTimelineData::PROFILES['TP005']['title']['fr'],
+            ]),
             'titles' => [
                 'fr' => LoadTimelineData::THEMES['TT001']['title']['fr'],
                 'en' => LoadTimelineData::THEMES['TT001']['title']['en'],
@@ -130,24 +148,40 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
         ], $oldThemePayload);
 
         $this->assertArrayHasKey('objectID', $oldThemePayload);
-        $this->assertNotEmpty($oldThemePayload);
+        $this->assertNotEmpty($oldThemePayload['objectID']);
 
+        $this->assertArraySubset([
+            'id' => $newTheme->getId(),
+            'featured' => true,
+            'image' => null,
+            'measureIds' => $this->getMeasureIdsByTitles([
+                LoadTimelineData::MEASURES['TM001']['title']['fr'],
+                LoadTimelineData::MEASURES['TM005']['title']['fr'],
+                LoadTimelineData::MEASURES['TM014']['title']['fr'],
+                LoadTimelineData::MEASURES['TM017']['title']['fr'],
+            ]),
+            'profileIds' => $this->getProfileIdsByTitles([
+                LoadTimelineData::PROFILES['TP002']['title']['fr'],
+                LoadTimelineData::PROFILES['TP003']['title']['fr'],
+                LoadTimelineData::PROFILES['TP005']['title']['fr'],
+                LoadTimelineData::PROFILES['TP001']['title']['fr'],
+            ]),
+            'titles' => [
+                'fr' => LoadTimelineData::THEMES['TT003']['title']['fr'],
+                'en' => LoadTimelineData::THEMES['TT003']['title']['en'],
+            ],
+            'slugs' => [
+                'fr' => LoadTimelineData::THEMES['TT003']['slug']['fr'],
+                'en' => LoadTimelineData::THEMES['TT003']['slug']['en'],
+            ],
+            'descriptions' => [
+                'fr' => LoadTimelineData::THEMES['TT003']['description']['fr'],
+                'en' => LoadTimelineData::THEMES['TT003']['description']['en'],
+            ],
+        ], $newThemePayload);
 
-        return;
-        /* @var $measure Measure */
-        $measure = $indexedEntities[0];
-        $this->assertInstanceOf(Measure::class, $measure);
-        $this->assertSame(LoadTimelineData::MEASURES['TM001']['title']['fr'], $measure->getTitle());
-
-        /* @var $oldTheme Theme */
-        $oldTheme = $indexedEntities[1];
-        $this->assertInstanceOf(Theme::class, $oldTheme);
-        $this->assertSame(LoadTimelineData::THEMES['TT001']['title']['fr'], $oldTheme->getTitle());
-
-        /* @var $currentTheme Theme */
-        $currentTheme = $indexedEntities[2];
-        $this->assertInstanceOf(Theme::class, $currentTheme);
-        $this->assertSame(LoadTimelineData::THEMES['TT003']['title']['fr'], $currentTheme->getTitle());
+        $this->assertArrayHasKey('objectID', $newThemePayload);
+        $this->assertNotEmpty($newThemePayload['objectID']);
     }
 
     protected function setUp()
@@ -184,7 +218,16 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
         $repository = $this->measureRepository;
 
         return array_map(function(string $measureTitle) use ($repository) {
-            return $repository->findOneByTitle($measureTitle)->getId(),
-        }, $measureTitle);
+            return $repository->findOneByTitle($measureTitle)->getId();
+        }, $measureTitles);
+    }
+
+    private function getProfileIdsByTitles(array $profileTitles): array
+    {
+        $repository = $this->profileRepository;
+
+        return array_map(function(string $profileTitle) use ($repository) {
+            return $repository->findOneByTitle($profileTitle)->getId();
+        }, $profileTitles);
     }
 }
