@@ -21,6 +21,14 @@
 			</argument>
 		</service>
 
+		<!-- GeoCoder -->
+		<service id="GeoIp2\WebService\Client">
+			<argument>%env(MAXMIND_USER_ID)%</argument>
+			<argument>%env(MAXMIND_LICENSE_KEY)%</argument>
+		</service>
+		<service id="GeoIp2\ProviderInterface" alias="GeoIp2\WebService\Client" />
+		<service id="AppBundle\Address\GeoCoder" />
+
 		<!-- CitizenProject -->
         <service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true">
             <argument key="$mailer" type="service" id="app.mailer.transactional"/>
@@ -76,5 +84,17 @@
 			<argument>%locale%</argument>
 		</service>
 		<service id="AppBundle\Timeline\TimelineFactory" />
+
+		<!-- Security -->
+		<service id="app.security.user_provider" class="AppBundle\Security\UserProvider">
+			<argument key="$classOrAlias" type="string">AppBundle\Entity\Adherent</argument>
+		</service>
+
+		<service id="app.security.admin_provider" class="AppBundle\Security\UserProvider">
+			<argument key="$classOrAlias" type="string">AppBundle\Entity\Administrator</argument>
+		</service>
+
+		<service id="AppBundle\Security\FailedLoginAttemptFactory"/>
+		<service id="AppBundle\Security\Http\AuthenticationFailureHandler" />
 	</services>
 </container>

@@ -44,9 +44,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/mes-evenements');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $crawler = $this->client->followRedirect();
-
-        $this->assertSame('Identifiez-vous', $crawler->filter('.login h2')->text());
+        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
     }
 
     public function testAuthenticatedAdherentCanSeeHisUpcomingAndPastEvents()
@@ -131,16 +129,16 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+        $this->client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => 'michelle.dufour@example.ch',
             '_adherent_password' => 'secret!12345',
         ]));
 
         $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
 
-        $this->client->followRedirect();
+        $crawler = $this->client->followRedirect();
 
-        $this->assertContains('Oups! Vos identifiants sont invalides.', $this->client->getResponse()->getContent());
+        $this->assertContains('L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.', $crawler->filter('#auth-error')->text());
     }
 
     public function testEditAdherentProfile()

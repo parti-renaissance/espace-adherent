@@ -1,0 +1,27 @@
+{% extends 'oauth/base.html.twig' %}
+
+{% form_theme authorization_form 'form_div_layout.html.twig' %}
+
+{% block title 'Autoriser une application' %}
+
+{% block content %}
+    <section class="l__inner">
+        <h1 id="auth-client-notice">
+            Je me connecte à <strong>{{ client.name }}</strong> avec mon compte <em>En Marche</em>.
+        </h1>
+
+        {{ form_start(authorization_form) }}
+            {{ form_errors(authorization_form) }}
+
+            <div class="btn--dual">
+                <div>
+                    {{ form_widget(authorization_form.deny, {'label':'Refuser'}) }}
+                </div>
+
+                <div>
+                    {{ form_widget(authorization_form.allow, {'label':'Accepter'}) }}
+                </div>
+            </div>
+        {{ form_end(authorization_form) }}
+    </section>
+{% endblock %}

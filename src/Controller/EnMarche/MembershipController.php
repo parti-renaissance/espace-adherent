@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
@@ -11,9 +12,10 @@ use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\DonationRequestType;
 use AppBundle\Form\MembershipChooseNearbyCommitteeType;
-use AppBundle\Form\MembershipRequestType;
+use AppBundle\Form\NewMemberShipRequestType;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\MembershipRequest;
+use AppBundle\OAuth\CallbackManager;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -22,6 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 class MembershipController extends Controller
 {
@@ -31,18 +34,24 @@ class MembershipController extends Controller
      * @Route("/inscription", name="app_membership_register")
      * @Method("GET|POST")
      */
-    public function registerAction(Request $request): Response
+    public function registerAction(Request $request, GeoCoder $geoCoder, AuthorizationChecker $authorizationChecker, CallbackManager $callbackManager): Response
     {
-        $membership = MembershipRequest::createWithCaptcha($request->request->get('g-recaptcha-response'));
-        $form = $this->createForm(MembershipRequestType::class, $membership)
-            ->add('submit', SubmitType::class, ['label' => 'J\'adhère'])
-        ;
+        if ($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $callbackManager->redirectToClientIfValid();
+        }
+
+        $membership = MembershipRequest::createWithCaptcha(
+            $geoCoder->getCountryCodeFromIp($request->getClientIp()),
+            $request->request->get('g-recaptcha-response')
+        );
+
+        $form = $this->createForm(NewMemberShipRequestType::class, $membership);
 
         try {
             if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
                 $this->get('app.membership_request_handler')->handle($membership);
 
-                return $this->redirectToRoute('app_membership_donate');
+                return $this->redirectToRoute('app_membership_complete');
             }
         } catch (ConnectException $e) {
             $this->addFlash('error_recaptcha', $this->get('translator')->trans('recaptcha.error'));
@@ -194,13 +203,13 @@ class MembershipController extends Controller
     /**
      * This action is the landing page at the end of the subscription process.
      *
-     * @Route("/inscription/terminee", name="app_membership_complete")
+     * @Route("/presque-fini", name="app_membership_complete")
      * @Method("GET")
      */
     public function completeAction(): Response
     {
         if ($this->getUser()) {
-            $this->redirectToRoute('app_search_events');
+            $this->redirectToRoute('app_adherent_profile');
         }
 
         $membershipUtils = $this->get('app.membership_utils');
@@ -215,9 +224,7 @@ class MembershipController extends Controller
 
         $membershipUtils->clearNewAdherentId();
 
-        return $this->render('membership/complete.html.twig', [
-            'name' => $adherent->getFirstName(),
-        ]);
+        return $this->render('membership/complete.html.twig');
     }
 
     /**
@@ -236,7 +243,7 @@ class MembershipController extends Controller
      * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
      * @Entity("activationToken", expr="repository.findByToken(activation_token)")
      */
-    public function activateAction(Adherent $adherent, AdherentActivationToken $activationToken): Response
+    public function activateAction(Adherent $adherent, AdherentActivationToken $activationToken, CallbackManager $callbackManager): Response
     {
         if ($this->getUser()) {
             $this->redirectToRoute('app_search_events');
@@ -246,7 +253,7 @@ class MembershipController extends Controller
             $this->get('app.adherent_account_activation_handler')->handle($adherent, $activationToken);
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
 
-            return $this->redirectToRoute('app_search_events');
+            return $callbackManager->redirectToClientIfValid('app_search_events');
         } catch (AdherentAlreadyEnabledException $e) {
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.already_active'));
         } catch (AdherentTokenExpiredException $e) {

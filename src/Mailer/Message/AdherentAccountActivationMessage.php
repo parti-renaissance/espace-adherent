@@ -11,10 +11,10 @@ final class AdherentAccountActivationMessage extends Message
     {
         return new self(
             Uuid::uuid4(),
-            '54665',
+            '292269',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Plus qu\'une étape',
+            'Confirmez votre compte En-Marche.fr',
             static::getTemplateVars(),
             static::getRecipientVars($adherent->getFirstName(), $confirmationLink)
         );
@@ -23,16 +23,16 @@ final class AdherentAccountActivationMessage extends Message
     private static function getTemplateVars(): array
     {
         return [
-            'target_firstname' => '',
-            'confirmation_link' => '',
+            'first_name' => '',
+            'activation_link' => '',
         ];
     }
 
     private static function getRecipientVars(string $firstName, string $confirmationLink): array
     {
         return [
-            'target_firstname' => self::escape($firstName),
-            'confirmation_link' => $confirmationLink,
+            'first_name' => self::escape($firstName),
+            'activation_link' => $confirmationLink,
         ];
     }
 }
