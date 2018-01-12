@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Controller\PrintControllerTrait;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventContactMembersCommand;
@@ -10,6 +11,7 @@ use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\ContactMembersType;
 use AppBundle\Form\EventCommandType;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -26,6 +28,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class EventManagerController extends Controller
 {
+    use PrintControllerTrait;
+
     /**
      * @Route("/modifier", name="app_event_edit")
      * @Method("GET|POST")
@@ -188,5 +192,44 @@ class EventManagerController extends Controller
             'contacts' => $uuids,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/inscrits/imprimer", name="app_event_print_members")
+     * @Method("POST")
+     */
+    public function printMembersAction(Request $request, Event $event): Response
+    {
+        if (!$this->isCsrfTokenValid('event.print_members', $request->request->get('token'))) {
+            throw $this->createAccessDeniedException('Invalid CSRF protection token to print members.');
+        }
+
+        $uuids = json_decode($request->request->get('prints'), true);
+
+        if (!$uuids) {
+            return $this->redirectToRoute('app_event_members', [
+                'slug' => $event->getSlug(),
+            ]);
+        }
+
+        $repository = $this->getDoctrine()->getRepository(EventRegistration::class);
+
+        try {
+            $registrations = $repository->findByUuidAndEvent($event, $uuids);
+        } catch (InvalidUuidException $e) {
+            throw new BadUuidRequestException($e);
+        }
+
+        if (!$registrations) {
+            return $this->redirectToRoute('app_event_members', [
+                'slug' => $event->getSlug(),
+            ]);
+        }
+
+        $html = $this->renderView('events/print_members.html.twig', [
+            'registrations' => $registrations,
+        ]);
+
+        return new PdfResponse($this->getPdfForResponse($html), 'Liste des participants.pdf');
     }
 }

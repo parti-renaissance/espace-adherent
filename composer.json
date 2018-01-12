@@ -65,8 +65,8 @@
         "lullabot/amp": "^1.1",
         "cocur/slugify": "^2.5",
         "symfony/thanks": "^1.0",
-        "a2lix/translation-form-bundle": "^2.1",
-        "a2lix/i18n-doctrine-bundle": "^0.1.0"
+        "knplabs/knp-snappy-bundle": "^1.5",
+        "h4cc/wkhtmltopdf-amd64": "^0.12.4"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

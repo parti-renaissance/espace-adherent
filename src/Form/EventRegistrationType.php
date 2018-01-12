@@ -35,9 +35,8 @@ class EventRegistrationType extends AbstractType
 
         /** @var EventRegistrationCommand $registration */
         $registration = $builder->getData();
-        if ($builder->getData() instanceof EventRegistrationCommand
-            && (!$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')
-                || !$registration->isNewsletterSubscriber())) {
+        if (!$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')
+                || ($builder->getData() instanceof EventRegistrationCommand && !$registration->isNewsletterSubscriber())) {
             $builder
                 ->add('newsletterSubscriber', CheckboxType::class, [
                     'required' => false,
