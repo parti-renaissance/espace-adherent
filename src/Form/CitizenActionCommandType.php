@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use AppBundle\CitizenAction\CitizenActionCommand;
 use AppBundle\Entity\CitizenActionCategory;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,6 +20,10 @@ class CitizenActionCommandType extends AbstractType
     {
         $builder
             ->remove('capacity')
+            ->add('description', TextareaType::class, [
+                'filter_emojis' => true,
+                'purify_html' => false,
+            ])
         ;
     }
 

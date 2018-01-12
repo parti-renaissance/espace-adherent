@@ -24,6 +24,7 @@ class BaseEventCommandType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'filter_emojis' => true,
+                'purify_html' => true,
             ])
             ->add('address', AddressType::class)
             ->add('beginAt', DateTimeType::class, [
