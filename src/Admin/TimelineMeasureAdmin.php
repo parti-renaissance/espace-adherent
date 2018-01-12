@@ -5,8 +5,9 @@ namespace AppBundle\Admin;
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use AppBundle\Entity\Timeline\Measure;
 use AppBundle\Form\EventListener\EmptyTranslationRemoverListener;
+use AppBundle\Repository\Timeline\ProfileRepository;
+use AppBundle\Repository\Timeline\ThemeRepository;
 use AppBundle\Timeline\MeasureManager;
-use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -99,7 +100,7 @@ class TimelineMeasureAdmin extends AbstractAdmin
                 'show_filter' => true,
             ], null, [
                 'multiple' => true,
-                'query_builder' => function (EntityRepository $repository) {
+                'query_builder' => function (ProfileRepository $repository) {
                     return $repository
                         ->createQueryBuilder('profile')
                         ->select('profile, translations')
@@ -114,7 +115,7 @@ class TimelineMeasureAdmin extends AbstractAdmin
                 'show_filter' => true,
             ], null, [
                 'multiple' => true,
-                'query_builder' => function (EntityRepository $repository) {
+                'query_builder' => function (ThemeRepository $repository) {
                     return $repository
                         ->createQueryBuilder('theme')
                         ->select('theme, translations')
