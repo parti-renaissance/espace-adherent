@@ -8,6 +8,7 @@ use Psr\Log\LoggerInterface;
 class DummyManualIndexer implements ManualIndexerInterface
 {
     private $logger;
+    private $lastIndex;
 
     public function __construct(LoggerInterface $logger = null)
     {
@@ -25,5 +26,12 @@ class DummyManualIndexer implements ManualIndexerInterface
                 $this->logger->info(sprintf('[algolia] indexing entity "%s".', get_class($entities)));
             }
         }
+
+        $this->lastIndex = $entities;
+    }
+
+    public function getLastIndex()
+    {
+        return $this->lastIndex;
     }
 }
