@@ -17,7 +17,7 @@ help:
 ##---------------------------------------------------------------------------
 
 start:          ## Install and start the project
-start: build up app/config/parameters.yml db web/built assets-amp perm
+start: build up app/config/parameters.yml db rabbitmq-fabric web/built assets-amp perm
 
 stop:           ## Remove docker containers
 	$(FIG) kill
@@ -48,6 +48,9 @@ cc:
 tty:            ## Run app container in interactive mode
 tty:
 	$(RUN) /bin/bash
+
+rabbitmq-fabric:
+	$(RUN) $(CONSOLE) rabbitmq:setup-fabric
 
 ##
 ## Database
@@ -170,10 +173,11 @@ deps: vendor web/built
 # Internal rules
 
 build:
-	$(FIG) build
+	$(FIG) pull --parallel
+	$(FIG) build --pull --force-rm
 
 up:
-	$(FIG) up -d
+	$(FIG) up -d --remove-orphans
 
 perm:
 	-$(EXEC) chmod -R 777 var
@@ -186,7 +190,7 @@ vendor: composer.lock
 composer.lock: composer.json
 	@echo compose.lock is not up to date.
 
-app/config/parameters.yml: app/config/parameters.yml.dist
+app/config/parameters.yml: app/config/parameters.yml.dist vendor
 	@$(RUN) composer run-script post-install-cmd
 
 node_modules: yarn.lock
