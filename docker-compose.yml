@@ -14,7 +14,7 @@ services:
             context: docker/dev
         depends_on:
             - db
-            - enmarche_redis
+            - redis
             - rabbitmq
         volumes:
             - .:/app
@@ -24,7 +24,7 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: root
 
-    enmarche_redis:
+    redis:
         image: redis:3.2
 
     ## common

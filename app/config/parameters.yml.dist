@@ -6,7 +6,7 @@ parameters:
     env(DATABASE_USER):         root
     env(DATABASE_PASSWORD):     root
 
-    env(REDIS_HOST):            enmarche_redis
+    env(REDIS_HOST):            redis
 
     env(RABBITMQ_HOST):         rabbitmq
     env(RABBITMQ_PORT):         5672
