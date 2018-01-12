@@ -217,7 +217,7 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
     {
         $repository = $this->measureRepository;
 
-        return array_map(function(string $measureTitle) use ($repository) {
+        return array_map(function (string $measureTitle) use ($repository) {
             return $repository->findOneByTitle($measureTitle)->getId();
         }, $measureTitles);
     }
@@ -226,7 +226,7 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
     {
         $repository = $this->profileRepository;
 
-        return array_map(function(string $profileTitle) use ($repository) {
+        return array_map(function (string $profileTitle) use ($repository) {
             return $repository->findOneByTitle($profileTitle)->getId();
         }, $profileTitles);
     }
