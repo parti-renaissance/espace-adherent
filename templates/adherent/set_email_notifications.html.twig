@@ -50,7 +50,7 @@
                             .append('autour de chez moi')
                     );
                     selectDistanceNotificationPc.children('option:selected').removeAttr("selected");
-                    selectDistanceNotificationPc.children('option[value="{{ app.user.citizenProjectCreationEmailSubscriptionRadius != constant('DISABLED_CITIZEN_PROJECT_EMAIL', app.user) ? app.user.citizenProjectCreationEmailSubscription : 10}}"]').prop('selected', true);
+                    selectDistanceNotificationPc.children('option[value="{{ app.user.hasCitizenProjectCreationEmailSubscription ? app.user.citizenProjectCreationEmailSubscriptionRadius : constant('CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE', app.user) }}"]').prop('selected', true);
                     selectDistanceNotificationPc.show();
                 } else {
                     selectDistanceNotificationPc.hide();
