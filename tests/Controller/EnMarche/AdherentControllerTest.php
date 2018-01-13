@@ -452,7 +452,7 @@ class AdherentControllerTest extends MysqlWebTestCase
     public function testAdherentCanCreateNewCitizenProject()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
-        $this->assertSame(2, $crawler->selectLink('Créer un projet citoyen')->count());
+        $this->assertSame(3, $crawler->selectLink('Lancer mon projet')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -461,7 +461,7 @@ class AdherentControllerTest extends MysqlWebTestCase
     public function testCitizenProjectAdministratorCannotCreateAnotherCitizenProject()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
-        $this->assertSame(0, $crawler->selectLink('Créer un projet citoyen')->count());
+        $this->assertSame(0, $crawler->selectLink('Lancer mon projet')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());

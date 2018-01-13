@@ -61,7 +61,7 @@
         li {
             border-radius: 50px;
             background-color: $gray--lighter;
-            color: $newblue;
+            color: $blue--dark;
             display: inline-block;
             @include text--small;
             padding: 2px 10px;
@@ -78,8 +78,8 @@
 
             .active {
                 font-weight: bold;
-                color: $newblue;
-                border-bottom: 6px solid $newblue;
+                color: $blue--dark;
+                border-bottom: 6px solid $blue--dark;
             }
 
             a {

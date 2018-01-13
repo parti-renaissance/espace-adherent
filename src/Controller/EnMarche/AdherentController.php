@@ -207,6 +207,15 @@ class AdherentController extends Controller
         ]);
     }
 
+    public function listCommitteesAlAction(): Response
+    {
+        $manager = $this->get('app.committee.manager');
+
+        return $this->render('adherent/list_my_committees_al.html.twig', [
+            'committees' => $manager->getAdherentCommittees($this->getUser()),
+        ]);
+    }
+
     public function listMyCitizenProjectsAction(CitizenProjectManager $manager): Response
     {
         return $this->render('adherent/list_my_citizen_projects.html.twig', [

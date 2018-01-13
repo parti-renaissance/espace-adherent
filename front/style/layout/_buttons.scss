@@ -48,10 +48,10 @@
     transition: all 0.45s;
     box-sizing: border-box;
     font-family: $font-roboto;
-    background-color: $newblue;
+    background-color: $blue--dark;
 
     &:hover {
-        background: $newblue--hover;
+        background: $blue--dark--hover;
         color: white;
         transform: translateY(-1px);
     }
@@ -146,8 +146,8 @@
 
 @mixin btn--blue {
     color: white;
-    background: $blue;
-    border-color: $blue;
+    background: $blue--dark;
+    border-color: $blue--dark;
 
     &:hover {
         background-color: $blue-hover;
@@ -383,15 +383,15 @@ button.btn {
 
         &:hover {
             background: white;
-            border-color: $newblue;
-            color: $newblue;
+            border-color: $blue--dark;
+            color: $blue--dark;
         }
     }
 
     &--green {
-        background-color: $newgreen;
+        background-color: $green;
         color: white;
-        border-color: $newgreen;
+        border-color: $green;
 
         &:hover {
             background-color: $error;

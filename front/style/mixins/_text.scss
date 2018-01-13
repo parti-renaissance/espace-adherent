@@ -328,7 +328,7 @@ $text--size-extra-large: 48px;
     }
 
     &--blue--new {
-        color: $newblue;
+        color: $blue--dark;
     }
 
     &--green {
@@ -508,11 +508,16 @@ $text--size-extra-large: 48px;
 
     &__links--nav {
         li {
-            font-size: $text--size-default;
+            @include text--default;
             letter-spacing: 0;
 
             h1 {
                 @include text--logo;
+                margin-top: -5px;
+
+                a {
+                    color: black;
+                }
             }
 
             .icon-search {
@@ -531,6 +536,11 @@ $text--size-extra-large: 48px;
                 line-height: 2;
             }
         }
+    }
+
+    &__links--subnav li a {
+        color: white;
+        font-size: $text--size-small;
     }
 }
 

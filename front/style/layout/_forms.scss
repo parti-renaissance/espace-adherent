@@ -257,7 +257,7 @@ label {
       z-index: 1;
 
       &:checked + label {
-        background-color: $newblue;
+        background-color: $blue--dark;
         color: white;
       }
     }
@@ -318,8 +318,8 @@ label {
       opacity: 0;
 
       &:checked + label:before {
-        border-color: $newblue;
-        background: $newblue;
+        border-color: $blue--dark;
+        background: $blue--dark;
         content: $checkbox__mark;
       }
     }
@@ -491,7 +491,7 @@ input[type=date]::-webkit-inner-spin-button {
 
     &:focus {
       outline: none;
-      border-color: $newblue;
+      border-color: $blue--dark;
     }
   }
 
@@ -602,7 +602,7 @@ input[type=date]::-webkit-inner-spin-button {
 
         &:focus {
             outline: none;
-            border-color: $newblue;
+            border-color: $blue--dark;
         }
     }
 

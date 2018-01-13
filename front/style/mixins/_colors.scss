@@ -3,34 +3,37 @@ $defaultBackgroundColor : white;
 $defaultTextColor : black;
 
 // Colors
-$pink: #FF3680;
+$blue: #2ABAFF; //old
+$blue-hover: #009FE1; //old
+$blue--light: #9AD7E8;
+$blue--dark: #185FCA;
+$blue--dark--hover: #024fc1; //old
+$green: #0CD283;
+$green-hover: #4CD7A5; //old
+$green--dark: #067065;
+$green--teal: #45E5CE;
+$orange: #FF6955;
+$pink: #FF4D89;
 $pink-hover: #E53072;
-$green: #55F0B8;
-$green-hover: #4CD7A5;
-$blue: #01B2FB;
-$blue--light: rgba(0, 178, 251, 0.15);
-$blue--dark: #1C5BC9;
-$blue-hover: #009FE1;
-$yellow: #edf861;
-$yellow-hover: #c4d02a;
-$orange: #ff7822;
+$pink--light: #FF4D89;
+$purple: #6F80FF;
+$red: #FF4863;
+$yellow: #FFD400;
+$yellow-hover: #c4d02a; //old
+$yellow--light: #FFEB00;
+
+// Alerts
 $error: #EE324A;
 $success: $green;
-
-// New Colors
-$newblue: #005be2;
-$newblue--hover: #024fc1;
-$newgreen: #00e28c;
-$purple: #7181FF;
-$orange: #ff6955;
 
 // Grays
 $darker: #222;
 $dark: #444;
 $gray--dark: #666;
+$silver: #afafaf;
+$black--half: #7f7f7f;
 $gray--muted: #999;
-$black--half: rgba(0, 0, 0, .5);
-$gray: #BCBCBC;
+$gray: #BCBCBC; // #D6D6D6 new gray
 $gray--light: #E5E5E5;
 $gray--lighter: #F6F6F6;
 $gray--white: #FAFAFA;
@@ -157,7 +160,7 @@ $gradient--menu: linear-gradient(to right, rgba(white, 0), white);
     }
 }
 
-.background--primary {
+.background--pink {
     background-color: $pink;
 }
 
@@ -167,6 +170,10 @@ $gradient--menu: linear-gradient(to right, rgba(white, 0), white);
 
 .background--dark {
     background-color: $dark;
+}
+
+.background--silver {
+    background-color: $silver;
 }
 
 .background--light {
@@ -182,15 +189,11 @@ $gradient--menu: linear-gradient(to right, rgba(white, 0), white);
 }
 
 .background--blue-light {
-    background-color: rgba($newblue, 0.1);
+    background-color: rgba($blue--dark, 0.1);
 }
 
 .background--green {
     background-color: $green;
-}
-
-.background--pink {
-    background-color: $pink;
 }
 
 .background--purple {
