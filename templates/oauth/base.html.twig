@@ -20,7 +20,7 @@
             {% for key, messages in app.flashes %}
                 {% for message in messages %}
                     <div class="flash flash-{{ key }}">
-                        {{ message|trans|raw }}
+                        {{ message|trans }}
                     </div>
                 {% endfor %}
             {% endfor %}

@@ -160,15 +160,15 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->logout($this->client);
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);
 
-        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
 
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Votre compte adhérent est déjà actif.', $crawler->filter('#notice-flashes')->text());
+        $this->assertContains('Votre compte adhérent est déjà actif.', $crawler->filter('.flash')->text());
 
         // Try to authenticate with credentials
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+        $this->client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => 'paul@dupont.tld',
             '_adherent_password' => '#example!12345#',
         ]));
@@ -240,10 +240,10 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
 
         // login
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/connexion');
+        $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+        $this->client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => $data['membership_request']['emailAddress'],
             '_adherent_password' => $data['membership_request']['password']['first'],
         ]));

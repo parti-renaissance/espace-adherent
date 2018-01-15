@@ -69,6 +69,7 @@
             letter-spacing: -1.2px;
             line-height: 1.15;
             margin-top: 20px;
+            margin-right: 0;
         }
 
         &--gray {
@@ -84,8 +85,6 @@
         }
     }
 
-    //////////////
-
     @mixin btn-oauth {
         @include text--normal-oauth;
         @include transition;
@@ -98,6 +97,8 @@
         width: 100%;
         cursor: pointer;
         box-sizing: border-box;
+        text-transform: none;
+        letter-spacing: normal;
 
         &:hover {
             background-color: $cta-hover;
@@ -132,14 +133,13 @@
         }
     }
 
-    ///////////////
-
     input, select {
         @include text--normal-oauth;
         border-radius: 3px;
         border: solid 1px $border-form;
         width: 100%;
-        padding: 20px;
+        padding: 20px !important;
+        height: 63px;
         box-sizing: border-box;
 
         &:focus {

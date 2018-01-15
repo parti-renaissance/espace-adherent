@@ -44,9 +44,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/mes-evenements');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $crawler = $this->client->followRedirect();
-
-        $this->assertSame('Identifiez-vous', $crawler->filter('.login h2')->text());
+        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
     }
 
     public function testAuthenticatedAdherentCanSeeHisUpcomingAndPastEvents()
@@ -89,7 +87,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, $profilePage);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client, true);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client, true);
     }
 
     public function provideProfilePage()
@@ -128,20 +126,20 @@ class AdherentControllerTest extends MysqlWebTestCase
 
     public function testProfileActionIsNotAccessibleForDisabledAdherent()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/connexion');
+        $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+        $this->client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => 'michelle.dufour@example.ch',
             '_adherent_password' => 'secret!12345',
         ]));
 
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
 
-        $this->client->followRedirect();
+        $crawler = $this->client->followRedirect();
 
-        $this->assertContains('Oups! Vos identifiants sont invalides.', $this->client->getResponse()->getContent());
+        $this->assertContains('L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.', $crawler->filter('#auth-error')->text());
     }
 
     public function testEditAdherentProfile()
@@ -447,7 +445,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
     }
 
     public function testAdherentCanCreateNewCitizenProject()
@@ -686,7 +684,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client, true);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client, true);
     }
 
     public function testDocumentsActionIsAccessibleAsAdherent()
@@ -703,7 +701,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/contacter/'.LoadAdherentData::ADHERENT_1_UUID);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client, true);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client, true);
     }
 
     public function testContactActionForAdherent()
