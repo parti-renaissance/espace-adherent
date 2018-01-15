@@ -7,7 +7,11 @@ default:
                     manager: "@doctrine.orm.default_entity_manager"
                 - RestContext
                 - JsonContext
-
+                - RabbitMqContext:
+                    container: "@service_container"
+                - SyncWithAPIContext:
+                    doctrine: "@doctrine"
+                    dispatcher: "@event_dispatcher"
     extensions:
         Behat\Symfony2Extension:
             kernel:
