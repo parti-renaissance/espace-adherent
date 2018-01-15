@@ -3,40 +3,25 @@
 namespace Tests\AppBundle\Test\Algolia;
 
 use Algolia\AlgoliaSearchBundle\Indexer\Indexer;
-use Algolia\AlgoliaSearchBundle\Indexer\ManualIndexer;
-use Doctrine\ORM\EntityManagerInterface;
 
 class DummyIndexer extends Indexer
 {
-    public $creations = [];
-    public $updates = [];
-    public $deletions = [];
-
-    /**
-     * @var ManualIndexer
-     */
-    private $manualIndexer;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        parent::__construct();
-
-        $this->manualIndexer = $this->getManualIndexer($em);
-    }
+    public $entitiesToIndex = [];
+    public $entitiesToUnIndex = [];
 
     public function performBatchCreations(array $creations)
     {
-        $this->creations = array_merge_recursive($this->creations, $creations);
+        $this->entitiesToIndex = array_merge_recursive($this->entitiesToIndex, $creations);
     }
 
     public function performBatchUpdates(array $updates)
     {
-        $this->updates = array_merge_recursive($this->updates, $updates);
+        $this->entitiesToIndex = array_merge_recursive($this->entitiesToIndex, $updates);
     }
 
     public function performBatchDeletions(array $deletions)
     {
-        $this->deletions = array_merge_recursive($this->deletions, $deletions);
+        $this->entitiesToUnIndex = array_merge_recursive($this->entitiesToUnIndex, $deletions);
     }
 
     public function getAlgoliaIndexName($entity_or_class)
@@ -49,13 +34,19 @@ class DummyIndexer extends Indexer
         return sprintf('%s_test', parent::makeEnvIndexName($indexName, $perEnvironment));
     }
 
-    public function index($entities, array $options = []): void
+    public function getEntitiesToIndex(): array
     {
-        $this->manualIndexer->index($entities, $options);
+        return $this->entitiesToIndex;
     }
 
-    public function unIndex($entities, array $options = []): void
+    public function getEntitiesToUnIndex(): array
     {
-        $this->manualIndexer->unIndex($entities);
+        return $this->entitiesToUnIndex;
+    }
+
+    public function reset(): void
+    {
+        $this->entitiesToIndex = [];
+        $this->entitiesToUnIndex = [];
     }
 }

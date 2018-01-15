@@ -11,6 +11,7 @@
 		<service id="AppBundle\Membership\AdherentRegistry" public="true" />
 
 		<!-- Algolia -->
+        <service id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
 		<service id="AppBundle\Algolia\ManualIndexer">
 			<argument type="service">
 				<service class="Algolia\AlgoliaSearchBundle\Ìndexer\ManualIndexer">
@@ -74,9 +75,6 @@
 			<argument>%locales%</argument>
 			<argument>%locale%</argument>
 		</service>
-		<service id="AppBundle\Timeline\MeasureManager" />
-		<service id="AppBundle\Timeline\ThemeManager" />
 		<service id="AppBundle\Timeline\TimelineFactory" />
-		<service id="AppBundle\Timeline\ProfileManager" />
 	</services>
 </container>

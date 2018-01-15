@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Timeline;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\AlgoliaIndexedEntityInterface;
 use AppBundle\Entity\EntityTranslatableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Profile
+class Profile implements AlgoliaIndexedEntityInterface
 {
     use EntityTranslatableTrait;
 

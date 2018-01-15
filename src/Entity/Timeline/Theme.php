@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Timeline;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\AlgoliaIndexedEntityInterface;
 use AppBundle\Entity\EntityMediaInterface;
 use AppBundle\Entity\EntityMediaTrait;
 use AppBundle\Entity\EntityTranslatableTrait;
@@ -20,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     attributesForFaceting={"title", "profileIds"}
  * )
  */
-class Theme implements EntityMediaInterface
+class Theme implements EntityMediaInterface, AlgoliaIndexedEntityInterface
 {
     use EntityMediaTrait;
     use EntityTranslatableTrait;

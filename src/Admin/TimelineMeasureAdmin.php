@@ -7,7 +7,6 @@ use AppBundle\Entity\Timeline\Measure;
 use AppBundle\Form\EventListener\EmptyTranslationRemoverListener;
 use AppBundle\Repository\Timeline\ProfileRepository;
 use AppBundle\Repository\Timeline\ThemeRepository;
-use AppBundle\Timeline\MeasureManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -20,14 +19,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TimelineMeasureAdmin extends AbstractAdmin
 {
-    private $measureManager;
+    use AlgoliaIndexedEntityAdminTrait;
+
     private $emptyTranslationRemoverListener;
 
-    public function __construct($code, $class, $baseControllerName, MeasureManager $measureManager, EmptyTranslationRemoverListener $emptyTranslationRemoverListener)
+    public function __construct($code, $class, $baseControllerName, EmptyTranslationRemoverListener $emptyTranslationRemoverListener)
     {
         parent::__construct($code, $class, $baseControllerName);
 
-        $this->measureManager = $measureManager;
         $this->emptyTranslationRemoverListener = $emptyTranslationRemoverListener;
     }
 
@@ -173,29 +172,5 @@ class TimelineMeasureAdmin extends AbstractAdmin
                 ],
             ])
         ;
-    }
-
-    /**
-     * @param Measure $object
-     */
-    public function postPersist($object)
-    {
-        $this->measureManager->postPersist($object);
-    }
-
-    /**
-     * @param Measure $object
-     */
-    public function postUpdate($object)
-    {
-        $this->measureManager->postUpdate($object);
-    }
-
-    /**
-     * @param Measure $object
-     */
-    public function postRemove($object)
-    {
-        $this->measureManager->postRemove($object);
     }
 }

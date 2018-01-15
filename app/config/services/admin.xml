@@ -559,8 +559,11 @@
             <argument />
             <argument>AppBundle\Entity\Timeline\Profile</argument>
             <argument>AppBundle\Controller\Admin\AdminTimelineProfileController</argument>
-            <argument type="service" id="AppBundle\Timeline\ProfileManager" />
             <argument type="service" id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener" />
+
+            <call method="setAlgoliaManager">
+                <argument type="service" id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
+            </call>
         </service>
 
         <service id="app.admin.timeline_theme" class="AppBundle\Admin\TimelineThemeAdmin">
@@ -569,8 +572,11 @@
             <argument />
             <argument>AppBundle\Entity\Timeline\Theme</argument>
             <argument>AppBundle\Controller\Admin\AdminTimelineThemeController</argument>
-            <argument type="service" id="AppBundle\Timeline\ThemeManager" />
             <argument type="service" id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener" />
+
+            <call method="setAlgoliaManager">
+                <argument type="service" id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
+            </call>
         </service>
 
         <service id="app.admin.timeline_measure" class="AppBundle\Admin\TimelineMeasureAdmin">
@@ -579,8 +585,11 @@
             <argument />
             <argument>AppBundle\Entity\Timeline\Measure</argument>
             <argument>AppBundle\Controller\Admin\AdminTimelineMeasureController</argument>
-            <argument type="service" id="AppBundle\Timeline\MeasureManager" />
             <argument type="service" id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener" />
+
+            <call method="setAlgoliaManager">
+                <argument type="service" id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
+            </call>
         </service>
 
         <!--

@@ -3,9 +3,7 @@
 namespace AppBundle\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
-use AppBundle\Entity\Timeline\Profile;
 use AppBundle\Form\EventListener\EmptyTranslationRemoverListener;
-use AppBundle\Timeline\ProfileManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -13,14 +11,14 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class TimelineProfileAdmin extends AbstractAdmin
 {
-    private $profileManager;
+    use AlgoliaIndexedEntityAdminTrait;
+
     private $emptyTranslationRemoverListener;
 
-    public function __construct($code, $class, $baseControllerName, ProfileManager $profileManager, EmptyTranslationRemoverListener $emptyTranslationRemoverListener)
+    public function __construct($code, $class, $baseControllerName, EmptyTranslationRemoverListener $emptyTranslationRemoverListener)
     {
         parent::__construct($code, $class, $baseControllerName);
 
-        $this->profileManager = $profileManager;
         $this->emptyTranslationRemoverListener = $emptyTranslationRemoverListener;
     }
 
@@ -83,29 +81,5 @@ class TimelineProfileAdmin extends AbstractAdmin
                 ],
             ])
         ;
-    }
-
-    /**
-     * @param Profile $object
-     */
-    public function postPersist($object)
-    {
-        $this->profileManager->postPersist($object);
-    }
-
-    /**
-     * @param Profile $object
-     */
-    public function postUpdate($object)
-    {
-        $this->profileManager->postUpdate($object);
-    }
-
-    /**
-     * @param Profile $object
-     */
-    public function postRemove($object)
-    {
-        $this->profileManager->postRemove($object);
     }
 }

@@ -3,9 +3,7 @@
 namespace AppBundle\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
-use AppBundle\Entity\Timeline\Theme;
 use AppBundle\Form\EventListener\EmptyTranslationRemoverListener;
-use AppBundle\Timeline\ThemeManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -17,14 +15,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TimelineThemeAdmin extends AbstractAdmin
 {
-    private $themeManager;
+    use AlgoliaIndexedEntityAdminTrait;
+
     private $emptyTranslationRemoverListener;
 
-    public function __construct($code, $class, $baseControllerName, ThemeManager $themeManager, EmptyTranslationRemoverListener $emptyTranslationRemoverListener)
+    public function __construct($code, $class, $baseControllerName, EmptyTranslationRemoverListener $emptyTranslationRemoverListener)
     {
         parent::__construct($code, $class, $baseControllerName);
 
-        $this->themeManager = $themeManager;
         $this->emptyTranslationRemoverListener = $emptyTranslationRemoverListener;
     }
 
@@ -156,29 +154,5 @@ class TimelineThemeAdmin extends AbstractAdmin
                 ],
             ])
         ;
-    }
-
-    /**
-     * @param Theme $object
-     */
-    public function postPersist($object)
-    {
-        $this->themeManager->postPersist($object);
-    }
-
-    /**
-     * @param Theme $object
-     */
-    public function postUpdate($object)
-    {
-        $this->themeManager->postUpdate($object);
-    }
-
-    /**
-     * @param Theme $object
-     */
-    public function postRemove($object)
-    {
-        $this->themeManager->postRemove($object);
     }
 }

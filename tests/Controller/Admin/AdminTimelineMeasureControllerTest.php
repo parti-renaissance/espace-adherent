@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\MysqlWebTestCase;
+use Tests\AppBundle\Test\Algolia\DummyIndexer;
+use Tests\AppBundle\Test\Algolia\DummyManualIndexer;
 
 /**
  * @group functional
@@ -22,11 +24,6 @@ use Tests\AppBundle\MysqlWebTestCase;
 class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
-
-    /**
-     * @var ManualIndexer
-     */
-    private $manualIndexer;
 
     /**
      * @var MeasureRepository
@@ -42,6 +39,44 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
      * @var ProfileRepository
      */
     private $profileRepository;
+
+    public function testUnindexedMeasureAfterMeasureRemoval()
+    {
+        /* @var $measure Measure */
+        $measure = $this->measureRepository->findOneByTitle(LoadTimelineData::MEASURES['TM001']['title']['fr']);
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
+
+        // connect as admin
+        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+            '_admin_email' => 'admin@en-marche-dev.fr',
+            '_admin_password' => 'admin',
+        ]));
+
+        $deleteUrl = sprintf('/admin/app/timeline-measure/%s/delete', $measure->getId());
+        $crawler = $this->client->request(Request::METHOD_GET, $deleteUrl);
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+
+        $this->client->submit($crawler->selectButton('Oui, supprimer')->form());
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+
+        $entitiesToIndex = $this->getIndexer()->getEntitiesToIndex();
+        $entitiesToUnIndex = $this->getIndexer()->getEntitiesToUnIndex();
+
+        $this->assertCount(1, $entitiesToUnIndex);
+        $this->assertArrayHasKey('Measure_test', $entitiesToUnIndex);
+        $this->assertCount(1, $entitiesToUnIndex['Measure_test']);
+
+        $this->assertCount(1, $entitiesToIndex);
+        $this->assertArrayHasKey('Theme_test', $entitiesToIndex);
+        $this->assertCount(1, $entitiesToIndex['Theme_test']);
+        $this->assertArraySubset([
+            'titles' => [
+                'fr' => LoadTimelineData::THEMES['TT001']['title']['fr'],
+            ]
+        ], $entitiesToIndex['Theme_test'][0]);
+    }
 
     public function testIndexedThemesAfterMeasureUpdate()
     {
@@ -79,7 +114,7 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
         ]));
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
-        $indexedEntities = $this->client->getContainer()->get(ManualIndexer::class)->getCreations();
+        $indexedEntities = $this->getIndexer()->getCreations();
 
         $this->assertCount(2, $indexedEntities);
         $this->assertArrayHasKey('Measure_test', $indexedEntities);
@@ -195,7 +230,6 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
 
         $this->get('doctrine.orm.entity_manager')->getFilters()->disable('oneLocale');
 
-        $this->manualIndexer = $this->client->getContainer()->get(ManualIndexer::class);
         $this->measureRepository = $this->getRepository(Measure::class);
         $this->themeRepository = $this->getRepository(Theme::class);
         $this->profileRepository = $this->getRepository(Profile::class);
@@ -205,7 +239,6 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
     {
         $this->kill();
 
-        $this->manualIndexer = null;
         $this->measureRepository = null;
         $this->themeRepository = null;
         $this->profileRepository = null;
@@ -229,5 +262,10 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
         return array_map(function (string $profileTitle) use ($repository) {
             return $repository->findOneByTitle($profileTitle)->getId();
         }, $profileTitles);
+    }
+
+    private function getIndexer(): DummyIndexer
+    {
+        return $this->client->getContainer()->get('algolia.indexer');
     }
 }
