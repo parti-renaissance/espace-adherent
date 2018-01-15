@@ -35,7 +35,7 @@ class ReferentControllerTest extends SqliteWebTestCase
     public function testReferentBackendIsForbiddenAsAnonymous($path)
     {
         $this->client->request(Request::METHOD_GET, $path);
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
     }
 
     /**

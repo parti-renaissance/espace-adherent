@@ -12,22 +12,23 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-/**
- * @Route("/espace-adherent")
- */
 class AdherentSecurityController extends Controller
 {
     /**
+     * @Route("/espace-adherent/connexion", name="app_adherent_login_legacy")
      * @Route("/connexion", name="app_adherent_login")
      * @Method("GET")
      */
-    public function loginAction(): Response
+    public function loginAction(string $_route): Response
     {
+        if ('app_adherent_login_legacy' === $_route) {
+            return $this->redirectToRoute('app_adherent_login', [], Response::HTTP_MOVED_PERMANENTLY);
+        }
+
         if ($this->getUser()) {
             return $this->redirectToRoute('app_search_events');
         }
@@ -53,7 +54,7 @@ class AdherentSecurityController extends Controller
     }
 
     /**
-     * @Route("/deconnexion", name="app_adherent_logout")
+     * @Route("/espace-adherent/deconnexion", name="app_adherent_logout")
      * @Method("GET")
      */
     public function logoutAction()
@@ -61,7 +62,7 @@ class AdherentSecurityController extends Controller
     }
 
     /**
-     * @Route("/mot-de-passe-oublie", name="adherent_forgot_password")
+     * @Route("/espace-adherent/mot-de-passe-oublie", name="adherent_forgot_password")
      * @Method("GET|POST")
      */
     public function retrieveForgotPasswordAction(Request $request)
@@ -72,11 +73,11 @@ class AdherentSecurityController extends Controller
 
         $form = $this->createFormBuilder()
             ->add('email', EmailType::class, ['constraints' => new NotBlank()])
-            ->add('submit', SubmitType::class)
             ->getForm()
+            ->handleRequest($request)
         ;
 
-        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
 
             if ($adherent = $this->getDoctrine()->getRepository(Adherent::class)->findOneByEmail($email)) {
@@ -84,6 +85,8 @@ class AdherentSecurityController extends Controller
             }
 
             $this->addFlash('info', $this->get('translator')->trans('adherent.reset_password.email_sent'));
+
+            return $this->redirectToRoute('app_adherent_login');
         }
 
         return $this->render('security/adherent_forgot_password.html.twig', [
@@ -94,7 +97,7 @@ class AdherentSecurityController extends Controller
 
     /**
      * @Route(
-     *   path="/changer-mot-de-passe/{adherent_uuid}/{reset_password_token}",
+     *   path="/espace-adherent/changer-mot-de-passe/{adherent_uuid}/{reset_password_token}",
      *   name="adherent_reset_password",
      *   requirements={
      *     "adherent_uuid": "%pattern_uuid%",

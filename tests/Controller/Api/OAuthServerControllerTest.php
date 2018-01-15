@@ -175,10 +175,10 @@ class OAuthServerControllerTest extends MysqlWebTestCase
         $response = $this->client->getResponse();
 
         // 2. But the user must authenticate 1st
-        static::assertTrue($response->isRedirect('http://'.$this->hosts['app'].'/espace-adherent/connexion'));
+        static::assertTrue($response->isRedirect('http://'.$this->hosts['app'].'/connexion'));
         $crawler = $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+        $this->client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => 'carl999@example.fr',
             '_adherent_password' => 'secret!12345',
         ]));
@@ -246,8 +246,8 @@ class OAuthServerControllerTest extends MysqlWebTestCase
 
     public function testOAuthAuthenticationIsFailedWithoutRedirectUri(): void
     {
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/connexion');
-        $this->client->submit($this->client->getCrawler()->selectButton('Je me connecte')->form([
+        $this->client->request(Request::METHOD_GET, '/connexion');
+        $this->client->submit($this->client->getCrawler()->selectButton('Connexion')->form([
             '_adherent_email' => 'carl999@example.fr',
             '_adherent_password' => 'secret!12345',
         ]));
@@ -266,11 +266,11 @@ class OAuthServerControllerTest extends MysqlWebTestCase
         $authorizeUrl = $this->createAuthorizeUrl('661cc3b7-322d-4441-a510-ab04eda71737');
         $this->client->request(Request::METHOD_GET, $authorizeUrl);
         $response = $this->client->getResponse();
-        static::assertTrue($response->isRedirect('http://'.$this->hosts['app'].'/espace-adherent/connexion'));
+        static::assertTrue($response->isRedirect('http://'.$this->hosts['app'].'/connexion'));
 
         $crawler = $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+        $this->client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => 'carl999@example.fr',
             '_adherent_password' => 'secret!12345',
         ]));

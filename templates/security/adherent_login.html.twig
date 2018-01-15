@@ -1,77 +1,44 @@
-{% extends 'base.html.twig' %}
+{% extends 'oauth/base.html.twig' %}
 
-{% block page_title 'Connexion' %}
-
-{% block stylesheets %}
-    <style type="text/css">
-        body {
-            height: 100vh;
-            justify-content: space-between;
-        }
-        header,
-        footer {
-            flex-grow: 0;
-        }
-        main {
-            flex-grow: 1;
-        }
-    </style>
-{% endblock %}
+{% block page_title 'Connectez-vous avec vos identifiants En Marche afin d’accéder à cette application.' %}
 
 {% block content %}
+    <section class="l__inner">
+        <h1>Connectez-vous avec vos identifiants <em>En Marche</em> afin d’accéder à cette application.</h1>
 
-    <main class="login">
-        <section class="l__wrapper-300">
-            <div>
-                <h2>Identifiez-vous</h2>
-
-                <div class="security__form">
-                    <form action="{{ path('app_adherent_login_check') }}" name="app_login" method="post">
-
-                    {{ form_errors(form) }}
-
-                    {% if error %}
-                        <div class="form__error login__error">
-                            Oups! Vos identifiants sont invalides.
-                        </div>
-                    {% endif %}
-
-                    <div class="form__row">
-                        {{ form_widget(form._adherent_email, { 'attr': {
-                            'placeholder': 'Adresse e-mail',
-                            'aria-label': 'Adresse e-mail',
-                            'class': 'form--full'
-                        } }) }}
-                    </div>
-
-                    <div class="form__row">
-                        {{ form_widget(form._adherent_password, { 'attr': {
-                            'placeholder': 'Mot de passe',
-                            'aria-label': 'Mot de passe',
-                            'class': 'form--full'
-                        } }) }}
-                    </div>
-
-                    {{ form_rest(form) }}
-
-                    <button type="submit"
-                            title="Je me connecte"
-                            class="form form--full btn btn--blue">Je me connecte</button>
-                    </form>
-                </div>
-
-                <p><a href="{{ path('adherent_forgot_password') }}">Mot de passe oublié</a></p>
-
-                <div class="login__separator">
-                    <div class="login__separator__text">Pas encore adhérent?</div>
-                </div>
-
-                <a href="{{ path('app_membership_register') }}" title="J'adhère à En Marche !"
-                    class="form form--full btn login__subscribe">
-                    J'adhère à En Marche !
-                </a>
-                </div>
+        {% if error %}
+            <div id="auth-error" class="form__error">
+                {{- error.messageKey|trans(error.messageData) -}}
             </div>
-        </section>
-    </main>
+        {% endif %}
+
+        {{ form_start(form, {'action': path('app_adherent_login_check')}) }}
+            <ul class="form">
+                <li>
+                     {{ form_label(form._adherent_email, 'E-mail',{ 'label_attr': {'class': 'visually-hidden'} }) }}
+                     {{ form_errors(form._adherent_email) }}
+                     {{ form_widget(form._adherent_email, {'attr': {'placeholder': 'E-mail' }}) }}
+                </li>
+
+                <li>
+                    {{ form_label(form._adherent_password,'Mot de passe',{ 'label_attr': {'class': 'visually-hidden'} }) }}
+                    {{ form_errors(form._adherent_password) }}
+                    {{ form_widget(form._adherent_password, {'attr': {'placeholder': 'Mot de passe' }}) }}
+
+                    <a href="{{ path('adherent_forgot_password') }}" class="form__forgotten-pw">Oublié ?</a>
+                </li>
+
+                <li>
+                    <button class="btn">Connexion</button>
+                </li>
+            </ul>
+        {{ form_end(form) }}
+    </section>
+
+    <section class="l__inner__footer">
+        Pas de compte ? <a href="{{ path('app_membership_register') }}">S’inscrire</a>.
+        <div>
+            Créer un compte ne vous engage pas à adhérer au mouvement En Marche.
+        </div>
+    </section>
 {% endblock %}

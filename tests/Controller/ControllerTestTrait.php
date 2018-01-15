@@ -51,11 +51,11 @@ trait ControllerTestTrait
 
     public function authenticateAsAdherent(Client $client, string $emailAddress, string $password)
     {
-        $crawler = $client->request(Request::METHOD_GET, '/espace-adherent/connexion');
+        $crawler = $client->request(Request::METHOD_GET, '/connexion');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
 
-        $client->submit($crawler->selectButton('Je me connecte')->form([
+        $client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => $emailAddress,
             '_adherent_password' => $password,
         ]));
