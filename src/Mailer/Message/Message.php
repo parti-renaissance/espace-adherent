@@ -114,7 +114,7 @@ abstract class Message
 
     final protected static function escape(string $string): string
     {
-        return htmlspecialchars($string, ENT_QUOTES, 'UTF-8', false);
+        return htmlspecialchars($string, ENT_NOQUOTES, 'UTF-8', false);
     }
 
     public function getSenderEmail(): ?string
