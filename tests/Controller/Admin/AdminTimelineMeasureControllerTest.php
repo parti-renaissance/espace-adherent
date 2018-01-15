@@ -111,7 +111,7 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
         ]));
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
-        $indexedEntities = $this->getIndexer()->getCreations();
+        $indexedEntities = $this->getIndexer()->getEntitiesToIndex();
 
         $this->assertCount(2, $indexedEntities);
         $this->assertArrayHasKey('Measure_test', $indexedEntities);

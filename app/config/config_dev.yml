@@ -21,7 +21,6 @@ services:
         class: 'Tests\AppBundle\Test\Recaptcha\DummyRecaptchaApiClient'
         public: false
 
-
     algolia.indexer:
         class: 'Tests\AppBundle\Test\Algolia\DummyIndexer'
 
