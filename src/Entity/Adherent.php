@@ -3,8 +3,9 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Collection\CommitteeMembershipCollection;
+use AppBundle\OAuth\Model\User as InMemoryOAuthUser;
 use AppBundle\Collection\CitizenProjectMembershipCollection;
+use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Coordinator\CoordinatorAreaSectors;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
@@ -25,6 +26,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Table(name="adherents", uniqueConstraints={
@@ -64,6 +66,9 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     /**
      * @ORM\Column
+     *
+     * @JMS\Groups({"user_profile", "public"})
+     * @JMS\SerializedName("emailAddress")
      */
     private $emailAddress;
 
@@ -209,6 +214,16 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      */
     private $tags;
 
+    /**
+     * @var InMemoryOAuthUser|null
+     */
+    private $oAuthUser;
+
+    /**
+     * @var string[]
+     */
+    private $roles = [];
+
     public function __construct(
         UuidInterface $uuid,
         string $emailAddress,
@@ -252,6 +267,16 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return Uuid::uuid5(Uuid::NAMESPACE_OID, $email);
     }
 
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("uuid"),
+     * @JMS\Groups({"user_profile", "public"})
+     */
+    public function getUuidAsString(): string
+    {
+        return $this->getUuid()->toString();
+    }
+
     public function getRoles(): array
     {
         $roles = ['ROLE_ADHERENT'];
@@ -292,7 +317,14 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
             $roles[] = 'ROLE_ADMINISTRATOR';
         }
 
-        return $roles;
+        return array_merge($roles, $this->roles);
+    }
+
+    public function addRoles(array $roles)
+    {
+        foreach ($roles as $role) {
+            $this->roles[] = $role;
+        }
     }
 
     public function getType(): string
@@ -1013,5 +1045,14 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return implode(', ', array_map(function (CoordinatorManagedArea $area) {
             return $area->getCodesAsString();
         }, $this->coordinatorManagedAreas->toArray()));
+    }
+
+    public function getOAuthUser(): InMemoryOAuthUser
+    {
+        if (!$this->oAuthUser) {
+            $this->oAuthUser = new InMemoryOAuthUser($this->uuid);
+        }
+
+        return $this->oAuthUser;
     }
 }
