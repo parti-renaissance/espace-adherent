@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\Admin;
 
-use AppBundle\Algolia\ManualIndexer;
 use AppBundle\DataFixtures\ORM\LoadAdminData;
 use AppBundle\DataFixtures\ORM\LoadTimelineData;
 use AppBundle\Entity\Timeline\Measure;
@@ -16,7 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\MysqlWebTestCase;
 use Tests\AppBundle\Test\Algolia\DummyIndexer;
-use Tests\AppBundle\Test\Algolia\DummyManualIndexer;
 
 /**
  * @group functional
@@ -57,7 +55,6 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $deleteUrl);
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-
         $this->client->submit($crawler->selectButton('Oui, supprimer')->form());
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
@@ -74,7 +71,7 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
         $this->assertArraySubset([
             'titles' => [
                 'fr' => LoadTimelineData::THEMES['TT001']['title']['fr'],
-            ]
+            ],
         ], $entitiesToIndex['Theme_test'][0]);
     }
 
