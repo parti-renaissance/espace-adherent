@@ -2,9 +2,9 @@
 
 {% set campaign_expired = app.request.attributes.get('_campaign_expired') %}
 
-{% set default_sharer = homepage_url ~ asset('images/default_sharer.jpg') %}
-{% set default_sharer_width = 1905 %}
-{% set default_sharer_height = 1000 %}
+{% set default_sharer = 'https://storage.googleapis.com/en-marche-fr/E-MAILING/2017/images/REM/Logo-LREM-noir.jpg' %}
+{% set default_sharer_width = 1698 %}
+{% set default_sharer_height = 550 %}
 
 {% set has_role_user = is_granted('ROLE_USER') %}
 {% set has_role_adherent = is_granted('ROLE_ADHERENT') %}
@@ -44,7 +44,7 @@
         <meta name="description" content="{% block meta_description %}Pour ceux qui sont convaincus que le pays est bloqué, qui ont le goût du travail, du progrès, du risque, qui vivent pour la liberté, l'égalité, et l'Europe.{% endblock %}" />
         {% block amp_link '' %}
 
-        <meta property="og:site_name" content="En Marche !" />
+        <meta property="og:site_name" content="{% block open_graph_site_name 'La République En Marche !' %}" />
         <meta property="og:url" content="{% block open_graph_url block('canonical_url') %}" />
         <meta property="og:title" content="{% block open_graph_title block('title') %}" />
         <meta property="og:description" content="{% block open_graph_description block('meta_description') %}" />
