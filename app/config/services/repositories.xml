@@ -29,11 +29,6 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.citizen_initiative" class="AppBundle\Repository\CitizenInitiativeRepository" public="false">
-            <argument>AppBundle\Entity\CitizenInitiative</argument>
-            <factory service="doctrine" method="getRepository"/>
-        </service>
-
         <service id="app.repository.citizen_action" class="AppBundle\Repository\CitizenActionRepository" public="false">
             <argument>AppBundle\Entity\CitizenAction</argument>
             <factory service="doctrine" method="getRepository"/>

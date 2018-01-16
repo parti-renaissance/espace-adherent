@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 class SkillRepository extends EntityRepository
 {
     const FIND_FOR_SUMMARY = 'summaries';
-    const FIND_FOR_CITIZEN_INITIATIVE = 'citizenInitiatives';
 
     /**
      * Finds all available skills for autocomplete.
@@ -19,11 +18,6 @@ class SkillRepository extends EntityRepository
             case self::FIND_FOR_SUMMARY:
                 $joinedTable = 'summaries';
                 $fieldUser = 'member';
-
-                break;
-            case self::FIND_FOR_CITIZEN_INITIATIVE:
-                $joinedTable = 'citizenInitiatives';
-                $fieldUser = 'organizer';
 
                 break;
         }

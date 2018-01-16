@@ -5,8 +5,6 @@ namespace AppBundle\Event;
 use AppBundle\Address\Address;
 use AppBundle\Address\PostAddressFactory;
 use AppBundle\CitizenAction\CitizenActionCommand;
-use AppBundle\CitizenInitiative\CitizenInitiativeCommand;
-use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\PostAddress;
@@ -46,37 +44,6 @@ class EventFactory
         );
     }
 
-    public function createCitizenInitiativeFromArray(array $data): CitizenInitiative
-    {
-        foreach (['uuid', 'organizer', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at',
-                     'expert_assistance_needed', 'coaching_requested', 'capacity', 'place', ] as $key) {
-            if (!array_key_exists($key, $data)) {
-                throw new \InvalidArgumentException(sprintf('Key "%s" is missing.', $key));
-            }
-        }
-
-        $uuid = Uuid::fromString($data['uuid']);
-
-        return new CitizenInitiative(
-            $uuid,
-            $data['organizer'],
-            $data['name'],
-            $data['category'],
-            $data['description'],
-            $data['address'],
-            $data['begin_at'],
-            $data['finish_at'],
-            $data['expert_assistance_needed'],
-            $data['coaching_requested'],
-            null,
-            [],
-            $data['capacity'],
-            null,
-            0,
-            $data['place']
-        );
-    }
-
     public function createCitizenActionFromArray(array $data): CitizenAction
     {
         foreach (['uuid', 'organizer', 'citizen_project', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at'] as $key) {
@@ -98,32 +65,6 @@ class EventFactory
             $data['begin_at'],
             $data['finish_at']
         );
-    }
-
-    public function createFromCitizenInitiativeCommand(CitizenInitiativeCommand $command): CitizenInitiative
-    {
-        $initiative = new CitizenInitiative(
-            $command->getUuid(),
-            $command->getAuthor(),
-            $command->getName(),
-            $command->getCategory(),
-            $command->getDescription(),
-            $this->createPostAddress($command->getAddress()),
-            $command->getBeginAt(),
-            $command->getFinishAt(),
-            $command->isExpertAssistanceNeeded(),
-            $command->isCoachingRequested(),
-            $command->getCoachingRequest(),
-            $command->getInterests(),
-            $command->getCapacity(),
-            null,
-            0,
-            $command->getPlace()
-        );
-
-        $initiative->setSkills($command->getSkills());
-
-        return $initiative;
     }
 
     public function createFromEventCommand(EventCommand $command): Event
@@ -157,27 +98,6 @@ class EventFactory
         );
 
         return $event;
-    }
-
-    public function updateFromCitizenInitiativeCommand(CitizenInitiative $initiative, CitizenInitiativeCommand $command): CitizenInitiative
-    {
-        $initiative->update(
-            $command->getName(),
-            $command->getCategory(),
-            $command->getDescription(),
-            $this->createPostAddress($command->getAddress()),
-            $command->getBeginAt(),
-            $command->getFinishAt(),
-            $command->isExpertAssistanceNeeded(),
-            $command->isCoachingRequested(),
-            $command->getCoachingRequest(),
-            $command->getInterests(),
-            $command->getCapacity(),
-            $command->getSkills(),
-            $command->getPlace()
-        );
-
-        return $initiative;
     }
 
     public function createFromCitizenActionCommand(CitizenActionCommand $command): CitizenAction

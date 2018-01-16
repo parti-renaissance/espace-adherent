@@ -266,10 +266,5 @@
             <tag name="form.type" />
         </service>
 
-        <service id="AppBundle\Form\CitizenInitiativeType">
-            <argument type="service" id="app.repository.skill" />
-            <tag name="form.type" />
-        </service>
-
     </services>
 </container>

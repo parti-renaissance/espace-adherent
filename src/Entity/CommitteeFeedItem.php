@@ -110,21 +110,6 @@ class CommitteeFeedItem
         return $item;
     }
 
-    public static function createCitizenInitiative(
-        Committee $committee,
-        Adherent $author,
-        string $content,
-        CitizenInitiative $initiative,
-        bool $published = true,
-        string $createdAt = 'now'
-    ): self {
-        $item = new static(Uuid::uuid4(), self::CITIZEN_INITIATIVE, $committee, $author, $published, $createdAt);
-        $item->content = $content;
-        $item->event = $initiative;
-
-        return $item;
-    }
-
     public function getContent(): ?string
     {
         if ($this->event instanceof Event) {

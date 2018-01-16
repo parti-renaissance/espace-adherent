@@ -20,7 +20,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
  *     "event" = "AppBundle\Entity\Event",
- *     "citizen_initiative" = "AppBundle\Entity\CitizenInitiative",
  *     "citizen_action" = "AppBundle\Entity\CitizenAction"
  * })
  *
@@ -333,11 +332,6 @@ abstract class BaseEvent implements GeoPointInterface
     }
 
     abstract public function getType();
-
-    public function isCitizenInitiative(): bool
-    {
-        return self::CITIZEN_INITIATIVE_TYPE === $this->getType();
-    }
 
     public function isCitizenAction(): bool
     {

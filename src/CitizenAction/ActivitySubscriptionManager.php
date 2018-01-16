@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\CitizenInitiative;
+namespace AppBundle\CitizenAction;
 
 use AppBundle\Entity\ActivitySubscription;
 use AppBundle\Entity\Adherent;

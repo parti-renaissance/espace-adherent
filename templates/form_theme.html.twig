@@ -96,16 +96,6 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block _citizen_initiative_skills_entry_name_row %}
-    {% spaceless %}
-        <div class="summary-skill">
-            <span class="skill-remove">X</span>
-            <span class="skill-value">&nbsp;{% if value is not empty %}{{ value }}{% endif %}</span>
-            {{ block('hidden_widget') }}
-        </div>
-    {% endspaceless %}
-{% endblock %}
-
 {% block _citizen_project_skills_entry_row %}
     {% spaceless %}
         <div class="summary-skill">

@@ -2,7 +2,6 @@
 
 namespace AppBundle\CitizenAction;
 
-use AppBundle\CitizenInitiative\ActivitySubscriptionManager;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Event\EventRegistrationFactory;
 use AppBundle\Event\EventRegistrationManager;
@@ -14,20 +13,17 @@ class CitizenActionRegistrationCommandHandler
 {
     private $factory;
     private $manager;
-    private $activitySubscriptionManager;
     private $mailer;
     private $urlGenerator;
 
     public function __construct(
         EventRegistrationFactory $factory,
         EventRegistrationManager $manager,
-        ActivitySubscriptionManager $activitySubscriptionManager,
         MailerService $mailer,
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->factory = $factory;
         $this->manager = $manager;
-        $this->activitySubscriptionManager = $activitySubscriptionManager;
         $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
     }
@@ -52,11 +48,6 @@ class CitizenActionRegistrationCommandHandler
         ]);
 
         $this->mailer->sendMessage(CitizenActionRegistrationConfirmationMessage::createFromRegistration($registration, $citizenInitiativeCalendarLink));
-
-        // Subscribe to citizen initiative organizator activity
-        if ($adherent = $command->getAdherent()) {
-            $this->activitySubscriptionManager->subscribeToAdherentActivity($adherent, $command->getEvent()->getOrganizer());
-        }
     }
 
     private function generateUrl(string $route, array $params = []): string

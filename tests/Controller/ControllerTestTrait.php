@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller;
 
-use AppBundle\Entity\CitizenInitiativeCategory;
 use AppBundle\Entity\EventCategory;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -89,11 +88,6 @@ trait ControllerTestTrait
     private function getEventCategoryIdForName(string $categoryName): int
     {
         return $this->manager->getRepository(EventCategory::class)->findOneBy(['name' => $categoryName])->getId();
-    }
-
-    private function getCitizenInitiativeCategoryIdForName(string $categoryName): int
-    {
-        return $this->manager->getRepository(CitizenInitiativeCategory::class)->findOneBy(['name' => $categoryName])->getId();
     }
 
     protected function init(array $fixtures = [], string $host = 'app')

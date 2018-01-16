@@ -24,16 +24,12 @@
                         {{- event.name -}}
                     </h1>
                     <div class="committee-event-organizer text--body text--white">
-                        {% if event.isCitizenInitiative %}
-                            <span class="text--bold">Initiative citoyenne</span> organisée par l'adhérent <span class="text--bold">{{ event.organizer.fullName }}</span>
-                        {% else %}
-                            Organisé par <span class="text--bold">{{ event.organizer }}</span>
-                            {% if committee is defined and committee %}
-                                du comité
-                                <a class="link--white" href="{{ path('app_committee_show', {'slug': committee.slug}) }}">
-                                    {{- committee.name -}}
-                                </a>
-                            {% endif %}
+                        Organisé par <span class="text--bold">{{ event.organizer }}</span>
+                        {% if committee is defined and committee %}
+                            du comité
+                            <a class="link--white" href="{{ path('app_committee_show', {'slug': committee.slug}) }}">
+                                {{- committee.name -}}
+                            </a>
                         {% endif %}
                     </div>
                 </div>
@@ -81,7 +77,7 @@
                         </div>
                     {% else %}
                         <div class="text--body">
-                            {% set msg = event.isCitizenInitiative ? 'Votre message sera envoyé par e-mail à %s de votre initiative.' : 'Votre message sera envoyé par e-mail à %s de votre comité.' %}
+                            {% set msg = 'Votre message sera envoyé par e-mail à %s de votre comité.' %}
                             {{ msg|format('event.participants_count'|transchoice(contacts|length)) }}
                         </div>
                     {% endif %}

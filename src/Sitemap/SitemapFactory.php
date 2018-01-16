@@ -4,7 +4,6 @@ namespace AppBundle\Sitemap;
 
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
-use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Media;
@@ -21,10 +20,9 @@ use Tackk\Cartographer\SitemapIndex;
 
 class SitemapFactory
 {
-    public const ALL_TYPES = 'citizen_initiatives|committees|content|events|images|main|videos';
+    public const ALL_TYPES = 'committees|content|events|images|main|videos';
     private const PER_PAGE = 10000;
     private const EXPIRATION_TIME = 3600;
-    private const TYPE_CITIZEN_INITIATIVES = 'citizen_initiatives';
     private const TYPE_COMMITTEES = 'committees';
     private const TYPE_CONTENT = 'content';
     private const TYPE_EVENTS = 'events';
@@ -68,14 +66,6 @@ class SitemapFactory
 
             for ($i = 1; $i <= $pagesCount; ++$i) {
                 $sitemapIndex->add($this->generateUrl('app_sitemap', ['type' => self::TYPE_EVENTS, 'page' => $i]), null);
-            }
-
-            // Citizen initiatives
-            $totalCount = $this->manager->getRepository(CitizenInitiative::class)->countSitemapCitizenInitiatives();
-            $pagesCount = ceil($totalCount / self::PER_PAGE);
-
-            for ($i = 1; $i <= $pagesCount; ++$i) {
-                $sitemapIndex->add($this->generateUrl('app_sitemap', ['type' => self::TYPE_CITIZEN_INITIATIVES, 'page' => $i]), null);
             }
 
             // AMP
@@ -124,10 +114,6 @@ class SitemapFactory
 
         if (self::TYPE_EVENTS === $type) {
             return $this->createEventsSitemap($page);
-        }
-
-        if (self::TYPE_CITIZEN_INITIATIVES === $type) {
-            return $this->createCitizenInitiativesSitemap($page);
         }
 
         if (self::TYPE_IMAGES === $type) {
@@ -215,23 +201,6 @@ class SitemapFactory
         }
 
         return $events->get();
-    }
-
-    private function createCitizenInitiativesSitemap(int $page): string
-    {
-        $citizenInitiatives = $this->cache->getItem('sitemap_citizen_initiatives_'.$page);
-
-        if (!$citizenInitiatives->isHit()) {
-            $sitemap = new Sitemap();
-            $this->addCitizenInitiatives($sitemap, $page, self::PER_PAGE);
-
-            $citizenInitiatives->set((string) $sitemap);
-            $citizenInitiatives->expiresAfter(self::EXPIRATION_TIME);
-
-            $this->cache->save($citizenInitiatives);
-        }
-
-        return $citizenInitiatives->get();
     }
 
     private function createImagesSitemap(): string
@@ -380,23 +349,6 @@ class SitemapFactory
         foreach ($events as $event) {
             $sitemap->add(
                 $this->generateUrl('app_event_show', [
-                    'slug' => $event['slug'],
-                ]),
-                $event['updatedAt']->format(\DATE_ATOM),
-                ChangeFrequency::WEEKLY,
-                0.6
-            );
-        }
-    }
-
-    private function addCitizenInitiatives(Sitemap $sitemap, int $page, int $perPage)
-    {
-        $citizenInitiatives = $this->manager->getRepository(CitizenInitiative::class)->findSitemapCitizenInitiatives($page, $perPage);
-
-        foreach ($citizenInitiatives as $event) {
-            $sitemap->add(
-                $this->generateUrl('app_citizen_initiative_show', [
-                    'uuid' => $event['uuid'],
                     'slug' => $event['slug'],
                 ]),
                 $event['updatedAt']->format(\DATE_ATOM),
