@@ -12,7 +12,7 @@ trait AlgoliaIndexedEntityAdminTrait
      */
     private $algoliaManager;
 
-    public function setAlgoliaManager(AlgoliaIndexedEntityManager $manager)
+    public function setAlgoliaManager(AlgoliaIndexedEntityManager $manager): void
     {
         $this->algoliaManager = $manager;
     }

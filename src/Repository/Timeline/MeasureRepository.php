@@ -9,9 +9,13 @@ class MeasureRepository extends EntityRepository
 {
     public function findOneByTitle(string $title): ?Measure
     {
-        return $this->createQueryBuilder('measure')
+        $qb = $this
+            ->createQueryBuilder('measure')
             ->join('measure.translations', 'translations')
-            ->where('translations.title = :title')
+        ;
+
+        return $qb
+            ->andWhere('translations.title = :title')
             ->setParameter('title', $title)
             ->getQuery()
             ->getOneOrNullResult()
