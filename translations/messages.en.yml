@@ -1,0 +1,6 @@
+#
+# Timeline
+#
+timeline.measure.status.done: done
+timeline.measure.status.in_progress: in progress
+timeline.measure.status.upcoming: upcoming
