@@ -88,13 +88,7 @@ class TimelineMeasureAdmin extends AbstractAdmin
             ], null, [
                 'multiple' => true,
                 'query_builder' => function (ProfileRepository $repository) {
-                    return $repository
-                        ->createQueryBuilder('profile')
-                        ->select('profile, translations')
-                        ->join('profile.translations', 'translations')
-                        ->where('translations.locale = :locale')
-                        ->setParameter('locale', 'fr')
-                    ;
+                    return $repository->getTranslatedChoicesQueryBuilder();
                 },
             ])
             ->add('themes', null, [
@@ -103,13 +97,7 @@ class TimelineMeasureAdmin extends AbstractAdmin
             ], null, [
                 'multiple' => true,
                 'query_builder' => function (ThemeRepository $repository) {
-                    return $repository
-                        ->createQueryBuilder('theme')
-                        ->select('theme, translations')
-                        ->join('theme.translations', 'translations')
-                        ->where('translations.locale = :locale')
-                        ->setParameter('locale', 'fr')
-                    ;
+                    return $repository->getTranslatedChoicesQueryBuilder();
                 },
             ])
             ->add('status', ChoiceFilter::class, [

@@ -3,10 +3,13 @@
 namespace AppBundle\Repository\Timeline;
 
 use AppBundle\Entity\Timeline\Profile;
+use AppBundle\Repository\TranslatableRepositoryTrait;
 use Doctrine\ORM\EntityRepository;
 
 class ProfileRepository extends EntityRepository
 {
+    use TranslatableRepositoryTrait;
+
     public function findOneByTitle(string $title): ?Profile
     {
         $qb = $this
