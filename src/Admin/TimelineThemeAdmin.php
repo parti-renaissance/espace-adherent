@@ -51,7 +51,7 @@ class TimelineThemeAdmin extends AbstractAdmin
             ->end()
         ;
 
-        $this->removeEmptyTranslationsOnSubmit($formMapper);
+        $this->removeEmptyTranslationsOnSubmit($formMapper->getFormBuilder());
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)

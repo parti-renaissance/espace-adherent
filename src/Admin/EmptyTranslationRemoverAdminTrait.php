@@ -3,7 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Form\EventListener\EmptyTranslationRemoverListener;
-use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\FormBuilderInterface;
 
 trait EmptyTranslationRemoverAdminTrait
 {
@@ -17,11 +17,8 @@ trait EmptyTranslationRemoverAdminTrait
         $this->emptyTranslationRemoverListener = $listener;
     }
 
-    private function removeEmptyTranslationsOnSubmit(FormMapper $formMapper): void
+    private function removeEmptyTranslationsOnSubmit(FormBuilderInterface $builder): void
     {
-        $formMapper
-            ->getFormBuilder()
-            ->addEventSubscriber($this->emptyTranslationRemoverListener)
-        ;
+        $builder->addEventSubscriber($this->emptyTranslationRemoverListener);
     }
 }
