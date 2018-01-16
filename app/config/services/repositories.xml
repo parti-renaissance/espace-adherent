@@ -153,10 +153,5 @@
             <argument>AppBundle\Entity\Media</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
-
-        <service id="AppBundle\Repository\Timeline\ThemeRepository" public="false">
-            <argument>AppBundle\Entity\Timeline\Theme</argument>
-            <factory service="doctrine" method="getRepository"/>
-        </service>
     </services>
 </container>
