@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
+ * @ORM\EntityListeners({"AppBundle\Entity\Timeline\MeasureTranslationListener"})
  * @ORM\Table(name="timeline_measure_translations")
  *
  * @UniqueEntity(fields={"locale", "title"}, errorPath="title")

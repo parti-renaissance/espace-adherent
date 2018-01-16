@@ -9,9 +9,13 @@ class ThemeRepository extends EntityRepository
 {
     public function findOneByTitle(string $title): ?Theme
     {
-        return $this->createQueryBuilder('theme')
+        $qb = $this
+            ->createQueryBuilder('theme')
             ->join('theme.translations', 'translations')
-            ->where('translations.title = :title')
+        ;
+
+        return $qb
+            ->andWhere('translations.title = :title')
             ->setParameter('title', $title)
             ->getQuery()
             ->getOneOrNullResult()

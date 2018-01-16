@@ -186,6 +186,11 @@ class Measure implements AlgoliaIndexedEntityInterface
         return $this->updatedAt;
     }
 
+    public function update(): void
+    {
+        $this->updatedAt = new \DateTime('now');
+    }
+
     /**
      * @Algolia\Attribute
      */
