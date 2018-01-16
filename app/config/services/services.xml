@@ -76,5 +76,9 @@
 			<argument>%locale%</argument>
 		</service>
 		<service id="AppBundle\Timeline\TimelineFactory" />
+		<service id="AppBundle\Timeline\TimelineImageFactory" public="true">
+			<argument key="$cacheDirectory">%kernel.cache_dir%</argument>
+			<argument key="$webDirectory">%kernel.root_dir%/../web</argument>
+		</service>
 	</services>
 </container>
