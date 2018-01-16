@@ -231,7 +231,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         string $gender,
         string $firstName,
         string $lastName,
-        \DateTime $birthdate,
+        ?\DateTime $birthDate,
         string $position,
         PostAddress $postAddress,
         PhoneNumber $phone = null,
@@ -247,7 +247,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->emailAddress = $emailAddress;
-        $this->birthdate = $birthdate;
+        $this->birthdate = $birthDate;
         $this->position = $position;
         $this->postAddress = $postAddress;
         $this->phone = $phone;

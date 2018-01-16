@@ -52,11 +52,14 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
-        $data['membership_request']['emailAddress'] = $emailAddress;
-        $crawler = $this->client->submit($crawler->selectButton('J\'adhère')->form(), $data);
+        $data['new_member_ship_request']['emailAddress']['first'] = $emailAddress;
+        $data['new_member_ship_request']['emailAddress']['second'] = $emailAddress;
+        $crawler = $this->client->submit($crawler->selectButton('Créer mon compte')->form(), $data);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('Cette adresse e-mail existe déjà.', $crawler->filter('#field-email-address > .form__errors > li')->text());
+        $errors = $crawler->filter('.form__error');
+        $this->assertSame(1, $errors->count());
+        $this->assertSame('Cette adresse e-mail existe déjà.', $errors->text());
     }
 
     /**
@@ -72,61 +75,29 @@ class MembershipControllerTest extends MysqlWebTestCase
         ];
     }
 
-    public function testCannotCreateMembershipAccountIfConditionsAreNotAccepted()
-    {
-        $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $data = static::createFormData();
-        $data['membership_request']['conditions'] = false;
-        $crawler = $this->client->submit($crawler->selectButton('J\'adhère')->form(), $data);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('Vous devez accepter la charte.', $crawler->filter('#field-conditions > .form__errors > li')->text());
-    }
-
-    public function testCannotCreateMembershipAccountWithInvalidFrenchAddress()
-    {
-        $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $data = static::createFormData();
-        $data['membership_request']['address']['postalCode'] = '73100';
-        $data['membership_request']['address']['city'] = '73100-73999';
-        $crawler = $this->client->submit($crawler->selectButton('J\'adhère')->form(), $data);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('Cette ville n\'est pas une ville française valide.', $crawler->filter('#membership-address > .form__errors > li')->eq(0)->text());
-        $this->assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $crawler->filter('#membership-address > .form__errors > li')->eq(1)->text());
-    }
-
     public function testCreateMembershipAccountForFrenchAdherentIsSuccessful()
     {
         $this->client->request(Request::METHOD_GET, '/inscription');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->submit($this->client->getCrawler()->selectButton('J\'adhère')->form(), static::createFormData());
+        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon compte')->form(), static::createFormData());
 
-        $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
-
-        $this->client->followRedirect();
+        $this->assertClientIsRedirectedTo('/presque-fini', $this->client);
 
         $adherent = $this->getAdherentRepository()->findOneByEmail('paul@dupont.tld');
         $this->assertInstanceOf(Adherent::class, $adherent);
         $this->assertSame('male', $adherent->getGender());
         $this->assertSame('Paul', $adherent->getFirstName());
         $this->assertSame('Dupont', $adherent->getLastName());
-        $this->assertSame('92 Bld Victor Hugo', $adherent->getAddress());
-        $this->assertSame('Clichy', $adherent->getCityName());
+        $this->assertEmpty($adherent->getAddress());
+        $this->assertEmpty($adherent->getCityName());
         $this->assertSame('FR', $adherent->getCountry());
-        $this->assertSame('20-01-1950', $adherent->getBirthdate()->format('d-m-Y'));
-        $this->assertTrue($adherent->getComMobile());
-        $this->assertFalse($adherent->getComEmail());
-        $this->assertNotNull($adherent->getLatitude());
-        $this->assertNotNull($adherent->getLongitude());
+        $this->assertNull($adherent->getBirthdate());
+        $this->assertFalse($adherent->getComMobile());
+        $this->assertTrue($adherent->getComEmail());
+        $this->assertNull($adherent->getLatitude());
+        $this->assertNull($adherent->getLongitude());
 
         $this->assertInstanceOf(
             Adherent::class,
@@ -181,27 +152,24 @@ class MembershipControllerTest extends MysqlWebTestCase
     /**
      * @dataProvider provideSuccessfulMembershipRequests
      */
-    public function testCreateMembershipAccountIsSuccessful($country, $city, $cityName, $postalCode, $address)
+    public function testCreateMembershipAccountIsSuccessful($country, $postalCode)
     {
         $this->client->request(Request::METHOD_GET, '/inscription');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
-        $data['membership_request']['address']['country'] = $country;
-        $data['membership_request']['address']['city'] = $city;
-        $data['membership_request']['address']['cityName'] = $cityName;
-        $data['membership_request']['address']['postalCode'] = $postalCode;
-        $data['membership_request']['address']['address'] = $address;
+        $data['new_member_ship_request']['address']['country'] = $country;
+        $data['new_member_ship_request']['address']['postalCode'] = $postalCode;
 
-        $this->client->submit($this->client->getCrawler()->selectButton('J\'adhère')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon compte')->form(), $data);
 
-        $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
+        $this->assertClientIsRedirectedTo('/presque-fini', $this->client);
 
         $adherent = $this->getAdherentRepository()->findOneByEmail('paul@dupont.tld');
         $this->assertInstanceOf(Adherent::class, $adherent);
-        $this->assertNotNull($adherent->getLatitude());
-        $this->assertNotNull($adherent->getLongitude());
+        $this->assertNull($adherent->getLatitude());
+        $this->assertNull($adherent->getLongitude());
 
         $session = $this->client->getRequest()->getSession();
 
@@ -213,10 +181,10 @@ class MembershipControllerTest extends MysqlWebTestCase
     public function provideSuccessfulMembershipRequests()
     {
         return [
-            'Foreign' => ['CH', '', 'Zürich', '8057', '36 Zeppelinstrasse'],
-            'DOM-TOM Réunion' => ['FR', '97437-97410', '', '97437', '20 Rue Francois Vitry'],
-            'DOM-TOM Guadeloupe' => ['FR', '97110-97120', '', '97110', '18 Rue Roby Petreluzzi'],
-            'DOM-TOM Polynésie' => ['FR', '98714-98735', '', '98714', '45 Avenue du Maréchal Foch'],
+            'Foreign' => ['CH', '8057'],
+            'DOM-TOM Réunion' => ['FR', '97437'],
+            'DOM-TOM Guadeloupe' => ['FR', '97110'],
+            'DOM-TOM Polynésie' => ['FR', '98714'],
         ];
     }
 
@@ -228,24 +196,22 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
-        $data['membership_request']['emailAddress'] = 'michel@dupont.tld';
-        $data['membership_request']['address']['country'] = 'CH';
-        $data['membership_request']['address']['city'] = '';
-        $data['membership_request']['address']['cityName'] = 'Zürich';
-        $data['membership_request']['address']['postalCode'] = '8057';
-        $data['membership_request']['address']['address'] = '36 Zeppelinstrasse';
+        $data['new_member_ship_request']['emailAddress']['first'] = 'michel@dupont.tld';
+        $data['new_member_ship_request']['emailAddress']['second'] = 'michel@dupont.tld';
+        $data['new_member_ship_request']['address']['country'] = 'CH';
+        $data['new_member_ship_request']['address']['postalCode'] = '8057';
 
-        $this->client->submit($this->client->getCrawler()->selectButton('J\'adhère')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon compte')->form(), $data);
 
-        $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
+        $this->assertClientIsRedirectedTo('/presque-fini', $this->client);
 
         // login
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_adherent_email' => $data['membership_request']['emailAddress'],
-            '_adherent_password' => $data['membership_request']['password']['first'],
+            '_adherent_email' => $data['new_member_ship_request']['emailAddress']['first'],
+            '_adherent_password' => $data['new_member_ship_request']['password'],
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
@@ -255,7 +221,7 @@ class MembershipControllerTest extends MysqlWebTestCase
     public function testDonateWithoutTemporaryDonation()
     {
         $client = $this->client;
-        $client->request(Request::METHOD_GET, '/inscription/don');
+        $client->request(Request::METHOD_GET, '/presque-fini');
 
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $client->getResponse());
     }
@@ -268,21 +234,14 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
-        $data['membership_request']['emailAddress'] = 'michel2@dupont.tld';
-        $data['membership_request']['address']['country'] = 'CH';
-        $data['membership_request']['address']['city'] = '';
-        $data['membership_request']['address']['cityName'] = 'Zürich';
-        $data['membership_request']['address']['postalCode'] = '8057';
-        $data['membership_request']['address']['address'] = '36 Zeppelinstrasse';
+        $data['new_member_ship_request']['emailAddress']['first'] = 'michel2@dupont.tld';
+        $data['new_member_ship_request']['emailAddress']['second'] = 'michel2@dupont.tld';
+        $data['new_member_ship_request']['address']['country'] = 'CH';
+        $data['new_member_ship_request']['address']['postalCode'] = '8057';
 
-        $this->client->submit($this->client->getCrawler()->selectButton('J\'adhère')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon compte')->form(), $data);
 
-        $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
-        $crawler = $this->client->followRedirect();
-        $form = $crawler->selectButton('Je soutiens maintenant')->form();
-        $this->client->submit($form, ['app_donation[amount]' => 'NaN']);
-
-        $this->assertNotSame(500, $this->client->getResponse()->getStatusCode());
+        $this->assertClientIsRedirectedTo('/presque-fini', $this->client);
     }
 
     /**
@@ -431,18 +390,10 @@ class MembershipControllerTest extends MysqlWebTestCase
             ],
         ]);
 
-        $this->assertClientIsRedirectedTo('/inscription/terminee', $this->client);
-
-        $crawler = $this->client->followRedirect();
-
-        $this->assertContains('Finalisez dès maintenant votre adhésion', $crawler->text());
-
-        $memberships = $this->getCommitteeMembershipRepository()->findMemberships($adherent);
-
-        $this->assertCount(2, $memberships);
+        $this->assertClientIsRedirectedTo('/presque-fini', $this->client);
     }
 
-    public function testCannotCreateMembershipAccountRecaptchaConnexionFailure()
+    public function testCannotCreateMembershipAccountRecaptchaConnectionFailure()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
 
@@ -450,44 +401,31 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $data = static::createFormData();
         $data['g-recaptcha-response'] = 'connection_failure';
-        $crawler = $this->client->submit($crawler->selectButton('J\'adhère')->form(), $data);
+        $crawler = $this->client->submit($crawler->selectButton('Créer mon compte')->form(), $data);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('Une erreur s\'est produite, pouvez-vous réessayer ?', $crawler->filter('#recapture_error')->text());
+        $errors = $crawler->filter('.flash-error_recaptcha');
+        $this->assertSame(1, $errors->count());
+        $this->assertSame('Une erreur s\'est produite, pouvez-vous réessayer ?', $errors->text());
     }
 
     private static function createFormData()
     {
         return [
             'g-recaptcha-response' => 'dummy',
-            'membership_request' => [
-                'gender' => 'male',
+            'new_member_ship_request' => [
                 'firstName' => 'Paul',
                 'lastName' => 'Dupont',
-                'emailAddress' => 'paul@dupont.tld',
-                'password' => [
-                    'first' => '#example!12345#',
-                    'second' => '#example!12345#',
+                'emailAddress' => [
+                    'first' => 'paul@dupont.tld',
+                    'second' => 'paul@dupont.tld',
                 ],
+                'password' => '#example!12345#',
                 'address' => [
                     'country' => 'FR',
                     'postalCode' => '92110',
-                    'city' => '92110-92024',
-                    'cityName' => '',
-                    'address' => '92 Bld Victor Hugo',
                 ],
-                'phone' => [
-                    'country' => 'FR',
-                    'number' => '0140998080',
-                ],
-                'position' => 'retired',
-                'birthdate' => [
-                    'year' => '1950',
-                    'month' => '1',
-                    'day' => '20',
-                ],
-                'conditions' => true,
-                'comMobile' => true,
+                'comEmail' => true,
             ],
         ];
     }
