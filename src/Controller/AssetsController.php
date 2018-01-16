@@ -7,6 +7,7 @@ use AppBundle\Entity\Clarification;
 use AppBundle\Entity\CustomSearchResult;
 use AppBundle\Entity\Proposal;
 use AppBundle\Geocoder\Coordinates;
+use AppBundle\Timeline\TimelineImageFactory;
 use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Responses\SymfonyResponseFactory;
 use League\Glide\Signatures\SignatureException;
@@ -187,5 +188,19 @@ class AssetsController extends Controller
         imagepng($image, $imagePath);
 
         return $imagePath;
+    }
+
+    /**
+     * @Route("/timeline-image.jpg", defaults={"_enable_campaign_silence"=true}, name="asset_timeline")
+     * @Method("GET")
+     * @Cache(maxage=900, smaxage=900)
+     */
+    public function timelineImageAction(Request $request)
+    {
+        $imageFactory = $this->get(TimelineImageFactory::class);
+
+        return new Response(file_get_contents($imageFactory->createImage()), Response::HTTP_OK, [
+            'Content-Type' => 'image/jpeg',
+        ]);
     }
 }

@@ -21,4 +21,19 @@ class MeasureRepository extends EntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function countMeasuresByStatus(string $status): int
+    {
+        $qb = $this
+            ->createQueryBuilder('measure')
+            ->select('COUNT(measure)')
+        ;
+
+        return $qb
+            ->andWhere('measure.status = :status')
+            ->setParameter('status', $status)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
 }
