@@ -55,8 +55,12 @@ class ThemeTranslation implements EntityTranslationInterface
      */
     private $description;
 
-    public function __construct(string $locale = null, string $title = null, string $slug = null, string $description = null)
-    {
+    public function __construct(
+        string $locale = null,
+        string $title = null,
+        string $slug = null,
+        string $description = null
+    ) {
         $this->locale = $locale;
         $this->title = $title;
         $this->slug = $slug;
