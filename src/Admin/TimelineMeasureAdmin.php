@@ -4,7 +4,6 @@ namespace AppBundle\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use AppBundle\Entity\Timeline\Measure;
-use AppBundle\Form\EventListener\EmptyTranslationRemoverListener;
 use AppBundle\Repository\Timeline\ProfileRepository;
 use AppBundle\Repository\Timeline\ThemeRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -20,15 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class TimelineMeasureAdmin extends AbstractAdmin
 {
     use AlgoliaIndexedEntityAdminTrait;
-
-    private $emptyTranslationRemoverListener;
-
-    public function __construct($code, $class, $baseControllerName, EmptyTranslationRemoverListener $emptyTranslationRemoverListener)
-    {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->emptyTranslationRemoverListener = $emptyTranslationRemoverListener;
-    }
+    use EmptyTranslationRemoverAdminTrait;
 
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -67,10 +58,7 @@ class TimelineMeasureAdmin extends AbstractAdmin
             ->end()
         ;
 
-        $formMapper
-            ->getFormBuilder()
-            ->addEventSubscriber($this->emptyTranslationRemoverListener)
-        ;
+        $this->removeEmptyTranslationsOnSubmit($formMapper);
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
