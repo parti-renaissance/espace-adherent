@@ -183,5 +183,10 @@
             <factory service="doctrine" method="getRepository" />
             <argument>AppBundle\Entity\OAuth\UserAuthorization</argument>
         </service>
+
+        <service id="AppBundle\Repository\FailedLoginAttemptRepository" public="false">
+            <factory service="doctrine" method="getRepository" />
+            <argument>AppBundle\Entity\FailedLoginAttempt</argument>
+        </service>
     </services>
 </container>
