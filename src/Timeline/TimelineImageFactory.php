@@ -16,7 +16,7 @@ class TimelineImageFactory
     private const TEXTS_TO_ADD = [
         Measure::STATUS_DONE => ['x' => 110, 'y' => 343],
         Measure::STATUS_IN_PROGRESS => ['x' => 280, 'y' => 343],
-        Measure::STATUS_UPCOMING => ['x' => 555, 'y' => 343]
+        Measure::STATUS_UPCOMING => ['x' => 555, 'y' => 343],
     ];
 
     private const BAR_X1 = 89;
