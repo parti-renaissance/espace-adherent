@@ -72,5 +72,17 @@
 		<service id="AppBundle\Event\EventRegistrationSubscriber" >
 			<argument type="service" id="app.mailer.transactional" />
 		</service>
+
+		<!-- Security -->
+		<service id="app.security.user_provider" class="AppBundle\Security\UserProvider">
+			<argument key="$classOrAlias" type="string">AppBundle\Entity\Adherent</argument>
+		</service>
+
+		<service id="app.security.admin_provider" class="AppBundle\Security\UserProvider">
+			<argument key="$classOrAlias" type="string">AppBundle\Entity\Administrator</argument>
+		</service>
+
+		<service id="AppBundle\Security\FailedLoginAttemptFactory"/>
+		<service id="AppBundle\Security\Http\AuthenticationFailureHandler" />
 	</services>
 </container>
