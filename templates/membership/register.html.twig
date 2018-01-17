@@ -76,7 +76,8 @@
                 </li>
 
                 <li class="form__checkbox">
-                    {{ form_row(form.comEmail, { label: 'J\'accepte de recevoir par courrier électronique des sollicitations ou informations à des fins de communication politique de la part de En Marche' }) }}
+                    {{ form_widget(form.comEmail) }}
+                    {{ form_label(form.comEmail, 'J\'accepte de recevoir par courrier électronique des sollicitations ou informations à des fins de communication politique de la part de En Marche') }}
                 </li>
 
                 <li class="visually-hidden">
@@ -95,7 +96,7 @@
                     <button class="btn">Créer mon compte</button>
                 </li>
                 <li class="text--small text--gray text--center">
-                    En vous inscrivant, vous acceptez nos <a href="https://en-marche.fr/mentions-legales" target="_blank" rel="noopener noreferrer">Conditions d'utilisation</a> et notre <a href="https://en-marche.fr/politique-cookies" target="_blank" rel="noopener noreferrer">Politique en matière de cookies</a>.
+                    En vous inscrivant, vous acceptez nos <a href="{{ path('page_mentions_legales') }}" target="_blank" rel="noopener noreferrer">Conditions d'utilisation</a> et notre <a href="{{ path('page_politique_cookies') }}" target="_blank" rel="noopener noreferrer">Politique en matière de cookies</a>.
                 </li>
             </ul>
 
