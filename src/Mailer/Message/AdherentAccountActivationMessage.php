@@ -18,7 +18,6 @@ final class AdherentAccountActivationMessage extends Message
             static::getTemplateVars(),
             static::getRecipientVars($adherent->getFirstName(), $confirmationLink)
         );
-
     }
 
     private static function getTemplateVars(): array
