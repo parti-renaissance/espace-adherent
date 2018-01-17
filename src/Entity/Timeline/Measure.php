@@ -3,6 +3,8 @@
 namespace AppBundle\Entity\Timeline;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\AlgoliaIndexedEntityInterface;
+use AppBundle\Entity\EntityTranslatableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,10 +13,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="timeline_measures")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\Timeline\MeasureRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
-class Measure
+class Measure implements AlgoliaIndexedEntityInterface
 {
+    use EntityTranslatableTrait;
+
     public const TITLE_MAX_LENGTH = 100;
 
     public const STATUS_UPCOMING = 'UPCOMING';
@@ -39,18 +45,6 @@ class Measure
      * @Algolia\Attribute
      */
     private $id;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(length=100)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=Measure::TITLE_MAX_LENGTH)
-     *
-     * @Algolia\Attribute
-     */
-    private $title;
 
     /**
      * @var string|null
@@ -114,7 +108,7 @@ class Measure
     /**
      * @var Theme[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Timeline\Theme")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Timeline\Theme", inversedBy="measures")
      * @ORM\JoinTable(
      *     name="timeline_themes_measures",
      *     joinColumns={
@@ -130,7 +124,6 @@ class Measure
     private $savedThemes;
 
     /**
-     * @param string      $title
      * @param string      $status
      * @param Profile[]   $profiles
      * @param Theme[]     $themes
@@ -138,40 +131,34 @@ class Measure
      * @param bool|null   $isGlobal
      */
     public function __construct(
-        string $title = null,
         string $status = null,
         array $profiles = [],
         array $themes = [],
         string $link = null,
         bool $isMajor = false
     ) {
-        $this->title = $title;
         $this->status = $status;
         $this->link = $link;
         $this->major = $isMajor;
         $this->profiles = new ArrayCollection($profiles);
         $this->themes = new ArrayCollection($themes);
         $this->savedThemes = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     public function __toString()
     {
-        return $this->title ?? '';
+        /* @var $translation MeasureTranslation */
+        if ($translation = $this->translate()) {
+            return $translation->getTitle();
+        }
+
+        return '';
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): void
-    {
-        $this->title = $title;
     }
 
     public function getLink(): ?string
@@ -197,6 +184,11 @@ class Measure
     public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
+    }
+
+    public function update(): void
+    {
+        $this->updatedAt = new \DateTime('now');
     }
 
     /**
@@ -275,21 +267,21 @@ class Measure
         return self::STATUS_DEFERRED === $this->status;
     }
 
-    public function equals(self $measure): bool
-    {
-        return $measure->title === $this->title;
-    }
-
     public function saveCurrentThemes(): void
     {
         $this->savedThemes = clone $this->themes;
+    }
+
+    private function getSavedThemes(): Collection
+    {
+        return $this->savedThemes ?? new ArrayCollection();
     }
 
     public function getThemesToIndex(): ArrayCollection
     {
         $themes = new ArrayCollection();
 
-        foreach (array_merge($this->savedThemes->toArray(), $this->themes->toArray()) as $theme) {
+        foreach (array_merge($this->getSavedThemes()->toArray(), $this->themes->toArray()) as $theme) {
             if (!$themes->contains($theme)) {
                 $themes->add($theme);
             }
@@ -306,5 +298,26 @@ class Measure
         return array_map(function (Profile $profile) {
             return $profile->getId();
         }, $this->profiles->toArray());
+    }
+
+    /**
+     * @Algolia\Attribute
+     */
+    public function titles(): array
+    {
+        /* @var $french MeasureTranslation */
+        if (!$french = $this->translate('fr')) {
+            return [];
+        }
+
+        /* @var $english MeasureTranslation */
+        if (!$english = $this->translate('en')) {
+            $english = $french;
+        }
+
+        return [
+            'fr' => $french->getTitle(),
+            'en' => $english->getTitle(),
+        ];
     }
 }

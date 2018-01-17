@@ -7,6 +7,7 @@ imports:
 
 parameters:
     locale:                      fr
+    locales:                     [fr, en]
     pattern_uuid:                '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}'
     pattern_sha1:                '[0-9A-Fa-f]{40}'
     pattern_coordinate:          '-?\d+(\.\d{1,7})?'
@@ -112,6 +113,9 @@ doctrine:
             softdeleteable:
                 class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
                 enabled: true
+            oneLocale:
+                class: A2lix\I18nDoctrineBundle\Doctrine\ORM\Filter\OneLocaleFilter
+                enabled: true
 
         dql:
             numeric_functions:
@@ -139,6 +143,11 @@ stof_doctrine_extensions:
             sluggable: true
             softdeleteable: true
             timestampable: true
+
+a2lix_translation_form:
+    locales: "%locales%"
+    required_locales: ["%locale%"]
+    templating: "admin/form_translations.html.twig"
 
 lexik_paybox:
     parameters:

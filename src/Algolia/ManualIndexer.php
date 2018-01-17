@@ -17,4 +17,9 @@ class ManualIndexer implements ManualIndexerInterface
     {
         $this->algolia->index($entities, $options);
     }
+
+    public function unIndex($entities, array $options = []): void
+    {
+        $this->algolia->unIndex($entities, $options);
+    }
 }

@@ -11,6 +11,7 @@
 		<service id="AppBundle\Membership\AdherentRegistry" public="true" />
 
 		<!-- Algolia -->
+        <service id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
 		<service id="AppBundle\Algolia\ManualIndexer">
 			<argument type="service">
 				<service class="Algolia\AlgoliaSearchBundle\Ìndexer\ManualIndexer">
@@ -70,7 +71,10 @@
 
 		<!-- Timeline -->
 		<service id="AppBundle\Command\ImportTimelineCommand" />
-		<service id="AppBundle\Timeline\MeasureManager" />
+		<service id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener">
+			<argument>%locales%</argument>
+			<argument>%locale%</argument>
+		</service>
 		<service id="AppBundle\Timeline\TimelineFactory" />
 	</services>
 </container>

@@ -21,9 +21,8 @@ services:
         class: 'Tests\AppBundle\Test\Recaptcha\DummyRecaptchaApiClient'
         public: false
 
-    AppBundle\Algolia\ManualIndexer:
-        class: 'Tests\AppBundle\Test\Algolia\DummyManualIndexer'
-        public: false
+    algolia.indexer:
+        class: 'Tests\AppBundle\Test\Algolia\DummyIndexer'
 
 framework:
     router:

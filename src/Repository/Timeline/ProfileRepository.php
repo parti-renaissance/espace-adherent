@@ -2,19 +2,19 @@
 
 namespace AppBundle\Repository\Timeline;
 
-use AppBundle\Entity\Timeline\Theme;
+use AppBundle\Entity\Timeline\Profile;
 use AppBundle\Repository\TranslatableRepositoryTrait;
 use Doctrine\ORM\EntityRepository;
 
-class ThemeRepository extends EntityRepository
+class ProfileRepository extends EntityRepository
 {
     use TranslatableRepositoryTrait;
 
-    public function findOneByTitle(string $title): ?Theme
+    public function findOneByTitle(string $title): ?Profile
     {
         $qb = $this
-            ->createQueryBuilder('theme')
-            ->join('theme.translations', 'translations')
+            ->createQueryBuilder('profile')
+            ->join('profile.translations', 'translations')
         ;
 
         return $qb

@@ -48,6 +48,8 @@ class AlgoliaSynchronizeCommand extends ContainerAwareCommand
         $algolia = $this->getContainer()->get('algolia.indexer');
 
         $this->manager = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $this->manager->getFilters()->disable('oneLocale');
+
         $this->indexer = $algolia->getManualIndexer($this->manager);
     }
 

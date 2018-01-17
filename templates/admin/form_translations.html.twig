@@ -1,0 +1,44 @@
+{% extends "A2lixTranslationFormBundle::default.html.twig" %}
+
+{% block a2lix_translations_widget %}
+    {{ form_errors(form) }}
+    <div class="a2lix_translations tabbable">
+        <ul class="a2lix_translationsLocales nav nav-tabs">
+            {% for translationsFields in form %}
+                {% set locale = translationsFields.vars.name %}
+
+                {% set classes = [] %}
+                {% if app.request.locale is same as(locale) %}
+                    {% set classes = classes|merge(['active']) %}
+                {% endif %}
+                {% if not translationsFields.vars.valid %}
+                    {% set classes = classes|merge(['error']) %}
+                {% endif %}
+                <li{% if classes|length %} class="{{ classes|join(' ') }}"{% endif %}>
+                    <a href="#" data-toggle="tab" data-target=".{{ translationsFields.vars.id }}_a2lix_translationsFields-{{ locale }}">
+                        {{ ('locale.' ~ locale)|trans({}, 'SonataAdminBundle') }}
+                        {% if translationsFields.vars.required %}*{% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div class="a2lix_translationsFields tab-content">
+            {% for translationsFields in form %}
+                {% set locale = translationsFields.vars.name %}
+
+                {% set classes = [translationsFields.vars.id ~ '_a2lix_translationsFields-' ~ locale] %}
+                {% if app.request.locale is same as(locale) %}
+                    {% set classes = classes|merge(['active']) %}
+                {% endif %}
+                {% if not form.vars.valid %}
+                    {% set classes = classes|merge(['sonata-ba-field-error']) %}
+                {% endif %}
+                <div class="tab-pane {{ classes|join(' ') }}">
+                    {{ form_errors(translationsFields) }}
+                    {{ form_widget(translationsFields) }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

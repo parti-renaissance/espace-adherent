@@ -3,25 +3,28 @@
 namespace AppBundle\Entity\Timeline;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\AlgoliaIndexedEntityInterface;
+use AppBundle\Entity\EntityMediaInterface;
+use AppBundle\Entity\EntityMediaTrait;
+use AppBundle\Entity\EntityTranslatableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use AppBundle\Entity\EntityMediaInterface;
-use AppBundle\Entity\EntityMediaTrait;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="timeline_themes")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\Timeline\ThemeRepository")
  *
  * @Algolia\Index(
+ *     autoIndex=false,
  *     hitsPerPage=100,
  *     attributesForFaceting={"title", "profileIds"}
  * )
  */
-class Theme implements EntityMediaInterface
+class Theme implements EntityMediaInterface, AlgoliaIndexedEntityInterface
 {
     use EntityMediaTrait;
+    use EntityTranslatableTrait;
 
     /**
      * @var int
@@ -33,41 +36,6 @@ class Theme implements EntityMediaInterface
      * @Algolia\Attribute
      */
     private $id;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(length=100)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
-     *
-     * @Algolia\Attribute
-     */
-    private $title;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(length=100, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
-     *
-     * @Algolia\Attribute
-     */
-    private $slug;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
-     *
-     * @Algolia\Attribute
-     */
-    private $description;
 
     /**
      * @var bool
@@ -85,57 +53,26 @@ class Theme implements EntityMediaInterface
      */
     private $measures;
 
-    public function __construct(
-        string $title = null,
-        string $slug = null,
-        string $description = null,
-        bool $featured = false
-    ) {
-        $this->title = $title;
-        $this->slug = $slug;
-        $this->description = $description;
+    public function __construct(bool $featured = false)
+    {
         $this->featured = $featured;
         $this->measures = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     public function __toString()
     {
-        return $this->title ?? '';
+        /* @var $translation ThemeTranslation */
+        if ($translation = $this->translate()) {
+            return $translation->getTitle();
+        }
+
+        return '';
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): void
-    {
-        $this->title = $title;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): void
-    {
-        $this->slug = $slug;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): void
-    {
-        $this->description = $description;
     }
 
     public function isFeatured(): bool
@@ -201,5 +138,68 @@ class Theme implements EntityMediaInterface
         return array_map(function (Profile $profile) {
             return $profile->getId();
         }, $profiles->toArray());
+    }
+
+    /**
+     * @Algolia\Attribute
+     */
+    public function titles(): array
+    {
+        /* @var $french ThemeTranslation */
+        if (!$french = $this->translate('fr')) {
+            return [];
+        }
+
+        /* @var $english ThemeTranslation */
+        if (!$english = $this->translate('en')) {
+            $english = $french;
+        }
+
+        return [
+            'fr' => $french->getTitle(),
+            'en' => $english->getTitle(),
+        ];
+    }
+
+    /**
+     * @Algolia\Attribute
+     */
+    public function slugs(): array
+    {
+        /* @var $french ThemeTranslation */
+        if (!$french = $this->translate('fr')) {
+            return [];
+        }
+
+        /* @var $english ThemeTranslation */
+        if (!$english = $this->translate('en')) {
+            $english = $french;
+        }
+
+        return [
+            'fr' => $french->getSlug(),
+            'en' => $english->getSlug(),
+        ];
+    }
+
+    /**
+     * @Algolia\Attribute
+     */
+    public function descriptions(): array
+    {
+        /* @var $french ThemeTranslation */
+        if (!$french = $this->translate('fr')) {
+            return [];
+        }
+
+        /* @var $english ThemeTranslation */
+        if (!$english = $this->translate('en')) {
+            $english = $french;
+        }
+
+        return [
+            'fr' => $french->getDescription(),
+            'en' => $english->getDescription(),
+        ];
     }
 }

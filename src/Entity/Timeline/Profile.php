@@ -3,15 +3,21 @@
 namespace AppBundle\Entity\Timeline;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\AlgoliaIndexedEntityInterface;
+use AppBundle\Entity\EntityTranslatableTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="timeline_profiles")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\Timeline\ProfileRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
-class Profile
+class Profile implements AlgoliaIndexedEntityInterface
 {
+    use EntityTranslatableTrait;
+
     /**
      * @var int
      *
@@ -23,53 +29,19 @@ class Profile
      */
     private $id;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(length=100)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
-     *
-     * @Algolia\Attribute
-     */
-    private $title;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(length=100, unique=true)
-     *
-     * @Assert\NotBlank
-     *
-     * @Algolia\Attribute
-     */
-    private $slug;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank
-     *
-     * @Algolia\Attribute
-     */
-    private $description;
-
-    public function __construct(
-        string $title = null,
-        string $slug = null,
-        string $description = null
-    ) {
-        $this->title = $title;
-        $this->slug = $slug;
-        $this->description = $description;
+    public function __construct()
+    {
+        $this->translations = new ArrayCollection();
     }
 
     public function __toString()
     {
-        return $this->title ?? '';
+        /* @var $translation ProfileTranslation */
+        if ($translation = $this->translate()) {
+            return $translation->getTitle();
+        }
+
+        return '';
     }
 
     public function getId(): ?int
@@ -77,33 +49,66 @@ class Profile
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    /**
+     * @Algolia\Attribute
+     */
+    public function titles(): array
     {
-        return $this->title;
+        /* @var $french ProfileTranslation */
+        if (!$french = $this->translate('fr')) {
+            return [];
+        }
+
+        /* @var $english ProfileTranslation */
+        if (!$english = $this->translate('en')) {
+            $english = $french;
+        }
+
+        return [
+            'fr' => $french->getTitle(),
+            'en' => $english->getTitle(),
+        ];
     }
 
-    public function setTitle(string $title): void
+    /**
+     * @Algolia\Attribute
+     */
+    public function slugs(): array
     {
-        $this->title = $title;
+        /* @var $french ProfileTranslation */
+        if (!$french = $this->translate('fr')) {
+            return [];
+        }
+
+        /* @var $english ProfileTranslation */
+        if (!$english = $this->translate('en')) {
+            $english = $french;
+        }
+
+        return [
+            'fr' => $french->getSlug(),
+            'en' => $english->getSlug(),
+        ];
     }
 
-    public function getSlug(): ?string
+    /**
+     * @Algolia\Attribute
+     */
+    public function descriptions(): array
     {
-        return $this->slug;
-    }
+        /* @var $french ProfileTranslation */
+        if (!$french = $this->translate('fr')) {
+            return [];
+        }
 
-    public function setSlug(string $slug): void
-    {
-        $this->slug = $slug;
-    }
+        /* @var $english ProfileTranslation */
+        if (!$english = $this->translate('en')) {
+            $english = $french;
+        }
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): void
-    {
-        $this->description = $description;
+        return [
+            'fr' => $french->getDescription(),
+            'en' => $english->getDescription(),
+        ];
     }
 }

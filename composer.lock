@@ -4,8 +4,129 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2dfccb494c77b310006510cc77ae1f54",
+    "content-hash": "408757ed3de2276329167092b6c8b06a",
     "packages": [
+        {
+            "name": "a2lix/i18n-doctrine-bundle",
+            "version": "0.1",
+            "target-dir": "A2lix/I18nDoctrineBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/a2lix/I18nDoctrineBundle.git",
+                "reference": "84c47ccd68abad5c6ace733f12149e390a51386a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/a2lix/I18nDoctrineBundle/zipball/84c47ccd68abad5c6ace733f12149e390a51386a",
+                "reference": "84c47ccd68abad5c6ace733f12149e390a51386a",
+                "shasum": ""
+            },
+            "require": {
+                "a2lix/translation-form-bundle": "*",
+                "symfony/symfony": ">=2.3"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "A2lix\\I18nDoctrineBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "A2lix",
+                    "homepage": "http://a2lix.fr"
+                },
+                {
+                    "name": "David ALLIX"
+                }
+            ],
+            "description": "Manage i18n for your doctrine objects",
+            "homepage": "https://github.com/a2lix/I18nDoctrineBundle",
+            "keywords": [
+                "Symfony2",
+                "doctrine2",
+                "i18n",
+                "internationalization",
+                "translatable",
+                "translation"
+            ],
+            "time": "2014-04-27T11:40:04+00:00"
+        },
+        {
+            "name": "a2lix/translation-form-bundle",
+            "version": "2.1.2",
+            "target-dir": "A2lix/TranslationFormBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/a2lix/TranslationFormBundle.git",
+                "reference": "a04a8db282caabc084cf9fcccd82d2fcfbee36af"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/a04a8db282caabc084cf9fcccd82d2fcfbee36af",
+                "reference": "a04a8db282caabc084cf9fcccd82d2fcfbee36af",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/symfony": ">=2.3"
+            },
+            "require-dev": {
+                "doctrine/common": "~2.3",
+                "gedmo/doctrine-extensions": "~2.4",
+                "knplabs/doctrine-behaviors": "1.0.*",
+                "phpunit/phpunit": "~4.1"
+            },
+            "suggest": {
+                "a2lix/i18n-doctrine-bundle": "For A2lix strategy",
+                "gedmo/doctrine-extensions": "For Gedmo strategy",
+                "knplabs/doctrine-behaviors": "For Knp strategy",
+                "prezent/doctrine-translatable-bundle": "For Prezent strategy"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "A2lix\\TranslationFormBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David ALLIX",
+                    "homepage": "http://a2lix.fr"
+                }
+            ],
+            "description": "Translate your doctrine objects easily with some helps",
+            "homepage": "https://github.com/a2lix/TranslationFormBundle",
+            "keywords": [
+                "Symfony2",
+                "doctrine2",
+                "form",
+                "gedmo",
+                "i18n",
+                "internationalization",
+                "knplabs",
+                "translatable",
+                "translation"
+            ],
+            "time": "2016-04-11T12:49:49+00:00"
+        },
         {
             "name": "algolia/algolia-search-bundle",
             "version": "2.2.0",
