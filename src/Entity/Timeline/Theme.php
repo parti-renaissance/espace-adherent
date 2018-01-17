@@ -123,6 +123,22 @@ class Theme implements EntityMediaInterface, AlgoliaIndexedEntityInterface
     /**
      * @Algolia\Attribute
      */
+    public function measureTitles(): array
+    {
+        $titles = [];
+        foreach ($this->measures as $measure) {
+            /* @var $translation MeasureTranslation */
+            foreach ($measure->getTranslations() as $translation) {
+                $titles[] = $translation->getTitle();
+            }
+        }
+
+        return array_unique($titles);
+    }
+
+    /**
+     * @Algolia\Attribute
+     */
     public function profileIds(): array
     {
         $profiles = new ArrayCollection();
