@@ -30,7 +30,7 @@ class AdherentFactory
             $request->gender,
             $request->firstName,
             $request->lastName,
-            clone $request->getBirthdate(),
+            $request->getBirthdate() ? clone $request->getBirthdate() : null,
             $request->position,
             $this->addressFactory->createFromAddress($request->getAddress()),
             $request->getPhone(),

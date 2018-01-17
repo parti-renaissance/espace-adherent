@@ -63,3 +63,6 @@ parameters:
     env(SSL_PRIVATE_KEY): 'file://%kernel.project_dir%/var/private.key'
     env(SSL_PUBLIC_KEY): 'file://%kernel.project_dir%/var/public.key'
     env(SSL_ENCRYPTION_KEY): 'PT/cLwGkQqwF5exN/CkkV5oUkBemNyhi2dXDHy2N+Nc='
+
+    env(MAXMIND_LICENSE_KEY): ''
+    env(MAXMIND_USER_ID):     ''

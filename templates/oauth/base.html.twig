@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" />
         <link rel="stylesheet" href="{{ webpack_asset('app.css') }}" />
         {% block stylesheets '' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/cookieconsent.min.css') }}" />
 
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -19,9 +20,7 @@
 
             {% for key, messages in app.flashes %}
                 {% for message in messages %}
-                    <div class="flash flash-{{ key }}">
-                        {{ message|trans }}
-                    </div>
+                    <div class="flash flash-{{ key }}">{{ message|trans }}</div>
                 {% endfor %}
             {% endfor %}
 
@@ -30,6 +29,22 @@
             {% block content '' %}
         </section>
 
+        <script type="text/javascript" src="{{ webpack_asset('kernel.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/cookieconsent.min.js') }}"></script>
+
         {% block javascripts '' %}
+
+        <script type="text/javascript">
+            on(window, 'load', function() {
+                Kernel.boot(
+                    '{{ app.debug ? 'debug' : assets_hash }}',
+                    {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }},
+                    '{{ app.environment }}',
+                    {{ algolia_app_id ? ('\''~algolia_app_id|e('js')~'\'')|raw : 'null' }},
+                    {{ algolia_api_key ? ('\''~algolia_api_key|e('js')~'\'')|raw : 'null' }},
+                    '{{ algolia_blacklist|base64_encode }}'
+                );
+            });
+        </script>
     </body>
 </html>

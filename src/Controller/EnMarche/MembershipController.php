@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
@@ -11,7 +12,7 @@ use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\DonationRequestType;
 use AppBundle\Form\MembershipChooseNearbyCommitteeType;
-use AppBundle\Form\MembershipRequestType;
+use AppBundle\Form\NewMemberShipRequestType;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\MembershipRequest;
 use GuzzleHttp\Exception\ConnectException;
@@ -31,18 +32,20 @@ class MembershipController extends Controller
      * @Route("/inscription", name="app_membership_register")
      * @Method("GET|POST")
      */
-    public function registerAction(Request $request): Response
+    public function registerAction(Request $request, GeoCoder $geoCoder): Response
     {
-        $membership = MembershipRequest::createWithCaptcha($request->request->get('g-recaptcha-response'));
-        $form = $this->createForm(MembershipRequestType::class, $membership)
-            ->add('submit', SubmitType::class, ['label' => 'J\'adhère'])
-        ;
+        $membership = MembershipRequest::createWithCaptcha(
+            $geoCoder->getCountryCodeFromIp($request->getClientIp()),
+            $request->request->get('g-recaptcha-response')
+        );
+
+        $form = $this->createForm(NewMemberShipRequestType::class, $membership);
 
         try {
             if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
                 $this->get('app.membership_request_handler')->handle($membership);
 
-                return $this->redirectToRoute('app_membership_donate');
+                return $this->redirectToRoute('app_membership_complete');
             }
         } catch (ConnectException $e) {
             $this->addFlash('error_recaptcha', $this->get('translator')->trans('recaptcha.error'));
@@ -194,13 +197,13 @@ class MembershipController extends Controller
     /**
      * This action is the landing page at the end of the subscription process.
      *
-     * @Route("/inscription/terminee", name="app_membership_complete")
+     * @Route("/presque-fini", name="app_membership_complete")
      * @Method("GET")
      */
     public function completeAction(): Response
     {
         if ($this->getUser()) {
-            $this->redirectToRoute('app_search_events');
+            $this->redirectToRoute('app_adherent_profile');
         }
 
         $membershipUtils = $this->get('app.membership_utils');
@@ -215,9 +218,7 @@ class MembershipController extends Controller
 
         $membershipUtils->clearNewAdherentId();
 
-        return $this->render('membership/complete.html.twig', [
-            'name' => $adherent->getFirstName(),
-        ]);
+        return $this->render('membership/complete.html.twig');
     }
 
     /**

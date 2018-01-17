@@ -150,6 +150,7 @@
 
     select {
         height: 60px;
+        background-color: #FFF;
     }
 
     .form {
@@ -182,22 +183,6 @@
             @include text--small-oauth;
             display: inline-block;
             margin: 10px 0 0 0;
-        }
-
-        &__checkbox {
-            > div {
-                display: flex;
-                align-items: flex-start;
-            }
-
-            input[type="checkbox"] {
-                width: 60px;
-            }
-
-            label {
-                order: 2;
-                @include text--small-oauth;
-            }
         }
     }
 
