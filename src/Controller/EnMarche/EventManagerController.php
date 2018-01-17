@@ -30,6 +30,10 @@ class EventManagerController extends Controller
 {
     use PrintControllerTrait;
 
+    private const ACTION_CONTACT = 'contact';
+    private const ACTION_EXPORT = 'export';
+    private const ACTION_PRINT = 'print';
+
     /**
      * @Route("/modifier", name="app_event_edit")
      * @Method("GET|POST")
@@ -105,25 +109,7 @@ class EventManagerController extends Controller
      */
     public function exportMembersAction(Request $request, Event $event): Response
     {
-        if (!$this->isCsrfTokenValid('event.export_members', $request->request->get('token'))) {
-            throw $this->createAccessDeniedException('Invalid CSRF protection token to export members.');
-        }
-
-        $uuids = json_decode($request->request->get('exports'), true);
-
-        if (!$uuids) {
-            return $this->redirectToRoute('app_event_members', [
-                'slug' => $event->getSlug(),
-            ]);
-        }
-
-        $repository = $this->getDoctrine()->getRepository(EventRegistration::class);
-
-        try {
-            $registrations = $repository->findByUuidAndEvent($event, $uuids);
-        } catch (InvalidUuidException $e) {
-            throw new BadUuidRequestException($e);
-        }
+        $registrations = $this->getRegistrations($request, $event, self::ACTION_EXPORT);
 
         if (!$registrations) {
             return $this->redirectToRoute('app_event_members', [
@@ -145,26 +131,12 @@ class EventManagerController extends Controller
      */
     public function contactMembersAction(Request $request, Event $event): Response
     {
-        if (!$this->isCsrfTokenValid('event.contact_members', $request->request->get('token'))) {
-            throw $this->createAccessDeniedException('Invalid CSRF protection token to contact members.');
-        }
+        $registrations = $this->getRegistrations($request, $event, self::ACTION_CONTACT);
 
-        $uuids = json_decode($request->request->get('contacts', '[]'), true);
-
-        if (!$uuids) {
-            $this->addFlash('info', $this->get('translator')->trans('committee.event.contact.none'));
-
+        if (!$registrations) {
             return $this->redirectToRoute('app_event_members', [
                 'slug' => $event->getSlug(),
             ]);
-        }
-
-        $repository = $this->getDoctrine()->getRepository(EventRegistration::class);
-
-        try {
-            $registrations = $repository->findByUuidAndEvent($event, $uuids);
-        } catch (InvalidUuidException $e) {
-            throw new BadUuidRequestException($e);
         }
 
         $command = new EventContactMembersCommand($registrations, $this->getUser());
@@ -200,25 +172,7 @@ class EventManagerController extends Controller
      */
     public function printMembersAction(Request $request, Event $event): Response
     {
-        if (!$this->isCsrfTokenValid('event.print_members', $request->request->get('token'))) {
-            throw $this->createAccessDeniedException('Invalid CSRF protection token to print members.');
-        }
-
-        $uuids = json_decode($request->request->get('prints'), true);
-
-        if (!$uuids) {
-            return $this->redirectToRoute('app_event_members', [
-                'slug' => $event->getSlug(),
-            ]);
-        }
-
-        $repository = $this->getDoctrine()->getRepository(EventRegistration::class);
-
-        try {
-            $registrations = $repository->findByUuidAndEvent($event, $uuids);
-        } catch (InvalidUuidException $e) {
-            throw new BadUuidRequestException($e);
-        }
+        $registrations = $this->getRegistrations($request, $event, self::ACTION_PRINT);
 
         if (!$registrations) {
             return $this->redirectToRoute('app_event_members', [
@@ -231,5 +185,30 @@ class EventManagerController extends Controller
         ]);
 
         return new PdfResponse($this->getPdfForResponse($html), 'Liste des participants.pdf');
+    }
+
+    private function getRegistrations(Request $request, Event $event, string $action): array
+    {
+        if (!$this->isCsrfTokenValid(sprintf('event.%s_members', $action), $request->request->get('token'))) {
+            throw $this->createAccessDeniedException("Invalid CSRF protection token to $action members.");
+        }
+
+        if (!$uuids = json_decode($request->request->get(sprintf('%ss', $action)), true)) {
+            if (self::ACTION_CONTACT === $action) {
+                $this->addFlash('info', $this->get('translator')->trans('committee.event.contact.none'));
+            }
+
+            return [];
+        }
+
+        $repository = $this->getDoctrine()->getRepository(EventRegistration::class);
+
+        try {
+            $registrations = $repository->findByUuidAndEvent($event, $uuids);
+        } catch (InvalidUuidException $e) {
+            throw new BadUuidRequestException($e);
+        }
+
+        return $registrations;
     }
 }
