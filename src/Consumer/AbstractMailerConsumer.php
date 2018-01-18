@@ -41,6 +41,8 @@ abstract class AbstractMailerConsumer extends AbstractConsumer
                 $this->getEmailRepository()->setDelivered($message, $delivered);
             }
 
+            $this->manager->clear();
+
             return $delivered ? ConsumerInterface::MSG_ACK : ConsumerInterface::MSG_REJECT_REQUEUE;
         } catch (ConnectException $error) {
             $this->writeln($data['uuid'], 'API timeout');
@@ -48,6 +50,8 @@ abstract class AbstractMailerConsumer extends AbstractConsumer
                 'RabbitMQ connection timeout while sending a mail with UUID '.$data['uuid'],
                 ['exception' => $error]
             );
+
+            $this->manager->clear();
 
             // to prevent requeuing in loop and user from receiving tens of mails
             return ConsumerInterface::MSG_ACK;
@@ -57,6 +61,8 @@ abstract class AbstractMailerConsumer extends AbstractConsumer
             return ConsumerInterface::MSG_ACK;
         } catch (MailerException $mailerException) {
             $this->getLogger()->error('Unable to send email to recipients.', ['exception' => $mailerException]);
+
+            $this->manager->clear();
 
             return ConsumerInterface::MSG_REJECT_REQUEUE;
         } catch (\Exception $error) {
