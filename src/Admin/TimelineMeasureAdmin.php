@@ -4,6 +4,7 @@ namespace AppBundle\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use AppBundle\Entity\Timeline\Measure;
+use AppBundle\Entity\Timeline\Theme;
 use AppBundle\Repository\Timeline\ProfileRepository;
 use AppBundle\Repository\Timeline\ThemeRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -13,6 +14,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -48,8 +50,11 @@ class TimelineMeasureAdmin extends AbstractAdmin
                 ->add('profiles', null, [
                     'label' => 'Profils',
                 ])
-                ->add('themes', null, [
+                ->add('themes', EntityType::class, [
                     'label' => 'Thèmes',
+                    'class' => Theme::class,
+                    'by_reference' => false,
+                    'multiple' => true,
                 ])
                 ->add('major', null, [
                     'label' => 'Mise en avant (32)',

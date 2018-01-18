@@ -237,6 +237,12 @@ class Measure implements AlgoliaIndexedEntityInterface
 
     public function addTheme(Theme $theme): void
     {
+        $savedThemes = $this->getSavedThemes();
+
+        if ($savedThemes->contains($theme)) {
+            $savedThemes->removeElement($theme);
+        }
+
         if (!$this->themes->contains($theme)) {
             $this->themes->add($theme);
         }
@@ -244,6 +250,12 @@ class Measure implements AlgoliaIndexedEntityInterface
 
     public function removeTheme(Theme $theme): void
     {
+        $savedThemes = $this->getSavedThemes();
+
+        if (!$savedThemes->contains($theme)) {
+            $savedThemes->add($theme);
+        }
+
         $this->themes->removeElement($theme);
     }
 
@@ -267,14 +279,13 @@ class Measure implements AlgoliaIndexedEntityInterface
         return self::STATUS_DEFERRED === $this->status;
     }
 
-    public function saveCurrentThemes(): void
-    {
-        $this->savedThemes = clone $this->themes;
-    }
-
     private function getSavedThemes(): Collection
     {
-        return $this->savedThemes ?? new ArrayCollection();
+        if (!$this->savedThemes) {
+            $this->savedThemes = new ArrayCollection();
+        }
+
+        return $this->savedThemes;
     }
 
     public function getThemesToIndex(): ArrayCollection
