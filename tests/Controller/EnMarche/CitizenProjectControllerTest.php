@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
+use AppBundle\DataFixtures\ORM\LoadCitizenActionData;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectCommentData;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
@@ -26,14 +27,17 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
     public function testAnonymousUserCanSeeAnApprovedCitizenProject(): void
     {
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
+
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertFalse($this->seeCommentSection());
         $this->assertFalse($this->seeReportLink());
+        $this->assertSeeNextActions();
     }
 
     public function testAnonymousUserCannotSeeAPendingCitizenProject(): void
     {
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille');
+
         $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/connexion', $this->client);
     }
 
@@ -41,6 +45,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille');
+
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
@@ -523,7 +528,14 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertSame($citizenProjectName, $crawler->filter('#citizen_project_name')->attr('value'));
     }
 
-    private function assertSeeComments(array $comments)
+    private function assertSeeNextActions(): void
+    {
+        $this->assertCount(2, $actions = $this->client->getCrawler()->filter('.citizen-project-next-actions ul'), 'There should be 2 next actions');
+        $this->assertRegExp('~Projet citoyen #3\n.+1 inscrit\(s\)~', $actions->first()->filter('li')->eq(1)->text());
+        $this->assertRegExp('~Projet citoyen Paris-18\n.+1 inscrit\(s\)~', $actions->last()->filter('li')->eq(1)->text());
+    }
+
+    private function assertSeeComments(array $comments): void
     {
         foreach ($comments as $position => $comment) {
             list($author, $text) = $comment;
@@ -531,7 +543,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         }
     }
 
-    private function assertSeeComment(int $position, string $author, string $text)
+    private function assertSeeComment(int $position, string $author, string $text): void
     {
         $crawler = $this->client->getCrawler();
         $this->assertContains($author, $crawler->filter('.citizen-project-comment')->eq($position)->text());
@@ -543,7 +555,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         return 1 === count($this->client->getCrawler()->filter('.citizen-project-comments'));
     }
 
-    private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)
+    private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null): bool
     {
         $flash = $crawler->filter('#notice-flashes');
 
@@ -590,6 +602,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
             LoadAdherentData::class,
             LoadCitizenProjectData::class,
             LoadCitizenProjectCommentData::class,
+            LoadCitizenActionData::class,
         ]);
     }
 

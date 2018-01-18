@@ -38,7 +38,7 @@ class CitizenActionRepository extends EventRepository
             ->setParameter('now', new \DateTime())
             ->andWhere('action.status = :status')
             ->setParameter('status', CitizenAction::STATUS_SCHEDULED)
-            ->orderBy('action.beginAt', 'DESC')
+            ->orderBy('action.beginAt', 'ASC')
         ;
     }
 
