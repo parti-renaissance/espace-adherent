@@ -32,13 +32,13 @@ class ScopeStore implements ScopeRepositoryInterface
             throw new \LogicException(sprintf('Only %s instances are supported', Client::class));
         }
 
-        $unvalidScopes = array_diff(
+        $invalidScopes = array_diff(
             array_map(function (Scope $scope) {return $scope->getIdentifier(); }, $scopes), // Scopes asked by the client
             $clientEntity->getScopes() // Scopes allowed for the client
         );
 
-        if ($unvalidScopes) {
-            throw OAuthServerException::invalidScope(implode(',', $unvalidScopes));
+        if ($invalidScopes) {
+            throw OAuthServerException::invalidScope(implode(',', $invalidScopes));
         }
 
         return $scopes;

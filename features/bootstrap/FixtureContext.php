@@ -1,6 +1,5 @@
 <?php
 
-use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
@@ -9,7 +8,7 @@ use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 
-class FixtureContext extends RawMinkContext implements Context
+class FixtureContext extends RawMinkContext
 {
     use KernelDictionary;
 

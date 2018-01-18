@@ -244,7 +244,7 @@ class OAuthServerControllerTest extends MysqlWebTestCase
 //        $this->assertContains('<td>En-Marche !</td>', $response->getContent());
     }
 
-    public function testOAuthAuthenticationIsFailedWithoutRedirectUri(): void
+    public function testOAuthAuthenticationFailedWithoutRedirectUriIfClientHasMoreThan1RedirectUri(): void
     {
         $this->client->request(Request::METHOD_GET, '/connexion');
         $this->client->submit($this->client->getCrawler()->selectButton('Connexion')->form([
@@ -253,17 +253,19 @@ class OAuthServerControllerTest extends MysqlWebTestCase
         ]));
         $this->client->followRedirect();
 
-        $urlWithoutRedirectUri = str_replace('&redirect_uri=http%3A%2F%2Fclient-oauth.docker%3A8000%2Fclient%2Freceive_authcode', '', $this->createAuthorizeUrl());
+        $urlWithoutRedirectUri = $this->createAuthorizeUrl('f80ce2df-af6d-4ce4-8239-04cfcefd5a19', null);
 
         $this->client->request(Request::METHOD_GET, $urlWithoutRedirectUri);
         $response = $this->client->getResponse();
-        $this->assertSame(400, $response->getStatusCode());
-        $this->assertContains('Check the `redirect_uri` parameter', $response->getContent());
+
+        $this->assertSame(401, $response->getStatusCode());
+        $this->assertSame('{"error":"invalid_client","message":"Client authentication failed"}', $response->getContent());
     }
 
     public function testOAuthAuthenticationIsSuccessfulWithoutAskingUserAuthorization(): void
     {
-        $authorizeUrl = $this->createAuthorizeUrl('661cc3b7-322d-4441-a510-ab04eda71737');
+        // No redirect_uri is specified so it's gonna use the only one the client registered
+        $authorizeUrl = $this->createAuthorizeUrl('661cc3b7-322d-4441-a510-ab04eda71737', null);
         $this->client->request(Request::METHOD_GET, $authorizeUrl);
         $response = $this->client->getResponse();
         static::assertTrue($response->isRedirect('http://'.$this->hosts['app'].'/connexion'));
@@ -291,15 +293,19 @@ class OAuthServerControllerTest extends MysqlWebTestCase
             ->findAuthorizationCodeByIdentifier($identifier);
     }
 
-    private function createAuthorizeUrl($clientId = 'f80ce2df-af6d-4ce4-8239-04cfcefd5a19'): string
+    private function createAuthorizeUrl(string $clientId = 'f80ce2df-af6d-4ce4-8239-04cfcefd5a19', ?string $redirectUri = 'http://client-oauth.docker:8000/client/receive_authcode'): string
     {
-        return sprintf('http://'.$this->hosts['app'].'/oauth/v2/auth?%s', http_build_query([
-            'client_id' => $clientId,
-            'redirect_uri' => 'http://client-oauth.docker:8000/client/receive_authcode',
-            'response_type' => 'code',
-            'scope' => 'user_profile',
-            'state' => 'bds1775p6f3ks29h2vla20ng5n',
-        ]));
+        $params = ['client_id' => $clientId];
+
+        if ($redirectUri) {
+            $params['redirect_uri'] = $redirectUri;
+        }
+
+        $params['response_type'] = 'code';
+        $params['scope'] = 'user_profile';
+        $params['state'] = 'bds1775p6f3ks29h2vla20ng5n';
+
+        return sprintf('http://'.$this->hosts['app'].'/oauth/v2/auth?%s', http_build_query($params));
     }
 
     private function getEncryptedCode(AuthorizationCode $authCode): string

@@ -76,6 +76,61 @@ class PersistentTokenFactoryTest extends TestCase
         $this->assertTrue($authCode->hasScope('manage_events'));
     }
 
+    public function testCreateAuthorizationCodeRedirectUriFallbackToClient(): void
+    {
+        $token = $this->createAuthorizationCode();
+        $token->setClient($this->createClient());
+        $token->setUserIdentifier(self::USER_UUID);
+        $token->setExpiryDateTime(new \DateTime('+5 hours'));
+        $token->addScope($this->createScope('manage_committees'));
+        $token->addScope($this->createScope('manage_events'));
+
+        $this
+            ->adherentRepository
+            ->expects($this->any())
+            ->method('findByUuid')
+            ->with(self::USER_UUID)
+            ->willReturn($user = $this->createMock(Adherent::class));
+
+        $this
+            ->clientRepository
+            ->expects($this->any())
+            ->method('findClientByUuid')
+            ->with(self::CLIENT_UUID)
+            ->willReturn(new Client(null, 'client', 'description', 'secret', [], ['http://client.com/fallback']));
+
+        $authCode = $this->tokenFactory->createAuthorizationCode($token);
+        $this->assertSame('http://client.com/fallback', $authCode->getRedirectUri());
+    }
+
+    public function testCreateAuthorizationCodeThrowsExeeptionIfTokenRedirectUriIsEmptyAndClientHaveMoreThan1RedirectUris(): void
+    {
+        $token = $this->createAuthorizationCode();
+        $token->setClient($this->createClient());
+        $token->setUserIdentifier(self::USER_UUID);
+        $token->setExpiryDateTime(new \DateTime('+5 hours'));
+        $token->addScope($this->createScope('manage_committees'));
+        $token->addScope($this->createScope('manage_events'));
+
+        $this
+            ->adherentRepository
+            ->expects($this->any())
+            ->method('findByUuid')
+            ->with(self::USER_UUID)
+            ->willReturn($user = $this->createMock(Adherent::class));
+
+        $this
+            ->clientRepository
+            ->expects($this->any())
+            ->method('findClientByUuid')
+            ->with(self::CLIENT_UUID)
+            ->willReturn(new Client(null, 'client', 'description', 'secret', [], ['http://client.com/fallback', 'http://client2.com']));
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Cannot determined which redirect URI to use');
+        $this->tokenFactory->createAuthorizationCode($token);
+    }
+
     public function testCreateAccessToken(): void
     {
         $token = $this->createAccessToken();

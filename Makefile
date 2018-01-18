@@ -124,7 +124,7 @@ tu: vendor
 
 tf:             ## Run the PHP functional tests
 tf: tfp
-	$(EXEC) $(CONSOLE) --env=test rabbitmq:setup-fabric
+	$(EXEC) $(CONSOLE) --env=test_mysql rabbitmq:setup-fabric
 	$(EXEC) vendor/bin/behat -vvv || true
 	$(EXEC) vendor/bin/phpunit --group functional || true
 

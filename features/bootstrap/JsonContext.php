@@ -11,10 +11,15 @@ class JsonContext extends BehatchJsonContext
     {
         $actual = $this->getJson();
 
-        // Replace all useless whitespace
-        $expected = preg_replace('/\s(?=([^"]*"[^"]*")*[^"]*$)/', '', $content->getRaw());
+        $this->assertJson($content->getRaw(), $actual);
+    }
 
-        if (!PHPMatcher::match((string) $actual, (string) $expected, $error)) {
+    public function assertJson(string $expected, string $actual): void
+    {
+        // Remove all useless whitespaces
+        $expected = preg_replace('/\s(?=([^"]*"[^"]*")*[^"]*$)/', '', $expected);
+
+        if (!PHPMatcher::match($actual, $expected, $error)) {
             throw new ExpectationException($error, $this->getSession());
         }
     }

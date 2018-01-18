@@ -3,8 +3,8 @@
 namespace AppBundle\Controller\OAuth;
 
 use AppBundle\OAuth\Form\ConfirmActionType;
-use AppBundle\Repository\OAuth\ClientRepository;
 use AppBundle\OAuth\OAuthAuthorizationManager;
+use AppBundle\Repository\OAuth\ClientRepository;
 use Lcobucci\JWT\Parser;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -39,16 +39,9 @@ class OAuthServerController extends Controller
      */
     public function authorizeAction(Request $request, ClientRepository $repository, OAuthAuthorizationManager $manager)
     {
-        $response = new Response();
-
         try {
             $user = $this->getUser();
             $authRequest = $this->authorizationServer->validateAuthorizationRequest($request);
-
-            if (empty($authRequest->getRedirectUri())) {
-                throw OAuthServerException::invalidRequest('redirect_uri');
-            }
-
             $authRequest->setUser($user->getOAuthUser());
 
             $client = $repository->findClientByUuid(Uuid::fromString($authRequest->getClient()->getIdentifier()));
@@ -69,10 +62,10 @@ class OAuthServerController extends Controller
                     $manager->record($user, $client, $authRequest->getScopes());
                 }
 
-                return $this->authorizationServer->completeAuthorizationRequest($authRequest, $response);
+                return $this->authorizationServer->completeAuthorizationRequest($authRequest, new Response());
             }
         } catch (OAuthServerException $exception) {
-            return $exception->generateHttpResponse($response);
+            return $exception->generateHttpResponse(new Response());
         }
 
         return $this->render('oauth/authorize.html.twig', [
