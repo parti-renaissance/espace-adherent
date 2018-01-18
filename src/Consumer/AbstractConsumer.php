@@ -16,7 +16,7 @@ abstract class AbstractConsumer implements ConsumerInterface
 {
     use LoggerAwareTrait;
 
-    const BATCH_SIZE = 100;
+    protected const BATCH_SIZE = 200;
 
     protected $logger;
     protected $validator;
@@ -52,7 +52,7 @@ abstract class AbstractConsumer implements ConsumerInterface
 
         $returnCode = $this->doExecute($data);
 
-        if (($this->messageCount % self::BATCH_SIZE) === 0) {
+        if (0 === ($this->messageCount % self::BATCH_SIZE)) {
             $this->manager->clear();
             $this->messageCount = 0;
         }
