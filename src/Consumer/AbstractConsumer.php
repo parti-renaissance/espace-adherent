@@ -16,9 +16,12 @@ abstract class AbstractConsumer implements ConsumerInterface
 {
     use LoggerAwareTrait;
 
+    const BATCH_SIZE = 100;
+
     protected $logger;
     protected $validator;
     protected $manager;
+    private $messageCount = 0;
 
     public function __construct(ValidatorInterface $validator, EntityManagerInterface $manager)
     {
@@ -47,7 +50,16 @@ abstract class AbstractConsumer implements ConsumerInterface
             return ConsumerInterface::MSG_ACK;
         }
 
-        return $this->doExecute($data);
+        $returnCode = $this->doExecute($data);
+
+        if (($this->messageCount % self::BATCH_SIZE) === 0) {
+            $this->manager->clear();
+            $this->messageCount = 0;
+        }
+
+        ++$this->messageCount;
+
+        return $returnCode;
     }
 
     public function writeln($name, $message): void
