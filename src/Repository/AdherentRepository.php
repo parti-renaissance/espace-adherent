@@ -8,10 +8,8 @@ use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\BoardMember\BoardMember;
-use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Membership\AdherentEmailSubscription;
@@ -33,9 +31,6 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
     }
-
-    const CITIZEN_INITIATIVE_RADIUS = 2;
-    const CITIZEN_INITIATIVE_SUPERVISOR_RADIUS = 5;
 
     public function countElements(): int
     {
@@ -286,26 +281,6 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         return new AdherentCollection($query->getResult());
     }
 
-    public function findNearByCitizenInitiativeInterests(CitizenInitiative $citizenInitiative): AdherentCollection
-    {
-        $qb = $this
-            ->createNearbyQueryBuilder(new Coordinates($citizenInitiative->getLatitude(), $citizenInitiative->getLongitude()))
-            ->andWhere($this->getNearbyExpression().' <= :distance_max')
-            ->setParameter('distance_max', self::CITIZEN_INITIATIVE_RADIUS);
-
-        if (false === empty($interests = $citizenInitiative->getInterests())) {
-            foreach ($interests as $index => $interest) {
-                $conditions[] = $qb->expr()->eq(sprintf('json_contains(n.interests, :interest_%s)', $index), 1);
-                $qb->setParameter(sprintf(':interest_%s', $index), sprintf('"%s"', $interest));
-            }
-            $orX = $qb->expr()->orX();
-            $orX->addMultiple($conditions ?? []);
-            $qb->andWhere($orX);
-        }
-
-        return new AdherentCollection($qb->getQuery()->getResult());
-    }
-
     public function findByNearCitizenProjectOrAcceptAllNotification(CitizenProject $citizenProject, int $offset = 0, bool $excludeSupervisor = true, int $radius = CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN): Paginator
     {
         $qb = $this->createNearbyQueryBuilder(
@@ -338,33 +313,6 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             ->setMaxResults(CitizenProjectMessageNotifier::NOTIFICATION_PER_PAGE);
 
         return new Paginator($qb);
-    }
-
-    public function findSupervisorsNearCitizenInitiative(CitizenInitiative $citizenInitiative): AdherentCollection
-    {
-        $qb = $this
-            ->createNearbyQueryBuilder(new Coordinates($citizenInitiative->getLatitude(), $citizenInitiative->getLongitude()))
-            ->leftJoin('n.memberships', 'cm')
-            ->andWhere($this->getNearbyExpression().' <= :distance_max')
-            ->andWhere('cm.privilege = :supervisor')
-            ->setParameter('supervisor', CommitteeMembership::COMMITTEE_SUPERVISOR)
-            ->setParameter('distance_max', self::CITIZEN_INITIATIVE_SUPERVISOR_RADIUS);
-
-        return new AdherentCollection($qb->getQuery()->getResult());
-    }
-
-    public function findSubscribersToAdherentActivity(Adherent $followed): AdherentCollection
-    {
-        $qb = $this
-            ->createQueryBuilder('a')
-            ->leftJoin('a.activitySubscriptions', 's')
-            ->where('s.followedAdherent = :followed')
-            ->andWhere('(s.unsubscribedAt IS NULL OR s.subscribedAt > s.unsubscribedAt)')
-            ->setParameters([
-                'followed' => $followed,
-        ]);
-
-        return new AdherentCollection($qb->getQuery()->getResult());
     }
 
     public function searchBoardMembers(BoardMemberFilter $filter, Adherent $excludedMember): array

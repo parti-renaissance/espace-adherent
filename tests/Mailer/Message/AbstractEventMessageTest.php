@@ -4,7 +4,6 @@ namespace Tests\AppBundle\Mailer\Message;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
-use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\Event;
@@ -30,23 +29,6 @@ abstract class AbstractEventMessageTest extends TestCase
         }
 
         return $event;
-    }
-
-    protected function createCitizenInitiativeMock(string $name, string $beginAt, string $street, string $cityCode, string $slug = '', ?Adherent $organizer = null): CitizenInitiative
-    {
-        $address = PostAddress::createFrenchAddress($street, $cityCode)->getInlineFormattedAddress('fr_FR');
-
-        $citizenInitiative = $this->createMock(CitizenInitiative::class);
-        $citizenInitiative->expects(static::any())->method('getName')->willReturn($name);
-        $citizenInitiative->expects(static::any())->method('getBeginAt')->willReturn(new \DateTime($beginAt));
-        $citizenInitiative->expects(static::any())->method('getInlineFormattedAddress')->with('fr_FR')->willReturn($address);
-        $citizenInitiative->expects(static::any())->method('getSlug')->willReturn($slug);
-
-        if ($organizer) {
-            $citizenInitiative->expects(static::any())->method('getOrganizer')->willReturn($organizer);
-        }
-
-        return $citizenInitiative;
     }
 
     protected function createAdherentMock(string $emailAddress, string $firstName, string $lastName): Adherent

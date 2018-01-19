@@ -3,9 +3,6 @@
 namespace Tests\AppBundle\Repository;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadCitizenInitiativeCategoryData;
-use AppBundle\DataFixtures\ORM\LoadCitizenInitiativeData;
-use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\Committee;
 use AppBundle\Repository\AdherentRepository;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -22,19 +19,6 @@ class AdherentRepositoryMysqlTest extends MysqlWebTestCase
     private $repository;
 
     use ControllerTestTrait;
-
-    public function testFindNearByCitizenInitiativeInterests()
-    {
-        $citizenInitiative = $this->getMockBuilder(CitizenInitiative::class)->disableOriginalConstructor()->getMock();
-        $citizenInitiative->expects(static::any())->method('getLatitude')->willReturn(48.8713224);
-        $citizenInitiative->expects(static::any())->method('getLongitude')->willReturn(2.3353755);
-        $citizenInitiative->expects(static::any())->method('getInterests')->willReturn(['jeunesse']);
-
-        $adherents = $this->repository->findNearByCitizenInitiativeInterests($citizenInitiative);
-
-        $this->assertCount(1, $adherents);
-        $this->assertSame('Lucie Olivera', $adherents[0]->getFullName());
-    }
 
     public function testFindReferentsByCommittee()
     {
@@ -82,8 +66,6 @@ class AdherentRepositoryMysqlTest extends MysqlWebTestCase
 
         $this->loadFixtures([
             LoadAdherentData::class,
-            LoadCitizenInitiativeCategoryData::class,
-            LoadCitizenInitiativeData::class,
         ]);
 
         $this->container = $this->getContainer();

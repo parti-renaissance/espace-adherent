@@ -198,13 +198,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $committeeFeedItems;
 
     /**
-     * @var ActivitySubscription[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="ActivitySubscription", mappedBy="followingAdherent", cascade={"remove"})
-     */
-    private $activitySubscriptions;
-
-    /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\AdherentTag")
      */
     private $tags;
@@ -878,22 +871,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         }
 
         return $membership->canAdministrateCitizenProject();
-    }
-
-    public function isSubscribedTo(self $adherent = null): bool
-    {
-        return null === $adherent || null === $this->getActivitySubscriptionTo($adherent) ? false : true;
-    }
-
-    public function getActivitySubscriptionTo(self $followed): ?ActivitySubscription
-    {
-        foreach ($this->activitySubscriptions as $subscription) {
-            if ($subscription->matches($this, $followed) && $subscription->isSubscribed()) {
-                return $subscription;
-            }
-        }
-
-        return null;
     }
 
     public function isSupervisor(): bool

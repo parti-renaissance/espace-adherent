@@ -5,7 +5,6 @@ namespace AppBundle\Membership;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\BaseEvent;
 use AppBundle\Repository\AdherentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -40,20 +39,5 @@ class AdherentManager
     public function findByEvent(BaseEvent $event): AdherentCollection
     {
         return $this->repository->findByEvent($event);
-    }
-
-    public function findNearByCitizenInitiativeInterests(CitizenInitiative $citizenInitiative): AdherentCollection
-    {
-        return $this->repository->findNearByCitizenInitiativeInterests($citizenInitiative);
-    }
-
-    public function findSupervisorsNearCitizenInitiative(CitizenInitiative $citizenInitiative): AdherentCollection
-    {
-        return $this->repository->findSupervisorsNearCitizenInitiative($citizenInitiative);
-    }
-
-    public function findSubscribersToAdherentActivity(Adherent $followedAdherent): AdherentCollection
-    {
-        return $this->repository->findSubscribersToAdherentActivity($followedAdherent);
     }
 }

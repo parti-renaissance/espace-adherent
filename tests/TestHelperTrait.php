@@ -4,12 +4,10 @@ namespace Tests\AppBundle;
 
 use AppBundle\Committee\Feed\CommitteeFeedManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\ActivitySubscription;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\CitizenInitiative;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectComment;
 use AppBundle\Entity\Committee;
@@ -33,12 +31,10 @@ use AppBundle\Entity\Summary;
 use AppBundle\Entity\TonMacronChoice;
 use AppBundle\Entity\TonMacronFriendInvitation;
 use AppBundle\Membership\ActivityPositions;
-use AppBundle\Repository\ActivitySubscriptionRepository;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\AdherentResetPasswordTokenRepository;
 use AppBundle\Repository\CitizenActionRepository;
-use AppBundle\Repository\CitizenInitiativeRepository;
 use AppBundle\Repository\CitizenProjectCommentRepository;
 use AppBundle\Repository\CitizenProjectRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
@@ -159,16 +155,6 @@ trait TestHelperTrait
     public function getEventRepository(): EventRepository
     {
         return $this->getRepository(Event::class);
-    }
-
-    public function getCitizenInitiativeRepository(): CitizenInitiativeRepository
-    {
-        return $this->getRepository(CitizenInitiative::class);
-    }
-
-    public function getActivitySubscriptionRepository(): ActivitySubscriptionRepository
-    {
-        return $this->getRepository(ActivitySubscription::class);
     }
 
     public function getCommitteeFeedItemRepository(): CommitteeFeedItemRepository

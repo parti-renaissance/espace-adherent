@@ -62,7 +62,7 @@ class CitizenActionController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get(CitizenActionRegistrationCommandHandler::class)->handle($command);
-            $this->addFlash('info', $this->get('translator')->trans('citizen_initiative.registration.success'));
+            $this->addFlash('info', $this->get('translator')->trans('citizen_action.registration.success'));
 
             return $this->redirectToRoute('app_citizen_action_attend_confirmation', [
                 'slug' => $citizenAction->getSlug(),

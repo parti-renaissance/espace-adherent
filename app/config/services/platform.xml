@@ -273,61 +273,12 @@
             <argument type="service" id="app.repository.event"/>
         </service>
 
-        <!-- CitizenInitiative -->
-        <service id="app.citizen_initiative.handler" class="AppBundle\CitizenInitiative\CitizenInitiativeCommandHandler">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.event.factory"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="app.mailer.transactional"/>
-        </service>
-
-        <service id="app.citizen_initiative.invitation_handler" class="AppBundle\CitizenInitiative\CitizenInitiativeInvitationHandler">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="app.routing.remote_url_generator"/>
-        </service>
-
-        <service id="app.citizen_initiative.registration_handler" class="AppBundle\CitizenInitiative\CitizenInitiativeRegistrationCommandHandler">
-            <argument type="service" id="app.event.registration_factory"/>
-            <argument type="service" id="app.event.registration_manager"/>
-            <argument type="service" id="app.activity_subscription.manager"/>
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="app.routing.remote_url_generator"/>
-        </service>
-
-        <service id="app.citizen_initiative.message_notifier" class="AppBundle\CitizenInitiative\CitizenInitiativeMessageNotifier">
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="AppBundle\Membership\AdherentManager"/>
-            <argument type="service" id="router"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
-        <service id="AppBundle\CitizenInitiative\CitizenInitiativeManager">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.repository.citizen_initiative"/>
-        </service>
-
-        <service id="app.activity_subscription.manager" class="AppBundle\CitizenInitiative\ActivitySubscriptionManager">
-            <argument type="service" id="app.repository.activity_subscription" />
-            <argument type="service" id="doctrine.orm.entity_manager" />
-        </service>
-
-        <service id="app.citizen_initiative.controller_subscriber" class="AppBundle\CitizenInitiative\CitizenInitiativeControllerSubscriber">
-            <argument type="service" id="router" />
-            <argument type="service" id="security.token_storage" />
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
         <!-- CitizenActions -->
         <service autowire="true" id="AppBundle\CitizenAction\CitizenActionManager"/>
-
         <service autowire="true" id="AppBundle\CitizenAction\CitizenActionCommandHandler" />
-
         <service id="AppBundle\CitizenAction\CitizenActionRegistrationCommandHandler">
             <argument type="service" id="app.event.registration_factory"/>
             <argument type="service" id="app.event.registration_manager"/>
-            <argument type="service" id="app.activity_subscription.manager"/>
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="app.routing.remote_url_generator"/>
         </service>

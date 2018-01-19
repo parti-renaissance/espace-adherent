@@ -34,7 +34,7 @@ class MemberActivityCollectionTest extends TestCase
     {
         $collection = new MemberActivityCollection($this->getAdherentMock(), [
             $this->getEventRegistrationMock($this->getEventMock('Réunion de réflexion parisienne'), new \DateTimeImmutable('2017-08-11')),
-            $this->getEventRegistrationMock($this->getEventMock('Nettoyage de la Kilchberg', true), new \DateTimeImmutable('2017-08-01')),
+            $this->getEventRegistrationMock($this->getEventMock('Nettoyage de la Kilchberg'), new \DateTimeImmutable('2017-08-01')),
             $this->getEventRegistrationMock($this->getEventMock('Meeting de Brooklyn'), new \DateTimeImmutable('2017-08-06')),
         ]);
         $logsToArray = iterator_to_array($collection->getLogs());
@@ -44,15 +44,15 @@ class MemberActivityCollectionTest extends TestCase
 
         $this->assertSame('A participé à l\'événement "Réunion de réflexion parisienne" (11/08/2017)', $logsToArray[0]);
         $this->assertSame('A participé à l\'événement "Meeting de Brooklyn" (06/08/2017)', $logsToArray[1]);
-        $this->assertSame('A participé à l\'initiative citoyenne "Nettoyage de la Kilchberg" (01/08/2017)', $logsToArray[2]);
+        $this->assertSame('A participé à l\'événement "Nettoyage de la Kilchberg" (01/08/2017)', $logsToArray[2]);
     }
 
     public function testGetLogsWithEvents()
     {
         $collection = new MemberActivityCollection($this->getAdherentMock(), [], [
-            $this->getEventMock('Réunion de réflexion parisienne', false, new \DateTime('2017-08-10')),
-            $this->getEventMock('Nettoyage de la Kilchberg', true, new \DateTime('2017-07-17')),
-            $this->getEventMock('Meeting de Brooklyn', false, new \DateTime('2017-08-01')),
+            $this->getEventMock('Réunion de réflexion parisienne', new \DateTime('2017-08-10')),
+            $this->getEventMock('Nettoyage de la Kilchberg', new \DateTime('2017-07-17')),
+            $this->getEventMock('Meeting de Brooklyn', new \DateTime('2017-08-01')),
         ]);
         $logsToArray = iterator_to_array($collection->getLogs());
 
@@ -61,19 +61,19 @@ class MemberActivityCollectionTest extends TestCase
 
         $this->assertSame('A créé l\'événement "Réunion de réflexion parisienne" (10/08/2017)', $logsToArray[0]);
         $this->assertSame('A créé l\'événement "Meeting de Brooklyn" (01/08/2017)', $logsToArray[1]);
-        $this->assertSame('A créé l\'initiative citoyenne "Nettoyage de la Kilchberg" (17/07/2017)', $logsToArray[2]);
+        $this->assertSame('A créé l\'événement "Nettoyage de la Kilchberg" (17/07/2017)', $logsToArray[2]);
     }
 
     public function testGetLogsWithEventRegistrationsAndEvents()
     {
         $collection = new MemberActivityCollection($this->getAdherentMock(), [
             $this->getEventRegistrationMock($this->getEventMock('Réunion de réflexion parisienne'), new \DateTimeImmutable('2017-08-11')),
-            $this->getEventRegistrationMock($this->getEventMock('Nettoyage de la Kilchberg', true), new \DateTimeImmutable('2017-08-02')),
+            $this->getEventRegistrationMock($this->getEventMock('Nettoyage de la Kilchberg'), new \DateTimeImmutable('2017-08-02')),
             $this->getEventRegistrationMock($this->getEventMock('Meeting de Brooklyn'), new \DateTimeImmutable('2017-08-06')),
         ], [
-            $this->getEventMock('Réunion de réflexion parisienne', false, new \DateTime('2017-08-10')),
-            $this->getEventMock('Nettoyage de la Kilchberg', true, new \DateTime('2017-07-17')),
-            $this->getEventMock('Meeting de Brooklyn', false, new \DateTime('2017-08-01')),
+            $this->getEventMock('Réunion de réflexion parisienne', new \DateTime('2017-08-10')),
+            $this->getEventMock('Nettoyage de la Kilchberg', new \DateTime('2017-07-17')),
+            $this->getEventMock('Meeting de Brooklyn', new \DateTime('2017-08-01')),
         ]);
         $logsToArray = iterator_to_array($collection->getLogs());
 
@@ -83,21 +83,21 @@ class MemberActivityCollectionTest extends TestCase
         $this->assertSame('A participé à l\'événement "Réunion de réflexion parisienne" (11/08/2017)', $logsToArray[0]);
         $this->assertSame('A créé l\'événement "Réunion de réflexion parisienne" (10/08/2017)', $logsToArray[1]);
         $this->assertSame('A participé à l\'événement "Meeting de Brooklyn" (06/08/2017)', $logsToArray[2]);
-        $this->assertSame('A participé à l\'initiative citoyenne "Nettoyage de la Kilchberg" (02/08/2017)', $logsToArray[3]);
+        $this->assertSame('A participé à l\'événement "Nettoyage de la Kilchberg" (02/08/2017)', $logsToArray[3]);
         $this->assertSame('A créé l\'événement "Meeting de Brooklyn" (01/08/2017)', $logsToArray[4]);
-        $this->assertSame('A créé l\'initiative citoyenne "Nettoyage de la Kilchberg" (17/07/2017)', $logsToArray[5]);
+        $this->assertSame('A créé l\'événement "Nettoyage de la Kilchberg" (17/07/2017)', $logsToArray[5]);
     }
 
     public function testGetLogsWithRegisteredAtAndEventRegistrationsAndEvents()
     {
         $collection = new MemberActivityCollection($this->getAdherentMock(new \DateTime('2017-08-06')), [
             $this->getEventRegistrationMock($this->getEventMock('Réunion de réflexion parisienne'), new \DateTimeImmutable('2017-08-11')),
-            $this->getEventRegistrationMock($this->getEventMock('Nettoyage de la Kilchberg', true), new \DateTimeImmutable('2017-08-02')),
+            $this->getEventRegistrationMock($this->getEventMock('Nettoyage de la Kilchberg'), new \DateTimeImmutable('2017-08-02')),
             $this->getEventRegistrationMock($this->getEventMock('Meeting de Brooklyn'), new \DateTimeImmutable('2017-08-06')),
         ], [
-            $this->getEventMock('Réunion de réflexion parisienne', false, new \DateTime('2017-08-10')),
-            $this->getEventMock('Nettoyage de la Kilchberg', true, new \DateTime('2017-07-17')),
-            $this->getEventMock('Meeting de Brooklyn', false, new \DateTime('2017-08-01')),
+            $this->getEventMock('Réunion de réflexion parisienne', new \DateTime('2017-08-10')),
+            $this->getEventMock('Nettoyage de la Kilchberg', new \DateTime('2017-07-17')),
+            $this->getEventMock('Meeting de Brooklyn', new \DateTime('2017-08-01')),
         ]);
         $logsToArray = iterator_to_array($collection->getLogs());
 
@@ -108,9 +108,9 @@ class MemberActivityCollectionTest extends TestCase
         $this->assertSame('A créé l\'événement "Réunion de réflexion parisienne" (10/08/2017)', $logsToArray[1]);
         $this->assertSame('A rejoint le mouvement En Marche (06/08/2017)', $logsToArray[2]);
         $this->assertSame('A participé à l\'événement "Meeting de Brooklyn" (06/08/2017)', $logsToArray[3]);
-        $this->assertSame('A participé à l\'initiative citoyenne "Nettoyage de la Kilchberg" (02/08/2017)', $logsToArray[4]);
+        $this->assertSame('A participé à l\'événement "Nettoyage de la Kilchberg" (02/08/2017)', $logsToArray[4]);
         $this->assertSame('A créé l\'événement "Meeting de Brooklyn" (01/08/2017)', $logsToArray[5]);
-        $this->assertSame('A créé l\'initiative citoyenne "Nettoyage de la Kilchberg" (17/07/2017)', $logsToArray[6]);
+        $this->assertSame('A créé l\'événement "Nettoyage de la Kilchberg" (17/07/2017)', $logsToArray[6]);
     }
 
     private function getAdherentMock(\DateTime $registeredAt = null): Adherent
@@ -130,11 +130,10 @@ class MemberActivityCollectionTest extends TestCase
         return $eventRegistration;
     }
 
-    private function getEventMock(string $name, bool $isCitizenInitiative = false, \DateTime $createdAt = null): BaseEvent
+    private function getEventMock(string $name, \DateTime $createdAt = null): BaseEvent
     {
         $event = $this->getMockBuilder(BaseEvent::class)->disableOriginalConstructor()->getMock();
         $event->expects(static::any())->method('__toString')->willReturn($name);
-        $event->expects(static::any())->method('isCitizenInitiative')->willReturn($isCitizenInitiative);
         $event->expects(static::any())->method('getCreatedAt')->willReturn($createdAt);
 
         return $event;

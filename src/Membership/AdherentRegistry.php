@@ -3,8 +3,6 @@
 namespace AppBundle\Membership;
 
 use AppBundle\CitizenAction\CitizenActionManager;
-use AppBundle\CitizenInitiative\ActivitySubscriptionManager;
-use AppBundle\CitizenInitiative\CitizenInitiativeManager;
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\Feed\CommitteeFeedManager;
@@ -21,35 +19,29 @@ use Doctrine\ORM\EntityManagerInterface;
 class AdherentRegistry
 {
     private $em;
-    private $citizenInitiativeManager;
     private $citizenActionManager;
     private $eventManager;
     private $committeeManager;
     private $committeeFeedManager;
-    private $activitySubscriptionManager;
     private $citizenProjectManager;
     private $reportManager;
     private $registrationManager;
 
     public function __construct(
         EntityManagerInterface $em,
-        CitizenInitiativeManager $citizenInitiativeManager,
         CitizenActionManager $citizenActionManager,
         EventManager $eventManager,
         CommitteeManager $committeeManager,
         CommitteeFeedManager $committeeFeedManager,
-        ActivitySubscriptionManager $activitySubscriptionManager,
         CitizenProjectManager $citizenProjectManager,
         ReportManager $reportManager,
         EventRegistrationManager $registrationManager
     ) {
         $this->em = $em;
-        $this->citizenInitiativeManager = $citizenInitiativeManager;
         $this->citizenActionManager = $citizenActionManager;
         $this->committeeManager = $committeeManager;
         $this->committeeFeedManager = $committeeFeedManager;
         $this->eventManager = $eventManager;
-        $this->activitySubscriptionManager = $activitySubscriptionManager;
         $this->citizenProjectManager = $citizenProjectManager;
         $this->reportManager = $reportManager;
         $this->registrationManager = $registrationManager;
@@ -65,11 +57,9 @@ class AdherentRegistry
         $this->em->persist($unregistration);
         $this->removeAdherentMemberShips($adherent);
         $this->citizenActionManager->removeOrganizerCitizenActions($adherent);
-        $this->citizenInitiativeManager->removeOrganizerCitizenInitiatives($adherent);
         $this->eventManager->removeOrganizerEvents($adherent);
         $this->registrationManager->anonymizeAdherentRegistrations($adherent);
         $this->committeeFeedManager->removeAuthorItems($adherent);
-        $this->activitySubscriptionManager->removeAdherentActivities($adherent);
         $this->citizenProjectManager->removeAuthorItems($adherent);
         $this->reportManager->anonymAuthorReports($adherent);
 

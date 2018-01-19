@@ -29,11 +29,6 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.citizen_initiative" class="AppBundle\Repository\CitizenInitiativeRepository" public="false">
-            <argument>AppBundle\Entity\CitizenInitiative</argument>
-            <factory service="doctrine" method="getRepository"/>
-        </service>
-
         <service id="app.repository.citizen_action" class="AppBundle\Repository\CitizenActionRepository" public="false">
             <argument>AppBundle\Entity\CitizenAction</argument>
             <factory service="doctrine" method="getRepository"/>
@@ -91,11 +86,6 @@
 
         <service id="app.repository.skill" class="AppBundle\Repository\SkillRepository" public="false">
             <argument>AppBundle\Entity\Skill</argument>
-            <factory service="doctrine" method="getRepository"/>
-        </service>
-
-        <service id="app.repository.activity_subscription" class="AppBundle\Repository\ActivitySubscriptionRepository" public="false">
-            <argument>AppBundle\Entity\ActivitySubscription</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 

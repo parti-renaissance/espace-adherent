@@ -16,7 +16,6 @@ class CommitteeFeedItem
 {
     const MESSAGE = 'message';
     const EVENT = 'event';
-    const CITIZEN_INITIATIVE = 'citizen_initiative';
 
     use EntityIdentityTrait;
 
@@ -106,21 +105,6 @@ class CommitteeFeedItem
             $createdAt
         );
         $item->event = $event;
-
-        return $item;
-    }
-
-    public static function createCitizenInitiative(
-        Committee $committee,
-        Adherent $author,
-        string $content,
-        CitizenInitiative $initiative,
-        bool $published = true,
-        string $createdAt = 'now'
-    ): self {
-        $item = new static(Uuid::uuid4(), self::CITIZEN_INITIATIVE, $committee, $author, $published, $createdAt);
-        $item->content = $content;
-        $item->event = $initiative;
 
         return $item;
     }

@@ -93,7 +93,7 @@
             {{ include('events/_header.html.twig') }}
 
             <div class="b__nudge--top-10 text--body text--small">
-                {% if is_granted('HOST_EVENT', event) or is_granted('EDIT_CITIZEN_INITIATIVE', event) %}
+                {% if is_granted('HOST_EVENT', event) %}
                     {% if event.active %}
                         <a class="b__nudge--right-small"
                            href="{{ path("app_#{event.type}_edit", {'slug': event.slug}) }}">
@@ -129,26 +129,11 @@
         </section>
         <section class="l__wrapper--slim space--30-0 text--body">
             <ul id="committee__event__nav" class="list__links list__links--row list__links--default b__nudge--bottom">
-                {% if app.request.get('_route') != 'app_citizen_initiative_expert_assistance' %}
-                    <li class="text--bold">À propos</li>
-                {% else %}
-                    <li>
-                        <a href="{{ path("app_#{event.type}_show", {'slug': event.slug}) }}">
-                            À propos
-                        </a>
-                    </li>
-                {% endif %}
-                {% if event.isCitizenInitiative %}
-                    {% if app.request.get('_route') == 'app_citizen_initiative_expert_assistance' %}
-                        <li class="text--bold">Compétences recherchées</li>
-                    {% else %}
-                        <li>
-                            <a href="{{ path("app_#{event.type}_expert_assistance", {'slug': event.slug}) }}">
-                                Compétences recherchées
-                            </a>
-                        </li>
-                    {% endif %}
-                {% endif %}
+                <li>
+                    <a href="{{ path("app_#{event.type}_show", {'slug': event.slug}) }}">
+                        À propos
+                    </a>
+                </li>
                 {% if event.active %}
                     <li>
                         <a href="{{ path("app_#{event.type}_invite", {'slug': event.slug}) }}">

@@ -19,9 +19,7 @@
                     {% if event.isForLegislatives %}
                         <div class="tag tag--orange">Législatives</div>
                     {% endif %}
-                    {% if event.type and event.isCitizenInitiative %}
-                        <div class="tag tag--orange">Initiative citoyenne</div>
-                    {% elseif event.type and event.isCitizenAction %}
+                    {% if event.type and event.isCitizenAction %}
                         <div class="tag tag--orange">Action citoyenne</div>
                     {% else %}
                         <div class="tag">{{ event.category }}</div>
@@ -35,13 +33,7 @@
                 </h2>
                 <div class="text--body text--gray">
                     Organisé par
-                    {% if event.type and event.isCitizenInitiative %}
-                        {% if event.organizer %}
-                            l'adhérent <span class="text--bold">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span>
-                        {% else %}
-                            un ancien adhérent
-                        {% endif %}
-                    {% elseif event.committee %}
+                    {% if event.committee %}
                         <span class="text--bold">{{ event.committee.name }}</span>
                     {% elseif event.organizer and event.organizer.isReferent %}
                         <span class="text--bold">Référent En Marche</span> ({{ event.organizer.fullName }})
