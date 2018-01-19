@@ -9,7 +9,6 @@ use AppBundle\Mailer\Message\NewsletterSubscriptionMessage;
 use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\NewsletterInviteRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
-use Symfony\Bundle\FrameworkBundle\Client;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,9 +21,6 @@ use Tests\AppBundle\SqliteWebTestCase;
 class NewsletterControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
-
-    /** @var Client */
-    private $client;
 
     /** @var NewsletterSubscriptionRepository */
     private $subscriptionsRepository;

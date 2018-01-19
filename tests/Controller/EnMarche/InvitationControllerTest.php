@@ -8,7 +8,6 @@ use AppBundle\Mailer\Message\InvitationMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Repository\InvitationRepository;
-use Symfony\Bundle\FrameworkBundle\Client;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
@@ -19,9 +18,6 @@ use Tests\AppBundle\SqliteWebTestCase;
 class InvitationControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
-
-    /** @var Client */
-    private $client;
 
     /** @var InvitationRepository */
     private $invitationRepository;

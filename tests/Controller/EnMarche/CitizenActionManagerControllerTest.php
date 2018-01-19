@@ -30,7 +30,7 @@ class CitizenActionManagerControllerTest extends MysqlWebTestCase
         $this->assertSame(0, $crawler->selectLink('Créer une action citoyenne')->count());
     }
 
-    public function testCreateCitizeActionIsForbiddenIfProjectIsNotApproved()
+    public function testCreateCitizenActionIsForbiddenIfProjectIsNotApproved()
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille/actions/creer');

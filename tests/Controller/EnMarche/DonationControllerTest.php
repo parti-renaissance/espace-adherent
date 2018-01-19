@@ -355,7 +355,7 @@ class DonationControllerTest extends SqliteWebTestCase
     {
         $this->kill();
 
-        $this->payboxClient = new PayboxClient();
+        $this->payboxClient = null;
         $this->donationRepository = null;
 
         parent::tearDown();
