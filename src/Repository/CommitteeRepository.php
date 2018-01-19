@@ -303,4 +303,16 @@ class CommitteeRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function unfollowCommitteesOnUnregistration(Adherent $adherent): void
+    {
+        $this->createQueryBuilder('c')
+            ->update()
+            ->set('c.membersCounts', 'c.$membersCounts - 1')
+            ->where('c.uuid IN :uuids')
+            ->setParameters($adherent->getMemberships()->getCommitteeUuids())
+            ->getQuery()
+            ->execute()
+        ;
+    }
 }

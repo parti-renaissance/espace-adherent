@@ -88,14 +88,4 @@ class EventRegistrationManager
 
         return $this->repository->findUpcomingAdherentRegistrations($adherent->getUuid());
     }
-
-    public function anonymizeAdherentRegistrations(Adherent $adherent): void
-    {
-        $this->repository->anonymizeAdherentRegistrations($adherent);
-    }
-
-    public function findByAdherentEmailAndEvent(string $email, BaseEvent $event): ?EventRegistration
-    {
-        return $this->repository->findByAdherentEmailAndEvent($email, $event);
-    }
 }

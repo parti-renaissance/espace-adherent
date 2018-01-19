@@ -431,11 +431,6 @@ class CitizenProjectManager
         return $this->registry->getRepository(CitizenProjectCommitteeSupport::class);
     }
 
-    private function getCitizenProjectCommentRepository(): CitizenProjectCommentRepository
-    {
-        return $this->registry->getRepository(CitizenProjectComment::class);
-    }
-
     private function getCitizenActionRepository(): CitizenActionRepository
     {
         return $this->registry->getRepository(CitizenAction::class);
@@ -499,11 +494,6 @@ class CitizenProjectManager
         if ($flush) {
             $this->getManager()->flush();
         }
-    }
-
-    public function removeAuthorItems(Adherent $adherent)
-    {
-        $this->getCitizenProjectCommentRepository()->removeForAuthor($adherent);
     }
 
     public function hasCitizenProjectInStatus(Adherent $adherent, array $status): bool

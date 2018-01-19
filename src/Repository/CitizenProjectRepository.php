@@ -160,4 +160,16 @@ class CitizenProjectRepository extends BaseGroupRepository
             ->getResult()
         ;
     }
+
+    public function unfollowCitizenProjectsOnUnregistration(Adherent $adherent): void
+    {
+        $this->createQueryBuilder('p')
+             ->update()
+             ->set('p.membersCounts', 'p.membersCounts - 1')
+             ->where('p.uuid IN :uuids')
+             ->setParameters($adherent->getCitizenProjectMemberships()->getCitizenProjectUuids())
+             ->getQuery()
+             ->execute()
+        ;
+    }
 }

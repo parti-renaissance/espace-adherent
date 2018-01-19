@@ -31,12 +31,6 @@ class CitizenActionManager
         $this->eventRegistrationManager = $eventRegistrationManager;
     }
 
-    public function removeOrganizerCitizenActions(Adherent $adherent): void
-    {
-        $this->citizenActionRepository->removeOrganizerEvents($adherent, CitizenActionRepository::TYPE_PAST, true);
-        $this->citizenActionRepository->removeOrganizerEvents($adherent, CitizenActionRepository::TYPE_UPCOMING);
-    }
-
     public function getRegistrations(CitizenAction $citizenAction): EventRegistrationCollection
     {
         return $this->eventRegistrationRepository->findByEvent($citizenAction);

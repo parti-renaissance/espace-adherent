@@ -18,15 +18,13 @@ class CommitteeFeedManager
     private $committeeManager;
     private $mailer;
     private $urlGenerator;
-    private $repository;
 
-    public function __construct(ObjectManager $manager, CommitteeManager $committeeManager, MailerService $mailer, UrlGeneratorInterface $urlGenerator, CommitteeFeedItemRepository $repository)
+    public function __construct(ObjectManager $manager, CommitteeManager $committeeManager, MailerService $mailer, UrlGeneratorInterface $urlGenerator)
     {
         $this->manager = $manager;
         $this->committeeManager = $committeeManager;
         $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
-        $this->repository = $repository;
     }
 
     public function createEvent(CommitteeEvent $event): CommitteeFeedItem
@@ -80,10 +78,5 @@ class CommitteeFeedManager
     private function generateUrl(string $route, array $params = []): string
     {
         return $this->urlGenerator->generate($route, $params, UrlGeneratorInterface::ABSOLUTE_URL);
-    }
-
-    public function removeAuthorItems(Adherent $adherent): void
-    {
-        $this->repository->removeAuthorItems($adherent);
     }
 }
