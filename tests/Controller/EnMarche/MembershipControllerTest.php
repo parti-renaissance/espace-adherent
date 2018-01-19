@@ -110,7 +110,6 @@ class MembershipControllerTest extends MysqlWebTestCase
         $session = $this->client->getRequest()->getSession();
 
         $this->assertInstanceOf(DonationRequest::class, $session->get(MembershipUtils::REGISTERING_DONATION));
-        $this->assertSame($adherent->getId(), $session->get(MembershipUtils::NEW_ADHERENT_ID));
 
         // Activate the user account
         $activateAccountUrl = sprintf('/inscription/finaliser/%s/%s', $adherent->getUuid(), $activationToken->getValue());
@@ -118,7 +117,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentAccountConfirmationMessage::class, 'paul@dupont.tld'));
-        $this->assertClientIsRedirectedTo('/evenements', $this->client);
+        $this->assertClientIsRedirectedTo('/presque-fini', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -174,7 +173,6 @@ class MembershipControllerTest extends MysqlWebTestCase
         $session = $this->client->getRequest()->getSession();
 
         $this->assertInstanceOf(DonationRequest::class, $donation = $session->get(MembershipUtils::REGISTERING_DONATION));
-        $this->assertSame($adherent->getId(), $session->get(MembershipUtils::NEW_ADHERENT_ID));
         $this->assertSame('Dupont', $donation->getLastName());
     }
 
@@ -254,19 +252,6 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
-    /**
-     * @dataProvider provideRegistrationOnBoardingStepUrl
-     */
-    public function testRegistrationOnBoardingWithWrongNewAdherentId(string $stepUrl)
-    {
-        // Set a wrong id
-        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, 1234);
-
-        $this->client->request(Request::METHOD_GET, '/inscription/'.$stepUrl);
-
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
-    }
-
     public function provideRegistrationOnBoardingStepUrl()
     {
         yield ['centre-interets'];
@@ -277,8 +262,6 @@ class MembershipControllerTest extends MysqlWebTestCase
     public function testPinInterests()
     {
         $adherent = $this->getAdherentRepository()->findOneByEmail('michelle.dufour@example.ch');
-
-        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, $adherent->getId());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription/centre-interets');
 
@@ -306,8 +289,6 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->assertFalse($adherent->isEnabled());
         $this->assertEmpty($adherent->getInterests());
-
-        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, $adherent->getId());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription/centre-interets');
 
@@ -342,8 +323,6 @@ class MembershipControllerTest extends MysqlWebTestCase
         $adherent = $this->getAdherentRepository()->findOneByEmail('michelle.dufour@example.ch');
         $coordinates = new Coordinates($adherent->getLatitude(), $adherent->getLongitude());
 
-        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, $adherent->getId());
-
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription/choisir-des-comites');
 
         $boxPattern = '#app_membership_choose_nearby_committee_committees > div';
@@ -369,8 +348,6 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->assertFalse($adherent->isEnabled());
         $this->assertCount(0, $memberships);
-
-        $this->client->getContainer()->get('session')->set(MembershipUtils::NEW_ADHERENT_ID, $adherent->getId());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription/choisir-des-comites');
 

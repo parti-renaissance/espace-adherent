@@ -29,7 +29,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
     public function testOldRouteIsRedirected(): void
     {
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/connexion');
+        $this->client->request(Request::METHOD_GET, '/connexion');
 
         $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }

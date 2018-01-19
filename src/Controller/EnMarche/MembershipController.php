@@ -12,14 +12,17 @@ use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\DonationRequestType;
 use AppBundle\Form\MembershipChooseNearbyCommitteeType;
+use AppBundle\Form\MembershipRequestType;
 use AppBundle\Form\NewMemberShipRequestType;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\OAuth\CallbackManager;
+use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +40,7 @@ class MembershipController extends Controller
     public function registerAction(Request $request, GeoCoder $geoCoder, AuthorizationChecker $authorizationChecker, CallbackManager $callbackManager): Response
     {
         if ($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $callbackManager->redirectToClientIfValid();
+            return $callbackManager->redirectToClientIfValid('app_membership_join');
         }
 
         $membership = MembershipRequest::createWithCaptcha(
@@ -58,6 +61,48 @@ class MembershipController extends Controller
         }
 
         return $this->render('membership/register.html.twig', [
+            'membership' => $membership,
+            'form' => $form->createView(),
+            'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
+        ]);
+    }
+
+    /**
+     * This action enables a guest user to adhere to the community.
+     *
+     * @Route("/adhesion", name="app_membership_join")
+     * @Method("GET|POST")
+     *
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function joinAction(Request $request, EntityManagerInterface $manager): Response
+    {
+        /** @var Adherent $user */
+        $user = $this->getUser();
+
+        if ($user->isAdherent()) {
+            throw $this->createNotFoundException();
+        }
+
+        $membership = MembershipRequest::createFromAdherent($user);
+        $form = $this->createForm(MembershipRequestType::class, $membership)
+            ->add('submit', SubmitType::class, ['label' => 'J\'adhère'])
+        ;
+
+        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+            $user->join();
+            $manager->flush();
+
+            $this->get('security.token_storage')->setToken(null);
+            $request->getSession()->invalidate();
+            $this->get('app.security.authentication_utils')->authenticateAdherent($user);
+
+            $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render('membership/join.html.twig', [
             'membership' => $membership,
             'form' => $form->createView(),
             'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
@@ -124,21 +169,11 @@ class MembershipController extends Controller
      */
     public function pinInterestsAction(Request $request): Response
     {
-        if ($this->getUser()) {
+        if ($adherent = $this->getUser()) {
             $this->redirectToRoute('app_adherent_pin_interests');
         }
 
-        $membershipUtils = $this->get('app.membership_utils');
-
-        if (!$id = $membershipUtils->getNewAdherentId()) {
-            throw $this->createNotFoundException('The adherent has not been successfully redirected from the registration page.');
-        }
-
         $manager = $this->getDoctrine()->getManager();
-
-        if (!$adherent = $manager->getRepository(Adherent::class)->find($id)) {
-            throw $this->createNotFoundException('New adherent id not found.');
-        }
 
         $form = $this->createForm(AdherentInterestsFormType::class, $adherent)
             ->add('pass', SubmitType::class)
@@ -166,19 +201,11 @@ class MembershipController extends Controller
      */
     public function chooseNearbyCommitteeAction(Request $request): Response
     {
-        if ($this->getUser()) {
+        if ($adherent = $this->getUser()) {
             $this->redirectToRoute('app_search_committees');
         }
 
         $membershipUtils = $this->get('app.membership_utils');
-
-        if (!$id = $membershipUtils->getNewAdherentId()) {
-            throw $this->createNotFoundException('The adherent has not been successfully redirected from the registration page.');
-        }
-
-        if (!$adherent = $this->getDoctrine()->getRepository(Adherent::class)->find($id)) {
-            throw $this->createNotFoundException('New adherent id not found.');
-        }
 
         $form = $this->createForm(MembershipChooseNearbyCommitteeType::class, null, ['adherent' => $adherent])
             ->add('submit', SubmitType::class, ['label' => 'Terminer'])
@@ -209,20 +236,8 @@ class MembershipController extends Controller
     public function completeAction(): Response
     {
         if ($this->getUser()) {
-            $this->redirectToRoute('app_adherent_profile');
+            $this->redirectToRoute('app_user_login');
         }
-
-        $membershipUtils = $this->get('app.membership_utils');
-
-        if (!$id = $membershipUtils->getNewAdherentId()) {
-            throw $this->createNotFoundException('The adherent has not been successfully redirected from the registration page.');
-        }
-
-        if (!$adherent = $this->getDoctrine()->getRepository(Adherent::class)->find($id)) {
-            throw $this->createNotFoundException('New adherent id not found.');
-        }
-
-        $membershipUtils->clearNewAdherentId();
 
         return $this->render('membership/complete.html.twig');
     }
@@ -253,7 +268,7 @@ class MembershipController extends Controller
             $this->get('app.adherent_account_activation_handler')->handle($adherent, $activationToken);
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
 
-            return $callbackManager->redirectToClientIfValid('app_search_events');
+            return $callbackManager->redirectToClientIfValid();
         } catch (AdherentAlreadyEnabledException $e) {
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.already_active'));
         } catch (AdherentTokenExpiredException $e) {

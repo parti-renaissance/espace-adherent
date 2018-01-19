@@ -3,6 +3,7 @@
 namespace AppBundle\Membership;
 
 use AppBundle\Donation\DonationRequest;
+use AppBundle\Entity\Adherent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -10,7 +11,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 final class MembershipUtils implements EventSubscriberInterface
 {
     const REGISTERING_DONATION = 'membership.registering_donation';
-    const NEW_ADHERENT_ID = 'membership.new_adherent_id';
 
     private $session;
     private $requestStack;
@@ -34,19 +34,15 @@ final class MembershipUtils implements EventSubscriberInterface
     }
 
     /**
-     * Returns the id of the new adherent during registration's steps.
-     */
-    public function getNewAdherentId(): ?int
-    {
-        return $this->session->get(self::NEW_ADHERENT_ID);
-    }
-
-    /**
      * If true, the current user has started the subscription process but hasn't finished yet.
      */
-    public function isInSubscriptionProcess(): bool
+    public function isInSubscriptionProcess(Adherent $user = null): bool
     {
-        return (bool) $this->getNewAdherentId();
+        if (null == $user) {
+            return true;
+        }
+
+        return (bool) !$user->isAdherent();
     }
 
     public function onAdherentAccountRegistrationCompleted(AdherentAccountWasCreatedEvent $event): void
@@ -61,12 +57,6 @@ final class MembershipUtils implements EventSubscriberInterface
         );
 
         $this->session->set(self::REGISTERING_DONATION, $donationRequest);
-        $this->session->set(self::NEW_ADHERENT_ID, $adherent->getId());
-    }
-
-    public function clearNewAdherentId(): void
-    {
-        $this->session->remove(self::NEW_ADHERENT_ID);
     }
 
     public static function getSubscribedEvents(): array
