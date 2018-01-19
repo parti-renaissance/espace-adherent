@@ -12,6 +12,8 @@ default:
                 - SyncWithAPIContext:
                     doctrine: "@doctrine"
                     dispatcher: "@event_dispatcher"
+                - EmailContext
+
     extensions:
         Behat\Symfony2Extension:
             kernel:

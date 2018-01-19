@@ -8,6 +8,7 @@ use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
 use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
+use AppBundle\OAuth\CallbackManager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -17,7 +18,7 @@ class MembershipRequestHandler
     private $dispatcher;
     private $adherentFactory;
     private $addressFactory;
-    private $urlGenerator;
+    private $callbackManager;
     private $mailer;
     private $manager;
 
@@ -25,7 +26,7 @@ class MembershipRequestHandler
         EventDispatcherInterface $dispatcher,
         AdherentFactory $adherentFactory,
         PostAddressFactory $addressFactory,
-        UrlGeneratorInterface $urlGenerator,
+        CallbackManager $callbackManager,
         MailerService $mailer,
         ObjectManager $manager,
         AdherentRegistry $adherentRegistry
@@ -33,7 +34,7 @@ class MembershipRequestHandler
         $this->adherentFactory = $adherentFactory;
         $this->addressFactory = $addressFactory;
         $this->dispatcher = $dispatcher;
-        $this->urlGenerator = $urlGenerator;
+        $this->callbackManager = $callbackManager;
         $this->mailer = $mailer;
         $this->manager = $manager;
         $this->adherentRegistry = $adherentRegistry;
@@ -70,7 +71,7 @@ class MembershipRequestHandler
             'activation_token' => (string) $token->getValue(),
         ];
 
-        return $this->urlGenerator->generate('app_membership_activate', $params, UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->callbackManager->generateUrl('app_membership_activate', $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     public function terminateMembership(UnregistrationCommand $command, Adherent $adherent)

@@ -26,7 +26,7 @@ class LoadClientData extends AbstractFixture implements FixtureInterface
             'Plateforme Citoyenne de la République En-Marche !',
             '2x26pszrpag408so88w4wwo4gs8o8ok4osskcw00ow80sgkkcs',
             [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
-            ['http://client-oauth.docker:8000/client/receive_authcode']
+            ['http://client-oauth.docker:8000/client/receive_authcode', 'https://en-marche.fr/callback']
         );
         $client1->addSupportedScope('user_profile');
         $manager->persist($client1);

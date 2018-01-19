@@ -15,6 +15,7 @@ use AppBundle\Form\MembershipChooseNearbyCommitteeType;
 use AppBundle\Form\NewMemberShipRequestType;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\MembershipRequest;
+use AppBundle\OAuth\CallbackManager;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -237,7 +238,7 @@ class MembershipController extends Controller
      * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
      * @Entity("activationToken", expr="repository.findByToken(activation_token)")
      */
-    public function activateAction(Adherent $adherent, AdherentActivationToken $activationToken): Response
+    public function activateAction(Adherent $adherent, AdherentActivationToken $activationToken, CallbackManager $callbackManager): Response
     {
         if ($this->getUser()) {
             $this->redirectToRoute('app_search_events');
@@ -247,7 +248,7 @@ class MembershipController extends Controller
             $this->get('app.adherent_account_activation_handler')->handle($adherent, $activationToken);
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
 
-            return $this->redirectToRoute('app_search_events');
+            return $callbackManager->redirectToClientIfValid('app_search_events');
         } catch (AdherentAlreadyEnabledException $e) {
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.already_active'));
         } catch (AdherentTokenExpiredException $e) {
