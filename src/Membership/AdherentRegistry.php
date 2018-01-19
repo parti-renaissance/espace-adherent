@@ -23,7 +23,6 @@ class AdherentRegistry
     private $eventManager;
     private $committeeManager;
     private $committeeFeedManager;
-    private $activitySubscriptionManager;
     private $citizenProjectManager;
     private $reportManager;
     private $registrationManager;

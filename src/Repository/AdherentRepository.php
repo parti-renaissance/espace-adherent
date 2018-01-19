@@ -315,20 +315,6 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         return new Paginator($qb);
     }
 
-    public function findSubscribersToAdherentActivity(Adherent $followed): AdherentCollection
-    {
-        $qb = $this
-            ->createQueryBuilder('a')
-            ->leftJoin('a.activitySubscriptions', 's')
-            ->where('s.followedAdherent = :followed')
-            ->andWhere('(s.unsubscribedAt IS NULL OR s.subscribedAt > s.unsubscribedAt)')
-            ->setParameters([
-                'followed' => $followed,
-        ]);
-
-        return new AdherentCollection($qb->getQuery()->getResult());
-    }
-
     public function searchBoardMembers(BoardMemberFilter $filter, Adherent $excludedMember): array
     {
         return $this

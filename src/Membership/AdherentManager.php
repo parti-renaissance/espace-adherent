@@ -40,9 +40,4 @@ class AdherentManager
     {
         return $this->repository->findByEvent($event);
     }
-
-    public function findSubscribersToAdherentActivity(Adherent $followedAdherent): AdherentCollection
-    {
-        return $this->repository->findSubscribersToAdherentActivity($followedAdherent);
-    }
 }
