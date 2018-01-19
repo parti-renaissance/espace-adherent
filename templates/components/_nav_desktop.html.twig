@@ -47,9 +47,11 @@
             {% endif %}
             <div class="nav-dropdown">
                 {% if is_granted('ROLE_ADMIN_DASHBOARD') %}
-                    <a href="{{ path('sonata_admin_dashboard') }}" class="nav-dropdown__name">
-                        Admin 🤓
-                    </a>
+                    <div class="space--20-0">
+                        <a href="{{ path('sonata_admin_dashboard') }}" class="nav-dropdown__name">
+                            Admin 🤓
+                        </a>
+                    </div>
                 {% else %}
                     {% if app.user %}
                         <a href="{{ has_role_adherent ? path('app_user_profile') }}" class="icon--with-text nav-dropdown__name">

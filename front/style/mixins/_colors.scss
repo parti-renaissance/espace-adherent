@@ -15,7 +15,7 @@ $green--teal: #45E5CE;
 $orange: #FF6955;
 $pink: #FF4D89;
 $pink-hover: #E53072;
-$pink--light: #FF4D89;
+$pink--light: #F8BCBC;
 $purple: #6F80FF;
 $red: #FF4863;
 $yellow: #FFD400;
@@ -162,6 +162,10 @@ $gradient--menu: linear-gradient(to right, rgba(white, 0), white);
 
 .background--pink {
     background-color: $pink;
+}
+
+.background--pink--light {
+    background-color: $pink--light;
 }
 
 .background--darker {

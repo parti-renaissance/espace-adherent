@@ -68,15 +68,15 @@
     <header class="space--100-0">
         <div class="l__wrapper l__col text--white">
             <h1 class="text--extra-large">Agissez près de chez vous !</h1>
-            <h2>Proposez votre projet citoyen ou rejoignez un projet</h2>
+            <h2>Participez à la transformation de la France</h2>
         </div>
     </header>
 
     <div class="l__wrapper space--60-0 citizen-projects__landing__nearby">
         <div class="text--large text--bold">
-            Les projets citoyens à rejoindre autour de <span id="city-search-display">{{ city }}</span>
+            Rejoignez ces projets citoyens autour de <span id="city-search-display">{{ city }}</span>
             <input style="display: none;" type="text" value="{{ city }}" id="city-search-input">
-            <span id="change-city" class="text--default btn btn--functional">Changer lieu</span>
+            <span id="change-city" class="btn b__nudge--left">Changer lieu</span>
             <span id="save-city" class="text--default btn btn--functional" style="display: none">Sauvegarder</span>
         </div>
         <div id="search-results" class="citizen-projects__landing__grid">
@@ -86,7 +86,7 @@
             </div>
         </div>
         <div class="text--center">
-            <a class="newbtn" href="{{ path('app_search_citizen_projects') }}">Tous les projets</a>
+            <a class="btn btn--blue " href="{{ path('app_search_citizen_projects') }}">Tous les projets</a>
         </div>
     </div>
 
@@ -95,15 +95,15 @@
 
     <div class="l__wrapper--narrow space--60-0 text--center">
         <p class="text--medium-large text--bold">
-            Les projets citoyens sont des actions locales qui visent à améliorer concrètement le quotidien des habitants dans son quartier, son village, en réunissant la force et les compétences de tous ceux qui veulent agir.
+            Les projets citoyens sont des actions locales qui permettent d'améliorer concrètement le quotidien des habitants dans son quartier, son village, en réunissant la force et les compétences de tous ceux qui veulent agir.
         </p>
     </div>
 
-    <div class="background--pink-light space--100-0 citizen-projects__landing__create">
-        <div class="l__wrapper--narrow">
+    <div class="background--pink--light space--100-0 citizen-projects__landing__create">
+        <div class="l__wrapper--slim">
             <div class="l__row">
                 {{ include('components/projets-citoyens.html.twig') }}
-                <div class="b__nudge--left-large text--large text--bold text--blue">
+                <div class="b__nudge--left text--large text--bold text--blue--dark">
                     Envie d'agir près de chez vous ?<br />
                     {{ citizen_project ? 'Faites grandir votre projet !' : 'Lancez votre projet citoyen !' }}
                 </div>
@@ -124,8 +124,8 @@
         </div>
     </div>
 
-    <div class="text--center">
-        <video src=""></video>
+    <div class="citizen-projects__landing__video text--center space--100-0">
+        <iframe width="720" height="405" src="https://www.youtube.com/embed/XFOp8jqBTnE?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
 
 </section>

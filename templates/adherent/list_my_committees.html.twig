@@ -1,7 +1,6 @@
 {% if committees|length < 1 %}
-    <div class="text--center">
-        <div class="text--body b__nudge--bottom-small">Rejoignez un comité<br>En Marche !</div>
-        <a class="btn btn--blue form--full" href="{{ path('app_search_committees') }}">Trouver un comité</a>
+    <div>
+        <a class="link--blue--dark" href="{{ path('app_search_committees') }}">Découvrir des comités autour de chez moi</a>
     </div>
 {% else %}
     <ul>
