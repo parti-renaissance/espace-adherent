@@ -6,6 +6,7 @@ use AppBundle\CitizenProject\CitizenProjectCommentCommand;
 use AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler;
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\CitizenProject\CitizenProjectPermissions;
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use AppBundle\Entity\CitizenProjectCategorySkill;
@@ -158,21 +159,16 @@ class CitizenProjectController extends Controller
 
     /**
      * @Route("/mon-comite-soutien/{slug}", name="app_citizen_project_committee_support")
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("is_granted('ROLE_SUPERVISOR')")
      * @Method("GET|POST")
      */
     public function committeeSupportAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
     {
-        $user = $this->getUser();
-        if (!$user->isSupervisor()) {
-            throw $this->createAccessDeniedException();
-        }
-
         $form = $this->createForm(FormType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $committeeUuid = $user->getMemberships()->getCommitteeSupervisorMemberships()->last()->getCommitteeUuid();
+            $committeeUuid = $this->getUser()->getMemberships()->getCommitteeSupervisorMemberships()->last()->getCommitteeUuid();
             $committee = $this->getDoctrine()->getRepository(Committee::class)->findOneByUuid($committeeUuid);
 
             try {
@@ -271,12 +267,15 @@ class CitizenProjectController extends Controller
      */
     public function landingAction(CitizenProjectManager $citizenProjectManager): Response
     {
-        $city = $this->getUser() ? $this->getUser()->getCityName() : SearchParametersFilter::DEFAULT_CITY;
-        $citizenProjects = $this->getUser() ? $citizenProjectManager->getAdherentCitizenProjectsAdministrator($this->getUser()) : [];
+        $user = $this->getUser();
+        $citizenProjects = $user instanceof Adherent ?
+            $citizenProjectManager->getAdherentCitizenProjectsAdministrator($user)
+            : []
+        ;
 
         return $this->render('citizen_project/landing.html.twig', [
             'citizen_project' => $citizenProjects[0] ?? null,
-            'city' => $city,
+            'city' => $user instanceof Adherent ? $user->getCityName() : SearchParametersFilter::DEFAULT_CITY,
         ]);
     }
 
