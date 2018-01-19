@@ -27,7 +27,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 abstract class BaseEvent implements GeoPointInterface
 {
-    const CITIZEN_INITIATIVE_TYPE = 'citizen_initiative';
     const EVENT_TYPE = 'event';
     const CITIZEN_ACTION_TYPE = 'citizen_action';
 

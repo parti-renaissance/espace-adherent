@@ -43,11 +43,11 @@ class CitizenActionRegistrationCommandHandler
 
         $this->manager->create($registration = $this->factory->createFromCommand($command));
 
-        $citizenInitiativeCalendarLink = $this->generateUrl('app_citizen_action_export_ical', [
+        $citizenActionCalendarLink = $this->generateUrl('app_citizen_action_export_ical', [
             'slug' => $command->getEvent()->getSlug(),
         ]);
 
-        $this->mailer->sendMessage(CitizenActionRegistrationConfirmationMessage::createFromRegistration($registration, $citizenInitiativeCalendarLink));
+        $this->mailer->sendMessage(CitizenActionRegistrationConfirmationMessage::createFromRegistration($registration, $citizenActionCalendarLink));
     }
 
     private function generateUrl(string $route, array $params = []): string

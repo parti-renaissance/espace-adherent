@@ -32,9 +32,6 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         findOneByUuid as findOneByValidUuid;
     }
 
-    const CITIZEN_INITIATIVE_RADIUS = 2;
-    const CITIZEN_INITIATIVE_SUPERVISOR_RADIUS = 5;
-
     public function countElements(): int
     {
         return (int) $this

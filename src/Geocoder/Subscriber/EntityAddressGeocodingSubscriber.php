@@ -67,8 +67,6 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
             Events::EVENT_UPDATED => ['updateCoordinates', -256],
             Events::CITIZEN_ACTION_CREATED => ['updateCoordinates', -256],
             Events::CITIZEN_ACTION_UPDATED => ['updateCoordinates', -256],
-            Events::CITIZEN_INITIATIVE_CREATED => ['updateCoordinates', -256],
-            Events::CITIZEN_INITIATIVE_UPDATED => ['updateCoordinates', -256],
             Events::CITIZEN_PROJECT_CREATED => ['updateCoordinates', -256],
             Events::CITIZEN_PROJECT_UPDATED => ['updateCoordinates', -256],
         ];

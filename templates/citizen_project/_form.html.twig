@@ -110,7 +110,7 @@
     <label class="label__header--large">Ce projet a besoin de : <span>(Optionnel)</span></label>
     <div>
         {{ form_widget(form.skills_search, {attr: {style: 'margin-bottom: 10px', class: 'form--full'} }) }}
-        {{ form_widget(form.skills, {attr: {class: 'citizen_initiative__skills'} }) }}
+        {{ form_widget(form.skills, {attr: {class: 'citizen_project__skills'} }) }}
     </div>
 </div>
 
@@ -142,7 +142,7 @@
     <label class="label__header--large">Vous avez déjà le soutien d'un comité local ?<br />Indiquez son nom : <span>(Optionnel)</span></label>
     <div>
         {{ form_widget(form.committees_search, {attr: {class: 'form--full'} }) }}
-        {{ form_widget(form.committees, {attr: {class: 'citizen_initiative__skills'} }) }}
+        {{ form_widget(form.committees, {attr: {class: 'citizen_project__skills'} }) }}
     </div>
 </div>
 
