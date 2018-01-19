@@ -4,12 +4,17 @@ namespace AppBundle\Committee;
 
 final class CommitteePermissions
 {
-    const SHOW = 'SHOW_COMMITTEE';
-    const FOLLOW = 'FOLLOW_COMMITTEE';
-    const UNFOLLOW = 'UNFOLLOW_COMMITTEE';
-    const CREATE = 'CREATE_COMMITTEE';
-    const HOST = 'HOST_COMMITTEE';
-    const SUPERVISE = 'SUPERVISE_COMMITTEE';
+    public const SHOW = 'SHOW_COMMITTEE';
+    public const FOLLOW = 'FOLLOW_COMMITTEE';
+    public const UNFOLLOW = 'UNFOLLOW_COMMITTEE';
+    public const CREATE = 'CREATE_COMMITTEE';
+    public const HOST = 'HOST_COMMITTEE';
+    public const SUPERVISE = 'SUPERVISE_COMMITTEE';
+
+    public const FOLLOWER = [
+        self::FOLLOW,
+        self::UNFOLLOW,
+    ];
 
     private function __construct()
     {

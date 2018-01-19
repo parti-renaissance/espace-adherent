@@ -2,47 +2,27 @@
 
 namespace AppBundle\Security\Voter\Committee;
 
-use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use AppBundle\Security\Voter\AbstractAdherentVoter;
 
-class SuperviseCommitteeVoter extends Voter
+class SuperviseCommitteeVoter extends AbstractAdherentVoter
 {
-    private $manager;
-
-    public function __construct(CommitteeManager $manager)
-    {
-        $this->manager = $manager;
-    }
-
     protected function supports($attribute, $subject): bool
     {
         return CommitteePermissions::SUPERVISE === $attribute && $subject instanceof Committee;
     }
 
     /**
-     * @param string         $attribute
-     * @param Committee      $committee
-     * @param TokenInterface $token
+     * @param string    $attribute
+     * @param Adherent  $adherent
+     * @param Committee $committee
      *
      * @return bool
      */
-    protected function voteOnAttribute($attribute, $committee, TokenInterface $token): bool
+    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $committee): bool
     {
-        if ($token instanceof AnonymousToken) {
-            return false;
-        }
-
-        $supervisor = $token->getUser();
-
-        if (!$supervisor instanceof Adherent) {
-            return false;
-        }
-
-        return $this->manager->superviseCommittee($supervisor, $committee);
+        return $adherent->isSupervisorOf($committee);
     }
 }

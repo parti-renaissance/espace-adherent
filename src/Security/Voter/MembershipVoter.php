@@ -4,28 +4,16 @@ namespace AppBundle\Security\Voter;
 
 use AppBundle\Membership\MembershipPermissions;
 use AppBundle\Entity\Adherent;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class MembershipVoter extends Voter
+class MembershipVoter extends AbstractAdherentVoter
 {
     protected function supports($attribute, $subject)
     {
         return MembershipPermissions::UNREGISTER === $attribute && null === $subject;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        $adherent = $token->getUser();
-
-        if (!$adherent instanceof Adherent) {
-            return false;
-        }
-
-        if (!$adherent->isBasicAdherent()) {
-            return false;
-        }
-
-        return true;
+        return $adherent->isBasicAdherent();
     }
 }

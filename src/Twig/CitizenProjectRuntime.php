@@ -15,14 +15,15 @@ class CitizenProjectRuntime
     private const COLOR_STATUS_ADMINISTRATOR = 'bullet--own';
 
     private $authorizationChecker;
-    private $citizenProjectManager;
+    private $projectAuthority;
 
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        CitizenProjectManager $citizenProjectManager
+        CitizenProjectManager $citizenProjectManager,
+        CitizenProjectAuthority $projectAuthority
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->citizenProjectManager = $citizenProjectManager;
+        $this->projectAuthority = $projectAuthority;
     }
 
     public function isProjectAdministrator(CitizenProject $citizenProject): bool

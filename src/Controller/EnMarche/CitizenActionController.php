@@ -44,7 +44,6 @@ class CitizenActionController extends Controller
     /**
      * @Route("/{slug}/inscription", name="app_citizen_action_attend")
      * @Method("GET|POST")
-     * @Security("is_granted('REGISTER_CITIZEN_ACTION', citizenAction)")
      */
     public function attendAction(Request $request, CitizenAction $citizenAction): Response
     {

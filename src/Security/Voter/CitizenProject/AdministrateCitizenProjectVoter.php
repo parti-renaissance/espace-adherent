@@ -2,31 +2,31 @@
 
 namespace AppBundle\Security\Voter\CitizenProject;
 
-use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\CitizenProject\CitizenProjectPermissions;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Security\Voter\AbstractAdherentVoter;
 
-class AdministrateCitizenProjectVoter extends AbstractCitizenProjectVoter
+class AdministrateCitizenProjectVoter extends AbstractAdherentVoter
 {
-    private $manager;
-
-    public function __construct(CitizenProjectManager $manager)
-    {
-        $this->manager = $manager;
-    }
-
     protected function supports($attribute, $subject): bool
     {
         return CitizenProjectPermissions::ADMINISTRATE === $attribute && $subject instanceof CitizenProject;
     }
 
-    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, CitizenProject $citizenProject): bool
+    /**
+     * @param string         $attribute
+     * @param Adherent       $adherent
+     * @param CitizenProject $citizenProject
+     *
+     * @return bool
+     */
+    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $citizenProject): bool
     {
         if (!$citizenProject->isApproved()) {
-            return $adherent->getUuid()->toString() === $citizenProject->getCreatedBy();
+            return $citizenProject->isCreatedBy($adherent->getUuid());
         }
 
-        return $this->manager->administrateCitizenProject($adherent, $citizenProject);
+        return $adherent->isAdministratorOf($citizenProject);
     }
 }

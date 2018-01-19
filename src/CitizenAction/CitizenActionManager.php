@@ -91,7 +91,7 @@ class CitizenActionManager
 
     public function unregisterFromCitizenAction(CitizenAction $citizenAction, Adherent $adherent): void
     {
-        if (!$registration = $this->eventRegistrationManager->searchRegistration($citizenAction, $adherent->getEmailAddress(), $adherent)) {
+        if (!$registration = $this->eventRegistrationManager->searchAdherentRegistration($citizenAction, $adherent)) {
             throw new EntityNotFoundException(
                 sprintf('Unable to find event registration by CitizenAction UUID (%s) and adherent UUID (%s)', $citizenAction->getUuid()->toString(), $adherent->getUuid()->toString())
             );

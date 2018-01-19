@@ -308,9 +308,9 @@ class CommitteeRepository extends EntityRepository
     {
         $this->createQueryBuilder('c')
             ->update()
-            ->set('c.membersCounts', 'c.$membersCounts - 1')
-            ->where('c.uuid IN :uuids')
-            ->setParameters($adherent->getMemberships()->getCommitteeUuids())
+            ->set('c.membersCounts', 'c.membersCounts - 1')
+            ->where('c.uuid IN (:uuids)')
+            ->setParameter('uuids', $adherent->getMemberships()->getCommitteeUuids())
             ->getQuery()
             ->execute()
         ;

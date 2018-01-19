@@ -2,126 +2,57 @@
 
 namespace Tests\AppBundle\Security\Voter\Committee;
 
-use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
+use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Committee;
+use AppBundle\Security\Voter\AbstractAdherentVoter;
 use AppBundle\Security\Voter\Committee\SuperviseCommitteeVoter;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Component\Security\Core\User\User;
+use Tests\AppBundle\Security\Voter\AbstractAdherentVoterTest;
 
-class SuperviseCommitteeVoterTest extends AbstractCommitteeVoterTest
+class SuperviseCommitteeVoterTest extends AbstractAdherentVoterTest
 {
-    /* @var SuperviseCommitteeVoter */
-    private $voter;
-    private $manager;
-
-    public function testUnsupportedAdherentType()
+    public function provideAnonymousCases(): iterable
     {
-        $committee = $this->createCommittee(self::ADHERENT_2_UUID);
-        $token = $this->createAuthenticatedToken(new User('foobar', 'password', ['ROLE_USER', 'ROLE_ADHERENT']));
-
-        $this->manager->expects($this->never())->method('superviseCommittee');
-
-        $this->assertSame(
-            VoterInterface::ACCESS_DENIED,
-            $this->voter->vote($token, $committee, [CommitteePermissions::SUPERVISE])
-        );
+        yield [false, true, CommitteePermissions::SUPERVISE, $this->createMock(Committee::class)];
     }
 
-    public function testUnsupportedCommitteeType()
+    protected function getVoter(): AbstractAdherentVoter
     {
-        $token = $this->createAuthenticatedToken($this->createAdherentFromUuidAndEmail(self::ADHERENT_2_UUID));
-
-        $this->manager->expects($this->never())->method('superviseCommittee');
-
-        $this->assertSame(
-            VoterInterface::ACCESS_ABSTAIN,
-            $this->voter->vote($token, new \stdClass(), [CommitteePermissions::SUPERVISE])
-        );
+        return new SuperviseCommitteeVoter();
     }
 
-    public function testUnsupportedAttribute()
+    public function testAdherentIsNotGranted()
     {
-        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
-        $committee = $this->createCommittee(self::ADHERENT_1_UUID);
-        $token = $this->createAuthenticatedToken($adherent);
+        $committee = $this->createMock(Committee::class);
+        $adherent = $this->getAdherentMock(false, $committee);
 
-        $this->manager->expects($this->never())->method('superviseCommittee');
-
-        $this->assertSame(
-            VoterInterface::ACCESS_ABSTAIN,
-            $this->voter->vote($token, $committee, [CommitteePermissions::CREATE])
-        );
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::SUPERVISE, $committee);
     }
 
-    public function testAnonymousIsNotGrantedToSuperviseAnApprovedCommittee()
+    public function testSupervizerIsGranted()
     {
-        $committee = $this->createCommittee(self::ADHERENT_1_UUID);
-        $committee->approved();
+        $committee = $this->createMock(Committee::class);
+        $adherent = $this->getAdherentMock(true, $committee);
 
-        $token = $this->createAnonymousToken();
-
-        $this->manager->expects($this->never())->method('superviseCommittee');
-
-        $this->assertSame(
-            VoterInterface::ACCESS_DENIED,
-            $this->voter->vote($token, $committee, [CommitteePermissions::SUPERVISE])
-        );
+        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::SUPERVISE, $committee);
     }
 
-    public function testAdherentIsNotGrantedToSuperviseCommittee()
+    /**
+     * @param bool      $isSupervisor
+     * @param Committee $committee
+     *
+     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getAdherentMock(bool $isSupervisor, Committee $committee): Adherent
     {
-        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
+        $adherent = $this->createAdherentMock();
 
-        $committee = $this->createCommittee(self::ADHERENT_2_UUID);
-        $committee->approved();
+        $adherent->expects($this->once())
+            ->method('isSupervisorOf')
+            ->with($committee)
+            ->willReturn($isSupervisor)
+        ;
 
-        $token = $this->createAuthenticatedToken($adherent);
-
-        $this
-            ->manager
-            ->expects($this->once())
-            ->method('superviseCommittee')
-            ->with($adherent, $committee)
-            ->willReturn(false);
-
-        $this->assertSame(
-            VoterInterface::ACCESS_DENIED,
-            $this->voter->vote($token, $committee, [CommitteePermissions::SUPERVISE])
-        );
-    }
-
-    public function testCommitteeOwnerIsGrantedToSuperviseCommittee()
-    {
-        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
-        $committee = $this->createCommittee($adherent->getUuid());
-        $token = $this->createAuthenticatedToken($adherent);
-
-        $this
-            ->manager
-            ->expects($this->once())
-            ->method('superviseCommittee')
-            ->with($adherent, $committee)
-            ->willReturn(true);
-
-        $this->assertSame(
-            VoterInterface::ACCESS_GRANTED,
-            $this->voter->vote($token, $committee, [CommitteePermissions::SUPERVISE])
-        );
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->manager = $this->createMock(CommitteeManager::class);
-        $this->voter = new SuperviseCommitteeVoter($this->manager);
-    }
-
-    protected function tearDown()
-    {
-        $this->manager = null;
-        $this->voter = null;
-
-        parent::tearDown();
+        return $adherent;
     }
 }

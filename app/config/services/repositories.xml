@@ -109,6 +109,11 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service id="app.repository.citizen_project_comment" class="AppBundle\Repository\CitizenProjectCommentRepository" public="false">
+            <argument>AppBundle\Entity\CitizenProjectComment</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
         <service id="app.repository.citizen_project_membership" class="AppBundle\Repository\CitizenProjectMembershipRepository" public="false">
             <argument>AppBundle\Entity\CitizenProjectMembership</argument>
             <factory service="doctrine" method="getRepository"/>

@@ -9,10 +9,13 @@ final class CitizenActionPermissions
     public const REGISTER = 'REGISTER_CITIZEN_ACTION';
     public const UNREGISTER = 'UNREGISTER_CITIZEN_ACTION';
 
-    public const ORGANIZER_PERMS = [
+    public const MANAGE = [
         self::CREATE,
         self::EDIT,
+    ];
+    public const ATTEND = [
         self::REGISTER,
+        self::UNREGISTER,
     ];
 
     private function __construct()

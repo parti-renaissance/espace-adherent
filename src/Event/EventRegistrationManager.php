@@ -4,7 +4,6 @@ namespace AppBundle\Event;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
-use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Exception\EventRegistrationException;
 use AppBundle\Repository\EventRegistrationRepository;
@@ -30,23 +29,26 @@ class EventRegistrationManager
         return $this->repository->findOneByUuid($uuid);
     }
 
-    public function findRegistrations(Event $event): array
+    public function searchRegistration(BaseEvent $event, string $emailAddress, ?Adherent $adherent): ?EventRegistration
     {
-        return $this->repository->findByEvent($event);
-    }
-
-    public function searchRegistration(
-        BaseEvent $event,
-        string $emailAddress,
-        Adherent $adherent = null
-    ): ?EventRegistration {
-        $eventUuid = (string) $event->getUuid();
-
-        if (!$adherent) {
-            return $this->repository->findGuestRegistration($eventUuid, $emailAddress);
+        if ($adherent) {
+            return $this->searchAdherentRegistration($event, $adherent);
         }
 
-        return $this->repository->findAdherentRegistration($eventUuid, (string) $adherent->getUuid());
+        return $this->searchGuestRegistration($event, $emailAddress);
+    }
+
+    public function searchGuestRegistration(BaseEvent $event, string $emailAddress): ?EventRegistration
+    {
+        return $this->repository->findGuestRegistration($event->getUuid()->toString(), $emailAddress);
+    }
+
+    public function searchAdherentRegistration(BaseEvent $event, Adherent $adherent): ?EventRegistration
+    {
+        return $this->repository->findAdherentRegistration(
+            $event->getUuid()->toString(),
+            $adherent->getUuid()->toString()
+        );
     }
 
     public function create(EventRegistration $registration, bool $flush = true): void

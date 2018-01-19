@@ -592,7 +592,6 @@ class AdherentControllerTest extends MysqlWebTestCase
         $crawler = $this->client->click($crawler->selectLink('Créer un comité')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
         $this->assertSame($phone, $crawler->filter('#create_committee_phone_number')->attr('value'));
 
         // Submit the committee form with invalid data

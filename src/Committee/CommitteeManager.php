@@ -21,12 +21,6 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class CommitteeManager
 {
-    const COMMITTEE_STATUS_NOT_ALLOWED_TO_CREATE_ANOTHER = [
-        Committee::PRE_REFUSED,
-        Committee::PRE_APPROVED,
-        Committee::PENDING,
-        Committee::REFUSED,
-    ];
     const EXCLUDE_HOSTS = false;
     const INCLUDE_HOSTS = true;
 
@@ -61,7 +55,7 @@ class CommitteeManager
     {
         // Optimization to prevent a SQL query if the current adherent already
         // has a loaded list of related committee memberships entities.
-        if ($adherent->isHost()) {
+        if ($adherent->hasLoadedMemberships() && $adherent->isHost()) {
             return true;
         }
 
@@ -72,7 +66,7 @@ class CommitteeManager
     {
         // Optimization to prevent a SQL query if the current adherent already
         // has a loaded list of related committee memberships entities.
-        if ($adherent->isHostOf($committee)) {
+        if ($adherent->hasLoadedMemberships() && $adherent->isHostOf($committee)) {
             return true;
         }
 
@@ -83,7 +77,7 @@ class CommitteeManager
     {
         // Optimization to prevent a SQL query if the current adherent already
         // has a loaded list of related committee memberships entities.
-        if ($adherent->isSupervisorOf($committee)) {
+        if ($adherent->hasLoadedMemberships() && $adherent->isSupervisorOf($committee)) {
             return true;
         }
 
@@ -103,7 +97,7 @@ class CommitteeManager
     private function doGetAdherentCommittees(Adherent $adherent, $onlySupervisor = false): array
     {
         // Prevent SQL query if the adherent doesn't follow any committees yet.
-        if (!count($memberships = $adherent->getMemberships())) {
+        if (0 === count($memberships = $adherent->getMemberships())) {
             return [];
         }
 
@@ -118,13 +112,15 @@ class CommitteeManager
             ->filter(function (Committee $committee) use ($adherent) {
                 // Any approved committee is kept.
                 if ($committee->isApproved()) {
-                    return $committee;
+                    return true;
                 }
 
                 // However, an unapproved committee is kept only if it was created by the adherent.
                 if ($committee->isCreatedBy($adherent->getUuid())) {
-                    return $committee;
+                    return true;
                 }
+
+                return false; // discard
             });
 
         return $committees->toArray();
@@ -212,8 +208,8 @@ class CommitteeManager
     {
         // Optimization to prevent a SQL query if the current adherent already
         // has a loaded list of related committee memberships entities.
-        if ($membership = $adherent->getMembershipFor($committee)) {
-            return $membership;
+        if ($adherent->hasLoadedMemberships()) {
+            return $adherent->getMembershipFor($committee);
         }
 
         return $this->getMembershipRepository()->findMembership($adherent, $committee->getUuid());
@@ -376,7 +372,11 @@ class CommitteeManager
      */
     public function unfollowCommittee(Adherent $adherent, Committee $committee, bool $flush = true): void
     {
-        $membership = $this->getMembershipRepository()->findMembership($adherent, $committee->getUuid());
+        if ($adherent->hasLoadedMemberships()) {
+            $membership = $adherent->getMembershipFor($committee);
+        } else {
+            $membership = $this->getMembershipRepository()->findMembership($adherent, $committee->getUuid());
+        }
 
         if ($membership) {
             $this->doUnfollowCommittee($membership, $committee, $flush);
@@ -467,11 +467,6 @@ class CommitteeManager
         }
 
         return $committees;
-    }
-
-    public function isSupervisorOfAnyCommittee(Adherent $adherent): bool
-    {
-        return $this->getMembershipRepository()->superviseCommittee($adherent);
     }
 
     public function hasCommitteeInStatus(Adherent $adherent, array $status): bool

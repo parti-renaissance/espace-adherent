@@ -2,13 +2,13 @@
 
 namespace Tests\AppBundle\CitizenProject;
 
+use AppBundle\CitizenProject\CitizenProjectAuthority;
 use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectMembership;
 use AppBundle\Membership\AdherentEmailSubscription;
 use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\MysqlWebTestCase;
@@ -59,71 +59,6 @@ class CitizenProjectManagerTest extends MysqlWebTestCase
         $this->assertCount(1, $this->citizenProjectManager->getCitizenProjectFollowers($this->getCitizenProjectMock(LoadCitizenProjectData::CITIZEN_PROJECT_2_UUID)));
     }
 
-    public function testGetAdherentCitizenProjects()
-    {
-        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
-
-        // Without any fixed limit.
-        $this->assertCount(7, $citizenProjects = $this->citizenProjectManager->getAdherentCitizenProjects($adherent));
-        $this->assertSame('Le projet citoyen à Paris 8', (string) $citizenProjects[0]);
-        $this->assertSame('Projet citoyen à New York City', (string) $citizenProjects[1]);
-        $this->assertSame('Formation en ligne ouverte à tous à Évry', (string) $citizenProjects[2]);
-        $this->assertSame('Le projet citoyen à Dammarie-les-Lys', (string) $citizenProjects[3]);
-        $this->assertSame('Massive Open Online Course', (string) $citizenProjects[4]);
-        $this->assertSame('Formation en ligne ouverte à tous', (string) $citizenProjects[5]);
-        $this->assertSame('En Marche - Projet citoyen', (string) $citizenProjects[7]);
-    }
-
-    public function testGetAdherentCitizenProjectsWhenPreApproved()
-    {
-        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_6_UUID);
-
-        // Without any fixed limit.
-        $this->assertCount(1, $citizenProjects = $this->citizenProjectManager->getAdherentCitizenProjects($adherent));
-        $this->assertSame('Le projet citoyen à Marseille', (string) $citizenProjects[0]);
-    }
-
-    public function testChangePrivilegeNotDefinedPrivilege()
-    {
-        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
-        $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
-
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid privilege WRONG_PRIVILEGE');
-
-        $this->citizenProjectManager->changePrivilege($adherent, $citizenProject, 'WRONG_PRIVILEGE');
-    }
-
-    public function testChangePrivilege()
-    {
-        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
-        $adherent2 = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_2_UUID);
-        $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
-
-        // Change privileges of the first member ADMINISTRATOR => FOLLOWER => ADMINISTRATOR
-        $this->assertEquals(true, $adherent->getCitizenProjectMembershipFor($citizenProject)->isAdministrator());
-        $this->assertEquals(false, $adherent->getCitizenProjectMembershipFor($citizenProject)->isFollower());
-
-        $this->citizenProjectManager->changePrivilege($adherent, $citizenProject, CitizenProjectMembership::CITIZEN_PROJECT_FOLLOWER);
-
-        $this->assertEquals(true, $adherent->getCitizenProjectMembershipFor($citizenProject)->isFollower());
-        $this->assertEquals(false, $adherent->getCitizenProjectMembershipFor($citizenProject)->isAdministrator());
-
-        $this->citizenProjectManager->changePrivilege($adherent, $citizenProject, CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR);
-
-        $this->assertEquals(true, $adherent->getCitizenProjectMembershipFor($citizenProject)->isAdministrator());
-        $this->assertEquals(false, $adherent->getCitizenProjectMembershipFor($citizenProject)->isFollower());
-
-        // Change privileges of the second member: FOLLOWER => ADMINISTRATOR
-        $this->assertEquals(true, $adherent2->getCitizenProjectMembershipFor($citizenProject)->isFollower());
-        $this->assertEquals(false, $adherent2->getCitizenProjectMembershipFor($citizenProject)->isAdministrator());
-
-        $this->citizenProjectManager->changePrivilege($adherent2, $citizenProject, CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR);
-
-        $this->assertEquals(true, $adherent2->getCitizenProjectMembershipFor($citizenProject)->isAdministrator());
-        $this->assertEquals(false, $adherent2->getCitizenProjectMembershipFor($citizenProject)->isFollower());
-    }
-
     public function testFindAdherentNearCitizenProjectOrAcceptAllNotification()
     {
         $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
@@ -171,7 +106,11 @@ class CitizenProjectManagerTest extends MysqlWebTestCase
         ]);
 
         $this->container = $this->getContainer();
-        $this->citizenProjectManager = new CitizenProjectManager($this->getManagerRegistry(), $this->getStorage());
+        $this->citizenProjectManager = new CitizenProjectManager(
+            $this->getManagerRegistry(),
+            $this->getStorage(),
+            $this->createMock(CitizenProjectAuthority::class))
+        ;
     }
 
     protected function tearDown()

@@ -505,10 +505,10 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertContains('Francis Brioul', trim($thumb3->filter('.citizen-projects__landing__card__creator')->text()));
     }
 
-    public function testCitizenProjectLandingPageAuthenticateUser()
+    public function testCitizenProjectLandingPageAsAuthenticateUser()
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
-        $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
+        $this->authenticateAsAdherent($this->client, 'damien.schmidt@example.ch', 'newpassword');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('damien.schmidt@example.ch');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens');
 

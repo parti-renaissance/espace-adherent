@@ -2,19 +2,19 @@
 
 namespace AppBundle\Security\Voter\CitizenProject;
 
-use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\CitizenProject\CitizenProjectPermissions;
 use AppBundle\Entity\Adherent;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use AppBundle\Entity\CitizenProject;
+use AppBundle\Repository\CitizenProjectRepository;
+use AppBundle\Security\Voter\AbstractAdherentVoter;
 
-class CreateCitizenProjectVoter extends Voter
+class CreateCitizenProjectVoter extends AbstractAdherentVoter
 {
-    private $manager;
+    private $projectRepository;
 
-    public function __construct(CitizenProjectManager $manager)
+    public function __construct(CitizenProjectRepository $projectRepository)
     {
-        $this->manager = $manager;
+        $this->projectRepository = $projectRepository;
     }
 
     protected function supports($attribute, $subject)
@@ -22,22 +22,12 @@ class CreateCitizenProjectVoter extends Voter
         return CitizenProjectPermissions::CREATE === $attribute && null === $subject;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        $adherent = $token->getUser();
-
-        if (!$adherent instanceof Adherent || $adherent->isReferent()) {
-            return false;
-        }
-
-        if ($this->manager->isCitizenProjectAdministrator($adherent)) {
-            return false;
-        }
-
-        if ($this->manager->hasCitizenProjectInStatus($adherent, CitizenProjectManager::STATUS_NOT_ALLOWED_TO_CREATE)) {
-            return false;
-        }
-
-        return true;
+        // Cannot create a project when referent or already administrate one
+        return !$adherent->isReferent()
+            && !$adherent->isProjectAdministrator()
+            && !$this->projectRepository->hasCitizenProjectInStatus($adherent, CitizenProject::STATUSES_NOT_ALLOWED_TO_CREATE)
+        ;
     }
 }

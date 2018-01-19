@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\Committee\CommitteeCreationCommand;
 use AppBundle\Contact\ContactMessage;
 use AppBundle\Entity\Adherent;
@@ -17,6 +16,7 @@ use AppBundle\Form\ContactMessageType;
 use AppBundle\Form\CreateCommitteeCommandType;
 use AppBundle\Form\CitizenProjectCommandType;
 use AppBundle\CitizenProject\CitizenProjectCreationCommand;
+use AppBundle\Repository\CitizenProjectRepository;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -214,10 +214,10 @@ class AdherentController extends Controller
         ]);
     }
 
-    public function listMyCitizenProjectsAction(CitizenProjectManager $manager): Response
+    public function listMyCitizenProjectsAction(CitizenProjectRepository $citizenProjectRepository): Response
     {
         return $this->render('adherent/list_my_citizen_projects.html.twig', [
-            'citizen_projects' => $manager->getAdherentCitizenProjects($this->getUser()),
+            'citizen_projects' => $citizenProjectRepository->findAllRegisteredCitizenProjectsForAdherent($this->getUser()),
         ]);
     }
 }

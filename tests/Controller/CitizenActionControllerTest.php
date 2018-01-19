@@ -7,7 +7,6 @@ use AppBundle\DataFixtures\ORM\LoadCitizenActionData;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Mailer\Message\CitizenActionRegistrationConfirmationMessage;
-use AppBundle\Repository\EventRegistrationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -20,11 +19,11 @@ class CitizenActionControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
 
-    /** @var EventRegistrationRepository */
-    private $repository;
-
-    public function testAnonymousUserCannotRegisterToCitizenAction()
+    public function testAnonymousUserCanRegisterToCitizenAction()
     {
+        $registrations = $this->getEventRegistrationRepository()->findAll();
+        $initialCount = count($registrations);
+
         $eventUrl = '/action-citoyenne/'.date('Y-m-d', strtotime('tomorrow')).'-projet-citoyen-3';
         $crawler = $this->client->request('GET', $eventUrl);
 
@@ -34,10 +33,22 @@ class CitizenActionControllerTest extends MysqlWebTestCase
         $this->assertSame('1 inscrit', trim($crawler->filter('#members h3')->text()));
         $this->assertSame(0, $crawler->filter('.citizen_action header a:contains("S\'inscrire")')->count());
 
-        $this->client->request('GET', $eventUrl.'/inscription');
+        $crawler = $this->client->request('GET', "$eventUrl/inscription");
 
-        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/connexion', $this->client, true);
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $this->client->click($crawler->selectButton("Je m'inscris")->form([
+            'event_registration[firstName]' => 'Anonymous',
+            'event_registration[lastName]' => 'Guest',
+            'event_registration[emailAddress]' => 'anonymous.guest@exemple.org',
+            'event_registration[acceptTerms]' => '1',
+        ]));
+
+        $registrations = $this->getEventRegistrationRepository()->findAll();
+        $lastUuid = end($registrations)->getUuid();
+
+        $this->assertCount($initialCount + 1, $registrations);
+        $this->assertClientIsRedirectedTo("$eventUrl/confirmation?registration=".$lastUuid, $this->client);
     }
 
     public function testRegisteredAdherentUserCanRegisterToCitizenAction()
@@ -127,7 +138,7 @@ CONTENT;
         $unregistrationButton = $this->client->getCrawler()->filter('#citizen_action-unregistration');
 
         $this->assertSame('Se désinscrire', trim($unregistrationButton->text()));
-        $this->assertInstanceOf(EventRegistration::class, $this->repository->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_3_UUID));
+        $this->assertInstanceOf(EventRegistration::class, $this->getEventRegistrationRepository()->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_3_UUID));
 
         $this->client->request(Request::METHOD_POST, sprintf('/action-citoyenne/%s/desinscription', $citizenAction->getSlug()), [
             'token' => $unregistrationButton->attr('data-csrf-token'),
@@ -138,7 +149,7 @@ CONTENT;
         $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s', $citizenAction->getSlug()));
 
         $this->assertSame('S\'inscrire', $this->client->getCrawler()->filter('a.newbtn--orange')->text());
-        $this->assertNull($this->repository->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_3_UUID));
+        $this->assertNull($this->getEventRegistrationRepository()->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_3_UUID));
     }
 
     public function testUnregistrationFailed(): void
@@ -155,7 +166,7 @@ CONTENT;
         $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s', $citizenAction->getSlug()));
 
         $this->assertSame('S\'inscrire', $this->client->getCrawler()->filter('a.newbtn--orange')->text());
-        $this->assertNull($this->repository->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_2_UUID));
+        $this->assertNull($this->getEventRegistrationRepository()->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_2_UUID));
 
         $csrfToken = $this->container->get('security.csrf.token_manager')->getToken('citizen_action.unregistration');
         $this->client->request(Request::METHOD_POST, sprintf('/action-citoyenne/%s/desinscription', $citizenAction->getSlug()), [
@@ -167,7 +178,7 @@ CONTENT;
         $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s', $citizenAction->getSlug()));
 
         $this->assertSame('S\'inscrire', $this->client->getCrawler()->filter('a.newbtn--orange')->text());
-        $this->assertNull($this->repository->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_2_UUID));
+        $this->assertNull($this->getEventRegistrationRepository()->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_2_UUID));
     }
 
     protected function setUp()
@@ -177,16 +188,17 @@ CONTENT;
         $this->init([
             LoadCitizenActionData::class,
         ]);
-
-        $this->repository = $this->getEventRegistrationRepository();
     }
 
     protected function tearDown()
     {
         $this->kill();
 
-        $this->repository = null;
-
         parent::tearDown();
+    }
+
+    protected function getEventUrl(): string
+    {
+        return '/initiative-citoyenne/'.date('Y-m-d', strtotime('tomorrow')).'-apprenez-a-sauver-des-vies';
     }
 }

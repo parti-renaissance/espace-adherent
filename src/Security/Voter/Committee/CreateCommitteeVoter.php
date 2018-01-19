@@ -2,19 +2,19 @@
 
 namespace AppBundle\Security\Voter\Committee;
 
-use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Entity\Adherent;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use AppBundle\Entity\Committee;
+use AppBundle\Repository\CommitteeRepository;
+use AppBundle\Security\Voter\AbstractAdherentVoter;
 
-class CreateCommitteeVoter extends Voter
+class CreateCommitteeVoter extends AbstractAdherentVoter
 {
-    private $manager;
+    private $repository;
 
-    public function __construct(CommitteeManager $manager)
+    public function __construct(CommitteeRepository $repository)
     {
-        $this->manager = $manager;
+        $this->repository = $repository;
     }
 
     protected function supports($attribute, $subject)
@@ -22,26 +22,12 @@ class CreateCommitteeVoter extends Voter
         return CommitteePermissions::CREATE === $attribute && null === $subject;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        $adherent = $token->getUser();
-
-        if (!$adherent instanceof Adherent || $adherent->isReferent()) {
-            return false;
-        }
-
-        if ($this->manager->isSupervisorOfAnyCommittee($adherent)) {
-            return false;
-        }
-
-        if ($this->manager->isCommitteeHost($adherent)) {
-            return false;
-        }
-
-        if ($this->manager->hasCommitteeInStatus($adherent, CommitteeManager::COMMITTEE_STATUS_NOT_ALLOWED_TO_CREATE_ANOTHER)) {
-            return false;
-        }
-
-        return true;
+        // Cannot create a project when referent or already host one
+        return !$adherent->isReferent()
+            && !$adherent->isHost()
+            && !$this->repository->hasCommitteeInStatus($adherent, Committee::STATUSES_NOT_ALLOWED_TO_CREATE_ANOTHER)
+        ;
     }
 }

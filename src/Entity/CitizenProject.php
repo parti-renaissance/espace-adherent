@@ -36,6 +36,11 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     use SkillTrait;
     use CoordinatorAreaTrait;
 
+    public const STATUSES_NOT_ALLOWED_TO_CREATE = [
+        self::PENDING,
+        self::REFUSED,
+    ];
+
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CitizenProjectCategory")
      *
