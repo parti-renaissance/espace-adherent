@@ -17,7 +17,7 @@ class HomeControllerTest extends SqliteWebTestCase
 
     public function testLegislativesCandidatesDirectory()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, 'https://'.$this->hosts['legislatives']);
+        $crawler = $this->client->request(Request::METHOD_GET, $this->hosts['scheme'].'://'.$this->hosts['legislatives']);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
