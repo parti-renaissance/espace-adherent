@@ -13,7 +13,7 @@ default:
                     doctrine: "@doctrine"
                     dispatcher: "@event_dispatcher"
                 - EmailContext
-
+                - SecurityContext
     extensions:
         Behat\Symfony2Extension:
             kernel:

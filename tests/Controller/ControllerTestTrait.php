@@ -72,6 +72,16 @@ trait ControllerTestTrait
         return $client->followRedirect();
     }
 
+    public function authenticateAsAdmin(Client $client): void
+    {
+        $crawler = $client->request(Request::METHOD_GET, '/admin/login');
+
+        $client->submit($crawler->selectButton('Connexion')->form([
+            '_admin_email' => 'admin@en-marche-dev.fr',
+            '_admin_password' => 'admin',
+        ]));
+    }
+
     protected function appendCollectionFormPrototype(\DOMElement $collection, string $newIndex = '0', string $prototypeName = '__name__'): void
     {
         $prototypeHTML = $collection->getAttribute('data-prototype');

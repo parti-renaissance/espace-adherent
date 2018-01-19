@@ -24,6 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 class MembershipController extends Controller
 {
@@ -33,8 +34,12 @@ class MembershipController extends Controller
      * @Route("/inscription", name="app_membership_register")
      * @Method("GET|POST")
      */
-    public function registerAction(Request $request, GeoCoder $geoCoder): Response
+    public function registerAction(Request $request, GeoCoder $geoCoder, AuthorizationChecker $authorizationChecker, CallbackManager $callbackManager): Response
     {
+        if ($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $callbackManager->redirectToClientIfValid();
+        }
+
         $membership = MembershipRequest::createWithCaptcha(
             $geoCoder->getCountryCodeFromIp($request->getClientIp()),
             $request->request->get('g-recaptcha-response')

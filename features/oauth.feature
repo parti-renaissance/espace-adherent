@@ -134,3 +134,8 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     """
     When I click on the email link "activation_link"
     Then I should be on "https://enmarche.fr/callback"
+
+    # Already logged in user returning to register are redirected to the redirect_uri
+    Given I am logged as "jp@test.com"
+    When I am on "/inscription?client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19&redirect_uri=https%3A%2F%2Fen-marche.fr%2Fcallback"
+    Then I should be on "https://en-marche.fr/callback"
