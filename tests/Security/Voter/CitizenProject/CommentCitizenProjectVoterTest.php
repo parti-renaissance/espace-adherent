@@ -3,13 +3,13 @@
 namespace Tests\AppBundle\Security\Voter\CitizenProject;
 
 use AppBundle\CitizenProject\CitizenProjectPermissions;
-use AppBundle\Security\Voter\CitizenProject\CommentCitizenProjectVoter;
+use AppBundle\Security\Voter\CitizenProject\CommentsCitizenProjectVoter;
 use AppBundle\Entity\CitizenProjectCategory;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class CommentCitizenProjectVoterTest extends AbstractCitizenProjectVoterTest
 {
-    /* @var CommentCitizenProjectVoter */
+    /* @var CommentsCitizenProjectVoter */
     private $voter;
     private $manager;
 
@@ -61,7 +61,7 @@ class CommentCitizenProjectVoterTest extends AbstractCitizenProjectVoterTest
     {
         parent::setUp();
 
-        $this->voter = new CommentCitizenProjectVoter();
+        $this->voter = new CommentsCitizenProjectVoter();
     }
 
     protected function tearDown()

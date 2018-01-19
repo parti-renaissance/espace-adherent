@@ -4,13 +4,13 @@ namespace Tests\AppBundle\Security\Voter\Committee;
 
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
-use AppBundle\Security\Voter\Committee\FollowCommitteeVoter;
+use AppBundle\Security\Voter\Committee\FollowerCommitteeVoter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\User\User;
 
 class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
 {
-    /* @var FollowCommitteeVoter */
+    /* @var FollowerCommitteeVoter */
     private $voter;
     private $manager;
 
@@ -256,7 +256,7 @@ class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
         parent::setUp();
 
         $this->manager = $this->createMock(CommitteeManager::class);
-        $this->voter = new FollowCommitteeVoter($this->manager);
+        $this->voter = new FollowerCommitteeVoter($this->manager);
     }
 
     protected function tearDown()

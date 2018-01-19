@@ -3,13 +3,13 @@
 namespace Tests\AppBundle\Security\Voter\Committee;
 
 use AppBundle\Committee\CommitteePermissions;
-use AppBundle\Security\Voter\Committee\ShowCommitteeVoter;
+use AppBundle\Security\Voter\Committee\ShowGroupVoter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\User\User;
 
 class ShowCommitteeVoterTest extends AbstractCommitteeVoterTest
 {
-    /* @var ShowCommitteeVoter */
+    /* @var ShowGroupVoter */
     private $voter;
 
     public function testUnsupportedAdherentType()
@@ -101,7 +101,7 @@ class ShowCommitteeVoterTest extends AbstractCommitteeVoterTest
     {
         parent::setUp();
 
-        $this->voter = new ShowCommitteeVoter();
+        $this->voter = new ShowGroupVoter();
     }
 
     protected function tearDown()
