@@ -255,6 +255,6 @@ class MembershipController extends Controller
 
         // Other exceptions that may be raised will be caught by Symfony.
 
-        return $this->redirectToRoute('app_adherent_login');
+        return $this->redirectToRoute('app_user_login');
     }
 }

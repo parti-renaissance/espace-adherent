@@ -40,7 +40,7 @@
     text-align: center;
     border-radius: 3px;
     border: 1px solid transparent;
-    padding: 19px 30px 18px;
+    padding: 18px 30px;
     font-weight: bold;
     background: white;
     color: white;
@@ -48,11 +48,12 @@
     transition: all 0.45s;
     box-sizing: border-box;
     font-family: $font-roboto;
-    background-color: $newblue;
+    background-color: $blue--dark;
 
     &:hover {
-        background: $newblue--hover;
+        background: $blue--dark--hover;
         color: white;
+        transform: translateY(-1px);
     }
 
     &:disabled,
@@ -145,8 +146,8 @@
 
 @mixin btn--blue {
     color: white;
-    background: $blue;
-    border-color: $blue;
+    background: $blue--dark;
+    border-color: $blue--dark;
 
     &:hover {
         background-color: $blue-hover;
@@ -198,23 +199,6 @@
           font-size: $text--size-medium--small;
           letter-spacing: 2px;
           height: 50px;
-        }
-    }
-
-    &--functional {
-        padding: 5px 10px;
-        font-family: $font-roboto;
-        font-weight: normal;
-        text-transform: none;
-        letter-spacing: 0;
-        border: 1px solid $gray--light;
-        color: $newblue;
-        border-radius: 3px;
-
-        &:hover {
-            background-color: $gray--lighter;
-            color: $newblue;
-            border-color: $gray;
         }
     }
 
@@ -399,15 +383,15 @@ button.btn {
 
         &:hover {
             background: white;
-            border-color: $newblue;
-            color: $newblue;
+            border-color: $blue--dark;
+            color: $blue--dark;
         }
     }
 
     &--green {
-        background-color: $newgreen;
+        background-color: $green;
         color: white;
-        border-color: $newgreen;
+        border-color: $green;
 
         &:hover {
             background-color: $error;

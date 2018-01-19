@@ -1,0 +1,13 @@
+<ul class="list__links">
+    {% for committee in committees %}
+        {% if app.user.hostOf(committee) %}
+            {# using the Adherent::isHostOf() method instead of a voter below prevents unneeded SQL queries #}
+            <li>
+                <a href="{{ path('app_committee_show', { slug: committee.slug }) }}"
+                   title="{{ committee.name }}">
+                    {{- committee.name -}}
+                </a>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>

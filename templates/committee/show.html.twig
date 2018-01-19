@@ -77,7 +77,7 @@
             });
             {% endif %}
 
-            {% if is_granted('ROLE_ADHERENT') %}
+            {% if has_role_adherent %}
             var toggleMembershipButton = dom('#committee-toggle-membership');
             var toggleMembershipLoader = dom('#committee-follow-btn-loader');
 
@@ -105,7 +105,7 @@
 
 {% block committee_lcol %}
     {% if committee.isApproved %}
-        {% if not is_granted('ROLE_ADHERENT') %}
+        {% if not has_role_adherent %}
             <div class="committee-follow--anonymous">
                 <button role="button"
                         class="btn btn--no-border btn--text-blue committee-follow--disabled btn--no-wrap"
@@ -115,7 +115,7 @@
                 </button>
 
                 <div class="committee-follow--anonymous__link text--white">
-                    <a href="{{ path('app_adherent_login') }}" id="committee-login-link" class="link--white">
+                    <a href="{{ path('app_user_login') }}" id="committee-login-link" class="link--white">
                         Connectez-vous
                     </a>
                     ou

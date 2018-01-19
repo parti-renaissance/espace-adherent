@@ -160,7 +160,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->logout($this->client);
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);
 
-        $this->assertClientIsRedirectedTo('/espace-adherent/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -240,7 +240,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertClientIsRedirectedTo('/inscription/don', $this->client);
 
         // login
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/connexion');
+        $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($crawler->selectButton('Je me connecte')->form([

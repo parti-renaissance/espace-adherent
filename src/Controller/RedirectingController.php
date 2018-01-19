@@ -12,7 +12,7 @@ class RedirectingController extends Controller
     /**
      * @Route("/{url}", name="remove_trailing_slash", requirements={"url" = ".*\/$"}, methods={"GET"})
      */
-    public function removeTrailingSlashAction(Request $request)
+    public function removeTrailingSlashAction(Request $request): Response
     {
         $pathInfo = $request->getPathInfo();
         $requestUri = $request->getRequestUri();

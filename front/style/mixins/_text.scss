@@ -136,7 +136,7 @@ $text--size-extra-large: 48px;
 }
 
 @mixin text--blue {
-    color: $newblue;
+    color: $blue
 }
 
 @mixin text--uppercase {
@@ -163,10 +163,6 @@ $text--size-extra-large: 48px;
 
     &--small {
         @include text--small;
-    }
-
-    &--default {
-        @include text--default;
     }
 
     &--medium-small {
@@ -245,7 +241,7 @@ $text--size-extra-large: 48px;
     }
 
     &--blue {
-        @include text--blue;
+        color: $blue;
     }
 
     &--dark {
@@ -330,7 +326,7 @@ $text--size-extra-large: 48px;
     }
 
     &--blue--new {
-        color: $newblue;
+        color: $blue--dark;
     }
 
     &--green {
@@ -510,11 +506,16 @@ $text--size-extra-large: 48px;
 
     &__links--nav {
         li {
-            font-size: $text--size-default;
+            @include text--default;
             letter-spacing: 0;
 
             h1 {
                 @include text--logo;
+                margin-top: -5px;
+
+                a {
+                    color: black;
+                }
             }
 
             .icon-search {
@@ -533,6 +534,11 @@ $text--size-extra-large: 48px;
                 line-height: 2;
             }
         }
+    }
+
+    &__links--subnav li a {
+        color: white;
+        font-size: $text--size-small;
     }
 }
 

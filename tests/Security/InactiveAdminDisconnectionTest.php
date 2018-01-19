@@ -43,7 +43,7 @@ class InactiveAdminDisconnectionTest extends SqliteWebTestCase
 
     public function testNoLogoutInactiveAdherent()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/connexion');
+        $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
 
         // connect as adherent
         $this->client->submit($crawler->selectButton('Je me connecte')->form([
@@ -57,7 +57,7 @@ class InactiveAdminDisconnectionTest extends SqliteWebTestCase
         sleep(1900);
 
         // go to another page
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte');
+        $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
 
         // status code should be 200 OK, because there is no redirection to disconnect
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());

@@ -261,8 +261,8 @@ security:
             anonymous:
                 secret: '%env(SECRET)%'
             form_login:
-                login_path: app_adherent_login
-                check_path: app_adherent_login_check
+                login_path: app_user_login
+                check_path: app_user_login_check
 
                 default_target_path: app_search_events
 
@@ -275,11 +275,8 @@ security:
                 target: homepage
 
     access_control:
-        - { path: '^/espace-adherent/mon-compte', roles: [ROLE_ADHERENT] }
-        - { path: '^/espace-adherent/mon-profil', roles: [ROLE_ADHERENT] }
-        - { path: '^/espace-adherent/documents', roles: [ROLE_ADHERENT] }
-        - { path: '^/espace-adherent/contacter', roles: [ROLE_ADHERENT] }
-        - { path: '^/espace-adherent/mes-evenements', roles: [ROLE_ADHERENT] }
+        - { path: '^/parametres', roles: [ROLE_USER] }
+        - { path: '^/espace-adherent', roles: [ROLE_ADHERENT] }
         - { path: '^/espace-coordinateur', roles: [ROLE_COORDINATOR] }
         - { path: '^/admin/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: '^/admin/impersonation/exit', roles: [ROLE_PREVIOUS_ADMIN] }
