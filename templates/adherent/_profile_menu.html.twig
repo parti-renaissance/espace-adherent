@@ -11,7 +11,7 @@
             </li>
         {% endfor %}
 
-        {% if is_granted('ROLE_ADHERENT') %}
+        {% if has_role_adherent %}
             <li class="{{ route == 'app_summary_manager_index' ? 'active' }}">
                 <a href="{{ path('app_summary_manager_index') }}">Modifier mon profil</a>
             </li>

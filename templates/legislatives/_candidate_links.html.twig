@@ -7,19 +7,19 @@
 
     <div class="{{ social_networks_container_class|default('list__links--svgs b__nudge--top-10') }} candidate_social_networks_links">
         {% if candidate.twitterPageUrl %}
-            <a href="{{ candidate.twitterPageUrl }}" target="_blank" class="link--no-decor" title="Twitter">
+            <a href="{{ candidate.twitterPageUrl }}" target="_blank" rel="noopener" class="link--no-decor" title="Twitter">
                 <i class="fa fa-twitter"></i>
             </a>
         {% endif %}
 
         {% if candidate.facebookPageUrl %}
-            <a href="{{ candidate.facebookPageUrl }}" target="_blank" class="link--no-decor" title="Facebook">
+            <a href="{{ candidate.facebookPageUrl }}" target="_blank" rel="noopener" class="link--no-decor" title="Facebook">
                 <i class="fa fa-facebook-official"></i>
             </a>
         {% endif %}
 
         {% if candidate.donationPageUrl %}
-            <a href="{{ candidate.donationPageUrl }}" target="_blank" class="link--no-decor" title="Faire un don">
+            <a href="{{ candidate.donationPageUrl }}" target="_blank" rel="noopener" class="link--no-decor" title="Faire un don">
                 <i class="fa fa-link"></i>
             </a>
         {% endif %}

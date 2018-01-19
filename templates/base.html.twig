@@ -104,7 +104,7 @@
         <header>
             {% set adherent_committees = '' %}
             {# Prerendering this block and saving it in a variable prevents extra SQL queries #}
-            {% if is_granted('ROLE_ADHERENT') %}
+            {% if has_role_adherent %}
                 {% set adherent_committees %}
                     {{ render(controller('AppBundle:EnMarche/Adherent:listMyCommittees')) }}
                 {% endset %}

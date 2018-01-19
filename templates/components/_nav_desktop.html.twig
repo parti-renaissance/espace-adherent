@@ -1,11 +1,10 @@
 <nav class="gtm__navigation__desktop l__wrapper l__row l__row--h-stretch l__hide--on-small-laptop {{ app.user ? '' : 'space--20-0' }}">
     <ul class="list__links list__links--row list__links--no-decor list__links--nav">
         {% if app.user %}
-        <li>
-            <h1><a href="{{ path('homepage') }}">EM!</a></h1>
-        </li>
-        {% endif %}
-        {% if not app.user %}
+            <li>
+                <h1><a href="{{ path('homepage') }}">EM!</a></h1>
+            </li>
+        {% else %}
             <li>
                 <h1><a href="{{ path('homepage') }}">En Marche !</a></h1>
             </li>
@@ -23,9 +22,9 @@
             <a href="{{ path('page_campus') }}">Campus</a>
         </li>
         <li>
-            <a href="{{ path('articles_list', {'category': 'tout'}) }}">Actualités</a>
+            <a href="{{ path('articles_list', { category: 'tout' }) }}">Actualités</a>
         </li>
-        {% if app.user and not is_granted('ROLE_ADHERENT') %}
+        {% if app.user and not has_role_adherent %}
             <li>
                 <a href="{{ path('app_membership_register') }}">Devenir adhérent(e)</a>
             </li>
@@ -53,12 +52,12 @@
                     </a>
                 {% else %}
                     {% if app.user %}
-                        <a href="{{ is_granted('ROLE_ADHERENT') ? path('app_user_profile') }}" class="icon--with-text nav-dropdown__name">
+                        <a href="{{ has_role_adherent ? path('app_user_profile') }}" class="icon--with-text nav-dropdown__name">
                             {{ include('components/user.html.twig') }}
                             {{ app.user.firstName is defined ? app.user.firstName : ''}}
                         </a>
                     {% endif %}
-                    {% if is_granted('ROLE_USER') %}
+                    {% if has_role_user %}
                         <div class="nav-dropdown__caret">
                             <span class="nav-dropdown__caret--outer"></span>
                             <span class="nav-dropdown__caret--inner"></span>
@@ -66,16 +65,16 @@
                         <div class="nav-dropdown__menu">
                             <ul class="nav-dropdown__section">
                                 <li class="nav-dropdown__section__name">
-                                    <a href="{{ is_granted('ROLE_ADHERENT') ? path('app_user_profile') }}" class="icon--with-text">
+                                    <a href="{{ has_role_adherent ? path('app_user_profile') }}" class="icon--with-text">
                                         <div>{{ app.user }}</div>
                                         <div class="text--small text--gray text--normal">
-                                            {% if not is_granted('ROLE_ADHERENT') %}
+                                            {% if not has_role_adherent %}
                                                 Non-adhérent(e)
                                             {% elseif is_granted('ROLE_REFERENT') %}
                                                 {% if app.user.isFemale %}Référente 🥇{% else %}Référent 🥇{% endif %}
                                             {% elseif app.user.isHost %}
                                                 {% if app.user.isFemale %}Animatrice 🏅{% else %}Animateur 🏅{% endif %}
-                                            {% elseif is_granted('ROLE_ADHERENT') %}
+                                            {% elseif has_role_adherent %}
                                                 {% if app.user.isFemale %}Adhérente 😍{% else %}Adhérent 😍{% endif %}
                                             {% endif %}
                                         </div>
@@ -87,13 +86,13 @@
                                 <div>
                                     <ul class="nav-dropdown__section">
                                         <li>
-                                            {% set url = is_granted('ROLE_ADHERENT') ? path('app_user_profile') : path('app_user_login') %}
+                                            {% set url = has_role_adherent ? path('app_user_profile') : path('app_user_login') %}
                                             <a href="{{ url }}">Profil</a>
                                         </li>
                                         <li>
                                             <a href="{{ path('app_adherent_events') }}">Mes activités</a>
                                         </li>
-                                        {% if app.user and (is_granted('ROLE_ADHERENT') or is_granted('ROLE_HOST')) %}
+                                        {% if app.user and (has_role_adherent or is_granted('ROLE_HOST')) %}
                                             <li>
                                                 <a href="{{ path('app_documents_index') }}">Mes documents</a>
                                             </li>
@@ -108,7 +107,7 @@
                                         </ul>
                                         <div class="nav-dropdown__separator"></div>
                                     {% endif %}
-                                    {% if is_granted('ROLE_ADHERENT') and is_granted('CREATE_COMMITTEE') %}
+                                    {% if has_role_adherent and is_granted('CREATE_COMMITTEE') %}
                                         <ul class="nav-dropdown__section">
                                             <li>
                                                 <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
@@ -116,7 +115,7 @@
                                         </ul>
                                         <div class="nav-dropdown__separator"></div>
                                     {% endif %}
-                                    {% if app.user and not is_granted('ROLE_ADHERENT') %}
+                                    {% if app.user and not has_role_adherent %}
                                         <div class="nav-dropdown__separator"></div>
                                         <ul class="nav-dropdown__section">
                                             <li>
@@ -148,7 +147,7 @@
                                         {% endif %}
                                     </ul>
                                 </div>
-                                {% if is_granted('ROLE_ADHERENT') %}
+                                {% if has_role_adherent %}
                                     <ul class="nav-dropdown__section">
                                         <li class="text--small text--bold">Comités</li>
                                         <li>
@@ -204,7 +203,7 @@
         {% endif %}
         {% if is_granted('ROLE_LEGISLATIVE_CANDIDATE') %}
             <li>
-                <a href="{{ path('app_legislative_candidates_platform') }}" target="_blank">
+                <a href="{{ path('app_legislative_candidates_platform') }}" target="_blank" rel="noopener">
                     Espace candidat aux législatives
                 </a>
             </li>

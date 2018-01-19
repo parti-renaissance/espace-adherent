@@ -17,19 +17,19 @@
                 </ul>
                 <hr />
             {% endif %}
-            {% if is_granted('ROLE_USER') %}
+            {% if has_role_user %}
                 <ul>
                     <li>
-                        <a href="{{ is_granted('ROLE_ADHERENT') ? path('app_user_profile') : path('app_user_login') }}">
+                        <a href="{{ has_role_adherent ? path('app_user_profile') : path('app_user_login') }}">
                             <div class="text--bold">{{ app.user.firstName }}</div>
                             <div class="text--small text--gray">
-                                {% if not is_granted('ROLE_ADHERENT') %}
+                                {% if not has_role_adherent %}
                                     Non-adhérent(e)
                                 {% elseif is_granted('ROLE_REFERENT') %}
                                     {% if app.user.isFemale %}Référente 🥇{% else %}Référent 🥇{% endif %}
                                 {% elseif app.user.isHost %}
                                     {% if app.user.isFemale %}Animatrice 🏅{% else %}Animateur 🏅{% endif %}
-                                {% elseif is_granted('ROLE_ADHERENT') %}
+                                {% elseif has_role_adherent %}
                                     {% if app.user.isFemale %}Adhérente 😍{% else %}Adhérent 😍{% endif %}
                                 {% endif %}
                             </div>
@@ -39,7 +39,7 @@
                 <hr />
                 <ul>
                     <li>
-                        {% set url = is_granted('ROLE_ADHERENT') ? path('app_user_profile') : path('app_user_login') %}
+                        {% set url = has_role_adherent ? path('app_user_profile') : path('app_user_login') %}
                         <a href="{{ url }}">Profil</a>
                     </li>
                     <li>
@@ -54,7 +54,7 @@
                     </ul>
                 {% endif %}
                 <ul>
-                    {% if is_granted('ROLE_ADHERENT') and is_granted('CREATE_COMMITTEE') %}
+                    {% if has_role_adherent and is_granted('CREATE_COMMITTEE') %}
                         <ul>
                             <li>
                                 <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
@@ -127,12 +127,12 @@
                 <li>
                     <a href="{{ path('articles_list', {'category': 'tout'}) }}">Actualités</a>
                 </li>
-                {% if app.user and not is_granted('ROLE_ADHERENT') %}
+                {% if app.user and not has_role_adherent %}
                     <li>
                         <a href="{{ path('app_membership_register') }}">Devenir adhérent(e)</a>
                     </li>
                 {% endif %}
-                {% if app.user and (is_granted('ROLE_ADHERENT') or is_granted('ROLE_HOST')) %}
+                {% if app.user and (has_role_adherent or is_granted('ROLE_HOST')) %}
                     <li>
                         <a href="{{ path('app_documents_index') }}">Mes documents</a>
                     </li>
@@ -147,7 +147,7 @@
                 </li>
             </ul>
             <hr>
-            {% if is_granted('ROLE_ADHERENT') %}
+            {% if has_role_adherent %}
                 <div>
                     <div class="text--body text--bold text--small">Comités</div>
                     {{ adherent_committees }}
@@ -158,7 +158,7 @@
                     {{ adherent_citizen_projects }}
                 </div>
             {% endif %}
-            {% if is_granted('ROLE_USER') %}
+            {% if has_role_user %}
                 <hr>
                 <ul>
                     <li>
