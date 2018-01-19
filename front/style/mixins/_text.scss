@@ -136,7 +136,7 @@ $text--size-extra-large: 48px;
 }
 
 @mixin text--blue {
-    color: $blue
+    color: $blue;
 }
 
 @mixin text--uppercase {
@@ -244,6 +244,10 @@ $text--size-extra-large: 48px;
         color: $blue;
     }
 
+    &--blue--dark {
+      color: $blue--dark;
+    }
+
     &--dark {
         color: $dark;
     }
@@ -319,10 +323,6 @@ $text--size-extra-large: 48px;
 
     &--orange {
         color: $orange;
-    }
-
-    &--blue--dark {
-        color: $blue--dark;
     }
 
     &--blue--new {

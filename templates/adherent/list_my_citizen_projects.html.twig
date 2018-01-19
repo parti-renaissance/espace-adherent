@@ -1,7 +1,6 @@
 {% if citizen_projects|length < 1 %}
-    <div class="text--center">
-        <div class="text--body b__nudge--bottom-small">Rejoignez un projet citoyen<br>En Marche !</div>
-        <a class="btn btn--blue form--full" href="{{ path('app_search_citizen_projects') }}">Trouver un projet citoyen</a>
+    <div>
+        <a class="link--blue--dark" href="{{ path('app_search_citizen_projects') }}">Découvrir des projet citoyens autour de chez moi</a>
     </div>
 {% else %}
     <ul>

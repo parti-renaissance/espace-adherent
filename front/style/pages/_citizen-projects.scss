@@ -1,12 +1,12 @@
 .citizen-projects {
     &__landing {
         header {
-            background-image: linear-gradient(115deg, $blue--dark, $pink--light);
+            background-image: linear-gradient(115deg, $blue--dark, $pink);
 
             h2 {
                 @include text--medium-large;
                 font-weight: 300;
-                margin-top: 5px;
+                margin-top: 10px;
                 letter-spacing: 0;
             }
         }
@@ -43,6 +43,23 @@
             flex-wrap: wrap;
             justify-content: space-between;
             margin: 40px 0;
+        }
+
+        @media (max-width: $tablet) {
+            &__video {
+                position: relative;
+                padding-bottom: 56.25%; /* 16:9 */
+                padding-top: 25px;
+                height: 0;
+
+                iframe {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                }
+            }
         }
     }
 
