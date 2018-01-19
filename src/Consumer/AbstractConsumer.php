@@ -52,12 +52,11 @@ abstract class AbstractConsumer implements ConsumerInterface
 
         $returnCode = $this->doExecute($data);
 
+        ++$this->messageCount;
+
         if (0 === ($this->messageCount % self::BATCH_SIZE)) {
             $this->manager->clear();
-            $this->messageCount = 0;
         }
-
-        ++$this->messageCount;
 
         return $returnCode;
     }
