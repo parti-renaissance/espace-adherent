@@ -32,8 +32,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class AdherentController extends Controller
 {
-    const UNREGISTER_TOKEN = 'unregister_token';
-
     /**
      * This action enables an adherent to pin his/her interests.
      *

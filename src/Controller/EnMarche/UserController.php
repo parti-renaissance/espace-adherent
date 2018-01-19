@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class UserController extends Controller
 {
-    const UNREGISTER_TOKEN = 'unregister_token';
+    private const UNREGISTER_TOKEN = 'unregister_token';
 
     /**
      * @Route("", name="app_user_profile")
