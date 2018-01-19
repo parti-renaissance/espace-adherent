@@ -202,6 +202,7 @@ sonata_admin:
         layout:  admin/layout.html.twig
     security:
         handler: sonata.admin.security.handler.role
+    persist_filters: true
 
 bazinga_geocoder:
     providers:
