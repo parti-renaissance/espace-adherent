@@ -104,15 +104,16 @@ trait ControllerTestTrait
 
     protected function init(array $fixtures = [], string $host = 'app')
     {
-        if ($fixtures) {
-            $this->loadFixtures($fixtures);
-        }
+        $this->loadFixtures($fixtures);
 
         $this->container = $this->getContainer();
 
-        $this->hosts['app'] = $this->container->getParameter('app_host');
-        $this->hosts['amp'] = $this->container->getParameter('amp_host');
-        $this->hosts['legislatives'] = $this->container->getParameter('legislatives_host');
+        $this->hosts = [
+            'scheme' => $this->container->getParameter('router.request_context.scheme'),
+            'app' => $this->container->getParameter('app_host'),
+            'amp' => $this->container->getParameter('amp_host'),
+            'legislatives' => $this->container->getParameter('legislatives_host'),
+        ];
 
         $this->client = $this->makeClient(false, ['HTTP_HOST' => $this->hosts[$host]]);
         $this->manager = $this->container->get('doctrine.orm.entity_manager');
