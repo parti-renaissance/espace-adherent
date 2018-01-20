@@ -34,7 +34,7 @@ class MembershipController extends Controller
     public function registerAction(Request $request): Response
     {
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('app_user_profile');
         }
 
         $membership = MembershipRequest::createWithCaptcha($request->request->get('g-recaptcha-response'));

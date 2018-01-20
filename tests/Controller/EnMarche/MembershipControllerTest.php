@@ -78,7 +78,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->client->request(Request::METHOD_GET, '/inscription');
 
-        $this->assertClientIsRedirectedTo('/', $this->client);
+        $this->assertClientIsRedirectedTo('/parametres/mon-compte', $this->client);
     }
 
     public function testCannotCreateMembershipAccountIfConditionsAreNotAccepted()
