@@ -8,49 +8,57 @@ use AppBundle\Entity\Clarification;
 use AppBundle\Entity\CustomSearchResult;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Proposal;
-use Doctrine\ORM\EntityManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use AppBundle\Entity\Timeline\Measure;
+use AppBundle\Entity\Timeline\Profile;
+use AppBundle\Entity\Timeline\Theme;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AlgoliaSynchronizeCommand extends ContainerAwareCommand
+class AlgoliaSynchronizeCommand extends Command
 {
-    const ENTITIES_TO_INDEX = [
+    public const COMMAND_NAME = 'app:algolia:synchronize';
+
+    private const ENTITIES_TO_INDEX = [
         Article::class,
         Proposal::class,
         Clarification::class,
         CustomSearchResult::class,
         Event::class,
+        Profile::class,
+        Theme::class,
+        Measure::class,
     ];
-
-    /**
-     * @var EntityManager
-     */
-    private $manager;
 
     /**
      * @var ManualIndexer
      */
     private $indexer;
 
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
+
+    public function __construct(ManualIndexer $indexer, EntityManagerInterface $manager)
+    {
+        $this->indexer = $indexer;
+        $this->manager = $manager;
+
+        $this->manager->getFilters()->disable('oneLocale');
+
+        parent::__construct();
+    }
+
     protected function configure()
     {
         $this
-            ->setName('app:algolia:synchronize')
+            ->setName(self::COMMAND_NAME)
             ->addArgument('entityName', InputArgument::OPTIONAL, 'Which type of entity do you want to reindex? If not set, all is assumed.')
             ->setDescription('Synchronize')
         ;
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $algolia = $this->getContainer()->get('algolia.indexer');
-
-        $this->manager = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $this->manager->getFilters()->disable('oneLocale');
-
-        $this->indexer = $algolia->getManualIndexer($this->manager);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

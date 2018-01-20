@@ -11,14 +11,16 @@
 		<service id="AppBundle\Membership\AdherentRegistry" public="true" />
 
 		<!-- Algolia -->
-        <service id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
+		<service id="app.algolia.manual_indexer.inner" class="Algolia\AlgoliaSearchBundle\Ìndexer\ManualIndexer">
+			<factory service="algolia.indexer" method="getManualIndexer" />
+			<argument type="service" id="doctrine.orm.entity_manager" />
+		</service>
+		<service id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
 		<service id="AppBundle\Algolia\ManualIndexer">
-			<argument type="service">
-				<service class="Algolia\AlgoliaSearchBundle\Ìndexer\ManualIndexer">
-					<factory service="algolia.indexer" method="getManualIndexer" />
-					<argument type="service" id="doctrine.orm.entity_manager" />
-				</service>
-			</argument>
+			<argument type="service" id="app.algolia.manual_indexer.inner" />
+		</service>
+		<service id="AppBundle\Command\AlgoliaSynchronizeCommand">
+			<argument type="service" id="app.algolia.manual_indexer.inner" />
 		</service>
 
 		<!-- CitizenProject -->
@@ -70,7 +72,8 @@
 		<prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter" />
 
 		<!-- Timeline -->
-		<service id="AppBundle\Command\ImportTimelineCommand" />
+		<service id="AppBundle\Command\TimelineImportCommand" />
+		<service id="AppBundle\Command\TimelineSynchronizeCommand" />
 		<service id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener">
 			<argument>%locales%</argument>
 			<argument>%locale%</argument>

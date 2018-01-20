@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
-class ImportTimelineCommand extends Command
+class TimelineImportCommand extends Command
 {
     private const BOOLEAN_CHOICES = ['oui' => true, 'non' => false];
 
@@ -31,7 +31,7 @@ class ImportTimelineCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('app:import:timeline')
+            ->setName('app:timeline:import')
             ->addArgument('profilesUrl', InputArgument::REQUIRED)
             ->addArgument('themesUrl', InputArgument::REQUIRED)
             ->addArgument('measuresUrl', InputArgument::REQUIRED)
