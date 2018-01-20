@@ -78,7 +78,6 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->client->request(Request::METHOD_GET, '/inscription');
 
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/', $this->client);
     }
 
