@@ -14,6 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ReferentMessageDispatcherConsumer extends AbstractConsumer
 {
+    protected const BATCH_SIZE = 50;
+
     /**
      * @var MailerService
      */
