@@ -54,25 +54,25 @@ class AlgoliaSynchronizeCommand extends Command
         $this
             ->setName(self::COMMAND_NAME)
             ->addArgument('entityName', InputArgument::OPTIONAL, 'Which type of entity do you want to reindex? If not set, all is assumed.')
-            ->setDescription('Synchronize')
+            ->setDescription('Synchronize indices on Algolia')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->getEntitiesToIndex($input) as $entity) {
-            $output->write('Synchronizing entity '.$entity.' ... ');
+        foreach ($this->getEntitiesToIndex($input->getArgument('entityName')) as $entity) {
+            $output->write("Synchronizing entity $entity ... ");
             $nbIndexes = $this->algolia->reIndex($entity);
-            $output->writeln('done, '.$nbIndexes.' records indexed');
+            $output->writeln("done, $nbIndexes records indexed");
         }
     }
 
-    protected function getEntitiesToIndex(InputInterface $input): array
+    private function getEntitiesToIndex(?string $entityName): array
     {
-        if ($entityNameToIndex = $input->getArgument('entityName')) {
-            return [$this->manager->getRepository($entityNameToIndex)->getClassName()];
+        if ($entityName) {
+            return [$this->manager->getRepository($entityName)->getClassName()];
         }
 
-        return self::ENTITIES_TO_INDEX;
+        return static::ENTITIES_TO_INDEX;
     }
 }

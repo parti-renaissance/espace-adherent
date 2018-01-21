@@ -18,9 +18,11 @@ class TimelineSynchronizeCommand extends AlgoliaSynchronizeCommand
 
     protected function configure()
     {
+        parent::configure();
+
         $this
             ->setName('app:timeline:synchronize')
-            ->setDescription('Update Timeline indices on Algolia')
+            ->setDescription('Synchronize Timeline indices on Algolia')
         ;
     }
 
@@ -31,10 +33,5 @@ class TimelineSynchronizeCommand extends AlgoliaSynchronizeCommand
         parent::execute($input, $output);
 
         $output->writeln('Timeline has been successfully synchronized with Algolia. (but the tasks may not have completed on Algolia\'s side yet)');
-    }
-
-    protected function getEntitiesToIndex(InputInterface $input): array
-    {
-        return self::ENTITIES_TO_INDEX;
     }
 }
