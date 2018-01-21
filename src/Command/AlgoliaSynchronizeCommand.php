@@ -21,7 +21,7 @@ class AlgoliaSynchronizeCommand extends Command
 {
     public const COMMAND_NAME = 'app:algolia:synchronize';
 
-    private const ENTITIES_TO_INDEX = [
+    protected const ENTITIES_TO_INDEX = [
         Article::class,
         Proposal::class,
         Clarification::class,
@@ -56,13 +56,19 @@ class AlgoliaSynchronizeCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $entityNameToIndex = $input->getArgument('entityName');
-        $toIndex = $entityNameToIndex ? [$this->manager->getRepository($entityNameToIndex)->getClassName()] : self::ENTITIES_TO_INDEX;
-
-        foreach ($toIndex as $entity) {
+        foreach ($this->getEntitiesToIndex($input) as $entity) {
             $output->write('Synchronizing entity '.$entity.' ... ');
             $nbIndexes = $this->algolia->reIndex($entity);
             $output->writeln('done, '.$nbIndexes.' records indexed');
         }
+    }
+
+    protected function getEntitiesToIndex(InputInterface $input): array
+    {
+        if ($entityNameToIndex = $input->getArgument('entityName')) {
+            return [$this->manager->getRepository($entityNameToIndex)->getClassName()];
+        }
+
+        return self::ENTITIES_TO_INDEX;
     }
 }
