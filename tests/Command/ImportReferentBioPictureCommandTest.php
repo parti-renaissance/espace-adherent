@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Command;
 
+use AppBundle\Command\ImportReferentBioPictureCommand;
 use AppBundle\DataFixtures\ORM\LoadReferentData;
 use AppBundle\Entity\Media;
 use AppBundle\Entity\Referent;

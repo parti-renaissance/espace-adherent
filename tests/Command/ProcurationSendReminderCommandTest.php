@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Command;
 
+use AppBundle\Command\ProcurationSendReminderCommand;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadProcurationData;
 use AppBundle\Mailer\Message\ProcurationProxyReminderMessage;
