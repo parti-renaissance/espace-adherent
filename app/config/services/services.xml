@@ -11,10 +11,6 @@
 		<service id="AppBundle\Membership\AdherentRegistry" public="true" />
 
 		<!-- Algolia -->
-		<service id="app.algolia.manual_indexer.inner" class="Algolia\AlgoliaSearchBundle\Ìndexer\ManualIndexer">
-			<factory service="algolia.indexer" method="getManualIndexer" />
-			<argument type="service" id="doctrine.orm.entity_manager" />
-		</service>
 		<service id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
 		<service id="AppBundle\Algolia\ManualIndexer" />
 		<service id="AppBundle\Command\AlgoliaSynchronizeCommand" />
