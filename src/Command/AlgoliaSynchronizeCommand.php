@@ -2,7 +2,7 @@
 
 namespace AppBundle\Command;
 
-use Algolia\AlgoliaSearchBundle\Indexer\ManualIndexer;
+use AppBundle\Algolia\ManualIndexer;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Clarification;
 use AppBundle\Entity\CustomSearchResult;
@@ -32,19 +32,12 @@ class AlgoliaSynchronizeCommand extends Command
         Measure::class,
     ];
 
-    /**
-     * @var ManualIndexer
-     */
-    private $indexer;
-
-    /**
-     * @var EntityManagerInterface
-     */
+    private $algolia;
     private $manager;
 
-    public function __construct(ManualIndexer $indexer, EntityManagerInterface $manager)
+    public function __construct(ManualIndexer $algolia, EntityManagerInterface $manager)
     {
-        $this->indexer = $indexer;
+        $this->algolia = $algolia;
         $this->manager = $manager;
 
         $this->manager->getFilters()->disable('oneLocale');
@@ -68,17 +61,8 @@ class AlgoliaSynchronizeCommand extends Command
 
         foreach ($toIndex as $entity) {
             $output->write('Synchronizing entity '.$entity.' ... ');
-            $nbIndexes = $this->synchronizeEntity($entity);
+            $nbIndexes = $this->algolia->reIndex($entity);
             $output->writeln('done, '.$nbIndexes.' records indexed');
         }
-    }
-
-    private function synchronizeEntity($className)
-    {
-        return (int) $this->indexer->reIndex($className, [
-            'batchSize' => 3000,
-            'safe' => true,
-            'clearEntityManager' => true,
-        ]);
     }
 }

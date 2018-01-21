@@ -16,12 +16,8 @@
 			<argument type="service" id="doctrine.orm.entity_manager" />
 		</service>
 		<service id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
-		<service id="AppBundle\Algolia\ManualIndexer">
-			<argument type="service" id="app.algolia.manual_indexer.inner" />
-		</service>
-		<service id="AppBundle\Command\AlgoliaSynchronizeCommand">
-			<argument type="service" id="app.algolia.manual_indexer.inner" />
-		</service>
+		<service id="AppBundle\Algolia\ManualIndexer" />
+		<service id="AppBundle\Command\AlgoliaSynchronizeCommand" />
 
 		<!-- CitizenProject -->
         <service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true">

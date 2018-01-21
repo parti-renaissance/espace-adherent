@@ -18,7 +18,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @Algolia\Index(
  *     autoIndex=false,
  *     hitsPerPage=100,
- *     attributesForFaceting={"title", "profileIds"}
+ *     attributesForFaceting={
+ *         "titles.fr",
+ *         "titles.en",
+ *         "profileIds"
+ *     }
  * )
  */
 class Theme implements EntityMediaInterface, AlgoliaIndexedEntityInterface

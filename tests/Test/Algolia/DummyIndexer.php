@@ -55,4 +55,8 @@ class DummyIndexer extends Indexer
     {
         return new DummyManualIndexer($this, $em);
     }
+
+    public function setIndexSettings($indexName, array $settings, array $options = [])
+    {
+    }
 }

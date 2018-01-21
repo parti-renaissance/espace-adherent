@@ -46,6 +46,6 @@ class TimelineSynchronizeCommand extends Command
             $this->synchronizeCommand->run(new ArrayInput(['entityName' => $entityToIndex]), $output);
         }
 
-        $output->writeln('Timeline has been successfully synchronized with Algolia.');
+        $output->writeln('Timeline has been successfully synchronized with Algolia. (but the tasks may not have completed on Algolia\'s side yet)');
     }
 }
