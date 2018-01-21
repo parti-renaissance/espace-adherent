@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Command;
+namespace Tests\AppBundle\Command;
 
 use AppBundle\DataFixtures\ORM\LoadTimelineData;
 use Tests\AppBundle\SqliteWebTestCase;
