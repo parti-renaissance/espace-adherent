@@ -24,7 +24,7 @@ class AdherentLoginTimestampRecorder implements EventSubscriberInterface
         $token = $event->getAuthenticationToken();
 
         // OAuth calls are not login attempts
-        if ($token instanceof PostAuthenticationGuardToken && 'api_me' === $token->getProviderKey()) {
+        if ($token instanceof PostAuthenticationGuardToken && 'api' === $token->getProviderKey()) {
             return;
         }
 

@@ -184,6 +184,9 @@ security:
         ROLE_ADMIN_CLIENTS:
             - ROLE_APP_ADMIN_CLIENT_ALL
 
+        ROLE_ADMIN_WEB_HOOKS:
+            - ROLE_APP_ADMIN_WEB_HOOK_ALL
+
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN_DASHBOARD
             - ROLE_ADMIN_MEDIAS
@@ -218,6 +221,7 @@ security:
             - ROLE_ADMIN_BOARD_MEMBER_ROLES
             - ROLE_ADMIN_TIMELINE
             - ROLE_ADMIN_CLIENTS
+            - ROLE_ADMIN_WEB_HOOKS
 
     access_decision_manager:
         strategy: unanimous
@@ -233,8 +237,8 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        api_me:
-            pattern: ^/api/me$
+        api:
+            pattern: ^/api/(me|webhooks/)
             stateless: true
             guard:
                 authenticators:

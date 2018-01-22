@@ -39,10 +39,10 @@
             <argument type="service" id="app.mailer.transactional" />
         </service>
 
-		<!-- EventListener -->
-		<service id="AppBundle\EventListener\ProcurationMailerSubscriber">
-			<argument key="$mailer" type="service" id="app.mailer.transactional" />
-		</service>
+        <!-- EventListener -->
+        <service id="AppBundle\EventListener\ProcurationMailerSubscriber">
+            <argument key="$mailer" type="service" id="app.mailer.transactional"/>
+        </service>
 
 
         <!-- Form -->
@@ -51,13 +51,13 @@
         <service id="AppBundle\Form\EventListener\AmpSynchronisedListener"/>
         <service id="AppBundle\Form\EventRegistrationType"/>
 
-		<!-- GeoCoder -->
-		<service id="GeoIp2\WebService\Client">
-			<argument>%env(MAXMIND_USER_ID)%</argument>
-			<argument>%env(MAXMIND_LICENSE_KEY)%</argument>
-		</service>
-		<service id="GeoIp2\ProviderInterface" alias="GeoIp2\WebService\Client" />
-		<service id="AppBundle\Address\GeoCoder" />
+        <!-- GeoCoder -->
+        <service id="GeoIp2\WebService\Client">
+            <argument>%env(MAXMIND_USER_ID)%</argument>
+            <argument>%env(MAXMIND_LICENSE_KEY)%</argument>
+        </service>
+        <service id="GeoIp2\ProviderInterface" alias="GeoIp2\WebService\Client"/>
+        <service id="AppBundle\Address\GeoCoder"/>
 
         <!-- Procuration -->
         <service id="AppBundle\Procuration\ProcurationManager" public="true" />
@@ -69,19 +69,19 @@
         <service id="AppBundle\Form\ReportCommandType"/>
         <service id="AppBundle\Report\ReportCreationCommandHandler"/>
 
-		<!-- Security -->
-		<prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter" />
-		<service  id="AppBundle\Security\Http\AuthenticationFailureHandler" />
-		<service id="app.security.user_provider" class="AppBundle\Security\UserProvider">
-			<argument key="$classOrAlias" type="string">AppBundle\Entity\Adherent</argument>
-		</service>
-		<service id="app.security.admin_provider" class="AppBundle\Security\UserProvider">
-			<argument key="$classOrAlias" type="string">AppBundle\Entity\Administrator</argument>
-		</service>
+        <!-- Security -->
+        <prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter"/>
+        <service id="AppBundle\Security\Http\AuthenticationFailureHandler"/>
+        <service id="app.security.user_provider" class="AppBundle\Security\UserProvider">
+            <argument key="$classOrAlias" type="string">AppBundle\Entity\Adherent</argument>
+        </service>
+        <service id="app.security.admin_provider" class="AppBundle\Security\UserProvider">
+            <argument key="$classOrAlias" type="string">AppBundle\Entity\Administrator</argument>
+        </service>
 
         <!-- Timeline -->
-        <service id="AppBundle\Command\TimelineImportCommand" />
-        <service id="AppBundle\Command\TimelineSynchronizeCommand" />
+        <service id="AppBundle\Command\TimelineImportCommand"/>
+        <service id="AppBundle\Command\TimelineSynchronizeCommand"/>
         <service id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener">
             <argument>%locales%</argument>
             <argument>%locale%</argument>

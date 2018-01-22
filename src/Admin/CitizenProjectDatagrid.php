@@ -6,16 +6,14 @@ use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\Entity\CitizenProject;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 
-class CitizenProjectDatagrid implements DatagridInterface
+class CitizenProjectDatagrid extends DatagridDecorator
 {
-    use DatagridDecoratorTrait;
-
     private $manager;
     private $cachedResults;
 
     public function __construct(DatagridInterface $decorated, CitizenProjectManager $manager)
     {
-        $this->setDecorated($decorated);
+        parent::__construct($decorated);
 
         $this->manager = $manager;
     }
