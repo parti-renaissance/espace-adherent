@@ -148,7 +148,7 @@ class Measure implements AlgoliaIndexedEntityInterface
 
     public function __toString()
     {
-        /* @var $translation MeasureTranslation */
+        /* @var MeasureTranslation $translation */
         if ($translation = $this->translate()) {
             return $translation->getTitle();
         }
@@ -316,12 +316,12 @@ class Measure implements AlgoliaIndexedEntityInterface
      */
     public function titles(): array
     {
-        /* @var $french MeasureTranslation */
+        /* @var MeasureTranslation $french */
         if (!$french = $this->translate('fr')) {
             return [];
         }
 
-        /* @var $english MeasureTranslation */
+        /* @var MeasureTranslation $english */
         if (!$english = $this->translate('en')) {
             $english = $french;
         }

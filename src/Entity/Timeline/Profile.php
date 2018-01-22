@@ -36,7 +36,7 @@ class Profile implements AlgoliaIndexedEntityInterface
 
     public function __toString()
     {
-        /* @var $translation ProfileTranslation */
+        /* @var ProfileTranslation $translation */
         if ($translation = $this->translate()) {
             return $translation->getTitle();
         }
@@ -54,12 +54,12 @@ class Profile implements AlgoliaIndexedEntityInterface
      */
     public function titles(): array
     {
-        /* @var $french ProfileTranslation */
+        /* @var ProfileTranslation $french */
         if (!$french = $this->translate('fr')) {
             return [];
         }
 
-        /* @var $english ProfileTranslation */
+        /* @var ProfileTranslation $english */
         if (!$english = $this->translate('en')) {
             $english = $french;
         }
@@ -75,12 +75,12 @@ class Profile implements AlgoliaIndexedEntityInterface
      */
     public function slugs(): array
     {
-        /* @var $french ProfileTranslation */
+        /* @var ProfileTranslation $french */
         if (!$french = $this->translate('fr')) {
             return [];
         }
 
-        /* @var $english ProfileTranslation */
+        /* @var ProfileTranslation $english */
         if (!$english = $this->translate('en')) {
             $english = $french;
         }
@@ -96,12 +96,12 @@ class Profile implements AlgoliaIndexedEntityInterface
      */
     public function descriptions(): array
     {
-        /* @var $french ProfileTranslation */
+        /* @var ProfileTranslation $french */
         if (!$french = $this->translate('fr')) {
             return [];
         }
 
-        /* @var $english ProfileTranslation */
+        /* @var ProfileTranslation $english */
         if (!$english = $this->translate('en')) {
             $english = $french;
         }
