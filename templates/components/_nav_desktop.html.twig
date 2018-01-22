@@ -26,7 +26,7 @@
         </li>
         {% if app.user and not has_role_adherent %}
             <li>
-                <a href="{{ path('app_membership_register') }}">Devenir adhérent(e)</a>
+                <a href="{{ path('app_membership_join') }}">Devenir adhérent(e)</a>
             </li>
         {% endif %}
         <li>
@@ -119,7 +119,7 @@
                                         <div class="nav-dropdown__separator"></div>
                                         <ul class="nav-dropdown__section">
                                             <li>
-                                                <a href="{{ path('app_membership_register') }}">Devenir adhérent(e)</a>
+                                                <a href="{{ path('app_membership_join') }}">Devenir adhérent(e)</a>
                                             </li>
                                         </ul>
                                     {% endif %}

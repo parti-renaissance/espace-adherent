@@ -165,7 +165,6 @@ class DonationController extends Controller
             'error_code' => $request->query->get('code'),
             'donation' => $donation,
             'retry_url' => $retryUrl,
-            'is_in_subscription_process' => $this->get('app.membership_utils')->isInSubscriptionProcess($this->getUser()),
         ]);
     }
 }

@@ -94,12 +94,6 @@
             <argument type="service" id="app.address.post_address_factory"/>
         </service>
 
-        <service id="app.membership_utils" class="AppBundle\Membership\MembershipUtils">
-            <argument type="service" id="session"/>
-            <argument type="service" id="request_stack" on-invalid="ignore"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
         <service id="app.validator.unique_membership" class="AppBundle\Validator\UniqueMembershipValidator">
             <argument type="service" id="app.repository.adherent"/>
             <argument type="service" id="security.token_storage" />
@@ -113,12 +107,6 @@
 
         <service id="AppBundle\Form\UnregistrationReasonsChoiceType">
             <argument type="string">%adherent_unregistration_reasons%</argument>
-            <tag name="form.type" />
-        </service>
-
-        <service id="app.membership.membership_choose_nearby_committee_type" class="AppBundle\Form\MembershipChooseNearbyCommitteeType">
-            <argument type="service" id="app.committee.manager"/>
-            <argument type="service" id="app.geocoder.coordinates_factory"/>
             <tag name="form.type" />
         </service>
 
