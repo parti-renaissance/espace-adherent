@@ -48,7 +48,7 @@ class AdherentFactory
             $phone = $this->createPhone($data['phone']);
         }
 
-        return new Adherent(
+        $adherent = new Adherent(
             isset($data['uuid']) ? Uuid::fromString($data['uuid']) : Adherent::createUuid($data['email']),
             $data['email'],
             $this->encodePassword($data['password']),
@@ -62,6 +62,10 @@ class AdherentFactory
             Adherent::DISABLED,
             isset($data['registered_at']) ? $data['registered_at'] : 'now'
         );
+
+        $adherent->join();
+
+        return $adherent;
     }
 
     /**

@@ -26,7 +26,7 @@
         </li>
         {% if app.user and not has_role_adherent %}
             <li>
-                <a href="{{ path('app_membership_register') }}">Devenir adhérent(e)</a>
+                <a href="{{ path('app_membership_join') }}">Devenir adhérent(e)</a>
             </li>
         {% endif %}
         <li>
@@ -119,7 +119,7 @@
                                         <div class="nav-dropdown__separator"></div>
                                         <ul class="nav-dropdown__section">
                                             <li>
-                                                <a href="{{ path('app_membership_register') }}">Devenir adhérent(e)</a>
+                                                <a href="{{ path('app_membership_join') }}">Devenir adhérent(e)</a>
                                             </li>
                                         </ul>
                                     {% endif %}
@@ -136,7 +136,7 @@
                                             <a class="text--gray" href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a>
                                         </li>
                                         <li>
-                                            <a class="text--gray" href="{{ path('app_adherent_logout') }}">Déconnexion</a>
+                                            <a class="text--gray" href="{{ path('logout') }}">Déconnexion</a>
                                         </li>
                                         {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
                                             <li class="text--small">

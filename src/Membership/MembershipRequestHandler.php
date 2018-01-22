@@ -53,6 +53,7 @@ class MembershipRequestHandler
         $this->mailer->sendMessage(AdherentAccountActivationMessage::createFromAdherent($adherent, $activationUrl));
 
         $this->dispatcher->dispatch(AdherentEvents::REGISTRATION_COMPLETED, new AdherentAccountWasCreatedEvent($adherent, $membershipRequest));
+        $this->dispatcher->dispatch(UserEvents::USER_CREATED, new UserEvent($adherent));
     }
 
     public function update(Adherent $adherent, MembershipRequest $membershipRequest)
@@ -60,6 +61,7 @@ class MembershipRequestHandler
         $adherent->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
 
         $this->dispatcher->dispatch(AdherentEvents::PROFILE_UPDATED, new AdherentProfileWasUpdatedEvent($adherent));
+        $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($adherent));
 
         $this->manager->flush();
     }
@@ -83,5 +85,7 @@ class MembershipRequestHandler
 
         $message = AdherentTerminateMembershipMessage::createFromAdherent($adherent);
         $this->mailer->sendMessage($message);
+
+        $this->dispatcher->dispatch(UserEvents::USER_DELETED, new UserEvent($adherent));
     }
 }
