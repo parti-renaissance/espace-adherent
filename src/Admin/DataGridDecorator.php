@@ -2,27 +2,23 @@
 
 namespace AppBundle\Admin;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
-use Sonata\AdminBundle\Datagrid\PagerInterface;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
-use Symfony\Component\Form\FormInterface;
 
-trait DatagridDecoratorTrait
+abstract class DataGridDecorator implements DatagridInterface
 {
     /**
      * @var DatagridInterface
      */
     protected $decorated;
 
-    public function setDecorated(DatagridInterface $decorated)
+    public function __construct(DatagridInterface $decorated)
     {
         $this->decorated = $decorated;
     }
 
     /**
-     * @return PagerInterface
+     * {@inheritdoc}
      */
     public function getPager()
     {
@@ -30,7 +26,7 @@ trait DatagridDecoratorTrait
     }
 
     /**
-     * @return ProxyQueryInterface
+     * {@inheritdoc}
      */
     public function getQuery()
     {
@@ -38,7 +34,7 @@ trait DatagridDecoratorTrait
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getResults()
     {
@@ -51,9 +47,7 @@ trait DatagridDecoratorTrait
     }
 
     /**
-     * @param FilterInterface $filter
-     *
-     * @return FilterInterface
+     * {@inheritdoc}
      */
     public function addFilter(FilterInterface $filter)
     {
@@ -61,7 +55,7 @@ trait DatagridDecoratorTrait
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getFilters()
     {
@@ -69,9 +63,7 @@ trait DatagridDecoratorTrait
     }
 
     /**
-     * Reorder filters.
-     *
-     * @param array $keys
+     * {@inheritdoc}
      */
     public function reorderFilters(array $keys)
     {
@@ -79,7 +71,7 @@ trait DatagridDecoratorTrait
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getValues()
     {
@@ -87,7 +79,7 @@ trait DatagridDecoratorTrait
     }
 
     /**
-     * @return FieldDescriptionCollection
+     * {@inheritdoc}
      */
     public function getColumns()
     {
@@ -95,9 +87,7 @@ trait DatagridDecoratorTrait
     }
 
     /**
-     * @param string $name
-     * @param string $operator
-     * @param mixed  $value
+     * {@inheritdoc}
      */
     public function setValue($name, $operator, $value)
     {
@@ -105,7 +95,7 @@ trait DatagridDecoratorTrait
     }
 
     /**
-     * @return FormInterface
+     * {@inheritdoc}
      */
     public function getForm()
     {
@@ -113,9 +103,7 @@ trait DatagridDecoratorTrait
     }
 
     /**
-     * @param string $name
-     *
-     * @return FilterInterface
+     * {@inheritdoc}
      */
     public function getFilter($name)
     {
@@ -123,9 +111,7 @@ trait DatagridDecoratorTrait
     }
 
     /**
-     * @param string $name
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasFilter($name)
     {
@@ -133,7 +119,7 @@ trait DatagridDecoratorTrait
     }
 
     /**
-     * @param string $name
+     * {@inheritdoc}
      */
     public function removeFilter($name)
     {
@@ -141,7 +127,7 @@ trait DatagridDecoratorTrait
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasActiveFilters()
     {
@@ -149,7 +135,7 @@ trait DatagridDecoratorTrait
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasDisplayableFilters()
     {

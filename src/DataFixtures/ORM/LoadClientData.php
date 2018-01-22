@@ -18,6 +18,8 @@ class LoadClientData extends AbstractFixture implements FixtureInterface
     public const CLIENT_01_UUID = 'f80ce2df-af6d-4ce4-8239-04cfcefd5a19';
     public const CLIENT_02_UUID = '661cc3b7-322d-4441-a510-ab04eda71737';
     public const CLIENT_03_UUID = '4122f4ce-f994-45f7-9ff5-f9f09ab3991e';
+    public const CLIENT_04_UUID = '4222f4ce-f994-45f7-9ff5-f9f09ab3991f';
+    public const CLIENT_05_UUID = '4222f4ce-f994-45f7-9ff5-f9f09ab3992e';
 
     public function load(ObjectManager $manager)
     {
@@ -51,6 +53,31 @@ class LoadClientData extends AbstractFixture implements FixtureInterface
         );
         $client3->addSupportedScope(Scope::READ_USERS);
         $manager->persist($client3);
+
+        $client4 = new Client(
+            Uuid::fromString(self::CLIENT_04_UUID),
+            'Client Web Hook 1',
+            'Plateforme Citoyenne de la République En-Marche !',
+            'dALH/khq9BcjOS0GB6u5NaJ3R9k2yvSBq5wYUHx1omA=',
+            [GrantTypeEnum::CLIENT_CREDENTIALS]
+        );
+        $client4->addSupportedScope(Scope::WEB_HOOK);
+        $client4->addSupportedScope(Scope::READ_USERS);
+        $manager->persist($client4);
+        $this->setReference('web_hook_client_1', $client4);
+
+        $client5 = new Client(
+            Uuid::fromString(self::CLIENT_05_UUID),
+            'Client Web Hook 2',
+            'Plateforme Citoyenne de la République En-Marche !',
+            'dALH/khq9BcjOS0GB6u5NaJ3R9k2yvSBq5wYUHx12T8=',
+            [GrantTypeEnum::CLIENT_CREDENTIALS]
+        );
+        $client5->addSupportedScope(Scope::WEB_HOOK);
+        $client5->addSupportedScope(Scope::READ_USERS);
+        $client5->addSupportedScope(Scope::WRITE_USERS);
+        $manager->persist($client5);
+        $this->setReference('web_hook_client_2', $client5);
 
         $manager->flush();
     }

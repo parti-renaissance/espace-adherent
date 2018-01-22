@@ -78,17 +78,24 @@
 			<argument key="$classOrAlias" type="string">AppBundle\Entity\Administrator</argument>
 		</service>
 
-        <!-- Timeline -->
-        <service id="AppBundle\Command\TimelineImportCommand" />
-        <service id="AppBundle\Command\TimelineSynchronizeCommand" />
-        <service id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener">
-            <argument>%locales%</argument>
-            <argument>%locale%</argument>
-        </service>
-        <service id="AppBundle\Timeline\TimelineFactory" />
-        <service id="AppBundle\Timeline\TimelineImageFactory" public="true">
-            <argument key="$cacheDirectory">%kernel.cache_dir%</argument>
-            <argument key="$webDirectory">%kernel.root_dir%/../web</argument>
-        </service>
-    </services>
+		<!-- Timeline -->
+		<service id="AppBundle\Command\TimelineImportCommand" />
+		<service id="AppBundle\Command\TimelineSynchronizeCommand" />
+		<service id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener">
+			<argument>%locales%</argument>
+			<argument>%locale%</argument>
+		</service>
+		<service id="AppBundle\Timeline\TimelineFactory" />
+		<!-- WebHook --><service id="AppBundle\WebHook\WebHookManager" />
+
+		<!-- Security -->
+		<service id="app.security.user_provider" class="AppBundle\Security\UserProvider">
+			<argument key="$classOrAlias" type="string">AppBundle\Entity\Adherent</argument>
+			</service>
+
+		<service id="app.security.admin_provider" class="AppBundle\Security\UserProvider">
+			<argument key="$classOrAlias" type="string">AppBundle\Entity\Administrator</argument>
+		</service>
+
+	</services>
 </container>
