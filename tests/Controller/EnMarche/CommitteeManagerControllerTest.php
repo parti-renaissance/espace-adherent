@@ -267,7 +267,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeMessageForm($crawler));
-        $this->assertFalse($this->seeMessageSuccesfullyCreatedFlash($crawler));
+        $this->assertFalse($this->seeFlashMessage($crawler));
         $this->assertCountTimelineMessages($crawler, 9);
 
         $crawler = $this->client->submit($crawler->selectButton('committee_feed_message[send]')->form([
@@ -276,7 +276,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeMessageForm($crawler, ['Le message doit contenir au moins 10 caractères.']));
-        $this->assertFalse($this->seeMessageSuccesfullyCreatedFlash($crawler));
+        $this->assertFalse($this->seeFlashMessage($crawler));
 
         $this->client->submit($crawler->selectButton('committee_feed_message[send]')->form([
             'committee_feed_message' => ['content' => 'Bienvenue !'],
@@ -288,7 +288,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeMessageForm($crawler));
-        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, 'Votre message a bien été envoyé.'));
+        $this->assertTrue($this->seeFlashMessage($crawler, 'Votre message a bien été envoyé.'));
         $this->assertCountTimelineMessages($crawler, 9, 'Message should not be published');
 
         $message = $this->committeeFeedItemRepository->findMostRecentFeedMessage(LoadAdherentData::COMMITTEE_1_UUID);
@@ -311,7 +311,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeMessageForm($crawler));
-        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, 'Votre message a bien été publié.'));
+        $this->assertTrue($this->seeFlashMessage($crawler, 'Votre message a bien été publié.'));
         $this->assertSeeTimelineMessage($crawler, 0, 'Gisele Berthoux', 'Première publication !');
     }
 
@@ -469,7 +469,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $this->seeMessageSuccesfullyCreatedFlash($crawler, 'Félicitations, votre message a bien été envoyé aux membres sélectionnés.');
+        $this->seeFlashMessage($crawler, 'Félicitations, votre message a bien été envoyé aux membres sélectionnés.');
 
         // Try to illegally contact an adherent
         $uuids[] = LoadAdherentData::ADHERENT_1_UUID;
@@ -595,17 +595,6 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         }
 
         return 1 === count($crawler->filter('form[name="committee_feed_message"]'));
-    }
-
-    private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)
-    {
-        $flash = $crawler->filter('#notice-flashes');
-
-        if ($message) {
-            $this->assertSame($message, trim($flash->text()));
-        }
-
-        return 1 === count($flash);
     }
 
     private function assertCountTimelineMessages(Crawler $crawler, int $nb, string $message = '')

@@ -11,7 +11,6 @@ use AppBundle\Entity\EventRegistration;
 use AppBundle\Mailer\Message\EventInvitationMessage;
 use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
 use AppBundle\Repository\EventRegistrationRepository;
-use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -80,7 +79,7 @@ class EventControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, "Votre inscription à l'événement est confirmée."));
+        $this->assertTrue($this->seeFlashMessage($crawler, "Votre inscription à l'événement est confirmée."));
         $this->assertContains('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
 
         $crawler = $this->client->click($crawler->selectLink('Retour')->link());
@@ -125,7 +124,7 @@ class EventControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, "Votre inscription à l'événement est confirmée."));
+        $this->assertTrue($this->seeFlashMessage($crawler, "Votre inscription à l'événement est confirmée."));
         $this->assertContains('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
 
         $crawler = $this->client->click($crawler->selectLink('Retour')->link());
@@ -314,17 +313,6 @@ class EventControllerTest extends MysqlWebTestCase
         $eventUrl = sprintf('/evenements/%s', $event->getSlug());
 
         $this->assertRedirectionEventNotPublishTest($eventUrl);
-    }
-
-    private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)
-    {
-        $flash = $crawler->filter('#notice-flashes');
-
-        if ($message) {
-            $this->assertSame($message, trim($flash->text()));
-        }
-
-        return 1 === count($flash);
     }
 
     public function testRedirectIfEventNotExist()
