@@ -77,7 +77,9 @@
             <ul class="list__links list__links--col list__links--no-decor">
                 {% if not campaign_expired %}
                     <li><h4><a href="{{ path('page_le_mouvement_devenez_benevole') }}" class="text--bold text--medium-small">S'engager</a></h4></li>
-                    <li><a href="{{ path('app_membership_register') }}">Adhérer en ligne</a></li>
+                    {% if not has_role_adherent %}
+                        <li><a href="{{ path('app_membership_register') }}">Adhérer en ligne</a></li>
+                    {% endif %}
                     <li><a href="https://storage.googleapis.com/en-marche-fr/bulletin-d-adhesion-EMa.pdf">Adhérer par courrier</a></li>
                 {% else %}
                     <li><h4><a href="#" class="text--bold text--medium-small">S'engager</a></h4></li>

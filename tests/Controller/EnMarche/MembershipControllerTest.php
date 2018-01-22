@@ -72,6 +72,15 @@ class MembershipControllerTest extends MysqlWebTestCase
         ];
     }
 
+    public function testCannotCreateMembershipAccountIfAlreadyLoggedIn()
+    {
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+
+        $this->client->request(Request::METHOD_GET, '/inscription');
+
+        $this->assertClientIsRedirectedTo('/parametres/mon-compte', $this->client);
+    }
+
     public function testCannotCreateMembershipAccountIfConditionsAreNotAccepted()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
