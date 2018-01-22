@@ -20,8 +20,7 @@ export default () => {
     };
 
     /**
-     * Display captcha block when the ZipCode is filled
-     * and remove the listener from ZipCode field
+     * Display captcha block when the ZipCode is filled and remove the listener from ZipCode field
      *
      * @param event
      */
