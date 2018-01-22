@@ -4,10 +4,8 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
-use AppBundle\Donation\DonationRequest;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\Geocoder\Coordinates;
 use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
 use AppBundle\Mailer\Message\AdherentAccountConfirmationMessage;
 use AppBundle\Repository\AdherentActivationTokenRepository;
@@ -119,7 +117,6 @@ class MembershipControllerTest extends MysqlWebTestCase
         // User is automatically logged-in and redirected to the events page
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertContains('Votre compte adhérent est maintenant actif.', $crawler->filter('#notice-flashes')->text());
-//        $this->assertSame('Participez aux événements', $crawler->filter('.search-title')->text());
 
         // Activate user account twice
         $this->logout($this->client);
