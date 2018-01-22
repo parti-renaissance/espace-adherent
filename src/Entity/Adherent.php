@@ -61,7 +61,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $oldPassword;
 
     /**
-     * @ORM\Column(length=6)
+     * @ORM\Column(length=6, nullable=true)
      */
     private $gender;
 
@@ -84,7 +84,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $birthdate;
 
     /**
-     * @ORM\Column(length=20)
+     * @ORM\Column(length=20, nullable=true)
      */
     private $position;
 
@@ -115,7 +115,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $lastLoggedAt;
 
     /**
-     * @ORM\Column(type="json_array")
+     * @ORM\Column(type="json_array", nullable=true)
      */
     private $interests = [];
 
@@ -227,11 +227,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         UuidInterface $uuid,
         string $emailAddress,
         string $password,
-        string $gender,
+        ?string $gender,
         string $firstName,
         string $lastName,
         ?\DateTime $birthDate,
-        string $position,
+        ?string $position,
         PostAddress $postAddress,
         PhoneNumber $phone = null,
         string $status = self::DISABLED,
@@ -390,7 +390,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->phone;
     }
 
-    public function getGender(): string
+    public function getGender(): ?string
     {
         return $this->gender;
     }
