@@ -113,7 +113,7 @@ class MembershipController extends Controller
     public function completeAction(): Response
     {
         if ($this->getUser()) {
-            $this->redirectToRoute('app_user_login');
+            $this->redirectToRoute('homepage');
         }
 
         return $this->render('membership/complete.html.twig');
