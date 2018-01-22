@@ -19,16 +19,11 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class SecurityController extends Controller
 {
     /**
-     * @Route("/connexion", name="app_adherent_login_legacy")
      * @Route("/connexion", name="app_user_login")
      * @Method("GET")
      */
-    public function loginAction(string $_route): Response
+    public function loginAction(): Response
     {
-        if ('app_adherent_login_legacy' === $_route) {
-            return $this->redirectToRoute('app_adherent_login', [], Response::HTTP_MOVED_PERMANENTLY);
-        }
-
         if ($this->getUser()) {
             return $this->redirectToRoute('app_search_events');
         }
@@ -86,7 +81,7 @@ class SecurityController extends Controller
 
             $this->addFlash('info', $this->get('translator')->trans('adherent.reset_password.email_sent'));
 
-            return $this->redirectToRoute('app_adherent_login');
+            return $this->redirectToRoute('app_user_login');
         }
 
         return $this->render('security/forgot_password.html.twig', [

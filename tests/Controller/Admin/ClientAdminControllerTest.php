@@ -12,6 +12,9 @@ use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\MysqlWebTestCase;
 
+/**
+ * @group functional
+ */
 class ClientAdminControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
