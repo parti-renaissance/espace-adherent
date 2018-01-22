@@ -38,18 +38,18 @@ class CitizenProjectRepository extends BaseGroupRepository
             return new ArrayCollection();
         }
 
-        $statuses[] = BaseGroup::APPROVED;
-        if (self::INCLUDE_UNAPPROVED === $statusFilter) {
-            $statuses[] = BaseGroup::PENDING;
-        }
-
         $qb = $this->createQueryBuilder('c');
 
         $qb
             ->where($qb->expr()->in('c.uuid', $uuids))
-            ->andWhere($qb->expr()->in('c.status', $statuses))
             ->orderBy('c.membersCounts', 'DESC')
         ;
+
+        if (self::ONLY_APPROVED === $statusFilter) {
+            $qb
+                ->andWhere('c.status = :status')
+                ->setParameter('status', BaseGroup::APPROVED);
+        }
 
         if ($limit >= 1) {
             $qb->setMaxResults($limit);
