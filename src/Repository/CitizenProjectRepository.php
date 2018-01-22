@@ -38,10 +38,9 @@ class CitizenProjectRepository extends BaseGroupRepository
             return new ArrayCollection();
         }
 
-        $qb = $this->createQueryBuilder('c');
-
-        $qb
-            ->where($qb->expr()->in('c.uuid', $uuids))
+        $qb = $this->createQueryBuilder('c')
+            ->where('c.uuid IN (:uuids)')
+            ->setParameter('uuids', $uuids)
             ->orderBy('c.membersCounts', 'DESC')
         ;
 

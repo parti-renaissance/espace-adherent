@@ -74,7 +74,7 @@ class CitizenProjectManagerTest extends MysqlWebTestCase
         $this->assertSame('En Marche - Projet citoyen', (string) $citizenProjects[7]);
     }
 
-    public function testGetAdherentCitizenProjectsWhenPreApprouved()
+    public function testGetAdherentCitizenProjectsWhenPreApproved()
     {
         $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_6_UUID);
 
