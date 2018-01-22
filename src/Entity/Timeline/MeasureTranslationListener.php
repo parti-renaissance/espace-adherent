@@ -8,7 +8,7 @@ class MeasureTranslationListener
 {
     public function preUpdate(MeasureTranslation $translation, PreUpdateEventArgs $event)
     {
-        /* @var Measure $measure */
+        /** @var Measure $measure */
         $measure = $translation->getTranslatable();
         $measure->update();
 

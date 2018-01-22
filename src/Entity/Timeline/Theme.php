@@ -62,7 +62,7 @@ class Theme implements EntityMediaInterface, AlgoliaIndexedEntityInterface
 
     public function __toString()
     {
-        /* @var ThemeTranslation $translation */
+        /** @var ThemeTranslation $translation */
         if ($translation = $this->translate()) {
             return $translation->getTitle();
         }
@@ -127,7 +127,7 @@ class Theme implements EntityMediaInterface, AlgoliaIndexedEntityInterface
     {
         $titles = [];
         foreach ($this->measures as $measure) {
-            /* @var MeasureTranslation $translation */
+            /** @var MeasureTranslation $translation */
             foreach ($measure->getTranslations() as $translation) {
                 $titles[] = $translation->getTitle();
             }
@@ -161,12 +161,12 @@ class Theme implements EntityMediaInterface, AlgoliaIndexedEntityInterface
      */
     public function titles(): array
     {
-        /* @var ThemeTranslation $french */
+        /** @var ThemeTranslation $french */
         if (!$french = $this->translate('fr')) {
             return [];
         }
 
-        /* @var ThemeTranslation $english */
+        /** @var ThemeTranslation $english */
         if (!$english = $this->translate('en')) {
             $english = $french;
         }
@@ -182,12 +182,12 @@ class Theme implements EntityMediaInterface, AlgoliaIndexedEntityInterface
      */
     public function slugs(): array
     {
-        /* @var ThemeTranslation $french */
+        /** @var ThemeTranslation $french */
         if (!$french = $this->translate('fr')) {
             return [];
         }
 
-        /* @var ThemeTranslation $english */
+        /** @var ThemeTranslation $english */
         if (!$english = $this->translate('en')) {
             $english = $french;
         }
@@ -203,12 +203,12 @@ class Theme implements EntityMediaInterface, AlgoliaIndexedEntityInterface
      */
     public function descriptions(): array
     {
-        /* @var ThemeTranslation $french */
+        /** @var ThemeTranslation $french */
         if (!$french = $this->translate('fr')) {
             return [];
         }
 
-        /* @var ThemeTranslation $english */
+        /** @var ThemeTranslation $english */
         if (!$english = $this->translate('en')) {
             $english = $french;
         }
