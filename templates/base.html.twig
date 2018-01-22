@@ -38,6 +38,8 @@
         <link rel="mask-icon" href="{{ asset('safari-pinned-tab.svg') }}?v2" color="#ff3680" />
         <meta name="theme-color" content="#ffffff" />
 
+        {% block extra_link '' %}
+
         <title>{% block title %}{% block page_title '' %} | {% block app_title 'En Marche !' %}{% endblock %}</title>
 
         <link rel="canonical" href="{% block canonical_url homepage_url %}" />

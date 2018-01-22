@@ -10,6 +10,7 @@ use AppBundle\Coordinator\Filter\CommitteeFilter;
 use AppBundle\Search\SearchParametersFilter;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ramsey\Uuid\UuidInterface;
 
 class CommitteeRepository extends EntityRepository
@@ -314,5 +315,15 @@ class CommitteeRepository extends EntityRepository
             ->getQuery()
             ->execute()
         ;
+    }
+
+    public function findPaginate(int $offset = 0, int $limit = SearchParametersFilter::DEFAULT_MAX_RESULTS): Paginator
+    {
+        $query = $this->createQueryBuilder('e')
+            ->getQuery()
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return new Paginator($query);
     }
 }

@@ -2,7 +2,9 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\EntityPostAddressTrait;
+use AppBundle\Entity\Event;
 use AppBundle\Entity\EventCategory;
 use AppBundle\Geocoder\Exception\GeocodingException;
 use AppBundle\Search\SearchParametersFilter;
@@ -110,6 +112,54 @@ class SearchController extends Controller
             'search' => $search,
             'results' => $results ?? [],
             'errors' => $errors ?? [],
+        ]);
+    }
+
+    /**
+     * @Route("/tous-les-evenements/{page}", requirements={"page"="\d+"}, name="app_search_all_events")
+     * @Method("GET")
+     */
+    public function allEventsAction(int $page = 1)
+    {
+        $eventRepository = $this->getDoctrine()->getRepository(Event::class);
+        $maxResultPage = $this->getParameter('search_max_results');
+        $results = $eventRepository->findPaginate($page > 1 ? $maxResultPage * $page : 0);
+        $totalResults = $results->count();
+        $totalPage = (int) ceil($totalResults / $maxResultPage);
+
+        if (!$results->count() || !($page <= $totalPage)) {
+            throw $this->createNotFoundException('No results found');
+        }
+
+        return $this->render('events/all_events.html.twig', [
+            'results' => $results,
+            'total' => $totalResults,
+            'currentPage' => $page,
+            'totalPages' => $totalPage,
+        ]);
+    }
+
+    /**
+     * @Route("/tous-les-comites/{page}", requirements={"page"="\d+"}, name="app_search_all_committees")
+     * @Method("GET")
+     */
+    public function allCommitteesAction(int $page = 1)
+    {
+        $committeeRepository = $this->getDoctrine()->getRepository(Committee::class);
+        $maxResultPage = $this->getParameter('search_max_results');
+        $results = $committeeRepository->findPaginate($page > 1 ? $maxResultPage * $page : 0);
+        $totalResults = $results->count();
+        $totalPage = (int) ceil($totalResults / $maxResultPage);
+
+        if (!$results->count() || !($page <= $totalPage)) {
+            throw $this->createNotFoundException('No results found');
+        }
+
+        return $this->render('committee/all_committees.html.twig', [
+            'results' => $results,
+            'total' => $totalResults,
+            'currentPage' => $page,
+            'totalPages' => $totalPage,
         ]);
     }
 }

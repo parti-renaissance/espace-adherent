@@ -1,9 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title current.name %}
-{% block canonical_url url('articles_list', {'category': current.slug}) %}
+{% block canonical_url url('articles_list', {category: current.slug, page: currentPage}) %}
 
 {% block final_javascripts include('bot/_javascript.html.twig') %}
+
+{% block extra_link %}
+    {{ parent() }}
+    {% if currentPage > 1 %}
+        <link rel="prev" href="{{ url('articles_list', {category: current.slug, page: currentPage-1}) }}">
+    {% endif %}
+
+    {% if currentPage < totalPages %}
+        <link rel="next" href="{{ url('articles_list', {category: current.slug, page: currentPage+1}) }}">
+    {% endif %}
+{% endblock %}
 
 {% block content %}
     <main>
