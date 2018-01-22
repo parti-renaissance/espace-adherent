@@ -32,6 +32,11 @@ class EventManagerController extends Controller
     private const ACTION_CONTACT = 'contact';
     private const ACTION_EXPORT = 'export';
     private const ACTION_PRINT = 'print';
+    private const ACTIONS = [
+        self::ACTION_CONTACT,
+        self::ACTION_EXPORT,
+        self::ACTION_PRINT,
+    ];
 
     /**
      * @Route("/modifier", name="app_event_edit")
@@ -190,6 +195,10 @@ class EventManagerController extends Controller
 
     private function getRegistrations(Request $request, Event $event, string $action): array
     {
+        if (!in_array($action, self::ACTIONS)) {
+            throw new \InvalidArgumentException("Action '$action' is not allowed.");
+        }
+
         if (!$this->isCsrfTokenValid(sprintf('event.%s_members', $action), $request->request->get('token'))) {
             throw $this->createAccessDeniedException("Invalid CSRF protection token to $action members.");
         }

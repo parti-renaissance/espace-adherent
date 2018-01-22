@@ -98,29 +98,4 @@ class EventRegistrationManager
     {
         return $this->repository->findByAdherentEmailAndEvent($email, $event);
     }
-
-    public function getRegistrations(Request $request, Event $event, string $action): array
-    {
-        if (!$this->isCsrfTokenValid(sprintf('event.%s_members', $action), $request->request->get('token'))) {
-            throw $this->createAccessDeniedException("Invalid CSRF protection token to $action members.");
-        }
-
-        if (!$uuids = json_decode($request->request->get(sprintf('%ss', $action)), true)) {
-            if (self::ACTION_CONTACT === $action) {
-                $this->addFlash('info', $this->get('translator')->trans('committee.event.contact.none'));
-            }
-
-            return [];
-        }
-
-        $repository = $this->getDoctrine()->getRepository(EventRegistration::class);
-
-        try {
-            $registrations = $repository->findByUuidAndEvent($event, $uuids);
-        } catch (InvalidUuidException $e) {
-            throw new BadUuidRequestException($e);
-        }
-
-        return $registrations;
-    }
 }
