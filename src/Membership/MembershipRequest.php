@@ -48,8 +48,6 @@ class MembershipRequest implements MembershipInterface
     public $lastName;
 
     /**
-     * @Assert\Valid
-     *
      * @var Address
      */
     private $address;

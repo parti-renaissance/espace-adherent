@@ -19,16 +19,11 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class SecurityController extends Controller
 {
     /**
-     * @Route("/espace-adherent/connexion", name="app_adherent_login_legacy")
      * @Route("/connexion", name="app_user_login")
      * @Method("GET")
      */
-    public function loginAction(string $_route): Response
+    public function loginAction(): Response
     {
-        if ('app_adherent_login_legacy' === $_route) {
-            return $this->redirectToRoute('app_adherent_login', [], Response::HTTP_MOVED_PERMANENTLY);
-        }
-
         if ($this->getUser()) {
             return $this->redirectToRoute('app_search_events');
         }
@@ -54,7 +49,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/espace-adherent/deconnexion", name="app_adherent_logout")
+     * @Route("/deconnexion", name="logout")
      * @Method("GET")
      */
     public function logoutAction()
@@ -62,7 +57,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/espace-adherent/mot-de-passe-oublie", name="adherent_forgot_password")
+     * @Route("/mot-de-passe-oublie", name="forgot_password")
      * @Method("GET|POST")
      */
     public function retrieveForgotPasswordAction(Request $request)
@@ -86,10 +81,10 @@ class SecurityController extends Controller
 
             $this->addFlash('info', $this->get('translator')->trans('adherent.reset_password.email_sent'));
 
-            return $this->redirectToRoute('app_adherent_login');
+            return $this->redirectToRoute('app_user_login');
         }
 
-        return $this->render('security/adherent_forgot_password.html.twig', [
+        return $this->render('security/forgot_password.html.twig', [
             'legacy' => $request->query->getBoolean('legacy'),
             'form' => $form->createView(),
         ]);
@@ -97,7 +92,7 @@ class SecurityController extends Controller
 
     /**
      * @Route(
-     *   path="/espace-adherent/changer-mot-de-passe/{adherent_uuid}/{reset_password_token}",
+     *   path="/changer-mot-de-passe/{adherent_uuid}/{reset_password_token}",
      *   name="adherent_reset_password",
      *   requirements={
      *     "adherent_uuid": "%pattern_uuid%",

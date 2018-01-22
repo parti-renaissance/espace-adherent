@@ -209,6 +209,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $tags;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $adherent = false;
+
+    /**
      * @var InMemoryOAuthUser|null
      */
     private $oAuthUser;
@@ -273,7 +278,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function getRoles(): array
     {
-        $roles = ['ROLE_USER', 'ROLE_ADHERENT'];
+        $roles = ['ROLE_USER'];
+
+        if ($this->isAdherent()) {
+            $roles[] = 'ROLE_ADHERENT';
+        }
 
         if ($this->isReferent()) {
             $roles[] = 'ROLE_REFERENT';
@@ -1030,6 +1039,16 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return implode(', ', array_map(function (CoordinatorManagedArea $area) {
             return $area->getCodesAsString();
         }, $this->coordinatorManagedAreas->toArray()));
+    }
+
+    public function isAdherent(): bool
+    {
+        return $this->adherent;
+    }
+
+    public function join(): void
+    {
+        $this->adherent = true;
     }
 
     public function getOAuthUser(): InMemoryOAuthUser
