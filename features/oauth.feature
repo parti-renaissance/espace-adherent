@@ -41,15 +41,8 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
 
     Given I add the access token to the Authorization header
     When I send a "GET" request to "/api/me"
-    Then the response status code should be 200
+    Then the response status code should be 403
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-      "uuid":"4122f4ce-f994-45f7-9ff5-f9f09ab3991e",
-      "username":"oauth_client_user_4122f4ce-f994-45f7-9ff5-f9f09ab3991e"
-    }
-    """
 
   Scenario: Grant type not allowed
     Given I add "Accept" header equal to "application/json"

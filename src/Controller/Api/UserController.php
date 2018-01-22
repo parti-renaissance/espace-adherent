@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\OAuth\Model\ApiUser;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -17,6 +18,10 @@ class UserController extends Controller
      */
     public function showMeAction(Serializer $serializer): JsonResponse
     {
+        if ($this->getUser() instanceof ApiUser) {
+            return new JsonResponse('API user does not have access to this route', JsonResponse::HTTP_FORBIDDEN);
+        }
+
         return new JsonResponse(
             $serializer->serialize(
                 $this->getUser(),
