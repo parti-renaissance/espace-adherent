@@ -37,7 +37,7 @@ trait EntityTranslatableTrait
 
     private function removeTranslationIfEmpty(string $locale): void
     {
-        /* @var $translation EntityTranslationInterface */
+        /** @var EntityTranslationInterface $translation */
         if (!$translation = $this->translate($locale)) {
             return;
         }

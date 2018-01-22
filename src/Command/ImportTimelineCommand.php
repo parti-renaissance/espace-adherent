@@ -254,7 +254,7 @@ class ImportTimelineCommand extends Command
 
     private function getProfiles(): array
     {
-        /* @var $profile Profile */
+        /** @var Profile $profile */
         foreach ($this->em->getRepository(Profile::class)->findAll() as $profile) {
             $profiles[$profile->getTitle()] = $profile;
         }
@@ -264,7 +264,7 @@ class ImportTimelineCommand extends Command
 
     private function getThemes(): array
     {
-        /* @var $theme Theme */
+        /** @var Theme $theme */
         foreach ($this->em->getRepository(Theme::class)->findAll() as $theme) {
             $themes[$theme->getTitle()] = $theme;
         }

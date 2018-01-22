@@ -25,7 +25,7 @@ class EmptyTranslationRemoverListener implements EventSubscriberInterface
 
     public function removeEmptyTranslations(FormEvent $event): void
     {
-        /* @var $translatable EntityTranslatableTrait */
+        /** @var EntityTranslatableTrait $translatable */
         if (!$translatable = $event->getData()) {
             return;
         }

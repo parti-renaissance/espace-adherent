@@ -148,7 +148,7 @@ class Measure implements AlgoliaIndexedEntityInterface
 
     public function __toString()
     {
-        /* @var $translation MeasureTranslation */
+        /** @var MeasureTranslation $translation */
         if ($translation = $this->translate()) {
             return $translation->getTitle();
         }
@@ -237,6 +237,12 @@ class Measure implements AlgoliaIndexedEntityInterface
 
     public function addTheme(Theme $theme): void
     {
+        $savedThemes = $this->getSavedThemes();
+
+        if ($savedThemes->contains($theme)) {
+            $savedThemes->removeElement($theme);
+        }
+
         if (!$this->themes->contains($theme)) {
             $this->themes->add($theme);
         }
@@ -244,6 +250,12 @@ class Measure implements AlgoliaIndexedEntityInterface
 
     public function removeTheme(Theme $theme): void
     {
+        $savedThemes = $this->getSavedThemes();
+
+        if (!$savedThemes->contains($theme)) {
+            $savedThemes->add($theme);
+        }
+
         $this->themes->removeElement($theme);
     }
 
@@ -267,14 +279,13 @@ class Measure implements AlgoliaIndexedEntityInterface
         return self::STATUS_DEFERRED === $this->status;
     }
 
-    public function saveCurrentThemes(): void
-    {
-        $this->savedThemes = clone $this->themes;
-    }
-
     private function getSavedThemes(): Collection
     {
-        return $this->savedThemes ?? new ArrayCollection();
+        if (!$this->savedThemes) {
+            $this->savedThemes = new ArrayCollection();
+        }
+
+        return $this->savedThemes;
     }
 
     public function getThemesToIndex(): ArrayCollection
@@ -305,12 +316,12 @@ class Measure implements AlgoliaIndexedEntityInterface
      */
     public function titles(): array
     {
-        /* @var $french MeasureTranslation */
+        /** @var MeasureTranslation $french */
         if (!$french = $this->translate('fr')) {
             return [];
         }
 
-        /* @var $english MeasureTranslation */
+        /** @var MeasureTranslation $english */
         if (!$english = $this->translate('en')) {
             $english = $french;
         }
