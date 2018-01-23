@@ -275,7 +275,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $this->seeMessageSuccesfullyCreatedFlash($crawler, 'Félicitations, votre message a bien été envoyé aux inscrits sélectionnés.');
+        $this->seeFlashMessage($crawler, 'Félicitations, votre message a bien été envoyé aux inscrits sélectionnés.');
 
         // Email should have been sent
         $this->assertCount(1, $this->getEmailRepository()->findMessages(EventContactMembersMessage::class));
@@ -306,17 +306,6 @@ class EventManagerControllerTest extends SqliteWebTestCase
         $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/ical');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-    }
-
-    private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)
-    {
-        $flash = $crawler->filter('#notice-flashes');
-
-        if ($message) {
-            $this->assertSame($message, trim($flash->text()));
-        }
-
-        return 1 === count($flash);
     }
 
     private function seeMembersList(Crawler $crawler, int $count): bool

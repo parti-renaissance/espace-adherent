@@ -38,12 +38,12 @@
                     }) }}
                 </div>
 
-                <div class="form__row" id="field-postal-code">
-                    {{ form_errors(form.postalCode) }}
-                    {{ form_widget(form.postalCode, {
+                <div class="form__row" id="field-last-name">
+                    {{ form_errors(form.lastName) }}
+                    {{ form_widget(form.lastName, {
                         'attr': {
                             'class': 'form--full',
-                            'placeholder': 'Code postal',
+                            'placeholder': 'Nom',
                         }
                     }) }}
                 </div>
@@ -58,13 +58,23 @@
                     }) }}
                 </div>
 
-                <div class="form__row form__checkbox" id="field-newsletter-subscriber">
-                    {{ form_widget(form.newsletterSubscriber) }}
-                    {{ form_errors(form.newsletterSubscriber) }}
-                    <label for="{{ form.newsletterSubscriber.vars.id }}">
-                        J'accepte de recevoir les e-mails En Marche !
+                <div class="form__row form__checkbox" id="field-accept-terms">
+                    {{ form_widget(form.acceptTerms) }}
+                    {{ form_errors(form.acceptTerms) }}
+                    <label for="{{ form.acceptTerms.vars.id }}">
+                        En participant à cet événement, vous acceptez de partager vos nom et prénom à l'organisateur.
                     </label>
                 </div>
+
+                {% if form.newsletterSubscriber is defined %}
+                    <div class="form__row form__checkbox" id="field-newsletter-subscriber">
+                        {{ form_widget(form.newsletterSubscriber) }}
+                        {{ form_errors(form.newsletterSubscriber) }}
+                        <label for="{{ form.newsletterSubscriber.vars.id }}">
+                            J'accepte de recevoir les e-mails En Marche !
+                        </label>
+                    </div>
+                {% endif %}
 
                 <div class="text--center">
                     {{ form_rest(form) }}

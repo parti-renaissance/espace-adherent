@@ -11,7 +11,6 @@ use AppBundle\Entity\EventRegistration;
 use AppBundle\Mailer\Message\EventInvitationMessage;
 use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
 use AppBundle\Repository\EventRegistrationRepository;
-use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -51,23 +50,26 @@ class EventControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertEmpty($crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
-        $this->assertEmpty($crawler->filter('#field-postal-code > input[type="text"]')->attr('value'));
+        $this->assertEmpty($crawler->filter('#field-last-name > input[type="text"]')->attr('value'));
         $this->assertEmpty($crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
+        $this->assertSame(1, $crawler->filter('#field-accept-terms')->count());
+        $this->assertSame(1, $crawler->filter('#field-newsletter-subscriber')->count());
 
         $crawler = $this->client->submit($crawler->selectButton("Je m'inscris")->form());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(3, $crawler->filter('.form__errors')->count());
         $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-first-name .form__errors > li')->text());
-        $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-postal-code .form__errors > li')->text());
+        $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-last-name .form__errors > li')->text());
         $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-email-address .form__errors > li')->text());
 
         $this->client->submit($crawler->selectButton("Je m'inscris")->form([
             'event_registration' => [
                 'firstName' => 'Pauline',
                 'emailAddress' => 'paupau75@example.org',
-                'postalCode' => '75001',
+                'lastName' => '75001',
                 'newsletterSubscriber' => true,
+                'acceptTerms' => true,
             ],
         ]));
 
@@ -77,7 +79,7 @@ class EventControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, "Votre inscription à l'événement est confirmée."));
+        $this->assertTrue($this->seeFlashMessage($crawler, "Votre inscription à l'événement est confirmée."));
         $this->assertContains('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
 
         $crawler = $this->client->click($crawler->selectLink('Retour')->link());
@@ -108,8 +110,11 @@ class EventControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('Benjamin', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
-        $this->assertSame('13003', $crawler->filter('#field-postal-code > input[type="text"]')->attr('value'));
+        $this->assertSame('Duroc', $crawler->filter('#field-last-name > input[type="text"]')->attr('value'));
         $this->assertSame('benjyd@aol.com', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
+        $this->assertSame(1, $crawler->filter('#field-accept-terms')->count());
+        // Adherent is already subscribed to mails
+        $this->assertSame(0, $crawler->filter('#field-newsletter-subscriber')->count());
 
         $this->client->submit($crawler->selectButton("Je m'inscris")->form());
 
@@ -119,7 +124,7 @@ class EventControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertTrue($this->seeMessageSuccesfullyCreatedFlash($crawler, "Votre inscription à l'événement est confirmée."));
+        $this->assertTrue($this->seeFlashMessage($crawler, "Votre inscription à l'événement est confirmée."));
         $this->assertContains('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
 
         $crawler = $this->client->click($crawler->selectLink('Retour')->link());
@@ -150,7 +155,7 @@ class EventControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertSame('Benjamin', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
-        $this->assertSame('13003', $crawler->filter('#field-postal-code > input[type="text"]')->attr('value'));
+        $this->assertSame('Duroc', $crawler->filter('#field-last-name > input[type="text"]')->attr('value'));
         $this->assertSame('benjyd@aol.com', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
 
         $crawler = $this->client->submit($crawler->selectButton("Je m'inscris")->form());
@@ -308,17 +313,6 @@ class EventControllerTest extends MysqlWebTestCase
         $eventUrl = sprintf('/evenements/%s', $event->getSlug());
 
         $this->assertRedirectionEventNotPublishTest($eventUrl);
-    }
-
-    private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null)
-    {
-        $flash = $crawler->filter('#notice-flashes');
-
-        if ($message) {
-            $this->assertSame($message, trim($flash->text()));
-        }
-
-        return 1 === count($flash);
     }
 
     public function testRedirectIfEventNotExist()

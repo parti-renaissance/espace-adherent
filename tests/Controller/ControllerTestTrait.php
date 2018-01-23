@@ -5,6 +5,7 @@ namespace Tests\AppBundle\Controller;
 use AppBundle\Entity\EventCategory;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\TestHelperTrait;
@@ -72,6 +73,17 @@ trait ControllerTestTrait
         }
 
         return $client->followRedirect();
+    }
+
+    protected function seeFlashMessage(Crawler $crawler, ?string $message = null): bool
+    {
+        $flash = $crawler->filter('#notice-flashes');
+
+        if ($message) {
+            $this->assertSame($message, trim($flash->text()));
+        }
+
+        return 1 === count($flash);
     }
 
     protected function appendCollectionFormPrototype(\DOMElement $collection, string $newIndex = '0', string $prototypeName = '__name__'): void

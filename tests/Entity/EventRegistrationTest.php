@@ -24,8 +24,8 @@ class EventRegistrationTest extends TestCase
             Uuid::fromString(self::REGISTRATION_UUID),
             $event = $this->createEventMock(self::EVENT_1_UUID),
             'Joseph',
+            'Seguin',
             'joseph.seguin@domain.tld',
-            '67001',
             false,
             Uuid::fromString(self::ADHERENT_1_UUID)
         );
@@ -33,7 +33,7 @@ class EventRegistrationTest extends TestCase
         $this->assertEquals(Uuid::fromString(self::REGISTRATION_UUID), $registration->getUuid());
         $this->assertSame($event, $registration->getEvent());
         $this->assertSame('Joseph', $registration->getFirstName());
-        $this->assertSame('67001', $registration->getPostalCode());
+        $this->assertSame('Seguin', $registration->getLastName());
         $this->assertSame('joseph.seguin@domain.tld', $registration->getEmailAddress());
         $this->assertFalse($registration->isNewsletterSubscriber());
 
@@ -50,15 +50,15 @@ class EventRegistrationTest extends TestCase
             Uuid::fromString(self::REGISTRATION_UUID),
             $event = $this->createEventMock(self::EVENT_2_UUID),
             'Rose',
+            'Leroy',
             'rose-lr@domain.tld',
-            '59000',
             true
         );
 
         $this->assertEquals(Uuid::fromString(self::REGISTRATION_UUID), $registration->getUuid());
         $this->assertSame($event, $registration->getEvent());
         $this->assertSame('Rose', $registration->getFirstName());
-        $this->assertSame('59000', $registration->getPostalCode());
+        $this->assertSame('Leroy', $registration->getLastName());
         $this->assertSame('rose-lr@domain.tld', $registration->getEmailAddress());
         $this->assertTrue($registration->isNewsletterSubscriber());
 

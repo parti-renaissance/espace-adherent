@@ -313,7 +313,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
         $this->assertClientIsRedirectedTo($actorsListUrl, $this->client);
         $crawler = $this->client->followRedirect();
-        $this->seeMessageSuccesfullyCreatedFlash($crawler, 'Félicitations, votre message a bien été envoyé aux acteurs sélectionnés.');
+        $this->seeFlashMessage($crawler, 'Félicitations, votre message a bien été envoyé aux acteurs sélectionnés.');
 
         // Try to illegally contact an adherent, adds an adherent not linked with this citizen project
         $uuids[] = LoadAdherentData::ADHERENT_1_UUID;
@@ -336,7 +336,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
         $this->assertClientIsRedirectedTo($actorsListUrl, $this->client);
         $crawler = $this->client->followRedirect();
-        $this->seeMessageSuccesfullyCreatedFlash($crawler, 'Félicitations, votre message a bien été envoyé aux acteurs sélectionnés.');
+        $this->seeFlashMessage($crawler, 'Félicitations, votre message a bien été envoyé aux acteurs sélectionnés.');
     }
 
     public function testAnonymousUserIsNotAllowedToFollowCitizenProject()
@@ -553,17 +553,6 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
     private function seeCommentSection(): bool
     {
         return 1 === count($this->client->getCrawler()->filter('.citizen-project-comments'));
-    }
-
-    private function seeMessageSuccesfullyCreatedFlash(Crawler $crawler, ?string $message = null): bool
-    {
-        $flash = $crawler->filter('#notice-flashes');
-
-        if ($message) {
-            $this->assertSame($message, trim($flash->text()));
-        }
-
-        return 1 === count($flash);
     }
 
     private function seeFollowLink(Crawler $crawler): bool

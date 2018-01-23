@@ -16,14 +16,16 @@ class LoadCitizenProjectCommentData extends AbstractFixture implements Dependent
         $comment1 = $this->createCitizenProjectComment(
             $this->getReference('citizen-project-1'),
             $this->getReference('adherent-2'),
-            'Jean-Paul à Maurice : tout va bien ! Je répète ! Tout va bien !'
+            'Jean-Paul à Maurice : tout va bien ! Je répète ! Tout va bien !',
+            '-1 minute'
         );
         $this->addReference('citizen-project-comment-1', $comment1);
 
         $comment2 = $this->createCitizenProjectComment(
             $this->getReference('citizen-project-1'),
             $this->getReference('adherent-4'),
-            'Maurice à Jean-Paul : tout va bien aussi !'
+            'Maurice à Jean-Paul : tout va bien aussi !',
+            '-2 minutes'
         );
         $this->addReference('citizen-project-comment-2', $comment2);
 
@@ -89,9 +91,9 @@ class LoadCitizenProjectCommentData extends AbstractFixture implements Dependent
         $manager->flush();
     }
 
-    private function createCitizenProjectComment(CitizenProject $citizenProject, Adherent $author, string $content): CitizenProjectComment
+    private function createCitizenProjectComment(CitizenProject $citizenProject, Adherent $author, string $content, string $createdAt = 'now'): CitizenProjectComment
     {
-        return new CitizenProjectComment(null, $citizenProject, $author, $content);
+        return new CitizenProjectComment(null, $citizenProject, $author, $content, $createdAt);
     }
 
     public function getDependencies()

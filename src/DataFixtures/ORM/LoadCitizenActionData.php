@@ -42,7 +42,7 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '30 Zeppelinstrasse', 47.3950062, 8.53838),
             'begin_at' => new \DateTime(date('Y-m-d', strtotime('+3 days')).' 09:30:00'),
             'finish_at' => new \DateTime(date('Y-m-d', strtotime('+3 days')).' 19:00:00'),
-            'capacity' => 20,
+            'capacity' => 1,
         ]);
         $actionCitoyenne1->setPublished(true);
         $actionCitoyenne1->incrementParticipantsCount();
