@@ -52,7 +52,7 @@ class TimelineImageFactory
         $imagePath = sprintf('%s/images/transformer-social-media-%s.png', $this->webDirectory, $locale);
 
         if (!$image = $this->createImageFromPng($imagePath)) {
-            throw new \InvalidArgumentException("Image template doest not exist for locale \"$locale\".");
+            throw new \InvalidArgumentException("Image template does not exist for locale \"$locale\".");
         }
 
         $this->drawTexts($image, $counts, $locale);
