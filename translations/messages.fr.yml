@@ -266,3 +266,10 @@ coordinator.sector.committee: Secteur - Comités
 coordinator.sector.citizen_project: Secteur - Projets citoyens
 coordinator.label.codes: Codes des zones gérées
 coordinator.placeholder.sector: Veuillez choisir un secteur
+
+#
+# Timeline
+#
+timeline.measure.status.done: fait
+timeline.measure.status.in_progress: en cours
+timeline.measure.status.upcoming: à venir

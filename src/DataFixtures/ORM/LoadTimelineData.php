@@ -203,7 +203,7 @@ class LoadTimelineData extends AbstractFixture
                 'fr' => 'Rendre les ministres comptables du respect de la dépense publique',
                 'en' => 'Make ministers accountable for respecting public spending',
             ],
-            'status' => Measure::STATUS_IN_PROGRESS,
+            'status' => Measure::STATUS_DONE,
             'themes' => ['TT001', 'TT002', 'TT003'],
             'profiles' => ['TP005'],
         ],
@@ -212,7 +212,7 @@ class LoadTimelineData extends AbstractFixture
                 'fr' => 'Mettre fin à l’évolution uniforme des rémunérations des fonctions publiques',
                 'en' => 'Put an end to the uniform evolution of public service pay',
             ],
-            'status' => Measure::STATUS_IN_PROGRESS,
+            'status' => Measure::STATUS_DONE,
             'themes' => ['TT001'],
             'profiles' => ['TP001'],
         ],
@@ -221,7 +221,7 @@ class LoadTimelineData extends AbstractFixture
                 'fr' => 'Confier aux services des métropoles les compétences de leurs conseils départementaux',
                 'en' => 'Entrust the departments of the cities with the skills of their departmental councils',
             ],
-            'status' => Measure::STATUS_IN_PROGRESS,
+            'status' => Measure::STATUS_DONE,
             'themes' => ['TT001'],
             'profiles' => ['TP001'],
         ],
@@ -239,7 +239,7 @@ class LoadTimelineData extends AbstractFixture
                 'fr' => 'Créer une aide unique selon la taille de l’entreprise et le niveau de qualification de l’apprenti',
                 'en' => 'Create a unique help depending on the size of the company',
             ],
-            'status' => Measure::STATUS_IN_PROGRESS,
+            'status' => Measure::STATUS_UPCOMING,
             'themes' => ['TT002'],
             'profiles' => ['TP002', 'TP003', 'TP004', 'TP005'],
         ],
@@ -248,7 +248,7 @@ class LoadTimelineData extends AbstractFixture
                 'fr' => 'Créer une aide unique selon la taille de l’entreprise et le niveau de qualification de l’apprenti',
                 'en' => 'Create a one-stop shop for businesses for learning and applying for help',
             ],
-            'status' => Measure::STATUS_IN_PROGRESS,
+            'status' => Measure::STATUS_UPCOMING,
             'themes' => ['TT002'],
             'profiles' => ['TP001', 'TP002'],
         ],
@@ -257,7 +257,7 @@ class LoadTimelineData extends AbstractFixture
                 'fr' => 'Rassembler les deux contrats d\'alternance en un contrat unique',
                 'en' => 'Bring the two work-study contracts into a single contract',
             ],
-            'status' => Measure::STATUS_IN_PROGRESS,
+            'status' => Measure::STATUS_UPCOMING,
             'themes' => ['TT002'],
             'profiles' => ['TP001', 'TP002'],
         ],
@@ -266,7 +266,7 @@ class LoadTimelineData extends AbstractFixture
                 'fr' => 'Affecter la totalité de la taxe d’apprentissage au financement de l’apprentissage',
                 'en' => 'Allocate the Learning Tax to Learning Funding',
             ],
-            'status' => Measure::STATUS_IN_PROGRESS,
+            'status' => Measure::STATUS_UPCOMING,
             'themes' => ['TT002', 'TT001'],
             'profiles' => ['TP001'],
         ],
@@ -275,7 +275,7 @@ class LoadTimelineData extends AbstractFixture
                 'fr' => 'Unifier la grille de rémunération des alternants',
                 'en' => 'Unify the remuneration grid for alternates',
             ],
-            'status' => Measure::STATUS_IN_PROGRESS,
+            'status' => Measure::STATUS_UPCOMING,
             'themes' => ['TT002'],
             'profiles' => ['TP002', 'TP003', 'TP004', 'TP005'],
         ],
@@ -371,7 +371,9 @@ class LoadTimelineData extends AbstractFixture
                 }, $metadatas['profiles']),
                 array_map(function (string $themeReference) {
                     return $this->getReference($themeReference);
-                }, $metadatas['themes'])
+                }, $metadatas['themes']),
+                null,
+                true
             );
 
             $measure->addTranslation(new MeasureTranslation('fr', $metadatas['title']['fr']));

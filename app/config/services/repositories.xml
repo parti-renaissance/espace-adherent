@@ -143,5 +143,10 @@
             <argument>AppBundle\Entity\Media</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
+
+        <service id="AppBundle\Repository\Timeline\MeasureRepository" public="false">
+            <argument>AppBundle\Entity\Timeline\Measure</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
     </services>
 </container>

@@ -127,7 +127,7 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
             'id' => $measure->getId(),
             'link' => '',
             'status' => 'IN_PROGRESS',
-            'major' => false,
+            'major' => true,
             'profileIds' => $this->getProfileIdsByTitles([
                 LoadTimelineData::PROFILES['TP002']['title']['fr'],
                 LoadTimelineData::PROFILES['TP003']['title']['fr'],
