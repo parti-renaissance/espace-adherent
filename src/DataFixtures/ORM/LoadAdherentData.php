@@ -38,6 +38,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
     const ADHERENT_14_UUID = '511c21bf-1240-5271-abaa-3393d3f40740';
     const ADHERENT_15_UUID = 'd72d88ee-44bf-5059-bd19-02af28f0c7dc';
     const ADHERENT_16_UUID = '0a68eb57-c88a-5f34-9e9d-27f85e68af4f';
+    const ADHERENT_17_UUID = '1ebee762-4dc1-42f6-9884-1c83ba9c6d71';
 
     const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
@@ -193,7 +194,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $referent->enableCommitteesNotifications();
 
-        $coordinateur = $adherentFactory->createFromArray([
+        $coordinator = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_15_UUID,
             'password' => 'coordinateur',
             'email' => 'coordinateur@en-marche-dev.fr',
@@ -206,7 +207,22 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'phone' => '33 665859053',
             'registered_at' => '2017-09-20 15:31:21',
         ]);
-        $coordinateur->addCoordinatorManagedArea(new CoordinatorManagedArea(['FR'], CoordinatorAreaSectors::COMMITTEE_SECTOR));
+        $coordinator->addCoordinatorManagedArea(new CoordinatorManagedArea(['FR'], CoordinatorAreaSectors::COMMITTEE_SECTOR));
+
+        $coordinatorCP = $adherentFactory->createFromArray([
+            'uuid' => self::ADHERENT_17_UUID,
+            'password' => 'coordinatrice',
+            'email' => 'coordinatrice-cp@en-marche-dev.fr',
+            'gender' => 'female',
+            'first_name' => 'Coordinatrice',
+            'last_name' => 'CITIZEN PROJECT',
+            'address' => PostAddress::createFrenchAddress('Place de la Madeleine', '75008-75108', 48.8704135, 2.324256),
+            'birthdate' => '1989-03-13',
+            'position' => 'employed',
+            'phone' => '33 665859053',
+            'registered_at' => '2017-09-20 15:31:21',
+        ]);
+        $coordinatorCP->addCoordinatorManagedArea(new CoordinatorManagedArea(['FR'], CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR));
 
         $adherent9 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_9_UUID,
@@ -345,7 +361,8 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $key13 = AdherentActivationToken::generate($adherent13);
         $key14 = AdherentActivationToken::generate($adherent14);
         $key15 = AdherentActivationToken::generate($adherent15);
-        $key16 = AdherentActivationToken::generate($coordinateur);
+        $key16 = AdherentActivationToken::generate($coordinator);
+        $key17 = AdherentActivationToken::generate($coordinatorCP);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -362,7 +379,8 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $adherent13->activate($key13, '2017-05-03 09:16:54');
         $adherent14->activate($key14, '2017-05-04 09:34:21');
         // $key15 is not activated, but adherent is enabled
-        $coordinateur->activate($key16, '2017-09-20 17:44:32');
+        $coordinator->activate($key16, '2017-09-20 17:44:32');
+        $coordinatorCP->activate($key17, '2018-01-20 14:34:11');
 
         // Create some default committees and make people join them
         $committeeFactory = $this->getCommitteeFactory();
@@ -499,7 +517,8 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $manager->persist($adherent13);
         $manager->persist($adherent14);
         $manager->persist($adherent15);
-        $manager->persist($coordinateur);
+        $manager->persist($coordinator);
+        $manager->persist($coordinatorCP);
 
         $manager->persist($key1);
         $manager->persist($key2);

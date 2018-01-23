@@ -39,7 +39,7 @@
                 <hr />
                 <ul>
                     <li>
-                        {% set url = has_role_adherent ? path('app_user_profile') : path('app_user_login') %}
+                        {% set url = has_role_adherent ? path('app_summary_manager_index') : path('app_user_login') %}
                         <a href="{{ url }}">Profil</a>
                     </li>
                     <li>
@@ -71,9 +71,13 @@
                             <a href="{{ path('app_board_member_home') }}">Espace membre du Conseil</a>
                         </li>
                     {% endif %}
-                    {% if is_granted('ROLE_COORDINATOR') %}
+                    {% if is_granted('ROLE_COORDINATOR_CITIZEN_PROJECT') %}
                         <li>
-                            <a href="{{ path('app_coordinator_committees', { 's': constant('AppBundle\\Entity\\Committee::PENDING') }) }}">Espace coordinateur régional</a>
+                            <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}">Espace Responsable Engagement Citoyen</a>
+                        </li>
+                    {% elseif is_granted('ROLE_COORDINATOR_COMMITTEE') %}
+                        <li>
+                            <a href="{{ path('app_coordinator_committees', { s: constant('AppBundle\\Entity\\Committee::PENDING')}) }}">Espace coordinateur régional</a>
                         </li>
                     {% endif %}
                     {% if is_granted('ROLE_PROCURATION_MANAGER') %}
@@ -91,12 +95,10 @@
                 </ul>
                 <ul>
                     <li>
-                        {# @TODO change route name when PR will be merge #}
-                        <a href="{{ path('homepage') }}">Notifications</a>
+                        <a href="{{ path('app_user_set_email_notifications') }}">Notifications</a>
                     </li>
                     <li>
-                        {# @TODO change route name when PR will be merge #}
-                        <a href="{{ path('homepage') }}">Paramètres</a>
+                        <a href="{{ path('app_user_profile') }}">Paramètres</a>
                     </li>
                     <li>
                         <a href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a>
