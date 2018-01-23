@@ -1,6 +1,14 @@
 const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ExtractTextPluginForPrint = new ExtractTextPlugin({
+    filename: 'print.css',
+    allChunks: true,
+});
+const ExtractTextPluginForApp = new ExtractTextPlugin({
+    filename: 'app.css',
+    allChunks: true,
+});
 
 module.exports = {
     context: path.join(__dirname, './front'),
@@ -22,7 +30,14 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                loaders: ExtractTextPlugin.extract({
+                loaders: ExtractTextPluginForApp.extract({
+                    fallbackLoader: 'style-loader',
+                    loader: 'css-loader!sass-loader',
+                }),
+            },
+            {
+                test: /print.scss/,
+                loaders: ExtractTextPluginForPrint.extract({
                     fallbackLoader: 'style-loader',
                     loader: 'css-loader!sass-loader',
                 }),
@@ -58,9 +73,7 @@ module.exports = {
             minimize: false,
             debug: true,
         }),
-        new ExtractTextPlugin({
-            filename: 'app.css',
-            allChunks: true,
-        }),
+        ExtractTextPluginForApp,
+        ExtractTextPluginForPrint,
     ],
 };

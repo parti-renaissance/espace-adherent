@@ -1,0 +1,20 @@
+.no-print, .no-print * {
+  display: none !important;
+}
+
+table {
+  page-break-inside: auto
+}
+
+tr {
+  page-break-inside: avoid !important;
+  page-break-after: auto
+}
+
+thead {
+  display: table-header-group !important;
+}
+
+tfoot {
+  display: table-row-group !important;
+}

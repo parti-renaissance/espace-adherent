@@ -1,4 +1,5 @@
 import './style/app.scss';
+import './style/print.scss';
 
 import Container from './services/Container';
 import registerServices from './services';

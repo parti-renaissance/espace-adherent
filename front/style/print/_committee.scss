@@ -1,0 +1,100 @@
+.committee {
+  margin: 0 0 100px 0;
+
+  &__waiting-for-approval {
+    font-family: $font-roboto;
+    @include text--default;
+    margin-top: 20px;
+    color: $dark;
+    background: $yellow;
+    padding: 5px 10px;
+  }
+
+  &__name {
+    @include breakword;
+  }
+
+  &__header__titles {
+    margin-right: 25px;
+
+    @media (max-width: $mobile) {
+      margin: 0;
+    }
+  }
+
+  &__host {
+    &__nav {
+      @include text--body;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      margin: 25px 0 40px;
+    }
+
+    &__menu {
+      li {
+        padding: 15px 25px;
+
+        &:first-child {
+          background: $gray--lighter;
+        }
+
+        &:last-child {
+          background: white;
+          padding: 15px 25px;
+        }
+      }
+    }
+  }
+
+  &__members {
+    &__nav {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+
+      > div {
+        display: flex;
+      }
+
+      @media(max-width: $mobile) {
+        flex-direction: column;
+
+        > a {
+          margin-top: 10px;
+        }
+
+        > div {
+          justify-content: space-between;
+
+          form {
+            width: 48%;
+
+            button {
+              margin: 0;
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+
+    &__list {
+      font-family: $font-roboto;
+      width: 100%;
+
+      thead {
+        background: $gray--lighter;
+        border-color: $gray;
+
+        th {
+          text-align: left;
+        }
+      }
+
+      tr {
+        border-bottom: 1px solid $gray--light;
+      }
+    }
+  }
+}

@@ -4,7 +4,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <link rel="stylesheet" href="{{ absolute_url(asset('css/print.css')) }}" />
+    {#<link rel="stylesheet" href="{{ absolute_url(asset('css/print.css')) }}" />#}
+    <link rel="stylesheet" href="{{ absolute_url(webpack_asset('print.css')) }}" />
 </head>
 <body>
 
