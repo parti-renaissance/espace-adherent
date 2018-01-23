@@ -74,6 +74,15 @@ class CitizenProjectManagerTest extends MysqlWebTestCase
         $this->assertSame('En Marche - Projet citoyen', (string) $citizenProjects[7]);
     }
 
+    public function testGetAdherentCitizenProjectsWhenPreApproved()
+    {
+        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_6_UUID);
+
+        // Without any fixed limit.
+        $this->assertCount(1, $citizenProjects = $this->citizenProjectManager->getAdherentCitizenProjects($adherent));
+        $this->assertSame('Le projet citoyen à Marseille', (string) $citizenProjects[0]);
+    }
+
     public function testChangePrivilegeNotDefinedPrivilege()
     {
         $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_3_UUID);

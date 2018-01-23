@@ -141,7 +141,7 @@ class CitizenProjectManager
                     return $citizenProject;
                 }
 
-                // However, an unapproved citizen project is kept only if it was created by the adherent.
+                // However, an unapproved/pre-refused/pre-approved citizen project is kept only if it was created by the adherent.
                 if ($citizenProject->isCreatedBy($adherent->getUuid())) {
                     return $citizenProject;
                 }
