@@ -3,14 +3,11 @@
 namespace AppBundle\OAuth\Model;
 
 use Symfony\Component\Security\Core\User\UserInterface;
-use JMS\Serializer\Annotation as JMS;
 
 class ApiUser implements UserInterface
 {
     /**
      * @var string
-     *
-     * @JMS\Groups("user_profile")
      */
     private $uuid;
 
@@ -21,8 +18,6 @@ class ApiUser implements UserInterface
 
     /**
      * @var string
-     *
-     * @JMS\Groups("user_profile")
      */
     private $username = 'oauth_client_user_';
 
