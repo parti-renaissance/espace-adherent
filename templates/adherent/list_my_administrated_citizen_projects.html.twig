@@ -1,0 +1,12 @@
+<ul class="list__links">
+    {% for citizen_project in citizen_projects %}
+        {% if app.user.isAdministratorOf(citizen_project) %}
+            <li>
+                <a href="{{ path('app_citizen_project_show', { slug: citizen_project.slug }) }}"
+                   title="{{ citizen_project.name }}">
+                    {{- citizen_project.name -}}
+                </a>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>
