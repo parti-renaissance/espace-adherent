@@ -37,14 +37,19 @@ class CoordinatorControllerTest extends SqliteWebTestCase
         $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
     }
 
-    /**
-     * @dataProvider providePages
-     */
-    public function testCoordinatorBackendIsAccessibleForCoordinator($path)
+    public function testCoordinatorCommitteeBackendIsAccessibleForCoordinator()
     {
         $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr', 'coordinateur');
 
-        $this->client->request(Request::METHOD_GET, $path);
+        $this->client->request(Request::METHOD_GET, '/espace-coordinateur/comites/list');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+    }
+
+    public function testCoordinatorCitizenProjectBackendIsAccessibleForCoordinator()
+    {
+        $this->authenticateAsAdherent($this->client, 'coordinatrice-cp@en-marche-dev.fr', 'coordinatrice');
+
+        $this->client->request(Request::METHOD_GET, '/espace-coordinateur/projet-citoyen/list');
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
@@ -147,6 +152,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
     {
         return [
             ['/espace-coordinateur/comites/list'],
+            ['/espace-coordinateur/projet-citoyen/list'],
         ];
     }
 

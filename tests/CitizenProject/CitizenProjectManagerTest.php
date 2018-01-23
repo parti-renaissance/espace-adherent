@@ -129,11 +129,11 @@ class CitizenProjectManagerTest extends MysqlWebTestCase
         $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
         $adherents = $this->citizenProjectManager->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject);
 
-        $this->assertSame(3, $adherents->count());
+        $this->assertSame(4, $adherents->count());
 
         $adherents = $this->citizenProjectManager->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject, 0, false);
 
-        $this->assertSame(4, $adherents->count());
+        $this->assertSame(5, $adherents->count());
 
         $adherent = $this->getAdherentRepository()->findOneByEmail('francis.brioul@yahoo.com');
         $adherent->setCitizenProjectCreationEmailSubscriptionRadius(AdherentEmailSubscription::DISTANCE_100KM);
@@ -146,7 +146,7 @@ class CitizenProjectManagerTest extends MysqlWebTestCase
 
         $adherents = $this->citizenProjectManager->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject, 0, true, CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN);
 
-        $this->assertSame(5, $adherents->count());
+        $this->assertSame(6, $adherents->count());
     }
 
     private function getCitizenProjectMock(string $uuid)
