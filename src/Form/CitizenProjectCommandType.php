@@ -49,7 +49,7 @@ class CitizenProjectCommandType extends AbstractType
             ->add('subtitle', TextType::class, [
                 'filter_emojis' => true,
                 'with_character_count' => true,
-                'attr' => ['maxlength' => 60],
+                'attr' => ['maxlength' => 80],
             ])
             ->add('category', EventCategoryType::class, [
                 'placeholder' => 'Choisir un thème',
