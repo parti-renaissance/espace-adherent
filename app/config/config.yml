@@ -296,3 +296,7 @@ old_sound_rabbit_mq:
             queue_options:     { name: 'project_citizen_creation_notification', durable: false }
             callback:          AppBundle\Consumer\ProjectCitizenCreationNotificationConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
+
+knp_snappy:
+    pdf:
+        binary: %kernel.root_dir%/../vendor/bin/wkhtmltopdf-amd64

@@ -47,7 +47,8 @@ RUN apt-get update -q && \
         redis-server \
         supervisor \
         tzdata \
-        wget && \
+        wget \
+        wkhtmltopdf && \
 
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
 

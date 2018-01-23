@@ -11,6 +11,8 @@
             var contactSelection = dom('#members-contact-selection');
             var exportButton = dom('#members-export-button');
             var exportSelection = dom('#members-export-selection');
+            var printButton = dom('#members-print-button');
+            var printSelection = dom('#members-print-selection');
 
             // Bind the 'select all' checkbox
             on(allCheckbox, 'change', function() {
@@ -52,6 +54,7 @@
             function toggleButtons(value) {
                 contactButton.disabled = !value;
                 exportButton.disabled = !value;
+                printButton.disabled = !value;
             }
 
             // Toggle each 'selection' checkbox
@@ -85,6 +88,19 @@
                 });
 
                 contactSelection.value = JSON.stringify(members);
+            });
+
+            // Bind the print button (build a Json list of members to print)
+            on(printButton, 'click', function () {
+                var members = [];
+
+                selectionCheckboxes.forEach(function(element) {
+                    if (element.checked) {
+                        members.push(element.value);
+                    }
+                });
+
+                printSelection.value = JSON.stringify(members);
             });
         });
     </script>
@@ -156,34 +172,24 @@
                 </h2>
                 <div class="committee__members__nav">
                     <div>
-                        <form method="post" action="{{ path("app_#{event.type}_contact_members", {'slug': event.slug}) }}">
+                        <form method="post" action="{{ path("app_%s_contact_members"|format(event.type), { slug: event.slug }) }}">
                             <input type="hidden" name="token" value="{{ csrf_token('event.contact_members') }}" id="members-contact-token" />
                             <input type="hidden" name="contacts" value="" id="members-contact-selection" />
                             <button id="members-contact-button" class="btn b__nudge--right" disabled="disabled">Contacter</button>
                         </form>
-                        <form method="post" action="{{ path("app_#{event.type}_export_members", {'slug': event.slug}) }}">
+                        <form method="post" action="{{ path("app_%s_export_members"|format(event.type), { slug: event.slug }) }}">
                             <input type="hidden" name="token" value="{{ csrf_token('event.export_members') }}" id="members-export-token" />
                             <input type="hidden" name="exports" value="" id="members-export-selection" />
-                            <button id="members-export-button" disabled="disabled" class="btn">Exporter</button>
+                            <button id="members-export-button" class="btn b__nudge--right" disabled="disabled">Exporter</button>
+                        </form>
+                        <form method="post" action="{{ path("app_%s_print_members"|format(event.type), { slug: event.slug }) }}">
+                            <input type="hidden" name="token" value="{{ csrf_token('event.print_members') }}" id="members-print-token" />
+                            <input type="hidden" name="prints" value="" id="members-print-selection" />
+                            <button id="members-print-button" class="btn" disabled="disabled">Imprimer</button>
                         </form>
                     </div>
                 </div>
-                <table class="committee__members__list" cellpadding="10">
-                    <tr>
-                        <th><input type="checkbox" id="members-check-all" /></th>
-                        <th>Nom</th>
-                        <th>Prénom</th>
-                        <th>Date d'inscription</th>
-                    </tr>
-                    {% for registration in registrations %}
-                        <tr>
-                            <td><input type="checkbox" name="members[]" value="{{ registration.uuid }}" /></td>
-                            <td>{{ registration.lastName }}</td>
-                            <td>{{ registration.firstName }}</td>
-                            <td>{{ registration.createdAt|date('d/m/Y à H:i') }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
+                {% include 'events/_member_list.html.twig' with { registrations: registrations } only %}
             </div>
         </section>
     </main>
