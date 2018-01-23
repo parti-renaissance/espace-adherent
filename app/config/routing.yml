@@ -21,9 +21,11 @@ app_api:
     resource: "@AppBundle/Controller/Api"
     type:     "annotation"
     prefix:   "/api"
+    defaults:
+        _format: 'json'
 
 #
-# API
+# OAuth
 #
 app_oauth:
     host:     "%app_host%"
