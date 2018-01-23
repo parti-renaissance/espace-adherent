@@ -49,7 +49,9 @@ class TimelineImageFactory
     {
         $counts = $this->getMeasureCounts();
 
-        $image = $this->createImageFromPng($this->getImageTemplatePath($locale));
+        if (!$image = $this->createImageFromPng($this->getImageTemplatePath($locale))) {
+            throw new \InvalidArgumentException("Image template doest not exist for locale \"$locale\".");
+        }
 
         $this->drawTexts($image, $counts, $locale);
         $this->drawChart($image, $counts);
