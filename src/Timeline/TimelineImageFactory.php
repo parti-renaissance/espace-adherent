@@ -49,16 +49,16 @@ class TimelineImageFactory
     {
         $counts = $this->getMeasureCounts();
 
-        if (!$image = $this->createImageFromPng($this->getImageTemplatePath($locale))) {
+        $imagePath = sprintf('%s/images/transformer-social-media-%s.png', $this->webDirectory, $locale);
+
+        if (!$image = $this->createImageFromPng($imagePath)) {
             throw new \InvalidArgumentException("Image template doest not exist for locale \"$locale\".");
         }
 
         $this->drawTexts($image, $counts, $locale);
         $this->drawChart($image, $counts);
 
-        $this->saveImage($image, $imagePath = $this->getOutputImagePath());
-
-        return $imagePath;
+        return $this->saveImage($image);
     }
 
     private function drawTexts($image, array $counts, string $locale): void
@@ -112,16 +112,6 @@ class TimelineImageFactory
         $this->drawChartArc($image, self::CHART['innerRadius'], 0, 360, $background);
     }
 
-    private function getOutputImagePath(): string
-    {
-        return sprintf('%s/%s', $this->cacheDirectory, self::OUTPUT_IMAGE_NAME);
-    }
-
-    private function getImageTemplatePath(string $locale): string
-    {
-        return sprintf('%s/images/transformer-social-media-%s.png', $this->webDirectory, $locale);
-    }
-
     private function getFontPath(string $fontName): string
     {
         return sprintf('%s/fonts/%s', $this->webDirectory, $fontName);
@@ -130,15 +120,10 @@ class TimelineImageFactory
     private function getMeasureCounts(): array
     {
         foreach (array_keys(self::TEXTS_COORDINATES) as $measureStatus) {
-            $counts[$measureStatus] = $this->countMeasuresByStatus($measureStatus);
+            $counts[$measureStatus] = $this->measureRepository->countMeasuresByStatus($measureStatus);
         }
 
         return $counts ?? [];
-    }
-
-    private function countMeasuresByStatus(string $status): int
-    {
-        return $this->measureRepository->countMeasuresByStatus($status);
     }
 
     private function translate(string $id, string $locale): string
@@ -151,10 +136,12 @@ class TimelineImageFactory
         return imagecreatefrompng($path);
     }
 
-    private function saveImage($image, string $path): void
+    private function saveImage($image): string
     {
-        imagejpeg($image, $path);
+        imagejpeg($image, $path = sprintf('%s/%s', $this->cacheDirectory, self::OUTPUT_IMAGE_NAME));
         imagedestroy($image);
+
+        return $path;
     }
 
     private function createColor($image, int $red, int $green, int $blue): int
