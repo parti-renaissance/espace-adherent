@@ -423,7 +423,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertSame('Nos coups de cœur', trim($crawler->filter('.citizen_project_featured')->text()));
     }
 
-    public function testCitizenProjectLandingPageAnonymous()
+    public function testCitizenProjectLandingPageAsAnonymous()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens');
 
@@ -455,7 +455,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertSame($citizenProjectName, $crawler->filter('#citizen_project_name')->attr('value'));
     }
 
-    public function testCitizenProjectLandingPageResultAnonymous()
+    public function testCitizenProjectLandingPageResultAsAnonymous()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/landing/results?city=paris', [], [], [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -479,7 +479,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertContains('Francis B.', trim($thumb3->filter('.citizen-projects__landing__card__creator')->text()));
     }
 
-    public function testCitizenProjectLandingPageResultAuthenticate()
+    public function testCitizenProjectLandingPageResultAsAuthenticatedUser()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
         $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/landing/results?city=evry', [], [], [
@@ -505,7 +505,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertContains('Francis Brioul', trim($thumb3->filter('.citizen-projects__landing__card__creator')->text()));
     }
 
-    public function testCitizenProjectLandingPageAsAuthenticateUser()
+    public function testCitizenProjectLandingPageAsAuthenticatedUser()
     {
         $this->authenticateAsAdherent($this->client, 'damien.schmidt@example.ch', 'newpassword');
         $adherent = $this->getAdherentRepository()->findOneByEmail('damien.schmidt@example.ch');
@@ -526,6 +526,19 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
         $this->assertSame('/espace-adherent/creer-mon-projet-citoyen', $this->client->getRequest()->getPathInfo());
         $this->assertSame($citizenProjectName, $crawler->filter('#citizen_project_name')->attr('value'));
+    }
+
+    public function testCitizenProjectLandingPageAsReferent()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('referent@en-marche-dev.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame($adherent->getCityName(), trim($crawler->filter('#city-search-display')->text()));
+        $this->assertSame($adherent->getCityName(), trim($crawler->filter('#city-search-input')->attr('value')));
+        $this->assertCount(0, $crawler->selectButton('Prochaine étape'), 'A referent cannot create projects.');
     }
 
     private function assertSeeNextActions(): void
