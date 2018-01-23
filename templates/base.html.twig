@@ -114,6 +114,9 @@
                 {% set adherent_citizen_projects %}
                     {{ render(controller('AppBundle:EnMarche/Adherent:listMyCitizenProjects')) }}
                 {% endset %}
+                {% set administrated_citizen_projects %}
+                    {{ render(controller('AppBundle:EnMarche/Adherent:listMyAdministratedCitizenProjects')) }}
+                {% endset %}
             {% endif %}
             <!--  Header / Navigation Desktop -->
             {{ include('components/_nav_desktop.html.twig') }}
