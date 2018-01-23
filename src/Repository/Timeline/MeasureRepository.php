@@ -29,6 +29,8 @@ class MeasureRepository extends EntityRepository
             ->select('COUNT(measure)')
             ->andWhere('measure.status = :status')
             ->setParameter('status', $status)
+            ->andWhere('measure.major = :major')
+            ->setParameter('major', true)
             ->getQuery()
             ->getSingleScalarResult()
         ;

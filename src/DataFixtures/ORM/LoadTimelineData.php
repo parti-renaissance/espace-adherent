@@ -371,7 +371,9 @@ class LoadTimelineData extends AbstractFixture
                 }, $metadatas['profiles']),
                 array_map(function (string $themeReference) {
                     return $this->getReference($themeReference);
-                }, $metadatas['themes'])
+                }, $metadatas['themes']),
+                null,
+                true
             );
 
             $measure->addTranslation(new MeasureTranslation('fr', $metadatas['title']['fr']));
