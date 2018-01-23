@@ -51,24 +51,24 @@ class TimelineImageFactory
 
         $imagePath = sprintf('%s/images/transformer-social-media-%s.png', $this->webDirectory, $locale);
 
-        if (!$image = $this->createImageFromPng($imagePath)) {
+        if (!$image = self::createImageFromPng($imagePath)) {
             throw new \InvalidArgumentException("Image template does not exist for locale \"$locale\".");
         }
 
         $this->drawTexts($image, $counts, $locale);
-        $this->drawChart($image, $counts);
+        self::drawChart($image, $counts);
 
         return $this->saveImage($image);
     }
 
     private function drawTexts($image, array $counts, string $locale): void
     {
-        $textColor = $this->createColor($image, 255, 255, 255);
+        $textColor = self::createColor($image, 255, 255, 255);
         $boldFont = $this->getFontPath(self::TEXT_FONT_BOLD);
         $regularFont = $this->getFontPath(self::TEXT_FONT_REGULAR);
 
         foreach ($counts as $status => $count) {
-            $this->drawText(
+            self::drawText(
                 $image,
                 $count,
                 $textColor,
@@ -78,7 +78,7 @@ class TimelineImageFactory
                 self::TEXTS_COORDINATES[$status]['y']
             );
 
-            $this->drawText(
+            self::drawText(
                 $image,
                 $this->translate(sprintf('timeline.measure.status.%s', strtolower($status)), $locale),
                 $textColor,
@@ -90,12 +90,12 @@ class TimelineImageFactory
         }
     }
 
-    private function drawChartArc($image, int $radius, int $start, int $end, int $color): void
+    private static function drawChartArc($image, int $radius, int $start, int $end, int $color): void
     {
-        $this->drawArc($image, self::CHART['center']['x'], self::CHART['center']['y'], $radius, $start, $end, $color);
+        self::drawArc($image, self::CHART['center']['x'], self::CHART['center']['y'], $radius, $start, $end, $color);
     }
 
-    private function drawChart($image, array $counts): void
+    private static function drawChart($image, array $counts): void
     {
         $total = array_sum($counts);
 
@@ -103,13 +103,13 @@ class TimelineImageFactory
         $color1end = $color1start + ($counts[Measure::STATUS_DONE] / $total) * 360;
         $color2end = $color1end + ($counts[Measure::STATUS_IN_PROGRESS] / $total) * 360;
 
-        $color1 = $this->createColor($image, 255, 234, 0);
-        $color2 = $this->createColor($image, 189, 182, 81);
-        $background = $this->createColor($image, 113, 129, 255);
+        $color1 = self::createColor($image, 255, 234, 0);
+        $color2 = self::createColor($image, 189, 182, 81);
+        $background = self::createColor($image, 113, 129, 255);
 
-        $this->drawChartArc($image, self::CHART['outerRadius'], $color1end, $color2end, $color2);
-        $this->drawChartArc($image, self::CHART['outerRadius'], $color1start, $color1end, $color1);
-        $this->drawChartArc($image, self::CHART['innerRadius'], 0, 360, $background);
+        self::drawChartArc($image, self::CHART['outerRadius'], $color1end, $color2end, $color2);
+        self::drawChartArc($image, self::CHART['outerRadius'], $color1start, $color1end, $color1);
+        self::drawChartArc($image, self::CHART['innerRadius'], 0, 360, $background);
     }
 
     private function getFontPath(string $fontName): string
@@ -131,7 +131,7 @@ class TimelineImageFactory
         return $this->translator->trans($id, [], 'messages', $locale);
     }
 
-    private function createImageFromPng(string $path)
+    private static function createImageFromPng(string $path)
     {
         return imagecreatefrompng($path);
     }
@@ -144,17 +144,17 @@ class TimelineImageFactory
         return $path;
     }
 
-    private function createColor($image, int $red, int $green, int $blue): int
+    private static function createColor($image, int $red, int $green, int $blue): int
     {
         return imagecolorallocate($image, $red, $green, $blue);
     }
 
-    private function drawText($image, string $text, int $color, string $font, int $size, int $x, int $y): void
+    private static function drawText($image, string $text, int $color, string $font, int $size, int $x, int $y): void
     {
         imagettftext($image, $size, 0, $x, $y, $color, $font, $text);
     }
 
-    private function drawArc($image, int $x, int $y, int $radius, int $start, int $end, int $color): void
+    private static function drawArc($image, int $x, int $y, int $radius, int $start, int $end, int $color): void
     {
         imagefilledarc($image, $x, $y, $radius, $radius, $start, $end, $color, IMG_ARC_PIE);
     }
