@@ -35,7 +35,8 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
       "token_type":"Bearer",
       "expires_in":@integer@,
       "access_token":"@string@",
-      "grant_types": ["client_credentials"]
+      "grant_types": ["client_credentials"],
+      "scopes": ["read:users"]
     }
     """
 
