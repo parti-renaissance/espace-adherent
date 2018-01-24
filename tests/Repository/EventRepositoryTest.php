@@ -6,13 +6,15 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Repository\EventRepository;
+use AppBundle\Search\SearchParametersFilter;
+use Symfony\Component\HttpFoundation\Request;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Tests\AppBundle\MysqlWebTestCase;
 
 /**
  * @group functional
  */
-class EventRepositoryTest extends SqliteWebTestCase
+class EventRepositoryTest extends MysqlWebTestCase
 {
     /**
      * @var EventRepository
@@ -36,17 +38,43 @@ class EventRepositoryTest extends SqliteWebTestCase
         $this->assertSame(8, $this->repository->countUpcomingEvents());
     }
 
+    public function testSearchAllEvents()
+    {
+        $query = [
+            'q' => '',
+            'r' => '150',
+            'c' => 'paris',
+            't' => 'events',
+        ];
+        $request = new Request($query);
+        $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
+
+        $this->assertSame(4, count($this->repository->searchAllEvents($search)));
+
+        $query = [
+            'q' => '',
+            'r' => '150',
+            'c' => 'paris',
+            't' => 'events',
+            'offset' => '0',
+            'ec' => $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']),
+        ];
+        $request = new Request($query);
+        $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
+
+        $this->assertSame(1, count($this->repository->searchAllEvents($search)));
+    }
+
     protected function setUp()
     {
         parent::setUp();
 
-        $this->loadFixtures([
+        $this->init([
             LoadAdherentData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,
         ]);
 
-        $this->container = $this->getContainer();
         $this->repository = $this->getEventRepository();
     }
 
@@ -55,7 +83,6 @@ class EventRepositoryTest extends SqliteWebTestCase
         $this->loadFixtures([]);
 
         $this->repository = null;
-        $this->container = null;
 
         parent::tearDown();
     }
