@@ -26,7 +26,7 @@ class CitizenProjectRuntime
         $this->projectAuthority = $projectAuthority;
     }
 
-    public function isProjectAdministrator(CitizenProject $citizenProject): bool
+    public function isAdministratorOf(CitizenProject $citizenProject): bool
     {
         return $this->authorizationChecker->isGranted(CitizenProjectPermissions::ADMINISTRATE, $citizenProject);
     }
