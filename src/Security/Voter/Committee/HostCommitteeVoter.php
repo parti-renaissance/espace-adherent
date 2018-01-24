@@ -9,6 +9,9 @@ use AppBundle\Security\Voter\AbstractAdherentVoter;
 
 class HostCommitteeVoter extends AbstractAdherentVoter
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function supports($attribute, $committee)
     {
         return CommitteePermissions::HOST === $attribute && $committee instanceof Committee;

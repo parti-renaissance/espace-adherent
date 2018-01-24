@@ -53,7 +53,7 @@ class CitizenProjectManager
      * @param Adherent             $coordinator
      * @param CitizenProjectFilter $filter
      *
-     * @return CitizenProject
+     * @return CitizenProject[]
      */
     public function getCoordinatorCitizenProjects(Adherent $coordinator, CitizenProjectFilter $filter): array
     {

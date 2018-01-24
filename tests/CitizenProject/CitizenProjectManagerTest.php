@@ -109,8 +109,8 @@ class CitizenProjectManagerTest extends MysqlWebTestCase
         $this->citizenProjectManager = new CitizenProjectManager(
             $this->getManagerRegistry(),
             $this->getStorage(),
-            $this->createMock(CitizenProjectAuthority::class))
-        ;
+            $this->createMock(CitizenProjectAuthority::class)
+        );
     }
 
     protected function tearDown()

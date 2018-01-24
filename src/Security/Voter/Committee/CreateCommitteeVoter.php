@@ -17,6 +17,9 @@ class CreateCommitteeVoter extends AbstractAdherentVoter
         $this->repository = $repository;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function supports($attribute, $subject)
     {
         return CommitteePermissions::CREATE === $attribute && null === $subject;
@@ -24,7 +27,7 @@ class CreateCommitteeVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        // Cannot create a project when referent or already host one
+        // Cannot create a committee when referent or already host one
         return !$adherent->isReferent()
             && !$adherent->isHost()
             && !$this->repository->hasCommitteeInStatus($adherent, Committee::STATUSES_NOT_ALLOWED_TO_CREATE_ANOTHER)

@@ -9,6 +9,9 @@ use AppBundle\Security\Voter\AbstractAdherentVoter;
 
 class SuperviseCommitteeVoter extends AbstractAdherentVoter
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function supports($attribute, $subject): bool
     {
         return CommitteePermissions::SUPERVISE === $attribute && $subject instanceof Committee;

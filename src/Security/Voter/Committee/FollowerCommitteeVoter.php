@@ -17,6 +17,9 @@ class FollowerCommitteeVoter extends AbstractAdherentVoter
         $this->repository = $repository;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function supports($attribute, $subject)
     {
         return $subject instanceof Committee

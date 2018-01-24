@@ -30,6 +30,9 @@ class AttendEventVoter extends AbstractAdherentVoter
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         if ((EventPermissions::REGISTER === $attribute || CitizenActionPermissions::REGISTER === $attribute)

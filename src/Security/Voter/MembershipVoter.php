@@ -7,6 +7,9 @@ use AppBundle\Entity\Adherent;
 
 class MembershipVoter extends AbstractAdherentVoter
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function supports($attribute, $subject)
     {
         return MembershipPermissions::UNREGISTER === $attribute && null === $subject;

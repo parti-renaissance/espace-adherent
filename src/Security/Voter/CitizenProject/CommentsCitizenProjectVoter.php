@@ -10,6 +10,9 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class CommentsCitizenProjectVoter extends AbstractAdherentVoter
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function supports($attribute, $citizenProject)
     {
         return $citizenProject instanceof CitizenProject
