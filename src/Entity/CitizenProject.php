@@ -94,14 +94,14 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     /**
      * @var Skill[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\CitizenProjectSkill", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\CitizenProjectSkill")
      * @ORM\JoinTable(
      *     name="citizen_projects_skills",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="citizen_project_id", referencedColumnName="id")
+     *         @ORM\JoinColumn(name="citizen_project_id", referencedColumnName="id", onDelete="CASCADE")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="citizen_project_skill_id", referencedColumnName="id")
+     *         @ORM\JoinColumn(name="citizen_project_skill_id", referencedColumnName="id", onDelete="CASCADE")
      *     }
      * )
      */
