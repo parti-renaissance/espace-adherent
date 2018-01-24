@@ -9,6 +9,7 @@ use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Security\Voter\AbstractAdherentVoter;
 use AppBundle\Security\Voter\Committee\FollowerCommitteeVoter;
+use Ramsey\Uuid\UuidInterface;
 use Tests\AppBundle\Security\Voter\AbstractAdherentVoterTest;
 
 class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
@@ -198,28 +199,39 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
      */
     private function getCommitteeMock(bool $approved = null): Committee
     {
-        $project = $this->createMock(Committee::class);
+        $committee = $this->createMock(Committee::class);
 
         if (null !== $approved) {
-            $project->expects($this->once())
+            $committee->expects($this->once())
                 ->method('isApproved')
                 ->willReturn($approved)
             ;
         } else {
-            $project->expects($this->never())
+            $committee->expects($this->never())
                 ->method('isApproved')
             ;
         }
 
-        return $project;
+        $uuid = $this->createMock(UuidInterface::class);
+        $uuid->expects($this->any())
+            ->method('toString')
+            ->willReturn('test')
+        ;
+
+        $committee->expects($this->any())
+            ->method('getUuid')
+            ->willReturn($uuid)
+        ;
+
+        return $committee;
     }
 
-    private function assertRepositoryBehavior(?bool $manyHost, Committee $committee = null): void
+    private function assertRepositoryBehavior(?bool $manyHost): void
     {
         if (null !== $manyHost) {
             $this->membershipRepository->expects($this->once())
                 ->method('countHostMembers')
-                ->with($committee)
+                ->with($this->isType('string'))
                 ->willReturn($manyHost ? 2 : 1)
             ;
         } else {

@@ -26,7 +26,7 @@ class CreateCitizenProjectVoter extends AbstractAdherentVoter
     {
         // Cannot create a project when referent or already administrate one
         return !$adherent->isReferent()
-            && !$adherent->isProjectAdministrator()
+            && !$adherent->isCitizenProjectAdministrator()
             && !$this->projectRepository->hasCitizenProjectInStatus($adherent, CitizenProject::STATUSES_NOT_ALLOWED_TO_CREATE)
         ;
     }

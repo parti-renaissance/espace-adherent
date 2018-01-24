@@ -92,11 +92,11 @@ class CreateCitizenProjectVoterTest extends AbstractAdherentVoterTest
 
         if ($isReferent) {
             $adherent->expects($this->never())
-                ->method('isProjectAdministrator')
+                ->method('isCitizenProjectAdministrator')
             ;
         } else {
             $adherent->expects($this->once())
-                ->method('isProjectAdministrator')
+                ->method('isCitizenProjectAdministrator')
                 ->willReturn($isAdministrator)
             ;
         }

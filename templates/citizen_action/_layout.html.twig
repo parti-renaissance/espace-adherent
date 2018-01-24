@@ -2,7 +2,7 @@
 
 {% block banner '' %}
 
-{% set is_administrator = is_project_administrator(citizen_action.citizenProject) %}
+{% set is_administrator = is_citizen_project_administrator(citizen_action.citizenProject) %}
 
 {% block javascripts %}
     {{ parent() }}

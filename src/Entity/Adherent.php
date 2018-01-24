@@ -282,8 +282,8 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
             $roles[] = 'ROLE_BOARD_MEMBER';
         }
 
-        if ($this->isProjectAdministrator()) {
-            $roles[] = 'ROLE_PROJECT_ADMINISTRATOR';
+        if ($this->isCitizenProjectAdministrator()) {
+            $roles[] = 'ROLE_CITIZEN_PROJECT_ADMINISTRATOR';
         }
 
         return $roles;
@@ -304,7 +304,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function hasAdvancedPrivileges(): bool
     {
-        return $this->isReferent() || $this->isCoordinator() || $this->isProcurationManager() || $this->isHost() || $this->isProjectAdministrator() || $this->isBoardMember();
+        return $this->isReferent() || $this->isCoordinator() || $this->isProcurationManager() || $this->isHost() || $this->isCitizenProjectAdministrator() || $this->isBoardMember();
     }
 
     public function getPassword(): string
@@ -862,7 +862,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $membership->canHostCommittee();
     }
 
-    public function isProjectAdministrator(): bool
+    public function isCitizenProjectAdministrator(): bool
     {
         return $this->getCitizenProjectMemberships()->countCitizenProjectAdministratorMemberships() >= 1;
     }

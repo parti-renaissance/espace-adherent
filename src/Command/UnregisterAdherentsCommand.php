@@ -138,7 +138,7 @@ class UnregisterAdherentsCommand extends ContainerAwareCommand
                     continue;
                 }
 
-                if ($adherent->isProjectAdministrator()) {
+                if ($adherent->isCitizenProjectAdministrator()) {
                     $this->citizenProjectAdministrators[] = $email;
 
                     continue;
