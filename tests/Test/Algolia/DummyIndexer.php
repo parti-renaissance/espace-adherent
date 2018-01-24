@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Test\Algolia;
 
 use Algolia\AlgoliaSearchBundle\Indexer\Indexer;
+use Doctrine\ORM\EntityManager;
 
 class DummyIndexer extends Indexer
 {
@@ -48,5 +49,14 @@ class DummyIndexer extends Indexer
     {
         $this->entitiesToIndex = [];
         $this->entitiesToUnIndex = [];
+    }
+
+    public function getManualIndexer(EntityManager $em)
+    {
+        return new DummyManualIndexer($this, $em);
+    }
+
+    public function setIndexSettings($indexName, array $settings, array $options = [])
+    {
     }
 }

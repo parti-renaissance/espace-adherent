@@ -2,75 +2,77 @@
 
 namespace AppBundle\Command;
 
-use Algolia\AlgoliaSearchBundle\Indexer\ManualIndexer;
+use AppBundle\Algolia\ManualIndexer;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Clarification;
 use AppBundle\Entity\CustomSearchResult;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Proposal;
-use Doctrine\ORM\EntityManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use AppBundle\Entity\Timeline\Measure;
+use AppBundle\Entity\Timeline\Profile;
+use AppBundle\Entity\Timeline\Theme;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AlgoliaSynchronizeCommand extends ContainerAwareCommand
+class AlgoliaSynchronizeCommand extends Command
 {
-    const ENTITIES_TO_INDEX = [
+    public const COMMAND_NAME = 'app:algolia:synchronize';
+
+    protected const ENTITIES_TO_INDEX = [
         Article::class,
         Proposal::class,
         Clarification::class,
         CustomSearchResult::class,
         Event::class,
+        Profile::class,
+        Theme::class,
+        Measure::class,
     ];
 
-    /**
-     * @var EntityManager
-     */
+    private $algolia;
     private $manager;
 
-    /**
-     * @var ManualIndexer
-     */
-    private $indexer;
+    public function __construct(ManualIndexer $algolia, EntityManagerInterface $manager)
+    {
+        $this->algolia = $algolia;
+        $this->manager = $manager;
+
+        $filters = $this->manager->getFilters();
+
+        if ($filters->isEnabled('oneLocale')) {
+            $filters->disable('oneLocale');
+        }
+
+        parent::__construct();
+    }
 
     protected function configure()
     {
         $this
-            ->setName('app:algolia:synchronize')
+            ->setName(self::COMMAND_NAME)
             ->addArgument('entityName', InputArgument::OPTIONAL, 'Which type of entity do you want to reindex? If not set, all is assumed.')
-            ->setDescription('Synchronize')
+            ->setDescription('Synchronize indices on Algolia')
         ;
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $algolia = $this->getContainer()->get('algolia.indexer');
-
-        $this->manager = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $this->manager->getFilters()->disable('oneLocale');
-
-        $this->indexer = $algolia->getManualIndexer($this->manager);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $entityNameToIndex = $input->getArgument('entityName');
-        $toIndex = $entityNameToIndex ? [$this->manager->getRepository($entityNameToIndex)->getClassName()] : self::ENTITIES_TO_INDEX;
-
-        foreach ($toIndex as $entity) {
-            $output->write('Synchronizing entity '.$entity.' ... ');
-            $nbIndexes = $this->synchronizeEntity($entity);
-            $output->writeln('done, '.$nbIndexes.' records indexed');
+        foreach ($this->getEntitiesToIndex($input->getArgument('entityName')) as $entity) {
+            $output->write("Synchronizing entity $entity ... ");
+            $nbIndexes = $this->algolia->reIndex($entity);
+            $output->writeln("done, $nbIndexes records indexed");
         }
     }
 
-    private function synchronizeEntity($className)
+    private function getEntitiesToIndex(?string $entityName): array
     {
-        return (int) $this->indexer->reIndex($className, [
-            'batchSize' => 3000,
-            'safe' => true,
-            'clearEntityManager' => true,
-        ]);
+        if ($entityName) {
+            return [$this->manager->getRepository($entityName)->getClassName()];
+        }
+
+        return static::ENTITIES_TO_INDEX;
     }
 }
