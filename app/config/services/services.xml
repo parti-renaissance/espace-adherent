@@ -3,79 +3,79 @@
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-	<services>
-		<defaults autowire="true" autoconfigure="true" public="false" />
+    <services>
+        <defaults autowire="true" autoconfigure="true" public="false" />
 
-		<!-- Adherents -->
-		<service id="AppBundle\Membership\AdherentManager" />
-		<service id="AppBundle\Membership\AdherentRegistry" public="true" />
+        <!-- Adherents -->
+        <service id="AppBundle\Membership\AdherentManager" />
+        <service id="AppBundle\Membership\AdherentRegistry" public="true" />
 
-		<!-- Algolia -->
-		<service id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
-		<service id="AppBundle\Algolia\ManualIndexer" />
-		<service id="AppBundle\Command\AlgoliaSynchronizeCommand" />
+        <!-- Algolia -->
+        <service id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
+        <service id="AppBundle\Algolia\ManualIndexer" />
+        <service id="AppBundle\Command\AlgoliaSynchronizeCommand" />
 
-		<!-- CitizenProject -->
-		<service id="AppBundle\CitizenProject\CitizenProjectAuthority" />
+        <!-- CitizenProject -->
+        <service id="AppBundle\CitizenProject\CitizenProjectAuthority" />
         <service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true">
             <argument key="$mailer" type="service" id="app.mailer.transactional"/>
         </service>
-		<service id="AppBundle\CitizenProject\CitizenProjectManager">
-			<call method="setGlide">
-				<argument type="service" id="app.glide" />
-			</call>
-		</service>
+        <service id="AppBundle\CitizenProject\CitizenProjectManager">
+            <call method="setGlide">
+                <argument type="service" id="app.glide" />
+            </call>
+        </service>
 
-		<!-- Controller -->
-		<prototype namespace="AppBundle\Controller\" resource="../../../src/Controller/">
-			<tag name="controller.service_arguments" />
-		</prototype>
-		<prototype namespace="AppBundle\Controller\Admin\" resource="../../../src/Controller/Admin" public="true">
-			<tag name="controller.service_arguments" />
-		</prototype>
+        <!-- Controller -->
+        <prototype namespace="AppBundle\Controller\" resource="../../../src/Controller/">
+            <tag name="controller.service_arguments" />
+        </prototype>
+        <prototype namespace="AppBundle\Controller\Admin\" resource="../../../src/Controller/Admin" public="true">
+            <tag name="controller.service_arguments" />
+        </prototype>
 
         <!-- Event -->
         <service id="AppBundle\Event\EventRegistrationSubscriber" >
             <argument type="service" id="app.mailer.transactional" />
         </service>
 
-		<!-- EventListener -->
-		<service id="AppBundle\EventListener\ProcurationMailerSubscriber">
-			<argument key="$mailer" type="service" id="app.mailer.transactional" />
-		</service>
-		<service id="AppBundle\EventListener\RegistrationCompletedSubscriber">
-			<argument type="service" id="old_sound_rabbit_mq.enmarche_sync_user_create_producer" />
-		</service>
+        <!-- EventListener -->
+        <service id="AppBundle\EventListener\ProcurationMailerSubscriber">
+            <argument key="$mailer" type="service" id="app.mailer.transactional" />
+        </service>
+        <service id="AppBundle\EventListener\RegistrationCompletedSubscriber">
+            <argument type="service" id="old_sound_rabbit_mq.enmarche_sync_user_create_producer" />
+        </service>
 
         <!-- Form -->
         <service id="AppBundle\Form\CitizenProjectCommentCommandType"/>
         <service id="AppBundle\Form\CitizenProjectCommandType"/>
-		<service id="AppBundle\Form\EventRegistrationType"/>
+        <service id="AppBundle\Form\EventRegistrationType"/>
 
-		<!-- Procuration -->
-		<service id="AppBundle\Procuration\ProcurationManager" public="true" />
-		<service id="AppBundle\Procuration\ProcurationRequestSerializer" />
-		<service id="AppBundle\Procuration\ProcurationSession" />
+        <!-- Procuration -->
+        <service id="AppBundle\Procuration\ProcurationManager" public="true" />
+        <service id="AppBundle\Procuration\ProcurationRequestSerializer" />
+        <service id="AppBundle\Procuration\ProcurationSession" />
 
-		<!-- Report -->
-		<service id="AppBundle\Report\ReportManager" />
-		<service id="AppBundle\Form\ReportCommandType"/>
-		<service id="AppBundle\Report\ReportCreationCommandHandler"/>
+        <!-- Report -->
+        <service id="AppBundle\Report\ReportManager" />
+        <service id="AppBundle\Form\ReportCommandType"/>
+        <service id="AppBundle\Report\ReportCreationCommandHandler"/>
 
-		<!-- Security -->
-		<prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter" />
+        <!-- Security -->
+        <prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter" />
 
-		<!-- Timeline -->
-		<service id="AppBundle\Command\TimelineImportCommand" />
-		<service id="AppBundle\Command\TimelineSynchronizeCommand" />
-		<service id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener">
-			<argument>%locales%</argument>
-			<argument>%locale%</argument>
-		</service>
-		<service id="AppBundle\Timeline\TimelineFactory" />
-		<service id="AppBundle\Timeline\TimelineImageFactory" public="true">
-			<argument key="$cacheDirectory">%kernel.cache_dir%</argument>
-			<argument key="$webDirectory">%kernel.root_dir%/../web</argument>
-		</service>
-	</services>
+        <!-- Timeline -->
+        <service id="AppBundle\Command\TimelineImportCommand" />
+        <service id="AppBundle\Command\TimelineSynchronizeCommand" />
+        <service id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener">
+            <argument>%locales%</argument>
+            <argument>%locale%</argument>
+        </service>
+        <service id="AppBundle\Timeline\TimelineFactory" />
+        <service id="AppBundle\Timeline\TimelineImageFactory" public="true">
+            <argument key="$cacheDirectory">%kernel.cache_dir%</argument>
+            <argument key="$webDirectory">%kernel.root_dir%/../web</argument>
+        </service>
+    </services>
 </container>
