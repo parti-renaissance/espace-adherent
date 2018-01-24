@@ -71,6 +71,7 @@ class OAuthServerController extends Controller
         return $this->render('oauth/authorize.html.twig', [
             'authorization_form' => $form->createView(),
             'client' => $client,
+            'scopes' => $authRequest->getScopes(),
         ]);
     }
 
@@ -102,7 +103,7 @@ class OAuthServerController extends Controller
         }
 
         try {
-            $resourceServer->validateAuthenticatedRequest($request->withAddedHeader('Authorization', 'Bearer '.$accessToken));
+            $oauthRequest = $resourceServer->validateAuthenticatedRequest($request->withAddedHeader('Authorization', 'Bearer '.$accessToken));
         } catch (OAuthServerException $e) {
             return $e->generateHttpResponse(new Response());
         }
@@ -115,6 +116,7 @@ class OAuthServerController extends Controller
             'expires_in' => $accessTokenObject->getClaim('exp') - time(),
             'access_token' => $accessToken,
             'grant_types' => $client->getAllowedGrantTypes(),
+            'scopes' => $oauthRequest->getAttribute('oauth_scopes'),
         ]);
     }
 }

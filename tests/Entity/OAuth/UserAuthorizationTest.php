@@ -25,7 +25,7 @@ class UserAuthorizationTest extends TestCase
     public function testSupportsScopes(): void
     {
         $authorization = $this->createUserAuthorization();
-        $scopes = [new Scope('public')];
+        $scopes = [Scope::READ_USERS()];
 
         static::assertFalse($authorization->supportsScopes($scopes));
         $authorization->setScopes($scopes);

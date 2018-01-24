@@ -4,6 +4,7 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\OAuth\Client;
 use AppBundle\OAuth\Model\GrantTypeEnum;
+use AppBundle\OAuth\Model\Scope;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -28,7 +29,6 @@ class LoadClientData extends AbstractFixture implements FixtureInterface
             [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
             ['http://client-oauth.docker:8000/client/receive_authcode', 'https://en-marche.fr/callback']
         );
-        $client1->addSupportedScope('user_profile');
         $manager->persist($client1);
 
         $client2 = new Client(
@@ -39,7 +39,6 @@ class LoadClientData extends AbstractFixture implements FixtureInterface
             [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
             ['http://client-oauth.docker:8000/client/receive_authcode']
         );
-        $client2->addSupportedScope('user_profile');
         $client2->setAskUserForAuthorization(false);
         $manager->persist($client2);
 
@@ -50,7 +49,7 @@ class LoadClientData extends AbstractFixture implements FixtureInterface
             'dALH/khq9BcjOS0GB6u5NaJ3R9k2yvSBq5wYUHx1omA=',
             [GrantTypeEnum::CLIENT_CREDENTIALS]
         );
-        $client3->addSupportedScope('public');
+        $client3->addSupportedScope(Scope::READ_USERS);
         $manager->persist($client3);
 
         $manager->flush();

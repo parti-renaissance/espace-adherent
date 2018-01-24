@@ -22,7 +22,6 @@ class PersistentTokenFactory
     private $accessTokenRepository;
     private $clientRepository;
     private $adherentRepository;
-    private $defaultGrantedScopes;
 
     public function __construct(
         AccessTokenRepository $accessTokenRepository,
@@ -32,7 +31,6 @@ class PersistentTokenFactory
         $this->accessTokenRepository = $accessTokenRepository;
         $this->clientRepository = $clientRepository;
         $this->adherentRepository = $adherentRepository;
-        $this->defaultGrantedScopes = ['public'];
     }
 
     public function createAccessToken(AccessTokenEntityInterface $token): AccessToken
@@ -49,7 +47,7 @@ class PersistentTokenFactory
             $client
         );
 
-        $accessToken->addScopes(array_merge($this->defaultGrantedScopes, $this->extractScopes($token)));
+        $accessToken->addScopes($this->extractScopes($token));
 
         return $accessToken;
     }
@@ -91,7 +89,7 @@ class PersistentTokenFactory
             $client
         );
 
-        $authCode->addScopes(array_merge($this->defaultGrantedScopes, $this->extractScopes($token)));
+        $authCode->addScopes($this->extractScopes($token));
 
         return $authCode;
     }

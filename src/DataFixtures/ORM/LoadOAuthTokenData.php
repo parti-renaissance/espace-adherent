@@ -59,7 +59,6 @@ class LoadOAuthTokenData extends AbstractFixture implements DependentFixtureInte
             LoadClientData::CLIENT_01_UUID,
             '2017-08-03 16:06:11'
         );
-        $accessToken1->addScope('public');
 
         $accessToken2 = $this->createAccessToken(
             '4c843038f3d1ba017e6c835420efeefd03c024d9f413ecf96bc70acbdcb79e8ae0598a1579364190',
@@ -67,7 +66,6 @@ class LoadOAuthTokenData extends AbstractFixture implements DependentFixtureInte
             LoadClientData::CLIENT_01_UUID,
             '+10 minutes'
         );
-        $accessToken2->addScope('public');
         $accessToken2->revoke();
 
         $refreshToken1 = $this->createRefreshToken(

@@ -22,17 +22,17 @@ class OAuthAuthorizationManagerTest extends TestCase
         $this->userAuthorizationRepository->expects($this->never())->method($this->anything());
 
         static::assertFalse(
-            $userAuthorizationManager->isAuthorized($this->createUser(), $this->createClient(), [new Scope('Not Allowed')])
+            $userAuthorizationManager->isAuthorized($this->createUser(), $this->createClient(), [Scope::WRITE_USERS()])
         );
         static::assertFalse( // Test with Client allowed not to ask for user authorization
-            $userAuthorizationManager->isAuthorized($this->createUser(), $this->createClient(false), [new Scope('Not Allowed')])
+            $userAuthorizationManager->isAuthorized($this->createUser(), $this->createClient(false), [Scope::WRITE_USERS()])
         );
     }
 
     public function testIsAuthorizedReturnTrueWhenClientScopesAndUserAuthorizationScopesAreValid(): void
     {
         $userAuthorizationManager = $this->createOAuthAuthorizationManager();
-        $scopes = [new Scope('public')];
+        $scopes = [Scope::READ_USERS()];
         $user = $this->createUser();
         $client = $this->createClient();
 
@@ -54,7 +54,7 @@ class OAuthAuthorizationManagerTest extends TestCase
         $this->userAuthorizationRepository->expects($this->never())->method($this->anything());
 
         static::assertTrue(
-            $userAuthorizationManager->isAuthorized($this->createUser(), $this->createClient(false), [new Scope('public')])
+            $userAuthorizationManager->isAuthorized($this->createUser(), $this->createClient(false), [Scope::READ_USERS()])
         );
     }
 
@@ -68,10 +68,10 @@ class OAuthAuthorizationManagerTest extends TestCase
             ->expects($this->once())
             ->method('findByUserAndClient')
             ->with($user, $client)
-            ->willReturn($this->createUserAuthorization($user, $client, [new Scope('scope1')]));
+            ->willReturn($this->createUserAuthorization($user, $client, [Scope::WRITE_USERS()]));
 
         static::assertFalse(
-            $userAuthorizationManager->isAuthorized($user, $client, [new Scope('public')])
+            $userAuthorizationManager->isAuthorized($user, $client, [Scope::READ_USERS()])
         );
     }
 
@@ -85,14 +85,14 @@ class OAuthAuthorizationManagerTest extends TestCase
             ->expects($this->once())
             ->method('findByUserAndClient')
             ->with($user, $client)
-            ->willReturn($userAuthorization = $this->createUserAuthorization($user, $client, [new Scope('public')]));
+            ->willReturn($userAuthorization = $this->createUserAuthorization($user, $client, [Scope::READ_USERS()]));
 
         $this->userAuthorizationRepository
             ->expects($this->once())
             ->method('save')
             ->with($userAuthorization);
 
-        $scopes = [new Scope('scope1'), new Scope('scope2')];
+        $scopes = [Scope::READ_USERS(), Scope::WRITE_USERS()];
         $userAuthorizationManager->record($user, $client, $scopes);
         static::assertTrue($userAuthorization->supportsScopes($scopes));
     }
@@ -113,7 +113,7 @@ class OAuthAuthorizationManagerTest extends TestCase
             ->expects($this->once())
             ->method('save');
 
-        $userAuthorizationManager->record($user, $client, [new Scope('scope2')]);
+        $userAuthorizationManager->record($user, $client, [Scope::READ_USERS()]);
     }
 
     public function testRecordDoesNotPersistUserAuthorizationWhenClientIsAllowedNotToAskUserAuthorization(): void
@@ -128,7 +128,7 @@ class OAuthAuthorizationManagerTest extends TestCase
             ->expects($this->never())
             ->method('save');
 
-        $userAuthorizationManager->record($this->createUser(), $this->createClient(false), [new Scope('scope2')]);
+        $userAuthorizationManager->record($this->createUser(), $this->createClient(false), [Scope::WRITE_USERS()]);
     }
 
     private function createUser(): Adherent
@@ -139,7 +139,7 @@ class OAuthAuthorizationManagerTest extends TestCase
     private function createClient(bool $askForUserAuthorization = true): Client
     {
         $client = new Client();
-        $client->addSupportedScope('public');
+        $client->addSupportedScope(Scope::READ_USERS);
         $client->setAskUserForAuthorization($askForUserAuthorization);
 
         return $client;
@@ -154,6 +154,6 @@ class OAuthAuthorizationManagerTest extends TestCase
 
     private function createUserAuthorization(Adherent $user, Client $client, array $scopes = [])
     {
-        return new UserAuthorization(null, $user, $client, $scopes ?: [new Scope('public')]);
+        return new UserAuthorization(null, $user, $client, $scopes ?: [Scope::READ_USERS()]);
     }
 }
