@@ -65,15 +65,18 @@
         <h1 class="space--20-0 b__nudge--top-40">À propos</h1>
 
         <div class="text--body text--dark" id="citizen-project-problem-description">
-            <p>{{ citizen_project.problemDescription }}</p>
+            <p class="text--bold">Le problème</p>
+            <p>{{ citizen_project.problemDescription|nl2br }}</p>
         </div>
 
         <div class="text--body text--dark" id="citizen-project-proposed-solution">
+            <p class="text--bold">Notre projet</p>
             <p>{{ citizen_project.proposedSolution|raw }}</p>
         </div>
 
         <div class="text--body text--dark" id="citizen-project-required-means">
-            <p>{{ citizen_project.requiredMeans }}</p>
+            <p class="text--bold">Les actions à lancer</p>
+            <p>{{ citizen_project.requiredMeans|nl2br }}</p>
         </div>
 
         <ul id="citizen-project-menu" class="citizen-project__menu list__links list__links--left list__links--row">

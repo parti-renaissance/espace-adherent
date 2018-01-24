@@ -161,7 +161,6 @@ class CitizenProjectAdmin extends AbstractAdmin
                 ->add('requiredMeans', null, [
                     'label' => 'Feuille de route',
                     'filter_emojis' => true,
-                    'purify_html' => true,
                 ])
                 ->add('skills', EntityType::class, [
                     'class' => CitizenProjectSkill::class,
