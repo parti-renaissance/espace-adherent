@@ -24,6 +24,10 @@
         }
     }
 
+    ul {
+        list-style-type: disc;
+    }
+
     .flash {
         padding: 20px 30px;
 
@@ -53,10 +57,10 @@
         width: 1px;
     }
 
-    h1 {
+    h1, h2 {
         @include text--normal-oauth;
         color: $text--gray;
-        margin: 12px auto 35px;
+        margin: 0 auto 35px;
     }
 
     .text {
@@ -68,8 +72,7 @@
             font-style: italic;
             letter-spacing: -1.2px;
             line-height: 1.15;
-            margin-top: 20px;
-            margin-right: 0;
+            margin: 20px 0;
         }
 
         &--gray {

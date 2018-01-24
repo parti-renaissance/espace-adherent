@@ -71,6 +71,7 @@ class OAuthServerController extends Controller
         return $this->render('oauth/authorize.html.twig', [
             'authorization_form' => $form->createView(),
             'client' => $client,
+            'scopes' => $authRequest->getScopes(),
         ]);
     }
 

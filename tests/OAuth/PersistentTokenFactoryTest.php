@@ -42,8 +42,8 @@ class PersistentTokenFactoryTest extends TestCase
         $token->setClient($this->createClient());
         $token->setUserIdentifier(self::USER_UUID);
         $token->setExpiryDateTime(new \DateTime('+5 hours'));
-        $token->addScope($this->createScope('manage_committees'));
-        $token->addScope($this->createScope('manage_events'));
+        $token->addScope($this->createScope('read:users'));
+        $token->addScope($this->createScope('write:users'));
         $token->setRedirectUri('https://app.foo-bar.com/oauth');
 
         $this
@@ -71,9 +71,8 @@ class PersistentTokenFactoryTest extends TestCase
         $this->assertSame($user, $authCode->getUser());
         $this->assertSame($client, $authCode->getClient());
         $this->assertSame('https://app.foo-bar.com/oauth', $authCode->getRedirectUri());
-        $this->assertTrue($authCode->hasScope('public'));
-        $this->assertTrue($authCode->hasScope('manage_committees'));
-        $this->assertTrue($authCode->hasScope('manage_events'));
+        $this->assertTrue($authCode->hasScope('read:users'));
+        $this->assertTrue($authCode->hasScope('write:users'));
     }
 
     public function testCreateAuthorizationCodeRedirectUriFallbackToClient(): void
@@ -82,8 +81,8 @@ class PersistentTokenFactoryTest extends TestCase
         $token->setClient($this->createClient());
         $token->setUserIdentifier(self::USER_UUID);
         $token->setExpiryDateTime(new \DateTime('+5 hours'));
-        $token->addScope($this->createScope('manage_committees'));
-        $token->addScope($this->createScope('manage_events'));
+        $token->addScope($this->createScope('read:users'));
+        $token->addScope($this->createScope('write:users'));
 
         $this
             ->adherentRepository
@@ -109,8 +108,8 @@ class PersistentTokenFactoryTest extends TestCase
         $token->setClient($this->createClient());
         $token->setUserIdentifier(self::USER_UUID);
         $token->setExpiryDateTime(new \DateTime('+5 hours'));
-        $token->addScope($this->createScope('manage_committees'));
-        $token->addScope($this->createScope('manage_events'));
+        $token->addScope($this->createScope('read:users'));
+        $token->addScope($this->createScope('write:users'));
 
         $this
             ->adherentRepository
@@ -137,8 +136,8 @@ class PersistentTokenFactoryTest extends TestCase
         $token->setClient($this->createClient());
         $token->setUserIdentifier(self::USER_UUID);
         $token->setExpiryDateTime($expectedDate = \DateTime::createFromFormat('U', time() + 5 * 60 * 60));
-        $token->addScope($this->createScope('manage_committees'));
-        $token->addScope($this->createScope('manage_events'));
+        $token->addScope($this->createScope('read:users'));
+        $token->addScope($this->createScope('write:users'));
 
         $this
             ->adherentRepository
@@ -164,9 +163,8 @@ class PersistentTokenFactoryTest extends TestCase
         $this->assertSame($expectedDate->format('U'), $accessToken->getExpiryDateTime()->format('U'));
         $this->assertSame($user, $accessToken->getUser());
         $this->assertSame($client, $accessToken->getClient());
-        $this->assertTrue($accessToken->hasScope('public'));
-        $this->assertTrue($accessToken->hasScope('manage_committees'));
-        $this->assertTrue($accessToken->hasScope('manage_events'));
+        $this->assertTrue($accessToken->hasScope('read:users'));
+        $this->assertTrue($accessToken->hasScope('write:users'));
     }
 
     /**

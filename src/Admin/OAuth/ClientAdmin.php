@@ -4,14 +4,13 @@ namespace AppBundle\Admin\OAuth;
 
 use AppBundle\OAuth\ClientManager;
 use AppBundle\OAuth\Form\GrantTypesType;
+use AppBundle\OAuth\Form\ScopesType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class ClientAdmin extends AbstractAdmin
@@ -43,6 +42,17 @@ class ClientAdmin extends AbstractAdmin
             ])
             ->add('description', null, [
                 'label' => 'Description',
+            ])
+            ->add('allowedGrantTypes', 'array', [
+                'label' => 'Grant Types OAuth2',
+                'template' => 'admin/oauth/client/_list_allowedGrantTypes.html.twig',
+            ])
+            ->add('askUserForAuthorization', null, [
+                'label' => 'Demander l\'autorisation de connexion sur cette application',
+            ])
+            ->add('supportedScopes', 'array', [
+                'label' => 'Scopes autorisés',
+                'template' => 'admin/oauth/client/_list_scopes.html.twig',
             ])
             ->add('_action', null, [
                 'actions' => [
@@ -83,6 +93,10 @@ class ClientAdmin extends AbstractAdmin
                     'label' => 'Grant Types OAuth2',
                     'template' => 'admin/oauth/client/_show_allowedGrantTypes.html.twig',
                 ])
+                ->add('supportedScopes', 'array', [
+                    'label' => 'Scopes autorisés',
+                    'template' => 'admin/oauth/client/_show_scopes.html.twig',
+                ])
                 ->add('uuid', null, [
                     'label' => 'Consumer Key (API Key)',
                 ])
@@ -96,19 +110,16 @@ class ClientAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('name', TextType::class, [
+            ->add('name', null, [
                 'label' => 'Nom',
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
             ])
-            ->add('askUserForAuthorization', ChoiceType::class, [
+            ->add('askUserForAuthorization', null, [
                 'label' => 'Demander l\'autorisation de connexion sur cette application',
-                'choices' => [
-                    'Oui' => true,
-                    'Non' => false,
-                ],
             ])
+            ->add('supportedScopes', ScopesType::class, ['error_bubbling' => false])
             ->add('allowedGrantTypes', GrantTypesType::class, ['error_bubbling' => false])
             ->add('redirectUris', CollectionType::class, [
                 'label' => 'Adresses de redirection',
@@ -119,11 +130,6 @@ class ClientAdmin extends AbstractAdmin
                 'error_bubbling' => false,
             ])
         ;
-    }
-
-    public function prePersist($object)
-    {
-        $object->addSupportedScope('user_profile');
     }
 
     public function delete($object)

@@ -168,6 +168,37 @@ class OAuthServerControllerTest extends MysqlWebTestCase
         static::assertSame('{"error":"invalid_request","message":"The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed.","hint":"Authorization code was not issued to this client"}', $response->getContent());
     }
 
+    public function testRequestAccessTokenWithUngrantedScope(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+
+        $crawler = $this->client->request(Request::METHOD_GET, $this->createAuthorizeUrl(['read:users']));
+        static::assertSame(
+            'Je me connecte à En-Marche ! avec mon compte En Marche.',
+            trim($crawler->filter('#auth-client-notice')->text())
+        );
+
+        $this->client->submit($crawler->selectButton('Accepter')->form());
+        $response = $this->client->getResponse();
+        static::assertTrue($response->isRedirect());
+        static::assertRegExp(self::AUTH_TOKEN_URI_REGEX, $location = $response->headers->get('Location'));
+        if (!preg_match(self::AUTH_TOKEN_URI_REGEX, $location, $matches)) {
+            throw new \RuntimeException('Unable to fetch the OAuth authorization token from the URI.');
+        }
+
+        $this->client->request('POST', '/oauth/v2/token', [
+            'client_id' => 'f80ce2df-af6d-4ce4-8239-04cfcefd5a19',
+            'client_secret' => '2x26pszrpag408so88w4wwo4gs8o8ok4osskcw00ow80sgkkcs',
+            'code' => $matches['code'],
+            'grant_type' => 'authorization_code',
+            'redirect_uri' => 'http://client-oauth.docker:8000/client/receive_authcode',
+        ]);
+        $response = $this->client->getResponse();
+        static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        static::assertSame('application/json', $response->headers->get('Content-Type'));
+        static::assertJsonStringEqualsJsonString('{"error":"invalid_scope","message":"The requested scope is invalid, unknown, or malformed","hint":"Check the `read:users` scope"}', $response->getContent());
+    }
+
     public function testOAuthAuthenticationIsSuccessful(): void
     {
         // 1. Try to connect User with OAuth
@@ -253,7 +284,7 @@ class OAuthServerControllerTest extends MysqlWebTestCase
         ]));
         $this->client->followRedirect();
 
-        $urlWithoutRedirectUri = $this->createAuthorizeUrl('f80ce2df-af6d-4ce4-8239-04cfcefd5a19', null);
+        $urlWithoutRedirectUri = $this->createAuthorizeUrl([], 'f80ce2df-af6d-4ce4-8239-04cfcefd5a19', null);
 
         $this->client->request(Request::METHOD_GET, $urlWithoutRedirectUri);
         $response = $this->client->getResponse();
@@ -265,7 +296,7 @@ class OAuthServerControllerTest extends MysqlWebTestCase
     public function testOAuthAuthenticationIsSuccessfulWithoutAskingUserAuthorization(): void
     {
         // No redirect_uri is specified so it's gonna use the only one the client registered
-        $authorizeUrl = $this->createAuthorizeUrl('661cc3b7-322d-4441-a510-ab04eda71737', null);
+        $authorizeUrl = $this->createAuthorizeUrl([], '661cc3b7-322d-4441-a510-ab04eda71737', null);
         $this->client->request(Request::METHOD_GET, $authorizeUrl);
         $response = $this->client->getResponse();
         static::assertTrue($response->isRedirect('http://'.$this->hosts['app'].'/connexion'));
@@ -293,7 +324,7 @@ class OAuthServerControllerTest extends MysqlWebTestCase
             ->findAuthorizationCodeByIdentifier($identifier);
     }
 
-    private function createAuthorizeUrl(string $clientId = 'f80ce2df-af6d-4ce4-8239-04cfcefd5a19', ?string $redirectUri = 'http://client-oauth.docker:8000/client/receive_authcode'): string
+    private function createAuthorizeUrl($scopes = [], string $clientId = 'f80ce2df-af6d-4ce4-8239-04cfcefd5a19', ?string $redirectUri = 'http://client-oauth.docker:8000/client/receive_authcode'): string
     {
         $params = ['client_id' => $clientId];
 
@@ -302,7 +333,11 @@ class OAuthServerControllerTest extends MysqlWebTestCase
         }
 
         $params['response_type'] = 'code';
-        $params['scope'] = 'user_profile';
+
+        if ($scopes) {
+            $params['scope'] = implode(' ', $scopes);
+        }
+
         $params['state'] = 'bds1775p6f3ks29h2vla20ng5n';
 
         return sprintf('http://'.$this->hosts['app'].'/oauth/v2/auth?%s', http_build_query($params));

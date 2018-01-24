@@ -14,7 +14,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
       | client_secret | dALH/khq9BcjOS0GB6u5NaJ3R9k2yvSBq5wYUHx1omA= |
       | client_id     | 4122f4ce-f994-45f7-9ff5-f9f09ab3991e         |
       | grant_type    | client_credentials                           |
-      | scope         | public                                       |
+      | scope         | read:users                                    |
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -41,8 +41,16 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
 
     Given I add the access token to the Authorization header
     When I send a "GET" request to "/api/me"
-    Then the response status code should be 403
+    Then the response status code should be 401
     And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "error": "access_denied",
+      "message": "The resource owner or authorization server denied the request.",
+      "hint": "API user does not have access to this route"
+    }
+    """
 
   Scenario: Grant type not allowed
     Given I add "Accept" header equal to "application/json"
@@ -68,7 +76,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
       | client_secret | dALH/khq9BcjOS0GB6u5NaJ3R9k2yvSBq5wYUHx1omA= |
       | client_id     | 4122f4ce-f994-45f7-9ff5-f9f09ab3991e         |
       | grant_type    | client_credentials                           |
-      | scope         | public user_profile                          |
+      | scope         | read:users write:users                         |
     Then the response status code should be 400
     And the response should be in JSON
     And the JSON should be equal to:
@@ -76,7 +84,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     {
       "error":"invalid_scope",
       "message":"The requested scope is invalid, unknown, or malformed",
-      "hint":"Check the `user_profile` scope"
+      "hint":"Check the `write:users` scope"
     }
     """
 

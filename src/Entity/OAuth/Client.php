@@ -6,6 +6,7 @@ use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntitySoftDeletableTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use AppBundle\OAuth\Model\GrantTypeEnum;
+use AppBundle\OAuth\Model\Scope;
 use AppBundle\OAuth\SecretGenerator;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -66,7 +67,7 @@ class Client
     private $allowedGrantTypes;
 
     /**
-     * @ORM\Column(type="simple_array")
+     * @ORM\Column(type="simple_array", nullable=true)
      */
     private $supportedScopes;
 
@@ -172,7 +173,24 @@ class Client
 
     public function addSupportedScope(string $scope): void
     {
+        if (in_array($scope, $this->supportedScopes, true)) {
+            throw new \LogicException("$scope is already supported");
+        }
+
+        if (!Scope::isValid($scope)) {
+            throw new \DomainException("$scope is not supported. Choose one from ".Scope::class);
+        }
+
         $this->supportedScopes[] = $scope;
+    }
+
+    public function setSupportedScopes(array $supportedScopes): void
+    {
+        $this->supportedScopes = [];
+
+        foreach ($supportedScopes as $scope) {
+            $this->addSupportedScope($scope);
+        }
     }
 
     public function supportsScope(string $scope): bool
