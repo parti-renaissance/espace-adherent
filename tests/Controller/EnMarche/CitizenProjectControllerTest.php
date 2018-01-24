@@ -61,9 +61,12 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertTrue($this->seeReportLink());
         $this->assertFalse($this->seeCommentSection());
 
-        $this->assertContains($citizenProject->getProblemDescription(), $crawler->filter('#citizen-project-problem-description > p')->text());
-        $this->assertContains($citizenProject->getProposedSolution(), $crawler->filter('#citizen-project-proposed-solution > p')->text());
-        $this->assertContains($citizenProject->getRequiredMeans(), $crawler->filter('#citizen-project-required-means > p')->text());
+        $this->assertContains('Le problème', $crawler->filter('#citizen-project-problem-description > p:nth-child(1)')->text());
+        $this->assertContains($citizenProject->getProblemDescription(), $crawler->filter('#citizen-project-problem-description > p:nth-child(2)')->text());
+        $this->assertContains('Notre projet', $crawler->filter('#citizen-project-proposed-solution > p:nth-child(1)')->text());
+        $this->assertContains($citizenProject->getProposedSolution(), $crawler->filter('#citizen-project-proposed-solution > p:nth-child(2)')->text());
+        $this->assertContains('Les actions à lancer', $crawler->filter('#citizen-project-required-means > p:nth-child(1)')->text());
+        $this->assertContains($citizenProject->getRequiredMeans(), $crawler->filter('#citizen-project-required-means > p:nth-child(2)')->text());
     }
 
     public function testAdministratorCanSeeUnapprovedCitizenProject(): void
