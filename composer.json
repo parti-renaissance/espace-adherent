@@ -71,8 +71,6 @@
         "symfony/psr-http-message-bridge": "^1.0",
         "myclabs/php-enum": "^1.5",
         "knplabs/knp-snappy-bundle": "^1.5",
-        "h4cc/wkhtmltopdf-amd64": "^0.12.4",
-        "knplabs/knp-snappy-bundle": "^1.5",
         "h4cc/wkhtmltopdf-amd64": "^0.12.4"
     },
     "require-dev": {
