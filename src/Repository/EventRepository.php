@@ -341,7 +341,8 @@ SQL;
             $filterQuery = '';
         }
 
-        if ($category = $search->getEventCategory() && SearchParametersFilter::TYPE_CITIZEN_ACTIONS !== $search->getEventCategory()) {
+        $category = $search->getEventCategory();
+        if ($category && SearchParametersFilter::TYPE_CITIZEN_ACTIONS !== $category) {
             $filterCategory = 'AND events.category_id = :category';
         } else {
             $filterCategory = '';
