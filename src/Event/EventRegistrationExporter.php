@@ -10,7 +10,7 @@ class EventRegistrationExporter
     public function export(array $registrations): string
     {
         $handle = fopen('php://memory', 'r+');
-        fputcsv($handle, ['N° d\'enregistrement', 'Prénom', 'Code postal', 'Date d\'inscription']);
+        fputcsv($handle, ['N° d\'enregistrement', 'Prénom', 'Nom', 'Date d\'inscription']);
 
         foreach ($registrations as $registration) {
             if (!$registration instanceof EventRegistration) {
@@ -20,7 +20,7 @@ class EventRegistrationExporter
             fputcsv($handle, [
                 $registration->getUuid()->toString(),
                 $registration->getFirstName(),
-                $registration->getPostalCode(),
+                $registration->getLastName(),
                 $registration->getCreatedAt()->format('d/m/Y à H:i'),
             ]);
         }

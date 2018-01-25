@@ -96,17 +96,17 @@
             font-family: $font-roboto;
             width: 100%;
 
-            tr {
-                border-bottom: 1px solid $gray--light;
-
-                &:first-child {
-                    background: $gray--lighter;
-                    border-color: $gray;
-                }
+            thead {
+                background: $gray--lighter;
+                border-color: $gray;
 
                 th {
                     text-align: left;
                 }
+            }
+
+            tr {
+                border-bottom: 1px solid $gray--light;
             }
 
             &__host {

@@ -177,7 +177,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
-        $this->assertTrue($this->seeMembersList($crawler, 2), 'There should be 2 members in the list.');
+        $this->assertTrue($this->seeMembersList($crawler, 1), 'There should be 2 members in the list.');
     }
 
     public function testOrganizerCanExportRegistrationsWithWrongUuids()
@@ -234,6 +234,49 @@ class EventManagerControllerTest extends SqliteWebTestCase
         ]);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+    }
+
+    public function testOrganizerCannotPrintRegistrationsWithWrongUuids()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+
+        $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
+        $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
+
+        $printUrl = $this->client->getRequest()->getPathInfo().'/imprimer';
+
+        $this->client->request(Request::METHOD_POST, $printUrl, [
+            'token' => $crawler->filter('#members-print-token')->attr('value'),
+            'prints' => json_encode(['wrong_uuid']),
+        ]);
+
+        $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
+    }
+
+    public function testOrganizerCanPrintRegistrations()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+
+        $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
+        $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
+
+        $token = $crawler->filter('#members-print-token')->attr('value');
+        $uuids = (array) $crawler->filter('input[name="members[]"]')->attr('value');
+
+        $printUrl = $this->client->getRequest()->getPathInfo().'/imprimer';
+
+        $this->client->request(Request::METHOD_POST, $printUrl, [
+            'token' => $token,
+            'prints' => json_encode($uuids),
+        ]);
+
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertTrue(
+            $this->client->getResponse()->headers->contains(
+                'Content-Type',
+                'application/pdf'
+            )
+        );
     }
 
     public function testOrganizerCanContactRegistrations()
@@ -310,7 +353,6 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
     private function seeMembersList(Crawler $crawler, int $count): bool
     {
-        // Header row is part of the count
         return $count === count($crawler->filter('table > tr'));
     }
 

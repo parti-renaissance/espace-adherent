@@ -69,7 +69,9 @@
         "a2lix/i18n-doctrine-bundle": "^0.1.0",
         "league/oauth2-server": "^6.0",
         "symfony/psr-http-message-bridge": "^1.0",
-        "myclabs/php-enum": "^1.5"
+        "myclabs/php-enum": "^1.5",
+        "knplabs/knp-snappy-bundle": "^1.5",
+        "h4cc/wkhtmltopdf-amd64": "^0.12.4"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
