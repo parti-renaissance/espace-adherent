@@ -509,15 +509,6 @@ $text--size-extra-large: 48px;
             @include text--default;
             letter-spacing: 0;
 
-            h1 {
-                @include text--logo;
-                margin-top: -5px;
-
-                a {
-                    color: black;
-                }
-            }
-
             .icon-search {
                 position: relative;
                 top: 4px;

@@ -2,11 +2,11 @@
     <ul class="list__links list__links--row list__links--no-decor list__links--nav">
         {% if app.user %}
             <li>
-                <h1><a href="{{ path('homepage') }}">EM!</a></h1>
+                <a href="{{ path('homepage') }}" class="link--no-decor text--logo">EM!</a>
             </li>
         {% else %}
             <li>
-                <h1><a href="{{ path('homepage') }}">En Marche !</a></h1>
+                <a href="{{ path('homepage') }}" class="link--no-decor text--logo">En Marche !</a>
             </li>
             <li>
                 <a href="{{ path('page_le_mouvement') }}">Le Mouvement</a>
