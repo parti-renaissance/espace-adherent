@@ -131,7 +131,7 @@
                 </li>
                 {% if app.user and not has_role_adherent %}
                     <li>
-                        <a href="{{ path('app_membership_register') }}">Devenir adhérent(e)</a>
+                        <a href="{{ path('app_membership_join') }}">Devenir adhérent(e)</a>
                     </li>
                 {% endif %}
                 {% if app.user and (has_role_adherent or is_granted('ROLE_HOST')) %}
@@ -164,7 +164,7 @@
                 <hr>
                 <ul>
                     <li>
-                        <a href="{{ path('app_adherent_logout') }}">Déconnexion</a>
+                        <a href="{{ path('logout') }}">Déconnexion</a>
                     </li>
                 </ul>
             {% endif %}

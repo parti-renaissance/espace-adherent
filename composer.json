@@ -66,7 +66,10 @@
         "cocur/slugify": "^2.5",
         "symfony/thanks": "^1.0",
         "a2lix/translation-form-bundle": "^2.1",
-        "a2lix/i18n-doctrine-bundle": "^0.1.0"
+        "a2lix/i18n-doctrine-bundle": "^0.1.0",
+        "league/oauth2-server": "^6.0",
+        "symfony/psr-http-message-bridge": "^1.0",
+        "myclabs/php-enum": "^1.5"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -74,7 +77,13 @@
         "phpunit/phpunit": "^6.2",
         "fabpot/goutte": "^3.2",
         "liip/functional-test-bundle": "^1.8",
-        "friendsofphp/php-cs-fixer": "^2.7"
+        "friendsofphp/php-cs-fixer": "^2.7",
+        "behat/mink": "^1.7",
+        "behat/mink-browserkit-driver": "^1.3",
+        "behat/mink-extension": "^2.2",
+        "behat/symfony2-extension": "^2.1",
+        "behatch/contexts": "^2.7",
+        "coduo/php-matcher": "^2.2"
     },
     "scripts": {
         "symfony-scripts": [
