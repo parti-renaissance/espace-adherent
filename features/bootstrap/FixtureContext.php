@@ -28,7 +28,7 @@ class FixtureContext extends RawMinkContext
         $loader = new ContainerAwareLoader($this->getContainer());
 
         foreach ($classnames->getRows() as $classname) {
-            $loader->loadFromFile($path.'/'.$classname[0].'.php');
+            $loader->loadFromFile(sprintf('%s/%s.php', $path, $classname[0]));
         }
 
         $fixtures = $loader->getFixtures();

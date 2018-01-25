@@ -51,10 +51,7 @@ class OAuthServerController extends Controller
 
             $authorizationApproved = $manager->isAuthorized($user, $client, $authRequest->getScopes());
 
-            if (
-                ($form->isSubmitted() && $form->isValid())
-                || $authorizationApproved
-            ) {
+            if ($authorizationApproved || ($form->isSubmitted() && $form->isValid())) {
                 $authorizationApproved = $form->get('allow')->isClicked() || $authorizationApproved;
                 $authRequest->setAuthorizationApproved($authorizationApproved);
 

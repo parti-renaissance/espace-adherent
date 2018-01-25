@@ -323,7 +323,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return array_merge($roles, $this->roles);
     }
 
-    public function addRoles(array $roles)
+    public function addRoles(array $roles): void
     {
         foreach ($roles as $role) {
             $this->roles[] = $role;
