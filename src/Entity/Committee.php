@@ -35,6 +35,13 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
     use EntityPostAddressTrait;
     use CoordinatorAreaTrait;
 
+    public const STATUSES_NOT_ALLOWED_TO_CREATE_ANOTHER = [
+        self::PRE_REFUSED,
+        self::PRE_APPROVED,
+        self::PENDING,
+        self::REFUSED,
+    ];
+
     /**
      * The group description.
      *

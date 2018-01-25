@@ -4,37 +4,29 @@ namespace AppBundle\Twig;
 
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\CitizenProject\CitizenProjectPermissions;
+use AppBundle\CitizenProject\CitizenProjectAuthority;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CitizenProjectRuntime
 {
-    const COLOR_STATUS_PENDING = 'bullet--pending';
-    const COLOR_STATUS_ADMINISTRATOR = 'bullet--own';
+    private const COLOR_STATUS_PENDING = 'bullet--pending';
+    private const COLOR_STATUS_ADMINISTRATOR = 'bullet--own';
 
     private $authorizationChecker;
-    private $citizenProjectManager;
+    private $projectAuthority;
 
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        CitizenProjectManager $citizenProjectManager
+        CitizenProjectManager $citizenProjectManager,
+        CitizenProjectAuthority $projectAuthority
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->citizenProjectManager = $citizenProjectManager;
+        $this->projectAuthority = $projectAuthority;
     }
 
-    public function isPromotableAdministrator(Adherent $adherent, CitizenProject $citizenProject): bool
-    {
-        return $this->citizenProjectManager->isPromotableAdministrator($adherent, $citizenProject);
-    }
-
-    public function isDemotableAdministrator(Adherent $adherent, CitizenProject $citizenProject): bool
-    {
-        return $this->citizenProjectManager->isDemotableAdministrator($adherent, $citizenProject);
-    }
-
-    public function isAdministrator(CitizenProject $citizenProject): bool
+    public function isAdministratorOf(CitizenProject $citizenProject): bool
     {
         return $this->authorizationChecker->isGranted(CitizenProjectPermissions::ADMINISTRATE, $citizenProject);
     }

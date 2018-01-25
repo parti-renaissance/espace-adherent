@@ -7,7 +7,6 @@ use AppBundle\Mailer\Message\JeMarcheReportMessage;
 use AppBundle\Repository\JeMarcheReportRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Client;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\SqliteWebTestCase;
 
@@ -18,9 +17,6 @@ use Tests\AppBundle\SqliteWebTestCase;
 class JeMarcheControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
-
-    /** @var Client */
-    private $client;
 
     /** @var JeMarcheReportRepository */
     private $jeMarcheReportRepostitory;

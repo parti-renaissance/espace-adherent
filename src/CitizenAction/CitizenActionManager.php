@@ -31,12 +31,6 @@ class CitizenActionManager
         $this->eventRegistrationManager = $eventRegistrationManager;
     }
 
-    public function removeOrganizerCitizenActions(Adherent $adherent): void
-    {
-        $this->citizenActionRepository->removeOrganizerEvents($adherent, CitizenActionRepository::TYPE_PAST, true);
-        $this->citizenActionRepository->removeOrganizerEvents($adherent, CitizenActionRepository::TYPE_UPCOMING);
-    }
-
     public function getRegistrations(CitizenAction $citizenAction): EventRegistrationCollection
     {
         return $this->eventRegistrationRepository->findByEvent($citizenAction);
@@ -97,7 +91,7 @@ class CitizenActionManager
 
     public function unregisterFromCitizenAction(CitizenAction $citizenAction, Adherent $adherent): void
     {
-        if (!$registration = $this->eventRegistrationManager->searchRegistration($citizenAction, $adherent->getEmailAddress(), $adherent)) {
+        if (!$registration = $this->eventRegistrationManager->searchAdherentRegistration($citizenAction, $adherent)) {
             throw new EntityNotFoundException(
                 sprintf('Unable to find event registration by CitizenAction UUID (%s) and adherent UUID (%s)', $citizenAction->getUuid()->toString(), $adherent->getUuid()->toString())
             );

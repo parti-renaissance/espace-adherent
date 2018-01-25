@@ -78,7 +78,7 @@ class DocumentsController extends Controller
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
-        $isHost = $this->get('app.committee.manager')->isCommitteeHost($adherent);
+        $isHost = $adherent->isHost();
         $isReferent = $adherent->isReferent();
         $isLegislativeCandidate = $adherent->isLegislativeCandidate();
 

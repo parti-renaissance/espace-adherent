@@ -4,7 +4,6 @@ namespace Tests\AppBundle\Controller\EnMarche\Security;
 
 use AppBundle\DataFixtures\ORM\LoadAdminData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -16,9 +15,6 @@ use Tests\AppBundle\SqliteWebTestCase;
 class AdminSecurityControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
-
-    /* @var Client */
-    private $client;
 
     public function testAuthenticationIsSuccessful()
     {

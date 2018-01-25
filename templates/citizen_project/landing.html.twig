@@ -99,34 +99,35 @@
         </p>
     </div>
 
-    <div class="background--pink--light space--100-0 citizen-projects__landing__create">
-        <div class="l__wrapper--slim">
-            <div class="l__row">
-                {{ include('components/projets-citoyens.html.twig') }}
-                <div class="b__nudge--left text--large text--bold text--blue--dark">
-                    Envie d'agir près de chez vous ?<br />
-                    {{ citizen_project ? 'Faites grandir votre projet !' : 'Lancez votre projet citoyen !' }}
+    {% if not app.user or is_granted('CREATE_CITIZEN_PROJECT') %}
+        <div class="background--pink--light space--100-0 citizen-projects__landing__create">
+            <div class="l__wrapper--slim">
+                <div class="l__row">
+                    {{ include('components/projets-citoyens.html.twig') }}
+                    <div class="b__nudge--left text--large text--bold text--blue--dark">
+                        Envie d'agir près de chez vous ?<br />
+                        {{ citizen_project ? 'Faites grandir votre projet !' : 'Lancez votre projet citoyen !' }}
+                    </div>
+                </div>
+                <div class="text--center">
+                    {% if citizen_project %}
+                        <a href="{{ path('app_citizen_project_show', { slug: citizen_project.slug }) }}">Voir mon projet {{ include('components/arrow--right.html.twig') }}</a>
+                    {% else %}
+                        <form id="start-creation-citizen-project" action="{{ path('app_adherent_create_citizen_project') }}" method="GET" class="b__nudge--top">
+                            <input type="text" name="name" placeholder="Quel est le nom (court) de votre projet ?">
+                            <button type="submit">
+                                Prochaine étape
+                                {{ include('components/arrow--right.html.twig') }}
+                            </button>
+                        </form>
+                    {% endif %}
                 </div>
             </div>
-            <div class="text--center">
-                {% if citizen_project %}
-                    <a href="{{ path('app_citizen_project_show', { slug: citizen_project.slug }) }}">Voir mon projet {{ include('components/arrow--right.html.twig') }}</a>
-                {% else %}
-                    <form id="start-creation-citizen-project" action="{{ path('app_adherent_create_citizen_project') }}" method="GET" class="b__nudge--top">
-                        <input type="text" name="name" placeholder="Quel est le nom (court) de votre projet ?">
-                        <button type="submit">
-                            Prochaine étape
-                            {{ include('components/arrow--right.html.twig') }}
-                        </button>
-                    </form>
-                {% endif %}
-            </div>
         </div>
-    </div>
+    {% endif %}
 
     <div class="citizen-projects__landing__video text--center space--100-0">
         <iframe width="720" height="405" src="https://www.youtube.com/embed/XFOp8jqBTnE?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
-
 </section>
 {% endblock %}

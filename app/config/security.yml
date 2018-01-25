@@ -212,11 +212,6 @@ security:
             - ROLE_ADMIN_BOARD_MEMBER_ROLES
             - ROLE_ADMIN_TIMELINE
 
-        ROLE_COORDINATOR_CITIZEN_PROJECT:
-            - ROLE_COORDINATOR_CITIZEN_PROJECT
-        ROLE_COORDINATOR_COMMITTEE:
-            - ROLE_COORDINATOR_COMMITTEE
-
     access_decision_manager:
         strategy: unanimous
 
@@ -265,6 +260,7 @@ security:
                 check_path: app_user_login_check
 
                 default_target_path: app_search_events
+                use_referer: true
 
                 username_parameter: _adherent_email
                 password_parameter: _adherent_password

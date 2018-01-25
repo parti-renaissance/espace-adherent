@@ -2,77 +2,121 @@
 
 namespace Tests\AppBundle\Security\Voter\CitizenProject;
 
-use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\CitizenProject\CitizenProjectPermissions;
+use AppBundle\Entity\Adherent;
+use AppBundle\Entity\CitizenProject;
+use AppBundle\Security\Voter\AbstractAdherentVoter;
 use AppBundle\Security\Voter\CitizenProject\AdministrateCitizenProjectVoter;
-use AppBundle\Entity\CitizenProjectCategory;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Ramsey\Uuid\UuidInterface;
+use Tests\AppBundle\Security\Voter\AbstractAdherentVoterTest;
 
-class AdministrateCitizenProjectVoterTest extends AbstractCitizenProjectVoterTest
+class AdministrateCitizenProjectVoterTest extends AbstractAdherentVoterTest
 {
-    /* @var AdministrateCitizenProjectVoter */
-    private $voter;
-    private $manager;
-
-    public function testAdherentCanEditHisUnapprovedCitizenProject()
+    public function provideAnonymousCases(): iterable
     {
-        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
-        $citizenProjectCategory = new CitizenProjectCategory(self::CATEGORY_1);
-        $citizenProject = $this->createCitizenProject(self::ADHERENT_1_UUID, $citizenProjectCategory);
-        $token = $this->createAuthenticatedToken($adherent);
-
-        $this->assertSame(
-            VoterInterface::ACCESS_GRANTED,
-            $this->voter->vote($token, $citizenProject, [CitizenProjectPermissions::ADMINISTRATE])
-        );
+        yield [false, true, CitizenProjectPermissions::ADMINISTRATE, $this->createMock(CitizenProject::class)];
     }
 
-    public function testAnonymousCannotEditCitizenProject()
+    protected function getVoter(): AbstractAdherentVoter
     {
-        $citizenProjectCategory = new CitizenProjectCategory(self::CATEGORY_1);
-        $citizenProject = $this->createCitizenProject(self::ADHERENT_2_UUID, $citizenProjectCategory);
-        $token = $this->createAnonymousToken();
-
-        $this->assertSame(
-            VoterInterface::ACCESS_DENIED,
-            $this->voter->vote($token, $citizenProject, [CitizenProjectPermissions::ADMINISTRATE])
-        );
+        return new AdministrateCitizenProjectVoter();
     }
 
-    public function testAdministrateGroupAdherentCanEditApprovedCitizenProject()
+    public function testAdherentCannotAdministrateCitizenProjectIfNotApproved()
     {
-        $citizenProjectCategory = new CitizenProjectCategory(self::CATEGORY_2);
-        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_2_UUID);
-        $citizenProject = $this->createCitizenProject(self::ADHERENT_1_UUID, $citizenProjectCategory);
-        $citizenProject->approved();
+        $citizenProject = $this->getCitizenProjectMock(false, false);
+        $adherent = $this->getAdherentMock(true);
 
-        $this
-            ->manager
-            ->expects($this->once())
-            ->method('administrateCitizenProject')
-            ->with($adherent)
-            ->willReturn(true);
-
-        $token = $this->createAuthenticatedToken($adherent);
-        $this->assertSame(
-            VoterInterface::ACCESS_GRANTED,
-            $this->voter->vote($token, $citizenProject, [CitizenProjectPermissions::ADMINISTRATE])
-        );
+        $this->assertGrantedForAdherent(false, true, $adherent, CitizenProjectPermissions::ADMINISTRATE, $citizenProject);
     }
 
-    protected function setUp()
+    public function testAdherentCanAdministrateCitizenProjectIfNotApprovedButCreator()
     {
-        parent::setUp();
+        $citizenProject = $this->getCitizenProjectMock(false, true);
+        $adherent = $this->getAdherentMock(true);
 
-        $this->manager = $this->createMock(CitizenProjectManager::class);
-        $this->voter = new AdministrateCitizenProjectVoter($this->manager);
+        $this->assertGrantedForAdherent(true, true, $adherent, CitizenProjectPermissions::ADMINISTRATE, $citizenProject);
     }
 
-    protected function tearDown()
+    public function testAdherentCanAdministrateCitizenProjectIfApprovedAndAdministrator()
     {
-        $this->manager = null;
-        $this->voter = null;
+        $citizenProject = $this->getCitizenProjectMock(true);
+        $adherent = $this->getAdherentMock(false, $citizenProject, false);
 
-        parent::tearDown();
+        // A "standard" adherent should not be granted
+        $this->assertGrantedForAdherent(false, true, $adherent, CitizenProjectPermissions::ADMINISTRATE, $citizenProject);
+
+        $citizenProject = $this->getCitizenProjectMock(true);
+        $adherent = $this->getAdherentMock(false, $citizenProject, true);
+
+        // An of this project should be granted
+        $this->assertGrantedForAdherent(true, true, $adherent, CitizenProjectPermissions::ADMINISTRATE, $citizenProject);
+    }
+
+    /**
+     * @param bool                $getUuidIsCalled
+     * @param CitizenProject|null $project
+     * @param bool|null           $isAdministrator
+     *
+     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getAdherentMock(bool $getUuidIsCalled, CitizenProject $project = null, bool $isAdministrator = null): Adherent
+    {
+        $adherent = $this->createAdherentMock();
+
+        if ($getUuidIsCalled) {
+            $adherent->expects($this->once())
+                ->method('getUuid')
+                ->willReturn($this->createMock(UuidInterface::class))
+            ;
+        } else {
+            $adherent->expects($this->never())
+                ->method('getUuid')
+            ;
+        }
+
+        if ($project) {
+            $adherent->expects($this->once())
+                ->method('isAdministratorOf')
+                ->with($project)
+                ->willReturn($isAdministrator)
+            ;
+        } else {
+            $adherent->expects($this->never())
+                ->method('isAdministratorOf')
+            ;
+        }
+
+        return $adherent;
+    }
+
+    /**
+     * @param bool      $approved
+     * @param bool|null $withCreator
+     *
+     * @return CitizenProject|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getCitizenProjectMock(bool $approved, bool $withCreator = null): CitizenProject
+    {
+        $project = $this->createMock(CitizenProject::class);
+
+        $project->expects($this->once())
+            ->method('isApproved')
+            ->willReturn($approved)
+        ;
+
+        if ($approved) {
+            $project->expects($this->never())
+                ->method('isCreatedBy')
+            ;
+        } elseif (null !== $withCreator) {
+            $project->expects($this->once())
+                ->method('isCreatedBy')
+                ->with($this->isInstanceOf(UuidInterface::class))
+                ->willReturn($withCreator)
+            ;
+        }
+
+        return $project;
     }
 }

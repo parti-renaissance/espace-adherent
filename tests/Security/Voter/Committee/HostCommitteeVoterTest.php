@@ -2,143 +2,131 @@
 
 namespace Tests\AppBundle\Security\Voter\Committee;
 
-use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
-use AppBundle\Security\Voter\Committee\HostCommitteeVoter;
 use AppBundle\Entity\Adherent;
+use AppBundle\Security\Voter\AbstractAdherentVoter;
+use AppBundle\Security\Voter\Committee\HostCommitteeVoter;
 use AppBundle\Entity\Committee;
-use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Ramsey\Uuid\UuidInterface;
+use Tests\AppBundle\Security\Voter\AbstractAdherentVoterTest;
 
-class HostCommitteeVoterTest extends TestCase
+class HostCommitteeVoterTest extends AbstractAdherentVoterTest
 {
-    const ADHERENT_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
-    const CREATOR_UUID = '5e534122-2669-41eb-b92c-1cb9ad196328';
-
-    private $token;
-    private $adherent;
-    private $committee;
-    private $committeeManager;
-
-    /* @var HostCommitteeVoter */
-    private $voter;
-
-    public function testCommitteeSupervisorCanHostApprovedCommittee()
+    public function provideAnonymousCases(): iterable
     {
-        $this->committee->expects($this->once())->method('isApproved')->willReturn(true);
-
-        $this
-            ->committeeManager
-            ->expects($this->once())
-            ->method('hostCommittee')
-            ->with($this->adherent, $this->committee)
-            ->willReturn(true);
-
-        $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->voter->vote($this->token, $this->committee, [CommitteePermissions::HOST]));
+        yield [false, true, CommitteePermissions::HOST, $this->createMock(Committee::class)];
     }
 
-    public function testCommitteeSupervisorCanHostUnapprovedCommittee()
+    protected function getVoter(): AbstractAdherentVoter
     {
-        $this->committee->expects($this->once())->method('isApproved')->willReturn(false);
-
-        $this
-            ->committeeManager
-            ->expects($this->once())
-            ->method('superviseCommittee')
-            ->with($this->adherent, $this->committee)
-            ->willReturn(true);
-
-        $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->voter->vote($this->token, $this->committee, [CommitteePermissions::HOST]));
+        return new HostCommitteeVoter();
     }
 
-    public function testCommitteeCreatorCanHostUnapprovedCommittee()
+    public function testAdherentCannotHostNotApprovedCommittee()
     {
-        $this->committee->expects($this->once())->method('isApproved')->willReturn(false);
-        $this->committee->expects($this->once())->method('getCreatedBy')->willReturn(self::ADHERENT_UUID);
-        $this->adherent->expects($this->once())->method('getUuid')->willReturn(Uuid::fromString(self::ADHERENT_UUID));
+        $committee = $this->getCommitteeMock(false);
+        $adherent = $this->getAdherentMock(false, $committee);
 
-        $this
-            ->committeeManager
-            ->expects($this->once())
-            ->method('superviseCommittee')
-            ->with($this->adherent, $this->committee)
-            ->willReturn(false);
+        // Hosts cannot either
+        $adherent->expects($this->never())
+            ->method('isHostOf')
+        ;
 
-        $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->voter->vote($this->token, $this->committee, [CommitteePermissions::HOST]));
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::HOST, $committee);
     }
 
-    public function testCommitteeHostCanHostApprovedCommittee()
+    public function testAdherentCanHostNotApprovedCommitteeIfSupervisor()
     {
-        $this->committee->expects($this->once())->method('isApproved')->willReturn(true);
+        $committee = $this->getCommitteeMock(false);
+        $adherent = $this->getAdherentMock(true, $committee);
 
-        $this
-            ->committeeManager
-            ->expects($this->once())
-            ->method('hostCommittee')
-            ->with($this->adherent, $this->committee)
-            ->willReturn(true);
-
-        $this->assertSame(VoterInterface::ACCESS_GRANTED, $this->voter->vote($this->token, $this->committee, [CommitteePermissions::HOST]));
+        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::HOST, $committee);
     }
 
-    public function testCommitteeHostCannotHostUnapprovedCommittee()
+    public function testAdherentCanHostNotApprovedCommitteeIfCreator()
     {
-        $this->committee->expects($this->once())->method('isApproved')->willReturn(false);
-        $this->committee->expects($this->once())->method('getCreatedBy')->willReturn(self::CREATOR_UUID);
-        $this->adherent->expects($this->once())->method('getUuid')->willReturn(Uuid::fromString(self::ADHERENT_UUID));
+        $committee = $this->getCommitteeMock(false);
+        $adherent = $this->getAdherentMock(false, $committee, true);
 
-        $this
-            ->committeeManager
-            ->expects($this->once())
-            ->method('superviseCommittee')
-            ->with($this->adherent, $this->committee)
-            ->willReturn(false);
-
-        $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote($this->token, $this->committee, [CommitteePermissions::HOST]));
+        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::HOST, $committee);
     }
 
-    public function testNonCommitteeHostCannotHostApprovedCommittee()
+    public function testAdherentCannotHostApprovedCommittee()
     {
-        $this->committee->expects($this->once())->method('isApproved')->willReturn(true);
+        $committee = $this->getCommitteeMock(true);
+        $adherent = $this->getAdherentMock(null, $committee, false, false);
 
-        $this
-            ->committeeManager
-            ->expects($this->once())
-            ->method('hostCommittee')
-            ->with($this->adherent, $this->committee)
-            ->willReturn(false);
-
-        $this->assertSame(VoterInterface::ACCESS_DENIED, $this->voter->vote($this->token, $this->committee, [CommitteePermissions::HOST]));
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::HOST, $committee);
     }
 
-    public function testCreateCommitteePermissionWithUnsupportedAttributeIsAbstain()
+    public function testHostIsGrantedForApprovedCommittee()
     {
-        $this->committeeManager->expects($this->never())->method('hostCommittee');
+        $committee = $this->getCommitteeMock(true);
+        $adherent = $this->getAdherentMock(null, $committee, false, true);
 
-        $this->assertSame(VoterInterface::ACCESS_ABSTAIN, $this->voter->vote($this->token, $this->committee, ['CREATE_FOOBAR']));
+        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::HOST, $committee);
     }
 
-    protected function setUp()
+    /**
+     * @param bool                                                    $isSupervisor
+     * @param Committee|\PHPUnit_Framework_MockObject_MockObject|null $committee
+     * @param bool|null                                               $isCreator
+     * @param bool|null                                               $isHost
+     *
+     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getAdherentMock(bool $isSupervisor = null, Committee $committee = null, bool $isCreator = false, bool $isHost = null): Adherent
     {
-        parent::setUp();
+        $adherent = $this->createAdherentMock();
 
-        $this->committeeManager = $this->createMock(CommitteeManager::class);
-        $this->adherent = $this->createMock(Adherent::class);
-        $this->committee = $this->createMock(Committee::class);
-        $this->token = new UsernamePasswordToken($this->adherent, 'password', 'users_db');
-        $this->voter = new HostCommitteeVoter($this->committeeManager);
+        if (null !== $isSupervisor) {
+            $adherent->expects($this->once())
+                ->method('isSupervisorOf')
+                ->with($committee)
+                ->willReturn($isSupervisor)
+            ;
+            if (!$isSupervisor) {
+                $adherent->expects($this->once())
+                    ->method('getUuid')
+                    ->willReturn($uuid = $this->createMock(UuidInterface::class))
+                ;
+                $committee->expects($this->once())
+                    ->method('isCreatedBy')
+                    ->with($uuid)
+                    ->willReturn($isCreator)
+                ;
+            }
+        } else {
+            $adherent->expects($this->never())
+                ->method('isSupervisorOf')
+            ;
+        }
+
+        if (null !== $isHost) {
+            $adherent->expects($this->once())
+                ->method('isHostOf')
+                ->with($committee)
+                ->willReturn($isHost)
+            ;
+        }
+
+        return $adherent;
     }
 
-    protected function tearDown()
+    /**
+     * @param bool $approved
+     *
+     * @return Committee|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getCommitteeMock(bool $approved): Committee
     {
-        $this->token = null;
-        $this->adherent = null;
-        $this->committee = null;
-        $this->committeeManager = null;
-        $this->voter = null;
+        $committee = $this->createMock(Committee::class);
 
-        parent::tearDown();
+        $committee->expects($this->once())
+            ->method('isApproved')
+            ->willReturn($approved)
+        ;
+
+        return $committee;
     }
 }

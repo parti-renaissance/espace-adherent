@@ -2,268 +2,242 @@
 
 namespace Tests\AppBundle\Security\Voter\Committee;
 
-use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
-use AppBundle\Security\Voter\Committee\FollowCommitteeVoter;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Component\Security\Core\User\User;
+use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeMembership;
+use AppBundle\Repository\CommitteeMembershipRepository;
+use AppBundle\Security\Voter\AbstractAdherentVoter;
+use AppBundle\Security\Voter\Committee\FollowerCommitteeVoter;
+use Ramsey\Uuid\UuidInterface;
+use Tests\AppBundle\Security\Voter\AbstractAdherentVoterTest;
 
-class FollowCommitteeVoterTest extends AbstractCommitteeVoterTest
+class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
 {
-    /* @var FollowCommitteeVoter */
-    private $voter;
-    private $manager;
-
-    public function testCommitteeHostAdherentIsNotAllowedToUnfollowCommittee()
-    {
-        $committee = $this->createCommittee(self::ADHERENT_2_UUID);
-        $committee->approved();
-
-        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
-        $membership = $adherent->hostCommittee($committee);
-
-        $token = $this->createAuthenticatedToken($adherent);
-
-        $this
-            ->manager
-            ->expects($this->once())
-            ->method('getCommitteeMembership')
-            ->with($adherent, $committee)
-            ->willReturn($membership);
-
-        $this->assertSame(
-            VoterInterface::ACCESS_DENIED,
-            $this->voter->vote($token, $committee, [CommitteePermissions::UNFOLLOW])
-        );
-    }
-
-    public function testFollowerAdherentCanUnfollowCommittee()
-    {
-        $committee = $this->createCommittee(self::ADHERENT_2_UUID);
-        $committee->approved();
-
-        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
-        $membership = $adherent->followCommittee($committee);
-
-        $token = $this->createAuthenticatedToken($adherent);
-
-        $this
-            ->manager
-            ->expects($this->once())
-            ->method('getCommitteeMembership')
-            ->with($adherent, $committee)
-            ->willReturn($membership);
-
-        $this->assertSame(
-            VoterInterface::ACCESS_GRANTED,
-            $this->voter->vote($token, $committee, [CommitteePermissions::UNFOLLOW])
-        );
-    }
-
-    public function testAdherentIsNotAllowedToUnfollowCommitteeHeDoesNotAlreadyFollow()
-    {
-        $committee = $this->createCommittee(self::ADHERENT_2_UUID);
-        $committee->approved();
-
-        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
-        $token = $this->createAuthenticatedToken($adherent);
-
-        $this
-            ->manager
-            ->expects($this->once())
-            ->method('getCommitteeMembership')
-            ->with($adherent, $committee)
-            ->willReturn(null);
-
-        $this->assertSame(
-            VoterInterface::ACCESS_DENIED,
-            $this->voter->vote($token, $committee, [CommitteePermissions::UNFOLLOW])
-        );
-    }
-
-    public function testAdherentIsNotAllowedToUnfollowAnUnapprovedCommittee()
-    {
-        $this->manager->expects($this->never())->method('getCommitteeMembership');
-
-        $committee = $this->createCommittee(self::ADHERENT_2_UUID);
-        $token = $this->createAuthenticatedToken($this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID));
-
-        $this->assertSame(
-            VoterInterface::ACCESS_DENIED,
-            $this->voter->vote($token, $committee, [CommitteePermissions::UNFOLLOW])
-        );
-    }
-
-    public function testAdherentIsNotAllowedToFollowAnUnapprovedCommittee()
-    {
-        $this->manager->expects($this->never())->method('isFollowingCommittee');
-
-        $committee = $this->createCommittee(self::ADHERENT_2_UUID);
-        $token = $this->createAuthenticatedToken($this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID));
-
-        $this->assertSame(
-            VoterInterface::ACCESS_DENIED,
-            $this->voter->vote($token, $committee, [CommitteePermissions::FOLLOW])
-        );
-    }
-
-    public function testAdherentIsNotAllowedToFollowSameApprovedCommitteeTwice()
-    {
-        $committee = $this->createCommittee(self::ADHERENT_2_UUID);
-        $committee->approved();
-
-        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
-
-        $this
-            ->manager
-            ->expects($this->once())
-            ->method('isFollowingCommittee')
-            ->with($adherent, $committee)
-            ->willReturn(true);
-
-        $token = $this->createAuthenticatedToken($adherent);
-
-        $this->assertSame(
-            VoterInterface::ACCESS_DENIED,
-            $this->voter->vote($token, $committee, [CommitteePermissions::FOLLOW])
-        );
-    }
-
-    public function testRegularAdherentIsAllowedToFollowTheCommittee()
-    {
-        $committee = $this->createCommittee(self::ADHERENT_2_UUID);
-        $committee->approved();
-
-        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
-
-        $this
-            ->manager
-            ->expects($this->once())
-            ->method('isFollowingCommittee')
-            ->with($adherent, $committee)
-            ->willReturn(false);
-
-        $token = $this->createAuthenticatedToken($adherent);
-
-        $this->assertSame(
-            VoterInterface::ACCESS_GRANTED,
-            $this->voter->vote($token, $committee, [CommitteePermissions::FOLLOW])
-        );
-    }
-
     /**
-     * @dataProvider provideSupportedAttribute
+     * @var CommitteeMembershipRepository|\PHPUnit_Framework_MockObject_MockObject
      */
-    public function testUnsupportedAdherentType(string $attribute)
+    private $membershipRepository;
+
+    protected function setUp(): void
     {
-        $committee = $this->createCommittee(self::ADHERENT_2_UUID);
-        $token = $this->createAuthenticatedToken(new User('foobar', 'password', ['ROLE_USER', 'ROLE_ADHERENT']));
+        $this->membershipRepository = $this->createMock(CommitteeMembershipRepository::class);
 
-        $this->assertSame(
-            VoterInterface::ACCESS_DENIED,
-            $this->voter->vote($token, $committee, [$attribute])
-        );
-    }
-
-    /**
-     * @dataProvider provideSupportedAttribute
-     */
-    public function testUnsupportedCommitteeType(string $attribute)
-    {
-        $token = $this->createAuthenticatedToken($this->createAdherentFromUuidAndEmail(self::ADHERENT_2_UUID));
-
-        $this->assertSame(
-            VoterInterface::ACCESS_ABSTAIN,
-            $this->voter->vote($token, new \stdClass(), [$attribute])
-        );
-    }
-
-    public function provideSupportedAttribute()
-    {
-        return [
-            [CommitteePermissions::FOLLOW],
-            [CommitteePermissions::UNFOLLOW],
-        ];
-    }
-
-    public function testUnsupportedAttribute()
-    {
-        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
-        $committee = $this->createCommittee(self::ADHERENT_1_UUID);
-        $token = $this->createAuthenticatedToken($adherent);
-
-        $this->assertSame(
-            VoterInterface::ACCESS_ABSTAIN,
-            $this->voter->vote($token, $committee, [CommitteePermissions::SHOW])
-        );
-    }
-
-    public function testAdherentIsDeniedToFollowUnapprovedCommittee()
-    {
-        $committee = $this->createCommittee(self::ADHERENT_1_UUID);
-        $token = $this->createAuthenticatedToken($this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID));
-
-        $this->assertSame(
-            VoterInterface::ACCESS_DENIED,
-            $this->voter->vote($token, $committee, [CommitteePermissions::FOLLOW])
-        );
-    }
-
-    public function testAdherentIsDeniedToFollowCommitteeTwice()
-    {
-        $committee = $this->createCommittee(self::ADHERENT_1_UUID);
-        $committee->approved();
-
-        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_1_UUID);
-        $token = $this->createAuthenticatedToken($adherent);
-
-        $this
-            ->manager
-            ->expects($this->once())
-            ->method('isFollowingCommittee')
-            ->with($adherent, $committee)
-            ->willReturn(true);
-
-        $this->assertSame(
-            VoterInterface::ACCESS_DENIED,
-            $this->voter->vote($token, $committee, [CommitteePermissions::FOLLOW])
-        );
-    }
-
-    public function testAdherentIsGrantedToFollowNewCommittee()
-    {
-        $committee = $this->createCommittee(self::ADHERENT_1_UUID);
-        $committee->approved();
-
-        $adherent = $this->createAdherentFromUuidAndEmail(self::ADHERENT_2_UUID);
-        $token = $this->createAuthenticatedToken($adherent);
-
-        $this
-            ->manager
-            ->expects($this->once())
-            ->method('isFollowingCommittee')
-            ->with($adherent, $committee)
-            ->willReturn(false);
-
-        $this->assertSame(
-            VoterInterface::ACCESS_GRANTED,
-            $this->voter->vote($token, $committee, [CommitteePermissions::FOLLOW])
-        );
-    }
-
-    protected function setUp()
-    {
         parent::setUp();
-
-        $this->manager = $this->createMock(CommitteeManager::class);
-        $this->voter = new FollowCommitteeVoter($this->manager);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
-        $this->voter = null;
-        $this->manager = null;
+        $this->membershipRepository = null;
 
         parent::tearDown();
+    }
+
+    public function provideAnonymousCases(): iterable
+    {
+        yield 'Anonymous cannot follow committees' => [false, true, CommitteePermissions::FOLLOW, $this->getCommitteeMock()];
+        yield 'Anonymous cannot unfollow committees' => [false, true, CommitteePermissions::UNFOLLOW, $this->getCommitteeMock()];
+    }
+
+    protected function getVoter(): AbstractAdherentVoter
+    {
+        return new FollowerCommitteeVoter($this->membershipRepository);
+    }
+
+    public function testAdherentCannotFollowCommitteeIfAlreadyFollowing()
+    {
+        $committee = $this->getCommitteeMock(true);
+        $adherent = $this->getAdherentMock($committee, true);
+
+        $this->assertRepositoryBehavior(null);
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::FOLLOW, $committee);
+    }
+
+    public function testAdherentCannotFollowCommitteeIfNotApproved()
+    {
+        $committee = $this->getCommitteeMock(false);
+        $adherent = $this->getAdherentMock();
+
+        $this->assertRepositoryBehavior(null);
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::FOLLOW, $committee);
+    }
+
+    public function testAdherentCanFollowCommittee()
+    {
+        $committee = $this->getCommitteeMock(true);
+        $adherent = $this->getAdherentMock($committee);
+
+        $this->assertRepositoryBehavior(null);
+        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::FOLLOW, $committee);
+    }
+
+    public function testAdherentCannotUnFollowCommitteeIfNotAlreadyFollowing()
+    {
+        $committee = $this->getCommitteeMock(true);
+        $adherent = $this->getAdherentMock($committee);
+
+        $this->assertRepositoryBehavior(null);
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::UNFOLLOW, $committee);
+    }
+
+    public function testAdherentCannotUnfollowCommitteeIfNotApproved()
+    {
+        $committee = $this->getCommitteeMock(false);
+        $adherent = $this->getAdherentMock();
+
+        $this->assertRepositoryBehavior(null);
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::UNFOLLOW, $committee);
+    }
+
+    public function testSupervisorCannotUnfollowCommittee()
+    {
+        $committee = $this->getCommitteeMock(true);
+        $adherent = $this->getAdherentMock($committee, true, true);
+
+        $this->assertRepositoryBehavior(null);
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::UNFOLLOW, $committee);
+    }
+
+    public function testAdherentCanUnfollowCommittee()
+    {
+        $committee = $this->getCommitteeMock(true);
+        $adherent = $this->getAdherentMock($committee, true, false);
+
+        $this->assertRepositoryBehavior(null);
+        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::UNFOLLOW, $committee);
+    }
+
+    public function testHostCannotUnfollowCommitteeIfOnlyHost()
+    {
+        $committee = $this->getCommitteeMock(true);
+        $adherent = $this->getAdherentMock($committee, true, false, true);
+
+        $this->assertRepositoryBehavior(false);
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::UNFOLLOW, $committee);
+    }
+
+    public function testHostCanUnfollowCommitteeIfManyHosts()
+    {
+        $committee = $this->getCommitteeMock(true);
+        $adherent = $this->getAdherentMock($committee, true, false, true);
+
+        $this->assertRepositoryBehavior(true);
+        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::UNFOLLOW, $committee);
+    }
+
+    /**
+     * @param Committee|null $committee
+     * @param bool|null      $isFollower
+     * @param bool|null      $isSupervisor
+     * @param bool           $isHost
+     *
+     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getAdherentMock(Committee $committee = null, bool $isFollower = null, bool $isSupervisor = null, bool $isHost = false): Adherent
+    {
+        $adherent = $this->createAdherentMock();
+
+        if ($committee) {
+            $adherent->expects($this->once())
+                ->method('getMembershipFor')
+                ->with($committee)
+                ->willReturn($this->getMembershipMock($isFollower, $isSupervisor, $isHost))
+            ;
+        } else {
+            $adherent->expects($this->never())
+                ->method('getMembershipFor')
+            ;
+        }
+
+        return $adherent;
+    }
+
+    /**
+     * @param bool|null $isFollower
+     * @param bool|null $isSupervisor
+     * @param bool      $isHost
+     *
+     * @return CommitteeMembership|\PHPUnit_Framework_MockObject_MockObject|null
+     */
+    private function getMembershipMock(?bool $isFollower, ?bool $isSupervisor, bool $isHost = false): ?CommitteeMembership
+    {
+        if (!$isFollower) {
+            return null;
+        }
+
+        $membership = $this->createMock(CommitteeMembership::class);
+
+        if (null !== $isSupervisor) {
+            $membership->expects($this->once())
+                ->method('isSupervisor')
+                ->willReturn($isSupervisor)
+            ;
+
+            if ($isSupervisor) {
+                $membership->expects($this->never())
+                    ->method('isFollower')
+                ;
+            } else {
+                $membership->expects($this->once())
+                    ->method('isFollower')
+                    ->willReturn(!$isHost)
+                ;
+            }
+        } else {
+            $membership->expects($this->never())
+                ->method('isSupervisor')
+            ;
+        }
+
+        return $membership;
+    }
+
+    /**
+     * @param bool $approved
+     *
+     * @return Committee|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getCommitteeMock(bool $approved = null): Committee
+    {
+        $committee = $this->createMock(Committee::class);
+
+        if (null !== $approved) {
+            $committee->expects($this->once())
+                ->method('isApproved')
+                ->willReturn($approved)
+            ;
+        } else {
+            $committee->expects($this->never())
+                ->method('isApproved')
+            ;
+        }
+
+        $uuid = $this->createMock(UuidInterface::class);
+        $uuid->expects($this->any())
+            ->method('toString')
+            ->willReturn('test')
+        ;
+
+        $committee->expects($this->any())
+            ->method('getUuid')
+            ->willReturn($uuid)
+        ;
+
+        return $committee;
+    }
+
+    private function assertRepositoryBehavior(?bool $manyHost): void
+    {
+        if (null !== $manyHost) {
+            $this->membershipRepository->expects($this->once())
+                ->method('countHostMembers')
+                ->with($this->isType('string'))
+                ->willReturn($manyHost ? 2 : 1)
+            ;
+        } else {
+            $this->membershipRepository->expects($this->never())
+                ->method('countHostMembers')
+            ;
+        }
     }
 }

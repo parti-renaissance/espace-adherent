@@ -8,7 +8,6 @@ use AppBundle\Entity\BaseGroup;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Search\SearchParametersFilter;
-use Doctrine\Common\Collections\ArrayCollection;
 use Ramsey\Uuid\UuidInterface;
 
 class CitizenProjectRepository extends BaseGroupRepository
@@ -32,10 +31,17 @@ class CitizenProjectRepository extends BaseGroupRepository
         ;
     }
 
-    public function findCitizenProjects(array $uuids, int $statusFilter = self::ONLY_APPROVED, int $limit = 0): ArrayCollection
+    /**
+     * @param array $uuids
+     * @param int   $statusFilter
+     * @param int   $limit
+     *
+     * @return CitizenProject[]
+     */
+    public function findCitizenProjects(array $uuids, int $statusFilter = self::ONLY_APPROVED, int $limit = 0): array
     {
         if (!$uuids) {
-            return new ArrayCollection();
+            return [];
         }
 
         $qb = $this->createQueryBuilder('c')
@@ -54,7 +60,24 @@ class CitizenProjectRepository extends BaseGroupRepository
             $qb->setMaxResults($limit);
         }
 
-        return new ArrayCollection($qb->getQuery()->getResult());
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param Adherent $adherent
+     * @param bool     $onlyAdministrated
+     *
+     * @return CitizenProject[]
+     */
+    public function findAllRegisteredCitizenProjectsForAdherent(Adherent $adherent, bool $onlyAdministrated = false): array
+    {
+        $memberships = $adherent->getCitizenProjectMemberships();
+
+        if ($onlyAdministrated) {
+            $memberships = $memberships->getCitizenProjectAdministratorMemberships();
+        }
+
+        return $this->findCitizenProjects($memberships->getCitizenProjectUuids(), self::INCLUDE_UNAPPROVED);
     }
 
     public function findOneApprovedBySlug(string $slug): ?CitizenProject
@@ -158,6 +181,18 @@ class CitizenProjectRepository extends BaseGroupRepository
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function unfollowCitizenProjectsOnUnregistration(Adherent $adherent): void
+    {
+        $this->createQueryBuilder('p')
+             ->update()
+             ->set('p.membersCounts', 'p.membersCounts - 1')
+             ->where('p.uuid IN (:uuids)')
+             ->setParameter('uuids', $adherent->getCitizenProjectMemberships()->getCitizenProjectUuids())
+             ->getQuery()
+             ->execute()
         ;
     }
 }

@@ -16,6 +16,7 @@
 		<service id="AppBundle\Command\AlgoliaSynchronizeCommand" />
 
 		<!-- CitizenProject -->
+		<service id="AppBundle\CitizenProject\CitizenProjectAuthority" />
         <service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true">
             <argument key="$mailer" type="service" id="app.mailer.transactional"/>
         </service>
