@@ -221,10 +221,10 @@ class AdherentController extends Controller
         ]);
     }
 
-    public function listMyAdministratedCitizenProjectsAction(CitizenProjectManager $manager): Response
+    public function listMyAdministratedCitizenProjectsAction(CitizenProjectRepository $citizenProjectRepository): Response
     {
         return $this->render('adherent/list_my_administrated_citizen_projects.html.twig', [
-            'citizen_projects' => $manager->getAdherentCitizenProjects($this->getUser()),
+            'citizen_projects' => $citizenProjectRepository->findAllRegisteredCitizenProjectsForAdherent($this->getUser(), true),
         ]);
     }
 }
