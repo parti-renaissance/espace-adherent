@@ -85,6 +85,7 @@ class CommitteeAdmin extends AbstractAdmin
             ->with('Comité', array('class' => 'col-md-7'))
                 ->add('name', null, [
                     'label' => 'Nom',
+                    'format_title_case' => true,
                 ])
                 ->add('description', TextareaType::class, [
                     'filter_emojis' => true,

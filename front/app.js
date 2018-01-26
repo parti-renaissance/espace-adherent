@@ -110,6 +110,12 @@ class App {
         });
     }
 
+    runRegistration() {
+        System.import('pages/registration').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        });
+    }
+
     runProcurationThanks() {
         System.import('pages/procuration_thanks').catch((error) => { throw error; }).then((module) => {
             module.default();

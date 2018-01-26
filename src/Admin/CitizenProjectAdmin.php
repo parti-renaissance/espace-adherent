@@ -139,12 +139,14 @@ class CitizenProjectAdmin extends AbstractAdmin
             ->with('Projet citoyen', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
+                    'format_title_case' => true,
                 ])
                 ->add('slug', null, [
                     'label' => 'Slug',
                 ])
                 ->add('subtitle', null, [
                     'label' => 'Sous-titre',
+                    'format_title_case' => true,
                 ])
                 ->add('category', null, [
                     'label' => 'Catégorie',
@@ -182,13 +184,9 @@ class CitizenProjectAdmin extends AbstractAdmin
             ->end()
             ->with('Localisation', ['class' => 'col-md-5'])
                 ->add('postAddress.latitude', null, [
-                    'required' => false,
-                    'empty_data' => null,
                     'label' => 'Latitude',
                 ])
                 ->add('postAddress.longitude', null, [
-                    'required' => false,
-                    'empty_data' => null,
                     'label' => 'Longitude',
                     'help' => 'Pour modifier l\'adresse, impersonnifiez un organisateur de ce projet citoyen.',
                 ])

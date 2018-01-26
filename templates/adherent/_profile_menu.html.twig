@@ -4,17 +4,13 @@
         {% for target, link in {
             'app_user_profile': 'Mon compte',
             'app_user_edit': 'Mes informations personnelles',
+            'app_summary_manager_index': 'Modifier mon profil',
             'app_user_set_email_notifications': 'Notifications',
+            'app_user_change_password': 'Mot de passe',
         } %}
             <li class="{{ route == target ? 'active' }}">
                 <a href="{{ path(target) }}">{{ link }}</a>
             </li>
         {% endfor %}
-
-        {% if has_role_adherent %}
-            <li class="{{ route == 'app_summary_manager_index' ? 'active' }}">
-                <a href="{{ path('app_summary_manager_index') }}">Modifier mon profil</a>
-            </li>
-        {% endif %}
     </ul>
 </div>

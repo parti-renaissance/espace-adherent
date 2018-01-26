@@ -1,20 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends 'oauth/base.html.twig' %}
 
-{% block banner '' %}
 {% block page_title 'Finalisez votre adhésion' %}
 
 {% block content %}
-    <main>
-        <section class="content l__wrapper--slim register__comites">
-            <header class="l__wrapper--slim space--60-0 text--center">
-                <h1 class="text--large">
-                    Merci {{ name }} de votre confiance !
-                </h1>
-                <h2 class="bigger b__nudge--top">
-                    Finalisez dès maintenant votre adhésion en cliquant sur le lien de confirmation envoyé à votre adresse email.
-                </h2>
-                <p class="text--body">Sans cela, vous ne pourrez accéder à votre espace adhérent.</p>
-            </header>
-        </section>
-    </main>
+    <section class="l__inner">
+        <p>
+            👏 Bienvenue ! Nous venons de vous envoyer un <span class="text--block">e-mail</span> afin de confirmer votre nouveau compte.
+        </p>
+        <p>Rendez-vous dans votre boîte mail pour continuer !</p>
+    </section>
 {% endblock %}
