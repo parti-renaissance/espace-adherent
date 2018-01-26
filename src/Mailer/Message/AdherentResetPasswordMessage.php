@@ -11,12 +11,12 @@ final class AdherentResetPasswordMessage extends Message
     {
         return new self(
             Uuid::uuid4(),
-            '54686',
+            '292292',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Réinitialisez votre mot de passe',
+            'Réinitialisation de votre mot de passe',
             [
-                'target_firstname' => self::escape($adherent->getFirstName()),
+                'first_name' => self::escape($adherent->getFirstName()),
                 'reset_link' => $resetPasswordLink,
             ]
         );

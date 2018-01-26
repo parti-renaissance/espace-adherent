@@ -178,6 +178,9 @@ security:
             - ROLE_APP_ADMIN_TIMELINE_THEME_ALL
             - ROLE_APP_ADMIN_TIMELINE_MEASURE_ALL
 
+        ROLE_ADMIN_CLIENTS:
+            - ROLE_APP_ADMIN_CLIENT_ALL
+
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN_DASHBOARD
             - ROLE_ADMIN_MEDIAS
@@ -211,20 +214,28 @@ security:
             - ROLE_ADMIN_REFERENTS_AREAS
             - ROLE_ADMIN_BOARD_MEMBER_ROLES
             - ROLE_ADMIN_TIMELINE
+            - ROLE_ADMIN_CLIENTS
 
     access_decision_manager:
         strategy: unanimous
 
     providers:
         admins_db:
-            entity: { class: 'AppBundle\Entity\Administrator' }
+            id: app.security.admin_provider
         users_db:
-            entity: { class: 'AppBundle\Entity\Adherent' }
+            id: app.security.user_provider
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        api_me:
+            pattern: ^/api/me$
+            stateless: true
+            guard:
+                authenticators:
+                    - 'AppBundle\OAuth\OAuthAuthenticator'
 
         admin:
             context: main_context
@@ -266,8 +277,10 @@ security:
                 password_parameter: _adherent_password
                 csrf_parameter: _adherent_csrf
                 csrf_token_id: authenticate_adherent
+
+                failure_handler: AppBundle\Security\Http\AuthenticationFailureHandler
             logout:
-                path: app_adherent_logout
+                path: logout
                 target: homepage
 
     access_control:
