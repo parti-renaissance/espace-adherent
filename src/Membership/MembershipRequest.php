@@ -8,49 +8,54 @@ use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use AppBundle\Validator\UniqueMembership as AssertUniqueMembership;
 use AppBundle\ValueObject\Genders;
 use libphonenumber\PhoneNumber;
+use libphonenumber\PhoneNumberUtil;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertUniqueMembership
+ * @AssertUniqueMembership(groups={"Registration", "Update"})
  */
 class MembershipRequest implements MembershipInterface
 {
     /**
+     * @Assert\NotBlank(message="common.gender.not_blank", groups={"Update"})
      * @Assert\Choice(
      *   callback = {"AppBundle\ValueObject\Genders", "all"},
      *   message="common.gender.invalid_choice",
-     *   strict=true
+     *   strict=true,
+     *   groups={"Update"}
      * )
      */
     public $gender;
 
     /**
-     * @Assert\NotBlank(message="common.first_name.not_blank")
+     * @Assert\NotBlank(message="common.first_name.not_blank", groups={"Registration", "Update"})
      * @Assert\Length(
      *   min=2,
      *   max=50,
      *   minMessage="common.first_name.min_length",
-     *   maxMessage="common.first_name.max_length"
+     *   maxMessage="common.first_name.max_length",
+     *   groups={"Registration", "Update"}
      * )
      */
     public $firstName;
 
     /**
-     * @Assert\NotBlank(message="common.first_name.not_blank")
+     * @Assert\NotBlank(message="common.first_name.not_blank", groups={"Registration", "Update"})
      * @Assert\Length(
      *   min=2,
      *   max=50,
      *   minMessage="common.last_name.min_length",
-     *   maxMessage="common.last_name.max_length"
+     *   maxMessage="common.last_name.max_length",
+     *   groups={"Registration", "Update"}
      * )
      */
     public $lastName;
 
     /**
-     * @Assert\Valid
-     *
      * @var Address
+     *
+     * @Assert\Valid
      */
     private $address;
 
@@ -58,7 +63,8 @@ class MembershipRequest implements MembershipInterface
      * @Assert\Choice(
      *   callback = {"AppBundle\Membership\ActivityPositions", "all"},
      *   message="adherent.activity_position.invalid_choice",
-     *   strict=true
+     *   strict=true,
+     *   groups={"Update"}
      * )
      */
     public $position;
@@ -69,36 +75,32 @@ class MembershipRequest implements MembershipInterface
      */
     public $password;
 
-    /**
-     * @Assert\IsTrue(message="common.conditions.not_accepted", groups={"Registration"})
-     */
-    public $conditions;
-
     public $comMobile = false;
 
     public $comEmail = false;
 
     /**
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups="Registration")
+     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"Registration"})
      * @AssertRecaptcha(groups={"Registration"})
      */
     public $recaptcha;
 
     /**
-     * @Assert\NotBlank(message="common.email.not_blank")
-     * @Assert\Email(message="common.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
+     * @Assert\NotBlank(message="common.email.not_blank", groups={"Registration", "Update"})
+     * @Assert\Email(message="common.email.invalid", groups={"Registration", "Update"})
+     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Registration", "Update"})
      */
     private $emailAddress;
 
     /**
-     * @AssertPhoneNumber(defaultRegion="FR")
+     * @AssertPhoneNumber(defaultRegion="FR", groups={"Update"})
+     * @Assert\NotBlank(message="common.phone_number.required", groups={"Update"})
      */
     private $phone;
 
     /**
-     * @Assert\NotBlank(message="adherent.birthdate.not_blank")
-     * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age")
+     * @Assert\NotBlank(message="adherent.birthdate.not_blank", groups={"Update"})
+     * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age", groups={"Update"})
      */
     private $birthdate;
 
@@ -106,21 +108,23 @@ class MembershipRequest implements MembershipInterface
     {
         $this->gender = Genders::MALE;
         $this->position = ActivityPositions::EMPLOYED;
-        $this->conditions = false;
         $this->emailAddress = '';
         $this->address = new Address();
     }
 
-    public static function createWithCaptcha(string $recaptchaAnswer = null): self
+    public static function createWithCaptcha(?string $countryIso, string $recaptchaAnswer = null): self
     {
         $dto = new self();
         $dto->recaptcha = $recaptchaAnswer;
-        $dto->phone = static::createPhoneNumber();
+
+        if ($countryIso) {
+            $dto->address->setCountry($countryIso);
+        }
 
         return $dto;
     }
 
-    public static function createFromAdherent(Adherent $adherent): self
+    public static function createFromAdherent(Adherent $adherent, PhoneNumberUtil $phoneNumberUtil): self
     {
         $dto = new self();
         $dto->gender = $adherent->getGender();
@@ -134,19 +138,14 @@ class MembershipRequest implements MembershipInterface
         $dto->comEmail = $adherent->getComEmail();
         $dto->emailAddress = $adherent->getEmailAddress();
 
-        return $dto;
-    }
-
-    private static function createPhoneNumber(int $countryCode = 33, string $number = null): PhoneNumber
-    {
-        $phone = new PhoneNumber();
-        $phone->setCountryCode($countryCode);
-
-        if ($number) {
-            $phone->setNationalNumber($number);
+        if (!$dto->phone) {
+            $countryCode = $phoneNumberUtil->getCountryCodeForRegion($dto->address->getCountry());
+            $countryCode = $countryCode ?: 33;
+            $dto->phone = new PhoneNumber();
+            $dto->phone->setCountryCode($countryCode);
         }
 
-        return $phone;
+        return $dto;
     }
 
     public function setAddress(Address $address = null): void

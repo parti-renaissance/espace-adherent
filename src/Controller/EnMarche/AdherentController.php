@@ -33,6 +33,15 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class AdherentController extends Controller
 {
     /**
+     * @Route("/accueil", name="app_adherent_home")
+     * @Method("GET")
+     */
+    public function homeAction(): Response
+    {
+        return $this->render('adherent/home.html.twig');
+    }
+
+    /**
      * This action enables an adherent to pin his/her interests.
      *
      * @Route("/mon-compte/centres-d-interet", name="app_adherent_pin_interests")

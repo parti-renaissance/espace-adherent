@@ -103,8 +103,6 @@ class SummaryType extends AbstractType
             case self::STEP_SYNTHESIS:
                 $builder
                     ->add('current_profession', TextType::class, [
-                        'required' => false,
-                        'empty_data' => null,
                         'filter_emojis' => true,
                     ])
                     ->add('current_position', ActivityPositionType::class)

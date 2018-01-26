@@ -115,9 +115,9 @@ class CitizenActionManagerControllerTest extends MysqlWebTestCase
         $this->client->submit($crawler->selectButton('Je crée mon action citoyenne')->form(), $data);
 
         $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
-
-        $this->assertInstanceOf(CitizenAction::class, $this->getCitizenActionRepository()->findOneBy(['slug' => (new \DateTime())->format('Y-m-d').'-mon-action-citoyenne']));
-
+        /** @var CitizenAction $citizenAction */
+        $this->assertInstanceOf(CitizenAction::class, $citizenAction = $this->getCitizenActionRepository()->findOneBy(['slug' => (new \DateTime())->format('Y-m-d').'-mon-action-citoyenne']));
+        $this->assertSame('Mon Action Citoyenne', $citizenAction->getName());
         $this->assertCountMails(0, EventRegistrationConfirmationMessage::class, 'jacques.picard@en-marche.fr');
     }
 

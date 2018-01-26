@@ -125,6 +125,7 @@ class CitizenActionAdmin extends AbstractAdmin
             ->with('Action citoyenne', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
+                    'format_title_case' => true,
                 ])
                 ->add('category', CitizenActionCategoryType::class, [
                     'label' => 'Catégorie',
