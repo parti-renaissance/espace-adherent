@@ -45,9 +45,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/mes-evenements');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $crawler = $this->client->followRedirect();
-
-        $this->assertSame('Identifiez-vous', $crawler->filter('.login h2')->text());
+        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
     }
 
     public function testAuthenticatedAdherentCanSeeHisUpcomingAndPastEvents()
@@ -132,16 +130,16 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+        $this->client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => 'michelle.dufour@example.ch',
             '_adherent_password' => 'secret!12345',
         ]));
 
         $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
 
-        $this->client->followRedirect();
+        $crawler = $this->client->followRedirect();
 
-        $this->assertContains('Oups! Vos identifiants sont invalides.', $this->client->getResponse()->getContent());
+        $this->assertContains('L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.', $crawler->filter('#auth-error')->text());
     }
 
     public function testEditAdherentProfile()
@@ -195,13 +193,10 @@ class AdherentControllerTest extends MysqlWebTestCase
         $errors = $crawler->filter('.form__errors > li');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertSame(6, $errors->count());
+        $this->assertSame(3, $errors->count());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
-        $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(2)->text());
-        $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $errors->eq(3)->text());
-        $this->assertSame("L'adresse est obligatoire.", $errors->eq(4)->text());
-        $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(5)->text());
+        $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(2)->text());
 
         $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
 
