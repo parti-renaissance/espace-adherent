@@ -87,6 +87,11 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
     private $citizenProjectSupports;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $nameLocked = false;
+
+    /**
      * A cached list of the hosts (for admin).
      */
     public $hosts = [];
@@ -195,6 +200,16 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
     public function setAdminComment(string $adminComment): void
     {
         $this->adminComment = $adminComment;
+    }
+
+    public function isNameLocked(): bool
+    {
+        return $this->nameLocked;
+    }
+
+    public function setNameLocked(bool $nameLocked): void
+    {
+        $this->nameLocked = $nameLocked;
     }
 
     /**

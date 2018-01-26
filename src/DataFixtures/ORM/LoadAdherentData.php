@@ -418,6 +418,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'description' => 'Les jeunes avec En Marche !',
             'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', 48.5182194, 2.6220158),
             'phone' => '33 673654349',
+            'name_locked' => true,
         ]);
         $committee3->approved('2017-01-27 09:18:33');
 

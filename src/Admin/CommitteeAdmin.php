@@ -152,6 +152,9 @@ class CommitteeAdmin extends AbstractAdmin
                 ->add('name', null, [
                     'label' => 'Nom',
                 ])
+                ->add('nameLocked', null, [
+                    'label' => 'Bloquer la modification du nom de comité',
+                ])
                 ->add('description', null, [
                     'label' => 'Description',
                     'attr' => [
