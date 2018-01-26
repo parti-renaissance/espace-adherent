@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -49,7 +50,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/deconnexion", name="logout")
+     * @Route("/deconnexion", name="app_adherent_logout")
      * @Method("GET")
      */
     public function logoutAction()
@@ -57,7 +58,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/mot-de-passe-oublie", name="forgot_password")
+     * @Route("/mot-de-passe-oublie", name="adherent_forgot_password")
      * @Method("GET|POST")
      */
     public function retrieveForgotPasswordAction(Request $request)
@@ -68,11 +69,11 @@ class SecurityController extends Controller
 
         $form = $this->createFormBuilder()
             ->add('email', EmailType::class, ['constraints' => new NotBlank()])
+            ->add('submit', SubmitType::class)
             ->getForm()
-            ->handleRequest($request)
         ;
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
 
             if ($adherent = $this->getDoctrine()->getRepository(Adherent::class)->findOneByEmail($email)) {
@@ -80,11 +81,9 @@ class SecurityController extends Controller
             }
 
             $this->addFlash('info', $this->get('translator')->trans('adherent.reset_password.email_sent'));
-
-            return $this->redirectToRoute('app_user_login');
         }
 
-        return $this->render('security/forgot_password.html.twig', [
+        return $this->render('security/adherent_forgot_password.html.twig', [
             'legacy' => $request->query->getBoolean('legacy'),
             'form' => $form->createView(),
         ]);

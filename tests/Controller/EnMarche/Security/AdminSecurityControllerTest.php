@@ -21,9 +21,10 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(0, $crawler->filter('#auth-error'));
+        $this->assertCount(1, $crawler->filter('form[name="app_login"]'));
+        $this->assertCount(0, $crawler->filter('.login__error'));
 
-        $this->client->submit($crawler->selectButton('Connexion')->form([
+        $this->client->submit($crawler->selectButton('Je me connecte')->form([
             '_admin_email' => 'admin@en-marche-dev.fr',
             '_admin_password' => 'admin',
         ]));
@@ -40,9 +41,10 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(0, $crawler->filter('#auth-error'));
+        $this->assertCount(1, $crawler->filter('form[name="app_login"]'));
+        $this->assertCount(0, $crawler->filter('.login__error'));
 
-        $this->client->submit($crawler->selectButton('Connexion')->form([
+        $this->client->submit($crawler->selectButton('Je me connecte')->form([
             '_admin_email' => 'titouan.galopin@en-marche.fr',
             '_admin_password' => 'secret!12345',
         ]));
@@ -63,9 +65,10 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(0, $crawler->filter('#auth-error'));
+        $this->assertCount(1, $crawler->filter('form[name="app_login"]'));
+        $this->assertCount(0, $crawler->filter('.login__error'));
 
-        $this->client->submit($crawler->selectButton('Connexion')->form([
+        $this->client->submit($crawler->selectButton('Je me connecte')->form([
             '_admin_email' => $username,
             '_admin_password' => $password,
         ]));
@@ -76,8 +79,8 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(1, $error = $crawler->filter('#auth-error'));
-        $this->assertSame('L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.', trim($error->text()));
+        $this->assertCount(1, $error = $crawler->filter('.login__error'));
+        $this->assertSame('Oups! Vos identifiants sont invalides.', trim($error->text()));
     }
 
     public function provideInvalidCredentials()

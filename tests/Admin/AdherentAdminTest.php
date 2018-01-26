@@ -27,7 +27,7 @@ class AdherentAdminTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
 
         // connect as admin
-        $this->client->submit($crawler->selectButton('Connexion')->form([
+        $this->client->submit($crawler->selectButton('Je me connecte')->form([
             '_admin_email' => 'admin@en-marche-dev.fr',
             '_admin_password' => 'admin',
         ]));

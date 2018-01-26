@@ -68,7 +68,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @var string
      *
-     * @ORM\Column(length=2, nullable=true)
+     * @ORM\Column(length=2)
      *
      * @Algolia\Attribute
      */
@@ -88,7 +88,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      */
     private $longitude;
 
-    private function __construct(?string $country, string $postalCode, ?string $cityName, string $street, float $latitude = null, $longitude = null)
+    private function __construct(string $country, string $postalCode, ?string $cityName, string $street, float $latitude = null, $longitude = null)
     {
         $this->country = $country;
         $this->address = $street;

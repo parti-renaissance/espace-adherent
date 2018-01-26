@@ -8,8 +8,6 @@ window.findAll = (element, selector) => element.querySelectorAll(selector);
 
 window.on = (element, event, handler) => element.addEventListener(event, handler);
 
-window.off = (element, event, handler) => element.removeEventListener(event, handler);
-
 window.insertAfter = (element, newElement) => {
     if (element.parentNode) {
         element.parentNode.insertBefore(newElement, element.nextSibling);

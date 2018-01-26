@@ -50,14 +50,6 @@
         <!-- Form -->
         <service id="AppBundle\Form\CitizenProjectCommentCommandType"/>
         <service id="AppBundle\Form\CitizenProjectCommandType"/>
-
-		<!-- GeoCoder -->
-		<service id="GeoIp2\WebService\Client">
-			<argument>%env(MAXMIND_USER_ID)%</argument>
-			<argument>%env(MAXMIND_LICENSE_KEY)%</argument>
-		</service>
-		<service id="GeoIp2\ProviderInterface" alias="GeoIp2\WebService\Client" />
-		<service id="AppBundle\Address\GeoCoder" />
 		<service id="AppBundle\Form\EventRegistrationType"/>
 
 		<!-- Procuration -->
@@ -72,14 +64,6 @@
 
 		<!-- Security -->
 		<prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter" />
-		<service id="AppBundle\Security\FailedLoginAttemptFactory"/>
-		<service id="AppBundle\Security\Http\AuthenticationFailureHandler" />
-		<service id="app.security.user_provider" class="AppBundle\Security\UserProvider">
-			<argument key="$classOrAlias" type="string">AppBundle\Entity\Adherent</argument>
-		</service>
-		<service id="app.security.admin_provider" class="AppBundle\Security\UserProvider">
-			<argument key="$classOrAlias" type="string">AppBundle\Entity\Administrator</argument>
-		</service>
 
 		<!-- Timeline -->
 		<service id="AppBundle\Command\TimelineImportCommand" />
@@ -93,6 +77,5 @@
 			<argument key="$cacheDirectory">%kernel.cache_dir%</argument>
 			<argument key="$webDirectory">%kernel.root_dir%/../web</argument>
 		</service>
-
 	</services>
 </container>

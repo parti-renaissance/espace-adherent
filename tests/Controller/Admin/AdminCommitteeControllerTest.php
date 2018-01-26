@@ -26,7 +26,13 @@ class AdminCommitteeControllerTest extends MysqlWebTestCase
 
         $this->assertFalse($committee->isApproved());
 
-        $this->authenticateAsAdmin($this->client);
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
+
+        // connect as admin
+        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+            '_admin_email' => 'admin@en-marche-dev.fr',
+            '_admin_password' => 'admin',
+        ]));
 
         $this->client->request(Request::METHOD_GET, sprintf('/admin/committee/%s/approve', $committee->getId()));
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());

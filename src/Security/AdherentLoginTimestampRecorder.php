@@ -6,7 +6,6 @@ use AppBundle\Entity\Adherent;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
@@ -22,12 +21,6 @@ class AdherentLoginTimestampRecorder implements EventSubscriberInterface
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
     {
         $token = $event->getAuthenticationToken();
-
-        // OAuth calls are not login attempts
-        if ($token instanceof PostAuthenticationGuardToken && 'api_me' === $token->getProviderKey()) {
-            return;
-        }
-
         if (!$token instanceof UsernamePasswordToken) {
             throw new \RuntimeException(sprintf('Authentication token must be a %s instance.', UsernamePasswordToken::class));
         }

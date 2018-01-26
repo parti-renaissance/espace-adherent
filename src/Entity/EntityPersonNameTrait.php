@@ -3,23 +3,16 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
 
 trait EntityPersonNameTrait
 {
     /**
      * @ORM\Column(length=50)
-     *
-     * @JMS\Groups({"user_profile", "public"})
-     * @JMS\SerializedName("firstName")
      */
     private $firstName = '';
 
     /**
      * @ORM\Column(length=50)
-     *
-     * @JMS\Groups({"user_profile", "public"})
-     * @JMS\SerializedName("lastName")
      */
     private $lastName = '';
 

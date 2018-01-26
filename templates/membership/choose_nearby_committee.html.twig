@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block banner '' %}
+{% block page_title 'Suivre des comités' %}
+
+{% block content %}
+    <main>
+        <section class="content register__comites">
+            <header class="l__wrapper--slim space--60-0 text--center">
+                <h1 class="text--large">
+                    Pour terminer
+                </h1>
+                <h2 class="b__nudge--top-15">
+                    Suivez l'actualité des comités locaux près de chez vous.<br />
+                    C'est le cœur du mouvement En Marche !
+                </h2>
+            </header>
+            <hr class="l__wrapper b__nudge--bottom-large" />
+            <div class="l__wrapper--slim membership_choose_nearby_committee__form">
+                {{ form_start(form) }}
+                    {{ form_row(form.committees) }}
+                    <div class="text--center">
+                        <p>
+                            En cochant ces cases, j'accepte de recevoir l'actualité des comités sélectionnés.
+                        </p>
+                        {{ form_widget(form.submit, {'attr': {'class': 'btn btn--primary'}}) }}
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </section>
+    </main>
+{% endblock %}

@@ -24,7 +24,6 @@
     "find": true,
     "findAll": true,
     "on": true,
-    "off": true,
     "insertAfter": true,
     "remove": true,
     "show": true,

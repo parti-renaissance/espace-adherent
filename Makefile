@@ -16,18 +16,17 @@ help:
 ## Project setup
 ##---------------------------------------------------------------------------
 
-start:            ## Install and start the project
-start: build up app/config/parameters.yml db rabbitmq-fabric web/built assets-amp var/public.key perm
+start:          ## Install and start the project
+start: build up app/config/parameters.yml db web/built assets-amp perm
 
-stop:             ## Remove docker containers
-stop:
+stop:           ## Remove docker containers
 	$(FIG) kill
 	$(FIG) rm -v --force
 
-reset:            ## Reset the whole project
+reset:          ## Reset the whole project
 reset: stop start
 
-clear:            ## Remove all the cache, the logs, the sessions and the built assets
+clear:          ## Remove all the cache, the logs, the sessions and the built assets
 clear: perm
 	-$(EXEC) rm -rf var/cache/*
 	-$(EXEC) rm -rf var/sessions/*
@@ -37,29 +36,18 @@ clear: perm
 	rm -rf web/built
 	rm var/.php_cs.cache
 
-clean:            ## Clear and remove dependencies
+clean:          ## Clear and remove dependencies
 clean: clear
 	rm -rf vendor node_modules
 
-cc:               ## Clear the cache in dev env
+cc:             ## Clear the cache in dev env
 cc:
 	$(RUN) $(CONSOLE) cache:clear --no-warmup
 	$(RUN) $(CONSOLE) cache:warmup
 
-tty:              ## Run app container in interactive mode
+tty:            ## Run app container in interactive mode
 tty:
 	$(RUN) /bin/bash
-
-var/public.key:   ## Generate the public key
-var/public.key: var/private.key
-	$(RUN) openssl rsa -in var/private.key -pubout -out var/public.key
-
-var/private.key:  ## Generate the private key
-var/private.key:
-	$(RUN) openssl genrsa -out var/private.key 1024
-
-rabbitmq-fabric:
-	$(RUN) $(CONSOLE) rabbitmq:setup-fabric
 
 ##
 ## Database
@@ -124,8 +112,6 @@ tu: vendor
 
 tf:             ## Run the PHP functional tests
 tf: tfp
-	$(EXEC) $(CONSOLE) --env=test_mysql rabbitmq:setup-fabric
-	$(EXEC) vendor/bin/behat -vvv || true
 	$(EXEC) vendor/bin/phpunit --group functional || true
 
 tfp:            ## Prepare the PHP functional tests
@@ -184,16 +170,13 @@ deps: vendor web/built
 # Internal rules
 
 build:
-	$(FIG) pull --parallel
-	$(FIG) build --pull --force-rm
+	$(FIG) build
 
 up:
-	$(FIG) up -d --remove-orphans
+	$(FIG) up -d
 
 perm:
 	-$(EXEC) chmod -R 777 var
-	-$(EXEC) chown www-data:root var/public.key var/private.key
-	-$(EXEC) chmod 660 var/public.key var/private.key
 
 # Rules from files
 
@@ -203,7 +186,7 @@ vendor: composer.lock
 composer.lock: composer.json
 	@echo compose.lock is not up to date.
 
-app/config/parameters.yml: app/config/parameters.yml.dist vendor
+app/config/parameters.yml: app/config/parameters.yml.dist
 	@$(RUN) composer run-script post-install-cmd
 
 node_modules: yarn.lock

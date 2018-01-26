@@ -14,7 +14,6 @@ approved: Approuvé
 #
 # Adherent
 #
-Invalid credentials.: L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.
 adherent.activity_position.form_label: Profession
 adherent.activity_position.student: Étudiant
 adherent.activity_position.retired: Retraité
