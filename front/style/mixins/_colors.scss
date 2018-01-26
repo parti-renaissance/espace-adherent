@@ -21,10 +21,14 @@ $red: #FF4863;
 $yellow: #FFD400;
 $yellow-hover: #c4d02a; //old
 $yellow--light: #FFEB00;
+$cta: #1254d8;
+$cta-hover: #0251C0;
 
 // Alerts
 $error: #EE324A;
 $success: $green;
+$info: #FFF878;
+$border-form: #E6ECF0;
 
 // Grays
 $darker: #222;
@@ -37,6 +41,9 @@ $gray: #BCBCBC; // #D6D6D6 new gray
 $gray--light: #E5E5E5;
 $gray--lighter: #F6F6F6;
 $gray--white: #FAFAFA;
+$text--gray: #666666;
+$bg--gray: #F5F5F5;
+$border-gray: #F1F1F1;
 
 // Social Media
 $facebook: #3b5998;
@@ -97,6 +104,9 @@ $gradient--menu: linear-gradient(to right, rgba(white, 0), white);
     opacity: $opacity;
 }
 
+@mixin transition {
+    transition: all 0.2s;
+}
 
 // SVGs
 @mixin color($color) {

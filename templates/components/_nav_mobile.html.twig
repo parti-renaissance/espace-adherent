@@ -6,7 +6,7 @@
         <input type="checkbox" id="nav-menu">
         <label for="nav-menu">Menu de navigation</label>
         <div class="nav-mobile--menu">
-            {% if (not app.user) %}
+            {% if not app.user %}
                 <ul>
                     <li>
                         <a href="{{ path('app_user_login') }}">Connexion</a>
@@ -25,7 +25,7 @@
                             <div class="text--small text--gray">
                                 {% if not has_role_adherent %}
                                     Non-adhérent(e)
-                                {% elseif is_granted('ROLE_REFERENT') %}
+                                {% elseif has_role_adherent %}
                                     {% if app.user.isFemale %}Référente 🥇{% else %}Référent 🥇{% endif %}
                                 {% elseif app.user.isHost %}
                                     {% if app.user.isFemale %}Animatrice 🏅{% else %}Animateur 🏅{% endif %}
@@ -61,26 +61,26 @@
                             </li>
                         </ul>
                     {% endif %}
-                    {% if is_granted('ROLE_REFERENT') %}
+                    {% if has_role_adherent %}
                         <li>
                             <a href="{{ path('app_referent_users') }}">Espace référent</a>
                         </li>
                     {% endif %}
-                    {% if is_granted('ROLE_BOARD_MEMBER') %}
+                    {% if app.user.isBoardMember %}
                         <li>
                             <a href="{{ path('app_board_member_home') }}">Espace membre du Conseil</a>
                         </li>
                     {% endif %}
-                    {% if is_granted('ROLE_COORDINATOR_CITIZEN_PROJECT') %}
+                    {% if app.user.isCoordinatorCitizenProjectSector %}
                         <li>
                             <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}">Espace Responsable Engagement Citoyen</a>
                         </li>
-                    {% elseif is_granted('ROLE_COORDINATOR_COMMITTEE') %}
+                    {% elseif app.user.isCoordinatorCommitteeSector %}
                         <li>
                             <a href="{{ path('app_coordinator_committees', { s: constant('AppBundle\\Entity\\Committee::PENDING')}) }}">Espace coordinateur régional</a>
                         </li>
                     {% endif %}
-                    {% if is_granted('ROLE_PROCURATION_MANAGER') %}
+                    {% if app.user.isProcurationManager %}
                         <li>
                             <a href="{{ path('app_procuration_manager_requests') }}">Espace responsable procuration</a>
                         </li>
@@ -129,12 +129,11 @@
                 <li>
                     <a href="{{ path('articles_list', {category: 'tout'}) }}">Actualités</a>
                 </li>
-                {% if app.user and not has_role_adherent %}
+                {% if not has_role_adherent %}
                     <li>
-                        <a href="{{ path('app_membership_register') }}">Devenir adhérent(e)</a>
+                        <a href="{{ path('app_membership_join') }}">Devenir adhérent(e)</a>
                     </li>
-                {% endif %}
-                {% if app.user and (has_role_adherent or is_granted('ROLE_HOST')) %}
+                {% else %}
                     <li>
                         <a href="{{ path('app_documents_index') }}">Mes documents</a>
                     </li>
@@ -164,7 +163,7 @@
                 <hr>
                 <ul>
                     <li>
-                        <a href="{{ path('app_adherent_logout') }}">Déconnexion</a>
+                        <a href="{{ path('logout') }}">Déconnexion</a>
                     </li>
                 </ul>
             {% endif %}
