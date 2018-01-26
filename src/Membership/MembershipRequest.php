@@ -12,7 +12,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertUniqueMembership
+ * @AssertUniqueMembership(groups={"Default", "Registration"})
  */
 class MembershipRequest implements MembershipInterface
 {
@@ -26,7 +26,7 @@ class MembershipRequest implements MembershipInterface
     public $gender;
 
     /**
-     * @Assert\NotBlank(message="common.first_name.not_blank")
+     * @Assert\NotBlank(message="common.first_name.not_blank", groups={"Default", "Registration"})
      * @Assert\Length(
      *   min=2,
      *   max=50,
@@ -37,7 +37,7 @@ class MembershipRequest implements MembershipInterface
     public $firstName;
 
     /**
-     * @Assert\NotBlank(message="common.first_name.not_blank")
+     * @Assert\NotBlank(message="common.first_name.not_blank", groups={"Default", "Registration"})
      * @Assert\Length(
      *   min=2,
      *   max=50,
@@ -48,8 +48,6 @@ class MembershipRequest implements MembershipInterface
     public $lastName;
 
     /**
-     * @Assert\Valid
-     *
      * @var Address
      */
     private $address;
@@ -69,11 +67,6 @@ class MembershipRequest implements MembershipInterface
      */
     public $password;
 
-    /**
-     * @Assert\IsTrue(message="common.conditions.not_accepted", groups={"Registration"})
-     */
-    public $conditions;
-
     public $comMobile = false;
 
     public $comEmail = false;
@@ -85,9 +78,9 @@ class MembershipRequest implements MembershipInterface
     public $recaptcha;
 
     /**
-     * @Assert\NotBlank(message="common.email.not_blank")
-     * @Assert\Email(message="common.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
+     * @Assert\NotBlank(message="common.email.not_blank", groups={"Default", "Registration"})
+     * @Assert\Email(message="common.email.invalid", groups={"Default", "Registration"})
+     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Default", "Registration"})
      */
     private $emailAddress;
 
@@ -106,16 +99,18 @@ class MembershipRequest implements MembershipInterface
     {
         $this->gender = Genders::MALE;
         $this->position = ActivityPositions::EMPLOYED;
-        $this->conditions = false;
         $this->emailAddress = '';
         $this->address = new Address();
     }
 
-    public static function createWithCaptcha(string $recaptchaAnswer = null): self
+    public static function createWithCaptcha(?string $countryIso, string $recaptchaAnswer = null): self
     {
         $dto = new self();
         $dto->recaptcha = $recaptchaAnswer;
-        $dto->phone = static::createPhoneNumber();
+
+        if ($countryIso) {
+            $dto->address->setCountry($countryIso);
+        }
 
         return $dto;
     }
@@ -135,18 +130,6 @@ class MembershipRequest implements MembershipInterface
         $dto->emailAddress = $adherent->getEmailAddress();
 
         return $dto;
-    }
-
-    private static function createPhoneNumber(int $countryCode = 33, string $number = null): PhoneNumber
-    {
-        $phone = new PhoneNumber();
-        $phone->setCountryCode($countryCode);
-
-        if ($number) {
-            $phone->setNationalNumber($number);
-        }
-
-        return $phone;
     }
 
     public function setAddress(Address $address = null): void

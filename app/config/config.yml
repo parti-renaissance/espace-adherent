@@ -252,14 +252,21 @@ old_sound_rabbit_mq:
             exchange_options: { name: 'referent-message-dispatcher', type: direct }
             class:            AppBundle\Producer\ReferentMessageDispatcherProducer
 
-        enmarche_sync_user_create:
-            connection: default
-            exchange_options: { name: 'enmarche_sync_user_create', type: direct }
-            queue_options:    { name: 'enmarche_sync_user_create', durable: true }
-
         project_citizen_creation_notification:
             connection: default
             exchange_options: { name: 'project_citizen_creation_notification', type: direct }
+
+        user_sync_api:
+            connection: default
+            exchange_options:
+                name: api
+                type: topic
+            queue_options:
+                name: api_user
+                routing_keys:
+                    - user.created
+                    - user.updated
+                    - user.deleted
 
     consumers:
         mailer_campaign:

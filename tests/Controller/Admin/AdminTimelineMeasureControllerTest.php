@@ -43,13 +43,7 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
         /* @var $measure Measure */
         $measure = $this->measureRepository->findOneByTitle(LoadTimelineData::MEASURES['TM001']['title']['fr']);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
-
-        // connect as admin
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
-            '_admin_email' => 'admin@en-marche-dev.fr',
-            '_admin_password' => 'admin',
-        ]));
+        $this->authenticateAsAdmin($this->client);
 
         $deleteUrl = sprintf('/admin/app/timeline-measure/%s/delete', $measure->getId());
         $crawler = $this->client->request(Request::METHOD_GET, $deleteUrl);
@@ -87,13 +81,7 @@ class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
         $this->assertTrue($measure->getThemesToIndex()->contains($currentTheme));
         $this->assertFalse($measure->getThemesToIndex()->contains($newTheme));
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
-
-        // connect as admin
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
-            '_admin_email' => 'admin@en-marche-dev.fr',
-            '_admin_password' => 'admin',
-        ]));
+        $this->authenticateAsAdmin($this->client);
 
         $editUrl = sprintf('/admin/app/timeline-measure/%s/edit', $measure->getId());
         $crawler = $this->client->request(Request::METHOD_GET, $editUrl);

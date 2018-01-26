@@ -447,7 +447,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
         $crawler = $this->client->followRedirect();
 
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+        $this->client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => 'carl999@example.fr',
             '_adherent_password' => 'secret!12345',
         ]));
