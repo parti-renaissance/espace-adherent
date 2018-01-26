@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Intl;
+use JMS\Serializer\Annotation as JMS;
 
 trait EntityPostAddressTrait
 {
@@ -29,6 +30,11 @@ trait EntityPostAddressTrait
         return $this->postAddress->getInlineFormattedAddress($locale);
     }
 
+    /**
+     * @JMS\Groups({"user_profile", "public"})
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("country")
+     */
     public function getCountry(): ?string
     {
         return $this->postAddress->getCountry();
@@ -44,6 +50,11 @@ trait EntityPostAddressTrait
         return $this->postAddress->getAddress();
     }
 
+    /**
+     * @JMS\Groups({"user_profile", "public"})
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("zipCode")
+     */
     public function getPostalCode(): ?string
     {
         return $this->postAddress->getPostalCode();

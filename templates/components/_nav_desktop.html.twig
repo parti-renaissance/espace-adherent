@@ -26,7 +26,7 @@
         </li>
         {% if app.user and not has_role_adherent %}
             <li>
-                <a href="{{ path('app_membership_register') }}">Devenir adhérent(e)</a>
+                <a href="{{ path('app_membership_join') }}">Devenir adhérent(e)</a>
             </li>
         {% endif %}
         <li>
@@ -94,7 +94,7 @@
                                         <li>
                                             <a href="{{ path('app_adherent_events') }}">Mes activités</a>
                                         </li>
-                                        {% if app.user and (has_role_adherent or is_granted('ROLE_HOST')) %}
+                                        {% if app.user and (has_role_adherent or app.user.isHost) %}
                                             <li>
                                                 <a href="{{ path('app_documents_index') }}">Mes documents</a>
                                             </li>
@@ -121,7 +121,7 @@
                                         <div class="nav-dropdown__separator"></div>
                                         <ul class="nav-dropdown__section">
                                             <li>
-                                                <a href="{{ path('app_membership_register') }}">Devenir adhérent(e)</a>
+                                                <a href="{{ path('app_membership_join') }}">Devenir adhérent(e)</a>
                                             </li>
                                         </ul>
                                     {% endif %}
@@ -136,7 +136,7 @@
                                             <a class="text--gray" href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a>
                                         </li>
                                         <li>
-                                            <a class="text--gray" href="{{ path('app_adherent_logout') }}">Déconnexion</a>
+                                            <a class="text--gray" href="{{ path('logout') }}">Déconnexion</a>
                                         </li>
                                         {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
                                             <li class="text--small">
@@ -176,7 +176,7 @@
 {% if is_granted('ROLE_SUPERVISOR') or is_granted('ROLE_HOST') or is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') or is_granted('ROLE_REFERENT') or is_granted('ROLE_BOARD_MEMBER') or is_granted('ROLE_COORDINATOR') or is_granted('ROLE_PROCURATION_MANAGER') or is_granted('ROLE_LEGISLATIVE_CANDIDATE') %}
 <div class="background--darker space--10-0 l__hide--on-small-laptop">
     <ul class="l__wrapper list__links list__links--row list__links--row-left list__links--no-decor list__links--subnav nav-dropdown__menu__items">
-        {% if is_granted('ROLE_SUPERVISOR') or is_granted('ROLE_HOST') %}
+        {% if app.user.isSupervisor or app.user.isHost %}
             <li>
                 {{ al_committees }}
             </li>
@@ -186,26 +186,26 @@
                 {{ administrated_citizen_projects }}
             </li>
         {% endif %}
-        {% if is_granted('ROLE_REFERENT') %}
+        {% if app.user.isReferent %}
             <li>
                 <a href="{{ path('app_referent_users') }}">Espace référent</a>
             </li>
         {% endif %}
-        {% if is_granted('ROLE_BOARD_MEMBER') %}
+        {% if app.user.isBoardMember %}
             <li>
                 <a href="{{ path('app_board_member_home') }}">Espace membre du Conseil</a>
             </li>
         {% endif %}
-        {% if is_granted('ROLE_COORDINATOR_CITIZEN_PROJECT') %}
+        {% if app.user.isCoordinatorCitizenProjectSector %}
             <li>
                 <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}">Espace Responsable Engagement Citoyen</a>
             </li>
-        {% elseif is_granted('ROLE_COORDINATOR_COMMITTEE') %}
+        {% elseif app.user.isCoordinatorCommitteeSector %}
             <li>
                 <a href="{{ path('app_coordinator_committees', { s: constant('AppBundle\\Entity\\Committee::PENDING')}) }}">Espace coordinateur régional</a>
             </li>
         {% endif %}
-        {% if is_granted('ROLE_PROCURATION_MANAGER') %}
+        {% if app.user.isProcurationManager %}
             <li>
                 <a href="{{ path('app_procuration_manager_requests') }}">Espace responsable procuration</a>
             </li>

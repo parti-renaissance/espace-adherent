@@ -1,0 +1,9 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    <p>
+    {% for grantType in value %}
+        <span class="label label-default">{{ grantType }}</span>
+    {% endfor %}
+    </p>
+{% endblock %}
