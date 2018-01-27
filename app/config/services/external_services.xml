@@ -39,7 +39,6 @@
         <service id="app.mailer.message_factory.transactional" class="AppBundle\Mailer\EmailTemplateFactory" public="false">
             <argument>%transactional_sender_email%</argument>
             <argument>%transactional_sender_name%</argument>
-            <argument>AppBundle\Mailjet\EmailTemplate</argument>
         </service>
 
         <!-- Mailer (campaign) -->
@@ -62,7 +61,6 @@
         <service id="app.mailer.message_factory.campaign" class="AppBundle\Mailer\EmailTemplateFactory" public="false">
             <argument>%campaign_sender_email%</argument>
             <argument>%campaign_sender_name%</argument>
-            <argument>AppBundle\Mailjet\EmailTemplate</argument>
         </service>
 
         <service id="AppBundle\Mailer\EventSubscriber\EmailPersisterEventSubscriber">

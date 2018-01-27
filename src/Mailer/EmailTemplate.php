@@ -37,15 +37,27 @@ abstract class EmailTemplate implements \JsonSerializable
         $this->recipients = [];
     }
 
-    public static function createWithMessage(Message $message, string $defaultSenderEmail, string $defaultSenderName = null): self
-    {
-        $senderEmail = $message->getSenderEmail() ?: $defaultSenderEmail;
-        $senderName = $message->getSenderName() ?: $defaultSenderName;
-
-        $email = new static($message->getUuid(), $message->getTemplate(), $message->getSubject(), $senderEmail, $senderName, $message->getReplyTo(), $message->getCC());
+    public static function createWithMessage(
+        Message $message,
+        string $defaultSenderEmail,
+        string $defaultSenderName = null
+    ): self {
+        $email = new static(
+            $message->getUuid(),
+            $message->getTemplate(),
+            $message->getSubject(),
+            $message->getSenderEmail() ?: $defaultSenderEmail,
+            $message->getSenderName() ?: $defaultSenderName,
+            $message->getReplyTo(),
+            $message->getCC()
+        );
 
         foreach ($message->getRecipients() as $recipient) {
-            $email->addRecipient($recipient->getEmailAddress(), $recipient->getFullName(), $recipient->getVars());
+            $email->addRecipient(
+                $recipient->getEmailAddress(),
+                $recipient->getFullName(),
+                $recipient->getVars()
+            );
         }
 
         return $email;
