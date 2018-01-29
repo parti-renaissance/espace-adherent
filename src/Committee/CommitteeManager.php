@@ -18,6 +18,9 @@ use AppBundle\Repository\CommitteeRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use League\Flysystem\Filesystem;
+use League\Glide\Server;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CommitteeManager
 {
@@ -27,10 +30,14 @@ class CommitteeManager
     private const COMMITTEE_PROPOSALS_COUNT = 3;
 
     private $registry;
+    private $storage;
+    private $glide;
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, Filesystem $storage, Server $glide)
     {
         $this->registry = $registry;
+        $this->storage = $storage;
+        $this->glide = $glide;
     }
 
     public function isPromotableHost(Adherent $adherent, Committee $committee): bool
@@ -477,5 +484,27 @@ class CommitteeManager
     public function getCommitteeSupervisor(Committee $committee): ?Adherent
     {
         return $this->getMembershipRepository()->findSupervisor($committee->getUuid()->toString());
+    }
+
+    /**
+     * Uploads and saves the ID photo of committee creator.
+     *
+     * @param Committee $committee
+     */
+    public function addPhoto(Committee $committee): void
+    {
+        if (!$committee->getPhoto() instanceof UploadedFile) {
+            throw new \RuntimeException(sprintf('The photo must be an instance of %s', UploadedFile::class));
+        }
+
+        $path = $committee->getPhotoPath();
+
+        // Uploads the file : creates or updates if exists
+        $this->storage->put($path, file_get_contents($committee->getPhoto()->getPathname()));
+
+        // Clears the cache file
+        $this->glide->deleteCache($path);
+
+        $committee->setPhotoUploaded(true);
     }
 }

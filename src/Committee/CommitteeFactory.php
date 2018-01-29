@@ -86,6 +86,8 @@ class CommitteeFactory
             $committee->setGooglePlusPageUrl($command->googlePlusPageUrl);
         }
 
+        $committee->setPhoto($command->getPhoto());
+
         return $committee;
     }
 

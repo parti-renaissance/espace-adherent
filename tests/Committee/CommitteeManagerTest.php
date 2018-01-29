@@ -267,7 +267,7 @@ class CommitteeManagerTest extends MysqlWebTestCase
         ]);
 
         $this->container = $this->getContainer();
-        $this->committeeManager = new CommitteeManager($this->getManagerRegistry());
+        $this->committeeManager = new CommitteeManager($this->getManagerRegistry(), $this->getStorage(), $this->getGlide());
     }
 
     protected function tearDown()

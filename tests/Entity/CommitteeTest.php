@@ -85,7 +85,7 @@ class CommitteeTest extends TestCase
         $this->assertTrue($committee->isPreApproved());
         $this->assertFalse($committee->isApproved());
         $this->assertFalse($committee->isRefused());
-        $this->assertFalse($committee->isWaitingForApproval());
+        $this->assertTrue($committee->isWaitingForApproval());
         $this->assertFalse($committee->isPreRefused());
         $this->assertEquals(null, $committee->getApprovedAt());
     }
@@ -98,7 +98,7 @@ class CommitteeTest extends TestCase
         $this->assertTrue($committee->isPreRefused());
         $this->assertFalse($committee->isApproved());
         $this->assertFalse($committee->isRefused());
-        $this->assertFalse($committee->isWaitingForApproval());
+        $this->assertTrue($committee->isWaitingForApproval());
         $this->assertFalse($committee->isPreApproved());
         $this->assertEquals(null, $committee->getApprovedAt());
     }

@@ -8,6 +8,7 @@ use AppBundle\Validator\UniqueCommittee as AssertUniqueCommittee;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -62,6 +63,16 @@ class CommitteeCommand
      * @Assert\Length(max=255)
      */
     public $googlePlusPageUrl;
+
+    /**
+     * @var UploadedFile|null
+     *
+     * @Assert\Image(
+     *     maxSize = "50M",
+     *     mimeTypes = {"image/jpeg", "image/png"},
+     * )
+     */
+    private $photo;
 
     protected function __construct(Address $address = null)
     {
@@ -120,5 +131,18 @@ class CommitteeCommand
     public function getAddress(): Address
     {
         return $this->address;
+    }
+
+    /**
+     * @return null|UploadedFile
+     */
+    public function getPhoto(): ?UploadedFile
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?UploadedFile $photo): void
+    {
+        $this->photo = $photo;
     }
 }

@@ -30,7 +30,7 @@
             </header>
 
             <div class="committee__form">
-                <form method="post" id="create-committee-form" class="form committee-form">
+                {{ form_start(form, {attr: {'id': 'create-committee-form', 'class': 'form committee-form'}}) }}
                     {{ include('committee/_form.html.twig') }}
 
                     <div class="space--20-30">
@@ -46,6 +46,8 @@
                             Ces informations ne sont pas justes ?
                             <a href="{{ path('app_user_profile') }}">Éditez-les</a>.
                         </p>
+
+                        <div class="text--summary text--small text--gray b__nudge--top-10 b__nudge--bottom">Vos informations seront mises à disposition de notre équipe départementale LaREM qui pourra vous contacter. Elles ne seront pas visibles sur le site.</div>
                     </div>
 
                     <div class="form__row form__checkbox" id="field-confidentiality-terms">
@@ -67,7 +69,7 @@
                     </div>
 
                     {{ form_rest(form) }}
-                </form>
+                {{ form_end(form) }}
             </div>
         </section>
     </main>

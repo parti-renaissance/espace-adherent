@@ -136,6 +136,8 @@
         <!-- Committees -->
         <service id="app.committee.manager" class="AppBundle\Committee\CommitteeManager">
             <argument type="service" id="doctrine"/>
+            <argument type="service" id="app.storage"/>
+            <argument type="service" id="app.glide"/>
         </service>
 
         <service id="app.committee.authority" class="AppBundle\Committee\CommitteeManagementAuthority">
@@ -152,6 +154,7 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.address.post_address_factory"/>
+            <argument type="service" id="app.committee.manager"/>
         </service>
 
         <service id="app.committee.creation_handler" class="AppBundle\Committee\CommitteeCreationCommandHandler">
@@ -159,6 +162,7 @@
             <argument type="service" id="app.committee.factory"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.mailer.transactional"/>
+            <argument type="service" id="app.committee.manager"/>
         </service>
 
         <service id="app.committee.contact_members_handler" class="AppBundle\Committee\CommitteeContactMembersCommandHandler">

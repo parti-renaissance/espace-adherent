@@ -11,6 +11,7 @@ use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Sabre\DAV\Collection;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * This entity represents a committee group.
@@ -40,6 +41,12 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
         self::PRE_APPROVED,
         self::PENDING,
         self::REFUSED,
+    ];
+
+    public const WAITING_STATUSES = [
+        self::PENDING,
+        self::PRE_APPROVED,
+        self::PRE_REFUSED,
     ];
 
     /**
@@ -92,6 +99,20 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
     private $nameLocked = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default"=false})
+     */
+    private $photoUploaded = false;
+
+    private $urlPhoto = '';
+
+    /**
+     * @var UploadedFile|null
+     */
+    private $photo;
+
+    /**
      * A cached list of the hosts (for admin).
      */
     public $hosts = [];
@@ -140,6 +161,41 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
     public function getPostAddress(): PostAddress
     {
         return $this->postAddress;
+    }
+
+    public function getPhotoPath(): string
+    {
+        return sprintf('images/committees/%s.jpg', $this->getUuid());
+    }
+
+    public function setUrlPhoto(string $url): void
+    {
+        $this->urlPhoto = $url;
+    }
+
+    public function getUrlPhoto(): string
+    {
+        return $this->urlPhoto;
+    }
+
+    public function getPhoto(): ?UploadedFile
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?UploadedFile $photo): void
+    {
+        $this->photo = $photo;
+    }
+
+    public function hasPhotoUploaded(): bool
+    {
+        return $this->photoUploaded;
+    }
+
+    public function setPhotoUploaded(bool $photoUploaded): void
+    {
+        $this->photoUploaded = $photoUploaded;
     }
 
     public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, string $description, PostAddress $address, PhoneNumber $phone, string $createdAt = 'now'): self
@@ -212,6 +268,11 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
         $this->nameLocked = $nameLocked;
     }
 
+    public function isWaitingForApproval(): bool
+    {
+        return (in_array($this->status, self::WAITING_STATUSES, true)) && !$this->approvedAt;
+    }
+
     /**
      * Marks this committee as approved.
      *
@@ -277,8 +338,13 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
         return $links;
     }
 
-    public function update(string $name, string $description, PostAddress $address, PhoneNumber $phone): void
-    {
+    public function update(
+        string $name,
+        string $description,
+        PostAddress $address,
+        PhoneNumber $phone,
+        ?UploadedFile $photo
+    ): void {
         $this->setName($name);
         $this->description = $description;
 
@@ -288,6 +354,10 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
 
         if (null === $this->phone || !$this->phone->equals($phone)) {
             $this->phone = $phone;
+        }
+
+        if ($photo instanceof UploadedFile) {
+            $this->setPhoto($photo);
         }
     }
 

@@ -397,6 +397,11 @@ class CommitteeAdmin extends AbstractAdmin
                 'label' => 'Statut',
                 'template' => 'admin/committee/list_status.html.twig',
             ])
+            ->add('photo', TextType::class, [
+                'virtual_field' => true,
+                'label' => "Photo d'identité",
+                'template' => 'admin/committee/photo.html.twig',
+            ])
             ->add('_action', null, [
                 'virtual_field' => true,
                 'template' => 'admin/committee/list_actions.html.twig',

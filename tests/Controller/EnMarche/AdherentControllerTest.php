@@ -20,6 +20,7 @@ use AppBundle\Mailer\Message\CitizenProjectCreationConfirmationMessage;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EmailRepository;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -628,29 +629,27 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame('Vous devez accepter les règles de confidentialité.', $crawler->filter('#field-confidentiality-terms > .form__errors > li')->text());
         $this->assertSame("Vous devez accepter d'être contacté(e) par la plateforme En Marche !", $crawler->filter('#field-contacting-terms > .form__errors > li')->text());
 
-        // Submit the committee form with valid data to create committee
-        $this->client->submit($crawler->selectButton('Créer mon comité')->form([
-            'create_committee' => [
-                'name' => 'Lyon est En Marche !',
-                'description' => 'Comité français En Marche ! de la ville de Lyon',
-                'address' => [
-                    'country' => 'FR',
-                    'address' => '6 rue Neyret',
-                    'postalCode' => '69001',
-                    'city' => '69001-69381',
-                    'cityName' => '',
-                ],
-                'phone' => [
-                    'country' => 'FR',
-                    'number' => '0478457898',
-                ],
-                'facebookPageUrl' => 'https://www.facebook.com/EnMarcheLyon',
-                'twitterNickname' => '@enmarchelyon',
-                'googlePlusPageUrl' => 'https://plus.google.com/+EnMarcheavecEmmanuelMacron?hl=fr',
-                'acceptConfidentialityTerms' => true,
-                'acceptContactingTerms' => true,
-            ],
-        ]));
+        $file = new UploadedFile(__DIR__.'/../../Fixtures/image.jpg', 'image.jpg', 'image/jpeg', 631, UPLOAD_ERR_OK, true);
+
+        $parameters = [
+            'create_committee[name]' => 'Lyon est En Marche !',
+            'create_committee[description]' => 'Comité français En Marche ! de la ville de Lyon',
+            'create_committee[address][country]' => 'FR',
+            'create_committee[address][address]' => '6 rue Neyret',
+            'create_committee[address][postalCode]' => '69001',
+            'create_committee[address][city]' => '69001-69381',
+            'create_committee[address][cityName]' => '',
+            'create_committee[phone][country]' => 'FR',
+            'create_committee[phone][number]' => '0478457898',
+            'create_committee[facebookPageUrl]' => 'https://www.facebook.com/EnMarcheLyon',
+            'create_committee[twitterNickname]' => '@enmarchelyon',
+            'create_committee[googlePlusPageUrl]' => 'https://plus.google.com/+EnMarcheavecEmmanuelMacron?hl=fr',
+            'create_committee[acceptConfidentialityTerms]' => true,
+            'create_committee[acceptContactingTerms]' => true,
+            'create_committee[photo]' => $file,
+        ];
+
+        $this->client->submit($crawler->selectButton('Créer mon comité')->form($parameters));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertInstanceOf(Committee::class, $committee = $this->committeeRepository->findMostRecentCommittee());
@@ -669,6 +668,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('04 78 45 78 98', $crawler->filter('#committee_phone_number')->attr('value'));
+        $this->assertSame(1, $crawler->filter('#field-photo img')->count());
     }
 
     public function provideRegularAdherentsCredentials()

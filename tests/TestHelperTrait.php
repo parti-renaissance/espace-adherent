@@ -59,6 +59,7 @@ use AppBundle\Repository\TonMacronFriendInvitationRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use League\Flysystem\Filesystem;
+use League\Glide\Server;
 use libphonenumber\PhoneNumber;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -105,6 +106,11 @@ trait TestHelperTrait
     public function getStorage(): Filesystem
     {
         return $this->container->get('app.storage');
+    }
+
+    public function getGlide(): Server
+    {
+        return $this->container->get('app.glide');
     }
 
     public function getEntityManager($class): ObjectManager
