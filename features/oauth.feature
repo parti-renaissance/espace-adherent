@@ -130,7 +130,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
       "MJ-TemplateLanguage": true,
       "Recipients": [
         {
-      "Email": "jp@test.com",
+          "Email": "jp@test.com",
           "Name": "Jean-Pierre DURAND",
           "Vars": {
             "first_name": "Jean-Pierre",
