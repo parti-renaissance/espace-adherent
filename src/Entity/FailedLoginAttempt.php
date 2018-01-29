@@ -2,7 +2,7 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Security\FailedLoginAttemptSignature;
+use AppBundle\Security\LoginAttemptSignature;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +35,7 @@ class FailedLoginAttempt
      */
     private $extra;
 
-    public function __construct(string $signature, array $extra)
+    private function __construct(string $signature, array $extra)
     {
         $this->uuid = Uuid::uuid4();
         $this->signature = $signature;
@@ -45,13 +45,20 @@ class FailedLoginAttempt
 
     public static function createFromRequest(Request $request): self
     {
+        $attempt = LoginAttemptSignature::createFromRequest($request);
+
         return new self(
-            (new FailedLoginAttemptSignature($request->get('_adherent_email'), $request->getClientIp()))(),
+            $attempt->getSignature(),
             [
-                'login' => $request->get('_adherent_email'),
-                'ip' => $request->getClientIp(),
+                'login' => $attempt->getLogin(),
+                'ip' => $attempt->getIp(),
                 'user_agent' => $request->headers->get('User-Agent'),
             ]
         );
+    }
+
+    public function getSignature(): string
+    {
+        return $this->signature;
     }
 }
