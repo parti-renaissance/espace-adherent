@@ -22,7 +22,6 @@ final class AdherentContactMessage extends Message
             $contactMessage->getFrom()->getFirstName().' vous a envoyé un message',
             [],
             [
-                'animator_firstname' => self::escape($contactMessage->getTo()->getFirstName()),
                 'member_firstname' => self::escape($contactMessage->getFrom()->getFirstName()),
                 'target_message' => nl2br(self::escape($contactMessage->getContent())),
             ],
