@@ -15,6 +15,7 @@ approved: Approuvé
 # Adherent
 #
 Invalid credentials.: L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.
+Max attempts reached.: Vous avez effectué 5 tentatives de connexion erronées. Veuillez attendre 1 minute avant de réessayer.
 adherent.activity_position.form_label: Profession
 adherent.activity_position.student: Étudiant
 adherent.activity_position.retired: Retraité

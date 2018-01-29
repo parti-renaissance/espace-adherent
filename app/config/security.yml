@@ -1,4 +1,7 @@
 security:
+    # Providers auth exceptions must not be hidden to customize the error message
+    # see usages of App\Security\Exception\BadCredentialsException
+    hide_user_not_found: false
     erase_credentials: false
 
     encoders:
@@ -254,6 +257,8 @@ security:
                 password_parameter: _admin_password
                 csrf_parameter: _admin_csrf
                 csrf_token_id: authenticate_admin
+
+                failure_handler: AppBundle\Security\Http\AuthenticationFailureHandler
             logout:
                 path: app_admin_logout
                 target: homepage
