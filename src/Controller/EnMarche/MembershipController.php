@@ -85,6 +85,8 @@ class MembershipController extends Controller
         ;
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+            $this->get('app.membership_request_handler')->update($user, $membership);
+
             $user->join();
             $manager->flush();
 
