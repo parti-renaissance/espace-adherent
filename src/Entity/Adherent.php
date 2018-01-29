@@ -255,7 +255,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->registeredAt = new \DateTime($registeredAt);
         $this->memberships = new ArrayCollection();
         $this->citizenProjectMemberships = new ArrayCollection();
-        $this->comEmail = $comEmail;
+        $this->setComEmail($comEmail);
         $this->comMobile = $comMobile;
         $this->tags = new ArrayCollection($tags);
         $this->coordinatorManagedAreas = new ArrayCollection();
@@ -963,6 +963,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function setComEmail(?bool $comEmail): void
     {
         $this->comEmail = $comEmail;
+
+        $this->setCitizenProjectCreationEmailSubscriptionRadius(
+            $comEmail ? self::CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE : self::DISABLED_CITIZEN_PROJECT_EMAIL
+        );
     }
 
     public function getCommitteeFeedItems(): iterable

@@ -64,6 +64,7 @@ class AdherentFactory
         );
 
         $adherent->join();
+        $adherent->setCitizenProjectCreationEmailSubscriptionRadius(Adherent::CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE);
 
         return $adherent;
     }
