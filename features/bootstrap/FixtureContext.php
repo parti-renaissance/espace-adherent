@@ -13,10 +13,19 @@ class FixtureContext extends RawMinkContext
     use KernelDictionary;
 
     private $executor;
+    private $purger;
 
     public function __construct(EntityManager $manager)
     {
-        $this->executor = new ORMExecutor($manager, new ORMPurger($manager));
+        $this->executor = new ORMExecutor($manager, $this->purger = new ORMPurger($manager));
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function clearDatabase()
+    {
+        $this->purger->purge();
     }
 
     /**
