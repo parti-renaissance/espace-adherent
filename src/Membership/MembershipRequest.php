@@ -31,7 +31,8 @@ class MembershipRequest implements MembershipInterface
      *   min=2,
      *   max=50,
      *   minMessage="common.first_name.min_length",
-     *   maxMessage="common.first_name.max_length"
+     *   maxMessage="common.first_name.max_length",
+     *   groups={"Default", "Registration"}
      * )
      */
     public $firstName;
@@ -42,7 +43,8 @@ class MembershipRequest implements MembershipInterface
      *   min=2,
      *   max=50,
      *   minMessage="common.last_name.min_length",
-     *   maxMessage="common.last_name.max_length"
+     *   maxMessage="common.last_name.max_length",
+     *   groups={"Default", "Registration"}
      * )
      */
     public $lastName;
