@@ -40,6 +40,7 @@ class SearchParametersFilter
         self::TYPE_CITIZEN_ACTIONS,
     ];
 
+    const RADIUS_NONE = -1;
     const RADIUS_1 = 1;
     const RADIUS_5 = 5;
     const RADIUS_10 = 10;
@@ -49,6 +50,7 @@ class SearchParametersFilter
     const RADIUS_150 = 150;
 
     const RADII = [
+        self::RADIUS_NONE,
         self::RADIUS_1,
         self::RADIUS_5,
         self::RADIUS_10,
@@ -88,7 +90,7 @@ class SearchParametersFilter
     {
         $this->setQuery((string) $request->query->get(self::PARAMETER_QUERY));
         $this->setType($request->query->get(self::PARAMETER_TYPE, ''));
-        $this->setRadius($request->query->getInt(self::PARAMETER_RADIUS));
+        $this->setRadius($request->query->getInt(self::PARAMETER_RADIUS, self::DEFAULT_RADIUS));
         $this->setOffset($request->query->getInt(self::PARAMETER_OFFSET));
         $this->setEventCategory($request->query->getAlnum(self::PARAMETER_EVENT_CATEGORY, null));
 

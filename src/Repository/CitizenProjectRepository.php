@@ -118,7 +118,7 @@ class CitizenProjectRepository extends BaseGroupRepository
             throw new \LogicException(sprintf('Only %s is supported', SearchParametersFilter::TYPE_CITIZEN_PROJECTS));
         }
 
-        if ($coordinates = $search->getCityCoordinates()) {
+        if ($search->getRadius() > 0 && $coordinates = $search->getCityCoordinates()) {
             $qb = $this
                 ->createNearbyQueryBuilder($coordinates)
                 ->andWhere($this->getNearbyExpression().' < :distance_max')

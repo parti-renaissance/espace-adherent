@@ -14,15 +14,11 @@
             </div>
         {% endif %}
 
-        <div>
-            dans un rayon de
-            {# this widget will be embedded in the ribbon text #}
-            <select name="{{ constant('PARAMETER_RADIUS', search) }}">
-                {% for option in constant('RADII', search) %}
-                    <option value="{{ option }}" {% if constant('DEFAULT_RADIUS', search) == option %}selected="selected"{% endif %}>{{ option }} Km</option>
-                {% endfor %}
-            </select>
-        </div>
+        {% if search.isTypeCitizenProjects %}
+            {{ include('search/_filters_radius_citizen_projects.html.twig') }}
+        {% else %}
+            {{ include('search/_filters_radius.html.twig') }}
+        {% endif %}
 
         <div>
             autour de
