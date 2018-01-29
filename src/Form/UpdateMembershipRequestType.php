@@ -13,8 +13,6 @@ class UpdateMembershipRequestType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->remove('password')
-            ->remove('conditions')
             ->remove($firstName = 'firstName')->add($firstName, TextType::class)
             ->remove($lastName = 'lastName')->add($lastName, TextType::class)
             ->remove($email = 'emailAddress')->add($email, EmailType::class)
