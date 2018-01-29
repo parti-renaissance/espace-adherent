@@ -18,12 +18,12 @@ class AccessTokenTest extends TestCase
 
     public function testCreateAccessToken(): void
     {
-        $accessToken = $this->createAccessToken('+5 hours');
+        $accessToken = $this->createAccessToken(time() + 5 * 3600);
 
         static::assertSame(self::IDENTIFIER, $accessToken->getIdentifier());
         static::assertEquals(Uuid::fromString(self::UUID), $accessToken->getUuid());
         static::assertInstanceOf(\DateTimeImmutable::class, $accessToken->getExpiryDateTime());
-        static::assertSame(strtotime('+5 hours'), (int) $accessToken->getExpiryDateTime()->format('U'));
+        static::assertSame(time() + 5 * 3600, (int) $accessToken->getExpiryDateTime()->format('U'));
         static::assertSame(['public', 'user_profile', 'manage_committees'], $accessToken->getScopes());
         static::assertInstanceOf(Adherent::class, $accessToken->getUser());
         static::assertInstanceOf(Client::class, $accessToken->getClient());
@@ -33,7 +33,7 @@ class AccessTokenTest extends TestCase
 
     public function testRevokeToken(): void
     {
-        $accessToken = $this->createAccessToken('+10 hours');
+        $accessToken = $this->createAccessToken(time() + 36000);
 
         static::assertFalse($accessToken->isRevoked());
 
@@ -44,18 +44,18 @@ class AccessTokenTest extends TestCase
 
     public function testExpiredToken(): void
     {
-        $accessToken = $this->createAccessToken('-2 hours');
+        $accessToken = $this->createAccessToken(time() - 2 * 3600);
 
         static::assertTrue($accessToken->isExpired());
     }
 
-    private function createAccessToken(string $expiryDateTime): AccessToken
+    private function createAccessToken(int $time): AccessToken
     {
         $token = new AccessToken(
             Uuid::fromString(self::UUID),
             $this->createMock(Adherent::class),
             self::IDENTIFIER,
-            \DateTime::createFromFormat('U', strtotime($expiryDateTime)),
+            \DateTime::createFromFormat('U', $time),
             $this->createMock(Client::class)
         );
         $token->addScope('public');
