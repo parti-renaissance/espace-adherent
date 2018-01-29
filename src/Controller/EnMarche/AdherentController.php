@@ -17,6 +17,7 @@ use AppBundle\Form\CreateCommitteeCommandType;
 use AppBundle\Form\CitizenProjectCommandType;
 use AppBundle\CitizenProject\CitizenProjectCreationCommand;
 use AppBundle\Repository\CitizenProjectRepository;
+use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -96,10 +97,17 @@ class AdherentController extends Controller
      *
      * @Route("/creer-mon-projet-citoyen", name="app_adherent_create_citizen_project")
      * @Method("GET|POST")
-     * @Security("is_granted('CREATE_CITIZEN_PROJECT')")
      */
     public function createCitizenProjectAction(Request $request): Response
     {
+        if ($this->isGranted('IS_ANONYMOUS')
+            && $authentication = $this->get(AnonymousFollowerSession::class)->start($request)
+        ) {
+            return $authentication;
+        }
+
+        $this->denyAccessUnlessGranted('CREATE_CITIZEN_PROJECT');
+
         $command = CitizenProjectCreationCommand::createFromAdherent($user = $this->getUser());
         if ($name = $request->query->get('name', false)) {
             $command->name = $name;

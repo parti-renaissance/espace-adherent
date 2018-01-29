@@ -10,20 +10,17 @@ use AppBundle\Entity\CitizenProject;
 use AppBundle\Mailer\Message\CitizenProjectCommentMessage;
 use AppBundle\Mailer\Message\CitizenProjectNewFollowerMessage;
 use AppBundle\Search\SearchParametersFilter;
+use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MysqlWebTestCase;
 
 /**
  * @group functional
  * @group citizenProject
  */
-class CitizenProjectControllerTest extends MysqlWebTestCase
+class CitizenProjectControllerTest extends AbstractGroupControllerTest
 {
-    use ControllerTestTrait;
-
     public function testAnonymousUserCanSeeAnApprovedCitizenProject(): void
     {
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
@@ -448,12 +445,21 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_adherent_email' => 'carl999@example.fr',
-            '_adherent_password' => 'secret!12345',
+            '_adherent_email' => 'benjyd@aol.com',
+            '_adherent_password' => 'HipHipHip',
         ]));
 
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/creer-mon-projet-citoyen?name='.rawurlencode($citizenProjectName), $this->client);
+        $this->assertClientIsRedirectedTo(sprintf(
+            'http://%s/espace-adherent/creer-mon-projet-citoyen?%s=%s&name=%s',
+            $this->hosts['app'],
+            AnonymousFollowerSession::AUTHENTICATION_INTENTION,
+            rawurlencode('/connexion'),
+            rawurlencode($citizenProjectName)
+        ), $this->client);
+
         $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $this->assertSame($citizenProjectName, $crawler->filter('#citizen_project_name')->attr('value'));
     }
@@ -616,5 +622,10 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->kill();
 
         parent::tearDown();
+    }
+
+    protected function getGroupUrl(): string
+    {
+        return '/projets-citoyens/le-projet-citoyen-a-paris-8';
     }
 }

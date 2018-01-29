@@ -66,14 +66,15 @@ class CallbackManager
         $request = $this->requestStack->getMasterRequest();
         $redirectUri = $request->query->get('redirect_uri');
         $clientId = $request->query->get('client_id');
-        $callbackParameters = [
-            'redirect_uri' => $redirectUri,
-            'client_id' => $clientId,
-        ];
 
         if (!$redirectUri || !$clientId) {
             return [];
         }
+
+        $callbackParameters = [
+            'redirect_uri' => $redirectUri,
+            'client_id' => $clientId,
+        ];
 
         try {
             $clientUuid = Uuid::fromString($clientId);

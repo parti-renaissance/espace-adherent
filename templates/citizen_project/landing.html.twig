@@ -99,7 +99,8 @@
         </p>
     </div>
 
-    {% if not app.user or is_granted('CREATE_CITIZEN_PROJECT') %}
+    {% set can_create_citizen_project = is_granted('CREATE_CITIZEN_PROJECT') %}
+    {% if not app.user or can_create_citizen_project %}
         <div class="background--pink--light space--100-0 citizen-projects__landing__create">
             <div class="l__wrapper--slim">
                 <div class="l__row">
@@ -113,7 +114,8 @@
                     {% if citizen_project %}
                         <a href="{{ path('app_citizen_project_show', { slug: citizen_project.slug }) }}">Voir mon projet {{ include('components/arrow--right.html.twig') }}</a>
                     {% else %}
-                        <form id="start-creation-citizen-project" action="{{ path('app_adherent_create_citizen_project') }}" method="GET" class="b__nudge--top">
+                        {% set create_action = can_create_citizen_project ? path('app_adherent_create_citizen_project') : login_path_for_anonymous_follower('app_adherent_create_citizen_project') %}
+                        <form id="start-creation-citizen-project" action="{{ create_action }}" method="GET" class="b__nudge--top">
                             <input type="text" name="name" placeholder="Quel est le nom (court) de votre projet ?">
                             <button type="submit">
                                 Prochaine étape

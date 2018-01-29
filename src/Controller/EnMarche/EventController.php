@@ -9,6 +9,7 @@ use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\EventInvitationType;
 use AppBundle\Form\EventRegistrationType;
+use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -61,15 +62,26 @@ class EventController extends Controller
             throw $this->createNotFoundException(sprintf('Event "%s" is finished and does not accept registrations anymore', $event->getUuid()));
         }
 
-        $committee = $event->getCommittee();
+        if ($this->isGranted('IS_ANONYMOUS')
+            && $authenticate = $this->get(AnonymousFollowerSession::class)->start($request)
+        ) {
+            return $authenticate;
+        }
 
         $command = new EventRegistrationCommand($event, $this->getUser());
-        $form = $this->createForm(EventRegistrationType::class, $command);
-        $form->handleRequest($request);
+        $form = $this->createForm(EventRegistrationType::class, $command)
+            ->handleRequest($request)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.event.registration_handler')->handle($command);
             $this->addFlash('info', $this->get('translator')->trans('committee.event.registration.success'));
+
+            $followerSession = $this->get(AnonymousFollowerSession::class);
+
+            if ($followerSession->isStarted()) {
+                return $followerSession->terminate();
+            }
 
             return $this->redirectToRoute('app_event_attend_confirmation', [
                 'slug' => $event->getSlug(),
@@ -79,7 +91,7 @@ class EventController extends Controller
 
         return $this->render('events/attend.html.twig', [
             'committee_event' => $event,
-            'committee' => $committee,
+            'committee' => $event->getCommittee(),
             'form' => $form->createView(),
         ]);
     }

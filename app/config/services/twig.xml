@@ -42,6 +42,10 @@
             <tag name="twig.runtime" />
         </service>
 
+        <service id="AppBundle\Twig\AnonymousRuntime">
+            <tag name="twig.runtime" />
+        </service>
+
         <service id="AppBundle\Twig\CitizenActionExtension" />
 
         <service id="AppBundle\Twig\CitizenActionRuntime">

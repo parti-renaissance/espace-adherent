@@ -35,16 +35,16 @@
                 L'événement à été annulé
             </div>
         {% elseif not event.full%}
-            <a class="btn btn--no-border {{ isFull?' btn--full':''}}" href="{{ path("app_#{event.type}_attend", {slug: event.slug}) }}">Je veux participer</a>
+            <a class="btn btn--no-border {{ isFull?' btn--full':''}} register-event" href="{{ path("app_#{event.type}_attend", {slug: event.slug}) }}">Je veux participer</a>
         {% else %}
-            <button class="btn btn--no-border{{ isFull?' btn--full':''}} btn--text-blue btn--disabled" disabled="disabled">
+            <button class="btn btn--no-border{{ isFull?' btn--full':''}} btn--text-blue btn--disabled register-event" disabled="disabled">
                 Je veux participer
             </button>
             <div class="text--white text--center">
                 L'événement est complet
             </div>
         {% endif %}
-        <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10 committee-event-attendees">
+        <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10 committee-event-attendees event-attendees">
             {{ include('components/participants.html.twig') }}
             {{ event.participantsCount }} {{ 'capacity'|transchoice(event.participantsCount)  }}
         </div>

@@ -39,13 +39,11 @@
             <argument type="service" id="app.mailer.transactional" />
         </service>
 
-        <!-- EventListener -->
-        <service id="AppBundle\EventListener\ProcurationMailerSubscriber">
-            <argument key="$mailer" type="service" id="app.mailer.transactional" />
-        </service>
-        <service id="AppBundle\EventListener\RegistrationCompletedSubscriber">
-            <argument type="service" id="old_sound_rabbit_mq.enmarche_sync_user_create_producer" />
-        </service>
+		<!-- EventListener -->
+		<service id="AppBundle\EventListener\ProcurationMailerSubscriber">
+			<argument key="$mailer" type="service" id="app.mailer.transactional" />
+		</service>
+
 
         <!-- Form -->
         <service id="AppBundle\Form\CitizenProjectCommentCommandType"/>
@@ -72,8 +70,9 @@
 
         <!-- Security -->
         <prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter" />
-        <service id="AppBundle\Security\FailedLoginAttemptFactory"/>
+        <service id="AppBundle\Security\Http\AnonymousFollowerAuthenticationSuccessHandler" />
         <service id="AppBundle\Security\Http\AuthenticationFailureHandler" />
+		<service id="AppBundle\Security\Http\Session\AnonymousFollowerSession" public="true" />
         <service id="app.security.user_provider" class="AppBundle\Security\UserProvider">
             <argument key="$classOrAlias" type="string">AppBundle\Entity\Adherent</argument>
         </service>

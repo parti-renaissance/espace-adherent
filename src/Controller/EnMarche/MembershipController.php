@@ -12,6 +12,7 @@ use AppBundle\Form\UpdateMembershipRequestType;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\OAuth\CallbackManager;
+use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -70,13 +71,17 @@ class MembershipController extends Controller
      *
      * @Security("is_granted('ROLE_USER')")
      */
-    public function joinAction(Request $request, EntityManagerInterface $manager): Response
+    public function joinAction(Request $request, EntityManagerInterface $manager, AnonymousFollowerSession $followerSession): Response
     {
+        if ($followerSession->isStarted()) {
+            return $followerSession->follow($request->getPathInfo());
+        }
+
         /** @var Adherent $user */
         $user = $this->getUser();
 
-        if ($user->isAdherent()) {
-            throw $this->createNotFoundException();
+        if ($user instanceof Adherent && $user->isAdherent()) {
+            throw $this->createNotFoundException('An adherent cannot join.');
         }
 
         $membership = MembershipRequest::createFromAdherent($user);

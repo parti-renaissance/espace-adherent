@@ -21,11 +21,13 @@
             {% if not has_role_adherent %}
                 <p>
                     Avez-vous déjà un compte En Marche ?
-                    <a href="{{ path('app_user_login') }}">Connectez-vous</a>.
+                    <a href="{{ login_path_for_anonymous_follower("app_#{committee_event.type}_attend", { uuid: committee_event.uuid.toString, slug: committee_event.slug }) }}">
+                        Connectez-vous
+                    </a>.
                 </p>
             {% endif %}
 
-            <form action="{{ path("app_#{committee_event.type}_attend", {'uuid': committee_event.uuid.toString, 'slug': committee_event.slug}) }}" method="post" id="committee-event-registration-form">
+            <form action="{{ path("app_#{committee_event.type}_attend", { uuid: committee_event.uuid.toString, slug: committee_event.slug }) }}" method="post" id="committee-event-registration-form">
                 {{ form_errors(form) }}
 
                 <div class="form__row" id="field-first-name">

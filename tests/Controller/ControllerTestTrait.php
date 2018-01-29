@@ -17,17 +17,17 @@ trait ControllerTestTrait
 {
     use TestHelperTrait;
 
-    private $hosts = [];
+    protected $hosts = [];
 
     /**
      * @var Client
      */
-    private $client;
+    protected $client;
 
     /**
      * @var ObjectManager
      */
-    private $manager;
+    protected $manager;
 
     public function assertResponseStatusCode(int $statusCode, Response $response, string $message = '')
     {

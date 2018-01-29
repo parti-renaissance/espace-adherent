@@ -10,6 +10,7 @@ use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\EventRegistrationType;
+use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use Doctrine\ORM\EntityNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -55,13 +56,26 @@ class CitizenActionController extends Controller
             throw $this->createNotFoundException(sprintf('Event "%s" is cancelled and does not accept registrations anymore', $citizenAction->getUuid()));
         }
 
+        if ($this->isGranted('IS_ANONYMOUS', $citizenAction)) {
+            if ($authenticate = $this->get(AnonymousFollowerSession::class)->start($request)) {
+                return $authenticate;
+            }
+        }
+
         $command = new EventRegistrationCommand($citizenAction, $this->getUser());
-        $form = $this->createForm(EventRegistrationType::class, $command);
-        $form->handleRequest($request);
+        $form = $this->createForm(EventRegistrationType::class, $command)
+            ->handleRequest($request)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get(CitizenActionRegistrationCommandHandler::class)->handle($command);
             $this->addFlash('info', $this->get('translator')->trans('citizen_action.registration.success'));
+
+            $followerSession = $this->get(AnonymousFollowerSession::class);
+
+            if ($followerSession->isStarted()) {
+                return $followerSession->terminate();
+            }
 
             return $this->redirectToRoute('app_citizen_action_attend_confirmation', [
                 'slug' => $citizenAction->getSlug(),
@@ -76,11 +90,11 @@ class CitizenActionController extends Controller
     }
 
     /**
-     * @Route("/{slug}/desinscription", name="app_citizen_action_unregistration")
+     * @Route("/{slug}/desinscription", name="app_citizen_action_unregistration", condition="request.isXmlHttpRequest()")
      * @Method("GET|POST")
      * @Security("is_granted('UNREGISTER_CITIZEN_ACTION', citizenAction)")
      */
-    public function unregistrationAction(Request $request, CitizenAction $citizenAction): Response
+    public function unregistrationAction(Request $request, CitizenAction $citizenAction): JsonResponse
     {
         if (!$this->isCsrfTokenValid('citizen_action.unregistration', $token = $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to unregister from the citizen action.');
@@ -89,7 +103,10 @@ class CitizenActionController extends Controller
         try {
             $this->get(CitizenActionManager::class)->unregisterFromCitizenAction($citizenAction, $this->getUser());
         } catch (EntityNotFoundException $e) {
-            return new JsonResponse(['error' => 'Impossible d\'exécuter la désinscription de l\'action citoyenne, votre inscription n\'est pas trouvée.', Response::HTTP_NOT_FOUND]);
+            return new JsonResponse(
+                ['error' => 'Impossible d\'exécuter la désinscription de l\'action citoyenne, votre inscription n\'est pas trouvée.'],
+                Response::HTTP_NOT_FOUND
+            );
         }
 
         return new JsonResponse();
