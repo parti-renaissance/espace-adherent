@@ -46,6 +46,20 @@ class AdherentTest extends TestCase
         $this->assertSame(ActivityPositions::STUDENT, $adherent->getPosition());
         $this->assertNull($adherent->getLatitude());
         $this->assertNull($adherent->getLongitude());
+        $this->assertSame(-1, $adherent->getCitizenProjectCreationEmailSubscriptionRadius());
+    }
+
+    public function testAdherentCitizenProjectCreationEmailSubscriptionRadiusIsRelatedToComEmail()
+    {
+        $adherent = $this->createAdherent();
+
+        $this->assertSame(-1, $adherent->getCitizenProjectCreationEmailSubscriptionRadius());
+
+        $adherent->setComEmail(true);
+        $this->assertSame(10, $adherent->getCitizenProjectCreationEmailSubscriptionRadius())
+
+        $adherent->setComEmail(false);
+        $this->assertSame(-1, $adherent->getCitizenProjectCreationEmailSubscriptionRadius())
     }
 
     public function testAdherentsAreEqual()
