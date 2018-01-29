@@ -127,6 +127,10 @@ class DonationControllerTest extends SqliteWebTestCase
 
         $crawler = $this->payboxClient->submit($formNode->form());
 
+        if (Response::HTTP_OK !== $status = $this->payboxClient->getInternalResponse()->getStatus()) {
+            $this->markTestSkipped(sprintf('Paybox preproduction server has responded with %d.', $status));
+        }
+
         /*
          * Paybox redirection and payment form
          */
@@ -259,6 +263,11 @@ class DonationControllerTest extends SqliteWebTestCase
          * Paybox cancellation of payment form
          */
         $crawler = $this->payboxClient->submit($formNode->form());
+
+        if (Response::HTTP_OK !== $status = $this->payboxClient->getInternalResponse()->getStatus()) {
+            $this->markTestSkipped(sprintf('Paybox preproduction server has responded with %d.', $status));
+        }
+
         $crawler = $this->payboxClient->submit($crawler->filter('form[name=PAYBOX]')->form());
         $cancelUrl = $crawler->filter('#pbx-annuler a')->attr('href');
         $cancelUrlRegExp = 'http://'.$this->hosts['app'].'/don/callback/(.+)'; // token
