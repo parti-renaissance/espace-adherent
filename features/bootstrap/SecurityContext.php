@@ -1,7 +1,9 @@
 <?php
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Administrator;
 use AppBundle\Repository\AdherentRepository;
+use AppBundle\Repository\AdministratorRepository;
 use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
@@ -22,7 +24,19 @@ class SecurityContext extends RawMinkContext
             throw new \Exception(sprintf('Adherent %s not found', $email));
         }
 
-        $this->logAs($user, 'admin');
+        $this->logAs($user);
+    }
+
+    /**
+     * @When I am logged as :email admin
+     */
+    public function iAmLoggedAsAdmin(string $email): void
+    {
+        if (!$user = $this->getAdministratorRepository()->loadUserByUsername($email)) {
+            throw new \Exception(sprintf('Admin %s not found', $email));
+        }
+
+        $this->logAs($user);
     }
 
     private function logAs(UserInterface $user): void
@@ -46,5 +60,10 @@ class SecurityContext extends RawMinkContext
     protected function getAdherentRepository(): AdherentRepository
     {
         return $this->getContainer()->get('doctrine')->getRepository(Adherent::class);
+    }
+
+    protected function getAdministratorRepository(): AdministratorRepository
+    {
+        return $this->getContainer()->get('doctrine')->getRepository(Administrator::class);
     }
 }
