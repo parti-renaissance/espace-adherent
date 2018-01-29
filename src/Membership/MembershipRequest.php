@@ -51,6 +51,8 @@ class MembershipRequest implements MembershipInterface
 
     /**
      * @var Address
+     *
+     * @Assert\Valid
      */
     private $address;
 
