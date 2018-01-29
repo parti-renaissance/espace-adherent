@@ -35,7 +35,7 @@ class OAuthServerController extends Controller
     /**
      * @Route("/auth", name="app_front_oauth_authorize")
      * @Method("GET|POST")
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY') and not is_granted('ROLE_ADMIN_DASHBOARD')")
      */
     public function authorizeAction(Request $request, ClientRepository $repository, OAuthAuthorizationManager $manager)
     {
