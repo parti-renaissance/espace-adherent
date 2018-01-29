@@ -82,6 +82,13 @@
             }
         </script>
         {% endblock %}
+
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ webpack_asset('app.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/cookieconsent.min.css') }}" />
+
+        {% block stylesheets '' %}
+        {% block final_stylesheets '' %}
     </head>
     <body>
         {% for message in app.flashes('info') %}
@@ -135,13 +142,6 @@
 
             <div id="search-engine"></div>
         </div>
-
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}" />
-        <link rel="stylesheet" type="text/css" href="{{ webpack_asset('app.css') }}" />
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/cookieconsent.min.css') }}" />
-        
-        {% block stylesheets '' %}
-        {% block final_stylesheets '' %}
 
         <script type="text/javascript" src="{{ webpack_asset('kernel.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/cookieconsent.min.js') }}"></script>
