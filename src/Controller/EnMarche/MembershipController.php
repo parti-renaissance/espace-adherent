@@ -7,8 +7,8 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentTokenExpiredException;
-use AppBundle\Form\MembershipRequestType;
 use AppBundle\Form\NewMemberShipRequestType;
+use AppBundle\Form\UpdateMembershipRequestType;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\OAuth\CallbackManager;
@@ -80,7 +80,7 @@ class MembershipController extends Controller
         }
 
         $membership = MembershipRequest::createFromAdherent($user);
-        $form = $this->createForm(MembershipRequestType::class, $membership)
+        $form = $this->createForm(UpdateMembershipRequestType::class, $membership)
             ->add('submit', SubmitType::class, ['label' => 'J\'adhère'])
         ;
 
@@ -96,7 +96,7 @@ class MembershipController extends Controller
 
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('app_adherent_home');
         }
 
         return $this->render('membership/join.html.twig', [
