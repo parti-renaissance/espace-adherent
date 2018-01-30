@@ -148,7 +148,7 @@
 
 <div class="form__new" id="citizen-project-phone">
     <div class="register__form__phone">
-        {{ form_label(form.required_means, 'Votre téléphone :', {label_attr: {class: 'label__header--large'}}) }}
+        {{ form_label(form.phone, 'Votre téléphone :', {label_attr: {class: 'label__header--large'}}) }}
         <div class="l__row l__row--top l__row--h-stretch">
             {{ form_widget(form.phone.country) }}
             {{ form_widget(form.phone.number, {attr: { placeholder: 'Téléphone' }}) }}
