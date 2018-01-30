@@ -49,6 +49,7 @@ tty:            ## Run app container in interactive mode
 tty:
 	$(RUN) /bin/bash
 
+
 ##
 ## Database
 ##---------------------------------------------------------------------------
@@ -76,6 +77,10 @@ db-rollback: vendor
 db-load:        ## Reset the database fixtures
 db-load: vendor
 	$(RUN) $(CONSOLE) doctrine:fixtures:load -n
+
+db-validate:    ## Check the ORM mapping
+db-validate: vendor
+	$(RUN) $(CONSOLE) doctrine:schema:validate
 
 
 ##
@@ -154,6 +159,10 @@ phpcs: vendor
 phpcsfix:       ## Lint and fix PHP code to follow the convention
 phpcsfix: vendor
 	$(PHPCSFIXER) fix
+
+security-check: ## Check for vulnerable dependencies
+security-check: vendor
+	$(RUN) vendor/bin/security-checker security:check
 
 
 ##
