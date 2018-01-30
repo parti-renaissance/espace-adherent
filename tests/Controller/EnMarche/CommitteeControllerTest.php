@@ -161,10 +161,11 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSeeHosts($crawler, ['Francis B.', 'Jacques P.']);
         $this->assertCountTimelineMessages($crawler, 2);
         $this->assertSeeTimelineMessages($crawler, [
-            ['Jacques Picard', 'Connectez-vous'],
-            ['Jacques Picard', 'Connectez-vous'],
+            ['Jacques P.', 'Connectez-vous'],
+            ['Jacques P.', 'Connectez-vous'],
         ]);
 
         // Adherent
@@ -242,6 +243,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSeeHosts($crawler, ['Jacques Picard', 'Gisele Berthoux']);
         $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The adherent should not see the "register link"');
         $this->assertTrue($this->seeFollowLink($crawler), 'The adherent should see the "follow link"');
         $this->assertFalse($this->seeUnfollowLink($crawler), 'The adherent should not see the "unfollow link"');
@@ -317,6 +319,15 @@ class CommitteeControllerTest extends MysqlWebTestCase
     private function seeHosts(Crawler $crawler, int $hostsCount): bool
     {
         return $hostsCount === count($crawler->filter('.committee__card .committee-host'));
+    }
+
+    private function assertSeeHosts(Crawler $crawler, array $hosts): void
+    {
+        $this->assertCount(count($hosts), $nodes = $crawler->filter('.committee-host'));
+
+        foreach ($hosts as $position => $host) {
+            $this->assertRegExp('/^'.preg_quote($host).'\s+(Contacter)?$/', trim($nodes->eq($position)->text()));
+        }
     }
 
     private function seeHostsContactLink(Crawler $crawler, int $hostsCount): bool
