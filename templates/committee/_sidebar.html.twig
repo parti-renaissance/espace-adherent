@@ -15,7 +15,7 @@
         <ul class="committee__hosts">
             {% for host in committee_hosts %}
                 <li class="committee-host text--body text--bold">
-                    {{ host }}
+                    {{ has_role_adherent ? host.fullName : host.partialName }}
                     {% if is_host and app.user.equals(host) %}
                         (vous)
                     {% else %}
