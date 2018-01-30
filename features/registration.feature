@@ -4,8 +4,6 @@ Feature:
   I can register
 
   Scenario: I can register as a user
-    Given the following fixtures are loaded:
-      | LoadHomeBlockData |
     Given I am on "/inscription"
     When I fill in the following:
       | Prénom             | Jean-Pierre |
@@ -63,3 +61,22 @@ Feature:
     And the "update_membership_request[birthdate][day]" field should contain "1"
     And the "update_membership_request[birthdate][month]" field should contain "1"
     And the "update_membership_request[birthdate][year]" field should contain "1980"
+
+  Scenario: I have great error message when register is misfiled
+    Given I am on "/inscription"
+    When I fill in the following:
+      | Prénom             |                  |
+      | Nom                |                  |
+      | E-mail             | jp@test.com      |
+      | Re-saisir l'e-mail | jp2@test.com     |
+      | Mot de passe       | testte           |
+      | Code postal        | 0000000000000000 |
+      | Pays               | FR               |
+    And I press "Créer mon compte"
+    Then the response status code should be 200
+    And I should see 6 ".form__error" elements
+    And I should see "Les adresses email ne correspondent pas."
+    And I should see "Votre mot de passe doit comporter au moins 8 caractères."
+    And I should see "Vous avez été détecté en tant que robot, pourriez-vous réessayer ?"
+    And I should see "Vous devez saisir au maximum 15 caractères."
+    And I should see "Cette valeur ne doit pas être vide."

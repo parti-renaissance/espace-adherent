@@ -25,6 +25,7 @@ class NewMemberShipRequestType extends AbstractType
             ])
             ->add('emailAddress', RepeatedType::class, [
                 'type' => EmailType::class,
+                'invalid_message' => 'common.email.repeated',
             ])
             ->add('password', PasswordType::class)
         ;
