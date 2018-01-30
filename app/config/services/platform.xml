@@ -152,6 +152,7 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.address.post_address_factory"/>
+            <argument type="service" id="app.committee.photo.manager"/>
         </service>
 
         <service id="app.committee.creation_handler" class="AppBundle\Committee\CommitteeCreationCommandHandler">
@@ -159,6 +160,7 @@
             <argument type="service" id="app.committee.factory"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.mailer.transactional"/>
+            <argument type="service" id="app.committee.photo.manager"/>
         </service>
 
         <service id="app.committee.contact_members_handler" class="AppBundle\Committee\CommitteeContactMembersCommandHandler">
@@ -224,6 +226,11 @@
             <argument type="service" id="router" />
             <argument type="service" id="security.token_storage" />
             <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="app.committee.photo.manager" class="AppBundle\Committee\PhotoManager">
+            <argument type="service" id="app.storage"/>
+            <argument type="service" id="app.glide"/>
         </service>
 
         <!-- Events -->

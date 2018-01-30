@@ -17,9 +17,9 @@ use Ramsey\Uuid\UuidInterface;
  */
 abstract class BaseGroup implements GeoPointInterface
 {
-    const APPROVED = 'APPROVED';
-    const PENDING = 'PENDING';
-    const REFUSED = 'REFUSED';
+    public const APPROVED = 'APPROVED';
+    public const PENDING = 'PENDING';
+    public const REFUSED = 'REFUSED';
 
     use EntityIdentityTrait;
     use EntityCrudTrait;

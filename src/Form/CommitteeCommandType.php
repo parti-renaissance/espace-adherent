@@ -3,8 +3,10 @@
 namespace AppBundle\Form;
 
 use AppBundle\Committee\CommitteeCommand;
+use AppBundle\Entity\Committee;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -15,7 +17,8 @@ class CommitteeCommandType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $committee = $builder->getData() instanceof CommitteeCommand ? $builder->getData()->getCommittee() : null;
+        $command = $builder->getData();
+        $committee = $command instanceof CommitteeCommand ? $command->getCommittee() : null;
         $builder
             ->add('name', TextType::class, [
                 'filter_emojis' => true,
@@ -41,6 +44,13 @@ class CommitteeCommandType extends AbstractType
                 'default_protocol' => null,
             ])
         ;
+
+        if (!$committee || $committee->isWaitingForApproval()) {
+            $builder->add('photo', FileType::class, [
+                'required' => $committee ? !$committee->hasPhotoUploaded() : true,
+                'label' => false,
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
