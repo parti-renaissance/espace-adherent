@@ -18,9 +18,9 @@ class UpdateMembershipRequestType extends AbstractType
     {
         $builder
             ->add('gender', GenderType::class)
-            ->add('firstName', TextType::class, ['disabled' => $options['disabled_name_and_email_fields']])
-            ->add('lastName', TextType::class, ['disabled' => $options['disabled_name_and_email_fields']])
-            ->add('emailAddress', EmailType::class, ['disabled' => $options['disabled_name_and_email_fields']])
+            ->add('firstName', TextType::class, ['disabled' => $options['name_and_email_fields_disabled']])
+            ->add('lastName', TextType::class, ['disabled' => $options['name_and_email_fields_disabled']])
+            ->add('emailAddress', EmailType::class, ['disabled' => $options['name_and_email_fields_disabled']])
             ->add('birthdate', BirthdayType::class, [
                 'widget' => 'choice',
                 'years' => $options['years'],
@@ -49,9 +49,9 @@ class UpdateMembershipRequestType extends AbstractType
             'data_class' => MembershipRequest::class,
             'years' => array_combine($years, $years),
             'validation_groups' => ['Update'],
-            'disabled_name_and_email_fields' => true,
+            'name_and_email_fields_disabled' => true,
         ]);
 
-        $resolver->setAllowedTypes('disabled_name_and_email_fields', 'bool');
+        $resolver->setAllowedTypes('name_and_email_fields_disabled', 'bool');
     }
 }
