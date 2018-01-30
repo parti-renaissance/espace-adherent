@@ -20,14 +20,14 @@ class MapsControllerTest extends SqliteWebTestCase
 
     public function testCandidates()
     {
-        $this->client->request(Request::METHOD_GET, 'https://'.$this->hosts['legislatives'].'/la-carte');
+        $this->client->request(Request::METHOD_GET, $this->hosts['scheme'].'://'.$this->hosts['legislatives'].'/la-carte');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
     public function testEvents()
     {
-        $this->client->request(Request::METHOD_GET, 'https://'.$this->hosts['legislatives'].'/les-evenements');
+        $this->client->request(Request::METHOD_GET, $this->hosts['scheme'].'://'.$this->hosts['legislatives'].'/les-evenements');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
@@ -41,7 +41,7 @@ class MapsControllerTest extends SqliteWebTestCase
             LoadAdherentData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,
-        ]);
+        ], 'legislatives');
     }
 
     protected function tearDown()

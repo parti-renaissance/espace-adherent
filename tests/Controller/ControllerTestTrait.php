@@ -58,7 +58,7 @@ trait ControllerTestTrait
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
 
-        $client->submit($crawler->selectButton('Je me connecte')->form([
+        $client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => $emailAddress,
             '_adherent_password' => $password,
         ]));
@@ -73,6 +73,16 @@ trait ControllerTestTrait
         }
 
         return $client->followRedirect();
+    }
+
+    public function authenticateAsAdmin(Client $client): void
+    {
+        $crawler = $client->request(Request::METHOD_GET, '/admin/login');
+
+        $client->submit($crawler->selectButton('Connexion')->form([
+            '_admin_email' => 'admin@en-marche-dev.fr',
+            '_admin_password' => 'admin',
+        ]));
     }
 
     protected function seeFlashMessage(Crawler $crawler, ?string $message = null): bool
@@ -104,15 +114,16 @@ trait ControllerTestTrait
 
     protected function init(array $fixtures = [], string $host = 'app')
     {
-        if ($fixtures) {
-            $this->loadFixtures($fixtures);
-        }
+        $this->loadFixtures($fixtures);
 
         $this->container = $this->getContainer();
 
-        $this->hosts['app'] = $this->container->getParameter('app_host');
-        $this->hosts['amp'] = $this->container->getParameter('amp_host');
-        $this->hosts['legislatives'] = $this->container->getParameter('legislatives_host');
+        $this->hosts = [
+            'scheme' => $this->container->getParameter('router.request_context.scheme'),
+            'app' => $this->container->getParameter('app_host'),
+            'amp' => $this->container->getParameter('amp_host'),
+            'legislatives' => $this->container->getParameter('legislatives_host'),
+        ];
 
         $this->client = $this->makeClient(false, ['HTTP_HOST' => $this->hosts[$host]]);
         $this->manager = $this->container->get('doctrine.orm.entity_manager');

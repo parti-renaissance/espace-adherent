@@ -56,6 +56,14 @@ parameters:
 
     env(SESSION_MAX_IDLE_TIME): 1800
 
-    env(APP_HOST): enmarche.dev
-    env(AMP_HOST): m.enmarche.dev
-    env(LEGISLATIVES_HOST): legislatives.enmarche.dev
+    env(APP_SCHEME): http
+    env(APP_HOST): enmarche.code
+    env(AMP_HOST): m.enmarche.code
+    env(LEGISLATIVES_HOST): legislatives.enmarche.code
+
+    env(SSL_PRIVATE_KEY): 'file://%kernel.project_dir%/var/private.key'
+    env(SSL_PUBLIC_KEY): 'file://%kernel.project_dir%/var/public.key'
+    env(SSL_ENCRYPTION_KEY): 'PT/cLwGkQqwF5exN/CkkV5oUkBemNyhi2dXDHy2N+Nc='
+
+    env(MAXMIND_LICENSE_KEY): ''
+    env(MAXMIND_USER_ID):     ''

@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% use 'adherent/_membership_form.html.twig' %}
+
+{% block banner '' %}
+{% block title 'Adhérer au mouvement En Marche !' %}
+
+{% block stylesheets %}
+    <style type="text/css">
+        nav,
+        .cc-window {
+            display: none !important;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places"></script>
+    {% import 'javascript.js.twig' as js %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.address(form.address, {cityAutocomplete: true}) }}
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    <main class="content register">
+        <section class="register__header background--blue progressive-background"
+                 data-sd="{{ static_asset('registration-hdr.jpg', {'w': 300, 'q': 20}) }}"
+                 data-hd="{{ static_asset('registration-hdr.jpg', {'w': 2000, 'q': 70}) }}">
+            <div class="l__wrapper l__row l__row--h-stretch list__links--nav space--30-0">
+                <h1><a href="{{ path('homepage') }}" class="link--no-decor text--logo text--white text--center">En Marche !</a></h1>
+            </div>
+            <header class="space--60-0 l__wrapper--slim l__col l__col--center text--center b__nudge--bottom-60">
+                <h1 class="b__nudge--bottom-small text--blue text--larger">
+                    <span class="text--on-white">Adhérer à En Marche !</span>
+                </h1>
+                <div class="text--white text--body text--bold text--medium-small space--10-0">C'est facile, gratuit et 3 minutes suffiront.</div>
+                <div class="text--body text--white">Vous voulez participer à la révolution en Marche, vous engager et devenir un acteur de celle-ci ou simplement vous tenir informé de nos idées et de nos actions ?</div>
+            </header>
+        </section>
+
+        <section class="register__content">
+            <article class="l__wrapper--slim b__nudge--bottom-60">
+                <p class="text--body">Vous avez dès maintenant la possibilité d'adhérer à En Marche.
+                    Nous sommes un collectif citoyen qui part d'une conviction : les Français doivent être au cœur
+                    de la vie politique et non son décor.<br/>
+                    Pour ce faire, veuillez remplir ces informations :</p>
+            </article>
+            <article class="l__wrapper--slim b__nudge--bottom-huge l__col l__col--center">
+                <div class="register__form">
+                    {% set isCreateForm = true %}
+                    {{ block('adherent_membership_form') }}
+                </div>
+                <p class="text--summary b__nudge--top-50 text--gray">
+                    Les informations recueillies à partir de ce formulaire font l'objet d'un traitement informatique exclusivement destiné à La République En Marche. En retournant ce formulaire, vous autorisez La République En Marche à utiliser vos données pour des opérations de communication politique et de dons. Vos informations ne pourront être communiquées qu'à des co-contractants qui en leur qualité de sous-traitants de La République En Marche, n'agiront que sur instruction de cette dernière et seront soumis à une stricte obligation de confidentialité. En application des articles 38 et suivants de la loi du 6 janvier 1978, vous bénéficiez des droits d'accès, de rectification et de suppression des données qui vous concernent et d'un droit d'opposition au traitement de vos données. Vous pouvez exercer ces droits en adressant votre demande à La République En Marche, à l'adresse électronique <a href="mailto:contact@en-marche.fr">contact@en-marche.fr</a> ou postale à La République En Marche, 63 rue Sainte-Anne, 75002 Paris.
+                </p>
+            </article>
+        </section>
+    </main>
+
+{% endblock %}

@@ -28,9 +28,10 @@ class ManagedEventsExporter
                 'id' => $event->getId(),
                 'name' => [
                     'label' => $event->getName(),
-                    'url' => $this->urlGenerator->generate('app_event_show', [
-                        'slug' => $event->getSlug(),
-                    ]),
+                    'url' => $this->urlGenerator->generate(
+                        'app_event_show', ['slug' => $event->getSlug()],
+                        UrlGeneratorInterface::ABSOLUTE_URL
+                    ),
                 ],
                 'beginAt' => $event->getBeginAt()->format('d/m/Y H:i'),
                 'category' => $event->getCategoryName(),
