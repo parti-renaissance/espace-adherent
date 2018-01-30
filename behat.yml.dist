@@ -14,6 +14,7 @@ default:
                     dispatcher: "@event_dispatcher"
                 - EmailContext
                 - SecurityContext
+                - FeatureContext
     extensions:
         Behat\Symfony2Extension:
             kernel:

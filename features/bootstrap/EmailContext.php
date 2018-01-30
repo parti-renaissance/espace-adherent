@@ -70,14 +70,6 @@ class EmailContext extends RawMinkContext
         $this->visitPath($link);
     }
 
-    /**
-     * @Given I resolved the captcha
-     */
-    public function iResolvedTheCaptcha()
-    {
-        $this->getSession()->getPage()->find('css', 'input[name="g-recaptcha-response"]')->setValue('dummy');
-    }
-
     private function getEmailRepository(): EmailRepository
     {
         return $this->getContainer()->get('app.repository.email');

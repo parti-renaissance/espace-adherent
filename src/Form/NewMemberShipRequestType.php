@@ -23,23 +23,17 @@ class NewMemberShipRequestType extends AbstractType
             ->add('comEmail', CheckboxType::class, [
                 'required' => false,
             ])
+            ->add('emailAddress', RepeatedType::class, [
+                'type' => EmailType::class,
+            ])
+            ->add('password', PasswordType::class)
         ;
-
-        if (in_array('Registration', $options['validation_groups'], true)) {
-            $builder
-                ->add('emailAddress', RepeatedType::class, [
-                    'type' => EmailType::class,
-                ])
-                ->add('password', PasswordType::class)
-            ;
-        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => MembershipRequest::class,
-            'translation_domain' => false,
             'validation_groups' => ['Registration'],
             'country_iso' => null,
         ]);
