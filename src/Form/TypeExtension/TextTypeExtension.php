@@ -15,17 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TextTypeExtension extends AbstractTypeExtension
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        if ($options['filter_emojis']) {
-            $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'filterEmojisOnPreSubmit'], 10);
-        }
-
-        if ($options['purify_html']) {
-            $builder->addEventListener(FormEvents::SUBMIT, [$this, 'purifyOnSubmit']);
-        }
-    }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
@@ -33,12 +22,29 @@ class TextTypeExtension extends AbstractTypeExtension
                 'empty_data' => '',
                 'purify_html' => false,
                 'filter_emojis' => false,
+                'format_title_case' => false,
                 'with_character_count' => false,
             ])
             ->setAllowedTypes('purify_html', 'bool')
             ->setAllowedTypes('filter_emojis', 'bool')
+            ->setAllowedTypes('format_title_case', 'bool')
             ->setAllowedTypes('with_character_count', 'bool')
         ;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        if ($options['filter_emojis']) {
+            $builder->addEventListener(FormEvents::PRE_SUBMIT, [__CLASS__, 'filterEmojis'], 10);
+        }
+
+        if ($options['purify_html']) {
+            $builder->addEventListener(FormEvents::SUBMIT, [__CLASS__, 'purifyHtml']);
+        }
+
+        if ($options['format_title_case']) {
+            $builder->addEventListener(FormEvents::SUBMIT, [__CLASS__, 'formatAsTitle']);
+        }
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
@@ -53,17 +59,30 @@ class TextTypeExtension extends AbstractTypeExtension
         return TextType::class;
     }
 
-    public function filterEmojisOnPreSubmit(FormEvent $event)
+    public static function filterEmojis(FormEvent $event): void
     {
-        if ($data = $event->getData()) {
+        $data = $event->getData();
+
+        if (\is_string($data) && '' !== $data) {
             $event->setData(EmojisRemover::remove($data));
         }
     }
 
-    public function purifyOnSubmit(FormEvent $event)
+    public static function purifyHtml(FormEvent $event): void
     {
-        if ($data = $event->getData()) {
+        $data = $event->getData();
+
+        if (\is_string($data) && '' !== $data) {
             $event->setData(HtmlPurifier::purify($data));
+        }
+    }
+
+    public static function formatAsTitle(FormEvent $event): void
+    {
+        $data = $event->getData();
+
+        if (\is_string($data) && '' !== $data) {
+            $event->setData(\mb_convert_case($data, MB_CASE_TITLE, 'UTF-8'));
         }
     }
 }
