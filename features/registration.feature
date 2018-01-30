@@ -18,7 +18,7 @@ Feature:
     And I resolved the captcha
     And I press "Créer mon compte"
     Then I should be on "/presque-fini"
-    Then I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
+    And I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
     """
     {
       "FromEmail": "contact@en-marche.fr",
@@ -38,18 +38,23 @@ Feature:
       ]
     }
     """
+
     When I click on the email link "activation_link"
     Then I should be on "/adhesion"
-    When I fill in the following:
-      | Adresse postale                      | 1 rue de l'egalite |
-      | membership_request[phone][country]   | FR                 |
-      | membership_request[phone][number]    | 0600000000         |
-      | membership_request[birthdate][day]   | 1                  |
-      | membership_request[birthdate][month] | 1                  |
-      | membership_request[birthdate][year]  | 1980               |
+
+    When I fill in hidden field "update_membership_request_address_city" with "06000-6088"
+    And I fill in the following:
+      | update_membership_request[address][address]  | 1 rue de l'egalite |
+      | update_membership_request[address][cityName] | Nice, France       |
+      | update_membership_request[phone][country]    | FR                 |
+      | update_membership_request[phone][number]     | 0600000000         |
+      | update_membership_request[birthdate][day]    | 1                  |
+      | update_membership_request[birthdate][month]  | 1                  |
+      | update_membership_request[birthdate][year]   | 1980               |
     And I press "J'adhère"
-    Then I should be on "/"
+    Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
+
     When I am on "/parametres/mon-compte/modifier"
     Then the "update_membership_request[address][address]" field should contain "1 rue de l'egalite"
     And the "update_membership_request[address][country]" field should contain "FR"

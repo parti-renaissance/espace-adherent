@@ -12,7 +12,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertUniqueMembership(groups={"Default", "Registration"})
+ * @AssertUniqueMembership(groups={"Registration", "Update"})
  */
 class MembershipRequest implements MembershipInterface
 {
@@ -20,31 +20,32 @@ class MembershipRequest implements MembershipInterface
      * @Assert\Choice(
      *   callback = {"AppBundle\ValueObject\Genders", "all"},
      *   message="common.gender.invalid_choice",
-     *   strict=true
+     *   strict=true,
+     *   groups={"Update"}
      * )
      */
     public $gender;
 
     /**
-     * @Assert\NotBlank(message="common.first_name.not_blank", groups={"Default", "Registration"})
+     * @Assert\NotBlank(message="common.first_name.not_blank", groups={"Registration", "Update"})
      * @Assert\Length(
      *   min=2,
      *   max=50,
      *   minMessage="common.first_name.min_length",
      *   maxMessage="common.first_name.max_length",
-     *   groups={"Default", "Registration"}
+     *   groups={"Registration", "Update"}
      * )
      */
     public $firstName;
 
     /**
-     * @Assert\NotBlank(message="common.first_name.not_blank", groups={"Default", "Registration"})
+     * @Assert\NotBlank(message="common.first_name.not_blank", groups={"Registration", "Update"})
      * @Assert\Length(
      *   min=2,
      *   max=50,
      *   minMessage="common.last_name.min_length",
      *   maxMessage="common.last_name.max_length",
-     *   groups={"Default", "Registration"}
+     *   groups={"Registration", "Update"}
      * )
      */
     public $lastName;
@@ -60,7 +61,8 @@ class MembershipRequest implements MembershipInterface
      * @Assert\Choice(
      *   callback = {"AppBundle\Membership\ActivityPositions", "all"},
      *   message="adherent.activity_position.invalid_choice",
-     *   strict=true
+     *   strict=true,
+     *   groups={"Update"}
      * )
      */
     public $position;
@@ -76,26 +78,27 @@ class MembershipRequest implements MembershipInterface
     public $comEmail = false;
 
     /**
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups="Registration")
+     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"Registration"})
      * @AssertRecaptcha(groups={"Registration"})
      */
     public $recaptcha;
 
     /**
-     * @Assert\NotBlank(message="common.email.not_blank", groups={"Default", "Registration"})
-     * @Assert\Email(message="common.email.invalid", groups={"Default", "Registration"})
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Default", "Registration"})
+     * @Assert\NotBlank(message="common.email.not_blank", groups={"Registration", "Update"})
+     * @Assert\Email(message="common.email.invalid", groups={"Registration", "Update"})
+     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Registration", "Update"})
      */
     private $emailAddress;
 
     /**
-     * @AssertPhoneNumber(defaultRegion="FR")
+     * @AssertPhoneNumber(defaultRegion="FR", groups={"Update"})
+     * @Assert\NotBlank(message="common.phone_number.required", groups={"Update"})
      */
     private $phone;
 
     /**
-     * @Assert\NotBlank(message="adherent.birthdate.not_blank")
-     * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age")
+     * @Assert\NotBlank(message="adherent.birthdate.not_blank", groups={"Update"})
+     * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age", groups={"Update"})
      */
     private $birthdate;
 
