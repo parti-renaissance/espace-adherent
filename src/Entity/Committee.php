@@ -11,7 +11,6 @@ use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Sabre\DAV\Collection;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * This entity represents a committee group.
@@ -104,11 +103,6 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
      * @ORM\Column(type="boolean", options={"default"=false})
      */
     private $photoUploaded = false;
-
-    /**
-     * @var UploadedFile|null
-     */
-    private $photo;
 
     /**
      * A cached list of the hosts (for admin).
@@ -248,7 +242,7 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
 
     public function isWaitingForApproval(): bool
     {
-        return (in_array($this->status, self::WAITING_STATUSES, true)) && !$this->approvedAt;
+        return in_array($this->status, self::WAITING_STATUSES, true) && !$this->approvedAt;
     }
 
     /**
@@ -316,12 +310,8 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
         return $links;
     }
 
-    public function update(
-        string $name,
-        string $description,
-        PostAddress $address,
-        PhoneNumber $phone
-    ): void {
+    public function update(string $name, string $description, PostAddress $address, PhoneNumber $phone): void
+    {
         $this->setName($name);
         $this->description = $description;
 

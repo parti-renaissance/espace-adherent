@@ -96,7 +96,7 @@ class CitizenProjectCommand
      * @var UploadedFile|null
      *
      * @Assert\Image(
-     *     maxSize = "50M",
+     *     maxSize = "5M",
      *     mimeTypes = {"image/jpeg", "image/png"},
      *     minWidth = "1024",
      *     minHeight = "576",

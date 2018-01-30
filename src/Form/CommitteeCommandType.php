@@ -17,8 +17,8 @@ class CommitteeCommandType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var Committee $committee */
-        $committee = $builder->getData() instanceof CommitteeCommand ? $builder->getData()->getCommittee() : null;
+        $command = $builder->getData();
+        $committee = $command instanceof CommitteeCommand ? $command->getCommittee() : null;
         $builder
             ->add('name', TextType::class, [
                 'filter_emojis' => true,

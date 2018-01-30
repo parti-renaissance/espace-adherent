@@ -68,7 +68,7 @@ class CommitteeCommand
      * @var UploadedFile|null
      *
      * @Assert\Image(
-     *     maxSize = "50M",
+     *     maxSize = "5M",
      *     mimeTypes = {"image/jpeg", "image/png"},
      * )
      */
