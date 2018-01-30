@@ -14,20 +14,20 @@ class CommitteeCreationCommandHandler
     private $factory;
     private $manager;
     private $mailer;
-    private $committeeManager;
+    private $photoManager;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
         CommitteeFactory $factory,
         ObjectManager $manager,
         MailerService $mailer,
-        CommitteeManager $committeeManager
+        PhotoManager $photoManager
     ) {
         $this->dispatcher = $dispatcher;
         $this->factory = $factory;
         $this->manager = $manager;
         $this->mailer = $mailer;
-        $this->committeeManager = $committeeManager;
+        $this->photoManager = $photoManager;
     }
 
     public function handle(CommitteeCreationCommand $command): void
@@ -35,9 +35,7 @@ class CommitteeCreationCommandHandler
         $adherent = $command->getAdherent();
         $committee = $this->factory->createFromCommitteeCreationCommand($command);
         // Uploads an ID photo
-        if (null !== $command->getPhoto()) {
-            $this->committeeManager->addPhoto($committee);
-        }
+        $this->photoManager->addPhotoFromCommand($command, $committee);
 
         $command->setCommittee($committee);
 

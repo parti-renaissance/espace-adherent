@@ -105,8 +105,6 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
      */
     private $photoUploaded = false;
 
-    private $urlPhoto = '';
-
     /**
      * @var UploadedFile|null
      */
@@ -166,26 +164,6 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
     public function getPhotoPath(): string
     {
         return sprintf('images/committees/%s.jpg', $this->getUuid());
-    }
-
-    public function setUrlPhoto(string $url): void
-    {
-        $this->urlPhoto = $url;
-    }
-
-    public function getUrlPhoto(): string
-    {
-        return $this->urlPhoto;
-    }
-
-    public function getPhoto(): ?UploadedFile
-    {
-        return $this->photo;
-    }
-
-    public function setPhoto(?UploadedFile $photo): void
-    {
-        $this->photo = $photo;
     }
 
     public function hasPhotoUploaded(): bool
@@ -342,8 +320,7 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
         string $name,
         string $description,
         PostAddress $address,
-        PhoneNumber $phone,
-        ?UploadedFile $photo
+        PhoneNumber $phone
     ): void {
         $this->setName($name);
         $this->description = $description;
@@ -354,10 +331,6 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
 
         if (null === $this->phone || !$this->phone->equals($phone)) {
             $this->phone = $phone;
-        }
-
-        if ($photo instanceof UploadedFile) {
-            $this->setPhoto($photo);
         }
     }
 
