@@ -161,11 +161,14 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSeeHosts($crawler, ['Francis B.', 'Jacques P.']);
+        $this->assertSeeHosts($crawler, [
+            ['Francis B.', 'animateur'],
+            ['Jacques P.', 'co-animateur'],
+        ]);
         $this->assertCountTimelineMessages($crawler, 2);
         $this->assertSeeTimelineMessages($crawler, [
-            ['Jacques P.', 'Connectez-vous'],
-            ['Jacques P.', 'Connectez-vous'],
+            ['Jacques P.', 'co-animateur', 'Connectez-vous'],
+            ['Jacques P.', 'co-animateur', 'Connectez-vous'],
         ]);
 
         // Adherent
@@ -176,8 +179,8 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCountTimelineMessages($crawler, 2);
         $this->assertSeeTimelineMessages($crawler, [
-            ['Jacques Picard', 'À la recherche de volontaires !'],
-            ['Jacques Picard', 'Lancement du comité !'],
+            ['Jacques Picard', 'co-animateur', 'À la recherche de volontaires !'],
+            ['Jacques Picard', 'co-animateur', 'Lancement du comité !'],
         ]);
 
         $this->logout($this->client);
@@ -190,8 +193,8 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCountTimelineMessages($crawler, 2);
         $this->assertSeeTimelineMessages($crawler, [
-            ['Jacques Picard', 'À la recherche de volontaires !'],
-            ['Jacques Picard', 'Lancement du comité !'],
+            ['Jacques Picard', 'co-animateur', 'À la recherche de volontaires !'],
+            ['Jacques Picard', 'co-animateur', 'Lancement du comité !'],
         ]);
     }
 
@@ -243,7 +246,10 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSeeHosts($crawler, ['Jacques Picard', 'Gisele Berthoux']);
+        $this->assertSeeHosts($crawler, [
+            ['Jacques Picard', 'animateur'],
+            ['Gisele Berthoux', 'co-animateur'],
+        ]);
         $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The adherent should not see the "register link"');
         $this->assertTrue($this->seeFollowLink($crawler), 'The adherent should see the "follow link"');
         $this->assertFalse($this->seeUnfollowLink($crawler), 'The adherent should not see the "unfollow link"');
@@ -282,7 +288,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->assertTrue($this->seeMembersCount($crawler, 4), 'The host should see the members count');
         $this->assertTrue($this->seeHosts($crawler, 2), 'The host should see the hosts');
         $this->assertTrue($this->seeHostsContactLink($crawler, 1), 'The host should see the other contact links');
-        $this->assertTrue($this->seeSelfHostContactLink($crawler, 'Gisele Berthoux'), 'The host should see his own contact link');
+        $this->assertTrue($this->seeSelfHostContactLink($crawler, 'Gisele Berthoux', 'co-animateur'), 'The host should see his own contact link');
         $this->assertTrue($this->seeHostNav($crawler), 'The host should see the host navigation');
         $this->assertTrue($this->seeMessageForm($crawler));
     }
@@ -326,7 +332,8 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->assertCount(count($hosts), $nodes = $crawler->filter('.committee-host'));
 
         foreach ($hosts as $position => $host) {
-            $this->assertRegExp('/^'.preg_quote($host).'\s+(Contacter)?$/', trim($nodes->eq($position)->text()));
+            list($name, $role) = $host;
+            $this->assertRegExp('/^'.preg_quote($name).'\s+'.$role.'\s+(Contacter)?$/', trim($nodes->eq($position)->text()));
         }
     }
 
@@ -335,7 +342,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
         return $hostsCount === count($crawler->filter('.committee__card .committee-host a'));
     }
 
-    private function seeSelfHostContactLink(Crawler $crawler, string $name): bool
+    private function seeSelfHostContactLink(Crawler $crawler, string $name, string $role): bool
     {
         /** @var \DOMElement $host */
         foreach ($crawler->filter('.committee__card .committee-host') as $host) {
@@ -343,7 +350,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
                 continue;
             }
 
-            return preg_match('/'.preg_quote($name).'\s+\(vous\)/', $host->textContent);
+            return preg_match('/'.preg_quote($name).'\s+'.$role.'\s+\(vous\)/', $host->textContent);
         }
 
         return false;
@@ -379,15 +386,9 @@ class CommitteeControllerTest extends MysqlWebTestCase
     private function assertSeeTimelineMessages(Crawler $crawler, array $messages)
     {
         foreach ($messages as $position => $message) {
-            list($author, $text) = $message;
-            $this->assertSeeTimelineMessage($crawler, $position, $author, $text);
+            list($author, $role, $text) = $message;
+            $this->assertSeeCommitteeTimelineMessage($crawler, $position, $author, $role, $text);
         }
-    }
-
-    private function assertSeeTimelineMessage(Crawler $crawler, int $position, string $author, string $text)
-    {
-        $this->assertSame($author, $crawler->filter('.committee__timeline__message h3')->eq($position)->text());
-        $this->assertContains($text, $crawler->filter('.committee__timeline__message div')->eq($position)->text());
     }
 
     private function assertSeeSocialLinks(Crawler $crawler, Committee $committee)
