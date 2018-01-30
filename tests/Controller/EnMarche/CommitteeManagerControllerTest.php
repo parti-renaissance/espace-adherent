@@ -119,6 +119,42 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $this->assertSame('Comité français En Marche ! de la ville de Clichy', $crawler->filter('#committee_description')->text());
     }
 
+    public function testCommitteeHostCannotEditNoneditableCommitteeName()
+    {
+        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $crawler = $this->client->click($crawler->selectLink('En Marche Dammarie-les-Lys')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->click($crawler->selectLink('Éditer le comité')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        // Submit the committee form with new name
+        $this->client->submit($crawler->selectButton('Enregistrer')->form([
+            'committee' => [
+                'name' => 'Nouveau nom',
+                'description' => 'Comité français En Marche !',
+                'address' => [
+                    'country' => 'FR',
+                    'address' => '92 bld victor hugo',
+                    'postalCode' => '92110',
+                    'city' => '92110-92024',
+                    'cityName' => '',
+                ],
+            ],
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+
+        // Follow the redirect and check the adherent can see the committee edit page again
+        $crawler = $this->client->followRedirect();
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        // Committee name has not been changed
+        $this->assertSame('En Marche Dammarie-les-Lys', $crawler->filter('#committee_name')->attr('value'));
+        $this->assertSame('Comité français En Marche !', $crawler->filter('#committee_description')->text());
+    }
+
     public function testCommitteeFollowerIsNotAllowedToPublishNewEvent()
     {
         $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
