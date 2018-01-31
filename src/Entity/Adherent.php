@@ -885,7 +885,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function isBasicAdherent(): bool
     {
-        return !$this->isHost() && !$this->isReferent() && !$this->isBoardMember();
+        return $this->isAdherent() && !$this->isHost() && !$this->isReferent() && !$this->isBoardMember();
     }
 
     public function isHost(): bool
