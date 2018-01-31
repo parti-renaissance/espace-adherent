@@ -21,6 +21,9 @@ final class ProcurationProxyReminderMessage extends Message
 
         $message->setSenderName('Procuration En Marche !');
 
+        $proxy = $request->getFoundProxy();
+        $message->addRecipient($proxy->getEmailAddress());
+
         return $message;
     }
 

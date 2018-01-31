@@ -79,7 +79,7 @@ abstract class Message
         return $this->replyTo;
     }
 
-    final public function addRecipient(string $recipientEmail, $recipientName, array $vars = []): void
+    final public function addRecipient(string $recipientEmail, $recipientName = null, array $vars = []): void
     {
         $key = mb_strtolower($recipientEmail);
         $vars = array_merge($this->vars, $vars);
