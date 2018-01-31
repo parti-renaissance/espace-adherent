@@ -19,17 +19,9 @@ class JobExperienceType extends AbstractType
             ->add('company', TextType::class, ['filter_emojis' => true])
             ->add('position', TextType::class, ['filter_emojis' => true])
             ->add('location', TextType::class, ['filter_emojis' => true])
-            ->add('website', UrlType::class, [
-                'required' => false,
-                'empty_data' => null,
-            ])
-            ->add('company_facebook_page', UrlType::class, [
-                'required' => false,
-                'empty_data' => null,
-            ])
+            ->add('website', UrlType::class)
+            ->add('company_facebook_page', UrlType::class)
             ->add('company_twitter_nickname', TextType::class, [
-                'required' => false,
-                'empty_data' => null,
                 'filter_emojis' => true,
             ])
             ->add('started_at', MonthChoiceType::class, [

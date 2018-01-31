@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TextTypeExtension extends AbstractTypeExtension
@@ -19,7 +20,9 @@ class TextTypeExtension extends AbstractTypeExtension
     {
         $resolver
             ->setDefaults([
-                'empty_data' => '',
+                'empty_data' => function (Options $options) {
+                    return $options['required'] ? '' : null;
+                },
                 'purify_html' => false,
                 'filter_emojis' => false,
                 'format_title_case' => false,
