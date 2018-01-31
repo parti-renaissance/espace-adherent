@@ -27,7 +27,7 @@ class ProcurationSendReminderCommandTest extends SqliteWebTestCase
 
         $this->assertContains('1 reminders sent', $output);
         $this->assertCountMails(1, ProcurationProxyReminderMessage::class);
-        $this->assertCount(2, $this->procurationRequestRepository->findBy(['reminded' => 1]), 'The command should add a reminder.');
+        $this->assertCount(1, $this->procurationRequestRepository->findBy(['reminded' => 1]), 'The command should add a reminder.');
     }
 
     public function setUp()
