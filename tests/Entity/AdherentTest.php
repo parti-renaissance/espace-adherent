@@ -135,13 +135,19 @@ class AdherentTest extends TestCase
 
     public function testIsBasicAdherent()
     {
-        // Basic
+        // User
         $adherent = $this->createAdherent();
+
+        $this->assertFalse($adherent->isBasicAdherent());
+
+        // Basic
+        $adherent->join();
 
         $this->assertTrue($adherent->isBasicAdherent());
 
         // Host
         $adherent = $this->createAdherent();
+        $adherent->join();
         $memberships = $adherent->getMemberships();
 
         $membership = $this->createMock(CommitteeMembership::class);
