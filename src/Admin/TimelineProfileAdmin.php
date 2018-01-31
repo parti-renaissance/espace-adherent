@@ -75,7 +75,7 @@ class TimelineProfileAdmin extends AbstractAdmin
     {
         return [
             'ID' => 'id',
-            'Titre (FR,EN)' => 'exportTitles',
+            'Titre (FR, EN)' => 'exportTitles',
             'Slug (FR, EN)' => 'exportSlugs',
             'Description (FR, EN)' => 'exportDescriptions',
         ];

@@ -159,7 +159,7 @@ class TimelineMeasureAdmin extends AbstractAdmin
     {
         return [
             'ID' => 'id',
-            'Titre (FR,EN)' => 'exportTitles',
+            'Titre (FR, EN)' => 'exportTitles',
             'Statut' => 'status',
             'Dernière modification' => 'updatedAt',
             'Mise en avant' => 'major',
