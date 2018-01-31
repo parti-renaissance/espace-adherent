@@ -348,7 +348,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeMessageForm($crawler));
         $this->assertTrue($this->seeFlashMessage($crawler, 'Votre message a bien été publié.'));
-        $this->assertSeeTimelineMessage($crawler, 0, 'Gisele Berthoux', 'Première publication !');
+        $this->assertSeeCommitteeTimelineMessage($crawler, 0, 'Gisele Berthoux', 'co-animateur', 'Première publication !');
     }
 
     /**
@@ -636,12 +636,6 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
     private function assertCountTimelineMessages(Crawler $crawler, int $nb, string $message = '')
     {
         $this->assertSame($nb, $crawler->filter('.committee__timeline__message')->count(), $message);
-    }
-
-    private function assertSeeTimelineMessage(Crawler $crawler, int $position, string $author, string $text)
-    {
-        $this->assertSame($author, $crawler->filter('.committee__timeline__message h3')->eq($position)->text());
-        $this->assertContains($text, $crawler->filter('.committee__timeline__message div')->eq($position)->text());
     }
 
     protected function setUp()

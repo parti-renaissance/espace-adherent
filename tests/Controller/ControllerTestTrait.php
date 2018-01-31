@@ -97,6 +97,13 @@ trait ControllerTestTrait
         }
     }
 
+    protected function assertSeeCommitteeTimelineMessage(Crawler $crawler, int $position, string $author, string $role, string $text)
+    {
+        $this->assertContains($author, $crawler->filter('.committee__timeline__message h3')->eq($position)->text());
+        $this->assertSame($role, $crawler->filter('.committee__timeline__message h3 span')->eq($position)->text());
+        $this->assertContains($text, $crawler->filter('.committee__timeline__message div')->eq($position)->text());
+    }
+
     private function getEventCategoryIdForName(string $categoryName): int
     {
         return $this->manager->getRepository(EventCategory::class)->findOneBy(['name' => $categoryName])->getId();
