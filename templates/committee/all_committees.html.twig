@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% set pagination_route_name = 'app_search_all_committees' %}
+
+{% block page_title 'Tous les comités' %}
+{% block canonical_url url(pagination_route_name, {page: currentPage}) %}
+
+{% block extra_link %}
+    {{ parent() }}
+    {% if currentPage > 1 %}
+        <link rel="prev" href="{{ url(pagination_route_name, {page: currentPage-1}) }}">
+    {% endif %}
+
+    {% if currentPage < totalPages %}
+        <link rel="next" href="{{ url(pagination_route_name, {page: currentPage+1}) }}">
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <main class="search">
+        <header class="l__wrapper space--60-0 text--center">
+            <h1 class="text--large search-title">Tous les comités</h1>
+            <h2 class="text--body text--normal"><a class="btn btn--blue" href="{{ path('app_search_committees') }}">Rechercher un comité</a></h2>
+        </header>
+
+        <div class="l__wrapper">
+            <div class="search__results app_search_committees" id="search-results">
+                {% spaceless %}
+                    {{ include("search/_committees.html.twig") }}
+                {% endspaceless %}
+            </div>
+        </div>
+
+        <div class="l__wrapper text--center b__nudge--bottom-huge">
+            {{ include('components/_pagination.html.twig') }}
+        </div>
+    </main>
+{% endblock %}
