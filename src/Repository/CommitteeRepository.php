@@ -317,7 +317,7 @@ class CommitteeRepository extends EntityRepository
         ;
     }
 
-    public function findPaginate(int $offset = 0, int $limit = SearchParametersFilter::DEFAULT_MAX_RESULTS): Paginator
+    public function paginate(int $offset = 0, int $limit = SearchParametersFilter::DEFAULT_MAX_RESULTS): Paginator
     {
         $query = $this->createQueryBuilder('e')
             ->getQuery()

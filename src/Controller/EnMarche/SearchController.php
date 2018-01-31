@@ -123,7 +123,7 @@ class SearchController extends Controller
     {
         $eventRepository = $this->getDoctrine()->getRepository(Event::class);
         $maxResultPage = $this->getParameter('search_max_results');
-        $results = $eventRepository->findPaginate($page > 1 ? $maxResultPage * $page : 0);
+        $results = $eventRepository->paginate($page > 1 ? $maxResultPage * $page : 0);
         $totalResults = $results->count();
         $totalPage = (int) ceil($totalResults / $maxResultPage);
 
@@ -147,7 +147,7 @@ class SearchController extends Controller
     {
         $committeeRepository = $this->getDoctrine()->getRepository(Committee::class);
         $maxResultPage = $this->getParameter('search_max_results');
-        $results = $committeeRepository->findPaginate($page > 1 ? $maxResultPage * $page : 0);
+        $results = $committeeRepository->paginate($page > 1 ? $maxResultPage * $page : 0);
         $totalResults = $results->count();
         $totalPage = (int) ceil($totalResults / $maxResultPage);
 

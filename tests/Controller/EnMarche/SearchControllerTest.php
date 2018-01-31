@@ -61,7 +61,7 @@ class SearchControllerTest extends MysqlWebTestCase
     public function testListAllEvents()
     {
         /** @var Paginator $evenets */
-        $events = $this->getRepository(Event::class)->findPaginate();
+        $events = $this->getRepository(Event::class)->paginate();
 
         $this->client->request(Request::METHOD_GET, '/tous-les-evenements/3');
         $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
@@ -79,7 +79,7 @@ class SearchControllerTest extends MysqlWebTestCase
     public function testListAllCommittee()
     {
         /** @var Paginator $evenets */
-        $events = $this->getRepository(Committee::class)->findPaginate();
+        $events = $this->getRepository(Committee::class)->paginate();
 
         $this->client->request(Request::METHOD_GET, '/tous-les-comites/3');
         $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
