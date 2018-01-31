@@ -126,7 +126,7 @@ tfp: vendor assets-amp
 	$(EXEC) $(CONSOLE) doctrine:schema:create --env=test_sqlite || true
 	$(EXEC) $(CONSOLE) doctrine:database:create --if-not-exists --env=test_mysql || true
 	$(EXEC) $(CONSOLE) doctrine:schema:drop --force --env=test_mysql || true
-	$(EXEC) $(CONSOLE) doctrine:schema:create --env=test_mysql || true
+	$(EXEC) $(CONSOLE) doctrine:migration:migrate -n --env=test_mysql || true
 
 tj:             ## Run the Javascript tests
 tj: node_modules
