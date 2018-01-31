@@ -16,6 +16,7 @@
             {% for host in committee_hosts %}
                 <li class="committee-host text--body text--bold">
                     {{ has_role_adherent ? host.fullName : host.partialName }}
+                    <span class="text--summary text--small text--gray b__nudge--bottom">{{ host.isSupervisorOf(committee) ? 'animateur' : 'co-animateur' }}</span>
                     {% if is_host and app.user.equals(host) %}
                         (vous)
                     {% else %}
