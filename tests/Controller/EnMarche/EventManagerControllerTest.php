@@ -84,7 +84,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
         $this->client->submit($crawler->selectButton('Enregistrer')->form([
             'committee_event' => [
-                'name' => "Débat sur l'écologie",
+                'name' => 'écologie, débatons-en !',
                 'description' => 'Cette journée sera consacrée à un grand débat sur la question écologique.',
                 'category' => $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']),
                 'address' => [
@@ -127,8 +127,8 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertContains('L\'événement a bien été modifié.', $crawler->filter('#notice-flashes')->text());
-        $this->assertSame('Débat sur l\'écologie | En Marche !', $crawler->filter('title')->text());
-        $this->assertSame('Débat sur l\'écologie', $crawler->filter('.committee-event-name')->text());
+        $this->assertSame('Écologie, Débatons-En ! | En Marche !', $crawler->filter('title')->text());
+        $this->assertSame('Écologie, Débatons-En !', $crawler->filter('.committee-event-name')->text());
         $this->assertSame('Organisé par Jacques Picard du comité En Marche Paris 8', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
         $this->assertSame('Mercredi 2 mars 2022, 9h30', $crawler->filter('.committee-event-date')->text());
         $this->assertSame('6 rue Neyret, 69001 Lyon 1er', $crawler->filter('.committee-event-address')->text());

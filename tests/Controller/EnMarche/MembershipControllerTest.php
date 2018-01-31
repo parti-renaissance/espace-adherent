@@ -82,10 +82,10 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->assertClientIsRedirectedTo('/presque-fini', $this->client);
 
-        $adherent = $this->getAdherentRepository()->findOneByEmail('paul@dupont.tld');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('jean-paul@dupont.tld');
         $this->assertInstanceOf(Adherent::class, $adherent);
         $this->assertSame('male', $adherent->getGender());
-        $this->assertSame('Paul', $adherent->getFirstName());
+        $this->assertSame('Jean-Paul', $adherent->getFirstName());
         $this->assertSame('Dupont', $adherent->getLastName());
         $this->assertEmpty($adherent->getAddress());
         $this->assertEmpty($adherent->getCityName());
@@ -96,11 +96,13 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertNull($adherent->getLatitude());
         $this->assertNull($adherent->getLongitude());
 
+        /** @var Adherent $adherent */
         $this->assertInstanceOf(
             Adherent::class,
-            $adherent = $this->client->getContainer()->get('doctrine')->getRepository(Adherent::class)->findOneByEmail('paul@dupont.tld')
+            $adherent = $this->client->getContainer()->get('doctrine')->getRepository(Adherent::class)->findOneByEmail('jean-paul@dupont.tld')
         );
-
+        $this->assertSame('Jean-Paul', $adherent->getFirstName());
+        $this->assertSame('Dupont', $adherent->getLastName());
         $this->assertInstanceOf(AdherentActivationToken::class, $activationToken = $this->activationTokenRepository->findAdherentMostRecentKey((string) $adherent->getUuid()));
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentAccountActivationMessage::class, 'paul@dupont.tld'));
 
@@ -131,7 +133,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         // Try to authenticate with credentials
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_adherent_email' => 'paul@dupont.tld',
+            '_adherent_email' => 'jean-paul@dupont.tld',
             '_adherent_password' => '#example!12345#',
         ]));
 
@@ -157,7 +159,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->assertClientIsRedirectedTo('/presque-fini', $this->client);
 
-        $adherent = $this->getAdherentRepository()->findOneByEmail('paul@dupont.tld');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('jean-paul@dupont.tld');
         $this->assertInstanceOf(Adherent::class, $adherent);
         $this->assertNull($adherent->getLatitude());
         $this->assertNull($adherent->getLongitude());
@@ -242,11 +244,11 @@ class MembershipControllerTest extends MysqlWebTestCase
         return [
             'g-recaptcha-response' => 'dummy',
             'new_member_ship_request' => [
-                'firstName' => 'Paul',
-                'lastName' => 'Dupont',
+                'firstName' => 'jean-pauL',
+                'lastName' => 'duPont',
                 'emailAddress' => [
-                    'first' => 'paul@dupont.tld',
-                    'second' => 'paul@dupont.tld',
+                    'first' => 'jean-paul@dupont.tld',
+                    'second' => 'jean-paul@dupont.tld',
                 ],
                 'password' => '#example!12345#',
                 'address' => [

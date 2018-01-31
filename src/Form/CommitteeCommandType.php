@@ -22,6 +22,7 @@ class CommitteeCommandType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'filter_emojis' => true,
+                'format_title_case' => true,
                 'disabled' => $committee ? $committee->isNameLocked() : false,
             ])
             ->add('description', TextareaType::class, [

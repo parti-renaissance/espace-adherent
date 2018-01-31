@@ -537,7 +537,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $data = [];
         $data['citizen_project']['name'] = 'Mon projet citoyen';
-        $data['citizen_project']['subtitle'] = 'Mon premier projet citoyen';
+        $data['citizen_project']['subtitle'] = 'Mon premier projet citoyen avec l\'apostrophe et-des-tirets';
         $data['citizen_project']['category'] = $categoryValue;
         $data['citizen_project']['problem_description'] = 'Le problème local.';
         $data['citizen_project']['proposed_solution'] = 'Ma solution.';
@@ -551,11 +551,13 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
 
-        $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['name' => 'Mon projet citoyen']);
+        /** @var CitizenProject $citizenProject */
+        $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['name' => 'Mon Projet Citoyen']);
 
         $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
         $this->assertInstanceOf(CitizenProject::class, $citizenProject);
-
+        $this->assertSame('Mon Projet Citoyen', $citizenProject->getName());
+        $this->assertSame('Mon Premier Projet Citoyen Avec L\'apostrophe Et-Des-Tirets', $citizenProject->getSubtitle());
         $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'carl999@example.fr'));
     }
 
@@ -631,10 +633,9 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame('Vous devez accepter les règles de confidentialité.', $crawler->filter('#field-confidentiality-terms > .form__errors > li')->text());
         $this->assertSame("Vous devez accepter d'être contacté(e) par la plateforme En Marche !", $crawler->filter('#field-contacting-terms > .form__errors > li')->text());
 
-        $file = new UploadedFile(__DIR__.'/../../Fixtures/image.jpg', 'image.jpg', 'image/jpeg', 631, UPLOAD_ERR_OK, true);
-
-        $parameters = [
-            'create_committee[name]' => 'Lyon est En Marche !',
+        // Submit the committee form with valid data to create committee
+        $this->client->submit($crawler->selectButton('Créer mon comité')->form([
+            'create_committee[name]' => 'lyon est en marche !',
             'create_committee[description]' => 'Comité français En Marche ! de la ville de Lyon',
             'create_committee[address][country]' => 'FR',
             'create_committee[address][address]' => '6 rue Neyret',
@@ -648,14 +649,12 @@ class AdherentControllerTest extends MysqlWebTestCase
             'create_committee[googlePlusPageUrl]' => 'https://plus.google.com/+EnMarcheavecEmmanuelMacron?hl=fr',
             'create_committee[acceptConfidentialityTerms]' => true,
             'create_committee[acceptContactingTerms]' => true,
-            'create_committee[photo]' => $file,
-        ];
-
-        $this->client->submit($crawler->selectButton('Créer mon comité')->form($parameters));
+            'create_committee[photo]' => new UploadedFile(__DIR__.'/../../Fixtures/image.jpg', 'image.jpg', 'image/jpeg', 631, UPLOAD_ERR_OK, true),
+        ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertInstanceOf(Committee::class, $committee = $this->committeeRepository->findMostRecentCommittee());
-        $this->assertSame('Lyon est En Marche !', $committee->getName());
+        $this->assertSame('Lyon Est En Marche !', $committee->getName());
         $this->assertTrue($committee->isWaitingForApproval());
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeCreationConfirmationMessage::class, $emaiLAddress));
 
@@ -663,7 +662,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertContains('Votre comité a été créé avec succès. Il est néanmoins en attente de validation par un administrateur', $crawler->filter('#notice-flashes')->text());
-        $this->assertSame('Lyon est En Marche !', $crawler->filter('#committee-name')->text());
+        $this->assertSame('Lyon Est En Marche !', $crawler->filter('#committee-name')->text());
         $this->assertSame('Comité français En Marche ! de la ville de Lyon', $crawler->filter('#committee-description')->text());
 
         $crawler = $this->client->click($crawler->selectLink('Éditer le comité')->link());

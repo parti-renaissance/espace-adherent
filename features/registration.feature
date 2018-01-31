@@ -27,7 +27,7 @@ Feature:
       "Recipients": [
         {
       "Email": "jp@test.com",
-          "Name": "Jean-Pierre DURAND",
+          "Name": "Jean-Pierre Durand",
           "Vars": {
             "first_name": "Jean-Pierre",
             "activation_link": "http:\/\/enmarche.dev\/inscription\/finaliser\/@string@\/@string@"

@@ -17,8 +17,12 @@ class NewMemberShipRequestType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName', TextType::class)
-            ->add('lastName', TextType::class)
+            ->add('firstName', TextType::class, [
+                'format_identity_case' => true,
+            ])
+            ->add('lastName', TextType::class, [
+                'format_identity_case' => true,
+            ])
             ->add('address', AddressType::class)
             ->add('comEmail', CheckboxType::class, [
                 'required' => false,

@@ -18,8 +18,14 @@ class UpdateMembershipRequestType extends AbstractType
     {
         $builder
             ->add('gender', GenderType::class)
-            ->add('firstName', TextType::class, ['disabled' => $options['name_and_email_fields_disabled']])
-            ->add('lastName', TextType::class, ['disabled' => $options['name_and_email_fields_disabled']])
+            ->add('firstName', TextType::class, [
+                'format_identity_case' => true,
+                'disabled' => $options['name_and_email_fields_disabled'],
+            ])
+            ->add('lastName', TextType::class, [
+                'format_identity_case' => true,
+                'disabled' => $options['name_and_email_fields_disabled'],
+            ])
             ->add('emailAddress', EmailType::class, ['disabled' => $options['name_and_email_fields_disabled']])
             ->add('birthdate', BirthdayType::class, [
                 'widget' => 'choice',
