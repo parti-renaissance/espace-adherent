@@ -168,9 +168,11 @@ class AdherentAdmin extends AbstractAdmin
                 ])
                 ->add('lastName', null, [
                     'label' => 'Nom',
+                    'format_identity_case' => true,
                 ])
                 ->add('firstName', null, [
                     'label' => 'Prénom',
+                    'format_identity_case' => true,
                 ])
                 ->add('emailAddress', null, [
                     'label' => 'Adresse e-mail',

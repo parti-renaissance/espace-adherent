@@ -139,12 +139,14 @@ class CitizenProjectAdmin extends AbstractAdmin
             ->with('Projet citoyen', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
+                    'format_title_case' => true,
                 ])
                 ->add('slug', null, [
                     'label' => 'Slug',
                 ])
                 ->add('subtitle', null, [
                     'label' => 'Sous-titre',
+                    'format_title_case' => true,
                 ])
                 ->add('category', null, [
                     'label' => 'Catégorie',
