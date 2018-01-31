@@ -39,6 +39,8 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     public const STATUSES_NOT_ALLOWED_TO_CREATE = [
         self::PENDING,
         self::REFUSED,
+        self::PRE_APPROVED,
+        self::PRE_REFUSED,
     ];
 
     /**
