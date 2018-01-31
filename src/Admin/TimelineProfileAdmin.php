@@ -70,4 +70,14 @@ class TimelineProfileAdmin extends AbstractAdmin
             ])
         ;
     }
+
+    public function getExportFields()
+    {
+        return [
+            'ID' => 'id',
+            'Titre (FR, EN)' => 'exportTitles',
+            'Slug (FR, EN)' => 'exportSlugs',
+            'Description (FR, EN)' => 'exportDescriptions',
+        ];
+    }
 }

@@ -143,4 +143,15 @@ class TimelineThemeAdmin extends AbstractAdmin
             ])
         ;
     }
+
+    public function getExportFields()
+    {
+        return [
+            'ID' => 'id',
+            'Titre (FR, EN)' => 'exportTitles',
+            'Slug (FR, EN)' => 'exportSlugs',
+            'Description (FR, EN)' => 'exportDescriptions',
+            'Mise en avant' => 'featured',
+        ];
+    }
 }
