@@ -48,7 +48,11 @@ class TextTypeExtension extends AbstractTypeExtension
         }
 
         if ($options['format_title_case']) {
-            $builder->addEventListener(FormEvents::SUBMIT, [__CLASS__, 'formatAsTitle']);
+            $builder->addEventListener(FormEvents::SUBMIT, [__CLASS__, 'formatDataAsTitle']);
+        }
+
+        if ($options['format_identity_case']) {
+            $builder->addEventListener(FormEvents::SUBMIT, [__CLASS__, 'formatDataAsIdentity']);
         }
     }
 
@@ -108,10 +112,10 @@ class TextTypeExtension extends AbstractTypeExtension
     private static function formatIdentityCase(string $string)
     {
         return \preg_replace_callback_array([
-            '/(?:^|[\s-])d[eu][\s-]/gui' => function (array $matches) {
+            '/(?:^|[\s-])d[eu][\s-]/ui' => function (array $matches) {
                 return \strtolower($matches[0]);
             },
-            '/(^|[\s-](d\')(\p{L})/gui' => function (array $matches) {
+            '/(?:^|[\s-])(d\')(\p{L})/ui' => function (array $matches) {
                 return \strtolower($matches[1]).\ucfirst($matches[2]);
             },
         ], self::formatTitleCase($string));
