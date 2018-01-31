@@ -331,4 +331,19 @@ class Measure implements AlgoliaIndexedEntityInterface
             'en' => $english->getTitle(),
         ];
     }
+
+    public function exportTitles(): string
+    {
+        return join(', ', $this->titles());
+    }
+
+    public function exportThemes(): string
+    {
+        return join(', ', $this->themes->toArray());
+    }
+
+    public function exportProfiles(): string
+    {
+        return join(', ', $this->profiles->toArray());
+    }
 }
