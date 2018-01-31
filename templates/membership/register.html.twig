@@ -57,7 +57,7 @@
                 <li>
                     {{ form_label(form.password,'Mot de passe',{ label_attr: {class: 'visually-hidden'} }) }}
                     {{ form_errors(form.password) }}
-                    {{ form_widget(form.password, {attr: {placeholder: 'Mot de passe'} }) }}
+                    {{ form_widget(form.password, {attr: {placeholder: 'Mot de passe', autocomplete: "new-password"} }) }}
                 </li>
 
                 {{ form_errors(form.address) }}
