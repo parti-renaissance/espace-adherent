@@ -5,6 +5,7 @@ namespace AppBundle\Repository;
 use AppBundle\BoardMember\BoardMemberFilter;
 use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
 use AppBundle\Collection\AdherentCollection;
+use AppBundle\Coordinator\CoordinatorManagedAreaUtils;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\CitizenProject;
@@ -206,6 +207,28 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             ->createReferentQueryBuilder()
             ->andWhere('FIND_IN_SET(:code, a.managedArea.codes) > 0')
             ->setParameter('code', ManagedAreaUtils::getCodeFromCommittee($committee))
+        ;
+
+        return new AdherentCollection($qb->getQuery()->getResult());
+    }
+
+    private function createCoordinatorQueryBuilder(): QueryBuilder
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->leftJoin('a.coordinatorManagedAreas', 'cma')
+            ->where('cma.codes IS NOT NULL')
+            ->andWhere('LENGTH(cma.codes) > 0')
+            ->orderBy('LOWER(cma.codes)', 'ASC')
+        ;
+    }
+
+    public function findCoordinatorsByCitizenProject(CitizenProject $citizenProject): AdherentCollection
+    {
+        $qb = $this
+            ->createCoordinatorQueryBuilder()
+            ->andWhere('FIND_IN_SET(:code, cma.codes) > 0')
+            ->setParameter('code', CoordinatorManagedAreaUtils::getCodeFromCitizenProject($citizenProject))
         ;
 
         return new AdherentCollection($qb->getQuery()->getResult());

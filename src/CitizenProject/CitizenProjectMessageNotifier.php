@@ -3,6 +3,7 @@
 namespace AppBundle\CitizenProject;
 
 use AppBundle\Committee\CommitteeManager;
+use AppBundle\Coordinator\Filter\AbstractCoordinatorAreaFilter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Events;
@@ -10,11 +11,14 @@ use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\CitizenProjectApprovalConfirmationMessage;
 use AppBundle\Mailer\Message\CitizenProjectCommentMessage;
 use AppBundle\Mailer\Message\CitizenProjectCreationConfirmationMessage;
+use AppBundle\Mailer\Message\CitizenProjectCreationCoordinatorNotificationMessage;
 use AppBundle\Mailer\Message\CitizenProjectCreationNotificationMessage;
 use AppBundle\Mailer\Message\CitizenProjectNewFollowerMessage;
 use AppBundle\Mailer\Message\CitizenProjectRequestCommitteeSupportMessage;
+use AppBundle\Repository\AdherentRepository;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class CitizenProjectMessageNotifier implements EventSubscriberInterface
@@ -27,14 +31,17 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
     private $mailer;
     private $committeeManager;
     private $router;
+    private $adherentRepository;
 
     public function __construct(
+        AdherentRepository $adherentRepository,
         ProducerInterface $creationNotificationProducer,
         CitizenProjectManager $manager,
         MailerService $mailer,
         CommitteeManager $committeeManager,
         RouterInterface $router
     ) {
+        $this->adherentRepository = $adherentRepository;
         $this->creationNotificationProducer = $creationNotificationProducer;
         $this->manager = $manager;
         $this->mailer = $mailer;
@@ -50,7 +57,8 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
 
     public function onCitizenProjectCreation(CitizenProjectWasCreatedEvent $event): void
     {
-        $this->sendCreatorConfirmationCreation($event->getCreator(), $event->getCitizenProject());
+        $this->sendCreatorCreationConfirmation($event->getCreator(), $event->getCitizenProject());
+        $this->sendCoordinatorCreationValidation($event->getCreator(), $event->getCitizenProject());
     }
 
     public function onCitizenProjectFollowerAdded(CitizenProjectFollowerAddedEvent $followerAddedEvent): void
@@ -86,7 +94,7 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         $this->mailer->sendMessage(CitizenProjectApprovalConfirmationMessage::create($citizenProject));
     }
 
-    private function sendCreatorConfirmationCreation(Adherent $creator, CitizenProject $citizenProject): void
+    private function sendCreatorCreationConfirmation(Adherent $creator, CitizenProject $citizenProject): void
     {
         $this->mailer->sendMessage(CitizenProjectCreationConfirmationMessage::create(
             $creator,
@@ -95,6 +103,27 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
                 'project_slug' => $citizenProject->getSlug(),
             ])
         ));
+    }
+
+    private function sendCoordinatorCreationValidation(Adherent $creator, CitizenProject $citizenProject): void
+    {
+        $coordinators = $this->adherentRepository->findCoordinatorsByCitizenProject($citizenProject);
+
+        /** @var Adherent $coordinator */
+        foreach ($coordinators as $coordinator) {
+            $this->mailer->sendMessage(
+                CitizenProjectCreationCoordinatorNotificationMessage::create(
+                    $coordinator,
+                    $citizenProject,
+                    $creator,
+                    $this->router->generate(
+                        'app_coordinator_citizen_project',
+                        [AbstractCoordinatorAreaFilter::PARAMETER_STATUS => CitizenProject::PENDING],
+                        UrlGeneratorInterface::ABSOLUTE_URL
+                    )
+                )
+            );
+        }
     }
 
     private function sendAskCommitteeSupport(CitizenProject $citizenProject): void
