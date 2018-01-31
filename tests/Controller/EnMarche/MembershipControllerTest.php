@@ -7,7 +7,6 @@ use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
-use AppBundle\Mailer\Message\AdherentAccountConfirmationMessage;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\EmailRepository;
@@ -109,7 +108,6 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentAccountConfirmationMessage::class, 'paul@dupont.tld'));
         $this->assertClientIsRedirectedTo('/adhesion', $this->client);
 
         $crawler = $this->client->followRedirect();
