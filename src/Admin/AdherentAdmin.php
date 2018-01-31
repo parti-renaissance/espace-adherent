@@ -146,11 +146,6 @@ class AdherentAdmin extends AbstractAdmin
                     'template' => 'admin/adherent/list_board_member_roles.html.twig',
                 ])
             ->end()
-            ->with('Candidat législatives', ['class' => 'col-md-6'])
-                ->add('legislativeCandidate', 'boolean', [
-                    'label' => 'Est candidat aux législatives ?',
-                ])
-            ->end()
             ->with('Tags', ['class' => 'col-md-6'])
                 ->add('tags', null, [
                     'label' => 'Tags de l\'adhérent',
