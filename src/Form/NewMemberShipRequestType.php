@@ -18,10 +18,10 @@ class NewMemberShipRequestType extends AbstractType
     {
         $builder
             ->add('firstName', TextType::class, [
-                'format_title_case' => true,
+                'format_identity_case' => true,
             ])
             ->add('lastName', TextType::class, [
-                'format_title_case' => true,
+                'format_identity_case' => true,
             ])
             ->add('address', AddressType::class)
             ->add('comEmail', CheckboxType::class, [

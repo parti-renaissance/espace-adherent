@@ -25,8 +25,11 @@ class EventRegistrationType extends AbstractType
         $builder
             ->add('firstName', TextType::class, [
                 'filter_emojis' => true,
+                'format_identity_case' => true,
             ])
-            ->add('lastName', TextType::class)
+            ->add('lastName', TextType::class, [
+                'format_identity_case' => true,
+            ])
             ->add('emailAddress', EmailType::class)
             ->add('acceptTerms', CheckboxType::class, [
                 'mapped' => false,
