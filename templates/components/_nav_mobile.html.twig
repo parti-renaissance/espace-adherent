@@ -37,15 +37,16 @@
                     </li>
                 </ul>
                 <hr />
-                <ul>
-                    <li>
-                        {% set url = has_role_adherent ? path('app_summary_manager_index') : path('app_user_login') %}
-                        <a href="{{ url }}">Profil</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_adherent_events') }}">Mes activités</a>
-                    </li>
-                </ul>
+                {% if has_role_adherent %}
+                    <ul>
+                        <li>
+                            <a href="{{ path('app_summary_manager_index') }}">Profil</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_adherent_events') }}">Mes activités</a>
+                        </li>
+                    </ul>
+                {% endif %}
                 {% if is_granted('CREATE_CITIZEN_PROJECT') %}
                     <ul>
                         <li>

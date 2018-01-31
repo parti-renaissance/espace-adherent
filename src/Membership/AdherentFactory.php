@@ -63,7 +63,10 @@ class AdherentFactory
             isset($data['registered_at']) ? $data['registered_at'] : 'now'
         );
 
-        $adherent->join();
+        if (!isset($data['isAdherent']) || $data['isAdherent']) {
+            $adherent->join();
+        }
+
         $adherent->setCitizenProjectCreationEmailSubscriptionRadius(Adherent::CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE);
 
         return $adherent;

@@ -86,37 +86,40 @@
                             <div class="nav-dropdown__separator"></div>
                             <div class="nav-dropdown__row">
                                 <div>
-                                    <ul class="nav-dropdown__section">
-                                        <li>
-                                            {% set url = has_role_adherent ? path('app_summary_manager_index') : path('app_user_login') %}
-                                            <a href="{{ url }}">Profil</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ path('app_adherent_events') }}">Mes activités</a>
-                                        </li>
-                                        {% if app.user and (has_role_adherent or app.user.isHost) %}
-                                            <li>
-                                                <a href="{{ path('app_documents_index') }}">Mes documents</a>
-                                            </li>
+                                    {% if has_role_adherent %}
+                                        <ul class="nav-dropdown__section">
+                                                <li>
+                                                    <a href="{{ path('app_summary_manager_index') }}">Profil</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ path('app_adherent_events') }}">Mes activités</a>
+                                                </li>
+                                            {% if app.user and (has_role_adherent or app.user.isHost) %}
+                                                <li>
+                                                    <a href="{{ path('app_documents_index') }}">Mes documents</a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+
+                                        <div class="nav-dropdown__separator"></div>
+                                        {% if is_granted('CREATE_CITIZEN_PROJECT') %}
+                                            <ul class="nav-dropdown__section">
+                                                <li>
+                                                    <a href="{{ path('app_adherent_create_citizen_project') }}">Lancer mon projet</a>
+                                                </li>
+                                            </ul>
+                                            <div class="nav-dropdown__separator"></div>
                                         {% endif %}
-                                    </ul>
-                                    <div class="nav-dropdown__separator"></div>
-                                    {% if is_granted('CREATE_CITIZEN_PROJECT') %}
-                                        <ul class="nav-dropdown__section">
-                                            <li>
-                                                <a href="{{ path('app_adherent_create_citizen_project') }}">Lancer mon projet</a>
-                                            </li>
-                                        </ul>
-                                        <div class="nav-dropdown__separator"></div>
+                                        {% if has_role_adherent and is_granted('CREATE_COMMITTEE') %}
+                                            <ul class="nav-dropdown__section">
+                                                <li>
+                                                    <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
+                                                </li>
+                                            </ul>
+                                            <div class="nav-dropdown__separator"></div>
+                                        {% endif %}
                                     {% endif %}
-                                    {% if has_role_adherent and is_granted('CREATE_COMMITTEE') %}
-                                        <ul class="nav-dropdown__section">
-                                            <li>
-                                                <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
-                                            </li>
-                                        </ul>
-                                        <div class="nav-dropdown__separator"></div>
-                                    {% endif %}
+
                                     {% if app.user and not has_role_adherent %}
                                         <div class="nav-dropdown__separator"></div>
                                         <ul class="nav-dropdown__section">
