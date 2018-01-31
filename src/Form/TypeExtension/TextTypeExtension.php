@@ -104,12 +104,12 @@ class TextTypeExtension extends AbstractTypeExtension
         }
     }
 
-    private static function formatTitleCase(string $string)
+    public static function formatTitleCase(string $string): string
     {
         return \mb_convert_case($string, MB_CASE_TITLE, 'UTF-8');
     }
 
-    private static function formatIdentityCase(string $string)
+    public static function formatIdentityCase(string $string): string
     {
         return \preg_replace_callback_array([
             '/(?:^|[\s-])d[eu][\s-]/ui' => function (array $matches) {
