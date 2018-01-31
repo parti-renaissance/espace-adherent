@@ -22,7 +22,6 @@ class ReferentManagedUser
     const STATUS_EXPIRED = 2;
 
     const TYPE_ADHERENT = 'adherent';
-    const TYPE_NEWSLETTER = 'newsletter';
 
     /**
      * @var int
@@ -207,10 +206,6 @@ class ReferentManagedUser
 
     public function getStyleType(): string
     {
-        if (self::TYPE_NEWSLETTER === $this->type) {
-            return 'newsletter';
-        }
-
         if ($this->isCommitteeHost || $this->isCommitteeSupervisor) {
             return 'host';
         }

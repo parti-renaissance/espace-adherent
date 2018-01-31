@@ -31,7 +31,7 @@ class PopulateManagedUsersByReferentCommand extends ContainerAwareCommand
         $sqlFromCommitteeMembership = <<<'SQL'
           INSERT INTO projection_referent_managed_users
             (status, type, original_id, email, postal_code, city, country, first_name, last_name, age, phone,
-            committees, is_committee_member, is_committee_host, is_mail_subscriber, created_at)
+            committees, is_committee_member, is_committee_host, is_committee_supervisor, is_mail_subscriber, created_at)
             SELECT
             0,
             'adherent',
@@ -57,33 +57,31 @@ class PopulateManagedUsersByReferentCommand extends ContainerAwareCommand
                WHERE cm.adherent_id = a.id AND c.status = 'APPROVED'
             ),
             (
-               SELECT COUNT(cm.id) > 0
-               FROM committees_memberships cm
-               LEFT JOIN committees c ON cm.committee_uuid = c.uuid
-               WHERE cm.adherent_id = a.id AND c.status = 'APPROVED' AND (cm.privilege = 'SUPERVISOR' OR cm.privilege = 'HOST')
+                SELECT COUNT(cm.id) > 0
+                FROM committees_memberships cm
+                LEFT JOIN committees c ON cm.committee_uuid = c.uuid
+                WHERE cm.adherent_id = a.id AND c.status = 'APPROVED' AND cm.privilege = 'HOST'
+            ),
+            (
+                SELECT COUNT(cm.id) > 0
+                FROM committees_memberships cm
+                LEFT JOIN committees c ON cm.committee_uuid = c.uuid
+                WHERE cm.adherent_id = a.id AND c.status = 'APPROVED' AND cm.privilege = 'SUPERVISOR'
             ),
             a.referents_emails_subscription,
             a.registered_at
             FROM adherents a
 SQL;
 
-        $sqlFromNewsletterSubscription = <<<'SQL'
-            INSERT INTO projection_referent_managed_users
-            (status, type, original_id, email, postal_code, city, country, first_name, last_name, age, phone,
-            committees, is_committee_member, is_committee_host, is_mail_subscriber, created_at)
-            SELECT 0, 'newsletter', n.id, n.email, n.postal_code, NULL, NULL, NULL, NULL, NULL, NULL, '', 0, 0, 1, n.created_at
-            FROM newsletter_subscriptions n
-            WHERE LENGTH(n.postal_code) = 5
-SQL;
-
         $sqlStatus = 'UPDATE projection_referent_managed_users SET status = status + 1';
+        $sqlDeleteOld = 'DELETE FROM projection_referent_managed_users WHERE status >= 2';
 
         try {
             $stmt = $this->manager->getConnection()->prepare($sqlFromCommitteeMembership);
             $stmt->execute();
-            $stmt = $this->manager->getConnection()->prepare($sqlFromNewsletterSubscription);
-            $stmt->execute();
             $stmt = $this->manager->getConnection()->prepare($sqlStatus);
+            $stmt->execute();
+            $stmt = $this->manager->getConnection()->prepare($sqlDeleteOld);
             $stmt->execute();
 
             $output->writeln('Creation of managed users by referent was successfully completed');

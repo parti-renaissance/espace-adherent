@@ -39,11 +39,6 @@ class ReferentManagedUsersMessage
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $includeNewsletter;
-
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
     private $includeAdherentsNoCommittee;
 
     /**
@@ -86,7 +81,6 @@ class ReferentManagedUsersMessage
         Adherent $from,
         string $subject,
         string $content,
-        bool $includeNewsletter,
         bool $includeAdherentsNoCommittee,
         bool $includeAdherentsInCommittee,
         bool $includeHosts,
@@ -100,7 +94,6 @@ class ReferentManagedUsersMessage
         $this->from = $from;
         $this->subject = $subject;
         $this->content = $content;
-        $this->includeNewsletter = $includeNewsletter;
         $this->includeAdherentsNoCommittee = $includeAdherentsNoCommittee;
         $this->includeAdherentsInCommittee = $includeAdherentsInCommittee;
         $this->includeHosts = $includeHosts;
@@ -118,7 +111,6 @@ class ReferentManagedUsersMessage
             $message->getFrom(),
             $message->getSubject(),
             $message->getContent(),
-            $message->getFilter()->includeNewsletter(),
             $message->getFilter()->includeAdherentsNoCommittee(),
             $message->getFilter()->includeAdherentsInCommittee(),
             $message->getFilter()->includeHosts(),
@@ -147,11 +139,6 @@ class ReferentManagedUsersMessage
     public function getContent(): string
     {
         return $this->content;
-    }
-
-    public function includeNewsletter(): bool
-    {
-        return $this->includeNewsletter;
     }
 
     public function includeAdherentsNoCommittee(): bool

@@ -41,7 +41,7 @@ class ReferentController extends Controller
         }
 
         $repository = $this->getDoctrine()->getRepository(ReferentManagedUser::class);
-        $results = $repository->search($this->getUser(), $filter->hasToken() ? $filter : null, false);
+        $results = $repository->search($this->getUser(), $filter->hasToken() ? $filter : null);
 
         $filter->setToken($this->get('security.csrf.token_manager')->getToken(self::TOKEN_ID));
 
@@ -79,7 +79,7 @@ class ReferentController extends Controller
         }
 
         $repository = $this->getDoctrine()->getRepository(ReferentManagedUser::class);
-        $results = $repository->search($this->getUser(), $filter->hasToken() ? $filter : null, true);
+        $results = $repository->search($this->getUser(), $filter->hasToken() ? $filter : null);
 
         return $this->render('referent/users_message.html.twig', [
             'filter' => $filter,
