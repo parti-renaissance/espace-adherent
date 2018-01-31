@@ -15,13 +15,15 @@
         <ul class="committee__hosts">
             {% for host in committee_hosts %}
                 <li class="committee-host text--body text--bold">
-                    {{ has_role_adherent ? host.fullName : host.partialName }}
-                    <span class="text--summary text--small text--gray b__nudge--bottom">{{ host.isSupervisorOf(committee) ? 'animateur' : 'co-animateur' }}</span>
+                    <div>
+                        {{ has_role_adherent ? host.fullName : host.partialName }}
+                        <span class="text--normal text--small text--gray b__nudge--bottom">{{ host.isSupervisorOf(committee) ? 'animateur' : 'co-animateur' }}</span>
+                    </div>
                     {% if is_host and app.user.equals(host) %}
                         (vous)
                     {% else %}
                         <a href="{{ path('app_adherent_contact', {'uuid': host.uuid, 'from': 'committee', 'id': committee.uuid.toString}) }}"
-                           class="link--no-decor text--blue text--normal text--summary">
+                           class="link--no-decor text--blue text--normal">
                             Contacter
                         </a>
                     {% endif %}
