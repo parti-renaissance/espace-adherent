@@ -110,13 +110,12 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/adhesion', $this->client);
+        $this->assertClientIsRedirectedTo('/adhesion?from_activation=1', $this->client);
 
-        $crawler = $this->client->followRedirect();
+        $this->client->followRedirect();
 
-        // User is automatically logged-in and redirected to the events page
+        // User is automatically logged-in
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Votre compte adhérent est maintenant actif.', $crawler->filter('#notice-flashes')->text());
 
         // Activate user account twice
         $this->logout($this->client);
@@ -127,7 +126,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Votre compte adhérent est déjà actif.', $crawler->filter('.flash')->text());
+        $this->assertContains('Votre compte est déjà actif.', $crawler->filter('.flash')->text());
 
         // Try to authenticate with credentials
         $this->client->submit($crawler->selectButton('Connexion')->form([

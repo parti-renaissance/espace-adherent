@@ -54,11 +54,11 @@ class CallbackManager
      *
      * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
      */
-    public function redirectToClientIfValid(string $fallback = null): RedirectResponse
+    public function redirectToClientIfValid(string $fallback = null, $fallbackParameters = []): RedirectResponse
     {
         $callbackParameters = $this->validateRedirectUriAndClient();
 
-        return new RedirectResponse($callbackParameters['redirect_uri'] ?? $this->urlGenerator->generate($fallback ?: 'homepage'));
+        return new RedirectResponse($callbackParameters['redirect_uri'] ?? $this->urlGenerator->generate($fallback ?: 'homepage', $fallbackParameters));
     }
 
     private function validateRedirectUriAndClient(): array

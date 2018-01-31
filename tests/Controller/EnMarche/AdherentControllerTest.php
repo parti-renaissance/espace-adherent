@@ -155,7 +155,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $inputPattern = 'input[name="update_membership_request[%s]"]';
         $optionPattern = 'select[name="update_membership_request[%s]"] option[selected="selected"]';
 
-        $this->assertSame('male', $crawler->filter(sprintf($inputPattern, 'gender').'[checked="checked"]')->attr('value'));
+        $this->assertSame('male', $crawler->filter(sprintf($optionPattern, 'gender'))->attr('value'));
         $this->assertSame('Carl', $crawler->filter(sprintf($inputPattern, 'firstName'))->attr('value'));
         $this->assertSame('Mirabeau', $crawler->filter(sprintf($inputPattern, 'lastName'))->attr('value'));
         $this->assertSame('122 rue de Mouxy', $crawler->filter(sprintf($inputPattern, 'address][address'))->attr('value'));
@@ -236,7 +236,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertSame(3, $errors->count());
-        $this->assertSame('Vous devez saisir au maximum 15 caractères.', $errors->eq(0)->text());
+        $this->assertSame('Le code postal doit contenir moins de 15 caractères.', $errors->eq(0)->text());
         $this->assertSame('L\'adresse ne peut pas dépasser 150 caractères.', $errors->eq(1)->text());
         $this->assertSame('Cette adresse e-mail existe déjà.', $errors->eq(2)->text());
 

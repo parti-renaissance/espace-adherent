@@ -40,7 +40,7 @@ class UserController extends Controller
     {
         $adherent = $this->getUser();
         $membership = MembershipRequest::createFromAdherent($adherent, $this->get('libphonenumber.phone_number_util'));
-        $form = $this->createForm(UpdateMembershipRequestType::class, $membership, ['name_and_email_fields_disabled' => false])
+        $form = $this->createForm(UpdateMembershipRequestType::class, $membership)
             ->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications'])
         ;
 
