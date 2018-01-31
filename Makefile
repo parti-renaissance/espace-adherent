@@ -50,16 +50,6 @@ tty:              ## Run app container in interactive mode
 tty:
 	$(RUN) /bin/bash
 
-var/public.key:   ## Generate the public key
-var/public.key: var/private.key
-	$(RUN) openssl rsa -in var/private.key -pubout -out var/public.key
-
-var/private.key:  ## Generate the private key
-var/private.key:
-	$(RUN) openssl genrsa -out var/private.key 1024
-
-rabbitmq-fabric:
-	$(RUN) $(CONSOLE) rabbitmq:setup-fabric
 
 ##
 ## Database
@@ -88,6 +78,10 @@ db-rollback: vendor
 db-load:        ## Reset the database fixtures
 db-load: vendor
 	$(RUN) $(CONSOLE) doctrine:fixtures:load -n
+
+db-validate:    ## Check the ORM mapping
+db-validate: vendor
+	$(RUN) $(CONSOLE) doctrine:schema:validate
 
 
 ##
@@ -135,7 +129,7 @@ tfp: vendor assets-amp
 	$(EXEC) $(CONSOLE) doctrine:schema:create --env=test_sqlite || true
 	$(EXEC) $(CONSOLE) doctrine:database:create --if-not-exists --env=test_mysql || true
 	$(EXEC) $(CONSOLE) doctrine:schema:drop --force --env=test_mysql || true
-	$(EXEC) $(CONSOLE) doctrine:schema:create --env=test_mysql || true
+	$(EXEC) $(CONSOLE) doctrine:migration:migrate -n --env=test_mysql || true
 
 tj:             ## Run the Javascript tests
 tj: node_modules
@@ -168,6 +162,10 @@ phpcs: vendor
 phpcsfix:       ## Lint and fix PHP code to follow the convention
 phpcsfix: vendor
 	$(PHPCSFIXER) fix
+
+security-check: ## Check for vulnerable dependencies
+security-check: vendor
+	$(RUN) vendor/bin/security-checker security:check
 
 
 ##

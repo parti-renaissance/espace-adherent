@@ -79,7 +79,9 @@ INTRODUCTION
 </div>
 INTRODUCTION
         );
-        $nextTime = new \DateTime('next sunday'); // We need this election to always be in the future for tests to pass
+        // We need this election to always be in the future for tests to pass
+        // less than 3 days to trigger a reminder
+        $nextTime = new \DateTime('+2 days');
         $this->createRound(
             $partialLegislativeElections,
             '1er tour des éléctions législatives partielles pour la 1ère circonscription du Val-d\'Oise 2018',

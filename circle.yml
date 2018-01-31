@@ -61,10 +61,13 @@ test:
             parallel: true
         - ./bin/console doctrine:schema:drop --force --env=test_mysql:
             parallel: true
-        - ./bin/console doctrine:schema:create --env=test_mysql:
+        - ./bin/console doctrine:migrations:migrate -n --env=test_mysql:
             parallel: true
         - mkdir -p $CIRCLE_TEST_REPORTS/phpunit:
             parallel: true
+
+        # Check ORM mapping
+        - ./bin/console doctrine:schema:validate --env=test_mysql
 
         # PHP unit and functional tests
         - ./vendor/bin/behat --
@@ -77,6 +80,9 @@ test:
 
         # Try to build production JS
         - yarn run build-prod
+
+        # Check for vulnerable dependencies
+        - ./vendor/bin/security-checker security:check
 
 deployment:
     master:

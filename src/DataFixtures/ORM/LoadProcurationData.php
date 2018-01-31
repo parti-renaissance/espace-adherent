@@ -266,7 +266,7 @@ class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
         $reflectionProperty = $reflectionClass->getProperty('processedAt');
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($request1, new \DateTime('-48 hours'));
-        $reflectionProperty->setValue($request2, new \DateTime('-48 hours'));
+        $reflectionProperty->setValue($request2, new \DateTime('-72 hours'));
 
         $manager->flush();
     }

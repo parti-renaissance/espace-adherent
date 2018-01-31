@@ -11,6 +11,7 @@ use AppBundle\Search\SearchParametersFilter;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class EventRepository extends EntityRepository
 {
@@ -415,5 +416,15 @@ SQL;
         }
 
         return $qb->getQuery()->execute();
+    }
+
+    public function paginate(int $offset = 0, int $limit = SearchParametersFilter::DEFAULT_MAX_RESULTS): Paginator
+    {
+        $query = $this->createQueryBuilder('e')
+            ->getQuery()
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return new Paginator($query);
     }
 }
