@@ -12,15 +12,18 @@ class CommitteeUpdateCommandHandler
     private $dispatcher;
     private $addressFactory;
     private $manager;
+    private $photoManager;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
         ObjectManager $manager,
-        PostAddressFactory $addressFactory
+        PostAddressFactory $addressFactory,
+        PhotoManager $photoManager
     ) {
         $this->dispatcher = $dispatcher;
         $this->manager = $manager;
         $this->addressFactory = $addressFactory;
+        $this->photoManager = $photoManager;
     }
 
     public function handle(CommitteeCommand $command)
@@ -35,6 +38,9 @@ class CommitteeUpdateCommandHandler
             $this->addressFactory->createFromAddress($command->getAddress()),
             $command->getPhone()
         );
+
+        // Uploads an ID photo
+        $this->photoManager->addPhotoFromCommand($command, $committee);
 
         $committee->setSocialNetworks(
             $command->facebookPageUrl,

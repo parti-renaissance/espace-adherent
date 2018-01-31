@@ -25,7 +25,7 @@
                 </h1>
             </header>
 
-            <form method="post" id="edit-committee-form" class="form committee-form">
+            {{ form_start(form, {attr: {'id': 'edit-committee-form', 'class': 'form committee-form'}}) }}
                 {{ include('committee/_form.html.twig') }}
                 <div>
                     <button type="submit" id="edit-committee" class="btn btn--blue">
@@ -36,7 +36,7 @@
                     </a>
                 </div>
                 {{ form_rest(form) }}
-            </form>
+            {{ form_end(form) }}
         </section>
     </main>
 {% endblock %}

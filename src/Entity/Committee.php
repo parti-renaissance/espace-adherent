@@ -42,6 +42,12 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
         self::REFUSED,
     ];
 
+    public const WAITING_STATUSES = [
+        self::PENDING,
+        self::PRE_APPROVED,
+        self::PRE_REFUSED,
+    ];
+
     /**
      * The group description.
      *
@@ -92,6 +98,13 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
     private $nameLocked = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default"=false})
+     */
+    private $photoUploaded = false;
+
+    /**
      * A cached list of the hosts (for admin).
      */
     public $hosts = [];
@@ -140,6 +153,21 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
     public function getPostAddress(): PostAddress
     {
         return $this->postAddress;
+    }
+
+    public function getPhotoPath(): string
+    {
+        return sprintf('images/committees/%s.jpg', $this->getUuid());
+    }
+
+    public function hasPhotoUploaded(): bool
+    {
+        return $this->photoUploaded;
+    }
+
+    public function setPhotoUploaded(bool $photoUploaded): void
+    {
+        $this->photoUploaded = $photoUploaded;
     }
 
     public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, string $description, PostAddress $address, PhoneNumber $phone, string $createdAt = 'now'): self
@@ -210,6 +238,11 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
     public function setNameLocked(bool $nameLocked): void
     {
         $this->nameLocked = $nameLocked;
+    }
+
+    public function isWaitingForApproval(): bool
+    {
+        return in_array($this->status, self::WAITING_STATUSES, true) && !$this->approvedAt;
     }
 
     /**
