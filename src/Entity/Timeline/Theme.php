@@ -222,4 +222,19 @@ class Theme implements EntityMediaInterface, AlgoliaIndexedEntityInterface
             'en' => $english->getDescription(),
         ];
     }
+
+    public function exportTitles(): string
+    {
+        return join(', ', $this->titles());
+    }
+
+    public function exportSlugs(): string
+    {
+        return join(', ', $this->slugs());
+    }
+
+    public function exportDescriptions(): string
+    {
+        return join(', ', $this->descriptions());
+    }
 }
