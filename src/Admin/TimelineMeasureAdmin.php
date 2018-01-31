@@ -154,4 +154,17 @@ class TimelineMeasureAdmin extends AbstractAdmin
             ])
         ;
     }
+
+    public function getExportFields()
+    {
+        return [
+            'ID' => 'id',
+            'Titre (FR,EN)' => 'exportTitles',
+            'Statut' => 'status',
+            'Dernière modification' => 'updatedAt',
+            'Mise en avant' => 'major',
+            'Thèmes' => 'exportThemes',
+            'Profils' => 'exportProfiles',
+        ];
+    }
 }
