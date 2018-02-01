@@ -21,10 +21,12 @@
         {% endif %}
 
         <div>
-            autour de
-            {# this widget will be embedded in the ribbon text #}
-            <input class="search-city" name="{{ constant('PARAMETER_CITY', search) }}" value="{{ search.city }}" placeholder="Ville ou code postal">
-            <input id="search-type" type="hidden" name="{{ constant('PARAMETER_TYPE', search) }}" value="{{ search.type }}"/>
+            <form>
+                autour de
+                {# this widget will be embedded in the ribbon text #}
+                <input class="search-city" id="search-city" name="{{ constant('PARAMETER_CITY', search) }}" value="{{ search.city }}" placeholder="Ville ou code postal" />
+                <input id="search-type" type="hidden" name="{{ constant('PARAMETER_TYPE', search) }}" value="{{ search.type }}"/>
+            </form>
         </div>
     </div>
 </div>
