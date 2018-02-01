@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MembershipRequest implements MembershipInterface
 {
     /**
+     * @Assert\NotBlank(message="common.gender.not_blank", groups={"Update"})
      * @Assert\Choice(
      *   callback = {"AppBundle\ValueObject\Genders", "all"},
      *   message="common.gender.invalid_choice",

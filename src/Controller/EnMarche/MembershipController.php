@@ -7,8 +7,8 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentTokenExpiredException;
-use AppBundle\Form\NewMemberShipRequestType;
-use AppBundle\Form\UpdateMembershipRequestType;
+use AppBundle\Form\BecomeAdherentType;
+use AppBundle\Form\UserRegistrationType;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\OAuth\CallbackManager;
@@ -43,7 +43,7 @@ class MembershipController extends Controller
             $request->request->get('g-recaptcha-response')
         );
 
-        $form = $this->createForm(NewMemberShipRequestType::class, $membership);
+        $form = $this->createForm(UserRegistrationType::class, $membership);
 
         try {
             if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
@@ -79,8 +79,9 @@ class MembershipController extends Controller
             throw $this->createNotFoundException();
         }
 
+        $fromActivation = $request->query->getBoolean('from_activation');
         $membership = MembershipRequest::createFromAdherent($user, $this->get('libphonenumber.phone_number_util'));
-        $form = $this->createForm(UpdateMembershipRequestType::class, $membership)
+        $form = $this->createForm(BecomeAdherentType::class, $membership)
             ->add('submit', SubmitType::class, ['label' => 'J\'adhère'])
         ;
 
@@ -102,6 +103,7 @@ class MembershipController extends Controller
             'membership' => $membership,
             'form' => $form->createView(),
             'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
+            'from_activation' => $fromActivation,
         ]);
     }
 
@@ -144,9 +146,8 @@ class MembershipController extends Controller
 
         try {
             $this->get('app.adherent_account_activation_handler')->handle($adherent, $activationToken);
-            $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
 
-            return $callbackManager->redirectToClientIfValid('app_membership_join');
+            return $callbackManager->redirectToClientIfValid('app_membership_join', ['from_activation' => 1]);
         } catch (AdherentAlreadyEnabledException $e) {
             $this->addFlash('info', $this->get('translator')->trans('adherent.activation.already_active'));
         } catch (AdherentTokenExpiredException $e) {

@@ -25,7 +25,7 @@ class Address implements AddressInterface, GeocodableInterface
 
     /**
      * @Assert\NotBlank(message="common.postal_code.not_blank", groups={"Default", "Registration", "Update"})
-     * @Assert\Length(max=15, groups={"Default", "Registration", "Update"})
+     * @Assert\Length(max=15, maxMessage="common.postal_code.max_length", groups={"Default", "Registration", "Update"})
      */
     private $postalCode;
 

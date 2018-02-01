@@ -12,21 +12,20 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 
-class UpdateMembershipRequestType extends AbstractType
+class AdherentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('gender', GenderType::class)
             ->add('firstName', TextType::class, [
                 'format_identity_case' => true,
-                'disabled' => $options['name_and_email_fields_disabled'],
             ])
             ->add('lastName', TextType::class, [
                 'format_identity_case' => true,
-                'disabled' => $options['name_and_email_fields_disabled'],
             ])
-            ->add('emailAddress', EmailType::class, ['disabled' => $options['name_and_email_fields_disabled']])
+            ->add('emailAddress', EmailType::class)
+            ->add('position', ActivityPositionType::class)
+            ->add('gender', GenderType::class)
             ->add('birthdate', BirthdayType::class, [
                 'widget' => 'choice',
                 'years' => $options['years'],
@@ -36,7 +35,6 @@ class UpdateMembershipRequestType extends AbstractType
                     'day' => 'JJ',
                 ],
             ])
-            ->add('position', ActivityPositionType::class)
             ->add('address', AddressType::class)
             ->add('phone', PhoneNumberType::class, [
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
@@ -55,9 +53,6 @@ class UpdateMembershipRequestType extends AbstractType
             'data_class' => MembershipRequest::class,
             'years' => array_combine($years, $years),
             'validation_groups' => ['Update'],
-            'name_and_email_fields_disabled' => true,
         ]);
-
-        $resolver->setAllowedTypes('name_and_email_fields_disabled', 'bool');
     }
 }

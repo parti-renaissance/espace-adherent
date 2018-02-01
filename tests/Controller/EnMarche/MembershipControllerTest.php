@@ -48,8 +48,8 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
-        $data['new_member_ship_request']['emailAddress']['first'] = $emailAddress;
-        $data['new_member_ship_request']['emailAddress']['second'] = $emailAddress;
+        $data['user_registration']['emailAddress']['first'] = $emailAddress;
+        $data['user_registration']['emailAddress']['second'] = $emailAddress;
         $crawler = $this->client->submit($crawler->selectButton('Créer mon compte')->form(), $data);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -110,13 +110,12 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/adhesion', $this->client);
+        $this->assertClientIsRedirectedTo('/adhesion?from_activation=1', $this->client);
 
-        $crawler = $this->client->followRedirect();
+        $this->client->followRedirect();
 
-        // User is automatically logged-in and redirected to the events page
+        // User is automatically logged-in
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Votre compte adhérent est maintenant actif.', $crawler->filter('#notice-flashes')->text());
 
         // Activate user account twice
         $this->logout($this->client);
@@ -127,7 +126,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Votre compte adhérent est déjà actif.', $crawler->filter('.flash')->text());
+        $this->assertContains('Votre compte est déjà actif.', $crawler->filter('.flash')->text());
 
         // Try to authenticate with credentials
         $this->client->submit($crawler->selectButton('Connexion')->form([
@@ -150,8 +149,8 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
-        $data['new_member_ship_request']['address']['country'] = $country;
-        $data['new_member_ship_request']['address']['postalCode'] = $postalCode;
+        $data['user_registration']['address']['country'] = $country;
+        $data['user_registration']['address']['postalCode'] = $postalCode;
 
         $this->client->submit($this->client->getCrawler()->selectButton('Créer mon compte')->form(), $data);
 
@@ -181,10 +180,10 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
-        $data['new_member_ship_request']['emailAddress']['first'] = 'michel@dupont.tld';
-        $data['new_member_ship_request']['emailAddress']['second'] = 'michel@dupont.tld';
-        $data['new_member_ship_request']['address']['country'] = 'CH';
-        $data['new_member_ship_request']['address']['postalCode'] = '8057';
+        $data['user_registration']['emailAddress']['first'] = 'michel@dupont.tld';
+        $data['user_registration']['emailAddress']['second'] = 'michel@dupont.tld';
+        $data['user_registration']['address']['country'] = 'CH';
+        $data['user_registration']['address']['postalCode'] = '8057';
 
         $this->client->submit($this->client->getCrawler()->selectButton('Créer mon compte')->form(), $data);
 
@@ -195,8 +194,8 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_adherent_email' => $data['new_member_ship_request']['emailAddress']['first'],
-            '_adherent_password' => $data['new_member_ship_request']['password'],
+            '_adherent_email' => $data['user_registration']['emailAddress']['first'],
+            '_adherent_password' => $data['user_registration']['password'],
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
@@ -211,10 +210,10 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
-        $data['new_member_ship_request']['emailAddress']['first'] = 'michel2@dupont.tld';
-        $data['new_member_ship_request']['emailAddress']['second'] = 'michel2@dupont.tld';
-        $data['new_member_ship_request']['address']['country'] = 'CH';
-        $data['new_member_ship_request']['address']['postalCode'] = '8057';
+        $data['user_registration']['emailAddress']['first'] = 'michel2@dupont.tld';
+        $data['user_registration']['emailAddress']['second'] = 'michel2@dupont.tld';
+        $data['user_registration']['address']['country'] = 'CH';
+        $data['user_registration']['address']['postalCode'] = '8057';
 
         $this->client->submit($this->client->getCrawler()->selectButton('Créer mon compte')->form(), $data);
 
@@ -241,7 +240,7 @@ class MembershipControllerTest extends MysqlWebTestCase
     {
         return [
             'g-recaptcha-response' => 'dummy',
-            'new_member_ship_request' => [
+            'user_registration' => [
                 'firstName' => 'jean-pauL',
                 'lastName' => 'duPont',
                 'emailAddress' => [
