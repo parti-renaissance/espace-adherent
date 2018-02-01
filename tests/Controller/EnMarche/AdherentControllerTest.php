@@ -152,8 +152,8 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
 
-        $inputPattern = 'input[name="update_membership_request[%s]"]';
-        $optionPattern = 'select[name="update_membership_request[%s]"] option[selected="selected"]';
+        $inputPattern = 'input[name="membership_request[%s]"]';
+        $optionPattern = 'select[name="membership_request[%s]"] option[selected="selected"]';
 
         $this->assertSame('male', $crawler->filter(sprintf($optionPattern, 'gender'))->attr('value'));
         $this->assertSame('Carl', $crawler->filter(sprintf($inputPattern, 'firstName'))->attr('value'));
@@ -170,8 +170,8 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame('carl999@example.fr', $crawler->filter(sprintf($inputPattern, 'emailAddress'))->attr('value'));
 
         // Submit the profile form with invalid data
-        $crawler = $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
-            'update_membership_request' => [
+        $crawler = $this->client->submit($crawler->selectButton('membership_request[submit]')->form([
+            'membership_request' => [
                 'gender' => 'male',
                 'firstName' => '',
                 'lastName' => '',
@@ -206,8 +206,8 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
 
         // Submit the profile form with duplicate email and too long input
-        $crawler = $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
-            'update_membership_request' => [
+        $crawler = $this->client->submit($crawler->selectButton('membership_request[submit]')->form([
+            'membership_request' => [
                 'gender' => 'female',
                 'firstName' => 'Jean',
                 'lastName' => 'Dupont',
@@ -241,8 +241,8 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame('Cette adresse e-mail existe déjà.', $errors->eq(2)->text());
 
         // Submit the profile form with valid data
-        $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
-            'update_membership_request' => [
+        $this->client->submit($crawler->selectButton('membership_request[submit]')->form([
+            'membership_request' => [
                 'gender' => 'female',
                 'firstName' => 'Jean',
                 'lastName' => 'Dupont',

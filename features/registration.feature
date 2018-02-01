@@ -46,16 +46,16 @@ Feature:
     When I am on "/adhesion"
     Then I should not see "Bienvenue ! Votre e-mail est confirmé."
 
-    Given I fill in hidden field "update_membership_request_address_city" with "06000-6088"
+    Given I fill in hidden field "become_adherent_address_city" with "06000-6088"
     And I fill in the following:
-      | update_membership_request[address][address]    |    |
-      | update_membership_request[address][cityName]   |    |
-      | update_membership_request[address][postalCode] |    |
-      | update_membership_request[gender]              |    |
-      | update_membership_request[phone][number]       |    |
-      | update_membership_request[birthdate][day]      |    |
-      | update_membership_request[birthdate][month]    |    |
-      | update_membership_request[birthdate][year]     |    |
+      | become_adherent[address][address]    |    |
+      | become_adherent[address][cityName]   |    |
+      | become_adherent[address][postalCode] |    |
+      | become_adherent[gender]              |    |
+      | become_adherent[phone][number]       |    |
+      | become_adherent[birthdate][day]      |    |
+      | become_adherent[birthdate][month]    |    |
+      | become_adherent[birthdate][year]     |    |
     When I press "J'adhère"
     Then I should see 6 ".form__error" elements
     And I should see "L'adresse est obligatoire."
@@ -65,17 +65,17 @@ Feature:
     And I should see "Vous devez spécifier votre date de naissance."
     And I should see "Le numéro de téléphone est obligatoire."
 
-    When I fill in hidden field "update_membership_request_address_city" with "06000-6088"
+    When I fill in hidden field "become_adherent_address_city" with "06000-6088"
     And I fill in the following:
-      | update_membership_request[address][address]    | 1 rue de l'egalite |
-      | update_membership_request[address][cityName]   | Nice, France       |
-      | update_membership_request[address][postalCode] | 06000              |
-      | update_membership_request[gender]              | male               |
-      | update_membership_request[phone][country]      | FR                 |
-      | update_membership_request[phone][number]       | 0600000000         |
-      | update_membership_request[birthdate][day]      | 1                  |
-      | update_membership_request[birthdate][month]    | 1                  |
-      | update_membership_request[birthdate][year]     | 1980               |
+      | become_adherent[address][address]    | 1 rue de l'egalite |
+      | become_adherent[address][cityName]   | Nice, France       |
+      | become_adherent[address][postalCode] | 06000              |
+      | become_adherent[gender]              | male               |
+      | become_adherent[phone][country]      | FR                 |
+      | become_adherent[phone][number]       | 0600000000         |
+      | become_adherent[birthdate][day]      | 1                  |
+      | become_adherent[birthdate][month]    | 1                  |
+      | become_adherent[birthdate][year]     | 1980               |
     And I press "J'adhère"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
@@ -103,13 +103,13 @@ Feature:
     """
 
     When I am on "/parametres/mon-compte/modifier"
-    Then the "update_membership_request[address][address]" field should contain "1 rue de l'egalite"
-    And the "update_membership_request[address][country]" field should contain "CH"
-    And the "update_membership_request[phone][country]" field should contain "FR"
-    And the "update_membership_request[phone][number]" field should contain "06 00 00 00 00"
-    And the "update_membership_request[birthdate][day]" field should contain "1"
-    And the "update_membership_request[birthdate][month]" field should contain "1"
-    And the "update_membership_request[birthdate][year]" field should contain "1980"
+    Then the "membership_request[address][address]" field should contain "1 rue de l'egalite"
+    And the "membership_request[address][country]" field should contain "CH"
+    And the "membership_request[phone][country]" field should contain "FR"
+    And the "membership_request[phone][number]" field should contain "06 00 00 00 00"
+    And the "membership_request[birthdate][day]" field should contain "1"
+    And the "membership_request[birthdate][month]" field should contain "1"
+    And the "membership_request[birthdate][year]" field should contain "1980"
 
   Scenario: I have great error message when register is misfiled
     Given I am on "/inscription"
