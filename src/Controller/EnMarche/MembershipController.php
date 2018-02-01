@@ -79,7 +79,7 @@ class MembershipController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $membership = MembershipRequest::createFromAdherent($user);
+        $membership = MembershipRequest::createFromAdherent($user, $this->get('libphonenumber.phone_number_util'));
         $form = $this->createForm(UpdateMembershipRequestType::class, $membership)
             ->add('submit', SubmitType::class, ['label' => 'J\'adhère'])
         ;
