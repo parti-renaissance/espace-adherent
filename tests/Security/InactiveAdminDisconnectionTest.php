@@ -48,7 +48,7 @@ class InactiveAdminDisconnectionTest extends SqliteWebTestCase
         // connect as adherent
         $this->client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => 'carl999@example.fr',
-            '_adherent_password' => 'secret!12345',
+            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');

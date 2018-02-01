@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\EventCategory;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -52,7 +53,7 @@ trait ControllerTestTrait
         return $client->followRedirect();
     }
 
-    public function authenticateAsAdherent(Client $client, string $emailAddress, string $password)
+    public function authenticateAsAdherent(Client $client, string $emailAddress, string $password = LoadAdherentData::DEFAULT_PASSWORD)
     {
         $crawler = $client->request(Request::METHOD_GET, '/connexion');
 

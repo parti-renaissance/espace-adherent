@@ -43,3 +43,7 @@ version: "2"
 #            BLACKFIRE_LOG_LEVEL: 4
 #            BLACKFIRE_SERVER_ID:
 #            BLACKFIRE_SERVER_TOKEN:
+
+#    selenium:
+#        ports:
+#            - 5900:5900

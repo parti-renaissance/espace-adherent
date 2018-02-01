@@ -36,7 +36,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => 'carl999@example.fr',
-            '_adherent_password' => 'secret!12345',
+            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
         $adherent = $this->adherentRepository->findOneByEmail('carl999@example.fr');

@@ -334,7 +334,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
     public function testProcurationRequestAsAdherent()
     {
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr', 'EnMarche2017');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $this->setElectionContext();
 

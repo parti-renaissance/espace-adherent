@@ -21,7 +21,7 @@ class CitizenActionManagerControllerTest extends MysqlWebTestCase
 
     public function testCreateCitizenActionIsForbiddenIfUserIsNotProjectOrganizer()
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8/actions/creer');
 
         static::assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
@@ -32,7 +32,7 @@ class CitizenActionManagerControllerTest extends MysqlWebTestCase
 
     public function testCreateCitizenActionIsForbiddenIfProjectIsNotApproved()
     {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille/actions/creer');
 
         static::assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
@@ -42,7 +42,7 @@ class CitizenActionManagerControllerTest extends MysqlWebTestCase
 
     public function testCreateCitizenActionFailed()
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
         $this->assertSame(1, $crawler->selectLink('Créer une action citoyenne')->count());
 
@@ -95,7 +95,7 @@ class CitizenActionManagerControllerTest extends MysqlWebTestCase
 
     public function testCreateCitizenActionSuccessful()
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
         $this->assertSame(1, $crawler->selectLink('Créer une action citoyenne')->count());
 
