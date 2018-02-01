@@ -20,7 +20,7 @@ class SecurityContext extends RawMinkContext
      */
     public function iAmLoggedAs(string $email): void
     {
-        if (!$user = $this->getAdherentRepository()->loadUserByUsername($email)) {
+        if (!$user = $this->getAdherentRepository()->findOneBy(['emailAddress' => $email])) {
             throw new \Exception(sprintf('Adherent %s not found', $email));
         }
 
