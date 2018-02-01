@@ -52,6 +52,28 @@ Feature:
     And I press "J'adhère"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
+    And I should have 1 email "AdherentAccountConfirmationMessage" for "jp@test.com" with payload:
+    """
+    {
+        "FromEmail":"contact@en-marche.fr",
+        "FromName":"En Marche !",
+        "Subject":"Et maintenant ?",
+        "MJ-TemplateID":"54673",
+        "MJ-TemplateLanguage":true,
+        "Recipients":[
+            {
+                "Email":"jp@test.com",
+                "Name":"Jean-Pierre DURAND",
+                "Vars":{
+                    "adherents_count":1,
+                    "committees_count":0,
+                    "target_firstname":"Jean-Pierre",
+                    "target_lastname":"DURAND"
+                }
+            }
+        ]
+    }
+    """
 
     When I am on "/parametres/mon-compte/modifier"
     Then the "update_membership_request[address][address]" field should contain "1 rue de l'egalite"

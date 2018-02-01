@@ -68,6 +68,8 @@
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="AppBundle\Membership\AdherentRegistry"/>
+            <argument type="service" id="AppBundle\Membership\AdherentManager"/>
+            <argument type="service" id="app.committee.manager"/>
         </service>
 
         <service id="app.adherent_change_password_handler" class="AppBundle\Membership\AdherentChangePasswordHandler">
@@ -84,8 +86,6 @@
 
         <service id="app.adherent_account_activation_handler" class="AppBundle\Membership\AdherentAccountActivationHandler">
             <argument type="service" id="AppBundle\Membership\AdherentManager"/>
-            <argument type="service" id="app.committee.manager"/>
-            <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="app.security.authentication_utils"/>
         </service>
 
