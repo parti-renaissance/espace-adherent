@@ -7,7 +7,6 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use AppBundle\Validator\UniqueMembership as AssertUniqueMembership;
 use AppBundle\ValueObject\Genders;
-use libphonenumber\CountryCodeToRegionCodeMap;
 use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberUtil;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
