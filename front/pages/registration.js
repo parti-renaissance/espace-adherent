@@ -1,9 +1,9 @@
 import validateEmail from '../validator/emailValidator';
 
 export default () => {
-    const emailField = dom('#new_member_ship_request_emailAddress_first');
-    const confirmEmailField = dom('#new_member_ship_request_emailAddress_second');
-    const zipCodeField = dom('#new_member_ship_request_address_postalCode');
+    const emailField = dom('#registration_emailAddress_first');
+    const confirmEmailField = dom('#registration_emailAddress_second');
+    const zipCodeField = dom('#registration_address_postalCode');
     const captchaBlock = dom('div.g-recaptcha');
 
     /**

@@ -103,13 +103,13 @@ Feature:
     """
 
     When I am on "/parametres/mon-compte/modifier"
-    Then the "membership_request[address][address]" field should contain "1 rue de l'egalite"
-    And the "membership_request[address][country]" field should contain "CH"
-    And the "membership_request[phone][country]" field should contain "FR"
-    And the "membership_request[phone][number]" field should contain "06 00 00 00 00"
-    And the "membership_request[birthdate][day]" field should contain "1"
-    And the "membership_request[birthdate][month]" field should contain "1"
-    And the "membership_request[birthdate][year]" field should contain "1980"
+    Then the "adherent[address][address]" field should contain "1 rue de l'egalite"
+    And the "adherent[address][country]" field should contain "CH"
+    And the "adherent[phone][country]" field should contain "FR"
+    And the "adherent[phone][number]" field should contain "06 00 00 00 00"
+    And the "adherent[birthdate][day]" field should contain "1"
+    And the "adherent[birthdate][month]" field should contain "1"
+    And the "adherent[birthdate][year]" field should contain "1980"
 
   Scenario: I have great error message when register is misfiled
     Given I am on "/inscription"
