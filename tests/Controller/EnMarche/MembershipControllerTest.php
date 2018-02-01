@@ -48,8 +48,8 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
-        $data['registration']['emailAddress']['first'] = $emailAddress;
-        $data['registration']['emailAddress']['second'] = $emailAddress;
+        $data['user_registration']['emailAddress']['first'] = $emailAddress;
+        $data['user_registration']['emailAddress']['second'] = $emailAddress;
         $crawler = $this->client->submit($crawler->selectButton('Créer mon compte')->form(), $data);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -149,8 +149,8 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
-        $data['registration']['address']['country'] = $country;
-        $data['registration']['address']['postalCode'] = $postalCode;
+        $data['user_registration']['address']['country'] = $country;
+        $data['user_registration']['address']['postalCode'] = $postalCode;
 
         $this->client->submit($this->client->getCrawler()->selectButton('Créer mon compte')->form(), $data);
 
@@ -180,10 +180,10 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
-        $data['registration']['emailAddress']['first'] = 'michel@dupont.tld';
-        $data['registration']['emailAddress']['second'] = 'michel@dupont.tld';
-        $data['registration']['address']['country'] = 'CH';
-        $data['registration']['address']['postalCode'] = '8057';
+        $data['user_registration']['emailAddress']['first'] = 'michel@dupont.tld';
+        $data['user_registration']['emailAddress']['second'] = 'michel@dupont.tld';
+        $data['user_registration']['address']['country'] = 'CH';
+        $data['user_registration']['address']['postalCode'] = '8057';
 
         $this->client->submit($this->client->getCrawler()->selectButton('Créer mon compte')->form(), $data);
 
@@ -194,8 +194,8 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_adherent_email' => $data['registration']['emailAddress']['first'],
-            '_adherent_password' => $data['registration']['password'],
+            '_adherent_email' => $data['user_registration']['emailAddress']['first'],
+            '_adherent_password' => $data['user_registration']['password'],
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
@@ -210,10 +210,10 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
-        $data['registration']['emailAddress']['first'] = 'michel2@dupont.tld';
-        $data['registration']['emailAddress']['second'] = 'michel2@dupont.tld';
-        $data['registration']['address']['country'] = 'CH';
-        $data['registration']['address']['postalCode'] = '8057';
+        $data['user_registration']['emailAddress']['first'] = 'michel2@dupont.tld';
+        $data['user_registration']['emailAddress']['second'] = 'michel2@dupont.tld';
+        $data['user_registration']['address']['country'] = 'CH';
+        $data['user_registration']['address']['postalCode'] = '8057';
 
         $this->client->submit($this->client->getCrawler()->selectButton('Créer mon compte')->form(), $data);
 
@@ -240,7 +240,7 @@ class MembershipControllerTest extends MysqlWebTestCase
     {
         return [
             'g-recaptcha-response' => 'dummy',
-            'registration' => [
+            'user_registration' => [
                 'firstName' => 'jean-pauL',
                 'lastName' => 'duPont',
                 'emailAddress' => [

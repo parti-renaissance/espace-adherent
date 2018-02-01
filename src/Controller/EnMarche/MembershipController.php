@@ -8,7 +8,7 @@ use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentTokenExpiredException;
 use AppBundle\Form\BecomeAdherentType;
-use AppBundle\Form\RegistrationType;
+use AppBundle\Form\UserRegistrationType;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\OAuth\CallbackManager;
@@ -43,7 +43,7 @@ class MembershipController extends Controller
             $request->request->get('g-recaptcha-response')
         );
 
-        $form = $this->createForm(RegistrationType::class, $membership);
+        $form = $this->createForm(UserRegistrationType::class, $membership);
 
         try {
             if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {

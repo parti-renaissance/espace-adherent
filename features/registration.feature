@@ -40,7 +40,7 @@ Feature:
 
     When I click on the email link "activation_link"
     Then I should be on "/adhesion"
-    And the "update_membership_request[phone][country]" field should contain "CH"
+    And the "become_adherent[phone][country]" field should contain "CH"
     And I should see "Bienvenue ! Votre e-mail est confirmé."
 
     When I am on "/adhesion"
