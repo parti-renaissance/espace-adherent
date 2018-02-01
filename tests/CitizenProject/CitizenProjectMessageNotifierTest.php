@@ -16,6 +16,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectComment;
 use AppBundle\Mailer\MailerService;
+use AppBundle\Repository\AdherentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use PHPUnit\Framework\TestCase;
@@ -24,6 +25,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 class CitizenProjectMessageNotifierTest extends TestCase
 {
+    private $adherentRepository;
+
     public function testOnCitizenProjectApprove()
     {
         $producer = $this->createMock(ProducerInterface::class);
@@ -40,29 +43,50 @@ class CitizenProjectMessageNotifierTest extends TestCase
         $mailer->expects($this->once())->method('sendMessage');
         $manager = $this->createManager($administrator);
 
-        $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($producer, $manager, $mailer, $committeeManager, $router);
+        $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($this->adherentRepository, $producer, $manager, $mailer, $committeeManager, $router);
         $citizenProjectMessageNotifier->onCitizenProjectApprove($citizenProjectWasApprovedEvent);
     }
 
     public function testOnCitizenProjectCreation()
     {
+        $citizenProject = $this->createCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID, 'Paris 8e');
+        $administrator = $this->createAdministrator(LoadAdherentData::ADHERENT_3_UUID);
+        $manager = $this->createManager($administrator);
+
         $producer = $this->createMock(ProducerInterface::class);
         $mailer = $this->createMock(MailerService::class);
         $citizenProjectWasCreatedEvent = $this->createMock(CitizenProjectWasCreatedEvent::class);
         $committeeManager = $this->createMock(CommitteeManager::class);
         $router = $this->createMock(RouterInterface::class);
+        $coordinator = $this->createMock(Adherent::class);
 
-        $citizenProject = $this->createCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID, 'Paris 8e');
-        $administrator = $this->createAdministrator(LoadAdherentData::ADHERENT_3_UUID);
-        $citizenProjectWasCreatedEvent->expects($this->once())->method('getCitizenProject')->willReturn($citizenProject);
-        $citizenProjectWasCreatedEvent->expects($this->once())->method('getCreator')->willReturn($administrator);
-        $router->expects($this->once())->method('generate')->with('app_citizen_action_manager_create', [
-            'project_slug' => $citizenProject->getSlug(),
-        ])->willReturn('test');
-        $mailer->expects($this->once())->method('sendMessage');
-        $manager = $this->createManager($administrator);
+        $citizenProjectWasCreatedEvent->expects($this->once())
+            ->method('getCitizenProject')
+            ->willReturn($citizenProject)
+        ;
 
-        $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($producer, $manager, $mailer, $committeeManager, $router);
+        $citizenProjectWasCreatedEvent->expects($this->once())
+            ->method('getCreator')
+            ->willReturn($administrator)
+        ;
+
+        $router->expects($this->exactly(2))->method('generate')->willReturn('http://foobar.io');
+        $mailer->expects($this->exactly(2))->method('sendMessage');
+
+        $this->adherentRepository->expects($this->once())
+            ->method('findCoordinatorsByCitizenProject')
+            ->willReturn(new AdherentCollection([$coordinator]))
+        ;
+
+        $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier(
+            $this->adherentRepository,
+            $producer,
+            $manager,
+            $mailer,
+            $committeeManager,
+            $router
+        );
+
         $citizenProjectMessageNotifier->onCitizenProjectCreation($citizenProjectWasCreatedEvent);
     }
 
@@ -79,7 +103,7 @@ class CitizenProjectMessageNotifierTest extends TestCase
 
         $mailer->expects($this->once())->method('sendMessage');
 
-        $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($producer, $manager, $mailer, $committeeManager, $router);
+        $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($this->adherentRepository, $producer, $manager, $mailer, $committeeManager, $router);
         $citizenProjectMessageNotifier->sendAdherentNotificationCreation($adherent, $citizenProject, $creator);
     }
 
@@ -97,7 +121,7 @@ class CitizenProjectMessageNotifierTest extends TestCase
         $manager->expects($this->once())->method('getCitizenProjectAdministrators')->willReturn(new AdherentCollection([$administrator]));
         $mailer->expects($this->once())->method('sendMessage');
 
-        $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($producer, $manager, $mailer, $committeeManager, $router);
+        $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($this->adherentRepository, $producer, $manager, $mailer, $committeeManager, $router);
         $followerAddedEvent = new CitizenProjectFollowerAddedEvent($citizenProject, $adherent);
         $citizenProjectMessageNotifier->onCitizenProjectFollowerAdded($followerAddedEvent);
     }
@@ -115,7 +139,7 @@ class CitizenProjectMessageNotifierTest extends TestCase
         $manager->expects($this->once())->method('getCitizenProjectAdministrators')->willReturn(new AdherentCollection());
         $mailer->expects($this->never())->method('sendMessage');
 
-        $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($producer, $manager, $mailer, $committeeManager, $router);
+        $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($this->adherentRepository, $producer, $manager, $mailer, $committeeManager, $router);
         $followerAddedEvent = new CitizenProjectFollowerAddedEvent($citizenProject, $adherent);
         $citizenProjectMessageNotifier->onCitizenProjectFollowerAdded($followerAddedEvent);
     }
@@ -141,7 +165,7 @@ class CitizenProjectMessageNotifierTest extends TestCase
             ->method('sendMessage')
         ;
 
-        $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($producer, $manager, $mailer, $committeeManager, $router);
+        $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($this->adherentRepository, $producer, $manager, $mailer, $committeeManager, $router);
         $commentCreatedEvent = new CitizenProjectCommentEvent($citizenProject, $comment, true);
         $citizenProjectMessageNotifier->sendCommentCreatedEmail($commentCreatedEvent);
     }
@@ -222,5 +246,19 @@ class CitizenProjectMessageNotifierTest extends TestCase
         }
 
         return $manager;
+    }
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->adherentRepository = $this->createMock(AdherentRepository::class);
+    }
+
+    protected function tearDown()
+    {
+        $this->adherentRepository = null;
+
+        parent::tearDown();
     }
 }
