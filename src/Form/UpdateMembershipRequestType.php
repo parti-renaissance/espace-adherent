@@ -16,20 +16,15 @@ class UpdateMembershipRequestType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (!$options['is_adhesion_form']) {
-            $builder
-                ->add('firstName', TextType::class, [
-                    'format_identity_case' => true,
-                ])
-                ->add('lastName', TextType::class, [
-                    'format_identity_case' => true,
-                ])
-                ->add('emailAddress', EmailType::class)
-                ->add('position', ActivityPositionType::class)
-            ;
-        }
-
         $builder
+            ->add('firstName', TextType::class, [
+                'format_identity_case' => true,
+            ])
+            ->add('lastName', TextType::class, [
+                'format_identity_case' => true,
+            ])
+            ->add('emailAddress', EmailType::class)
+            ->add('position', ActivityPositionType::class)
             ->add('gender', GenderType::class)
             ->add('birthdate', BirthdayType::class, [
                 'widget' => 'choice',
@@ -58,9 +53,6 @@ class UpdateMembershipRequestType extends AbstractType
             'data_class' => MembershipRequest::class,
             'years' => array_combine($years, $years),
             'validation_groups' => ['Update'],
-            'is_adhesion_form' => false,
         ]);
-
-        $resolver->setAllowedTypes('is_adhesion_form', 'bool');
     }
 }

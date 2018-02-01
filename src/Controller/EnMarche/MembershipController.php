@@ -7,8 +7,8 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentTokenExpiredException;
-use AppBundle\Form\NewMemberShipRequestType;
-use AppBundle\Form\UpdateMembershipRequestType;
+use AppBundle\Form\BecomeAdherentType;
+use AppBundle\Form\RegistrationType;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\OAuth\CallbackManager;
@@ -43,7 +43,7 @@ class MembershipController extends Controller
             $request->request->get('g-recaptcha-response')
         );
 
-        $form = $this->createForm(NewMemberShipRequestType::class, $membership);
+        $form = $this->createForm(RegistrationType::class, $membership);
 
         try {
             if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
@@ -81,7 +81,7 @@ class MembershipController extends Controller
 
         $fromActivation = $request->query->getBoolean('from_activation');
         $membership = MembershipRequest::createFromAdherent($user, $this->get('libphonenumber.phone_number_util'));
-        $form = $this->createForm(UpdateMembershipRequestType::class, $membership, ['is_adhesion_form' => true])
+        $form = $this->createForm(BecomeAdherentType::class, $membership)
             ->add('submit', SubmitType::class, ['label' => 'J\'adhère'])
         ;
 
