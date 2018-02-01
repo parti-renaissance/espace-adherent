@@ -260,7 +260,7 @@
         <service id="app.event.message_notifier" class="AppBundle\Event\EventMessageNotifier">
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="app.committee.manager"/>
-            <argument type="service" id="AppBundle\Membership\AdherentManager"/>
+            <argument type="service" id="app.repository.event_registration"/>
             <argument type="service" id="router"/>
             <tag name="kernel.event_subscriber"/>
         </service>

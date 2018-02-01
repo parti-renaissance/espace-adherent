@@ -7,6 +7,7 @@ use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\EventRegistration;
 use AppBundle\Entity\PostAddress;
 use PHPUnit\Framework\TestCase;
 
@@ -29,6 +30,16 @@ abstract class AbstractEventMessageTest extends TestCase
         }
 
         return $event;
+    }
+
+    protected function createRegistrationMock(string $emailAddress, string $firstName, string $lastName): EventRegistration
+    {
+        $registration = $this->createMock(EventRegistration::class);
+        $registration->expects(static::any())->method('getEmailAddress')->willReturn($emailAddress);
+        $registration->expects(static::any())->method('getFirstName')->willReturn($firstName);
+        $registration->expects(static::any())->method('getLastName')->willReturn($lastName);
+
+        return $registration;
     }
 
     protected function createAdherentMock(string $emailAddress, string $firstName, string $lastName): Adherent
