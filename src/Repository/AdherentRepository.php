@@ -6,11 +6,9 @@ use AppBundle\BoardMember\BoardMemberFilter;
 use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\EventRegistration;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Referent\ManagedAreaUtils;
@@ -257,28 +255,6 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         $qb->andWhere($codesFilter);
 
         return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * Finds a collection of adherents registered for a given event.
-     *
-     * @param BaseEvent $event
-     *
-     * @return AdherentCollection
-     */
-    public function findByEvent(BaseEvent $event): AdherentCollection
-    {
-        $qb = $this->createQueryBuilder('a');
-
-        $query = $qb
-            ->join(EventRegistration::class, 'er', 'WITH', 'er.adherentUuid = a.uuid')
-            ->join('er.event', 'e')
-            ->where('e.id = :eventId')
-            ->setParameter('eventId', $event->getId())
-            ->getQuery()
-        ;
-
-        return new AdherentCollection($query->getResult());
     }
 
     public function findByNearCitizenProjectOrAcceptAllNotification(CitizenProject $citizenProject, int $offset = 0, bool $excludeSupervisor = true, int $radius = CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN): Paginator

@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Mailer\Message;
 
-use AppBundle\Entity\Adherent;
+use AppBundle\Entity\EventRegistration;
 use AppBundle\Mailer\Message\EventCancellationMessage;
 use AppBundle\Mailer\Message\EventNotificationMessage;
 use AppBundle\Mailer\Message\MessageRecipient;
@@ -13,24 +13,23 @@ class EventCancellationMessageTest extends AbstractEventMessageTest
 
     public function testCreateEventCancellationMessage()
     {
-        $recipients[] = $this->createAdherentMock('em@example.com', 'Émmanuel', 'Macron');
-        $recipients[] = $this->createAdherentMock('jb@example.com', 'Jean', 'Berenger');
-        $recipients[] = $this->createAdherentMock('ml@example.com', 'Marie', 'Lambert');
-        $recipients[] = $this->createAdherentMock('ez@example.com', 'Éric', 'Zitrone');
+        $recipients[] = $this->createRegistrationMock('jb@example.com', 'Jean', 'Berenger');
+        $recipients[] = $this->createRegistrationMock('ml@example.com', 'Marie', 'Lambert');
+        $recipients[] = $this->createRegistrationMock('ez@example.com', 'Éric', 'Zitrone');
 
         $message = EventCancellationMessage::create(
             $recipients,
-            $recipients[0],
+            $this->createAdherentMock('em@example.com', 'Émmanuel', 'Macron'),
             $this->createEventMock('En Marche Lyon', '2017-02-01 15:30:00', '15 allées Paul Bocuse', '69006-69386'),
             self::SEARCH_EVENTS_URL,
-            function (Adherent $adherent) {
-                return EventNotificationMessage::getRecipientVars($adherent->getFirstName());
+            function (EventRegistration $registration) {
+                return EventNotificationMessage::getRecipientVars($registration->getFirstName());
             }
         );
 
         $this->assertInstanceOf(EventCancellationMessage::class, $message);
         $this->assertSame('78678', $message->getTemplate());
-        $this->assertCount(4, $message->getRecipients());
+        $this->assertCount(3, $message->getRecipients());
         $this->assertSame('L\'événement "En Marche Lyon" a été annulé.', $message->getSubject());
         $this->assertCount(2, $message->getVars());
         $this->assertSame(
@@ -43,18 +42,18 @@ class EventCancellationMessageTest extends AbstractEventMessageTest
 
         $recipient = $message->getRecipient(0);
         $this->assertInstanceOf(MessageRecipient::class, $recipient);
-        $this->assertSame('em@example.com', $recipient->getEmailAddress());
-        $this->assertSame('Émmanuel Macron', $recipient->getFullName());
+        $this->assertSame('jb@example.com', $recipient->getEmailAddress());
+        $this->assertSame('Jean Berenger', $recipient->getFullName());
         $this->assertSame(
             [
                 'event_name' => 'En Marche Lyon',
                 'event_slug' => self::SEARCH_EVENTS_URL,
-                'target_firstname' => 'Émmanuel',
+                'target_firstname' => 'Jean',
             ],
             $recipient->getVars()
         );
 
-        $recipient = $message->getRecipient(3);
+        $recipient = $message->getRecipient(2);
         $this->assertInstanceOf(MessageRecipient::class, $recipient);
         $this->assertSame('ez@example.com', $recipient->getEmailAddress());
         $this->assertSame('Éric Zitrone', $recipient->getFullName());

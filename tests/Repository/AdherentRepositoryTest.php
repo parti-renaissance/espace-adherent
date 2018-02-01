@@ -8,7 +8,6 @@ use AppBundle\DataFixtures\ORM\LoadBoardMemberRoleData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Event;
 use AppBundle\Repository\AdherentRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -67,19 +66,6 @@ class AdherentRepositoryTest extends SqliteWebTestCase
         $this->assertSame('Referent Referent', $managedByReferent[5]->getFullName());
         $this->assertSame('Benjamin Duroc', $managedByReferent[6]->getFullName());
         $this->assertSame('Gisele Berthoux', $managedByReferent[7]->getFullName());
-    }
-
-    public function testFindByEvent()
-    {
-        $event = $this->getEventRepository()->findOneBy(['uuid' => LoadEventData::EVENT_2_UUID]);
-
-        $this->assertInstanceOf(Event::class, $event, 'Event must be returned.');
-
-        $adherents = $this->repository->findByEvent($event);
-
-        $this->assertCount(2, $adherents);
-        $this->assertSame('Jacques Picard', $adherents[0]->getFullName());
-        $this->assertSame('Francis Brioul', $adherents[1]->getFullName());
     }
 
     /**

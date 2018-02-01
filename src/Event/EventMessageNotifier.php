@@ -2,6 +2,7 @@
 
 namespace AppBundle\Event;
 
+use AppBundle\Entity\EventRegistration;
 use AppBundle\Events;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
@@ -9,7 +10,7 @@ use AppBundle\Entity\Event;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\EventCancellationMessage;
 use AppBundle\Mailer\Message\EventNotificationMessage;
-use AppBundle\Membership\AdherentManager;
+use AppBundle\Repository\EventRegistrationRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -17,18 +18,18 @@ class EventMessageNotifier implements EventSubscriberInterface
 {
     private $mailer;
     private $committeeManager;
-    private $adherentManager;
+    private $registrationRepository;
     private $urlGenerator;
 
     public function __construct(
         MailerService $mailer,
         CommitteeManager $committeeManager,
-        AdherentManager $adherentManager,
+        EventRegistrationRepository $registrationRepository,
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->mailer = $mailer;
         $this->committeeManager = $committeeManager;
-        $this->adherentManager = $adherentManager;
+        $this->registrationRepository = $registrationRepository;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -58,7 +59,7 @@ class EventMessageNotifier implements EventSubscriberInterface
             return;
         }
 
-        $subscriptions = $this->adherentManager->findByEvent($event->getEvent());
+        $subscriptions = $this->registrationRepository->findByEvent($event->getEvent());
 
         if (count($subscriptions) > 0) {
             $chunks = array_chunk($subscriptions->toArray(), MailerService::PAYLOAD_MAXSIZE);
@@ -99,8 +100,8 @@ class EventMessageNotifier implements EventSubscriberInterface
             $host,
             $event,
             $this->generateUrl('app_search_events'),
-            function (Adherent $adherent) {
-                return EventCancellationMessage::getRecipientVars($adherent->getFirstName());
+            function (EventRegistration $registration) {
+                return EventCancellationMessage::getRecipientVars($registration->getFirstName());
             }
         );
     }
