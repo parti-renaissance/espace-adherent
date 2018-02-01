@@ -31,6 +31,7 @@ class CommitteeCommandType extends AbstractType
             ->add('address', AddressType::class)
             ->add('phone', PhoneNumberType::class, [
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
+                'default_region' => 'FR',
             ])
             ->add('facebookPageUrl', UrlType::class, [
                 'required' => false,

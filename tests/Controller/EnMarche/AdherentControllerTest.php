@@ -660,7 +660,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         // Follow the redirect and check the adherent can see the committee page
         $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertContains('Votre comité a été créé avec succès. Il est néanmoins en attente de validation par un administrateur', $crawler->filter('#notice-flashes')->text());
+        $this->assertContains('Votre comité a été créé avec succès. Il est en attente de validation par nos équipes.', $crawler->filter('#notice-flashes')->text());
         $this->assertSame('Lyon est En Marche !', $crawler->filter('#committee-name')->text());
         $this->assertSame('Comité français En Marche ! de la ville de Lyon', $crawler->filter('#committee-description')->text());
 
