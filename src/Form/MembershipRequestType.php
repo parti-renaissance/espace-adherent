@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 
-class UpdateMembershipRequestType extends AbstractType
+class MembershipRequestType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

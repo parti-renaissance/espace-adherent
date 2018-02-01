@@ -5,7 +5,7 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Form\AdherentChangePasswordType;
 use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\UnregistrationType;
-use AppBundle\Form\UpdateMembershipRequestType;
+use AppBundle\Form\MembershipRequestType;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\Membership\UnregistrationCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -40,7 +40,7 @@ class UserController extends Controller
     {
         $adherent = $this->getUser();
         $membership = MembershipRequest::createFromAdherent($adherent, $this->get('libphonenumber.phone_number_util'));
-        $form = $this->createForm(UpdateMembershipRequestType::class, $membership)
+        $form = $this->createForm(MembershipRequestType::class, $membership)
             ->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications'])
         ;
 

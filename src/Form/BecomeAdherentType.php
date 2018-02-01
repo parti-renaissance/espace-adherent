@@ -19,6 +19,6 @@ class BecomeAdherentType extends AbstractType
 
     public function getParent()
     {
-        return UpdateMembershipRequestType::class;
+        return MembershipRequestType::class;
     }
 }
