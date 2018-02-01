@@ -42,7 +42,7 @@ class Version20180131163109 extends AbstractMigration
             );
         }
 
-        foreach ($this->connection->executeQuery('SELECT id, `name`, subtitle FROM committees') as $committee) {
+        foreach ($this->connection->executeQuery('SELECT id, `name` FROM committees') as $committee) {
             $this->connection->executeQuery(
                 'UPDATE events SET name = ? WHERE id = ?',
                 [
