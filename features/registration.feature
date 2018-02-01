@@ -63,12 +63,12 @@ Feature:
         "Recipients":[
             {
                 "Email":"jp@test.com",
-                "Name":"Jean-Pierre DURAND",
+                "Name":"Jean-Pierre Durand",
                 "Vars":{
                     "adherents_count":1,
                     "committees_count":0,
                     "target_firstname":"Jean-Pierre",
-                    "target_lastname":"DURAND"
+                    "target_lastname":"Durand"
                 }
             }
         ]
