@@ -113,10 +113,10 @@ class AdherentTest extends TestCase
     public function testUserWithLegislativeCandidateRole()
     {
         $adherent = $this->createAdherent();
-        $this->assertFalse(in_array('ROLE_LEGISLATIVE_CANDIDATE', $adherent->getRoles()));
+        $this->assertNotContains('ROLE_LEGISLATIVE_CANDIDATE', $adherent->getRoles());
 
         $adherent = $this->createAdherent('john.smith@en-marche.fr');
-        $this->assertTrue(in_array('ROLE_LEGISLATIVE_CANDIDATE', $adherent->getRoles()));
+        $this->assertNotContains('ROLE_LEGISLATIVE_CANDIDATE', $adherent->getRoles());
     }
 
     public function testIsBasicAdherent()
