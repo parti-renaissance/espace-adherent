@@ -278,7 +278,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
             $roles[] = 'ROLE_PROCURATION_MANAGER';
         }
 
-        if ($this->legislativeCandidate || false !== stripos($this->emailAddress, '@en-marche.fr')) {
+        if ($this->legislativeCandidate) {
             $roles[] = 'ROLE_LEGISLATIVE_CANDIDATE';
         }
 
