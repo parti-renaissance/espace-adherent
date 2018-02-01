@@ -60,12 +60,12 @@ class CitizenProjectMessageNotifierTest extends TestCase
         $router = $this->createMock(RouterInterface::class);
         $coordinator = $this->createMock(Adherent::class);
 
-        $citizenProjectWasCreatedEvent->expects($this->exactly(2))
+        $citizenProjectWasCreatedEvent->expects($this->once())
             ->method('getCitizenProject')
             ->willReturn($citizenProject)
         ;
 
-        $citizenProjectWasCreatedEvent->expects($this->exactly(2))
+        $citizenProjectWasCreatedEvent->expects($this->once())
             ->method('getCreator')
             ->willReturn($administrator)
         ;

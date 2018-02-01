@@ -3,7 +3,7 @@
 namespace AppBundle\CitizenProject;
 
 use AppBundle\Committee\CommitteeManager;
-use AppBundle\Coordinator\Filter\AbstractCoordinatorAreaFilter;
+use AppBundle\Coordinator\Filter\CitizenProjectFilter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Events;
@@ -57,8 +57,11 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
 
     public function onCitizenProjectCreation(CitizenProjectWasCreatedEvent $event): void
     {
-        $this->sendCreatorCreationConfirmation($event->getCreator(), $event->getCitizenProject());
-        $this->sendCoordinatorCreationValidation($event->getCreator(), $event->getCitizenProject());
+        $creator = $event->getCreator();
+        $citizenProject = $event->getCitizenProject();
+
+        $this->sendCreatorCreationConfirmation($creator, $citizenProject);
+        $this->sendCoordinatorCreationValidation($creator, $citizenProject);
     }
 
     public function onCitizenProjectFollowerAdded(CitizenProjectFollowerAddedEvent $followerAddedEvent): void
@@ -109,7 +112,6 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
     {
         $coordinators = $this->adherentRepository->findCoordinatorsByCitizenProject($citizenProject);
 
-        /** @var Adherent $coordinator */
         foreach ($coordinators as $coordinator) {
             $this->mailer->sendMessage(
                 CitizenProjectCreationCoordinatorNotificationMessage::create(
@@ -118,7 +120,7 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
                     $creator,
                     $this->router->generate(
                         'app_coordinator_citizen_project',
-                        [AbstractCoordinatorAreaFilter::PARAMETER_STATUS => CitizenProject::PENDING],
+                        [CitizenProjectFilter::PARAMETER_STATUS => CitizenProject::PENDING],
                         UrlGeneratorInterface::ABSOLUTE_URL
                     )
                 )
