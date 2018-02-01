@@ -12,7 +12,7 @@ Feature:
       | Re-saisir l'e-mail | jp@test.com |
       | Mot de passe       | testtest    |
       | Code postal        | 38000       |
-      | Pays               | FR          |
+      | Pays               | CH          |
     And I resolved the captcha
     And I press "Créer mon compte"
     Then I should be on "/presque-fini"
@@ -40,6 +40,7 @@ Feature:
 
     When I click on the email link "activation_link"
     Then I should be on "/adhesion"
+    And the "update_membership_request[phone][country]" field should contain "CH"
 
     When I fill in hidden field "update_membership_request_address_city" with "06000-6088"
     And I fill in the following:
