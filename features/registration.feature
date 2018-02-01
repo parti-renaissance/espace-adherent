@@ -16,6 +16,7 @@ Feature:
     And I resolved the captcha
     And I press "Créer mon compte"
     Then I should be on "/presque-fini"
+    And the response status code should be 200
     And I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
     """
     {
