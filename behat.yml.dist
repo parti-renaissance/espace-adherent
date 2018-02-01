@@ -14,7 +14,9 @@ default:
                     dispatcher: "@event_dispatcher"
                 - EmailContext
                 - SecurityContext
-                - FeatureContext
+                - FeatureContext:
+                    tokenManager: "@security.csrf.token_manager"
+                - CitizenProjectContext
     extensions:
         Behat\Symfony2Extension:
             kernel:

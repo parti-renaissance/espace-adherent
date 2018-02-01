@@ -15,6 +15,7 @@ use AppBundle\Mailer\Message\CitizenProjectNewFollowerMessage;
 use AppBundle\Mailer\Message\CitizenProjectRequestCommitteeSupportMessage;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class CitizenProjectMessageNotifier implements EventSubscriberInterface
@@ -90,10 +91,7 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
     {
         $this->mailer->sendMessage(CitizenProjectCreationConfirmationMessage::create(
             $creator,
-            $citizenProject,
-            $this->router->generate('app_citizen_action_manager_create', [
-                'project_slug' => $citizenProject->getSlug(),
-            ])
+            $citizenProject
         ));
     }
 
@@ -111,7 +109,7 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
                     $committeeSupervisor,
                     $this->router->generate('app_citizen_project_committee_support', [
                         'slug' => $citizenProject->getSlug(),
-                    ])
+                    ], UrlGeneratorInterface::ABSOLUTE_URL)
                 )
             );
         }
