@@ -79,7 +79,7 @@ Feature:
 
     When I am on "/parametres/mon-compte/modifier"
     Then the "update_membership_request[address][address]" field should contain "1 rue de l'egalite"
-    And the "update_membership_request[address][country]" field should contain "FR"
+    And the "update_membership_request[address][country]" field should contain "CH"
     And the "update_membership_request[phone][country]" field should contain "FR"
     And the "update_membership_request[phone][number]" field should contain "06 00 00 00 00"
     And the "update_membership_request[birthdate][day]" field should contain "1"
