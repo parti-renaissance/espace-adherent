@@ -131,23 +131,21 @@ class ReferentControllerTest extends SqliteWebTestCase
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
-        $this->assertSame(6, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        $this->assertSame(4, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $data = [
-            'n' => 1,
             'anc' => 1,
             'aic' => 1,
             'h' => 1,
             'ac' => 77,
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
-        $this->assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
-        $this->assertSame(6, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        $this->assertSame(4, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $data = [
-            'n' => 1,
             'anc' => 1,
             'aic' => 1,
             'h' => 1,
@@ -158,7 +156,6 @@ class ReferentControllerTest extends SqliteWebTestCase
         $this->assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $data = [
-            'n' => 1,
             'anc' => 1,
             'aic' => 1,
             'h' => 1,
@@ -168,7 +165,6 @@ class ReferentControllerTest extends SqliteWebTestCase
         $this->assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $data = [
-            'n' => 1,
             'anc' => 1,
             'aic' => 1,
             'h' => 1,
@@ -184,7 +180,6 @@ class ReferentControllerTest extends SqliteWebTestCase
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         $data = [
-            'n' => 1,
             'anc' => 1,
             'aic' => 1,
             'h' => 1,
@@ -206,7 +201,6 @@ class ReferentControllerTest extends SqliteWebTestCase
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         $data = [
-            'n' => 1,
             'anc' => 1,
             'aic' => 1,
             'h' => 1,
@@ -231,7 +225,6 @@ class ReferentControllerTest extends SqliteWebTestCase
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         $data = [
-            'n' => 1,
             'anc' => 1,
             'aic' => 1,
             'h' => 1,
@@ -240,7 +233,7 @@ class ReferentControllerTest extends SqliteWebTestCase
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
         $this->client->click($this->client->getCrawler()->selectLink('Leur envoyer un message')->link());
         $this->assertContains('Referent Referent', $this->client->getCrawler()->filter('form')->html());
-        $this->assertContains('6 marcheurs(s)', $this->client->getCrawler()->filter('form')->html());
+        $this->assertContains('4 marcheurs(s)', $this->client->getCrawler()->filter('form')->html());
 
         $data = [];
         $data['referent_message']['subject'] = 'Event reminder';
@@ -269,7 +262,6 @@ class ReferentControllerTest extends SqliteWebTestCase
         $this->assertSame('referent@en-marche-dev.fr', $message->getFrom()->getEmailAddress());
         $this->assertSame('Event reminder', $message->getSubject());
         $this->assertSame('One event is planned.', $message->getContent());
-        $this->assertTrue($message->includeNewsletter());
         $this->assertTrue($message->includeAdherentsNoCommittee());
         $this->assertTrue($message->includeAdherentsInCommittee());
         $this->assertTrue($message->includeHosts());
@@ -286,13 +278,12 @@ class ReferentControllerTest extends SqliteWebTestCase
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
 
-        $this->assertCount(6, $this->client->getCrawler()->filter('tbody tr.referent__item'));
+        $this->assertCount(4, $this->client->getCrawler()->filter('tbody tr.referent__item'));
 
         // filter hosts
         $data = [
             'h' => true,
             's' => false,
-            'n' => false,
             'anc' => false,
             'aic' => false,
         ];
@@ -309,7 +300,6 @@ class ReferentControllerTest extends SqliteWebTestCase
         $data = [
             'h' => false,
             's' => true,
-            'n' => false,
             'anc' => false,
             'aic' => false,
         ];
@@ -326,24 +316,21 @@ class ReferentControllerTest extends SqliteWebTestCase
         $data = [
             'h' => false,
             's' => false,
-            'n' => true,
             'anc' => false,
             'aic' => false,
         ];
 
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
 
-        $this->assertContains('2 contact(s) trouvés', $this->client->getCrawler()->filter('.referent__filters__count')->text());
-        $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item--newsletter'));
-        $this->assertContains('92110', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-        $this->assertContains('77000', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertContains('4 contact(s) trouvés', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+        $this->assertCount(4, $this->client->getCrawler()->filter('tbody tr.referent__item'));
+        $this->assertContains('77000', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
+        $this->assertContains('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
 
         // filter adherents in no committee
         $data = [
             'h' => false,
             's' => false,
-            'n' => false,
             'anc' => true,
             'aic' => false,
         ];
@@ -365,7 +352,6 @@ class ReferentControllerTest extends SqliteWebTestCase
         $data = [
             'h' => false,
             's' => false,
-            'n' => false,
             'anc' => false,
             'aic' => true,
         ];

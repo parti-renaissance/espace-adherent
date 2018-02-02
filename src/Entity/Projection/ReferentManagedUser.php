@@ -22,7 +22,9 @@ class ReferentManagedUser
     const STATUS_EXPIRED = 2;
 
     const TYPE_ADHERENT = 'adherent';
-    const TYPE_NEWSLETTER = 'newsletter';
+
+    const STYLE_TYPE_ADHERENT = 'adherent';
+    const STYLE_TYPE_HOST = 'host';
 
     /**
      * @var int
@@ -207,15 +209,11 @@ class ReferentManagedUser
 
     public function getStyleType(): string
     {
-        if (self::TYPE_NEWSLETTER === $this->type) {
-            return 'newsletter';
-        }
-
         if ($this->isCommitteeHost || $this->isCommitteeSupervisor) {
-            return 'host';
+            return self::STYLE_TYPE_HOST;
         }
 
-        return 'adherent';
+        return self::STYLE_TYPE_ADHERENT;
     }
 
     public function getOriginalId(): int

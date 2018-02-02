@@ -14,20 +14,19 @@
                 <div class="l__row l__row--top l__mobile--col">
                     <div class="l__col--grow-1 b__nudge--right">
                         <div class="form__row form__checkbox">
-                            <input type="checkbox" value="1" id="parameter_include_newsletter"
-                                   name="{{ constant('PARAMETER_INCLUDE_NEWSLETTER', filter) }}"
-                                    {{ filter.includeNewsletter ? 'checked="checked"' : '' }} />
-                            <label for="parameter_include_newsletter">
-                                Marcheurs abonnés à la newsletter
-                            </label>
-                        </div>
-
-                        <div class="form__row form__checkbox">
                             <input type="checkbox" value="1" id="parameter_include_adherents_no_committee"
                                    name="{{ constant('PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE', filter) }}"
                                     {{ filter.includeAdherentsNoCommittee ? 'checked="checked"' : '' }} />
                             <label for="parameter_include_adherents_no_committee">
                                 Adhérents ne faisant partie d'aucun comité
+                            </label>
+                        </div>
+                        <div class="form__row form__checkbox">
+                            <input type="checkbox" value="1" id="parameter_include_adherents_in_committee"
+                                   name="{{ constant('PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE', filter) }}"
+                                    {{ filter.includeAdherentsInCommittee ? 'checked="checked"' }} />
+                            <label for="parameter_include_adherents_in_committee">
+                                Adhérents faisant partie d'au moins un comité (hors animateurs)
                             </label>
                         </div>
                     </div>
@@ -48,17 +47,6 @@
                                     {{ filter.includeHosts ? 'checked="checked"' : '' }} />
                             <label for="parameter_include_hosts">
                                 Co-animateurs de comités locaux
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="l__col--grow-1 b__nudge--right">
-                        <div class="form__row form__checkbox">
-                            <input type="checkbox" value="1" id="parameter_include_adherents_in_committee"
-                                   name="{{ constant('PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE', filter) }}"
-                                    {{ filter.includeAdherentsInCommittee ? 'checked="checked"' : '' }} />
-                            <label for="parameter_include_adherents_in_committee">
-                                Adhérents faisant partie d'au moins un comité (hors animateurs)
                             </label>
                         </div>
                     </div>
@@ -175,27 +163,23 @@
                         <td>{{ user.id }}</td>
                         <td>{{ user.postalCode }}</td>
                         <td class="datagrid__table__col--left">
-                            {% if user.type == constant('TYPE_NEWSLETTER', user) %}
-                                Abonné newsletter
-                            {% else %}
-                                <strong>
-                                    {{ user.firstName|slice(0, 1)|upper ~ user.firstName|slice(1) }}
-                                    {{ user.isCommitteeHost or user.isCommitteeSupervisor ? user.lastName : (user.lastName|slice(0, 1)|upper)~'.' }}
-                                </strong>
-                                <small class="referent__item__metadata">
-                                    {{ user.age }} ans, {{ user.city }}, {{ user.country }},
-                                    {{ user.isMailSubscriber ? 'abonné(e) aux mails' : 'non abonné(e) aux mails' }}
-                                </small>
-                                <br />
-                                <small>
-                                    {% set is_host = user.isCommitteeHost %}
-                                    {%- if user.isCommitteeSupervisor -%}
-                                        Animateur local
-                                        {{- is_host ? ' / ' : '' -}}
-                                    {%- endif -%}
-                                    {{- is_host ? 'Co-animateur local' : '' -}}
-                                </small>
-                            {% endif %}
+                            <strong>
+                                {{ user.firstName|capitalize }}
+                                {{ user.isCommitteeHost or user.isCommitteeSupervisor ? user.lastName : (user.lastName|slice(0, 1)|upper)~'.' }}
+                            </strong>
+                            <small class="referent__item__metadata">
+                                {{ user.age }} ans, {{ user.city }}, {{ user.country }},
+                                {{ user.isMailSubscriber ? 'abonné(e) aux mails' : 'non abonné(e) aux mails' }}
+                            </small>
+                            <br />
+                            <small>
+                                {% set is_host = user.isCommitteeHost %}
+                                {%- if user.isCommitteeSupervisor -%}
+                                    Animateur local
+                                    {{- is_host ? ' / ' -}}
+                                {%- endif -%}
+                                {{- is_host ? 'Co-animateur local' -}}
+                            </small>
                         </td>
                         <td class="datagrid__table__col--left datagrid__table__col--hide-mobile">
                             {{ user.committees|e|join('<br />')|raw }}

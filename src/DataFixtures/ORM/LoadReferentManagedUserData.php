@@ -58,32 +58,6 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
 
         $managedUser3 = $referentManagedUserFactory->createFromArray([
             'status' => ReferentManagedUser::STATUS_READY,
-            'type' => ReferentManagedUser::TYPE_NEWSLETTER,
-            'original_id' => $this->getReference('news-sub-77')->getId(),
-            'email' => $this->getReference('news-sub-77')->getEmail(),
-            'postal_code' => $this->getReference('news-sub-77')->getPostalCode(),
-            'is_committee_member' => 0,
-            'is_committee_host' => 0,
-            'is_committee_supervisor' => 0,
-            'is_mail_subscriber' => 1,
-            'created_at' => '2017-06-03 07:58:02',
-        ]);
-
-        $managedUser4 = $referentManagedUserFactory->createFromArray([
-            'status' => ReferentManagedUser::STATUS_READY,
-            'type' => ReferentManagedUser::TYPE_NEWSLETTER,
-            'original_id' => $this->getReference('news-sub-92')->getId(),
-            'email' => $this->getReference('news-sub-92')->getEmail(),
-            'postal_code' => $this->getReference('news-sub-92')->getPostalCode(),
-            'is_committee_member' => 0,
-            'is_committee_host' => 0,
-            'is_committee_supervisor' => 0,
-            'is_mail_subscriber' => 1,
-            'created_at' => '2017-06-03 11:01:56',
-        ]);
-
-        $managedUser5 = $referentManagedUserFactory->createFromArray([
-            'status' => ReferentManagedUser::STATUS_READY,
             'type' => ReferentManagedUser::TYPE_ADHERENT,
             'original_id' => $this->getReference('adherent-5')->getId(),
             'email' => $this->getReference('adherent-5')->getEmailAddress(),
@@ -101,7 +75,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'created_at' => '2017-06-02 15:34:12',
         ]);
 
-        $managedUser6 = $referentManagedUserFactory->createFromArray([
+        $managedUser4 = $referentManagedUserFactory->createFromArray([
             'status' => ReferentManagedUser::STATUS_READY,
             'type' => ReferentManagedUser::TYPE_ADHERENT,
             'original_id' => $this->getReference('adherent-7')->getId(),
@@ -124,8 +98,6 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
         $manager->persist($managedUser2);
         $manager->persist($managedUser3);
         $manager->persist($managedUser4);
-        $manager->persist($managedUser5);
-        $manager->persist($managedUser6);
 
         $manager->flush();
     }

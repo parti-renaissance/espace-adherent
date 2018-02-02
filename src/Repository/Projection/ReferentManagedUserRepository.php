@@ -12,16 +12,14 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class ReferentManagedUserRepository extends EntityRepository
 {
-    public function search(Adherent $referent, ManagedUsersFilter $filter = null, bool $onlySubscribers = true): Paginator
+    public function search(Adherent $referent, ManagedUsersFilter $filter = null): Paginator
     {
         if (!$referent->getManagedArea()) {
             throw new \InvalidArgumentException(sprintf('User %s is not a referent', $referent->getEmailAddress()));
         }
 
         $qb = $this->createFilterQueryBuilder($referent, $filter);
-        if ($onlySubscribers) {
-            $qb->andWhere('u.isMailSubscriber = 1');
-        }
+        $qb->andWhere('u.isMailSubscriber = 1');
 
         $query = $qb->getQuery();
         $query
@@ -76,15 +74,7 @@ class ReferentManagedUserRepository extends EntityRepository
                     )
                 );
 
-                $codesFilter->add(
-                    $qb->expr()->andX(
-                        'u.type = :newsletter'.$key,
-                        $qb->expr()->like('u.postalCode', ':code'.$key)
-                    )
-                );
-
                 $qb->setParameter('adherent'.$key, ReferentManagedUser::TYPE_ADHERENT);
-                $qb->setParameter('newsletter'.$key, ReferentManagedUser::TYPE_NEWSLETTER);
                 $qb->setParameter('code'.$key, $code.'%');
             } else {
                 // Country
@@ -143,11 +133,6 @@ class ReferentManagedUserRepository extends EntityRepository
         }
 
         $typeExpression = $qb->expr()->orX();
-
-        if ($filter->includeNewsletter()) {
-            $typeExpression->add('u.type = :type_n');
-            $qb->setParameter('type_n', ReferentManagedUser::TYPE_NEWSLETTER);
-        }
 
         if ($filter->includeAdherentsNoCommittee()) {
             $typeExpression->add('u.type = :type_anc AND u.isCommitteeMember = 0');

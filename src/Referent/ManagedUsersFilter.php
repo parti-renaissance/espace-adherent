@@ -13,7 +13,6 @@ class ManagedUsersFilter
 {
     const PER_PAGE = 50;
 
-    const PARAMETER_INCLUDE_NEWSLETTER = 'n';
     const PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE = 'anc';
     const PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE = 'aic';
     const PARAMETER_INCLUDE_HOSTS = 'h';
@@ -24,7 +23,6 @@ class ManagedUsersFilter
     const PARAMETER_OFFSET = 'o';
     const PARAMETER_TOKEN = 't';
 
-    private $includeNewsletter = true;
     private $includeAdherentsNoCommittee = true;
     private $includeAdherentsInCommittee = true;
     private $includeHosts = true;
@@ -54,7 +52,6 @@ class ManagedUsersFilter
     public static function createFromMessage(ReferentManagedUsersMessage $message): self
     {
         $filter = new self();
-        $filter->includeNewsletter = $message->includeNewsletter();
         $filter->includeAdherentsNoCommittee = $message->includeAdherentsNoCommittee();
         $filter->includeAdherentsInCommittee = $message->includeAdherentsInCommittee();
         $filter->includeHosts = $message->includeHosts();
@@ -79,7 +76,6 @@ class ManagedUsersFilter
             return $this;
         }
 
-        $this->includeNewsletter = $query->getBoolean(self::PARAMETER_INCLUDE_NEWSLETTER);
         $this->includeAdherentsNoCommittee = $query->getBoolean(self::PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE);
         $this->includeAdherentsInCommittee = $query->getBoolean(self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE);
         $this->includeHosts = $query->getBoolean(self::PARAMETER_INCLUDE_HOSTS);
@@ -101,7 +97,6 @@ class ManagedUsersFilter
     public function getQueryStringForOffset(int $offset): string
     {
         return '?'.http_build_query([
-            self::PARAMETER_INCLUDE_NEWSLETTER => $this->includeNewsletter ? '1' : '0',
             self::PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE => $this->includeAdherentsNoCommittee ? '1' : '0',
             self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE => $this->includeAdherentsInCommittee ? '1' : '0',
             self::PARAMETER_INCLUDE_HOSTS => $this->includeHosts ? '1' : '0',
@@ -139,11 +134,6 @@ class ManagedUsersFilter
     public function getQueryId(): string
     {
         return $this->queryId;
-    }
-
-    public function includeNewsletter(): bool
-    {
-        return $this->includeNewsletter;
     }
 
     public function includeAdherentsNoCommittee(): bool

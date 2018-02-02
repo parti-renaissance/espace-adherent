@@ -17,7 +17,6 @@ class ManagedUsersFilterTest extends TestCase
     {
         $filter = ManagedUsersFilter::createFromMessage($message);
 
-        $this->assertSame($expected['includeNewsletter'], $filter->includeNewsletter());
         $this->assertSame($expected['includeAdherentsNoCommittee'], $filter->includeAdherentsNoCommittee());
         $this->assertSame($expected['includeAdherentsInCommittee'], $filter->includeAdherentsInCommittee());
         $this->assertSame($expected['includeHosts'], $filter->includeHosts());
@@ -38,7 +37,6 @@ class ManagedUsersFilterTest extends TestCase
                     $this->createMock(Adherent::class),
                     'Random subject',
                     'Here is the mail content',
-                    false,
                     true,
                     false,
                     true,
@@ -48,7 +46,6 @@ class ManagedUsersFilterTest extends TestCase
                     '1234'
                 ),
                 [
-                    'includeNewsletter' => false,
                     'includeAdherentsNoCommittee' => true,
                     'includeAdherentsInCommittee' => false,
                     'includeHosts' => true,
