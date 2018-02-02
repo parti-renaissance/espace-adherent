@@ -94,3 +94,9 @@ deployment:
 
             # Deploys image and migrates database
             - ./scripts/deployment.sh
+    develop:
+       branch: develop
+       owner: EnMarche
+       commands:
+           # Builds and pushes image to registry
+           - ./scripts/build.sh develop
