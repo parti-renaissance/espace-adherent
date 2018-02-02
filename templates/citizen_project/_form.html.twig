@@ -47,9 +47,8 @@
 </div>
 
 <div class="form__new" id="field-image">
-    {{ form_errors(form.image) }}
     <label class="label__header--large">Ajoutez une image d'illustration : <span>(Optionnel)</span></label>
-    <label class="label__header--image">Veuillez sélectionner une image sur votre ordinateur.</label>
+    {{ form_errors(form.image) }}
     {% if citizen_project is defined and citizen_project.hasImageUploaded %}
         <div class="citizen_project_form__picture_preview">
             <img style="max-width: 400px" src="{{ asset(citizen_project.getAssetImagePath) }}" />
@@ -59,6 +58,7 @@
             {{ form_label(form.remove_image, 'Supprimer l\'image') }}
         </div>
     {% endif %}
+    <label class="label__header--image">Veuillez sélectionner une image sur votre ordinateur.</label>
     {{ form_widget(form.image) }}
     <div class="field-image-info">
         <div>JPEG ou PNG - 5 Mo maximum</div>
