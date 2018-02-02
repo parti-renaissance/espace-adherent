@@ -262,7 +262,7 @@ class CitizenProjectManager
             throw new CitizenProjectNotApprovedException($citizenProject);
         }
 
-        if (!$committeeSupport = $this->getCitizenProjectCommitteeSupportRepository()->findByCommittee($committee)) {
+        if (!$committeeSupport = $this->getCitizenProjectCommitteeSupportRepository()->findOneByCommitteeAndCitizenProject($committee, $citizenProject)) {
             $committeeSupport = new CitizenProjectCommitteeSupport($citizenProject, $committee);
         }
 
@@ -280,9 +280,9 @@ class CitizenProjectManager
         }
     }
 
-    public function deleteCommitteeSupport(Committee $committee, bool $flush = true): void
+    public function deleteCommitteeSupport(Committee $committee, CitizenProject $citizenProject, bool $flush = true): void
     {
-        if (!$committeeSupport = $this->getCitizenProjectCommitteeSupportRepository()->findByCommittee($committee)) {
+        if (!$committeeSupport = $this->getCitizenProjectCommitteeSupportRepository()->findOneByCommitteeAndCitizenProject($committee, $citizenProject)) {
             throw new \RuntimeException('No CommitteeSupport found for committee '.$committee->getName());
         }
 

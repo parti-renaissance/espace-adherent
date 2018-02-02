@@ -186,7 +186,7 @@ class CitizenProjectController extends Controller
                 );
                 $flashMessage = sprintf('Votre comité soutient maintenant le projet citoyen %s', $citizenProject->getName());
             } catch (CitizenProjectCommitteeSupportAlreadySupportException $committeeSupportAlreadySupportException) {
-                $citizenProjectManager->deleteCommitteeSupport($committee);
+                $citizenProjectManager->deleteCommitteeSupport($committee, $citizenProject);
                 $flashMessage = sprintf(
                     'Votre comité %s ne soutient plus le projet citoyen %s',
                     $committeeSupportAlreadySupportException->getCommittee()->getName(),
