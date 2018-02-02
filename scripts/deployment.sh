@@ -8,8 +8,7 @@ sudo /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials $GCLOUD
 # Migrates database
 export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud-service-key.json
 
-sudo /opt/google-cloud-sdk/bin/kubectl set image pod/staging-migrate-tasks enmarche=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
-sudo /opt/google-cloud-sdk/bin/kubectl get pod staging-migrate-tasks -o yaml | sudo /opt/google-cloud-sdk/bin/kubectl replace --force -f -
+sudo /opt/google-cloud-sdk/bin/kubectl set image deployment/staging-migrate enmarche=eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
 
 # Deploy to staging
 declare -a images=("staging-app" "staging-worker-mailer-campaign" "staging-worker-mailer-transactional" "staging-worker-referent")
