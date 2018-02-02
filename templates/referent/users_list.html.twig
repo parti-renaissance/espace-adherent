@@ -24,7 +24,7 @@
                         <div class="form__row form__checkbox">
                             <input type="checkbox" value="1" id="parameter_include_adherents_in_committee"
                                    name="{{ constant('PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE', filter) }}"
-                                    {{ filter.includeAdherentsInCommittee ? 'checked="checked"' : '' }} />
+                                    {{ filter.includeAdherentsInCommittee ? 'checked="checked"' }} />
                             <label for="parameter_include_adherents_in_committee">
                                 Adhérents faisant partie d'au moins un comité (hors animateurs)
                             </label>
@@ -164,7 +164,7 @@
                         <td>{{ user.postalCode }}</td>
                         <td class="datagrid__table__col--left">
                             <strong>
-                                {{ user.firstName|slice(0, 1)|upper ~ user.firstName|slice(1) }}
+                                {{ user.firstName|capitalize }}
                                 {{ user.isCommitteeHost or user.isCommitteeSupervisor ? user.lastName : (user.lastName|slice(0, 1)|upper)~'.' }}
                             </strong>
                             <small class="referent__item__metadata">
@@ -176,9 +176,9 @@
                                 {% set is_host = user.isCommitteeHost %}
                                 {%- if user.isCommitteeSupervisor -%}
                                     Animateur local
-                                    {{- is_host ? ' / ' : '' -}}
+                                    {{- is_host ? ' / ' -}}
                                 {%- endif -%}
-                                {{- is_host ? 'Co-animateur local' : '' -}}
+                                {{- is_host ? 'Co-animateur local' -}}
                             </small>
                         </td>
                         <td class="datagrid__table__col--left datagrid__table__col--hide-mobile">

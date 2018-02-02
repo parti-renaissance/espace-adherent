@@ -23,6 +23,9 @@ class ReferentManagedUser
 
     const TYPE_ADHERENT = 'adherent';
 
+    const STYLE_TYPE_ADHERENT = 'adherent';
+    const STYLE_TYPE_HOST = 'host';
+
     /**
      * @var int
      *
@@ -207,10 +210,10 @@ class ReferentManagedUser
     public function getStyleType(): string
     {
         if ($this->isCommitteeHost || $this->isCommitteeSupervisor) {
-            return 'host';
+            return self::STYLE_TYPE_HOST;
         }
 
-        return 'adherent';
+        return self::STYLE_TYPE_ADHERENT;
     }
 
     public function getOriginalId(): int
