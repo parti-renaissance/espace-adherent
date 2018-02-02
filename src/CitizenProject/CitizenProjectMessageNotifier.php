@@ -102,7 +102,7 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         $this->mailer->sendMessage(CitizenProjectCreationConfirmationMessage::create(
             $creator,
             $citizenProject,
-            $this->router->generate('app_citizen_action_manager_create', [
+            $this->generateUrl('app_citizen_action_manager_create', [
                 'project_slug' => $citizenProject->getSlug(),
             ])
         ));
@@ -118,11 +118,9 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
                     $coordinator,
                     $citizenProject,
                     $creator,
-                    $this->router->generate(
-                        'app_coordinator_citizen_project',
-                        [CitizenProjectFilter::PARAMETER_STATUS => CitizenProject::PENDING],
-                        UrlGeneratorInterface::ABSOLUTE_URL
-                    )
+                    $this->generateUrl('app_coordinator_citizen_project', [
+                        CitizenProjectFilter::PARAMETER_STATUS => CitizenProject::PENDING,
+                    ])
                 )
             );
         }
@@ -140,7 +138,7 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
                 CitizenProjectRequestCommitteeSupportMessage::create(
                     $citizenProject,
                     $committeeSupervisor,
-                    $this->router->generate('app_citizen_project_committee_support', [
+                    $this->generateUrl('app_citizen_project_committee_support', [
                         'slug' => $citizenProject->getSlug(),
                     ])
                 )
@@ -164,5 +162,10 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
             Events::CITIZEN_PROJECT_FOLLOWER_ADDED => ['onCitizenProjectFollowerAdded', -128],
             Events::CITIZEN_PROJECT_COMMENT_CREATED => ['sendCommentCreatedEmail', -128],
         ];
+    }
+
+    private function generateUrl(string $name, array $parameters = []): string
+    {
+        return $this->router->generate($name, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 }
