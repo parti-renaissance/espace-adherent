@@ -119,7 +119,7 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
                     $citizenProject,
                     $creator,
                     $this->generateUrl('app_coordinator_citizen_project', [
-                        CitizenProjectFilter::PARAMETER_STATUS => CitizenProject::PENDING
+                        CitizenProjectFilter::PARAMETER_STATUS => CitizenProject::PENDING,
                     ])
                 )
             );
