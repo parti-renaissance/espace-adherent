@@ -11,7 +11,7 @@ class Version20180131163109 extends AbstractMigration
     public function up(Schema $schema)
     {
         foreach ($this->connection->executeQuery('SELECT id, first_name, last_name FROM adherents') as $adherent) {
-            $this->connection->executeQuery(
+            $this->connection->executeUpdate(
                 'UPDATE adherents SET first_name = ?, last_name = ? WHERE id = ?',
                 [
                     TextTypeExtension::formatIdentityCase($adherent['first_name']),
@@ -27,8 +27,8 @@ class Version20180131163109 extends AbstractMigration
         }
 
         foreach ($this->connection->executeQuery('SELECT id, `name`, subtitle FROM citizen_projects') as $project) {
-            $this->connection->executeQuery(
-                'UPDATE events SET name = ? WHERE id = ?',
+            $this->connection->executeUpdate(
+                'UPDATE citizen_projects SET `name` = ?, subtitle = ? WHERE id = ?',
                 [
                     TextTypeExtension::formatTitleCase($project['name']),
                     TextTypeExtension::formatTitleCase($project['subtitle']),
@@ -43,8 +43,8 @@ class Version20180131163109 extends AbstractMigration
         }
 
         foreach ($this->connection->executeQuery('SELECT id, `name` FROM committees') as $committee) {
-            $this->connection->executeQuery(
-                'UPDATE events SET name = ? WHERE id = ?',
+            $this->connection->executeUpdate(
+                'UPDATE committees SET `name` = ? WHERE id = ?',
                 [
                     TextTypeExtension::formatTitleCase($committee['name']),
                     $committee['id'],
@@ -57,8 +57,8 @@ class Version20180131163109 extends AbstractMigration
         }
 
         foreach ($this->connection->executeQuery('SELECT id, `name` FROM events') as $event) {
-            $this->connection->executeQuery(
-                'UPDATE events SET name = ? WHERE id = ?',
+            $this->connection->executeUpdate(
+                'UPDATE events SET `name` = ? WHERE id = ?',
                 [
                     TextTypeExtension::formatTitleCase($event['name']),
                     $event['id'],
