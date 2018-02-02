@@ -24,11 +24,11 @@ class ReferentManagedUserRepositoryTest extends SqliteWebTestCase
     public function testSearch()
     {
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferent(['77'], '1.123456', '2.34567');
+        $referent->setReferent(['CH', '77'], '1.123456', '2.34567');
 
         $results = $this->repository->search($referent)->getQuery()->getResult();
 
-        $this->assertCount(2, $results);
+        $this->assertCount(3, $results);
     }
 
     /**
@@ -45,11 +45,11 @@ class ReferentManagedUserRepositoryTest extends SqliteWebTestCase
     public function testCreateDispatcherIterator()
     {
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferent(['77'], '1.123456', '2.34567');
+        $referent->setReferent(['92', '77'], '1.123456', '2.34567');
 
         $results = $this->repository->createDispatcherIterator($referent);
 
-        $expectedEmails = ['francis.brioul@yahoo.com', 'def@en-marche-dev.fr'];
+        $expectedEmails = ['francis.brioul@yahoo.com', 'gisele-berthoux@caramail.com'];
 
         $count = 0;
         foreach ($results as $key => $result) {
@@ -63,14 +63,14 @@ class ReferentManagedUserRepositoryTest extends SqliteWebTestCase
     public function testCreateDispatcherIteratorWithOffset()
     {
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferent(['77'], '1.123456', '2.34567');
+        $referent->setReferent(['92', '77'], '1.123456', '2.34567');
 
         $filter = $this->createMock(ManagedUsersFilter::class);
         $filter->expects($this->once())->method('getOffset')->willReturn(1);
 
         $results = $this->repository->createDispatcherIterator($referent, $filter);
 
-        $expectedEmails = ['def@en-marche-dev.fr'];
+        $expectedEmails = ['gisele-berthoux@caramail.com'];
 
         $count = 0;
         foreach ($results as $key => $result) {

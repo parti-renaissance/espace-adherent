@@ -60,7 +60,7 @@
 {% set committee = committee is defined ? committee : form.vars.data.committee %}
 {% if not committee or committee.isWaitingForApproval %}
     <div class="form__row" id="field-photo">
-        {{ form_label(form.photo, "Ajouter votre photo d'identité", { label_attr: { class: 'text--bold' } }) }}<br />
+        {{ form_label(form.photo, "Ajouter votre pièce d’identité (passeport, permis de conduire ou carte nationale d’identité)", { label_attr: { class: 'text--bold' } }) }}<br />
         {% if committee and committee.hasPhotoUploaded %}
             <img style="max-width: 100px" src="{{ path('asset_url', { path: committee.photoPath }) }}" />
         {% endif %}

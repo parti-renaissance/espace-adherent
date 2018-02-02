@@ -98,8 +98,8 @@ class CitizenProjectCommand
      * @Assert\Image(
      *     maxSize = "5M",
      *     mimeTypes = {"image/jpeg", "image/png"},
-     *     minWidth = "1024",
-     *     minHeight = "576",
+     *     minWidth = "1200",
+     *     minHeight = "675",
      *     minRatio = 1.77,
      * )
      */
