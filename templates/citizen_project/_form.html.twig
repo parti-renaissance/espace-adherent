@@ -47,6 +47,7 @@
 </div>
 
 <div class="form__new" id="field-image">
+    {{ form_errors(form.image) }}
     <label class="label__header--large">Ajoutez une image d'illustration : <span>(Optionnel)</span></label>
     <label class="label__header--image">Veuillez sélectionner une image sur votre ordinateur.</label>
     {% if citizen_project is defined and citizen_project.hasImageUploaded %}
@@ -58,11 +59,10 @@
             {{ form_label(form.remove_image, 'Supprimer l\'image') }}
         </div>
     {% endif %}
-    {{ form_errors(form.image) }}
     {{ form_widget(form.image) }}
     <div class="field-image-info">
         <div>JPEG ou PNG - 5 Mo maximum</div>
-        <div>Au moins 1024x576 pixels - format 16:9</div>
+        <div>Au moins 1200x675 pixels - format 16:9</div>
     </div>
     <small>Choisissez une image sans texte, représentative de votre projet et libre de droit.</small>
 </div>
