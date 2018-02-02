@@ -29,7 +29,9 @@ class CommitteeCommandType extends AbstractType
                 'filter_emojis' => true,
                 'purify_html' => true,
             ])
-            ->add('address', AddressType::class)
+            ->add('address', AddressType::class, [
+                'disable_fields' => $committee ? $committee->isApproved() : false,
+            ])
             ->add('phone', PhoneNumberType::class, [
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                 'default_region' => 'FR',
