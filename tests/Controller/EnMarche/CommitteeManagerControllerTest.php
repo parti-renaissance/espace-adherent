@@ -81,9 +81,8 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(8, $crawler->filter('#edit-committee-form .form__errors > li')->count());
-        $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $crawler->filter('#committee-address > .form__errors > .form__error')->eq(0)->text());
-        $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $crawler->filter('#committee-address > .form__errors > li')->eq(1)->text());
+        $this->assertSame(7, $crawler->filter('#edit-committee-form .form__errors > li')->count());
+        $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $crawler->filter('#committee-address > .form__errors > .form__error')->eq(0)->text());
         $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#field-address > .form__errors > li')->text());
         $this->assertSame('Vous devez saisir au moins 2 caractères.', $crawler->filter('#field-name > .form__errors > li')->text());
         $this->assertSame('Votre texte de description est trop court. Il doit compter 5 caractères minimum.', $crawler->filter('#field-description > .form__errors > li')->text());
@@ -98,7 +97,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
                 'description' => 'Comité français En Marche ! de la ville de Clichy',
                 'address' => [
                     'country' => 'FR',
-                    'address' => '92 bld victor hugo',
+                    'address' => '12 Rue des Saussaies',
                     'postalCode' => '92110',
                     'city' => '92110-92024',
                     'cityName' => '',
@@ -116,7 +115,12 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertContains('Les informations du comité ont été mises à jour avec succès.', $crawler->filter('#notice-flashes')->text());
         $this->assertSame('Clichy est En Marche !', $crawler->filter('#committee_name')->attr('value'));
-        $this->assertSame('Comité français En Marche ! de la ville de Clichy', $crawler->filter('#committee_description')->text());
+        // Address has been changed but not city and country because the committee is approved
+        $this->assertSame('12 Rue des Saussaies', $crawler->filter('#committee_address_address')->attr('value'));
+        $this->assertSame('75008', $crawler->filter('#committee_address_postalCode')->attr('value'));
+        $this->assertSame('75008-75108', $crawler->filter('#committee_address_city')->attr('value'));
+        $this->assertSame('Paris 8e', $crawler->filter('#committee_address_cityName')->attr('value'));
+        $this->assertSame('France', $crawler->filter('#committee_address_country option:selected')->text());
     }
 
     public function testCommitteeHostCannotEditNoneditableCommitteeName()
@@ -137,7 +141,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
                 'description' => 'Comité français En Marche !',
                 'address' => [
                     'country' => 'FR',
-                    'address' => '92 bld victor hugo',
+                    'address' => '824 Avenue du Lys',
                     'postalCode' => '92110',
                     'city' => '92110-92024',
                     'cityName' => '',
@@ -153,6 +157,41 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         // Committee name has not been changed
         $this->assertSame('En Marche Dammarie-les-Lys', $crawler->filter('#committee_name')->attr('value'));
         $this->assertSame('Comité français En Marche !', $crawler->filter('#committee_description')->text());
+    }
+
+    public function testCommitteeHostCanEditCompletelyAddressOfPendingCommittee()
+    {
+        $crawler = $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $crawler = $this->client->click($crawler->selectLink('En Marche Marseille 3')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->click($crawler->selectLink('Éditer le comité')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        // Submit the committee form with new address
+        $this->client->submit($crawler->selectButton('Enregistrer')->form([
+            'committee' => [
+                'address' => [
+                    'country' => 'CH',
+                    'address' => '12 Pilgerweg',
+                    'postalCode' => '8802',
+                    'cityName' => 'Kilchberg',
+                ],
+            ],
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+
+        // Follow the redirect and check the adherent can see the committee edit page again
+        $crawler = $this->client->followRedirect();
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        // Address has been changed totally
+        $this->assertSame('12 Pilgerweg', $crawler->filter('#committee_address_address')->attr('value'));
+        $this->assertSame('8802', $crawler->filter('#committee_address_postalCode')->attr('value'));
+        $this->assertSame('Kilchberg', $crawler->filter('#committee_address_cityName')->attr('value'));
+        $this->assertSame('Suisse', $crawler->filter('#committee_address_country option:selected')->text());
     }
 
     public function testCommitteeFollowerIsNotAllowedToPublishNewEvent()

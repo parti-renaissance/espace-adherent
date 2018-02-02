@@ -21,15 +21,20 @@ class AddressType extends AbstractType
             ->add('city', HiddenType::class, [
                 'required' => false,
                 'error_bubbling' => true,
+                'disabled' => $options['disable_fields'],
             ])
             ->add('cityName', TextType::class, [
                 'required' => false,
+                'disabled' => $options['disable_fields'],
             ])
-            ->add('country', UnitedNationsCountryType::class)
+            ->add('country', UnitedNationsCountryType::class, [
+                'disabled' => $options['disable_fields'],
+            ])
         ;
 
         $field = $builder->create('postalCode', TextType::class, [
             'error_bubbling' => true,
+            'disabled' => $options['disable_fields'],
         ]);
 
         $field->addModelTransformer(new CallbackTransformer(
@@ -46,9 +51,13 @@ class AddressType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Address::class,
-            'error_bubbling' => false,
-        ]);
+        $resolver
+            ->setDefaults([
+                'data_class' => Address::class,
+                'error_bubbling' => false,
+                'disable_fields' => false,
+            ])
+            ->setAllowedTypes('disable_fields', 'bool')
+        ;
     }
 }

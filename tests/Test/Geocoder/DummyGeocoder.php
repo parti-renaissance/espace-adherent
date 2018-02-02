@@ -85,6 +85,14 @@ class DummyGeocoder implements GeocoderInterface
             'lat' => 48.633333,
             'lon' => 2.450000,
         ],
+        '12 rue des saussaies, 75008 paris 8e, fr' => [
+            'lat' => 48.8713699,
+            'lon' => 2.318119,
+        ],
+        '824 avenue du lys, 77190 dammarie-les-lys, fr' => [
+            'lat' => 48.5182194,
+            'lon' => 2.624205,
+        ],
     ];
 
     public function geocode(string $address): Coordinates
