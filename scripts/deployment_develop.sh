@@ -19,6 +19,6 @@ do
 done
 
 # Send result to slack
-migration_log=$(sudo /opt/google-cloud-sdk/bin/kubectl logs develop-migrate --container=enmarche || true)
+migration_log=$(sudo /opt/google-cloud-sdk/bin/kubectl logs deploy/develop-migrate --container=enmarche || true)
 json="{\"text\": \"\`\`\`$(echo $migration_log | sed 's/"//g' | sed "s/'//g" | sed 's/\\/\//g' )\`\`\`\"}"
 curl -s "Content-Type: application/json" -d "payload=$json" https://hooks.slack.com/services/$SLACK_TOKEN
