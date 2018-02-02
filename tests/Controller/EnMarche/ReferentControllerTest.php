@@ -110,7 +110,7 @@ class ReferentControllerTest extends SqliteWebTestCase
         $this->client->submit($this->client->getCrawler()->selectButton('Créer cet événement')->form(), $data);
 
         /** @var Event $event */
-        $event = $this->getEventRepository()->findOneBy(['name' => 'Premier événement']);
+        $event = $this->getEventRepository()->findOneBy(['name' => 'Premier Événement']);
 
         $this->assertInstanceOf(Event::class, $event);
         $this->assertClientIsRedirectedTo('/evenements/'.$event->getSlug(), $this->client);

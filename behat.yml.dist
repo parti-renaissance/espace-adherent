@@ -1,0 +1,29 @@
+default:
+    suites:
+        default:
+            contexts:
+                - Behat\MinkExtension\Context\MinkContext
+                - FixtureContext:
+                    manager: "@doctrine.orm.default_entity_manager"
+                - RestContext
+                - JsonContext
+                - RabbitMqContext:
+                    container: "@service_container"
+                - SyncWithAPIContext:
+                    doctrine: "@doctrine"
+                    dispatcher: "@event_dispatcher"
+                - EmailContext
+                - SecurityContext
+                - FeatureContext
+    extensions:
+        Behat\Symfony2Extension:
+            kernel:
+                class: AppKernel
+                env: test_mysql
+        Behat\MinkExtension:
+            sessions:
+                default:
+                    symfony2: ~
+            base_url: "http://enmarche.dev"
+
+        Behatch\Extension: ~

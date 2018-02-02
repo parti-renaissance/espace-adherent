@@ -1,0 +1,9 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field %}
+    <p>
+    {% for scope in value %}
+        <span class="label label-default" title="{{ scope|trans({}, 'oauth') }}">{{ scope }}</span>
+    {% endfor %}
+    </p>
+{% endblock %}

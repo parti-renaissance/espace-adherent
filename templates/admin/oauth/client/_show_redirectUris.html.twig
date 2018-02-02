@@ -1,0 +1,9 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field %}
+    <ul>
+    {% for url in value %}
+        <li>{{ url }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

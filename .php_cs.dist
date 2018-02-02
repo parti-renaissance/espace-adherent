@@ -4,12 +4,14 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__.'/src')
     ->in(__DIR__.'/tests')
     ->in(__DIR__.'/app')
+    ->in(__DIR__.'/features/bootstrap')
     ->exclude(__DIR__.'app/data')
 ;
 
 return PhpCsFixer\Config::create()
     ->setRules([
         '@Symfony' => true,
+        'phpdoc_to_comment' => false,
         'no_unneeded_final_method' => false,
         'concat_space' => ["spacing" => "none"],
     ])

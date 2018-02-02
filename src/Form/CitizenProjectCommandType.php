@@ -42,12 +42,14 @@ class CitizenProjectCommandType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'filter_emojis' => true,
+                'format_title_case' => true,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 30],
                 'disabled' => $command->isCitizenProjectApproved(),
             ])
             ->add('subtitle', TextType::class, [
                 'filter_emojis' => true,
+                'format_title_case' => true,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 80],
             ])

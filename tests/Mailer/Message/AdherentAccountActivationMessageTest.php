@@ -21,10 +21,10 @@ class AdherentAccountActivationMessageTest extends TestCase
         $message = AdherentAccountActivationMessage::createFromAdherent($adherent, self::CONFIRMATION_URL);
 
         $this->assertInstanceOf(AdherentAccountActivationMessage::class, $message);
-        $this->assertSame('54665', $message->getTemplate());
-        $this->assertSame('Plus qu\'une étape', $message->getSubject());
+        $this->assertSame('292269', $message->getTemplate());
+        $this->assertSame('Confirmez votre compte En-Marche.fr', $message->getSubject());
         $this->assertCount(2, $message->getVars());
-        $this->assertSame(['target_firstname' => '', 'confirmation_link' => ''], $message->getVars());
+        $this->assertSame(['first_name' => '', 'activation_link' => ''], $message->getVars());
 
         $recipient = $message->getRecipient(0);
         $this->assertInstanceOf(MessageRecipient::class, $recipient);
@@ -32,8 +32,8 @@ class AdherentAccountActivationMessageTest extends TestCase
         $this->assertSame('Jérôme Pichoud', $recipient->getFullName());
         $this->assertSame(
             [
-                'target_firstname' => 'Jérôme',
-                'confirmation_link' => self::CONFIRMATION_URL,
+                'first_name' => 'Jérôme',
+                'activation_link' => self::CONFIRMATION_URL,
             ],
             $recipient->getVars()
         );

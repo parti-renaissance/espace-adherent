@@ -43,6 +43,21 @@
         }
     }
 
+    &__wrapper--430 {
+        max-width: 430px;
+        margin: 0 auto;
+        box-sizing: border-box;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+        border: solid 1px $border-gray;
+        text-align: center;
+
+        @media (max-width: $mobile) {
+            border: 0;
+            width: 100%;
+            box-shadow: none;
+        }
+    }
+
     &__wrapper--aside {
         width: 285px;
     }
@@ -61,6 +76,17 @@
         width: 90%;
         max-width: 300px;
         margin: 0 auto;
+    }
+
+    &__inner {
+        padding: 0 30px 30px;
+
+        &__footer {
+            padding: 20px 30px;
+            background: $bg--gray;
+            color: $text--gray;
+            @include text--small;
+        }
     }
 
     &__row {
@@ -226,6 +252,10 @@
 
     &--60-0 {
         padding: 60px 0;
+    }
+
+    &--60-15 {
+        padding: 60px 0 15px;
     }
 
     &--45-5 {
