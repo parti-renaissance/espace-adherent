@@ -1,5 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% block final_javascripts %}
+    <script>
+        Kernel.onLoad(function() {
+            App.runReport();
+        });
+    </script>
+{% endblock %}
+
 {% block content %}
     <div>
             <header>

@@ -2,7 +2,7 @@
 
     <div class="citizen-project__card b__nudge--top-40">
         {% if is_granted('REPORT') %}
-            <a href="{{ path('app_report', {type: 'citizen-project', uuid: citizen_project.uuid, redirectUrl: app.request.pathInfo}) }}" class="text--body link--newblue">Signaler ce projet</a>
+            <a href="{{ report_path(citizen_project, app.request.pathInfo) }}" class="text--body link--newblue">Signaler ce projet</a>
         {% endif %}
     </div>
 

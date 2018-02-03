@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\Report\ReportableInterface;
 use AppBundle\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -16,7 +17,7 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @ORM\MappedSuperclass
  */
-abstract class BaseGroup implements GeoPointInterface
+abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface, ReportableInterface
 {
     public const APPROVED = 'APPROVED';
     public const PENDING = 'PENDING';
