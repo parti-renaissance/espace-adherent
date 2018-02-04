@@ -106,7 +106,8 @@ class TextTypeExtension extends AbstractTypeExtension
 
     public static function formatTitleCase(string $string): string
     {
-        return \mb_convert_case($string, MB_CASE_TITLE, 'UTF-8');
+        // Here we just ensure the first character is uppercase, the rest is left as is
+        return \ucfirst($string);
     }
 
     public static function formatIdentityCase(string $string): string
@@ -118,6 +119,6 @@ class TextTypeExtension extends AbstractTypeExtension
             '/(?:^|[\s-])(d\')(\p{L})/ui' => function (array $matches) {
                 return \strtolower($matches[1]).\ucfirst($matches[2]);
             },
-        ], self::formatTitleCase($string));
+        ], \mb_convert_case($string, MB_CASE_TITLE, 'UTF-8'));
     }
 }
