@@ -292,20 +292,6 @@ class AdherentAdmin extends AbstractAdmin
                 'label' => 'Date d\'adhésion',
                 'field_type' => DateRangePickerType::class,
             ])
-            ->add('postalCode', 'doctrine_orm_callback', [
-                'label' => 'Code postal',
-                'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
-                    }
-
-                    $qb->andWhere(sprintf('%s.postAddress.postalCode', $alias).' LIKE :postalCode');
-                    $qb->setParameter('postalCode', $value['value'].'%');
-
-                    return true;
-                },
-            ])
             ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',
                 'field_type' => TextType::class,
