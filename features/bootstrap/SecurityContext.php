@@ -1,5 +1,6 @@
 <?php
 
+use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Administrator;
 use AppBundle\Repository\AdherentRepository;
@@ -49,7 +50,7 @@ class SecurityContext extends RawMinkContext
 
             $this->visitPath('/connexion');
             $page->findField('_adherent_email')->setValue($user->getUsername());
-            $page->findField('_adherent_password')->setValue(\AppBundle\DataFixtures\ORM\LoadAdherentData::DEFAULT_PASSWORD);
+            $page->findField('_adherent_password')->setValue(LoadAdherentData::DEFAULT_PASSWORD);
             $page->findButton('Connexion')->press();
 
             return;

@@ -7,9 +7,8 @@ services:
         networks:
           default:
             aliases:
-              - enmarche.dev
+              - test.enmarche.code
               - enmarche.code
-              - enmarche.local
         build:
             context: docker/dev
         depends_on:

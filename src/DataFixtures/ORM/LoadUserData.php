@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\AdherentFactory;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -32,6 +33,8 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
             'birthdate' => '1972-11-24',
             'isAdherent' => false,
         ]);
+        $key1 = AdherentActivationToken::generate($user1);
+        $user1->activate($key1, '2017-01-25 19:34:02');
 
         $manager->persist($user1);
         $manager->flush();

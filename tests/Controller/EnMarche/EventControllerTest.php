@@ -90,7 +90,7 @@ class EventControllerTest extends MysqlWebTestCase
 
     public function testRegisteredAdherentUserCanRegisterToEvent()
     {
-        $crawler = $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
+        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
         $crawler = $this->client->click($crawler->selectLink('Rejoindre un comité')->link());
 
@@ -109,17 +109,17 @@ class EventControllerTest extends MysqlWebTestCase
         $crawler = $this->client->click($crawler->selectLink('Je veux participer')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('Benjamin', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
-        $this->assertSame('Duroc', $crawler->filter('#field-last-name > input[type="text"]')->attr('value'));
-        $this->assertSame('benjyd@aol.com', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
+        $this->assertSame('Jacques', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
+        $this->assertSame('Picard', $crawler->filter('#field-last-name > input[type="text"]')->attr('value'));
+        $this->assertSame('jacques.picard@en-marche.fr', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
         $this->assertSame(1, $crawler->filter('#field-accept-terms')->count());
         // Adherent is already subscribed to mails
         $this->assertSame(0, $crawler->filter('#field-newsletter-subscriber')->count());
 
         $this->client->submit($crawler->selectButton("Je m'inscris")->form());
 
-        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'benjyd@aol.com'));
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'benjyd@aol.com'));
+        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'jacques.picard@en-marche.fr'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'jacques.picard@en-marche.fr'));
 
         $crawler = $this->client->followRedirect();
 
@@ -130,7 +130,7 @@ class EventControllerTest extends MysqlWebTestCase
         $crawler = $this->client->click($crawler->selectLink('Retour')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('2 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
+        $this->assertSame('1 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
 
         $this->client->click($crawler->selectLink('Mes activités')->link());
 

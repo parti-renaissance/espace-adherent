@@ -21,7 +21,7 @@ default:
                 class: AppKernel
                 env: test_mysql
         Behat\MinkExtension:
-            base_url: "http://enmarche.code"
+            base_url: "http://test.enmarche.code"
             sessions:
                 default:
                     symfony2: ~
@@ -32,16 +32,7 @@ default:
                         wd_host: http://selenium:4444/wd/hub
         Behatch\Extension: ~
 
-wip:
-    filters:
-        tags: "@wip"
-    formatters:
-      pretty:
-
 ci:
-    extensions:
-        Behat\MinkExtension:
-            base_url: "http://enmarche.dev"
     extensions:
         Behat\MinkExtension:
             sessions:
@@ -49,5 +40,4 @@ ci:
                     selenium2:
                         wd_host: http://127.0.0.1:4444/wd/hub
     formatters:
-        progress:
         junit: [behat/reports/]

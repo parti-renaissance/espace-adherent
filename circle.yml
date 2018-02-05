@@ -4,6 +4,8 @@ machine:
     php:
         version: 7.1.6
     environment:
+        APP_ENV: 'test_mysql'
+        SYMFONY_ENV: 'test_mysql'
         YARN_VERSION: 0.18.1
         PATH: "${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
         DATABASE_HOST: 127.0.0.1
@@ -15,10 +17,9 @@ machine:
         RABBITMQ_USER: 'guest'
         RABBITMQ_PASSWORD: 'guest'
     hosts:
-        enmarche.dev: 127.0.0.1
-        enmarche.code: 127.0.0.1
-        m.enmarche.dev: 127.0.0.1
-        legislatives.enmarche.dev: 127.0.0.1
+        test.enmarche.code: 127.0.0.1
+        test.m.enmarche.code: 127.0.0.1
+        test.legislatives.enmarche.code: 127.0.0.1
     services:
         - docker
         - rabbitmq-server

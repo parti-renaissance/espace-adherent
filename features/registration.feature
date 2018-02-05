@@ -31,7 +31,7 @@ Feature:
           "Name": "Jean-Pierre Durand",
           "Vars": {
             "first_name": "Jean-Pierre",
-            "activation_link": "http:\/\/enmarche.dev\/inscription\/finaliser\/@string@\/@string@"
+            "activation_link": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
           }
         }
       ]
