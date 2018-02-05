@@ -34,7 +34,7 @@ class AdherentFactory
             $request->position,
             $this->addressFactory->createFromAddress($request->getAddress()),
             $request->getPhone(),
-            Adherent::ENABLED,
+            Adherent::DISABLED,
             'now',
             $request->comEmail,
             $request->comMobile
