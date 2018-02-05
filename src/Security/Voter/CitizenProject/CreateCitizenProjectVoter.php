@@ -28,7 +28,8 @@ class CreateCitizenProjectVoter extends AbstractAdherentVoter
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
         // Cannot create a project when referent or already administrate one
-        return !$adherent->isReferent()
+        return $adherent->isAdherent()
+            && !$adherent->isReferent()
             && !$adherent->isCitizenProjectAdministrator()
             && !$this->projectRepository->hasCitizenProjectInStatus($adherent, CitizenProject::STATUSES_NOT_ALLOWED_TO_CREATE)
         ;
