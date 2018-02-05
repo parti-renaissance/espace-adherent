@@ -53,6 +53,10 @@ class SearchController extends Controller
         $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_COMMITTEES);
 
         $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
+        $user = $this->getUser();
+        if ($user && in_array(EntityPostAddressTrait::class, class_uses($user))) {
+            $search->setCity(sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
+        }
 
         try {
             $results = $this->get(SearchResultsProvidersManager::class)->find($search);

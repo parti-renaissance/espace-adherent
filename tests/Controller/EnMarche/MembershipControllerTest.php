@@ -131,109 +131,12 @@ class MembershipControllerTest extends MysqlWebTestCase
         // Try to authenticate with credentials
         $this->client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => 'jean-paul@dupont.tld',
-            '_adherent_password' => '#example!12345#',
+            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
         $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/evenements', $this->client);
 
         $this->client->followRedirect();
-    }
-
-    /**
-     * @dataProvider provideSuccessfulMembershipRequests
-     */
-    public function testCreateMembershipAccountIsSuccessful($country, $postalCode)
-    {
-        $this->client->request(Request::METHOD_GET, '/inscription');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $data = static::createFormData();
-        $data['user_registration']['address']['country'] = $country;
-        $data['user_registration']['address']['postalCode'] = $postalCode;
-
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon compte')->form(), $data);
-
-        $this->assertClientIsRedirectedTo('/presque-fini', $this->client);
-
-        $adherent = $this->getAdherentRepository()->findOneByEmail('jean-paul@dupont.tld');
-        $this->assertInstanceOf(Adherent::class, $adherent);
-        $this->assertNull($adherent->getLatitude());
-        $this->assertNull($adherent->getLongitude());
-    }
-
-    public function provideSuccessfulMembershipRequests()
-    {
-        return [
-            'Foreign' => ['CH', '8057'],
-            'DOM-TOM Réunion' => ['FR', '97437'],
-            'DOM-TOM Guadeloupe' => ['FR', '97110'],
-            'DOM-TOM Polynésie' => ['FR', '98714'],
-        ];
-    }
-
-    public function testLoginAfterCreatingMembershipAccountWithoutConfirmItsEmail()
-    {
-        // register
-        $this->client->request(Request::METHOD_GET, '/inscription');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $data = static::createFormData();
-        $data['user_registration']['emailAddress']['first'] = 'michel@dupont.tld';
-        $data['user_registration']['emailAddress']['second'] = 'michel@dupont.tld';
-        $data['user_registration']['address']['country'] = 'CH';
-        $data['user_registration']['address']['postalCode'] = '8057';
-
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon compte')->form(), $data);
-
-        $this->assertClientIsRedirectedTo('/presque-fini', $this->client);
-
-        // login
-        $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_adherent_email' => $data['user_registration']['emailAddress']['first'],
-            '_adherent_password' => $data['user_registration']['password'],
-        ]));
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/evenements', $this->client, true);
-    }
-
-    public function testDonateWithAFakeValue()
-    {
-        // register
-        $this->client->request(Request::METHOD_GET, '/inscription');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $data = static::createFormData();
-        $data['user_registration']['emailAddress']['first'] = 'michel2@dupont.tld';
-        $data['user_registration']['emailAddress']['second'] = 'michel2@dupont.tld';
-        $data['user_registration']['address']['country'] = 'CH';
-        $data['user_registration']['address']['postalCode'] = '8057';
-
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon compte')->form(), $data);
-
-        $this->assertClientIsRedirectedTo('/presque-fini', $this->client);
-    }
-
-    public function testCannotCreateMembershipAccountRecaptchaConnectionFailure()
-    {
-        $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $data = static::createFormData();
-        $data['g-recaptcha-response'] = 'connection_failure';
-        $crawler = $this->client->submit($crawler->selectButton('Créer mon compte')->form(), $data);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $errors = $crawler->filter('.flash-error_recaptcha');
-        $this->assertSame(1, $errors->count());
-        $this->assertSame('Une erreur s\'est produite, pouvez-vous réessayer ?', $errors->text());
     }
 
     private static function createFormData()
@@ -247,7 +150,7 @@ class MembershipControllerTest extends MysqlWebTestCase
                     'first' => 'jean-paul@dupont.tld',
                     'second' => 'jean-paul@dupont.tld',
                 ],
-                'password' => '#example!12345#',
+                'password' => LoadAdherentData::DEFAULT_PASSWORD,
                 'address' => [
                     'country' => 'FR',
                     'postalCode' => '92110',

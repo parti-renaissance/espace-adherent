@@ -31,12 +31,19 @@ Feature:
           "Name": "Jean-Pierre Durand",
           "Vars": {
             "first_name": "Jean-Pierre",
-            "activation_link": "http:\/\/enmarche.dev\/inscription\/finaliser\/@string@\/@string@"
+            "activation_link": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
           }
         }
       ]
     }
     """
+
+    Given I am on "/connexion"
+    When I fill in the following:
+      | E-mail       | jp@test.com |
+      | Mot de passe | testtest    |
+    And I press "Connexion"
+    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
 
     When I click on the email link "activation_link"
     Then I should be on "/adhesion"

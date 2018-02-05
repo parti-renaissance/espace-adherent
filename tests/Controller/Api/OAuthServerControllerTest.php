@@ -2,6 +2,7 @@
 
 namespace AppBundle\Tests\Controller\Front;
 
+use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadOAuthTokenData;
 use AppBundle\Entity\OAuth\AccessToken;
 use AppBundle\Entity\OAuth\AuthorizationCode;
@@ -170,7 +171,7 @@ class OAuthServerControllerTest extends MysqlWebTestCase
 
     public function testRequestAccessTokenWithUngrantedScope(): void
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, $this->createAuthorizeUrl(['read:users']));
         static::assertSame(
@@ -211,7 +212,7 @@ class OAuthServerControllerTest extends MysqlWebTestCase
         $this->isSuccessful($this->client->getResponse());
         $this->client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => 'carl999@example.fr',
-            '_adherent_password' => 'secret!12345',
+            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
         static::assertTrue($this->client->getResponse()->isRedirect($this->createAuthorizeUrl()));
 
@@ -280,7 +281,7 @@ class OAuthServerControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/connexion');
         $this->client->submit($this->client->getCrawler()->selectButton('Connexion')->form([
             '_adherent_email' => 'carl999@example.fr',
-            '_adherent_password' => 'secret!12345',
+            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
         $this->client->followRedirect();
 
@@ -305,7 +306,7 @@ class OAuthServerControllerTest extends MysqlWebTestCase
         $this->isSuccessful($this->client->getResponse());
         $this->client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => 'carl999@example.fr',
-            '_adherent_password' => 'secret!12345',
+            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
         static::assertTrue($this->client->getResponse()->isRedirect($authorizeUrl));
 

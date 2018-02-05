@@ -31,7 +31,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
      */
     public function testCoordinatorBackendIsForbiddenForAdherentNotCoordinator($path)
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         $this->client->request(Request::METHOD_GET, $path);
         $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
@@ -39,7 +39,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
 
     public function testCoordinatorCommitteeBackendIsAccessibleForCoordinator()
     {
-        $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr', 'coordinateur');
+        $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr');
 
         $this->client->request(Request::METHOD_GET, '/espace-coordinateur/comites/list');
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
@@ -47,7 +47,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
 
     public function testCoordinatorCitizenProjectBackendIsAccessibleForCoordinator()
     {
-        $this->authenticateAsAdherent($this->client, 'coordinatrice-cp@en-marche-dev.fr', 'coordinatrice');
+        $this->authenticateAsAdherent($this->client, 'coordinatrice-cp@en-marche-dev.fr');
 
         $this->client->request(Request::METHOD_GET, '/espace-coordinateur/projet-citoyen/list');
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
@@ -55,7 +55,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
 
     public function testValidationCommitteeFailed()
     {
-        $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr', 'coordinateur');
+        $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr');
 
         $this->client->click($this->client->getCrawler()->selectLink('Espace coordinateur régional')->link());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
@@ -90,7 +90,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
 
     public function testPreAcceptCommitteeWithSuccess()
     {
-        $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr', 'coordinateur');
+        $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr');
 
         $this->client->click($this->client->getCrawler()->selectLink('Espace coordinateur régional')->link());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
@@ -120,7 +120,7 @@ class CoordinatorControllerTest extends SqliteWebTestCase
 
     public function testPreRefuseCommitteeWithSuccess()
     {
-        $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr', 'coordinateur');
+        $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr');
 
         $this->client->click($this->client->getCrawler()->selectLink('Espace coordinateur régional')->link());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);

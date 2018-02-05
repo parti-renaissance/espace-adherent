@@ -135,7 +135,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
           "Name": "Jean-Pierre d'Artagnan",
           "Vars": {
             "first_name": "Jean-Pierre",
-            "activation_link": "http:\/\/enmarche.dev\/inscription\/finaliser\/@string@\/@string@?redirect_uri=https%3A\/\/en-marche.fr\/callback&client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19"
+            "activation_link": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@?redirect_uri=https%3A\/\/en-marche.fr\/callback&client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19"
           }
         }
       ]

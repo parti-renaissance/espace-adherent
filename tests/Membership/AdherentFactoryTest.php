@@ -48,6 +48,7 @@ class AdherentFactoryTest extends TestCase
         $this->assertSame('Geneva', $adherent->getCityName());
         $this->assertEquals(new \DateTime('1972-11-23'), $adherent->getBirthdate());
         $this->assertSame(ActivityPositions::EMPLOYED, $adherent->getPosition());
+        $this->assertFalse($adherent->isEnabled());
     }
 
     public function testCreateFrenchAdherentFromArray()
@@ -83,6 +84,7 @@ class AdherentFactoryTest extends TestCase
         $this->assertSame('73100-73182', $adherent->getCity());
         $this->assertEquals(new \DateTime('1950-07-08'), $adherent->getBirthdate());
         $this->assertSame(ActivityPositions::RETIRED, $adherent->getPosition());
+        $this->assertFalse($adherent->isEnabled());
     }
 
     public function testCreateFrenchAdherentFromMembershipRequest()
@@ -121,6 +123,7 @@ class AdherentFactoryTest extends TestCase
         $this->assertSame('122 rue de Mouxy', $adherent->getAddress());
         $this->assertSame('73100', $adherent->getPostalCode());
         $this->assertSame('73100-73182', $adherent->getCity());
+        $this->assertFalse($adherent->isEnabled());
         $this->assertEquals($request->getBirthdate(), $adherent->getBirthdate());
         $this->assertNotSame($request->getBirthdate(), $adherent->getBirthdate());
         $this->assertSame(ActivityPositions::RETIRED, $adherent->getPosition());

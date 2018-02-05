@@ -12,8 +12,10 @@ Feature:
     And I am on "/"
     Then the ".nav-dropdown" element should not contain "Profil"
     And the ".nav-dropdown" element should not contain "Mes activités"
+    And I should not see "Lancer mon projet"
 
     When I am logged as "carl999@example.fr"
     And I am on "/"
     Then the ".nav-dropdown" element should contain "Profil"
     And the ".nav-dropdown" element should contain "Mes activités"
+    And I should see "Lancer mon projet"

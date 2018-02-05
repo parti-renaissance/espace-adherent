@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class AdherentAccountActivationMessageTest extends TestCase
 {
-    const CONFIRMATION_URL = 'https://enmarche.dev/activation';
+    const CONFIRMATION_URL = 'https://test.enmarche.code/activation';
 
     public function testCreateAdherentAccountActivationMessage()
     {

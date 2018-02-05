@@ -51,6 +51,8 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
     const COMMITTEE_9_UUID = '62ea97e7-6662-427b-b90a-23429136d0dd';
     const COMMITTEE_10_UUID = '79638242-5101-11e7-b114-b2f933d5fe66';
 
+    const DEFAULT_PASSWORD = 'secret!12345';
+
     use ContainerAwareTrait;
 
     public function load(ObjectManager $manager)
@@ -60,7 +62,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         // Create adherent users list
         $adherent1 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_1_UUID,
-            'password' => 'secret!12345',
+            'password' => self::DEFAULT_PASSWORD,
             'email' => 'michelle.dufour@example.ch',
             'gender' => 'female',
             'first_name' => 'Michelle',
@@ -72,7 +74,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent2 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_2_UUID,
-            'password' => 'secret!12345',
+            'password' => self::DEFAULT_PASSWORD,
             'email' => 'carl999@example.fr',
             'gender' => 'male',
             'first_name' => 'Carl',
@@ -91,7 +93,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent3 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_3_UUID,
-            'password' => 'changeme1337',
+            'password' => self::DEFAULT_PASSWORD,
             'email' => 'jacques.picard@en-marche.fr',
             'gender' => 'male',
             'first_name' => 'Jacques',
@@ -107,7 +109,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent4 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_4_UUID,
-            'password' => 'EnMarche2017',
+            'password' => self::DEFAULT_PASSWORD,
             'email' => 'luciole1989@spambox.fr',
             'gender' => 'female',
             'first_name' => 'Lucie',
@@ -126,7 +128,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent5 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_5_UUID,
-            'password' => 'ILoveYouManu',
+            'password' => self::DEFAULT_PASSWORD,
             'email' => 'gisele-berthoux@caramail.com',
             'gender' => 'female',
             'first_name' => 'Gisele',
@@ -142,7 +144,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent6 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_6_UUID,
-            'password' => 'HipHipHip',
+            'password' => self::DEFAULT_PASSWORD,
             'email' => 'benjyd@aol.com',
             'gender' => 'male',
             'first_name' => 'Benjamin',
@@ -161,7 +163,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent7 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_7_UUID,
-            'password' => 'Champion20',
+            'password' => self::DEFAULT_PASSWORD,
             'email' => 'francis.brioul@yahoo.com',
             'gender' => 'male',
             'first_name' => 'Francis',
@@ -177,7 +179,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $referent = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_8_UUID,
-            'password' => 'referent',
+            'password' => self::DEFAULT_PASSWORD,
             'email' => 'referent@en-marche-dev.fr',
             'gender' => 'male',
             'first_name' => 'Referent',
@@ -196,7 +198,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $coordinator = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_15_UUID,
-            'password' => 'coordinateur',
+            'password' => self::DEFAULT_PASSWORD,
             'email' => 'coordinateur@en-marche-dev.fr',
             'gender' => 'male',
             'first_name' => 'Coordinateur',
@@ -211,7 +213,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $coordinatorCP = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_17_UUID,
-            'password' => 'coordinatrice',
+            'password' => self::DEFAULT_PASSWORD,
             'email' => 'coordinatrice-cp@en-marche-dev.fr',
             'gender' => 'female',
             'first_name' => 'Coordinatrice',
@@ -226,7 +228,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent9 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_9_UUID,
-            'password' => 'password12345',
+            'password' => self::DEFAULT_PASSWORD,
             'email' => 'laura@deloche.com',
             'gender' => 'female',
             'first_name' => 'Laura',
@@ -246,7 +248,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent10 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_10_UUID,
-            'password' => 'politique2017',
+            'password' => self::DEFAULT_PASSWORD,
             'email' => 'martine.lindt@gmail.com',
             'gender' => 'female',
             'first_name' => 'Martine',
@@ -265,7 +267,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent11 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_11_UUID,
-            'password' => 'politique2017',
+            'password' => self::DEFAULT_PASSWORD,
             'email' => 'lolodie.dutemps@hotnix.tld',
             'gender' => 'female',
             'first_name' => 'Élodie',
@@ -284,7 +286,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent12 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_12_UUID,
-            'password' => 'politique2017',
+            'password' => self::DEFAULT_PASSWORD,
             'email' => 'kiroule.p@blabla.tld',
             'gender' => 'male',
             'first_name' => 'Pierre',
@@ -308,7 +310,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent13 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_13_UUID,
-            'password' => 'secret!12345',
+            'password' => self::DEFAULT_PASSWORD,
             'email' => 'michel.vasseur@example.ch',
             'gender' => 'male',
             'first_name' => 'Michel',
@@ -320,7 +322,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
 
         $adherent14 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_14_UUID,
-            'password' => 'newpassword',
+            'password' => self::DEFAULT_PASSWORD,
             'email' => 'damien.schmidt@example.ch',
             'gender' => 'male',
             'first_name' => 'Damien',
@@ -333,7 +335,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         // Non activated, enabled adherent
         $adherent15 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_16_UUID,
-            'password' => 'secret!12345',
+            'password' => self::DEFAULT_PASSWORD,
             'email' => 'thomas.leclerc@example.ch',
             'gender' => 'male',
             'first_name' => 'Thomas',

@@ -44,9 +44,17 @@ class CreateCitizenProjectVoterTest extends AbstractAdherentVoterTest
         return new CreateCitizenProjectVoter($this->projectRepository);
     }
 
+    public function testNonAdherentIsNotGranted()
+    {
+        $adherent = $this->getAdherentMock(false);
+
+        $this->assertRepositoryBehavior(null);
+        $this->assertGrantedForAdherent(false, true, $adherent, CitizenProjectPermissions::CREATE);
+    }
+
     public function testAdherentIsNotGrantedWhenReferent()
     {
-        $adherent = $this->getAdherentMock(true);
+        $adherent = $this->getAdherentMock(true, true);
 
         $this->assertRepositoryBehavior(null);
         $this->assertGrantedForAdherent(false, true, $adherent, CitizenProjectPermissions::CREATE);
@@ -54,7 +62,7 @@ class CreateCitizenProjectVoterTest extends AbstractAdherentVoterTest
 
     public function testAdherentIsNotGrantedWhenAlreadyProjectAdministrator()
     {
-        $adherent = $this->getAdherentMock(false, true);
+        $adherent = $this->getAdherentMock(true, false, true);
 
         $this->assertRepositoryBehavior(null);
         $this->assertGrantedForAdherent(false, true, $adherent, CitizenProjectPermissions::CREATE);
@@ -62,7 +70,7 @@ class CreateCitizenProjectVoterTest extends AbstractAdherentVoterTest
 
     public function testAdherentIsNotGrantedWhenAlreadyHasProjectInInvalidStatus()
     {
-        $adherent = $this->getAdherentMock(false);
+        $adherent = $this->getAdherentMock(true);
 
         $this->assertRepositoryBehavior($adherent);
         $this->assertGrantedForAdherent(false, true, $adherent, CitizenProjectPermissions::CREATE);
@@ -70,36 +78,35 @@ class CreateCitizenProjectVoterTest extends AbstractAdherentVoterTest
 
     public function testAdherentIsGranted()
     {
-        $adherent = $this->getAdherentMock(false);
+        $adherent = $this->getAdherentMock(true);
 
         $this->assertRepositoryBehavior($adherent, true);
         $this->assertGrantedForAdherent(true, true, $adherent, CitizenProjectPermissions::CREATE);
     }
 
     /**
-     * @param bool|null $isAdministrator
+     * @param bool|null $isCitizenProjectAdministrator
      *
      * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function getAdherentMock(bool $isReferent, bool $isAdministrator = false): Adherent
+    private function getAdherentMock(bool $isAdherent, bool $isReferent = false, bool $isCitizenProjectAdministrator = false): Adherent
     {
         $adherent = $this->createAdherentMock();
 
-        $adherent->expects($this->once())
+        $adherent->expects($isAdherent ? $this->once() : $this->any())
+            ->method('isAdherent')
+            ->willReturn($isAdherent)
+        ;
+
+        $adherent->expects($isReferent ? $this->once() : $this->any())
             ->method('isReferent')
             ->willReturn($isReferent)
         ;
 
-        if ($isReferent) {
-            $adherent->expects($this->never())
-                ->method('isCitizenProjectAdministrator')
-            ;
-        } else {
-            $adherent->expects($this->once())
-                ->method('isCitizenProjectAdministrator')
-                ->willReturn($isAdministrator)
-            ;
-        }
+        $adherent->expects($isCitizenProjectAdministrator ? $this->once() : $this->any())
+            ->method('isCitizenProjectAdministrator')
+            ->willReturn($isCitizenProjectAdministrator)
+        ;
 
         return $adherent;
     }
