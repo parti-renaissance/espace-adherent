@@ -9,8 +9,10 @@ use Doctrine\ORM\EntityRepository;
 
 class CitizenProjectCommitteeSupportRepository extends EntityRepository
 {
-    public function findOneByCommitteeAndCitizenProject(Committee $committee, CitizenProject $citizenProject): ?CitizenProjectCommitteeSupport
-    {
+    public function findOneByCommitteeAndCitizenProject(
+        Committee $committee,
+        CitizenProject $citizenProject
+    ): ?CitizenProjectCommitteeSupport {
         return $this->findOneBy(['committee' => $committee, 'citizenProject' => $citizenProject]);
     }
 }
