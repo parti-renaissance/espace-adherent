@@ -223,7 +223,10 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $flash = $crawler->filter('#notice-flashes');
         $this->assertSame(1, count($flash));
-        $this->assertSame(sprintf('Votre comité soutient maintenant le projet citoyen %s', $citizenProject->getName()), trim($flash->text()));
+        $this->assertSame(sprintf('Votre comité %s soutient maintenant le projet citoyen %s',
+            $committee->getName(),
+            $citizenProject->getName()
+        ), trim($flash->text()));
 
         $this->manager->clear();
         $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
@@ -260,7 +263,10 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
         $flash = $crawler->filter('#notice-flashes');
         $this->assertCount(1, $flash);
-        $this->assertSame(sprintf('Votre comité soutient maintenant le projet citoyen %s', $citizenProject->getName()), trim($flash->text()));
+        $this->assertSame(sprintf('Votre comité %s soutient maintenant le projet citoyen %s',
+            $committee->getName(),
+            $citizenProject->getName()
+        ), trim($flash->text()));
 
         $this->manager->clear();
         $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
