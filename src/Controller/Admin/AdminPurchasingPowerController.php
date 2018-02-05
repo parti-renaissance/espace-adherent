@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\PurchasingPowerChoice;
 use AppBundle\Entity\PurchasingPowerInvitation;
+use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -29,10 +30,7 @@ class AdminPurchasingPowerController extends Controller
         $choices = $this->getDoctrine()->getRepository(PurchasingPowerChoice::class)->findAll();
         $exported = $this->get('app.purchasing_power.serializer.serializer')->serializeChoices($choices);
 
-        return new Response($exported, 200, [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="purchasing-power-choices.csv"',
-        ]);
+        return new SnappyResponse($exported, 'purchasing-power-choices.csv', 'text/csv');
     }
 
     /**

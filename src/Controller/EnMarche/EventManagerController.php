@@ -11,6 +11,7 @@ use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\ContactMembersType;
 use AppBundle\Form\EventCommandType;
+use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -123,10 +124,7 @@ class EventManagerController extends Controller
 
         $exported = $this->get('app.event.registration_exporter')->export($registrations);
 
-        return new Response($exported, 200, [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="inscrits-a-l-evenement.csv"',
-        ]);
+        return new SnappyResponse($exported, 'inscrits-a-l-evenement.csv', 'text/csv');
     }
 
     /**
@@ -212,10 +210,8 @@ class EventManagerController extends Controller
             return [];
         }
 
-        $repository = $this->getDoctrine()->getRepository(EventRegistration::class);
-
         try {
-            $registrations = $repository->findByUuidAndEvent($event, $uuids);
+            $registrations = $this->getDoctrine()->getRepository(EventRegistration::class)->findByEventAndUuid($event, $uuids);
         } catch (InvalidUuidException $e) {
             throw new BadUuidRequestException($e);
         }

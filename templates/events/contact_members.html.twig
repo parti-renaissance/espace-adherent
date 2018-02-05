@@ -85,7 +85,7 @@
 
                 {{ form_start(form) }}
 
-                    <input type="hidden" name="contacts" value="{{ contacts|json_encode }}" />
+                    {{ form_widget(form.contacts, { value: contacts|json_encode }) }}
 
                     <div class="form__row subject">
                         {{ form_label(form.subject, 'Objet') }}

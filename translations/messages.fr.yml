@@ -95,6 +95,10 @@ citizen_action.creation.success: Votre action citoyenne a bien été crée.
 citizen_action.update.success: Votre action citoyenne a bien été mise à jour.
 citizen_action.participants_count: '%count% inscrit|%count% inscrits'
 citizen_action.registration.success: Votre inscription est confirmée.
+citizen_action.cancel.success: L'action citoyenne a bien été annulée.
+citizen_action.contact.none: Vous n'avez sélectionné aucun inscrit à contacter.
+citizen_action.contact.success: Félicitations, votre message a bien été envoyé aux inscrits sélectionnés.
+citizen_action.export.none: Aucun inscrit à l'initiative citoyenne n'a été trouvé.
 
 #
 # Summary

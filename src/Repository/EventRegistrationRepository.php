@@ -34,11 +34,18 @@ class EventRegistrationRepository extends EntityRepository
      *
      * @return EventRegistration[]
      */
-    public function findByUuidAndEvent(BaseEvent $event, array $uuids): array
+    public function findByEventAndUuid(BaseEvent $event, array $uuids): array
     {
         self::validUuids($uuids);
 
         return $this->findBy(['event' => $event, 'uuid' => $uuids]);
+    }
+
+    public function getByEventAndUuid(BaseEvent $event, array $uuids): EventRegistrationCollection
+    {
+        self::validUuids($uuids);
+
+        return $this->createEventRegistrationCollection($this->findBy(['event' => $event, 'uuid' => $uuids]));
     }
 
     public function findAdherentRegistration(string $eventUuid, string $adherentUuid): ?EventRegistration

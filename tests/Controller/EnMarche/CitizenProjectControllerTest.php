@@ -569,7 +569,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
     {
         $this->assertCount(2, $actions = $this->client->getCrawler()->filter('.citizen-project-next-actions ul'), 'There should be 2 next actions');
         $this->assertRegExp('~Projet citoyen #3\n.+1 inscrit\(s\)~', $actions->first()->filter('li')->eq(1)->text());
-        $this->assertRegExp('~Projet citoyen Paris-18\n.+1 inscrit\(s\)~', $actions->last()->filter('li')->eq(1)->text());
+        $this->assertRegExp('~Projet citoyen Paris-18\n.+2 inscrit\(s\)~', $actions->last()->filter('li')->eq(1)->text());
     }
 
     private function assertSeeComments(array $comments): void

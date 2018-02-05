@@ -123,6 +123,11 @@ class EventRegistration
         return \DateTimeImmutable::createFromMutable($this->event->getBeginAt());
     }
 
+    public function getFullName(): string
+    {
+        return $this->firstName.' '.$this->lastName;
+    }
+
     public function matches(BaseEvent $event, Adherent $adherent = null): bool
     {
         if (!$this->event->equals($event)) {

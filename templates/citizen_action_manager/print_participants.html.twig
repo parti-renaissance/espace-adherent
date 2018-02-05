@@ -2,5 +2,5 @@
 
 {% block content %}
     <p class="text--bold">Liste des participants</p>
-    {% include 'events/_member_list.html.twig' with { registrations: registrations } only %}
+    {% include 'citizen_action/_participants_list.html.twig' with { participants: participants, is_host: true } only %}
 {% endblock %}

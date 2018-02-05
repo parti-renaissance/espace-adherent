@@ -48,11 +48,11 @@ class CitizenActionController extends Controller
     public function attendAction(Request $request, CitizenAction $citizenAction): Response
     {
         if ($citizenAction->isFinished()) {
-            throw $this->createNotFoundException(sprintf('Event "%s" is finished and does not accept registrations anymore', $citizenAction->getUuid()));
+            throw $this->createNotFoundException(sprintf('CitizenAction "%s" is finished and does not accept registrations anymore', $citizenAction->getUuid()));
         }
 
         if ($citizenAction->isCancelled()) {
-            throw $this->createNotFoundException(sprintf('Event "%s" is cancelled and does not accept registrations anymore', $citizenAction->getUuid()));
+            throw $this->createNotFoundException(sprintf('CitizenAction "%s" is cancelled and does not accept registrations anymore', $citizenAction->getUuid()));
         }
 
         $command = new EventRegistrationCommand($citizenAction, $this->getUser());
@@ -146,11 +146,11 @@ class CitizenActionController extends Controller
      */
     public function listParticipantsAction(CitizenAction $citizenAction, CitizenActionManager $citizenActionManager): Response
     {
-        $registrations = $citizenActionManager->populateRegistrationWithAdherentsInformations($citizenActionManager->getRegistrations($citizenAction));
+        $participants = $citizenActionManager->populateRegistrationWithAdherentsInformations($citizenActionManager->getRegistrations($citizenAction));
 
         return $this->render('citizen_action/list_participants.html.twig', [
             'citizen_action' => $citizenAction,
-            'participants' => $registrations,
+            'participants' => $participants,
         ]);
     }
 }
