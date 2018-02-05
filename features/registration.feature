@@ -53,16 +53,15 @@ Feature:
     When I am on "/adhesion"
     Then I should not see "Bienvenue ! Votre e-mail est confirmé."
 
-    Given I fill in hidden field "become_adherent_address_city" with "06000-6088"
     And I fill in the following:
-      | become_adherent[address][address]    |    |
-      | become_adherent[address][cityName]   |    |
-      | become_adherent[address][postalCode] |    |
-      | become_adherent[gender]              |    |
-      | become_adherent[phone][number]       |    |
-      | become_adherent[birthdate][day]      |    |
-      | become_adherent[birthdate][month]    |    |
-      | become_adherent[birthdate][year]     |    |
+      | become_adherent[address][address]    |  |
+      | become_adherent[address][cityName]   |  |
+      | become_adherent[address][postalCode] |  |
+      | become_adherent[gender]              |  |
+      | become_adherent[phone][number]       |  |
+      | become_adherent[birthdate][day]      |  |
+      | become_adherent[birthdate][month]    |  |
+      | become_adherent[birthdate][year]     |  |
     When I press "J'adhère"
     Then I should see 6 ".form__error" elements
     And I should see "L'adresse est obligatoire."
@@ -75,7 +74,7 @@ Feature:
     When I fill in hidden field "become_adherent_address_city" with "06000-6088"
     And I fill in the following:
       | become_adherent[address][address]    | 1 rue de l'egalite |
-      | become_adherent[address][cityName]   | Nice, France       |
+      | become_adherent[address][cityName]   | Nice               |
       | become_adherent[address][postalCode] | 06000              |
       | become_adherent[gender]              | male               |
       | become_adherent[phone][country]      | FR                 |
@@ -117,6 +116,52 @@ Feature:
     And the "adherent[birthdate][day]" field should contain "1"
     And the "adherent[birthdate][month]" field should contain "1"
     And the "adherent[birthdate][year]" field should contain "1980"
+
+  Scenario: I can become adherent with a foreign country
+    Given the following fixtures are loaded:
+      | LoadUserData |
+    And I am logged as "simple-user@example.ch"
+    And I am on "/adhesion"
+    And I fill in the following:
+      | become_adherent[address][address]    | 32 Zeppelinstrasse |
+      | become_adherent[address][postalCode] | 8057               |
+      | become_adherent[gender]              | male               |
+      | become_adherent[phone][number]       | 06 12 34 56 78     |
+      | become_adherent[birthdate][day]      | 1                  |
+      | become_adherent[birthdate][month]    | 1                  |
+      | become_adherent[birthdate][year]     | 1980               |
+    When I press "J'adhère"
+    Then I should see "Veuillez renseigner une ville."
+
+    Given I fill in the following:
+      | become_adherent[address][cityName] | Zürich |
+    When I press "J'adhère"
+    Then I should be on "/espace-adherent/accueil"
+    And I should see "Votre compte adhérent est maintenant actif."
+
+  Scenario: I can become adherent with a french address
+    Given the following fixtures are loaded:
+      | LoadUserData |
+    And I am logged as "simple-user@example.ch"
+    And I am on "/adhesion"
+    And I fill in the following:
+      | become_adherent[address][country]    | FR                  |
+      | become_adherent[address][address]    | 1 rue des alouettes |
+      | become_adherent[gender]              | male                |
+      | become_adherent[phone][number]       | 06 12 34 56 78      |
+      | become_adherent[birthdate][day]      | 1                   |
+      | become_adherent[birthdate][month]    | 1                   |
+      | become_adherent[birthdate][year]     | 1980                |
+    When I press "J'adhère"
+    Then I should see "Veuillez renseigner une ville."
+
+    Given I fill in the following:
+      | become_adherent[address][postalCode] | 69001    |
+      | become_adherent[address][cityName]   | Lyon 1er |
+    And I fill in hidden field "become_adherent_address_city" with "69001-6088"
+    When I press "J'adhère"
+    Then I should be on "/espace-adherent/accueil"
+    And I should see "Votre compte adhérent est maintenant actif."
 
   Scenario: I have great error message when register is misfiled
     Given I am on "/inscription"

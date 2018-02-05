@@ -24,13 +24,11 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
         // Create adherent users list
         $user1 = $adherentFactory->createFromArray([
             'uuid' => self::USER_1_UUID,
-            'password' => 'enmarche',
+            'password' => LoadAdherentData::DEFAULT_PASSWORD,
             'email' => 'simple-user@example.ch',
-            'gender' => 'female',
             'first_name' => 'Simple',
             'last_name' => 'User',
-            'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', 47.3950786, 8.5361402),
-            'birthdate' => '1972-11-24',
+            'address' => PostAddress::createForeignAddress('CH', '8057', null, ''),
             'isAdherent' => false,
         ]);
         $key1 = AdherentActivationToken::generate($user1);

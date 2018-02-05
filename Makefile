@@ -199,7 +199,7 @@ up:
 	$(FIG) up -d --remove-orphans
 
 perm:
-	-$(EXEC) chmod -R 777 var
+	-$(EXEC) chmod -R 777 var app/data/images
 	-$(EXEC) chown www-data:root var/public.key var/private.key
 	-$(EXEC) chmod 660 var/public.key var/private.key
 
