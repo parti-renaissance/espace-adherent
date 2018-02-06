@@ -6,7 +6,6 @@ use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use AppBundle\Validator\UniqueMembership as AssertUniqueMembership;
-use AppBundle\ValueObject\Genders;
 use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberUtil;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
@@ -106,9 +105,6 @@ class MembershipRequest implements MembershipInterface
 
     public function __construct()
     {
-        $this->gender = Genders::MALE;
-        $this->position = ActivityPositions::EMPLOYED;
-        $this->emailAddress = '';
         $this->address = new Address();
     }
 
@@ -165,7 +161,7 @@ class MembershipRequest implements MembershipInterface
 
     public function getEmailAddress(): string
     {
-        return $this->emailAddress;
+        return $this->emailAddress ?: '';
     }
 
     public function setPhone(PhoneNumber $phone = null): void
