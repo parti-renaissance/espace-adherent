@@ -595,5 +595,14 @@
 
         <service autowire="true" public="false" id="AppBundle\Form\DataTransformer\CommitteeTransformer"/>
 
+
+        <service id="app.admin.postal_code_filter_extension" class="AppBundle\Admin\Extension\PostalCodeFilterAdminExtension">
+            <tag name="sonata.admin.extension" target="app.admin.committee" />
+            <tag name="sonata.admin.extension" target="app.admin.event" />
+            <tag name="sonata.admin.extension" target="app.admin.citizen_project" />
+            <tag name="sonata.admin.extension" target="app.admin.citizen_action" />
+            <tag name="sonata.admin.extension" target="app.admin.adherent" />
+        </service>
+
     </services>
 </container>
