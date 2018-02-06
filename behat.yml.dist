@@ -3,6 +3,8 @@ default:
         default:
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
+                - Behatch\Context\BrowserContext:
+                    timeout: 3
                 - FixtureContext:
                     manager: "@doctrine.orm.default_entity_manager"
                 - RestContext
@@ -39,5 +41,3 @@ ci:
                 javascript:
                     selenium2:
                         wd_host: http://127.0.0.1:4444/wd/hub
-    formatters:
-        junit: [behat/reports/]

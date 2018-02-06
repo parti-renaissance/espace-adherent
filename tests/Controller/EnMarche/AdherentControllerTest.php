@@ -194,14 +194,13 @@ class AdherentControllerTest extends MysqlWebTestCase
         $errors = $crawler->filter('.form__errors > li');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertSame(7, $errors->count());
+        $this->assertSame(6, $errors->count());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
         $this->assertSame('Veuillez renseigner un code postal.', $errors->eq(2)->text());
-        $this->assertSame('Veuillez renseigner une ville.', $errors->eq(3)->text());
-        $this->assertSame('L\'adresse est obligatoire.', $errors->eq(4)->text());
-        $this->assertSame('Le numéro de téléphone est obligatoire.', $errors->eq(5)->text());
-        $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(6)->text());
+        $this->assertSame('L\'adresse est obligatoire.', $errors->eq(3)->text());
+        $this->assertSame('Le numéro de téléphone est obligatoire.', $errors->eq(4)->text());
+        $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(5)->text());
 
         $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
 
