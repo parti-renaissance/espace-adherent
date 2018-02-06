@@ -1,8 +1,8 @@
 #
 # Common
 #
-common.gender.mister: Monsieur
-common.gender.miss: Madame
+common.gender.man: Homme
+common.gender.woman: Femme
 common.email_address: Adresse email
 common.zip_code: Code postal
 common.show_more: Voir plus
