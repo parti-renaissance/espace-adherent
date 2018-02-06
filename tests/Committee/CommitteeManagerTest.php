@@ -15,6 +15,7 @@ use Tests\AppBundle\TestHelperTrait;
 
 /**
  * @group functional
+ * @group committeeManager
  */
 class CommitteeManagerTest extends MysqlWebTestCase
 {

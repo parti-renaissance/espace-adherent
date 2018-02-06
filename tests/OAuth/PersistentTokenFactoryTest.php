@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
 /**
- * @group time-sentitive
+ * @group time-sensitive
  */
 class PersistentTokenFactoryTest extends TestCase
 {

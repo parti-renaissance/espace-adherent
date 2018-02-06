@@ -15,6 +15,7 @@ use Tests\AppBundle\TestHelperTrait;
 
 /**
  * @group functional
+ * @group committee
  */
 class CommitteeFeedManagerTest extends SqliteWebTestCase
 {

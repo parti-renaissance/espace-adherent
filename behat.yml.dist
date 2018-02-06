@@ -34,11 +34,3 @@ default:
                             version: ''
                         wd_host: http://selenium:4444/wd/hub
         Behatch\Extension: ~
-
-ci:
-    extensions:
-        Behat\MinkExtension:
-            sessions:
-                javascript:
-                    selenium2:
-                        wd_host: http://127.0.0.1:4444/wd/hub
