@@ -586,5 +586,18 @@
             <tag name="sonata.admin.extension" target="app.admin.adherent" />
         </service>
 
+        <service id="app.admin.remove_create_action_extension" class="AppBundle\Admin\Extension\RemoveCreateActionAdminExtension">
+            <tag name="sonata.admin.extension" target="app.admin.adherent" />
+            <tag name="sonata.admin.extension" target="app.admin.citizen_action" />
+            <tag name="sonata.admin.extension" target="app.admin.citizen_project" />
+            <tag name="sonata.admin.extension" target="app.admin.committee" />
+            <tag name="sonata.admin.extension" target="app.admin.email" />
+            <tag name="sonata.admin.extension" target="app.admin.unregistration" />
+            <tag name="sonata.admin.extension" target="app.admin.purchasing_power_invitation" />
+            <tag name="sonata.admin.extension" target="app.admin.summary" />
+            <tag name="sonata.admin.extension" target="app.admin.ton_macron_friend_invitation" />
+            <tag name="sonata.admin.extension" target="app.admin.procuration_proxy" />
+        </service>
+
     </services>
 </container>

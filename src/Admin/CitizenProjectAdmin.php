@@ -14,7 +14,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
@@ -74,11 +73,6 @@ class CitizenProjectAdmin extends AbstractAdmin
         }
 
         return parent::getTemplate($name);
-    }
-
-    protected function configureRoutes(RouteCollection $collection)
-    {
-        $collection->remove('create');
     }
 
     protected function configureShowFields(ShowMapper $showMapper)

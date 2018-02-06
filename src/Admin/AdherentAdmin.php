@@ -18,7 +18,6 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
-use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\DateRangePickerType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
@@ -48,11 +47,6 @@ class AdherentAdmin extends AbstractAdmin
         }
 
         return parent::getTemplate($name);
-    }
-
-    protected function configureRoutes(RouteCollection $collection)
-    {
-        $collection->remove('create');
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
