@@ -83,7 +83,7 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $adherent = $this->getAdherentRepository()->findOneByEmail('jean-paul@dupont.tld');
         $this->assertInstanceOf(Adherent::class, $adherent);
-        $this->assertSame('male', $adherent->getGender());
+        $this->assertNull($adherent->getGender());
         $this->assertSame('Jean-Paul', $adherent->getFirstName());
         $this->assertSame('Dupont', $adherent->getLastName());
         $this->assertEmpty($adherent->getAddress());
@@ -94,6 +94,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertTrue($adherent->getComEmail());
         $this->assertNull($adherent->getLatitude());
         $this->assertNull($adherent->getLongitude());
+        $this->assertNull($adherent->getPosition());
 
         /** @var Adherent $adherent */
         $this->assertInstanceOf(
