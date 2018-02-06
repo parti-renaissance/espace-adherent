@@ -6,6 +6,9 @@ use AppBundle\Entity\Redirection;
 use AppBundle\Redirection\Dynamic\RedirectionManager;
 use Tests\AppBundle\MysqlWebTestCase;
 
+/**
+ * @group functional
+ */
 class RedirectionManagerTest extends MysqlWebTestCase
 {
     public function testSimpleResolveRedirection(): void

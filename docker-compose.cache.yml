@@ -1,0 +1,9 @@
+version: "3.2"
+
+services:
+    app:
+        image: ${APP_DOCKER_IMAGE_NAME}:${APP_DOCKER_IMAGE_MD5}
+        build:
+            cache_from:
+                - ${APP_DOCKER_IMAGE_NAME}:${APP_DOCKER_IMAGE_MD5}
+                - ${APP_DOCKER_IMAGE_NAME}:dev

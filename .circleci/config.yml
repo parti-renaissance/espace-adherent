@@ -1,0 +1,207 @@
+version: 2
+
+references:
+    working_directory: &working_directory
+        working_directory: ~/app
+
+    attach_workspace: &attach_workspace
+        attach_workspace:
+            at: ~/app
+
+    configure_base: &configure_base
+        environment:
+            - DOCKER_COMPOSE: "docker-compose -f docker-compose.yml -f docker-compose.cache.yml"
+        machine:
+            enabled: true
+            image: circleci/classic:201711-01
+
+    generate_docker_hashes: &generate_docker_hashes
+        run: |
+            test -e docker-dev.md5 || find docker/dev -type f -exec md5sum {} \; | sort -k 2 > docker-dev.md5
+            echo 'export APP_DOCKER_IMAGE_NAME=eu.gcr.io/${GCLOUD_PROJECT}/app' >> $BASH_ENV
+            echo 'export APP_DOCKER_IMAGE_MD5=$(md5sum docker-dev.md5 | cut -f1 -d" ")' >> $BASH_ENV
+
+    authenticate_on_registry_and_build_docker_images: &authenticate_on_registry_and_build_docker_images
+        run: |
+            set -x
+
+            echo $GCLOUD_SERVICE_KEY | base64 --decode > $HOME/gcloud-service-key.json && cp $HOME/gcloud-service-key.json ./gcloud-service-key.json
+            gcloud auth activate-service-account --key-file $HOME/gcloud-service-key.json
+            gcloud config set project $GCLOUD_PROJECT
+
+            gcloud docker -- pull $APP_DOCKER_IMAGE_NAME:$APP_DOCKER_IMAGE_MD5 || true
+            make build
+
+    configure_hosts: &configure_hosts
+        run: |
+            echo 127.0.0.1 test.enmarche.code | sudo tee -a /etc/hosts
+            echo 127.0.0.1 test.m.enmarche.code | sudo tee -a /etc/hosts
+            echo 127.0.0.1 test.legislatives.enmarche.code | sudo tee -a /etc/hosts
+
+    start_containers: &start_containers
+        run: |
+            set -x
+
+            make up
+            $DOCKER_COMPOSE exec app phpdismod xdebug
+            $DOCKER_COMPOSE restart app
+
+            $DOCKER_COMPOSE exec app bin/console --env=test_mysql cache:clear --no-warmup
+            $DOCKER_COMPOSE exec app bin/console --env=test_mysql cache:warmup
+            make perm
+
+jobs:
+    build:
+        <<: *working_directory
+        <<: *configure_base
+        steps:
+            - checkout
+
+            - restore_cache:
+                  key: composer-{{ checksum "composer.lock" }}
+            - restore_cache:
+                  key: npm-{{ checksum "yarn.lock" }}
+
+            - *generate_docker_hashes
+            - *authenticate_on_registry_and_build_docker_images
+            - run: |
+                set -x
+
+                make assets-prod assets-amp deps node_modules var/public.key
+                gcloud docker -- push $APP_DOCKER_IMAGE_NAME:$APP_DOCKER_IMAGE_MD5
+                gcloud container images add-tag $APP_DOCKER_IMAGE_NAME:$APP_DOCKER_IMAGE_MD5 $APP_DOCKER_IMAGE_NAME:dev --quiet
+
+            - save_cache:
+                  paths:
+                      - ./vendor
+                  key: composer-{{ checksum "composer.lock" }}
+            - save_cache:
+                  paths:
+                      - ./node_modules
+                  key: npm-{{ checksum "yarn.lock" }}
+
+            - persist_to_workspace:
+                  root: ./
+                  paths:
+                      - ./
+
+    lint:
+        <<: *working_directory
+        <<: *configure_base
+        steps:
+            - *attach_workspace
+            - *generate_docker_hashes
+            - *authenticate_on_registry_and_build_docker_images
+            - run: |
+                set -x
+
+                make ls ly lt lj
+                make security-check
+
+                COMMIT_RANGE=$(echo "${CIRCLE_COMPARE_URL}" | cut -d/ -f7)
+                # Fix single commit
+                if [[ $COMMIT_RANGE != *"..."* ]]; then
+                  COMMIT_RANGE="${COMMIT_RANGE}~...${COMMIT_RANGE}"
+                fi
+                echo "${COMMIT_RANGE}"
+                CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB "${COMMIT_RANGE}" --)
+                echo "${CHANGED_FILES}"
+                if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php_cs(\\.dist)?|composer\\.lock)$"; then IFS=$'\n' EXTRA_ARGS=('--path-mode=intersection' '--' ${CHANGED_FILES[@]}); fi
+                $DOCKER_COMPOSE exec app vendor/bin/php-cs-fixer fix --dry-run --no-interaction -v --using-cache=no "${EXTRA_ARGS[@]}"
+
+    phpunit:
+        <<: *working_directory
+        <<: *configure_base
+        parallelism: 3
+        steps:
+            - *attach_workspace
+            - *generate_docker_hashes
+            - *authenticate_on_registry_and_build_docker_images
+            - *configure_hosts
+            - *start_containers
+            - run: |
+                set -x
+
+                mkdir -p ./phpunit
+                make tfp-rabbitmq tfp-db
+
+                GROUP1='adherent,amp,article,boardMember,citizenProject,referent,summary'
+                GROUP2='committee,committeeManager,coordinator,documents,donation,eventManager,explainer,facebook,home,invitation,legislatives,jeMarche,map,membership'
+
+                case $CIRCLE_NODE_INDEX in
+                    0)
+                        $DOCKER_COMPOSE exec app ./vendor/bin/phpunit --group $GROUP1 --log-junit ./phpunit/junit.xml
+                        ;;
+                    1)
+                        $DOCKER_COMPOSE exec app ./vendor/bin/phpunit --group $GROUP2 --log-junit ./phpunit/junit.xml
+                        ;;
+                    2)
+                        $DOCKER_COMPOSE exec app ./vendor/bin/phpunit --exclude-group $GROUP1,$GROUP2 --log-junit ./phpunit/junit.xml
+                        ;;
+
+                    *)
+                        echo "Too many parallelism instances configured\n"
+                        exit 1
+                esac
+            - store_test_results:
+                path: ./phpunit
+
+    behat:
+        <<: *working_directory
+        <<: *configure_base
+        steps:
+            - *attach_workspace
+            - *generate_docker_hashes
+            - *authenticate_on_registry_and_build_docker_images
+            - *configure_hosts
+            - *start_containers
+            - run: |
+                set -x
+
+                mkdir -p ./behat
+                make tfp-rabbitmq tfp-db
+
+                $DOCKER_COMPOSE exec app ./vendor/bin/behat -vvv --colors -f progress -o std -f junit -o ./behat --
+            - store_test_results:
+                path: ./behat
+
+    deployment:
+        <<: *working_directory
+        docker:
+            - image: google/cloud-sdk
+        steps:
+            - checkout
+            - setup_remote_docker
+            - run: |
+                set -x
+
+                bash scripts/build.sh ${CIRCLE_BRANCH}
+                bash scripts/deployment.sh ${CIRCLE_BRANCH}
+
+workflows:
+    version: 2
+    build_test_deploy:
+        jobs:
+          - build
+
+          - lint:
+              requires:
+                - build
+          - phpunit:
+              requires:
+                - build
+          - behat:
+              requires:
+                - build
+
+          - deployment:
+              requires:
+                - phpunit
+                - behat
+                - lint
+              filters:
+                branches:
+                  only:
+                    - develop
+                    - release
+                    - master

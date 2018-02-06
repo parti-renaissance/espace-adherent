@@ -9,8 +9,7 @@ services:
                 aliases:
                     - test.enmarche.code
                     - enmarche.code
-        build:
-            context: docker/dev
+        build: docker/dev
         depends_on:
             - db
             - redis
@@ -30,8 +29,7 @@ services:
     ####################
     selenium:
         image: selenium/standalone-firefox-debug:2.53.1
-        volumes:
-            - ./:/app
+        shm_size: 2g
 
     ## common
     ####################
