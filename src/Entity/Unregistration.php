@@ -63,7 +63,7 @@ class Unregistration
     public function __construct(
         UuidInterface $uuid,
         array $reasons,
-        string $comment,
+        ?string $comment,
         \DateTime $registeredAt,
         string $postalCode = null
     ) {
