@@ -5,9 +5,11 @@ namespace Test\AppBundle\Sitemap;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
 use AppBundle\Entity\OrderArticle;
+use AppBundle\Entity\Page;
 use AppBundle\Repository\ArticleCategoryRepository;
 use AppBundle\Repository\ArticleRepository;
 use AppBundle\Repository\OrderArticleRepository;
+use AppBundle\Repository\PageRepository;
 use AppBundle\Sitemap\SitemapFactory;
 use Doctrine\Common\Persistence\ObjectManager;
 use Psr\Cache\CacheItemInterface;
@@ -128,12 +130,20 @@ class SitemapFactoryTest extends TestCase
             ->willReturn([])
         ;
 
+        $pageRepository = $this->createMock(PageRepository::class);
+        $pageRepository
+            ->expects($this->any())
+            ->method('findAll')
+            ->willReturn([])
+        ;
+
         $this->objectManager
             ->method('getRepository')
             ->will($this->returnValueMap([
                 [ArticleCategory::class, $categoriesRepository],
                 [Article::class, $articleRepository],
                 [OrderArticle::class, $orderArticleRepository],
+                [Page::class, $pageRepository],
             ]))
         ;
     }
