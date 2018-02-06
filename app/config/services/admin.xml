@@ -44,10 +44,6 @@
             <argument />
             <argument>AppBundle\Entity\Article</argument>
             <argument />
-
-            <call method="setMarkdown">
-                <argument type="service" id="League\CommonMark\CommonMarkConverter" />
-            </call>
         </service>
 
         <service id="app.admin.page" class="AppBundle\Admin\PageAdmin">
@@ -56,10 +52,6 @@
             <argument />
             <argument>AppBundle\Entity\Page</argument>
             <argument />
-
-            <call method="setMarkdown">
-                <argument type="service" id="League\CommonMark\CommonMarkConverter" />
-            </call>
         </service>
 
         <service id="app.admin.facebook_video" class="AppBundle\Admin\FacebookVideoAdmin">
@@ -136,10 +128,6 @@
             <argument />
             <argument>AppBundle\Entity\Proposal</argument>
             <argument />
-
-            <call method="setMarkdown">
-                <argument type="service" id="League\CommonMark\CommonMarkConverter" />
-            </call>
         </service>
 
         <service id="app.admin.order_section" class="AppBundle\Admin\OrderSectionAdmin">
@@ -156,10 +144,6 @@
             <argument />
             <argument>AppBundle\Entity\OrderArticle</argument>
             <argument />
-
-            <call method="setMarkdown">
-                <argument type="service" id="League\CommonMark\CommonMarkConverter" />
-            </call>
         </service>
 
         <service id="app.admin.facebook_profile" class="AppBundle\Admin\FacebookProfileAdmin">
@@ -594,6 +578,15 @@
             <tag name="sonata.admin.extension" target="app.admin.timeline_profile" />
             <tag name="sonata.admin.extension" target="app.admin.timeline_theme" />
             <tag name="sonata.admin.extension" target="app.admin.timeline_measure" />
+        </service>
+
+        <service id="app.admin.amp_synchronised_extension" class="AppBundle\Admin\Extension\AmpSynchronisedAdminExtension">
+            <argument type="service" id="AppBundle\Form\EventListener\AmpSynchronisedListener" />
+
+            <tag name="sonata.admin.extension" target="app.admin.article" />
+            <tag name="sonata.admin.extension" target="app.admin.page" />
+            <tag name="sonata.admin.extension" target="app.admin.proposal" />
+            <tag name="sonata.admin.extension" target="app.admin.order_article" />
         </service>
 
         <service id="app.admin.postal_code_filter_extension" class="AppBundle\Admin\Extension\PostalCodeFilterAdminExtension">

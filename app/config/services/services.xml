@@ -48,6 +48,7 @@
         <!-- Form -->
         <service id="AppBundle\Form\CitizenProjectCommentCommandType"/>
         <service id="AppBundle\Form\CitizenProjectCommandType"/>
+        <service id="AppBundle\Form\EventListener\AmpSynchronisedListener"/>
         <service id="AppBundle\Form\EventRegistrationType"/>
 
 		<!-- GeoCoder -->
