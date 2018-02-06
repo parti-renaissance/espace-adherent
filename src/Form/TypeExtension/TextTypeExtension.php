@@ -16,6 +16,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TextTypeExtension extends AbstractTypeExtension
 {
+    public function getExtendedType()
+    {
+        return TextType::class;
+    }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
@@ -58,14 +63,7 @@ class TextTypeExtension extends AbstractTypeExtension
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        if (isset($options['with_character_count'])) {
-            $view->vars['with_character_count'] = $options['with_character_count'];
-        }
-    }
-
-    public function getExtendedType()
-    {
-        return TextType::class;
+        $view->vars['with_character_count'] = $options['with_character_count'];
     }
 
     public static function filterEmojis(FormEvent $event): void
@@ -107,7 +105,7 @@ class TextTypeExtension extends AbstractTypeExtension
     public static function formatTitleCase(string $string): string
     {
         // Here we just ensure the first character is uppercase, the rest is left as is
-        return \ucfirst($string);
+        return \mb_strtoupper($string[0]).\substr($string, 1);
     }
 
     public static function formatIdentityCase(string $string): string

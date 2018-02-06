@@ -94,7 +94,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         // Submit the committee form with valid data to create committee
         $this->client->submit($crawler->selectButton('Enregistrer')->form([
             'committee' => [
-                'name' => 'Clichy est En Marche !',
+                'name' => 'clichy est En Marche !',
                 'description' => 'Comité français En Marche ! de la ville de Clichy',
                 'address' => [
                     'country' => 'FR',
@@ -115,7 +115,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertContains('Les informations du comité ont été mises à jour avec succès.', $crawler->filter('#notice-flashes')->text());
-        $this->assertSame('Clichy Est En Marche !', $crawler->filter('#committee_name')->attr('value'));
+        $this->assertSame('Clichy est En Marche !', $crawler->filter('#committee_name')->attr('value'));
         $this->assertSame('Comité français En Marche ! de la ville de Clichy', $crawler->filter('#committee_description')->text());
     }
 
@@ -230,7 +230,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         // Submit the committee form with valid data to create the new committee event
         $this->client->submit($crawler->selectButton('Créer cet événement')->form([
             'committee_event' => [
-                'name' => " ♻ DéBaT sur l'agriculture écologique ♻ ",
+                'name' => " ♻ débat sur l'agriculture écologique ♻ ",
                 'description' => " ♻ Cette journée sera consacrée à un grand débat sur la question de l'agriculture écologique. ♻ ",
                 'category' => $eventCategory,
                 'address' => [
@@ -267,7 +267,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertInstanceOf(Event::class, $event = $this->committeeEventRepository->findMostRecentEvent());
-        $this->assertSame("Débat Sur L'agriculture Écologique", $event->getName());
+        $this->assertSame("Débat sur l'agriculture écologique", $event->getName());
         $this->assertSame(('Cette journée sera consacrée à un grand débat sur la question de l&#039;agriculture écologique.'), $event->getDescription());
         $this->assertFalse($event->isForLegislatives());
         $this->assertCountMails(1, EventNotificationMessage::class, 'jacques.picard@en-marche.fr');
@@ -283,8 +283,8 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertContains('Le nouvel événement a bien été créé et publié sur la page du comité.', $crawler->filter('#notice-flashes')->text());
-        $this->assertSame('Débat Sur L\'agriculture Écologique | En Marche !', $crawler->filter('title')->text());
-        $this->assertSame('Débat Sur L\'agriculture Écologique', $crawler->filter('.committee-event-name')->text());
+        $this->assertSame('Débat sur l\'agriculture écologique | En Marche !', $crawler->filter('title')->text());
+        $this->assertSame('Débat sur l\'agriculture écologique', $crawler->filter('.committee-event-name')->text());
         $this->assertSame('Organisé par Gisele Berthoux du comité En Marche Paris 8', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
         $this->assertSame('Mercredi 2 mars 2022, 9h30', $crawler->filter('.committee-event-date')->text());
         $this->assertSame('6 rue Neyret, 69001 Lyon 1er', $crawler->filter('.committee-event-address')->text());
