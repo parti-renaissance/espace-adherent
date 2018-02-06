@@ -188,21 +188,6 @@ class EventAdmin extends AbstractAdmin
                 'label' => 'Nom de l\'organisateur',
                 'show_filter' => true,
             ])
-            ->add('postalCode', CallbackFilter::class, [
-                'label' => 'Code postal (préfixe)',
-                'show_filter' => true,
-                'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
-                    }
-
-                    $qb->andWhere(sprintf('%s.postAddress.postalCode', $alias).' LIKE :postalCode');
-                    $qb->setParameter('postalCode', $value['value'].'%');
-
-                    return true;
-                },
-            ])
             ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',
                 'field_type' => TextType::class,
