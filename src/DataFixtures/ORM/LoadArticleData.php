@@ -36,7 +36,7 @@ class LoadArticleData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($speechCategory = new ArticleCategory('Discours', 'discours', 3));
         $manager->persist($mediasCategory = new ArticleCategory('Médias', 'medias', 4));
         $manager->persist($communiquesCategory = new ArticleCategory('Communiqués', 'communiques', 5));
-        $manager->persist($opinionsCategory = new ArticleCategory('Opinions', 'opinions', 6));
+        $manager->persist($opinionsCategory = new ArticleCategory('Opinions', 'opinions', 6, 'http://www.google.fr', 'Google link'));
 
         $manager->flush();
 

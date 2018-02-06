@@ -114,6 +114,13 @@ class ArticleControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
+    public function testDisplayCTALink()
+    {
+        $this->client->request(Request::METHOD_GET, '/articles/opinions/mes-opinions');
+
+        $this->assertContains('<a href="http://www.google.fr">Google link</a>', $this->client->getResponse()->getContent());
+    }
+
     protected function setUp()
     {
         parent::setUp();
