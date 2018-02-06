@@ -14,8 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TimelineThemeAdmin extends AbstractAdmin
 {
-    use EmptyTranslationRemoverAdminTrait;
-
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -49,8 +47,6 @@ class TimelineThemeAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
-
-        $this->removeEmptyTranslationsOnSubmit($formMapper->getFormBuilder());
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)

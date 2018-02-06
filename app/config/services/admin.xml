@@ -524,10 +524,6 @@
             <argument />
             <argument>AppBundle\Entity\Timeline\Profile</argument>
             <argument>AppBundle\Controller\Admin\AdminTimelineProfileController</argument>
-
-            <call method="setEmptyTranslationRemoverListener">
-                <argument type="service" id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener" />
-            </call>
         </service>
 
         <service id="app.admin.timeline_theme" class="AppBundle\Admin\TimelineThemeAdmin">
@@ -536,10 +532,6 @@
             <argument />
             <argument>AppBundle\Entity\Timeline\Theme</argument>
             <argument>AppBundle\Controller\Admin\AdminTimelineThemeController</argument>
-
-            <call method="setEmptyTranslationRemoverListener">
-                <argument type="service" id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener" />
-            </call>
         </service>
 
         <service id="app.admin.timeline_measure" class="AppBundle\Admin\TimelineMeasureAdmin">
@@ -548,10 +540,6 @@
             <argument />
             <argument>AppBundle\Entity\Timeline\Measure</argument>
             <argument>AppBundle\Controller\Admin\AdminTimelineMeasureController</argument>
-
-            <call method="setEmptyTranslationRemoverListener">
-                <argument type="service" id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener" />
-            </call>
         </service>
 
         <!--
@@ -594,6 +582,14 @@
 
         <service id="app.admin.algolia_indexed_entity_extension" class="AppBundle\Admin\Extension\AlgoliaIndexedEntityAdminExtension">
             <argument type="service" id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
+
+            <tag name="sonata.admin.extension" target="app.admin.timeline_profile" />
+            <tag name="sonata.admin.extension" target="app.admin.timeline_theme" />
+            <tag name="sonata.admin.extension" target="app.admin.timeline_measure" />
+        </service>
+
+        <service id="app.admin.empty_translation_remover_extension" class="AppBundle\Admin\Extension\EmptyTranslationRemoverAdminExtension">
+            <argument type="service" id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener" />
 
             <tag name="sonata.admin.extension" target="app.admin.timeline_profile" />
             <tag name="sonata.admin.extension" target="app.admin.timeline_theme" />
