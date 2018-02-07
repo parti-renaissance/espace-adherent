@@ -42,6 +42,11 @@ dependencies:
 
     override:
         - yarn install
+
+        # Try to build production JS (required for selenium tests)
+        - yarn run build-prod
+        - yarn run build-amp
+
         - composer install --no-interaction
         - bin/console rabbitmq:setup-fabric --env=test
 
@@ -71,14 +76,11 @@ test:
         # Check ORM mapping
         - ./bin/console doctrine:schema:validate --env=test_mysql
 
-        # Try to build production JS (required for selenium tests)
-        - yarn run build-prod
-
         # PHP unit and functional tests
         - mkdir -p behat/reports
         - ./vendor/bin/behat -vvv --colors --profile ci -f progress -o std -f junit -o behat/reports/ --
         - mv behat/reports/ $CIRCLE_TEST_REPORTS/behat/
-        - yarn run build-amp
+
         - case $CIRCLE_NODE_INDEX in 0) ./vendor/bin/phpunit --group $GROUP1 --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; 1) ./vendor/bin/phpunit --group $GROUP2 --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; 2) ./vendor/bin/phpunit --exclude-group $GROUP1,$GROUP2 --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml ;; esac:
             parallel: true
             environment:
