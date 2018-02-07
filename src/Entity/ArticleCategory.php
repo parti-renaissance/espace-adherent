@@ -57,11 +57,36 @@ class ArticleCategory
      */
     private $slug;
 
-    public function __construct(string $name = '', string $slug = '', int $position = 1)
-    {
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Url(checkDNS="ANY")
+     */
+    private $ctaLink;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=100, nullable=true)
+     *
+     * @Assert\Length(max="100")
+     */
+    private $ctaLabel;
+
+    public function __construct(
+        string $name = '',
+        string $slug = '',
+        int $position = 1,
+        string $ctaLink = null,
+        string $ctaLabel = null
+    ) {
         $this->name = $name;
         $this->slug = $slug;
         $this->position = $position;
+        $this->ctaLink = $ctaLink;
+        $this->ctaLabel = $ctaLabel;
     }
 
     public function __toString()
@@ -106,6 +131,30 @@ class ArticleCategory
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getCtaLink(): ?string
+    {
+        return $this->ctaLink;
+    }
+
+    public function setCtaLink(?string $ctaLink): self
+    {
+        $this->ctaLink = $ctaLink;
+
+        return $this;
+    }
+
+    public function getCtaLabel(): ?string
+    {
+        return $this->ctaLabel;
+    }
+
+    public function setCtaLabel(?string $ctaLabel): self
+    {
+        $this->ctaLabel = $ctaLabel;
 
         return $this;
     }
