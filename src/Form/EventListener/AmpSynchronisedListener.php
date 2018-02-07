@@ -28,7 +28,9 @@ class AmpSynchronisedListener implements EventSubscriberInterface
     public function setAmpContent(FormEvent $event): void
     {
         /** @var EntityContentInterface $entityContent */
-        if (!$entityContent = $event->getData()) {
+        $entityContent = $event->getData();
+
+        if (!$entityContent instanceof EntityContentInterface) {
             return;
         }
 
