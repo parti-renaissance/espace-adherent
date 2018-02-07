@@ -8,7 +8,7 @@
     {{ parent() }}
     <script type="text/javascript">
         Kernel.onLoad(function(di) {
-            {% if has_role_adherent %}
+            {% if has_role_user %}
                 var citizenProjectSlug = '{{ citizen_project.slug }}';
                 var toggleMembershipButton = dom('#citizen_project-toggle-membership');
 
@@ -57,10 +57,17 @@
                     <div class="l__row l__row--h-stretch l__mobile--col">
                         {% if citizen_project.isApproved %}
                             <div class="l__row l__mobile--col">
-                                {% if not has_role_adherent %}
-                                    <a href="{{ path('app_user_login') }}" class="newbtn newbtn--orange b__nudge--right-large">
+                                {% if not has_role_user %}
+                                    <button type="button"
+                                            class="newbtn newbtn--orange citizen-project-follow b__nudge--right-large"
+                                            disabled="disabled">
                                         Rejoindre ce projet
-                                    </a>
+                                    </button>
+
+                                    <div class="text--white text--margin-right">
+                                        <a href="{{ path('app_user_login') }}" class="link--white">Connectez-vous</a>
+                                         pour rejoindre ce projet citoyen
+                                    </div>
                                 {% elseif can_follow_citizen_project(citizen_project) %}
                                     <button type="button"
                                             id="citizen_project-toggle-membership"

@@ -342,7 +342,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->seeFlashMessage($crawler, 'Félicitations, votre message a bien été envoyé aux acteurs sélectionnés.');
     }
 
-    public function testAnonymousUserIsNotAllowedToFollowCitizenProject()
+    public function testAnonymousUserIsAllowedToFollowCitizenProject()
     {
         $committeeUrl = sprintf('/projets-citoyens/%s', 'le-projet-citoyen-a-paris-8');
 
@@ -351,6 +351,8 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
+        $this->assertFalse($this->seeRegisterLink($crawler, 0));
+        $this->assertTrue($this->seeLoginLink($crawler));
     }
 
     public function testAuthenticatedAdherentCanFollowCitizenProject()
@@ -367,6 +369,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
+        $this->assertFalse($this->seeLoginLink($crawler));
 
         // Emulate POST request to follow the committee.
         $token = $crawler->selectButton('Rejoindre ce projet')->attr('data-csrf-token');
@@ -385,6 +388,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertTrue($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
+        $this->assertFalse($this->seeLoginLink($crawler));
 
         // Emulate POST request to unfollow the committee.
         $token = $crawler->selectButton('Quitter ce projet citoyen')->attr('data-csrf-token');
@@ -400,6 +404,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
+        $this->assertFalse($this->seeLoginLink($crawler));
     }
 
     public function testFeaturedCitizenProject()
@@ -573,7 +578,9 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
     private function seeFollowLink(Crawler $crawler): bool
     {
-        return 1 === count($crawler->filter('.citizen-project-follow'));
+        $button = $crawler->selectButton('Rejoindre ce projet');
+
+        return $button->count() && !$button->attr('disabled');
     }
 
     private function seeUnfollowLink(Crawler $crawler): bool
@@ -586,6 +593,11 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertCount($nb, $crawler->filter('.citizen-project-follow--disabled'));
 
         return 1 === count($crawler->filter('#citizen-project-register-link'));
+    }
+
+    private function seeLoginLink(Crawler $crawler): bool
+    {
+        return 1 === $crawler->selectLink('Connectez-vous')->count();
     }
 
     private function seeReportLink(): bool

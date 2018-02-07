@@ -105,7 +105,7 @@
 
 {% block committee_lcol %}
     {% if committee.isApproved %}
-        {% if not has_role_adherent %}
+        {% if not has_role_user %}
             <div class="committee-follow--anonymous">
                 <button role="button"
                         class="btn btn--no-border btn--text-blue committee-follow--disabled btn--no-wrap"
@@ -115,13 +115,21 @@
                 </button>
 
                 <div class="committee-follow--anonymous__link text--white">
-                    <a href="{{ path('app_user_login') }}" id="committee-login-link" class="link--white">
-                        Connectez-vous
-                    </a>
-                    ou
-                    <a href="{{ path('app_membership_register') }}" id="committee-register-link" class="link--white">
-                        adhérez
-                    </a>
+                    <a href="{{ path('app_user_login') }}" id="committee-login-link" class="link--white">Connectez-vous</a>
+                    pour suivre ce comité
+                </div>
+            </div>
+        {% elseif not has_role_adherent %}
+            <div class="committee-follow--anonymous">
+                <button role="button"
+                        class="btn btn--no-border btn--text-blue committee-follow--disabled btn--no-wrap"
+                        style="max-width: 175px;"
+                        disabled="disabled">
+                    Suivre ce comité
+                </button>
+
+                <div class="committee-follow--anonymous__link text--white">
+                    <a href="{{ path('app_membership_join') }}" id="committee-register-link" class="link--white">Vous devez adhérer au mouvement</a>
                     pour suivre ce comité
                 </div>
             </div>
