@@ -88,7 +88,7 @@ class ReferentControllerTest extends SqliteWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-referent/evenements/creer');
 
         $data = [];
-        $data['committee_event']['name'] = 'Premier événement';
+        $data['committee_event']['name'] = 'premier événement';
         $data['committee_event']['category'] = 4;
         $data['committee_event']['beginAt']['date']['day'] = 14;
         $data['committee_event']['beginAt']['date']['month'] = 6;
@@ -110,7 +110,7 @@ class ReferentControllerTest extends SqliteWebTestCase
         $this->client->submit($this->client->getCrawler()->selectButton('Créer cet événement')->form(), $data);
 
         /** @var Event $event */
-        $event = $this->getEventRepository()->findOneBy(['name' => 'Premier Événement']);
+        $event = $this->getEventRepository()->findOneBy(['name' => 'Premier événement']);
 
         $this->assertInstanceOf(Event::class, $event);
         $this->assertClientIsRedirectedTo('/evenements/'.$event->getSlug(), $this->client);

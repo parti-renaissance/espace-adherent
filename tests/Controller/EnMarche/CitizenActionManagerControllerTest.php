@@ -105,7 +105,7 @@ class CitizenActionManagerControllerTest extends MysqlWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8/actions/creer');
 
-        $data['citizen_action']['name'] = 'Mon action citoyenne';
+        $data['citizen_action']['name'] = 'mon Action Citoyenne';
         $data['citizen_action']['description'] = 'Ma première action citoyenne';
         $data['citizen_action']['address']['address'] = '44 rue des Courcelles';
         $data['citizen_action']['address']['postalCode'] = '75008';

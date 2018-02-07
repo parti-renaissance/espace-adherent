@@ -535,8 +535,8 @@ class AdherentControllerTest extends MysqlWebTestCase
         $categoryValue = $crawler->filter('#citizen_project_category option:contains("Culture")')->attr('value');
 
         $data = [];
-        $data['citizen_project']['name'] = 'Mon projet citoyen';
-        $data['citizen_project']['subtitle'] = 'Mon premier projet citoyen avec l\'apostrophe et-des-tirets';
+        $data['citizen_project']['name'] = 'mon Projet Citoyen';
+        $data['citizen_project']['subtitle'] = 'mon premier projet citoyen';
         $data['citizen_project']['category'] = $categoryValue;
         $data['citizen_project']['problem_description'] = 'Le problème local.';
         $data['citizen_project']['proposed_solution'] = 'Ma solution.';
@@ -556,7 +556,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
         $this->assertInstanceOf(CitizenProject::class, $citizenProject);
         $this->assertSame('Mon Projet Citoyen', $citizenProject->getName());
-        $this->assertSame('Mon Premier Projet Citoyen Avec L\'apostrophe Et-Des-Tirets', $citizenProject->getSubtitle());
+        $this->assertSame('Mon premier projet citoyen', $citizenProject->getSubtitle());
         $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'carl999@example.fr'));
     }
 
@@ -634,7 +634,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         // Submit the committee form with valid data to create committee
         $this->client->submit($crawler->selectButton('Créer mon comité')->form([
-            'create_committee[name]' => 'lyon est en marche !',
+            'create_committee[name]' => 'lyon est En Marche !',
             'create_committee[description]' => 'Comité français En Marche ! de la ville de Lyon',
             'create_committee[address][country]' => 'FR',
             'create_committee[address][address]' => '6 rue Neyret',
@@ -653,7 +653,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertInstanceOf(Committee::class, $committee = $this->committeeRepository->findMostRecentCommittee());
-        $this->assertSame('Lyon Est En Marche !', $committee->getName());
+        $this->assertSame('Lyon est En Marche !', $committee->getName());
         $this->assertTrue($committee->isWaitingForApproval());
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeCreationConfirmationMessage::class, $emaiLAddress));
 
@@ -661,7 +661,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertContains('Votre comité a été créé avec succès. Il est en attente de validation par nos équipes.', $crawler->filter('#notice-flashes')->text());
-        $this->assertSame('Lyon Est En Marche !', $crawler->filter('#committee-name')->text());
+        $this->assertSame('Lyon est En Marche !', $crawler->filter('#committee-name')->text());
         $this->assertSame('Comité français En Marche ! de la ville de Lyon', $crawler->filter('#committee-description')->text());
 
         $crawler = $this->client->click($crawler->selectLink('Éditer le comité')->link());
