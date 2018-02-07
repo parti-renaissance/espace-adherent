@@ -344,6 +344,10 @@ $text--size-extra-large: 48px;
     &--light-gray {
         color: $gray;
     }
+
+    &--margin-right {
+        margin-right: 15px;
+    }
 }
 
 .link {
