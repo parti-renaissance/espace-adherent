@@ -16,13 +16,17 @@ class AssetRuntime
     private $env;
     private $hash;
 
-    public function __construct(Router $router, BaseAssetExtension $symfonyAssetExtension, string $secret, string $env, string $hash)
+    public function __construct(Router $router, BaseAssetExtension $symfonyAssetExtension, string $secret, string $env, ?string $hash)
     {
         $this->router = $router;
         $this->symfonyAssetExtension = $symfonyAssetExtension;
         $this->secret = $secret;
         $this->env = $env;
         $this->hash = $hash;
+
+        if ($env !== 'dev' && !$this->hash) {
+            throw new \RuntimeException('The "assets_hash" parameter is mandatory for all environments but dev. Please build them.');
+        }
     }
 
     public function transformedStaticAsset(string $path, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
