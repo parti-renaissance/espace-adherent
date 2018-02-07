@@ -122,17 +122,17 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     /**
      * @ORM\Column(type="boolean")
      */
-    private $mainEmailsSubscription = true;
+    private $mainEmailsSubscription = false;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $referentsEmailsSubscription = true;
+    private $referentsEmailsSubscription = false;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $localHostEmailsSubscription = true;
+    private $localHostEmailsSubscription = false;
 
     /**
      * @ORM\Column(type="integer", options={"default"=10})
@@ -143,11 +143,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $comMobile = false;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $comEmail = false;
 
     /**
      * @ORM\Column(type="boolean", options={"default": 0})
@@ -955,18 +950,21 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->comMobile = $comMobile;
     }
 
-    public function getComEmail(): ?bool
-    {
-        return $this->comEmail;
-    }
-
     public function setComEmail(?bool $comEmail): void
     {
-        $this->comEmail = $comEmail;
-
         $this->setCitizenProjectCreationEmailSubscriptionRadius(
             $comEmail ? self::CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE : self::DISABLED_CITIZEN_PROJECT_EMAIL
         );
+
+        if ($comEmail) {
+            $subscriptions = [
+                AdherentEmailSubscription::SUBSCRIBED_EMAILS_MAIN,
+                AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS,
+                AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST,
+            ];
+        }
+
+        $this->setEmailsSubscriptions($subscriptions ?? []);
     }
 
     public function getCommitteeFeedItems(): iterable

@@ -91,10 +91,13 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertSame('FR', $adherent->getCountry());
         $this->assertNull($adherent->getBirthdate());
         $this->assertFalse($adherent->getComMobile());
-        $this->assertTrue($adherent->getComEmail());
         $this->assertNull($adherent->getLatitude());
         $this->assertNull($adherent->getLongitude());
         $this->assertNull($adherent->getPosition());
+        $this->assertTrue($adherent->hasSubscribedMainEmails());
+        $this->assertTrue($adherent->hasSubscribedLocalHostEmails());
+        $this->assertTrue($adherent->hasSubscribedReferentsEmails());
+        $this->assertTrue($adherent->hasCitizenProjectCreationEmailSubscription());
 
         /** @var Adherent $adherent */
         $this->assertInstanceOf(

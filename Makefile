@@ -193,7 +193,7 @@ deps: vendor web/built
 
 build:
 	$(FIG) pull --parallel
-	$(FIG) build --pull --force-rm
+	$(FIG) build --force-rm
 
 up:
 	$(FIG) up -d --remove-orphans

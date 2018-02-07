@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Committee\Feed\CommitteeMessage;
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Form\CommitteeFeedMessageType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -72,6 +73,7 @@ class CommitteeController extends Controller
         return $this->render('committee/timeline/feed.html.twig', [
             'committee' => $committee,
             'committee_timeline' => $timeline,
+            'has_role_adherent' => $this->getUser() instanceof Adherent && $this->getUser()->isAdherent(),
         ]);
     }
 

@@ -60,14 +60,13 @@ class AdherentFactory
             $data['address'],
             $phone,
             Adherent::DISABLED,
-            isset($data['registered_at']) ? $data['registered_at'] : 'now'
+            isset($data['registered_at']) ? $data['registered_at'] : 'now',
+            true
         );
 
         if (!isset($data['isAdherent']) || $data['isAdherent']) {
             $adherent->join();
         }
-
-        $adherent->setCitizenProjectCreationEmailSubscriptionRadius(Adherent::CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE);
 
         return $adherent;
     }
