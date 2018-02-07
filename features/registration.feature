@@ -117,6 +117,12 @@ Feature:
     And the "adherent[birthdate][month]" field should contain "1"
     And the "adherent[birthdate][year]" field should contain "1980"
 
+    When I am on "/parametres/mon-compte/preferences-des-emails"
+    Then the element "Emails En Marche !" should be disabled
+    Then the element "Emails de vos référents" should be disabled
+    Then the element "Emails de votre animateur local" should be disabled
+    Then the element "Être notifié(e) de la création de nouveaux projets citoyens" should be disabled
+
   Scenario: I can become adherent with a foreign country
     Given the following fixtures are loaded:
       | LoadUserData |

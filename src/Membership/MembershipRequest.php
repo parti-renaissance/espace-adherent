@@ -131,7 +131,6 @@ class MembershipRequest implements MembershipInterface
         $dto->address = Address::createFromAddress($adherent->getPostAddress());
         $dto->phone = $adherent->getPhone();
         $dto->comMobile = $adherent->getComMobile();
-        $dto->comEmail = $adherent->getComEmail();
         $dto->emailAddress = $adherent->getEmailAddress();
 
         if (!$dto->phone) {

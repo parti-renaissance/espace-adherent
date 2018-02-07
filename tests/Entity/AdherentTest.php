@@ -54,12 +54,24 @@ class AdherentTest extends TestCase
         $adherent = $this->createAdherent();
 
         $this->assertSame(-1, $adherent->getCitizenProjectCreationEmailSubscriptionRadius());
+        $this->assertFalse($adherent->hasSubscribedMainEmails());
+        $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
+        $this->assertFalse($adherent->hasSubscribedReferentsEmails());
+        $this->assertFalse($adherent->hasCitizenProjectCreationEmailSubscription());
 
         $adherent->setComEmail(true);
         $this->assertSame(10, $adherent->getCitizenProjectCreationEmailSubscriptionRadius());
+        $this->assertTrue($adherent->hasSubscribedMainEmails());
+        $this->assertTrue($adherent->hasSubscribedLocalHostEmails());
+        $this->assertTrue($adherent->hasSubscribedReferentsEmails());
+        $this->assertTrue($adherent->hasCitizenProjectCreationEmailSubscription());
 
         $adherent->setComEmail(false);
         $this->assertSame(-1, $adherent->getCitizenProjectCreationEmailSubscriptionRadius());
+        $this->assertFalse($adherent->hasSubscribedMainEmails());
+        $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
+        $this->assertFalse($adherent->hasSubscribedReferentsEmails());
+        $this->assertFalse($adherent->hasCitizenProjectCreationEmailSubscription());
     }
 
     public function testAdherentsAreEqual()
