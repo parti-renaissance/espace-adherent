@@ -55,7 +55,7 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
      *
      * @Algolia\Attribute
      */
-    private $description;
+    protected $description;
 
     /**
      * The committee Facebook page URL.
