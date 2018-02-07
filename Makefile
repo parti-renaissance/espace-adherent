@@ -17,7 +17,7 @@ help:
 ##---------------------------------------------------------------------------
 
 start:            ## Install and start the project
-start: build up web/built assets-prod assets-amp app/config/parameters.yml db rabbitmq-fabric var/public.key perm
+start: build up app/config/parameters.yml db rabbitmq-fabric web/built assets-amp var/public.key perm
 
 stop:             ## Remove docker containers
 stop:
