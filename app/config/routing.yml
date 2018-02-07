@@ -108,22 +108,6 @@ app_redirecting:
     resource: "@AppBundle/Controller/RedirectingController.php"
     type:     "annotation"
 
-app_redirect_login:
-    host: "%app_host%"
-    path: /login
-    defaults:
-        _controller: FrameworkBundle:Redirect:redirect
-        route: app_user_login
-        permanent: true
-
-app_redirect_register:
-    host: "%app_host%"
-    path: /register
-    defaults:
-        _controller: FrameworkBundle:Redirect:redirect
-        route: app_membership_register
-        permanent: true
-
 # This route must be loaded the last to prevent an override
 app_static_page:
     host:    "%app_host%"
