@@ -24,7 +24,7 @@ class AssetRuntime
         $this->env = $env;
         $this->hash = $hash;
 
-        if ($env !== 'dev' && !$this->hash) {
+        if ('dev' !== $env && !$this->hash) {
             throw new \RuntimeException('The "assets_hash" parameter is mandatory for all environments but dev. Please build them.');
         }
     }
