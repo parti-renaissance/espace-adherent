@@ -4,8 +4,6 @@ machine:
     php:
         version: 7.1.6
     environment:
-        APP_ENV: 'test_mysql'
-        SYMFONY_ENV: 'test_mysql'
         YARN_VERSION: 0.18.1
         PATH: "${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
         DATABASE_HOST: 127.0.0.1
