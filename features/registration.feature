@@ -108,8 +108,12 @@ Feature:
     }
     """
 
-    When I am on "/parametres/mon-compte/modifier"
-    Then the "adherent[address][address]" field should contain "1 rue de l'egalite"
+    Given I am on "/parametres/mon-compte"
+    Then the response status code should be 200
+
+    Given I follow "Mes informations personnelles"
+    Then I should be on "/parametres/mon-compte/modifier"
+    And the "adherent[address][address]" field should contain "1 rue de l'egalite"
     And the "adherent[address][country]" field should contain "CH"
     And the "adherent[phone][country]" field should contain "FR"
     And the "adherent[phone][number]" field should contain "06 00 00 00 00"
@@ -117,11 +121,16 @@ Feature:
     And the "adherent[birthdate][month]" field should contain "1"
     And the "adherent[birthdate][year]" field should contain "1980"
 
-    When I am on "/parametres/mon-compte/preferences-des-emails"
-    Then the element "Emails En Marche !" should be disabled
-    Then the element "Emails de vos référents" should be disabled
-    Then the element "Emails de votre animateur local" should be disabled
-    Then the element "Être notifié(e) de la création de nouveaux projets citoyens" should be disabled
+    Given I follow "Notifications"
+    Then I should be on "/parametres/mon-compte/preferences-des-emails"
+    And the element "Emails En Marche !" should be disabled
+    And the element "Emails de vos référents" should be disabled
+    And the element "Emails de votre animateur local" should be disabled
+    And the element "Être notifié(e) de la création de nouveaux projets citoyens" should be disabled
+
+    Given I follow "Modifier mon profil"
+    Then the response status code should be 200
+    And I should be on "/espace-adherent/mon-profil"
 
   Scenario: I can become adherent with a foreign country
     Given the following fixtures are loaded:
