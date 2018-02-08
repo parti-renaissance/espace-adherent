@@ -161,7 +161,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
 
     public function testCommitteeHostCanEditCompletelyAddressOfPendingCommittee()
     {
-        $crawler = $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $crawler = $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
         $crawler = $this->client->click($crawler->selectLink('En Marche Marseille 3')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
