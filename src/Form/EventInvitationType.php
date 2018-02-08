@@ -63,6 +63,7 @@ class EventInvitationType extends AbstractType
                 'label' => false,
                 'allow_add' => true,
                 'allow_delete' => false,
+                'required' => false,
                 'data' => array_fill(0, 3, ''),
             ])
             ->add('invite', SubmitType::class, [
