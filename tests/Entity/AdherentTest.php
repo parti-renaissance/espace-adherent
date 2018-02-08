@@ -46,6 +46,32 @@ class AdherentTest extends TestCase
         $this->assertSame(ActivityPositions::STUDENT, $adherent->getPosition());
         $this->assertNull($adherent->getLatitude());
         $this->assertNull($adherent->getLongitude());
+        $this->assertSame(-1, $adherent->getCitizenProjectCreationEmailSubscriptionRadius());
+    }
+
+    public function testAdherentCitizenProjectCreationEmailSubscriptionRadiusIsRelatedToComEmail()
+    {
+        $adherent = $this->createAdherent();
+
+        $this->assertSame(-1, $adherent->getCitizenProjectCreationEmailSubscriptionRadius());
+        $this->assertFalse($adherent->hasSubscribedMainEmails());
+        $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
+        $this->assertFalse($adherent->hasSubscribedReferentsEmails());
+        $this->assertFalse($adherent->hasCitizenProjectCreationEmailSubscription());
+
+        $adherent->setComEmail(true);
+        $this->assertSame(10, $adherent->getCitizenProjectCreationEmailSubscriptionRadius());
+        $this->assertTrue($adherent->hasSubscribedMainEmails());
+        $this->assertTrue($adherent->hasSubscribedLocalHostEmails());
+        $this->assertTrue($adherent->hasSubscribedReferentsEmails());
+        $this->assertTrue($adherent->hasCitizenProjectCreationEmailSubscription());
+
+        $adherent->setComEmail(false);
+        $this->assertSame(-1, $adherent->getCitizenProjectCreationEmailSubscriptionRadius());
+        $this->assertFalse($adherent->hasSubscribedMainEmails());
+        $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
+        $this->assertFalse($adherent->hasSubscribedReferentsEmails());
+        $this->assertFalse($adherent->hasCitizenProjectCreationEmailSubscription());
     }
 
     public function testAdherentsAreEqual()
@@ -121,13 +147,19 @@ class AdherentTest extends TestCase
 
     public function testIsBasicAdherent()
     {
-        // Basic
+        // User
         $adherent = $this->createAdherent();
+
+        $this->assertFalse($adherent->isBasicAdherent());
+
+        // Basic
+        $adherent->join();
 
         $this->assertTrue($adherent->isBasicAdherent());
 
         // Host
         $adherent = $this->createAdherent();
+        $adherent->join();
         $memberships = $adherent->getMemberships();
 
         $membership = $this->createMock(CommitteeMembership::class);

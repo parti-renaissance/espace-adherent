@@ -25,19 +25,19 @@ class Address implements AddressInterface, GeocodableInterface
 
     /**
      * @Assert\NotBlank(message="common.postal_code.not_blank", groups={"Default", "Registration", "Update"})
-     * @Assert\Length(max=15, groups={"Default", "Registration", "Update"})
+     * @Assert\Length(max=15, maxMessage="common.postal_code.max_length", groups={"Default", "Registration", "Update"})
      */
     private $postalCode;
 
     /**
      * @Assert\Length(max=15, groups={"Default", "Update"})
-     * @Assert\NotBlank(groups={"Update"})
+     * @Assert\Expression(expression="this.getCountry() !== constant('AppBundle\\Address\\Address::FRANCE') or value", message="common.city_name.not_blank", groups={"Update"})
      */
     private $city;
 
     /**
      * @Assert\Length(max=255, groups={"Default", "Update"})
-     * @Assert\NotBlank(message="common.city_name.not_blank", groups={"Update"})
+     * @Assert\Expression(expression="this.getCountry() === constant('AppBundle\\Address\\Address::FRANCE') or value", message="common.city_name.not_blank", groups={"Update"})
      */
     private $cityName;
 

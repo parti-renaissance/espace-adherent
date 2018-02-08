@@ -127,9 +127,6 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('hasSubscribedLocalHostEmails', 'boolean', [
                     'label' => 'Abonné aux mails de comités ?',
                 ])
-                ->add('comEmail', 'boolean', [
-                    'label' => 'Accepte de recevoir des emails de la part d\'En Marche !',
-                ])
                 ->add('comMobile', 'boolean', [
                     'label' => 'Accepte de recevoir des SMS de la part d\'En Marche !',
                 ])
@@ -163,9 +160,11 @@ class AdherentAdmin extends AbstractAdmin
                 ])
                 ->add('lastName', null, [
                     'label' => 'Nom',
+                    'format_identity_case' => true,
                 ])
                 ->add('firstName', null, [
                     'label' => 'Prénom',
+                    'format_identity_case' => true,
                 ])
                 ->add('emailAddress', null, [
                     'label' => 'Adresse e-mail',
@@ -426,7 +425,7 @@ class AdherentAdmin extends AbstractAdmin
             ->add('postAddress.country', null, [
                 'label' => 'Pays',
             ])
-            ->add('comEmail', 'boolean', [
+            ->add('hasSubscribedMainEmails', 'boolean', [
                 'label' => 'Accepte les e-mails',
             ])
             ->add('comMobile', 'boolean', [

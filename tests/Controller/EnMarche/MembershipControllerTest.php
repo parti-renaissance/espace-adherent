@@ -7,7 +7,6 @@ use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
-use AppBundle\Mailer\Message\AdherentAccountConfirmationMessage;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\EmailRepository;
@@ -49,8 +48,8 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $data = static::createFormData();
-        $data['new_member_ship_request']['emailAddress']['first'] = $emailAddress;
-        $data['new_member_ship_request']['emailAddress']['second'] = $emailAddress;
+        $data['user_registration']['emailAddress']['first'] = $emailAddress;
+        $data['user_registration']['emailAddress']['second'] = $emailAddress;
         $crawler = $this->client->submit($crawler->selectButton('Créer mon compte')->form(), $data);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -82,25 +81,31 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         $this->assertClientIsRedirectedTo('/presque-fini', $this->client);
 
-        $adherent = $this->getAdherentRepository()->findOneByEmail('paul@dupont.tld');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('jean-paul@dupont.tld');
         $this->assertInstanceOf(Adherent::class, $adherent);
-        $this->assertSame('male', $adherent->getGender());
-        $this->assertSame('Paul', $adherent->getFirstName());
+        $this->assertNull($adherent->getGender());
+        $this->assertSame('Jean-Paul', $adherent->getFirstName());
         $this->assertSame('Dupont', $adherent->getLastName());
         $this->assertEmpty($adherent->getAddress());
         $this->assertEmpty($adherent->getCityName());
         $this->assertSame('FR', $adherent->getCountry());
         $this->assertNull($adherent->getBirthdate());
         $this->assertFalse($adherent->getComMobile());
-        $this->assertTrue($adherent->getComEmail());
         $this->assertNull($adherent->getLatitude());
         $this->assertNull($adherent->getLongitude());
+        $this->assertNull($adherent->getPosition());
+        $this->assertTrue($adherent->hasSubscribedMainEmails());
+        $this->assertTrue($adherent->hasSubscribedLocalHostEmails());
+        $this->assertTrue($adherent->hasSubscribedReferentsEmails());
+        $this->assertTrue($adherent->hasCitizenProjectCreationEmailSubscription());
 
+        /** @var Adherent $adherent */
         $this->assertInstanceOf(
             Adherent::class,
-            $adherent = $this->client->getContainer()->get('doctrine')->getRepository(Adherent::class)->findOneByEmail('paul@dupont.tld')
+            $adherent = $this->client->getContainer()->get('doctrine')->getRepository(Adherent::class)->findOneByEmail('jean-paul@dupont.tld')
         );
-
+        $this->assertSame('Jean-Paul', $adherent->getFirstName());
+        $this->assertSame('Dupont', $adherent->getLastName());
         $this->assertInstanceOf(AdherentActivationToken::class, $activationToken = $this->activationTokenRepository->findAdherentMostRecentKey((string) $adherent->getUuid()));
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentAccountActivationMessage::class, 'paul@dupont.tld'));
 
@@ -109,14 +114,12 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentAccountConfirmationMessage::class, 'paul@dupont.tld'));
-        $this->assertClientIsRedirectedTo('/adhesion', $this->client);
+        $this->assertClientIsRedirectedTo('/adhesion?from_activation=1', $this->client);
 
-        $crawler = $this->client->followRedirect();
+        $this->client->followRedirect();
 
-        // User is automatically logged-in and redirected to the events page
+        // User is automatically logged-in
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Votre compte adhérent est maintenant actif.', $crawler->filter('#notice-flashes')->text());
 
         // Activate user account twice
         $this->logout($this->client);
@@ -127,12 +130,12 @@ class MembershipControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Votre compte adhérent est déjà actif.', $crawler->filter('.flash')->text());
+        $this->assertContains('Votre compte est déjà actif.', $crawler->filter('.flash')->text());
 
         // Try to authenticate with credentials
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_adherent_email' => 'paul@dupont.tld',
-            '_adherent_password' => '#example!12345#',
+            '_adherent_email' => 'jean-paul@dupont.tld',
+            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
         $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/evenements', $this->client);
@@ -140,115 +143,18 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->client->followRedirect();
     }
 
-    /**
-     * @dataProvider provideSuccessfulMembershipRequests
-     */
-    public function testCreateMembershipAccountIsSuccessful($country, $postalCode)
-    {
-        $this->client->request(Request::METHOD_GET, '/inscription');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $data = static::createFormData();
-        $data['new_member_ship_request']['address']['country'] = $country;
-        $data['new_member_ship_request']['address']['postalCode'] = $postalCode;
-
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon compte')->form(), $data);
-
-        $this->assertClientIsRedirectedTo('/presque-fini', $this->client);
-
-        $adherent = $this->getAdherentRepository()->findOneByEmail('paul@dupont.tld');
-        $this->assertInstanceOf(Adherent::class, $adherent);
-        $this->assertNull($adherent->getLatitude());
-        $this->assertNull($adherent->getLongitude());
-    }
-
-    public function provideSuccessfulMembershipRequests()
-    {
-        return [
-            'Foreign' => ['CH', '8057'],
-            'DOM-TOM Réunion' => ['FR', '97437'],
-            'DOM-TOM Guadeloupe' => ['FR', '97110'],
-            'DOM-TOM Polynésie' => ['FR', '98714'],
-        ];
-    }
-
-    public function testLoginAfterCreatingMembershipAccountWithoutConfirmItsEmail()
-    {
-        // register
-        $this->client->request(Request::METHOD_GET, '/inscription');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $data = static::createFormData();
-        $data['new_member_ship_request']['emailAddress']['first'] = 'michel@dupont.tld';
-        $data['new_member_ship_request']['emailAddress']['second'] = 'michel@dupont.tld';
-        $data['new_member_ship_request']['address']['country'] = 'CH';
-        $data['new_member_ship_request']['address']['postalCode'] = '8057';
-
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon compte')->form(), $data);
-
-        $this->assertClientIsRedirectedTo('/presque-fini', $this->client);
-
-        // login
-        $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_adherent_email' => $data['new_member_ship_request']['emailAddress']['first'],
-            '_adherent_password' => $data['new_member_ship_request']['password'],
-        ]));
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/evenements', $this->client, true);
-    }
-
-    public function testDonateWithAFakeValue()
-    {
-        // register
-        $this->client->request(Request::METHOD_GET, '/inscription');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $data = static::createFormData();
-        $data['new_member_ship_request']['emailAddress']['first'] = 'michel2@dupont.tld';
-        $data['new_member_ship_request']['emailAddress']['second'] = 'michel2@dupont.tld';
-        $data['new_member_ship_request']['address']['country'] = 'CH';
-        $data['new_member_ship_request']['address']['postalCode'] = '8057';
-
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer mon compte')->form(), $data);
-
-        $this->assertClientIsRedirectedTo('/presque-fini', $this->client);
-    }
-
-    public function testCannotCreateMembershipAccountRecaptchaConnectionFailure()
-    {
-        $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $data = static::createFormData();
-        $data['g-recaptcha-response'] = 'connection_failure';
-        $crawler = $this->client->submit($crawler->selectButton('Créer mon compte')->form(), $data);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $errors = $crawler->filter('.flash-error_recaptcha');
-        $this->assertSame(1, $errors->count());
-        $this->assertSame('Une erreur s\'est produite, pouvez-vous réessayer ?', $errors->text());
-    }
-
     private static function createFormData()
     {
         return [
             'g-recaptcha-response' => 'dummy',
-            'new_member_ship_request' => [
-                'firstName' => 'Paul',
-                'lastName' => 'Dupont',
+            'user_registration' => [
+                'firstName' => 'jean-pauL',
+                'lastName' => 'duPont',
                 'emailAddress' => [
-                    'first' => 'paul@dupont.tld',
-                    'second' => 'paul@dupont.tld',
+                    'first' => 'jean-paul@dupont.tld',
+                    'second' => 'jean-paul@dupont.tld',
                 ],
-                'password' => '#example!12345#',
+                'password' => LoadAdherentData::DEFAULT_PASSWORD,
                 'address' => [
                     'country' => 'FR',
                     'postalCode' => '92110',

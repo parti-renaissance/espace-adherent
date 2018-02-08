@@ -7,9 +7,8 @@ services:
         networks:
           default:
             aliases:
-              - enmarche.dev
+              - test.enmarche.code
               - enmarche.code
-              - enmarche.local
         build:
             context: docker/dev
         depends_on:
@@ -26,6 +25,13 @@ services:
 
     redis:
         image: redis:3.2
+
+    ## testing
+    ####################
+    selenium:
+        image: selenium/standalone-firefox-debug:2.53.1
+        volumes:
+            - ./:/app
 
     ## common
     ####################

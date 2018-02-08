@@ -43,7 +43,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
     public function testAdherentCannotSeeUnapprovedCitizenProject(): void
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille');
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
@@ -51,7 +51,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
     public function testAdherentCanSeeCitizenProject(): void
     {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
 
         /** @var CitizenProject $citizenProject */
         $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
@@ -71,7 +71,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
     public function testAdministratorCanSeeUnapprovedCitizenProject(): void
     {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeCommentSection());
@@ -80,7 +80,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
     public function testAdministratorCanSeeACitizenProject(): void
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeReportLink());
@@ -95,7 +95,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
     public function testFollowerCanSeeACitizenProject(): void
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeReportLink());
@@ -114,7 +114,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
      */
     public function testFollowerCanAddCommentToCitizenProject(): void
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8/discussions');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->client->submit(
@@ -138,7 +138,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
      */
     public function testFollowerCanNotSendCommentToCitizenProjectInMail(): void
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8/discussions');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -150,7 +150,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
      */
     public function testAdministratorCanAddCommentToCitizenProjectWithSendingMail(): void
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8/discussions');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -183,7 +183,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertClientIsRedirectedTo('/connexion', $this->client, true);
 
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/comite/autocompletion?term=pa', [], [], [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ]);
@@ -202,7 +202,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
     public function testCommitteeSupportCitizenProject()
     {
-        $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com', 'Champion20');
+        $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com');
 
         /** @var CitizenProject $citizenProject */
         $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_2_UUID);
@@ -281,7 +281,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
     public function testCitizenProjectContactActors()
     {
         // Authenticate as the administrator (host)
-        $crawler = $this->authenticateAsAdherent($this->client, 'lolodie.dutemps@hotnix.tld', 'politique2017');
+        $crawler = $this->authenticateAsAdherent($this->client, 'lolodie.dutemps@hotnix.tld');
         $crawler = $this->client->click($crawler->selectLink('En Marche - Projet citoyen')->link());
         $crawler = $this->client->click($crawler->selectLink('Voir')->link());
 
@@ -342,7 +342,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->seeFlashMessage($crawler, 'Félicitations, votre message a bien été envoyé aux acteurs sélectionnés.');
     }
 
-    public function testAnonymousUserIsNotAllowedToFollowCitizenProject()
+    public function testAnonymousUserIsAllowedToFollowCitizenProject()
     {
         $committeeUrl = sprintf('/projets-citoyens/%s', 'le-projet-citoyen-a-paris-8');
 
@@ -351,11 +351,13 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
+        $this->assertFalse($this->seeRegisterLink($crawler, 0));
+        $this->assertTrue($this->seeLoginLink($crawler));
     }
 
     public function testAuthenticatedAdherentCanFollowCitizenProject()
     {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
 
         // Browse to the citizen project details page
         $citizenProjectUrl = sprintf('/projets-citoyens/%s', 'le-projet-citoyen-a-paris-8');
@@ -367,6 +369,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
+        $this->assertFalse($this->seeLoginLink($crawler));
 
         // Emulate POST request to follow the committee.
         $token = $crawler->selectButton('Rejoindre ce projet')->attr('data-csrf-token');
@@ -385,6 +388,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertTrue($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
+        $this->assertFalse($this->seeLoginLink($crawler));
 
         // Emulate POST request to unfollow the committee.
         $token = $crawler->selectButton('Quitter ce projet citoyen')->attr('data-csrf-token');
@@ -400,6 +404,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
+        $this->assertFalse($this->seeLoginLink($crawler));
     }
 
     public function testFeaturedCitizenProject()
@@ -449,7 +454,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => 'carl999@example.fr',
-            '_adherent_password' => 'secret!12345',
+            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
         $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/creer-mon-projet-citoyen?name='.rawurlencode($citizenProjectName), $this->client);
@@ -484,7 +489,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
     public function testCitizenProjectLandingPageResultAsAuthenticatedUser()
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/landing/results?city=evry', [], [], [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ]);
@@ -510,7 +515,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
     public function testCitizenProjectLandingPageAsAuthenticatedUser()
     {
-        $this->authenticateAsAdherent($this->client, 'damien.schmidt@example.ch', 'newpassword');
+        $this->authenticateAsAdherent($this->client, 'damien.schmidt@example.ch');
         $adherent = $this->getAdherentRepository()->findOneByEmail('damien.schmidt@example.ch');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens');
@@ -533,7 +538,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
     public function testCitizenProjectLandingPageAsReferent()
     {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr', 'referent');
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
         $adherent = $this->getAdherentRepository()->findOneByEmail('referent@en-marche-dev.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens');
@@ -573,7 +578,9 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
     private function seeFollowLink(Crawler $crawler): bool
     {
-        return 1 === count($crawler->filter('.citizen-project-follow'));
+        $button = $crawler->selectButton('Rejoindre ce projet');
+
+        return $button->count() && !$button->attr('disabled');
     }
 
     private function seeUnfollowLink(Crawler $crawler): bool
@@ -586,6 +593,11 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertCount($nb, $crawler->filter('.citizen-project-follow--disabled'));
 
         return 1 === count($crawler->filter('#citizen-project-register-link'));
+    }
+
+    private function seeLoginLink(Crawler $crawler): bool
+    {
+        return 1 === $crawler->selectLink('Connectez-vous')->count();
     }
 
     private function seeReportLink(): bool

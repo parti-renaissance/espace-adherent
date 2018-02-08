@@ -122,17 +122,17 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     /**
      * @ORM\Column(type="boolean")
      */
-    private $mainEmailsSubscription = true;
+    private $mainEmailsSubscription = false;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $referentsEmailsSubscription = true;
+    private $referentsEmailsSubscription = false;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $localHostEmailsSubscription = true;
+    private $localHostEmailsSubscription = false;
 
     /**
      * @ORM\Column(type="integer", options={"default"=10})
@@ -143,11 +143,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $comMobile = false;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $comEmail = false;
 
     /**
      * @ORM\Column(type="boolean", options={"default": 0})
@@ -255,7 +250,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->registeredAt = new \DateTime($registeredAt);
         $this->memberships = new ArrayCollection();
         $this->citizenProjectMemberships = new ArrayCollection();
-        $this->comEmail = $comEmail;
+        $this->setComEmail($comEmail);
         $this->comMobile = $comMobile;
         $this->tags = new ArrayCollection($tags);
         $this->coordinatorManagedAreas = new ArrayCollection();
@@ -590,7 +585,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->birthdate = $membership->getBirthdate();
         $this->position = $membership->position;
         $this->phone = $membership->getPhone();
-        $this->comEmail = $membership->comEmail;
         $this->comMobile = $membership->comMobile;
         $this->emailAddress = $membership->getEmailAddress();
 
@@ -885,7 +879,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function isBasicAdherent(): bool
     {
-        return !$this->isHost() && !$this->isReferent() && !$this->isBoardMember();
+        return $this->isAdherent() && !$this->isHost() && !$this->isReferent() && !$this->isBoardMember();
     }
 
     public function isHost(): bool
@@ -955,14 +949,21 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->comMobile = $comMobile;
     }
 
-    public function getComEmail(): ?bool
-    {
-        return $this->comEmail;
-    }
-
     public function setComEmail(?bool $comEmail): void
     {
-        $this->comEmail = $comEmail;
+        $this->setCitizenProjectCreationEmailSubscriptionRadius(
+            $comEmail ? self::CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE : self::DISABLED_CITIZEN_PROJECT_EMAIL
+        );
+
+        if ($comEmail) {
+            $subscriptions = [
+                AdherentEmailSubscription::SUBSCRIBED_EMAILS_MAIN,
+                AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS,
+                AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST,
+            ];
+        }
+
+        $this->setEmailsSubscriptions($subscriptions ?? []);
     }
 
     public function getCommitteeFeedItems(): iterable

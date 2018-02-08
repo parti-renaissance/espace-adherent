@@ -17,7 +17,7 @@ class ReportControllerTest extends MysqlWebTestCase
 
     public function testAdherentCanReportCitizenProject(): void
     {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
         $this->isSuccessful($this->client->getResponse());
 
@@ -36,7 +36,7 @@ class ReportControllerTest extends MysqlWebTestCase
 
     public function testAdherentIsRedirectedToWebRootIfRedirectUrlIsNotAValidInternalPath(): void
     {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
         $this->client->request(Request::METHOD_GET, '/report/citizen-project/aa364092-3999-4102-930c-f711ef971195?redirectUrl=http%3A%2F%2Fje-te-hack.com');
         $this->isSuccessful($this->client->getResponse());
 
@@ -50,7 +50,7 @@ class ReportControllerTest extends MysqlWebTestCase
 
     public function testAdherentIsRedirectedWebRootIfNoRedirectUrlIsProvided(): void
     {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
         $this->client->request(Request::METHOD_GET, '/report/citizen-project/aa364092-3999-4102-930c-f711ef971195');
         $this->isSuccessful($this->client->getResponse());
 

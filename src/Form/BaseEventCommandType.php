@@ -18,6 +18,7 @@ class BaseEventCommandType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'filter_emojis' => true,
+                'format_title_case' => true,
             ])
             ->add('category', EventCategoryType::class, [
                 'class' => $options['event_category_class'],

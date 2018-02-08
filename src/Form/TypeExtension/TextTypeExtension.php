@@ -11,59 +11,112 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TextTypeExtension extends AbstractTypeExtension
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function getExtendedType()
     {
-        if ($options['filter_emojis']) {
-            $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'filterEmojisOnPreSubmit'], 10);
-        }
-
-        if ($options['purify_html']) {
-            $builder->addEventListener(FormEvents::SUBMIT, [$this, 'purifyOnSubmit']);
-        }
+        return TextType::class;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
             ->setDefaults([
-                'empty_data' => '',
+                'empty_data' => function (Options $options) {
+                    return $options['required'] ? '' : null;
+                },
                 'purify_html' => false,
                 'filter_emojis' => false,
+                'format_title_case' => false,
+                'format_identity_case' => false,
                 'with_character_count' => false,
             ])
             ->setAllowedTypes('purify_html', 'bool')
             ->setAllowedTypes('filter_emojis', 'bool')
+            ->setAllowedTypes('format_title_case', 'bool')
+            ->setAllowedTypes('format_identity_case', 'bool')
             ->setAllowedTypes('with_character_count', 'bool')
         ;
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (isset($options['with_character_count'])) {
-            $view->vars['with_character_count'] = $options['with_character_count'];
+        if ($options['filter_emojis']) {
+            $builder->addEventListener(FormEvents::PRE_SUBMIT, [__CLASS__, 'filterEmojis'], 10);
+        }
+
+        if ($options['purify_html']) {
+            $builder->addEventListener(FormEvents::SUBMIT, [__CLASS__, 'purifyHtml']);
+        }
+
+        if ($options['format_title_case']) {
+            $builder->addEventListener(FormEvents::SUBMIT, [__CLASS__, 'formatDataAsTitle']);
+        }
+
+        if ($options['format_identity_case']) {
+            $builder->addEventListener(FormEvents::SUBMIT, [__CLASS__, 'formatDataAsIdentity']);
         }
     }
 
-    public function getExtendedType()
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        return TextType::class;
+        $view->vars['with_character_count'] = $options['with_character_count'];
     }
 
-    public function filterEmojisOnPreSubmit(FormEvent $event)
+    public static function filterEmojis(FormEvent $event): void
     {
-        if ($data = $event->getData()) {
+        $data = $event->getData();
+
+        if (\is_string($data) && '' !== $data) {
             $event->setData(EmojisRemover::remove($data));
         }
     }
 
-    public function purifyOnSubmit(FormEvent $event)
+    public static function purifyHtml(FormEvent $event): void
     {
-        if ($data = $event->getData()) {
+        $data = $event->getData();
+
+        if (\is_string($data) && '' !== $data) {
             $event->setData(HtmlPurifier::purify($data));
         }
+    }
+
+    public static function formatDataAsTitle(FormEvent $event): void
+    {
+        $data = $event->getData();
+
+        if (\is_string($data) && '' !== $data) {
+            $event->setData(self::formatTitleCase($data));
+        }
+    }
+
+    public static function formatDataAsIdentity(FormEvent $event): void
+    {
+        $data = $event->getData();
+
+        if (\is_string($data) && '' !== $data) {
+            $event->setData(self::formatIdentityCase($data));
+        }
+    }
+
+    public static function formatTitleCase(string $string): string
+    {
+        // Here we just ensure the first character is uppercase, the rest is left as is
+        return \mb_strtoupper(\mb_substr($string, 0, 1)).\mb_substr($string, 1);
+    }
+
+    public static function formatIdentityCase(string $string): string
+    {
+        return \preg_replace_callback_array([
+            '/(?:^|[\s-])d[eu][\s-]/ui' => function (array $matches) {
+                return \mb_strtolower($matches[0]);
+            },
+            '/(?:^|[\s-])(d\')(\p{L})/ui' => function (array $matches) {
+                return \mb_strtolower($matches[1]).\ucfirst($matches[2]);
+            },
+        ], \mb_convert_case($string, MB_CASE_TITLE, 'UTF-8'));
     }
 }

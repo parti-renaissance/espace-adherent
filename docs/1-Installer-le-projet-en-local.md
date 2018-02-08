@@ -141,29 +141,29 @@ Cela risque de prendre un peu de temps.
 Dans votre fichier `/etc/hosts` :
 
 ```
-127.0.0.1       enmarche.dev
-127.0.0.1       m.enmarche.dev
-127.0.0.1       legislatives.enmarche.dev
+127.0.0.1       enmarche.code
+127.0.0.1       m.enmarche.code
+127.0.0.1       legislatives.enmarche.code
 ```
 
 Voici par defaut les noms de domaine pour les differentes applications, configurés dans `app/config/parameters.yml`.
 
 ```
-env(APP_HOST): enmarche.dev
-env(AMP_HOST): m.enmarche.dev
-env(LEGISLATIVES_HOST): legislatives.enmarche.dev
+env(APP_HOST): enmarche.code
+env(AMP_HOST): m.enmarche.code
+env(LEGISLATIVES_HOST): legislatives.enmarche.code
 ```
 
 Le projet devrait être accessible sur
-[http://enmarche.dev:8000](http://enmarche.dev:8000) (ou si vous êtes sous macOS, sur le port 8000 de la
+[http://enmarche.code:8000](http://enmarche.code:8000) (ou si vous êtes sous macOS, sur le port 8000 de la
 machine virtuelle de votre instance Docker).
 
-Si vous préférez accéder à l'application principale via [http://localhost:8000](http://localhost:8000) au lieu de [http://enmarche.dev:8000](http://enmarche.dev:8000) par exemple, il vous suffit d'ajuster le fichier `/etc/hosts` ainsi que le fichier `app/config/parameters.yml` et les parametres `env(APP_HOST)`, `env(AMP_HOST)` et `env(LEGISLATIVES_HOST)`.
+Si vous préférez accéder à l'application principale via [http://localhost:8000](http://localhost:8000) au lieu de [http://enmarche.code:8000](http://enmarche.code:8000) par exemple, il vous suffit d'ajuster le fichier `/etc/hosts` ainsi que le fichier `app/config/parameters.yml` et les parametres `env(APP_HOST)`, `env(AMP_HOST)` et `env(LEGISLATIVES_HOST)`.
 
 ### 1.1.3.1 Accéder à l'espace d'administration
 
 Une fois le projet installé, vous pouvez accéder à l'espace d'administration en allant sur
-[http://enmarche.dev:8000/admin](http://enmarche.dev:8000/admin).
+[http://enmarche.code:8000/admin](http://enmarche.dev:8000/admin).
 
 Vous pouvez alors y entrer les identifiants suivants :
 ```

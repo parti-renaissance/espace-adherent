@@ -6,8 +6,8 @@ use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use AppBundle\Validator\UniqueMembership as AssertUniqueMembership;
-use AppBundle\ValueObject\Genders;
 use libphonenumber\PhoneNumber;
+use libphonenumber\PhoneNumberUtil;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MembershipRequest implements MembershipInterface
 {
     /**
+     * @Assert\NotBlank(message="common.gender.not_blank", groups={"Update"})
      * @Assert\Choice(
      *   callback = {"AppBundle\ValueObject\Genders", "all"},
      *   message="common.gender.invalid_choice",
@@ -104,9 +105,6 @@ class MembershipRequest implements MembershipInterface
 
     public function __construct()
     {
-        $this->gender = Genders::MALE;
-        $this->position = ActivityPositions::EMPLOYED;
-        $this->emailAddress = '';
         $this->address = new Address();
     }
 
@@ -122,7 +120,7 @@ class MembershipRequest implements MembershipInterface
         return $dto;
     }
 
-    public static function createFromAdherent(Adherent $adherent): self
+    public static function createFromAdherent(Adherent $adherent, PhoneNumberUtil $phoneNumberUtil): self
     {
         $dto = new self();
         $dto->gender = $adherent->getGender();
@@ -133,8 +131,14 @@ class MembershipRequest implements MembershipInterface
         $dto->address = Address::createFromAddress($adherent->getPostAddress());
         $dto->phone = $adherent->getPhone();
         $dto->comMobile = $adherent->getComMobile();
-        $dto->comEmail = $adherent->getComEmail();
         $dto->emailAddress = $adherent->getEmailAddress();
+
+        if (!$dto->phone) {
+            $countryCode = $phoneNumberUtil->getCountryCodeForRegion($dto->address->getCountry());
+            $countryCode = $countryCode ?: 33;
+            $dto->phone = new PhoneNumber();
+            $dto->phone->setCountryCode($countryCode);
+        }
 
         return $dto;
     }
@@ -156,7 +160,7 @@ class MembershipRequest implements MembershipInterface
 
     public function getEmailAddress(): string
     {
-        return $this->emailAddress;
+        return $this->emailAddress ?: '';
     }
 
     public function setPhone(PhoneNumber $phone = null): void

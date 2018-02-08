@@ -22,7 +22,7 @@ class CitizenActionCommandType extends AbstractType
             ->remove('capacity')
             ->add('description', TextareaType::class, [
                 'filter_emojis' => true,
-                'purify_html' => false,
+                'purify_html' => false, // override parent type
             ])
         ;
     }

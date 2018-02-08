@@ -29,8 +29,7 @@
         {% if object.isBoardMember %}
             <span class="label label-primary" style="padding: 2px;">Membre du Conseil</span><br/>
         {% endif %}
-
-    {% else %}
+    {% elseif object.isAdherent %}
         <span class="label label-default">Adhérent</span>
     {% endif %}
 {% endblock %}

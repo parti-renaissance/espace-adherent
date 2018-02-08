@@ -139,12 +139,14 @@ class CitizenProjectAdmin extends AbstractAdmin
             ->with('Projet citoyen', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
+                    'format_title_case' => true,
                 ])
                 ->add('slug', null, [
                     'label' => 'Slug',
                 ])
                 ->add('subtitle', null, [
                     'label' => 'Sous-titre',
+                    'format_title_case' => true,
                 ])
                 ->add('category', null, [
                     'label' => 'Catégorie',
@@ -182,13 +184,9 @@ class CitizenProjectAdmin extends AbstractAdmin
             ->end()
             ->with('Localisation', ['class' => 'col-md-5'])
                 ->add('postAddress.latitude', null, [
-                    'required' => false,
-                    'empty_data' => null,
                     'label' => 'Latitude',
                 ])
                 ->add('postAddress.longitude', null, [
-                    'required' => false,
-                    'empty_data' => null,
                     'label' => 'Longitude',
                     'help' => 'Pour modifier l\'adresse, impersonnifiez un organisateur de ce projet citoyen.',
                 ])
@@ -230,7 +228,6 @@ class CitizenProjectAdmin extends AbstractAdmin
             ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date de création',
-                'show_filter' => true,
                 'field_type' => 'sonata_type_date_range_picker',
             ])
             ->add('administratorFirstName', CallbackFilter::class, [
@@ -258,7 +255,6 @@ class CitizenProjectAdmin extends AbstractAdmin
             ])
             ->add('administratorLastName', CallbackFilter::class, [
                 'label' => 'Nom de l\'organisateur/créateur',
-                'show_filter' => true,
                 'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($citizenProjectRepository, $citizenProjectMembershipRepository, $adherentRepository) {
                     if (!$value['value']) {
@@ -282,7 +278,6 @@ class CitizenProjectAdmin extends AbstractAdmin
             ])
             ->add('administratorEmailAddress', CallbackFilter::class, [
                 'label' => 'Email de l\'organisateur/créateur',
-                'show_filter' => true,
                 'field_type' => EmailType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) use ($citizenProjectRepository, $citizenProjectMembershipRepository, $adherentRepository) {
                     if (!$value['value']) {
@@ -306,6 +301,7 @@ class CitizenProjectAdmin extends AbstractAdmin
             ])
             ->add('postalCode', CallbackFilter::class, [
                 'label' => 'Code postal',
+                'show_filter' => true,
                 'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
@@ -320,7 +316,6 @@ class CitizenProjectAdmin extends AbstractAdmin
             ])
             ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',
-                'show_filter' => true,
                 'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
@@ -335,7 +330,6 @@ class CitizenProjectAdmin extends AbstractAdmin
             ])
             ->add('country', CallbackFilter::class, [
                 'label' => 'Pays',
-                'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
                     'choices' => array_flip(UnitedNationsBundle::getCountries()),
@@ -353,7 +347,6 @@ class CitizenProjectAdmin extends AbstractAdmin
             ])
             ->add('assistanceNeeded', null, [
                 'label' => 'Demande d\'accompagnement',
-                'show_filter' => true,
             ])
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',

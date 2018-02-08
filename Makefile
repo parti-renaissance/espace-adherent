@@ -50,6 +50,16 @@ tty:              ## Run app container in interactive mode
 tty:
 	$(RUN) /bin/bash
 
+var/public.key:   ## Generate the public key
+var/public.key: var/private.key
+	$(RUN) openssl rsa -in var/private.key -pubout -out var/public.key
+
+var/private.key:  ## Generate the private key
+var/private.key:
+	$(RUN) openssl genrsa -out var/private.key 1024
+
+rabbitmq-fabric:
+	$(RUN) $(CONSOLE) rabbitmq:setup-fabric
 
 ##
 ## Database
@@ -123,12 +133,12 @@ tf: tfp
 	$(EXEC) vendor/bin/phpunit --group functional || true
 
 tfp:            ## Prepare the PHP functional tests
-tfp: vendor assets-amp
+tfp: vendor assets-amp assets-prod
 	$(EXEC) rm -rf var/cache/test var/cache/test_sqlite var/cache/test_mysql /tmp/data.db app/data/dumped_referents_users || true
 	$(EXEC) $(CONSOLE) doctrine:database:create --env=test_sqlite || true
 	$(EXEC) $(CONSOLE) doctrine:schema:create --env=test_sqlite || true
-	$(EXEC) $(CONSOLE) doctrine:database:create --if-not-exists --env=test_mysql || true
-	$(EXEC) $(CONSOLE) doctrine:schema:drop --force --env=test_mysql || true
+	$(EXEC) $(CONSOLE) doctrine:database:drop --force --if-exists --env=test_mysql || true
+	$(EXEC) $(CONSOLE) doctrine:database:create --env=test_mysql || true
 	$(EXEC) $(CONSOLE) doctrine:migration:migrate -n --env=test_mysql || true
 
 tj:             ## Run the Javascript tests
@@ -183,13 +193,13 @@ deps: vendor web/built
 
 build:
 	$(FIG) pull --parallel
-	$(FIG) build --pull --force-rm
+	$(FIG) build --force-rm
 
 up:
 	$(FIG) up -d --remove-orphans
 
 perm:
-	-$(EXEC) chmod -R 777 var
+	-$(EXEC) chmod -R 777 var app/data/images
 	-$(EXEC) chown www-data:root var/public.key var/private.key
 	-$(EXEC) chmod 660 var/public.key var/private.key
 

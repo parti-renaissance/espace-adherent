@@ -3,10 +3,12 @@
 namespace AppBundle\Membership;
 
 use AppBundle\Address\PostAddressFactory;
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
+use AppBundle\Mailer\Message\AdherentAccountConfirmationMessage;
 use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
 use AppBundle\OAuth\CallbackManager;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -21,6 +23,8 @@ class MembershipRequestHandler
     private $callbackManager;
     private $mailer;
     private $manager;
+    private $adherentManager;
+    private $committeeManager;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
@@ -29,7 +33,9 @@ class MembershipRequestHandler
         CallbackManager $callbackManager,
         MailerService $mailer,
         ObjectManager $manager,
-        AdherentRegistry $adherentRegistry
+        AdherentRegistry $adherentRegistry,
+        AdherentManager $adherentManager,
+        CommitteeManager $committeeManager
     ) {
         $this->adherentFactory = $adherentFactory;
         $this->addressFactory = $addressFactory;
@@ -38,6 +44,8 @@ class MembershipRequestHandler
         $this->mailer = $mailer;
         $this->manager = $manager;
         $this->adherentRegistry = $adherentRegistry;
+        $this->adherentManager = $adherentManager;
+        $this->committeeManager = $committeeManager;
     }
 
     public function handle(MembershipRequest $membershipRequest)
@@ -52,8 +60,23 @@ class MembershipRequestHandler
         $activationUrl = $this->generateMembershipActivationUrl($adherent, $token);
         $this->mailer->sendMessage(AdherentAccountActivationMessage::createFromAdherent($adherent, $activationUrl));
 
-        $this->dispatcher->dispatch(AdherentEvents::REGISTRATION_COMPLETED, new AdherentAccountWasCreatedEvent($adherent, $membershipRequest));
         $this->dispatcher->dispatch(UserEvents::USER_CREATED, new UserEvent($adherent));
+    }
+
+    public function join(Adherent $user, MembershipRequest $membershipRequest)
+    {
+        $user->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
+        $user->join();
+        $this->manager->flush();
+
+        $this->mailer->sendMessage(AdherentAccountConfirmationMessage::createFromAdherent(
+            $user,
+            $this->adherentManager->countActiveAdherents(),
+            $this->committeeManager->countApprovedCommittees()
+        ));
+
+        $this->dispatcher->dispatch(AdherentEvents::REGISTRATION_COMPLETED, new AdherentAccountWasCreatedEvent($user, $membershipRequest));
+        $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($user));
     }
 
     public function update(Adherent $adherent, MembershipRequest $membershipRequest)

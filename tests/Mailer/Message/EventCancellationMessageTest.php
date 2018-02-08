@@ -9,7 +9,7 @@ use AppBundle\Mailer\Message\MessageRecipient;
 
 class EventCancellationMessageTest extends AbstractEventMessageTest
 {
-    const SEARCH_EVENTS_URL = 'https://enmarche.dev/evenements';
+    const SEARCH_EVENTS_URL = 'https://test.enmarche.code/evenements';
 
     public function testCreateEventCancellationMessage()
     {

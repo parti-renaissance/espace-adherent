@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% use 'adherent/_membership_form.html.twig' %}
-
 {% block banner '' %}
 {% block title 'Adhérer au mouvement En Marche !' %}
 
@@ -15,17 +13,15 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places"></script>
     {% import 'javascript.js.twig' as js %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            {{ js.address(form.address, {cityAutocomplete: true}) }}
+            {{ js.address(form.address) }}
         });
     </script>
 {% endblock %}
 
 {% block content %}
-
     <main class="content register">
         <section class="register__header background--blue progressive-background"
                  data-sd="{{ static_asset('registration-hdr.jpg', {'w': 300, 'q': 20}) }}"
@@ -44,6 +40,11 @@
 
         <section class="register__content">
             <article class="l__wrapper--slim b__nudge--bottom-60">
+                {% if from_activation %}
+                    <p class="text--body">
+                        👏 Bienvenue ! Votre e-mail est confirmé.
+                    </p>
+                {% endif %}
                 <p class="text--body">Vous avez dès maintenant la possibilité d'adhérer à En Marche.
                     Nous sommes un collectif citoyen qui part d'une conviction : les Français doivent être au cœur
                     de la vie politique et non son décor.<br/>
@@ -51,8 +52,82 @@
             </article>
             <article class="l__wrapper--slim b__nudge--bottom-huge l__col l__col--center">
                 <div class="register__form">
-                    {% set isCreateForm = true %}
-                    {{ block('adherent_membership_form') }}
+                    {{ form_start(form) }}
+                        {{ form_errors(form) }}
+                        <div id="membership-address">
+                            <strong>Adresse</strong>
+                            {{ form_errors(form.address) }}
+                            {{ form_errors(form.address.cityName) }}
+                            <div class="l__row l__row--h-stretch register__form--full">
+                                {{ form_widget(form.address.address, { attr: { placeholder: 'Adresse postale' } }) }}
+                                {{ form_errors(form.address.address) }}
+                            </div>
+
+                            <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                                <div class="register__form__zip_code register__form--mid">
+                                    {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Code postal' } }) }}
+                                </div>
+                                <div class="register__form__city register__form--mid">
+                                    {{ form_widget(form.address.city, { 'attr': { 'class': 'register__form__city'} }) }}
+                                    {{ form_widget(form.address.cityName, { 'attr': { 'class': 'register__form__city_name', 'placeholder': 'Ville' } }) }}
+                                </div>
+                            </div>
+
+                            <div class="l__row l__row--top l__row--h-stretch l__mobile--col register__form__country register__form--full">
+                                {{ form_widget(form.address.country) }}
+                                {{ form_errors(form.address.country) }}
+                            </div>
+                        </div>
+
+                        <div class="space--10-0"></div>
+
+                        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                            <div class="register__form--mid" id="field-birthdate">
+                                <strong>Date de naissance</strong>
+                                <div class="l__row l__row--h-stretch">
+                                    {% for field in form.birthdate|reverse %}
+                                        {{ form_widget(field, { attr: {style: 'width: 32%;' }}) }}
+                                    {% endfor %}
+                                </div>
+                                {{ form_errors(form.birthdate) }}
+                            </div>
+                            <div class="form__radio-button register__form--mid">
+                                <strong>Sexe</strong>
+                                {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
+                                {{ form_errors(form.gender) }}
+                            </div>
+                        </div>
+
+                        <div class="space--10-0"></div>
+
+                        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                            <div class="register__form--full">
+                                <strong>Numéro de téléphone mobile</strong>
+                                <div class="l__row l__row--h-stretch">
+                                    {{ form_widget(form.phone.country, { placeholder: 'Pays', attr: { class: 'membership_request__form__phone'} }) }}
+                                    {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
+                                </div>
+                                {{ form_errors(form.phone) }}
+                            </div>
+                        </div>
+
+                        <div class="space--10-0"></div>
+
+                        <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-mobile">
+                            {{ form_widget(form.comMobile) }}
+                            <label class="form form__label" for="{{ form.comMobile.vars.id }}">
+                                <span>
+                                    J'accepte de recevoir par SMS et/ou MMS des informations ou sollicitations à des fins de communication politique
+                                    <span class="text--gray text--italic">(optionnel)</span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="register__form--full">
+                            {{ form_widget(form.submit, { attr: { class: 'btn btn--blue btn--medium b__nudge--top' }}) }}
+                            <a href="{{ url('homepage') }}" >Je ne souhaite pas adhérer maintenant</a>
+                        </div>
+                    {{ form_end(form) }}
                 </div>
                 <p class="text--summary b__nudge--top-50 text--gray">
                     Les informations recueillies à partir de ce formulaire font l'objet d'un traitement informatique exclusivement destiné à La République En Marche. En retournant ce formulaire, vous autorisez La République En Marche à utiliser vos données pour des opérations de communication politique et de dons. Vos informations ne pourront être communiquées qu'à des co-contractants qui en leur qualité de sous-traitants de La République En Marche, n'agiront que sur instruction de cette dernière et seront soumis à une stricte obligation de confidentialité. En application des articles 38 et suivants de la loi du 6 janvier 1978, vous bénéficiez des droits d'accès, de rectification et de suppression des données qui vous concernent et d'un droit d'opposition au traitement de vos données. Vous pouvez exercer ces droits en adressant votre demande à La République En Marche, à l'adresse électronique <a href="mailto:contact@en-marche.fr">contact@en-marche.fr</a> ou postale à La République En Marche, 63 rue Sainte-Anne, 75002 Paris.
