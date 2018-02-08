@@ -224,7 +224,7 @@ class EventControllerTest extends MysqlWebTestCase
             'event_invitation[email]' => 'titouan@en-marche.fr',
             'event_invitation[firstName]' => 'Titouan',
             'event_invitation[lastName]' => 'Galopin',
-            'event_invitation[message]' => 'Venez !',
+            'event_invitation[message]' => '',
             'event_invitation[guests][0]' => 'hugo.hamon@clichy-beach.com',
             'event_invitation[guests][1]' => 'jules.pietri@clichy-beach.com',
         ]));

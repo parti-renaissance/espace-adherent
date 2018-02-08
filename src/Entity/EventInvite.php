@@ -72,7 +72,7 @@ class EventInvite
         $invite->firstName = $invitation->firstName;
         $invite->lastName = $invitation->lastName;
         $invite->email = $invitation->email;
-        $invite->message = $invitation->message;
+        $invite->message = $invitation->message ?: '';
         $invite->guests = $invitation->guests;
 
         return $invite;
