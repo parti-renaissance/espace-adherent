@@ -658,7 +658,7 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
         return $this->adminComment;
     }
 
-    public function setAdminComment(string $adminComment): void
+    public function setAdminComment(?string $adminComment): void
     {
         $this->adminComment = $adminComment;
     }
