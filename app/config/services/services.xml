@@ -96,5 +96,8 @@
 
         <!--Command-->
         <service id="AppBundle\Command\FixTitleCaseCommand" />
+
+        <!-- UserDocument -->
+        <service id="AppBundle\UserDocument\UserDocumentManager" public="true" />
     </services>
 </container>

@@ -275,3 +275,8 @@ coordinator.placeholder.sector: Veuillez choisir un secteur
 timeline.measure.status.done: fait
 timeline.measure.status.in_progress: en cours
 timeline.measure.status.upcoming: à venir
+
+#
+# UserDocument
+#
+document.upload.success: Le document a été uploadé avec succès.

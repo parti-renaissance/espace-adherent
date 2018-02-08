@@ -9,7 +9,7 @@ App.createAddressSelector(
 );
 {% endmacro %}
 
-{% macro ckeditor(element, height) %}
+{% macro ckeditor(element, height, uploadType = 'none') %}
 CKEDITOR.replace('{{ element }}', {
     extraPlugins : 'confighelper',
     removePlugins: 'elementspath',
@@ -22,8 +22,19 @@ CKEDITOR.replace('{{ element }}', {
         { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
         { name: 'paragraph', items: [ 'NumberedList', 'BulletedList' ] },
         { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
-        { name: 'links', items: [ 'Link', 'Unlink', 'Image' ] }
-    ]
+        { name: 'links', items: [ 'Link' ] }
+    ],
+    filebrowserUploadUrl: "{{ path('app_filebrowser_upload', { type: uploadType }) }}",
+});
+
+CKEDITOR.on('dialogDefinition', function(ev) {
+    var dialogName = ev.data.name;
+    var dialogDefinition = ev.data.definition;
+
+    if ( dialogName == 'link' ) {
+        dialogDefinition.removeContents('advanced');
+        dialogDefinition.removeContents('target');
+    }
 });
 {% endmacro %}
 

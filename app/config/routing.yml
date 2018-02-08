@@ -14,6 +14,13 @@ app_assets:
     type:     "annotation"
 
 #
+# User uploaded documents
+#
+app_documents:
+    resource: "@AppBundle/Controller/UploadDocumentController.php"
+    type:     "annotation"
+
+#
 # API
 #
 app_api:

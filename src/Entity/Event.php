@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
@@ -11,8 +13,10 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @Algolia\Index
  */
-class Event extends BaseEvent
+class Event extends BaseEvent implements UserDocumentInterface
 {
+    use UserDocumentTrait;
+
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EventCategory")
      *
@@ -33,6 +37,22 @@ class Event extends BaseEvent
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $isForLegislatives = false;
+
+    /**
+     * @var UserDocument[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\UserDocument", cascade={"persist"})
+     * @ORM\JoinTable(
+     *     name="event_user_documents",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="user_document_id", referencedColumnName="id", onDelete="CASCADE")
+     *     }
+     * )
+     */
+    protected $documents;
 
     public function __construct(
         UuidInterface $uuid,
@@ -68,6 +88,7 @@ class Event extends BaseEvent
         $this->status = self::STATUS_SCHEDULED;
         $this->isForLegislatives = $isForLegislatives;
         $this->type = $type;
+        $this->documents = new ArrayCollection();
     }
 
     public function __toString(): string
