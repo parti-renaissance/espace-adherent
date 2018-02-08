@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Projets citoyens - image generateur' %}
+
+{% block content %}
+    <main>
+        <section class="l__wrapper--medium space--30-0">
+            <header class="space--30-0">
+                <h1 class="b__nudge--bottom-small text--medium">Creer vos images</h1>
+            </header>
+
+            <div>
+                <p>Grâce a cette interface, generez les photos du profil et de couverture de votre projet citoyen sur les reseaux sociaux.</p>
+
+                {{ form_start(form) }}
+
+                {{ form_errors(form) }}
+
+                {{ form_row(form.citizenProjectTitle, {
+                    label: 'Entrez le nom de votre projet citoyen :',
+                    attr: {class: 'form--full b__nudge--top-15'}
+                }) }}
+
+                {{ form_row(form.emoji, {
+                    label: 'Entrez un emoji qui représente au mieux votre projet :',
+                    attr: {class: 'b__nudge--top-15'}
+                }) }}
+                <p>Vous pouvez aller chercher votre emoji sur
+                    <a href="https://getemoji.com" target="_blank">getemoji.com</a> et le coller ici.</p>
+
+                {{ form_row(form.backgroundColor, {
+                    label: 'Choisissez une couleur :',
+                    attr: {class: 'b__nudge--top-15'}
+                }) }}
+
+                {{ form_row(form.city, {
+                    label: 'Entrez votre ville :',
+                    attr: {class: 'b__nudge--top-15'}
+                }) }}
+
+                {{ form_row(form.departmentCode, {
+                    label: 'Entrez le numéro de votre département :',
+                    attr: {class: 'b__nudge--top-15'}
+                }) }}
+
+                {{ form_row(form.backgroundImage, {
+                    label: 'Uploadez une photo :',
+                    attr: {class: 'b__nudge--top-15 hidden'}
+                }) }}
+                {{ dump(previewCoverImage) }}
+                {% if previewCoverImage %}
+                    <hr/>
+                    <div>
+                        <div>
+                            <h6>Profile</h6>
+                            <img src="{{ previewEmojiImage }}"/>
+                        </div>
+                        <div>
+                            <h6>Cover</h6>
+                            <img src="{{ previewCoverImage }}" style="max-width: 800px"/>
+                        </div>
+                    </div>
+                    {{ form_row(form.preview, {
+                        label: 'Générer un apperçu (avant le téléchargement)',
+                        attr: {class: 'b__nudge--top-15'}
+                    }) }}
+
+                    {{ form_row(form.download, {
+                        label: 'Télécharger les images',
+                        attr: {class: 'b__nudge--top-15'}
+                    }) }}
+                {% else %}
+                    {{ form_row(form.preview, {
+                        label: 'Générer un apperçu (avant le téléchargement)',
+                        attr: {class: 'b__nudge--top-15'}
+                    }) }}
+
+                {% endif %}
+
+                {{ form_end(form) }}
+            </div>
+        </section>
+    </main>
+{% endblock content %}
