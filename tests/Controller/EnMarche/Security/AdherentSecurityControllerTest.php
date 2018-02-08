@@ -32,12 +32,11 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(1, $crawler->filter('form[name="app_login"]'));
-        $this->assertCount(0, $crawler->filter('.login__error'));
+        $this->assertCount(0, $crawler->filter('#auth-error'));
 
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+        $this->client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => 'carl999@example.fr',
-            '_adherent_password' => 'secret!12345',
+            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
         $adherent = $this->adherentRepository->findOneByEmail('carl999@example.fr');
@@ -66,10 +65,9 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(1, $crawler->filter('form[name="app_login"]'));
-        $this->assertCount(0, $crawler->filter('.login__error'));
+        $this->assertCount(0, $crawler->filter('#auth-error'));
 
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+        $this->client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => $username,
             '_adherent_password' => $password,
         ]));
@@ -80,8 +78,8 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(1, $error = $crawler->filter('.login__error'));
-        $this->assertSame('Oups! Vos identifiants sont invalides.', trim($error->text()));
+        $this->assertCount(1, $error = $crawler->filter('#auth-error'));
+        $this->assertSame('L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.', trim($error->text()));
     }
 
     public function provideInvalidCredentials()
@@ -118,7 +116,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->submit($crawler->selectButton('form[submit]')->form(), ['form' => ['email' => '']]);
+        $crawler = $this->client->submit($crawler->selectButton('Envoyer un e-mail')->form(), ['form' => ['email' => '']]);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -137,11 +135,13 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
             'form' => ['email' => 'toto@example.org'],
         ];
 
-        $crawler = $this->client->submit($crawler->selectButton('form[submit]')->form(), $formData);
+        $this->client->submit($crawler->selectButton('Envoyer un e-mail')->form(), $formData);
+
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
+
+        $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->assertCount(1, $crawler->filter('input[name="form[email]"]'));
         $this->assertCount(0, $crawler->filter('.form__error'));
         $this->assertContains('Un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
         $this->assertCount(0, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'toto@example.org'), 'No mail should have been sent to unknown account.');
@@ -157,11 +157,13 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
             'form' => ['email' => 'carl999@example.fr'],
         ];
 
-        $crawler = $this->client->submit($crawler->selectButton('form[submit]')->form(), $formData);
+        $this->client->submit($crawler->selectButton('Envoyer un e-mail')->form(), $formData);
+
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
+
+        $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->assertCount(1, $crawler->filter('input[name="form[email]"]'));
         $this->assertCount(0, $crawler->filter('.form__error'));
         $this->assertContains('Un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
 

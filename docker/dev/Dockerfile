@@ -83,6 +83,7 @@ COPY php.ini /etc/php/7.1/cli/conf.d/50-setting.ini
 COPY php.ini /etc/php/7.1/fpm/conf.d/50-setting.ini
 COPY pool.conf /etc/php/7.1/fpm/pool.d/www.conf
 COPY nginx.conf /etc/nginx/nginx.conf
+COPY symfony.conf /etc/nginx/symfony.conf
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

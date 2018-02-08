@@ -1,20 +1,27 @@
+{% set route = app.request.attributes.get('_route') %}
+
 <div class="l__wrapper--aside settings-menu">
     <ul>
-        {% set route = app.request.attributes.get('_route') %}
-        {% for target, link in {
-            'app_user_profile': 'Mon compte',
-            'app_user_edit': 'Mes informations personnelles',
-            'app_user_set_email_notifications': 'Notifications',
-        } %}
-            <li class="{{ route == target ? 'active' }}">
-                <a href="{{ path(target) }}">{{ link }}</a>
-            </li>
-        {% endfor %}
+        <li class="{{ route == 'app_user_profile' ? 'active' }}">
+            <a href="{{ path('app_user_profile') }}">Mon compte</a>
+        </li>
 
-        {% if has_role_adherent %}
+        <li class="{{ route == 'app_user_edit' ? 'active' }}">
+            <a href="{{ path('app_user_edit') }}">Mes informations personnelles</a>
+        </li>
+
+        {% if app.user.isAdherent %}
             <li class="{{ route == 'app_summary_manager_index' ? 'active' }}">
                 <a href="{{ path('app_summary_manager_index') }}">Modifier mon profil</a>
             </li>
         {% endif %}
+
+        <li class="{{ route == 'app_user_set_email_notifications' ? 'active' }}">
+            <a href="{{ path('app_user_set_email_notifications') }}">Notifications</a>
+        </li>
+
+        <li class="{{ route == 'app_user_change_password' ? 'active' }}">
+            <a href="{{ path('app_user_change_password') }}">Mot de passe</a>
+        </li>
     </ul>
 </div>

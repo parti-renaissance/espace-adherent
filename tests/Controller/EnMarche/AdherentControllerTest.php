@@ -45,14 +45,12 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/mes-evenements');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $crawler = $this->client->followRedirect();
-
-        $this->assertSame('Identifiez-vous', $crawler->filter('.login h2')->text());
+        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
     }
 
     public function testAuthenticatedAdherentCanSeeHisUpcomingAndPastEvents()
     {
-        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $crawler = $this->client->click($crawler->selectLink('Mes activités')->link());
@@ -102,7 +100,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
     public function testProfileActionIsAccessibleForAdherent()
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
 
@@ -115,7 +113,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
     public function testProfileActionIsAccessibleForInactiveAdherent()
     {
-        $this->authenticateAsAdherent($this->client, 'thomas.leclerc@example.ch', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'thomas.leclerc@example.ch');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
 
@@ -132,21 +130,21 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+        $this->client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => 'michelle.dufour@example.ch',
-            '_adherent_password' => 'secret!12345',
+            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
         $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
 
-        $this->client->followRedirect();
+        $crawler = $this->client->followRedirect();
 
-        $this->assertContains('Oups! Vos identifiants sont invalides.', $this->client->getResponse()->getContent());
+        $this->assertContains('L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.', $crawler->filter('#auth-error')->text());
     }
 
     public function testEditAdherentProfile()
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
         $oldLatitude = $adherent->getLatitude();
@@ -154,10 +152,10 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
 
-        $inputPattern = 'input[name="update_membership_request[%s]"]';
-        $optionPattern = 'select[name="update_membership_request[%s]"] option[selected="selected"]';
+        $inputPattern = 'input[name="adherent[%s]"]';
+        $optionPattern = 'select[name="adherent[%s]"] option[selected="selected"]';
 
-        $this->assertSame('male', $crawler->filter(sprintf($inputPattern, 'gender').'[checked="checked"]')->attr('value'));
+        $this->assertSame('male', $crawler->filter(sprintf($optionPattern, 'gender'))->attr('value'));
         $this->assertSame('Carl', $crawler->filter(sprintf($inputPattern, 'firstName'))->attr('value'));
         $this->assertSame('Mirabeau', $crawler->filter(sprintf($inputPattern, 'lastName'))->attr('value'));
         $this->assertSame('122 rue de Mouxy', $crawler->filter(sprintf($inputPattern, 'address][address'))->attr('value'));
@@ -172,16 +170,17 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame('carl999@example.fr', $crawler->filter(sprintf($inputPattern, 'emailAddress'))->attr('value'));
 
         // Submit the profile form with invalid data
-        $crawler = $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
-            'update_membership_request' => [
+        $crawler = $this->client->submit($crawler->selectButton('adherent[submit]')->form([
+            'adherent' => [
                 'gender' => 'male',
                 'firstName' => '',
                 'lastName' => '',
                 'address' => [
                     'address' => '',
                     'country' => 'FR',
-                    'postalCode' => '99999',
+                    'postalCode' => '',
                     'city' => '10102-45029',
+                    'cityName' => '',
                 ],
                 'phone' => [
                     'country' => 'FR',
@@ -198,25 +197,25 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame(6, $errors->count());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
-        $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(2)->text());
-        $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $errors->eq(3)->text());
-        $this->assertSame("L'adresse est obligatoire.", $errors->eq(4)->text());
+        $this->assertSame('Veuillez renseigner un code postal.', $errors->eq(2)->text());
+        $this->assertSame('L\'adresse est obligatoire.', $errors->eq(3)->text());
+        $this->assertSame('Le numéro de téléphone est obligatoire.', $errors->eq(4)->text());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(5)->text());
 
         $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
 
-        // Submit the profile form with duplicate email
-        $crawler = $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
-            'update_membership_request' => [
+        // Submit the profile form with duplicate email and too long input
+        $crawler = $this->client->submit($crawler->selectButton('adherent[submit]')->form([
+            'adherent' => [
                 'gender' => 'female',
                 'firstName' => 'Jean',
                 'lastName' => 'Dupont',
                 'address' => [
-                    'address' => '9 rue du Lycée',
+                    'address' => 'Une adresse de 150 caractères, ça peut arriver.Une adresse de 150 caractères, ça peut arriver.Une adresse de 150 caractères, ça peut arriver.Oui oui oui.',
                     'country' => 'FR',
-                    'postalCode' => '06000',
+                    'postalCode' => '0600000000000000',
                     'city' => '06000-6088',
-                    'cityName' => '',
+                    'cityName' => 'Nice, France',
                 ],
                 'phone' => [
                     'country' => 'FR',
@@ -235,12 +234,14 @@ class AdherentControllerTest extends MysqlWebTestCase
         $errors = $crawler->filter('.form__errors > li');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertSame(1, $errors->count());
-        $this->assertSame('Cette adresse e-mail existe déjà.', $errors->eq(0)->text());
+        $this->assertSame(3, $errors->count());
+        $this->assertSame('Le code postal doit contenir moins de 15 caractères.', $errors->eq(0)->text());
+        $this->assertSame('L\'adresse ne peut pas dépasser 150 caractères.', $errors->eq(1)->text());
+        $this->assertSame('Cette adresse e-mail existe déjà.', $errors->eq(2)->text());
 
         // Submit the profile form with valid data
-        $this->client->submit($crawler->selectButton('update_membership_request[submit]')->form([
-            'update_membership_request' => [
+        $this->client->submit($crawler->selectButton('adherent[submit]')->form([
+            'adherent' => [
                 'gender' => 'female',
                 'firstName' => 'Jean',
                 'lastName' => 'Dupont',
@@ -248,8 +249,8 @@ class AdherentControllerTest extends MysqlWebTestCase
                     'address' => '9 rue du Lycée',
                     'country' => 'FR',
                     'postalCode' => '06000',
-                    'city' => '06000-6088', // Nice
-                    'cityName' => '',
+                    'city' => '06000-6088',
+                    'cityName' => 'Nice, France',
                 ],
                 'phone' => [
                     'country' => 'FR',
@@ -291,7 +292,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
     public function testEditAdherentInterests()
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte/centres-d-interet');
 
@@ -347,7 +348,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
     public function testAdherentChangePassword()
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/changer-mot-de-passe');
 
@@ -396,7 +397,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertTrue($adherent->hasSubscribedMainEmails());
         $this->assertTrue($adherent->hasCitizenProjectCreationEmailSubscription());
 
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/preferences-des-emails');
         $subscriptions = $crawler->filter('input[name="adherent_email_subscription[emails_subscriptions][]"]');
@@ -452,7 +453,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
     public function testAdherentCanCreateNewCitizenProject()
     {
-        $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $this->assertSame(3, $crawler->selectLink('Lancer mon projet')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
@@ -461,7 +462,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
     public function testCitizenProjectAdministratorCannotCreateAnotherCitizenProject()
     {
-        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $this->assertSame(0, $crawler->selectLink('Lancer mon projet')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
@@ -470,7 +471,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
     public function testCreateCitizenProjectFailed()
     {
-        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
 
         $data = [];
@@ -527,15 +528,15 @@ class AdherentControllerTest extends MysqlWebTestCase
 
     public function testCreateCitizenProjectSuccessful()
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
 
         $categoryValue = $crawler->filter('#citizen_project_category option:contains("Culture")')->attr('value');
 
         $data = [];
-        $data['citizen_project']['name'] = 'Mon projet citoyen';
-        $data['citizen_project']['subtitle'] = 'Mon premier projet citoyen';
+        $data['citizen_project']['name'] = 'mon Projet Citoyen';
+        $data['citizen_project']['subtitle'] = 'mon premier projet citoyen';
         $data['citizen_project']['category'] = $categoryValue;
         $data['citizen_project']['problem_description'] = 'Le problème local.';
         $data['citizen_project']['proposed_solution'] = 'Ma solution.';
@@ -549,20 +550,22 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
 
-        $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['name' => 'Mon projet citoyen']);
+        /** @var CitizenProject $citizenProject */
+        $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['name' => 'Mon Projet Citoyen']);
 
         $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
         $this->assertInstanceOf(CitizenProject::class, $citizenProject);
-
+        $this->assertSame('Mon Projet Citoyen', $citizenProject->getName());
+        $this->assertSame('Mon premier projet citoyen', $citizenProject->getSubtitle());
         $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'carl999@example.fr'));
     }
 
     /**
      * @dataProvider provideCommitteesHostsAdherentsCredentials
      */
-    public function testCommitteesAdherentsHostsAreNotAllowedToCreateNewCommittees(string $emailAddress, string $password)
+    public function testCommitteesAdherentsHostsAreNotAllowedToCreateNewCommittees(string $emailAddress)
     {
-        $crawler = $this->authenticateAsAdherent($this->client, $emailAddress, $password);
+        $crawler = $this->authenticateAsAdherent($this->client, $emailAddress);
         $this->assertSame(0, $crawler->selectLink('Créer un comité')->count());
 
         // Try to cheat the system with a direct URL access.
@@ -587,9 +590,9 @@ class AdherentControllerTest extends MysqlWebTestCase
     /**
      * @dataProvider provideRegularAdherentsCredentials
      */
-    public function testRegularAdherentCanCreateOneNewCommittee(string $emaiLAddress, string $password, string $phone)
+    public function testRegularAdherentCanCreateOneNewCommittee(string $emaiLAddress, string $phone)
     {
-        $crawler = $this->authenticateAsAdherent($this->client, $emaiLAddress, $password);
+        $crawler = $this->authenticateAsAdherent($this->client, $emaiLAddress);
         $crawler = $this->client->click($crawler->selectLink('Créer un comité')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -629,10 +632,9 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame('Vous devez accepter les règles de confidentialité.', $crawler->filter('#field-confidentiality-terms > .form__errors > li')->text());
         $this->assertSame("Vous devez accepter d'être contacté(e) par la plateforme En Marche !", $crawler->filter('#field-contacting-terms > .form__errors > li')->text());
 
-        $file = new UploadedFile(__DIR__.'/../../Fixtures/image.jpg', 'image.jpg', 'image/jpeg', 631, UPLOAD_ERR_OK, true);
-
-        $parameters = [
-            'create_committee[name]' => 'Lyon est En Marche !',
+        // Submit the committee form with valid data to create committee
+        $this->client->submit($crawler->selectButton('Créer mon comité')->form([
+            'create_committee[name]' => 'lyon est En Marche !',
             'create_committee[description]' => 'Comité français En Marche ! de la ville de Lyon',
             'create_committee[address][country]' => 'FR',
             'create_committee[address][address]' => '6 rue Neyret',
@@ -646,10 +648,8 @@ class AdherentControllerTest extends MysqlWebTestCase
             'create_committee[googlePlusPageUrl]' => 'https://plus.google.com/+EnMarcheavecEmmanuelMacron?hl=fr',
             'create_committee[acceptConfidentialityTerms]' => true,
             'create_committee[acceptContactingTerms]' => true,
-            'create_committee[photo]' => $file,
-        ];
-
-        $this->client->submit($crawler->selectButton('Créer mon comité')->form($parameters));
+            'create_committee[photo]' => new UploadedFile(__DIR__.'/../../Fixtures/image.jpg', 'image.jpg', 'image/jpeg', 631, UPLOAD_ERR_OK, true),
+        ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertInstanceOf(Committee::class, $committee = $this->committeeRepository->findMostRecentCommittee());
@@ -674,8 +674,8 @@ class AdherentControllerTest extends MysqlWebTestCase
     public function provideRegularAdherentsCredentials()
     {
         return [
-            ['carl999@example.fr', 'secret!12345', '01 11 22 33 44'],
-            ['luciole1989@spambox.fr', 'EnMarche2017', '07 27 36 36 43'],
+            ['carl999@example.fr', '01 11 22 33 44'],
+            ['luciole1989@spambox.fr', '07 27 36 36 43'],
         ];
     }
 
@@ -689,7 +689,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
     public function testDocumentsActionIsAccessibleAsAdherent()
     {
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
         $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -706,7 +706,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
     public function testContactActionForAdherent()
     {
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/contacter/'.LoadAdherentData::ADHERENT_1_UUID);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -730,7 +730,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
     public function testContactActionWithInvalidUuid()
     {
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com', 'ILoveYouManu');
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/contacter/wrong-uuid');
 
@@ -754,9 +754,9 @@ class AdherentControllerTest extends MysqlWebTestCase
     /**
      * @dataProvider dataProviderCannotTerminateMembership
      */
-    public function testCannotTerminateMembership(string $email, string $password)
+    public function testCannotTerminateMembership(string $email)
     {
-        $this->authenticateAsAdherent($this->client, $email, $password);
+        $this->authenticateAsAdherent($this->client, $email);
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
 
@@ -770,20 +770,20 @@ class AdherentControllerTest extends MysqlWebTestCase
 
     public function dataProviderCannotTerminateMembership()
     {
-        yield 'Host' => ['gisele-berthoux@caramail.com', 'ILoveYouManu'];
-        yield 'Referent' => ['referent@en-marche-dev.fr', 'referent'];
-        yield 'BoardMember' => ['carl999@example.fr', 'secret!12345'];
+        yield 'Host' => ['gisele-berthoux@caramail.com'];
+        yield 'Referent' => ['referent@en-marche-dev.fr'];
+        yield 'BoardMember' => ['carl999@example.fr'];
     }
 
     /**
      * @dataProvider provideAdherentCredentials
      */
-    public function testAdherentTerminatesMembership(string $userEmail, string $password, string $uuid, int $nbComments, string $committee, int $nbFollowers)
+    public function testAdherentTerminatesMembership(string $userEmail, string $uuid, int $nbComments, string $committee, int $nbFollowers)
     {
         /** @var Adherent $adherent */
         $adherentBeforeUnregistration = $this->getAdherentRepository()->findOneByEmail($userEmail);
 
-        $this->authenticateAsAdherent($this->client, $userEmail, $password);
+        $this->authenticateAsAdherent($this->client, $userEmail);
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
 
@@ -859,8 +859,8 @@ class AdherentControllerTest extends MysqlWebTestCase
     public function provideAdherentCredentials()
     {
         return [
-            'adherent 1' => ['michel.vasseur@example.ch', 'secret!12345', LoadAdherentData::ADHERENT_13_UUID, 2, 'en-marche-suisse', 3],
-            'adherent 2' => ['luciole1989@spambox.fr', 'EnMarche2017', LoadAdherentData::ADHERENT_4_UUID, 1, 'en-marche-paris-8', 4],
+            'adherent 1' => ['michel.vasseur@example.ch', LoadAdherentData::ADHERENT_13_UUID, 2, 'en-marche-suisse', 3],
+            'adherent 2' => ['luciole1989@spambox.fr', LoadAdherentData::ADHERENT_4_UUID, 1, 'en-marche-paris-8', 4],
         ];
     }
 

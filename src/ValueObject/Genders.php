@@ -13,8 +13,8 @@ final class Genders
     ];
 
     const CHOICES = [
-        'common.gender.mister' => self::MALE,
-        'common.gender.miss' => self::FEMALE,
+        'common.gender.man' => self::MALE,
+        'common.gender.woman' => self::FEMALE,
     ];
 
     private function __construct()

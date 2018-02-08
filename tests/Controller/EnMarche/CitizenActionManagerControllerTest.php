@@ -21,7 +21,7 @@ class CitizenActionManagerControllerTest extends MysqlWebTestCase
 
     public function testCreateCitizenActionIsForbiddenIfUserIsNotProjectOrganizer()
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8/actions/creer');
 
         static::assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
@@ -32,7 +32,7 @@ class CitizenActionManagerControllerTest extends MysqlWebTestCase
 
     public function testCreateCitizenActionIsForbiddenIfProjectIsNotApproved()
     {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille/actions/creer');
 
         static::assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
@@ -42,7 +42,7 @@ class CitizenActionManagerControllerTest extends MysqlWebTestCase
 
     public function testCreateCitizenActionFailed()
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
         $this->assertSame(1, $crawler->selectLink('Créer une action citoyenne')->count());
 
@@ -95,7 +95,7 @@ class CitizenActionManagerControllerTest extends MysqlWebTestCase
 
     public function testCreateCitizenActionSuccessful()
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
         $this->assertSame(1, $crawler->selectLink('Créer une action citoyenne')->count());
 
@@ -105,7 +105,7 @@ class CitizenActionManagerControllerTest extends MysqlWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8/actions/creer');
 
-        $data['citizen_action']['name'] = 'Mon action citoyenne';
+        $data['citizen_action']['name'] = 'mon Action Citoyenne';
         $data['citizen_action']['description'] = 'Ma première action citoyenne';
         $data['citizen_action']['address']['address'] = '44 rue des Courcelles';
         $data['citizen_action']['address']['postalCode'] = '75008';
@@ -115,9 +115,9 @@ class CitizenActionManagerControllerTest extends MysqlWebTestCase
         $this->client->submit($crawler->selectButton('Je crée mon action citoyenne')->form(), $data);
 
         $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
-
-        $this->assertInstanceOf(CitizenAction::class, $this->getCitizenActionRepository()->findOneBy(['slug' => (new \DateTime())->format('Y-m-d').'-mon-action-citoyenne']));
-
+        /** @var CitizenAction $citizenAction */
+        $this->assertInstanceOf(CitizenAction::class, $citizenAction = $this->getCitizenActionRepository()->findOneBy(['slug' => (new \DateTime())->format('Y-m-d').'-mon-action-citoyenne']));
+        $this->assertSame('Mon Action Citoyenne', $citizenAction->getName());
         $this->assertCountMails(0, EventRegistrationConfirmationMessage::class, 'jacques.picard@en-marche.fr');
     }
 

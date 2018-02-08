@@ -30,11 +30,11 @@ class AdherentFactory
             $request->gender,
             $request->firstName,
             $request->lastName,
-            clone $request->getBirthdate(),
+            $request->getBirthdate() ? clone $request->getBirthdate() : null,
             $request->position,
             $this->addressFactory->createFromAddress($request->getAddress()),
             $request->getPhone(),
-            Adherent::ENABLED,
+            Adherent::DISABLED,
             'now',
             $request->comEmail,
             $request->comMobile
@@ -48,20 +48,27 @@ class AdherentFactory
             $phone = $this->createPhone($data['phone']);
         }
 
-        return new Adherent(
+        $adherent = new Adherent(
             isset($data['uuid']) ? Uuid::fromString($data['uuid']) : Adherent::createUuid($data['email']),
             $data['email'],
             $this->encodePassword($data['password']),
-            $data['gender'],
+            $data['gender'] ?? null,
             $data['first_name'],
             $data['last_name'],
-            $this->createBirthdate($data['birthdate']),
+            isset($data['birthdate']) ? $this->createBirthdate($data['birthdate']) : null,
             isset($data['position']) ? $data['position'] : ActivityPositions::EMPLOYED,
             $data['address'],
             $phone,
             Adherent::DISABLED,
-            isset($data['registered_at']) ? $data['registered_at'] : 'now'
+            isset($data['registered_at']) ? $data['registered_at'] : 'now',
+            true
         );
+
+        if (!isset($data['isAdherent']) || $data['isAdherent']) {
+            $adherent->join();
+        }
+
+        return $adherent;
     }
 
     /**

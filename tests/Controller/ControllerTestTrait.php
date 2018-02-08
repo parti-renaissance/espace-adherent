@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\EventCategory;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -53,13 +54,13 @@ trait ControllerTestTrait
         return $client->followRedirect();
     }
 
-    public function authenticateAsAdherent(Client $client, string $emailAddress, string $password): Crawler
+    public function authenticateAsAdherent(Client $client, string $emailAddress, string $password = LoadAdherentData::DEFAULT_PASSWORD): Crawler
     {
         $crawler = $client->request(Request::METHOD_GET, '/connexion');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
 
-        $client->submit($crawler->selectButton('Je me connecte')->form([
+        $client->submit($crawler->selectButton('Connexion')->form([
             '_adherent_email' => $emailAddress,
             '_adherent_password' => $password,
         ]));
@@ -82,7 +83,7 @@ trait ControllerTestTrait
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
 
-        $client->submit($crawler->selectButton('Je me connecte')->form([
+        $client->submit($crawler->selectButton('Connexion')->form([
             '_admin_email' => $emailAddress,
             '_admin_password' => $password,
         ]));

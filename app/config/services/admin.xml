@@ -565,6 +565,24 @@
 
         <!--
         ######################################################
+        # OAuth
+        ######################################################
+         -->
+
+        <service id="app.admin.client" class="AppBundle\Admin\OAuth\ClientAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Client" group="OAuth" />
+
+            <argument />
+            <argument>AppBundle\Entity\OAuth\Client</argument>
+            <argument />
+
+            <call method="setClientManager">
+                <argument type="service" id="AppBundle\OAuth\ClientManager" />
+            </call>
+        </service>
+
+        <!--
+        ######################################################
         # Data Transformer
         ######################################################
          -->

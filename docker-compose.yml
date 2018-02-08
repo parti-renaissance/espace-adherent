@@ -1,16 +1,22 @@
 version: "2"
 
 services:
+    ## en-marche.fr
+    ###############
     app:
+        networks:
+          default:
+            aliases:
+              - test.enmarche.code
+              - enmarche.code
         build:
             context: docker/dev
         depends_on:
             - db
             - redis
+            - rabbitmq
         volumes:
             - .:/app
-            - /app/var/cache
-            - /app/var/sessions
 
     db:
         image: mysql:5.7
@@ -20,5 +26,14 @@ services:
     redis:
         image: redis:3.2
 
+    ## testing
+    ####################
+    selenium:
+        image: selenium/standalone-firefox-debug:2.53.1
+        volumes:
+            - ./:/app
+
+    ## common
+    ####################
     rabbitmq:
         image: rabbitmq:3-management

@@ -39,7 +39,7 @@ class AdherentEmailSubscriptionType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $formData = $event->getData();
             $form = $event->getForm();
-            if (!in_array(AdherentEmailSubscription::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION, $formData['emails_subscriptions'])) {
+            if (!in_array(AdherentEmailSubscription::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION, $formData['emails_subscriptions'] ?? [])) {
                 $form->add('citizenProjectCreationEmailSubscriptionRadius', ChoiceType::class, [
                     'choices' => array_merge(AdherentEmailSubscription::CITIZEN_PROJECT_DISTANCE_NOTIFICATION, ['Désactivé' => Adherent::DISABLED_CITIZEN_PROJECT_EMAIL]),
                 ]);

@@ -25,10 +25,16 @@ class LegacyRedirectionsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $requestUri = rtrim($event->getRequest()->getRequestUri(), '/');
+        $requestUri = rtrim($event->getRequest()->getPathInfo(), '/');
 
         if (isset(self::$redirections[$requestUri])) {
-            $event->setResponse(new RedirectResponse(self::$redirections[$requestUri], 301));
+            $redirectUri = self::$redirections[$requestUri];
+
+            if ($queryString = $event->getRequest()->getQueryString()) {
+                $redirectUri .= '?'.$queryString;
+            }
+
+            $event->setResponse(new RedirectResponse($redirectUri, 301));
         }
     }
 
@@ -131,5 +137,7 @@ class LegacyRedirectionsSubscriber implements EventSubscriberInterface
         '/emmanuel-macron' => '/emmanuel-macron',
         '/en-marche' => '/le-mouvement',
         '/suivez-en-marche' => '/le-mouvement',
+        '/login' => '/connexion',
+        '/register' => '/inscription',
     ];
 }

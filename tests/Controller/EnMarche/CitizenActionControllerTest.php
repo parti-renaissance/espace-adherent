@@ -53,7 +53,7 @@ class CitizenActionControllerTest extends MysqlWebTestCase
 
     public function testRegisteredAdherentUserCanRegisterToCitizenAction()
     {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com', 'HipHipHip');
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
 
         $eventUrl = '/action-citoyenne/'.date('Y-m-d', strtotime('tomorrow')).'-projet-citoyen-3';
         $crawler = $this->client->request('GET', $eventUrl);
@@ -127,7 +127,7 @@ CONTENT;
 
     public function testUnregistrationSuccessful(): void
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr', 'changeme1337');
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
         $uuid = LoadCitizenActionData::CITIZEN_ACTION_3_UUID;
         /** @var CitizenAction $citizenAction */
@@ -156,7 +156,7 @@ CONTENT;
     {
         $this->markTestSkipped('Need to fix different token problem');
 
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr', 'secret!12345');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         $this->client->disableReboot();
         $uuid = LoadCitizenActionData::CITIZEN_ACTION_4_UUID;

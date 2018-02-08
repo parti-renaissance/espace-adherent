@@ -18,30 +18,32 @@ class Address implements AddressInterface, GeocodableInterface
     const FRANCE = 'FR';
 
     /**
-     * @Assert\NotBlank(message="common.address.required")
-     * @Assert\Length(max=150, maxMessage="common.address.max_length")
+     * @Assert\NotBlank(message="common.address.required", groups={"Default", "Update"})
+     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"Default", "Update"})
      */
     private $address;
 
     /**
-     * @Assert\NotBlank(message="common.postal_code.not_blank")
-     * @Assert\Length(max=15)
+     * @Assert\NotBlank(message="common.postal_code.not_blank", groups={"Default", "Registration", "Update"})
+     * @Assert\Length(max=15, maxMessage="common.postal_code.max_length", groups={"Default", "Registration", "Update"})
      */
     private $postalCode;
 
     /**
-     * @Assert\Length(max=15)
+     * @Assert\Length(max=15, groups={"Default", "Update"})
+     * @Assert\Expression(expression="this.getCountry() !== constant('AppBundle\\Address\\Address::FRANCE') or value", message="common.city_name.not_blank", groups={"Update"})
      */
     private $city;
 
     /**
-     * @Assert\Length(max=255)
+     * @Assert\Length(max=255, groups={"Default", "Update"})
+     * @Assert\Expression(expression="this.getCountry() === constant('AppBundle\\Address\\Address::FRANCE') or value", message="common.city_name.not_blank", groups={"Update"})
      */
     private $cityName;
 
     /**
-     * @Assert\NotBlank(message="common.country.not_blank")
-     * @AssertUnitedNationsCountry(message="common.country.invalid")
+     * @Assert\NotBlank(message="common.country.not_blank", groups={"Default", "Registration", "Update"})
+     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"Default", "Registration", "Update"})
      */
     private $country;
 

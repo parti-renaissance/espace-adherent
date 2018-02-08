@@ -1,8 +1,8 @@
 #
 # Common
 #
-common.gender.mister: Monsieur
-common.gender.miss: Madame
+common.gender.man: Homme
+common.gender.woman: Femme
 common.email_address: Adresse email
 common.zip_code: Code postal
 common.show_more: Voir plus
@@ -14,6 +14,8 @@ approved: Approuvé
 #
 # Adherent
 #
+Invalid credentials.: L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.
+Max attempts reached.: Vous avez effectué 5 tentatives de connexion erronées. Veuillez attendre 1 minute avant de réessayer.
 adherent.activity_position.form_label: Profession
 adherent.activity_position.student: Étudiant
 adherent.activity_position.retired: Retraité
@@ -26,7 +28,7 @@ adherent.registration.success: |
     cliquer sur le lien que nous vous avons envoyé par e-mail.
 
 adherent.activation.success: Votre compte adhérent est maintenant actif.
-adherent.activation.already_active: Votre compte adhérent est déjà actif.
+adherent.activation.already_active: Votre compte est déjà actif.
 adherent.activation.expired_key: Votre clé d'activation est expirée ! Veuillez contacter les administrateurs du site pour activer votre compte.
 
 adherent.submit_donation_label: Je soutiens maintenant

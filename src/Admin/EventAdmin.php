@@ -46,6 +46,7 @@ class EventAdmin extends AbstractAdmin
             ->with('Événement', array('class' => 'col-md-7'))
                 ->add('name', null, [
                     'label' => 'Nom',
+                    'format_title_case' => true,
                 ])
                 ->add('category', null, [
                     'label' => 'Catégorie',
