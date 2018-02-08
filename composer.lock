@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c2a25bac89849c1c1a2c4da91c6f281b",
+    "content-hash": "8e968d1ed9eecaef879411a59688f620",
     "packages": [
         {
             "name": "a2lix/i18n-doctrine-bundle",
