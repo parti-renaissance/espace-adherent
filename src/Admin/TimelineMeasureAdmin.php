@@ -20,7 +20,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TimelineMeasureAdmin extends AbstractAdmin
 {
-    use AlgoliaIndexedEntityAdminTrait;
     use EmptyTranslationRemoverAdminTrait;
 
     protected function configureFormFields(FormMapper $formMapper)

@@ -525,9 +525,6 @@
             <argument>AppBundle\Entity\Timeline\Profile</argument>
             <argument>AppBundle\Controller\Admin\AdminTimelineProfileController</argument>
 
-            <call method="setAlgoliaManager">
-                <argument type="service" id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
-            </call>
             <call method="setEmptyTranslationRemoverListener">
                 <argument type="service" id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener" />
             </call>
@@ -540,9 +537,6 @@
             <argument>AppBundle\Entity\Timeline\Theme</argument>
             <argument>AppBundle\Controller\Admin\AdminTimelineThemeController</argument>
 
-            <call method="setAlgoliaManager">
-                <argument type="service" id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
-            </call>
             <call method="setEmptyTranslationRemoverListener">
                 <argument type="service" id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener" />
             </call>
@@ -555,9 +549,6 @@
             <argument>AppBundle\Entity\Timeline\Measure</argument>
             <argument>AppBundle\Controller\Admin\AdminTimelineMeasureController</argument>
 
-            <call method="setAlgoliaManager">
-                <argument type="service" id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
-            </call>
             <call method="setEmptyTranslationRemoverListener">
                 <argument type="service" id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener" />
             </call>
@@ -595,6 +586,20 @@
 
         <service autowire="true" public="false" id="AppBundle\Form\DataTransformer\CommitteeTransformer"/>
 
+
+        <!--
+        ######################################################
+        # Extension
+        ######################################################
+         -->
+
+        <service id="app.admin.algolia_indexed_entity_extension" class="AppBundle\Admin\Extension\AlgoliaIndexedEntityAdminExtension">
+            <argument type="service" id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
+
+            <tag name="sonata.admin.extension" target="app.admin.timeline_profile" />
+            <tag name="sonata.admin.extension" target="app.admin.timeline_theme" />
+            <tag name="sonata.admin.extension" target="app.admin.timeline_measure" />
+        </service>
 
         <service id="app.admin.postal_code_filter_extension" class="AppBundle\Admin\Extension\PostalCodeFilterAdminExtension">
             <tag name="sonata.admin.extension" target="app.admin.committee" />
