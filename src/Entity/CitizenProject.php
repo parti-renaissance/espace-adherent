@@ -521,7 +521,7 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
         string $subtitle,
         CitizenProjectCategory $category,
         bool $assistanceNeeded,
-        string $assistanceContent,
+        ?string $assistanceContent,
         string $problemDescription,
         string $proposedSolution,
         string $requiredMeans,
