@@ -7,7 +7,6 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use AppBundle\Validator\UniqueMembership as AssertUniqueMembership;
 use libphonenumber\PhoneNumber;
-use libphonenumber\PhoneNumberUtil;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -120,7 +119,7 @@ class MembershipRequest implements MembershipInterface
         return $dto;
     }
 
-    public static function createFromAdherent(Adherent $adherent, PhoneNumberUtil $phoneNumberUtil): self
+    public static function createFromAdherent(Adherent $adherent): self
     {
         $dto = new self();
         $dto->gender = $adherent->getGender();
@@ -132,13 +131,6 @@ class MembershipRequest implements MembershipInterface
         $dto->phone = $adherent->getPhone();
         $dto->comMobile = $adherent->getComMobile();
         $dto->emailAddress = $adherent->getEmailAddress();
-
-        if (!$dto->phone) {
-            $countryCode = $phoneNumberUtil->getCountryCodeForRegion($dto->address->getCountry());
-            $countryCode = $countryCode ?: 33;
-            $dto->phone = new PhoneNumber();
-            $dto->phone->setCountryCode($countryCode);
-        }
 
         return $dto;
     }
