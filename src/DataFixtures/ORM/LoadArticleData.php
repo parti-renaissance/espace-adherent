@@ -3,17 +3,13 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\ArticleCategory;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\File\File;
 
-class LoadArticleData implements FixtureInterface, ContainerAwareInterface
+class LoadArticleData extends Fixture
 {
-    use ContainerAwareTrait;
-
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');

@@ -55,6 +55,9 @@ framework:
     cache:
         app: cache.adapter.doctrine
         default_doctrine_provider: cache.redis_doctrine_provider
+        pools:
+            app.cache.redirection:
+                adapter: cache.adapter.doctrine
 
 twig:
     debug:            "%kernel.debug%"

@@ -2,7 +2,6 @@
 
 namespace AppBundle\Redirection\Dynamic;
 
-use AppBundle\Repository\RedirectionRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 
@@ -11,18 +10,16 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
  */
 class RedirectToAdminPanelHandler implements RedirectToInterface
 {
-    private $provider;
-    private $redirectionRepository;
+    private $redirectionManager;
 
-    public function __construct(RedirectionsProvider $provider, RedirectionRepository $redirectionRepository)
+    public function __construct(RedirectionManager $redirectionManager)
     {
-        $this->provider = $provider;
-        $this->redirectionRepository = $redirectionRepository;
+        $this->redirectionManager = $redirectionManager;
     }
 
     public function handle(GetResponseForExceptionEvent $event, string $requestUri, string $redirectCode): bool
     {
-        if ($redirection = $this->redirectionRepository->findOneByOriginUri($requestUri)) {
+        if ($redirection = $this->redirectionManager->getRedirection($requestUri)) {
             $event->setResponse(new RedirectResponse($redirection->getTo(), $redirection->getType()));
 
             return true;

@@ -107,8 +107,13 @@
 
         <!-- Dynamic redirections "to admin panel" handler -->
         <service id="app.dynamic_redirect_to_admin_panel_handler" class="AppBundle\Redirection\Dynamic\RedirectToAdminPanelHandler">
-            <argument type="service" id="app.dynamic_redirections_provider" />
+            <argument type="service" id="AppBundle\Redirection\Dynamic\RedirectionManager" />
             <argument type="service" id="app.repository.redirection" />
+        </service>
+        <service id="AppBundle\Redirection\Dynamic\RedirectionManager" class="AppBundle\Redirection\Dynamic\RedirectionManager">
+            <argument type="service" id="app.cache.redirection" />
+            <argument type="service" id="doctrine.orm.default_entity_manager"/>
+            <argument type="service" id="jms_serializer.serializer"/>
         </service>
 
         <!-- Dynamic redirections "to remove uuid" handler-->

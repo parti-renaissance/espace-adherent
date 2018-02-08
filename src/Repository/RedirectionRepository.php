@@ -11,4 +11,12 @@ class RedirectionRepository extends EntityRepository
     {
         return $this->findOneBy(['from' => $url]);
     }
+
+    /**
+     * @return Redirection[]
+     */
+    public function findByTargetUri(string $url): array
+    {
+        return $this->findBy(['to' => $url]);
+    }
 }
