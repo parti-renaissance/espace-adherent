@@ -23,7 +23,7 @@ class Color
     const CHOICES = [
         'Blanc' => self::WHITE,
         'Bleu' => self::BLUE,
-        'Jeune' => self::YELLOW,
+        'Jaune' => self::YELLOW,
         'Noir' => self::BLACK,
         'Rose' => self::PINK,
         'Vert' => self::GREEN,
