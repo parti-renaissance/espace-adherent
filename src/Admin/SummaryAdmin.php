@@ -71,8 +71,14 @@ class SummaryAdmin extends AbstractAdmin
                     }
 
                     $qb->innerJoin(sprintf('%s.member', $alias), 'm');
-                    $qb->andWhere('m.postAddress.postalCode LIKE :postalCode');
-                    $qb->setParameter('postalCode', $value['value'].'%');
+                    $value = array_map('trim', explode(',', strtolower($value['value'])));
+                    $postalCodeExpression = $qb->expr()->orX();
+                    foreach (array_filter($value) as $key => $code) {
+                        $postalCodeExpression->add(sprintf('m.postAddress.postalCode LIKE :postalCode_%s', $key));
+                        $qb->setParameter('postalCode_'.$key, $code.'%');
+                    }
+
+                    $qb->andWhere($postalCodeExpression);
 
                     return true;
                 },

@@ -80,7 +80,7 @@ class MembershipController extends Controller
         }
 
         $fromActivation = $request->query->getBoolean('from_activation');
-        $membership = MembershipRequest::createFromAdherent($user, $this->get('libphonenumber.phone_number_util'));
+        $membership = MembershipRequest::createFromAdherent($user);
         $form = $this->createForm(BecomeAdherentType::class, $membership)
             ->add('submit', SubmitType::class, ['label' => 'J\'adhère'])
         ;
