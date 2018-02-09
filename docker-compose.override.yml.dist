@@ -11,6 +11,9 @@ version: "2"
 #    app:
 #        volumes:
 #            - "~/.composer:/root/.composer"
+# Add this 2 volumes if you have weird permissions issues (But you won't gonna be able to see your cache on your host)
+#            - /app/var/cache
+#            - /app/var/sessions
 #        environment:
 #            - BLACKFIRE_CLIENT_ID
 #            - BLACKFIRE_CLIENT_TOKEN
