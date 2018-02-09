@@ -63,15 +63,16 @@ Feature:
       | become_adherent[birthdate][month]    |  |
       | become_adherent[birthdate][year]     |  |
     When I press "J'adhère"
-    Then I should see 6 ".form__error" elements
+    Then I should see 7 ".form__error" elements
     And I should see "L'adresse est obligatoire."
     And I should see "Veuillez renseigner un code postal."
     And I should see "Veuillez renseigner une ville."
     And I should see "Veuillez renseigner un sexe."
     And I should see "Vous devez spécifier votre date de naissance."
     And I should see "Le numéro de téléphone est obligatoire."
+    And I should see "Vous devez accepter la charte."
 
-    When I fill in hidden field "become_adherent_address_city" with "06000-6088"
+    Given I fill in hidden field "become_adherent_address_city" with "06000-6088"
     And I fill in the following:
       | become_adherent[address][address]    | 1 rue de l'egalite |
       | become_adherent[address][cityName]   | Nice               |
@@ -82,7 +83,8 @@ Feature:
       | become_adherent[birthdate][day]      | 1                  |
       | become_adherent[birthdate][month]    | 1                  |
       | become_adherent[birthdate][year]     | 1980               |
-    And I press "J'adhère"
+    And I check "Oui, j'adhère à la Charte des Valeurs ainsi qu'aux Conditions Générales d'Utilisation du site et j’ai pris connaissance des règles de fonctionnement de La République En Marche."
+    When I press "J'adhère"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
     And I should have 1 email "AdherentAccountConfirmationMessage" for "jp@test.com" with payload:
@@ -145,6 +147,7 @@ Feature:
       | become_adherent[birthdate][day]      | 1                  |
       | become_adherent[birthdate][month]    | 1                  |
       | become_adherent[birthdate][year]     | 1980               |
+    And I check "Oui, j'adhère à la Charte des Valeurs ainsi qu'aux Conditions Générales d'Utilisation du site et j’ai pris connaissance des règles de fonctionnement de La République En Marche."
     When I press "J'adhère"
     Then I should see "Veuillez renseigner une ville."
 
@@ -167,6 +170,7 @@ Feature:
       | become_adherent[birthdate][day]      | 1                   |
       | become_adherent[birthdate][month]    | 1                   |
       | become_adherent[birthdate][year]     | 1980                |
+    And I check "Oui, j'adhère à la Charte des Valeurs ainsi qu'aux Conditions Générales d'Utilisation du site et j’ai pris connaissance des règles de fonctionnement de La République En Marche."
     When I press "J'adhère"
     Then I should see "Veuillez renseigner une ville."
 

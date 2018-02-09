@@ -586,7 +586,6 @@
 
         <service autowire="true" public="false" id="AppBundle\Form\DataTransformer\CommitteeTransformer"/>
 
-
         <!--
         ######################################################
         # Extension

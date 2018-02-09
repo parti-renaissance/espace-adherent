@@ -39,7 +39,7 @@ class UserController extends Controller
     public function profileAction(Request $request): Response
     {
         $adherent = $this->getUser();
-        $membership = MembershipRequest::createFromAdherent($adherent, $this->get('libphonenumber.phone_number_util'));
+        $membership = MembershipRequest::createFromAdherent($adherent);
         $form = $this->createForm(AdherentType::class, $membership)
             ->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications'])
         ;

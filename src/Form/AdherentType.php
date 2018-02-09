@@ -9,6 +9,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 
@@ -16,6 +18,8 @@ class AdherentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $countryCode = $builder->getData()->getAddress() ? $builder->getData()->getAddress()->getCountry() : null;
+
         $builder
             ->add('firstName', TextType::class, [
                 'format_identity_case' => true,
@@ -38,10 +42,20 @@ class AdherentType extends AbstractType
             ->add('address', AddressType::class)
             ->add('phone', PhoneNumberType::class, [
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
+                'preferred_country_choices' => $countryCode ? [$countryCode] : [],
             ])
             ->add('comMobile', CheckboxType::class, [
                 'required' => false,
             ])
+        ;
+
+        // Use address country for phone by default
+        $builder->get('phone')->get('country')
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) use ($countryCode) {
+                if ($countryCode && !$formEvent->getData()) {
+                    $formEvent->setData($countryCode);
+                }
+            })
         ;
     }
 
