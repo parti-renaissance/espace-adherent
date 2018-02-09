@@ -74,6 +74,11 @@ class MembershipRequest implements MembershipInterface
      */
     public $password;
 
+    /**
+     * @Assert\IsTrue(message="common.conditions.not_accepted", groups={"Conditions"})
+     */
+    public $conditions;
+
     public $comMobile = false;
 
     public $comEmail = false;
