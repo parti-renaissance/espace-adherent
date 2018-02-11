@@ -137,7 +137,7 @@
 {%- endblock character_count %}
 
 {% block color_choice_entry_label %}
-    {%- set label_attr = label_attr|merge({style: "cursor: pointer; display: inline-block; background-color: " ~ label ~ "; width: 27px; height: 27px; margin-right: 10px;"}) -%}
+    {%- set label_attr = label_attr|merge({style: "cursor: pointer; background-color: " ~ label ~ "; width: 27px; height: 27px;"}) -%}
     {%- set label = " " -%}
     {{- block('form_label') -}}
 {% endblock %}
