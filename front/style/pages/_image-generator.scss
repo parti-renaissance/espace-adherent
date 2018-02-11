@@ -72,3 +72,23 @@ input.img-gen__input {
   }
 }
 
+[name="citizen_project_image[backgroundColor]"] + label {
+  position: relative;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+[name="citizen_project_image[backgroundColor]"] + label:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 5px;
+  bottom: -8px;
+  background-color: transparent;
+  transition: background-color 125ms ease;
+}
+
+[name="citizen_project_image[backgroundColor]"]:checked + label:after {
+  background-color: #444;
+}
+
