@@ -177,6 +177,10 @@
             flex-flow: column wrap;
             max-height: 100%;
         }
+
+        &--half {
+          flex-basis: 50%;
+        }
     }
 
     &__tablet {

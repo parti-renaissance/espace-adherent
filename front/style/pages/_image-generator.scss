@@ -2,4 +2,27 @@
   font-family: $font-roboto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  form[name="citizen_project_image"] {
+    counter-reset: section;
+  }
+}
+
+.img-gen__fieldset {
+
+  &:before {
+    counter-increment: section;
+    content: counter(section) ' ';
+    color: white;
+    display: flex;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+    background-color: #444;
+    font-family: $font-gillsans;
+    font-weight: bold;
+    font-size: 16px;
+  }
 }
