@@ -3,12 +3,17 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  color: #444;
+
   form[name="citizen_project_image"] {
     counter-reset: section;
   }
 }
 
 .img-gen__fieldset {
+  margin-bottom: 45px;
+  display: flex;
+  flex-flow: row wrap;
 
   &:before {
     counter-increment: section;
@@ -25,4 +30,37 @@
     font-weight: bold;
     font-size: 16px;
   }
+
+  > div {
+    flex: 1;
+    margin-left: 20px;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
+
+.img-gen__input {
+  margin: 0;
+
+  &--block {
+    width: 100%;
+  }
+
+
+input.img-gen__input {
+  height: 55px;
+}
+
+.img-gen__label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+

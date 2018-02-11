@@ -21,6 +21,11 @@
                   <div class="l__col l__col--half l__col--top b__nudge--right-larger">
 
                     <div class="img-gen__fieldset">
+                      {{ form_row(form.citizenProjectTitle, {
+                          label: 'Entrez le nom de votre projet citoyen :',
+                          attr: {class: 'img-gen__input img-gen__input--block'},
+                          label_attr: {class: 'img-gen__label'}
+                      }) }}
                     </div>
 
                     <div class="img-gen__fieldset">
@@ -34,6 +39,11 @@
                   <div class="l__col l__col--half l__col--top">
 
                     <div class="img-gen__fieldset">
+                    {{ form_row(form.city, {
+                        label: 'Entrez votre ville :',
+                        attr: {class: 'img-gen__input img-gen__input--block'},
+                        label_attr: {class: 'img-gen__label'}
+                    }) }}
                     </div>
 
                     <div class="img-gen__fieldset">
