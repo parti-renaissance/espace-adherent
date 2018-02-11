@@ -40,6 +40,10 @@
     margin-left: 20px;
   }
 
+  p {
+    margin: 0;
+  }
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -56,6 +60,15 @@
     max-width: 65px;
   }
 
+  &[type="file"] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+}
 
 input.img-gen__input {
   height: 55px;
