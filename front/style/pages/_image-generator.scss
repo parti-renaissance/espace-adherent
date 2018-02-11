@@ -105,3 +105,21 @@ input.img-gen__input {
   background-color: #444;
 }
 
+.img-gen__preview {
+  display: flex;
+  margin-bottom: 70px;
+
+  img {
+    max-width: 100%;
+  }
+}
+
+
+.img-gen__preview-profile {
+  max-width: 150px;
+  margin-right: 75px;
+}
+
+.img-gen__preview-cover {
+}
+
