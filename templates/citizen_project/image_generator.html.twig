@@ -106,14 +106,14 @@
                 {{ dump(previewCoverImage) }}
                 {% if previewCoverImage %}
                     <hr/>
-                    <div>
-                        <div>
+                    <div class="img-gen__preview">
+                        <div class="img-gen__preview-profile">
                             <h6>Profile</h6>
                             <img src="{{ previewEmojiImage }}"/>
                         </div>
-                        <div>
+                        <div class="img-gen__preview-cover">
                             <h6>Cover</h6>
-                            <img src="{{ previewCoverImage }}" style="max-width: 800px"/>
+                            <img src="{{ previewCoverImage }}" />
                         </div>
                     </div>
                     {{ form_row(form.preview, {
