@@ -8,6 +8,10 @@
   form[name="citizen_project_image"] {
     counter-reset: section;
   }
+
+  a {
+    border-bottom: none;
+  }
 }
 
 .img-gen__fieldset {
@@ -46,6 +50,10 @@
 
   &--block {
     width: 100%;
+  }
+
+  &--narrow {
+    max-width: 65px;
   }
 
 

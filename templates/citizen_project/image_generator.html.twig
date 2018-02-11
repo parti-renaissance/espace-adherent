@@ -29,6 +29,22 @@
                     </div>
 
                     <div class="img-gen__fieldset">
+                      <div>
+                        {{ form_label(form.emoji, 'Entrez un emoji qui représente au mieux votre projet :', {
+                          label_attr: {class: 'img-gen__label'}
+                        })}}
+                        {{ form_errors(form.emoji)}}
+
+                        <div class="l__row">
+                          {{ form_widget(form.emoji, {
+                            attr: {class: 'img-gen__input img-gen__input--narrow'}
+                          }) }}
+                          <div class="text--small b__nudge--left-medium">
+                            Vous pouvez aller chercher votre emoji sur
+                            <a href="https://getemoji.com" class="text--blue--dark" target="_blank">getemoji.com</a> et le coller ici.
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     <div class="img-gen__fieldset">
@@ -47,6 +63,21 @@
                     </div>
 
                     <div class="img-gen__fieldset">
+                      <div>
+                        {{ form_label(form.departmentCode, 'Entrez le numéro de votre département :', {
+                          label_attr: {class: 'img-gen__label'}
+                        })}}
+                        {{ form_errors(form.departmentCode)}}
+
+                        <div class="l__row">
+                          {{ form_widget(form.departmentCode, {
+                            attr: {
+                              class: 'img-gen__input img-gen__input--narrow',
+                              maxlength: 2
+                            }
+                          })}}
+                        </div>
+                      </div>
                     </div>
 
                     <div class="img-gen__fieldset">
