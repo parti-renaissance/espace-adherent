@@ -8,7 +8,7 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\MysqlWebTestCase;
 
 /**
- * @functional
+ * @group functional
  */
 class ArticleCategoryAdminTest extends MysqlWebTestCase
 {
