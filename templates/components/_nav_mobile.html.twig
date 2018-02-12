@@ -22,17 +22,7 @@
                     <li>
                         <a href="{{ has_role_adherent ? path('app_user_profile') : path('app_user_login') }}">
                             <div class="text--bold">{{ app.user.firstName }}</div>
-                            <div class="text--small text--gray">
-                                {% if not has_role_adherent %}
-                                    Non-adhérent(e)
-                                {% elseif has_role_adherent %}
-                                    {% if app.user.isFemale %}Référente 🥇{% else %}Référent 🥇{% endif %}
-                                {% elseif app.user.isHost %}
-                                    {% if app.user.isFemale %}Animatrice 🏅{% else %}Animateur 🏅{% endif %}
-                                {% elseif has_role_adherent %}
-                                    {% if app.user.isFemale %}Adhérente 😍{% else %}Adhérent 😍{% endif %}
-                                {% endif %}
-                            </div>
+                            <div class="text--small text--gray">{{ get_user_level_label(app.user) }}</div>
                         </a>
                     </li>
                 </ul>
