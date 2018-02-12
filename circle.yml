@@ -96,16 +96,19 @@ deployment:
         owner: EnMarche
         commands:
             # Builds and pushes image to registry
-            - bash scripts/build.sh stable
-    staging:
-        branch: staging
+            - bash scripts/build.sh master
+
+            # Deploys image and migrates database
+            - bash scripts/deployment.sh preprod
+    release:
+        branch: release
         owner: EnMarche
         commands:
             # Builds and pushes image to registry
-            - bash scripts/build.sh latest
+            - bash scripts/build.sh release
 
             # Deploys image and migrates database
-            - bash scripts/deployment_staging.sh
+            - bash scripts/deployment.sh release
     develop:
        branch: develop
        owner: EnMarche
@@ -114,4 +117,4 @@ deployment:
             - bash scripts/build.sh develop
 
             # Deploys image and migrates database
-            - bash scripts/deployment_develop.sh
+            - bash scripts/deployment.sh develop
