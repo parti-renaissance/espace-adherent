@@ -14,7 +14,6 @@ use AppBundle\Entity\Committee;
 use AppBundle\Exception\CitizenProjectCommitteeSupportAlreadySupportException;
 use AppBundle\Exception\CitizenProjectNotApprovedException;
 use AppBundle\Form\CitizenProjectCommentCommandType;
-use AppBundle\Form\CitizenProjectImageType;
 use AppBundle\Geocoder\Exception\GeocodingException;
 use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Repository\CitizenProjectCommentRepository;
@@ -50,35 +49,6 @@ class CitizenProjectController extends Controller
     public function showIfNotAuthorizedDepartmentAction(): Response
     {
         return $this->render('citizen_project/not_available.html.twig');
-    }
-
-    /**
-     * @Route("/image-generateur", name="app_citizen_project_image_generator")
-     * @Method({"GET", "POST"})
-     */
-    public function generateCitizenProjectImageAction(Request $request): Response
-    {
-        $form = $this
-            ->createForm(CitizenProjectImageType::class)
-            ->handleRequest($request);
-
-        $previewCoverImage = $previewEmojiImage = null;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $imageGenerator = $this->get('app.citizen_project.image_generator');
-            $imageCommand = $form->getData();
-
-            $previewCoverImage = $imageGenerator->getImageAsBase64($imageGenerator->generate($imageCommand));
-        }
-
-        return $this->render(
-            'citizen_project/image_generator.html.twig',
-            [
-                'form' => $form->createView(),
-                'previewCoverImage' => $previewCoverImage,
-                'previewEmojiImage' => $previewEmojiImage,
-            ]
-        );
     }
 
     /**

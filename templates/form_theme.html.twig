@@ -142,7 +142,7 @@
     {{- block('form_label') -}}
 {% endblock %}
 
-{% block _citizen_project_image_backgroundImage_label %}
+{% block _citizen_project_media_backgroundImage_label %}
     {%- set label_attr = label_attr|merge({style: "cursor: pointer;"}) -%}
     {% if not compound -%}
         {% set label_attr = label_attr|merge({'for': id}) %}
