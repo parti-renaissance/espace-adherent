@@ -29,9 +29,6 @@ parameters:
     legislatives_host:           '%env(LEGISLATIVES_HOST)%'
     router.request_context.scheme:  '%env(APP_SCHEME)%'
     router.request_context.host:    '%env(APP_HOST)%'
-    citizen_project_badge_path:  '%env(STATIC_IMAGES_PATH)%/badge/citizen-project.png'
-    citizen_project_cover.font_title: '%kernel.project_dir%/web/fonts/gillsans-heavy-italic.ttf'
-    citizen_project_cover.font_text: '%kernel.project_dir%/web/fonts/gillsans-regular.ttf'
 
 framework:
     translator:      { fallbacks: ["%locale%"], paths: ['%kernel.project_dir%/translations'] }

@@ -224,13 +224,11 @@
         <service id="app.citizen_project.cover_generator" class="AppBundle\MediaGenerator\Image\CitizenProjectCoverGenerator">
             <argument type="service" id="knp_snappy.image"/>
             <argument type="service" id="templating"/>
-            <argument>%citizen_project_badge_path%</argument>
         </service>
 
         <service id="app.citizen_project.tract_generator" class="AppBundle\MediaGenerator\Pdf\CitizenProjectTractGenerator">
             <argument type="service" id="knp_snappy.pdf"/>
             <argument type="service" id="templating"/>
-            <argument>%citizen_project_badge_path%</argument>
         </service>
 
         <service id="app.committee.photo.manager" class="AppBundle\Committee\PhotoManager">
