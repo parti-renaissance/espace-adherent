@@ -39,6 +39,7 @@ class CitizenProjectCoverGenerator extends BaseSnappyGenerator
             [
                 'format' => 'png',
                 'quality' => 100,
+                'width' => 820,
             ]
         );
 
