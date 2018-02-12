@@ -3,6 +3,12 @@
         <h3 class="text--body">
             {{ has_role_adherent ? item.author.fullName : item.author.partialName }}
             <span class="text--summary text--small text--gray b__nudge--bottom">{{ item.author.isSupervisorOf(committee) ? 'animateur' : (item.author.isHostOf(committee) ? 'co-animateur') }}</span>
+            {% if item.author == app.user or (app.user.isSupervisorOf is defined and app.user.isSupervisorOf(committee)) %}
+                <div class="feed-rc-dropdown"
+                     data-url-edit="{{ path('app_committee_timeline_edit', { slug: committee.slug, id: item.id }) }}"
+                     data-url-delete="{{ path('app_committee_timeline_delete', { slug: committee.slug, id: item.id }) }}"
+                ></div>
+            {% endif %}
         </h3>
         <span class="time-ago text--body">{{ item.createdAt|ago|capitalize }}</span>
         {{ include("committee/timeline/_#{item.type}.html.twig", ignore_missing=true) }}

@@ -86,6 +86,12 @@ class App {
         });
     }
 
+    runCommitteesButton() {
+        System.import('pages/committees_button').catch((error) => { throw error; }).then((module) => {
+            module.default(this.get('map_factory'), this.get('api'));
+        });
+    }
+
     runEventsMap() {
         System.import('pages/events_map').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('map_factory'), this.get('api'));

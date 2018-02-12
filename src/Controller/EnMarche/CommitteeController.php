@@ -6,8 +6,10 @@ use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Form\CommitteeFeedMessageType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -51,10 +53,65 @@ class CommitteeController extends Controller
         return $this->render('committee/show.html.twig', [
             'committee' => $committee,
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
-            'committee_timeline' => $committeeManager->getTimeline($committee, $this->getParameter('timeline_max_messages')),
+            'committee_timeline' => $committeeManager->getTimeline($committee,
+                $this->getParameter('timeline_max_messages')),
             'committee_timeline_max_messages' => $this->getParameter('timeline_max_messages'),
             'form' => $form ? $form->createView() : null,
         ]);
+    }
+
+    /**
+     * @Route("/timeline/{id}/edit", name="app_committee_timeline_edit")
+     * @ParamConverter("committee", options={"mapping":{"slug": "slug"}})
+     * @ParamConverter("committeeFeedItem", options={"mapping":{"id": "id"}})
+     * @Method("GET|POST")
+     * @Security("is_granted('ADMIN_FEED_COMMITTEE', committeeFeedItem)")
+     */
+    public function timelineEditAction(Request $request, Committee $committee, CommitteeFeedItem $committeeFeedItem): Response
+    {
+        $form = null;
+        if ($this->isGranted(CommitteePermissions::HOST, $committee)) {
+            $form = $this
+                ->createForm(CommitteeFeedMessageType::class, $committeeFeedItem, ['data_class' => CommitteeFeedItem::class])
+                ->handleRequest($request)
+            ;
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
+                $this->addFlash('info', $this->get('translator')->trans('committee.message_edited'));
+
+                return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
+            }
+        }
+
+        $committeeManager = $this->get('app.committee.manager');
+
+        return $this->render('committee/show.html.twig', [
+            'committee' => $committee,
+            'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
+            'committee_timeline' => $committeeManager->getTimeline($committee,
+                $this->getParameter('timeline_max_messages')),
+            'committee_timeline_max_messages' => $this->getParameter('timeline_max_messages'),
+            'form' => $form ? $form->createView() : null,
+        ]);
+    }
+
+    /**
+     * @Route("/timeline/{id}/delete", name="app_committee_timeline_delete")
+     * @ParamConverter("committee", options={"mapping":{"slug": "slug"}})
+     * @ParamConverter("committeeFeedItem", options={"mapping":{"id": "id"}})
+     * @Method("GET")
+     * @Security("is_granted('ADMIN_FEED_COMMITTEE', committeeFeedItem)")
+     */
+    public function timelineDeleteAction(Committee $committee, CommitteeFeedItem $committeeFeedItem): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $em->remove($committeeFeedItem);
+        $em->flush();
+        $this->addFlash('info', $this->get('translator')->trans('committee.message_deleted'));
+
+        return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
     }
 
     /**
