@@ -2,6 +2,15 @@
 
 {% block page_title 'Projets citoyens - image generateur' %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runCitizenProjectImageGenerator();
+        });
+    </script>
+{% endblock %}
+
 {% block media_generator_form %}
     <p>Grâce a cette interface, generez les photos du profil et de couverture de votre projet citoyen sur les reseaux sociaux.</p>
 
@@ -101,11 +110,11 @@
         <div class="img-gen__preview">
             <div class="img-gen__preview-profile">
                 <h6>Profile</h6>
-                <img src="{{ previewEmojiImage }}"/>
+                <canvas id="profil-emoji" width="170" height="170" />
             </div>
             <div class="img-gen__preview-cover">
                 <h6>Cover</h6>
-                <img src="{{ previewCoverImage }}" />
+                <img id="cover-image" src="{{ previewCoverImage }}" />
             </div>
         </div>
 
@@ -115,7 +124,7 @@
                 attr: {class: 'img-gen__button--inverse'}
             }) }}
 
-            <a href="#">Télécharger les images</a>
+            <a href="#" id="citizen_project_image_download_button" class="img-gen__button--inverse">Télécharger les images</a>
         </div>
     {% else %}
 
