@@ -27,6 +27,10 @@ class ClientStore implements OAuthClientRepositoryInterface
      */
     public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
     {
+        if (!Uuid::isValid($clientIdentifier)) {
+            return null;
+        }
+
         if (!$client = $this->clientRepository->findClientByUuid(Uuid::fromString($clientIdentifier))) {
             return null;
         }
