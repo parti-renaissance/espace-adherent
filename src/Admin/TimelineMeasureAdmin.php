@@ -20,8 +20,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TimelineMeasureAdmin extends AbstractAdmin
 {
-    use EmptyTranslationRemoverAdminTrait;
-
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -61,8 +59,6 @@ class TimelineMeasureAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
-
-        $this->removeEmptyTranslationsOnSubmit($formMapper->getFormBuilder());
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
