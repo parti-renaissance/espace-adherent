@@ -72,17 +72,7 @@
                                 <li class="nav-dropdown__section__name">
                                     <a href="{{ has_role_adherent ? path('app_user_profile') }}" class="icon--with-text">
                                         <div>{{ app.user }}</div>
-                                        <div class="text--small text--gray text--normal">
-                                            {% if not has_role_adherent %}
-                                                Non-adhérent(e)
-                                            {% elseif is_granted('ROLE_REFERENT') %}
-                                                {% if app.user.isFemale %}Référente 🥇{% else %}Référent 🥇{% endif %}
-                                            {% elseif app.user.isHost %}
-                                                {% if app.user.isFemale %}Animatrice 🏅{% else %}Animateur 🏅{% endif %}
-                                            {% elseif has_role_adherent %}
-                                                {% if app.user.isFemale %}Adhérente 😍{% else %}Adhérent 😍{% endif %}
-                                            {% endif %}
-                                        </div>
+                                        <div class="text--small text--gray text--normal">{{ get_user_level_label(app.user) }}</div>
                                     </a>
                                 </li>
                             </ul>
