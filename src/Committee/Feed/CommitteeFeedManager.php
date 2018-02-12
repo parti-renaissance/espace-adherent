@@ -53,15 +53,15 @@ class CommitteeFeedManager
         $this->manager->persist($item);
         $this->manager->flush();
 
-        $this->sendMessageToFollowers($item, $message->getCommittee());
+        $this->sendMessageToFollowers($item, $message->getCommittee(), $message->getSubject());
 
         return $item;
     }
 
-    private function sendMessageToFollowers(CommitteeFeedItem $message, Committee $committee): void
+    private function sendMessageToFollowers(CommitteeFeedItem $message, Committee $committee, string $subject): void
     {
         foreach ($this->getOptinCommitteeFollowersChunks($committee) as $chunk) {
-            $this->mailer->sendMessage(CommitteeMessageNotificationMessage::create($chunk, $message));
+            $this->mailer->sendMessage(CommitteeMessageNotificationMessage::create($chunk, $message, $subject));
         }
     }
 

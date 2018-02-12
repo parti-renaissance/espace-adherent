@@ -15,6 +15,12 @@ class CommitteeContactMembersCommand
 
     /**
      * @Assert\NotBlank
+     * @Assert\Length(max=80)
+     */
+    private $subject;
+
+    /**
+     * @Assert\NotBlank
      * @Assert\Length(min=10, minMessage="committee.message.min_length")
      */
     private $message;
@@ -36,7 +42,17 @@ class CommitteeContactMembersCommand
         return $this->sender;
     }
 
-    public function setMessage(?string $message)
+    public function setSubject(?string $subject): void
+    {
+        $this->subject = $subject;
+    }
+
+    public function getSubject(): ?string
+    {
+        return $this->subject;
+    }
+
+    public function setMessage(?string $message): void
     {
         $this->message = $message;
     }

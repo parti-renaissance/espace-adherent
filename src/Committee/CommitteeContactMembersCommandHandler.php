@@ -25,6 +25,7 @@ class CommitteeContactMembersCommandHandler
             $this->mailer->sendMessage(CommitteeContactMembersMessage::create(
                 $chunk,
                 $command->getSender(),
+                $command->getSubject(),
                 $command->getMessage()
             ));
         }

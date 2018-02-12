@@ -37,13 +37,13 @@
                 <input type="text" disabled="disabled" class="form form__field form--full" value="{{ app.user.fullName }}" />
             </div>
 
-            <div class="form__row">
+            <div class="form__row subject">
                 {{ form_label(form.subject, 'Objet') }}
                 {{ form_errors(form.subject) }}
                 {{ form_widget(form.subject, {'attr': {'class': 'form--full'}}) }}
             </div>
 
-            <div class="form__row">
+            <div class="form__row message">
                 {{ form_label(form.content, 'Message') }}
                 {{ form_errors(form.content) }}
                 {{ form_widget(form.content, {'attr': {'class': 'form--full form__field--textarea-300'}}) }}

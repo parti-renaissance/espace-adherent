@@ -11,11 +11,12 @@ final class CommitteeContactMembersMessage extends Message
     /**
      * @param Adherent[] $recipients
      * @param Adherent   $host
+     * @param string     $subject
      * @param string     $content
      *
      * @return CommitteeContactMembersMessage
      */
-    public static function create(array $recipients, Adherent $host, string $content): self
+    public static function create(array $recipients, Adherent $host, string $subject, string $content): self
     {
         $first = array_shift($recipients);
 
@@ -24,7 +25,7 @@ final class CommitteeContactMembersMessage extends Message
             '63337',
             $first->getEmailAddress(),
             $first->getFullName(),
-            'Des nouvelles de votre comité',
+            "[Comité local] $subject",
             [
                 'animator_firstname' => self::escape($host->getFirstName()),
                 'target_message' => $content,
@@ -35,7 +36,7 @@ final class CommitteeContactMembersMessage extends Message
             $host->getEmailAddress()
         );
 
-        $sender = $host->getFirstName().', ';
+        $sender = $host->getFullName().', ';
         $sender .= Genders::FEMALE === $host->getGender() ? 'animatrice' : 'animateur';
         $sender .= ' de votre comité';
 
