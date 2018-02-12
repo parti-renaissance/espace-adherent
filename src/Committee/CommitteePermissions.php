@@ -10,6 +10,7 @@ final class CommitteePermissions
     public const CREATE = 'CREATE_COMMITTEE';
     public const HOST = 'HOST_COMMITTEE';
     public const SUPERVISE = 'SUPERVISE_COMMITTEE';
+    public const ADMIN_FEED = 'ADMIN_FEED_COMMITTEE';
 
     public const FOLLOWER = [
         self::FOLLOW,

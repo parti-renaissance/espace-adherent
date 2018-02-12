@@ -134,10 +134,13 @@ trait ControllerTestTrait
         }
     }
 
-    protected function assertSeeCommitteeTimelineMessage(Crawler $crawler, int $position, string $author, string $role, string $text)
+    protected function assertSeeCommitteeTimelineMessage(Crawler $crawler, int $position, string $author, string $role, string $text, bool $editable = false)
     {
         $this->assertContains($author, $crawler->filter('.committee__timeline__message h3')->eq($position)->text());
         $this->assertSame($role, $crawler->filter('.committee__timeline__message h3 span')->eq($position)->text());
+        if ($editable) {
+            $position = ($position + 1) * 3 - 1;
+        }
         $this->assertContains($text, $crawler->filter('.committee__timeline__message div')->eq($position)->text());
     }
 
