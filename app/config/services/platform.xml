@@ -221,19 +221,17 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="app.citizen_project.image_generator" class="AppBundle\ImageGenerator\CitizenProjectImageGenerator">
-            <argument type="service" id="app.image_manager"/>
+        <service id="app.citizen_project.cover_generator" class="AppBundle\MediaGenerator\Image\CitizenProjectCoverGenerator">
+            <argument type="service" id="knp_snappy.image"/>
+            <argument type="service" id="templating"/>
             <argument>%citizen_project_badge_path%</argument>
-            <argument>%citizen_project_cover.font_title%</argument>
-            <argument>%citizen_project_cover.font_text%</argument>
         </service>
 
-        <service id="app.emoji_image_generator" class="AppBundle\ImageGenerator\EmojiImageGenerator">
-            <argument type="service" id="app.image_manager"/>
-            <argument type="service" id="knp_snappy.image" />
+        <service id="app.citizen_project.tract_generator" class="AppBundle\MediaGenerator\Pdf\CitizenProjectTractGenerator">
+            <argument type="service" id="knp_snappy.pdf"/>
+            <argument type="service" id="templating"/>
+            <argument>%citizen_project_badge_path%</argument>
         </service>
-
-        <service id="app.image_manager" class="Intervention\Image\ImageManager" />
 
         <service id="app.committee.photo.manager" class="AppBundle\Committee\PhotoManager">
             <argument type="service" id="app.storage"/>
