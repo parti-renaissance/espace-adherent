@@ -166,6 +166,31 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         return $this->longitude;
     }
 
+    public function setAddress(?string $address): void
+    {
+        $this->address = $address;
+    }
+
+    public function setPostalCode(?string $postalCode): void
+    {
+        $this->postalCode = $postalCode;
+    }
+
+    public function setCity(?string $city): void
+    {
+        $this->city = $city;
+    }
+
+    public function setCityName(?string $cityName): void
+    {
+        $this->cityName = $cityName;
+    }
+
+    public function setCountry(string $country): void
+    {
+        $this->country = $country;
+    }
+
     public function setLatitude($latitude)
     {
         $this->latitude = $latitude;
