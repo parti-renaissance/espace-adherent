@@ -1,0 +1,16 @@
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field%}
+    <ul>
+        {% for callback in value %}
+            <li>
+                {{ callback.client.name }}
+                <ul>
+                    {% for url in callback.urls %}
+                        <li>{{ url }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
