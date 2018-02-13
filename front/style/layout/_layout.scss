@@ -137,6 +137,10 @@
         &--top {
             align-items: flex-start;
         }
+
+        &--pack-center {
+            align-content: center;
+        }
     }
 
     &__col {
