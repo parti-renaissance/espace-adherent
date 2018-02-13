@@ -1,0 +1,86 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <div class="sticky-wrapper">
+        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        Afficher "{{ template.class|split('\\')|last }}"
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    {% block notice %}
+        {{ parent() }}
+    {% endblock %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h4 class="box-title">
+                        Informations
+                    </h4>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table">
+                        <tbody>
+                            <tr class="sonata-ba-view-container">
+                                <th>Classe</th>
+                                <td>src/{{ template.class|replace({'\\': '/'}) }}.php</td>
+                            </tr>
+                            <tr class="sonata-ba-view-container">
+                                <th>Template</th>
+                                <td>templates/email/template/{{ template.name }}_message.html.twig</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h4 class="box-title">
+                        Aperçus
+                    </h4>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table">
+                        <tbody>
+                            <tr class="sonata-ba-view-container">
+                                <th>Sujet</th>
+                                <td>
+                                    {{ template.subject }}
+                                </td>
+                            </tr>
+                            <tr class="sonata-ba-view-container">
+                                <th>Version HTML</th>
+                                <td>
+                                    <a href="{{ path('app_admin_email_template_html', {'name': template.name}) }}"
+                                       class="btn btn-default btn-sm" target="_blank">
+                                        Voir en HTML
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="sonata-ba-view-container">
+                                <th>Version texte</th>
+                                <td>
+                                    <a href="{{ path('app_admin_email_template_text', {'name': template.name}) }}"
+                                       class="btn btn-default btn-sm" target="_blank">
+                                        Voir en texte
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

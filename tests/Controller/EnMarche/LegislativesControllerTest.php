@@ -89,8 +89,6 @@ class LegislativesControllerTest extends SqliteWebTestCase
         $payload = $emails[0]->getRequestPayload();
 
         $this->assertSame('Marc Dupont', $payload['FromName']);
-        $this->assertSame('Élections Législatives - Nouvelle demande de contact', $payload['Subject']);
-        $this->assertSame('143247', $payload['MJ-TemplateID']);
         $this->assertSame(
             [
                 'email' => 'marc1337@gmail.tld',

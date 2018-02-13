@@ -10,14 +10,17 @@ final class DonationMessage extends Message
     {
         return new self(
             $donation->getUuid(),
-            '54677',
             $donation->getEmailAddress(),
             $donation->getFullName(),
-            'Merci pour votre engagement',
-            [
-                'target_firstname' => self::escape($donation->getFirstName()),
-                'year' => (int) $donation->getDonatedAt()->format('Y') + 1,
-            ]
+            [],
+            self::getRecipientVars($donation->getFirstName())
         );
+    }
+
+    private static function getRecipientVars(string $firstName): array
+    {
+        return [
+            'target_firstname' => self::escape($firstName),
+        ];
     }
 }

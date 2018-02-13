@@ -24,4 +24,9 @@ abstract class AbstractEmailClient
 
         return $this->httpClient->request($method, $uri, $options);
     }
+
+    protected function getBody(ResponseInterface $response): array
+    {
+        return json_decode($response->getBody(), true);
+    }
 }

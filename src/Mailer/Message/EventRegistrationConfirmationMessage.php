@@ -14,27 +14,38 @@ final class EventRegistrationConfirmationMessage extends Message
 
         return new self(
             Uuid::uuid4(),
-            '118620',
             $registration->getEmailAddress(),
             $firstName,
-            'Confirmation de participation à un événement En Marche !',
-            static::getTemplateVars(
+            self::getTemplateVars(
                 $event->getName(),
+                static::formatDate($event->getBeginAt(), 'EEEE d MMMM y'),
+                sprintf(
+                    '%sh%s',
+                    static::formatDate($event->getBeginAt(), 'HH'),
+                    static::formatDate($event->getBeginAt(), 'mm')
+                ),
+                $event->getInlineFormattedAddress(),
                 $event->getOrganizerName(),
                 $eventLink
             ),
-            static::getRecipientVars($firstName)
+            self::getRecipientVars($firstName)
         );
     }
 
     private static function getTemplateVars(
         string $eventName,
+        string $eventDate,
+        string $eventHour,
+        string $eventAddress,
         string $organizerName,
         string $eventLink
     ): array {
         return [
             'event_name' => self::escape($eventName),
-            'event_organiser' => self::escape($organizerName),
+            'event_date' => $eventDate,
+            'event_hour' => $eventHour,
+            'event_address' => self::escape($eventAddress),
+            'event_organizer' => self::escape($organizerName),
             'event_link' => $eventLink,
         ];
     }

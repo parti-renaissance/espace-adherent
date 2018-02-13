@@ -36,10 +36,6 @@ class CommitteeManagementAuthorityTest extends TestCase
         ;
 
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $urlGenerator->expects($this->at(0))->method('generate')->willReturn(sprintf(
-            '/comites/%s',
-            'comite-lille-beach'
-        ));
 
         $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailer);
         $committeeManagementAuthority->approve($committee);

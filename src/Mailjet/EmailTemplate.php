@@ -33,7 +33,6 @@ final class EmailTemplate extends AbstractEmailTemplate
             $body['FromName'] = $this->fixMailjetParsing($this->senderName);
         }
 
-        $body['Subject'] = $this->subject;
         $body['MJ-TemplateID'] = $this->template;
         $body['MJ-TemplateLanguage'] = true;
 

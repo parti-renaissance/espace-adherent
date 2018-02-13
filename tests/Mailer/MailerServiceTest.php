@@ -6,6 +6,7 @@ use AppBundle\Mailer\Event\MailerEvent;
 use AppBundle\Mailer\Event\MailerEvents;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\EmailTemplateFactory;
+use AppBundle\Mailer\Message\MessageRegistry;
 use PHPUnit\Framework\TestCase;
 use Tests\AppBundle\Test\Mailer\DummyEmailTemplate;
 use Tests\AppBundle\Test\Mailer\Message\DummyMessage;
@@ -29,10 +30,14 @@ class MailerServiceTest extends TestCase
             $this->isInstanceOf(MailerEvent::class)
         );
 
+        $messageRegistry = $this->createMock(MessageRegistry::class);
+        $messageRegistry->expects($this->once())->method('getTemplate')->willReturn('dummy_message');
+
         $service = new MailerService(
             $dispatcher,
             new NullTransport(),
             new EmailTemplateFactory(
+                $messageRegistry,
                 'contact@en-marche.fr',
                 'En Marche',
                 DummyEmailTemplate::class
@@ -56,10 +61,14 @@ class MailerServiceTest extends TestCase
             $this->isInstanceOf(MailerEvent::class)
         );
 
+        $messageRegistry = $this->createMock(MessageRegistry::class);
+        $messageRegistry->expects($this->once())->method('getTemplate')->willReturn('dummy_message');
+
         $service = new MailerService(
             $dispatcher,
             new FailingTransport(),
             new EmailTemplateFactory(
+                $messageRegistry,
                 'contact@en-marche.fr',
                 'En Marche',
                 DummyEmailTemplate::class

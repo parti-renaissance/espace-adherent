@@ -16,17 +16,15 @@ final class CommitteeApprovalReferentMessage extends Message
     ): self {
         return new self(
             Uuid::uuid4(),
-            '221238',
             $referent->getEmailAddress(),
             $referent->getFullName(),
-            'Un comité vient d\'être approuvé',
-            static::getTemplateVars(
+            self::getTemplateVars(
                 $committee->getName(),
                 $committee->getCityName(),
                 $animator->getFirstName(),
                 $contactLink
             ),
-            static::getRecipientVars($referent->getFirstName())
+            self::getRecipientVars($referent->getFirstName())
         );
     }
 

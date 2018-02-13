@@ -1,0 +1,23 @@
+{% block subject %}
+    {% verbatim %}
+        Un message au sujet de {{var:event_name:""}}
+    {% endverbatim %}
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            {% verbatim %}
+                <tr>
+                    <td align="left">
+                        <p>
+                            {{var:target_message:""}}
+                        </p>
+                    </td>
+                </tr>
+            {% endverbatim %}
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

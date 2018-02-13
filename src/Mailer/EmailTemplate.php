@@ -11,7 +11,6 @@ abstract class EmailTemplate implements \JsonSerializable
     protected $senderEmail;
     protected $senderName;
     protected $replyTo;
-    protected $subject;
     protected $cc;
     protected $recipients;
     protected $template;
@@ -21,7 +20,6 @@ abstract class EmailTemplate implements \JsonSerializable
     public function __construct(
         UuidInterface $uuid,
         string $template,
-        string $subject,
         string $senderEmail,
         string $senderName = null,
         string $replyTo = null,
@@ -29,7 +27,6 @@ abstract class EmailTemplate implements \JsonSerializable
     ) {
         $this->uuid = $uuid;
         $this->template = $template;
-        $this->subject = $subject;
         $this->senderEmail = $senderEmail;
         $this->senderName = $senderName;
         $this->replyTo = $replyTo;
@@ -37,12 +34,12 @@ abstract class EmailTemplate implements \JsonSerializable
         $this->recipients = [];
     }
 
-    public static function createWithMessage(Message $message, string $defaultSenderEmail, string $defaultSenderName = null): self
+    public static function createWithMessage(Message $message, string $template, string $defaultSenderEmail, string $defaultSenderName = null): self
     {
         $senderEmail = $message->getSenderEmail() ?: $defaultSenderEmail;
         $senderName = $message->getSenderName() ?: $defaultSenderName;
 
-        $email = new static($message->getUuid(), $message->getTemplate(), $message->getSubject(), $senderEmail, $senderName, $message->getReplyTo(), $message->getCC());
+        $email = new static($message->getUuid(), $template, $senderEmail, $senderName, $message->getReplyTo(), $message->getCC());
 
         foreach ($message->getRecipients() as $recipient) {
             $email->addRecipient($recipient->getEmailAddress(), $recipient->getFullName(), $recipient->getVars());

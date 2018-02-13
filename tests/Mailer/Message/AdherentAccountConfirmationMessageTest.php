@@ -4,34 +4,31 @@ namespace Tests\AppBundle\Mailer\Message;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Mailer\Message\AdherentAccountConfirmationMessage;
+use AppBundle\Mailer\Message\Message;
 use AppBundle\Mailer\Message\MessageRecipient;
 use PHPUnit\Framework\TestCase;
 
 class AdherentAccountConfirmationMessageTest extends TestCase
 {
-    public function testCreateAdherentAccountConfirmationMessage()
+    public function testCreateFromAdherent()
     {
-        $adherent = $this->getMockBuilder(Adherent::class)->disableOriginalConstructor()->getMock();
+        $adherent = $this->createMock(Adherent::class);
         $adherent->expects($this->once())->method('getEmailAddress')->willReturn('jerome@example.com');
         $adherent->expects($this->once())->method('getFullName')->willReturn('Jérôme Pichoud');
         $adherent->expects($this->once())->method('getFirstName')->willReturn('Jérôme');
-        $adherent->expects($this->once())->method('getLastName')->willReturn('Pichoud');
 
-        $message = AdherentAccountConfirmationMessage::createFromAdherent($adherent, 8, 15);
+        $message = AdherentAccountConfirmationMessage::createFromAdherent($adherent, 8);
 
         $this->assertInstanceOf(AdherentAccountConfirmationMessage::class, $message);
-        $this->assertSame('54673', $message->getTemplate());
-        $this->assertSame('Et maintenant ?', $message->getSubject());
-        $this->assertCount(4, $message->getVars());
+        $this->assertInstanceOf(Message::class, $message);
+        $this->assertCount(1, $message->getVars());
         $this->assertSame(
             [
                 'adherents_count' => 8,
-                'committees_count' => 15,
-                'target_firstname' => '',
-                'target_lastname' => '',
             ],
             $message->getVars()
         );
+        $this->assertCount(1, $message->getRecipients());
 
         $recipient = $message->getRecipient(0);
         $this->assertInstanceOf(MessageRecipient::class, $recipient);
@@ -40,9 +37,7 @@ class AdherentAccountConfirmationMessageTest extends TestCase
         $this->assertSame(
             [
                 'adherents_count' => 8,
-                'committees_count' => 15,
                 'target_firstname' => 'Jérôme',
-                'target_lastname' => 'Pichoud',
             ],
             $recipient->getVars()
         );

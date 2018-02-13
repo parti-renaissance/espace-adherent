@@ -32,8 +32,7 @@ class CommitteeManagementAuthority
 
         $this->mailer->sendMessage(CommitteeApprovalConfirmationMessage::create(
             $this->manager->getCommitteeCreator($committee),
-            $committee->getCityName(),
-            $this->urlGenerator->generate('app_committee_show', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
+            $committee->getCityName()
         ));
     }
 
@@ -88,10 +87,7 @@ class CommitteeManagementAuthority
         $this->mailer->sendMessage(CommitteeNewFollowerMessage::create(
             $committee,
             $hosts,
-            $adherent,
-            $this->urlGenerator->generate('app_commitee_manager_list_members', [
-                'slug' => $committee->getSlug(),
-            ], UrlGeneratorInterface::ABSOLUTE_URL)
+            $adherent
         ));
     }
 }

@@ -10,12 +10,12 @@ final class ProcurationProxyReminderMessage extends Message
 {
     public static function create(ProcurationRequest $request, string $infoUrl): self
     {
+        $proxy = $request->getFoundProxy();
+
         $message = new self(
             Uuid::uuid4(),
-            '133881',
             $request->getEmailAddress(),
             null,
-            'RAPPEL : votre procuration',
             self::createRecipientVariables($request, $infoUrl)
         );
 
