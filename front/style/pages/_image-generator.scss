@@ -3,6 +3,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  background-color: #f3f6f8;
+
   color: #444;
 
   form[name="citizen_project_media"] {
@@ -11,6 +13,16 @@
 
   a {
     border-bottom: none;
+  }
+}
+
+.img-gen__body {
+  background-color: white;
+  padding: 60px 66px 80px;
+
+  > p {
+    margin-top: 0;
+    margin-bottom: 60px;
   }
 }
 
