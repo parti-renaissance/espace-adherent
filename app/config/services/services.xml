@@ -91,5 +91,8 @@
             <argument key="$cacheDirectory">%kernel.cache_dir%</argument>
             <argument key="$webDirectory">%kernel.root_dir%/../web</argument>
         </service>
+
+        <!--Command-->
+        <service id="AppBundle\Command\FixTitleCaseCommand" />
     </services>
 </container>
