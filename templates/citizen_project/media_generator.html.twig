@@ -1,20 +1,29 @@
 {% extends 'base.html.twig' %}
+{% set currentRoute = app.request.attributes.get('_route') %}
+{% set imageRoute = 'app_citizen_project_image_generator' %}
+{% set pdfRoute = 'app_citizen_project_tract_generator' %}
 
 {% block page_title 'Projets citoyens - Media generateur' %}
 
 {% block content %}
-    <main class="image-generator">
-        <section class="l__wrapper--medium space--30-0">
-            <header class="space--30-0">
-                <h1 class="b__nudge--bottom-small text--medium">Creer vos images</h1>
-            </header>
-            <div>
-                <ul>
-                    <li><a href="{{ path('app_citizen_project_image_generator') }}">Réseaux sociaux</a></li>
-                    <li><a href="{{ path('app_citizen_project_tract_generator') }}">Tracts</a></li>
-                </ul>
-            </div>
-            <div>{% block media_generator_form %}{% endblock %}</div>
-        </section>
-    </main>
+<main class="image-generator">
+  <section class="l__wrapper space--30-0">
+    <header>
+      <h1 class="image-generator__headline">Creer vos images</h1>
+    </header>
+    <nav class="img-tabs">
+      <ul>
+        <li class="{{ currentRoute == imageRoute ? 'active' }}">
+          <a href="{{ path(imageRoute) }}">Réseaux sociaux</a>
+        </li>
+        <li class="{{ currentRoute == pdfRoute ?  'active' }}">
+          <a href="{{ path(pdfRoute) }}">Tracts</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="img-gen__body">
+      {% block media_generator_form %}{% endblock %}
+    </div>
+  </section>
+</main>
 {% endblock content %}
