@@ -33,7 +33,8 @@ class NewsletterSubscriptionRepository extends EntityRepository
             ->orderBy('n.createdAt', 'DESC')
             ->where('n.email != :self')
             ->setParameter('self', $referent->getEmailAddress())
-            ->andWhere('LENGTH(n.postalCode) = 5');
+            ->andWhere('LENGTH(n.postalCode) = 5')
+        ;
 
         $codesFilter = $qb->expr()->orX();
 

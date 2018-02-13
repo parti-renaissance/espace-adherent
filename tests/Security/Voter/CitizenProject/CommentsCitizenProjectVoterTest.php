@@ -67,7 +67,8 @@ class CommentsCitizenProjectVoterTest extends AbstractAdherentVoterTest
             ;
         } else {
             $adherent->expects($this->never())
-                ->method('getCitizenProjectMembershipFor');
+                ->method('getCitizenProjectMembershipFor')
+            ;
         }
 
         return $adherent;

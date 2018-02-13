@@ -22,7 +22,8 @@ class CoordinatorManagedAreaType extends AbstractType
             ])
             ->add('codesAsString', TextType::class, [
                 'label' => 'coordinator.label.codes',
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

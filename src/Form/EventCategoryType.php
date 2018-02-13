@@ -19,7 +19,8 @@ class EventCategoryType extends AbstractType
                 return $er->createQueryBuilder('e')
                     ->where('e.status = :status')
                     ->orderBy('e.name', 'ASC')
-                    ->setParameter('status', EventCategory::ENABLED);
+                    ->setParameter('status', EventCategory::ENABLED)
+                ;
             },
         ]);
     }

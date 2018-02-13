@@ -64,7 +64,8 @@ class JsonWebTokenValidator implements AuthorizationValidatorInterface
                 ->withAttribute('oauth_access_token_id', $token->getClaim('jti'))
                 ->withAttribute('oauth_client_id', $token->getClaim('aud'))
                 ->withAttribute('oauth_user_id', $token->getClaim('sub'))
-                ->withAttribute('oauth_scopes', $token->getClaim('scopes'));
+                ->withAttribute('oauth_scopes', $token->getClaim('scopes'))
+            ;
         } catch (\InvalidArgumentException $exception) {
             // JWT couldn't be parsed so return the request as is
             throw OAuthServerException::accessDenied($exception->getMessage());

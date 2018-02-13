@@ -34,7 +34,8 @@ class AdherentEmailSubscriptionType extends AbstractType
                 'attr' => [
                     'style' => 'display: none;',
                 ],
-            ]);
+            ])
+        ;
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $formData = $event->getData();

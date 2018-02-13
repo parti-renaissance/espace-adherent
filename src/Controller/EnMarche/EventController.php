@@ -124,7 +124,8 @@ class EventController extends Controller
         $eventInvitation = EventInvitation::createFromAdherent($this->getUser());
 
         $form = $this->createForm(EventInvitationType::class, $eventInvitation)
-            ->handleRequest($request);
+            ->handleRequest($request)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var EventInvitation $invitation */

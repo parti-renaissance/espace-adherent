@@ -121,7 +121,8 @@ class CommitteeManager
                 }
 
                 return false; // discard
-            });
+            })
+        ;
 
         return $committees->toArray();
     }

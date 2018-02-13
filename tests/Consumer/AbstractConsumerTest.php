@@ -37,7 +37,8 @@ class AbstractConsumerTest extends TestCase
             ->getMockBuilder(self::CLASS_NAME)
             ->setConstructorArgs([$this->validator, $this->entityManager])
             ->setMethods(['getLogger'])
-            ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $message = $this->createMock(AMQPMessage::class);
         $message->body = 'toto';
@@ -61,13 +62,15 @@ class AbstractConsumerTest extends TestCase
         $this->validator
             ->expects($this->once())
             ->method('validate')
-            ->willReturn($collections);
+            ->willReturn($collections)
+        ;
 
         $abstractConsumer = $this
             ->getMockBuilder(self::CLASS_NAME)
             ->setConstructorArgs([$this->validator, $this->entityManager])
             ->setMethods(['getLogger'])
-            ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $message = $this->createMock(AMQPMessage::class);
         $message->body = json_encode(['toto', ['tata']]);
@@ -86,7 +89,8 @@ class AbstractConsumerTest extends TestCase
             ->getMockBuilder(self::CLASS_NAME)
             ->setConstructorArgs([$this->validator, $this->entityManager])
             ->setMethods(['getLogger'])
-            ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $this->expectOutputString(sprintf('%s | %s', 'Mon message', 'mon output').PHP_EOL);
         $abstractConsumer->writeln('Mon message', 'mon output');

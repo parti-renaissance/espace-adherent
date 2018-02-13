@@ -17,6 +17,7 @@ class HomeBlockRepository extends EntityRepository
             ->leftJoin('h.media', 'm')
             ->orderBy('h.position', 'ASC')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 }

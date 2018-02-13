@@ -44,7 +44,8 @@ class UnregisterAdherentsCommand extends ContainerAwareCommand
         $this
             ->setName(self::COMMAND_NAME)
             ->addArgument('fileUrl', InputArgument::REQUIRED)
-            ->setDescription('Unregister adherents from CSV file (only the fifth column "email" is taken into account)');
+            ->setDescription('Unregister adherents from CSV file (only the fifth column "email" is taken into account)')
+        ;
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)

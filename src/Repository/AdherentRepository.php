@@ -37,7 +37,8 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             ->createQueryBuilder('a')
             ->select('COUNT(a)')
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
     }
 
     /**
@@ -70,7 +71,8 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             ->where('a.emailAddress IN (:emails)')
             ->setParameter('emails', $emails)
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 
     public function loadUserByUsername($username)
@@ -169,7 +171,8 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         return $this
             ->createReferentQueryBuilder()
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 
     public function findReferent(string $identifier): ?Adherent
@@ -291,25 +294,31 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
 
         $distance = $qb->expr()->orX();
         $distance->add($this->getNearbyExpression().' <= :distance_max')
-            ->add('n.citizenProjectCreationEmailSubscriptionRadius = :citizenProjectCreationEmailSubscriptionRadius');
+            ->add('n.citizenProjectCreationEmailSubscriptionRadius = :citizenProjectCreationEmailSubscriptionRadius')
+        ;
 
         $qb->andWhere($distance)
             ->setParameter('distance_max', $radius)
-            ->setParameter('citizenProjectCreationEmailSubscriptionRadius', AdherentEmailSubscription::DISTANCE_ALL);
+            ->setParameter('citizenProjectCreationEmailSubscriptionRadius', AdherentEmailSubscription::DISTANCE_ALL)
+        ;
 
         $having = $qb->expr()->orX();
         $having->add($this->getNearbyExpression().' <= n.citizenProjectCreationEmailSubscriptionRadius')
-            ->add('n.citizenProjectCreationEmailSubscriptionRadius = :acceptAllNotification');
+            ->add('n.citizenProjectCreationEmailSubscriptionRadius = :acceptAllNotification')
+        ;
         $qb->having($having)
-            ->setParameter('acceptAllNotification', AdherentEmailSubscription::DISTANCE_ALL);
+            ->setParameter('acceptAllNotification', AdherentEmailSubscription::DISTANCE_ALL)
+        ;
 
         if ($excludeSupervisor) {
             $qb->andWhere('n.uuid != :uuid')
-                ->setParameter('uuid', $citizenProject->getCreatedBy());
+                ->setParameter('uuid', $citizenProject->getCreatedBy())
+            ;
         }
 
         $qb->setFirstResult($offset)
-            ->setMaxResults(CitizenProjectMessageNotifier::NOTIFICATION_PER_PAGE);
+            ->setMaxResults(CitizenProjectMessageNotifier::NOTIFICATION_PER_PAGE)
+        ;
 
         return new Paginator($qb);
     }
@@ -432,7 +441,8 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         $qb = $this
             ->createBoardMemberQueryBuilder()
             ->where(':member MEMBER OF bm.owners')
-            ->setParameter('member', $owner);
+            ->setParameter('member', $owner)
+        ;
 
         return new AdherentCollection($qb->getQuery()->getResult());
     }

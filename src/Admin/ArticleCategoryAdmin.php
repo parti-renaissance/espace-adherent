@@ -29,7 +29,8 @@ class ArticleCategoryAdmin extends AbstractAdmin
             ])
             ->add('ctaLabel', null, [
                 'label' => 'Label d\'action',
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -56,6 +57,7 @@ class ArticleCategoryAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }

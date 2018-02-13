@@ -41,7 +41,8 @@ abstract class AbstractCoordinatorAreaFilter
             ->addOrderBy(sprintf('%s.name', $alias), 'ASC')
 
             ->setFirstResult($this->offset)
-            ->setMaxResults(static::PER_PAGE);
+            ->setMaxResults(static::PER_PAGE)
+        ;
 
         $this->updateCount($qb, $alias);
     }
@@ -181,7 +182,8 @@ abstract class AbstractCoordinatorAreaFilter
             ->setMaxResults(null)
             ->setFirstResult(null)
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
 
         $this->setCount($count);
     }

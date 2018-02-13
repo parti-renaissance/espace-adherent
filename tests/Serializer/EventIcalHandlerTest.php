@@ -51,27 +51,34 @@ class EventIcalHandlerTest extends TestCase
         $startDate->expects($this->once())
             ->method('format')
             ->with($this->equalTo('Ymd\THis'))
-            ->will($this->returnValue('20170307T090000'));
+            ->will($this->returnValue('20170307T090000'))
+        ;
         $endDate->expects($this->once())
             ->method('format')
             ->with($this->equalTo('Ymd\THis'))
-            ->will($this->returnValue('20170307T100000'));
+            ->will($this->returnValue('20170307T100000'))
+        ;
 
         $committeeEvent->expects($this->once())
                        ->method('getUuid')
-                       ->will($this->returnValue($uuid));
+                       ->will($this->returnValue($uuid))
+        ;
         $committeeEvent->expects($this->once())
                        ->method('getBeginAt')
-                       ->will($this->returnValue($startDate));
+                       ->will($this->returnValue($startDate))
+        ;
         $committeeEvent->expects($this->once())
                        ->method('getFinishAt')
-                       ->will($this->returnValue($endDate));
+                       ->will($this->returnValue($endDate))
+        ;
         $committeeEvent->expects($this->once())
                        ->method('getOrganizer')
-                       ->will($this->returnValue(null));
+                       ->will($this->returnValue(null))
+        ;
 
         $visitor->expects($this->once())
-                ->method('setRoot');
+                ->method('setRoot')
+        ;
 
         $this->handler->serialize($visitor, $committeeEvent, $type, $serializationContext);
     }

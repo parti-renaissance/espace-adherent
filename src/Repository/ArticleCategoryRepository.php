@@ -16,7 +16,8 @@ class ArticleCategoryRepository extends EntityRepository
             ->select('c')
             ->orderBy('c.position', 'ASC')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 
     public function findOneBySlug(string $slug)
@@ -26,6 +27,7 @@ class ArticleCategoryRepository extends EntityRepository
             ->where('c.slug = :slug')
             ->setParameter('slug', $slug)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
     }
 }

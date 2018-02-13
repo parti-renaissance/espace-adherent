@@ -70,7 +70,8 @@ class ArticleControllerTest extends SqliteWebTestCase
 
         $articleController = $this->getMockBuilder(ArticleController::class)
             ->setMethods(['isPaginationValid'])
-            ->getMock();
+            ->getMock()
+        ;
 
         $this->assertEquals($expected, $reflectionMethod->invoke($articleController, $articlesCount, $requestedPageNumber, 5));
     }

@@ -54,7 +54,8 @@ class ArticleFeedGeneratorTest extends TestCase
     public function testGenerateEmptyArticles()
     {
         $this->urlGenerator->expects($this->never())
-            ->method('generate');
+            ->method('generate')
+        ;
 
         $this->assertInstanceOf(FeedInterface::class, $this->feedGenerator->buildFeed([]));
     }
@@ -74,36 +75,45 @@ class ArticleFeedGeneratorTest extends TestCase
 
         $article->expects($this->once())
             ->method('getSlug')
-            ->will($this->returnValue($articleSlug));
+            ->will($this->returnValue($articleSlug))
+        ;
         $article->expects($this->once())
             ->method('getContent')
-            ->will($this->returnValue($articleContent));
+            ->will($this->returnValue($articleContent))
+        ;
         $article->expects($this->exactly(2)) // once for the channel + once for the item itself
             ->method('getPublishedAt')
-            ->will($this->returnValue($articlePublishDate));
+            ->will($this->returnValue($articlePublishDate))
+        ;
         $articlePublishDate->expects($this->exactly(2))
             ->method('format')
             ->with($this->equalTo('U'))
-            ->will($this->returnValue($articlePublishDateTimeStamp));
+            ->will($this->returnValue($articlePublishDateTimeStamp))
+        ;
         $article->expects($this->any())
             ->method('getCategory')
-            ->will($this->returnValue($category));
+            ->will($this->returnValue($category))
+        ;
         $category->expects($this->once())
             ->method('getName')
-            ->will($this->returnValue('Category name'));
+            ->will($this->returnValue('Category name'))
+        ;
         $category->expects($this->once())
             ->method('getSlug')
-            ->will($this->returnValue($categorySlug));
+            ->will($this->returnValue($categorySlug))
+        ;
 
         $this->urlGenerator->expects($this->exactly(2))
             ->method('generate')
             ->will($this->returnValueMap([
                 ['homepage', [], UrlGeneratorInterface::ABSOLUTE_URL, 'https://en-marche.fr'],
                 ['article_view', ['categorySlug' => $categorySlug, 'articleSlug' => $articleSlug], UrlGeneratorInterface::ABSOLUTE_URL, sprintf('https://en-marche.fr/articles/%s/%s', $categorySlug, $articleSlug)],
-            ]));
+            ]))
+        ;
         $this->markdownParser->expects($this->once())
             ->method('convertToHtml')
-            ->with($this->equalTo($articleContent));
+            ->with($this->equalTo($articleContent))
+        ;
 
         $this->assertInstanceOf(FeedInterface::class, $this->feedGenerator->buildFeed([$article]));
     }

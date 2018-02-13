@@ -147,7 +147,8 @@ class EventManagerController extends Controller
 
         $form = $this->createForm(ContactMembersType::class, $command, ['csrf_token_id' => 'event.contact_members'])
             ->add('submit', SubmitType::class)
-            ->handleRequest($request);
+            ->handleRequest($request)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.event.contact_members_handler')->handle($command);

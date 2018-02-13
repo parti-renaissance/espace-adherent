@@ -18,7 +18,8 @@ class BoardMemberRoleAdmin extends AbstractAdmin
             ->add('name', TextType::class, [
                 'label' => 'Nom',
                 'filter_emojis' => true,
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -37,6 +38,7 @@ class BoardMemberRoleAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }

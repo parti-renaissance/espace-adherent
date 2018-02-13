@@ -49,13 +49,15 @@ class AbstractMailerConsumerTest extends TestCase
         $this->validator
             ->expects($this->once())
             ->method('validate')
-            ->willReturn($collections);
+            ->willReturn($collections)
+        ;
 
         $abstractConsumer = $this
             ->getMockBuilder(self::CLASS_NAME)
             ->setConstructorArgs([$this->validator, $this->entityManager])
             ->setMethods(['getLogger', 'getEmailRepository'])
-            ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $message = $this->createMock(AMQPMessage::class);
         $message->body = json_encode(['uuid' => $uuid]);
@@ -77,13 +79,15 @@ class AbstractMailerConsumerTest extends TestCase
             ->setConstructorArgs([
                 'message' => sprintf('Uuid "%s" is not valid.', $uuid),
             ])
-            ->getMock();
+            ->getMock()
+        ;
 
         $emailRepository = $this->createMock(EmailRepository::class);
         $emailRepository
             ->expects($this->once())
             ->method('findOneByUuid')
-            ->willThrowException($invalidUuidException);
+            ->willThrowException($invalidUuidException)
+        ;
 
         $collections = $this->createMock(ArrayCollection::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
@@ -91,13 +95,15 @@ class AbstractMailerConsumerTest extends TestCase
         $this->validator
             ->expects($this->once())
             ->method('validate')
-            ->willReturn($collections);
+            ->willReturn($collections)
+        ;
 
         $abstractConsumer = $this
             ->getMockBuilder(self::CLASS_NAME)
             ->setConstructorArgs([$this->validator, $this->entityManager])
             ->setMethods(['getLogger', 'getEmailRepository'])
-            ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $message = $this->createMock(AMQPMessage::class);
         $message->body = json_encode(['uuid' => $uuid]);
@@ -109,7 +115,8 @@ class AbstractMailerConsumerTest extends TestCase
         $logger
             ->expects($this->once())
             ->method('error')
-            ->with('UUID is invalid format', ['exception' => $invalidUuidException]);
+            ->with('UUID is invalid format', ['exception' => $invalidUuidException])
+        ;
         $abstractConsumer->expects($this->once())->method('getLogger')->willReturn($logger);
         $abstractConsumer->expects($this->once())->method('getEmailRepository')->willReturn($emailRepository);
 
@@ -128,30 +135,35 @@ class AbstractMailerConsumerTest extends TestCase
         $email = $this->getMockBuilder(Email::class)
             ->disableOriginalConstructor()
             ->setMethods(['getEnglishLog', 'getRequestPayloadJson'])
-            ->getMock();
+            ->getMock()
+        ;
 
         $email
             ->expects($this->once())
             ->method('getEnglishLog')
-            ->willReturn(sprintf('%s from %s to %s recipients', $messageClass, $sender, count($recipients)));
+            ->willReturn(sprintf('%s from %s to %s recipients', $messageClass, $sender, count($recipients)))
+        ;
 
         $email
             ->expects($this->once())
             ->method('getRequestPayloadJson')
-            ->willReturn($messagePayloadEncoded);
+            ->willReturn($messagePayloadEncoded)
+        ;
 
         $emailRepository = $this->createMock(EmailRepository::class);
         $emailRepository
             ->expects($this->once())
             ->method('findOneByUuid')
-            ->willReturn($email);
+            ->willReturn($email)
+        ;
 
         $emailClient = $this->createMock(EmailClientInterface::class);
         $emailClient
             ->expects($this->once())
             ->method('sendEmail')
             ->willReturn(false)
-            ->with($messagePayloadEncoded);
+            ->with($messagePayloadEncoded)
+        ;
 
         $collections = $this->createMock(ArrayCollection::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
@@ -159,13 +171,15 @@ class AbstractMailerConsumerTest extends TestCase
         $this->validator
             ->expects($this->once())
             ->method('validate')
-            ->willReturn($collections);
+            ->willReturn($collections)
+        ;
 
         $abstractConsumer = $this
             ->getMockBuilder(self::CLASS_NAME)
             ->setConstructorArgs([$this->validator, $this->entityManager])
             ->setMethods(['getEmailRepository', 'getEmailClient'])
-            ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $message = $this->createMock(AMQPMessage::class);
         $message->body = json_encode(['uuid' => $uuid]);
@@ -189,35 +203,41 @@ class AbstractMailerConsumerTest extends TestCase
         $email = $this->getMockBuilder(Email::class)
             ->disableOriginalConstructor()
             ->setMethods(['getEnglishLog', 'getRequestPayloadJson', 'delivered'])
-            ->getMock();
+            ->getMock()
+        ;
 
         $email
             ->expects($this->once())
             ->method('getEnglishLog')
-            ->willReturn(sprintf('%s from %s to %i recipients', $messageClass, $sender, count($recipients)));
+            ->willReturn(sprintf('%s from %s to %i recipients', $messageClass, $sender, count($recipients)))
+        ;
 
         $email
             ->expects($this->once())
             ->method('getRequestPayloadJson')
-            ->willReturn($messagePayloadEncoded);
+            ->willReturn($messagePayloadEncoded)
+        ;
 
         $emailRepository = $this->createMock(EmailRepository::class);
         $emailRepository
             ->expects($this->once())
             ->method('findOneByUuid')
-            ->willReturn($email);
+            ->willReturn($email)
+        ;
 
         $emailRepository
             ->expects($this->once())
             ->method('setDelivered')
-            ->with($email, true);
+            ->with($email, true)
+        ;
 
         $emailClient = $this->createMock(EmailClientInterface::class);
         $emailClient
             ->expects($this->once())
             ->method('sendEmail')
             ->willReturn(true)
-            ->with($messagePayloadEncoded);
+            ->with($messagePayloadEncoded)
+        ;
 
         $collections = $this->createMock(ArrayCollection::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
@@ -225,13 +245,15 @@ class AbstractMailerConsumerTest extends TestCase
         $this->validator
             ->expects($this->once())
             ->method('validate')
-            ->willReturn($collections);
+            ->willReturn($collections)
+        ;
 
         $abstractConsumer = $this
             ->getMockBuilder(self::CLASS_NAME)
             ->setConstructorArgs([$this->validator, $this->entityManager])
             ->setMethods(['getEmailRepository', 'getEmailClient'])
-            ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $message = $this->createMock(AMQPMessage::class);
         $message->body = json_encode(['uuid' => $uuid]);
@@ -255,37 +277,43 @@ class AbstractMailerConsumerTest extends TestCase
         $email = $this->getMockBuilder(Email::class)
             ->disableOriginalConstructor()
             ->setMethods(['getEnglishLog', 'getRequestPayloadJson', 'delivered'])
-            ->getMock();
+            ->getMock()
+        ;
 
         $email
             ->expects($this->once())
             ->method('getEnglishLog')
-            ->willReturn(sprintf('%s from %s to %i recipients', $messageClass, $sender, count($recipients)));
+            ->willReturn(sprintf('%s from %s to %i recipients', $messageClass, $sender, count($recipients)))
+        ;
 
         $email
             ->expects($this->once())
             ->method('getRequestPayloadJson')
-            ->willReturn($messagePayloadEncoded);
+            ->willReturn($messagePayloadEncoded)
+        ;
 
         $emailRepository = $this->createMock(EmailRepository::class);
         $emailRepository
             ->expects($this->once())
             ->method('findOneByUuid')
-            ->willReturn($email);
+            ->willReturn($email)
+        ;
 
         $mailerException = $this
             ->getMockBuilder(MailerException::class)
             ->setConstructorArgs([
                 'message' => 'Unable to send email to recipients.',
             ])
-            ->getMock();
+            ->getMock()
+        ;
 
         $emailClient = $this->createMock(EmailClientInterface::class);
         $emailClient
             ->expects($this->once())
             ->method('sendEmail')
             ->with($messagePayloadEncoded)
-            ->willThrowException($mailerException);
+            ->willThrowException($mailerException)
+        ;
 
         $collections = $this->createMock(ArrayCollection::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
@@ -293,13 +321,15 @@ class AbstractMailerConsumerTest extends TestCase
         $this->validator
             ->expects($this->once())
             ->method('validate')
-            ->willReturn($collections);
+            ->willReturn($collections)
+        ;
 
         $abstractConsumer = $this
             ->getMockBuilder(self::CLASS_NAME)
             ->setConstructorArgs([$this->validator, $this->entityManager])
             ->setMethods(['getLogger', 'getEmailRepository', 'getEmailClient'])
-            ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $message = $this->createMock(AMQPMessage::class);
         $message->body = json_encode(['uuid' => $uuid]);
@@ -327,23 +357,27 @@ class AbstractMailerConsumerTest extends TestCase
         $email = $this->getMockBuilder(Email::class)
             ->disableOriginalConstructor()
             ->setMethods(['getEnglishLog', 'getRequestPayloadJson', 'delivered'])
-            ->getMock();
+            ->getMock()
+        ;
 
         $email
             ->expects($this->once())
             ->method('getEnglishLog')
-            ->willReturn(sprintf('%s from %s to %i recipients', $messageClass, $sender, count($recipients)));
+            ->willReturn(sprintf('%s from %s to %i recipients', $messageClass, $sender, count($recipients)))
+        ;
 
         $email
             ->expects($this->once())
             ->method('getRequestPayloadJson')
-            ->willReturn($messagePayloadEncoded);
+            ->willReturn($messagePayloadEncoded)
+        ;
 
         $emailRepository = $this->createMock(EmailRepository::class);
         $emailRepository
             ->expects($this->once())
             ->method('findOneByUuid')
-            ->willReturn($email);
+            ->willReturn($email)
+        ;
 
         $connectException = $this->createMock(ConnectException::class);
 
@@ -352,7 +386,8 @@ class AbstractMailerConsumerTest extends TestCase
             ->expects($this->once())
             ->method('sendEmail')
             ->with($messagePayloadEncoded)
-            ->willThrowException($connectException);
+            ->willThrowException($connectException)
+        ;
 
         $collections = $this->createMock(ArrayCollection::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
@@ -360,13 +395,15 @@ class AbstractMailerConsumerTest extends TestCase
         $this->validator
             ->expects($this->once())
             ->method('validate')
-            ->willReturn($collections);
+            ->willReturn($collections)
+        ;
 
         $abstractConsumer = $this
             ->getMockBuilder(self::CLASS_NAME)
             ->setConstructorArgs([$this->validator, $this->entityManager])
             ->setMethods(['getLogger', 'getEmailRepository', 'getEmailClient'])
-            ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $message = $this->createMock(AMQPMessage::class);
         $message->body = json_encode(['uuid' => $uuid]);

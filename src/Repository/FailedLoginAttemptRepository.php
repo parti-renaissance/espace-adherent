@@ -37,7 +37,8 @@ class FailedLoginAttemptRepository extends EntityRepository
                 'startAt' => $this->createDateTimeForInterval($interval),
             ])
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
     }
 
     private function createDateTimeForInterval(string $interval): \DateTime

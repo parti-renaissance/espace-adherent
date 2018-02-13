@@ -57,7 +57,8 @@ class ImportReferentBioPictureCommand extends ContainerAwareCommand
         $this
           ->setName(self::COMMAND_NAME)
           ->addArgument('fileUrl', InputArgument::REQUIRED)
-          ->setDescription('Import bio & picture for referent already in DB');
+          ->setDescription('Import bio & picture for referent already in DB')
+        ;
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)

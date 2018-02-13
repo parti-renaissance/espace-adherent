@@ -25,7 +25,8 @@ class OrderSectionAdmin extends AbstractAdmin
             ])
             ->add('position', null, [
                 'label' => 'Ordre dans la liste',
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -43,6 +44,7 @@ class OrderSectionAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }

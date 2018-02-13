@@ -38,7 +38,8 @@ class RefreshTokenRepository extends EntityRepository
             ->where('at.client = :client')
             ->setParameter('client', $client)
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 
     public function revokeClientTokens(Client $client): void

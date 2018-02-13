@@ -32,7 +32,8 @@ class CommitteeManagementAuthorityTest extends TestCase
         $mailer = $this->createMock(MailerService::class);
         $mailer->expects($this->at(0))
             ->method('sendMessage')
-            ->with($this->isInstanceOf(CommitteeApprovalConfirmationMessage::class));
+            ->with($this->isInstanceOf(CommitteeApprovalConfirmationMessage::class))
+        ;
 
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
         $urlGenerator->expects($this->at(0))->method('generate')->willReturn(sprintf(
@@ -56,7 +57,8 @@ class CommitteeManagementAuthorityTest extends TestCase
         $mailer = $this->createMock(MailerService::class);
         $mailer->expects($this->at(0))
             ->method('sendMessage')
-            ->with($this->isInstanceOf(CommitteeApprovalReferentMessage::class));
+            ->with($this->isInstanceOf(CommitteeApprovalReferentMessage::class))
+        ;
 
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
         $urlGenerator->expects($this->any())->method('generate')->willReturn(sprintf(

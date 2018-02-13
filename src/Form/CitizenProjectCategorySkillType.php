@@ -22,7 +22,8 @@ class CitizenProjectCategorySkillType extends AbstractType
             ->add('promotion', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Promotion',
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

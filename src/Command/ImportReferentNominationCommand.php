@@ -81,7 +81,8 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
           ->addArgument('fileUrl', InputArgument::REQUIRED)
           ->setDescription(
             'Import referent and referent area from file store in Google Storage'
-          );
+          )
+        ;
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)

@@ -120,7 +120,8 @@ class AdministratorAdmin extends AbstractAdmin
                                 : $admin->getPassword();
                         }
                     ))
-            );
+            )
+        ;
 
         if (!$isCreation) {
             $formMapper->add('googleAuthenticatorSecret', null, [
@@ -135,7 +136,8 @@ class AdministratorAdmin extends AbstractAdmin
             ->add('emailAddress', null, [
                 'label' => 'E-mail',
                 'show_filter' => true,
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -153,7 +155,8 @@ class AdministratorAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 
     public function setEncoders(EncoderFactoryInterface $encoders)

@@ -46,7 +46,8 @@ class ImportBoardMemberCommand extends ContainerAwareCommand
             ->setName('app:import:board-member')
             ->addOption('csvtypeformurl', 'tfcsv', InputArgument::OPTIONAL, 'URL of type form CSV result', null)
             ->addOption('othercsv', 'csv', InputArgument::OPTIONAL, 'URL of CSV File', null)
-            ->setDescription('Import board member from CSV file');
+            ->setDescription('Import board member from CSV file')
+        ;
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)

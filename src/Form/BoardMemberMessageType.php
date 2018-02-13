@@ -21,7 +21,8 @@ class BoardMemberMessageType extends AbstractType
             ->add('content', TextareaType::class, [
                 'label' => false,
                 'attr' => ['placeholder' => 'Écrivez votre message'],
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
