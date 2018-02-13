@@ -4,6 +4,8 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Form\CitizenProjectImageType;
 use AppBundle\Form\CitizenProjectTractType;
+use AppBundle\MediaGenerator\Image\CitizenProjectCoverGenerator;
+use AppBundle\MediaGenerator\Pdf\CitizenProjectTractGenerator;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -30,7 +32,7 @@ class CitizenProjectMediaGeneratorController extends Controller
         $coverImage = null;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $coverImage = $this->get('app.citizen_project.cover_generator')->generate($form->getData());
+            $coverImage = $this->get(CitizenProjectCoverGenerator::class)->generate($form->getData());
         }
 
         return $this->render(
@@ -56,7 +58,7 @@ class CitizenProjectMediaGeneratorController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $tractCommand = $form->getData();
 
-            $pdfContent = $this->get('app.citizen_project.tract_generator')->generate($tractCommand);
+            $pdfContent = $this->get(CitizenProjectTractGenerator::class)->generate($tractCommand);
 
             return new PdfResponse($pdfContent->getContent(), $tractCommand->getCitizenProjectTitle().'.pdf');
         }
