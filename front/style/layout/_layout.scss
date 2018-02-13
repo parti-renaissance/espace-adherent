@@ -137,6 +137,10 @@
         &--top {
             align-items: flex-start;
         }
+
+        &--pack-center {
+            align-content: center;
+        }
     }
 
     &__col {
@@ -176,6 +180,10 @@
             display: inline-flex;
             flex-flow: column wrap;
             max-height: 100%;
+        }
+
+        &--half {
+          flex-basis: 50%;
         }
     }
 

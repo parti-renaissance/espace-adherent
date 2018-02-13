@@ -46,7 +46,7 @@ class CitizenProjectController extends Controller
      * @Route("/fonctionnalite_disponible_des_janvier", name="app_citizen_project_not_available")
      * @Method("GET")
      */
-    public function showIfNotAuthorizedDepartementAction(): Response
+    public function showIfNotAuthorizedDepartmentAction(): Response
     {
         return $this->render('citizen_project/not_available.html.twig');
     }
