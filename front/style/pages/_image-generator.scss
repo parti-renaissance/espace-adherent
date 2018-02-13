@@ -53,6 +53,15 @@
   }
 }
 
+.image-generator__headline {
+  font-family: $font-gillsans;
+  font-size: 38px;
+  line-height: 39px;
+  letter-spacing: -0.7px;
+  margin-bottom: 46px;
+  color: black;
+}
+
 .img-gen__fieldset {
   margin-bottom: 45px;
   display: flex;
