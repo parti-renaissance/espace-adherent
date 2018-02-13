@@ -197,7 +197,9 @@ input.img-gen__input {
   color: $orange;
 
   padding: 17px 22px 16px;
+
   &:hover {
+    color: white;
     background: $orange;
     border-color: $orange;
   }
