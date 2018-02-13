@@ -3,7 +3,6 @@
 namespace AppBundle\MediaGenerator\Image;
 
 use AppBundle\MediaGenerator\BaseSnappyGenerator;
-use AppBundle\MediaGenerator\Command\CitizenProjectImageCommand;
 use AppBundle\MediaGenerator\Command\MediaCommandInterface;
 use AppBundle\MediaGenerator\MediaContent;
 
@@ -11,7 +10,6 @@ class CitizenProjectCoverGenerator extends BaseSnappyGenerator
 {
     public function generate(MediaCommandInterface $command): MediaContent
     {
-        /** @var CitizenProjectImageCommand $command */
         $html = $this->templateEngine->render(
             'citizen_project/cover_image.html.twig',
             [

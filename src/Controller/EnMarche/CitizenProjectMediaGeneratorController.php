@@ -24,7 +24,8 @@ class CitizenProjectMediaGeneratorController extends Controller
     {
         $form = $this
             ->createForm(CitizenProjectImageType::class)
-            ->handleRequest($request);
+            ->handleRequest($request)
+        ;
 
         $coverImage = null;
 
@@ -49,13 +50,13 @@ class CitizenProjectMediaGeneratorController extends Controller
     {
         $form = $this
             ->createForm(CitizenProjectTractType::class)
-            ->handleRequest($request);
+            ->handleRequest($request)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $tractCommand = $form->getData();
-            $tractGenerator = $this->get('app.citizen_project.tract_generator');
 
-            $pdfContent = $tractGenerator->generate($tractCommand);
+            $pdfContent = $this->get('app.citizen_project.tract_generator')->generate($tractCommand);
 
             return new PdfResponse($pdfContent->getContent(), $tractCommand->getCitizenProjectTitle().'.pdf');
         }

@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class CitizenProjectMediaType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('citizenProjectTitle')
@@ -31,7 +31,7 @@ class CitizenProjectMediaType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix(): string
+    public function getBlockPrefix()
     {
         return 'citizen_project_media';
     }
