@@ -27,7 +27,8 @@ class PageAdmin extends AbstractAdmin
                     'label' => 'URL de publication',
                     'help' => 'Ne spécifier que la fin : http://en-marche.fr/[votre-valeur]<br />Doit être unique',
                 ])
-                ->end();
+                ->end()
+            ;
         }
 
         $formMapper
@@ -73,7 +74,8 @@ class PageAdmin extends AbstractAdmin
             ->add('title', null, [
                 'label' => 'Titre',
                 'show_filter' => true,
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -97,6 +99,7 @@ class PageAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }

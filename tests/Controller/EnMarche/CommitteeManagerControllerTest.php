@@ -645,7 +645,8 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
             ->committeeMembershipRepository
             ->findFollowers($committeeUuid)
             ->getCommitteesNotificationsSubscribers()
-            ->count();
+            ->count()
+        ;
     }
 
     private function seeMembersList(Crawler $crawler, int $count): bool

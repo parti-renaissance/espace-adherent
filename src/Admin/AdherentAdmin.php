@@ -267,7 +267,8 @@ class AdherentAdmin extends AbstractAdmin
 
         $formMapper->getFormBuilder()
             ->addEventSubscriber(new BoardMemberListener())
-            ->addEventSubscriber(new CoordinatorManagedAreaListener());
+            ->addEventSubscriber(new CoordinatorManagedAreaListener())
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)

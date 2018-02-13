@@ -83,7 +83,8 @@ class NewsletterController extends Controller
     public function invitationAction(Request $request)
     {
         $form = $this->createForm(NewsletterInvitationType::class)
-            ->handleRequest($request);
+            ->handleRequest($request)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Invitation $invitation */

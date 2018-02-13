@@ -78,7 +78,8 @@ class CitizenProjectManagerController extends Controller
 
         $form = $this->createForm(CitizenProjectContactActorsType::class, $command)
             ->add('submit', SubmitType::class)
-            ->handleRequest($request);
+            ->handleRequest($request)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get(CitizenProjectContactActorsCommandHandler::class)->handle($command);

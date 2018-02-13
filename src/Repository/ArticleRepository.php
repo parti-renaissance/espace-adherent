@@ -19,7 +19,8 @@ class ArticleRepository extends EntityRepository
         $qb = $this->createQueryBuilder('a')
             ->select('COUNT(a)')
             ->andWhere('a.published = :published')
-            ->setParameter('published', true);
+            ->setParameter('published', true)
+        ;
 
         if (!ArticleCategory::isDefault($category)) {
             $qb->leftJoin('a.category', 'c');
@@ -29,7 +30,8 @@ class ArticleRepository extends EntityRepository
 
         return (int) $qb
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
     }
 
     /**

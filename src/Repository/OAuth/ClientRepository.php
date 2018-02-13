@@ -14,7 +14,8 @@ class ClientRepository extends EntityRepository
         $qb = $this
             ->createQueryBuilder('c')
             ->where('c.uuid = :identifier')
-            ->setParameter('identifier', $identifier);
+            ->setParameter('identifier', $identifier)
+        ;
 
         if ($secret) {
             $qb->andWhere('c.secret = :secret')->setParameter('secret', $secret);
@@ -35,7 +36,8 @@ class ClientRepository extends EntityRepository
             ->andWhere('c.uuid = :identifier')
             ->setParameter('identifier', $uuid->toString())
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
     }
 
     private function addActiveClientCriteria(QueryBuilder $qb, string $rootAlias = 'c'): void

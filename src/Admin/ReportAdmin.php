@@ -111,7 +111,8 @@ class ReportAdmin extends AbstractAdmin
                     $qb
                         ->join("$alias.author", 'author')
                         ->andWhere('LOWER(author.firstName) LIKE :firstName')
-                        ->setParameter('firstName', sprintf('%%%s%%', mb_strtolower($value['value'])));
+                        ->setParameter('firstName', sprintf('%%%s%%', mb_strtolower($value['value'])))
+                    ;
 
                     return true;
                 },
@@ -132,7 +133,8 @@ class ReportAdmin extends AbstractAdmin
 
                     $qb
                         ->andWhere('LOWER(author.lastName) LIKE :lastName')
-                        ->setParameter('lastName', sprintf('%%%s%%', mb_strtolower($value['value'])));
+                        ->setParameter('lastName', sprintf('%%%s%%', mb_strtolower($value['value'])))
+                    ;
 
                     return true;
                 },
@@ -153,7 +155,8 @@ class ReportAdmin extends AbstractAdmin
 
                     $qb
                         ->andWhere('author.emailAddress=:emailAddress')
-                        ->setParameter('emailAddress', mb_strtolower($value['value']));
+                        ->setParameter('emailAddress', mb_strtolower($value['value']))
+                    ;
 
                     return true;
                 },

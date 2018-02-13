@@ -16,7 +16,8 @@ class SkillAdmin extends AbstractAdmin
             ->add('name', TextType::class, [
                 'label' => 'Nom',
                 'filter_emojis' => true,
-            ]);
+            ])
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -25,7 +26,8 @@ class SkillAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
                 'show_filter' => true,
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -43,6 +45,7 @@ class SkillAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }

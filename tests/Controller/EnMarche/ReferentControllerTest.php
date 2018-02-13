@@ -252,7 +252,8 @@ class ReferentControllerTest extends SqliteWebTestCase
             ->innerJoin('m.from', 'a')
             ->addSelect('a')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
 
         $this->assertCount(1, $referentMessages);
 

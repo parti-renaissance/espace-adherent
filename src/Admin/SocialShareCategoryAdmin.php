@@ -25,7 +25,8 @@ class SocialShareCategoryAdmin extends AbstractAdmin
             ])
             ->add('position', null, [
                 'label' => 'Position',
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -43,6 +44,7 @@ class SocialShareCategoryAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }

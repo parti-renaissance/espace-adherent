@@ -23,7 +23,8 @@ class ReferentMessageType extends AbstractType
                 'label' => false,
                 'attr' => ['placeholder' => 'Écrivez votre message'],
                 'filter_emojis' => true,
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

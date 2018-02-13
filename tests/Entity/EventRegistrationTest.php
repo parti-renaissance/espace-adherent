@@ -73,7 +73,8 @@ class EventRegistrationTest extends TestCase
         $adherent = $this
             ->getMockBuilder(Adherent::class)
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
 
         $adherent->expects($this->any())->method('getUuid')->willReturn(Uuid::fromString($uuid));
 
@@ -89,7 +90,8 @@ class EventRegistrationTest extends TestCase
             ->setMethods(['getUuid'])
             ->setMethodsExcept(['equals'])
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
 
         // Hack to ensure the $uuid protected property contains
         // a valid UuidInterface instance.

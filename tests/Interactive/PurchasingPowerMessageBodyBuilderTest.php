@@ -33,19 +33,22 @@ EOF;
             ->repository
             ->expects($this->exactly(2))
             ->method('findMailIntroduction')
-            ->willReturn($this->createChoice(0, $introductionText));
+            ->willReturn($this->createChoice(0, $introductionText))
+        ;
 
         $this
             ->repository
             ->expects($this->exactly(2))
             ->method('findMailConclusion')
-            ->willReturn($this->createChoice(0, $conclusionText));
+            ->willReturn($this->createChoice(0, $conclusionText))
+        ;
 
         $this
             ->repository
             ->expects($this->exactly(2))
             ->method('findMailCommon')
-            ->willReturn($this->createChoice(0, $commonText));
+            ->willReturn($this->createChoice(0, $commonText))
+        ;
 
         $friendPosition = $this->createArgumentChoice(1, 'Tu n’as pas à t\'inquiéter de la hausse de la CSG, qui permet de redonner du pouvoir d\'achat aux salariés et indépendants du secteur privé.');
         $this->createBuilder()->buildMessageBody($purchasingPower = $this->createPurchasingPowerProcessor($friendPosition));

@@ -53,7 +53,8 @@ class CitizenProjectRepository extends BaseGroupRepository
         if (self::ONLY_APPROVED === $statusFilter) {
             $qb
                 ->andWhere('c.status = :status')
-                ->setParameter('status', BaseGroup::APPROVED);
+                ->setParameter('status', BaseGroup::APPROVED)
+            ;
         }
 
         if ($limit >= 1) {
@@ -101,7 +102,8 @@ class CitizenProjectRepository extends BaseGroupRepository
 
         $qb = $this->createQueryBuilder('cp')
             ->orderBy('cp.name', 'ASC')
-            ->orderBy('cp.createdAt', 'DESC');
+            ->orderBy('cp.createdAt', 'DESC')
+        ;
 
         $filter->setCoordinator($coordinator);
         $filter->apply($qb, 'cp');
@@ -122,7 +124,8 @@ class CitizenProjectRepository extends BaseGroupRepository
             $qb = $this
                 ->createNearbyQueryBuilder($coordinates)
                 ->andWhere($this->getNearbyExpression().' < :distance_max')
-                ->setParameter('distance_max', $search->getRadius());
+                ->setParameter('distance_max', $search->getRadius())
+            ;
         } else {
             $qb = $this->createQueryBuilder('n');
         }
@@ -151,7 +154,8 @@ class CitizenProjectRepository extends BaseGroupRepository
             ->setParameter('creator', $adherent->getUuid()->toString())
             ->setParameter('status', $status)
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
 
         return $nb > 0;
     }

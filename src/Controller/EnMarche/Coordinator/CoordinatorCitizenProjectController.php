@@ -49,7 +49,8 @@ class CoordinatorCitizenProjectController extends Controller
                     ]),
                     'status' => $citizenProjectStatus,
                 ])
-                ->createView();
+                ->createView()
+            ;
         });
 
         return $this->render('coordinator/citizen_project.html.twig', [

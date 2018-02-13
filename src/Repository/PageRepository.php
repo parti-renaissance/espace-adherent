@@ -19,6 +19,7 @@ class PageRepository extends EntityRepository
             ->where('p.slug = :slug')
             ->setParameter('slug', $slug)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
     }
 }

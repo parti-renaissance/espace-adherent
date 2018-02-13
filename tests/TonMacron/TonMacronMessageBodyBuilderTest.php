@@ -32,13 +32,15 @@ EOF;
             ->repository
             ->expects($this->once())
             ->method('findMailIntroduction')
-            ->willReturn($this->createChoice(0, $introductionText));
+            ->willReturn($this->createChoice(0, $introductionText))
+        ;
 
         $this
             ->repository
             ->expects($this->once())
             ->method('findMailConclusion')
-            ->willReturn($this->createChoice(0, $conclusionText));
+            ->willReturn($this->createChoice(0, $conclusionText))
+        ;
 
         $this->createBuilder()->buildMessageBody($invitation = $this->createInvitationProcessor());
 

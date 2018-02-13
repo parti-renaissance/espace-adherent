@@ -14,6 +14,7 @@ class DonationSubscriptionRequestType extends AbstractType
             ->add('duration', PayboxPaymentSubscriptionType::class)
             ->add('submit', SubmitType::class, [
                 'label' => 'Continuer',
-            ]);
+            ])
+        ;
     }
 }

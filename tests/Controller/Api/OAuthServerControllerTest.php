@@ -322,7 +322,8 @@ class OAuthServerControllerTest extends MysqlWebTestCase
             ->getContainer()
             ->get('doctrine')
             ->getRepository(AuthorizationCode::class)
-            ->findAuthorizationCodeByIdentifier($identifier);
+            ->findAuthorizationCodeByIdentifier($identifier)
+        ;
     }
 
     private function createAuthorizeUrl($scopes = [], string $clientId = 'f80ce2df-af6d-4ce4-8239-04cfcefd5a19', ?string $redirectUri = 'http://client-oauth.docker:8000/client/receive_authcode'): string
@@ -398,7 +399,8 @@ class OAuthServerControllerTest extends MysqlWebTestCase
             ->get('doctrine')
             ->getManager()
             ->getRepository(AccessToken::class)
-            ->findAccessTokenByIdentifier($identifier);
+            ->findAccessTokenByIdentifier($identifier)
+        ;
 
         $client = new Client($accessToken->getClient()->getUuid()->toString(), []);
 

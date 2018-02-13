@@ -197,7 +197,8 @@ class ProcurationProxyAdmin extends AbstractAdmin
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date',
                 'field_type' => DateRangePickerType::class,
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)

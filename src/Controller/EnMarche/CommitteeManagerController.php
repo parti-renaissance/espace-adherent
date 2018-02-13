@@ -149,7 +149,8 @@ class CommitteeManagerController extends Controller
 
         $form = $this->createForm(ContactMembersType::class, $command)
             ->add('submit', SubmitType::class)
-            ->handleRequest($request);
+            ->handleRequest($request)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.committee.contact_members_handler')->handle($command);

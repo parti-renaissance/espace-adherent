@@ -17,6 +17,7 @@ class CitizenProjectCategorySkillRepository extends EntityRepository
             ->setParameter('cpc', $category)
             ->setParameter('term', '%'.strtolower($term).'%')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 }

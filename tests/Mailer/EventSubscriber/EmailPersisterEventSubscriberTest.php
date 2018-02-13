@@ -90,7 +90,8 @@ EOF;
         $this->repository
             ->expects($this->once())
             ->method('findOneByUuid')
-            ->willReturn($message1 = Email::createFromMessage($message, $requestPayload));
+            ->willReturn($message1 = Email::createFromMessage($message, $requestPayload))
+        ;
 
         $this->manager->expects($this->once())->method('flush');
 

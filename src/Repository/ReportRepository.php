@@ -32,7 +32,8 @@ class ReportRepository extends EntityRepository
             ->set('r.author', ':new_value')
             ->setParameter('new_value', null)
             ->where('r.author = :author')
-            ->setParameter('author', $adherent);
+            ->setParameter('author', $adherent)
+        ;
 
         return $qb->getQuery()->execute();
     }

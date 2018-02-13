@@ -47,7 +47,8 @@ class OAuthServerController extends Controller
             $client = $repository->findClientByUuid(Uuid::fromString($authRequest->getClient()->getIdentifier()));
             $form = $this
                 ->createForm(ConfirmActionType::class)
-                ->handleRequest($this->httpFoundationFactory->createRequest($request));
+                ->handleRequest($this->httpFoundationFactory->createRequest($request))
+            ;
 
             $authorizationApproved = $manager->isAuthorized($user, $client, $authRequest->getScopes());
 

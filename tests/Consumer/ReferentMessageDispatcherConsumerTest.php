@@ -41,7 +41,8 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
             ->entityManager
             ->expects($this->any())
             ->method('getConnection')
-            ->willReturn($this->createMock(Connection::class));
+            ->willReturn($this->createMock(Connection::class))
+        ;
 
         $this->validator = $this->createMock(ValidatorInterface::class);
     }
@@ -106,7 +107,8 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
             ->getMockBuilder(ReferentMessageDispatcherConsumer::class)
             ->setConstructorArgs([$this->validator, $this->entityManager])
             ->setMethods(['getReferentManagedUserRepository', 'getReferentMessageRepository'])
-            ->getMock();
+            ->getMock()
+        ;
 
         $message = $this->createMock(AMQPMessage::class);
         $message->body = json_encode($messageContent);
@@ -167,7 +169,8 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
                 'getManager',
                 'getMailer',
             ])
-            ->getMock();
+            ->getMock()
+        ;
 
         $message = $this->createMock(AMQPMessage::class);
         $message->body = json_encode($messageContent);
@@ -194,7 +197,8 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
             ->getMockBuilder(IterableResult::class)
             ->disableOriginalConstructor()
             ->setMethods(['rewind', 'current', 'key', 'next', 'valid', 'count'])
-            ->getMock();
+            ->getMock()
+        ;
         $iteratorData = new \stdClass();
         $iteratorData->array = $data;
         $iteratorData->position = 0;
@@ -207,7 +211,8 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
                         $iteratorData->position = 0;
                     }
                 )
-            );
+            )
+        ;
 
         $mock->expects($this->any())
             ->method('current')
@@ -217,7 +222,8 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
                         return $iteratorData->array[$iteratorData->position];
                     }
                 )
-            );
+            )
+        ;
 
         $mock->expects($this->any())
             ->method('key')
@@ -227,7 +233,8 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
                         return $iteratorData->position;
                     }
                 )
-            );
+            )
+        ;
 
         $mock->expects($this->any())
             ->method('next')
@@ -237,7 +244,8 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
                         ++$iteratorData->position;
                     }
                 )
-            );
+            )
+        ;
 
         $mock->expects($this->any())
             ->method('valid')
@@ -247,7 +255,8 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
                         return isset($iteratorData->array[$iteratorData->position]);
                     }
                 )
-            );
+            )
+        ;
 
         $mock->expects($this->any())
             ->method('count')
@@ -257,7 +266,8 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
                         return count($iteratorData->array);
                     }
                 )
-            );
+            )
+        ;
 
         return $mock;
     }
