@@ -6,23 +6,9 @@ use AppBundle\MediaGenerator\BaseSnappyGenerator;
 use AppBundle\MediaGenerator\Command\CitizenProjectImageCommand;
 use AppBundle\MediaGenerator\Command\MediaCommandInterface;
 use AppBundle\MediaGenerator\MediaContent;
-use Knp\Snappy\GeneratorInterface;
-use Symfony\Component\Templating\EngineInterface;
 
 class CitizenProjectCoverGenerator extends BaseSnappyGenerator
 {
-    private $badgeImagePath;
-
-    public function __construct(
-        GeneratorInterface $imageGenerator,
-        EngineInterface $templateEngine,
-        string $badgeImagePath
-    ) {
-        parent::__construct($imageGenerator, $templateEngine);
-
-        $this->badgeImagePath = $badgeImagePath;
-    }
-
     public function generate(MediaCommandInterface $command): MediaContent
     {
         /** @var CitizenProjectImageCommand $command */
@@ -30,7 +16,6 @@ class CitizenProjectCoverGenerator extends BaseSnappyGenerator
             'citizen_project/cover_image.html.twig',
             [
                 'command' => $command,
-                'badge_path' => $this->badgeImagePath,
             ]
         );
 

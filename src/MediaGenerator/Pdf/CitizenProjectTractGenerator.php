@@ -6,23 +6,9 @@ use AppBundle\MediaGenerator\BaseSnappyGenerator;
 use AppBundle\MediaGenerator\Command\CitizenProjectTractCommand;
 use AppBundle\MediaGenerator\Command\MediaCommandInterface;
 use AppBundle\MediaGenerator\MediaContent;
-use Knp\Snappy\GeneratorInterface;
-use Symfony\Component\Templating\EngineInterface;
 
 class CitizenProjectTractGenerator extends BaseSnappyGenerator
 {
-    private $badgeImagePath;
-
-    public function __construct(
-        GeneratorInterface $pdfGenerator,
-        EngineInterface $templateEngine,
-        string $badgeImagePath
-    ) {
-        parent::__construct($pdfGenerator, $templateEngine);
-
-        $this->badgeImagePath = $badgeImagePath;
-    }
-
     public function generate(MediaCommandInterface $command): MediaContent
     {
         /** @var CitizenProjectTractCommand $command */
@@ -30,7 +16,6 @@ class CitizenProjectTractGenerator extends BaseSnappyGenerator
             'citizen_project/tract_pdf.html.twig',
             [
                 'command' => $command,
-                'badge_path' => $this->badgeImagePath,
             ]
         );
 

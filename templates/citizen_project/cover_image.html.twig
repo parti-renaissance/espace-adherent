@@ -17,7 +17,7 @@
             #background {
                 background-repeat: no-repeat;
                 background-size: cover;
-                background-image: url('/app/data/static/badge/citizen-project.png');
+                background-image: url("{{ command.imagePath }}");
             }
             #mask {
                 position: relative;
@@ -63,7 +63,7 @@
         <div id="background">
             <div id="mask">
                 <div id="badge">
-                    <img src="{{ badge_path }}"/>
+                    <img src="/app/app/data/static/badge/citizen-project.png" />
                 </div>
                 <div id="text">
                     <span class="title-1">{{ command.citizenProjectTitle|upper }}</span>
