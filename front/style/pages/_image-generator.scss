@@ -5,7 +5,7 @@
 
   color: #444;
 
-  form[name="citizen_project_image"] {
+  form[name="citizen_project_media"] {
     counter-reset: section;
   }
 
@@ -85,13 +85,13 @@ input.img-gen__input {
   }
 }
 
-[name="citizen_project_image[backgroundColor]"] + label {
+[name="citizen_project_media[backgroundColor]"] + label {
   position: relative;
   margin-right: 10px;
   margin-bottom: 10px;
 }
 
-[name="citizen_project_image[backgroundColor]"] + label:after {
+[name="citizen_project_media[backgroundColor]"] + label:after {
   content: '';
   position: absolute;
   width: 100%;
@@ -101,7 +101,7 @@ input.img-gen__input {
   transition: background-color 125ms ease;
 }
 
-[name="citizen_project_image[backgroundColor]"]:checked + label:after {
+[name="citizen_project_media[backgroundColor]"]:checked + label:after {
   background-color: #444;
 }
 
