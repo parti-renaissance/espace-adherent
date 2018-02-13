@@ -16,6 +16,33 @@
   }
 }
 
+.img-tabs {
+
+  > ul {
+    display: flex;
+  }
+
+  li {
+    a {
+      color: #888;
+      display: block;
+      padding: 18px 28px 21px;
+      font-weight: bold;
+    }
+
+    &.active {
+      background-color: white;
+      color: black;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+
+      a {
+        color: black;
+      }
+    }
+  }
+}
+
 .img-gen__body {
   background-color: white;
   padding: 60px 66px 80px;
