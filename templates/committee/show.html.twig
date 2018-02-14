@@ -49,7 +49,6 @@
 
     <script type="text/javascript">
         Kernel.onLoad(function(di) {
-            App.runCommitteesButton();
             var committeeSlug = '{{ committee.slug }}';
 
             {% if committee_timeline is defined and committee_timeline|length %}
