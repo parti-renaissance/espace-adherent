@@ -190,16 +190,16 @@ class CommitteeAdmin extends AbstractAdmin
             ->end()
             ->with('Localisation', array('class' => 'col-md-5'))
                 ->add('postAddress.address', TextType::class, [
-                    'label' => 'Adresse postale'
+                    'label' => 'Adresse postale',
                 ])
                 ->add('postAddress.postalCode', TextType::class, [
-                    'label' => 'Code postal'
+                    'label' => 'Code postal',
                 ])
                 ->add('postAddress.cityName', TextType::class, [
-                    'label' => 'Ville'
+                    'label' => 'Ville',
                 ])
                 ->add('postAddress.country', UnitedNationsCountryType::class, [
-                    'label' => 'Pays'
+                    'label' => 'Pays',
                 ])
             ->end()
             ->with('Commentaire', array('class' => 'col-md-5'))
