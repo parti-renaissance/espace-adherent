@@ -10,7 +10,7 @@ class CitizenProjectImageCommand extends AbstractCitizenProjectMediaCommand
     /**
      * @var string
      *
-     * @Assert\Length(max=1)
+     * @Assert\Length(max=1, maxMessage="citizen_project.emoji.max_length")
      */
     private $emoji;
 
