@@ -123,7 +123,7 @@ class CommitteeFeedItem
         $this->content = $content;
     }
 
-    public function getPublished(): bool
+    public function isPublished(): bool
     {
         return $this->published;
     }
