@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block media_generator_form %}
-    <p>Grâce a cette interface, générez les photos du profil et de couverture de votre projet citoyen sur les reseaux sociaux.</p>
+    <p>Grâce à cette interface, générez les photos du profil et de couverture de votre projet citoyen sur les réseaux sociaux.</p>
 
     {{ form_start(form) }}
 
@@ -89,7 +89,7 @@
 
             <div class="img-gen__fieldset">
                 <div>
-                    {{ form_label(form.backgroundImage, 'Uploadez une photo :', {
+                    {{ form_label(form.backgroundImage, 'Ajoutez une photo :', {
                         label_attr: {class: 'img-gen__label'}
                     })}}
                     {{ form_errors(form.backgroundImage)}}
@@ -109,11 +109,11 @@
         <hr/>
         <div class="img-gen__preview">
             <div class="img-gen__preview-profile">
-                <h6>Profile</h6>
+                <h6>Photo de profil</h6>
                 <canvas id="profil-emoji" width="170" height="170" />
             </div>
             <div class="img-gen__preview-cover">
-                <h6>Cover</h6>
+                <h6>Photo de couverture</h6>
                 <img id="cover-image" src="{{ previewCoverImage }}" alt="Cover Facebook image"/>
             </div>
         </div>
@@ -124,13 +124,13 @@
                 attr: {class: 'img-gen__button--inverse'}
             }) }}
 
-            <a href="#" id="citizen_project_image_download_button" class="img-gen__button--inverse">Télécharger les images</a>
+            <button id="citizen_project_image_download_button" class="btn img-gen__button--inverse">Télécharger les images</button>
         </div>
     {% else %}
 
         <div class="l__row l__row--center">
             {{ form_row(form.preview, {
-                label: 'Générer un apperçu (avant le téléchargement)',
+                label: 'Aperçu',
                 attr: {class: 'img-gen__button'}
             }) }}
         </div>
