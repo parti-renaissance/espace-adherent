@@ -14,10 +14,6 @@ class ReferentManagedUserRepository extends EntityRepository
 {
     public function search(Adherent $referent, ManagedUsersFilter $filter = null): Paginator
     {
-        if (!$referent->getManagedArea()) {
-            throw new \InvalidArgumentException(sprintf('User %s is not a referent', $referent->getEmailAddress()));
-        }
-
         $qb = $this->createFilterQueryBuilder($referent, $filter);
         $qb->andWhere('u.isMailSubscriber = 1');
 
@@ -34,10 +30,6 @@ class ReferentManagedUserRepository extends EntityRepository
 
     public function createDispatcherIterator(Adherent $referent, ManagedUsersFilter $filter = null): IterableResult
     {
-        if (!$referent->getManagedArea()) {
-            throw new \InvalidArgumentException(sprintf('User %s is not a referent', $referent->getEmailAddress()));
-        }
-
         $qb = $this->createFilterQueryBuilder($referent, $filter);
         $qb->andWhere('u.isMailSubscriber = 1');
 
@@ -50,6 +42,10 @@ class ReferentManagedUserRepository extends EntityRepository
 
     private function createFilterQueryBuilder(Adherent $referent, ManagedUsersFilter $filter = null): QueryBuilder
     {
+        if (!$referent->isReferent()) {
+            throw new \InvalidArgumentException(sprintf('User %s is not a referent', $referent->getEmailAddress()));
+        }
+
         $qb = $this->createQueryBuilder('u');
         $qb
             ->where('u.status = :status')
@@ -57,36 +53,21 @@ class ReferentManagedUserRepository extends EntityRepository
             ->orderBy('u.createdAt', 'DESC')
         ;
 
-        $codesFilter = $qb->expr()->orX();
+        $tagsFilter = $qb->expr()->orX();
 
-        if (empty($codes = $referent->getManagedArea()->getCodes())) {
-            throw new \InvalidArgumentException(sprintf('User %s is not a referent', $referent->getEmailAddress()));
+        foreach ($referent->getManagedArea()->getTags() as $key => $tag) {
+            $tagsFilter->add("FIND_IN_SET(:tag_$key, u.subscribedTags) > 0");
+            $tagsFilter->add(
+                $qb->expr()->andX(
+                    'u.country = \'FR\'',
+                    $qb->expr()->like('u.committeePostalCode', ":tag_prefix_$key")
+                )
+            );
+            $qb->setParameter("tag_$key", $tag->getCode());
+            $qb->setParameter("tag_prefix_$key", $tag->getCode().'%');
         }
 
-        foreach ($codes as $key => $code) {
-            if (is_numeric($code)) {
-                // Postal code prefix
-                $codesFilter->add(
-                    $qb->expr()->andX(
-                        'u.type = :adherent'.$key,
-                        'u.country = \'FR\'',
-                        $qb->expr()->orX(
-                            $qb->expr()->like('u.postalCode', ':code'.$key),
-                            $qb->expr()->like('u.committeePostalCode', ':code'.$key)
-                        )
-                    )
-                );
-
-                $qb->setParameter('adherent'.$key, ReferentManagedUser::TYPE_ADHERENT);
-                $qb->setParameter('code'.$key, $code.'%');
-            } else {
-                // Country
-                $codesFilter->add($qb->expr()->eq('u.country', ':code'.$key));
-                $qb->setParameter('code'.$key, $code);
-            }
-        }
-
-        $qb->andWhere($codesFilter);
+        $qb->andWhere($tagsFilter);
 
         if (!$filter) {
             return $qb;

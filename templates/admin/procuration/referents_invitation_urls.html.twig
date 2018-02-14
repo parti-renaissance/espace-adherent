@@ -47,7 +47,7 @@
                             {{ referent.emailAddress }}
                         </td>
                         <td>
-                            {{ referent.managedAreaCodesAsString }}
+                            {{ referent.managedArea.tags|join(', ') }}
                         </td>
                         <td>
                             <input type="text" class="form-control"

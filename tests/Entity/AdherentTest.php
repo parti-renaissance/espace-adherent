@@ -7,6 +7,7 @@ use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\PostAddress;
+use AppBundle\Entity\ReferentTag;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentEmailSubscription;
@@ -184,7 +185,7 @@ class AdherentTest extends TestCase
 
         // Referent
         $adherent = $this->createAdherent();
-        $adherent->setReferent(['CH', '06'], -1.6743, 48.112);
+        $adherent->setReferent([new ReferentTag('06')], -1.6743, 48.112);
 
         $this->assertFalse($adherent->isBasicAdherent());
 

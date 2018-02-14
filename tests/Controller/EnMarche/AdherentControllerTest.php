@@ -168,6 +168,8 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame('7', $crawler->filter(sprintf($optionPattern, 'birthdate][month'))->attr('value'));
         $this->assertSame('1950', $crawler->filter(sprintf($optionPattern, 'birthdate][year'))->attr('value'));
         $this->assertSame('carl999@example.fr', $crawler->filter(sprintf($inputPattern, 'emailAddress'))->attr('value'));
+        self::assertCount(1, $adherent->getReferentTags());
+        self::assertAdherentHasReferentTag($adherent, '73');
 
         // Submit the profile form with invalid data
         $crawler = $this->client->submit($crawler->selectButton('adherent[submit]')->form([
@@ -286,6 +288,8 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertNotNull($newLongitude = $adherent->getLongitude());
         $this->assertNotSame($oldLatitude, $newLatitude);
         $this->assertNotSame($oldLongitude, $newLongitude);
+        self::assertCount(1, $adherent->getReferentTags());
+        self::assertAdherentHasReferentTag($adherent, '06');
     }
 
     public function testEditAdherentInterests(): void

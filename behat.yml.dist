@@ -16,6 +16,8 @@ default:
                     doctrine: "@doctrine"
                     dispatcher: "@event_dispatcher"
                 - EmailContext
+                - ReferentTagContext:
+                    adherentRepository: "@app.repository.adherent"
                 - SecurityContext
                 - FeatureContext
     extensions:

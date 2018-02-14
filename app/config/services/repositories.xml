@@ -192,5 +192,10 @@
             <factory service="doctrine" method="getRepository" />
             <argument>AppBundle\Entity\WebHook\WebHook</argument>
         </service>
+
+        <service id="AppBundle\Repository\ReferentTagRepository" public="false">
+            <factory service="doctrine" method="getRepository" />
+            <argument>AppBundle\Entity\ReferentTag</argument>
+        </service>
     </services>
 </container>

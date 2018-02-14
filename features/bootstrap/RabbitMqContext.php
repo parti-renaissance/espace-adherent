@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class RabbitMqContext implements Context
 {
     const QUEUES = [
-        'api_user',
+        'api_sync',
         'mailer-delayed-campaign',
         'mailer-delayed-transactional',
         'referent-message-dispatcher',

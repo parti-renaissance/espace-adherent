@@ -5,28 +5,44 @@ namespace Tests\AppBundle\Repository;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
 use AppBundle\DataFixtures\ORM\LoadReferentManagedUserData;
+use AppBundle\Entity\Projection\ReferentManagedUser;
+use AppBundle\Entity\ReferentTag;
 use AppBundle\Referent\ManagedUsersFilter;
-use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use AppBundle\Repository\Projection\ReferentManagedUserRepository;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Tests\AppBundle\MysqlWebTestCase;
+use Tests\AppBundle\TestHelperTrait;
 
 /**
  * @group functional
  */
-class ReferentManagedUserRepositoryTest extends SqliteWebTestCase
+class ReferentManagedUserRepositoryTest extends MysqlWebTestCase
 {
-    /**
-     * @var \AppBundle\Repository\Projection\ReferentManagedUserRepository
-     */
-    private $repository;
+    use TestHelperTrait;
 
-    use ControllerTestTrait;
+    /**
+     * @var ReferentManagedUserRepository
+     */
+    private $referentManagedUserRepository;
+
+    /**
+     * @var ObjectRepository
+     */
+    private $referentTagRepository;
 
     public function testSearch()
     {
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferent(['CH', '77'], '1.123456', '2.34567');
+        $referent->setReferent(
+            [
+                $this->referentTagRepository->findOneBy(['code' => 'ch']),
+                $this->referentTagRepository->findOneBy(['code' => '77']),
+            ],
+            '1.123456',
+            '2.34567'
+        );
 
-        $results = $this->repository->search($referent)->getQuery()->getResult();
+        $results = $this->referentManagedUserRepository->search($referent)->getQuery()->getResult();
 
         $this->assertCount(3, $results);
     }
@@ -39,15 +55,22 @@ class ReferentManagedUserRepositoryTest extends SqliteWebTestCase
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
         $referent->setReferent([], '1.123456', '2.34567');
 
-        $this->repository->search($referent);
+        $this->referentManagedUserRepository->search($referent);
     }
 
     public function testCreateDispatcherIterator()
     {
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferent(['92', '77'], '1.123456', '2.34567');
+        $referent->setReferent(
+            [
+                $this->referentTagRepository->findOneBy(['code' => '92']),
+                $this->referentTagRepository->findOneBy(['code' => '77']),
+            ],
+            '1.123456',
+            '2.34567'
+        );
 
-        $results = $this->repository->createDispatcherIterator($referent);
+        $results = $this->referentManagedUserRepository->createDispatcherIterator($referent);
 
         $expectedEmails = ['francis.brioul@yahoo.com', 'gisele-berthoux@caramail.com'];
 
@@ -63,12 +86,19 @@ class ReferentManagedUserRepositoryTest extends SqliteWebTestCase
     public function testCreateDispatcherIteratorWithOffset()
     {
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferent(['92', '77'], '1.123456', '2.34567');
+        $referent->setReferent(
+            [
+                $this->referentTagRepository->findOneBy(['code' => '92']),
+                $this->referentTagRepository->findOneBy(['code' => '77']),
+            ],
+            '1.123456',
+            '2.34567'
+        );
 
         $filter = $this->createMock(ManagedUsersFilter::class);
         $filter->expects($this->once())->method('getOffset')->willReturn(1);
 
-        $results = $this->repository->createDispatcherIterator($referent, $filter);
+        $results = $this->referentManagedUserRepository->createDispatcherIterator($referent, $filter);
 
         $expectedEmails = ['gisele-berthoux@caramail.com'];
 
@@ -92,14 +122,16 @@ class ReferentManagedUserRepositoryTest extends SqliteWebTestCase
         ]);
 
         $this->container = $this->getContainer();
-        $this->repository = $this->getReferentManagedUserRepository();
+        $this->referentManagedUserRepository = $this->getRepository(ReferentManagedUser::class);
+        $this->referentTagRepository = $this->getRepository(ReferentTag::class);
     }
 
     protected function tearDown()
     {
         $this->loadFixtures([]);
 
-        $this->repository = null;
+        $this->referentManagedUserRepository = null;
+        $this->referentTagRepository = null;
         $this->container = null;
 
         parent::tearDown();
