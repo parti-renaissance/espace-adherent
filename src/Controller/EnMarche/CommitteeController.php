@@ -53,8 +53,7 @@ class CommitteeController extends Controller
         return $this->render('committee/show.html.twig', [
             'committee' => $committee,
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
-            'committee_timeline' => $committeeManager->getTimeline($committee,
-                $this->getParameter('timeline_max_messages')),
+            'committee_timeline' => $committeeManager->getTimeline($committee, $this->getParameter('timeline_max_messages')),
             'committee_timeline_max_messages' => $this->getParameter('timeline_max_messages'),
             'form' => $form ? $form->createView() : null,
         ]);
