@@ -204,3 +204,22 @@ input.img-gen__input {
     border-color: $orange;
   }
 }
+
+.image-generator .image-preview {
+  height: 115px;
+  border-radius: 3px;
+  border: dashed 1px #dddddd;
+  margin-top: 10px;
+  background-position: center;
+  background-size: cover;
+
+  &.has-thumbnail {
+    border: none;
+    border-radius: 0;
+    height: auto;
+  }
+}
+
+.image-generator img.image-thumbnail {
+  max-width: 100%;
+}
