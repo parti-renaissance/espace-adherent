@@ -36,7 +36,6 @@
     "node-sass": "^3.11.2",
     "npm-run-all": "^3.1.2",
     "raven-js": "^3.8.0",
-    "rc-dropdown": "^2.1.0",
     "react": "^15.3.2",
     "react-addons-test-utils": "^15.3.2",
     "react-csv": "^1.0.5",

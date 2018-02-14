@@ -77,7 +77,6 @@ twig:
         url_help_en_marche:     "https://aide.en-marche.fr"
     form_themes:
         - 'form_theme.html.twig'
-        - 'form/delete_form_theme.html.twig'
         - 'SonataCoreBundle:Form:datepicker.html.twig'
         - 'SonataCoreBundle:Form:colorpicker.html.twig'
 

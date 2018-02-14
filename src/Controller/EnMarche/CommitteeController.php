@@ -4,11 +4,11 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Committee\Feed\CommitteeMessage;
+use AppBundle\Controller\EntityControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Form\CommitteeFeedMessageType;
-use AppBundle\Form\DeleteType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -23,6 +23,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CommitteeController extends Controller
 {
+    use EntityControllerTrait;
+
     /**
      * @Route(name="app_committee_show")
      * @Method("GET|POST")
@@ -51,17 +53,20 @@ class CommitteeController extends Controller
 
         $committeeManager = $this->get('app.committee.manager');
 
+        $feeds = $committeeManager->getTimeline($committee, $this->getParameter('timeline_max_messages'));
+
         return $this->render('committee/show.html.twig', [
             'committee' => $committee,
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
-            'committee_timeline' => $committeeManager->getTimeline($committee, $this->getParameter('timeline_max_messages')),
+            'committee_timeline' => $feeds,
+            'committee_timeline_forms' => $this->createTimelineDeleteForms($feeds),
             'committee_timeline_max_messages' => $this->getParameter('timeline_max_messages'),
             'form' => $form ? $form->createView() : null,
         ]);
     }
 
     /**
-     * @Route("/timeline/{id}/edit", name="app_committee_timeline_edit")
+     * @Route("/timeline/{id}/modifier", name="app_committee_timeline_edit")
      * @ParamConverter("committee", options={"mapping":{"slug": "slug"}})
      * @ParamConverter("committeeFeedItem", options={"mapping":{"id": "id"}})
      * @Method("GET|POST")
@@ -97,37 +102,27 @@ class CommitteeController extends Controller
     }
 
     /**
-     * @Route("/timeline/{id}/delete", name="app_committee_timeline_delete")
+     * @Route("/timeline/{id}/supprimer", name="app_committee_timeline_delete")
      * @ParamConverter("committee", options={"mapping":{"slug": "slug"}})
      * @ParamConverter("committeeFeedItem", options={"mapping":{"id": "id"}})
-     * @Method("GET|DELETE")
+     * @Method("DELETE")
      * @Security("is_granted('ADMIN_FEED_COMMITTEE', committeeFeedItem)")
      */
     public function timelineDeleteAction(Request $request, Committee $committee, CommitteeFeedItem $committeeFeedItem): Response
     {
-        $deleteForm = $this
-            ->createForm(DeleteType::class)
-            ->handleRequest($request)
-        ;
+        $form = $this->createDeleteForm('', 'committee_feed_delete', $request);
 
-        if ($deleteForm->isSubmitted() && $deleteForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $em->remove($committeeFeedItem);
-            $em->flush();
-            $this->addFlash('info', $this->get('translator')->trans('committee.message_deleted'));
-
-            return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            throw $this->createNotFoundException($form->isValid() ? 'Invalid token.' : 'No form submitted.');
         }
 
-        $committeeManager = $this->get('app.committee.manager');
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($committeeFeedItem);
+        $em->flush();
 
-        return $this->render('committee/delete.html.twig', [
-            'committee' => $committee,
-            'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
-            'committee_feed_item' => $committeeFeedItem,
-            'delete_form' => $deleteForm->createView()
-        ]);
+        $this->addFlash('info', $this->get('translator')->trans('committee.message_deleted'));
+
+        return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
     }
 
     /**
@@ -192,5 +187,25 @@ class CommitteeController extends Controller
                 'csrf_token' => (string) $this->get('security.csrf.token_manager')->getToken('committee.follow'),
             ],
         ]);
+    }
+
+    /**
+     * @param CommitteeFeedItem[]|iterable $feeds
+     * @return array
+     */
+    private function createTimelineDeleteForms(iterable $feeds): array
+    {
+        $forms = [];
+        foreach ($feeds as $feed) {
+            $forms[$feed->getId()] = $this->createDeleteForm(
+                $this->generateUrl('app_committee_timeline_delete', [
+                    'id' => $feed->getId(),
+                    'slug' => $feed->getCommittee()->getSlug(),
+                ]),
+                'committee_feed_delete'
+            )->createView();
+        }
+
+        return $forms;
     }
 }
