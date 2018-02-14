@@ -304,19 +304,28 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        // Try to post with an empty message
+        // Try to post with an empty subject and an empty message
         $crawler = $this->client->request(Request::METHOD_POST, $contactUrl, [
             'token' => $crawler->filter('input[name="token"]')->attr('value'),
             'contacts' => $crawler->filter('input[name="contacts"]')->attr('value'),
+            'subject' => ' ',
             'message' => ' ',
         ]);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('.form__errors > .form__error')->text());
+
+        $this->assertSame('Cette valeur ne doit pas être vide.',
+            $crawler->filter('.subject .form__errors > .form__error')->text()
+        );
+
+        $this->assertSame('Cette valeur ne doit pas être vide.',
+            $crawler->filter('.message .form__errors > .form__error')->text()
+        );
 
         $this->client->request(Request::METHOD_POST, $contactUrl, [
             'token' => $crawler->filter('input[name="token"]')->attr('value'),
             'contacts' => $crawler->filter('input[name="contacts"]')->attr('value'),
+            'subject' => 'Bonsoir',
             'message' => 'Bonsoir à tous.',
         ]);
 
@@ -340,6 +349,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_POST, $contactUrl, [
             'token' => $crawler->filter('input[name="token"]')->attr('value'),
             'contacts' => json_encode($uuids),
+            'subject' => 'Bonsoir',
             'message' => 'Bonsoir à tous.',
         ]);
 

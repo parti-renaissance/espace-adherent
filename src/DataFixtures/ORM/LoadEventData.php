@@ -318,27 +318,29 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         $manager->flush();
 
         foreach ($this->getCommitteeMessageData($committee1) as $data) {
-            $this->publishCommitteeMessage($committee1, $author3, $data['text'], $data['created_at']);
+            $this->publishCommitteeMessage($committee1, $author3, $data['subject'], $data['text'], $data['created_at']);
         }
 
         foreach ($this->getCommitteeMessageData($committee3) as $data) {
-            $this->publishCommitteeMessage($committee3, $author3, $data['text'], $data['created_at']);
+            $this->publishCommitteeMessage($committee3, $author3, $data['subject'], $data['text'], $data['created_at']);
         }
 
         for ($day = 1; $day <= 31; ++$day) {
-            $this->publishCommitteeMessage($committee1, $author3, sprintf("Rapport d'activité du %u janvier 2017.", $day), sprintf('2017-01-%02u 09:00:00', $day));
+            $this->publishCommitteeMessage($committee1, $author3, 'Foo subject', sprintf("Rapport d'activité du %u janvier 2017.", $day), sprintf('2017-01-%02u 09:00:00', $day));
         }
 
         for ($day = 1; $day <= 5; ++$day) {
-            $this->publishCommitteeMessage($committee1, $author7, sprintf("Rapport d'activité du %u janvier 2017.", $day), sprintf('2017-01-%02u 09:00:00', $day));
+            $this->publishCommitteeMessage($committee1, $author7, 'Foo subject', sprintf("Rapport d'activité du %u janvier 2017.", $day), sprintf('2017-01-%02u 09:00:00', $day));
         }
 
         $this->publishCommitteeEvent($event1);
     }
 
-    private function publishCommitteeMessage(Committee $committee, Adherent $author, string $text, string $createdAt = 'now')
+    private function publishCommitteeMessage(Committee $committee, Adherent $author, string $subject, string $text, string $createdAt = 'now')
     {
-        return $this->getCommitteeFeedManager()->createMessage(new CommitteeMessage($author, $committee, $text, true, $createdAt));
+        return $this->getCommitteeFeedManager()->createMessage(
+                new CommitteeMessage($author, $committee, $subject, $text, true, $createdAt)
+        );
     }
 
     private function publishCommitteeEvent(EntityEvent $event)
@@ -352,22 +354,27 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
 
         if (LoadAdherentData::COMMITTEE_1_UUID === $uuid) {
             yield [
+                'subject' => '[Comité local] Nouveau message',
                 'text' => 'Ouverture du comité !',
                 'created_at' => '2017-01-12 20:13:26',
             ];
             yield [
+                'subject' => '[Comité local] Nouveau message',
                 'text' => "Comment ça va aujourd'hui les Marcheurs ?",
                 'created_at' => '2017-01-13 08:31:12',
             ];
             yield [
+                'subject' => '[Comité local] Nouveau message',
                 'text' => 'Tout le monde est prêt pour le porte à porte ?',
                 'created_at' => '2017-01-13 10:08:45',
             ];
             yield [
+                'subject' => '[Comité local] Nouveau message',
                 'text' => 'Réunion écologiste en préparation !',
                 'created_at' => '2017-01-14 11:14:54',
             ];
             yield [
+                'subject' => '[Comité local] Nouveau message',
                 'text' => "Visite d'Émmanuel Macron le 20 janvier.",
                 'created_at' => '2017-01-15 13:28:33',
             ];
@@ -375,10 +382,12 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
 
         if (LoadAdherentData::COMMITTEE_3_UUID === $uuid) {
             yield [
+                'subject' => '[Comité local] Nouveau message',
                 'text' => 'Lancement du comité !',
                 'created_at' => '2017-01-16 13:14:56',
             ];
             yield [
+                'subject' => '[Comité local] Nouveau message',
                 'text' => 'À la recherche de volontaires !',
                 'created_at' => '2017-01-17 20:02:21',
             ];

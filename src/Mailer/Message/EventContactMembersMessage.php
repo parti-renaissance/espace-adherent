@@ -11,11 +11,12 @@ final class EventContactMembersMessage extends Message
     /**
      * @param EventRegistration[] $recipients
      * @param Adherent            $organizer
+     * @param string              $subject
      * @param string              $content
      *
      * @return EventContactMembersMessage
      */
-    public static function create(array $recipients, Adherent $organizer, string $content): self
+    public static function create(array $recipients, Adherent $organizer, string $subject, string $content): self
     {
         $recipients = array_values($recipients);
         $recipient = array_shift($recipients);
@@ -25,7 +26,7 @@ final class EventContactMembersMessage extends Message
             '116586',
             $recipient->getEmailAddress(),
             $recipient->getFirstName(),
-            "L'organisateur d'un événement auquel vous êtes inscrit vous a envoyé un message",
+            "[Événement] $subject",
             [
                 'organizer_firstname' => self::escape($organizer->getFirstName()),
                 'target_message' => $content,

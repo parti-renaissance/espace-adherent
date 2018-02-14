@@ -14,10 +14,11 @@ class CommitteeMessageNotificationMessage extends Message
      *
      * @param Adherent[]        $recipients
      * @param CommitteeFeedItem $feedItem
+     * @param string            $subject
      *
      * @return self
      */
-    public static function create(array $recipients, CommitteeFeedItem $feedItem): self
+    public static function create(array $recipients, CommitteeFeedItem $feedItem, string $subject): self
     {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one Adherent recipients is required.');
@@ -33,13 +34,13 @@ class CommitteeMessageNotificationMessage extends Message
             '63337',
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            'Des nouvelles de votre comité',
+            "[Comité local] $subject",
             static::getTemplateVars($feedItem->getAuthorFirstName(), $feedItem->getContent()),
             static::getRecipientVars($recipient->getFirstName()),
             $feedItem->getAuthor()->getEmailAddress()
         );
 
-        $sender = $feedItem->getAuthor()->getFirstName().', ';
+        $sender = $feedItem->getAuthor()->getFullName().', ';
         $sender .= Genders::FEMALE === $feedItem->getAuthor()->getGender() ? 'animatrice' : 'animateur';
         $sender .= ' de votre comité';
 

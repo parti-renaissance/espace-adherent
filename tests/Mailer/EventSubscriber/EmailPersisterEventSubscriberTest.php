@@ -34,7 +34,7 @@ class EmailPersisterEventSubscriberTest extends TestCase
         $item = $this->createCommitteeFeedItemMock('25c5762d-5a50-4c68-8f6c-106bcbff862e', 'Aurélien', 'Un message !');
 
         $this->subscriber->onMailerDeliveryMessage(new MailerEvent(
-            $message = CommitteeMessageNotificationMessage::create($adherents, $item),
+            $message = CommitteeMessageNotificationMessage::create($adherents, $item, 'Foo subject'),
             DummyEmailTemplate::createWithMessage($message, 'noreply@en-marche.fr')
         ));
     }

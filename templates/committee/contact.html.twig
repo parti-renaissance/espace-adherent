@@ -38,13 +38,19 @@
             </div>
 
             {{ form_start(form) }}
-                {{ form_errors(form.message) }}
                 <input type="hidden" name="contacts" value="{{ contacts|json_encode }}" />
 
-                {{ form_widget(form.message, { attr: {
-                    class: 'form--full form__field--textarea-300 b__nudge--top-15',
-                    placeholder: 'Écrivez votre message'
-                } }) }}
+                <div class="form__row subject">
+                    {{ form_label(form.subject, 'Objet') }}
+                    {{ form_errors(form.subject) }}
+                    {{ form_widget(form.subject, { attr: { class: 'form--full' } }) }}
+                </div>
+
+                <div class="form__row message">
+                    {{ form_label(form.message, 'Message') }}
+                    {{ form_errors(form.message) }}
+                    {{ form_widget(form.message, { attr: { class: 'form--full form__field--textarea-300' } }) }}
+                </div>
 
                 {{ form_widget(form.submit, { label: 'Envoyer', attr: { class: 'btn btn--blue b__nudge--top-15' } }) }}
 

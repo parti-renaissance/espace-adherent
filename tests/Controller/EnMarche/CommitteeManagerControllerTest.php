@@ -345,7 +345,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $this->assertCountTimelineMessages($crawler, 9);
 
         $crawler = $this->client->submit($crawler->selectButton('committee_feed_message[send]')->form([
-            'committee_feed_message' => ['content' => 'yo'],
+            'committee_feed_message' => ['subject' => 'bonsoir', 'content' => 'yo'],
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -353,7 +353,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $this->assertFalse($this->seeFlashMessage($crawler));
 
         $this->client->submit($crawler->selectButton('committee_feed_message[send]')->form([
-            'committee_feed_message' => ['content' => 'Bienvenue !'],
+            'committee_feed_message' => ['subject' => 'bonsoir', 'content' => 'Bienvenue !'],
         ]));
 
         $this->assertClientIsRedirectedTo($committeeUrl, $this->client);
@@ -374,6 +374,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
 
         $this->client->submit($crawler->selectButton('committee_feed_message[send]')->form([
             'committee_feed_message' => [
+                'subject' => 'Bonsoir',
                 'content' => 'Première publication !',
                 'published' => '1',
             ],
@@ -523,19 +524,28 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        // Try to post with an empty message
+        // Try to post with an empty subject and an empty message
         $crawler = $this->client->request(Request::METHOD_POST, $contactUrl, [
             'token' => $crawler->filter('input[name="token"]')->attr('value'),
             'contacts' => $crawler->filter('input[name="contacts"]')->attr('value'),
+            'subject' => ' ',
             'message' => ' ',
         ]);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('.form__errors > .form__error')->text());
+
+        $this->assertSame('Cette valeur ne doit pas être vide.',
+            $crawler->filter('.subject .form__errors > .form__error')->text()
+        );
+
+        $this->assertSame('Cette valeur ne doit pas être vide.',
+            $crawler->filter('.message .form__errors > .form__error')->text()
+        );
 
         $this->client->request(Request::METHOD_POST, $contactUrl, [
             'token' => $crawler->filter('input[name="token"]')->attr('value'),
             'contacts' => $crawler->filter('input[name="contacts"]')->attr('value'),
+            'subject' => 'Comité local',
             'message' => 'Hello à tous, j\'espère que vous allez bien!',
         ]);
 
@@ -560,6 +570,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_POST, $contactUrl, [
             'token' => $crawler->filter('input[name="token"]')->attr('value'),
             'contacts' => json_encode($uuids),
+            'subject' => 'Comité local',
             'message' => 'Hello à tous, j\'espère que vous allez bien!',
         ]);
 
