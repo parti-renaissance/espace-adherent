@@ -2,6 +2,15 @@
 
 {% block page_title 'Projets citoyens - tract generateur' %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runCitizenProjectImageGenerator();
+        });
+    </script>
+{% endblock %}
+
 {% block media_generator_form %}
     {{ form_start(form) }}
 

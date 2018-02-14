@@ -162,7 +162,7 @@
     {%- endif -%}
     <label{% if label_attr %}{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}>
         {{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}
-        <div class="l__row l__row--wrap l__row--center l__row--pack-center" style="height: 115px; border-radius: 3px; border: dashed 1px #dddddd; margin-top: 10px;">
+        <div class="l__row l__row--wrap l__row--center l__row--pack-center image-preview" id="image-thumbnail">
             <span class="text--blue--dark text--center" style="flex-basis: 100%;">
               Veuillez uploader une photo
             </span>

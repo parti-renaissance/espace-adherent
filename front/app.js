@@ -179,6 +179,7 @@ class App {
     runCitizenProjectImageGenerator() {
         System.import('pages/citizen_project_image_generator').catch((error) => { throw error; }).then((module) => {
             module.default();
+            module.previewHandler();
         });
     }
 }
