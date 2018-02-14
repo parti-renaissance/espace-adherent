@@ -19,6 +19,8 @@ class AdministrateCommitteeFeedItemVoter extends AbstractAdherentVoter
     }
 
     /**
+     * @param string            $attribute
+     * @param Adherent          $adherent
      * @param CommitteeFeedItem $subject
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
