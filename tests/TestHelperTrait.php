@@ -6,6 +6,7 @@ use AppBundle\Committee\Feed\CommitteeFeedManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
+use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\CitizenProject;
@@ -56,6 +57,7 @@ use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\Repository\TonMacronFriendInvitationRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\EntityRepository;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;
 use libphonenumber\PhoneNumber;
@@ -239,6 +241,11 @@ trait TestHelperTrait
     public function getPurchasingPowerInvitationRepository(): PurchasingPowerInvitationRepository
     {
         return $this->getRepository(PurchasingPowerInvitation::class);
+    }
+
+    public function getEmailSubscriptionHistoryRepository(): EntityRepository
+    {
+        return $this->getRepository(EmailSubscriptionHistory::class);
     }
 
     public function getCommitteeFeedManager(): CommitteeFeedManager

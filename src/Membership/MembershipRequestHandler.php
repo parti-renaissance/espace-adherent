@@ -6,6 +6,7 @@ use AppBundle\Address\PostAddressFactory;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
+use AppBundle\History\EmailSubscriptionHistoryHandler;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
 use AppBundle\Mailer\Message\AdherentAccountConfirmationMessage;
@@ -28,6 +29,8 @@ class MembershipRequestHandler
     private $committeeManager;
     private $adherentRegistry;
     private $referentTagManager;
+    private $membershipRegistrationProcess;
+    private $emailSubscriptionHistoryHandler;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
@@ -40,7 +43,8 @@ class MembershipRequestHandler
         AdherentManager $adherentManager,
         CommitteeManager $committeeManager,
         ReferentTagManager $referentTagManager,
-        MembershipRegistrationProcess $membershipRegistrationProcess
+        MembershipRegistrationProcess $membershipRegistrationProcess,
+        EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler
     ) {
         $this->adherentFactory = $adherentFactory;
         $this->addressFactory = $addressFactory;
@@ -53,12 +57,17 @@ class MembershipRequestHandler
         $this->committeeManager = $committeeManager;
         $this->referentTagManager = $referentTagManager;
         $this->membershipRegistrationProcess = $membershipRegistrationProcess;
+        $this->emailSubscriptionHistoryHandler = $emailSubscriptionHistoryHandler;
     }
 
     public function registerAsUser(MembershipRequest $membershipRequest): Adherent
     {
         $adherent = $this->adherentFactory->createFromMembershipRequest($membershipRequest);
         $this->manager->persist($adherent);
+
+        $this->referentTagManager->assignReferentLocalTags($adherent);
+        $this->emailSubscriptionHistoryHandler->handleSubscriptions($adherent);
+
         $this->sendEmailValidation($adherent);
 
         $this->dispatcher->dispatch(UserEvents::USER_CREATED, new UserEvent($adherent));
@@ -83,6 +92,7 @@ class MembershipRequestHandler
         $this->manager->persist($adherent);
 
         $this->referentTagManager->assignReferentLocalTags($adherent);
+        $this->emailSubscriptionHistoryHandler->handleSubscriptions($adherent);
         $this->membershipRegistrationProcess->start($adherent->getUuid()->toString());
 
         $adherent->join();
@@ -97,7 +107,7 @@ class MembershipRequestHandler
         $user->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
         $user->join();
 
-        $this->referentTagManager->assignReferentLocalTags($user);
+        $this->updateReferentTagsAndSubscriptionHistoryIfNeeded($user);
 
         $this->manager->flush();
 
@@ -120,12 +130,24 @@ class MembershipRequestHandler
     {
         $adherent->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
 
-        $this->referentTagManager->assignReferentLocalTags($adherent);
+        $this->updateReferentTagsAndSubscriptionHistoryIfNeeded($adherent);
 
         $this->dispatcher->dispatch(AdherentEvents::PROFILE_UPDATED, new AdherentProfileWasUpdatedEvent($adherent));
         $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($adherent));
 
         $this->manager->flush();
+    }
+
+    /**
+     * /!\ Only relevant for update not for creation.
+     */
+    private function updateReferentTagsAndSubscriptionHistoryIfNeeded(Adherent $adherent): void
+    {
+        if ($this->referentTagManager->isUpdateNeeded($adherent)) {
+            $oldReferentTags = $adherent->getReferentTags()->toArray();
+            $this->referentTagManager->assignReferentLocalTags($adherent);
+            $this->emailSubscriptionHistoryHandler->handleReferentTagsUpdate($adherent, $oldReferentTags);
+        }
     }
 
     private function generateMembershipActivationUrl(Adherent $adherent, AdherentActivationToken $token): string

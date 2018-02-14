@@ -55,14 +55,9 @@ class BoardMemberManager
             $count = $savedBoardMembers->count();
 
             foreach ($savedBoardMembers as $member) {
-                if ($member->isFemale()) {
-                    $statistics['women'] += 1;
-                } else {
-                    $statistics['men'] += 1;
-                }
-
+                $member->isFemale() ? ++$statistics['women'] : ++$statistics['men'];
                 $sum_age += $member->getAge();
-                $statistics['areas']['board_member.stats.area.'.$member->getBoardMember()->getArea()] += 1;
+                ++$statistics['areas']['board_member.stats.area.'.$member->getBoardMember()->getArea()];
             }
 
             $statistics['average_age'] = round($sum_age / $count);
