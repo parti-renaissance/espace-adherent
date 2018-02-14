@@ -8,13 +8,12 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Form\CommitteeFeedMessageType;
-use AppBundle\Form\DeleteEntityType;
+use AppBundle\Form\DeleteType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -107,7 +106,7 @@ class CommitteeController extends Controller
     public function timelineDeleteAction(Request $request, Committee $committee, CommitteeFeedItem $committeeFeedItem): Response
     {
         $deleteForm = $this
-            ->createForm(SubmitType::class)
+            ->createForm(DeleteType::class)
             ->handleRequest($request)
         ;
 
@@ -121,7 +120,11 @@ class CommitteeController extends Controller
             return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
         }
 
+        $committeeManager = $this->get('app.committee.manager');
+
         return $this->render('committee/delete.html.twig', [
+            'committee' => $committee,
+            'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
             'committee_feed_item' => $committeeFeedItem,
             'delete_form' => $deleteForm->createView()
         ]);
