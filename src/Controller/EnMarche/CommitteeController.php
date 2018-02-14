@@ -8,11 +8,13 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Form\CommitteeFeedMessageType;
+use AppBundle\Form\DeleteEntityType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -99,18 +101,30 @@ class CommitteeController extends Controller
      * @Route("/timeline/{id}/delete", name="app_committee_timeline_delete")
      * @ParamConverter("committee", options={"mapping":{"slug": "slug"}})
      * @ParamConverter("committeeFeedItem", options={"mapping":{"id": "id"}})
-     * @Method("GET")
+     * @Method("GET|DELETE")
      * @Security("is_granted('ADMIN_FEED_COMMITTEE', committeeFeedItem)")
      */
-    public function timelineDeleteAction(Committee $committee, CommitteeFeedItem $committeeFeedItem): Response
+    public function timelineDeleteAction(Request $request, Committee $committee, CommitteeFeedItem $committeeFeedItem): Response
     {
-        $em = $this->getDoctrine()->getManager();
+        $deleteForm = $this
+            ->createForm(SubmitType::class)
+            ->handleRequest($request)
+        ;
 
-        $em->remove($committeeFeedItem);
-        $em->flush();
-        $this->addFlash('info', $this->get('translator')->trans('committee.message_deleted'));
+        if ($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
 
-        return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
+            $em->remove($committeeFeedItem);
+            $em->flush();
+            $this->addFlash('info', $this->get('translator')->trans('committee.message_deleted'));
+
+            return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
+        }
+
+        return $this->render('committee/delete.html.twig', [
+            'committee_feed_item' => $committeeFeedItem,
+            'delete_form' => $deleteForm->createView()
+        ]);
     }
 
     /**
