@@ -3,7 +3,7 @@
         <h3 class="text--body">
             {{ has_role_adherent ? item.author.fullName : item.author.partialName }}
             <span class="text--summary text--small text--gray b__nudge--bottom">{{ item.author.isSupervisorOf(committee) ? 'animateur' : (item.author.isHostOf(committee) ? 'co-animateur') }}</span>
-            {% if item.author == app.user or (has_role_user and app.user.isSupervisorOf(committee)) %}
+            {% if has_role_user and (item.author.equals(app.user) or app.user.isSupervisorOf(committee)) %}
                 <div class="feed-rc-dropdown"
                      data-url-edit="{{ path('app_committee_timeline_edit', { slug: committee.slug, id: item.id }) }}"
                      data-url-delete="{{ path('app_committee_timeline_delete', { slug: committee.slug, id: item.id }) }}"
