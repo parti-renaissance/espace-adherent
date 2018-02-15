@@ -126,7 +126,10 @@
         <service id="app.unregistration.serializer" class="AppBundle\Membership\UnregistrationSerializer" />
 
         <!-- Committees -->
-        <service id="app.committee.manager" class="AppBundle\Committee\CommitteeManager">
+        <service id="app.committee.manager" alias="AppBundle\Committee\CommitteeManager">
+            <deprecated>The "app.committee.manager" is deprecated in favor of the AppBundle\Committee\CommitteeManager FQCN.</deprecated>
+        </service>
+        <service id="AppBundle\Committee\CommitteeManager">
             <argument type="service" id="doctrine"/>
         </service>
 

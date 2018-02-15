@@ -131,11 +131,26 @@ class CommitteeFeedItem implements UserDocumentInterface
 
     public function getContent(): ?string
     {
-        if ($this->event instanceof Event) {
+        if (!$this->content && $this->event instanceof Event) {
             return $this->event->getDescription();
         }
 
         return $this->content;
+    }
+
+    public function setContent(?string $content): void
+    {
+        $this->content = $content;
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->published;
+    }
+
+    public function setPublished(bool $published): void
+    {
+        $this->published = $published;
     }
 
     public function getCommittee(): ?Committee
@@ -179,5 +194,7 @@ class CommitteeFeedItem implements UserDocumentInterface
         if ($this->author instanceof Adherent) {
             return $this->author->getFirstName();
         }
+
+        return null;
     }
 }
