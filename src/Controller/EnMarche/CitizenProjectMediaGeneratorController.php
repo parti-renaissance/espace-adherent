@@ -60,7 +60,7 @@ class CitizenProjectMediaGeneratorController extends Controller
 
             $pdfContent = $this->get(CitizenProjectTractGenerator::class)->generate($tractCommand);
 
-            return new PdfResponse($pdfContent->getContent(), $tractCommand->getCitizenProjectTitle().'.pdf');
+            return new PdfResponse($pdfContent->getContent(), uniqid('tract_', false).'.pdf');
         }
 
         return $this->render(
