@@ -40,6 +40,8 @@ class CommitteeFeedMessageType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('data_class', CommitteeMessage::class);
+        $resolver->setDefaults([
+            'data_class' => CommitteeMessage::class,
+        ]);
     }
 }
