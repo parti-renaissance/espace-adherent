@@ -70,6 +70,7 @@ db: vendor
 	$(RUN) php -r "for(;;){if(@fsockopen('db',3306)){break;}}" # Wait for MySQL
 	$(RUN) $(CONSOLE) doctrine:database:drop --force --if-exists
 	$(RUN) $(CONSOLE) doctrine:database:create --if-not-exists
+	$(RUN) $(CONSOLE) doctrine:database:import -n -- dump/dump-2017.sql
 	$(RUN) $(CONSOLE) doctrine:migrations:migrate -n
 	$(RUN) $(CONSOLE) doctrine:fixtures:load -n
 
@@ -139,6 +140,7 @@ tfp: vendor assets-amp assets-prod
 	$(EXEC) $(CONSOLE) doctrine:schema:create --env=test_sqlite || true
 	$(EXEC) $(CONSOLE) doctrine:database:drop --force --if-exists --env=test_mysql || true
 	$(EXEC) $(CONSOLE) doctrine:database:create --env=test_mysql || true
+	$(EXEC) $(CONSOLE) doctrine:database:import --env=test_mysql -n -- dump/dump-2017.sql
 	$(EXEC) $(CONSOLE) doctrine:migration:migrate -n --env=test_mysql || true
 
 tj:             ## Run the Javascript tests
