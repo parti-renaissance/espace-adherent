@@ -90,12 +90,13 @@ class CommitteeController extends Controller
         }
 
         $committeeManager = $this->get('app.committee.manager');
+        $feeds = $committeeManager->getTimeline($committee, $this->getParameter('timeline_max_messages'));
 
         return $this->render('committee/show.html.twig', [
             'committee' => $committee,
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
-            'committee_timeline' => $committeeManager->getTimeline($committee,
-                $this->getParameter('timeline_max_messages')),
+            'committee_timeline' => $committeeManager->getTimeline($committee, $this->getParameter('timeline_max_messages')),
+            'committee_timeline_forms' => $this->createTimelineDeleteForms($feeds),
             'committee_timeline_max_messages' => $this->getParameter('timeline_max_messages'),
             'form' => $form ? $form->createView() : null,
         ]);

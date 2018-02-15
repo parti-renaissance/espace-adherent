@@ -293,8 +293,10 @@ class CommitteeControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $result = $crawler->filter('.feed-rc-dropdown');
+        $result = $crawler->filter('a[href^=\'/comites/en-marche-paris-8/timeline/\'][href$=\'/modifier\']');
+        $this->assertSame(0, $result->count());
 
+        $result = $crawler->filter('form[name=\'delete_entity\']');
         $this->assertSame(0, $result->count());
     }
 
@@ -305,8 +307,10 @@ class CommitteeControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $result = $crawler->filter('.feed-rc-dropdown');
+        $result = $crawler->filter('a[href^=\'/comites/en-marche-paris-8/timeline/\'][href$=\'/modifier\']');
+        $this->assertSame(10, $result->count());
 
+        $result = $crawler->filter('form[name=\'delete_entity\']');
         $this->assertSame(10, $result->count());
     }
 
@@ -317,8 +321,10 @@ class CommitteeControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $result = $crawler->filter('.feed-rc-dropdown');
+        $result = $crawler->filter('a[href^=\'/comites/en-marche-paris-8/timeline/\'][href$=\'/modifier\']');
+        $this->assertSame(5, $result->count());
 
+        $result = $crawler->filter('form[name=\'delete_entity\']');
         $this->assertSame(5, $result->count());
     }
 
@@ -328,7 +334,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $messages = $this->manager->getRepository(CommitteeFeedItem::class)->findMostRecentFeedEvent($committee->getUuid());
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/edit');
+        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/modifier');
         $this->isSuccessful($this->client->getResponse());
         $form = $crawler->selectButton('committee_feed_message_send')->form();
         $this->assertSame($messages->getContent(), $form->get('committee_feed_message[content]')->getValue());
@@ -345,7 +351,9 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $messages = $this->manager->getRepository(CommitteeFeedItem::class)->findMostRecentFeedEvent($committee->getUuid());
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
-        $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/delete');
+        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8');
+        $form = $crawler->selectButton('delete_entity_delete')->form();
+        $this->client->submit($form);
         $this->assertClientIsRedirectedTo('/comites/en-marche-paris-8', $this->client);
         $this->client->followRedirect();
         self::assertNotContains($messages->getContent(), $this->client->getResponse()->getContent());
@@ -356,10 +364,12 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $committee = $this->manager->getRepository(Committee::class)->findOneBy(['slug' => 'en-marche-paris-8']);
         $messages = $this->manager->getRepository(CommitteeFeedItem::class)->findMostRecentFeedEvent($committee->getUuid());
 
-        $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/edit');
-        $this->assertClientIsRedirectedTo($this->getUrl('app_user_login', [], UrlGeneratorInterface::ABSOLUTE_URL), $this->client);
-        $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/delete');
-        $this->assertClientIsRedirectedTo($this->getUrl('app_user_login', [], UrlGeneratorInterface::ABSOLUTE_URL), $this->client);
+        $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/modifier');
+        $this->assertClientIsRedirectedTo($this->hosts['scheme'].'://'.$this->hosts['app'].'/connexion', $this->client);
+        $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/supprimer');
+        $this->assertClientIsRedirectedTo('/comites', $this->client, false, true);
+        $this->client->request(Request::METHOD_DELETE, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/supprimer');
+        $this->assertClientIsRedirectedTo($this->hosts['scheme'].'://'.$this->hosts['app'].'/connexion', $this->client);
     }
 
     private function seeLoginLink(Crawler $crawler): bool

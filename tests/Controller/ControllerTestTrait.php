@@ -139,7 +139,7 @@ trait ControllerTestTrait
         $this->assertContains($author, $crawler->filter('.committee__timeline__message h3')->eq($position)->text());
         $this->assertSame($role, $crawler->filter('.committee__timeline__message h3 span')->eq($position)->text());
         if ($editable) {
-            $position = $position * 2 + 1;
+            $position = ($position + 1) * 3 - 1;
         }
         $this->assertContains($text, $crawler->filter('.committee__timeline__message div')->eq($position)->text());
     }
