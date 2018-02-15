@@ -274,5 +274,25 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
             <tag name="form.type" />
         </service>
+
+        <!-- Doctrine Listeners -->
+        <service id="AppBundle\Entity\Listener\ContainingUserDocumentListener" public="true">
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\Event" event="prePersist" method="prePersistEvent"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\Event" event="preUpdate" method="preUpdateEvent"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\Event" event="postUpdate"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\Event" event="preRemove"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\Event" event="postRemove"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\CommitteeFeedItem" event="prePersist" method="prePersistCommitteeFeed"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\CommitteeFeedItem" event="preUpdate" method="preUpdateCommitteeFeed"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\CommitteeFeedItem" event="postUpdate"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\CommitteeFeedItem" event="preRemove"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\CommitteeFeedItem" event="postRemove"/>
+            <argument type="service" id="service_container"/>
+            <!--Using Object Manager or service injecting Object Manager as argument causes a Circular reference-->
+            <!--Concerned issue https://github.com/symfony/symfony/issues/24775-->
+            <!--@todo Replace top line with this one when SF 3.4 will be used and make changes in the class-->
+            <!--<argument type="service" id="AppBundle\UserDocument\UserDocumentManager"/>-->
+            <argument>%pattern_uuid%</argument>
+        </service>
     </services>
 </container>
