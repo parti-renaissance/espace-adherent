@@ -56,6 +56,9 @@ test:
         - yarn lint
         - yarn test
 
+        # Lint YML
+        - ./bin/console lint:yaml app/config
+
         # Lint PHP
         - php -d memory_limit=1024m vendor/bin/php-cs-fixer fix --diff --dry-run --no-interaction -v --using-cache=no
 
