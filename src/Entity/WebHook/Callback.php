@@ -34,7 +34,7 @@ class Callback
     /**
      * @var Client
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\OAuth\Client")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\OAuth\Client", mappedBy="callbacks")
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;

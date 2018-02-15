@@ -96,7 +96,6 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_BOARD_MEMBER_ROLES',
                     'ROLE_ADMIN_TIMELINE',
                     'ROLE_ADMIN_CLIENTS',
-                    'ROLE_ADMIN_WEB_HOOKS',
                 ],
             ])
             ->add(
