@@ -85,6 +85,11 @@ class CitizenProjectCommitteeSupport
         return $this->committee;
     }
 
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
     public function isPending(): bool
     {
         return self::PENDING === $this->status;

@@ -6,7 +6,11 @@
             {% for committeeSupport in object.committeeSupports %}
                 <li>
                     {{ committeeSupport.committee.name }}
-                    [{{ committeeSupport.status }}]
+                    {% if committeeSupport.isApproved %}
+                        <span class="label label-success">Accepté</span>
+                    {% elseif committeeSupport.isPending %}
+                        <span class="label label-primary">En attente</span>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>

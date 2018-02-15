@@ -226,6 +226,9 @@ class CitizenProjectAdmin extends AbstractAdmin
                 'label' => 'Nom',
                 'show_filter' => true,
             ])
+            ->add('category', null, [
+                'label' => 'Catégorie',
+            ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date de création',
                 'field_type' => 'sonata_type_date_range_picker',
@@ -424,5 +427,26 @@ class CitizenProjectAdmin extends AbstractAdmin
                 'template' => 'admin/citizen_project/list_actions.html.twig',
             ])
         ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExportFields()
+    {
+        return [
+            'Nom' => 'name',
+            'Date de création' => 'createdAt',
+            'Catégorie' => 'category',
+            'Créateur' => 'createdBy',
+            'Membres' => 'membersCounts',
+            'Ville' => 'postAddress.cityName',
+            'Compétences recherchées' => 'exportSkills',
+            'Compétences matchées' => 'matchedSkills',
+            'Demande d\'accomp.' => 'assistanceNeeded',
+            'Statut' => 'status',
+            'Comités en soutien' => 'exportCommitteeSupports',
+            'Coup de coeur' => 'featured',
+        ];
     }
 }
