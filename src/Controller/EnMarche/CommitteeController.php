@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\Controller\EntityControllerTrait;
@@ -51,7 +52,7 @@ class CommitteeController extends Controller
             }
         }
 
-        $committeeManager = $this->get('app.committee.manager');
+        $committeeManager = $this->getCommitteeManager();
 
         $feeds = $committeeManager->getTimeline($committee, $this->getParameter('timeline_max_messages'));
 
@@ -89,7 +90,7 @@ class CommitteeController extends Controller
             }
         }
 
-        $committeeManager = $this->get('app.committee.manager');
+        $committeeManager = $this->getCommitteeManager();
         $feeds = $committeeManager->getTimeline($committee, $this->getParameter('timeline_max_messages'));
 
         return $this->render('committee/show.html.twig', [
@@ -133,7 +134,7 @@ class CommitteeController extends Controller
      */
     public function timelineAction(Request $request, Committee $committee): Response
     {
-        $timeline = $this->get('app.committee.manager')->getTimeline(
+        $timeline = $this->getCommitteeManager()->getTimeline(
             $committee,
             $this->getParameter('timeline_max_messages'),
             $request->query->getInt('offset', 0)
@@ -179,7 +180,7 @@ class CommitteeController extends Controller
             throw $this->createAccessDeniedException('Invalid CSRF protection token to unfollow committee.');
         }
 
-        $this->get('app.committee.manager')->unfollowCommittee($this->getUser(), $committee);
+        $this->getCommitteeManager()->unfollowCommittee($this->getUser(), $committee);
 
         return new JsonResponse([
             'button' => [
@@ -208,5 +209,10 @@ class CommitteeController extends Controller
         }
 
         return $forms;
+    }
+
+    private function getCommitteeManager(): CommitteeManager
+    {
+        return $this->get('app.committee.manager');
     }
 }

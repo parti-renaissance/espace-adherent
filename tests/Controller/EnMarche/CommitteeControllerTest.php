@@ -336,11 +336,14 @@ class CommitteeControllerTest extends MysqlWebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/modifier');
         $this->isSuccessful($this->client->getResponse());
+
         $form = $crawler->selectButton('committee_feed_message_send')->form();
         $this->assertSame($messages->getContent(), $form->get('committee_feed_message[content]')->getValue());
+
         $form->setValues(['committee_feed_message[content]' => $messages->getContent().' test']);
         $this->client->submit($form);
         $this->assertClientIsRedirectedTo('/comites/en-marche-paris-8', $this->client);
+
         $this->client->followRedirect();
         self::assertContains($messages->getContent().' test', $this->client->getResponse()->getContent());
     }
@@ -355,6 +358,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $form = $crawler->selectButton('delete_entity_delete')->form();
         $this->client->submit($form);
         $this->assertClientIsRedirectedTo('/comites/en-marche-paris-8', $this->client);
+
         $this->client->followRedirect();
         self::assertNotContains($messages->getContent(), $this->client->getResponse()->getContent());
     }
@@ -366,8 +370,10 @@ class CommitteeControllerTest extends MysqlWebTestCase
 
         $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/modifier');
         $this->assertClientIsRedirectedTo($this->hosts['scheme'].'://'.$this->hosts['app'].'/connexion', $this->client);
+
         $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/supprimer');
         $this->assertClientIsRedirectedTo('/comites', $this->client, false, true);
+
         $this->client->request(Request::METHOD_DELETE, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/supprimer');
         $this->assertClientIsRedirectedTo($this->hosts['scheme'].'://'.$this->hosts['app'].'/connexion', $this->client);
     }
