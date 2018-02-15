@@ -213,6 +213,6 @@ class CommitteeController extends Controller
 
     private function getCommitteeManager(): CommitteeManager
     {
-        return $this->get('app.committee.manager');
+        return $this->get(CommitteeManager::class);
     }
 }

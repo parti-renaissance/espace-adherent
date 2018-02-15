@@ -293,11 +293,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $result = $crawler->filter('a[href^=\'/comites/en-marche-paris-8/timeline/\'][href$=\'/modifier\']');
-        $this->assertSame(0, $result->count());
-
-        $result = $crawler->filter('form[name=\'delete_entity\']');
-        $this->assertSame(0, $result->count());
+        $this->assertEditDeleteButton($crawler, 0);
     }
 
     public function testDisplayEditLinkWithAnimateurUser()
@@ -307,11 +303,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $result = $crawler->filter('a[href^=\'/comites/en-marche-paris-8/timeline/\'][href$=\'/modifier\']');
-        $this->assertSame(10, $result->count());
-
-        $result = $crawler->filter('form[name=\'delete_entity\']');
-        $this->assertSame(10, $result->count());
+        $this->assertEditDeleteButton($crawler, 10);
     }
 
     public function testDisplayEditLinkWithNormaleUser()
@@ -321,11 +313,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $result = $crawler->filter('a[href^=\'/comites/en-marche-paris-8/timeline/\'][href$=\'/modifier\']');
-        $this->assertSame(5, $result->count());
-
-        $result = $crawler->filter('form[name=\'delete_entity\']');
-        $this->assertSame(5, $result->count());
+        $this->assertEditDeleteButton($crawler, 5);
     }
 
     public function testEditMessage()
@@ -535,5 +523,14 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->committeeRepository = null;
 
         parent::tearDown();
+    }
+
+    private function assertEditDeleteButton(Crawler $crawler, int $nbExpected)
+    {
+        $result = $crawler->selectLink('Modifier le message');
+        $this->assertSame($nbExpected, $result->count());
+
+        $result = $crawler->selectButton('delete_entity[delete]');
+        $this->assertSame($nbExpected, $result->count());
     }
 }
