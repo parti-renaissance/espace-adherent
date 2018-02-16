@@ -49,6 +49,23 @@ class CommitteeFeedManagerTest extends SqliteWebTestCase
         $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'carl999@example.fr');
     }
 
+    public function testCreateNoNotificationMessage()
+    {
+        $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
+        $author = $this->committeeMembershipRepository->findHostMembers(LoadAdherentData::COMMITTEE_1_UUID)->first();
+
+        $messageContent = 'Bienvenue !';
+        $message = $this->manager->createMessage(new CommitteeMessage($author, $committee, 'Foo subject', $messageContent, true, 'now', false));
+
+        $this->assertInstanceOf(CommitteeFeedItem::class, $message);
+        $this->assertSame($messageContent, $message->getContent());
+
+        $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'jacques.picard@en-marche.fr');
+        $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'luciole1989@spambox.fr');
+        $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'gisele-berthoux@caramail.com');
+        $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'carl999@example.fr');
+    }
+
     public function setUp()
     {
         $this->loadFixtures([

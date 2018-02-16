@@ -5,6 +5,10 @@
     </div>
 {% endblock %}
 
+{% block _committee_feed_message_sendNotification_row %}
+    {{- block('_committee_feed_message_published_row') -}}
+{% endblock %}
+
 {% block _committee_feed_item_message_published_row %}
     {{- block('_committee_feed_message_published_row') -}}
 {% endblock %}
