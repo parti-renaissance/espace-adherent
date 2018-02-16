@@ -45,7 +45,7 @@ class ContainingUserDocumentListener
         $this->preUpdate($args, 'description', $event);
     }
 
-    public function postUpdate(Event $event, LifecycleEventArgs $args): void
+    public function postUpdate(UserDocumentInterface $object, LifecycleEventArgs $args): void
     {
         // postUpdate is called inside flush()
         // Add this to be sure that all previous modifications were executed on database
@@ -55,12 +55,12 @@ class ContainingUserDocumentListener
         }
     }
 
-    public function preRemove(Event $event, LifecycleEventArgs $args): void
+    public function preRemove(UserDocumentInterface $object, LifecycleEventArgs $args): void
     {
-        $this->documentUuidsToRemove = $event->getDocuments()->toArray();
+        $this->documentUuidsToRemove = $object->getDocuments()->toArray();
     }
 
-    public function postRemove(Event $event, LifecycleEventArgs $args): void
+    public function postRemove(UserDocumentInterface $object, LifecycleEventArgs $args): void
     {
         if ($this->documentUuidsToRemove) {
             $this->documentManager->removeUnusedDocuments($this->documentUuidsToRemove);

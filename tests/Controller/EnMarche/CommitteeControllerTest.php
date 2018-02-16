@@ -324,10 +324,10 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/modifier');
         $this->isSuccessful($this->client->getResponse());
 
-        $form = $crawler->selectButton('committee_feed_message_send')->form();
-        $this->assertSame($messages->getContent(), $form->get('committee_feed_message[content]')->getValue());
+        $form = $crawler->selectButton('committee_feed_item_message_send')->form();
+        $this->assertSame($messages->getContent(), $form->get('committee_feed_item_message[content]')->getValue());
 
-        $form->setValues(['committee_feed_message[content]' => $messages->getContent().' test']);
+        $form->setValues(['committee_feed_item_message[content]' => $messages->getContent().' test']);
         $this->client->submit($form);
         $this->assertClientIsRedirectedTo('/comites/en-marche-paris-8', $this->client);
 

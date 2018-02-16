@@ -9,6 +9,7 @@ use AppBundle\Controller\EntityControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
+use AppBundle\Form\CommitteeFeedItemMessageType;
 use AppBundle\Form\CommitteeFeedMessageType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -78,7 +79,7 @@ class CommitteeController extends Controller
         $form = null;
         if ($this->isGranted(CommitteePermissions::HOST, $committee)) {
             $form = $this
-                ->createForm(CommitteeFeedMessageType::class, $committeeFeedItem, ['data_class' => CommitteeFeedItem::class])
+                ->createForm(CommitteeFeedItemMessageType::class, $committeeFeedItem)
                 ->handleRequest($request)
             ;
 
