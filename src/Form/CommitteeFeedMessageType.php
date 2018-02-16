@@ -25,7 +25,7 @@ class CommitteeFeedMessageType extends AbstractType
             ])
             ->add('content', TextareaType::class, [
                 'label' => false,
-                'attr' => ['placeholder' => 'Écrivez ici votre message public'],
+                'attr' => ['placeholder' => 'Écrivez ici votre message'],
                 'filter_emojis' => true,
                 'purify_html' => true,
             ])

@@ -19,7 +19,7 @@ CKEDITOR.replace('{{ element }}', {
         { name: 'tools', items: [ 'Maximize' ] },
         { name: 'clipboard', items: [ 'Undo', 'Redo' ] },
         { name: 'styles', items: [ 'Format' ] },
-        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
+        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Strike' ] },
         { name: 'paragraph', items: [ 'NumberedList', 'BulletedList' ] },
         { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
         { name: 'links', items: [ 'Link' ] }
@@ -32,6 +32,11 @@ CKEDITOR.on('dialogDefinition', function(ev) {
     var dialogDefinition = ev.data.definition;
 
     if ( dialogName == 'link' ) {
+        dialogDefinition.title = 'Partage de documents';
+        dialogDefinition.getContents('info').get('linkDisplayText').label = "Entrez ici le nom d'affichage du lien";
+        dialogDefinition.getContents('upload').label = 'Attacher un document';
+        dialogDefinition.getContents('upload').get('upload').label = 'Mettre en ligne un document';
+        dialogDefinition.getContents('upload').get('uploadButton').label = "Mettre en ligne";
         dialogDefinition.removeContents('advanced');
         dialogDefinition.removeContents('target');
     }
