@@ -33,7 +33,8 @@ CKEDITOR.on('dialogDefinition', function(ev) {
 
     if ( dialogName == 'link' ) {
         dialogDefinition.title = 'Partage de documents';
-        dialogDefinition.getContents('info').get('linkDisplayText').label = "Entrez ici le nom d'affichage du lien";
+        dialogDefinition.getContents('info').get('linkDisplayText').label = "Entrez ici le nom d'affichage de votre lien ou document.\nNe partagez rien de confidentiel car il pourra être accessible par toute personne disposant du lien.";
+        dialogDefinition.getContents('info').get('linkDisplayText').labelStyle = "white-space: pre;";
         dialogDefinition.getContents('upload').label = 'Attacher un document';
         dialogDefinition.getContents('upload').get('upload').label = 'Mettre en ligne un document';
         dialogDefinition.getContents('upload').get('uploadButton').label = "Mettre en ligne";
