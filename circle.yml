@@ -56,6 +56,9 @@ test:
         - yarn lint
         - yarn test
 
+        # Lint YML
+        - ./bin/console lint:yaml app/config
+
         # Lint PHP
         - |
             COMMIT_RANGE=$(echo "${CIRCLE_COMPARE_URL}" | cut -d/ -f7 | sed -e "s/\.\.\./ /")
