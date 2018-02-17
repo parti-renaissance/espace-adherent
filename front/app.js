@@ -181,6 +181,12 @@ class App {
             module.default();
         });
     }
+
+    runManageParticipants() {
+        System.import('pages/manage_participants').catch((error) => { throw error; }).then((module) => {
+            module.default(this.get('api'));
+        });
+    }
 }
 
 window.App = new App();

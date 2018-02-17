@@ -90,7 +90,7 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'capacity' => 20,
         ]);
         $actionCitoyenne4->setPublished(true);
-        $actionCitoyenne4->incrementParticipantsCount();
+        $actionCitoyenne4->incrementParticipantsCount(2);
 
         $actionCitoyenne5 = $eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_5_UUID,
@@ -180,6 +180,7 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne2, $this->getReference('adherent-2'))));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne3, $this->getReference('adherent-3'))));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne4, $this->getReference('adherent-3'))));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne4, $this->getReference('adherent-5'))));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne5, $this->getReference('adherent-13'))));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne6, $this->getReference('adherent-13'))));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne7, $this->getReference('adherent-13'))));

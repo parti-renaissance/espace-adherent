@@ -76,6 +76,7 @@ class CitizenActionManager
             }
 
             $eventsRegistrationHydrated[] = [
+                'uuid' => $registration->getUuid(),
                 'age' => $adherentFind->getAge(),
                 'lastNameInitial' => $adherentFind->getLastNameInitial(),
                 'lastName' => $adherentFind->getLastName(),

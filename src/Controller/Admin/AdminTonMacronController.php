@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\TonMacronChoice;
 use AppBundle\Entity\TonMacronFriendInvitation;
+use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -29,10 +30,7 @@ class AdminTonMacronController extends Controller
         $choices = $this->getDoctrine()->getRepository(TonMacronChoice::class)->findAll();
         $exported = $this->get('app.ton_macron.serializer')->serializeChoices($choices);
 
-        return new Response($exported, 200, [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="tonmacron-choices.csv"',
-        ]);
+        return new SnappyResponse($exported, 'tonmacron-choices.csv', 'text/csv');
     }
 
     /**
