@@ -42,11 +42,11 @@
             }
             @font-face {
                 font-family: title-1;
-                src: url("/app/web/fonts/gillsans-heavy-italic.ttf");
+                src: url("{{ project_dir }}/web/fonts/gillsans-heavy-italic.ttf");
             }
             @font-face {
                 font-family: title-2;
-                src: url("/app/web/fonts/gillsans-regular.ttf");
+                src: url("{{ project_dir }}/web/fonts/gillsans-regular.ttf");
             }
             .title-1 {
                 font-family: title-1;
@@ -62,7 +62,7 @@
         <div id="background">
             <div id="mask">
                 <div id="badge">
-                    <img src="/app/app/data/static/badge/citizen-project.png" />
+                    <img src="{{ project_dir }}/app/data/static/badge/citizen-project.png" />
                 </div>
                 <div id="text">
                     <span class="title-1">{{ command.citizenProjectTitle|upper }}</span>
