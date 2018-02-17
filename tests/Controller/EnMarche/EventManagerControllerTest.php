@@ -120,7 +120,6 @@ class EventManagerControllerTest extends SqliteWebTestCase
             ],
         ]));
 
-        file_put_contents(__DIR__.'/../../../web/heah.html', $this->client->getResponse()->getContent());
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
         // Follow the redirect and check the adherent can see the committee page
