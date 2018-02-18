@@ -37,12 +37,12 @@ class SummaryAdmin extends AbstractAdmin
         $alias = $query->getRootAlias();
 
         $query
-            ->addSelect('m')
+            ->addSelect('adherent')
             ->addSelect('boardMember')
             ->addSelect('procurationManagedArea')
-            ->join("$alias.member", 'm')
-            ->leftJoin('m.boardMember', 'boardMember')
-            ->leftJoin('m.procurationManagedArea', 'procurationManagedArea')
+            ->join("$alias.member", 'adherent')
+            ->leftJoin('adherent.boardMember', 'boardMember')
+            ->leftJoin('adherent.procurationManagedArea', 'procurationManagedArea')
         ;
 
         return $query;
@@ -84,14 +84,16 @@ class SummaryAdmin extends AbstractAdmin
                 'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
-                        return;
+                        return false;
                     }
 
-                    $value = array_map('trim', explode(',', strtolower($value['value'])));
+                    $value = array_map('trim', explode(',', \mb_strtolower($value['value'])));
+
                     $postalCodeExpression = $qb->expr()->orX();
+
                     foreach (array_filter($value) as $key => $code) {
-                        $postalCodeExpression->add(sprintf('m.postAddress.postalCode LIKE :postalCode_%s', $key));
-                        $qb->setParameter('postalCode_'.$key, $code.'%');
+                        $postalCodeExpression->add("adherent.postAddress.postalCode LIKE :postalCode_$key");
+                        $qb->setParameter("postalCode_$key", "$code%");
                     }
 
                     $qb->andWhere($postalCodeExpression);
@@ -104,11 +106,11 @@ class SummaryAdmin extends AbstractAdmin
                 'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
-                        return;
+                        return false;
                     }
 
-                    $qb->andWhere('LOWER(m.postAddress.cityName) LIKE :cityName');
-                    $qb->setParameter('cityName', '%'.strtolower($value['value']).'%');
+                    $qb->andWhere('LOWER(adherent.postAddress.cityName) LIKE :cityName');
+                    $qb->setParameter('cityName', '%'.\mb_strtolower($value['value']).'%');
 
                     return true;
                 },
@@ -121,11 +123,11 @@ class SummaryAdmin extends AbstractAdmin
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
-                        return;
+                        return false;
                     }
 
-                    $qb->andWhere('LOWER(m.postAddress.country) = :country');
-                    $qb->setParameter('country', strtolower($value['value']));
+                    $qb->andWhere('LOWER(adherent.postAddress.country) = :country');
+                    $qb->setParameter('country', \mb_strtolower($value['value']));
 
                     return true;
                 },
@@ -135,10 +137,10 @@ class SummaryAdmin extends AbstractAdmin
                 'field_type' => CheckboxType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
-                        return;
+                        return false;
                     }
 
-                    $qb->andWhere('m.managedArea.codes IS NOT NULL');
+                    $qb->andWhere('adherent.managedArea.codes IS NOT NULL');
 
                     return true;
                 },
