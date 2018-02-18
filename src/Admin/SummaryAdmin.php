@@ -31,6 +31,23 @@ class SummaryAdmin extends AbstractAdmin
 
     private $interests = [];
 
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery();
+        $alias = $query->getRootAlias();
+
+        $query
+            ->addSelect('m')
+            ->addSelect('boardMember')
+            ->addSelect('procurationManagedArea')
+            ->join("$alias.member", 'm')
+            ->leftJoin('m.boardMember', 'boardMember')
+            ->leftJoin('m.procurationManagedArea', 'procurationManagedArea')
+        ;
+
+        return $query;
+    }
+
     public function setInterestChoices(array $interests)
     {
         $this->interests = $interests;
@@ -70,7 +87,6 @@ class SummaryAdmin extends AbstractAdmin
                         return;
                     }
 
-                    $qb->innerJoin(sprintf('%s.member', $alias), 'm');
                     $value = array_map('trim', explode(',', strtolower($value['value'])));
                     $postalCodeExpression = $qb->expr()->orX();
                     foreach (array_filter($value) as $key => $code) {
@@ -91,7 +107,6 @@ class SummaryAdmin extends AbstractAdmin
                         return;
                     }
 
-                    $qb->innerJoin(sprintf('%s.member', $alias), 'm');
                     $qb->andWhere('LOWER(m.postAddress.cityName) LIKE :cityName');
                     $qb->setParameter('cityName', '%'.strtolower($value['value']).'%');
 
@@ -109,7 +124,6 @@ class SummaryAdmin extends AbstractAdmin
                         return;
                     }
 
-                    $qb->innerJoin(sprintf('%s.member', $alias), 'm');
                     $qb->andWhere('LOWER(m.postAddress.country) = :country');
                     $qb->setParameter('country', strtolower($value['value']));
 
@@ -124,7 +138,6 @@ class SummaryAdmin extends AbstractAdmin
                         return;
                     }
 
-                    $qb->innerJoin(sprintf('%s.member', $alias), 'm');
                     $qb->andWhere('m.managedArea.codes IS NOT NULL');
 
                     return true;
