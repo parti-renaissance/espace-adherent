@@ -45,11 +45,16 @@
             </div>
 
             <div class="img-gen__fieldset">
-                {{ form_row(form.details, {
-                    label: 'Entrez le deuxième paragraphe :',
-                    attr: { class: 'img-gen__input img-gen__input--block' },
-                    label_attr: { class: 'img-gen__label' }
-                }) }}
+                <div>
+                    {{ form_row(form.details, {
+                        label: 'Entrez le deuxième paragraphe :',
+                        attr: { class: 'img-gen__input img-gen__input--block' },
+                        label_attr: { class: 'img-gen__label' }
+                    }) }}
+                    <p class="text--summary text--muted l__col--grow-1">
+                        Si vous souhaitez distribuer ce tract sur la voie publique, veillez à indiquer la mention “Ne pas jeter sur la voie publique” ainsi que le RCS de votre imprimeur ou la mention “IPNS” si vous l’imprimez vous-même (Imprimé Par Nos Soins)
+                    </p>
+                </div>
             </div>
 
             <div class="img-gen__fieldset">
