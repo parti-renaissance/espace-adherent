@@ -99,6 +99,9 @@
             <argument key="$classOrAlias" type="string">AppBundle\Entity\Administrator</argument>
         </service>
 
+        <!-- Messages -->
+        <service id="AppBundle\Mailer\Message\MessageRegistry" public="true" />
+
         <!-- Timeline -->
         <service id="AppBundle\Command\TimelineImportCommand"/>
         <service id="AppBundle\Command\TimelineSynchronizeCommand"/>
