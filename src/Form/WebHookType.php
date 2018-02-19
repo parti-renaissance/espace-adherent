@@ -3,15 +3,17 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\OAuth\Client;
-use AppBundle\Entity\WebHook\Callback;
+use AppBundle\Entity\WebHook\WebHook;
+use AppBundle\WebHook\Event;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class WebHookCallbackType extends AbstractType
+class WebHookType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -19,8 +21,16 @@ class WebHookCallbackType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('client', EntityType::class, ['class' => Client::class])
-            ->add('urls', CollectionType::class, [
+            ->add('client', EntityType::class, [
+                'class' => Client::class,
+                'disabled' => true,
+            ])
+            ->add('event', ChoiceType::class, [
+                'placeholder' => '--',
+                'choices' => Event::toArray(),
+                'choice_label' => function ($value) {return $value; },
+            ])
+            ->add('callbacks', CollectionType::class, [
                 'label' => 'Liste des callbacks',
                 'entry_type' => UrlType::class,
                 'allow_add' => true,
@@ -34,7 +44,7 @@ class WebHookCallbackType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Callback::class,
+            'data_class' => WebHook::class,
         ]);
     }
 }

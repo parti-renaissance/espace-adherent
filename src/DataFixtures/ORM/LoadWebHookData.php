@@ -2,7 +2,6 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\WebHook\Callback;
 use AppBundle\Entity\WebHook\WebHook;
 use AppBundle\WebHook\Event;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -13,38 +12,33 @@ class LoadWebHookData extends Fixture
     public function load(ObjectManager $manager)
     {
         $webHook1 = new WebHook(
+            $this->getReference('web_hook_client_1'),
             Event::USER_DELETION(),
             [
-                new Callback(
-                    $this->getReference('web_hook_client_1'),
-                    [
-                        'http://test.com/awesome',
-                        'https://www.en-marche.fr/webhook/endpoint',
-                    ]
-                ),
+                'http://test.com/awesome',
+                'https://www.en-marche.fr/webhook/endpoint',
             ]
         );
         $manager->persist($webHook1);
 
         $webHook2 = new WebHook(
+            $this->getReference('web_hook_client_1'),
             Event::USER_MODIFICATION(),
             [
-                new Callback(
-                    $this->getReference('web_hook_client_1'),
-                    [
-                        'http://test.com/awesome',
-                        'https://www.en-marche.fr/webhook/endpoint',
-                    ]
-                ),
-                new Callback(
-                    $this->getReference('web_hook_client_2'),
-                    [
-                        'http://client5.com/web_hook',
-                    ]
-                ),
+                'http://test.com/awesome',
+                'https://www.en-marche.fr/webhook/endpoint',
             ]
         );
         $manager->persist($webHook2);
+
+        $webHook3 = new WebHook(
+            $this->getReference('web_hook_client_2'),
+            Event::USER_MODIFICATION(),
+            [
+                'http://client5.com/web_hook',
+            ]
+        );
+        $manager->persist($webHook3);
 
         $manager->flush();
     }

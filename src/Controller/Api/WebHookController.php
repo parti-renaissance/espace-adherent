@@ -2,10 +2,8 @@
 
 namespace AppBundle\Controller\Api;
 
-use AppBundle\Entity\WebHook\WebHook;
 use AppBundle\Repository\WebHookRepository;
 use AppBundle\WebHook\Event;
-use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -24,18 +22,11 @@ class WebHookController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $eventObject = new Event($event);
-        $webHook = $repository->findOneByEvent($eventObject);
+        $callbacks = $repository->findCallbacksByEvent(new Event($event));
 
-        if (!$webHook) {
-            $webHook = new WebHook($eventObject);
-        }
-
-        return new JsonResponse(
-            $serializer->serialize($webHook, 'json', SerializationContext::create()->setGroups(['api'])),
-            JsonResponse::HTTP_OK,
-            [],
-            true
-        );
+        return $this->json([
+            'event' => $event,
+            'callbacks' => $callbacks,
+        ]);
     }
 }

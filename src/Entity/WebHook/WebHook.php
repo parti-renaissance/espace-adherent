@@ -3,20 +3,20 @@
 namespace AppBundle\Entity\WebHook;
 
 use AppBundle\Entity\EntityIdentityTrait;
+use AppBundle\Entity\OAuth\Client;
 use AppBundle\WebHook\Event;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\Uuid;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\WebHookRepository")
  * @ORM\Table(name="web_hooks", uniqueConstraints={
  *   @ORM\UniqueConstraint(name="web_hook_uuid_unique", columns="uuid"),
- *   @ORM\UniqueConstraint(name="web_hook_event_unique", columns="event")
+ *   @ORM\UniqueConstraint(name="web_hook_event_client_id_unique", columns={"event", "client_id"})
  * })
+ * @UniqueEntity(fields={"event", "client"})
  */
 class WebHook
 {
@@ -27,76 +27,82 @@ class WebHook
      *
      * @ORM\Column(length=64)
      *
-     * @JMS\Groups({"api"})
+     * @Assert\NotBlank
      */
     private $event;
 
     /**
-     * @var Collection|Callback[]
+     * This property is needed to manage to have the unique constraint "web_hook_event_client_id_unique" with Doctrine ORM.
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WebHook\Callback", mappedBy="webHook", cascade={"all"}, orphanRemoval=true)
+     * @var Client
      *
-     * @Assert\Valid
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\OAuth\Client", inversedBy="webHooks")
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotNull
      */
-    private $callbacks;
+    private $client;
 
-    public function __construct(Event $event, $callbacks = [])
+    /**
+     * @var string[]
+     *
+     * @ORM\Column(type="json")
+     *
+     * @Assert\Count(min=1, minMessage = "Veuillez spécifier au moins une url de callback.")
+     */
+    private $callbacks = [];
+
+    public function __construct(Client $client = null, Event $event = null, array $callbacks = [])
     {
         $this->uuid = Uuid::uuid4();
-        $this->event = $event->getValue();
-        $this->callbacks = new ArrayCollection();
+        $this->client = $client;
+        $this->event = $event ? $event->getValue() : null;
 
         foreach ($callbacks as $callback) {
             $this->addCallback($callback);
         }
     }
 
-    public function getEvent(): string
+    public function getEvent(): ?string
     {
         return $this->event;
     }
 
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\Groups({"api"})
-     * @JMS\SerializedName("callbacks")
-     */
-    public function getCallbackUrls(): array
+    public function setEvent(string $event): void
     {
-        $urls = [];
-
-        foreach ($this->getCallbacks() as $callback) {
-            $urls[] = $callback->getUrls();
+        if (!Event::isValid($event)) {
+            throw new \DomainException("$event is not valid");
         }
 
-        return $urls ? array_merge(...$urls) : [];
+        $this->event = $event;
     }
 
-    /**
-     * @return Callback[]|Collection
-     */
-    public function getCallbacks(): Collection
+    public function getClient(): ?Client
     {
-        return $this->callbacks;
+        return $this->client;
     }
 
-    public function removeCallback(Callback $callback): void
+    public function setClient(Client $client): void
     {
-        if ($this->callbacks->contains($callback)) {
-            $this->callbacks->remove($callback);
+        $this->client = $client;
+    }
+
+    public function addCallback(string $callback): void
+    {
+        if (!in_array($callback, $this->callbacks, true)) {
+            $this->callbacks[] = $callback;
         }
     }
 
-    public function addCallback(Callback $callback): void
+    public function removeCallback(string $callback): void
     {
-        if (!$this->callbacks->contains($callback)) {
-            $callback->setWebHook($this);
-            $this->callbacks->add($callback);
+        if (false !== ($key = array_search($callback, $this->callbacks, true))) {
+            unset($this->callbacks[$key]);
         }
     }
 
-    public function __toString()
+    public function getCallbacks(): array
     {
-        return $this->getEvent();
+        return array_values($this->callbacks);
     }
 }
