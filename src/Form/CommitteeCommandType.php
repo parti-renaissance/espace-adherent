@@ -27,7 +27,6 @@ class CommitteeCommandType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'filter_emojis' => true,
-                'purify_html' => true,
             ])
             ->add('address', AddressType::class, [
                 'disable_fields' => $committee ? $committee->isApproved() : false,

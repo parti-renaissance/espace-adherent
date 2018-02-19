@@ -100,6 +100,10 @@
             {% endif %}
 
             {{ article.content|markdown }}
+
+            {% if article.category.ctaLink and article.category.ctaLabel %}
+                <p><a href="{{ article.category.ctaLink }}">{{ article.category.ctaLabel }}</a></p>
+            {% endif %}
         </article>
 
         <ul class="article__social space--60-0 l__wrapper--slim">

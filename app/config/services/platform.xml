@@ -265,10 +265,6 @@
             <argument type="service" id="app.mailer.campaign" />
         </service>
 
-        <service id="AppBundle\Event\EventManager">
-            <argument type="service" id="app.repository.event"/>
-        </service>
-
         <!-- CitizenActions -->
         <service autowire="true" id="AppBundle\CitizenAction\CitizenActionManager"/>
         <service autowire="true" id="AppBundle\CitizenAction\CitizenActionCommandHandler" />

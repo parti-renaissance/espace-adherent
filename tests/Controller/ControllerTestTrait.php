@@ -7,6 +7,7 @@ use AppBundle\Entity\EventCategory;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\TestHelperTrait;
@@ -46,14 +47,14 @@ trait ControllerTestTrait
         );
     }
 
-    public function logout(Client $client)
+    public function logout(Client $client): Crawler
     {
         $client->request(Request::METHOD_GET, '/deconnexion');
 
         return $client->followRedirect();
     }
 
-    public function authenticateAsAdherent(Client $client, string $emailAddress, string $password = LoadAdherentData::DEFAULT_PASSWORD)
+    public function authenticateAsAdherent(Client $client, string $emailAddress, string $password = LoadAdherentData::DEFAULT_PASSWORD): Crawler
     {
         $crawler = $client->request(Request::METHOD_GET, '/connexion');
 
@@ -76,14 +77,39 @@ trait ControllerTestTrait
         return $client->followRedirect();
     }
 
-    public function authenticateAsAdmin(Client $client): void
+    public function authenticateAsAdmin(Client $client, string $emailAddress = 'admin@en-marche-dev.fr', string $password = 'admin'): Crawler
     {
         $crawler = $client->request(Request::METHOD_GET, '/admin/login');
 
+        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+
         $client->submit($crawler->selectButton('Connexion')->form([
-            '_admin_email' => 'admin@en-marche-dev.fr',
-            '_admin_password' => 'admin',
+            '_admin_email' => $emailAddress,
+            '_admin_password' => $password,
         ]));
+
+        $shouldBeRedirectedTo = 'http://'.$this->hosts['app'].'/admin/dashboard';
+
+        if ($shouldBeRedirectedTo !== $client->getResponse()->headers->get('location')) {
+            $this->fail(
+                'Authentication as '.$emailAddress.' failed: check the credentials used in authenticateAsAdmin() '.
+                'and ensure you are properly loading adherents fixtures.'
+            );
+        }
+
+        return $client->followRedirect();
+    }
+
+    protected function getFirstPrefixForm(Form $form): ?string
+    {
+        foreach ($form->all() as $field) {
+            preg_match('/^(.*)\[.*\]$/', $field->getName(), $matches);
+            if ($matches) {
+                return $matches[1];
+            }
+        }
+
+        return null;
     }
 
     protected function seeFlashMessage(Crawler $crawler, ?string $message = null): bool

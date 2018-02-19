@@ -10,9 +10,6 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class TimelineProfileAdmin extends AbstractAdmin
 {
-    use AlgoliaIndexedEntityAdminTrait;
-    use EmptyTranslationRemoverAdminTrait;
-
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -36,8 +33,6 @@ class TimelineProfileAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
-
-        $this->removeEmptyTranslationsOnSubmit($formMapper->getFormBuilder());
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)

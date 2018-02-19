@@ -16,7 +16,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @functional
+ * @group functional
  */
 class CommitteeManagementAuthorityTest extends TestCase
 {

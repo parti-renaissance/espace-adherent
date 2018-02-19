@@ -7,11 +7,25 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     Given the following fixtures are loaded:
       | LoadClientData |
       | LoadAdminData  |
+      | LoadUserData  |
 
   Scenario: OAuth is not allowed for admin
     Given I am logged as "superadmin@en-marche-dev.fr" admin
     When I am on "/oauth/v2/auth?response_type=code&client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19&redirect_uri=http%3A%2F%2Fclient-oauth.docker%3A8000%2Fclient%2Freceive_authcode&state=m94bmt522o81gtch7pj0kd7hdf"
     Then the response status code should be 403
+
+  Scenario: OAuth client_id is malformed
+    Given I am logged as "simple-user@example.ch"
+    When I am on "/oauth/v2/auth?response_type=code&client_id=-af6d-4ce4-8239-04cfcefd5a19"
+    Then the response status code should be 401
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+      {
+        "error":"invalid_client",
+        "message":"Client authentication failed"
+      }
+    """
 
   Scenario: Client credentials authentication
     Given I add "Accept" header equal to "application/json"

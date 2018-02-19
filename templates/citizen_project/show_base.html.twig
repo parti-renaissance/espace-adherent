@@ -41,12 +41,21 @@
 
 {% block citizen_project_content %}
     {% if is_administrator %}
-        <div class="b__nudge--top">
-            <a href="{{ path('app_citizen_project_manager_edit', {slug: citizen_project.slug}) }}"
-               class="text--body link--newblue">
-                Modifier ce projet
-            </a>
-        </div>
+        <nav class="b__nudge--top">
+            <ul class="list__links list__links--margin-right">
+                <li>
+                    <a href="{{ path('app_citizen_project_manager_edit', { slug: citizen_project.slug }) }}"
+                       class="text--body link--newblue">
+                        Modifier ce projet
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('app_citizen_project_image_generator') }}" class="text--body link--newblue">
+                        Créer des images de promotion
+                    </a>
+                </li>
+            </ul>
+        </nav>
     {% endif %}
 
     {% if not citizen_project.isApproved %}

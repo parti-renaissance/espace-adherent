@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class ArticleCategoryAdmin extends AbstractAdmin
 {
@@ -21,6 +22,13 @@ class ArticleCategoryAdmin extends AbstractAdmin
             ])
             ->add('slug', null, [
                 'label' => 'Slug',
+            ])
+            ->add('ctaLink', UrlType::class, [
+                'required' => false,
+                'label' => 'Lien d\'action',
+            ])
+            ->add('ctaLabel', null, [
+                'label' => 'Label d\'action',
             ]);
     }
 
@@ -35,6 +43,12 @@ class ArticleCategoryAdmin extends AbstractAdmin
             ])
             ->add('slug', null, [
                 'label' => 'Slug',
+            ])
+            ->add('ctaLink', null, [
+                'label' => 'CTA Link',
+            ])
+            ->add('ctaLabel', null, [
+                'label' => 'CTA Label',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

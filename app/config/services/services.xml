@@ -25,6 +25,12 @@
                 <argument type="service" id="app.glide" />
             </call>
         </service>
+        <service id="AppBundle\MediaGenerator\Pdf\CitizenProjectTractGenerator" public="true">
+            <argument type="service" id="knp_snappy.pdf"/>
+        </service>
+        <service id="AppBundle\MediaGenerator\Image\CitizenProjectCoverGenerator" public="true">
+            <argument type="service" id="knp_snappy.image"/>
+        </service>
 
         <!-- Controller -->
         <prototype namespace="AppBundle\Controller\" resource="../../../src/Controller/">
@@ -44,11 +50,12 @@
 			<argument key="$mailer" type="service" id="app.mailer.transactional" />
 		</service>
 
-
         <!-- Form -->
         <service id="AppBundle\Form\CitizenProjectCommentCommandType"/>
         <service id="AppBundle\Form\CitizenProjectCommandType"/>
+        <service id="AppBundle\Form\EventListener\AmpSynchronisedListener"/>
         <service id="AppBundle\Form\EventRegistrationType"/>
+        <service id="AppBundle\Form\ColorChoiceType"/>
 
 		<!-- GeoCoder -->
 		<service id="GeoIp2\WebService\Client">
