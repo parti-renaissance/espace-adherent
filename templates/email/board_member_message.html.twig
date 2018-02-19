@@ -1,0 +1,52 @@
+{% block subject %}
+   @@subject@@
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        @@member_firstname@@ @@member_lastname@@, membre du Conseil de la République En Marche, vous envoie ce message :
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <p>
+                        ------
+                    </p>
+                    <p>
+                        @@message@@
+                    </p>
+                    <p>
+                        ------
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+                        Afin d'échanger avec @@member_firstname@@, répondez simplement à cet e-mail.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+                        A très bientôt,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

@@ -19,6 +19,9 @@ default:
                 - EnMarche\MailerBundle\Behat\Context\MailContext
                 - ReferentTagContext:
                     adherentRepository: "@AppBundle\\Repository\\AdherentRepository"
+                - EmailTemplateContext:
+                    twig: "@twig"
+                    messageRegistry: "@AppBundle\\Mailer\\Message\\MessageRegistry"
                 - SecurityContext
                 - FeatureContext
                 - DonationContext

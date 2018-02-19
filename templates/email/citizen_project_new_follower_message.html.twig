@@ -1,0 +1,37 @@
+{% block subject %}
+    Un nouveau membre a rejoint votre projet citoyen !
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        Un nouveau membre vient de rejoindre votre projet citoyen @@citizen_project_name@@ sur le site de La République En Marche.
+                    </p>
+                    <p>
+                        Voici ses informations : <br>
+                        @@follower_firstname@@ @@follower_lastname@@ <br>
+                        @@follower_age@@ ans <br>
+                        @@follower_city@@
+                    </p>
+                    <p>
+                        <strong>Nous vous invitons à lui souhaiter la bienvenue en répondant à cet e-mail !</strong>
+                    </p>
+                    <p>
+                        A très bientôt,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+            {% endblock %}
+    {% endembed %}
+
+{% endblock %}

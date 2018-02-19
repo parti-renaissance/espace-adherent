@@ -1,0 +1,40 @@
+{% block subject %}
+    Un nouveau membre dans votre comité: @@member_firstname@@ @@member_lastname@@
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        Un nouveau membre vient de rejoindre votre comité “@@committee_name@@” sur le site de La République En Marche.
+                    </p>
+                    <p>
+                        Voici ses coordonnées :
+                        <br>
+                        @@member_firstname@@ @@member_lastname@@
+                        <br>
+                        @@member_age@@ ans
+                        <br>
+                        @@member_city@@
+                    </p>
+                    <p>
+                        <strong>Nous vous invitons à lui souhaiter la bienvenue en répondant à cet e-mail !</strong>
+                    </p>
+                    <p>
+                        À très bientôt,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

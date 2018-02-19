@@ -1,0 +1,42 @@
+{% block subject %}
+    Confirmez votre compte En-Marche.fr
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        Merci d'avoir rejoint le mouvement !
+                    </p>
+                    <p>
+                        Il ne vous reste plus qu’une étape : confirmer  votre adresse e-mail.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+              <td align="center">
+                  <a href="@@confirmation_link@@" class="btn" target="_blank">
+                    Confirmer mon adresse e-mail
+                  </a>
+              </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+                        À très bientôt,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

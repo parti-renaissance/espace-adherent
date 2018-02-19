@@ -718,5 +718,10 @@
         <service id="AppBundle\Admin\EventListener\AdminCommitteeMergeMenuListener">
             <tag name="kernel.event_listener" event="sonata.admin.event.configure.menu.sidebar" method="addMenuItems" />
         </service>
+
+        <service id="AppBundle\Admin\EventListener\AdminEmailMenuListener">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <tag name="kernel.event_listener" event="sonata.admin.event.configure.menu.sidebar" method="addMenuItems" />
+        </service>
     </services>
 </container>

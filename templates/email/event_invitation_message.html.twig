@@ -1,0 +1,51 @@
+{% block subject %}
+    @@sender_first_name@@  vous invite à un événement En Marche !
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        @@sender_first_name@@ souhaiterait vous inviter à un événement En Marche :
+                        <strong>@@event_name@@</strong>.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <p>
+                        ------
+                    </p>
+                    <p>
+                        "<i>@@sender_message@@</i>"
+                    </p>
+                    <p>
+                        ------
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <a href="@@event_slug@@" target="_blank" class="btn">Répondre à l'invitation</a>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+                        À bientôt,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}
