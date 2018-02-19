@@ -11,26 +11,28 @@ final class CommitteeNewFollowerMessage extends Message
     public static function create(Committee $committee, array $hosts, Adherent $newFollower, string $hostUrl): self
     {
         if (!$hosts) {
-            throw new \InvalidArgumentException('At least one Adherent recipients is required.');
+            throw new \InvalidArgumentException('At least one recipient is required.');
         }
 
         $host = array_shift($hosts);
         if (!$host instanceof Adherent) {
-            throw new \RuntimeException('First recipient must be an Adherent instance.');
+            throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
         }
 
         $message = new self(
             Uuid::uuid4(),
-            '54904',
             $host->getEmailAddress(),
             $host->getFullName(),
-            'Un nouveau membre vient de suivre votre comité',
-            self::getTemplateVars($committee, $newFollower, $hostUrl),
-            self::getRecipientVars($host),
+            static::getTemplateVars($committee, $newFollower, $hostUrl),
+            static::getRecipientVars($host),
             $newFollower->getEmailAddress()
         );
 
         foreach ($hosts as $host) {
+            if (!$host instanceof Adherent) {
+                throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
+            }
+
             $message->addRecipient(
                 $host->getEmailAddress(),
                 $host->getFullName(),
@@ -46,8 +48,8 @@ final class CommitteeNewFollowerMessage extends Message
         return [
             'committee_name' => self::escape($committee->getName()),
             'committee_admin_url' => $hostUrl,
-            'member_firstname' => self::escape($newFollower->getFirstName()),
-            'member_lastname' => $newFollower->getLastNameInitial(),
+            'member_first_name' => self::escape($newFollower->getFirstName()),
+            'member_last_name' => $newFollower->getLastNameInitial(),
             'member_age' => $newFollower->getAge() ?? 'n/a',
         ];
     }
@@ -55,7 +57,7 @@ final class CommitteeNewFollowerMessage extends Message
     private static function getRecipientVars(Adherent $host): array
     {
         return [
-            'animator_firstname' => self::escape($host->getFullName()),
+            'first_name' => self::escape($host->getFirstName()),
         ];
     }
 }

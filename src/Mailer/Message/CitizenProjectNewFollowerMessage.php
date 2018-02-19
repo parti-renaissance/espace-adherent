@@ -11,26 +11,28 @@ final class CitizenProjectNewFollowerMessage extends Message
     public static function create(CitizenProject $citizenProject, array $hosts, Adherent $newFollower): self
     {
         if (!$hosts) {
-            throw new \InvalidArgumentException('At least one Adherent recipients is required.');
+            throw new \InvalidArgumentException('At least one recipient is required.');
         }
 
         $host = array_shift($hosts);
         if (!$host instanceof Adherent) {
-            throw new \RuntimeException('First recipient must be an Adherent instance.');
+            throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
         }
 
         $message = new self(
             Uuid::uuid4(),
-            '274966',
             $host->getEmailAddress(),
             $host->getFullName(),
-            'Un nouveau membre a rejoint votre projet citoyen !',
-            self::getTemplateVars($citizenProject, $newFollower),
+            static::getTemplateVars($citizenProject, $newFollower),
             [],
             $newFollower->getEmailAddress()
         );
 
         foreach ($hosts as $host) {
+            if (!$host instanceof Adherent) {
+                throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
+            }
+
             $message->addRecipient(
                 $host->getEmailAddress(),
                 $host->getFullName()
@@ -44,8 +46,8 @@ final class CitizenProjectNewFollowerMessage extends Message
     {
         return [
             'citizen_project_name' => self::escape($citizenProject->getName()),
-            'follower_firstname' => self::escape($newFollower->getFirstName()),
-            'follower_lastname' => $newFollower->getLastNameInitial(),
+            'follower_first_name' => self::escape($newFollower->getFirstName()),
+            'follower_last_name' => $newFollower->getLastNameInitial(),
             'follower_age' => $newFollower->getAge() ?? 'n/a',
             'follower_city' => $newFollower->getCityName() ?? 'n/a',
         ];

@@ -18,6 +18,9 @@ default:
                 - EmailContext
                 - ReferentTagContext:
                     adherentRepository: "@AppBundle\\Repository\\AdherentRepository"
+                - EmailTemplateContext:
+                    twig: "@twig"
+                    messageRegistry: "@AppBundle\\Mailer\\Message\\MessageRegistry"
                 - SecurityContext
                 - FeatureContext
     extensions:

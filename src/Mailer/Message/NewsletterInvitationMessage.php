@@ -7,22 +7,20 @@ use Ramsey\Uuid\Uuid;
 
 final class NewsletterInvitationMessage extends Message
 {
-    public static function createFromInvite(NewsletterInvite $invite, string $subscribeUrl): self
+    public static function create(NewsletterInvite $invite, string $subscribeUrl): self
     {
         return new self(
             Uuid::uuid4(),
-            '120780',
             $invite->getEmail(),
             null,
-            sprintf('%s vous invite à vous abonner à la newsletter En Marche.', self::escape($invite->getSenderFullName())),
-            static::getTemplateVars($invite->getFirstName(), $subscribeUrl)
+            static::getTemplateVars($invite, $subscribeUrl)
         );
     }
 
-    private static function getTemplateVars(string $firstName, string $subscribeLink): array
+    private static function getTemplateVars(NewsletterInvite $invite, string $subscribeLink): array
     {
         return [
-            'sender_firstname' => self::escape($firstName),
+            'sender_first_name' => self::escape($invite->getFirstName()),
             'subscribe_link' => $subscribeLink,
         ];
     }

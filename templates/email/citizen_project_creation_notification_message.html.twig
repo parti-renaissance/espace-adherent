@@ -1,0 +1,50 @@
+{% block subject %}
+    De nouveaux projets citoyens se sont lancés près de chez vous !
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@
+                    </p>
+                    <p>
+                        De nouveaux projets citoyens se sont lancés près de chez vous :
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <p>
+                        ------
+                    </p>
+                    <p>
+                        @@citizen_project_list@@
+                    </p>
+                    <p>
+                        ------
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <a href="@@all_citizen_projects_url@@" target="_blank" class="btn">Voir tous les projets citoyens</a>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+                        A très bientôt,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+            {% endblock %}
+    {% endembed %}
+
+{% endblock %}

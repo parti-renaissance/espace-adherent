@@ -1,0 +1,41 @@
+{% block subject %}
+    Votre inscription a bien été prise en compte
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        Vous êtes bien inscrit(e) à l'action citoyenne <strong>@@citizen_action_name@@</strong> organisée par @@citizen_action_organizer@@.
+                    </p>
+                    <p>
+                        Merci pour votre engagement !
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <a href="@@citizen_action_calendar_url@@" target="_blank" class="btn">Ajouter à mon calendrier</a>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+                        A très bientôt,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

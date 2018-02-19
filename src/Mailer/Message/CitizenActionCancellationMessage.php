@@ -13,8 +13,7 @@ final class CitizenActionCancellationMessage extends Message
         array $recipients,
         Adherent $author,
         CitizenAction $citizenAction,
-        string $eventsLink,
-        \Closure $recipientVarsGenerator
+        string $eventsLink
     ): self {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one recipient is required.');
@@ -22,44 +21,45 @@ final class CitizenActionCancellationMessage extends Message
 
         $recipient = array_shift($recipients);
         if (!$recipient instanceof EventRegistration) {
-            throw new \RuntimeException(sprintf('First recipient must be an %s instance, %s given', EventRegistration::class, get_class($recipient)));
+            throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', EventRegistration::class));
         }
 
         $message = new self(
             Uuid::uuid4(),
-            '308754',
             $recipient->getEmailAddress(),
-            $recipient->getFirstName().' '.$recipient->getLastName(),
-            '[Action citoyenne] Une action citoyenne à laquelle vous participez vient d\'être annulée.',
-            static::getTemplateVars($citizenAction->getName(), $eventsLink),
-            $recipientVarsGenerator($recipient),
+            $recipient->getFullName(),
+            static::getTemplateVars($citizenAction, $eventsLink),
+            static::getRecipientVars($recipient),
             $author->getEmailAddress()
         );
 
-        /* @var Adherent[] $recipients */
         foreach ($recipients as $recipient) {
+            if (!$recipient instanceof EventRegistration) {
+                throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', EventRegistration::class));
+            }
+
             $message->addRecipient(
                 $recipient->getEmailAddress(),
-                $recipient->getFirstName().' '.$recipient->getLastName(),
-                $recipientVarsGenerator($recipient)
+                $recipient->getFullName(),
+                static::getRecipientVars($recipient)
             );
         }
 
         return $message;
     }
 
-    private static function getTemplateVars(string $citizenActionName, string $eventsLink): array
+    private static function getTemplateVars(CitizenAction $citizenAction, string $eventsLink): array
     {
         return [
-            'citizen_action_name' => self::escape($citizenActionName),
-            'event_slug' => $eventsLink,
+            'citizen_action_name' => self::escape($citizenAction->getName()),
+            'events_link' => $eventsLink,
         ];
     }
 
-    public static function getRecipientVars(string $firstName): array
+    private static function getRecipientVars(EventRegistration $recipient): array
     {
         return [
-            'target_firstname' => self::escape($firstName),
+            'first_name' => self::escape($recipient->getFirstName()),
         ];
     }
 }

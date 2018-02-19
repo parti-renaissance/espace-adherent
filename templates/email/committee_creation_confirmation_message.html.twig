@@ -1,0 +1,38 @@
+{% block subject %}
+    Votre comité sera bientôt en ligne
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        Votre demande de création de comité à <strong>@@committee_city@@</strong>
+                        a bien été enregistrée, et nous vous remercions de votre engagement !
+                    </p>
+                    <p>
+                        Vous nous avez fait part de votre envie de prendre des responsabilités en devenant animatrice ou animateur local. Merci pour cet engagement à nos côtés !
+                    </p>
+                    <p>
+                        <strong>L’équipe territoires du mouvement vous contactera très prochainement pour un premier échange. </strong>
+                    </p>
+                    <p>
+                        En attendant, vous pouvez nous joindre pour toutes questions à l'adresse <a href="mailto:jemarche@en-marche.fr">jemarche@en-marche.fr</a>.
+                    </p>
+                    <p>
+                        À très bientôt,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

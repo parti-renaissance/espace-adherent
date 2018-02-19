@@ -2,68 +2,82 @@
 
 namespace Tests\AppBundle\Mailer\Message;
 
-use AppBundle\Entity\EventRegistration;
+use AppBundle\Entity\BaseEvent;
 use AppBundle\Mailer\Message\EventCancellationMessage;
-use AppBundle\Mailer\Message\EventNotificationMessage;
-use AppBundle\Mailer\Message\MessageRecipient;
 
-class EventCancellationMessageTest extends AbstractEventMessageTest
+/**
+ * @group message
+ */
+class EventCancellationMessageTest extends MessageTestCase
 {
-    const SEARCH_EVENTS_URL = 'https://test.enmarche.code/evenements';
+    /**
+     * @var BaseEvent|null
+     */
+    private $event;
 
-    public function testCreateEventCancellationMessage()
+    public function testCreate(): void
     {
-        $recipients[] = $this->createRegistrationMock('jb@example.com', 'Jean', 'Berenger');
-        $recipients[] = $this->createRegistrationMock('ml@example.com', 'Marie', 'Lambert');
-        $recipients[] = $this->createRegistrationMock('ez@example.com', 'Éric', 'Zitrone');
-
         $message = EventCancellationMessage::create(
-            $recipients,
-            $this->createAdherentMock('em@example.com', 'Émmanuel', 'Macron'),
-            $this->createEventMock('En Marche Lyon', '2017-02-01 15:30:00', '15 allées Paul Bocuse', '69006-69386'),
-            self::SEARCH_EVENTS_URL,
-            function (EventRegistration $registration) {
-                return EventNotificationMessage::getRecipientVars($registration->getFirstName());
-            }
+            [
+                $this->createEventRegistration('jean@example.com', 'Jean', 'Doe'),
+                $this->createEventRegistration('bernard@example.com', 'Bernard', 'Smith'),
+            ],
+            $this->createAdherent('host@example.com', 'Animateur', 'Jones'),
+            $this->event,
+            'https://enmarche.code/evenements'
         );
 
-        $this->assertInstanceOf(EventCancellationMessage::class, $message);
-        $this->assertSame('78678', $message->getTemplate());
-        $this->assertCount(3, $message->getRecipients());
-        $this->assertSame('L\'événement "En Marche Lyon" a été annulé.', $message->getSubject());
-        $this->assertCount(2, $message->getVars());
-        $this->assertSame(
+        self::assertMessage(
+            EventCancellationMessage::class,
             [
-                'event_name' => 'En Marche Lyon',
-                'event_slug' => self::SEARCH_EVENTS_URL,
+                'event_name' => 'Événement #1',
+                'event_url' => 'https://enmarche.code/evenements',
             ],
-            $message->getVars()
+            $message
         );
 
-        $recipient = $message->getRecipient(0);
-        $this->assertInstanceOf(MessageRecipient::class, $recipient);
-        $this->assertSame('jb@example.com', $recipient->getEmailAddress());
-        $this->assertSame('Jean Berenger', $recipient->getFullName());
-        $this->assertSame(
+        self::assertNoSender($message);
+        self::assertReplyTo('host@example.com', $message);
+
+        self::assertCountRecipients(2, $message);
+
+        self::assertMessageRecipient(
+            'jean@example.com',
+            'Jean Doe',
             [
-                'event_name' => 'En Marche Lyon',
-                'event_slug' => self::SEARCH_EVENTS_URL,
-                'target_firstname' => 'Jean',
+                'event_name' => 'Événement #1',
+                'event_url' => 'https://enmarche.code/evenements',
+                'first_name' => 'Jean',
             ],
-            $recipient->getVars()
+            $message
+        );
+        self::assertMessageRecipient(
+            'bernard@example.com',
+            'Bernard Smith',
+            [
+                'event_name' => 'Événement #1',
+                'event_url' => 'https://enmarche.code/evenements',
+                'first_name' => 'Bernard',
+            ],
+            $message
         );
 
-        $recipient = $message->getRecipient(2);
-        $this->assertInstanceOf(MessageRecipient::class, $recipient);
-        $this->assertSame('ez@example.com', $recipient->getEmailAddress());
-        $this->assertSame('Éric Zitrone', $recipient->getFullName());
-        $this->assertSame(
-            [
-                'event_name' => 'En Marche Lyon',
-                'event_slug' => self::SEARCH_EVENTS_URL,
-                'target_firstname' => 'Éric',
-            ],
-            $recipient->getVars()
-        );
+        self::assertNoCC($message);
+    }
+
+    protected function setUp()
+    {
+        $this->event = $this->createMock(BaseEvent::class);
+
+        $this->event
+            ->expects(self::once())
+            ->method('getName')
+            ->willReturn('Événement #1')
+        ;
+    }
+
+    protected function tearDown()
+    {
+        $this->event = null;
     }
 }

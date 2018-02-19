@@ -23,6 +23,6 @@ class JeMarcheReportHandler
         $this->entityManager->persist($jeMarcheReport);
         $this->entityManager->flush();
 
-        $this->mailer->sendMessage(JeMarcheReportMessage::createFromJeMarcheReport($jeMarcheReport));
+        $this->mailer->sendMessage(JeMarcheReportMessage::create($jeMarcheReport));
     }
 }

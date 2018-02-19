@@ -48,7 +48,7 @@ class CommitteeCreationCommandHandler
 
         $this->dispatcher->dispatch(Events::COMMITTEE_CREATED, new CommitteeEvent($committee));
 
-        $message = CommitteeCreationConfirmationMessage::create($adherent, $committee->getCityName());
+        $message = CommitteeCreationConfirmationMessage::create($adherent, $committee);
         $this->mailer->sendMessage($message);
     }
 }

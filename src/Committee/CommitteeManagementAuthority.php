@@ -32,7 +32,7 @@ class CommitteeManagementAuthority
 
         $this->mailer->sendMessage(CommitteeApprovalConfirmationMessage::create(
             $this->manager->getCommitteeCreator($committee),
-            $committee->getCityName(),
+            $committee,
             $this->urlGenerator->generate('app_committee_show', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
         ));
     }

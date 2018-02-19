@@ -2,7 +2,6 @@
 
 namespace AppBundle\Event;
 
-use AppBundle\Entity\EventRegistration;
 use AppBundle\Events;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
@@ -85,10 +84,7 @@ class EventMessageNotifier implements EventSubscriberInterface
             $host,
             $event,
             $this->generateUrl('app_event_show', $params),
-            $this->generateUrl('app_event_attend', $params),
-            function (Adherent $adherent) {
-                return EventNotificationMessage::getRecipientVars($adherent->getFirstName());
-            }
+            $this->generateUrl('app_event_attend', $params)
         );
     }
 
@@ -98,10 +94,7 @@ class EventMessageNotifier implements EventSubscriberInterface
             $registered,
             $host,
             $event,
-            $this->generateUrl('app_search_events'),
-            function (EventRegistration $registration) {
-                return EventCancellationMessage::getRecipientVars($registration->getFirstName());
-            }
+            $this->generateUrl('app_search_events')
         );
     }
 

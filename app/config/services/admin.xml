@@ -687,5 +687,15 @@
             <tag name="sonata.admin.extension" target="app.admin.adherent" />
         </service>
 
+        <!--
+        ######################################################
+        # Menu
+        ######################################################
+         -->
+
+        <service id="app.admin.menu.email" class="AppBundle\Admin\EventListener\AdminEmailMenuListener">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <tag name="kernel.event_listener" event="sonata.admin.event.configure.menu.sidebar" method="addMenuItems" />
+        </service>
     </services>
 </container>

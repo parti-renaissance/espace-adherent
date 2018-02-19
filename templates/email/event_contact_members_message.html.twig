@@ -1,0 +1,45 @@
+{% block subject %}
+    @@subject@@
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        @@organizer_first_name@@, organisateur de l'événement @@event_name@@, vous envoie ce message :
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <p>
+                        -------
+                    </p>
+                    <p>
+                        @@message@@
+                    </p>
+                    <p>
+                        -------
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+                        A très bientôt,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

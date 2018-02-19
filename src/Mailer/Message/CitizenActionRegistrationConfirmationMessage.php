@@ -7,42 +7,25 @@ use Ramsey\Uuid\Uuid;
 
 final class CitizenActionRegistrationConfirmationMessage extends Message
 {
-    public static function createFromRegistration(EventRegistration $registration, string $calendarEventUrl): self
+    public static function create(EventRegistration $registration, string $calendarEventUrl): self
     {
-        $firstName = $registration->getFirstName();
-        $citizenAction = $registration->getEvent();
-
         return new self(
             Uuid::uuid4(),
-            '270978',
             $registration->getEmailAddress(),
-            $firstName,
-            'Votre inscription a bien été prise en compte',
-            static::getTemplateVars(
-                $citizenAction->getName(),
-                $citizenAction->getOrganizerName(),
-                $calendarEventUrl
-            ),
-            static::getRecipientVars($firstName)
+            $registration->getFullName(),
+            static::getTemplateVars($registration, $calendarEventUrl)
         );
     }
 
-    private static function getTemplateVars(
-        string $eventName,
-        string $organizerName,
-        string $calendarEventUrl
-    ): array {
-        return [
-            'citizen_action_name' => self::escape($eventName),
-            'citizen_action_organiser' => self::escape($organizerName),
-            'citizen_action_calendar_url' => self::escape($calendarEventUrl),
-        ];
-    }
-
-    private static function getRecipientVars(string $firstName): array
+    private static function getTemplateVars(EventRegistration $registration, string $calendarEventUrl): array
     {
+        $citizenAction = $registration->getEvent();
+
         return [
-            'prenom' => self::escape($firstName),
+            'first_name' => self::escape($registration->getFirstName()),
+            'citizen_action_name' => self::escape($citizenAction->getName()),
+            'citizen_action_organiser' => self::escape($citizenAction->getOrganizerName()),
+            'citizen_action_calendar_url' => self::escape($calendarEventUrl),
         ];
     }
 }

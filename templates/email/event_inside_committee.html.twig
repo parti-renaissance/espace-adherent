@@ -1,0 +1,53 @@
+{% block subject %}
+    Nouvel événement dans votre comité : @@event_name@@
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        @@animator_firstname@@ vient de créer un événement dans votre comité :
+                        <strong>@@event_name@@</strong>.
+                    </p>
+                    <p>
+                        Celui-ci se déroulera le @@event_date@@
+                        à @@event_hour@@ au @@event_address@@.
+                    </p>
+                    <p>
+                        <strong>À propos de cette événement :</strong>
+                        <br/>
+                        @@event_description@@
+                    </p>
+                    <p>
+                        Indiquez dès maintenant à @@animator_firstname@@
+                        si vous participez à cet événement, en cliquant ci-dessous.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <a href="@@event_slug@@" target="_blank" class="btn">S'inscrire à l'événement</a>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+
+                        Merci pour votre implication et à très bientôt !
+
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

@@ -63,7 +63,7 @@ final class InvitationProcessorHandler
             $this->manager->persist($invitation);
             $this->manager->flush();
 
-            $this->mailer->sendMessage(TonMacronFriendMessage::createFromInvitation($invitation));
+            $this->mailer->sendMessage(TonMacronFriendMessage::create($invitation));
             $this->terminate($session);
             $this->stateMachine->apply($processor, InvitationProcessor::TRANSITION_SEND);
 

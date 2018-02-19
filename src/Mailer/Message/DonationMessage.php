@@ -6,20 +6,23 @@ use AppBundle\Entity\Transaction;
 
 final class DonationMessage extends Message
 {
-    public static function createFromTransaction(Transaction $transaction): self
+    public static function create(Transaction $transaction): self
     {
         $donation = $transaction->getDonation();
 
         return new self(
             $donation->getUuid(),
-            '54677',
             $donation->getEmailAddress(),
             $donation->getFullName(),
-            'Merci pour votre engagement',
-            [
-                'target_firstname' => self::escape($donation->getFirstName()),
-                'year' => (int) $transaction->getPayboxDateTime()->format('Y') + 1,
-            ]
+            static::getTemplateVars($donation)
         );
+    }
+
+    private static function getTemplateVars(Donation $donation): array
+    {
+        return [
+            'first_name' => self::escape($donation->getFirstName()),
+            'year' => (int) $transaction->getPayboxDateTime()->format('Y') + 1,
+        ];
     }
 }

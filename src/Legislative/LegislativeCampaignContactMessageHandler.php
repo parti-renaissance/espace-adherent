@@ -20,7 +20,7 @@ class LegislativeCampaignContactMessageHandler
 
     public function handle(LegislativeCampaignContactMessage $message): void
     {
-        $this->mailer->sendMessage(MailerLegislativeCampaignContactMessage::createFromCampaignContactMessage(
+        $this->mailer->sendMessage(MailerLegislativeCampaignContactMessage::create(
             $message,
             $message->isAddressedToFinancialHotline() ? $this->financialHotlineEmailAddress : $this->standardHotlineEmailAddress
         ));

@@ -47,7 +47,7 @@ class CitizenActionRegistrationCommandHandler
             'slug' => $command->getEvent()->getSlug(),
         ]);
 
-        $this->mailer->sendMessage(CitizenActionRegistrationConfirmationMessage::createFromRegistration($registration, $citizenActionCalendarLink));
+        $this->mailer->sendMessage(CitizenActionRegistrationConfirmationMessage::create($registration, $citizenActionCalendarLink));
     }
 
     private function generateUrl(string $route, array $params = []): string

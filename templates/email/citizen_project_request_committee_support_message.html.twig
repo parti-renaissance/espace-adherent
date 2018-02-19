@@ -1,0 +1,40 @@
+{% block subject %}
+    Un projet citoyen a besoin du soutien de votre comité !
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        @@citizen_project_host_firstname@@ @@citizen_project_host_lastname@@ vient de créer le projet citoyen @@citizen_project_name@@ et a besoin de votre soutien pour avancer.
+                    </p>
+                    <p>
+                        En soutenant son projet, vous afficherez le nom de votre comité sur sa page.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <a href="@@validation_url@@" target="_blank" class="btn">Soutenir ce projet citoyen</a>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+                        Merci pour votre implication et à très bientôt !
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+            {% endblock %}
+    {% endembed %}
+
+{% endblock %}

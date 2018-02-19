@@ -7,30 +7,20 @@ use Ramsey\Uuid\Uuid;
 
 final class AdherentTerminateMembershipMessage extends Message
 {
-    public static function createFromAdherent(Adherent $adherent): self
+    public static function create(Adherent $adherent): self
     {
         return new self(
             Uuid::uuid4(),
-            '187353',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Votre départ d\'En Marche !',
-            static::getTemplateVars(),
-            static::getRecipientVars($adherent->getFirstName())
+            static::getTemplateVars($adherent)
         );
     }
 
-    private static function getTemplateVars(): array
+    private static function getTemplateVars(Adherent $adherent): array
     {
         return [
-            'target_firstname' => '',
-        ];
-    }
-
-    private static function getRecipientVars(string $firstName): array
-    {
-        return [
-            'target_firstname' => self::escape($firstName),
+            'first_name' => self::escape($adherent->getFirstName()),
         ];
     }
 }

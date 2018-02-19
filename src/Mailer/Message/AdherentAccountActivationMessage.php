@@ -7,32 +7,21 @@ use Ramsey\Uuid\Uuid;
 
 final class AdherentAccountActivationMessage extends Message
 {
-    public static function createFromAdherent(Adherent $adherent, string $confirmationLink): self
+    public static function create(Adherent $adherent, string $activationUrl): self
     {
         return new self(
             Uuid::uuid4(),
-            '292269',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Confirmez votre compte En-Marche.fr',
-            static::getTemplateVars(),
-            static::getRecipientVars($adherent->getFirstName(), $confirmationLink)
+            static::getTemplateVars($adherent, $activationUrl)
         );
     }
 
-    private static function getTemplateVars(): array
+    private static function getTemplateVars(Adherent $adherent, string $activationUrl): array
     {
         return [
-            'first_name' => '',
-            'activation_link' => '',
-        ];
-    }
-
-    private static function getRecipientVars(string $firstName, string $confirmationLink): array
-    {
-        return [
-            'first_name' => self::escape($firstName),
-            'activation_link' => $confirmationLink,
+            'first_name' => self::escape($adherent->getFirstName()),
+            'activation_url' => $activationUrl,
         ];
     }
 }

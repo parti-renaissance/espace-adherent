@@ -1,0 +1,34 @@
+{% block subject %}
+    Votre départ d'En Marche !
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        Nous vous confirmons que votre demande de désadhésion a bien été prise en compte.
+                    </p>
+                    <p>
+                        Nous sommes navrés que vous n'ayez plus envie de vivre la suite de l'aventure En Marche à nos côtés.
+                    </p>
+                    <p>
+                        Si vous changez d'avis, sentez-vous libre d'adhérer de nouveau à tout moment ! Nous aurons toujours de nouveaux projets à partager avec vous.
+                    </p>
+                    <p>
+                        À bientôt,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

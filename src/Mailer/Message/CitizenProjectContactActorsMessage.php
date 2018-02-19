@@ -14,27 +14,29 @@ final class CitizenProjectContactActorsMessage extends Message
      */
     public static function create(array $recipients, Adherent $host, string $subject, string $content): self
     {
-        $first = array_shift($recipients);
+        if (!$recipients) {
+            throw new \InvalidArgumentException('At least one recipient is required.');
+        }
+
+        $recipient = array_shift($recipients);
+        if (!$recipient instanceof Adherent) {
+            throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
+        }
 
         $message = new self(
             Uuid::uuid4(),
-            '275088',
-            $first->getEmailAddress(),
-            $first->getFullName(),
-            "[Projet citoyen] $subject",
-            [
-                'citizen_project_host_message' => $content,
-                'citizen_project_host_firstname' => self::escape($host->getFirstName()),
-            ],
+            $recipient->getEmailAddress(),
+            $recipient->getFullName(),
+            static::getTemplateVars($host, $subject, $content),
             [],
             $host->getEmailAddress()
         );
 
-        $message->setSenderName(sprintf('%s %s', $host->getFirstName(), $host->getLastName()));
+        $message->setSenderName($host->getFullName());
 
         foreach ($recipients as $recipient) {
             if (!$recipient instanceof Adherent) {
-                throw new \InvalidArgumentException('This message builder requires a collection of Adherent instances');
+                throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
             }
 
             $message->addRecipient(
@@ -44,5 +46,14 @@ final class CitizenProjectContactActorsMessage extends Message
         }
 
         return $message;
+    }
+
+    private static function getTemplateVars(Adherent $host, string $subject, string $content): array
+    {
+        return [
+            'host_first_name' => self::escape($host->getFirstName()),
+            'subject' => $subject,
+            'message' => $content,
+        ];
     }
 }

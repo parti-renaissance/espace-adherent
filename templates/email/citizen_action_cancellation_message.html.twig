@@ -1,0 +1,40 @@
+{% block subject %}
+    Une action citoyenne à laquelle vous participez vient d'être annulée.
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        L'action citoyenne <strong>@@citizen_action_name@@</strong>, à laquelle vous deviez participer a malheureusement été annulée.
+                    </p>
+                    <p>
+                        Nous vous remercions de votre engagement et vous invitons à rejoindre d’autres événements proches de chez vous.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <a href="@@event_slug@@" target="_blank" class="btn">Consulter les événements</a>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+                        À très bientôt,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

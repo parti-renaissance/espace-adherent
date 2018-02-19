@@ -2,38 +2,38 @@
 
 namespace AppBundle\Mailer\Message;
 
+use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Utils\PhoneNumberFormatter;
 use Ramsey\Uuid\Uuid;
 
 final class ProcurationProxyReminderMessage extends Message
 {
-    public static function create(ProcurationRequest $request, string $infoUrl): self
+    public static function create(ProcurationRequest $request, string $infosUrl): self
     {
+        $proxy = $request->getFoundProxy();
+
         $message = new self(
             Uuid::uuid4(),
-            '133881',
             $request->getEmailAddress(),
             null,
-            'RAPPEL : votre procuration',
-            self::createRecipientVariables($request, $infoUrl)
+            static::getTemplateVars($request, $proxy, $infosUrl)
         );
 
         $message->setSenderName('Procuration En Marche !');
-
-        $proxy = $request->getFoundProxy();
         $message->addRecipient($proxy->getEmailAddress());
 
         return $message;
     }
 
-    public static function createRecipientVariables(ProcurationRequest $request, string $infoUrl)
-    {
-        $proxy = $request->getFoundProxy();
-
+    private static function getTemplateVars(
+        ProcurationRequest $request,
+        ProcurationProxy $proxy,
+        string $infosUrl
+    ): array {
         return [
-            'target_firstname' => self::escape($request->getFirstNames()),
-            'info_link' => $infoUrl,
+            'first_name' => self::escape($request->getFirstNames()),
+            'info_link' => $infosUrl,
             'elections' => implode(', ', $request->getElectionRoundLabels()),
             'voter_first_name' => self::escape($proxy->getFirstNames()),
             'voter_last_name' => self::escape($proxy->getLastName()),

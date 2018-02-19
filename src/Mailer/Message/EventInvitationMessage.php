@@ -8,28 +8,32 @@ use Ramsey\Uuid\Uuid;
 
 final class EventInvitationMessage extends Message
 {
-    public static function createFromInvite(EventInvite $invite, Event $event, string $eventUrl): self
+    public static function create(EventInvite $invite, Event $event, string $eventUrl): self
     {
         $message = new self(
             Uuid::uuid4(),
-            '132747',
             $invite->getEmail(),
             self::escape($invite->getFullName()),
-            $invite->getFullName().' vous invite à un événement En Marche !',
-            [
-                'sender_firstname' => self::escape($invite->getFirstName()),
-                'sender_message' => self::escape($invite->getMessage()),
-                'event_name' => self::escape($event->getName()),
-                'event_slug' => $eventUrl,
-            ]
+            static::getTemplateVars($invite, $event, $eventUrl),
+            [],
+            $invite->getEmail()
         );
-
-        $message->setReplyTo($invite->getEmail());
 
         foreach ($invite->getGuests() as $guest) {
             $message->addCC($guest);
         }
 
         return $message;
+    }
+
+    private static function getTemplateVars(EventInvite $invite, Event $event, string $eventUrl): array
+    {
+        return [
+            'sender_first_name' => self::escape($invite->getFirstName()),
+            'sender_full_name' => self::escape($invite->getFullName()),
+            'sender_message' => self::escape($invite->getMessage()),
+            'event_name' => self::escape($event->getName()),
+            'event_slug' => $eventUrl,
+        ];
     }
 }

@@ -1,0 +1,46 @@
+{% block subject %}
+    Confirmation de participation à un événement En Marche !
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        Vous êtes bien inscrit(e) à l'événement
+                        <strong>@@event_name@@</strong>
+                        organisé par @@event_organizer@@.
+                    </p>
+                    <p>
+                        Celui-ci se déroulera le @@event_date@@
+                        à @@event_hour@@ au @@event_address@@.
+                    </p>
+                    <p>
+                        Merci pour votre engagement !
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=@@event_link@@" target="_blank" class="btn">Partager sur Facebook !</a>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+                        À très bientôt,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

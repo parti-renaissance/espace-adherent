@@ -11,14 +11,17 @@ final class AdherentResetPasswordMessage extends Message
     {
         return new self(
             Uuid::uuid4(),
-            '292292',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Réinitialisation de votre mot de passe',
-            [
-                'first_name' => self::escape($adherent->getFirstName()),
-                'reset_link' => $resetPasswordLink,
-            ]
+            static::getTemplateVars($adherent, $resetPasswordLink)
         );
+    }
+
+    private static function getTemplateVars(Adherent $adherent, $resetPasswordLink): array
+    {
+        return [
+            'first_name' => self::escape($adherent->getFirstName()),
+            'reset_link' => $resetPasswordLink,
+        ];
     }
 }

@@ -1,0 +1,41 @@
+{% block subject %}
+    Nous avons bien reçu votre demande de création de projet citoyen !
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        Vous venez de créer le projet citoyen @@citizen_project_name@@ et nous vous en remercions !
+
+                    </p>
+                    <p>
+                       L’équipe départementale reviendra vers vous dans les meilleurs délais pour en discuter et vérifier que votre projet répond bien aux critères identifiés dans la <a href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/La%20Charte%20des%20Projets%20Citoyens.pdf">Charte des Projets Citoyens</a>, avant sa publication sur notre site.
+                    </p>
+                    <p>
+                       Dans le même temps, nous vous invitons à vous rapprocher d’un comité local autour de chez vous pour leur présenter votre idée et recueillir leur soutien ; vous avez par ailleurs toujours la possibilité de modifier votre projet en vous connectant sur le site.
+                    </p>
+                    <p>
+                        Merci beaucoup pour votre engagement !
+                    </p>
+                    <p>
+                        Si vous avez une question, envoyez-nous un e-mail à <a href="mailto:projetscitoyens@en-marche.fr">projetscitoyens@en-marche.fr</a>.
+                    </p>
+                    <p>
+                        A très bientôt,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

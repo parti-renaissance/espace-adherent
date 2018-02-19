@@ -3,6 +3,7 @@
 namespace AppBundle\Mailer\Message;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use Ramsey\Uuid\Uuid;
 
@@ -11,17 +12,12 @@ final class ProcurationProxyCancelledMessage extends Message
     public static function create(ProcurationRequest $request, ?Adherent $referent): self
     {
         $proxy = $request->getFoundProxy();
+
         $message = new self(
             Uuid::uuid4(),
-            '120189',
             $request->getEmailAddress(),
             null,
-            'Annulation de la mise en relation',
-            [
-                'target_firstname' => self::escape($request->getFirstNames()),
-                'voter_first_name' => $proxy->getFirstNames(),
-                'voter_last_name' => $proxy->getLastName(),
-            ]
+            static::getTemplateVars($request, $proxy)
         );
 
         $message->setSenderName('Procuration En Marche !');
@@ -37,5 +33,14 @@ final class ProcurationProxyCancelledMessage extends Message
         }
 
         return $message;
+    }
+
+    private static function getTemplateVars(ProcurationRequest $request, ProcurationProxy $proxy): array
+    {
+        return [
+            'target_first_name' => self::escape($request->getFirstNames()),
+            'voter_first_name' => $proxy->getFirstNames(),
+            'voter_last_name' => $proxy->getLastName(),
+        ];
     }
 }

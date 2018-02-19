@@ -1,0 +1,50 @@
+{% block subject %}
+    @@sender_first_name@@ vous a envoyé un message
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        @@sender_first_name@@, adhérent(e) d'En Marche, vous envoie ce message :
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <p>
+                        ------
+                    </p>
+                    <p>
+                        @@message@@
+                    </p>
+                    <p>
+                        ------
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+                        Si nécessaire, vous pouvez échanger avec
+                        @@sender_first_name@@
+                        en répondant à cet e-mail.
+                    </p>
+                    <p>
+                        À très bientôt,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

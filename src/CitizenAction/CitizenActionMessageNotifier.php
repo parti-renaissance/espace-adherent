@@ -5,7 +5,6 @@ namespace AppBundle\CitizenAction;
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\EventRegistration;
 use AppBundle\Events;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\CitizenActionCancellationMessage;
@@ -77,8 +76,11 @@ class CitizenActionMessageNotifier implements EventSubscriberInterface
         ];
     }
 
-    private function createMessage(array $followers, CitizenAction $citizenAction, Adherent $host): CitizenActionNotificationMessage
-    {
+    private function createMessage(
+        array $followers,
+        CitizenAction $citizenAction,
+        Adherent $host
+    ): CitizenActionNotificationMessage {
         return CitizenActionNotificationMessage::create(
             $followers,
             $host,
@@ -89,16 +91,16 @@ class CitizenActionMessageNotifier implements EventSubscriberInterface
         );
     }
 
-    private function createCancelMessage(array $registered, CitizenAction $citizenAction, Adherent $host): CitizenActionCancellationMessage
-    {
+    private function createCancelMessage(
+        array $registered,
+        CitizenAction $citizenAction,
+        Adherent $host
+    ): CitizenActionCancellationMessage {
         return CitizenActionCancellationMessage::create(
             $registered,
             $host,
             $citizenAction,
-            $this->generateUrl('app_search_events'),
-            function (EventRegistration $registration) {
-                return CitizenActionCancellationMessage::getRecipientVars($registration->getFirstName());
-            }
+            $this->generateUrl('app_search_events')
         );
     }
 

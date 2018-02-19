@@ -30,7 +30,7 @@ class EventInvitationHandler
             'slug' => $event->getSlug(),
         ]);
 
-        $this->mailer->sendMessage(EventInvitationMessage::createFromInvite($invite, $event, $url));
+        $this->mailer->sendMessage(EventInvitationMessage::create($invite, $event, $url));
 
         $this->manager->persist($invite);
         $this->manager->flush();

@@ -53,7 +53,7 @@ class AdherentResetPasswordHandler
 
         $this->manager->flush();
 
-        $this->mailer->sendMessage(AdherentResetPasswordConfirmationMessage::createFromAdherent($adherent));
+        $this->mailer->sendMessage(AdherentResetPasswordConfirmationMessage::create($adherent));
     }
 
     private function generateAdherentResetPasswordUrl(Adherent $adherent, AdherentResetPasswordToken $token)

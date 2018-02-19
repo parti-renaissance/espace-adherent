@@ -7,21 +7,27 @@ use Ramsey\Uuid\Uuid;
 
 final class TonMacronFriendMessage extends Message
 {
-    public static function createFromInvitation(TonMacronFriendInvitation $invitation): self
+    public static function create(TonMacronFriendInvitation $invitation): self
     {
         $message = new self(
             Uuid::uuid4(),
-            '135119',
             $invitation->getFriendEmailAddress(),
             null,
-            $invitation->getMailSubject(),
-            ['message' => $invitation->getMailBody()]
+            static::getTemplateVars($invitation),
+            [],
+            $invitation->getAuthorEmailAddress()
         );
 
-        $message->setReplyTo($invitation->getAuthorEmailAddress());
         $message->setSenderName($invitation->getAuthorFirstName().' '.$invitation->getAuthorLastName());
         $message->addCC($invitation->getAuthorEmailAddress());
 
         return $message;
+    }
+
+    private static function getTemplateVars(TonMacronFriendInvitation $invitation): array
+    {
+        return [
+            'message' => $invitation->getMailBody(),
+        ];
     }
 }

@@ -16,50 +16,55 @@ class CommitteeMessageNotificationMessage extends Message
     public static function create(array $recipients, CommitteeFeedItem $feedItem, string $subject): self
     {
         if (!$recipients) {
-            throw new \InvalidArgumentException('At least one Adherent recipients is required.');
+            throw new \InvalidArgumentException('At least one recipient is required.');
         }
 
         $recipient = array_shift($recipients);
         if (!$recipient instanceof Adherent) {
-            throw new \RuntimeException('First recipient must be an Adherent instance.');
+            throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
         }
+
+        $host = $feedItem->getAuthor();
 
         $message = new self(
             Uuid::uuid4(),
-            '63337',
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            "[Comité local] $subject",
-            static::getTemplateVars($feedItem->getAuthorFirstName(), $feedItem->getContent()),
-            static::getRecipientVars($recipient->getFirstName()),
-            $feedItem->getAuthor()->getEmailAddress()
+            static::getTemplateVars($feedItem, $host, $subject),
+            static::getRecipientVars($recipient),
+            $host->getEmailAddress()
         );
 
-        $message->setSenderName($feedItem->getAuthor()->getFullName());
+        $message->setSenderName($host->getFullName());
 
         foreach ($recipients as $recipient) {
+            if (!$recipient instanceof Adherent) {
+                throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
+            }
+
             $message->addRecipient(
                 $recipient->getEmailAddress(),
                 $recipient->getFullName(),
-                static::getRecipientVars($recipient->getFirstName())
+                static::getRecipientVars($recipient)
             );
         }
 
         return $message;
     }
 
-    private static function getTemplateVars(string $hostFirstName, string $hostMessage): array
+    private static function getTemplateVars(CommitteeFeedItem $feedItem, Adherent $host, string $subject): array
     {
         return [
-            'animator_firstname' => self::escape($hostFirstName),
-            'target_message' => $hostMessage,
+            'host_first_name' => self::escape($host->getFirstName()),
+            'subject' => $subject,
+            'message' => $feedItem->getContent(),
         ];
     }
 
-    private static function getRecipientVars(string $firstName): array
+    private static function getRecipientVars(Adherent $recipient): array
     {
         return [
-            'target_firstname' => self::escape($firstName),
+            'first_name' => self::escape($recipient->getFirstName()),
         ];
     }
 }

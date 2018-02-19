@@ -1,0 +1,41 @@
+{% block subject %}
+    @@sender_first_name@@ vous invite à vous abonner à la newsletter En Marche !
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        Nous vous écrivons de la part de
+                        @@sender_first_name@@. Ce(tte) dernier(e) a pensé que vous souhaiteriez peut-être vous abonner à la newsletter d'En Marche !
+                    </p>
+                    <p>
+                        Cela ne prendra que quelques secondes ! Vous recevrez alors les informations sur la vie du mouvement, des détails sur nos propositions, des invitations aux événements organisés près de chez vous et des moyens d'agir pour renouveler la politique.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <a href="@@subscribe_link@@" target="_blank" class="btn">S'inscrire à la newsletter</a>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+                        À très vite,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

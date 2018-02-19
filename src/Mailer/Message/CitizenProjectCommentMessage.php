@@ -6,7 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProjectComment;
 use Ramsey\Uuid\Uuid;
 
-class CitizenProjectCommentMessage extends Message
+final class CitizenProjectCommentMessage extends Message
 {
     /**
      * Creates a new message instance for a list of recipients.
@@ -16,32 +16,32 @@ class CitizenProjectCommentMessage extends Message
     public static function create(array $recipients, CitizenProjectComment $comment): self
     {
         if (!$recipients) {
-            throw new \InvalidArgumentException('At least one Adherent recipients is required.');
+            throw new \InvalidArgumentException('At least one recipient is required.');
         }
 
         $recipient = array_shift($recipients);
         if (!$recipient instanceof Adherent) {
-            throw new \RuntimeException('First recipient must be an Adherent instance.');
+            throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
         }
 
-        $author = $comment->getAuthor()->getFirstName();
+        $author = $comment->getAuthor();
+
         $message = new self(
             Uuid::uuid4(),
-            '285032',
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            'Message de votre porteur de projet',
-            [
-                'citizen_project_host_firstname' => self::escape($author),
-                'citizen_project_host_message' => $comment->getContent(),
-            ],
+            static::getTemplateVars($author, $comment),
             [],
-            $comment->getAuthor()->getEmailAddress()
+            $author->getEmailAddress()
         );
 
-        $message->setSenderName($comment->getAuthor()->getFullName());
+        $message->setSenderName($author->getFullName());
 
         foreach ($recipients as $recipient) {
+            if (!$recipient instanceof Adherent) {
+                throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
+            }
+
             $message->addRecipient(
                 $recipient->getEmailAddress(),
                 $recipient->getFullName()
@@ -49,5 +49,13 @@ class CitizenProjectCommentMessage extends Message
         }
 
         return $message;
+    }
+
+    private static function getTemplateVars(Adherent $author, CitizenProjectComment $comment): array
+    {
+        return [
+            'citizen_project_host_first_name' => self::escape($author->getFirstName()),
+            'citizen_project_host_message' => $comment->getContent(),
+        ];
     }
 }

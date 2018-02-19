@@ -6,29 +6,38 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use Ramsey\Uuid\Uuid;
 
-class CitizenProjectRequestCommitteeSupportMessage extends Message
+final class CitizenProjectRequestCommitteeSupportMessage extends Message
 {
-    public static function create(CitizenProject $citizenProject, Adherent $committeeSupervisor, string $validationUrl): self
-    {
+    public static function create(
+        CitizenProject $citizenProject,
+        Adherent $committeeSupervisor,
+        string $validationUrl
+    ): self {
         $message = new self(
             Uuid::uuid4(),
-            '263222',
             $committeeSupervisor->getEmailAddress(),
             $committeeSupervisor->getFullName(),
-            'Un projet citoyen a besoin du soutien de votre comité !',
-            [
-                'citizen_project_name' => self::escape($citizenProject->getName()),
-                'citizen_project_host_firstname' => self::escape($citizenProject->getCreator() ? $citizenProject->getCreator()->getFirstName() : ''),
-                'citizen_project_host_lastname' => self::escape($citizenProject->getCreator() ? $citizenProject->getCreator()->getLastName() : ''),
-                'validation_url' => self::escape($validationUrl),
-            ],
-            [
-                'target_firstname' => self::escape($committeeSupervisor->getFirstName() ?? ''),
-            ]
+            static::getTemplateVars($citizenProject, $committeeSupervisor, $validationUrl)
         );
 
         $message->setSenderEmail('projetscitoyens@en-marche.fr');
 
         return $message;
+    }
+
+    private static function getTemplateVars(
+        CitizenProject $citizenProject,
+        Adherent $committeeSupervisor,
+        string $validationUrl
+    ): array {
+        $creator = $citizenProject->getCreator();
+
+        return [
+            'first_name' => self::escape($committeeSupervisor->getFirstName() ?? ''),
+            'citizen_project_name' => self::escape($citizenProject->getName()),
+            'creator_first_name' => self::escape($creator ? $creator->getFirstName() : ''),
+            'creator_last_name' => self::escape($creator ? $creator->getLastName() : ''),
+            'validation_url' => self::escape($validationUrl),
+        ];
     }
 }

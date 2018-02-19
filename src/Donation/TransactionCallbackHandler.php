@@ -52,7 +52,7 @@ class TransactionCallbackHandler
 
             $campaignExpired = (bool) $request->attributes->get('_campaign_expired', false);
             if (!$campaignExpired && $transaction->isSuccessful()) {
-                $this->mailer->sendMessage(DonationMessage::createFromTransaction($transaction));
+                $this->mailer->sendMessage(DonationMessage::create($transaction));
             }
         }
 

@@ -7,15 +7,20 @@ use Ramsey\Uuid\Uuid;
 
 final class AdherentResetPasswordConfirmationMessage extends Message
 {
-    public static function createFromAdherent(Adherent $adherent): self
+    public static function create(Adherent $adherent): self
     {
         return new self(
             Uuid::uuid4(),
-            '292297',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Confirmation réinitialisation du mot de passe',
-            ['first_name' => self::escape($adherent->getFirstName())]
+            static::getTemplateVars($adherent)
         );
+    }
+
+    private static function getTemplateVars(Adherent $adherent): array
+    {
+        return [
+            'first_name' => self::escape($adherent->getFirstName()),
+        ];
     }
 }

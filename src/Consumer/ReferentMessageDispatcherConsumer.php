@@ -84,7 +84,7 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
 
     public function sendMessage(ReferentManagedUsersMessage $savedMessage, ReferentMessage $message, array $recipients, int $count)
     {
-        $delivered = $this->getMailer()->sendMessage(Message::createFromModel($message, $recipients));
+        $delivered = $this->getMailer()->sendMessage(Message::create($message, $recipients));
 
         if ($delivered) {
             $this->writeln(

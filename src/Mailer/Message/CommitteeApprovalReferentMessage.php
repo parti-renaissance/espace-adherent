@@ -10,44 +10,30 @@ final class CommitteeApprovalReferentMessage extends Message
 {
     public static function create(
         Adherent $referent,
-        Adherent $animator,
+        Adherent $creator,
         Committee $committee,
-        string $contactLink
+        string $creatorContactLink
     ): self {
         return new self(
             Uuid::uuid4(),
-            '221238',
             $referent->getEmailAddress(),
             $referent->getFullName(),
-            'Un comité vient d\'être approuvé',
-            static::getTemplateVars(
-                $committee->getName(),
-                $committee->getCityName(),
-                $animator->getFirstName(),
-                $contactLink
-            ),
-            static::getRecipientVars($referent->getFirstName())
+            static::getTemplateVars($referent, $creator, $committee, $creatorContactLink)
         );
     }
 
     private static function getTemplateVars(
-        string $committeeName,
-        string $committeeCityName,
-        string $animatorFirstName,
-        string $animatorContactLink
+        Adherent $referent,
+        Adherent $creator,
+        Committee $committee,
+        string $creatorContactLink
     ): array {
         return [
-            'committee_name' => $committeeName,
-            'committee_city' => $committeeCityName,
-            'animator_firstname' => $animatorFirstName,
-            'animator_contact_link' => $animatorContactLink,
-        ];
-    }
-
-    private static function getRecipientVars(string $firstName): array
-    {
-        return [
-            'prenom' => self::escape($firstName),
+            'first_name' => self::escape($referent->getFirstName()),
+            'committee_name' => $committee->getName(),
+            'committee_city' => $committee->getCityName(),
+            'creator_first_name' => $creator->getFirstName(),
+            'creator_contact_link' => $creatorContactLink,
         ];
     }
 }

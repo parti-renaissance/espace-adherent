@@ -7,14 +7,12 @@ use Ramsey\Uuid\Uuid;
 
 final class JeMarcheReportMessage extends Message
 {
-    public static function createFromJeMarcheReport(JeMarcheReport $jeMarcheReport): self
+    public static function create(JeMarcheReport $jeMarcheReport): self
     {
         return new self(
             Uuid::uuid4(),
-            '133783',
             $jeMarcheReport->getEmailAddress(),
             null,
-            'Merci pour votre compte-rendu d\'action.',
             static::getTemplateVars($jeMarcheReport)
         );
     }

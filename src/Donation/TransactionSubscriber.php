@@ -59,7 +59,7 @@ class TransactionSubscriber implements EventSubscriberInterface
 
         $campaignExpired = (bool) $this->requestStack->getCurrentRequest()->attributes->get('_campaign_expired', false);
         if (!$campaignExpired && $transaction->isSuccessful()) {
-            $this->mailer->sendMessage(DonationMessage::createFromTransaction($transaction));
+            $this->mailer->sendMessage(DonationMessage::create($transaction));
         }
     }
 }

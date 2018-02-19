@@ -4,35 +4,85 @@ namespace Tests\AppBundle\Mailer\Message;
 
 use AppBundle\Entity\JeMarcheReport;
 use AppBundle\Mailer\Message\JeMarcheReportMessage;
-use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\UuidInterface;
 
-class JeMarcheReportMessageTest extends TestCase
+/**
+ * @group message
+ */
+class JeMarcheReportMessageTest extends MessageTestCase
 {
-    public function testCreateJeMarcheReportMessageFromJeMarcheReport()
+    /**
+     * @var JeMarcheReport|null
+     */
+    private $jeMarcheReport;
+
+    public function testCreate(): void
     {
-        $jeMarcheReport = $this->createMock(JeMarcheReport::class);
-        $jeMarcheReport->expects(static::any())->method('getEmailAddress')->willReturn('jerome.picon@gmail.tld');
-        $jeMarcheReport->expects(static::any())->method('countConvinced')->willReturn(2);
-        $jeMarcheReport->expects(static::any())->method('countAlmostConvinced')->willReturn(2);
-        $jeMarcheReport->expects(static::any())->method('getConvincedList')->with(', ')->willReturn('test1@gmail.tld, test2@gmail.tld');
-        $jeMarcheReport->expects(static::any())->method('getAlmostConvincedList')->with(', ')->willReturn('test3@gmail.tld, test4@gmail.tld');
+        $message = JeMarcheReportMessage::create($this->jeMarcheReport);
 
-        $message = JeMarcheReportMessage::createFromJeMarcheReport($jeMarcheReport);
-
-        $this->assertInstanceOf(JeMarcheReportMessage::class, $message);
-        $this->assertInstanceOf(UuidInterface::class, $message->getUuid());
-        $this->assertSame('133783', $message->getTemplate());
-        $this->assertSame('Merci pour votre compte-rendu d\'action.', $message->getSubject());
-        $this->assertCount(4, $message->getVars());
-        $this->assertSame(
+        self::assertMessage(
+            JeMarcheReportMessage::class,
             [
-                'nombre_emails_convaincus' => 2,
+                'nombre_emails_convaincus' => 3,
                 'nombre_emails_indecis' => 2,
-                'emails_collected_convaincus' => 'test1@gmail.tld, test2@gmail.tld',
-                'emails_collected_indecis' => 'test3@gmail.tld, test4@gmail.tld',
+                'emails_collected_convaincus' => 'remi@example.com, jean@example.com, bernard@example.com',
+                'emails_collected_indecis' => 'john@example.com, doe@example.com',
             ],
-            $message->getVars()
+            $message
         );
+
+        self::assertNoSender($message);
+        self::assertNoReplyTo($message);
+
+        self::assertCountRecipients(1, $message);
+
+        self::assertMessageRecipient(
+            'recipient@example.com',
+            null,
+            [
+                'nombre_emails_convaincus' => 3,
+                'nombre_emails_indecis' => 2,
+                'emails_collected_convaincus' => 'remi@example.com, jean@example.com, bernard@example.com',
+                'emails_collected_indecis' => 'john@example.com, doe@example.com',
+            ],
+            $message
+        );
+
+        self::assertNoCC($message);
+    }
+
+    protected function setUp()
+    {
+        $this->jeMarcheReport = $this->createMock(JeMarcheReport::class);
+
+        $this->jeMarcheReport
+            ->expects(self::once())
+            ->method('getEmailAddress')
+            ->willReturn('recipient@example.com')
+        ;
+        $this->jeMarcheReport
+            ->expects(self::once())
+            ->method('countConvinced')
+            ->willReturn(3)
+        ;
+        $this->jeMarcheReport
+            ->expects(self::once())
+            ->method('countAlmostConvinced')
+            ->willReturn(2)
+        ;
+        $this->jeMarcheReport
+            ->expects(self::once())
+            ->method('getConvincedList')
+            ->willReturn('remi@example.com, jean@example.com, bernard@example.com')
+        ;
+        $this->jeMarcheReport
+            ->expects(self::once())
+            ->method('getAlmostConvincedList')
+            ->willReturn('john@example.com, doe@example.com')
+        ;
+    }
+
+    protected function tearDown()
+    {
+        $this->jeMarcheReport = null;
     }
 }

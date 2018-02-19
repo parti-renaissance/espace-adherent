@@ -140,8 +140,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     {
       "FromEmail": "contact@en-marche.fr",
       "FromName": "En Marche !",
-      "Subject": "Confirmez votre compte En-Marche.fr",
-      "MJ-TemplateID": "292269",
+      "MJ-TemplateID": "adherent_account_activation_message",
       "MJ-TemplateLanguage": true,
       "Recipients": [
         {
@@ -149,13 +148,13 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
           "Name": "Jean-Pierre d'Artagnan",
           "Vars": {
             "first_name": "Jean-Pierre",
-            "activation_link": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@?redirect_uri=https%3A\/\/en-marche.fr\/callback&client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19"
+            "activation_url": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@?redirect_uri=https%3A\/\/en-marche.fr\/callback&client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19"
           }
         }
       ]
     }
     """
-    When I click on the email link "activation_link"
+    When I click on the email link "activation_url"
     Then I should be on "https://enmarche.fr/callback"
 
     # Already logged in user returning to register are redirected to the redirect_uri

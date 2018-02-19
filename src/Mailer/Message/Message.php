@@ -8,8 +8,6 @@ class Message
 {
     protected $uuid;
     protected $vars;
-    protected $subject;
-    protected $template;
     protected $recipients;
     protected $replyTo;
     protected $senderEmail;
@@ -30,18 +28,14 @@ class Message
      */
     final public function __construct(
         UuidInterface $uuid,
-        string $template,
         string $recipientEmail,
-        $recipientName,
-        string $subject,
+        ?string $recipientName,
         array $commonVars = [],
         array $recipientVars = [],
         string $replyTo = null
     ) {
         $this->uuid = $uuid;
         $this->recipients = [];
-        $this->template = $template;
-        $this->subject = $subject;
         $this->vars = $commonVars;
         $this->replyTo = $replyTo;
         $this->cc = [];
@@ -60,16 +54,6 @@ class Message
     final public function getVars(): array
     {
         return $this->vars;
-    }
-
-    final public function getSubject(): string
-    {
-        return $this->subject;
-    }
-
-    final public function getTemplate(): string
-    {
-        return $this->template;
     }
 
     public function getReplyTo(): ?string

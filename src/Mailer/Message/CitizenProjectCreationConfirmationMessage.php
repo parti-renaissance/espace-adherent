@@ -6,25 +6,34 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use Ramsey\Uuid\Uuid;
 
-class CitizenProjectCreationConfirmationMessage extends Message
+final class CitizenProjectCreationConfirmationMessage extends Message
 {
-    public static function create(Adherent $adherent, CitizenProject $citizenProject, string $linkCreateCitizenAction): self
-    {
+    public static function create(
+        Adherent $creator,
+        CitizenProject $citizenProject,
+        string $linkCreateCitizenAction
+    ): self {
         $message = new self(
             Uuid::uuid4(),
-            '244426',
-            $adherent->getEmailAddress(),
-            $adherent->getFullName(),
-            'Nous avons bien reçu votre demande de création de projet citoyen !',
-            [
-                'target_firstname' => self::escape($adherent->getFirstName()),
-                'citizen_project_name' => self::escape($citizenProject->getName()),
-                'link_create_action' => self::escape($linkCreateCitizenAction),
-            ]
+            $creator->getEmailAddress(),
+            $creator->getFullName(),
+            static::getTemplateVars($citizenProject, $creator, $linkCreateCitizenAction)
         );
 
         $message->setSenderEmail('projetscitoyens@en-marche.fr');
 
         return $message;
+    }
+
+    private static function getTemplateVars(
+        CitizenProject $citizenProject,
+        Adherent $creator,
+        string $linkCreateCitizenAction
+    ): array {
+        return [
+            'first_name' => self::escape($creator->getFirstName()),
+            'citizen_project_name' => self::escape($citizenProject->getName()),
+            'create_action_link' => self::escape($linkCreateCitizenAction),
+        ];
     }
 }
