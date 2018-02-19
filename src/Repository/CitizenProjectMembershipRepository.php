@@ -155,7 +155,7 @@ class CitizenProjectMembershipRepository extends EntityRepository
      *
      * @return CitizenProjectMembershipCollection
      */
-    private function findPriviledgedMemberships(string $citizenProjectUuid, array $privileges): CitizenProjectMembershipCollection
+    public function findPriviledgedMemberships(string $citizenProjectUuid, array $privileges): CitizenProjectMembershipCollection
     {
         $citizenProjectUuid = Uuid::fromString($citizenProjectUuid);
 
