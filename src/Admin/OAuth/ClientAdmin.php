@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin\OAuth;
 
+use AppBundle\Form\WebHookType;
 use AppBundle\OAuth\ClientManager;
 use AppBundle\OAuth\Form\GrantTypesType;
 use AppBundle\OAuth\Form\ScopesType;
@@ -54,8 +55,13 @@ class ClientAdmin extends AbstractAdmin
                 'label' => 'Scopes autorisés',
                 'template' => 'admin/oauth/client/_list_scopes.html.twig',
             ])
+            ->add('webHooks', 'array', [
+                'label' => 'Web hooks',
+                'template' => 'admin/oauth/client/_list_webHooks.html.twig',
+            ])
             ->add('_action', null, [
                 'actions' => [
+                    'edit' => [],
                     'delete' => [
                         'template' => '@SonataAdmin/CRUD/list__action_delete.html.twig',
                     ],
@@ -124,6 +130,14 @@ class ClientAdmin extends AbstractAdmin
             ->add('redirectUris', CollectionType::class, [
                 'label' => 'Adresses de redirection',
                 'entry_type' => UrlType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'error_bubbling' => false,
+            ])
+            ->add('webHooks', CollectionType::class, [
+                'label' => 'Web hooks',
+                'entry_type' => WebHookType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,

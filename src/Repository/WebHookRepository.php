@@ -8,9 +8,24 @@ use Doctrine\ORM\EntityRepository;
 
 class WebHookRepository extends EntityRepository
 {
-    public function findOneByEvent(Event $event): ?WebHook
+    public function findCallbacksByEvent(Event $event): array
     {
-        return $this->findOneBy(['event' => $event->getValue()]);
+        $callbacks = $this->createQueryBuilder('web_hook')
+            ->select('web_hook.callbacks')
+            ->where('web_hook.event = :event')
+            ->setParameter('event', $event->getValue())
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        if (!$callbacks) {
+            return [];
+        }
+
+        $callbacks = array_column($callbacks, 'callbacks');
+        $callbacks = array_merge(...$callbacks);
+
+        return array_unique($callbacks);
     }
 
     public function save(WebHook $webHook): void

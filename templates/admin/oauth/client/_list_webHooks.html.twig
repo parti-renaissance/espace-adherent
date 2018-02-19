@@ -2,12 +2,12 @@
 
 {% block field%}
     <ul>
-        {% for callback in value %}
+        {% for webHook in value %}
             <li>
-                {{ callback.client.name }}
+                {{ webHook.event }}
                 <ul>
-                    {% for url in callback.urls %}
-                        <li>{{ url }}</li>
+                    {% for callback in webHook.callbacks %}
+                        <li>{{ callback }}</li>
                     {% endfor %}
                 </ul>
             </li>
