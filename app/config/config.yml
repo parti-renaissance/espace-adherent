@@ -75,6 +75,7 @@ twig:
         legislatives_platform:  "%env(LEGISLATIVES_PLATFORM)%"
         algolia_blacklist:      "%env(ALGOLIA_BLACKLIST)%"
         url_help_en_marche:     "https://aide.en-marche.fr"
+        project_dir:            "%kernel.project_dir%"
     form_themes:
         - 'form_theme.html.twig'
         - 'SonataCoreBundle:Form:datepicker.html.twig'
