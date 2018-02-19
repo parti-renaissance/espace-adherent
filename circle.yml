@@ -61,12 +61,14 @@ test:
 
         # Lint PHP
         - |
-            COMMIT_RANGE=$(echo "${CIRCLE_COMPARE_URL}" | cut -d/ -f7 | sed -e "s/\.\.\./ /")
+            COMMIT_RANGE=$(echo "${CIRCLE_COMPARE_URL}" | cut -d/ -f7)
             # Fix single commit
             if [[ $COMMIT_RANGE != *"..."* ]]; then
-              COMMIT_RANGE="${COMMIT_RANGE} ${COMMIT_RANGE}"
+              COMMIT_RANGE="${COMMIT_RANGE}~...${COMMIT_RANGE}"
             fi
-            CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB ${COMMIT_RANGE})
+            echo "${COMMIT_RANGE}"
+            CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB "${COMMIT_RANGE}" --)
+            echo "${CHANGED_FILES}"
             if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php_cs(\\.dist)?|composer\\.lock)$"; then IFS=$'\n' EXTRA_ARGS=('--path-mode=intersection' '--' ${CHANGED_FILES[@]}); fi
             php -d memory_limit=1024m vendor/bin/php-cs-fixer fix --config=.php_cs.dist --dry-run --no-interaction -v --using-cache=no "${EXTRA_ARGS[@]}"
 
