@@ -23,6 +23,9 @@ class CitizenActionCategoryAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
+            ->add('slug', null, [
+                'label' => 'Slug',
+            ])
         ;
     }
 
@@ -32,6 +35,10 @@ class CitizenActionCategoryAdmin extends AbstractAdmin
             ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])
+            ->add('slug', null, [
+                'label' => 'Slug',
+                'help' => 'Sera utilisé pour la recherche : https://en-marche.fr/evenements/categorie/[votre-valeur]<br />Doit être unique',
+            ])
         ;
     }
 
@@ -40,6 +47,9 @@ class CitizenActionCategoryAdmin extends AbstractAdmin
         $listMapper
             ->add('name', null, [
                 'label' => 'Nom',
+            ])
+            ->add('slug', null, [
+                'label' => 'Slug',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
