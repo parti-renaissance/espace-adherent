@@ -44,15 +44,15 @@
             }
             @font-face {
                 font-family: title-1;
-                src: url("/app/web/fonts/gillsans-heavy-italic.ttf");
+                src: url("{{ project_dir }}/web/fonts/gillsans-heavy-italic.ttf");
             }
             @font-face {
                 font-family: title-2;
-                src: url("/app/web/fonts/gillsans-regular.ttf");
+                src: url("{{ project_dir }}/web/fonts/gillsans-regular.ttf");
             }
             @font-face {
                 font-family: title-3;
-                src: url("/app/web/fonts/gillsans-italic.ttf");
+                src: url("{{ project_dir }}/web/fonts/gillsans-italic.ttf");
             }
             .title-1 {
                 font-family: title-1;
@@ -63,6 +63,7 @@
             .title-2 {
                 font-family: title-2;
                 font-size: 50px;
+                margin-bottom: 30px;
             }
             #details {
                 margin-top: 60px;
@@ -76,7 +77,7 @@
         <div id="background">
             <div id="mask">
                 <div id="badge">
-                    <img src="/app/app/data/static/badge/citizen-project.png" />
+                    <img src="{{ project_dir }}/app/data/static/badge/citizen-project.png" />
                 </div>
                 <div id="text">
                     <h3 class="title-2">RENCONTRES AVEC</h3>

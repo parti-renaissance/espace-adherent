@@ -30,6 +30,13 @@ class ColorChoiceType extends AbstractType
         return ChoiceType::class;
     }
 
+    /**
+     * Hack for https://github.com/symfony/symfony/issues/26062
+     *
+     * Override the "entry" block_prefix by "color_choice_entry"
+     * to allow us use "color_choice_entry_*" (with label, errors or widget) as template block name
+     * for overriding the default choice_entry_* templates.
+     */
     public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         foreach ($view->children as $child) {

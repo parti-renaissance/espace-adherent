@@ -25,6 +25,12 @@
                 <argument type="service" id="app.glide" />
             </call>
         </service>
+        <service id="AppBundle\MediaGenerator\Pdf\CitizenProjectTractGenerator" public="true">
+            <argument type="service" id="knp_snappy.pdf"/>
+        </service>
+        <service id="AppBundle\MediaGenerator\Image\CitizenProjectCoverGenerator" public="true">
+            <argument type="service" id="knp_snappy.image"/>
+        </service>
 
         <!-- CitizenActions -->
         <service id="AppBundle\CitizenAction\CitizenActionMessageNotifier">
@@ -50,10 +56,10 @@
             <argument type="service" id="app.mailer.transactional" />
         </service>
 
-        <!-- EventListener -->
-        <service id="AppBundle\EventListener\ProcurationMailerSubscriber">
-            <argument key="$mailer" type="service" id="app.mailer.transactional"/>
-        </service>
+		<!-- EventListener -->
+		<service id="AppBundle\EventListener\ProcurationMailerSubscriber">
+			<argument key="$mailer" type="service" id="app.mailer.transactional" />
+		</service>
         <prototype namespace="AppBundle\EntityListener\" resource="../../../src/EntityListener/">
             <tag name="doctrine.orm.entity_listener" />
         </prototype>
@@ -63,6 +69,7 @@
         <service id="AppBundle\Form\CitizenProjectCommandType"/>
         <service id="AppBundle\Form\EventListener\AmpSynchronisedListener"/>
         <service id="AppBundle\Form\EventRegistrationType"/>
+        <service id="AppBundle\Form\ColorChoiceType"/>
 
         <!-- GeoCoder -->
         <service id="GeoIp2\WebService\Client">

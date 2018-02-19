@@ -4,7 +4,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;
 
 require __DIR__.'/../vendor/autoload.php';
-require __DIR__.'/../app/trusted_proxies.php';
 
 if (getenv('APP_DEBUG')) {
     // Deny if client address is remote and is not in a container
@@ -37,6 +36,8 @@ if ('prod' === getenv('APP_ENV')) {
         exit;
     }
 }
+
+require __DIR__.'/../app/trusted_proxies.php';
 
 $kernel = new AppKernel(getenv('APP_ENV'), getenv('APP_DEBUG'));
 $request = Request::createFromGlobals();

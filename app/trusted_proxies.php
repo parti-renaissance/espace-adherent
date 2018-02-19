@@ -26,9 +26,12 @@ $trustedProxies = [
     '2803:f800::/32',
     '2c0f:f248::/32',
     '2a06:98c0::/29',
+    // Google Cloud Platform
+    '130.211.0.0/22',
+    '35.191.0.0/16',
 ];
 
-// Google
+// Google Load Balancer
 if (!empty($_SERVER['GCLOUD_LB_IP'])) {
     $trustedProxies[] = $_SERVER['GCLOUD_LB_IP'];
 }

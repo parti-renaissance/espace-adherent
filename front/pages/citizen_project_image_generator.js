@@ -36,3 +36,35 @@ export default(api) => {
 
     emojiField.dispatchEvent(new Event('change'));
 };
+
+export const previewHandler = () => {
+    const imageUpload = dom('#citizen_project_media_backgroundImage');
+
+    if (!imageUpload) {
+        return;
+    }
+
+    const imagePreview = ({ target }) => {
+        if (target.files && target.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                const thumbnail = new Image();
+                thumbnail.src = e.target.result;
+                thumbnail.classList.add('image-thumbnail');
+
+                const preview = dom('#image-thumbnail');
+                preview.classList.add('has-thumbnail');
+                while (preview.firstElementChild) {
+                    preview.firstElementChild.remove();
+                }
+                preview.appendChild(thumbnail);
+            };
+
+            reader.readAsDataURL(target.files[0]);
+        }
+    };
+
+
+    on(imageUpload, 'change', imagePreview);
+};

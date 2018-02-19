@@ -100,10 +100,6 @@
             <tag name="validator.constraint_validator" alias="app.validator.unique_membership"/>
         </service>
 
-        <service id="AppBundle\Form\ColorChoiceType">
-            <tag name="form.type" />
-        </service>
-
         <service id="AppBundle\Form\MemberInterestsChoiceType">
             <argument type="string">%adherent_interests%</argument>
             <tag name="form.type" />
@@ -222,16 +218,6 @@
             <argument type="service" id="router" />
             <argument type="service" id="security.token_storage" />
             <tag name="kernel.event_subscriber"/>
-        </service>
-
-        <service id="app.citizen_project.cover_generator" class="AppBundle\MediaGenerator\Image\CitizenProjectCoverGenerator">
-            <argument type="service" id="knp_snappy.image"/>
-            <argument type="service" id="templating"/>
-        </service>
-
-        <service id="app.citizen_project.tract_generator" class="AppBundle\MediaGenerator\Pdf\CitizenProjectTractGenerator">
-            <argument type="service" id="knp_snappy.pdf"/>
-            <argument type="service" id="templating"/>
         </service>
 
         <service id="app.committee.photo.manager" class="AppBundle\Committee\PhotoManager">
