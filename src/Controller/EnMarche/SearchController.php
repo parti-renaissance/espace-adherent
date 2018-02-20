@@ -28,7 +28,7 @@ class SearchController extends Controller
             if ($category = $this->getDoctrine()->getRepository(EventCategory::class)->findOneBySlug($slug)) {
                 $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_EVENTS);
                 $request->query->set(SearchParametersFilter::PARAMETER_EVENT_CATEGORY, $category->getId());
-            } else if ($this->getDoctrine()->getRepository(CitizenActionCategory::class)->findOneBySlug($slug)) {
+            } elseif ($this->getDoctrine()->getRepository(CitizenActionCategory::class)->findOneBySlug($slug)) {
                 $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_CITIZEN_ACTIONS);
                 $request->query->set(SearchParametersFilter::PARAMETER_EVENT_CATEGORY, SearchParametersFilter::TYPE_CITIZEN_ACTIONS);
             } else {
