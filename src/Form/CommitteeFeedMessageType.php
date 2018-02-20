@@ -30,7 +30,12 @@ class CommitteeFeedMessageType extends AbstractType
                 'purify_html' => true,
             ])
             ->add('published', CheckboxType::class, [
-                'label' => 'Rendre ce message visible sur la page du comité',
+                'label' => 'Publier sur la page du comité',
+                'attr' => ['class' => 'form__checkbox form__checkbox--large'],
+                'required' => false,
+            ])
+            ->add('sendNotification', CheckboxType::class, [
+                'label' => 'Envoyer le message par e-mail. Vous serez systématiquement mis(e) en copie de celui-ci',
                 'attr' => ['class' => 'form__checkbox form__checkbox--large'],
                 'required' => false,
             ])

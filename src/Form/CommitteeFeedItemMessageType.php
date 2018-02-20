@@ -11,7 +11,10 @@ class CommitteeFeedItemMessageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->remove('subject');
+        $builder
+            ->remove('subject')
+            ->remove('sendNotification')
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
