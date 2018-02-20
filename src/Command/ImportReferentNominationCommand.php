@@ -91,7 +91,7 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
         $this->referentAreaRepository = $this->em->getRepository(ReferentArea::class);
         $this->referentRepository = $this->em->getRepository(Referent::class);
         $this->mediaRepository = $this->em->getRepository(Media::class);
-        $this->mediaFactory = $this->getContainer()->get('app.content.media_factory');
+        $this->mediaFactory = $this->getContainer()->get(MediaFactory::class);
         $this->storage = $this->getContainer()->get('app.storage');
     }
 

@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Content\MediaFactory;
 use AppBundle\Entity\SocialShare;
 use AppBundle\Entity\SocialShareCategory;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -16,7 +17,7 @@ class LoadSocialShareData implements FixtureInterface, ContainerAwareInterface
 
     public function load(ObjectManager $manager)
     {
-        $mediaFactory = $this->container->get('app.content.media_factory');
+        $mediaFactory = $this->container->get(MediaFactory::class);
         $storage = $this->container->get('app.storage');
 
         // Medias

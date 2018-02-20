@@ -2,6 +2,8 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Content\CustomSearchResultFactory;
+use AppBundle\Content\MediaFactory;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -14,8 +16,8 @@ class LoadCustomSearchData implements FixtureInterface, ContainerAwareInterface
 
     public function load(ObjectManager $manager)
     {
-        $factory = $this->container->get('app.content.custom_search_factory');
-        $mediaFactory = $this->container->get('app.content.media_factory');
+        $factory = $this->container->get(CustomSearchResultFactory::class);
+        $mediaFactory = $this->container->get(MediaFactory::class);
         $storage = $this->container->get('app.storage');
 
         $description = 'Pour ceux qui sont convaincus que le pays est bloqué, qui ont le goût du travail, du progrès, '.
