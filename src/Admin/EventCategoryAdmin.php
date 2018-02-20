@@ -24,6 +24,10 @@ class EventCategoryAdmin extends AbstractAdmin
             ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])
+            ->add('slug', null, [
+                'label' => 'Slug',
+                'help' => 'Sera utilisé pour la recherche : https://en-marche.fr/evenements/categorie/[votre-valeur]<br />Doit être unique',
+            ])
             ->add('status', ChoiceType::class, [
                 'label' => 'Visibilité',
                 'choices' => [
@@ -39,6 +43,9 @@ class EventCategoryAdmin extends AbstractAdmin
         $listMapper
             ->add('name', null, [
                 'label' => 'Nom',
+            ])
+            ->add('slug', null, [
+                'label' => 'Slug',
             ])
             ->add('status', null, [
                 'label' => 'Visibilité',

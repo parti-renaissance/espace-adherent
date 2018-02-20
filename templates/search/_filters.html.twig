@@ -5,10 +5,10 @@
         {% if search.isTypeEvents() %}
             <div class="search__bar__options__types">
                 <select id="select-event-category" name="{{ constant('PARAMETER_EVENT_CATEGORY', search) }}" class="form">
-                    <option value="" selected="selected">Tous les événements</option>
+                    <option value=""{% if not search.eventCategory %} selected="selected"{% endif %}>Tous les événements</option>
                     <option value="{{ constant('TYPE_CITIZEN_ACTIONS', search) }}">Actions citoyennes</option>
                     {% for category in event_categories %}
-                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        <option value="{{ category.id }}"{% if search.eventCategory == category.id %} selected="selected"{% endif %}>{{ category.name }}</option>
                     {% endfor %}
                 </select>
             </div>
