@@ -9,7 +9,7 @@
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            var anotherReasons = $('#unregistration_reasons_6');
+            var anotherReasons = $('#unregistration_reasons_5');
             var toggleComment = function() {
                 if (anotherReasons.is(':checked')) {
                     $('#unregistration_another_reason_comment').show();
@@ -38,31 +38,22 @@
                     data-hd="{{ static_asset('em-marcheurs-bg.jpg', { q: 70 }) }}">
                 <div class="l__wrapper--narrow">
                     <h1 class="text--center text--larger">
-                        Je souhaite supprimer mon adhésion et mon compte <em>En Marche</em>
+                        Je souhaite supprimer mon compte <em>En Marche</em><br/>
+                        Nous sommes tristes de vous voir partir 😢
                     </h1>
                 </div>
             </header>
             <section class="l__wrapper--600 settings__unsub__intro">
                 <p>
-                    Vous êtes un marcheur, vous avez décidé de vous engager pour
-                    participer au renouvellement de la vie politique et à la
-                    transformation de notre pays.
-                    Grâce à vous, Emmanuel Macron est devenu Président de la
-                    République et les députés de notre mouvement ont obtenu la
-                    confiance des Français.<br>
-                    Notre projet de transformation de la France est en marche.
-                    Nous vous en remercions du fond du cœur.
+                    Merci de nous aider à comprendre pourquoi vous souhaitez quitter En Marche en choisissant
+                    une ou plusieurs des réponses ci-dessous :
                 </p>
             </section>
 
             <section class="l__wrapper--600">
-                {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
+                {{ form_start(form, { attr: { class: 'b__nudge--top-40' } }) }}
 
                 {{ form_errors(form) }}
-
-                <div class="form__row">
-                    {{ form_label(form.reasons, 'Merci de nous aider à comprendre pourquoi vous souhaitez quitter la communauté des marcheurs en choisissant une ou plusieurs des réponses ci-dessous :') }}
-                </div>
 
                 {{ form_errors(form.reasons) }}
 
@@ -86,13 +77,13 @@
                     mouvement.
                 </p>
                 <p class="text--body b__nudge--bottom-large">
-                    Si vous ne souhaitez plus être un marcheur, vous pouvez
-                    finaliser la suppression de votre adhésion en cliquant ci-dessous.
+                    Si vous ne souhaitez plus avoir de compte,
+                    vous pouvez finaliser sa suppression en cliquant ci-dessous.
                 </p>
 
                 <div class="text--center">
                     <button type="submit" class="btn btn--error">
-                        Je confirme la suppression de mon adhésion
+                        Je confirme la suppression de mon compte
                     </button>
                 </div>
 
@@ -104,7 +95,7 @@
         <div id="is_not_adherent" class="content">
             <header>
                 <h1 class="space--60-0 l__wrapper--slim text--center text--large">
-                    Votre adhésion et votre compte En Marche ont bien été supprimés et vos données personnelles effacées de notre base.
+                    Votre compte En Marche a bien été supprimé et vos données personnelles effacées de notre base.
                 </h1>
                 <hr class="l__wrapper"/>
             </header>

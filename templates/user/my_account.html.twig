@@ -25,9 +25,15 @@
         {#</p>#}
     {#{% endif %}#}
 
-    {% if is_granted('UNREGISTER') and app.user.basicAdherent %}
+    {% if is_granted('UNREGISTER') and app.user.isBasicAdherent %}
         <p>
             <a href="{{ path('app_user_terminate_membership') }}" class="settings__delete_account">Supprimer définitivement ce compte</a>
+        </p>
+    {% endif %}
+
+    {% if is_granted('UNREGISTER') and app.user.isUser %}
+        <p>
+            <a href="{{ path('app_user_terminate_membership') }}" class="settings__delete_account">Supprimer mon compte</a>
         </p>
     {% endif %}
 {% endblock %}

@@ -105,11 +105,6 @@
             <tag name="form.type" />
         </service>
 
-        <service id="AppBundle\Form\UnregistrationReasonsChoiceType">
-            <argument type="string">%adherent_unregistration_reasons%</argument>
-            <tag name="form.type" />
-        </service>
-
         <service id="app.adherent.contact_message_handler" class="AppBundle\Contact\ContactMessageHandler">
             <argument type="service" id="app.mailer.campaign" />
         </service>

@@ -12,6 +12,33 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Unregistration
 {
+    public const REASON_EMAILS = 'unregistration_reasons.emails';
+    public const REASON_SUPPORT = 'unregistration_reasons.support';
+    public const REASON_GOVERNMENT = 'unregistration_reasons.government';
+    public const REASON_ELECTED = 'unregistration_reasons.elected';
+    public const REASON_MOVEMENT = 'unregistration_reasons.movement';
+    public const REASON_COMMITTEE = 'unregistration_reasons.committee';
+    public const REASON_OTHER = 'unregistration_reasons.other';
+
+    public const REASONS_LIST_ADHERENT = [
+        self::REASON_EMAILS,
+        self::REASON_SUPPORT,
+        self::REASON_GOVERNMENT,
+        self::REASON_ELECTED,
+        self::REASON_MOVEMENT,
+        self::REASON_COMMITTEE,
+        self::REASON_OTHER,
+    ];
+
+    public const REASONS_LIST_USER = [
+        self::REASON_EMAILS,
+        self::REASON_GOVERNMENT,
+        self::REASON_ELECTED,
+        self::REASON_MOVEMENT,
+        self::REASON_COMMITTEE,
+        self::REASON_OTHER,
+    ];
+
     /**
      * @var int|null
      *
@@ -60,12 +87,18 @@ class Unregistration
      */
     private $unregisteredAt;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $isAdherent = false;
+
     public function __construct(
         UuidInterface $uuid,
         array $reasons,
         ?string $comment,
         \DateTime $registeredAt,
-        string $postalCode = null
+        string $postalCode = null,
+        bool $isAdherent = false
     ) {
         $this->uuid = $uuid;
         $this->postalCode = $postalCode;
@@ -73,6 +106,7 @@ class Unregistration
         $this->comment = $comment;
         $this->registeredAt = $registeredAt;
         $this->unregisteredAt = new \DateTime('now');
+        $this->isAdherent = $isAdherent;
     }
 
     public static function createFromAdherent(Adherent $adherent): self
@@ -82,7 +116,8 @@ class Unregistration
             ['autre'],
             'Adhérent supprimé par l\'administrateur',
             $adherent->getRegisteredAt(),
-            $adherent->getPostAddress()->getPostalCode()
+            $adherent->getPostAddress()->getPostalCode(),
+            $adherent->isAdherent()
         );
 
         return $unregistration;
@@ -136,5 +171,10 @@ class Unregistration
     public function getUnregisteredAt(): ?\DateTime
     {
         return $this->unregisteredAt;
+    }
+
+    public function isAdherent(): bool
+    {
+        return $this->isAdherent;
     }
 }

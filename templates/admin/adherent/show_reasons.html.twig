@@ -3,7 +3,7 @@
 {% block field_value %}
     <ul>
         {% for reason in object.reasons %}
-            <li>{{ unregistration_reasons_label(reason) }}</li>
+            <li>{{ reason|trans({}, 'forms') }}</li>
         {% endfor %}
     </ul>
 {% endblock %}
