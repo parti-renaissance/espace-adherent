@@ -36,7 +36,7 @@ final class CommitteeContactMembersMessage extends Message
             $host->getEmailAddress()
         );
 
-        $sender = $host->getFullName().', ';
+        $sender = $host->getFullName().' - ';
         $sender .= Genders::FEMALE === $host->getGender() ? 'animatrice' : 'animateur';
         $sender .= ' de votre comité';
 

@@ -38,7 +38,7 @@ final class BoardMemberMessage extends Message
         );
 
         $message->setSenderEmail('jemarche@en-marche.fr');
-        $message->setSenderName(sprintf('%s, membre du Conseil de LaREM', $boardMember->getFullName()));
+        $message->setSenderName(sprintf('%s - membre du Conseil de LaREM', $boardMember->getFullName()));
 
         $message->addRecipient('jemarche@en-marche.fr', 'Je Marche');
 
