@@ -182,8 +182,8 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCountTimelineMessages($crawler, 2);
         $this->assertSeeTimelineMessages($crawler, [
-            ['Jacques Picard', 'co-animateur', 'À la recherche de volontaires !', true],
-            ['Jacques Picard', 'co-animateur', 'Lancement du comité !', true],
+            ['Jacques Picard', 'co-animateur', 'À la recherche de volontaires !'],
+            ['Jacques Picard', 'co-animateur', 'Lancement du comité !'],
         ]);
     }
 
@@ -472,7 +472,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
     {
         foreach ($messages as $position => $message) {
             list($author, $role, $text) = $message;
-            $this->assertSeeCommitteeTimelineMessage($crawler, $position, $author, $role, $text, $message[3] ?? false);
+            $this->assertSeeCommitteeTimelineMessage($crawler, $position, $author, $role, $text);
         }
     }
 

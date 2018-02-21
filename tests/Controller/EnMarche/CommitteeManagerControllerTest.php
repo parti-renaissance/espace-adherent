@@ -387,7 +387,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeMessageForm($crawler));
         $this->assertTrue($this->seeFlashMessage($crawler, 'Votre message a bien été publié.'));
-        $this->assertSeeCommitteeTimelineMessage($crawler, 0, 'Gisele Berthoux', 'co-animateur', 'Première publication !', true);
+        $this->assertSeeCommitteeTimelineMessage($crawler, 0, 'Gisele Berthoux', 'co-animateur', 'Première publication !');
     }
 
     /**
