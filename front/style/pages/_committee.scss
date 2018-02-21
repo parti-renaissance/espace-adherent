@@ -24,6 +24,7 @@
     }
 
     &__name {
+        display: flex;
         @include breakword;
     }
 
