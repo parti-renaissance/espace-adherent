@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Security\LoginAttemptSignature;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -9,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\FailedLoginAttemptRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class FailedLoginAttempt
 {
