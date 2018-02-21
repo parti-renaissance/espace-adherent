@@ -13,6 +13,7 @@ final class CitizenActionCancellationMessage extends Message
         array $recipients,
         Adherent $author,
         CitizenAction $citizenAction,
+        string $eventsLink,
         \Closure $recipientVarsGenerator
     ): self {
         if (!$recipients) {
@@ -30,7 +31,7 @@ final class CitizenActionCancellationMessage extends Message
             $recipient->getEmailAddress(),
             $recipient->getFirstName().' '.$recipient->getLastName(),
             '[Action citoyenne] Une action citoyenne à laquelle vous participez vient d\'être annulée.',
-            static::getTemplateVars($citizenAction->getName()),
+            static::getTemplateVars($citizenAction->getName(), $eventsLink),
             $recipientVarsGenerator($recipient),
             $author->getEmailAddress()
         );
@@ -47,10 +48,11 @@ final class CitizenActionCancellationMessage extends Message
         return $message;
     }
 
-    private static function getTemplateVars(string $citizenActionName): array
+    private static function getTemplateVars(string $citizenActionName, string $eventsLink): array
     {
         return [
             'citizen_action_name' => self::escape($citizenActionName),
+            'event_slug' => $eventsLink,
         ];
     }
 

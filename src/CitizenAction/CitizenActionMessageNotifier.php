@@ -63,6 +63,7 @@ class CitizenActionMessageNotifier implements EventSubscriberInterface
             $registered,
             $host,
             $citizenAction,
+            $this->urlGenerator->generate('app_search_events', [], UrlGeneratorInterface::ABSOLUTE_URL),
             function (EventRegistration $registration) {
                 return CitizenActionCancellationMessage::getRecipientVars($registration->getFirstName());
             }
