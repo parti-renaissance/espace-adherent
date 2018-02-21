@@ -66,10 +66,6 @@ class CoordinatorManagedAreaListener implements EventSubscriberInterface
             return;
         }
 
-        $adherent->setCoordinatorManagedAreas(
-            $adherent->getCoordinatorManagedAreas()->filter(function (CoordinatorManagedArea $entity) {
-                return !empty($entity->getCodes()) && !empty($entity->getSector());
-            })
-        );
+        $adherent->removeEmptyCoordinatorManagedAreas();
     }
 }

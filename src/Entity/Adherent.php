@@ -1018,14 +1018,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->coordinatorManagedAreas;
     }
 
-    /**
-     * @param CoordinatorManagedArea[]|Collection $areas
-     */
-    public function setCoordinatorManagedAreas(Collection $areas): void
-    {
-        $this->coordinatorManagedAreas = $areas;
-    }
-
     public function addCoordinatorManagedArea(CoordinatorManagedArea $area): void
     {
         if (!$this->coordinatorManagedAreas->contains($area)) {
@@ -1044,6 +1036,15 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return implode(', ', array_map(function (CoordinatorManagedArea $area) {
             return $area->getCodesAsString();
         }, $this->coordinatorManagedAreas->toArray()));
+    }
+
+    public function removeEmptyCoordinatorManagedAreas(): void
+    {
+        foreach ($this->getCoordinatorManagedAreas() as $area) {
+            if (empty($area->getCodes()) || empty($area->getSector())) {
+                $this->removeCoordinatorManagedArea($area);
+            }
+        }
     }
 
     public function isAdherent(): bool
