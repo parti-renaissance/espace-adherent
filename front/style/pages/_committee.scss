@@ -523,3 +523,10 @@
     list-style: none;
     margin: 5px;
 }
+
+.feed {
+    &__options {
+        display: inline-flex;
+        margin-left: 10px;
+    }
+}
