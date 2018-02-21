@@ -2,10 +2,13 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PurchasingPowerChoiceRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class PurchasingPowerChoice extends InteractiveChoice
 {

@@ -7,6 +7,7 @@ use AppBundle\Entity\Article;
 use AppBundle\Entity\Clarification;
 use AppBundle\Entity\CustomSearchResult;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\Page;
 use AppBundle\Entity\Proposal;
 use AppBundle\Entity\Timeline\Measure;
 use AppBundle\Entity\Timeline\Profile;
@@ -30,6 +31,7 @@ class AlgoliaSynchronizeCommand extends Command
         Profile::class,
         Theme::class,
         Measure::class,
+        Page::class,
     ];
 
     private $algolia;
