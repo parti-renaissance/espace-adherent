@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\OAuth;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntitySoftDeletableTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
@@ -24,6 +25,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="oauth_clients", uniqueConstraints={
  *   @ORM\UniqueConstraint(name="oauth_clients_uuid_unique", columns="uuid")
  * })
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class Client
 {
