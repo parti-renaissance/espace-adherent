@@ -40,7 +40,7 @@ class CommitteeMessageNotificationMessage extends Message
             $feedItem->getAuthor()->getEmailAddress()
         );
 
-        $sender = $feedItem->getAuthor()->getFullName().', ';
+        $sender = $feedItem->getAuthor()->getFullName().' - ';
         $sender .= Genders::FEMALE === $feedItem->getAuthor()->getGender() ? 'animatrice' : 'animateur';
         $sender .= ' de votre comité';
 

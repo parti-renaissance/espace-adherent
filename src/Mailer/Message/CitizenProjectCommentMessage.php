@@ -42,7 +42,7 @@ class CitizenProjectCommentMessage extends Message
             $comment->getAuthor()->getEmailAddress()
         );
 
-        $sender = sprintf('%s, porteur de votre projet citoyen', $author);
+        $sender = sprintf('%s - porteur de votre projet citoyen', $author);
 
         $message->setSenderName($sender);
 
