@@ -209,7 +209,7 @@ input {
 }
 
 .btn--as-link {
-    &--delete {
+    &--danger {
         color: $red!important;
         &:hover {
             border-color: $red!important;;
