@@ -1,5 +1,6 @@
 FIG=docker-compose
-RUN=$(FIG) run --rm app
+#RUN=$(FIG) run --rm app
+RUN=$(FIG) exec app
 EXEC=$(FIG) exec app
 CONSOLE=bin/console
 PHPCSFIXER?=$(RUN) php -d memory_limit=1024m vendor/bin/php-cs-fixer
