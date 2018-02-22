@@ -3,6 +3,10 @@
 {% block page_title event.name %}
 {% block canonical_url url('app_event_show', {'slug': event.slug}) %}
 
+{% block meta_description %}
+    {{ event.name }} est un événement local du mouvement La République En Marche ! organisé par {{ event.organizer ? event.organizer.partialName : 'un ancien adhérent' }} le {{ event.beginAt|localizeddate('full', 'none') }} à {{ event.beginAt|date('G\\hi') -}}, dans la ville de {{ event.postAddress.cityName }}. Visitez la page dédiée pour vous inscrire et obtenir toutes les informations concernant cet événement.
+{% endblock %}
+
 {% block json_ld %}
     <script type="application/ld+json">
     {
