@@ -364,3 +364,28 @@ $(document).ready(function() {
     removeCommittee();
 });
 {% endmacro %}
+
+{% macro toggleDisplayingElement(checkboxSelector, elementSelector, checkboxNotSelectedSelector = null) %}
+    const checkbox = dom('{{ checkboxSelector|raw }}');
+    const element = dom('{{ elementSelector|raw }}');
+    var requiredValue = null;
+
+    if (element) {
+        const onChange = (event) => {
+            if (event.target.checked) {
+                removeClass(element.parentElement, 'hidden');
+                if (requiredValue) {
+                    element.setAttribute('required', requiredValue);
+                }
+            } else {
+                addClass(element.parentElement, 'hidden');
+                requiredValue = element.getAttribute('required');
+                element.removeAttribute('required');
+            }
+        };
+
+        on(checkbox, 'change', onChange);
+
+        checkbox.dispatchEvent(new Event('change'));
+    }
+{% endmacro %}
