@@ -3,30 +3,32 @@
 namespace AppBundle\Mailer\Message;
 
 use AppBundle\Contact\ContactMessage;
+use AppBundle\Entity\Adherent;
 use Ramsey\Uuid\Uuid;
 
 final class AdherentContactMessage extends Message
 {
-    /**
-     * @param ContactMessage $contactMessage
-     *
-     * @return AdherentContactMessage
-     */
     public static function createFromModel(ContactMessage $contactMessage): self
     {
+        $sender = $contactMessage->getFrom();
+        $recipient = $contactMessage->getTo();
+
         return new self(
             Uuid::uuid4(),
-            '114629',
-            $contactMessage->getTo()->getEmailAddress(),
-            $contactMessage->getTo()->getFullName(),
-            $contactMessage->getFrom()->getFirstName().' vous a envoyé un message',
+            $recipient->getEmailAddress(),
+            $recipient->getFullName(),
+            static::getTemplateVars($sender, $recipient, $contactMessage->getContent()),
             [],
-            [
-                'animator_firstname' => self::escape($contactMessage->getTo()->getFirstName()),
-                'member_firstname' => self::escape($contactMessage->getFrom()->getFirstName()),
-                'target_message' => nl2br(self::escape($contactMessage->getContent())),
-            ],
-            $contactMessage->getFrom()->getEmailAddress()
+            $sender->getEmailAddress()
         );
+    }
+
+    private static function getTemplateVars(Adherent $sender, Adherent $recipient, string $message): array
+    {
+        return [
+            'animator_firstname' => self::escape($recipient->getFirstName()),
+            'member_firstname' => self::escape($sender->getFirstName()),
+            'target_message' => \nl2br(self::escape($message)),
+        ];
     }
 }

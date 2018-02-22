@@ -37,9 +37,9 @@
         </service>
 
         <service id="app.mailer.message_factory.transactional" class="AppBundle\Mailer\EmailTemplateFactory" public="false">
+            <argument>AppBundle\Mailer\Message\MessageRegistry</argument>
             <argument>%transactional_sender_email%</argument>
             <argument>%transactional_sender_name%</argument>
-            <argument>AppBundle\Mailjet\EmailTemplate</argument>
         </service>
 
         <!-- Mailer (campaign) -->

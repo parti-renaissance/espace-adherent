@@ -9,40 +9,30 @@ final class EventRegistrationConfirmationMessage extends Message
 {
     public static function createFromRegistration(EventRegistration $registration, string $eventLink): self
     {
-        $event = $registration->getEvent();
-        $firstName = $registration->getFirstName();
-
         return new self(
             Uuid::uuid4(),
-            '118620',
             $registration->getEmailAddress(),
-            $firstName,
-            'Confirmation de participation à un événement En Marche !',
-            static::getTemplateVars(
-                $event->getName(),
-                $event->getOrganizerName(),
-                $eventLink
-            ),
-            static::getRecipientVars($firstName)
+            $registration->getFullName(),
+            static::getTemplateVars($registration, $eventLink),
+            static::getRecipientVars($registration)
         );
     }
 
-    private static function getTemplateVars(
-        string $eventName,
-        string $organizerName,
-        string $eventLink
-    ): array {
+    private static function getTemplateVars(EventRegistration $registration, string $eventLink): array
+    {
+        $event = $registration->getEvent();
+
         return [
-            'event_name' => self::escape($eventName),
-            'event_organiser' => self::escape($organizerName),
+            'event_name' => self::escape($event->getName()),
+            'event_organiser' => self::escape($event->getOrganizerName()),
             'event_link' => $eventLink,
         ];
     }
 
-    private static function getRecipientVars(string $firstName): array
+    private static function getRecipientVars(EventRegistration $registration): array
     {
         return [
-            'prenom' => self::escape($firstName),
+            'target_firstname' => self::escape($registration->getFirstName()),
         ];
     }
 }

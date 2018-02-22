@@ -8,72 +8,40 @@ use Ramsey\Uuid\Uuid;
 
 class EventNotificationMessage extends Message
 {
-    /**
-     * Creates a new message instance for a list of recipients.
-     *
-     * @param Adherent[] $recipients
-     * @param Adherent   $host
-     * @param Event      $event
-     * @param string     $eventLink
-     * @param string     $eventOkLink
-     * @param \Closure   $recipientVarsGenerator
-     *
-     * @return EventNotificationMessage
-     */
     public static function create(
-        array $recipients,
         Adherent $host,
         Event $event,
-        string $eventLink,
-        string $eventOkLink,
-        \Closure $recipientVarsGenerator
+        array $recipients,
+        string $eventShowLink,
+        string $eventAttendLink
     ): self {
         if (!$recipients) {
-            throw new \InvalidArgumentException('At least one Adherent recipients is required.');
+            throw new \InvalidArgumentException('At least one recipient is required.');
         }
 
         $recipient = array_shift($recipients);
         if (!$recipient instanceof Adherent) {
-            throw new \RuntimeException('First recipient must be an Adherent instance.');
+            throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
         }
-
-        $vars = static::getTemplateVars(
-            $host->getFirstName(),
-            $event->getName(),
-            static::formatDate($event->getBeginAt(), 'EEEE d MMMM y'),
-            sprintf(
-                '%sh%s',
-                static::formatDate($event->getBeginAt(), 'HH'),
-                static::formatDate($event->getBeginAt(), 'mm')
-            ),
-            $event->getInlineFormattedAddress(),
-            $eventLink,
-            $eventOkLink
-        );
 
         $message = new static(
             Uuid::uuid4(),
-            '54917',
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            sprintf(
-                '%s - %s : Nouvel événement de %s : %s',
-                static::formatDate($event->getBeginAt(), 'd MMMM'),
-                $vars['event_hour'],
-                $event->getCommittee()->getName(),
-                $vars['event_name']
-            ),
-            $vars,
-            $recipientVarsGenerator($recipient),
+            static::getTemplateVars($host, $event, $eventShowLink, $eventAttendLink),
+            static::getRecipientVars($recipient),
             $host->getEmailAddress()
         );
 
-        /* @var Adherent[] $recipients */
         foreach ($recipients as $recipient) {
+            if (!$recipient instanceof Adherent) {
+                throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
+            }
+
             $message->addRecipient(
                 $recipient->getEmailAddress(),
                 $recipient->getFullName(),
-                $recipientVarsGenerator($recipient)
+                static::getRecipientVars($recipient)
             );
         }
 
@@ -81,39 +49,34 @@ class EventNotificationMessage extends Message
     }
 
     private static function getTemplateVars(
-        string $hostFirstName,
-        string $eventName,
-        string $eventDate,
-        string $eventHour,
-        string $eventAddress,
-        string $eventLink,
-        string $eventOkLink
+        Adherent $host,
+        Event $event,
+        string $eventShowLink,
+        string $eventAttendLink
     ): array {
         return [
-            // Global common variables
-            'animator_firstname' => self::escape($hostFirstName),
-            'event_name' => self::escape($eventName),
-            'event_date' => $eventDate,
-            'event_hour' => $eventHour,
-            'event_address' => self::escape($eventAddress),
-            'event_slug' => $eventLink,
-            'event-slug' => $eventLink,
-            'event_ok_link' => $eventOkLink,
-            'event_ko_link' => $eventLink,
-
-            // Recipient specific template variables
-            'target_firstname' => '',
+            'animator_firstname' => self::escape($host->getFirstName()),
+            'event_name' => self::escape($event->getName()),
+            'event_date' => static::formatDate($event->getBeginAt(), 'EEEE d MMMM y'),
+            'event_hour' => sprintf(
+                '%sh%s',
+                static::formatDate($event->getBeginAt(), 'HH'),
+                static::formatDate($event->getBeginAt(), 'mm')
+            ),
+            'event_address' => self::escape($event->getInlineFormattedAddress()),
+            'event_show_link' => $eventShowLink,
+            'event_attend_link' => $eventAttendLink,
         ];
     }
 
-    public static function getRecipientVars(string $firstName): array
+    private static function getRecipientVars(Adherent $recipient): array
     {
         return [
-            'target_firstname' => self::escape($firstName),
+            'target_firstname' => self::escape($recipient->getFirstName()),
         ];
     }
 
-    private static function formatDate(\DateTime $date, string $format): string
+    private static function formatDate(\DateTimeInterface $date, string $format): string
     {
         $formatter = new \IntlDateFormatter(
             'fr_FR',

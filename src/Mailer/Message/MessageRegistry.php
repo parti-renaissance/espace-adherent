@@ -4,7 +4,9 @@ namespace AppBundle\Mailer\Message;
 
 class MessageRegistry
 {
-    private $transactional = [];
+    private $transactional = [
+        AdherentAccountActivationMessage::class => 'adherent_account_activation_message',
+    ];
 
     private $campaign = [];
 
@@ -27,7 +29,7 @@ class MessageRegistry
             return \array_search($name, $this->transactional);
         }
 
-        if (in_array($name, $this->campaign)) {
+        if (\in_array($name, $this->campaign)) {
             return \array_search($name, $this->campaign);
         }
 
@@ -36,6 +38,6 @@ class MessageRegistry
 
     public function getAllMessages(): array
     {
-        return array_merge($this->transactional, $this->campaign);
+        return \array_merge($this->transactional, $this->campaign);
     }
 }

@@ -8,62 +8,58 @@ use Ramsey\Uuid\Uuid;
 
 class CommitteeMessageNotificationMessage extends Message
 {
-    /**
-     * Creates a new message instance for a list of recipients.
-     *
-     * @param Adherent[]        $recipients
-     * @param CommitteeFeedItem $feedItem
-     * @param string            $subject
-     *
-     * @return self
-     */
-    public static function create(array $recipients, CommitteeFeedItem $feedItem, string $subject): self
+    public static function create(CommitteeFeedItem $feedItem, array $recipients, string $subject): self
     {
         if (!$recipients) {
-            throw new \InvalidArgumentException('At least one Adherent recipients is required.');
+            throw new \InvalidArgumentException('At least one recipient is required.');
         }
 
         $recipient = array_shift($recipients);
         if (!$recipient instanceof Adherent) {
-            throw new \RuntimeException('First recipient must be an Adherent instance.');
+            throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
         }
+
+        $author = $feedItem->getAuthor();
 
         $message = new self(
             Uuid::uuid4(),
-            '63337',
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            "[Comité local] $subject",
-            static::getTemplateVars($feedItem->getAuthorFirstName(), $feedItem->getContent()),
-            static::getRecipientVars($recipient->getFirstName()),
-            $feedItem->getAuthor()->getEmailAddress()
+            static::getTemplateVars($feedItem, $author, $subject),
+            static::getRecipientVars($recipient),
+            $author->getEmailAddress()
         );
 
-        $message->setSenderName($feedItem->getAuthor()->getFullName());
+        $message->setSenderName($author->getFullName());
 
         foreach ($recipients as $recipient) {
+            if (!$recipient instanceof Adherent) {
+                throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
+            }
+
             $message->addRecipient(
                 $recipient->getEmailAddress(),
                 $recipient->getFullName(),
-                static::getRecipientVars($recipient->getFirstName())
+                static::getRecipientVars($recipient)
             );
         }
 
         return $message;
     }
 
-    private static function getTemplateVars(string $hostFirstName, string $hostMessage): array
+    private static function getTemplateVars(CommitteeFeedItem $feedItem, Adherent $host, string $subject): array
     {
         return [
-            'animator_firstname' => self::escape($hostFirstName),
-            'target_message' => $hostMessage,
+            'animator_firstname' => self::escape($host->getFirstName()),
+            'target_subject' => $subject,
+            'target_message' => $feedItem->getContent(),
         ];
     }
 
-    private static function getRecipientVars(string $firstName): array
+    private static function getRecipientVars(Adherent $adherent): array
     {
         return [
-            'target_firstname' => self::escape($firstName),
+            'target_firstname' => self::escape($adherent->getFirstName()),
         ];
     }
 }

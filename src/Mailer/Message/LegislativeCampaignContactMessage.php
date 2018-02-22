@@ -11,25 +11,28 @@ final class LegislativeCampaignContactMessage extends Message
     {
         $message = new self(
             Uuid::uuid4(),
-            '143247',
             $recipient,
             null,
-            'Élections Législatives - Nouvelle demande de contact',
-            [
-                'email' => static::escape($contact->getEmailAddress()),
-                'first_name' => static::escape($contact->getFirstName()),
-                'last_name' => static::escape($contact->getLastName()),
-                'department_number' => static::escape($contact->getDepartmentNumber()),
-                'electoral_district_number' => static::escape($contact->getElectoralDistrictNumber()),
-                'role' => static::escape($contact->getRole()),
-                'subject' => static::escape($contact->getSubject()),
-                'message' => nl2br(static::escape($contact->getMessage())),
-            ]
+            static::getTemplateVars($contact)
         );
 
         $message->setSenderName($contact->getFullName());
         $message->addCC($contact->getEmailAddress());
 
         return $message;
+    }
+
+    private static function getTemplateVars(CampaignContactMessage $contact): array
+    {
+        return  [
+            'email' => static::escape($contact->getEmailAddress()),
+            'first_name' => static::escape($contact->getFirstName()),
+            'last_name' => static::escape($contact->getLastName()),
+            'department_number' => static::escape($contact->getDepartmentNumber()),
+            'electoral_district_number' => static::escape($contact->getElectoralDistrictNumber()),
+            'role' => static::escape($contact->getRole()),
+            'subject' => static::escape($contact->getSubject()),
+            'message' => nl2br(static::escape($contact->getMessage())),
+        ];
     }
 }

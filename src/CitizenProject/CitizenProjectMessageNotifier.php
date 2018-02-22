@@ -81,7 +81,7 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
     {
         if ($commentCreatedEvent->isSendMail()) {
             foreach ($this->getOptinCitizenProjectFollowersChunks($commentCreatedEvent->getCitizenProject()) as $chunk) {
-                $this->mailer->sendMessage(CitizenProjectCommentMessage::create($chunk, $commentCreatedEvent->getComment()));
+                $this->mailer->sendMessage(CitizenProjectCommentMessage::create($commentCreatedEvent->getComment(), $chunk));
             }
         }
     }
@@ -100,8 +100,8 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
     private function sendCreatorCreationConfirmation(Adherent $creator, CitizenProject $citizenProject): void
     {
         $this->mailer->sendMessage(CitizenProjectCreationConfirmationMessage::create(
-            $creator,
             $citizenProject,
+            $creator,
             $this->generateUrl('app_citizen_action_manager_create', [
                 'project_slug' => $citizenProject->getSlug(),
             ])
@@ -115,9 +115,9 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         foreach ($coordinators as $coordinator) {
             $this->mailer->sendMessage(
                 CitizenProjectCreationCoordinatorNotificationMessage::create(
-                    $coordinator,
                     $citizenProject,
                     $creator,
+                    $coordinator,
                     $this->generateUrl('app_coordinator_citizen_project', [
                         CitizenProjectFilter::PARAMETER_STATUS => CitizenProject::PENDING,
                     ])

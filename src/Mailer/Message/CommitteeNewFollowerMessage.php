@@ -8,29 +8,31 @@ use Ramsey\Uuid\Uuid;
 
 final class CommitteeNewFollowerMessage extends Message
 {
-    public static function create(Committee $committee, array $hosts, Adherent $newFollower, string $hostUrl): self
+    public static function create(Committee $committee, Adherent $newFollower, array $hosts, string $hostUrl): self
     {
         if (!$hosts) {
-            throw new \InvalidArgumentException('At least one Adherent recipients is required.');
+            throw new \InvalidArgumentException('At least one recipient is required.');
         }
 
         $host = array_shift($hosts);
         if (!$host instanceof Adherent) {
-            throw new \RuntimeException('First recipient must be an Adherent instance.');
+            throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
         }
 
         $message = new self(
             Uuid::uuid4(),
-            '54904',
             $host->getEmailAddress(),
             $host->getFullName(),
-            'Un nouveau membre vient de suivre votre comité',
             self::getTemplateVars($committee, $newFollower, $hostUrl),
             self::getRecipientVars($host),
             $newFollower->getEmailAddress()
         );
 
         foreach ($hosts as $host) {
+            if (!$host instanceof Adherent) {
+                throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
+            }
+
             $message->addRecipient(
                 $host->getEmailAddress(),
                 $host->getFullName(),

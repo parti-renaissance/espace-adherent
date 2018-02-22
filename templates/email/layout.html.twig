@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>La République En Marche !</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+        @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700);
+
+        /* ==================== Client-specific Styles ==================== */
+
+        #outlook a {
+            padding: 0;
+        }
+        /* Force Outlook to provide a "view in browser" message */
+
+        .ReadMsgBody {
+            width: 100%;
+        }
+
+        .ExternalClass {
+            width: 100%;
+        }
+        /* Force Hotmail to display emails at full width */
+
+        .ExternalClass,
+        .ExternalClass p,
+        .ExternalClass span,
+        .ExternalClass font,
+        .ExternalClass td,
+        .ExternalClass div {
+            line-height: 100%;
+        }
+        /* Force Hotmail to display normal line spacing */
+
+        body,
+        table,
+        td,
+        p,
+        a,
+        li,
+        blockquote {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+        /* Prevent WebKit and Windows mobile changing default text sizes */
+
+        table,
+        td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+        /* Remove spacing between tables in Outlook 2007 and up */
+
+        /* ==================== Reset Styles ==================== */
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100% !important;
+            width: 100% !important;
+        }
+
+        img {
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+        }
+
+        table {
+            border-collapse: collapse !important;
+        }
+
+        /* ==================== Page Styles ==================== */
+
+        body {
+            font-family: "Roboto", Helvetica, Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            margin: 15px 0;
+            color: #E5E5E5; /* old IE */
+            background-color: #E5E5E5; /* Modern Browsers */
+        }
+
+        .email__header,
+        .email__content {
+            background-color: white;
+        }
+
+        .email__header > td {
+            padding-top: 45px;
+            padding-bottom: 0;
+        }
+
+        .email__content > td {
+            padding-bottom: 15px;
+        }
+
+        .email__social {
+            display: inline-block;
+            text-decoration: none;
+            width: 25px;
+            text-align: center;
+        }
+
+        .padding-lg {
+            padding: 30px 0;
+        }
+
+        .padding-sm {
+            padding: 10px 0;
+        }
+
+        .email__unsub {
+            font-size: 12px;
+        }
+
+        .email__unsub a {
+            color: #666666;
+            text-decoration: none;
+            border-bottom: 1px solid #999999;
+        }
+
+        .btn {
+            width: 80%;
+            padding: 30px;
+            border-radius: 3px;
+            box-sizing: border-box;
+            display: inline-block;
+            background-color: #005be2;
+            color: white;
+            font-family: Gill Sans, Helvetica, Arial, serif;
+            font-size: 18px;
+            text-decoration: none;
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        .text--link {
+            color: #005be2;
+            text-decoration: none;
+        }
+
+        .text--pink {
+            color: #FF3680;
+        }
+
+
+        /* ==================== Mobile Styles ==================== */
+
+        @media only screen and (max-width: 480px) {
+            /* ==================== Client-specific Mobile Styles ==================== */
+            body,
+            table,
+            td,
+            p,
+            a,
+            li,
+            blockquote {
+                -webkit-text-size-adjust: none !important;
+            }
+            /* Prevent Webkit platforms from changing default text sizes */
+            body {
+                width: 100% !important;
+                min-width: 100% !important;
+            }
+            /* Prevent iOS Mail from adding padding to the body */
+
+            /* ==================== Mobile Reset Styles ==================== */
+            #bodyCell {
+                padding: 0 10px !important;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
+    <tr>
+        <td align="center" valign="top">
+            <table border="0" cellpadding="20" cellspacing="0" width="600" id="emailContainer">
+                <tr class="email__preheader">
+                    <td></td>
+                </tr>
+                <tr class="email__header">
+                    <td align="center" valign="top">
+                        <a href="{{ url('homepage') }}" target="_blank">
+                            <img alt="Logo En Marche !" title="En Marche !" height="60" width="225" src="https://storage.googleapis.com/en-marche-fr/logos/logo-larem-transactionnal-emails.png">
+                        </a>
+                    </td>
+                </tr>
+                <tr class="email__content">
+                    <td align="center" valign="top">
+                        <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                            {% block content "" %}
+                        </table>
+                    </td>
+                </tr>
+                <tr class="email__footer">
+                    <td align="center" valign="top">
+                        <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                            <tr>
+                                <td align="center" valign="top" class="padding-sm">
+                                    <a href="{{ url('homepage') }}" target="_blank">
+                                        <img alt="Logo En Marche !" title="En Marche !" height="35" width="70" src="https://storage.googleapis.com/en-marche-fr/logos/em-logo-transactionnal-emails-mini.png">
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" valign="top" class="padding-sm">
+                                    <a href="https://www.facebook.com/EnMarche" class="email__social" target="_blank">
+                                        <img alt="facebook" width="20" height="20" src="https://storage.googleapis.com/en-marche-fr/COMMUNICATION/SIGNATURE-E-MAIL/RX/EN-MARCHE-FACEBOOK.png">
+                                    </a>
+                                    <a href="https://www.instagram.com/enmarchefr/" class="email__social" target="_blank">
+                                        <img alt="instagram" width="20" height="20" src="https://storage.googleapis.com/en-marche-fr/COMMUNICATION/SIGNATURE-E-MAIL/RX/EN-MARCHE-INSTAGRAM.png">
+                                    </a>
+                                    <a href="https://www.linkedin.com/company/en-marche" class="email__social" target="_blank">
+                                        <img alt="linkedin" width="20" height="20" src="https://storage.googleapis.com/en-marche-fr/COMMUNICATION/SIGNATURE-E-MAIL/RX/EN-MARCHE-LINKEDIN.png">
+                                    </a>
+                                    <a href="https://medium.com/@enmarchefr" class="email__social" target="_blank">
+                                        <img alt="medium" width="20" height="20" src="https://storage.googleapis.com/en-marche-fr/COMMUNICATION/SIGNATURE-E-MAIL/RX/EN-MARCHE-MEDIUM.png">
+                                    </a>
+                                    <a href="http://www.snapchat.com/add/enmarchefr" class="email__social" target="_blank">
+                                        <img alt="snapchat" width="20" height="20" src="https://storage.googleapis.com/en-marche-fr/COMMUNICATION/SIGNATURE-E-MAIL/RX/EN-MARCHE-SNAPCHAT.png">
+                                    </a>
+                                    <a href="https://twitter.com/enmarchefr" class="email__social" target="_blank">
+                                        <img alt="twitter" width="20" height="20" src="https://storage.googleapis.com/en-marche-fr/COMMUNICATION/SIGNATURE-E-MAIL/RX/EN-MARCHE-TWITTER.png">
+                                    </a>
+                                    <a href="https://www.youtube.com/channel/UCJw8np695wqWOaKVhFjkRyg" class="email__social" target="_blank">
+                                        <img alt="youtube" width="20" height="20" src="https://storage.googleapis.com/en-marche-fr/COMMUNICATION/SIGNATURE-E-MAIL/RX/EN-MARCHE-YOUTUBE.png">
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" valign="top" class="padding-sm email__unsub">
+                                    <a target="_blank" href="{{ url('app_user_set_email_notifications') }}">Gérer vos notifications</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+
+</html>

@@ -42,9 +42,9 @@ class CitizenActionMessageNotifier implements EventSubscriberInterface
 
             foreach ($registrationChunks as $chunk) {
                 $this->mailer->sendMessage($this->createCancelMessage(
-                    $chunk,
                     $citizenAction,
-                    $citizenActionEvent->getAuthor()
+                    $citizenActionEvent->getAuthor(),
+                    $chunk
                 ));
             }
         }
@@ -57,16 +57,16 @@ class CitizenActionMessageNotifier implements EventSubscriberInterface
         ];
     }
 
-    private function createCancelMessage(array $registered, CitizenAction $citizenAction, Adherent $host): CitizenActionCancellationMessage
-    {
+    private function createCancelMessage(
+        CitizenAction $citizenAction,
+        Adherent $host,
+        array $registered
+    ): CitizenActionCancellationMessage {
         return CitizenActionCancellationMessage::create(
-            $registered,
-            $host,
             $citizenAction,
-            $this->urlGenerator->generate('app_search_events', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            function (EventRegistration $registration) {
-                return CitizenActionCancellationMessage::getRecipientVars($registration->getFirstName());
-            }
+            $host,
+            $registered,
+            $this->urlGenerator->generate('app_search_events', [], UrlGeneratorInterface::ABSOLUTE_URL)
         );
     }
 }

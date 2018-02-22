@@ -11,10 +11,8 @@ final class NewsletterSubscriptionMessage extends Message
     {
         return new self(
             Uuid::uuid4(),
-            '54637',
             $subscription->getEmail(),
-            null,
-            'Je marche !'
+            null
         );
     }
 }

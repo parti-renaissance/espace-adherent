@@ -8,51 +8,54 @@ use Ramsey\Uuid\Uuid;
 
 final class EventContactMembersMessage extends Message
 {
-    /**
-     * @param EventRegistration[] $recipients
-     * @param Adherent            $organizer
-     * @param string              $subject
-     * @param string              $content
-     *
-     * @return EventContactMembersMessage
-     */
-    public static function create(array $recipients, Adherent $organizer, string $subject, string $content): self
+    public static function create(Adherent $organizer, array $recipients, string $subject, string $content): self
     {
-        $recipients = array_values($recipients);
+        if (!$recipients) {
+            throw new \InvalidArgumentException('At least one recipient is required.');
+        }
+
         $recipient = array_shift($recipients);
+        if (!$recipient instanceof EventRegistration) {
+            throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', EventRegistration::class));
+        }
 
         $message = new self(
             Uuid::uuid4(),
-            '116586',
             $recipient->getEmailAddress(),
             $recipient->getFirstName(),
-            "[Événement] $subject",
-            [
-                'organizer_firstname' => self::escape($organizer->getFirstName()),
-                'target_message' => $content,
-            ],
-            [
-                'target_firstname' => self::escape($recipient->getFirstName()),
-            ],
+            static::getTemplateVars($organizer, $subject, $content),
+            static::getRecipientVars($recipient),
             $organizer->getEmailAddress()
         );
 
         foreach ($recipients as $recipient) {
             if (!$recipient instanceof EventRegistration) {
-                throw new \InvalidArgumentException(
-                    'This message builder requires a collection of EventRegistration instances'
-                );
+                throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', EventRegistration::class));
             }
 
             $message->addRecipient(
                 $recipient->getEmailAddress(),
                 $recipient->getFirstName(),
-                [
-                    'target_firstname' => self::escape($recipient->getFirstName()),
-                ]
+                static::getRecipientVars($recipient)
             );
         }
 
         return $message;
+    }
+
+    private static function getTemplateVars(Adherent $organizer, string $subject, string $content): array
+    {
+        return [
+            'organizer_firstname' => self::escape($organizer->getFirstName()),
+            'target_subject' => $subject,
+            'target_message' => $content,
+        ];
+    }
+
+    private static function getRecipientVars(EventRegistration $registration): array
+    {
+        return [
+            'target_firstname' => self::escape($registration->getFirstName()),
+        ];
     }
 }
