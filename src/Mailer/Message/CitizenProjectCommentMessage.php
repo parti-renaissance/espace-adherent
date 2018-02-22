@@ -49,7 +49,7 @@ final class CitizenProjectCommentMessage extends Message
     private static function getTemplateVars(Adherent $author, CitizenProjectComment $comment): array
     {
         return [
-            'citizen_project_host_firstname' => self::escape($author->getFirstName()),
+            'citizen_project_host_first_name' => self::escape($author->getFirstName()),
             'citizen_project_host_message' => $comment->getContent(),
         ];
     }

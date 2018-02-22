@@ -58,7 +58,7 @@ class MembershipRequestHandler
         $this->manager->flush();
 
         $activationUrl = $this->generateMembershipActivationUrl($adherent, $token);
-        $this->mailer->sendMessage(AdherentAccountActivationMessage::createFromAdherent($adherent, $activationUrl));
+        $this->mailer->sendMessage(AdherentAccountActivationMessage::create($adherent, $activationUrl));
 
         $this->dispatcher->dispatch(UserEvents::USER_CREATED, new UserEvent($adherent));
     }
@@ -69,7 +69,7 @@ class MembershipRequestHandler
         $user->join();
         $this->manager->flush();
 
-        $this->mailer->sendMessage(AdherentAccountConfirmationMessage::createFromAdherent(
+        $this->mailer->sendMessage(AdherentAccountConfirmationMessage::create(
             $user,
             $this->adherentManager->countActiveAdherents(),
             $this->committeeManager->countApprovedCommittees()
@@ -106,7 +106,7 @@ class MembershipRequestHandler
 
         $this->adherentRegistry->unregister($adherent, $unregistration);
 
-        $message = AdherentTerminateMembershipMessage::createFromAdherent($adherent);
+        $message = AdherentTerminateMembershipMessage::create($adherent);
         $this->mailer->sendMessage($message);
 
         $this->dispatcher->dispatch(UserEvents::USER_DELETED, new UserEvent($adherent));

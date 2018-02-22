@@ -2,49 +2,49 @@
 
 namespace Tests\AppBundle\Mailer\Message;
 
-use AppBundle\Entity\Adherent;
 use AppBundle\Mailer\Message\AdherentAccountConfirmationMessage;
-use AppBundle\Mailer\Message\MessageRecipient;
-use PHPUnit\Framework\TestCase;
 
-class AdherentAccountConfirmationMessageTest extends TestCase
+/**
+ * @group message
+ */
+class AdherentAccountConfirmationMessageTest extends MessageTestCase
 {
-    public function testCreateAdherentAccountConfirmationMessage()
+    public function testCreate(): void
     {
-        $adherent = $this->getMockBuilder(Adherent::class)->disableOriginalConstructor()->getMock();
-        $adherent->expects($this->once())->method('getEmailAddress')->willReturn('jerome@example.com');
-        $adherent->expects($this->once())->method('getFullName')->willReturn('Jérôme Pichoud');
-        $adherent->expects($this->once())->method('getFirstName')->willReturn('Jérôme');
-        $adherent->expects($this->once())->method('getLastName')->willReturn('Pichoud');
+        $message = AdherentAccountConfirmationMessage::create(
+            $this->createAdherent('jean@example.com', 'Jean', 'Doe'),
+            8,
+            15
+        );
 
-        $message = AdherentAccountConfirmationMessage::createFromAdherent($adherent, 8, 15);
-
-        $this->assertInstanceOf(AdherentAccountConfirmationMessage::class, $message);
-        $this->assertSame('54673', $message->getTemplate());
-        $this->assertSame('Et maintenant ?', $message->getSubject());
-        $this->assertCount(4, $message->getVars());
-        $this->assertSame(
+        self::assertMessage(
+            AdherentAccountConfirmationMessage::class,
             [
                 'adherents_count' => 8,
                 'committees_count' => 15,
-                'target_firstname' => '',
-                'target_lastname' => '',
+                'first_name' => 'Jean',
+                'last_name' => 'Doe',
             ],
-            $message->getVars()
+            $message
         );
 
-        $recipient = $message->getRecipient(0);
-        $this->assertInstanceOf(MessageRecipient::class, $recipient);
-        $this->assertSame('jerome@example.com', $recipient->getEmailAddress());
-        $this->assertSame('Jérôme Pichoud', $recipient->getFullName());
-        $this->assertSame(
+        self::assertNoSender($message);
+        self::assertNoReplyTo($message);
+
+        self::assertCountRecipients(1, $message);
+
+        self::assertMessageRecipient(
+            'jean@example.com',
+            'Jean Doe',
             [
                 'adherents_count' => 8,
                 'committees_count' => 15,
-                'target_firstname' => 'Jérôme',
-                'target_lastname' => 'Pichoud',
+                'first_name' => 'Jean',
+                'last_name' => 'Doe',
             ],
-            $recipient->getVars()
+            $message
         );
+
+        self::assertNoCC($message);
     }
 }

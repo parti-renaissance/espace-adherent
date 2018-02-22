@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 final class EventInvitationMessage extends Message
 {
-    public static function createFromInvite(EventInvite $invite, Event $event, string $eventUrl): self
+    public static function create(EventInvite $invite, Event $event, string $eventUrl): self
     {
         $message = new self(
             Uuid::uuid4(),
@@ -29,7 +29,8 @@ final class EventInvitationMessage extends Message
     private static function getTemplateVars(EventInvite $invite, Event $event, string $eventUrl): array
     {
         return [
-            'sender_firstname' => self::escape($invite->getFirstName()),
+            'sender_first_name' => self::escape($invite->getFirstName()),
+            'sender_full_name' => self::escape($invite->getFullName()),
             'sender_message' => self::escape($invite->getMessage()),
             'event_name' => self::escape($event->getName()),
             'event_slug' => $eventUrl,

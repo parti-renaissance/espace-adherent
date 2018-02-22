@@ -7,14 +7,13 @@ use Ramsey\Uuid\Uuid;
 
 final class EventRegistrationConfirmationMessage extends Message
 {
-    public static function createFromRegistration(EventRegistration $registration, string $eventLink): self
+    public static function create(EventRegistration $registration, string $eventLink): self
     {
         return new self(
             Uuid::uuid4(),
             $registration->getEmailAddress(),
             $registration->getFullName(),
-            static::getTemplateVars($registration, $eventLink),
-            static::getRecipientVars($registration)
+            static::getTemplateVars($registration, $eventLink)
         );
     }
 
@@ -23,16 +22,10 @@ final class EventRegistrationConfirmationMessage extends Message
         $event = $registration->getEvent();
 
         return [
+            'first_name' => self::escape($registration->getFirstName()),
             'event_name' => self::escape($event->getName()),
-            'event_organiser' => self::escape($event->getOrganizerName()),
+            'event_organizer' => self::escape($event->getOrganizerName()),
             'event_link' => $eventLink,
-        ];
-    }
-
-    private static function getRecipientVars(EventRegistration $registration): array
-    {
-        return [
-            'target_firstname' => self::escape($registration->getFirstName()),
         ];
     }
 }

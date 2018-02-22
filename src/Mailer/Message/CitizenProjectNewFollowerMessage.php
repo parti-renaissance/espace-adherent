@@ -23,7 +23,7 @@ final class CitizenProjectNewFollowerMessage extends Message
             Uuid::uuid4(),
             $host->getEmailAddress(),
             $host->getFullName(),
-            self::getTemplateVars($citizenProject, $newFollower),
+            static::getTemplateVars($citizenProject, $newFollower),
             [],
             $newFollower->getEmailAddress()
         );
@@ -46,8 +46,8 @@ final class CitizenProjectNewFollowerMessage extends Message
     {
         return [
             'citizen_project_name' => self::escape($citizenProject->getName()),
-            'follower_firstname' => self::escape($newFollower->getFirstName()),
-            'follower_lastname' => $newFollower->getLastNameInitial(),
+            'follower_first_name' => self::escape($newFollower->getFirstName()),
+            'follower_last_name' => $newFollower->getLastNameInitial(),
             'follower_age' => $newFollower->getAge() ?? 'n/a',
             'follower_city' => $newFollower->getCityName() ?? 'n/a',
         ];

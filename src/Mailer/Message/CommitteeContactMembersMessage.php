@@ -47,16 +47,16 @@ final class CommitteeContactMembersMessage extends Message
     private static function getTemplateVars(Adherent $host, string $subject, string $content): array
     {
         return [
-            'animator_firstname' => self::escape($host->getFirstName()),
-            'target_subject' => $subject,
-            'target_message' => $content,
+            'host_first_name' => self::escape($host->getFirstName()),
+            'subject' => $subject,
+            'message' => $content,
         ];
     }
 
     private static function getRecipientVars(Adherent $adherent): array
     {
         return [
-            'target_firstname' => self::escape($adherent->getFirstName())
+            'first_name' => self::escape($adherent->getFirstName())
         ];
     }
 }

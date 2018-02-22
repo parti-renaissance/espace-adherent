@@ -30,7 +30,7 @@ class EventRegistrationSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->mailer->sendMessage(EventRegistrationConfirmationMessage::createFromRegistration(
+        $this->mailer->sendMessage(EventRegistrationConfirmationMessage::create(
             $event->getRegistration(),
             $this->generateUrl('app_event_show', [
                 'slug' => $event->getSlug(),

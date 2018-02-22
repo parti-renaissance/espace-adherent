@@ -20,7 +20,7 @@ final class AdherentResetPasswordMessage extends Message
     private static function getTemplateVars(Adherent $adherent, $resetPasswordLink): array
     {
         return [
-            'target_firstname' => self::escape($adherent->getFirstName()),
+            'first_name' => self::escape($adherent->getFirstName()),
             'reset_link' => $resetPasswordLink,
         ];
     }

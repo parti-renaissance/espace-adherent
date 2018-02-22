@@ -2,35 +2,41 @@
 
 namespace Tests\AppBundle\Mailer\Message;
 
-use AppBundle\Entity\Adherent;
 use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
-use AppBundle\Mailer\Message\MessageRecipient;
-use PHPUnit\Framework\TestCase;
-use Tests\AppBundle\TestHelperTrait;
 
-class AdherentTerminateMembershipMessageTest extends TestCase
+/**
+ * @group message
+ */
+class AdherentTerminateMembershipMessageTest extends MessageTestCase
 {
-    use TestHelperTrait;
-
-    public function testCreateAdherentTerminateMembershipMessage()
+    public function testCreateFromAdherent(): void
     {
-        $adherent = $this->getMockBuilder(Adherent::class)->disableOriginalConstructor()->getMock();
-        $adherent->expects($this->once())->method('getEmailAddress')->willReturn('kevin@example.com');
-        $adherent->expects($this->once())->method('getFullName')->willReturn('Kévin CORNIL');
-        $adherent->expects($this->once())->method('getFirstName')->willReturn('Kévin');
+        $message = AdherentTerminateMembershipMessage::create(
+            $this->createAdherent('jean@example.com', 'Jean', 'Doe')
+        );
 
-        $message = AdherentTerminateMembershipMessage::createFromAdherent($adherent);
+        self::assertMessage(
+            AdherentTerminateMembershipMessage::class,
+            [
+                'first_name' => 'Jean',
+            ],
+            $message
+        );
 
-        $this->assertInstanceOf(AdherentTerminateMembershipMessage::class, $message);
-        $this->assertSame('187353', $message->getTemplate());
-        $this->assertSame('Votre départ d\'En Marche !', $message->getSubject());
-        $this->assertCount(1, $message->getVars());
-        $this->assertSame(['target_firstname' => ''], $message->getVars());
+        self::assertNoSender($message);
+        self::assertNoReplyTo($message);
 
-        $recipient = $message->getRecipient(0);
-        $this->assertInstanceOf(MessageRecipient::class, $recipient);
-        $this->assertSame('kevin@example.com', $recipient->getEmailAddress());
-        $this->assertSame('Kévin CORNIL', $recipient->getFullName());
-        $this->assertSame(['target_firstname' => 'Kévin'], $recipient->getVars());
+        self::assertCountRecipients(1, $message);
+
+        self::assertMessageRecipient(
+            'jean@example.com',
+            'Jean Doe',
+            [
+                'first_name' => 'Jean',
+            ],
+            $message
+        );
+
+        self::assertNoCC($message);
     }
 }

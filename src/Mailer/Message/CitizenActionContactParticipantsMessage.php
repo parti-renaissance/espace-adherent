@@ -47,7 +47,7 @@ final class CitizenActionContactParticipantsMessage extends Message
     private static function getTemplateVars(Adherent $organizer, string $subject, string $message): array
     {
         return [
-            'citizen_project_host_firstname' => self::escape($organizer->getFirstName()),
+            'citizen_project_host_first_name' => self::escape($organizer->getFirstName()),
             'citizen_project_host_subject' => $subject,
             'citizen_project_host_message' => $message,
         ];

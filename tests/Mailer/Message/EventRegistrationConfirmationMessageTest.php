@@ -2,51 +2,84 @@
 
 namespace Tests\AppBundle\Mailer\Message;
 
+use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
-use Ramsey\Uuid\UuidInterface;
 
-class EventRegistrationConfirmationMessageTest extends AbstractEventMessageTest
+/**
+ * @group message
+ */
+class EventRegistrationConfirmationMessageTest extends MessageTestCase
 {
-    const EVENT_LINK = 'http://en-marche.fr/evenements/201/2017-12-27-evenement-a-lyon';
+    /**
+     * @var EventRegistration|null
+     */
+    private $eventRegistration;
 
-    public function testCreateMessageFromEventRegistration()
+    public function testCreate(): void
     {
-        $event = $this->createEventMock('Grand Meeting de Paris', '2017-02-01 15:30:00', 'Palais des Congrés, Porte Maillot', '75001-75101', 'EM Paris');
-        $event->expects($this->any())->method('getOrganizerName')->willReturn('Michelle');
-
-        $registration = $this->createMock(EventRegistration::class);
-        $registration->expects($this->any())->method('getEvent')->willReturn($event);
-        $registration->expects($this->any())->method('getFirstName')->willReturn('John');
-        $registration->expects($this->any())->method('getEmailAddress')->willReturn('john@bar.com');
-
-        $message = EventRegistrationConfirmationMessage::createFromRegistration($registration, self::EVENT_LINK);
-
-        $this->assertInstanceOf(EventRegistrationConfirmationMessage::class, $message);
-        $this->assertInstanceOf(UuidInterface::class, $message->getUuid());
-        $this->assertSame('118620', $message->getTemplate());
-        $this->assertSame('john@bar.com', $message->getRecipient(0)->getEmailAddress());
-        $this->assertSame('John', $message->getRecipient(0)->getFullName());
-        $this->assertSame('Confirmation de participation à un événement En Marche !', $message->getSubject());
-        $this->assertSame(
-            [
-                'event_name' => 'Grand Meeting de Paris',
-                'event_organiser' => 'Michelle',
-                'event_link' => self::EVENT_LINK,
-            ],
-            $message->getVars()
+        $message = EventRegistrationConfirmationMessage::create(
+            $this->eventRegistration,
+            'https://enmarche.code/evenements/foo-bar'
         );
 
-        $recipient = $message->getRecipient(0);
-
-        $this->assertSame(
+        self::assertMessage(
+            EventRegistrationConfirmationMessage::class,
             [
-                'event_name' => 'Grand Meeting de Paris',
-                'event_organiser' => 'Michelle',
-                'event_link' => self::EVENT_LINK,
-                'prenom' => 'John',
+                'first_name' => 'Bernard',
+                'event_name' => 'Événement #1',
+                'event_organizer' => 'Jean Doe',
+                'event_link' => 'https://enmarche.code/evenements/foo-bar',
             ],
-            $recipient->getVars()
+            $message
         );
+
+        self::assertNoSender($message);
+        self::assertNoReplyTo($message);
+
+        self::assertCountRecipients(1, $message);
+
+        self::assertMessageRecipient(
+            'bernard@example.com',
+            'Bernard Smith',
+            [
+                'first_name' => 'Bernard',
+                'event_name' => 'Événement #1',
+                'event_organizer' => 'Jean Doe',
+                'event_link' => 'https://enmarche.code/evenements/foo-bar',
+            ],
+            $message
+        );
+
+        self::assertNoCC($message);
+    }
+
+    protected function setUp()
+    {
+        $event = $this->createMock(BaseEvent::class);
+
+        $event
+            ->expects(self::once())
+            ->method('getName')
+            ->willReturn('Événement #1')
+        ;
+        $event
+            ->expects(self::once())
+            ->method('getOrganizerName')
+            ->willReturn('Jean Doe')
+        ;
+
+        $this->eventRegistration = $this->createEventRegistration('bernard@example.com', 'Bernard', 'Smith');
+
+        $this->eventRegistration
+            ->expects(self::once())
+            ->method('getEvent')
+            ->willReturn($event)
+        ;
+    }
+
+    protected function tearDown()
+    {
+        $this->eventRegistration = null;
     }
 }

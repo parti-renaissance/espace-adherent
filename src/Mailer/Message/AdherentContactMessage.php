@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 final class AdherentContactMessage extends Message
 {
-    public static function createFromModel(ContactMessage $contactMessage): self
+    public static function create(ContactMessage $contactMessage): self
     {
         $sender = $contactMessage->getFrom();
         $recipient = $contactMessage->getTo();
@@ -26,9 +26,9 @@ final class AdherentContactMessage extends Message
     private static function getTemplateVars(Adherent $sender, Adherent $recipient, string $message): array
     {
         return [
-            'animator_firstname' => self::escape($recipient->getFirstName()),
-            'member_firstname' => self::escape($sender->getFirstName()),
-            'target_message' => \nl2br(self::escape($message)),
+            'recipient_first_name' => self::escape($recipient->getFirstName()),
+            'sender_first_name' => self::escape($sender->getFirstName()),
+            'message' => \nl2br(self::escape($message)),
         ];
     }
 }

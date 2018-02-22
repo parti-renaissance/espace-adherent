@@ -30,7 +30,7 @@ class NewsletterSubscriptionHandler
 
         $campaignExpired = (bool) $this->requestStack->getCurrentRequest()->attributes->get('_campaign_expired', false);
         if (!$campaignExpired) {
-            $this->mailer->sendMessage(NewsletterSubscriptionMessage::createFromSubscription($subscription));
+            $this->mailer->sendMessage(NewsletterSubscriptionMessage::create($subscription));
         }
     }
 

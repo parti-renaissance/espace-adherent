@@ -17,8 +17,7 @@ final class CitizenProjectRequestCommitteeSupportMessage extends Message
             Uuid::uuid4(),
             $committeeSupervisor->getEmailAddress(),
             $committeeSupervisor->getFullName(),
-            static::getTemplateVars($citizenProject, $validationUrl),
-            static::getRecipientVars($committeeSupervisor)
+            static::getTemplateVars($citizenProject, $committeeSupervisor, $validationUrl)
         );
 
         $message->setSenderEmail('projetscitoyens@en-marche.fr');
@@ -34,17 +33,11 @@ final class CitizenProjectRequestCommitteeSupportMessage extends Message
         $creator = $citizenProject->getCreator();
 
         return [
+            'first_name' => self::escape($committeeSupervisor->getFirstName() ?? ''),
             'citizen_project_name' => self::escape($citizenProject->getName()),
-            'citizen_project_host_firstname' => self::escape($creator ? $creator->getFirstName() : ''),
-            'citizen_project_host_lastname' => self::escape($creator ? $creator->getLastName() : ''),
-            'target_firstname' => self::escape($committeeSupervisor->getFirstName() ?? ''),
+            'creator_first_name' => self::escape($creator ? $creator->getFirstName() : ''),
+            'creator_last_name' => self::escape($creator ? $creator->getLastName() : ''),
             'validation_url' => self::escape($validationUrl),
-        ];
-    }
-
-    private static function getRecipientVars(Adherent $committeeSupervisor): array
-    {
-        return [
         ];
     }
 }

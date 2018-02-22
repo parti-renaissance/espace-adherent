@@ -23,8 +23,8 @@ final class CommitteeNewFollowerMessage extends Message
             Uuid::uuid4(),
             $host->getEmailAddress(),
             $host->getFullName(),
-            self::getTemplateVars($committee, $newFollower, $hostUrl),
-            self::getRecipientVars($host),
+            static::getTemplateVars($committee, $newFollower, $hostUrl),
+            static::getRecipientVars($host),
             $newFollower->getEmailAddress()
         );
 
@@ -48,8 +48,8 @@ final class CommitteeNewFollowerMessage extends Message
         return [
             'committee_name' => self::escape($committee->getName()),
             'committee_admin_url' => $hostUrl,
-            'member_firstname' => self::escape($newFollower->getFirstName()),
-            'member_lastname' => $newFollower->getLastNameInitial(),
+            'member_first_name' => self::escape($newFollower->getFirstName()),
+            'member_last_name' => $newFollower->getLastNameInitial(),
             'member_age' => $newFollower->getAge() ?? 'n/a',
         ];
     }
@@ -57,7 +57,7 @@ final class CommitteeNewFollowerMessage extends Message
     private static function getRecipientVars(Adherent $host): array
     {
         return [
-            'animator_firstname' => self::escape($host->getFullName()),
+            'first_name' => self::escape($host->getFirstName()),
         ];
     }
 }

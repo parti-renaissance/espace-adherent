@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 final class AdherentTerminateMembershipMessage extends Message
 {
-    public static function createFromAdherent(Adherent $adherent): self
+    public static function create(Adherent $adherent): self
     {
         return new self(
             Uuid::uuid4(),
@@ -20,7 +20,7 @@ final class AdherentTerminateMembershipMessage extends Message
     private static function getTemplateVars(Adherent $adherent): array
     {
         return [
-            'target_firstname' => self::escape($adherent->getFirstName()),
+            'first_name' => self::escape($adherent->getFirstName()),
         ];
     }
 }

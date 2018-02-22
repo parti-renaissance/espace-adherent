@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 final class BoardMemberMessage extends Message
 {
-    public static function createFromModel(BoardMemberMessageModel $model, array $recipients): self
+    public static function create(BoardMemberMessageModel $model, array $recipients): self
     {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one recipient is required.');
@@ -52,10 +52,10 @@ final class BoardMemberMessage extends Message
     private static function getTemplateVars(Adherent $boardMember, BoardMemberMessageModel $message): array
     {
         return [
-            'member_firstname' => self::escape($boardMember->getFirstName()),
-            'member_lastname' => self::escape($boardMember->getLastName()),
-            'target_subject' => $message->getSubject(),
-            'target_message' => $message->getContent(),
+            'member_first_name' => self::escape($boardMember->getFirstName()),
+            'member_last_name' => self::escape($boardMember->getLastName()),
+            'subject' => $message->getSubject(),
+            'message' => $message->getContent(),
         ];
     }
 }

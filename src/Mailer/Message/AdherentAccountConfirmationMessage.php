@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 final class AdherentAccountConfirmationMessage extends Message
 {
-    public static function createFromAdherent(
+    public static function create(
         Adherent $adherent,
         int $adherentsCount = 0,
         int $committeesCount = 0
@@ -28,8 +28,8 @@ final class AdherentAccountConfirmationMessage extends Message
         return [
             'adherents_count' => $adherentsCount,
             'committees_count' => $committeesCount,
-            'target_firstname' => self::escape($adherent->getFirstName()),
-            'target_lastname' => self::escape($adherent->getLastName()),
+            'first_name' => self::escape($adherent->getFirstName()),
+            'last_name' => self::escape($adherent->getLastName()),
         ];
     }
 }

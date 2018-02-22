@@ -52,14 +52,14 @@ final class EventCancellationMessage extends Message
     {
         return [
             'event_name' => $event->getName(),
-            'event_slug' => $eventsLink,
+            'event_url' => $eventsLink,
         ];
     }
 
     private static function getRecipientVars(EventRegistration $registration): array
     {
         return [
-            'target_firstname' => self::escape($registration->getFirstName()),
+            'first_name' => self::escape($registration->getFirstName()),
         ];
     }
 }

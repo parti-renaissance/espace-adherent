@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 final class AdherentAccountActivationMessage extends Message
 {
-    public static function createFromAdherent(Adherent $adherent, string $activationUrl): self
+    public static function create(Adherent $adherent, string $activationUrl): self
     {
         return new self(
             Uuid::uuid4(),

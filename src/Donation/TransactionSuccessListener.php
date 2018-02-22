@@ -53,7 +53,7 @@ class TransactionSuccessListener
 
         $campaignExpired = (bool) $this->requestStack->getCurrentRequest()->attributes->get('_campaign_expired', false);
         if (!$campaignExpired && $donation->isSuccessful()) {
-            $this->mailer->sendMessage(DonationMessage::createFromDonation($donation));
+            $this->mailer->sendMessage(DonationMessage::create($donation));
         }
     }
 }

@@ -16,6 +16,6 @@ class ContactMessageHandler
 
     public function handle(ContactMessage $contactMessage)
     {
-        $this->mailer->sendMessage(AdherentContactMessage::createFromModel($contactMessage));
+        $this->mailer->sendMessage(AdherentContactMessage::create($contactMessage));
     }
 }

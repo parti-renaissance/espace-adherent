@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 final class PurchasingPowerMessage extends Message
 {
-    public static function createFromInvitation(PurchasingPowerInvitation $invitation): self
+    public static function create(PurchasingPowerInvitation $invitation): self
     {
         $message = new self(
             Uuid::uuid4(),

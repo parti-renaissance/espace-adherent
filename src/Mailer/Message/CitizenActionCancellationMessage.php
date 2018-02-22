@@ -27,7 +27,7 @@ final class CitizenActionCancellationMessage extends Message
         $message = new self(
             Uuid::uuid4(),
             $recipient->getEmailAddress(),
-            $recipient->getgetFullName(),
+            $recipient->getFullName(),
             static::getTemplateVars($citizenAction, $eventsLink),
             static::getRecipientVars($recipient),
             $author->getEmailAddress()
@@ -59,7 +59,7 @@ final class CitizenActionCancellationMessage extends Message
     private static function getRecipientVars(EventRegistration $recipient): array
     {
         return [
-            'target_firstname' => self::escape($recipient->getFirstName()),
+            'first_name' => self::escape($recipient->getFirstName()),
         ];
     }
 }

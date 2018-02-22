@@ -28,14 +28,9 @@ class EmailPersisterEventSubscriberTest extends TestCase
         $this->manager->expects($this->once())->method('flush');
         $this->manager->expects($this->once())->method('detach');
 
-        $adherents[] = $this->createAdherentMock('john@smith.tld', 'John', 'Smith');
-        $adherents[] = $this->createAdherentMock('johana156@gmail.com', 'Johana', 'Durand');
-
-        $item = $this->createCommitteeFeedItemMock('25c5762d-5a50-4c68-8f6c-106bcbff862e', 'Aurélien', 'Un message !');
-
         $this->subscriber->onMailerDeliveryMessage(new MailerEvent(
-            $message = CommitteeMessageNotificationMessage::create($adherents, $item, 'Foo subject'),
-            DummyEmailTemplate::createWithMessage($message, 'noreply@en-marche.fr')
+            $message = DummyMessage::create(),
+            DummyEmailTemplate::createWithMessage($message, 'dummy_message', 'noreply@en-marche.fr')
         ));
     }
 
@@ -46,7 +41,7 @@ class EmailPersisterEventSubscriberTest extends TestCase
 
         $this->subscriber->onMailerDeliverySuccess(new MailerEvent(
             $message = DummyMessage::create(),
-            DummyEmailTemplate::createWithMessage($message, 'noreply@en-marche.fr')
+            DummyEmailTemplate::createWithMessage($message, 'dummy_message','noreply@en-marche.fr')
         ));
     }
 

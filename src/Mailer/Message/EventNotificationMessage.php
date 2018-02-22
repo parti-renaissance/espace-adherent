@@ -55,7 +55,7 @@ class EventNotificationMessage extends Message
         string $eventAttendLink
     ): array {
         return [
-            'animator_firstname' => self::escape($host->getFirstName()),
+            'host_first_name' => self::escape($host->getFirstName()),
             'event_name' => self::escape($event->getName()),
             'event_date' => static::formatDate($event->getBeginAt(), 'EEEE d MMMM y'),
             'event_hour' => sprintf(
@@ -72,7 +72,7 @@ class EventNotificationMessage extends Message
     private static function getRecipientVars(Adherent $recipient): array
     {
         return [
-            'target_firstname' => self::escape($recipient->getFirstName()),
+            'first_name' => self::escape($recipient->getFirstName()),
         ];
     }
 

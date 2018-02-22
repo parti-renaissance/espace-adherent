@@ -29,8 +29,8 @@ final class CitizenProjectApprovalConfirmationMessage extends Message
     private static function getTemplateVars(CitizenProject $citizenProject, Adherent $creator): array
     {
         return [
+            'first_name' => self::escape($creator->getFirstName()),
             'citizen_project_name' => self::escape($citizenProject->getName()),
-            'target_firstname' => self::escape($creator->getFirstName()),
         ];
     }
 }

@@ -9,7 +9,7 @@ use Ramsey\Uuid\Uuid;
 
 final class ReferentMessage extends Message
 {
-    public static function createFromModel(ReferentMessageModel $model, array $recipients): self
+    public static function create(ReferentMessageModel $model, array $recipients): self
     {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one recipient is required.');
@@ -51,15 +51,15 @@ final class ReferentMessage extends Message
     private static function getTemplateVars(Adherent $referent, string $message): array
     {
         return [
-            'referent_firstname' => self::escape($referent->getFirstName()),
-            'target_message' => $message,
+            'referent_first_name' => self::escape($referent->getFirstName()),
+            'message' => $message,
         ];
     }
 
     private static function getRecipientVars(ReferentManagedUser $recipient): array
     {
         return [
-            'target_firstname' => self::escape($recipient->getFirstName() ?: ''),
+            'first_name' => self::escape($recipient->getFirstName() ?: ''),
         ];
     }
 }

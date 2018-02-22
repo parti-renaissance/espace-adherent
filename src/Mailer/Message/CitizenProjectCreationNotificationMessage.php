@@ -28,11 +28,11 @@ final class CitizenProjectCreationNotificationMessage extends Message
         Adherent $creator
     ): array {
         return [
+            'first_name' => self::escape($adherent->getFirstName()),
             'citizen_project_name' => self::escape($citizenProject->getName()),
             'citizen_project_slug' => self::escape($citizenProject->getSlug()),
-            'citizen_project_host_firstname' => self::escape($creator->getFirstName()),
-            'citizen_project_host_lastname' => self::escape($creator->getLastName()),
-            'target_firstname' => self::escape($adherent->getFirstName()),
+            'creator_first_name' => self::escape($creator->getFirstName()),
+            'creator_last_name' => self::escape($creator->getLastName()),
         ];
     }
 }

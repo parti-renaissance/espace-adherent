@@ -28,6 +28,6 @@ class BoardMemberMessageNotifier
 
     private function createMessage(BoardMemberMessage $message, array $recipients): Message
     {
-        return Message::createFromModel($message, $recipients);
+        return Message::create($message, $recipients);
     }
 }

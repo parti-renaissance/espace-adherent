@@ -22,7 +22,7 @@ final class EventContactMembersMessage extends Message
         $message = new self(
             Uuid::uuid4(),
             $recipient->getEmailAddress(),
-            $recipient->getFirstName(),
+            $recipient->getFullName(),
             static::getTemplateVars($organizer, $subject, $content),
             static::getRecipientVars($recipient),
             $organizer->getEmailAddress()
@@ -35,7 +35,7 @@ final class EventContactMembersMessage extends Message
 
             $message->addRecipient(
                 $recipient->getEmailAddress(),
-                $recipient->getFirstName(),
+                $recipient->getFullName(),
                 static::getRecipientVars($recipient)
             );
         }
@@ -46,16 +46,16 @@ final class EventContactMembersMessage extends Message
     private static function getTemplateVars(Adherent $organizer, string $subject, string $content): array
     {
         return [
-            'organizer_firstname' => self::escape($organizer->getFirstName()),
-            'target_subject' => $subject,
-            'target_message' => $content,
+            'organizer_first_name' => self::escape($organizer->getFirstName()),
+            'subject' => $subject,
+            'message' => $content,
         ];
     }
 
     private static function getRecipientVars(EventRegistration $registration): array
     {
         return [
-            'target_firstname' => self::escape($registration->getFirstName()),
+            'first_name' => self::escape($registration->getFirstName()),
         ];
     }
 }

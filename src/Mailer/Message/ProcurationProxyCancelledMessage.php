@@ -38,7 +38,7 @@ final class ProcurationProxyCancelledMessage extends Message
     private static function getTemplateVars(ProcurationRequest $request, ProcurationProxy $proxy): array
     {
         return [
-            'target_firstname' => self::escape($request->getFirstNames()),
+            'target_first_name' => self::escape($request->getFirstNames()),
             'voter_first_name' => $proxy->getFirstNames(),
             'voter_last_name' => $proxy->getLastName(),
         ];

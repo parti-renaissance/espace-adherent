@@ -9,8 +9,8 @@ use Ramsey\Uuid\Uuid;
 final class CitizenProjectCreationConfirmationMessage extends Message
 {
     public static function create(
-        CitizenProject $citizenProject,
         Adherent $creator,
+        CitizenProject $citizenProject,
         string $linkCreateCitizenAction
     ): self {
         $message = new self(
@@ -31,9 +31,9 @@ final class CitizenProjectCreationConfirmationMessage extends Message
         string $linkCreateCitizenAction
     ): array {
         return [
+            'first_name' => self::escape($creator->getFirstName()),
             'citizen_project_name' => self::escape($citizenProject->getName()),
-            'link_create_action' => self::escape($linkCreateCitizenAction),
-            'target_firstname' => self::escape($creator->getFirstName()),
+            'create_action_link' => self::escape($linkCreateCitizenAction),
         ];
     }
 }

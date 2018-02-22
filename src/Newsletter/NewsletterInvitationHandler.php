@@ -27,7 +27,7 @@ class NewsletterInvitationHandler
             $invite = NewsletterInvite::create($invitation->firstName, $invitation->lastName, $guest, $ip);
 
             $this->manager->persist($invite);
-            $this->mailer->sendMessage(NewsletterInvitationMessage::createFromInvite($invite, $this->urlGenerator->generate(
+            $this->mailer->sendMessage(NewsletterInvitationMessage::create($invite, $this->urlGenerator->generate(
                 'newsletter_subscription',
                 ['mail' => $guest],
                 UrlGeneratorInterface::ABSOLUTE_URL

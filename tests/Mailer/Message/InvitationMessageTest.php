@@ -4,45 +4,84 @@ namespace Tests\AppBundle\Mailer\Message;
 
 use AppBundle\Entity\Invite;
 use AppBundle\Mailer\Message\InvitationMessage;
-use AppBundle\Mailer\Message\MessageRecipient;
-use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 
-class InvitationMessageTest extends TestCase
+/**
+ * @group message
+ */
+class InvitationMessageTest extends MessageTestCase
 {
-    public function testCreateInvitationMessageFromInvite()
+    /**
+     * @var Invite|null
+     */
+    private $invitation;
+
+    public function testCreateFromInvite(): void
     {
-        $message = InvitationMessage::createFromInvite(Invite::create(
-            'Paul',
-            'Auffray',
-            'jerome.picon@gmail.tld',
-            'Vous êtes invités par Paul Auffray !',
-            '192.168.12.25'
-        ));
+        $message = InvitationMessage::create($this->invitation);
 
-        $this->assertInstanceOf(InvitationMessage::class, $message);
-        $this->assertSame('108243', $message->getTemplate());
-        $this->assertSame('Paul Auffray vous invite à rejoindre En Marche.', $message->getSubject());
-        $this->assertCount(3, $message->getVars());
-        $this->assertSame(
+        self::assertMessage(
+            InvitationMessage::class,
             [
-                'sender_firstname' => 'Paul',
-                'sender_lastname' => 'Auffray',
-                'target_message' => 'Vous êtes invités par Paul Auffray !',
+                'sender_firstname' => 'Jean',
+                'sender_lastname' => 'Bernard',
+                'message' => 'Bonjour, ici Jean.',
             ],
-            $message->getVars()
+            $message
         );
 
-        $recipient = $message->getRecipient('jerome.picon@gmail.tld');
-        $this->assertInstanceOf(MessageRecipient::class, $recipient);
-        $this->assertSame('jerome.picon@gmail.tld', $recipient->getEmailAddress());
-        $this->assertNull($recipient->getFullName());
-        $this->assertSame(
+        self::assertNoSender($message);
+        self::assertNoReplyTo($message);
+
+        self::assertCountRecipients(1, $message);
+
+        self::assertMessageRecipient(
+            'recipient@example.com',
+            null,
             [
-                'sender_firstname' => 'Paul',
-                'sender_lastname' => 'Auffray',
-                'target_message' => 'Vous êtes invités par Paul Auffray !',
+                'sender_firstname' => 'Jean',
+                'sender_lastname' => 'Bernard',
+                'message' => 'Bonjour, ici Jean.',
             ],
-            $recipient->getVars()
+            $message
         );
+
+        self::assertNoCC($message);
+    }
+
+    protected function setUp()
+    {
+        $this->invitation = $this->createMock(Invite::class);
+
+        $this->invitation
+            ->expects(self::once())
+            ->method('getUuid')
+            ->willReturn(Uuid::uuid4())
+        ;
+        $this->invitation
+            ->expects(self::once())
+            ->method('getEmail')
+            ->willReturn('recipient@example.com')
+        ;
+        $this->invitation
+            ->expects(self::once())
+            ->method('getFirstName')
+            ->willReturn('Jean')
+        ;
+        $this->invitation
+            ->expects(self::once())
+            ->method('getLastName')
+            ->willReturn('Bernard')
+        ;
+        $this->invitation
+            ->expects(self::once())
+            ->method('getMessage')
+            ->willReturn('Bonjour, ici Jean.')
+        ;
+    }
+
+    protected function tearDown()
+    {
+        $this->invitation = null;
     }
 }

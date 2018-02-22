@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 final class NewsletterSubscriptionMessage extends Message
 {
-    public static function createFromSubscription(NewsletterSubscription $subscription): self
+    public static function create(NewsletterSubscription $subscription): self
     {
         return new self(
             Uuid::uuid4(),

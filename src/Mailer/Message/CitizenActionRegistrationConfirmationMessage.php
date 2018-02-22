@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 final class CitizenActionRegistrationConfirmationMessage extends Message
 {
-    public static function createFromRegistration(EventRegistration $registration, string $calendarEventUrl): self
+    public static function create(EventRegistration $registration, string $calendarEventUrl): self
     {
         return new self(
             Uuid::uuid4(),
@@ -22,7 +22,7 @@ final class CitizenActionRegistrationConfirmationMessage extends Message
         $citizenAction = $registration->getEvent();
 
         return [
-            'target_firstname' => self::escape($registration->getFirstName()),
+            'first_name' => self::escape($registration->getFirstName()),
             'citizen_action_name' => self::escape($citizenAction->getName()),
             'citizen_action_organiser' => self::escape($citizenAction->getOrganizerName()),
             'citizen_action_calendar_url' => self::escape($calendarEventUrl),

@@ -10,36 +10,30 @@ final class CommitteeApprovalReferentMessage extends Message
 {
     public static function create(
         Adherent $referent,
-        Adherent $animator,
+        Adherent $creator,
         Committee $committee,
-        string $animatorContactLink
+        string $creatorContactLink
     ): self {
         return new self(
             Uuid::uuid4(),
             $referent->getEmailAddress(),
             $referent->getFullName(),
-            static::getTemplateVars($animator, $committee, $animatorContactLink),
-            static::getRecipientVars($referent)
+            static::getTemplateVars($referent, $creator, $committee, $creatorContactLink)
         );
     }
 
     private static function getTemplateVars(
-        Adherent $animator,
+        Adherent $referent,
+        Adherent $creator,
         Committee $committee,
-        string $animatorContactLink
+        string $creatorContactLink
     ): array {
         return [
+            'first_name' => self::escape($referent->getFirstName()),
             'committee_name' => $committee->getName(),
             'committee_city' => $committee->getCityName(),
-            'animator_firstname' => $animator->getFirstName(),
-            'animator_contact_link' => $animatorContactLink,
-        ];
-    }
-
-    private static function getRecipientVars(Adherent $referent): array
-    {
-        return [
-            'target_firstname' => self::escape($referent->getFirstName()),
+            'creator_first_name' => $creator->getFirstName(),
+            'creator_contact_link' => $creatorContactLink,
         ];
     }
 }

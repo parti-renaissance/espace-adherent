@@ -26,6 +26,6 @@ class InvitationRequestHandler
         $this->entityManager->persist($invite);
         $this->entityManager->flush();
 
-        $this->mailer->sendMessage(InvitationMessage::createFromInvite($invite));
+        $this->mailer->sendMessage(InvitationMessage::create($invite));
     }
 }

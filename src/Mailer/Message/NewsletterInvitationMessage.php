@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 final class NewsletterInvitationMessage extends Message
 {
-    public static function createFromInvite(NewsletterInvite $invite, string $subscribeUrl): self
+    public static function create(NewsletterInvite $invite, string $subscribeUrl): self
     {
         return new self(
             Uuid::uuid4(),
@@ -20,7 +20,7 @@ final class NewsletterInvitationMessage extends Message
     private static function getTemplateVars(NewsletterInvite $invite, string $subscribeLink): array
     {
         return [
-            'sender_firstname' => self::escape($invite->getFirstName()),
+            'sender_first_name' => self::escape($invite->getFirstName()),
             'subscribe_link' => $subscribeLink,
         ];
     }

@@ -9,9 +9,9 @@ use Ramsey\Uuid\Uuid;
 final class CitizenProjectCreationCoordinatorNotificationMessage extends Message
 {
     public static function create(
+        Adherent $coordinator,
         CitizenProject $citizenProject,
         Adherent $creator,
-        Adherent $coordinator,
         string $coordinatorSpaceUrl
     ): self {
         $message = new self(
@@ -33,11 +33,11 @@ final class CitizenProjectCreationCoordinatorNotificationMessage extends Message
         string $coordinatorSpaceUrl
     ): array {
         return [
+            'first_name' => self::escape($coordinator->getFirstName()),
             'citizen_project_name' => self::escape($citizenProject->getName()),
-            'citizen_project_host_firstname' => self::escape($creator->getFirstName()),
-            'citizen_project_host_lastname' => self::escape($creator->getLastName()),
+            'host_first_name' => self::escape($creator->getFirstName()),
+            'host_last_name' => self::escape($creator->getLastName()),
             'coordinator_space_url' => $coordinatorSpaceUrl,
-            'target_firstname' => self::escape($coordinator->getFirstName()),
         ];
     }
 }

@@ -14,22 +14,15 @@ class CommitteeCreationConfirmationMessage extends Message
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            static::getTemplateVars($committee),
-            static::getRecipientVars($adherent)
+            static::getTemplateVars($adherent, $committee)
         );
     }
 
-    private static function getTemplateVars(Committee $committee): array
+    private static function getTemplateVars(Adherent $adherent, Committee $committee): array
     {
         return [
+            'first_name' => self::escape($adherent->getFirstName()),
             'committee_city' => $committee->getCityName(),
-        ];
-    }
-
-    private static function getRecipientVars(Adherent $adherent): array
-    {
-        return [
-            'target_firstname' => self::escape($adherent->getFirstName()),
         ];
     }
 }

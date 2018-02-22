@@ -19,18 +19,18 @@ class CommitteeMessageNotificationMessage extends Message
             throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
         }
 
-        $author = $feedItem->getAuthor();
+        $host = $feedItem->getAuthor();
 
         $message = new self(
             Uuid::uuid4(),
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            static::getTemplateVars($feedItem, $author, $subject),
+            static::getTemplateVars($feedItem, $host, $subject),
             static::getRecipientVars($recipient),
-            $author->getEmailAddress()
+            $host->getEmailAddress()
         );
 
-        $message->setSenderName($author->getFullName());
+        $message->setSenderName($host->getFullName());
 
         foreach ($recipients as $recipient) {
             if (!$recipient instanceof Adherent) {
@@ -50,16 +50,16 @@ class CommitteeMessageNotificationMessage extends Message
     private static function getTemplateVars(CommitteeFeedItem $feedItem, Adherent $host, string $subject): array
     {
         return [
-            'animator_firstname' => self::escape($host->getFirstName()),
-            'target_subject' => $subject,
-            'target_message' => $feedItem->getContent(),
+            'host_first_name' => self::escape($host->getFirstName()),
+            'subject' => $subject,
+            'message' => $feedItem->getContent(),
         ];
     }
 
-    private static function getRecipientVars(Adherent $adherent): array
+    private static function getRecipientVars(Adherent $recipient): array
     {
         return [
-            'target_firstname' => self::escape($adherent->getFirstName()),
+            'first_name' => self::escape($recipient->getFirstName()),
         ];
     }
 }

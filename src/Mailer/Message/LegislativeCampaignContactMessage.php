@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 final class LegislativeCampaignContactMessage extends Message
 {
-    public static function createFromCampaignContactMessage(CampaignContactMessage $contact, string $recipient): self
+    public static function create(CampaignContactMessage $contact, string $recipient): self
     {
         $message = new self(
             Uuid::uuid4(),

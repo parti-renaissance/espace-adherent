@@ -6,7 +6,7 @@ use AppBundle\Entity\Invite;
 
 final class InvitationMessage extends Message
 {
-    public static function createFromInvite(Invite $invite): self
+    public static function create(Invite $invite): self
     {
         return new self(
             $invite->getUuid(),
@@ -21,7 +21,7 @@ final class InvitationMessage extends Message
         return [
             'sender_firstname' => self::escape($invite->getFirstName()),
             'sender_lastname' => self::escape($invite->getLastName()),
-            'target_message' => nl2br(self::escape($invite->getMessage())),
+            'message' => nl2br(self::escape($invite->getMessage())),
         ];
     }
 }

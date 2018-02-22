@@ -63,7 +63,7 @@ final class PurchasingPowerProcessorHandler
             $this->manager->persist($purchasingPower);
             $this->manager->flush();
 
-            $this->mailer->sendMessage(PurchasingPowerMessage::createFromInvitation($purchasingPower));
+            $this->mailer->sendMessage(PurchasingPowerMessage::create($purchasingPower));
             $this->terminate($session);
             $this->stateMachine->apply($processor, PurchasingPowerProcessor::TRANSITION_SEND);
 

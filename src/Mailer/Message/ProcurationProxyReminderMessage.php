@@ -17,7 +17,7 @@ final class ProcurationProxyReminderMessage extends Message
             Uuid::uuid4(),
             $request->getEmailAddress(),
             null,
-            self::getTemplateVars($request, $proxy, $infosUrl)
+            static::getTemplateVars($request, $proxy, $infosUrl)
         );
 
         $message->setSenderName('Procuration En Marche !');
@@ -32,7 +32,7 @@ final class ProcurationProxyReminderMessage extends Message
         string $infosUrl
     ): array {
         return [
-            'target_firstname' => self::escape($request->getFirstNames()),
+            'first_name' => self::escape($request->getFirstNames()),
             'info_link' => $infosUrl,
             'elections' => implode(', ', $request->getElectionRoundLabels()),
             'voter_first_name' => self::escape($proxy->getFirstNames()),
