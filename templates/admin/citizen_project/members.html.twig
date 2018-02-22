@@ -64,12 +64,6 @@
                                         <span class="label label-primary">Organisateur</span>
                                     {% endif %}
                                 </td>
-                                <td>
-                                    <a href="{{ path('app_admin_citizenproject_change_privilege', {citizenProject: citizen_project.id, adherent: administrator.id, privilege: constant('CITIZEN_PROJECT_FOLLOWER', membership), token: token}) }}"
-                                       class="btn btn-default btn-sm">
-                                        Transformer en follower
-                                    </a>
-                                </td>
                             </tr>
                         {% endfor %}
                         {% for membership in memberships if membership.isFollower %}
