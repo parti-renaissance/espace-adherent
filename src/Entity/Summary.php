@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\MemberSummary\JobExperience;
 use AppBundle\Entity\MemberSummary\Language;
 use AppBundle\Entity\MemberSummary\MissionType;
@@ -18,6 +19,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SummaryRepository")
  * @ORM\Table(name="summaries")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class Summary
 {

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Timeline;
 
 use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translation;
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\EntityTranslationInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -14,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="timeline_measure_translations")
  *
  * @UniqueEntity(fields={"locale", "title"}, errorPath="title")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class MeasureTranslation implements EntityTranslationInterface
 {

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Projection;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 
@@ -14,6 +15,8 @@ use libphonenumber\PhoneNumber;
  *     @ORM\Index(name="projection_referent_managed_users_search", columns={"status", "postal_code", "country"})
  * })
  * @ORM\Entity(readOnly=true, repositoryClass="AppBundle\Repository\Projection\ReferentManagedUserRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class ReferentManagedUser
 {
