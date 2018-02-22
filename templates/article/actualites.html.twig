@@ -45,7 +45,7 @@
                     </li>
                     {% for category in categories %}
                         <li class="{{ current.slug == category.slug ? 'active' }}">
-                            <a href="{{ path('articles_list', {'category': category.slug}) }}">
+                            <a href="{{ path('articles_list', { category: category.slug }) }}" id="articles-list-filter-category-{{ category.slug }}">
                                 {{ category.name }}
                             </a>
                         </li>
