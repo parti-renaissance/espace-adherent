@@ -3,15 +3,17 @@
         <h3 class="text--body">
             {{ has_role_adherent ? item.author.fullName : item.author.partialName }}
             <span class="text--summary text--small text--gray b__nudge--bottom">{{ item.author.isSupervisorOf(committee) ? 'animateur' : (item.author.isHostOf(committee) ? 'co-animateur') }}</span>
-            {% if has_role_user and (item.author.equals(app.user) or app.user.isSupervisorOf(committee)) %}
-                 <ul class="list__links list__links--row">
+            {% if committee_timeline_forms[item.id] is defined %}
+                 <ul class="list__links list__links--row feed__options">
                      <li>
-                         <a href="{{ path('app_committee_timeline_edit', { slug: committee.slug, id: item.id }) }}">
+                         <a class="text--body link--newblue" href="{{ path('app_committee_timeline_edit', { slug: committee.slug, id: item.id }) }}">
                              Modifier le message
                          </a>
                      </li>
                      <li>
-                         {{ form(committee_timeline_forms[item.id]) }}
+                         {{ form_start(committee_timeline_forms[item.id]) }}
+                            {{ form_widget(committee_timeline_forms[item.id].delete, { attr: { class: 'btn--as-link btn--as-link--error'}}) }}
+                         {{ form_end(committee_timeline_forms[item.id]) }}
                      </li>
                  </ul>
             {% endif %}
