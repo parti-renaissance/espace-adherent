@@ -180,6 +180,26 @@
     border-color: $success;
 }
 
+@mixin btn--as-link($color) {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    color: $color;
+    border-bottom: 1px solid transparent;
+
+    &:hover {
+        border: none;
+        border-bottom: 1px solid $color;
+        color: $color;
+    }
+}
+
+button {
+    &.link--deletered {
+        @include btn--as-link($red);
+    }
+}
+
 .btn {
     @include btn;
 
