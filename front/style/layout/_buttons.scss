@@ -195,13 +195,6 @@
 button {
     &.btn--as-link {
         @include btn--as-link;
-        &--delete {
-            color: $red;
-            &:hover {
-                border-color: $red;
-                color: $red;
-            }
-        }
     }
 }
 
@@ -211,13 +204,16 @@ input {
     &[type="reset"] {
         & .btn--as-link {
             @include btn--as-link;
-            &--delete {
-                color: $red;
-                &:hover {
-                    border-color: $red;
-                    color: $red;
-                }
-            }
+        }
+    }
+}
+
+.btn--as-link {
+    &--delete {
+        color: $red!important;
+        &:hover {
+            border-color: $red!important;;
+            color: $red!important;;
         }
     }
 }
