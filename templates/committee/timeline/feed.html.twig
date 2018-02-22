@@ -3,7 +3,7 @@
         <h3 class="text--body">
             {{ has_role_adherent ? item.author.fullName : item.author.partialName }}
             <span class="text--summary text--small text--gray b__nudge--bottom">{{ item.author.isSupervisorOf(committee) ? 'animateur' : (item.author.isHostOf(committee) ? 'co-animateur') }}</span>
-            {% if is_granted('ADMIN_FEED_COMMITTEE', item) %}
+            {% if committee_timeline_forms[item.id] is defined %}
                  <ul class="list__links list__links--row feed__options">
                      <li>
                          <a class="text--body link--newblue" href="{{ path('app_committee_timeline_edit', { slug: committee.slug, id: item.id }) }}">

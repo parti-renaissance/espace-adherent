@@ -76,19 +76,16 @@ class CommitteeController extends Controller
      */
     public function timelineEditAction(Request $request, Committee $committee, CommitteeFeedItem $committeeFeedItem): Response
     {
-        $form = null;
-        if ($this->isGranted(CommitteePermissions::HOST, $committee)) {
-            $form = $this
-                ->createForm(CommitteeFeedItemMessageType::class, $committeeFeedItem)
-                ->handleRequest($request)
-            ;
+        $form = $this
+            ->createForm(CommitteeFeedItemMessageType::class, $committeeFeedItem)
+            ->handleRequest($request)
+        ;
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('info', $this->get('translator')->trans('committee.message_edited'));
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('info', $this->get('translator')->trans('committee.message_edited'));
 
-                return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
-            }
+            return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
         }
 
         $committeeManager = $this->getCommitteeManager();
