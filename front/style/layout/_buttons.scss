@@ -180,23 +180,45 @@
     border-color: $success;
 }
 
-@mixin btn--as-link($color) {
+@mixin btn--as-link() {
     background: none!important;
     border: none;
     padding: 0!important;
-    color: $color;
     border-bottom: 1px solid transparent;
 
     &:hover {
         border: none;
-        border-bottom: 1px solid $color;
-        color: $color;
+        border-bottom: 1px solid;
     }
 }
 
 button {
-    &.link--deletered {
-        @include btn--as-link($red);
+    &.btn--as-link {
+        @include btn--as-link;
+        &--delete {
+            color: $red;
+            &:hover {
+                border-color: $red;
+                color: $red;
+            }
+        }
+    }
+}
+
+input {
+    &[type="submit"],
+    &[type="button"],
+    &[type="reset"] {
+        & .btn--as-link {
+            @include btn--as-link;
+            &--delete {
+                color: $red;
+                &:hover {
+                    border-color: $red;
+                    color: $red;
+                }
+            }
+        }
     }
 }
 
