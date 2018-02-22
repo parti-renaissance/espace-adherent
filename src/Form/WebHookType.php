@@ -2,11 +2,9 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\OAuth\Client;
 use AppBundle\Entity\WebHook\WebHook;
 use AppBundle\WebHook\Event;
 use Sonata\AdminBundle\Form\Type\CollectionType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -15,16 +13,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class WebHookType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('client', EntityType::class, [
-                'class' => Client::class,
-                'disabled' => true,
-            ])
             ->add('event', ChoiceType::class, [
                 'placeholder' => '--',
                 'choices' => Event::toArray(),
