@@ -201,14 +201,9 @@ class CommitteeController extends Controller
      */
     private function createTimelineDeleteForms(iterable $feeds): array
     {
-        $user = $this->getUser();
         $forms = [];
         foreach ($feeds as $feed) {
-            // {% if has_role_user and (item.author.equals(app.user) or app.user.isSupervisorOf(committee)) %}
-            if ($this->isGranted('ROLE_USER')
-                && ($feed->getAuthor()->equals($user)
-                    || $user->isSupervisorOf($feed->getCommittee()))
-            ) {
+            if ($this->isGranted('ADMIN_FEED_COMMITTEE', $feed)) {
                 $forms[$feed->getId()] = $this->createDeleteForm(
                     $this->generateUrl('app_committee_timeline_delete',
                         [
