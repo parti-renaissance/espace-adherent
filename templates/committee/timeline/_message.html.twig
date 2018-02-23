@@ -2,13 +2,13 @@
     <div class="text--body text--with-bullet">{{ item.content|raw }}</div>
 {% elseif has_role_user %}
     <div class="committee-message-invisible text--body space--10-0">
-        <a href="{{ path('app_membership_register') }}">Vous devez adhérer au mouvement</a>
+        <a href="{{ path('app_membership_join') }}">Vous devez adhérer au mouvement</a>
         pour voir ce message.
     </div>
 {% else %}
     <div class="committee-message-invisible text--body space--10-0">
         <a href="{{ path('app_user_login') }}">Connectez-vous</a>
-        (ou <a href="{{ path('app_membership_register') }}">rejoignez En-Marche.fr</a>)
+        (ou <a href="{{ path('app_membership_join') }}">rejoignez En-Marche.fr</a>)
         afin de voir ce message.
     </div>
 {% endif %}

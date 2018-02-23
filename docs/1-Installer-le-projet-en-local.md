@@ -177,7 +177,7 @@ referent@en-marche-dev.fr / referent  pour l'accès en mode référent
 Une fois le projet installé, vous pouvez accéder à l'espace adhérent en cliquant sur "Connexion".
 Vous pouvez alors y entrer l'identifiant suivant :
 ```
-jacques.picard@en-marche.fr / changeme1337
+jacques.picard@en-marche.fr / secret!12345
 ```
 
 ## 1.1.4 Services disponibles

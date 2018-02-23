@@ -116,6 +116,18 @@ class App {
         });
     }
 
+    runJoin() {
+        System.import('pages/join').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        });
+    }
+
+    runComplete() {
+        System.import('pages/complete').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        });
+    }
+
     runProcurationThanks() {
         System.import('pages/procuration_thanks').catch((error) => { throw error; }).then((module) => {
             module.default();

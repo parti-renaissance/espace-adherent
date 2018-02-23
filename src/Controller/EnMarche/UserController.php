@@ -8,6 +8,7 @@ use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentType;
 use AppBundle\Form\UnregistrationType;
 use AppBundle\Membership\MembershipRequest;
+use AppBundle\Membership\MembershipRequestHandler;
 use AppBundle\Membership\UnregistrationCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -46,7 +47,7 @@ class UserController extends Controller
         ;
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-            $this->get('app.membership_request_handler')->update($adherent, $membership);
+            $this->get(MembershipRequestHandler::class)->update($adherent, $membership);
             $this->addFlash('info', $this->get('translator')->trans('adherent.update_profile.success'));
 
             return $this->redirectToRoute('app_user_profile');
@@ -121,7 +122,7 @@ class UserController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.membership_request_handler')->terminateMembership($unregistrationCommand, $adherent);
+            $this->get(MembershipRequestHandler::class)->terminateMembership($unregistrationCommand, $adherent);
             $this->get('security.token_storage')->setToken(null);
             $request->getSession()->invalidate();
 
