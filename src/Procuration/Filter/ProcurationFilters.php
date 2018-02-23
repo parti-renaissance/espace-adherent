@@ -156,8 +156,11 @@ abstract class ProcurationFilters
             }
         }
 
-        $qb->leftJoin("$alias.electionRounds", 'rounds');
-        $qb->addSelect('rounds');
+        $qb
+            ->leftJoin("$alias.electionRounds", 'rounds')
+            ->addSelect('rounds')
+            ->andWhere('rounds.date >= CURRENT_DATE()')
+        ;
 
         if ($this->electionRound) {
             $qb
