@@ -206,7 +206,6 @@
             <argument />
             <argument>AppBundle\Entity\Unregistration</argument>
             <argument />
-            <argument>%adherent_unregistration_reasons%</argument>
         </service>
 
         <!--

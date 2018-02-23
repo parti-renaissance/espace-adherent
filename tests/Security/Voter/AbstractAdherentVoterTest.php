@@ -50,8 +50,13 @@ abstract class AbstractAdherentVoterTest extends TestCase
         }
     }
 
-    protected function assertGrantedForAdherent(bool $granted, bool $instanceIsChecked, Adherent $adherent, string $attribute, $subject = null): void
-    {
+    protected function assertGrantedForAdherent(
+        bool $granted,
+        bool $instanceIsChecked,
+        Adherent $adherent,
+        string $attribute,
+        $subject = null
+    ): void {
         if ($granted) {
             $this->assertSame(
                 VoterInterface::ACCESS_GRANTED,
@@ -63,6 +68,28 @@ abstract class AbstractAdherentVoterTest extends TestCase
                 VoterInterface::ACCESS_DENIED,
                 $this->voter->vote($this->createTokenMock($adherent, $instanceIsChecked), $subject, [$attribute]),
                 'Adherent should not be granted.'
+            );
+        }
+    }
+
+    protected function assertGrantedForUser(
+        bool $granted,
+        bool $instanceIsChecked,
+        Adherent $adherent,
+        string $attribute,
+        $subject = null
+    ): void {
+        if ($granted) {
+            $this->assertSame(
+                VoterInterface::ACCESS_GRANTED,
+                $this->voter->vote($this->createTokenMock($adherent, $instanceIsChecked), $subject, [$attribute]),
+                'User should be granted.'
+            );
+        } else {
+            $this->assertSame(
+                VoterInterface::ACCESS_DENIED,
+                $this->voter->vote($this->createTokenMock($adherent, $instanceIsChecked), $subject, [$attribute]),
+                'User should not be granted.'
             );
         }
     }

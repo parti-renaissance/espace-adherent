@@ -14,7 +14,8 @@ class UnregistrationFactory
             $command->getReasons(),
             $command->getComment(),
             $adherent->getRegisteredAt(),
-            $adherent->getPostAddress()->getPostalCode()
+            $adherent->getPostAddress()->getPostalCode(),
+            $adherent->isAdherent()
         );
 
         return $unregistration;
