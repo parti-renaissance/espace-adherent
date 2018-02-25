@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 final class CommitteeNewFollowerMessage extends Message
 {
-    public static function create(Committee $committee, Adherent $newFollower, array $hosts, string $hostUrl): self
+    public static function create(Committee $committee, array $hosts, Adherent $newFollower, string $hostUrl): self
     {
         if (!$hosts) {
             throw new \InvalidArgumentException('At least one recipient is required.');

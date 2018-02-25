@@ -18,11 +18,11 @@ class CitizenProjectCommentMessageTest extends MessageTestCase
     public function testCreate(): void
     {
         $message = CitizenProjectCommentMessage::create(
-            $this->citizenProjectComment,
             [
                 $this->createAdherent('jean@example.com', 'Jean', 'Doe'),
                 $this->createAdherent('bernard@example.com', 'Bernard', 'Smith'),
-            ]
+            ],
+            $this->citizenProjectComment
         );
 
         self::assertMessage(

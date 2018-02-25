@@ -10,9 +10,9 @@ use Ramsey\Uuid\Uuid;
 final class EventCancellationMessage extends Message
 {
     public static function create(
+        array $recipients,
         Adherent $host,
         BaseEvent $event,
-        array $recipients,
         string $eventsLink
     ): self {
         if (!$recipients) {

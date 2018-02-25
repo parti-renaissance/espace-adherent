@@ -23,7 +23,7 @@ class EmailTemplateFactory
     {
         return MailjetTemplate::createWithMessage(
             $message,
-            $template,
+            $this->messageRegistry->getMessageTemplate($message),
             $this->senderEmail,
             $this->senderName
         );

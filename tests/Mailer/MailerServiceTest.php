@@ -6,8 +6,8 @@ use AppBundle\Mailer\Event\MailerEvent;
 use AppBundle\Mailer\Event\MailerEvents;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\EmailTemplateFactory;
+use AppBundle\Mailer\Message\MessageRegistry;
 use PHPUnit\Framework\TestCase;
-use Tests\AppBundle\Test\Mailer\DummyEmailTemplate;
 use Tests\AppBundle\Test\Mailer\Message\DummyMessage;
 use Tests\AppBundle\Test\Mailer\Transport\FailingTransport;
 use Tests\AppBundle\Test\Mailer\Transport\NullTransport;
@@ -33,9 +33,9 @@ class MailerServiceTest extends TestCase
             $dispatcher,
             new NullTransport(),
             new EmailTemplateFactory(
+                $this->createMock(MessageRegistry::class),
                 'contact@en-marche.fr',
-                'En Marche',
-                DummyEmailTemplate::class
+                'En Marche'
             )
         );
 
@@ -60,9 +60,9 @@ class MailerServiceTest extends TestCase
             $dispatcher,
             new FailingTransport(),
             new EmailTemplateFactory(
+                $this->createMock(MessageRegistry::class),
                 'contact@en-marche.fr',
-                'En Marche',
-                DummyEmailTemplate::class
+                'En Marche'
             )
         );
 

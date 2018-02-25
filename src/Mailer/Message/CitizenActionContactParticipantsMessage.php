@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 final class CitizenActionContactParticipantsMessage extends Message
 {
-    public static function create(Adherent $organizer, array $recipients, string $subject, string $message): self
+    public static function create(array $recipients, Adherent $organizer, string $subject, string $message): self
     {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one recipient is required.');

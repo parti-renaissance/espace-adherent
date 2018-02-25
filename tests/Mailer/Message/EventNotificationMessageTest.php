@@ -18,12 +18,12 @@ class EventNotificationMessageTest extends MessageTestCase
     public function testCreate(): void
     {
         $message = EventNotificationMessage::create(
-            $this->createAdherent('host@example.com', 'Animateur', 'Jones'),
-            $this->event,
             [
                 $this->createAdherent('jean@example.com', 'Jean', 'Doe'),
                 $this->createAdherent('bernard@example.com', 'Bernard', 'Smith'),
             ],
+            $this->createAdherent('host@example.com', 'Animateur', 'Jones'),
+            $this->event,
             'https://enmarche.code/evenement/foo-bar',
             'https://enmarche.code/evenement/foo-bar/participer'
         );

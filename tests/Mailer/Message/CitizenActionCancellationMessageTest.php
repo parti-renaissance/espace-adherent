@@ -18,12 +18,12 @@ class CitizenActionCancellationMessageTest extends MessageTestCase
     public function testCreate(): void
     {
         $message = CitizenActionCancellationMessage::create(
-            $this->citizenAction,
-            $this->createAdherent('author@example.com', 'Auteur', 'Jones'),
             [
                 $this->createEventRegistration('jean@example.com', 'Jean', 'Doe'),
                 $this->createEventRegistration('bernard@example.com', 'Bernard', 'Smith'),
-            ]
+            ],
+            $this->createAdherent('author@example.com', 'Auteur', 'Jones'),
+            $this->citizenAction
         );
 
         self::assertMessage(

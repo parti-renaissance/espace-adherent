@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 final class CitizenProjectCommentMessage extends Message
 {
-    public static function create(CitizenProjectComment $comment, array $recipients): self
+    public static function create(array $recipients, CitizenProjectComment $comment): self
     {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one recipient is required.');

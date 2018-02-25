@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 final class CommitteeContactMembersMessage extends Message
 {
-    public static function create(Adherent $host, array $recipients, string $subject, string $content): self
+    public static function create(array $recipients, Adherent $host, string $subject, string $content): self
     {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one recipient is required.');
@@ -56,7 +56,7 @@ final class CommitteeContactMembersMessage extends Message
     private static function getRecipientVars(Adherent $adherent): array
     {
         return [
-            'first_name' => self::escape($adherent->getFirstName())
+            'first_name' => self::escape($adherent->getFirstName()),
         ];
     }
 }

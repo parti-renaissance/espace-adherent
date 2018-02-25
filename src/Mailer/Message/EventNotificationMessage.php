@@ -9,9 +9,9 @@ use Ramsey\Uuid\Uuid;
 class EventNotificationMessage extends Message
 {
     public static function create(
+        array $recipients,
         Adherent $host,
         Event $event,
-        array $recipients,
         string $eventShowLink,
         string $eventAttendLink
     ): self {

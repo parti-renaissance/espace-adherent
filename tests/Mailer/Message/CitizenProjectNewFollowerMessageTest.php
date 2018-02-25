@@ -25,11 +25,11 @@ class CitizenProjectNewFollowerMessageTest extends MessageTestCase
     {
         $message = CitizenProjectNewFollowerMessage::create(
             $this->citizenProject,
-            $this->newFollower,
             [
                 $this->createAdherent('jean@example.com', 'Jean', 'Doe'),
                 $this->createAdherent('bernard@example.com', 'Bernard', 'Smith'),
-            ]
+            ],
+            $this->newFollower
         );
 
         self::assertMessage(

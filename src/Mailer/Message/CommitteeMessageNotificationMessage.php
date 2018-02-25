@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 class CommitteeMessageNotificationMessage extends Message
 {
-    public static function create(CommitteeFeedItem $feedItem, array $recipients, string $subject): self
+    public static function create(array $recipients, CommitteeFeedItem $feedItem, string $subject): self
     {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one recipient is required.');

@@ -23,14 +23,13 @@ class CommitteeNewFollowerMessageTest extends MessageTestCase
 
     public function testCreate(): void
     {
-
         $message = CommitteeNewFollowerMessage::create(
             $this->committee,
-            $this->newFollower,
             [
                 $this->createAdherent('jean@example.com', 'Jean', 'Doe'),
                 $this->createAdherent('bernard@example.com', 'Bernard', 'Smith'),
             ],
+            $this->newFollower,
             'https://enmarche.code/comites/foo-bar/administration'
         );
 

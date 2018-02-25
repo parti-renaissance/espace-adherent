@@ -18,12 +18,12 @@ class EventCancellationMessageTest extends MessageTestCase
     public function testCreate(): void
     {
         $message = EventCancellationMessage::create(
-            $this->createAdherent('host@example.com', 'Animateur', 'Jones'),
-            $this->event,
             [
                 $this->createEventRegistration('jean@example.com', 'Jean', 'Doe'),
                 $this->createEventRegistration('bernard@example.com', 'Bernard', 'Smith'),
             ],
+            $this->createAdherent('host@example.com', 'Animateur', 'Jones'),
+            $this->event,
             'https://enmarche.code/evenements'
         );
 

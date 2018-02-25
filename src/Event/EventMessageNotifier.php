@@ -2,7 +2,6 @@
 
 namespace AppBundle\Event;
 
-use AppBundle\Entity\EventRegistration;
 use AppBundle\Events;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
@@ -82,9 +81,9 @@ class EventMessageNotifier implements EventSubscriberInterface
         ];
 
         return EventNotificationMessage::create(
+            $followers,
             $host,
             $event,
-            $followers,
             $this->generateUrl('app_event_show', $params),
             $this->generateUrl('app_event_attend', $params)
         );
@@ -93,9 +92,9 @@ class EventMessageNotifier implements EventSubscriberInterface
     private function createCancelMessage(array $registered, Event $event, Adherent $host): EventCancellationMessage
     {
         return EventCancellationMessage::create(
+            $registered,
             $host,
             $event,
-            $registered,
             $this->generateUrl('app_search_events')
         );
     }

@@ -20,8 +20,8 @@ class CitizenActionContactParticipantsCommandHandler
 
         foreach ($chunks as $chunk) {
             $this->mailer->sendMessage(CitizenActionContactParticipantsMessage::create(
-                $command->getSender(),
                 $chunk,
+                $command->getSender(),
                 $command->getSubject(),
                 $command->getMessage()
             ));

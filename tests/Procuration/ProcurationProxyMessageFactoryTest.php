@@ -54,36 +54,14 @@ class ProcurationProxyMessageFactoryTest extends TestCase
         $message = $this->factory->createProxyCancelledMessage($request, $this->createAdherentMock('john@smith.tld'));
 
         $this->assertInstanceOf(ProcurationProxyCancelledMessage::class, $message);
-        $this->assertSame('procurations@en-marche-dev.fr', $message->getReplyTo());
-        $this->assertSame('Annulation de la mise en relation', $message->getSubject());
-        $this->assertSame('marieb.dumont@gmail.tld', $message->getRecipient(0)->getEmailAddress());
-        $this->assertNull($message->getRecipient(0)->getFullName());
-        $this->assertSame('Procuration En Marche !', $message->getSenderName());
-        $this->assertSame(
-            [
-                'target_firstname' => 'Marie Bénédicte',
-                'voter_first_name' => 'Monique',
-                'voter_last_name' => 'Clairefontaine',
-            ],
-            $message->getVars()
-        );
-        $this->assertSame(
-            [
-                'monique@en-marche-dev.fr',
-                'john@smith.tld',
-            ],
-            $message->getCC()
-        );
     }
 
     public function testCreateProxyFoundMessage()
     {
-        $url = 'https://en-marche.fr/procuration/3/2839f66263bca70ff077d8e47fbdf783';
-
         $this->urlGenerator
             ->expects($this->once())
             ->method('generate')
-            ->willReturn($url)
+            ->willReturn('https://enmarche.code/procuration/3/foo-bar')
         ;
 
         $request = $this->createProcurationRequestMock('Marie Bénédicte', 'Dumont', 'marieb.dumont@gmail.tld', '0102030405');
@@ -101,32 +79,6 @@ class ProcurationProxyMessageFactoryTest extends TestCase
         $message = $this->factory->createProxyFoundMessage($request);
 
         $this->assertInstanceOf(ProcurationProxyFoundMessage::class, $message);
-        $this->assertSame('procurations@en-marche-dev.fr', $message->getReplyTo());
-        $this->assertSame('Votre procuration', $message->getSubject());
-        $this->assertSame('marieb.dumont@gmail.tld', $message->getRecipient(0)->getEmailAddress());
-        $this->assertNull($message->getRecipient(0)->getFullName());
-        $this->assertSame('Procuration En Marche !', $message->getSenderName());
-        $this->assertSame(
-            [
-                'target_firstname' => 'Marie Bénédicte',
-                'info_link' => $url,
-                'elections' => '',
-                'voter_first_name' => 'Monique',
-                'voter_last_name' => 'Clairefontaine',
-                'voter_phone' => '+33 6 07 08 09 10',
-                'mandant_first_name' => 'Marie Bénédicte',
-                'mandant_last_name' => 'Dumont',
-                'mandant_phone' => '+33 1 02 03 04 05',
-            ],
-            $message->getVars()
-        );
-        $this->assertSame(
-            [
-                'john@smith.tld',
-                'monique@en-marche-dev.fr',
-            ],
-            $message->getCC()
-        );
     }
 
     private function createProcurationRequestMock(string $firstNames, string $lastName, string $email, string $phone = '')

@@ -12,11 +12,11 @@ class CitizenActionContactParticipantsMessageTest extends MessageTestCase
     public function testCreate(): void
     {
         $message = CitizenActionContactParticipantsMessage::create(
-            $this->createAdherent('organizer@example.com', 'Organisateur', 'Jones'),
             [
                 $this->createEventRegistration('jean@example.com', 'Jean', 'Doe'),
                 $this->createEventRegistration('bernard@example.com', 'Bernard', 'Smith'),
             ],
+            $this->createAdherent('organizer@example.com', 'Organisateur', 'Jones'),
             'Sujet de test',
             'Contenu du message de test.'
         );

@@ -81,7 +81,7 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
     {
         if ($commentCreatedEvent->isSendMail()) {
             foreach ($this->getOptinCitizenProjectFollowersChunks($commentCreatedEvent->getCitizenProject()) as $chunk) {
-                $this->mailer->sendMessage(CitizenProjectCommentMessage::create($commentCreatedEvent->getComment(), $chunk));
+                $this->mailer->sendMessage(CitizenProjectCommentMessage::create($chunk, $commentCreatedEvent->getComment()));
             }
         }
     }

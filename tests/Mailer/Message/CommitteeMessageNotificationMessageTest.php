@@ -18,11 +18,11 @@ class CommitteeMessageNotificationMessageTest extends MessageTestCase
     public function testCreate(): void
     {
         $message = CommitteeMessageNotificationMessage::create(
-            $this->committeeFeedItem,
             [
                 $this->createAdherent('jean@example.com', 'Jean', 'Doe'),
                 $this->createAdherent('bernard@example.com', 'Bernard', 'Smith'),
             ],
+            $this->committeeFeedItem,
             'Sujet de message test'
         );
 

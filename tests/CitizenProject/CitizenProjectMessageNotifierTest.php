@@ -37,6 +37,11 @@ class CitizenProjectMessageNotifierTest extends TestCase
 
         $citizenProject = $this->createCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID, 'Paris 8e');
         $citizenProject->expects($this->once())->method('getPendingCommitteeSupports')->willReturn(new ArrayCollection());
+        $citizenProject
+            ->expects($this->once())
+            ->method('getCreator')
+            ->willReturn($this->createMock(Adherent::class))
+        ;
 
         $administrator = $this->createAdministrator(LoadAdherentData::ADHERENT_3_UUID);
         $citizenProjectWasApprovedEvent->expects($this->any())->method('getCitizenProject')->willReturn($citizenProject);
