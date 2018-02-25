@@ -1,0 +1,21 @@
+{% block subject %}
+    Pour toi
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            {% verbatim %}
+                <tr>
+                    <td align="left">
+                        <p>
+                            {{var:message:""}}
+                        </p>
+                    </td>
+                </tr>
+            {% endverbatim %}
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}
