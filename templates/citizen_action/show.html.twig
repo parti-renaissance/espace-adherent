@@ -44,10 +44,10 @@
             <div id="members">
                 {% if is_administrator and citizen_action.active %}
                     <div class="b__nudge--bottom">
-                        <a href="{{ path('app_citizen_action_manager_edit', { slug: citizen_action.slug, project_slug: citizen_action.citizenProject.slug }) }}" class="text--body link--blue link--no-decor">
+                        <a href="{{ path('app_citizen_action_manager_edit', { slug: citizen_action.slug, project_slug: citizen_action.citizenProject.slug }) }}" class="text--body link--blue link--padding link--no-decor">
                             Modifier cette action citoyenne
                         </a>
-                        <a href="{{ path("app_citizen_action_manager_cancel", { slug: citizen_action.slug, project_slug: citizen_action.citizenProject.slug }) }}" class="text--body link--no-decor">
+                        <a href="{{ path("app_citizen_action_manager_cancel", { slug: citizen_action.slug, project_slug: citizen_action.citizenProject.slug }) }}" class="text--body link--blue link--no-decor">
                             Annuler cette action citoyenne
                         </a>
                     </div>
