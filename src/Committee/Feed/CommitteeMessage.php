@@ -27,8 +27,8 @@ class CommitteeMessage
     private $createdAt;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=80)
+     * @Assert\NotBlank(groups={"notification"})
+     * @Assert\Length(max=80, groups={"notification"})
      */
     private $subject;
 
