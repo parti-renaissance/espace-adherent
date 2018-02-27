@@ -4,7 +4,6 @@ namespace AppBundle\Mailer\Message;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\ValueObject\Genders;
 use Ramsey\Uuid\Uuid;
 
 class CommitteeMessageNotificationMessage extends Message
@@ -40,11 +39,7 @@ class CommitteeMessageNotificationMessage extends Message
             $feedItem->getAuthor()->getEmailAddress()
         );
 
-        $sender = $feedItem->getAuthor()->getFullName().' - ';
-        $sender .= Genders::FEMALE === $feedItem->getAuthor()->getGender() ? 'animatrice' : 'animateur';
-        $sender .= ' de votre comité';
-
-        $message->setSenderName($sender);
+        $message->setSenderName($feedItem->getAuthor()->getFullName());
 
         foreach ($recipients as $recipient) {
             $message->addRecipient(
