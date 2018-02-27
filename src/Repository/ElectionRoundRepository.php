@@ -27,17 +27,26 @@ class ElectionRoundRepository extends EntityRepository
 
     public function getAllRoundsAsChoices(): array
     {
-        $results = $this->createQueryBuilder('r')
+        $results = $this->createQueryBuilder('r', 'r.id')
             ->select('r.id, r.label')
             ->orderBy('r.date', 'ASC')
             ->getQuery()
             ->getArrayResult()
         ;
 
-        foreach ($results as $round) {
-            $rounds[$round['id']] = $round['label'];
-        }
+        return $results;
+    }
 
-        return $rounds ?? [];
+    public function getUpcomingElectionRounds(): array
+    {
+        $results = $this->createQueryBuilder('r', 'r.id')
+            ->select('r.id, r.label')
+            ->andWhere('r.date >= CURRENT_DATE()')
+            ->orderBy('r.date', 'ASC')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return $results;
     }
 }

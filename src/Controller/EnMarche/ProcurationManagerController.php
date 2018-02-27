@@ -46,7 +46,7 @@ class ProcurationManagerController extends Controller
             'requests' => $manager->getProcurationRequests($user, $filters),
             'total_count' => $manager->countProcurationRequests($user, $filters),
             'filters' => $filters,
-            'election_rounds' => $this->getDoctrine()->getRepository(ElectionRound::class)->getAllRoundsAsChoices(),
+            'election_rounds' => $this->getDoctrine()->getRepository(ElectionRound::class)->getUpcomingElectionRounds(),
         ]);
     }
 
@@ -89,7 +89,7 @@ class ProcurationManagerController extends Controller
             'proxies' => $manager->getProcurationProxyProposals($user, $filters),
             'total_count' => $manager->countProcurationProxyProposals($user, $filters),
             'filters' => $filters,
-            'election_rounds' => $this->getDoctrine()->getRepository(ElectionRound::class)->getAllRoundsAsChoices(),
+            'election_rounds' => $this->getDoctrine()->getRepository(ElectionRound::class)->getUpcomingElectionRounds(),
         ]);
     }
 

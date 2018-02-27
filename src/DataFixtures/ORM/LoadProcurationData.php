@@ -100,6 +100,46 @@ class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
             ProcurationRequest::REASON_HELP
         ));
 
+        $manager->persist($this->createRequest(
+            'male',
+            'Thomas, Jean',
+            'René',
+            'thomas.rene@example.gb',
+            '95, Faubourg Saint Honoré',
+            '75020',
+            '75020-75120',
+            null,
+            '33 0099887766',
+            '1962-10-11',
+            'FR',
+            '75020',
+            '75020-75120',
+            null,
+            'Lycée Faubourg',
+            $partialLegislativeElections->getRounds(),
+            ProcurationRequest::REASON_HEALTH
+        ));
+
+        $manager->persist($this->createRequest(
+            'female',
+            'Belle, Carole',
+            'D\'Aubigné',
+            'belle.carole@example.fr',
+            '77, Place de la Madeleine',
+            '75010',
+            '75010-75110',
+            null,
+            '33 655443322',
+            '1978-03-09',
+            'FR',
+            '75010',
+            '75010-75110',
+            null,
+            'Madeleine',
+            [$partialLegislativeElections->getRounds()->last()],
+            ProcurationRequest::REASON_HEALTH
+        ));
+
         $manager->persist($request1 = $this->createRequest(
             'male',
             'William',
@@ -247,6 +287,28 @@ class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
             '75010-75110',
             null,
             'École de la République',
+            [$partialLegislativeElections->getRounds()->first()],
+            5,
+            'Responsable procuration'
+        ));
+
+        $manager->persist($this->createProxyProposal(
+            $referent,
+            'male',
+            'Emmanuel',
+            'Harquin',
+            'emmanuel.harquin@exemple.org',
+            '53, Quai des Belges',
+            '91300',
+            '91300-91377',
+            null,
+            '33 675645342',
+            '1953-09-19',
+            'FR',
+            '91300',
+            '91300-91377',
+            null,
+            'École 42',
             $partialLegislativeElections->getRounds(),
             5,
             'Responsable procuration'
