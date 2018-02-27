@@ -74,7 +74,6 @@ class ReferentManagedUser
     private $postalCode;
 
     /**
-     *
      * The postal code is filled only for committee supervisors.
      *
      * @var string|null
