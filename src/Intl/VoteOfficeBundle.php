@@ -34,7 +34,8 @@ class VoteOfficeBundle
             'Skopje',
         ],
         'AD' => [ // ANDORRE
-            'Andorre',
+            'Andorre-la-Vieille',
+            'Pas-de-la-Case',
         ],
         'AO' => [ // ANGOLA
             'Luanda',
@@ -190,10 +191,24 @@ class VoteOfficeBundle
             'Quito',
         ],
         'ES' => [ // ESPAGNE
+            'Alicante',
             'Barcelone',
             'Bilbao',
+            'Figueres',
+            'Gerone',
+            'Grenade',
+            'Ibiza',
+            'Las Palmas',
             'Madrid',
+            'Malaga',
+            'Murcie',
+            'Palma de Majorque',
+            'Saragosse',
             'Seville',
+            'Tarragone-Reus',
+            'Tenerife',
+            'Valence',
+            'Vigo',
         ],
         'EE' => [ // ESTONIE
             'Tallinn',
@@ -431,7 +446,9 @@ class VoteOfficeBundle
             'Varsovie',
         ],
         'PT' => [ // PORTUGAL
+            'Faro',
             'Lisbonne',
+            'Porto',
         ],
         'QA' => [ // QATAR
             'Doha',
