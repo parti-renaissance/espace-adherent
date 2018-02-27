@@ -1,14 +1,14 @@
-version: "2"
+version: "3.2"
 
 services:
     ## en-marche.fr
     ###############
     app:
         networks:
-          default:
-            aliases:
-              - test.enmarche.code
-              - enmarche.code
+            default:
+                aliases:
+                    - test.enmarche.code
+                    - enmarche.code
         build:
             context: docker/dev
         depends_on:
