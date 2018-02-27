@@ -172,6 +172,15 @@ class ReferentControllerTest extends SqliteWebTestCase
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
         $this->assertSame(0, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+
+        $data = [
+            'anc' => 1,
+            'aic' => 1,
+            'h' => 1,
+            'ac' => 91,
+        ];
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->assertSame(0, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
     }
 
     public function testCancelSendMail()
