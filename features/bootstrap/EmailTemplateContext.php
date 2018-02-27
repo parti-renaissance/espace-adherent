@@ -2,20 +2,11 @@
 
 use AppBundle\Mailer\Message\MessageRegistry;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Symfony2Extension\Context\KernelDictionary;
-use Coduo\PHPMatcher\PHPMatcher;
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\ORM\EntityManager;
-use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 use Twig\Environment;
 
 class EmailTemplateContext extends RawMinkContext
 {
-    use KernelDictionary;
-
     private $twig;
     private $messageRegistry;
 
@@ -31,7 +22,7 @@ class EmailTemplateContext extends RawMinkContext
     }
 
     /**
-     * @When the :messageClass template is rendered
+     * @When the :messageClass email template is rendered
      */
     public function theMessageTemplateIsRendered(string $messageClass): void
     {
@@ -41,39 +32,48 @@ class EmailTemplateContext extends RawMinkContext
     }
 
     /**
-     * @Then I should see the following variables:
+     * @Then the email template should contain the following variables:
      */
-    public function iShouldSeeTheFollowingVariables(TableNode $variables): void
+    public function iShouldSeeTheFollowingVariables(TableNode $expectedVars): void
     {
-        $variableNames = [];
-        foreach ($variables->getRows() as $variable) {
-            $variableName = $variable[0];
+        $expectedVars = $expectedVars->getColumn(0);
+        $foundVars = $this->findVars();
 
-            if (!in_array($variableName, $variableNames)) {
-                $variableNames[] = $variableName;
+        $errors = [];
+        foreach ($foundVars as $name) {
+            if (!\in_array($name, $expectedVars)) {
+                $errors[] = "Variable \"$name\" was not expected in the template.";
             }
         }
 
-        preg_match_all(
-            '/{{var:(?<variable_names>[^:]+):"(?<default_values>[^"]*)"}}/',
-            $this->currentTemplate,
-            $matches
-        );
+        foreach ($expectedVars as $name) {
+            if (!\in_array($name, $foundVars)) {
+                $errors[] = "Variable \"$name\" was not found in the template.";
+            }
+        }
 
-        if (count(array_unique($matches['variable_names'])) !== count($variableNames)) {
-            dump($matches);
-            die;
+        if ($errors) {
+            throw new \Exception(implode(PHP_EOL, $errors));
+        }
+    }
+
+    /**
+     * @Then the email template should not contain any variable
+     */
+    public function iShouldNotSeeAnyVariable(): void
+    {
+        if (!empty($foundVars = $this->findVars())) {
             throw new \Exception(sprintf(
-                'Expecting %s variables in this template, but found %s.',
-                count($variableNames),
-                count($matches['variable_names'])
+                'No variable expected, but found "%s" instead.',
+                implode(', ', $foundVars)
             ));
         }
+    }
 
-        foreach ($variableNames as $variableName) {
-            if (!in_array($variableName, $matches['variable_names'])) {
-                throw new \Exception("Expected variable \"$variableName\" not found in the template.");
-            }
-        }
+    private function findVars(): array
+    {
+        preg_match_all('/@@(?<name>[a-z0-9_]+)@@/', $this->currentTemplate, $matches);
+
+        return array_unique($matches['name']);
     }
 }

@@ -1,6 +1,6 @@
 {% block subject %}
     {% verbatim %}
-        Un message de la part de @@from_firstname@@
+        Un message de la part de @@sender_first_name@@
     {% endverbatim %}
 {% endblock %}
 
@@ -14,16 +14,16 @@
                         Bonjour,
                     </p>
                     <p>
-                        @@from_firstname@@, adhérent(e) d'En Marche, vous envoie ce message :
+                        @@sender_first_name@@, adhérent(e) d'En Marche, vous envoie ce message :
                     </p>
                     <hr>
                     <p>
-                        @@target_message@@
+                        @@message@@
                     </p>
                     <hr>
                     <p>
                         Si nécessaire, vous pouvez échanger avec
-                        @@from_firstname@@
+                        @@sender_first_name@@
                         en répondant à cet e-mail.
                     </p>
                     <p>
