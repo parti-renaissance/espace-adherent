@@ -1,6 +1,6 @@
 {% block subject %}
     {% verbatim %}
-        Votre inscription pour {{var:event_name:""}}
+        Votre inscription pour @@event_name@@
     {% endverbatim %}
 {% endblock %}
 
@@ -8,20 +8,19 @@
 
     {% embed 'email/layout.html.twig' %}
         {% block content %}
-            {% verbatim %}
             <tr>
                 <td align="left">
                     <p>
-                        Bonjour {{var:prenom:""}},
+                        Bonjour @@prenom@@,
                     </p>
                     <p>
                         Vous êtes bien inscrit(e) à l'événement
-                        <strong>{{var:event_name:""}}</strong>
-                        organisé par {{var:event_organizer:""}}.
+                        <strong>@@event_name@@</strong>
+                        organisé par @@event_organizer@@.
                     </p>
                     <p>
-                        Celui-ci se déroulera le {{var:event_date:""}}
-                        à {{var:event_hour:""}}, {{var:event_address:""}}.
+                        Celui-ci se déroulera le @@event_date@@
+                        à @@event_hour@@, @@event_address@@.
                     </p>
                     <p>
                         Merci pour votre engagement !
@@ -36,10 +35,9 @@
             </tr>
             <tr>
                 <td align="center">
-                    <a href="https://www.facebook.com/sharer/sharer.php?u={{var:event_link:"https%3A//en-marche.fr/evenements"}}" target="_blank" class="btn">Partager sur Facebook !</a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=@@event_link@@" target="_blank" class="btn">Partager sur Facebook !</a>
                 </td>
             </tr>
-            {% endverbatim %}
         {% endblock %}
     {% endembed %}
 

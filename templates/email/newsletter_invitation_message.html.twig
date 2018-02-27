@@ -5,7 +5,7 @@
 {% block body_html %}
 
     {% embed 'email/layout.html.twig' %}
-        {% block content %}
+        {% block content %
             {% verbatim %}
             <tr>
                 <td align="left">
@@ -14,7 +14,7 @@
                     </p>
                     <p>
                         Nous vous écrivons de la part de
-                        {{var:sender_firstname:""}}. Ce(tte) dernier(e) a pensé que vous souhaiteriez peut-être vous abonner à la newsletter d'En Marche !
+                        @@sender_firstname@@. Ce(tte) dernier(e) a pensé que vous souhaiteriez peut-être vous abonner à la newsletter d'En Marche !
                     </p>
                     <p>
                         Cela ne prendra que quelques secondes ! Vous recevrez alors les informations sur la vie du mouvement, des détails sur nos propositions, des invitations aux événements organisés près de chez vous et des moyens d'agir pour renouveler la politique.
@@ -36,7 +36,6 @@
                     </p>
                 </td>
             </tr>
-            {% endverbatim %}
         {% endblock %}
     {% endembed %}
 
