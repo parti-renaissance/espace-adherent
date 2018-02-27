@@ -4,10 +4,13 @@ namespace Test\AppBundle\Sitemap;
 
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\OrderArticle;
 use AppBundle\Entity\Page;
+use AppBundle\Exception\SitemapException;
 use AppBundle\Repository\ArticleCategoryRepository;
 use AppBundle\Repository\ArticleRepository;
+use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\OrderArticleRepository;
 use AppBundle\Repository\PageRepository;
 use AppBundle\Sitemap\SitemapFactory;
@@ -20,22 +23,33 @@ use Tackk\Cartographer\Sitemap;
 
 class SitemapFactoryTest extends TestCase
 {
+    /**
+     * @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject
+     */
     private $objectManager;
-    private $router;
-    private $cache;
-    private $article;
-    private $category;
 
-    public function testAddArticle()
+    /**
+     * @var RouterInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $router;
+
+    /**
+     * @var CacheItemPoolInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $cache;
+
+    public function testAddArticle(): void
     {
+        $this->initMock();
         $sitemap = new Sitemap();
         $this->invokeReflectionMethod('addArticles', $sitemap);
 
         $this->assertEquals(1, $sitemap->getUrlCount());
     }
 
-    public function testCreateContentSitemapWithoutHit()
+    public function testCreateContentSitemapWithoutHit(): void
     {
+        $this->initMock();
         $cacheItemInterface = $this->createMock(CacheItemInterface::class);
         $cacheItemInterface
             ->expects($this->any())
@@ -62,8 +76,10 @@ class SitemapFactoryTest extends TestCase
         $this->invokeReflectionMethod('createContentSitemap');
     }
 
-    public function testCreateContentSitemapWithHit()
+    public function testCreateContentSitemapWithHit(): void
     {
+        $this->initMock();
+
         $cacheItemInterface = $this->createMock(CacheItemInterface::class);
         $cacheItemInterface
             ->expects($this->once())
@@ -93,48 +109,73 @@ class SitemapFactoryTest extends TestCase
         $this->invokeReflectionMethod('createContentSitemap');
     }
 
+    public function testSitemapFactoryException(): void
+    {
+        $committeeRepository = $this->createConfiguredMock(CommitteeRepository::class, ['findSitemapCommittees' => []]);
+        $this->objectManager
+            ->method('getRepository')
+            ->will($this->returnValueMap([
+                [Committee::class, $committeeRepository],
+            ]))
+        ;
+
+        $this->expectException(SitemapException::class);
+        $this->invokeReflectionMethod('addCommittees', new Sitemap(), 1, 10);
+    }
+
     protected function setUp()
     {
         parent::setUp();
 
-        $this->category = new ArticleCategory();
-        $this->category->setSlug('category');
-
-        $this->article = new Article();
-        $this->article->setSlug('article');
-        $this->article->setCategory($this->category);
-        $this->article->setUpdatedAt(new \DateTime());
-
         $this->objectManager = $this->createMock(ObjectManager::class);
         $this->router = $this->createMock(RouterInterface::class);
         $this->cache = $this->createMock(CacheItemPoolInterface::class);
+    }
+
+    protected function initMock(): void
+    {
+        $category = new ArticleCategory();
+        $category->setSlug('category');
+
+        $article = new Article();
+        $article->setSlug('article');
+        $article->setCategory($category);
+        $article->setUpdatedAt(new \DateTime());
+
+        $orderArticle = new OrderArticle();
+        $orderArticle->setSlug('article');
+        $orderArticle->setUpdatedAt(new \DateTime());
+
+        $page = new Page();
+        $page->setSlug('article');
+        $page->setUpdatedAt(new \DateTime());
 
         $categoriesRepository = $this->createMock(ArticleCategoryRepository::class);
         $categoriesRepository
             ->expects($this->any())
             ->method('findAll')
-            ->willReturn([$this->category])
+            ->willReturn([$category])
         ;
 
         $articleRepository = $this->createMock(ArticleRepository::class);
         $articleRepository
             ->expects($this->any())
             ->method('findAllPublished')
-            ->willReturn([$this->article])
+            ->willReturn([$article])
         ;
 
         $orderArticleRepository = $this->createMock(OrderArticleRepository::class);
         $orderArticleRepository
             ->expects($this->any())
             ->method('findAllPublished')
-            ->willReturn([])
+            ->willReturn([$orderArticle])
         ;
 
         $pageRepository = $this->createMock(PageRepository::class);
         $pageRepository
             ->expects($this->any())
             ->method('findAll')
-            ->willReturn([])
+            ->willReturn([$page])
         ;
 
         $this->objectManager
@@ -153,17 +194,15 @@ class SitemapFactoryTest extends TestCase
         $this->objectManager = null;
         $this->router = null;
         $this->cache = null;
-        $this->article = null;
-        $this->category = null;
 
         parent::tearDown();
     }
 
-    private function invokeReflectionMethod(string $methodName, Sitemap $sitemap = null)
+    private function invokeReflectionMethod(string $methodName, Sitemap $sitemap = null, int $page = null, int $perpage = null)
     {
         $reflection = new \ReflectionMethod(SitemapFactory::class, $methodName);
         $reflection->setAccessible(true);
 
-        return $reflection->invoke(new SitemapFactory($this->objectManager, $this->router, $this->cache), $sitemap);
+        return $reflection->invoke(new SitemapFactory($this->objectManager, $this->router, $this->cache), $sitemap, $page, $perpage);
     }
 }

@@ -9,6 +9,7 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\Media;
 use AppBundle\Entity\OrderArticle;
 use AppBundle\Entity\Page;
+use AppBundle\Exception\SitemapException;
 use AppBundle\Repository\MediaRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Psr\Cache\CacheItemPoolInterface;
@@ -20,7 +21,7 @@ use Tackk\Cartographer\SitemapIndex;
 
 class SitemapFactory
 {
-    public const ALL_TYPES = 'committees|content|events|images|main|videos';
+    public const ALL_TYPES = 'committees|content|events|images|main';
     private const PER_PAGE = 10000;
     private const EXPIRATION_TIME = 3600;
     private const TYPE_COMMITTEES = 'committees';
@@ -28,7 +29,6 @@ class SitemapFactory
     private const TYPE_EVENTS = 'events';
     private const TYPE_IMAGES = 'images';
     private const TYPE_MAIN = 'main';
-    private const TYPE_VIDEOS = 'videos';
 
     private $manager;
     private $router;
@@ -50,7 +50,6 @@ class SitemapFactory
             $sitemapIndex->add($this->generateUrl('app_sitemap', ['type' => self::TYPE_MAIN, 'page' => 1]), null);
             $sitemapIndex->add($this->generateUrl('app_sitemap', ['type' => self::TYPE_CONTENT, 'page' => 1]), null);
             $sitemapIndex->add($this->generateUrl('app_sitemap', ['type' => self::TYPE_IMAGES, 'page' => 1]), null);
-            $sitemapIndex->add($this->generateUrl('app_sitemap', ['type' => self::TYPE_VIDEOS, 'page' => 1]), null);
 
             // Committees
             $totalCount = $this->manager->getRepository(Committee::class)->countSitemapCommittees();
@@ -120,10 +119,6 @@ class SitemapFactory
             return $this->createImagesSitemap();
         }
 
-        if (self::TYPE_VIDEOS === $type) {
-            return $this->createVideosSitemap();
-        }
-
         return '';
     }
 
@@ -157,8 +152,8 @@ class SitemapFactory
             $this->addArticlesCategories($sitemap);
             $this->addPages($sitemap);
             $this->addArticles($sitemap);
-            $sitemap->add($this->generateUrl('app_explainer_index'), null, ChangeFrequency::NEVER, 0.5);
             $this->addOrderArticles($sitemap);
+            $sitemap->add($this->generateUrl('app_explainer_index'), null, ChangeFrequency::NEVER, 0.5);
 
             $content->set((string) $sitemap);
             $content->expiresAfter(self::EXPIRATION_TIME);
@@ -220,24 +215,7 @@ class SitemapFactory
         return $images->get();
     }
 
-    private function createVideosSitemap(): string
-    {
-        $images = $this->cache->getItem('sitemap_videos');
-
-        if (!$images->isHit()) {
-            $sitemap = new Sitemap();
-            $this->addVideos($sitemap);
-
-            $images->set((string) $sitemap);
-            $images->expiresAfter(self::EXPIRATION_TIME);
-
-            $this->cache->save($images);
-        }
-
-        return $images->get();
-    }
-
-    private function addArticlesCategories(Sitemap $sitemap)
+    private function addArticlesCategories(Sitemap $sitemap): void
     {
         $categories = $this->manager->getRepository(ArticleCategory::class)->findAll();
 
@@ -251,7 +229,7 @@ class SitemapFactory
         }
     }
 
-    private function addPages(Sitemap $sitemap)
+    private function addPages(Sitemap $sitemap): void
     {
         $sitemap->add($this->generateUrl('program_index'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('map_committees'), null, ChangeFrequency::WEEKLY, 0.6);
@@ -266,7 +244,7 @@ class SitemapFactory
         }
     }
 
-    private function addArticles(Sitemap $sitemap)
+    private function addArticles(Sitemap $sitemap): void
     {
         $articles = $this->manager->getRepository(Article::class)->findAllPublished();
 
@@ -283,7 +261,7 @@ class SitemapFactory
         }
     }
 
-    private function addAmpArticles(Sitemap $sitemap)
+    private function addAmpArticles(Sitemap $sitemap): void
     {
         $articles = $this->manager->getRepository(Article::class)->findAllPublished();
 
@@ -300,7 +278,7 @@ class SitemapFactory
         }
     }
 
-    private function addAmpOrderArticles(Sitemap $sitemap)
+    private function addAmpOrderArticles(Sitemap $sitemap): void
     {
         $articles = $this->manager->getRepository(OrderArticle::class)->findAllPublished();
 
@@ -314,7 +292,7 @@ class SitemapFactory
         }
     }
 
-    private function addOrderArticles(Sitemap $sitemap)
+    private function addOrderArticles(Sitemap $sitemap): void
     {
         $articles = $this->manager->getRepository(OrderArticle::class)->findAllPublished();
 
@@ -328,9 +306,12 @@ class SitemapFactory
         }
     }
 
-    private function addCommittees(Sitemap $sitemap, int $page, int $perPage)
+    private function addCommittees(Sitemap $sitemap, int $page, int $perPage): void
     {
         $committees = $this->manager->getRepository(Committee::class)->findSitemapCommittees($page, $perPage);
+        if (!$committees) {
+            throw new SitemapException('No committee');
+        }
 
         foreach ($committees as $committee) {
             $sitemap->add(
@@ -342,9 +323,12 @@ class SitemapFactory
         }
     }
 
-    private function addEvents(Sitemap $sitemap, int $page, int $perPage)
+    private function addEvents(Sitemap $sitemap, int $page, int $perPage): void
     {
         $events = $this->manager->getRepository(Event::class)->findSitemapEvents($page, $perPage);
+        if (!$events) {
+            throw new SitemapException('No event');
+        }
 
         foreach ($events as $event) {
             $sitemap->add(
@@ -358,9 +342,12 @@ class SitemapFactory
         }
     }
 
-    private function addImages(Sitemap $sitemap)
+    private function addImages(Sitemap $sitemap): void
     {
         $images = $this->manager->getRepository(Media::class)->findSitemapMedias(MediaRepository::TYPE_IMAGE);
+        if (!$images) {
+            throw new SitemapException('No image');
+        }
 
         foreach ($images as $image) {
             $imageURL = $this->generateUrl('asset_url', ['path' => $image->getPathWithDirectory()]);
@@ -368,17 +355,7 @@ class SitemapFactory
         }
     }
 
-    private function addVideos(Sitemap $sitemap)
-    {
-        $videos = $this->manager->getRepository(Media::class)->findSitemapMedias(MediaRepository::TYPE_VIDEO);
-
-        foreach ($videos as $video) {
-            $videoURL = $this->generateUrl('asset_url', ['path' => $video->getPathWithDirectory()]);
-            $sitemap->add($videoURL, null, ChangeFrequency::WEEKLY, 0.6);
-        }
-    }
-
-    private function generateUrl(string $name, array $parameters = [])
+    private function generateUrl(string $name, array $parameters = []): ?string
     {
         return $this->router->generate($name, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }

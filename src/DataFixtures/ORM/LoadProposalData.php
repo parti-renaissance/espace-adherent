@@ -2,6 +2,8 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Content\MediaFactory;
+use AppBundle\Content\ProposalFactory;
 use AppBundle\Entity\ProposalTheme;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -15,8 +17,8 @@ class LoadProposalData implements FixtureInterface, ContainerAwareInterface
 
     public function load(ObjectManager $manager)
     {
-        $factory = $this->container->get('app.content.proposal_factory');
-        $mediaFactory = $this->container->get('app.content.media_factory');
+        $factory = $this->container->get(ProposalFactory::class);
+        $mediaFactory = $this->container->get(MediaFactory::class);
         $storage = $this->container->get('app.storage');
         $em = $this->container->get('doctrine.orm.entity_manager');
 

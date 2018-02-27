@@ -6,6 +6,7 @@ use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\OrderArticle;
 use AppBundle\Entity\Proposal;
+use AppBundle\Sitemap\SitemapFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -60,7 +61,7 @@ class AmpController extends Controller
     public function sitemapIndexAction(): Response
     {
         return new Response(
-            $this->get('app.content.sitemap_factory')->createAmpSitemap(),
+            $this->get(SitemapFactory::class)->createAmpSitemap(),
             Response::HTTP_OK,
             ['Content-type' => 'text/xml']
         );
