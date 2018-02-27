@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\OAuth;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\OAuth\Model\Scope;
@@ -16,6 +17,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *   @ORM\UniqueConstraint(name="user_authorizations_unique", columns={"user_id", "client_id"})
  * })
  * @UniqueEntity(fields={"user", "client"}, message="user_authorization.non_unique")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class UserAuthorization
 {
