@@ -97,7 +97,7 @@
             {% endif %}
 
             {% if is_host %}
-                {{ js.ckeditor('committee_feed_message_content') }}
+                {{ js.ckeditor(form.vars.id ~ '_content', null, constant('AppBundle\\Entity\\UserDocument::TYPE_COMMITTEE_FEED')) }}
             {% endif %}
         });
     </script>

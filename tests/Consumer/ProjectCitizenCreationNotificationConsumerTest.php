@@ -40,7 +40,8 @@ class ProjectCitizenCreationNotificationConsumerTest extends TestCase
             ->entityManager
             ->expects($this->any())
             ->method('getConnection')
-            ->willReturn($this->createMock(Connection::class));
+            ->willReturn($this->createMock(Connection::class))
+        ;
 
         $this->validator = $this->createMock(ValidatorInterface::class);
     }

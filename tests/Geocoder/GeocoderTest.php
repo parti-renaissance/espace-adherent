@@ -30,7 +30,8 @@ class GeocoderTest extends TestCase
             ->expects($this->once())
             ->method('geocode')
             ->with(self::ADDRESS)
-            ->willReturn($addresses);
+            ->willReturn($addresses)
+        ;
 
         $coordinates = $this->geocoder->geocode(self::ADDRESS);
 
@@ -49,7 +50,8 @@ class GeocoderTest extends TestCase
             ->expects($this->once())
             ->method('geocode')
             ->with(self::ADDRESS)
-            ->willThrowException(new \Exception('Geocoding failed'));
+            ->willThrowException(new \Exception('Geocoding failed'))
+        ;
 
         $this->geocoder->geocode(self::ADDRESS);
     }
@@ -64,7 +66,8 @@ class GeocoderTest extends TestCase
             ->expects($this->once())
             ->method('geocode')
             ->with(self::ADDRESS)
-            ->willReturn(new AddressCollection());
+            ->willReturn(new AddressCollection())
+        ;
 
         $this->geocoder->geocode(self::ADDRESS);
     }

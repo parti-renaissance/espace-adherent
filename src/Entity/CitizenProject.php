@@ -672,4 +672,16 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     {
         $this->nextAction = $citizenAction;
     }
+
+    public function exportCommitteeSupports(): string
+    {
+        return \implode(', ', array_map(function (CitizenProjectCommitteeSupport $committeeSupport) {
+            return \sprintf('%s [%s]', $committeeSupport->getCommittee()->getName(), $committeeSupport->getStatus());
+        }, $this->committeeSupports->toArray()));
+    }
+
+    public function exportSkills(): string
+    {
+        return \implode(', ', $this->skills->toArray());
+    }
 }

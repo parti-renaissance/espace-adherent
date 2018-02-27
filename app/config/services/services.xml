@@ -32,6 +32,17 @@
             <argument type="service" id="knp_snappy.image"/>
         </service>
 
+        <!-- CitizenActions -->
+        <service id="AppBundle\CitizenAction\CitizenActionMessageNotifier">
+            <argument key="$mailer" type="service" id="app.mailer.transactional" />
+        </service>
+
+        <service id="AppBundle\CitizenAction\CitizenActionParticipantsExporter" public="true" />
+
+        <service id="AppBundle\CitizenAction\CitizenActionContactParticipantsCommandHandler" public="true">
+            <argument type="service" id="app.mailer.campaign" />
+        </service>
+
         <!-- Controller -->
         <prototype namespace="AppBundle\Controller\" resource="../../../src/Controller/">
             <tag name="controller.service_arguments" />
@@ -49,6 +60,9 @@
 		<service id="AppBundle\EventListener\ProcurationMailerSubscriber">
 			<argument key="$mailer" type="service" id="app.mailer.transactional" />
 		</service>
+        <prototype namespace="AppBundle\EntityListener\" resource="../../../src/EntityListener/">
+            <tag name="doctrine.orm.entity_listener" />
+        </prototype>
 
         <!-- Form -->
         <service id="AppBundle\Form\CitizenProjectCommentCommandType"/>
@@ -57,13 +71,13 @@
         <service id="AppBundle\Form\EventRegistrationType"/>
         <service id="AppBundle\Form\ColorChoiceType"/>
 
-		<!-- GeoCoder -->
-		<service id="GeoIp2\WebService\Client">
-			<argument>%env(MAXMIND_USER_ID)%</argument>
-			<argument>%env(MAXMIND_LICENSE_KEY)%</argument>
-		</service>
-		<service id="GeoIp2\ProviderInterface" alias="GeoIp2\WebService\Client" />
-		<service id="AppBundle\Address\GeoCoder" />
+        <!-- GeoCoder -->
+        <service id="GeoIp2\WebService\Client">
+            <argument>%env(MAXMIND_USER_ID)%</argument>
+            <argument>%env(MAXMIND_LICENSE_KEY)%</argument>
+        </service>
+        <service id="GeoIp2\ProviderInterface" alias="GeoIp2\WebService\Client"/>
+        <service id="AppBundle\Address\GeoCoder"/>
 
         <!-- Procuration -->
         <service id="AppBundle\Procuration\ProcurationManager" public="true" />
@@ -75,19 +89,19 @@
         <service id="AppBundle\Form\ReportCommandType"/>
         <service id="AppBundle\Report\ReportCreationCommandHandler"/>
 
-		<!-- Security -->
-		<prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter" />
-		<service  id="AppBundle\Security\Http\AuthenticationFailureHandler" />
-		<service id="app.security.user_provider" class="AppBundle\Security\UserProvider">
-			<argument key="$classOrAlias" type="string">AppBundle\Entity\Adherent</argument>
-		</service>
-		<service id="app.security.admin_provider" class="AppBundle\Security\UserProvider">
-			<argument key="$classOrAlias" type="string">AppBundle\Entity\Administrator</argument>
-		</service>
+        <!-- Security -->
+        <prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter"/>
+        <service id="AppBundle\Security\Http\AuthenticationFailureHandler"/>
+        <service id="app.security.user_provider" class="AppBundle\Security\UserProvider">
+            <argument key="$classOrAlias" type="string">AppBundle\Entity\Adherent</argument>
+        </service>
+        <service id="app.security.admin_provider" class="AppBundle\Security\UserProvider">
+            <argument key="$classOrAlias" type="string">AppBundle\Entity\Administrator</argument>
+        </service>
 
         <!-- Timeline -->
-        <service id="AppBundle\Command\TimelineImportCommand" />
-        <service id="AppBundle\Command\TimelineSynchronizeCommand" />
+        <service id="AppBundle\Command\TimelineImportCommand"/>
+        <service id="AppBundle\Command\TimelineSynchronizeCommand"/>
         <service id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener">
             <argument>%locales%</argument>
             <argument>%locale%</argument>
@@ -97,5 +111,11 @@
             <argument key="$cacheDirectory">%kernel.cache_dir%</argument>
             <argument key="$webDirectory">%kernel.root_dir%/../web</argument>
         </service>
+
+        <!--Command-->
+        <service id="AppBundle\Command\FixTitleCaseCommand" />
+
+        <!-- UserDocument -->
+        <service id="AppBundle\UserDocument\UserDocumentManager" public="true" />
     </services>
 </container>

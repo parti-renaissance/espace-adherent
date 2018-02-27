@@ -116,7 +116,8 @@ class CitizenActionAdmin extends AbstractAdmin
                 ->add('postAddress.longitude', TextType::class, [
                     'label' => 'Longitude',
                 ])
-            ->end();
+            ->end()
+        ;
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -172,7 +173,8 @@ class CitizenActionAdmin extends AbstractAdmin
                     'filter_emojis' => true,
                     'attr' => ['class' => 'content-editor', 'rows' => 20],
                 ])
-            ->end();
+            ->end()
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -263,6 +265,7 @@ class CitizenActionAdmin extends AbstractAdmin
             ->add('_action', null, [
                 'virtual_field' => true,
                 'template' => 'admin/citizen_action/list_actions.html.twig',
-            ]);
+            ])
+        ;
     }
 }

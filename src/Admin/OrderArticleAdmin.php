@@ -99,7 +99,8 @@ class OrderArticleAdmin extends AbstractAdmin
                     'filter_emojis' => true,
                     'attr' => ['class' => 'content-editor', 'rows' => 20],
                 ])
-            ->end();
+            ->end()
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -108,7 +109,8 @@ class OrderArticleAdmin extends AbstractAdmin
             ->add('title', null, [
                 'label' => 'Titre',
                 'show_filter' => true,
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -132,6 +134,7 @@ class OrderArticleAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }

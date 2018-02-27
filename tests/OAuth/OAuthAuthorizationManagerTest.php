@@ -40,7 +40,8 @@ class OAuthAuthorizationManagerTest extends TestCase
             ->expects($this->once())
             ->method('findByUserAndClient')
             ->with($user, $client)
-            ->willReturn($this->createUserAuthorization($user, $client));
+            ->willReturn($this->createUserAuthorization($user, $client))
+        ;
 
         static::assertTrue(
             $userAuthorizationManager->isAuthorized($user, $client, $scopes)
@@ -68,7 +69,8 @@ class OAuthAuthorizationManagerTest extends TestCase
             ->expects($this->once())
             ->method('findByUserAndClient')
             ->with($user, $client)
-            ->willReturn($this->createUserAuthorization($user, $client, [Scope::WRITE_USERS()]));
+            ->willReturn($this->createUserAuthorization($user, $client, [Scope::WRITE_USERS()]))
+        ;
 
         static::assertFalse(
             $userAuthorizationManager->isAuthorized($user, $client, [Scope::READ_USERS()])
@@ -85,12 +87,14 @@ class OAuthAuthorizationManagerTest extends TestCase
             ->expects($this->once())
             ->method('findByUserAndClient')
             ->with($user, $client)
-            ->willReturn($userAuthorization = $this->createUserAuthorization($user, $client, [Scope::READ_USERS()]));
+            ->willReturn($userAuthorization = $this->createUserAuthorization($user, $client, [Scope::READ_USERS()]))
+        ;
 
         $this->userAuthorizationRepository
             ->expects($this->once())
             ->method('save')
-            ->with($userAuthorization);
+            ->with($userAuthorization)
+        ;
 
         $scopes = [Scope::READ_USERS(), Scope::WRITE_USERS()];
         $userAuthorizationManager->record($user, $client, $scopes);
@@ -107,11 +111,13 @@ class OAuthAuthorizationManagerTest extends TestCase
             ->expects($this->once())
             ->method('findByUserAndClient')
             ->with($user, $client)
-            ->willReturn(null);
+            ->willReturn(null)
+        ;
 
         $this->userAuthorizationRepository
             ->expects($this->once())
-            ->method('save');
+            ->method('save')
+        ;
 
         $userAuthorizationManager->record($user, $client, [Scope::READ_USERS()]);
     }
@@ -122,11 +128,13 @@ class OAuthAuthorizationManagerTest extends TestCase
 
         $this->userAuthorizationRepository
             ->expects($this->never())
-            ->method('findByUserAndClient');
+            ->method('findByUserAndClient')
+        ;
 
         $this->userAuthorizationRepository
             ->expects($this->never())
-            ->method('save');
+            ->method('save')
+        ;
 
         $userAuthorizationManager->record($this->createUser(), $this->createClient(false), [Scope::WRITE_USERS()]);
     }

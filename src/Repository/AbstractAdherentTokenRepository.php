@@ -25,7 +25,8 @@ class AbstractAdherentTokenRepository extends EntityRepository
             ->where('t.adherentUuid = :uuid')
             ->orderBy('t.createdAt', 'DESC')
             ->setParameter('uuid', $adherent->toString())
-            ->getQuery();
+            ->getQuery()
+        ;
 
         return $query->getOneOrNullResult();
     }

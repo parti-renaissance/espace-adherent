@@ -29,7 +29,8 @@ class LiveLinkAdmin extends AbstractAdmin
             ])
             ->add('link', null, [
                 'label' => 'Cible du lien',
-            ]);
+            ])
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -54,6 +55,7 @@ class LiveLinkAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }

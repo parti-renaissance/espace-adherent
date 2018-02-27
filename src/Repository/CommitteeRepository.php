@@ -153,7 +153,8 @@ class CommitteeRepository extends EntityRepository
             ->where('c.status = :status')
             ->setParameter('status', Committee::APPROVED)
             ->orderBy('c.name', 'ASC')
-            ->orderBy('c.createdAt', 'DESC');
+            ->orderBy('c.createdAt', 'DESC')
+        ;
 
         $codesFilter = $qb->expr()->orX();
 
@@ -189,7 +190,8 @@ class CommitteeRepository extends EntityRepository
         $qb = $this->createQueryBuilder('c')
             ->select('c')
             ->orderBy('c.name', 'ASC')
-            ->orderBy('c.createdAt', 'DESC');
+            ->orderBy('c.createdAt', 'DESC')
+        ;
 
         $filter->setCoordinator($coordinator);
         $filter->apply($qb, 'c');
@@ -205,7 +207,8 @@ class CommitteeRepository extends EntityRepository
         return (int) $this->createSitemapQb()
             ->select('COUNT(c) AS nb')
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
     }
 
     /**
@@ -222,7 +225,8 @@ class CommitteeRepository extends EntityRepository
             ->setFirstResult(($page - 1) * $perPage)
             ->setMaxResults($perPage)
             ->getQuery()
-            ->getArrayResult();
+            ->getArrayResult()
+        ;
     }
 
     /**
@@ -233,7 +237,8 @@ class CommitteeRepository extends EntityRepository
         return $this
             ->createQueryBuilder('c')
             ->where('c.status = :status')
-            ->setParameter('status', Committee::APPROVED);
+            ->setParameter('status', Committee::APPROVED)
+        ;
     }
 
     /**
@@ -245,7 +250,8 @@ class CommitteeRepository extends EntityRepository
             $qb = $this
                 ->createNearbyQueryBuilder($coordinates)
                 ->andWhere($this->getNearbyExpression().' < :distance_max')
-                ->setParameter('distance_max', $search->getRadius());
+                ->setParameter('distance_max', $search->getRadius())
+            ;
         } else {
             $qb = $this->createQueryBuilder('n');
         }
@@ -274,7 +280,8 @@ class CommitteeRepository extends EntityRepository
             ->setParameter('creator', $adherent->getUuid()->toString())
             ->setParameter('status', $status)
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
 
         return $nb > 0;
     }
@@ -302,7 +309,8 @@ class CommitteeRepository extends EntityRepository
             ->setParameter('search', '%'.strtolower($search).'%')
             ->setMaxResults($limit)
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 
     public function unfollowCommitteesOnUnregistration(Adherent $adherent): void
@@ -322,7 +330,8 @@ class CommitteeRepository extends EntityRepository
         $query = $this->createQueryBuilder('e')
             ->getQuery()
             ->setMaxResults($limit)
-            ->setFirstResult($offset);
+            ->setFirstResult($offset)
+        ;
 
         return new Paginator($query);
     }

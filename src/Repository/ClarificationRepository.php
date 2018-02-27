@@ -25,7 +25,8 @@ class ClarificationRepository extends EntityRepository
             ->andWhere('c.published = 1')
             ->setParameter('slug', $slug)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
     }
 
     /**

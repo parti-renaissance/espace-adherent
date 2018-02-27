@@ -15,7 +15,8 @@ class CommitteeFeedItemRepository extends EntityRepository
         $qb = $this
             ->createCommitteeTimelineQueryBuilder($committeeUuid)
             ->setFirstResult($firstResultIndex)
-            ->setMaxResults($limit);
+            ->setMaxResults($limit)
+        ;
 
         return new Paginator($qb);
     }
@@ -39,7 +40,8 @@ class CommitteeFeedItemRepository extends EntityRepository
             ->where('i.itemType = :type')
             ->setMaxResults(1)
             ->setParameter('type', $type)
-            ->orderBy('i.createdAt', 'DESC');
+            ->orderBy('i.createdAt', 'DESC')
+        ;
 
         if (null !== $published) {
             $qb->andWhere('i.published = :published')->setParameter('published', $published);
@@ -58,7 +60,8 @@ class CommitteeFeedItemRepository extends EntityRepository
             $qb
                 ->leftJoin('i.committee', 'c')
                 ->andWhere('c.uuid = :committee')
-                ->setParameter('committee', $committeeUuid);
+                ->setParameter('committee', $committeeUuid)
+            ;
         }
 
         return $qb->getQuery()->getOneOrNullResult();
@@ -79,7 +82,8 @@ class CommitteeFeedItemRepository extends EntityRepository
             ->setParameter('committee', $committeeUuid)
             ->setParameter('published', true)
             ->setParameter('e_null', null)
-            ->setParameter('e_published', true);
+            ->setParameter('e_published', true)
+        ;
 
         return $qb;
     }
@@ -90,7 +94,8 @@ class CommitteeFeedItemRepository extends EntityRepository
         $qb
             ->delete()
             ->where('i.author = :author')
-            ->setParameter(':author', $author);
+            ->setParameter(':author', $author)
+        ;
 
         return $qb->getQuery()->execute();
     }

@@ -5,13 +5,17 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="redirections")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RedirectionRepository")
+ * @ORM\EntityListeners({"AppBundle\EntityListener\RedirectionListener"})
  *
  * @Algolia\Index(autoIndex=false)
+ *
+ * @Serializer\ExclusionPolicy("all")
  */
 class Redirection
 {
@@ -31,6 +35,8 @@ class Redirection
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
+     *
+     * @Serializer\Expose
      */
     private $from;
 
@@ -41,6 +47,8 @@ class Redirection
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
+     *
+     * @Serializer\Expose
      */
     private $to;
 
@@ -51,6 +59,8 @@ class Redirection
      *
      * @Assert\NotBlank
      * @Assert\Choice(choices={301, 302})
+     *
+     * @Serializer\Expose
      */
     private $type;
 

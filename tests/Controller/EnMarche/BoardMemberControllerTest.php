@@ -267,7 +267,8 @@ class BoardMemberControllerTest extends SqliteWebTestCase
             ->filter('.spaces__results__row')
             ->eq(4)
             ->filter('.btn-add-member-list')
-            ->attr('data-memberid');
+            ->attr('data-memberid')
+        ;
 
         $this->client->request(Request::METHOD_POST, '/espace-membres-conseil/list/boardmember', [
             'boardMemberId' => $idBoardMemberToAdd,

@@ -1,0 +1,16 @@
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field%}
+    <ul>
+        {% for webHook in value %}
+            <li>
+                {{ webHook.event }}
+                <ul>
+                    {% for callback in webHook.callbacks %}
+                        <li>{{ callback }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

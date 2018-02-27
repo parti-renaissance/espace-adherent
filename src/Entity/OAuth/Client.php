@@ -6,9 +6,12 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntitySoftDeletableTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
+use AppBundle\Entity\WebHook\WebHook;
 use AppBundle\OAuth\Model\GrantTypeEnum;
 use AppBundle\OAuth\Model\Scope;
 use AppBundle\OAuth\SecretGenerator;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
@@ -42,8 +45,8 @@ class Client
      * @Assert\Length(
      *     min = 10,
      *     max = 200,
-     *     minMessage = "client.description.constraint.length.min",
-     *     maxMessage = "client.description.constraint.length.max"
+     *     minMessage = "La description doit faire au moins {{ limit }} caractères.",
+     *     maxMessage = "La description ne doit pas dépasser {{ limit }} caractères."
      * )
      *
      * @ORM\Column
@@ -51,7 +54,7 @@ class Client
     private $description;
 
     /**
-     * @Assert\Count(min = 1, minMessage = "client.redirectUris.constraint.count.min")
+     * @Assert\Count(min = 1, minMessage = "Veuillez spécifier au moins une adresse de redirection.")
      *
      * @ORM\Column(type="json")
      */
@@ -79,6 +82,15 @@ class Client
      */
     private $askUserForAuthorization;
 
+    /**
+     * @var Collection|WebHook[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WebHook\WebHook", mappedBy="client", cascade={"all"}, orphanRemoval=true)
+     *
+     * @Assert\Valid
+     */
+    private $webHooks;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $name = '',
@@ -95,6 +107,7 @@ class Client
         $this->redirectUris = $redirectUris;
         $this->supportedScopes = [];
         $this->askUserForAuthorization = true;
+        $this->webHooks = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -219,5 +232,26 @@ class Client
     public function setAskUserForAuthorization(bool $askUserForAuthorization): void
     {
         $this->askUserForAuthorization = $askUserForAuthorization;
+    }
+
+    /**
+     * @return WebHook[]|Collection
+     */
+    public function getWebHooks(): Collection
+    {
+        return $this->webHooks;
+    }
+
+    public function removeWebHook(WebHook $webHook): void
+    {
+        $this->webHooks->removeElement($webHook);
+    }
+
+    public function addWebHook(WebHook $webHook): void
+    {
+        if (!$this->webHooks->contains($webHook)) {
+            $webHook->setClient($this);
+            $this->webHooks->add($webHook);
+        }
     }
 }

@@ -3,87 +3,9 @@
 {% block page_title 'Membres de mon comité' %}
 
 {% block javascripts %}
-    <script type="application/javascript">
-        var allCheckbox = dom('#members-check-all');
-        var selectionCheckboxes = document.getElementsByName('members[]');
-        var contactButton = dom('#members-contact-button');
-        var contactSelection = dom('#members-contact-selection');
-        var exportButton = dom('#members-export-button');
-        var exportSelection = dom('#members-export-selection');
-
-        // Bind the 'select all' checkbox
-        on(allCheckbox, 'change', function() {
-            if (allCheckbox.checked) {
-                toggleCheckboxs(true);
-                toggleButtons(true);
-            } else {
-                toggleCheckboxs(false);
-                toggleButtons(false);
-            }
-        });
-
-        // Bind each 'selection' checkbox
-        selectionCheckboxes.forEach(function(element) {
-            on(element, 'change', function() {
-                var all = true;
-
-                // Default behaviour
-                toggleButtons(false);
-                allCheckbox.checked = false;
-
-                selectionCheckboxes.forEach(function (element) {
-                    if (element.checked) {
-                        // Enable button if at least one selection checkbox is checked
-                        toggleButtons(true);
-                    } else {
-                        all = false;
-                    }
-                });
-
-                // When all selection checkbox are checked, also check the 'select all' checkbox
-                if (all) {
-                    allCheckbox.checked = true;
-                }
-            });
-        });
-
-        // Toggle action buttons
-        function toggleButtons(value) {
-            contactButton.disabled = !value;
-            exportButton.disabled = !value;
-        }
-
-        // Toggle each 'selection' checkbox
-        function toggleCheckboxs(value) {
-            selectionCheckboxes.forEach(function (element) {
-                element.checked = value;
-            });
-        }
-
-        // Bind the export button (build a Json list of members to export)
-        on(exportButton, 'click', function () {
-            var members = [];
-
-            selectionCheckboxes.forEach(function(element) {
-                if (element.checked) {
-                    members.push(element.value);
-                }
-            });
-
-            exportSelection.value = JSON.stringify(members);
-        });
-
-        // Bind the export button (build a Json list of members to export)
-        on(contactButton, 'click', function () {
-            var members = [];
-
-            selectionCheckboxes.forEach(function(element) {
-                if (element.checked) {
-                    members.push(element.value);
-                }
-            });
-
-            contactSelection.value = JSON.stringify(members);
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runManageParticipants();
         });
     </script>
 {% endblock %}

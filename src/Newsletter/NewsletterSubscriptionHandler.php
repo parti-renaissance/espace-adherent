@@ -70,6 +70,7 @@ class NewsletterSubscriptionHandler
         return $this
             ->manager
             ->getRepository(NewsletterSubscription::class)
-            ->findOneBy(['email' => $email]);
+            ->findOneBy(['email' => $email])
+        ;
     }
 }

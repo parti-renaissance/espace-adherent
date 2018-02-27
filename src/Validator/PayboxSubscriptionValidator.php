@@ -14,7 +14,8 @@ class PayboxSubscriptionValidator extends ConstraintValidator
             $this
                 ->context
                 ->buildViolation($constraint->message)
-                ->addViolation();
+                ->addViolation()
+            ;
         }
     }
 }

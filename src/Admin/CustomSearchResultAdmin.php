@@ -73,6 +73,7 @@ class CustomSearchResultAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }

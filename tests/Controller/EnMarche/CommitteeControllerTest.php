@@ -6,6 +6,7 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
+use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Mailer\Message\CommitteeNewFollowerMessage;
 use AppBundle\Entity\Committee;
 use Symfony\Component\DomCrawler\Crawler;
@@ -181,8 +182,8 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCountTimelineMessages($crawler, 2);
         $this->assertSeeTimelineMessages($crawler, [
-            ['Jacques Picard', 'co-animateur', 'À la recherche de volontaires !'],
-            ['Jacques Picard', 'co-animateur', 'Lancement du comité !'],
+            ['Jacques Picard', 'co-animateur', 'À la recherche de volontaires !', true],
+            ['Jacques Picard', 'co-animateur', 'Lancement du comité !', true],
         ]);
     }
 
@@ -285,6 +286,85 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->assertTrue($this->seeMessageForm($crawler));
     }
 
+    public function testNoEditLinkWithAnonymousUser()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertEditDeleteButton($crawler, 0);
+    }
+
+    public function testDisplayEditLinkWithAnimateurUser()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertEditDeleteButton($crawler, 10);
+    }
+
+    public function testDisplayEditLinkWithNormaleUser()
+    {
+        $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com');
+        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertEditDeleteButton($crawler, 5);
+    }
+
+    public function testEditMessage()
+    {
+        $committee = $this->manager->getRepository(Committee::class)->findOneBy(['slug' => 'en-marche-paris-8']);
+        $messages = $this->manager->getRepository(CommitteeFeedItem::class)->findMostRecentFeedEvent($committee->getUuid());
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/modifier');
+        $this->isSuccessful($this->client->getResponse());
+
+        $form = $crawler->selectButton('committee_feed_item_message_send')->form();
+        $this->assertSame($messages->getContent(), $form->get('committee_feed_item_message[content]')->getValue());
+
+        $form->setValues(['committee_feed_item_message[content]' => $messages->getContent().' test']);
+        $this->client->submit($form);
+        $this->assertClientIsRedirectedTo('/comites/en-marche-paris-8', $this->client);
+
+        $this->client->followRedirect();
+        self::assertContains($messages->getContent().' test', $this->client->getResponse()->getContent());
+    }
+
+    public function testDeleteMessage()
+    {
+        $committee = $this->manager->getRepository(Committee::class)->findOneBy(['slug' => 'en-marche-paris-8']);
+        $messages = $this->manager->getRepository(CommitteeFeedItem::class)->findMostRecentFeedEvent($committee->getUuid());
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8');
+        $form = $crawler->selectButton('delete_entity_delete')->form();
+        $this->client->submit($form);
+        $this->assertClientIsRedirectedTo('/comites/en-marche-paris-8', $this->client);
+
+        $this->client->followRedirect();
+        self::assertNotContains($messages->getContent(), $this->client->getResponse()->getContent());
+    }
+
+    public function testDeleteEditDenied()
+    {
+        $committee = $this->manager->getRepository(Committee::class)->findOneBy(['slug' => 'en-marche-paris-8']);
+        $messages = $this->manager->getRepository(CommitteeFeedItem::class)->findMostRecentFeedEvent($committee->getUuid());
+
+        $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/modifier');
+        $this->assertClientIsRedirectedTo($this->hosts['scheme'].'://'.$this->hosts['app'].'/connexion', $this->client);
+
+        $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/supprimer');
+        $this->assertClientIsRedirectedTo('/comites', $this->client, false, true);
+
+        $this->client->request(Request::METHOD_DELETE, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/supprimer');
+        $this->assertClientIsRedirectedTo($this->hosts['scheme'].'://'.$this->hosts['app'].'/connexion', $this->client);
+    }
+
     private function seeLoginLink(Crawler $crawler): bool
     {
         return 1 === count($crawler->filter('#committee-login-link'));
@@ -377,7 +457,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
     {
         foreach ($messages as $position => $message) {
             list($author, $role, $text) = $message;
-            $this->assertSeeCommitteeTimelineMessage($crawler, $position, $author, $role, $text);
+            $this->assertSeeCommitteeTimelineMessage($crawler, $position, $author, $role, $text, $message[3] ?? false);
         }
     }
 
@@ -442,5 +522,14 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->committeeRepository = null;
 
         parent::tearDown();
+    }
+
+    private function assertEditDeleteButton(Crawler $crawler, int $nbExpected)
+    {
+        $result = $crawler->selectLink('Modifier le message');
+        $this->assertSame($nbExpected, $result->count());
+
+        $result = $crawler->selectButton('delete_entity[delete]');
+        $this->assertSame($nbExpected, $result->count());
     }
 }

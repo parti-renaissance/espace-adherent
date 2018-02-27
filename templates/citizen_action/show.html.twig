@@ -42,16 +42,19 @@
 {% block citizen_action_content %}
         <section class="b__nudge--top-40">
             <div id="members">
-                {% if is_administrator %}
+                {% if is_administrator and citizen_action.active %}
                     <div class="b__nudge--bottom">
-                        <a href="{{ path('app_citizen_action_manager_edit', {slug: citizen_action.slug, project_slug: citizen_action.citizenProject.slug}) }}" class="text--body link--blue link--no-decor">
+                        <a href="{{ path('app_citizen_action_manager_edit', { slug: citizen_action.slug, project_slug: citizen_action.citizenProject.slug }) }}" class="text--body link--blue link--no-decor">
                             Modifier cette action citoyenne
+                        </a>
+                        <a href="{{ path("app_citizen_action_manager_cancel", { slug: citizen_action.slug, project_slug: citizen_action.citizenProject.slug }) }}" class="text--body link--no-decor">
+                            Annuler cette action citoyenne
                         </a>
                     </div>
                 {% endif %}
 
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a href="{{ path('app_citizen_action_list_participants', {slug: citizen_action.slug}) }}">
+                    <a href="{{ path('app_citizen_action_list_participants', { slug: citizen_action.slug }) }}">
                         <h3 class="text--medium">{{ 'citizen_action.participants_count'|transchoice(participants|length) }}</h3>
                     </a>
                 {% else %}

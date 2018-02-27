@@ -25,7 +25,8 @@ class ProposalThemeAdmin extends AbstractAdmin
             ])
             ->add('color', null, [
                 'label' => 'Couleur de fond',
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -43,6 +44,7 @@ class ProposalThemeAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }

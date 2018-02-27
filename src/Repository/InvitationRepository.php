@@ -15,6 +15,7 @@ class InvitationRepository extends EntityRepository
             ->andWhere('i.createdAt >= :aDayAgo')
             ->setParameter('aDayAgo', new \DateTime('-'.$since))
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 }

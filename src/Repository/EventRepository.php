@@ -33,11 +33,13 @@ class EventRepository extends EntityRepository
 
         if ($onlyPublished) {
             $qb->where('e.published = :published')
-                ->setParameter('published', true);
+                ->setParameter('published', true)
+            ;
         }
 
         return (int) $qb->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
     }
 
     public function findOneBySlug(string $slug): ?Event
@@ -68,7 +70,8 @@ class EventRepository extends EntityRepository
             ->setParameter('published', true)
             ->orderBy('ce.createdAt', 'DESC')
             ->setMaxResults(1)
-            ->getQuery();
+            ->getQuery()
+        ;
 
         return $query->getOneOrNullResult();
     }
@@ -218,7 +221,8 @@ class EventRepository extends EntityRepository
             ->createSitemapQueryBuilder()
             ->select('COUNT(c) AS nb')
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
     }
 
     public function findSitemapEvents(int $page, int $perPage): array
@@ -230,7 +234,8 @@ class EventRepository extends EntityRepository
             ->setFirstResult(($page - 1) * $perPage)
             ->setMaxResults($perPage)
             ->getQuery()
-            ->getArrayResult();
+            ->getArrayResult()
+        ;
     }
 
     private function createSitemapQueryBuilder(): QueryBuilder
@@ -268,7 +273,8 @@ class EventRepository extends EntityRepository
         }
 
         $qb->andWhere('n.published = :published')
-            ->setParameter('published', true);
+            ->setParameter('published', true)
+        ;
 
         if (!empty($query = $search->getQuery())) {
             $qb->andWhere('n.name like :query');
@@ -395,14 +401,17 @@ SQL;
         if ($anonymize) {
             $qb->update()
                 ->set('e.organizer', ':new_value')
-                ->setParameter('new_value', null);
+                ->setParameter('new_value', null)
+            ;
         } else {
             $qb->delete()
-                ->set('e.organizer', $qb->expr()->literal(null));
+                ->set('e.organizer', $qb->expr()->literal(null))
+            ;
         }
 
         $qb->where('e.organizer = :organizer')
-            ->setParameter('organizer', $organizer);
+            ->setParameter('organizer', $organizer)
+        ;
 
         if (in_array($type, [self::TYPE_UPCOMING, self::TYPE_PAST], true)) {
             if (self::TYPE_PAST === $type) {
@@ -423,7 +432,8 @@ SQL;
         $query = $this->createQueryBuilder('e')
             ->getQuery()
             ->setMaxResults($limit)
-            ->setFirstResult($offset);
+            ->setFirstResult($offset)
+        ;
 
         return new Paginator($query);
     }

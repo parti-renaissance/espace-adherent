@@ -78,7 +78,8 @@ class GeocodableAddressValidatorTest extends ConstraintValidatorTestCase
         $this
             ->buildViolation('common.address.not_geocodable')
             ->setCode(GeocodableAddress::INVALID_ERROR)
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     protected function createValidator()

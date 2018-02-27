@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -12,12 +14,13 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class CommitteeFeedItem
+class CommitteeFeedItem implements UserDocumentInterface
 {
     const MESSAGE = 'message';
     const EVENT = 'event';
 
     use EntityIdentityTrait;
+    use UserDocumentTrait;
 
     /**
      * @ORM\Column(length=18)
@@ -61,6 +64,22 @@ class CommitteeFeedItem
      */
     private $createdAt;
 
+    /**
+     * @var UserDocument[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\UserDocument", cascade={"all"}, orphanRemoval=true)
+     * @ORM\JoinTable(
+     *     name="committee_feed_item_user_documents",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="committee_feed_item_id", referencedColumnName="id", onDelete="CASCADE")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="user_document_id", referencedColumnName="id", onDelete="CASCADE")
+     *     }
+     * )
+     */
+    protected $documents;
+
     private function __construct(
         UuidInterface $uuid,
         string $type,
@@ -75,6 +94,7 @@ class CommitteeFeedItem
         $this->itemType = $type;
         $this->published = $published;
         $this->createdAt = new \DateTime($createdAt);
+        $this->documents = new ArrayCollection();
     }
 
     public static function createMessage(
@@ -111,11 +131,26 @@ class CommitteeFeedItem
 
     public function getContent(): ?string
     {
-        if ($this->event instanceof Event) {
+        if (!$this->content && $this->event instanceof Event) {
             return $this->event->getDescription();
         }
 
         return $this->content;
+    }
+
+    public function setContent(?string $content): void
+    {
+        $this->content = $content;
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->published;
+    }
+
+    public function setPublished(bool $published): void
+    {
+        $this->published = $published;
     }
 
     public function getCommittee(): ?Committee
@@ -159,5 +194,7 @@ class CommitteeFeedItem
         if ($this->author instanceof Adherent) {
             return $this->author->getFirstName();
         }
+
+        return null;
     }
 }

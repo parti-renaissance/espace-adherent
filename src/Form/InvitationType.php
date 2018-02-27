@@ -27,7 +27,8 @@ class InvitationType extends AbstractType
             ->add('email', EmailType::class)
             ->add('message', TextareaType::class, [
                 'filter_emojis' => true,
-            ]);
+            ])
+        ;
     }
 
     /**

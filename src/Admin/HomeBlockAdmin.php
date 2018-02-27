@@ -50,7 +50,8 @@ class HomeBlockAdmin extends AbstractAdmin
                 ])
                 ->add('position_name', TextType::class, [
                     'label' => 'Nom du bloc',
-                ]);
+                ])
+            ;
         }
 
         $formMapper
@@ -151,6 +152,7 @@ class HomeBlockAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }

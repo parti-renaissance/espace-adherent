@@ -179,6 +179,7 @@ class LoadSummaryData implements FixtureInterface, DependentFixtureInterface
 
         // Skills
         foreach ($manager->getRepository(Skill::class)->findBy(['name' => [
+            LoadSkillData::SKILLS['S004'],
             LoadSkillData::SKILLS['S005'],
             LoadSkillData::SKILLS['S006'],
             LoadSkillData::SKILLS['S007'],

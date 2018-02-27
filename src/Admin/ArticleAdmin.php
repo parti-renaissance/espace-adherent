@@ -43,11 +43,6 @@ class ArticleAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $slugEditable =
-            null === $this->getSubject()->getTitle()   // Creation
-            || !$this->getSubject()->isPublished()     // Draft
-        ;
-
         $formMapper
             ->with('Méta-données', ['class' => 'col-md-8'])
                 ->add('title', TextType::class, [
@@ -89,8 +84,7 @@ class ArticleAdmin extends AbstractAdmin
                 ])
                 ->add('slug', null, [
                     'label' => 'URL de publication',
-                    'disabled' => !$slugEditable,
-                    'help' => $slugEditable ? 'Ne spécifier que la fin : http://en-marche.fr/articles/[votre-valeur]<br />Doit être unique' : 'Non modifiable car publié',
+                    'help' => 'Ne spécifier que la fin : http://en-marche.fr/articles/[votre-valeur]<br />Doit être unique',
                 ])
                 ->add('category', null, [
                     'label' => 'Catégorie de publication',
@@ -103,7 +97,8 @@ class ArticleAdmin extends AbstractAdmin
                     'filter_emojis' => true,
                     'attr' => ['class' => 'content-editor', 'rows' => 20],
                 ])
-            ->end();
+            ->end()
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -112,7 +107,8 @@ class ArticleAdmin extends AbstractAdmin
             ->add('title', null, [
                 'label' => 'Titre',
                 'show_filter' => true,
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -142,6 +138,7 @@ class ArticleAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }

@@ -1,0 +1,30 @@
+<table class="committee__members__list" cellpadding="10">
+    <thead>
+        {% if is_host %}
+            <th class="no-print"><input type="checkbox" id="members-check-all" /></th>
+        {% endif %}
+        <th>Prénom</th>
+        {% if is_host %}
+            <th>Nom</th>
+            <th>Âge</th>
+            <th>Ville</th>
+            <th>Inscription</th>
+        {% endif %}
+    </thead>
+    {% for participant in participants %}
+        <tr>
+            {% if is_host %}
+                <td class="no-print"><input type="checkbox" name="members[]" value="{{ participant.uuid }}" /></td>
+            {% endif %}
+            <td class="member-first-name">{{ participant.firstName|capitalize }}</td>
+            {% if is_host %}
+                <td class="member-last-name">{{ participant.lastName|upper }}</td>
+                <td class="member-age">{{ participant.age }}</td>
+                <td class="member-city-name">{{ participant.cityName }}</td>
+                <td class="member-subscription-date">
+                    {{- participant.createdAt|date('d/m/Y') -}}
+                </td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+</table>

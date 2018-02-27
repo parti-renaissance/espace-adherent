@@ -51,14 +51,16 @@ class PersistentTokenFactoryTest extends TestCase
             ->expects($this->any())
             ->method('findByUuid')
             ->with(self::USER_UUID)
-            ->willReturn($user = $this->createMock(Adherent::class));
+            ->willReturn($user = $this->createMock(Adherent::class))
+        ;
 
         $this
             ->clientRepository
             ->expects($this->any())
             ->method('findClientByUuid')
             ->with(self::CLIENT_UUID)
-            ->willReturn($client = $this->createMock(Client::class));
+            ->willReturn($client = $this->createMock(Client::class))
+        ;
 
         $authCode = $this->tokenFactory->createAuthorizationCode($token);
 
@@ -89,14 +91,16 @@ class PersistentTokenFactoryTest extends TestCase
             ->expects($this->any())
             ->method('findByUuid')
             ->with(self::USER_UUID)
-            ->willReturn($user = $this->createMock(Adherent::class));
+            ->willReturn($user = $this->createMock(Adherent::class))
+        ;
 
         $this
             ->clientRepository
             ->expects($this->any())
             ->method('findClientByUuid')
             ->with(self::CLIENT_UUID)
-            ->willReturn(new Client(null, 'client', 'description', 'secret', [], ['http://client.com/fallback']));
+            ->willReturn(new Client(null, 'client', 'description', 'secret', [], ['http://client.com/fallback']))
+        ;
 
         $authCode = $this->tokenFactory->createAuthorizationCode($token);
         $this->assertSame('http://client.com/fallback', $authCode->getRedirectUri());
@@ -116,14 +120,16 @@ class PersistentTokenFactoryTest extends TestCase
             ->expects($this->any())
             ->method('findByUuid')
             ->with(self::USER_UUID)
-            ->willReturn($user = $this->createMock(Adherent::class));
+            ->willReturn($user = $this->createMock(Adherent::class))
+        ;
 
         $this
             ->clientRepository
             ->expects($this->any())
             ->method('findClientByUuid')
             ->with(self::CLIENT_UUID)
-            ->willReturn(new Client(null, 'client', 'description', 'secret', [], ['http://client.com/fallback', 'http://client2.com']));
+            ->willReturn(new Client(null, 'client', 'description', 'secret', [], ['http://client.com/fallback', 'http://client2.com']))
+        ;
 
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot determined which redirect URI to use');
@@ -144,14 +150,16 @@ class PersistentTokenFactoryTest extends TestCase
             ->expects($this->any())
             ->method('findByUuid')
             ->with(self::USER_UUID)
-            ->willReturn($user = $this->createMock(Adherent::class));
+            ->willReturn($user = $this->createMock(Adherent::class))
+        ;
 
         $this
             ->clientRepository
             ->expects($this->any())
             ->method('findClientByUuid')
             ->with(self::CLIENT_UUID)
-            ->willReturn($client = $this->createMock(Client::class));
+            ->willReturn($client = $this->createMock(Client::class))
+        ;
 
         $accessToken = $this->tokenFactory->createAccessToken($token);
 
@@ -181,7 +189,8 @@ class PersistentTokenFactoryTest extends TestCase
             ->expects($this->any())
             ->method('findByUuid')
             ->with(self::USER_UUID)
-            ->willReturn(null);
+            ->willReturn(null)
+        ;
 
         $this->tokenFactory->createAccessToken($token);
     }
@@ -201,14 +210,16 @@ class PersistentTokenFactoryTest extends TestCase
             ->expects($this->any())
             ->method('findByUuid')
             ->with(self::USER_UUID)
-            ->willReturn($this->createMock(Adherent::class));
+            ->willReturn($this->createMock(Adherent::class))
+        ;
 
         $this
             ->clientRepository
             ->expects($this->any())
             ->method('findClientByUuid')
             ->with(self::CLIENT_UUID)
-            ->willReturn(null);
+            ->willReturn(null)
+        ;
 
         $this->tokenFactory->createAccessToken($token);
     }
@@ -225,7 +236,8 @@ class PersistentTokenFactoryTest extends TestCase
             ->expects($this->any())
             ->method('findAccessTokenByIdentifier')
             ->with(self::ACCESS_TOKEN_IDENTIFIER)
-            ->willReturn($accessToken = $this->createMock(AccessToken::class));
+            ->willReturn($accessToken = $this->createMock(AccessToken::class))
+        ;
 
         $refreshToken = $this->tokenFactory->createRefreshToken($token);
 

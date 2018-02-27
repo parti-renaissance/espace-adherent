@@ -3,9 +3,11 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Committee\CommitteeManager;
+use AppBundle\Committee\CommitteeWasUpdatedEvent;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
+use AppBundle\Events;
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Intl\UnitedNationsBundle;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -18,6 +20,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -38,8 +41,9 @@ class CommitteeAdmin extends AbstractAdmin
     private $cachedDatagrid;
     private $committeeRepository;
     private $adherentRepository;
+    private $dispatcher;
 
-    public function __construct($code, $class, $baseControllerName, CommitteeManager $manager, ObjectManager $om)
+    public function __construct($code, $class, $baseControllerName, CommitteeManager $manager, ObjectManager $om, EventDispatcherInterface $dispatcher)
     {
         parent::__construct($code, $class, $baseControllerName);
 
@@ -47,6 +51,7 @@ class CommitteeAdmin extends AbstractAdmin
         $this->committeeMembershipRepository = $om->getRepository(CommitteeMembership::class);
         $this->committeeRepository = $om->getRepository(Committee::class);
         $this->adherentRepository = $om->getRepository(Adherent::class);
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -146,6 +151,11 @@ class CommitteeAdmin extends AbstractAdmin
         ;
     }
 
+    public function postUpdate($object)
+    {
+        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeWasUpdatedEvent($object));
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -179,12 +189,17 @@ class CommitteeAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Localisation', array('class' => 'col-md-5'))
-                ->add('postAddress.latitude', TextType::class, [
-                    'label' => 'Latitude',
+                ->add('postAddress.address', TextType::class, [
+                    'label' => 'Adresse postale',
                 ])
-                ->add('postAddress.longitude', TextType::class, [
-                    'label' => 'Longitude',
-                    'help' => 'Pour modifier l\'adresse, impersonnifiez un animateur de ce comité.',
+                ->add('postAddress.postalCode', TextType::class, [
+                    'label' => 'Code postal',
+                ])
+                ->add('postAddress.cityName', TextType::class, [
+                    'label' => 'Ville',
+                ])
+                ->add('postAddress.country', UnitedNationsCountryType::class, [
+                    'label' => 'Pays',
                 ])
             ->end()
             ->with('Commentaire', array('class' => 'col-md-5'))

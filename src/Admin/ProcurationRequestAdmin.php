@@ -108,7 +108,8 @@ class ProcurationRequestAdmin extends AbstractAdmin
                         'En raison d’obligations de formation' => ProcurationRequest::REASON_TRAINING,
                     ],
                 ])
-            ->end();
+            ->end()
+        ;
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
@@ -164,7 +165,8 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ->add('electionRounds', null, [
                     'label' => 'Tours',
                 ])
-            ->end();
+            ->end()
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -185,7 +187,8 @@ class ProcurationRequestAdmin extends AbstractAdmin
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date',
                 'field_type' => DateRangePickerType::class,
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)

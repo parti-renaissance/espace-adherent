@@ -107,8 +107,13 @@
 
         <!-- Dynamic redirections "to admin panel" handler -->
         <service id="app.dynamic_redirect_to_admin_panel_handler" class="AppBundle\Redirection\Dynamic\RedirectToAdminPanelHandler">
-            <argument type="service" id="app.dynamic_redirections_provider" />
+            <argument type="service" id="AppBundle\Redirection\Dynamic\RedirectionManager" />
             <argument type="service" id="app.repository.redirection" />
+        </service>
+        <service id="AppBundle\Redirection\Dynamic\RedirectionManager" class="AppBundle\Redirection\Dynamic\RedirectionManager">
+            <argument type="service" id="app.cache.redirection" />
+            <argument type="service" id="doctrine.orm.default_entity_manager"/>
+            <argument type="service" id="jms_serializer.serializer"/>
         </service>
 
         <!-- Dynamic redirections "to remove uuid" handler-->
@@ -268,6 +273,26 @@
             <argument type="service" id="app.glide" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <tag name="form.type" />
+        </service>
+
+        <!-- Doctrine Listeners -->
+        <service id="AppBundle\Entity\Listener\ContainingUserDocumentListener" public="true">
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\Event" event="prePersist" method="prePersistEvent"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\Event" event="preUpdate" method="preUpdateEvent"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\Event" event="postUpdate"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\Event" event="preRemove"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\Event" event="postRemove"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\CommitteeFeedItem" event="prePersist" method="prePersistCommitteeFeed"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\CommitteeFeedItem" event="preUpdate" method="preUpdateCommitteeFeed"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\CommitteeFeedItem" event="postUpdate"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\CommitteeFeedItem" event="preRemove"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\CommitteeFeedItem" event="postRemove"/>
+            <argument type="service" id="service_container"/>
+            <!--Using Object Manager or service injecting Object Manager as argument causes a Circular reference-->
+            <!--Concerned issue https://github.com/symfony/symfony/issues/24775-->
+            <!--@todo Replace top line with this one when SF 3.4 will be used and make changes in the class-->
+            <!--<argument type="service" id="AppBundle\UserDocument\UserDocumentManager"/>-->
+            <argument>%pattern_uuid%</argument>
         </service>
     </services>
 </container>

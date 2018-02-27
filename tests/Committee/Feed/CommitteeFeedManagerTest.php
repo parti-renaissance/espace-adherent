@@ -38,8 +38,7 @@ class CommitteeFeedManagerTest extends SqliteWebTestCase
         $author = $this->committeeMembershipRepository->findHostMembers(LoadAdherentData::COMMITTEE_1_UUID)->first();
 
         $messageContent = 'Bienvenue !';
-
-        $message = $this->manager->createMessage(new CommitteeMessage($author, $committee, $messageContent));
+        $message = $this->manager->createMessage(new CommitteeMessage($author, $committee, 'Foo subject', $messageContent));
 
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame($messageContent, $message->getContent());

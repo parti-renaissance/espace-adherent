@@ -83,7 +83,8 @@ class DonationController extends Controller
         }
 
         $donationRequest = $this->get(DonationRequestUtils::class)
-            ->createFromRequest($request, (float) $amount, $subscription, $this->getUser());
+            ->createFromRequest($request, (float) $amount, $subscription, $this->getUser())
+        ;
 
         $form = $this->createForm(DonationRequestType::class, $donationRequest, ['locale' => $request->getLocale()]);
 

@@ -115,7 +115,8 @@ class SummaryTest extends TestCase
         $mock = $this->createMock(Collection::class);
         $mock->expects($this->any())
             ->method('count')
-            ->willReturn($count);
+            ->willReturn($count)
+        ;
 
         return $mock;
     }

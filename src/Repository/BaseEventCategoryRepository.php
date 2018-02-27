@@ -15,6 +15,7 @@ abstract class BaseEventCategoryRepository extends EntityRepository
             ->setParameter('status', BaseEventCategory::ENABLED)
             ->orderBy('c.name', 'ASC')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 }

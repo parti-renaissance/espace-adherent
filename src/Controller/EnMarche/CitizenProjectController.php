@@ -123,7 +123,8 @@ class CitizenProjectController extends Controller
         $citizenProjectCategorySkills = $this
             ->getDoctrine()
             ->getRepository(CitizenProjectCategorySkill::class)
-            ->findByCitizenProjectCategoryAndTerm($category, $request->query->get('term', ''));
+            ->findByCitizenProjectCategoryAndTerm($category, $request->query->get('term', ''))
+        ;
 
         /** @var CitizenProjectCategorySkill[] $citizenProjectCategorySkills */
         foreach ($citizenProjectCategorySkills as $citizenProjectCategorySkill) {
@@ -153,7 +154,8 @@ class CitizenProjectController extends Controller
         $committees = $this
             ->getDoctrine()
             ->getRepository(Committee::class)
-            ->findByPartialName($term);
+            ->findByPartialName($term)
+        ;
 
         foreach ($committees as $committee) {
             $result[] = [

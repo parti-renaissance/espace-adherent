@@ -183,5 +183,10 @@
             <factory service="doctrine" method="getRepository" />
             <argument>AppBundle\Entity\FailedLoginAttempt</argument>
         </service>
+
+        <service id="AppBundle\Repository\WebHookRepository" public="false">
+            <factory service="doctrine" method="getRepository" />
+            <argument>AppBundle\Entity\WebHook\WebHook</argument>
+        </service>
     </services>
 </container>

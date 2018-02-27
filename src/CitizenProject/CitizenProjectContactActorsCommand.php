@@ -15,11 +15,17 @@ class CitizenProjectContactActorsCommand
 
     /**
      * @Assert\NotBlank
+     * @Assert\Length(max=80)
+     */
+    private $subject;
+
+    /**
+     * @Assert\NotBlank
      * @Assert\Length(min=10, minMessage="citizen_project.message.min_length")
      */
     private $message;
 
-    public function __construct(array $recipients, Adherent $sender, string $message = null)
+    public function __construct(array $recipients, Adherent $sender, string $subject = null, string $message = null)
     {
         $this->recipients = $recipients;
         $this->sender = $sender;
@@ -34,6 +40,16 @@ class CitizenProjectContactActorsCommand
     public function getSender(): Adherent
     {
         return $this->sender;
+    }
+
+    public function setSubject(?string $subject): void
+    {
+        $this->subject = $subject;
+    }
+
+    public function getSubject(): ?string
+    {
+        return $this->subject;
     }
 
     public function setMessage(?string $message): void

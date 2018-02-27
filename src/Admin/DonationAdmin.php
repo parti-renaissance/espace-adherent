@@ -73,7 +73,8 @@ class DonationAdmin extends AbstractAdmin
             ])
             ->add('payboxPayloadAsJson', null, [
                 'label' => 'Payload Paybox',
-            ]);
+            ])
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -84,7 +85,8 @@ class DonationAdmin extends AbstractAdmin
             ])
             ->add('lastName', null, [
                 'label' => 'Nom',
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -116,6 +118,7 @@ class DonationAdmin extends AbstractAdmin
                 'actions' => [
                     'show' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }

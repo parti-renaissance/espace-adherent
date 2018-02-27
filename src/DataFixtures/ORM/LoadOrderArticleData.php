@@ -2,18 +2,13 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\File\File;
 
-class LoadOrderArticleData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface
+class LoadOrderArticleData extends Fixture
 {
-    use ContainerAwareTrait;
-
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
@@ -60,5 +55,10 @@ class LoadOrderArticleData extends AbstractFixture implements FixtureInterface, 
         ]));
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [LoadOrderSectionData::class];
     }
 }

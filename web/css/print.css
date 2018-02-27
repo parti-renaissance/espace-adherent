@@ -47,3 +47,7 @@ tfoot {
 .committee__host {
     background: #fcecc2;
 }
+
+.text--bold {
+    font-weight: 700;
+}

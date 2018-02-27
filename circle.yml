@@ -56,8 +56,21 @@ test:
         - yarn lint
         - yarn test
 
+        # Lint YML
+        - ./bin/console lint:yaml app/config
+
         # Lint PHP
-        - php -d memory_limit=1024m vendor/bin/php-cs-fixer fix --diff --dry-run --no-interaction -v --using-cache=no
+        - |
+            COMMIT_RANGE=$(echo "${CIRCLE_COMPARE_URL}" | cut -d/ -f7)
+            # Fix single commit
+            if [[ $COMMIT_RANGE != *"..."* ]]; then
+              COMMIT_RANGE="${COMMIT_RANGE}~...${COMMIT_RANGE}"
+            fi
+            echo "${COMMIT_RANGE}"
+            CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB "${COMMIT_RANGE}" --)
+            echo "${CHANGED_FILES}"
+            if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php_cs(\\.dist)?|composer\\.lock)$"; then IFS=$'\n' EXTRA_ARGS=('--path-mode=intersection' '--' ${CHANGED_FILES[@]}); fi
+            php -d memory_limit=1024m vendor/bin/php-cs-fixer fix --config=.php_cs.dist --dry-run --no-interaction -v --using-cache=no "${EXTRA_ARGS[@]}"
 
         # Prepare PHP tests
         - rm -rf var/cache/test /tmp/data.db app/data/dumped_referents_users:
@@ -65,6 +78,8 @@ test:
         - ./bin/console doctrine:schema:create --env=test_sqlite:
             parallel: true
         - ./bin/console doctrine:schema:drop --force --env=test_mysql:
+            parallel: true
+        - ./bin/console doctrine:database:import -n --env=test_mysql -- dump/dump-2017.sql:
             parallel: true
         - ./bin/console doctrine:migrations:migrate -n --env=test_mysql:
             parallel: true

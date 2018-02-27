@@ -16,7 +16,8 @@ class GeoCoderTest extends TestCase
         $providerMock->expects($this->once())
             ->method('country')
             ->with('123.123.123.123')
-            ->willReturn(json_decode(json_encode(['country' => ['isoCode' => 'FR']])));
+            ->willReturn(json_decode(json_encode(['country' => ['isoCode' => 'FR']])))
+        ;
 
         $geocoder = new GeoCoder($providerMock, $this->createMock(LoggerInterface::class));
 
@@ -29,7 +30,8 @@ class GeoCoderTest extends TestCase
         $providerMock->expects($this->once())
             ->method('country')
             ->with('123.123.123.123')
-            ->willThrowException(new GeoIp2Exception('geoip2 error'));
+            ->willThrowException(new GeoIp2Exception('geoip2 error'))
+        ;
 
         $loggerProvider = $this->createMock(LoggerInterface::class);
         $loggerProvider->expects($this->once())->method('warning')->with('[GeoIP2] Unable to locate IP [123.123.123.123]: geoip2 error');

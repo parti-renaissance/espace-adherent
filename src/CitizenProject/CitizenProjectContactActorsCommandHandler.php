@@ -25,6 +25,7 @@ class CitizenProjectContactActorsCommandHandler
             $this->mailer->sendMessage(CitizenProjectContactActorsMessage::create(
                 $chunk,
                 $command->getSender(),
+                $command->getSubject(),
                 $command->getMessage()
             ));
         }

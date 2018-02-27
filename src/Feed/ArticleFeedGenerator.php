@@ -78,7 +78,8 @@ class ArticleFeedGenerator extends AbstractFeedGenerator
             ->pubDate($pubDate)
             ->lastBuildDate($lastBuildDate)
             ->ttl($this->ttl)
-            ->appendTo($feed);
+            ->appendTo($feed)
+        ;
     }
 
     /**
@@ -106,6 +107,7 @@ class ArticleFeedGenerator extends AbstractFeedGenerator
             ->pubDate($article->getPublishedAt()->format('U'))
             ->guid($articleUrl, true)
             ->preferCdata(true)
-            ->appendTo($channel);
+            ->appendTo($channel)
+        ;
     }
 }

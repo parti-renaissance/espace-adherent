@@ -38,7 +38,8 @@ class WysiwygLengthValidator extends ConstraintValidator
                 ->setParameter('{{ charset }}', $constraint->charset)
                 ->setInvalidValue($value)
                 ->setCode(WysiwygLength::INVALID_CHARACTERS_ERROR)
-                ->addViolation();
+                ->addViolation()
+            ;
 
             return;
         }
@@ -50,7 +51,8 @@ class WysiwygLengthValidator extends ConstraintValidator
                 ->setInvalidValue($value)
                 ->setPlural((int) $constraint->max)
                 ->setCode(WysiwygLength::TOO_LONG_ERROR)
-                ->addViolation();
+                ->addViolation()
+            ;
 
             return;
         }
@@ -62,7 +64,8 @@ class WysiwygLengthValidator extends ConstraintValidator
                 ->setInvalidValue($value)
                 ->setPlural((int) $constraint->min)
                 ->setCode(WysiwygLength::TOO_SHORT_ERROR)
-                ->addViolation();
+                ->addViolation()
+            ;
         }
     }
 }

@@ -10,11 +10,12 @@ final class CitizenProjectContactActorsMessage extends Message
     /**
      * @param Adherent[] $recipients
      * @param Adherent   $host
+     * @param string     $subject
      * @param string     $content
      *
      * @return CitizenProjectContactActorsMessage
      */
-    public static function create(array $recipients, Adherent $host, string $content): self
+    public static function create(array $recipients, Adherent $host, string $subject, string $content): self
     {
         $first = array_shift($recipients);
 
@@ -23,7 +24,7 @@ final class CitizenProjectContactActorsMessage extends Message
             '275088',
             $first->getEmailAddress(),
             $first->getFullName(),
-            'Vous avez un nouveau message d\'un porteur de projet',
+            "[Projet citoyen] $subject",
             [
                 'citizen_project_host_message' => $content,
                 'citizen_project_host_firstname' => self::escape($host->getFirstName()),

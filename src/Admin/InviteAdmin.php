@@ -41,7 +41,8 @@ class InviteAdmin extends AbstractAdmin
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
-            ]);
+            ])
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -55,7 +56,8 @@ class InviteAdmin extends AbstractAdmin
             ])
             ->add('email', null, [
                 'label' => 'E-mail de l\'invité',
-            ]);
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -82,6 +84,7 @@ class InviteAdmin extends AbstractAdmin
                     'show' => [],
                     'delete' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 }
