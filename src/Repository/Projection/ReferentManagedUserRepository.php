@@ -70,7 +70,10 @@ class ReferentManagedUserRepository extends EntityRepository
                     $qb->expr()->andX(
                         'u.type = :adherent'.$key,
                         'u.country = \'FR\'',
-                        $qb->expr()->like('u.postalCode', ':code'.$key)
+                        $qb->expr()->orX(
+                            $qb->expr()->like('u.postalCode', ':code'.$key),
+                            $qb->expr()->like('u.committeePostalCode', ':code'.$key)
+                        )
                     )
                 );
 
@@ -107,7 +110,7 @@ class ReferentManagedUserRepository extends EntityRepository
             $areaCodeExpression = $qb->expr()->orX();
             foreach ($queryAreaCode as $key => $areaCode) {
                 if (is_numeric($areaCode)) {
-                    $areaCodeExpression->add('u.postalCode LIKE :postalCode_'.$key);
+                    $areaCodeExpression->add('u.postalCode LIKE :postalCode_'.$key.' OR u.committeePostalCode LIKE :postalCode_'.$key);
                     $qb->setParameter('postalCode_'.$key, $areaCode.'%');
                 }
 

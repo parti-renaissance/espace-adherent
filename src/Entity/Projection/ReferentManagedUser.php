@@ -74,6 +74,16 @@ class ReferentManagedUser
     private $postalCode;
 
     /**
+     *
+     * The postal code is filled only for committee supervisors.
+     *
+     * @var string|null
+     *
+     * @ORM\Column(length=15, nullable=true)
+     */
+    private $committeePostalCode;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
@@ -163,6 +173,7 @@ class ReferentManagedUser
         int $originalId,
         string $email,
         string $postalCode,
+        string $committeePostalCode = null,
         string $city = null,
         string $country = null,
         string $firstName = null,
@@ -181,6 +192,7 @@ class ReferentManagedUser
         $this->originalId = $originalId;
         $this->email = $email;
         $this->postalCode = $postalCode;
+        $this->committeePostalCode = $committeePostalCode;
         $this->city = $city;
         $this->country = $country;
         $this->firstName = $firstName;
@@ -232,6 +244,11 @@ class ReferentManagedUser
     public function getPostalCode(): ?string
     {
         return $this->postalCode;
+    }
+
+    public function getCommitteePostalCode(): ?string
+    {
+        return $this->committeePostalCode;
     }
 
     public function getCity(): ?string
