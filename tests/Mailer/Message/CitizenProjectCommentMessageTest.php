@@ -34,11 +34,7 @@ class CitizenProjectCommentMessageTest extends MessageTestCase
             $message
         );
 
-        self::assertSender(
-            'Auteur Jones - porteur de votre projet citoyen',
-            null,
-            $message
-        );
+        self::assertSender('Auteur Jones', null, $message);
         self::assertReplyTo('author@example.com', $message);
 
         self::assertCountRecipients(2, $message);

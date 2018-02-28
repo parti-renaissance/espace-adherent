@@ -10,9 +10,9 @@ use Ramsey\Uuid\Uuid;
 final class CitizenActionCancellationMessage extends Message
 {
     public static function create(
-        CitizenAction $citizenAction,
-        Adherent $author,
         array $recipients,
+        Adherent $author,
+        CitizenAction $citizenAction,
         string $eventsLink
     ): self {
         if (!$recipients) {

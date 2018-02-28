@@ -36,11 +36,7 @@ class BoardMemberMessageTest extends MessageTestCase
             $message
         );
 
-        self::assertSender(
-            'Référent Jones - membre du Conseil de LaREM',
-            'jemarche@en-marche.fr',
-            $message
-        );
+        self::assertSender('Référent Jones', 'jemarche@en-marche.fr', $message);
         self::assertReplyTo('referent@example.com', $message);
 
         self::assertCountRecipients(3, $message);

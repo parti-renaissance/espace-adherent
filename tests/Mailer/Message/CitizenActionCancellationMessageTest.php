@@ -23,13 +23,15 @@ class CitizenActionCancellationMessageTest extends MessageTestCase
                 $this->createEventRegistration('bernard@example.com', 'Bernard', 'Smith'),
             ],
             $this->createAdherent('author@example.com', 'Auteur', 'Jones'),
-            $this->citizenAction
+            $this->citizenAction,
+            'https://enmarche.code/evenements'
         );
 
         self::assertMessage(
             CitizenActionCancellationMessage::class,
             [
                 'citizen_action_name' => 'Action Citoyenne #1',
+                'events_link' => 'https://enmarche.code/evenements',
             ],
             $message
         );
@@ -44,6 +46,7 @@ class CitizenActionCancellationMessageTest extends MessageTestCase
             'Jean Doe',
             [
                 'citizen_action_name' => 'Action Citoyenne #1',
+                'events_link' => 'https://enmarche.code/evenements',
                 'first_name' => 'Jean',
             ],
             $message
@@ -53,6 +56,7 @@ class CitizenActionCancellationMessageTest extends MessageTestCase
             'Bernard Smith',
             [
                 'citizen_action_name' => 'Action Citoyenne #1',
+                'events_link' => 'https://enmarche.code/evenements',
                 'first_name' => 'Bernard',
             ],
             $message

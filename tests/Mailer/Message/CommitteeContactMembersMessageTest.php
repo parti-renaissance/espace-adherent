@@ -31,7 +31,7 @@ class CommitteeContactMembersMessageTest extends MessageTestCase
             $message
         );
 
-        self::assertSender('Animateur Jones - animateur de votre comité', null, $message);
+        self::assertSender('Animateur Jones', null, $message);
         self::assertReplyTo('host@example.com', $message);
 
         self::assertCountRecipients(2, $message);
