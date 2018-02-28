@@ -1,0 +1,41 @@
+{% block subject %}
+    {# A REMPLIR #}
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@
+                    </p>
+                    <p>
+                        @@citizen_project_host_firstname@@ vous envoie ce message : 
+
+                    </p>
+                    <p>
+                       -------
+                    </p>
+                    <p>
+                        @@citizen_project_host_message@@
+                    </p>
+                    <p>
+                       -------
+                    </p>
+                    <p>
+                        Si nécessaire, vous pouvez échanger avec @@citizen_project_host_firstname@@ en répondant à cet e-mail.
+                    </p>                    
+                    <p>
+                        A très bientôt,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche ! 
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}
