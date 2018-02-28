@@ -36,7 +36,7 @@ class MessageRegistry
         ProcurationProxyCancelledMessage::class => 'procuration_proxy_cancelled_message',
         ProcurationProxyFoundMessage::class => 'procuration_proxy_found_message',
         ProcurationProxyReminderMessage::class => 'procuration_proxy_reminder_message',
-        PurchasingPowerMessage::class => 'purchasing_power_message_message',
+        PurchasingPowerMessage::class => 'purchasing_power_message',
     ];
 
     private $campaign = [
