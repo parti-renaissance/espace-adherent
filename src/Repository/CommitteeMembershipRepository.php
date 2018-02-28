@@ -327,7 +327,8 @@ class CommitteeMembershipRepository extends EntityRepository
         $qb
             ->leftJoin($alias.'.adherent', 'a')
             ->where($alias.'.committeeUuid = :committee')
-            ->orderBy('a.firstName', 'ASC')
+            ->orderBy($alias.'.privilege', 'DESC')
+            ->addOrderBy('a.firstName', 'ASC')
             ->setParameter('committee', (string) $committeeUuid)
         ;
 
