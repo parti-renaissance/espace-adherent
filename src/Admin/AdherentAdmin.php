@@ -12,6 +12,8 @@ use AppBundle\Form\EventListener\BoardMemberListener;
 use AppBundle\Form\EventListener\CoordinatorManagedAreaListener;
 use AppBundle\Form\GenderType;
 use AppBundle\Intl\UnitedNationsBundle;
+use AppBundle\Membership\UserEvent;
+use AppBundle\Membership\UserEvents;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -24,6 +26,7 @@ use Sonata\CoreBundle\Form\Type\DateRangePickerType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -36,6 +39,15 @@ class AdherentAdmin extends AbstractAdmin
         '_sort_order' => 'DESC',
         '_sort_by' => 'registeredAt',
     ];
+
+    private $dispatcher;
+
+    public function __construct($code, $class, $baseControllerName, EventDispatcherInterface $dispatcher)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->dispatcher = $dispatcher;
+    }
 
     public function getTemplate($name)
     {
@@ -53,6 +65,7 @@ class AdherentAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('create');
+        $collection->remove('delete');
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
@@ -382,6 +395,14 @@ class AdherentAdmin extends AbstractAdmin
                 },
             ])
         ;
+    }
+
+    /**
+     * @param Adherent $object
+     */
+    public function postUpdate($object)
+    {
+        $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($object));
     }
 
     protected function configureListFields(ListMapper $listMapper)
