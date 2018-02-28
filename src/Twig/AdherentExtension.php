@@ -42,8 +42,12 @@ class AdherentExtension extends AbstractExtension
             return $adherent->isFemale() ? 'Référente 🥇' : 'Référent 🥇';
         }
 
-        if ($adherent->isHost()) {
+        if ($adherent->isSupervisor()) {
             return $adherent->isFemale() ? 'Animatrice 🏅' : 'Animateur 🏅';
+        }
+
+        if ($adherent->isHost()) {
+            return $adherent->isFemale() ? 'Co-animatrice 🏅' : 'Co-animateur 🏅';
         }
 
         // It means the user is an adherent
