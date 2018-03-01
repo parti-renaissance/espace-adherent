@@ -22,9 +22,11 @@ CKEDITOR.replace('{{ element }}', {
         { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Strike' ] },
         { name: 'paragraph', items: [ 'NumberedList', 'BulletedList' ] },
         { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
-        { name: 'links', items: [ 'Link' ] }
+        { name: 'links', items: [ 'Link', 'Image' ] }
     ],
     filebrowserUploadUrl: "{{ path('app_filebrowser_upload', { type: uploadType }) }}",
+    linkShowAdvancedTab: false,
+    linkShowTargetTab: false,
 });
 
 CKEDITOR.on('dialogDefinition', function(ev) {
@@ -32,14 +34,24 @@ CKEDITOR.on('dialogDefinition', function(ev) {
     var dialogDefinition = ev.data.definition;
 
     if ( dialogName == 'link' ) {
+        var uploadTab = dialogDefinition.getContents('upload');
+        uploadTab.add({
+            type: 'html',
+            html: '<div>La mise en ligne vous permettra de générer automatiquement une URL pour votre document.</div>'
+        });
+
+        uploadTab.label = 'Attacher un document';
+        uploadTab.get('upload').label = 'Attachez ici votre document.\nNe partagez rien de confidentiel car il pourra être accessible par toute personne disposant du lien.';
+        uploadTab.get('upload').labelStyle = 'white-space: pre;height: 35px;display: block';
+        uploadTab.get('upload').style = 'padding-bottom: 2px;height: 60px';
+        uploadTab.get('uploadButton').label = 'Mettre en ligne';
         dialogDefinition.title = 'Partage de documents';
-        dialogDefinition.getContents('info').get('linkDisplayText').label = "Entrez ici le nom d'affichage de votre lien ou document.\nNe partagez rien de confidentiel car il pourra être accessible par toute personne disposant du lien.";
-        dialogDefinition.getContents('info').get('linkDisplayText').labelStyle = "white-space: pre;";
-        dialogDefinition.getContents('upload').label = 'Attacher un document';
-        dialogDefinition.getContents('upload').get('upload').label = 'Mettre en ligne un document';
-        dialogDefinition.getContents('upload').get('uploadButton').label = "Mettre en ligne";
+        dialogDefinition.getContents('info').get('linkDisplayText').label = "Entrez ici le nom d'affichage de votre lien ou document.";
+    }
+
+    if ( dialogName == 'image' ) {
+        dialogDefinition.removeContents('Upload');
         dialogDefinition.removeContents('advanced');
-        dialogDefinition.removeContents('target');
     }
 });
 {% endmacro %}
