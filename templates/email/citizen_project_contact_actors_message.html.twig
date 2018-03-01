@@ -9,25 +9,30 @@
             <tr>
                 <td align="left">
                     <p>
-                        Bonjour @@target_firstname@@ 
+                        Bonjour,
                     </p>
                     <p>
-                        Vous êtes bien inscrit(e) à l'action citoyenne <strong>@@citizen_action_name@@</strong> organisée par @@citizen_action_organiser@@.
+                        @@citizen_project_host_firstname@@ vous envoie ce message : 
+
                     </p>
                     <p>
-                        Merci pour votre engagement !
+                       -------
                     </p>
+                    <p>
+                        @@citizen_project_host_message@@
+                    </p>
+                    <p>
+                       -------
+                    </p>
+                    <p>
+                        Si nécessaire, vous pouvez échanger avec @@citizen_project_host_firstname@@ en répondant à cet e-mail.
+                    </p>                    
                     <p>
                         A très bientôt,
                     </p>
                     <p>
                         L'équipe de La République En Marche ! 
                     </p>
-                </td>
-            </tr>
-            <tr>
-                <td align="center">
-                    <a href="@@citizen_action_calendar_url@@" target="_blank" class="btn">Je l'ajoute à mon calendrier</a>
                 </td>
             </tr>
         {% endblock %}
