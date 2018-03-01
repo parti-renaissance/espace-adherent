@@ -59,11 +59,13 @@ class ArticleListener
 
     public function postUpdate(Article $article): void
     {
-        $redirection = $this->redirectionManager->setRedirection(
-            $this->redirections[$article->getId()]['source'],
-            $this->redirections[$article->getId()]['target']
-        );
+        if (isset($this->redirections[$article->getId()])) {
+            $redirection = $this->redirectionManager->setRedirection(
+                $this->redirections[$article->getId()]['source'],
+                $this->redirections[$article->getId()]['target']
+            );
 
-        $this->redirectionManager->optimiseRedirection($redirection);
+            $this->redirectionManager->optimiseRedirection($redirection);
+        }
     }
 }
