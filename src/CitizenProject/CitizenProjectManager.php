@@ -138,14 +138,27 @@ class CitizenProjectManager
         return $this->getCitizenProjectMembershipRepository()->findMembers($citizenProject->getUuid());
     }
 
-    public function getCitizenProjectFollowers(CitizenProject $citizenProject): AdherentCollection
+    public function getCitizenProjectFollowers(CitizenProject $citizenProject, bool $withHosts = false): AdherentCollection
     {
-        return $this->getCitizenProjectMembershipRepository()->findPriviledgedMembers($citizenProject->getUuid(), [CitizenProjectMembership::CITIZEN_PROJECT_FOLLOWER]);
+        return $this
+            ->getCitizenProjectMembershipRepository()
+            ->findFollowers($citizenProject->getUuid(), $withHosts)
+        ;
     }
 
     public function getCitizenProjectMemberships(CitizenProject $citizenProject): CitizenProjectMembershipCollection
     {
         return $this->getCitizenProjectMembershipRepository()->findCitizenProjectMemberships($citizenProject->getUuid());
+    }
+
+    public function getOptinCitizenProjectFollowers(CitizenProject $citizenProject): AdherentCollection
+    {
+        $followers = $this->getCitizenProjectFollowers($citizenProject);
+
+        return $this
+            ->getCitizenProjectAdministrators($citizenProject)
+            ->merge($followers->getCommitteesNotificationsSubscribers())
+        ;
     }
 
     /**
