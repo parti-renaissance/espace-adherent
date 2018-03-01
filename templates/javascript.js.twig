@@ -22,7 +22,7 @@ CKEDITOR.replace('{{ element }}', {
         { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Strike' ] },
         { name: 'paragraph', items: [ 'NumberedList', 'BulletedList' ] },
         { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
-        { name: 'links', items: [ 'Link' ] }
+        { name: 'links', items: [ 'Link', 'Image' ] }
     ],
     filebrowserUploadUrl: "{{ path('app_filebrowser_upload', { type: uploadType }) }}",
     linkShowAdvancedTab: false,
@@ -47,6 +47,11 @@ CKEDITOR.on('dialogDefinition', function(ev) {
         uploadTab.get('uploadButton').label = 'Mettre en ligne';
         dialogDefinition.title = 'Partage de documents';
         dialogDefinition.getContents('info').get('linkDisplayText').label = "Entrez ici le nom d'affichage de votre lien ou document.";
+    }
+
+    if ( dialogName == 'image' ) {
+        dialogDefinition.removeContents('Upload');
+        dialogDefinition.removeContents('advanced');
     }
 });
 {% endmacro %}
