@@ -48,6 +48,10 @@ dependencies:
         - yarn run build-amp
 
         - composer install --no-interaction
+
+        # Set up RabbitMQ
+        - sudo rabbitmqctl add_vhost /test
+        - sudo rabbitmqctl set_permissions -p /test guest ".*" ".*" ".*"
         - bin/console rabbitmq:setup-fabric --env=test
 
 test:

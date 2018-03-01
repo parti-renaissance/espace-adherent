@@ -264,15 +264,7 @@ old_sound_rabbit_mq:
 
         user_sync_api:
             connection: default
-            exchange_options:
-                name: api
-                type: topic
-            queue_options:
-                name: api_user
-                routing_keys:
-                    - user.created
-                    - user.updated
-                    - user.deleted
+            exchange_options: { name: 'api', type: topic }
 
     consumers:
         mailer_campaign:
