@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Unregistration
 {
     public const REASON_EMAILS = 'unregistration_reasons.emails';
+    public const REASON_TOOLS = 'unregistration_reasons.tools';
     public const REASON_SUPPORT = 'unregistration_reasons.support';
     public const REASON_GOVERNMENT = 'unregistration_reasons.government';
     public const REASON_ELECTED = 'unregistration_reasons.elected';
@@ -35,10 +36,10 @@ class Unregistration
 
     public const REASONS_LIST_USER = [
         self::REASON_EMAILS,
+        self::REASON_TOOLS,
         self::REASON_GOVERNMENT,
         self::REASON_ELECTED,
         self::REASON_MOVEMENT,
-        self::REASON_COMMITTEE,
         self::REASON_OTHER,
     ];
 
