@@ -10,6 +10,7 @@ use MyCLabs\Enum\Enum;
  * @method static WRITE_USERS()
  * @method static READ_USERS()
  * @method static READ_UNSUBCRIPTIONS()
+ * @method static READ_TYPEFORMS()
  */
 final class Scope extends Enum implements ScopeEntityInterface
 {
@@ -17,6 +18,7 @@ final class Scope extends Enum implements ScopeEntityInterface
     public const WRITE_USERS = 'write:users';
     public const READ_USERS = 'read:users';
     public const READ_UNSUBCRIPTIONS = 'read:unsubscriptions';
+    public const READ_TYPEFORMS = 'read:typeforms';
 
     public function __toString()
     {

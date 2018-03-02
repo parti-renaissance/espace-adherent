@@ -20,6 +20,7 @@ class LoadClientData extends AbstractFixture implements FixtureInterface
     public const CLIENT_03_UUID = '4122f4ce-f994-45f7-9ff5-f9f09ab3991e';
     public const CLIENT_04_UUID = '4222f4ce-f994-45f7-9ff5-f9f09ab3991f';
     public const CLIENT_05_UUID = '4222f4ce-f994-45f7-9ff5-f9f09ab3992e';
+    public const CLIENT_06_UUID = '4f3394d4-7137-424a-8c73-27e0ad641fc9';
 
     public function load(ObjectManager $manager)
     {
@@ -78,6 +79,18 @@ class LoadClientData extends AbstractFixture implements FixtureInterface
         $client5->addSupportedScope(Scope::WRITE_USERS);
         $manager->persist($client5);
         $this->setReference('web_hook_client_2', $client5);
+
+        $manager->flush();
+
+        $client6 = new Client(
+            Uuid::fromString(self::CLIENT_06_UUID),
+            'Data En Marche',
+            'Pour récupérer des données de typeforms par data-api.en-marche.fr!',
+            'crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE=',
+            [GrantTypeEnum::CLIENT_CREDENTIALS]
+        );
+        $client6->addSupportedScope(Scope::READ_TYPEFORMS);
+        $manager->persist($client6);
 
         $manager->flush();
     }
