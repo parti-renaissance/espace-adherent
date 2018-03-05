@@ -8,6 +8,7 @@ use AppBundle\Entity\EntityPostAddressTrait;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventCategory;
 use AppBundle\Geocoder\Exception\GeocodingException;
+use AppBundle\Repository\CitizenProjectSkillRepository;
 use AppBundle\Search\SearchParametersFilter;
 use AppBundle\Search\SearchResultsProvidersManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -89,7 +90,7 @@ class SearchController extends Controller
      * @Route("/recherche/projets-citoyens", name="app_search_citizen_projects")
      * @Method("GET")
      */
-    public function searchCitizenProjectsAction(Request $request)
+    public function searchCitizenProjectsAction(Request $request, CitizenProjectSkillRepository $skillRepository)
     {
         $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_CITIZEN_PROJECTS);
 
@@ -107,6 +108,7 @@ class SearchController extends Controller
 
         return $this->render('search/search_citizen_projects.html.twig', [
             'search' => $search,
+            'skills' => $skillRepository->findAllAsPartialArray(),
             'results' => $results ?? [],
             'errors' => $errors ?? [],
         ]);
