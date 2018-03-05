@@ -144,6 +144,7 @@ Feature:
     Then the response status code should be 200
     And I should be on "/espace-adherent/mon-profil"
 
+  @javascript
   Scenario: I can become adherent with a foreign country
     Given the following fixtures are loaded:
       | LoadUserData |
@@ -157,7 +158,7 @@ Feature:
       | become_adherent[birthdate][day]      | 1                  |
       | become_adherent[birthdate][month]    | 1                  |
       | become_adherent[birthdate][year]     | 1980               |
-    And I check "Oui, j'adhère à la Charte des Valeurs ainsi qu'aux Conditions Générales d'Utilisation du site et j’ai pris connaissance des règles de fonctionnement de La République En Marche."
+    And I click the "field-conditions" element
     When I press "J'adhère"
     Then I should see "Veuillez renseigner une ville."
 
@@ -167,6 +168,7 @@ Feature:
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
 
+  @javascript
   Scenario: I can become adherent with a french address
     Given the following fixtures are loaded:
       | LoadUserData |
@@ -180,14 +182,13 @@ Feature:
       | become_adherent[birthdate][day]      | 1                   |
       | become_adherent[birthdate][month]    | 1                   |
       | become_adherent[birthdate][year]     | 1980                |
-    And I check "Oui, j'adhère à la Charte des Valeurs ainsi qu'aux Conditions Générales d'Utilisation du site et j’ai pris connaissance des règles de fonctionnement de La République En Marche."
+    And I click the "field-conditions" element
     When I press "J'adhère"
     Then I should see "Veuillez renseigner une ville."
 
     Given I fill in the following:
-      | become_adherent[address][postalCode] | 69001    |
-      | become_adherent[address][cityName]   | Lyon 1er |
-    And I fill in hidden field "become_adherent_address_city" with "69001-6088"
+      | become_adherent[address][postalCode] | 69001 |
+    And I wait until I see "Lyon" in the "#become_adherent_address_city" element
     When I press "J'adhère"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."

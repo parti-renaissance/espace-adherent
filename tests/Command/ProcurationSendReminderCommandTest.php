@@ -12,6 +12,7 @@ use Tests\AppBundle\TestHelperTrait;
 
 /**
  * @group functional
+ * @group procuration
  */
 class ProcurationSendReminderCommandTest extends SqliteWebTestCase
 {

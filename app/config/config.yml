@@ -28,7 +28,7 @@ parameters:
     amp_host:                             "%env(AMP_HOST)%"
     legislatives_host:                    "%env(LEGISLATIVES_HOST)%"
     router.request_context.scheme:        "%env(APP_SCHEME)%"
-    router.request_context.host:          "%env(APP_HOST)%"
+    router.request_context.host:          "%app_host%"
 
 framework:
     translator:      { fallbacks: ["%locale%"], paths: ["%kernel.project_dir%/translations"] }

@@ -1,19 +1,20 @@
 #!/bin/bash
-set -e
+set -xe
 
-# Google Cloud authentication
-echo $GCLOUD_SERVICE_KEY | base64 --decode > $HOME/gcloud-service-key.json && cp $HOME/gcloud-service-key.json gcloud-service-key.json
-sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update
-sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file $HOME/gcloud-service-key.json
-sudo /opt/google-cloud-sdk/bin/gcloud config set project $GCLOUD_PROJECT
+TARGETED_ENV="${1:-default}"
+if [[ "${TARGETED_ENV}" == "master" ]]; then
+    TARGETED_ENV="preprod"
+fi
+
+DOCKER_IMAGE="eu.gcr.io/$GCLOUD_PROJECT/app"
+DOCKER_IMAGE_TAG="$TARGETED_ENV-$CIRCLE_SHA1"
 
 # Build the image
-yarn run build-prod
-yarn run build-amp
-docker build -t eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 .
+gcloud docker -- pull $DOCKER_IMAGE:$TARGETED_ENV
+docker build --cache-from=$DOCKER_IMAGE:$TARGETED_ENV -t $DOCKER_IMAGE:$DOCKER_IMAGE_TAG .
 
 # Push the images to Google Cloud
-sudo /opt/google-cloud-sdk/bin/gcloud docker -- push eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1
+gcloud docker -- push $DOCKER_IMAGE:$DOCKER_IMAGE_TAG
 
 # Set image tag
-sudo /opt/google-cloud-sdk/bin/gcloud container images add-tag eu.gcr.io/$GCLOUD_PROJECT/app:$CIRCLE_SHA1 eu.gcr.io/$GCLOUD_PROJECT/app:${1:-default} --quiet
+gcloud container images add-tag $DOCKER_IMAGE:$DOCKER_IMAGE_TAG $DOCKER_IMAGE:$TARGETED_ENV --quiet

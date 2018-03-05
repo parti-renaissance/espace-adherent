@@ -24,6 +24,7 @@ use Tests\AppBundle\SqliteWebTestCase;
 
 /**
  * @group functional
+ * @group summary
  */
 class SummaryManagerControllerTest extends SqliteWebTestCase
 {
