@@ -25,6 +25,7 @@ purchasing_power.friend_appreciations: Étape 3 - Laquelle de ces valeurs import
 # Unregistrations choices
 #
 unregistration_reasons.emails: Je reçois trop d'e-mails
+unregistration_reasons.tools: Je ne trouve plus d’utilité dans les outils développés par En Marche
 unregistration_reasons.support: J'avais uniquement adhéré pour soutenir la candidature d'Emmanuel Macron
 unregistration_reasons.government: Je ne suis plus d'accord avec le gouvernement
 unregistration_reasons.elected: Je suis déçu(e) par mon/les élu(e)s LaREM
