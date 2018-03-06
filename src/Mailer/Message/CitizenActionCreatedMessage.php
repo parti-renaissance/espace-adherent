@@ -52,7 +52,7 @@ class CitizenActionCreatedMessage extends Message
     private static function getRecipientVars(Adherent $adherent): array
     {
         return [
-            'target_firstname' => $adherent->getFirstName(),
+            'target_firstname' => self::escape($adherent->getFirstName()),
         ];
     }
 }
