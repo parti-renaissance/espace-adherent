@@ -1,0 +1,42 @@
+{% extends 'adherent/layout.twig' %}
+
+{% block adherent_profile_form %}
+    <h2>Mes dons</h2>
+
+    {% if donations %}
+        <p>Votre dernier don a été fait {{ donations|first.donatedAt|ago }}. <a href="{{ path('donation_index') }}">Faire un nouveau don</a></p>
+    {% endif %}
+
+    <p>Veuillez noter que seuls les dons effectués sur le site sont actuellement affichés.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Quand ?
+                </th>
+                <th>
+                    Combien ?
+                </th>
+                <th>
+                    Mode
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for donation in donations %}
+                <tr>
+                    <td>
+                        {{ donation.donatedAt|date('Y/m/d') }}
+                    </td>
+                    <td>
+                        {{ donation.amountInEuros }} €
+                    </td>
+                    <td>
+                        CB
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

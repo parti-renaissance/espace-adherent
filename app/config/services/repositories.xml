@@ -13,6 +13,11 @@
             <factory service="doctrine" method="getRepository"/>
         </service>
 
+        <service class="AppBundle\Repository\DonationRepository">
+            <argument>AppBundle\Entity\Donation</argument>
+            <factory service="doctrine" method="getRepository"/>
+        </service>
+
         <service id="app.repository.committee" class="AppBundle\Repository\CommitteeRepository" >
             <argument>AppBundle\Entity\Committee</argument>
             <factory service="doctrine" method="getRepository"/>
