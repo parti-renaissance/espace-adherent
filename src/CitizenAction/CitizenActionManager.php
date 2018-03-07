@@ -69,7 +69,6 @@ class CitizenActionManager
                     'age' => '',
                     'lastNameInitial' => '',
                     'lastName' => '',
-                    'postalCode' => '',
                     'cityName' => '',
                 ];
 
