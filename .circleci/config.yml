@@ -56,13 +56,13 @@ jobs:
 
             - *generate_docker_hashes
             - *authenticate_on_registry
-            - run: gcloud docker -- pull $APP_DOCKER_IMAGE_NAME:dev || true
-
             - run: |
                 set -x
 
-                make build
+                gcloud docker -- pull $APP_DOCKER_IMAGE_NAME:dev || true
                 gcloud docker -- pull $APP_DOCKER_IMAGE_NAME:$APP_DOCKER_IMAGE_MD5 || true
+
+                make build
 
                 make up-without-xdebug
                 make -j2 node_modules assets-prod assets-amp var/public.key
