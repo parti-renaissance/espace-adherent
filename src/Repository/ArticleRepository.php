@@ -9,11 +9,6 @@ use Doctrine\ORM\QueryBuilder;
 
 class ArticleRepository extends EntityRepository
 {
-    /**
-     * @param string $category
-     *
-     * @return int
-     */
     public function countAllByCategory(string $category): int
     {
         $qb = $this->createQueryBuilder('a')
@@ -46,8 +41,12 @@ class ArticleRepository extends EntityRepository
         $qb = $this->createQueryBuilder('a')
             ->select('a', 'm')
             ->leftJoin('a.media', 'm')
+            ->innerJoin('a.category', 'category')
+            ->addSelect('category')
             ->andWhere('a.published = :published')
+            ->andWhere('category.display = :display')
             ->setParameter('published', true)
+            ->setParameter('display', true)
             ->orderBy('a.publishedAt', 'DESC')
             ->setMaxResults($perPage)
             ->setFirstResult(($page - 1) * $perPage)
@@ -55,9 +54,7 @@ class ArticleRepository extends EntityRepository
 
         if (!ArticleCategory::isDefault($category)) {
             $qb
-                ->addSelect('c')
-                ->leftJoin('a.category', 'c')
-                ->andWhere('c.slug = :category')
+                ->andWhere('category.slug = :category')
                 ->setParameter('category', $category)
             ;
         }
@@ -107,7 +104,7 @@ class ArticleRepository extends EntityRepository
             ->setParameter('categorySlug', $categorySlug)
             ->getQuery()
             ->getOneOrNullResult()
-            ;
+        ;
     }
 
     /**

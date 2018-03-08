@@ -42,7 +42,7 @@ class ArticleController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $categories = $categoriesRepo->findAll();
+        $categories = $categoriesRepo->findBy(['display' => true]);
         array_unshift($categories, $noFilterByCategory);
         $articlesRepo = $this->getDoctrine()->getRepository(Article::class);
         $articlesCount = $articlesRepo->countAllByCategory($category);

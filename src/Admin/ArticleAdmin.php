@@ -108,6 +108,9 @@ class ArticleAdmin extends AbstractAdmin
                 'label' => 'Titre',
                 'show_filter' => true,
             ])
+            ->add('category', null, [
+                'label' => 'Catégorie',
+            ])
         ;
     }
 

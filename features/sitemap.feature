@@ -33,8 +33,9 @@ Feature:
 
   Scenario: The content sitemap displays correctly
     Given I am on "/sitemap_content_1.xml"
-    Then the response should be in XML
-    And the XML element "//urlset" should have 183 element
+    Then the response status code should be 200
+    And the response should be in XML
+    And the XML element "//urlset" should have 210 element
 
   Scenario: The images sitemap displays correctly
     Given I am on "/sitemap_images_1.xml"
