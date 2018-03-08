@@ -37,7 +37,7 @@
                     {{ form_widget(procuration_form.voteCountry, { attr: { class: 'form--full' } }) }}
                 </div>
 
-                <div class="form__row">
+                <div id="vote-row-postal-code" class="form__row">
                     {{ form_label(procuration_form.votePostalCode, 'Le code postal où je vote') }}
                     {{ form_errors(procuration_form.votePostalCode) }}
                     {{ form_widget(procuration_form.votePostalCode, { attr: { class: 'form--full', placeholder: 'Code postal' } }) }}
@@ -48,7 +48,7 @@
                         {{ form_label(procuration_form.voteCity, 'La ville dans laquelle je vote') }}
                     </span>
                     <span id="vote-label-consulate" style="display: none;">
-                        {{ form_label(procuration_form.voteCity, 'Le consulat ou l\'ambassade dans lequel ou laquelle je vote') }}
+                        {{ form_label(procuration_form.voteCity, 'La ville dans laquelle je vote') }}
                     </span>
                     {{ form_widget(procuration_form.voteCity) }}
                     {{ form_widget(procuration_form.voteCityName, { attr: { class: 'form--full', placeholder: 'Ville' } }) }}
