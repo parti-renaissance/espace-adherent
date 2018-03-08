@@ -16,7 +16,7 @@ export default class VoteLocationForm {
             postalCode: postalCode.value.replace(' ', ''),
             cities: null,
             consulates: null,
-            loading: false
+            loading: false,
         };
     }
 
@@ -53,6 +53,7 @@ export default class VoteLocationForm {
         this.resetCity();
 
         if ('FR' !== this._state.country) {
+            hide(dom('#vote-row-postal-code'));
             hide(dom('#vote-label-city-name'));
             show(dom('#vote-label-consulate'));
 
@@ -61,6 +62,7 @@ export default class VoteLocationForm {
         }
 
         hide(dom('#vote-label-consulate'));
+        show(dom('#vote-row-postal-code'));
         show(dom('#vote-label-city-name'));
 
         this.displayVoteCitySelector();
