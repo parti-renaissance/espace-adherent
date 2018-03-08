@@ -102,7 +102,10 @@
             {{ article.content|markdown }}
 
             {% if article.category.ctaLink and article.category.ctaLabel %}
-                <p><a href="{{ article.category.ctaLink }}">{{ article.category.ctaLabel }}</a></p>
+                <a href="{{ article.category.ctaLink }}" class="category category--{{ article.category.slug }}">
+                    <div class="category__header">Explorer plus dans cette série</div>
+                    <div class="category__label">{{ article.category.ctaLabel }}</div>
+                </a>
             {% endif %}
         </article>
 
