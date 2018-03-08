@@ -24,8 +24,8 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('#auth-error'));
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_admin_email' => 'admin@en-marche-dev.fr',
-            '_admin_password' => 'admin',
+            '_login_email' => 'admin@en-marche-dev.fr',
+            '_login_password' => 'admin',
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
@@ -43,8 +43,8 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('#auth-error'));
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_admin_email' => 'titouan.galopin@en-marche.fr',
-            '_admin_password' => 'secret!12345',
+            '_login_email' => 'titouan.galopin@en-marche.fr',
+            '_login_password' => 'secret!12345',
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
@@ -66,8 +66,8 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('#auth-error'));
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_admin_email' => $username,
-            '_admin_password' => $password,
+            '_login_email' => $username,
+            '_login_password' => $password,
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());

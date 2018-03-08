@@ -33,11 +33,11 @@ class LoginType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'username_parameter' => '_adherent_email',
-                'password_parameter' => '_adherent_password',
+                'username_parameter' => '_login_email',
+                'password_parameter' => '_login_password',
                 'remember_me_parameter' => '_remember_me',
-                'csrf_field_name' => '_adherent_csrf',
-                'csrf_token_id' => 'authenticate_adherent',
+                'csrf_field_name' => '_login_csrf',
+                'csrf_token_id' => 'authenticate',
                 'remember_me' => false,
                 'data_class' => null,
                 'translation_domain' => false,

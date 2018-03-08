@@ -211,8 +211,8 @@ class OAuthServerControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_adherent_email' => 'carl999@example.fr',
-            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
+            '_login_email' => 'carl999@example.fr',
+            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
         static::assertTrue($this->client->getResponse()->isRedirect($this->createAuthorizeUrl()));
 
@@ -280,8 +280,8 @@ class OAuthServerControllerTest extends MysqlWebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/connexion');
         $this->client->submit($this->client->getCrawler()->selectButton('Connexion')->form([
-            '_adherent_email' => 'carl999@example.fr',
-            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
+            '_login_email' => 'carl999@example.fr',
+            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
         $this->client->followRedirect();
 
@@ -305,8 +305,8 @@ class OAuthServerControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_adherent_email' => 'carl999@example.fr',
-            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
+            '_login_email' => 'carl999@example.fr',
+            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
         static::assertTrue($this->client->getResponse()->isRedirect($authorizeUrl));
 

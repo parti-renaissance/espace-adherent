@@ -20,13 +20,7 @@ class InactiveAdminDisconnectionTest extends SqliteWebTestCase
 
     public function testLogoutInactiveAdmin()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
-
-        // connect as admin
-        $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_admin_email' => 'admin@en-marche-dev.fr',
-            '_admin_password' => 'admin',
-        ]));
+        $this->authenticateAsAdmin($this->client);
 
         $this->client->request(Request::METHOD_GET, '/admin/app/media/list');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -43,13 +37,7 @@ class InactiveAdminDisconnectionTest extends SqliteWebTestCase
 
     public function testNoLogoutInactiveAdherent()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
-
-        // connect as adherent
-        $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_adherent_email' => 'carl999@example.fr',
-            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
-        ]));
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
 
