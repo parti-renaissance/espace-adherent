@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\MemberSummary;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\EntitySpanTrait;
 use AppBundle\Entity\Summary;
 use AppBundle\Summary\SummaryItemPositionableInterface;
@@ -11,6 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="member_summary_trainings")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class Training implements SummaryItemPositionableInterface
 {

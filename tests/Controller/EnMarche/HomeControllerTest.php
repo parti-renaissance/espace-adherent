@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
+use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
 use AppBundle\DataFixtures\ORM\LoadRedirectionData;
@@ -17,7 +18,7 @@ class HomeControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
-    public function testIndex()
+    public function testIndex(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/');
 
@@ -32,7 +33,7 @@ class HomeControllerTest extends SqliteWebTestCase
         $this->assertSame(1, $crawler->filter('html:contains("Le candidat du travail")')->count());
     }
 
-    public function testHealth()
+    public function testHealth(): void
     {
         $this->client->request(Request::METHOD_GET, '/health');
 
@@ -42,14 +43,24 @@ class HomeControllerTest extends SqliteWebTestCase
     /**
      * @dataProvider provideSitemaps
      */
-    public function testSitemaps($page)
+    public function testSitemaps(string $page): void
     {
         $this->client->request(Request::METHOD_GET, $page);
 
         $this->isSuccessful($this->client->getResponse());
     }
 
-    public function provideSitemaps()
+    /**
+     * @dataProvider provideEmptySitemaps
+     */
+    public function testEmptySitemaps(string $page): void
+    {
+        $this->client->request(Request::METHOD_GET, $page);
+
+        $this->assertClientIsRedirectedTo('/sitemap.xml', $this->client, false, true);
+    }
+
+    public function provideSitemaps(): array
     {
         return [
             ['/sitemap.xml'],
@@ -58,11 +69,18 @@ class HomeControllerTest extends SqliteWebTestCase
             ['/sitemap_committees_1.xml'],
             ['/sitemap_events_1.xml'],
             ['/sitemap_images_1.xml'],
-            ['/sitemap_videos_1.xml'],
         ];
     }
 
-    public function testDynamicRedirections()
+    public function provideEmptySitemaps(): array
+    {
+        return [
+            ['/sitemap_committees_42.xml'],
+            ['/sitemap_events_42.xml'],
+        ];
+    }
+
+    public function testDynamicRedirections(): void
     {
         $this->client->request(Request::METHOD_GET, '/dynamic-redirection-301');
 
@@ -81,6 +99,7 @@ class HomeControllerTest extends SqliteWebTestCase
             LoadHomeBlockData::class,
             LoadLiveLinkData::class,
             LoadRedirectionData::class,
+            LoadEventData::class,
         ]);
     }
 

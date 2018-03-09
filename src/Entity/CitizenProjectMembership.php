@@ -34,7 +34,7 @@ class CitizenProjectMembership
     public const CITIZEN_PROJECT_ADMINISTRATOR = 'HOST';
     public const CITIZEN_PROJECT_FOLLOWER = 'FOLLOWER';
 
-    const PRIVILEGES = [
+    public const PRIVILEGES = [
         self::CITIZEN_PROJECT_ADMINISTRATOR,
         self::CITIZEN_PROJECT_FOLLOWER,
     ];
@@ -172,6 +172,8 @@ class CitizenProjectMembership
 
     public function setPrivilege(string $privilege): void
     {
+        static::checkPrivilege($privilege);
+
         $this->privilege = $privilege;
     }
 

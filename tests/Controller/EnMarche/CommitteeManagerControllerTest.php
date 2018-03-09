@@ -322,7 +322,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertContains('Le nouvel événement a bien été créé et publié sur la page du comité.', $crawler->filter('#notice-flashes')->text());
-        $this->assertSame('Débat sur l\'agriculture écologique | En Marche !', $crawler->filter('title')->text());
+        $this->assertSame('Débat sur l\'agriculture écologique | La République En Marche !', $crawler->filter('title')->text());
         $this->assertSame('Débat sur l\'agriculture écologique', $crawler->filter('.committee-event-name')->text());
         $this->assertSame('Organisé par Gisele Berthoux du comité En Marche Paris 8', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
         $this->assertSame('Mercredi 2 mars 2022, 9h30', $crawler->filter('.committee-event-date')->text());
@@ -387,7 +387,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeMessageForm($crawler));
         $this->assertTrue($this->seeFlashMessage($crawler, 'Votre message a bien été publié.'));
-        $this->assertSeeCommitteeTimelineMessage($crawler, 0, 'Gisele Berthoux', 'co-animateur', 'Première publication !', true);
+        $this->assertSeeCommitteeTimelineMessage($crawler, 0, 'Gisele Berthoux', 'co-animateur', 'Première publication !');
     }
 
     /**

@@ -17,6 +17,14 @@ class MembershipVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        return $adherent->isBasicAdherent();
+        if ($adherent->isBasicAdherent()) {
+            return true;
+        }
+
+        if ($adherent->isUser()) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -26,8 +26,8 @@
                 Tour concerné :<br />
                 <select name="{{ constant('PARAMETER_ELECTION_ROUND', filters) }}" class="form form__field form--full">
                     <option value="" {{ filters.electionRound is empty ? 'selected="selected"' }}></option>
-                    {% for id, label in election_rounds %}
-                        <option value="{{ id }}" {{ filters.electionRound is same as(id) ? 'selected="selected"' }}>{{ label }}</option>
+                    {% for id, round in election_rounds %}
+                        <option value="{{ round.id }}" {{ filters.electionRound is same as(round.id) ? 'selected="selected"' }}>{{ round.label }}</option>
                     {% endfor %}
                 </select>
             </label>

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Entity\CitizenActionCategory;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\EntityPostAddressTrait;
 use AppBundle\Entity\Event;
@@ -18,11 +19,24 @@ class SearchController extends Controller
 {
     /**
      * @Route("/evenements", name="app_search_events")
+     * @Route("/evenements/categorie/{slug}", name="app_search_events_by_category")
      * @Method("GET")
      */
-    public function searchEventsAction(Request $request)
+    public function searchEventsAction(Request $request, string $slug = null)
     {
-        $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_EVENTS);
+        if ($slug) {
+            if ($category = $this->getDoctrine()->getRepository(EventCategory::class)->findOneBySlug($slug)) {
+                $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_EVENTS);
+                $request->query->set(SearchParametersFilter::PARAMETER_EVENT_CATEGORY, $category->getId());
+            } elseif ($this->getDoctrine()->getRepository(CitizenActionCategory::class)->findOneBySlug($slug)) {
+                $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_CITIZEN_ACTIONS);
+                $request->query->set(SearchParametersFilter::PARAMETER_EVENT_CATEGORY, SearchParametersFilter::TYPE_CITIZEN_ACTIONS);
+            } else {
+                return $this->redirectToRoute('app_search_events');
+            }
+        } else {
+            $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_EVENTS);
+        }
 
         $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
         $user = $this->getUser();

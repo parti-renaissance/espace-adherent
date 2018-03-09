@@ -170,12 +170,6 @@ class App {
         });
     }
 
-    runCitizenProjectCreation() {
-        System.import('pages/citizen_project_creation').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('api'));
-        });
-    }
-
     runCitizenProjectImageGenerator() {
         System.import('pages/citizen_project_image_generator').catch((error) => { throw error; }).then((module) => {
             module.default();

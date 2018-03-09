@@ -9,9 +9,9 @@
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            var hasAnotherReason = '#unregistration_reasons_6';
+            var anotherReasons = $('#unregistration_reasons_6');
             var toggleComment = function() {
-                if ($(hasAnotherReason).is(':checked')) {
+                if (anotherReasons.is(':checked')) {
                     $('#unregistration_another_reason_comment').show();
                 } else {
                     $('#unregistration_another_reason_comment').hide();
@@ -19,7 +19,7 @@
             };
 
             // Show/hide comment field
-            $(hasAnotherReason).change(function() {
+            anotherReasons.change(function() {
                 toggleComment();
             });
 
@@ -34,8 +34,8 @@
     {% if not unregistered %}
         <div id="is_adherent" class="settings__unsub">
             <header class="filtered-image progressive-background"
-                    data-sd="{{ static_asset('em-marcheurs-bg.jpg', {'w': 300, 'q': 20}) }}"
-                    data-hd="{{ static_asset('em-marcheurs-bg.jpg', {'q': 70}) }}">
+                    data-sd="{{ static_asset('em-marcheurs-bg.jpg', { w: 300, q: 20 }) }}"
+                    data-hd="{{ static_asset('em-marcheurs-bg.jpg', { q: 70 }) }}">
                 <div class="l__wrapper--narrow">
                     <h1 class="text--center text--larger">
                         Je souhaite supprimer mon adhésion et mon compte <em>En Marche</em>
@@ -56,7 +56,6 @@
             </section>
 
             <section class="l__wrapper--600">
-
                 {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
 
                 {{ form_errors(form) }}
@@ -68,15 +67,12 @@
                 {{ form_errors(form.reasons) }}
 
                 <div class="form l__col">
-                    {% for reason in form.reasons %}
-                        <div class="form__checkbox form__checkbox--medium">
-                            {{ form_widget(reason) }}
-                            {{ form_label(reason) }}
-                        </div>
-                    {% endfor %}
+                    <div class="form__checkbox b__nudge--top b__nudge--bottom">
+                        {{ form_widget(form.reasons) }}
+                    </div>
                     <div id="unregistration_another_reason_comment">
                         {{ form_errors(form.comment) }}
-                        {{ form_widget(form.comment, {attr: {class: 'form__textbox'}}) }}
+                        {{ form_widget(form.comment, { attr: { class: 'form__textbox' } }) }}
                     </div>
                 </div>
 

@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Unregistration;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -24,13 +25,9 @@ class UnregistrationAdmin extends AbstractAdmin
         '_sort_by' => 'unregisteredAt',
     ];
 
-    private $unregistrationReasons;
-
-    public function __construct($code, $class, $baseControllerName, array $unregistrationReasons)
+    public function __construct($code, $class, $baseControllerName)
     {
         parent::__construct($code, $class, $baseControllerName);
-
-        $this->unregistrationReasons = $unregistrationReasons;
     }
 
     public function getTemplate($name)
@@ -63,6 +60,10 @@ class UnregistrationAdmin extends AbstractAdmin
             ->add('comment', null, [
                 'label' => 'Commentaire',
             ])
+            ->add('adherent', null, [
+                'label' => 'Type',
+                'template' => 'admin/unregistration/user_type.html.twig',
+            ])
             ->add('registeredAt', null, [
                 'label' => 'Date d\'inscription',
             ])
@@ -80,13 +81,16 @@ class UnregistrationAdmin extends AbstractAdmin
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
+        $reasonsList = array_merge(Unregistration::REASONS_LIST_ADHERENT, Unregistration::REASONS_LIST_USER);
+
         $datagridMapper
             ->add('reasons', CallbackFilter::class, [
                 'label' => 'Raisons',
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => array_flip($this->unregistrationReasons),
+                    'choices' => array_combine($reasonsList, $reasonsList),
+                    'choice_translation_domain' => 'forms',
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {

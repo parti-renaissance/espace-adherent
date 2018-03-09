@@ -2,6 +2,8 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Content\ArticleFactory;
+use AppBundle\Content\MediaFactory;
 use AppBundle\Entity\ArticleCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -14,8 +16,8 @@ class LoadArticleData extends Fixture
     {
         $faker = Factory::create('fr_FR');
 
-        $factory = $this->container->get('app.content.article_factory');
-        $mediaFactory = $this->container->get('app.content.media_factory');
+        $factory = $this->container->get(ArticleFactory::class);
+        $mediaFactory = $this->container->get(MediaFactory::class);
         $storage = $this->container->get('app.storage');
 
         // Media

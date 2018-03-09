@@ -206,7 +206,6 @@
             <argument />
             <argument>AppBundle\Entity\Unregistration</argument>
             <argument />
-            <argument>%adherent_unregistration_reasons%</argument>
         </service>
 
         <!--
@@ -221,6 +220,7 @@
             <argument />
             <argument>AppBundle\Entity\Adherent</argument>
             <argument />
+            <argument type="service" id="event_dispatcher"/>
         </service>
 
         <service id="app.admin.committee" class="AppBundle\Admin\CommitteeAdmin">

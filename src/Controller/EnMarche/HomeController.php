@@ -2,7 +2,9 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Exception\SitemapException;
 use AppBundle\Form\NewsletterSubscriptionType;
+use AppBundle\Sitemap\SitemapFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -29,7 +31,7 @@ class HomeController extends Controller
      */
     public function sitemapIndexAction(): Response
     {
-        return $this->createXmlResponse($this->get('app.content.sitemap_factory')->createSitemapIndex());
+        return $this->createXmlResponse($this->get(SitemapFactory::class)->createSitemapIndex());
     }
 
     /**
@@ -41,9 +43,13 @@ class HomeController extends Controller
      * )
      * @Method("GET")
      */
-    public function sitemapAction($type, $page): Response
+    public function sitemapAction(string $type, int $page): Response
     {
-        return $this->createXmlResponse($this->get('app.content.sitemap_factory')->createSitemap($type, (int) $page));
+        try {
+            return $this->createXmlResponse($this->get(SitemapFactory::class)->createSitemap($type, $page));
+        } catch (SitemapException $exception) {
+            return $this->redirectToRoute('app_sitemap_index', [], Response::HTTP_MOVED_PERMANENTLY);
+        }
     }
 
     private function createXmlResponse(string $content): Response

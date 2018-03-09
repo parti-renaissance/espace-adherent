@@ -129,12 +129,14 @@ tu: vendor
 
 tf:             ## Run the PHP functional tests
 tf: tfp
-	$(EXEC) $(CONSOLE) --env=test_mysql rabbitmq:setup-fabric
 	$(EXEC) vendor/bin/behat -vvv || true
 	$(EXEC) vendor/bin/phpunit --group functional || true
 
 tfp:            ## Prepare the PHP functional tests
 tfp: vendor assets-amp assets-prod
+	$(FIG) exec rabbitmq rabbitmqctl add_vhost /test || true
+	$(FIG) exec rabbitmq rabbitmqctl set_permissions -p /test guest ".*" ".*" ".*"
+	$(EXEC) $(CONSOLE) --env=test_mysql rabbitmq:setup-fabric
 	$(EXEC) rm -rf var/cache/test var/cache/test_sqlite var/cache/test_mysql /tmp/data.db app/data/dumped_referents_users || true
 	$(EXEC) $(CONSOLE) doctrine:database:create --env=test_sqlite || true
 	$(EXEC) $(CONSOLE) doctrine:schema:create --env=test_sqlite || true

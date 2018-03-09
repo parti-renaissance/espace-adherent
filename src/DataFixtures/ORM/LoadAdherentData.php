@@ -123,7 +123,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $adherent4->setPosition(ActivityPositions::UNEMPLOYED);
         $adherent4->setInterests(['jeunesse']);
         $adherent4->enableCommitteesNotifications();
-        $adherent4->setProcurationManagedAreaCodesAsString('75, 44, GB, 92130');
+        $adherent4->setProcurationManagedAreaCodesAsString('75, 44, GB, 92130, 91300');
         $this->addReference('adherent-4', $adherent4);
 
         $adherent5 = $adherentFactory->createFromArray([

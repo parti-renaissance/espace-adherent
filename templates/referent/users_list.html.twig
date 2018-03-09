@@ -152,6 +152,7 @@
                 <tr>
                     <th style="width: 85px;">ID</th>
                     <th style="width: 100px;">Code postal</th>
+                    <th style="width: 120px;">Code postal du comité géré</th>
                     <th class="datagrid__table__col--left">Informations</th>
                     <th style="width: 300px;" class="datagrid__table__col--left datagrid__table__col--hide-mobile">Comités</th>
                     <th style="width: 150px;" class="datagrid__table__col--hide-mobile">Inscription</th>
@@ -162,6 +163,7 @@
                     <tr class="referent__item referent__item--{{ user.styleType }}">
                         <td>{{ user.id }}</td>
                         <td>{{ user.postalCode }}</td>
+                        <td>{{ user.committeePostalCode }}</td>
                         <td class="datagrid__table__col--left">
                             <strong>
                                 {{ user.firstName|capitalize }}

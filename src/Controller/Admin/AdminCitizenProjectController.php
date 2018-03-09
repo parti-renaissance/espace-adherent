@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\CitizenProject\CitizenProjectAuthority;
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
@@ -73,14 +74,15 @@ class AdminCitizenProjectController extends Controller
      * @Route("/{citizenProject}/members/{adherent}/set-privilege/{privilege}", name="app_admin_citizenproject_change_privilege")
      * @Method("GET")
      */
-    public function changePrivilegeAction(Request $request, CitizenProject $citizenProject, Adherent $adherent, string $privilege, CitizenProjectManager $manager): Response
+    public function changePrivilegeAction(Request $request, CitizenProject $citizenProject, Adherent $adherent, string $privilege, CitizenProjectAuthority $authority): Response
     {
         if (!$this->isCsrfTokenValid(sprintf('citizen_project.change_privilege.%s', $adherent->getId()), $request->query->get('token'))) {
             throw new BadRequestHttpException('Invalid Csrf token provided.');
         }
 
         try {
-            $manager->changePrivilege($adherent, $citizenProject, $privilege);
+            $authority->changePrivilege($adherent, $citizenProject, $privilege);
+            $this->getDoctrine()->getManager()->flush();
         } catch (CitizenProjectMembershipException $e) {
             $this->addFlash('error', $e->getMessage());
         }

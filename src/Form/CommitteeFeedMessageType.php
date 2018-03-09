@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CommitteeFeedMessageType extends AbstractType
@@ -30,7 +31,12 @@ class CommitteeFeedMessageType extends AbstractType
                 'purify_html' => true,
             ])
             ->add('published', CheckboxType::class, [
-                'label' => 'Rendre ce message visible sur la page du comité',
+                'label' => 'Publier sur la page du comité',
+                'attr' => ['class' => 'form__checkbox form__checkbox--large'],
+                'required' => false,
+            ])
+            ->add('sendNotification', CheckboxType::class, [
+                'label' => 'Envoyer le message par e-mail. Vous serez systématiquement mis(e) en copie de celui-ci',
                 'attr' => ['class' => 'form__checkbox form__checkbox--large'],
                 'required' => false,
             ])
@@ -42,6 +48,15 @@ class CommitteeFeedMessageType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => CommitteeMessage::class,
+            'validation_groups' => function (FormInterface $form) {
+                $committeeMessage = $form->getData();
+
+                if ($committeeMessage instanceof CommitteeMessage && $committeeMessage->isSendNotification()) {
+                    return ['Default', 'notification'];
+                }
+
+                return ['Default'];
+            },
         ]);
     }
 }

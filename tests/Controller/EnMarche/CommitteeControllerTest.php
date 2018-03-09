@@ -182,8 +182,8 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCountTimelineMessages($crawler, 2);
         $this->assertSeeTimelineMessages($crawler, [
-            ['Jacques Picard', 'co-animateur', 'À la recherche de volontaires !', true],
-            ['Jacques Picard', 'co-animateur', 'Lancement du comité !', true],
+            ['Jacques Picard', 'co-animateur', 'À la recherche de volontaires !'],
+            ['Jacques Picard', 'co-animateur', 'Lancement du comité !'],
         ]);
     }
 
@@ -365,6 +365,21 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->assertClientIsRedirectedTo($this->hosts['scheme'].'://'.$this->hosts['app'].'/connexion', $this->client);
     }
 
+    public function testGetTimeLineConnected()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $crawler = $this->client->request('GET', '/comites/en-marche-paris-8/timeline?offset=10');
+
+        $this->assertEditDeleteButton($crawler, 10);
+    }
+
+    public function testGetTimeLineNotConnected()
+    {
+        $crawler = $this->client->request('GET', '/comites/en-marche-paris-8/timeline?offset=10');
+
+        $this->assertEditDeleteButton($crawler, 0);
+    }
+
     private function seeLoginLink(Crawler $crawler): bool
     {
         return 1 === count($crawler->filter('#committee-login-link'));
@@ -457,7 +472,7 @@ class CommitteeControllerTest extends MysqlWebTestCase
     {
         foreach ($messages as $position => $message) {
             list($author, $role, $text) = $message;
-            $this->assertSeeCommitteeTimelineMessage($crawler, $position, $author, $role, $text, $message[3] ?? false);
+            $this->assertSeeCommitteeTimelineMessage($crawler, $position, $author, $role, $text);
         }
     }
 

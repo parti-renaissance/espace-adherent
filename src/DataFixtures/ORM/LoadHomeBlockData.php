@@ -44,8 +44,8 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
     public function load(ObjectManager $manager)
     {
         $this->em = $this->container->get('doctrine.orm.entity_manager');
-        $this->mediaFactory = $this->container->get('app.content.media_factory');
-        $this->homeBlockFactory = $this->container->get('app.content.home_block_factory');
+        $this->mediaFactory = $this->container->get(MediaFactory::class);
+        $this->homeBlockFactory = $this->container->get(HomeBlockFactory::class);
         $this->storage = $this->container->get('app.storage');
 
         $this->loadMedias();

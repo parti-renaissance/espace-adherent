@@ -40,7 +40,7 @@
 
         {% block extra_link '' %}
 
-        <title>{% block title %}{% block page_title '' %} | {% block app_title 'En Marche !' %}{% endblock %}</title>
+        <title>{% block title %}{% block page_title '' %} | {% block app_title 'La République En Marche !' %}{% endblock %}</title>
 
         <link rel="canonical" href="{% block canonical_url homepage_url %}" />
         <meta name="description" content="{% block meta_description %}Pour ceux qui sont convaincus que le pays est bloqué, qui ont le goût du travail, du progrès, du risque, qui vivent pour la liberté, l'égalité, et l'Europe.{% endblock %}" />
@@ -63,7 +63,7 @@
         <meta name="twitter:image:src" content="{{ block('open_graph_image')|raw }}" />
 
         {% block meta_rss %}
-            <link rel="alternate" type="application/rss+xml" title="En Marche !" href="{{ url('articles_feed') }}" />
+            <link rel="alternate" type="application/rss+xml" title="La République En Marche !" href="{{ url('articles_feed') }}" />
         {% endblock %}
 
         {% block json_ld %}

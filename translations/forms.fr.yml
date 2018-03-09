@@ -20,3 +20,14 @@ purchasing_power.not_visible: Étape 0 - Morceaux qui apparaitront pour tout le 
 purchasing_power.friend_professional_position: Étape 1 - Quelle est la situation professionnelle de votre ami(e) ? [ 1 choix ]
 purchasing_power.friend_cases: Étape 2 - Votre ami(e) est-il(elle) dans une des situations suivantes ? [ 2 choix possibles aujourd'hui]
 purchasing_power.friend_appreciations: Étape 3 - Laquelle de ces valeurs importe le plus pour votre ami(e) ? [ 2 choix possibles aujourd'hui]
+
+#
+# Unregistrations choices
+#
+unregistration_reasons.emails: Je reçois trop d'e-mails
+unregistration_reasons.support: J'avais uniquement adhéré pour soutenir la candidature d'Emmanuel Macron
+unregistration_reasons.government: Je ne suis plus d'accord avec le gouvernement
+unregistration_reasons.elected: Je suis déçu(e) par mon/les élu(e)s LaREM
+unregistration_reasons.movement: Je ne me reconnais plus dans les actions du mouvement En Marche !
+unregistration_reasons.committee: Je suis en désaccord avec l’activité de mon comité local
+unregistration_reasons.other: Autre

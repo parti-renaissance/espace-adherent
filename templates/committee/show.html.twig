@@ -49,6 +49,9 @@
 
     <script type="text/javascript">
         Kernel.onLoad(function(di) {
+            {% if form is defined and form is not null %}
+                {{ js.toggleDisplayingElement("##{form.vars.id}_sendNotification", "##{form.vars.id}_subject") }}
+            {% endif %}
             var committeeSlug = '{{ committee.slug }}';
 
             {% if committee_timeline is defined and committee_timeline|length %}

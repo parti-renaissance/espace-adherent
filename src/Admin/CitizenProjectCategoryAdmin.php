@@ -26,6 +26,9 @@ class CitizenProjectCategoryAdmin extends AbstractAdmin
             ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])
+            ->add('slug', null, [
+                'label' => 'Slug',
+            ])
             ->add('status', ChoiceType::class, [
                 'label' => 'Visibilité',
                 'choices' => [
@@ -52,6 +55,9 @@ class CitizenProjectCategoryAdmin extends AbstractAdmin
         $listMapper
             ->add('name', null, [
                 'label' => 'Nom',
+            ])
+            ->add('slug', null, [
+                'label' => 'Slug',
             ])
             ->add('status', null, [
                 'label' => 'Visibilité',

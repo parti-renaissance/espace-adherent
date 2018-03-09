@@ -186,6 +186,7 @@ class CitizenProjectManager
     {
         $citizenProject->approved();
 
+        /** @var Adherent $creator */
         $creator = $this->getAdherentRepository()->findOneByUuid($citizenProject->getCreatedBy());
         $this->projectAuthority->changePrivilege($creator, $citizenProject, CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR);
 

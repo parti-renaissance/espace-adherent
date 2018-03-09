@@ -53,7 +53,9 @@ class CommitteeFeedManager
         $this->manager->persist($item);
         $this->manager->flush();
 
-        $this->sendMessageToFollowers($item, $message->getCommittee(), $message->getSubject());
+        if ($message->isSendNotification()) {
+            $this->sendMessageToFollowers($item, $message->getCommittee(), $message->getSubject());
+        }
 
         return $item;
     }

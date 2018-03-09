@@ -76,19 +76,16 @@ class CommitteeController extends Controller
      */
     public function timelineEditAction(Request $request, Committee $committee, CommitteeFeedItem $committeeFeedItem): Response
     {
-        $form = null;
-        if ($this->isGranted(CommitteePermissions::HOST, $committee)) {
-            $form = $this
-                ->createForm(CommitteeFeedItemMessageType::class, $committeeFeedItem)
-                ->handleRequest($request)
-            ;
+        $form = $this
+            ->createForm(CommitteeFeedItemMessageType::class, $committeeFeedItem)
+            ->handleRequest($request)
+        ;
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('info', $this->get('translator')->trans('committee.message_edited'));
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('info', $this->get('translator')->trans('committee.message_edited'));
 
-                return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
-            }
+            return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
         }
 
         $committeeManager = $this->getCommitteeManager();
@@ -144,7 +141,9 @@ class CommitteeController extends Controller
         return $this->render('committee/timeline/feed.html.twig', [
             'committee' => $committee,
             'committee_timeline' => $timeline,
+            'committee_timeline_forms' => $this->createTimelineDeleteForms($timeline),
             'has_role_adherent' => $this->getUser() instanceof Adherent && $this->getUser()->isAdherent(),
+            'has_role_user' => $this->isGranted('ROLE_USER'),
         ]);
     }
 
@@ -201,13 +200,17 @@ class CommitteeController extends Controller
     {
         $forms = [];
         foreach ($feeds as $feed) {
-            $forms[$feed->getId()] = $this->createDeleteForm(
-                $this->generateUrl('app_committee_timeline_delete', [
-                    'id' => $feed->getId(),
-                    'slug' => $feed->getCommittee()->getSlug(),
-                ]),
-                'committee_feed_delete'
-            )->createView();
+            if ($this->isGranted('ADMIN_FEED_COMMITTEE', $feed)) {
+                $forms[$feed->getId()] = $this->createDeleteForm(
+                    $this->generateUrl('app_committee_timeline_delete',
+                        [
+                            'id' => $feed->getId(),
+                            'slug' => $feed->getCommittee()->getSlug(),
+                        ]),
+                    'committee_feed_delete'
+                )->createView()
+                ;
+            }
         }
 
         return $forms;

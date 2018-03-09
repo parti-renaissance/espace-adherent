@@ -2,10 +2,11 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Entity\Unregistration;
 use AppBundle\Form\AdherentChangePasswordType;
 use AppBundle\Form\AdherentEmailSubscriptionType;
-use AppBundle\Form\UnregistrationType;
 use AppBundle\Form\AdherentType;
+use AppBundle\Form\UnregistrationType;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\Membership\UnregistrationCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -109,9 +110,12 @@ class UserController extends Controller
     {
         $adherent = $this->getUser();
         $unregistrationCommand = new UnregistrationCommand();
+        $viewFolder = $adherent->isUser() ? 'user' : 'adherent';
+        $reasons = $adherent->isUser() ? Unregistration::REASONS_LIST_USER : Unregistration::REASONS_LIST_ADHERENT;
 
         $form = $this->createForm(UnregistrationType::class, $unregistrationCommand, [
             'csrf_token_id' => self::UNREGISTER_TOKEN,
+            'reasons' => array_combine($reasons, $reasons),
         ]);
 
         $form->handleRequest($request);
@@ -121,13 +125,13 @@ class UserController extends Controller
             $this->get('security.token_storage')->setToken(null);
             $request->getSession()->invalidate();
 
-            return $this->render('adherent/terminate_membership.html.twig', [
+            return $this->render(sprintf('%s/terminate_membership.html.twig', $viewFolder), [
                 'unregistered' => true,
                 'form' => $form->createView(),
             ]);
         }
 
-        return $this->render('adherent/terminate_membership.html.twig', [
+        return $this->render(sprintf('%s/terminate_membership.html.twig', $viewFolder), [
             'unregistered' => false,
             'form' => $form->createView(),
         ]);

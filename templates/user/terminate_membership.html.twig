@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Désadhésion' %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var anotherReasons = $('#unregistration_reasons_5');
+            var toggleComment = function() {
+                if (anotherReasons.is(':checked')) {
+                    $('#unregistration_another_reason_comment').show();
+                } else {
+                    $('#unregistration_another_reason_comment').hide();
+                }
+            };
+
+            // Show/hide comment field
+            anotherReasons.change(function() {
+                toggleComment();
+            });
+
+            toggleComment();
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+
+<div>
+    {% if not unregistered %}
+        <div id="is_adherent" class="settings__unsub">
+            <header class="filtered-image progressive-background"
+                    data-sd="{{ static_asset('em-marcheurs-bg.jpg', { w: 300, q: 20 }) }}"
+                    data-hd="{{ static_asset('em-marcheurs-bg.jpg', { q: 70 }) }}">
+                <div class="l__wrapper--narrow">
+                    <h1 class="text--center text--larger">
+                        Je souhaite supprimer mon compte <em>En Marche</em><br/>
+                        Nous sommes tristes de vous voir partir 😢
+                    </h1>
+                </div>
+            </header>
+            <section class="l__wrapper--600 settings__unsub__intro">
+                <p>
+                    Merci de nous aider à comprendre pourquoi vous souhaitez quitter En Marche en choisissant
+                    une ou plusieurs des réponses ci-dessous :
+                </p>
+            </section>
+
+            <section class="l__wrapper--600">
+                {{ form_start(form, { attr: { class: 'b__nudge--top-40' } }) }}
+
+                {{ form_errors(form) }}
+
+                {{ form_errors(form.reasons) }}
+
+                <div class="form l__col">
+                    <div class="form__checkbox b__nudge--top b__nudge--bottom">
+                        {{ form_widget(form.reasons) }}
+                    </div>
+                    <div id="unregistration_another_reason_comment">
+                        {{ form_errors(form.comment) }}
+                        {{ form_widget(form.comment, { attr: { class: 'form__textbox' } }) }}
+                    </div>
+                </div>
+
+                <p class="text--body">
+                    Merci pour ces précisions.
+                </p>
+                <p class="text--body">
+                    Nous vous rappelons que vous pouvez très facilement vous
+                    <a href="{{ path('app_user_set_email_notifications') }}">
+                    désabonner de tout ou partie des emails envoyés</a> par le
+                    mouvement.
+                </p>
+                <p class="text--body b__nudge--bottom-large">
+                    Si vous ne souhaitez plus avoir de compte,
+                    vous pouvez finaliser sa suppression en cliquant ci-dessous.
+                </p>
+
+                <div class="text--center">
+                    <button type="submit" class="btn btn--error">
+                        Je confirme la suppression de mon compte
+                    </button>
+                </div>
+
+                {{ form_end(form) }}
+            </section>
+
+        </div>
+    {% else %}
+        <div id="is_not_adherent" class="content">
+            <header>
+                <h1 class="space--60-0 l__wrapper--slim text--center text--large">
+                    Votre compte En Marche a bien été supprimé et vos données personnelles effacées de notre base.
+                </h1>
+                <hr class="l__wrapper"/>
+            </header>
+            <section class="l__wrapper--600 text--body">
+                <p>
+                    Nous sommes tristes de vous voir partir. Vous serez
+                    toujours les bienvenus si vous souhaitez nous rejoindre.
+                </p>
+
+                <p>
+                    Nous sommes preneurs de vos suggestions pour nous
+                    améliorer. N’hésitez pas à nous contacter
+                    au <a href="tel:01 86 95 02 86">01 86 95 02 86 ou</a> par e-mail à l’adresse
+                    <a href="mailto:contact@en-marche.fr">contact@en-marche.fr</a>.
+                </p>
+            </section>
+            <section class="text--center space--60-0">
+                <img class="l__wrapper--medium" src="{{ asset('images/a-bientot.jpg') }}"/>
+            </section>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

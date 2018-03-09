@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\MemberSummary;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\Summary;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Intl;
@@ -10,6 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="member_summary_languages")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class Language
 {

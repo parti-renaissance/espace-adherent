@@ -6,6 +6,12 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @Assert\Expression(
+ *     expression="this.isPublished() != false || this.isSendNotification() != false",
+ *     message="Vous devez cocher au moins une des deux cases"
+ * )
+ */
 class CommitteeMessage
 {
     private $author;
@@ -16,13 +22,13 @@ class CommitteeMessage
      * @Assert\Length(min=10, minMessage="committee.message.min_length")
      */
     private $content;
-
     private $published;
+    private $sendNotification;
     private $createdAt;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=80)
+     * @Assert\NotBlank(groups={"notification"})
+     * @Assert\Length(max=80, groups={"notification"})
      */
     private $subject;
 
@@ -32,13 +38,15 @@ class CommitteeMessage
         string $subject = null,
         string $content = null,
         bool $published = false,
-        string $createdAt = 'now'
+        string $createdAt = 'now',
+        bool $sendNotification = true
     ) {
         $this->author = $author;
         $this->committee = $committee;
         $this->subject = $subject;
         $this->content = $content;
         $this->published = $published;
+        $this->sendNotification = $sendNotification;
         $this->createdAt = new \DateTime($createdAt);
     }
 
@@ -85,5 +93,15 @@ class CommitteeMessage
     public function setPublished(bool $published): void
     {
         $this->published = $published;
+    }
+
+    public function isSendNotification(): bool
+    {
+        return $this->sendNotification;
+    }
+
+    public function setSendNotification(bool $sendNotification): void
+    {
+        $this->sendNotification = $sendNotification;
     }
 }

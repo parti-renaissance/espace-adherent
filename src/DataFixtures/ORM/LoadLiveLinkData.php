@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Content\LiveLinkFactory;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -13,7 +14,7 @@ class LoadLiveLinkData implements FixtureInterface, ContainerAwareInterface
 
     public function load(ObjectManager $manager)
     {
-        $factory = $this->container->get('app.content.live_link_factory');
+        $factory = $this->container->get(LiveLinkFactory::class);
 
         $manager->persist($factory->createFromArray([
             'position' => 1,

@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -32,17 +33,31 @@ abstract class BaseEventCategory
     protected $name = '';
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(length=100, unique=true)
+     * @Gedmo\Slug(fields={"name"}, unique=true)
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max=100)
+     *
+     * @Algolia\Attribute
+     */
+    protected $slug;
+
+    /**
      * @ORM\Column(length=10, options={"default"="ENABLED"})
      * @Algolia\Attribute
      */
     protected $status;
 
-    public function __construct(?string $name = null, ?string $status = self::ENABLED)
+    public function __construct(?string $name = null, ?string $status = self::ENABLED, string $slug = null)
     {
         if ($name) {
             $this->name = $name;
         }
         $this->status = $status;
+        $this->slug = $slug;
     }
 
     public function __toString(): string
@@ -78,5 +93,15 @@ abstract class BaseEventCategory
     public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): void
+    {
+        $this->slug = $slug;
     }
 }

@@ -66,6 +66,10 @@ a {
         }
     }
 
+    &.link--padding {
+        padding-right: 40px;
+    }
+
     &.link--newblue { // temporary until we update our color palette
         color: $blue--dark;
         border-color: transparent;

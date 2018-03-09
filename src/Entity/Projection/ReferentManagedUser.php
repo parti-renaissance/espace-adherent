@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Projection;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 
@@ -14,6 +15,8 @@ use libphonenumber\PhoneNumber;
  *     @ORM\Index(name="projection_referent_managed_users_search", columns={"status", "postal_code", "country"})
  * })
  * @ORM\Entity(readOnly=true, repositoryClass="AppBundle\Repository\Projection\ReferentManagedUserRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class ReferentManagedUser
 {
@@ -69,6 +72,15 @@ class ReferentManagedUser
      * @ORM\Column(length=15, nullable=true)
      */
     private $postalCode;
+
+    /**
+     * The postal code is filled only for committee supervisors.
+     *
+     * @var string|null
+     *
+     * @ORM\Column(length=15, nullable=true)
+     */
+    private $committeePostalCode;
 
     /**
      * @var string|null
@@ -160,6 +172,7 @@ class ReferentManagedUser
         int $originalId,
         string $email,
         string $postalCode,
+        string $committeePostalCode = null,
         string $city = null,
         string $country = null,
         string $firstName = null,
@@ -178,6 +191,7 @@ class ReferentManagedUser
         $this->originalId = $originalId;
         $this->email = $email;
         $this->postalCode = $postalCode;
+        $this->committeePostalCode = $committeePostalCode;
         $this->city = $city;
         $this->country = $country;
         $this->firstName = $firstName;
@@ -229,6 +243,11 @@ class ReferentManagedUser
     public function getPostalCode(): ?string
     {
         return $this->postalCode;
+    }
+
+    public function getCommitteePostalCode(): ?string
+    {
+        return $this->committeePostalCode;
     }
 
     public function getCity(): ?string

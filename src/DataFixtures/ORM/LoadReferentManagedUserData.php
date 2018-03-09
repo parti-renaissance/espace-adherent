@@ -81,6 +81,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'original_id' => $this->getReference('adherent-7')->getId(),
             'email' => $this->getReference('adherent-7')->getEmailAddress(),
             'postal_code' => $this->getReference('adherent-7')->getPostalCode(),
+            'committee_postal_code' => '91',
             'city' => $this->getReference('adherent-7')->getCityName(),
             'country' => $this->getReference('adherent-7')->getCountry(),
             'first_name' => $this->getReference('adherent-7')->getFirstName(),

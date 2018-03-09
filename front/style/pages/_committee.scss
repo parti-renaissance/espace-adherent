@@ -24,6 +24,7 @@
     }
 
     &__name {
+        display: flex;
         @include breakword;
     }
 
@@ -521,4 +522,11 @@
     display: inline-block;
     list-style: none;
     margin: 5px;
+}
+
+.feed {
+    &__options {
+        display: inline-flex;
+        margin-left: 10px;
+    }
 }

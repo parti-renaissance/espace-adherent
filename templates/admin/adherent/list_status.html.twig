@@ -30,6 +30,8 @@
             <span class="label label-primary" style="padding: 2px;">Membre du Conseil</span><br/>
         {% endif %}
     {% elseif object.isAdherent %}
-        <span class="label label-default">Adhérent</span>
+        <span class="label label-primary">Adhérent</span>
+    {% else %}
+        <span class="label label-default">Utilisateur</span>
     {% endif %}
 {% endblock %}

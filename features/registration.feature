@@ -14,9 +14,14 @@ Feature:
       | Code postal        | 38000       |
       | Pays               | CH          |
     And I resolved the captcha
+    And I clean the "api_user" queue
     And I press "Créer mon compte"
     Then I should be on "/presque-fini"
     And the response status code should be 200
+    And "api_user" should have 1 message
+    And "api_user" should have message below:
+      | routing_key  | body                                                                                                                            |
+      | user.created | {"uuid":"@string@","country":"CH","zipCode":"38000","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
     And I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
     """
     {
@@ -84,9 +89,14 @@ Feature:
       | become_adherent[birthdate][month]    | 1                  |
       | become_adherent[birthdate][year]     | 1980               |
     And I check "Oui, j'adhère à la Charte des Valeurs ainsi qu'aux Conditions Générales d'Utilisation du site et j’ai pris connaissance des règles de fonctionnement de La République En Marche."
+    And I clean the "api_user" queue
     When I press "J'adhère"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
+    And "api_user" should have 1 message
+    And "api_user" should have message below:
+      | routing_key  | body                                                                                                                            |
+      | user.updated | {"uuid":"@string@","country":"CH","zipCode":"06000","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
     And I should have 1 email "AdherentAccountConfirmationMessage" for "jp@test.com" with payload:
     """
     {
@@ -130,7 +140,7 @@ Feature:
     And the element "Emails de votre animateur local" should be disabled
     And the element "Être notifié(e) de la création de nouveaux projets citoyens" should be disabled
 
-    Given I follow "Modifier mon profil"
+    When I follow "Modifier mon profil"
     Then the response status code should be 200
     And I should be on "/espace-adherent/mon-profil"
 

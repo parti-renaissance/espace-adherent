@@ -176,7 +176,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
     {
         $this->setElectionContext();
 
-        $initialProcurationRequestCount = 6;
+        $initialProcurationRequestCount = 8;
         $procurationRequest = new ProcurationRequest();
 
         $this->assertCurrentProcurationRequestSameAs($procurationRequest);
@@ -396,7 +396,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
     {
         $this->setElectionContext(ElectionContext::ACTION_PROPOSAL);
 
-        $initialProcurationProxyCount = 5;
+        $initialProcurationProxyCount = 6;
 
         $this->assertCount($initialProcurationProxyCount, $this->procurationProxyRepostitory->findAll(), 'There should not be any proposal at the moment');
 
@@ -501,7 +501,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
     public function testProcurationRequestNotUniqueEmailBirthDate()
     {
-        $initialProcurationRequestCount = 6;
+        $initialProcurationRequestCount = 8;
 
         $this->assertCount($initialProcurationRequestCount, $this->procurationRequestRepostitory->findAll());
 
@@ -579,7 +579,7 @@ class ProcurationControllerTest extends SqliteWebTestCase
 
     public function testProcurationProposalNotUniqueEmailBirthdate()
     {
-        $initialProcurationProxyCount = 5;
+        $initialProcurationProxyCount = 6;
 
         $this->assertCount($initialProcurationProxyCount, $this->procurationProxyRepostitory->findAll(), 'There should not be any proposal at the moment');
 
@@ -657,9 +657,9 @@ class ProcurationControllerTest extends SqliteWebTestCase
     public function testMyRequest()
     {
         /** @var ProcurationRequest $procurationRequest */
-        $procurationRequest = $this->procurationRequestRepostitory->find(5);
+        $procurationRequest = $this->procurationRequestRepostitory->find(7);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/ma-demande/5/'.$procurationRequest->generatePrivateToken());
+        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/ma-demande/7/'.$procurationRequest->generatePrivateToken());
 
         $this->isSuccessful($this->client->getResponse());
         $this->assertCount(4, $rounds = $crawler->filter('.concerned-election_rounds li'));

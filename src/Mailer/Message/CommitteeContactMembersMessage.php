@@ -3,7 +3,6 @@
 namespace AppBundle\Mailer\Message;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\ValueObject\Genders;
 use Ramsey\Uuid\Uuid;
 
 final class CommitteeContactMembersMessage extends Message
@@ -36,11 +35,7 @@ final class CommitteeContactMembersMessage extends Message
             $host->getEmailAddress()
         );
 
-        $sender = $host->getFullName().', ';
-        $sender .= Genders::FEMALE === $host->getGender() ? 'animatrice' : 'animateur';
-        $sender .= ' de votre comité';
-
-        $message->setSenderName($sender);
+        $message->setSenderName($host->getFullName());
 
         foreach ($recipients as $recipient) {
             if (!$recipient instanceof Adherent) {

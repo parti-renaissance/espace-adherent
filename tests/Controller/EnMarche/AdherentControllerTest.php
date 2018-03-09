@@ -811,12 +811,13 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertCount($nbComments, $this->getCitizenProjectCommentRepository()->findForAuthor($adherentBeforeUnregistration));
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/desadherer');
-        $reasons = $this->client->getContainer()->getParameter('adherent_unregistration_reasons');
-        $reasonsValues = array_keys($reasons);
+        $reasons = Unregistration::REASONS_LIST_ADHERENT;
+        $reasonsValues = array_values($reasons);
         $chosenReasons = [
             1 => $reasonsValues[1],
             3 => $reasonsValues[3],
         ];
+
         $crawler = $this->client->submit($crawler->selectButton('Je confirme la suppression de mon adhésion')->form([
             'unregistration' => [
                 'reasons' => $chosenReasons,

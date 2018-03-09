@@ -8,24 +8,9 @@
         <service id="League\CommonMark\CommonMarkConverter" />
 
         <!-- Content -->
-        <service id="app.content.media_factory" class="AppBundle\Content\MediaFactory" />
+        <prototype namespace="AppBundle\Content\" resource="../../../src/Content" />
 
-        <service id="app.content.home_block_factory" class="AppBundle\Content\HomeBlockFactory" />
-
-        <service id="app.content.live_link_factory" class="AppBundle\Content\LiveLinkFactory" />
-
-        <service id="app.content.article_factory" class="AppBundle\Content\ArticleFactory" />
-
-        <service id="app.content.page_factory" class="AppBundle\Content\PageFactory" />
-
-        <service id="app.content.proposal_factory" class="AppBundle\Content\ProposalFactory" />
-
-        <service id="app.content.order_article_factory" class="AppBundle\Content\OrderArticleFactory" />
-
-        <service id="app.content.clarification_factory" class="AppBundle\Content\ClarificationFactory" />
-
-        <service id="app.content.custom_search_factory" class="AppBundle\Content\CustomSearchResultFactory" />
-
+        <!-- Feed -->
         <service id="app.feed_generator.article" class="AppBundle\Feed\ArticleFeedGenerator">
             <argument>%locale%</argument>
             <argument>%feed_ttl%</argument>
@@ -34,7 +19,7 @@
         </service>
 
         <!-- Sitemap -->
-        <service id="app.content.sitemap_factory" class="AppBundle\Sitemap\SitemapFactory">
+        <service id="AppBundle\Sitemap\SitemapFactory">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="router" />
             <argument type="service" id="cache.app" />
