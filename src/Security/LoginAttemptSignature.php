@@ -23,12 +23,7 @@ class LoginAttemptSignature
 
     public static function createFromRequest(Request $request): self
     {
-        $login = $request->request->get('_adherent_email');
-        if ($request->request->has('_admin_email')) {
-            // Prefixed to avoid collision between front and admin (without it you'll have the same signature for both)
-            $login = 'admin|'.$request->request->get('_admin_email');
-        }
-        $login = mb_strtolower($login);
+        $login = mb_strtolower($request->request->get('_login_email'));
 
         return new self($login, $request->getClientIp());
     }

@@ -254,10 +254,10 @@ security:
                 default_target_path: sonata_admin_dashboard
                 always_use_default_target_path: true
 
-                username_parameter: _admin_email
-                password_parameter: _admin_password
-                csrf_parameter: _admin_csrf
-                csrf_token_id: authenticate_admin
+                username_parameter: _login_email
+                password_parameter: _login_password
+                csrf_parameter: _login_csrf
+                csrf_token_id: authenticate
 
                 failure_handler: AppBundle\Security\Http\AuthenticationFailureHandler
             logout:
@@ -279,10 +279,10 @@ security:
                 default_target_path: app_search_events
                 use_referer: true
 
-                username_parameter: _adherent_email
-                password_parameter: _adherent_password
-                csrf_parameter: _adherent_csrf
-                csrf_token_id: authenticate_adherent
+                username_parameter: _login_email
+                password_parameter: _login_password
+                csrf_parameter: _login_csrf
+                csrf_token_id: authenticate
 
                 failure_handler: AppBundle\Security\Http\AuthenticationFailureHandler
             logout:

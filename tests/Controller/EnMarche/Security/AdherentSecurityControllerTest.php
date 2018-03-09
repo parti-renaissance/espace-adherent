@@ -35,8 +35,8 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('#auth-error'));
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_adherent_email' => 'carl999@example.fr',
-            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
+            '_login_email' => 'carl999@example.fr',
+            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
         $adherent = $this->adherentRepository->findOneByEmail('carl999@example.fr');
@@ -68,8 +68,8 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('#auth-error'));
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_adherent_email' => $username,
-            '_adherent_password' => $password,
+            '_login_email' => $username,
+            '_login_password' => $password,
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());

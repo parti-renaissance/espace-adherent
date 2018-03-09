@@ -12,18 +12,18 @@
             </div>
         {% endif %}
 
-        {{ form_start(form, {'action': path('app_user_login_check')}) }}
+        {{ form_start(form, { action: path('app_user_login_check') }) }}
             <ul class="form">
                 <li>
-                     {{ form_label(form._adherent_email, 'E-mail',{ 'label_attr': {'class': 'visually-hidden'} }) }}
-                     {{ form_errors(form._adherent_email) }}
-                     {{ form_widget(form._adherent_email, {'attr': {'placeholder': 'E-mail' }}) }}
+                     {{ form_label(form._login_email, 'E-mail', { label_attr: { class: 'visually-hidden' } }) }}
+                     {{ form_errors(form._login_email) }}
+                     {{ form_widget(form._login_email, { attr: { placeholder: 'E-mail' } }) }}
                 </li>
 
                 <li>
-                    {{ form_label(form._adherent_password,'Mot de passe',{ 'label_attr': {'class': 'visually-hidden'} }) }}
-                    {{ form_errors(form._adherent_password) }}
-                    {{ form_widget(form._adherent_password, {'attr': {'placeholder': 'Mot de passe' }}) }}
+                    {{ form_label(form._login_password, 'Mot de passe', { label_attr: { class: 'visually-hidden' } }) }}
+                    {{ form_errors(form._login_password) }}
+                    {{ form_widget(form._login_password, { attr: { placeholder: 'Mot de passe' } }) }}
 
                     <a href="{{ path('forgot_password') }}" class="form__forgotten-pw">Oublié ?</a>
                 </li>

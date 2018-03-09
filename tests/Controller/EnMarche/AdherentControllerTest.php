@@ -131,8 +131,8 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_adherent_email' => 'michelle.dufour@example.ch',
-            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
+            '_login_email' => 'michelle.dufour@example.ch',
+            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
         $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);

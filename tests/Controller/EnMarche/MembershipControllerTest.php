@@ -134,8 +134,8 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         // Try to authenticate with credentials
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_adherent_email' => 'jean-paul@dupont.tld',
-            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
+            '_login_email' => 'jean-paul@dupont.tld',
+            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
         $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/evenements', $this->client);
