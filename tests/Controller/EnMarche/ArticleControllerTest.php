@@ -119,7 +119,7 @@ class ArticleControllerTest extends SqliteWebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/articles/opinions/mes-opinions');
 
-        $this->assertContains('<a href="http://www.google.fr">Google link</a>', $this->client->getResponse()->getContent());
+        $this->assertContains('a href="http://www.google.fr" class="category category--opinions">', $this->client->getResponse()->getContent());
     }
 
     protected function setUp()

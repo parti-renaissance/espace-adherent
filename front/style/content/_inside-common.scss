@@ -99,6 +99,27 @@
         }
     }
 
+    .category {
+        background: $purple;
+        padding: 20px;
+        border: 0;
+        display: block;
+        margin-top: 40px;
+
+        &__header {
+            font-size: $text--size-small;
+            color: white;
+        }
+
+        &__label {
+            color: $yellow;
+            font-weight: bold;
+            font-family: $font-gillsans;
+            font-size: $text--size-medium;
+            font-style: italic;
+        }
+    }
+
     .indent {
         margin-left: 15px;
     }
