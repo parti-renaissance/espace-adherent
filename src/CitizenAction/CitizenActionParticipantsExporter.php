@@ -10,12 +10,12 @@ class CitizenActionParticipantsExporter
     {
         $handle = fopen('php://memory', 'r+');
         fputs($handle, chr(0xEF).chr(0xBB).chr(0xBF)); // add BOM to fix UTF-8 in Excel
-        fputcsv($handle, ['N° d\'enregistrement', 'Prénom', 'Nom', 'Âge', 'Département', 'Ville', 'Date d\'inscription']);
+        fputcsv($handle, ['N° d\'enregistrement', 'Prénom', 'Nom', 'Âge', 'Ville', 'Date d\'inscription']);
 
         foreach ($participants as $participant) {
             $resolver = new OptionsResolver();
-            $resolver->setDefined(['lastNameInitial']);
-            $resolver->setRequired(['uuid', 'firstName', 'lastName', 'age', 'postalCode', 'cityName', 'createdAt']);
+            $resolver->setDefined(['lastNameInitial', 'postalCode']);
+            $resolver->setRequired(['uuid', 'firstName', 'lastName', 'age', 'cityName', 'createdAt']);
             $resolver->setAllowedTypes('createdAt', \DateTime::class);
             $resolver->resolve($participant);
 
@@ -24,7 +24,6 @@ class CitizenActionParticipantsExporter
                 $participant['firstName'],
                 strtoupper($participant['lastName']),
                 $participant['age'],
-                substr($participant['postalCode'], 0, 2),
                 $participant['cityName'],
                 $participant['createdAt']->format('d/m/Y à H:i'),
             ]);

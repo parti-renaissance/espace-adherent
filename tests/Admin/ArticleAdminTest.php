@@ -92,6 +92,29 @@ class ArticleAdminTest extends MysqlWebTestCase
         $this->assertClientIsRedirectedTo('/articles/actualites/outre-mer-new', $this->client, false, true);
     }
 
+    public function testEditWithoutRedirection()
+    {
+        $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr', 'superadmin');
+
+        /** @var Article $article */
+        $article = $this->manager->getRepository(Article::class)->findOneBySlug('outre-mer');
+
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            sprintf('/admin/app/article/%s/edit', $article->getId())
+        );
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $form = $crawler->selectButton('btn_update_and_edit')->form();
+
+        $prefix = $this->getFirstPrefixForm($form);
+        $form->setValues([
+            $prefix.'[description]' => 'Vous devez saisir au moins 10 caractères.',
+        ]);
+        $this->client->submit($form);
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+    }
+
     protected function setUp()
     {
         parent::setUp();
