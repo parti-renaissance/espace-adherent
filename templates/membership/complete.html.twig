@@ -1,12 +1,47 @@
-{% extends 'oauth/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
+{% block banner '' %}
+{% block footer '' %}
 {% block page_title 'Finalisez votre adhésion' %}
 
+{% block stylesheets %}
+    <style type="text/css">
+        nav,
+        .cc-window {
+            display: none !important;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+{% import 'javascript.js.twig' as js %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runComplete();
+        });
+    </script>
+{% endblock %}
+
 {% block content %}
-    <section class="l__inner">
-        <p>
-            👏 Bienvenue ! Nous venons de vous envoyer un <span class="text--block">e-mail</span> afin de confirmer votre nouveau compte.
-        </p>
-        <p>Rendez-vous dans votre boîte mail pour continuer !</p>
-    </section>
+    <main class="content complete">
+        <section class="complete__anim">
+            <h1>
+                <a href="{{ path('homepage') }}" class="link--no-decor text--logo text--black text--center">EM !</a>
+            </h1>
+            
+            <div class="anim">
+                <img src="https://storage.googleapis.com/en-marche-staging/static/images/mail.gif" alt="">
+            </div> 
+        </section>
+        <section class="complete__desc">
+        	<div class="desc__texts space--60-0 l__wrapper--slim l__col l__col--center text--left b__nudge--bottom-60">
+                <div class="b__nudge--bottom-small text--black text--larger">
+                    <span class="text--white b__nudge--bottom-20" >
+                        Nous venons de vous envoyer un e-mail afin de confirmer votre nouveau compte.
+                    </span>
+                    <span class="text--white">Rendez-vous dans votre boîte mail pour continuer !</span>
+                </div>
+            </div>
+        </section>
+    </main>
 {% endblock %}

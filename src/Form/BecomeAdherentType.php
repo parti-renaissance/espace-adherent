@@ -12,6 +12,7 @@ class BecomeAdherentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->remove('comMobile')
             ->remove('firstName')
             ->remove('lastName')
             ->remove('emailAddress')
@@ -19,12 +20,18 @@ class BecomeAdherentType extends AbstractType
             ->add('conditions', CheckboxType::class, [
                 'required' => false,
             ])
+            ->add('address', AddressType::class, [
+                'label' => false,
+                'child_error_bubbling' => false,
+            ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('validation_groups', ['Update', 'Conditions']);
+        $resolver->setDefaults([
+            'validation_groups' => ['Update', 'Conditions'],
+        ]);
     }
 
     public function getParent()

@@ -36,9 +36,15 @@ class AdherentController extends Controller
      * @Route("/accueil", name="app_adherent_home")
      * @Method("GET")
      */
-    public function homeAction(): Response
+    public function homeAction(Request $request): Response
     {
-        return $this->render('adherent/home.html.twig');
+        if ($request->query->getBoolean('from_activation')) {
+            $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
+        }
+
+        return $this->render('adherent/home.html.twig', [
+            'from_activation' => $request->query->getBoolean('from_activation'),
+        ]);
     }
 
     /**

@@ -20,7 +20,7 @@ class AddressType extends AbstractType
             ])
             ->add('city', HiddenType::class, [
                 'required' => false,
-                'error_bubbling' => true,
+                'error_bubbling' => $options['child_error_bubbling'],
                 'disabled' => $options['disable_fields'],
             ])
             ->add('cityName', TextType::class, [
@@ -33,7 +33,7 @@ class AddressType extends AbstractType
         ;
 
         $field = $builder->create('postalCode', TextType::class, [
-            'error_bubbling' => true,
+            'error_bubbling' => $options['child_error_bubbling'],
             'disabled' => $options['disable_fields'],
         ]);
 
@@ -55,9 +55,11 @@ class AddressType extends AbstractType
             ->setDefaults([
                 'data_class' => Address::class,
                 'error_bubbling' => false,
+                'child_error_bubbling' => true,
                 'disable_fields' => false,
             ])
             ->setAllowedTypes('disable_fields', 'bool')
+            ->setAllowedTypes('child_error_bubbling', 'bool')
         ;
     }
 }

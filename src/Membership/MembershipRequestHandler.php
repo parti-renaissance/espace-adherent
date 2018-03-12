@@ -25,6 +25,7 @@ class MembershipRequestHandler
     private $manager;
     private $adherentManager;
     private $committeeManager;
+    private $adherentRegistry;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
@@ -48,38 +49,61 @@ class MembershipRequestHandler
         $this->committeeManager = $committeeManager;
     }
 
-    public function handle(MembershipRequest $membershipRequest)
+    public function registerAsUser(MembershipRequest $membershipRequest): Adherent
     {
         $adherent = $this->adherentFactory->createFromMembershipRequest($membershipRequest);
+        $this->manager->persist($adherent);
+        $this->sendEmailValidation($adherent);
+
+        $this->dispatcher->dispatch(UserEvents::USER_CREATED, new UserEvent($adherent));
+
+        return $adherent;
+    }
+
+    public function sendEmailValidation(Adherent $adherent): void
+    {
         $token = AdherentActivationToken::generate($adherent);
 
-        $this->manager->persist($adherent);
         $this->manager->persist($token);
         $this->manager->flush();
 
         $activationUrl = $this->generateMembershipActivationUrl($adherent, $token);
         $this->mailer->sendMessage(AdherentAccountActivationMessage::createFromAdherent($adherent, $activationUrl));
-
-        $this->dispatcher->dispatch(UserEvents::USER_CREATED, new UserEvent($adherent));
     }
 
-    public function join(Adherent $user, MembershipRequest $membershipRequest)
+    public function registerAsAdherent(MembershipRequest $membershipRequest): void
+    {
+        $adherent = $this->adherentFactory->createFromMembershipRequest($membershipRequest);
+        $this->manager->persist($adherent);
+        $adherent->join();
+        $this->sendEmailValidation($adherent);
+
+        $this->dispatcher->dispatch(UserEvents::USER_CREATED, new UserEvent($adherent));
+        $this->dispatcher->dispatch(AdherentEvents::REGISTRATION_COMPLETED, new AdherentAccountWasCreatedEvent($adherent, $membershipRequest));
+    }
+
+    public function join(Adherent $user, MembershipRequest $membershipRequest): void
     {
         $user->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
         $user->join();
         $this->manager->flush();
 
-        $this->mailer->sendMessage(AdherentAccountConfirmationMessage::createFromAdherent(
-            $user,
-            $this->adherentManager->countActiveAdherents(),
-            $this->committeeManager->countApprovedCommittees()
-        ));
+        $this->sendConfirmationJoinMessage($user);
 
         $this->dispatcher->dispatch(AdherentEvents::REGISTRATION_COMPLETED, new AdherentAccountWasCreatedEvent($user, $membershipRequest));
         $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($user));
     }
 
-    public function update(Adherent $adherent, MembershipRequest $membershipRequest)
+    public function sendConfirmationJoinMessage(Adherent $user): void
+    {
+        $this->mailer->sendMessage(AdherentAccountConfirmationMessage::createFromAdherent(
+            $user,
+            $this->adherentManager->countActiveAdherents(),
+            $this->committeeManager->countApprovedCommittees()
+        ));
+    }
+
+    public function update(Adherent $adherent, MembershipRequest $membershipRequest): void
     {
         $adherent->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
 
@@ -89,7 +113,7 @@ class MembershipRequestHandler
         $this->manager->flush();
     }
 
-    private function generateMembershipActivationUrl(Adherent $adherent, AdherentActivationToken $token)
+    private function generateMembershipActivationUrl(Adherent $adherent, AdherentActivationToken $token): string
     {
         $params = [
             'adherent_uuid' => (string) $adherent->getUuid(),
@@ -99,7 +123,7 @@ class MembershipRequestHandler
         return $this->callbackManager->generateUrl('app_membership_activate', $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
-    public function terminateMembership(UnregistrationCommand $command, Adherent $adherent)
+    public function terminateMembership(UnregistrationCommand $command, Adherent $adherent): void
     {
         $unregistrationFactory = new UnregistrationFactory();
         $unregistration = $unregistrationFactory->createFromUnregistrationCommandAndAdherent($command, $adherent);

@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block banner '' %}
+{% block footer '' %}
 {% block title 'Adhérer au mouvement En Marche !' %}
 
 {% block stylesheets %}
@@ -16,96 +17,111 @@
     {% import 'javascript.js.twig' as js %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
+            App.runJoin();
             {{ js.address(form.address) }}
         });
     </script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 {% endblock %}
 
 {% block content %}
-    <main class="content register">
-        <section class="register__header background--blue progressive-background"
-                 data-sd="{{ static_asset('registration-hdr.jpg', {'w': 300, 'q': 20}) }}"
-                 data-hd="{{ static_asset('registration-hdr.jpg', {'w': 2000, 'q': 70}) }}">
-            <div class="l__wrapper l__row l__row--h-stretch list__links--nav space--30-0">
-                <h1><a href="{{ path('homepage') }}" class="link--no-decor text--logo text--white text--center">En Marche !</a></h1>
-            </div>
-            <header class="space--60-0 l__wrapper--slim l__col l__col--center text--center b__nudge--bottom-60">
-                <h1 class="b__nudge--bottom-small text--blue text--larger">
-                    <span class="text--on-white">Adhérer à En Marche !</span>
-                </h1>
-                <div class="text--white text--body text--bold text--medium-small space--10-0">C'est facile, gratuit et 3 minutes suffiront.</div>
-                <div class="text--body text--white">Vous voulez participer à la révolution en Marche, vous engager et devenir un acteur de celle-ci ou simplement vous tenir informé de nos idées et de nos actions ?</div>
-            </header>
+    <main class="content join">
+        <section class="join__desc progressive-background"
+            data-sd="{{ static_asset('adhesion/adhesion__cover.jpg', {'w': 100, 'q': 50}) }}"
+            data-hd="{{ static_asset('adhesion/adhesion__cover.jpg', {'h': 450, 'q': 90}) }}">
+                 <h1><a href="{{ path('homepage') }}" class="link--no-decor text--logo text--white text--center">EM !</a></h1>
+                    <div class="desc__texts space--60-0 l__wrapper--slim l__col l__col--center text--center b__nudge--bottom-60">
+                      <div class="b__nudge--bottom-small text--black text--larger">
+                        <span>Adhérer</span><br><span>à la République en Marche</span> 
+                        </div>
+                    <p class="text--black text--body">
+                        Vous voulez participer à la révolution En Marche,
+                        vous engager et devenir un acteur de celle-ci ou simplement vous tenir 
+                        informé de nos idées et de nos actions ?
+                    </p>
+                </div>
+                <div class="join__cta">
+                    <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/charte_des_valeurs.pdf"><p class="btn">Lire la charte des valeurs</p></a>
+                </div>
         </section>
 
-        <section class="register__content">
-            <article class="l__wrapper--slim b__nudge--bottom-60">
-                {% if from_activation %}
-                    <p class="text--body">
-                        👏 Bienvenue ! Votre e-mail est confirmé.
-                    </p>
-                {% endif %}
-                <p class="text--body">Vous avez dès maintenant la possibilité d'adhérer à En Marche.
-                    Nous sommes un collectif citoyen qui part d'une conviction : les Français doivent être au cœur
-                    de la vie politique et non son décor.<br/>
-                    Pour ce faire, veuillez remplir ces informations :</p>
-            </article>
-            <article class="l__wrapper--slim b__nudge--bottom-huge l__col l__col--center">
+        <section class="join__form">
+            <article class="l__wrapper--500 l__col l__col--center">
                 <div class="register__form">
                     {{ form_start(form) }}
                         {{ form_errors(form) }}
                         <div id="membership-address">
-                            <strong>Adresse</strong>
-                            {{ form_errors(form.address) }}
-                            {{ form_errors(form.address.cityName) }}
+
+                            {% if not has_role_user %}
+                                <p class="b__nudge--bottom-tiny text--bold">Informations personnelles</p>
+                                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                                    <div class="register__form__zip_code register__form--mid">
+                                        {{ form_widget(form.firstName, { attr: { placeholder: 'Prénom' } }) }}
+                                        {{ form_errors(form.firstName) }}
+                                    </div>
+                                    <div class="register__form__city register__form--mid">
+                                        {{ form_widget(form.lastName, { attr: { placeholder: 'Nom' } }) }}
+                                        {{ form_errors(form.lastName) }}
+                                    </div>
+                                </div>
+                                 <div class="l__row l__row--h-stretch register__form--full">
+                                     {{ form_widget(form.emailAddress.first, { attr: { placeholder: 'E-mail' } }) }}
+                                     {{ form_errors(form.emailAddress.first) }}
+                                </div>
+                                 <div class="l__row l__row--h-stretch register__form--full visually-hidden">
+                                     {{ form_widget(form.emailAddress.second, { attr: { placeholder: 'Re-saisir l\'e-mail' } }) }}
+                                     {{ form_errors(form.emailAddress.second) }}
+                                     {{ form_errors(form.emailAddress) }}
+                                </div>
+
+                                <div class="l__row l__row--h-stretch register__form--full">
+                                    {{ form_widget(form.password, { attr: { placeholder: 'Mot de passe' } }) }}
+                                    {{ form_errors(form.password) }}
+                                </div>
+                            {% endif %}
+                            <p class="b__nudge--bottom-tiny text--bold">Adresse</p>
                             <div class="l__row l__row--h-stretch register__form--full">
                                 {{ form_widget(form.address.address, { attr: { placeholder: 'Adresse postale' } }) }}
                                 {{ form_errors(form.address.address) }}
                             </div>
-
-                            <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                             <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
                                 <div class="register__form__zip_code register__form--mid">
                                     {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Code postal' } }) }}
+                                    {{ form_errors(form.address.postalCode) }}
                                 </div>
                                 <div class="register__form__city register__form--mid">
                                     {{ form_widget(form.address.city, { 'attr': { 'class': 'register__form__city'} }) }}
                                     {{ form_widget(form.address.cityName, { 'attr': { 'class': 'register__form__city_name', 'placeholder': 'Ville' } }) }}
+                                    {{ form_errors(form.address.city) }}
+                                    {{ form_errors(form.address.cityName) }}
                                 </div>
                             </div>
 
-                            <div class="l__row l__row--top l__row--h-stretch l__mobile--col register__form__country register__form--full">
-                                {{ form_widget(form.address.country) }}
-                                {{ form_errors(form.address.country) }}
+                            <div class="l__row l__row--h-stretch register__form--full">
+                                 {{ form_widget(form.address.country, { attr: { placeholder: 'Pays' } }) }}
+                                 {{ form_errors(form.address.country) }}
                             </div>
-                        </div>
-
-                        <div class="space--10-0"></div>
-
-                        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                            <div class="register__form--mid" id="field-birthdate">
-                                <strong>Date de naissance</strong>
-                                <div class="l__row l__row--h-stretch">
-                                    {% for field in form.birthdate|reverse %}
-                                        {{ form_widget(field, { attr: {style: 'width: 32%;' }}) }}
-                                    {% endfor %}
+                            <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                                <div class="register__form__zip_code register__form--mid">
+                                    <p class="text--bold">Date de naissance</p> 
+                                    {{ form_widget(form.birthdate, { attr: { placeholder: 'Date de naissance', class: 'l__row l__row--h-stretch' } }) }}
+                                    {{ form_errors(form.birthdate) }}
                                 </div>
-                                {{ form_errors(form.birthdate) }}
+                                 <div class="form__radio-button register__form--mid">
+                                    <p class="text--bold">Sexe</p>
+                                     {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
+                                     {{ form_errors(form.gender) }}
+                                 </div>
                             </div>
-                            <div class="form__radio-button register__form--mid">
-                                <strong>Sexe</strong>
-                                {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
-                                {{ form_errors(form.gender) }}
-                            </div>
-                        </div>
-
-                        <div class="space--10-0"></div>
-
-                        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                            <div class="register__form--full">
-                                <strong>Numéro de téléphone mobile</strong>
-                                <div class="l__row l__row--h-stretch">
-                                    {{ form_widget(form.phone.country, { placeholder: 'Pays', attr: { class: 'membership_request__form__phone'} }) }}
+                            <p class="b__nudge--bottom-tiny text--bold">Téléphone</p>
+                            <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                                <div class=" register__form--mid">
+                                    {{ form_widget(form.phone.country, { placeholder: 'Indicatif Pays' }) }}
+                                </div>
+                                <div class="register__form--mid">
                                     {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
+                                    {{ form_errors(form.phone.country) }}
+                                    {{ form_errors(form.phone.number) }}
                                 </div>
                                 {{ form_errors(form.phone) }}
                             </div>
@@ -116,36 +132,46 @@
                         <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-conditions">
                             {{ form_widget(form.conditions) }}
                                 <label class="form form__label" for="{{ form.conditions.vars.id }}">
-                                    <span>
-                                        <strong>
+                                    <span class="text__checkbox">
                                             Oui, j'adhère à la <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/charte_des_valeurs.pdf" target="_blank">Charte des Valeurs</a> ainsi qu'aux <a href="{{ path('page_mentions_legales') }}" target="_blank">Conditions Générales d'Utilisation</a> du site et j’ai pris connaissance des <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/regles_de_fonctionnement_LaREM.pdf" target="_blank">règles de fonctionnement</a> de La République En Marche.
-                                        </strong>
                                     </span>
                                 </label>
                             {{ form_errors(form.conditions) }}
                         </div>
 
-                        <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-mobile">
-                            {{ form_widget(form.comMobile) }}
-                            <label class="form form__label" for="{{ form.comMobile.vars.id }}">
-                                <span>
-                                    J'accepte de recevoir par SMS et/ou MMS des informations ou sollicitations à des fins de communication politique
-                                    <span class="text--gray text--italic">(optionnel)</span>
-                                </span>
-                            </label>
-                        </div>
+                        {% if not has_role_user %}
+                            <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-email">
+                                {{ form_widget(form.comEmail) }}
+                                <label class="form form__label" for="{{ form.comEmail.vars.id }}">
+                                    <span class="text__checkbox">
+                                        J’accepte de recevoir des informations sur l’actualité du mouvement.
+                                        <span class="text--gray text--italic">(optionnel)</span>
+                                    </span>
+                                </label>
+                            </div>
+
+                            <div class="visually-hidden form__captcha">
+                                <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+                                {% if recaptcha_public_key is not empty %}
+                                {% for flashMessage in app.flashes("error_recaptcha") %}
+                                    <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
+                                {% endfor %}
+                                <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 30px auto 10px auto;"></div>
+                                {% elseif app.debug %}
+                                    <input type="hidden" name="g-recaptcha-response" value="fake" />
+                                {% endif %}
+                            </div>
+                        {% endif %}
 
                         <div class="register__form--full">
-                            {{ form_widget(form.submit, { attr: { class: 'btn btn--blue btn--medium b__nudge--top' }}) }}
-                            <a href="{{ url('homepage') }}" >Je ne souhaite pas adhérer maintenant</a>
+                            {{ form_widget(form.submit, { attr: { class: 'btn btn--green--other btn--large-and-medium b__nudge--top' }}) }}
                         </div>
                     {{ form_end(form) }}
                 </div>
-                <p class="text--summary b__nudge--top-50 text--gray">
+                <p class="text--summary text--gray join__form__legal">
                     Les informations recueillies à partir de ce formulaire font l'objet d'un traitement informatique exclusivement destiné à La République En Marche. En retournant ce formulaire, vous autorisez La République En Marche à utiliser vos données pour des opérations de communication politique et de dons. Vos informations ne pourront être communiquées qu'à des co-contractants qui en leur qualité de sous-traitants de La République En Marche, n'agiront que sur instruction de cette dernière et seront soumis à une stricte obligation de confidentialité. En application des articles 38 et suivants de la loi du 6 janvier 1978, vous bénéficiez des droits d'accès, de rectification et de suppression des données qui vous concernent et d'un droit d'opposition au traitement de vos données. Vous pouvez exercer ces droits en adressant votre demande à La République En Marche, à l'adresse électronique <a href="mailto:contact@en-marche.fr">contact@en-marche.fr</a> ou postale à La République En Marche, 63 rue Sainte-Anne, 75002 Paris.
                 </p>
             </article>
         </section>
     </main>
-
 {% endblock %}

@@ -70,7 +70,6 @@ Feature: Allow some worker to get the list of configured web hooks
 
   Scenario: It forbids access when OAuth client does not have web_hook scope or if user is anonymous
     When I send a "GET" request to "/api/webhooks/user.created"
-    Then print last response
     Then the response status code should be 401
 
     Given I send a "POST" request to "/oauth/v2/token" with parameters:

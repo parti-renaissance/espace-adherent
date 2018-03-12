@@ -31,6 +31,18 @@ class EmailContext extends RawMinkContext
     }
 
     /**
+     * @Given I should have :number email(s)
+     */
+    public function iShouldHaveMessages(int $number)
+    {
+        $emailRepository = $this->getEmailRepository();
+
+        if (($nb = $emailRepository->count([])) !== $number) {
+            throw new \RuntimeException(sprintf('I found %d email(s) instead of %d', $number, $nb));
+        }
+    }
+
+    /**
      * @Given I should have 1 email :emailType for :emailRecipient with payload:
      */
     public function iShouldHaveEmailForWithPayload(string $emailType, $emailRecipient, PyStringNode $json)

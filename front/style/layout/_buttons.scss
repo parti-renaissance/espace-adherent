@@ -101,6 +101,17 @@
     }
 }
 
+@mixin btn--green--other {
+    background: $green--other;
+    border-color: $green--other;
+
+    &:hover {
+        color: black;
+        background: $green-hover;
+        border-color: $green-hover;
+    }
+}
+
 @mixin btn--orange {
     background: $orange;
     border-color: $orange;
@@ -142,6 +153,18 @@
         color: black;
         background: $yellow-hover;
         border-color: $yellow-hover;
+    }
+}
+
+@mixin btn--pink {
+    color: $white;
+    background: $pink;
+    border-color: $pink;
+
+    &:hover {
+        color: $white;
+        background: $pink-hover;
+        border-color: $pink-hover;
     }
 }
 
@@ -282,8 +305,16 @@ input {
         @include btn--green;
     }
 
+    &--green--other {
+        @include btn--green--other;
+    }
+
     &--blue {
         @include btn--blue;
+    }
+
+    &--pink {
+        @include btn--pink;
     }
 
     &--muted {
