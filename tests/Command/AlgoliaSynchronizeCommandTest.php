@@ -40,7 +40,7 @@ class AlgoliaSynchronizeCommandTest extends SqliteWebTestCase
             [
                 [], // no parameters
                 [
-                    'Synchronizing entity AppBundle\Entity\Article ... done, 154 records indexed',
+                    'Synchronizing entity AppBundle\Entity\Article ... done, 180 records indexed',
                     'Synchronizing entity AppBundle\Entity\Proposal ... done, 3 records indexed',
                     'Synchronizing entity AppBundle\Entity\Clarification ... done, 0 records indexed',
                     'Synchronizing entity AppBundle\Entity\CustomSearchResult ... done, 0 records indexed',

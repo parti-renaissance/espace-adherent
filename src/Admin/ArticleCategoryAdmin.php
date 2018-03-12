@@ -30,6 +30,9 @@ class ArticleCategoryAdmin extends AbstractAdmin
             ->add('ctaLabel', null, [
                 'label' => 'Label d\'action',
             ])
+            ->add('display', null, [
+                'label' => 'Affichée ?',
+            ])
         ;
     }
 
@@ -50,6 +53,10 @@ class ArticleCategoryAdmin extends AbstractAdmin
             ])
             ->add('ctaLabel', null, [
                 'label' => 'CTA Label',
+            ])
+            ->add('display', null, [
+                'label' => 'Affichée ?',
+                'editable' => true,
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
