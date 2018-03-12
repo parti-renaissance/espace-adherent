@@ -19,7 +19,7 @@ class StatsController extends Controller
     public function indexAction()
     {
         return new JsonResponse([
-            'userCount' => $this->getDoctrine()->getRepository(Adherent::class)->countElements(),
+            'userCount' => $this->getDoctrine()->getRepository(Adherent::class)->countAdherents(),
             'eventCount' => $this->getDoctrine()->getRepository(Event::class)->countElements(),
             'committeeCount' => $this->getDoctrine()->getRepository(Committee::class)->countElements(),
         ]);

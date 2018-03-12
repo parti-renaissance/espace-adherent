@@ -2,6 +2,8 @@
 
 namespace Tests\AppBundle\Controller\Api;
 
+use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadEventData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -24,16 +26,22 @@ class StatsControllerTest extends SqliteWebTestCase
         $this->assertJson($content);
 
         $data = \GuzzleHttp\json_decode($content, true);
-        $this->assertArrayHasKey('userCount', $data);
-        $this->assertArrayHasKey('eventCount', $data);
-        $this->assertArrayHasKey('committeeCount', $data);
+
+        $this->assertArraySubset([
+            'userCount' => 17,
+            'eventCount' => 14,
+            'committeeCount' => 9,
+        ], $data);
     }
 
     protected function setUp()
     {
         parent::setUp();
 
-        $this->init();
+        $this->init([
+            LoadAdherentData::class,
+            LoadEventData::class,
+        ]);
     }
 
     protected function tearDown()
