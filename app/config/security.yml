@@ -258,6 +258,7 @@ security:
                 password_parameter: _login_password
                 csrf_parameter: _login_csrf
                 csrf_token_id: authenticate
+                csrf_token_generator: security.csrf.token_manager
 
                 failure_handler: AppBundle\Security\Http\AuthenticationFailureHandler
             logout:
@@ -283,6 +284,7 @@ security:
                 password_parameter: _login_password
                 csrf_parameter: _login_csrf
                 csrf_token_id: authenticate
+                csrf_token_generator: security.csrf.token_manager
 
                 failure_handler: AppBundle\Security\Http\AuthenticationFailureHandler
             logout:
