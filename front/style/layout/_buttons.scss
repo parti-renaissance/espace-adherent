@@ -101,9 +101,9 @@
     }
 }
 
-@mixin btn--green--other {
-    background: $green--other;
-    border-color: $green--other;
+@mixin btn--green--apple {
+    background: $green--apple;
+    border-color: $green--apple;
 
     &:hover {
         color: black;
@@ -305,8 +305,8 @@ input {
         @include btn--green;
     }
 
-    &--green--other {
-        @include btn--green--other;
+    &--green--apple {
+        @include btn--green--apple;
     }
 
     &--blue {
