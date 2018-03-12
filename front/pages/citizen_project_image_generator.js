@@ -12,6 +12,7 @@ export default(api) => {
 
     const drawEmoji = (event) => {
         const emoji = event.currentTarget.value;
+        emojiCanvasContext.padding = '10px';
         emojiCanvasContext.font = '170px Segoe UI Emoji';
         emojiCanvasContext.textBaseline = 'top';
         emojiCanvasContext.fillText(emoji, 0, 0);
