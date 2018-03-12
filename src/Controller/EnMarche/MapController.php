@@ -21,7 +21,7 @@ class MapController extends Controller
         $doctrine = $this->getDoctrine();
 
         return $this->render('map/committees.html.twig', [
-            'userCount' => $doctrine->getRepository(Adherent::class)->countElements(),
+            'userCount' => $doctrine->getRepository(Adherent::class)->countAdherents(),
             'eventCount' => $doctrine->getRepository(Event::class)->countElements(),
             'committeeCount' => $doctrine->getRepository(Committee::class)->countElements(),
         ]);
