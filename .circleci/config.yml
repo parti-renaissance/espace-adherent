@@ -166,10 +166,7 @@ jobs:
             - *authenticate_on_registry
             - setup_remote_docker
             - run: |
-                set -x
-
                 bash scripts/build.sh ${CIRCLE_BRANCH}
-                bash scripts/deployment.sh ${CIRCLE_BRANCH}
 
 workflows:
     version: 2
