@@ -24,8 +24,8 @@
             #mask {
                 width: 1754px;
                 height: 2480px;
-                background-image: -webkit-linear-gradient(top, {{ command.rgbaStartColor }}, {{ command.rgbaEndColor }} 70%);
-                background-image: linear-gradient(to bottom, {{ command.rgbaStartColor }}, {{ command.rgbaEndColor }} 70%);
+                background-image: -webkit-linear-gradient(top, {{ command.rgbaStartColor }}, {{ command.rgbaEndColor }} 95%);
+                background-image: linear-gradient(to bottom, {{ command.rgbaStartColor }}, {{ command.rgbaEndColor }} 95%);
             }
 
             #badge {
@@ -40,7 +40,7 @@
             #text {
                 padding: 0 100px;
                 text-align: center;
-                margin-top: 1000px;
+                margin-top: 650px;
             }
             @font-face {
                 font-family: title-1;
@@ -62,13 +62,13 @@
             }
             .title-2 {
                 font-family: title-2;
-                font-size: 50px;
+                font-size: 60px;
                 margin-bottom: 30px;
             }
             #details {
                 margin-top: 60px;
                 font-family: title-3;
-                font-size: 40px;
+                font-size: 50px;
                 font-style: italic;
             }
         </style>
@@ -80,7 +80,6 @@
                     <img src="{{ project_dir }}/app/data/static/badge/citizen-project.png" />
                 </div>
                 <div id="text">
-                    <h3 class="title-2">RENCONTRES AVEC</h3>
                     <h1 class="title-1">{{ command.citizenProjectTitle }}</h1>
                     <h2 class="title-2">{{ command.description|nl2br }}</h2>
                     <h4 id="details">{{ command.details|nl2br }}</h4>
