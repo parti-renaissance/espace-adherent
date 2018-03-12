@@ -6,6 +6,7 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
+use AppBundle\DataFixtures\ORM\LoadUserData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -45,6 +46,7 @@ class MapControllerTest extends SqliteWebTestCase
 
         $this->init([
             LoadAdherentData::class,
+            LoadUserData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,
             LoadHomeBlockData::class,

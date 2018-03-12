@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Controller\Api;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
+use AppBundle\DataFixtures\ORM\LoadUserData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -40,6 +41,7 @@ class StatsControllerTest extends SqliteWebTestCase
 
         $this->init([
             LoadAdherentData::class,
+            LoadUserData::class,
             LoadEventData::class,
         ]);
     }
