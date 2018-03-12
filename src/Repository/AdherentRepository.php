@@ -41,6 +41,17 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         ;
     }
 
+    public function countAdherents(): int
+    {
+        return (int) $this
+            ->createQueryBuilder('a')
+            ->select('COUNT(a)')
+            ->andWhere('a.adherent = 1')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
     /**
      * Finds an Adherent instance by its email address.
      *
