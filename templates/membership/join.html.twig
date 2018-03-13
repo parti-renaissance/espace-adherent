@@ -2,7 +2,7 @@
 
 {% block banner '' %}
 {% block footer '' %}
-{% block title 'Adhérer au mouvement En Marche !' %}
+{% block title 'Adhérer' %}
 
 {% block stylesheets %}
     <style type="text/css">
@@ -32,12 +32,11 @@
                  <h1><a href="{{ path('homepage') }}" class="link--no-decor text--logo text--white text--center">EM !</a></h1>
                     <div class="desc__texts space--60-0 l__wrapper--slim l__col l__col--center text--center b__nudge--bottom-60">
                       <div class="b__nudge--bottom-small text--black text--larger">
-                        <span>Adhérer</span><br><span>à la République en Marche</span> 
+                        <span>Adhérer</span><br><span>à La République En Marche</span>
                         </div>
                     <p class="text--black text--body">
                         Vous voulez participer à la révolution En Marche,
-                        vous engager et devenir un acteur de celle-ci ou simplement vous tenir 
-                        informé de nos idées et de nos actions ?
+                        vous engager et devenir un acteur de celle-ci ? Rejoignez-nous : c'est facile, gratuit et 3 minutes suffiront.
                     </p>
                 </div>
                 <div class="join__cta">
@@ -103,7 +102,7 @@
                             </div>
                             <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
                                 <div class="register__form__zip_code register__form--mid">
-                                    <p class="text--bold">Date de naissance</p> 
+                                    <p class="text--bold">Date de naissance</p>
                                     {{ form_widget(form.birthdate, { attr: { placeholder: 'Date de naissance', class: 'l__row l__row--h-stretch' } }) }}
                                     {{ form_errors(form.birthdate) }}
                                 </div>
@@ -144,7 +143,7 @@
                                 {{ form_widget(form.comEmail) }}
                                 <label class="form form__label" for="{{ form.comEmail.vars.id }}">
                                     <span class="text__checkbox">
-                                        J’accepte de recevoir des informations sur l’actualité du mouvement.
+                                        J’accepte de recevoir des informations sur l’actualité du mouvement
                                         <span class="text--gray text--italic">(optionnel)</span>
                                     </span>
                                 </label>

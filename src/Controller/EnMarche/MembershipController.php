@@ -81,7 +81,7 @@ class MembershipController extends Controller
 
         $form = $this
             ->createForm(AdherentRegistrationType::class, $membership)
-            ->add('submit', SubmitType::class, ['label' => 'Adhérer'])
+            ->add('submit', SubmitType::class, ['label' => 'Je rejoins La République En Marche'])
             ->handleRequest($request)
         ;
 
@@ -113,7 +113,7 @@ class MembershipController extends Controller
 
         $membership = MembershipRequest::createFromAdherent($user);
         $form = $this->createForm(BecomeAdherentType::class, $membership)
-            ->add('submit', SubmitType::class, ['label' => 'Adhérer'])
+            ->add('submit', SubmitType::class, ['label' => 'Je rejoins La République En Marche'])
             ->handleRequest($request)
         ;
 

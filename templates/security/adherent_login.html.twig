@@ -1,10 +1,10 @@
 {% extends 'oauth/base.html.twig' %}
 
-{% block page_title 'Connectez-vous avec vos identifiants En Marche afin d’accéder à cette application.' %}
+{% block page_title 'Connectez-vous avec vos identifiants En Marche.' %}
 
 {% block content %}
     <section class="l__inner">
-        <h1>Connectez-vous avec vos identifiants <em>En Marche</em> afin d’accéder à cette application.</h1>
+        <h1>Connexion</h1>
 
         {% if error %}
             <div id="auth-error" class="form__error">
@@ -36,9 +36,6 @@
     </section>
 
     <section class="l__inner__footer">
-        Pas de compte ? <a href="{{ path('app_membership_join') }}">S’inscrire</a>.
-        <div>
-            Créer un compte ne vous engage pas à adhérer au mouvement En Marche.
-        </div>
+        Pas encore adhérent(e) ? <a href="{{ path('app_membership_join') }}">S’inscrire</a>.
     </section>
 {% endblock %}

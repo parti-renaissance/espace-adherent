@@ -19,7 +19,7 @@
         bottom: 30px;
         left: 0;
         right: 0;
-        
+
         a {
             border-bottom: 0;
         }
@@ -43,6 +43,7 @@
         height: 100vh;
         transition: all 0.5s;
         position: relative;
+        background-color: $blue--dark;
 
         @media (min-width: $large--screen) {
             height: auto;
@@ -92,8 +93,9 @@
             }
 
             p {
+                max-width: 500px;
                 text-align: left;
-                padding: 2em;
+                padding: 0 2em 2em;
                 font-size: 18px;
                 color: $white;
             }

@@ -24,7 +24,7 @@ Feature:
     And I check "Oui, j'adhère à la Charte des Valeurs ainsi qu'aux Conditions Générales d'Utilisation du site et j’ai pris connaissance des règles de fonctionnement de La République En Marche."
     And I resolved the captcha
     And I clean the "api_user" queue
-    And I press "Adhérer"
+    And I press "Je rejoins La République En Marche"
     And the response status code should be 200
     And I should be on "/presque-fini"
     And "api_user" should have 1 message
@@ -136,7 +136,7 @@ Feature:
       | become_adherent[birthdate][day]      |  |
       | become_adherent[birthdate][month]    |  |
       | become_adherent[birthdate][year]     |  |
-    When I press "Adhérer"
+    When I press "Je rejoins La République En Marche"
     Then I should see 7 ".form__error" elements
     And I should see "L'adresse est obligatoire."
     And I should see "Veuillez renseigner un code postal."
@@ -159,7 +159,7 @@ Feature:
       | become_adherent[birthdate][year]     | 1980               |
     And I check "Oui, j'adhère à la Charte des Valeurs ainsi qu'aux Conditions Générales d'Utilisation du site et j’ai pris connaissance des règles de fonctionnement de La République En Marche."
     And I clean the "api_user" queue
-    When I press "Adhérer"
+    When I press "Je rejoins La République En Marche"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
     And "api_user" should have 1 message
@@ -229,12 +229,12 @@ Feature:
       | become_adherent[birthdate][month]    | 1                  |
       | become_adherent[birthdate][year]     | 1980               |
     And I click the "field-conditions" element
-    When I press "Adhérer"
+    When I press "Je rejoins La République En Marche"
     Then I should see "Veuillez renseigner une ville."
 
     Given I fill in the following:
       | become_adherent[address][cityName] | Zürich |
-    When I press "Adhérer"
+    When I press "Je rejoins La République En Marche"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
 
@@ -253,14 +253,14 @@ Feature:
       | become_adherent[birthdate][month] | 1                   |
       | become_adherent[birthdate][year]  | 1980                |
     And I click the "field-conditions" element
-    When I press "Adhérer"
+    When I press "Je rejoins La République En Marche"
     Then I should be on "/adhesion"
     And I should see "Veuillez renseigner une ville."
 
     Given I fill in the following:
       | become_adherent[address][postalCode] | 69001 |
     And I wait until I see "Lyon" in the "#become_adherent_address_city" element
-    When I press "Adhérer"
+    When I press "Je rejoins La République En Marche"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
 
