@@ -147,6 +147,17 @@ class CitizenProjectMembershipRepository extends EntityRepository
         return $this->createAdherentCollection($query);
     }
 
+    public function findFollowers(string $citizenProjectUuid, bool $includeAdministrators = true): AdherentCollection
+    {
+        $privileges = [CitizenProjectMembership::CITIZEN_PROJECT_FOLLOWER];
+
+        if ($includeAdministrators) {
+            $privileges[] = CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR;
+        }
+
+        return $this->findPriviledgedMembers($citizenProjectUuid, $privileges);
+    }
+
     /**
      * Returns the list of all priviledged memberships of a citizen project.
      *

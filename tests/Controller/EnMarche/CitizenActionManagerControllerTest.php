@@ -9,6 +9,7 @@ use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Mailer\Message\CitizenActionCancellationMessage;
 use AppBundle\Mailer\Message\CitizenActionContactParticipantsMessage;
+use AppBundle\Mailer\Message\CitizenActionNotificationMessage;
 use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DomCrawler\Crawler;
@@ -125,6 +126,10 @@ class CitizenActionManagerControllerTest extends MysqlWebTestCase
         $this->assertInstanceOf(CitizenAction::class, $citizenAction = $this->getCitizenActionRepository()->findOneBy(['slug' => (new \DateTime())->format('Y-m-d').'-mon-action-citoyenne']));
         $this->assertSame('Mon Action Citoyenne', $citizenAction->getName());
         $this->assertCountMails(0, EventRegistrationConfirmationMessage::class, 'jacques.picard@en-marche.fr');
+        $this->assertCountMails(1, CitizenActionNotificationMessage::class, 'jacques.picard@en-marche.fr');
+        $this->assertCountMails(1, CitizenActionNotificationMessage::class, 'gisele-berthoux@caramail.com');
+        $this->assertCountMails(1, CitizenActionNotificationMessage::class, 'luciole1989@spambox.fr');
+        $this->assertCountMails(0, CitizenActionNotificationMessage::class, 'benoit-da-m@stah.fr');
     }
 
     public function testOrganizerCanCancelCitizenAction()
