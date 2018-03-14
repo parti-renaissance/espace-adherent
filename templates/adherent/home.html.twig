@@ -18,20 +18,19 @@
                 <h1 class="text--large">
                     Bienvenue, {{ app.user.firstName }} ! 👋
                 </h1>
-                <p class="text--body text--medium">Vous êtes déjà {{nb_adherent}} adhérents !</p>
+                <p class="text--body text--medium">Nous sommes {{ nb_adherent|number_format(0, ',', ' ') }} citoyens En Marche !</p>
             </header>
                 <div class="home__adherent__don">
-                    <p class="text--large text--bold">Notre transformation démocratique <br> a besoin de vous !</p>
+                    <p class="text--large text--bold">Notre transformation démocratique<br/> a besoin de vous !</p>
                     <div>
                         <a href="{{ path('donation_index') }}" class="btn btn--white btn--large">Donner</a>
                     </div>
-
                 </div>
         </section>
         <div class=" l__wrapper">
 
         {% if committees is defined %}
-            <h3 class="home__adherent__title">Des comités à rejoindre autour de {{app.user.cityname}}</h3>
+            <h3 class="home__adherent__title">Rejoignez un comité autour de {{app.user.cityname}}</h3>
 
             <section class="home__adherent__committees">
                 <div class="home__flex">
@@ -53,7 +52,7 @@
                     {% endfor %}
                 </div>
                 <div class="text--center">
-                    <a href="{{ path('app_search_all_committees') }}" class="btn btn--blue btn--medium btn__adherent">Voir tous les comités</a>
+                    <a href="{{ path('app_search_committees') }}" class="btn btn--blue btn--medium btn__adherent">Voir tous les comités</a>
                 </div>
             </section>
 
@@ -61,7 +60,7 @@
         {% endif %}
 
         {% if events is defined %}
-            <h3 class="home__adherent__title">Des événements à rejoindre autour de {{app.user.cityname}}</h3>
+            <h3 class="home__adherent__title">Participez à un événement autour de {{app.user.cityname}}</h3>
 
             <section class="home__adherent__event">
                 {% for event in events %}
@@ -143,7 +142,7 @@
         {% endif %}
 
         {% if citizen_projects is defined %}
-            <h3 class="home__adherent__title">Des projets à rejoindre autour de {{app.user.cityname}}</h3>
+            <h3 class="home__adherent__title">Rejoignez un projet autour de {{app.user.cityname}}</h3>
 
             <section class="home__adherent__citizen__projects">
                 <div class="home__flex">

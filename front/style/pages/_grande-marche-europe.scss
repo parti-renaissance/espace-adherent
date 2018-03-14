@@ -164,7 +164,7 @@
             }
 
             .gme__button {
-                transition: all 1.5s;
+                transition: all 0.5s;
                 margin: 0;
                 background-color: $yellow--europe;
                 border: 0;
@@ -173,6 +173,7 @@
                 color: $black;
 
                 &:hover {
+                    color: $white;
                     background-color: $blue--europe;
                 }
 
