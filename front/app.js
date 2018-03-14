@@ -194,6 +194,12 @@ class App {
             module.default(this.get('api'));
         });
     }
+    
+    runGrandeMarcheEurope() {
+        System.import('pages/grande_marche_europe').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        });
+    }
 }
 
 window.App = new App();
