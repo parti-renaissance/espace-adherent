@@ -18,60 +18,43 @@
                 <h1 class="text--large">
                     Bienvenue, {{ app.user.firstName }} ! 👋
                 </h1>
-                <p class="text--large">Vous êtes actuellement {{nb_adherent}} adhérents !</p>
+                <p class="text--body text--medium">Vous êtes déjà {{nb_adherent}} adhérents !</p>
             </header>
                 <div class="home__adherent__don">
-                    <p class="text--large text--bold">Notre révolution démocratique <br> a besoin de vous !</p>
+                    <p class="text--large text--bold">Notre transformation démocratique <br> a besoin de vous !</p>
                     <div>
-                        <a href="{{ path('donation_index') }}" class="btn btn--white btn--large">Je donne</a>
+                        <a href="{{ path('donation_index') }}" class="btn btn--white btn--large">Donner</a>
                     </div>
-                    
-                </div> 
+
+                </div>
         </section>
         <div class=" l__wrapper">
 
-        {% if citizen_projects is defined %}
-            <h3 class="home__adherent__title">Des projets à rejoindre autour de {{app.user.cityname}}</h3>
+        {% if committees is defined %}
+            <h3 class="home__adherent__title">Des comités à rejoindre autour de {{app.user.cityname}}</h3>
 
-            <section class="home__adherent__citizen__projects">
+            <section class="home__adherent__committees">
                 <div class="home__flex">
-                    {% for citizen_project in citizen_projects %}
-                    <div class="search__citizen_project__box">
-                        {% if citizen_project.hasImageUploaded %}
-                             <div class="search__citizen_project__image">
-                                <img src="{{ asset(citizen_project.getAssetImagePath) }}" />
+                    {% for committee in committees %}
+                        <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}"
+                            class="search__committee__box">
+                            <div class="search__results__meta">
+                                <h2 class="text--medium text--normal">{{ committee.name }}</h2>
+                                <div class="text--body text--bold">{{ committee.cityName }}</div>
                             </div>
-                        {% endif %}
-                        <div class="search__citizen_project__meta">
-                            <h3 class="text--medium-small">
-                                {{ citizen_project.name }}
-                            </h3>
-                            <div class="text--gray b__nudge--top-5">{{ citizen_project.subtitle }}</div>
-                            <div class="text--small text--gray b__nudge--top-10">
-                                Par <span class="text--dark">{{ citizen_project.creator ? citizen_project.creator.fullName : 'un anonyme' }}</span> à
-                                {{ citizen_project.cityName }}
+                            <div class="search__results__cta">
+                                <span class="btn btn--blue">En savoir plus</span>
+                                <div class="text--body icon--with-text l__row--center">
+                                    {{ include('components/participants.html.twig') }}
+                                    {{ 'committee.members_count'|transchoice(committee.membersCount) }}
+                                </div>
                             </div>
-
-                            <div class="text--gray text--small b__nudge--top-50">
-                                {% if citizen_project.skills|length > 0 %}
-                                Aidez-nous en :
-                                <ul class="search__citizen_project__skills">
-                                    {% for skill in citizen_project.skills %}
-                                        <li>{{ skill }}</li>
-                                    {% endfor %}
-                                </ul>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}"
-                        class="search__citizen_project__box__link"></a>
-                    </div>
+                        </a>
                     {% endfor %}
                 </div>
                 <div class="text--center">
-                    <a href="{{ path('app_citizen_project_landing') }}" class="btn btn--blue btn--medium btn__adherent">Voir tous les projets</a>
+                    <a href="{{ path('app_search_all_committees') }}" class="btn btn--blue btn--medium btn__adherent">Voir tous les comités</a>
                 </div>
-
             </section>
 
             <div class="separator"></div>
@@ -159,31 +142,48 @@
             <div class="separator"></div>
         {% endif %}
 
-        {% if committees is defined %}
-            <h3 class="home__adherent__title">Des comités à rejoindre autour de {{app.user.cityname}}</h3>
+        {% if citizen_projects is defined %}
+            <h3 class="home__adherent__title">Des projets à rejoindre autour de {{app.user.cityname}}</h3>
 
-            <section class="home__adherent__committees">
+            <section class="home__adherent__citizen__projects">
                 <div class="home__flex">
-                    {% for committee in committees %}
-                        <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}"
-                            class="search__committee__box">
-                            <div class="search__results__meta">
-                                <h2 class="text--medium text--normal">{{ committee.name }}</h2>
-                                <div class="text--body text--bold">{{ committee.cityName }}</div>
+                    {% for citizen_project in citizen_projects %}
+                    <div class="search__citizen_project__box">
+                        {% if citizen_project.hasImageUploaded %}
+                             <div class="search__citizen_project__image">
+                                <img src="{{ asset(citizen_project.getAssetImagePath) }}" />
                             </div>
-                            <div class="search__results__cta">
-                                <span class="btn btn--blue">En savoir plus</span>
-                                <div class="text--body icon--with-text l__row--center">
-                                    {{ include('components/participants.html.twig') }}
-                                    {{ 'committee.members_count'|transchoice(committee.membersCount) }}
-                                </div>
+                        {% endif %}
+                        <div class="search__citizen_project__meta">
+                            <h3 class="text--medium-small">
+                                {{ citizen_project.name }}
+                            </h3>
+                            <div class="text--gray b__nudge--top-5">{{ citizen_project.subtitle }}</div>
+                            <div class="text--small text--gray b__nudge--top-10">
+                                Par <span class="text--dark">{{ citizen_project.creator ? citizen_project.creator.fullName : 'un anonyme' }}</span> à
+                                {{ citizen_project.cityName }}
                             </div>
-                        </a>
+
+                            <div class="text--gray text--small b__nudge--top-50">
+                                {% if citizen_project.skills|length > 0 %}
+                                Aidez-nous en :
+                                <ul class="search__citizen_project__skills">
+                                    {% for skill in citizen_project.skills %}
+                                        <li>{{ skill }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}"
+                        class="search__citizen_project__box__link"></a>
+                    </div>
                     {% endfor %}
                 </div>
                 <div class="text--center">
-                    <a href="{{ path('app_search_all_committees') }}" class="btn btn--blue btn--medium btn__adherent">Voir tous les comités</a>
+                    <a href="{{ path('app_citizen_project_landing') }}" class="btn btn--blue btn--medium btn__adherent">Voir tous les projets</a>
                 </div>
+
             </section>
 
             <div class="separator"></div>

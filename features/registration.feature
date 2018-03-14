@@ -21,7 +21,7 @@ Feature:
       | adherent_registration[phone][number]        | 123456789           |
     And I fill in hidden field "adherent_registration_address_city" with "94320-94073"
     And I fill in hidden field "adherent_registration_address_country" with "FR"
-    And I check "Oui, j'adhère à la Charte des Valeurs ainsi qu'aux Conditions Générales d'Utilisation du site et j’ai pris connaissance des règles de fonctionnement de La République En Marche."
+    And I check "Oui, j'adhère à la charte des valeurs, aux statuts et aux règles de fonctionnement de La République En Marche, ainsi qu'aux conditions générales d'utilisation du site"
     And I resolved the captcha
     And I clean the "api_user" queue
     And I press "Je rejoins La République En Marche"
@@ -157,7 +157,7 @@ Feature:
       | become_adherent[birthdate][day]      | 1                  |
       | become_adherent[birthdate][month]    | 1                  |
       | become_adherent[birthdate][year]     | 1980               |
-    And I check "Oui, j'adhère à la Charte des Valeurs ainsi qu'aux Conditions Générales d'Utilisation du site et j’ai pris connaissance des règles de fonctionnement de La République En Marche."
+    And I check "Oui, j'adhère à la charte des valeurs, aux statuts et aux règles de fonctionnement de La République En Marche, ainsi qu'aux conditions générales d'utilisation du site"
     And I clean the "api_user" queue
     When I press "Je rejoins La République En Marche"
     Then I should be on "/espace-adherent/accueil"

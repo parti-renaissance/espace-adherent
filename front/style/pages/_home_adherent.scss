@@ -1,16 +1,16 @@
 .home__adherent {
-   
+
     &__don {
         display: flex;
-        justify-content: space-around; 
-        background-color: $pink--light;
+        justify-content: space-around;
+        background-color: $pink;
         color: $white;
         padding: 30px 10px;
-        text-align: left;   
+        text-align: left;
         align-items: center;
 
         @media (max-width: $tablet) {
-            text-align: center;  
+            text-align: center;
             flex-direction: column;
         }
 
