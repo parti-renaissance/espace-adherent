@@ -32,6 +32,10 @@
                     z-index: 100;
                 }
             }
+
+            &__cp-skills {
+                display: none;
+            }
         }
 
         @media (max-width: $tablet) {
