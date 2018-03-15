@@ -9,7 +9,7 @@
 </div>
 <!-- Old class search__bar__options__types -->
 <div class="search__bar__options">
-    <select name="{{ constant('PARAMETER_CITIZEN_PROJECT_SKILL_IDS', search) }}" class="form" >
+    <select class="search__bar__options__cp-skills" name="{{ constant('PARAMETER_CITIZEN_PROJECT_SKILL_IDS', search) }}" class="form" >
         {% for skill in skills %}
             <option value="{{ skill.id }}">{{ skill.name }}</option>
         {% endfor %}

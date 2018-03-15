@@ -32,6 +32,10 @@
                     z-index: 100;
                 }
             }
+
+            &__cp-skills {
+                display: none;
+            }
         }
 
         @media (max-width: $tablet) {
@@ -291,9 +295,13 @@
         }
 
         &__skills {
-            margin-top: 5px;
-            display: flex;
-            flex-wrap: wrap;
+            display: none;
+
+            ul {
+                margin-top: 5px;
+                display: flex;
+                flex-wrap: wrap;
+            }
 
             li {
                 padding: 3px 10px;

@@ -13,10 +13,10 @@
                 </div>
             </div>
 
-            <div class="text--gray text--small b__nudge--top-50">
+            <div class="search__citizen_project__skills text--gray text--small b__nudge--top-50">
                 {% if citizen_project.skills|length > 0 %}
                     <div>Aidez-nous en :</div>
-                    <ul class="search__citizen_project__skills">
+                    <ul>
                         {% for skill in citizen_project.skills %}
                             <li>{{ skill }}</li>
                         {% endfor %}

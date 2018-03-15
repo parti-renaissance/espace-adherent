@@ -3,11 +3,7 @@
         margin-bottom: 30px;
 
         h2 {
-            @include text--summary;
-
-            &.bigger {
-                @include text--default;
-            }
+            @include text--body;
         }
 
         &.filtered-image:after {
@@ -26,6 +22,7 @@
     .article__social {
         display: flex;
         align-items: center;
+        padding-left: 0;
 
         .btn {
             display: flex;

@@ -64,11 +64,11 @@
     <main class="b__nudge--bottom">
         <section class="content b__nudge--bottom-huge">
             <article class="l__wrapper--slim">
-                <header class="b__nudge--top l__wrapper--slim">
+                <header class="b__nudge--top">
                     <h1 class="text--large b__nudge--bottom-small">
                         {{ article.title }}
                     </h1>
-                    <h2 class="text--gray bigger">{{ article.publishedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }} - {{ article.description }}</h2>
+                    <h2 class="text--gray">{{ article.publishedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }} - {{ article.description }}</h2>
                 </header>
 
                 {% if article.media and article.displayMedia %}
@@ -83,7 +83,7 @@
                         </noscript>
                     </amp-img>
                 {% endif %}
-                
+
                 {{ article.ampContent|raw }}
             </article>
         </section>
