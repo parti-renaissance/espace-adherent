@@ -83,8 +83,7 @@ class CitizenActionMessageNotifier implements EventSubscriberInterface
             $followers,
             $host,
             $citizenAction,
-            $this->generateUrl('app_event_attend', [
-                'uuid' => (string) $citizenAction->getUuid(),
+            $this->generateUrl('app_citizen_action_attend', [
                 'slug' => $citizenAction->getSlug(),
             ])
         );
