@@ -110,14 +110,12 @@
             margin: 0 auto;
 
             @media (max-width: $tablet) {
-                font-size: $text--size-larger;
-                line-height: 55px;
+                @include text--larger;
             }
 
             @media (max-width: $mobile) {
                 width: 90%;
-                font-size: 35px;
-                line-height: 40px;
+                @include text--medium-large;
             }
 
             span {
@@ -144,11 +142,12 @@
             }
 
             .gme__input {
+                border-radius: 0;
                 transition: all 1.5s;
                 width: 40%;
                 padding: 20px;
                 font-size: 30px;
-                font-family: 'roboto';
+                font-family: $font-roboto;
                 font-weight: 200;
                 margin: 0;
                 border: 0;
@@ -180,6 +179,7 @@
                 padding: 20px;
                 box-sizing: border-box;
                 color: $black;
+                white-space: normal;
 
                 &:hover {
                     color: $white;
@@ -196,15 +196,13 @@
         p {
             color: $white;
             width: 60%;
-            font-size: 30px;
-            line-height: 35px;
+            @include text--medium-large;
             margin: 20px auto 0 auto;
             text-align: center;
 
             @media (max-width: $mobile) {
                 width: 90%;
-                font-size: 25px;
-                line-height: 29px;
+                @include text--medium-small;
             }
         }
     }

@@ -67,8 +67,10 @@
             position: relative;
             transition: all 3s;
             @include vertical--align;
+            padding: 60px 0;
 
             @media (max-width: $tablet) {
+                padding: 30px 0;
                 opacity: 1;
                 margin: 0 auto;
                 width: 100%;
@@ -77,22 +79,22 @@
                 transform: translateY(0);
             }
 
-            &>div {
+            & > div {
                 width: 100%;
             }
 
             span {
-                text-align: left;
                 @include text--large;
                 @include text--bold;
-                font-family: 'Gillsans';
+                font-family: $font-gillsans;
                 display: block;
                 margin-bottom: 40px;
 
                 @media (max-width: $tablet) {
                     @include text--medium;
-                    padding: 20px;  
-                }    
+                    padding: 0 20px;
+                    margin-bottom: 20px;
+                }
             }
 
             p {
