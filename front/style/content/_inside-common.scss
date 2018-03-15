@@ -7,11 +7,7 @@
         margin-bottom: 30px;
 
         h2 {
-            @include text--summary;
-
-            &.bigger {
-                @include text--default;
-            }
+            @include text--body;
         }
 
         &.filtered-image:after {
@@ -100,16 +96,11 @@
     }
 
     .category {
-        background: $purple;
+        background: $pink;
         padding: 20px;
         border: 0;
         display: block;
         margin-top: 40px;
-
-        &__header {
-            font-size: $text--size-small;
-            color: white;
-        }
 
         &__label {
             color: $yellow;

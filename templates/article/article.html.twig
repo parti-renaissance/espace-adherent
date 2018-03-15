@@ -67,11 +67,11 @@
 <main>
     <section class="content">
         <article class="l__wrapper--slim">
-            <header class="space--60-0 l__wrapper--slim">
+            <header class="space--60-0">
                 <h1 class="text--large b__nudge--bottom-small">
                     {{ article.title }}
                 </h1>
-                <h2 class="text--gray b__nudge--bottom bigger">{{ article.publishedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }} - {{ article.description }}</h2>
+                <h2 class="text--gray b__nudge--bottom">{{ article.publishedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }} - {{ article.description }}</h2>
                 <ul class="article__social">
                     <li role="button" aria-label="Partagez sur Facebook"
                         class="btn btn--social btn--facebook"
@@ -103,8 +103,10 @@
 
             {% if article.category.ctaLink and article.category.ctaLabel %}
                 <a href="{{ article.category.ctaLink }}" class="category category--{{ article.category.slug }}">
-                    <div class="category__header">Explorer plus dans cette série</div>
-                    <div class="category__label">{{ article.category.ctaLabel }}</div>
+                    <div class="category__label">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                        {{ article.category.ctaLabel }}
+                    </div>
                 </a>
             {% endif %}
         </article>
