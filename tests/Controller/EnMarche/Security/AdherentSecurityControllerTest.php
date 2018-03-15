@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Controller\EnMarche\Security;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
+use AppBundle\DataFixtures\ORM\LoadUserData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Mailer\Message\AdherentResetPasswordMessage;
 use AppBundle\Mailer\Message\AdherentResetPasswordConfirmationMessage;
@@ -27,7 +28,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
     /* @var EmailRepository */
     private $emailRepository;
 
-    public function testAuthenticationIsSuccessful()
+    public function testAuthenticationIsSuccessful(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
 
@@ -60,7 +61,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
     /**
      * @dataProvider provideInvalidCredentials
      */
-    public function testLoginCheckFails($username, $password)
+    public function testLoginCheckFails(string $username, string $password, string $messageExpected): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
 
@@ -79,28 +80,36 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(1, $error = $crawler->filter('#auth-error'));
-        $this->assertSame('L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.', trim($error->text()));
+        $this->assertSame($messageExpected, trim($error->text()));
     }
 
-    public function provideInvalidCredentials()
+    public function provideInvalidCredentials(): array
     {
         return [
             'Unregistered adherent account' => [
                 'foobar@foo.tld',
                 'foo-bar-pass',
+                'L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.',
             ],
             'Registered enabled adherent' => [
                 'carl999@example.fr',
                 'foo-bar-pass',
+                'L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.',
             ],
-            'Registered disabled account' => [
+            'Registered not validated account' => [
                 'michelle.dufour@example.ch',
                 'secret!12345',
+                'Pour vous connecter vous devez confirmer votre adhésion. Si vous n\'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau.',
+            ],
+            'Registered disabled account' => [
+                'simple-user-disabled@example.ch',
+                'secret!12345',
+                'Account is disabled.',
             ],
         ];
     }
 
-    public function testRetrieveForgotPasswordAction()
+    public function testRetrieveForgotPasswordAction(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/mot-de-passe-oublie');
 
@@ -110,7 +119,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('.form__error'), 'No error should be displayed on initial display');
     }
 
-    public function testRetrieveForgotPasswordActionWithEmptyEmail()
+    public function testRetrieveForgotPasswordActionWithEmptyEmail(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/mot-de-passe-oublie');
 
@@ -125,7 +134,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertContains('Cette valeur ne doit pas être vide.', $error->text(), 'An empty email should be erroneous.');
     }
 
-    public function testRetrieveForgotPasswordActionWithUnknownEmail()
+    public function testRetrieveForgotPasswordActionWithUnknownEmail(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/mot-de-passe-oublie');
 
@@ -147,7 +156,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'toto@example.org'), 'No mail should have been sent to unknown account.');
     }
 
-    public function testRetrieveForgotPasswordActionWithKnownEmailSendEmail()
+    public function testRetrieveForgotPasswordActionWithKnownEmailSendEmail(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/mot-de-passe-oublie');
 
@@ -170,7 +179,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'carl999@example.fr'), 'An email should have been sent.');
     }
 
-    public function testResetPasswordAction()
+    public function testResetPasswordAction(): void
     {
         $client = $this->makeClient(false, ['HTTP_HOST' => $this->hosts['app']]);
         $adherent = $this->getAdherentRepository()->findOneByEmail('michelle.dufour@example.ch');
@@ -216,6 +225,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         parent::setUp();
 
         $this->init([
+            LoadUserData::class,
             LoadAdherentData::class,
             LoadHomeBlockData::class,
         ]);

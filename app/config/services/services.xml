@@ -92,6 +92,7 @@
         <!-- Security -->
         <prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter"/>
         <service id="AppBundle\Security\Http\AuthenticationFailureHandler"/>
+        <service id="AppBundle\Security\UserChecker"/>
         <service id="app.security.user_provider" class="AppBundle\Security\UserProvider">
             <argument key="$classOrAlias" type="string">AppBundle\Entity\Adherent</argument>
         </service>
