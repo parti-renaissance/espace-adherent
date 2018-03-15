@@ -1,6 +1,11 @@
 .gme {
     overflow: hidden;
 
+    @media (max-width: $mobile) {
+        height: 100%;
+        overflow: scroll;
+    }
+
     .splash-screen {
         @include splash--screen($blue--europe, 2s, 300);
 
@@ -57,10 +62,6 @@
         .logo {
             padding: 1.2em;
             width: 110px;
-
-            @media (max-width: $mobile) {
-                padding: 1em;
-            }
 
             @media (max-width: $mobile) {
                 padding: 1em;
@@ -138,6 +139,10 @@
                 flex-direction: column;
             }
 
+            @media (max-width: $mobile) {
+                margin: 0;
+            }
+
             .gme__input {
                 transition: all 1.5s;
                 width: 40%;
@@ -160,6 +165,10 @@
                     text-align: center;
                     width: 90%;
                     margin: 0 auto;
+                }
+
+                @media (max-width: $mobile) {
+                    font-size: 15px;
                 }
             }
 
