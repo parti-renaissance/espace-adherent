@@ -2,6 +2,8 @@
 
 use Behat\MinkExtension\Context\RawMinkContext;
 
+require_once __DIR__.'/../../vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
+
 class FeatureContext extends RawMinkContext
 {
     /**
@@ -18,5 +20,17 @@ class FeatureContext extends RawMinkContext
     public function fillField($fieldId, $value)
     {
         $this->getSession()->getPage()->findById($fieldId)->setValue($value);
+    }
+
+    /**
+     * @When I click the :elementId element
+     */
+    public function clickLinkElement($elementId)
+    {
+        $field = $this->getSession()->getPage()->findById($elementId);
+
+        assertNotNull($field, 'Cannot find "'.$elementId.'"');
+
+        $field->click();
     }
 }

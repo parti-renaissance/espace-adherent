@@ -7,6 +7,9 @@ $text--size-medium--large: 28px;
 $text--size-large: 34px;
 $text--size-larger: 44px;
 $text--size-extra-large: 48px;
+$text--size-extra-large--medium: 64px;
+$text--size-extra-large--large: 96px;
+$text--size-extra-large--big: 128px;
 
 @mixin text--bold {
     font-weight: 700;
@@ -97,6 +100,24 @@ $text--size-extra-large: 48px;
         letter-spacing: -0.5px;
         line-height: 38px;
     }
+}
+
+@mixin text--extra-large--medium {
+    font-size: $text--size-extra-large--medium;
+    letter-spacing: -1.5px;
+    line-height: 52px;
+}
+
+@mixin text--extra-large--large {
+    font-size: $text--size-extra-large--large;
+    letter-spacing: -1.5px;
+    line-height: 52px;
+}
+
+@mixin text--extra-large--big {
+    font-size: $text--size-extra-large--big;
+    letter-spacing: -1.5px;
+    line-height: 52px;
 }
 
 @mixin text--body {

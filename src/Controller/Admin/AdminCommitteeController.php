@@ -94,6 +94,10 @@ class AdminCommitteeController extends Controller
      */
     public function changePrivilegeAction(Request $request, Committee $committee, Adherent $adherent, string $privilege): Response
     {
+        if (!$committee->isApproved()) {
+            throw new BadRequestHttpException('Committee must be approved to change member privileges.');
+        }
+
         if (!$this->isCsrfTokenValid(sprintf('committee.change_privilege.%s', $adherent->getId()), $request->query->get('token'))) {
             throw new BadRequestHttpException('Invalid Csrf token provided.');
         }

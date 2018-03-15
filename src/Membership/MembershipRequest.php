@@ -150,7 +150,7 @@ class MembershipRequest implements MembershipInterface
         return $this->address;
     }
 
-    public function setEmailAddress(string $emailAddress): void
+    public function setEmailAddress(?string $emailAddress): void
     {
         $this->emailAddress = mb_strtolower($emailAddress);
     }

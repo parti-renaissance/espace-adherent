@@ -28,7 +28,7 @@ version: "3.2"
 #            - /var/run/docker.sock:/tmp/docker.sock:ro
 
 #    app:
-#         networks:
+#        networks:
 #            - default
 #            - enmarche
 #        volumes:

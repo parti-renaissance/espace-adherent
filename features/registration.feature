@@ -3,6 +3,75 @@ Feature:
   In order to access the web site
   I can register
 
+  Scenario: I can register as an adherent
+    Given I am on "/adhesion"
+    When I fill in the following:
+      | adherent_registration[firstName]            | Jean-Pierre         |
+      | adherent_registration[lastName]             | DURAND              |
+      | adherent_registration[emailAddress][first]  | jp@test.com         |
+      | adherent_registration[emailAddress][second] | jp@test.com         |
+      | adherent_registration[password]             | testtest            |
+      | adherent_registration[address][address]     | 1 rue des alouettes |
+      | adherent_registration[address][postalCode]  | 94320               |
+      | adherent_registration[address][cityName]    | Thiais              |
+      | adherent_registration[birthdate][day]       | 29                  |
+      | adherent_registration[birthdate][month]     | 1                   |
+      | adherent_registration[birthdate][year]      | 1989                |
+      | adherent_registration[gender]               | male                |
+      | adherent_registration[phone][number]        | 123456789           |
+    And I fill in hidden field "adherent_registration_address_city" with "94320-94073"
+    And I fill in hidden field "adherent_registration_address_country" with "FR"
+    And I check "Oui, j'adhère à la charte des valeurs, aux statuts et aux règles de fonctionnement de La République En Marche, ainsi qu'aux conditions générales d'utilisation du site"
+    And I resolved the captcha
+    And I clean the "api_user" queue
+    And I press "Je rejoins La République En Marche"
+    And the response status code should be 200
+    And I should be on "/presque-fini"
+    And "api_user" should have 1 message
+    And "api_user" should have message below:
+      | routing_key  | body                                                                                                                            |
+      | user.created | {"uuid":"@string@","country":"FR","zipCode":"94320","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
+    And I should have 1 email
+    And I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
+    """
+    {
+      "FromEmail": "contact@en-marche.fr",
+      "FromName": "En Marche !",
+      "Subject": "Confirmez votre compte En-Marche.fr",
+      "MJ-TemplateID": "292269",
+      "MJ-TemplateLanguage": true,
+      "Recipients": [
+        {
+          "Email": "jp@test.com",
+            "Name": "Jean-Pierre Durand",
+            "Vars": {
+              "first_name": "Jean-Pierre",
+              "activation_link": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
+            }
+        }
+      ]
+    }
+    """
+
+    Given I am on "/deconnexion"
+    And I am on "/connexion"
+    When I fill in the following:
+      | E-mail       | jp-fail@test.com |
+      | Mot de passe | testtesti        |
+    And I press "Connexion"
+    Then I should be on "/connexion"
+    And I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+
+    Given I am on "/connexion"
+    When I fill in the following:
+      | E-mail       | jp@test.com |
+      | Mot de passe | testtest    |
+    And I press "Connexion"
+    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+
+    When I click on the email link "activation_link"
+    Then I should be on "/espace-adherent/accueil"
+
   Scenario: I can register as a user
     Given I am on "/inscription"
     When I fill in the following:
@@ -22,6 +91,7 @@ Feature:
     And "api_user" should have message below:
       | routing_key  | body                                                                                                                            |
       | user.created | {"uuid":"@string@","country":"CH","zipCode":"38000","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
+    And I should have 1 email
     And I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
     """
     {
@@ -53,7 +123,6 @@ Feature:
     When I click on the email link "activation_link"
     Then I should be on "/adhesion"
     And the "become_adherent[phone][country]" field should contain "CH"
-    And I should see "Bienvenue ! Votre e-mail est confirmé."
 
     When I am on "/adhesion"
     Then I should not see "Bienvenue ! Votre e-mail est confirmé."
@@ -67,7 +136,7 @@ Feature:
       | become_adherent[birthdate][day]      |  |
       | become_adherent[birthdate][month]    |  |
       | become_adherent[birthdate][year]     |  |
-    When I press "J'adhère"
+    When I press "Je rejoins La République En Marche"
     Then I should see 7 ".form__error" elements
     And I should see "L'adresse est obligatoire."
     And I should see "Veuillez renseigner un code postal."
@@ -88,15 +157,16 @@ Feature:
       | become_adherent[birthdate][day]      | 1                  |
       | become_adherent[birthdate][month]    | 1                  |
       | become_adherent[birthdate][year]     | 1980               |
-    And I check "Oui, j'adhère à la Charte des Valeurs ainsi qu'aux Conditions Générales d'Utilisation du site et j’ai pris connaissance des règles de fonctionnement de La République En Marche."
+    And I check "Oui, j'adhère à la charte des valeurs, aux statuts et aux règles de fonctionnement de La République En Marche, ainsi qu'aux conditions générales d'utilisation du site"
     And I clean the "api_user" queue
-    When I press "J'adhère"
+    When I press "Je rejoins La République En Marche"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
     And "api_user" should have 1 message
     And "api_user" should have message below:
       | routing_key  | body                                                                                                                            |
       | user.updated | {"uuid":"@string@","country":"CH","zipCode":"06000","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
+    And I should have 2 emails
     And I should have 1 email "AdherentAccountConfirmationMessage" for "jp@test.com" with payload:
     """
     {
@@ -144,6 +214,7 @@ Feature:
     Then the response status code should be 200
     And I should be on "/espace-adherent/mon-profil"
 
+  @javascript
   Scenario: I can become adherent with a foreign country
     Given the following fixtures are loaded:
       | LoadUserData |
@@ -157,38 +228,39 @@ Feature:
       | become_adherent[birthdate][day]      | 1                  |
       | become_adherent[birthdate][month]    | 1                  |
       | become_adherent[birthdate][year]     | 1980               |
-    And I check "Oui, j'adhère à la Charte des Valeurs ainsi qu'aux Conditions Générales d'Utilisation du site et j’ai pris connaissance des règles de fonctionnement de La République En Marche."
-    When I press "J'adhère"
+    And I click the "field-conditions" element
+    When I press "Je rejoins La République En Marche"
     Then I should see "Veuillez renseigner une ville."
 
     Given I fill in the following:
       | become_adherent[address][cityName] | Zürich |
-    When I press "J'adhère"
+    When I press "Je rejoins La République En Marche"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
 
+  @javascript
   Scenario: I can become adherent with a french address
     Given the following fixtures are loaded:
       | LoadUserData |
     And I am logged as "simple-user@example.ch"
     And I am on "/adhesion"
     And I fill in the following:
-      | become_adherent[address][country]    | FR                  |
-      | become_adherent[address][address]    | 1 rue des alouettes |
-      | become_adherent[gender]              | male                |
-      | become_adherent[phone][number]       | 06 12 34 56 78      |
-      | become_adherent[birthdate][day]      | 1                   |
-      | become_adherent[birthdate][month]    | 1                   |
-      | become_adherent[birthdate][year]     | 1980                |
-    And I check "Oui, j'adhère à la Charte des Valeurs ainsi qu'aux Conditions Générales d'Utilisation du site et j’ai pris connaissance des règles de fonctionnement de La République En Marche."
-    When I press "J'adhère"
-    Then I should see "Veuillez renseigner une ville."
+      | become_adherent[address][country] | FR                  |
+      | become_adherent[address][address] | 1 rue des alouettes |
+      | become_adherent[gender]           | male                |
+      | become_adherent[phone][number]    | 06 12 34 56 78      |
+      | become_adherent[birthdate][day]   | 1                   |
+      | become_adherent[birthdate][month] | 1                   |
+      | become_adherent[birthdate][year]  | 1980                |
+    And I click the "field-conditions" element
+    When I press "Je rejoins La République En Marche"
+    Then I should be on "/adhesion"
+    And I should see "Veuillez renseigner une ville."
 
     Given I fill in the following:
-      | become_adherent[address][postalCode] | 69001    |
-      | become_adherent[address][cityName]   | Lyon 1er |
-    And I fill in hidden field "become_adherent_address_city" with "69001-6088"
-    When I press "J'adhère"
+      | become_adherent[address][postalCode] | 69001 |
+    And I wait until I see "Lyon" in the "#become_adherent_address_city" element
+    When I press "Je rejoins La République En Marche"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
 

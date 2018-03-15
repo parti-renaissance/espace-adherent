@@ -53,8 +53,8 @@ class MembershipControllerTest extends MysqlWebTestCase
         $crawler = $this->client->submit($crawler->selectButton('Créer mon compte')->form(), $data);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertValidationErrors(['data.emailAddress'], $this->client->getContainer());
         $errors = $crawler->filter('.form__error');
-        $this->assertSame(1, $errors->count());
         $this->assertSame('Cette adresse e-mail existe déjà.', $errors->text());
     }
 
@@ -114,7 +114,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/adhesion?from_activation=1', $this->client);
+        $this->assertClientIsRedirectedTo('/adhesion', $this->client);
 
         $this->client->followRedirect();
 
@@ -134,8 +134,8 @@ class MembershipControllerTest extends MysqlWebTestCase
 
         // Try to authenticate with credentials
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_adherent_email' => 'jean-paul@dupont.tld',
-            '_adherent_password' => LoadAdherentData::DEFAULT_PASSWORD,
+            '_login_email' => 'jean-paul@dupont.tld',
+            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
         $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/evenements', $this->client);

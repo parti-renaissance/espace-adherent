@@ -25,7 +25,7 @@ class SearchControllerTest extends MysqlWebTestCase
      */
     public function testIndex($query)
     {
-        $this->client->request(Request::METHOD_GET, '/recherche', $query);
+        $this->client->request(Request::METHOD_GET, '/recherche?'.http_build_query($query));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }

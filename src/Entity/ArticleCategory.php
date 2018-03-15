@@ -75,18 +75,27 @@ class ArticleCategory
      */
     private $ctaLabel;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 1})
+     */
+    private $display;
+
     public function __construct(
         string $name = '',
         string $slug = '',
         int $position = 1,
         string $ctaLink = null,
-        string $ctaLabel = null
+        string $ctaLabel = null,
+        bool $display = true
     ) {
         $this->name = $name;
         $this->slug = $slug;
         $this->position = $position;
         $this->ctaLink = $ctaLink;
         $this->ctaLabel = $ctaLabel;
+        $this->display = $display;
     }
 
     public function __toString()
@@ -162,5 +171,15 @@ class ArticleCategory
     public static function isDefault(string $category): bool
     {
         return self::DEFAULT_CATEGORY === $category;
+    }
+
+    public function isDisplay(): bool
+    {
+        return $this->display;
+    }
+
+    public function setDisplay(bool $display): void
+    {
+        $this->display = $display;
     }
 }

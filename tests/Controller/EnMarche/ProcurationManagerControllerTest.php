@@ -16,6 +16,7 @@ use Tests\AppBundle\SqliteWebTestCase;
 
 /**
  * @group functional
+ * @group procuration
  */
 class ProcurationManagerControllerTest extends SqliteWebTestCase
 {

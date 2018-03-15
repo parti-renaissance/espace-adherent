@@ -13,43 +13,44 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SearchParametersFilter
 {
-    const CACHE_KEY_PREFIX = 'search_geocoding_city_';
+    public const CACHE_KEY_PREFIX = 'search_geocoding_city_';
 
-    const PARAMETER_QUERY = 'q';
-    const PARAMETER_RADIUS = 'r';
-    const PARAMETER_CITY = 'c';
-    const PARAMETER_TYPE = 't';
-    const PARAMETER_OFFSET = 'offset';
-    const PARAMETER_EVENT_CATEGORY = 'ec';
+    public const PARAMETER_QUERY = 'q';
+    public const PARAMETER_RADIUS = 'r';
+    public const PARAMETER_CITY = 'c';
+    public const PARAMETER_TYPE = 't';
+    public const PARAMETER_OFFSET = 'offset';
+    public const PARAMETER_EVENT_CATEGORY = 'ec';
+    public const PARAMETER_CITIZEN_PROJECT_SKILL_IDS = 'citizen_project_skill_ids';
 
-    const DEFAULT_QUERY = '';
-    const DEFAULT_TYPE = self::TYPE_COMMITTEES;
-    const DEFAULT_RADIUS = self::RADIUS_50;
-    const DEFAULT_CITY = 'Paris';
-    const DEFAULT_MAX_RESULTS = 30;
+    public const DEFAULT_QUERY = '';
+    public const DEFAULT_TYPE = self::TYPE_COMMITTEES;
+    public const DEFAULT_RADIUS = self::RADIUS_50;
+    public const DEFAULT_CITY = 'Paris';
+    public const DEFAULT_MAX_RESULTS = 30;
 
-    const TYPE_COMMITTEES = 'committees';
-    const TYPE_EVENTS = 'events';
-    const TYPE_CITIZEN_PROJECTS = 'citizen_projects';
-    const TYPE_CITIZEN_ACTIONS = 'citizen_actions';
+    public const TYPE_COMMITTEES = 'committees';
+    public const TYPE_EVENTS = 'events';
+    public const TYPE_CITIZEN_PROJECTS = 'citizen_projects';
+    public const TYPE_CITIZEN_ACTIONS = 'citizen_actions';
 
-    const TYPES = [
+    public const TYPES = [
         self::TYPE_COMMITTEES,
         self::TYPE_EVENTS,
         self::TYPE_CITIZEN_PROJECTS,
         self::TYPE_CITIZEN_ACTIONS,
     ];
 
-    const RADIUS_NONE = -1;
-    const RADIUS_1 = 1;
-    const RADIUS_5 = 5;
-    const RADIUS_10 = 10;
-    const RADIUS_25 = 25;
-    const RADIUS_50 = 50;
-    const RADIUS_100 = 100;
-    const RADIUS_150 = 150;
+    public const RADIUS_NONE = -1;
+    public const RADIUS_1 = 1;
+    public const RADIUS_5 = 5;
+    public const RADIUS_10 = 10;
+    public const RADIUS_25 = 25;
+    public const RADIUS_50 = 50;
+    public const RADIUS_100 = 100;
+    public const RADIUS_150 = 150;
 
-    const RADII = [
+    public const RADII = [
         self::RADIUS_NONE,
         self::RADIUS_1,
         self::RADIUS_5,
@@ -68,6 +69,8 @@ class SearchParametersFilter
     private $offset;
     private $maxResults;
     private $eventCategory;
+    private $cache;
+    private $citizenProjecSkillIds;
 
     public function __construct(GeocoderInterface $geocoder, AdapterInterface $cache)
     {
@@ -79,6 +82,7 @@ class SearchParametersFilter
         $this->city = self::DEFAULT_CITY;
         $this->offset = 0;
         $this->maxResults = self::DEFAULT_MAX_RESULTS;
+        $this->citizenProjecSkillIds = [];
     }
 
     /**
@@ -94,6 +98,12 @@ class SearchParametersFilter
         $this->setOffset($request->query->getInt(self::PARAMETER_OFFSET));
         $this->setEventCategory($request->query->getAlnum(self::PARAMETER_EVENT_CATEGORY, null));
 
+        if (!is_array($skillIds = $request->query->get(self::PARAMETER_CITIZEN_PROJECT_SKILL_IDS, []))) {
+            $skillIds = [$skillIds];
+        }
+
+        $this->setCitizenProjecSkillIds($skillIds);
+
         if (null !== $city = $request->query->get(self::PARAMETER_CITY)) {
             $this->setCity((string) $city);
         }
@@ -104,7 +114,7 @@ class SearchParametersFilter
     public function setType(string $type): self
     {
         // Will fallback to the default one
-        $this->type = in_array($type, self::TYPES, true) ? $type : self::DEFAULT_TYPE;
+        $this->type = \in_array($type, self::TYPES, true) ? $type : self::DEFAULT_TYPE;
 
         return $this;
     }
@@ -117,7 +127,7 @@ class SearchParametersFilter
     public function setRadius(int $radius): self
     {
         // We fallback to the default one
-        $this->radius = in_array($radius, self::RADII, true) ? $radius : self::DEFAULT_RADIUS;
+        $this->radius = \in_array($radius, self::RADII, true) ? $radius : self::DEFAULT_RADIUS;
 
         return $this;
     }
@@ -134,7 +144,7 @@ class SearchParametersFilter
         return $this;
     }
 
-    public function getCity()
+    public function getCity(): string
     {
         return $this->city;
     }
@@ -188,7 +198,7 @@ class SearchParametersFilter
         return $this;
     }
 
-    public function getMaxResults()
+    public function getMaxResults(): int
     {
         return $this->maxResults;
     }
@@ -198,9 +208,19 @@ class SearchParametersFilter
         return $this->eventCategory;
     }
 
-    public function setEventCategory(?string $eventCategory)
+    public function setEventCategory(?string $eventCategory): void
     {
         $this->eventCategory = $eventCategory;
+    }
+
+    public function getCitizenProjecSkillIds(): array
+    {
+        return $this->citizenProjecSkillIds;
+    }
+
+    public function setCitizenProjecSkillIds(array $ids): void
+    {
+        $this->citizenProjecSkillIds = $ids;
     }
 
     public function isTypeCommittees(): bool

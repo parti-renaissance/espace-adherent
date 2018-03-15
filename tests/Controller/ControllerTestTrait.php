@@ -61,8 +61,8 @@ trait ControllerTestTrait
         $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
 
         $client->submit($crawler->selectButton('Connexion')->form([
-            '_adherent_email' => $emailAddress,
-            '_adherent_password' => $password,
+            '_login_email' => $emailAddress,
+            '_login_password' => $password,
         ]));
 
         $shouldBeRedirectedTo = 'http://'.$this->hosts['app'].'/evenements';
@@ -84,8 +84,8 @@ trait ControllerTestTrait
         $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
 
         $client->submit($crawler->selectButton('Connexion')->form([
-            '_admin_email' => $emailAddress,
-            '_admin_password' => $password,
+            '_login_email' => $emailAddress,
+            '_login_password' => $password,
         ]));
 
         $shouldBeRedirectedTo = 'http://'.$this->hosts['app'].'/admin/dashboard';

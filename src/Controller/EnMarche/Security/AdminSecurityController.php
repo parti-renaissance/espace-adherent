@@ -26,13 +26,13 @@ class AdminSecurityController extends Controller
             '',
             LoginType::class,
             [
-                '_admin_email' => $securityUtils->getLastUsername(),
+                '_login_email' => $securityUtils->getLastUsername(),
             ],
             [
-                'username_parameter' => '_admin_email',
-                'password_parameter' => '_admin_password',
-                'csrf_field_name' => '_admin_csrf',
-                'csrf_token_id' => 'authenticate_admin',
+                'username_parameter' => '_login_email',
+                'password_parameter' => '_login_password',
+                'csrf_field_name' => '_login_csrf',
+                'csrf_token_id' => 'authenticate',
             ]
         );
 

@@ -31,7 +31,7 @@ class SecurityController extends Controller
         $securityUtils = $this->get('security.authentication_utils');
 
         $form = $this->get('form.factory')->createNamed('', LoginType::class, [
-            '_adherent_email' => $securityUtils->getLastUsername(),
+            '_login_email' => $securityUtils->getLastUsername(),
         ]);
 
         return $this->render('security/adherent_login.html.twig', [

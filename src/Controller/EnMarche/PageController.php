@@ -184,6 +184,15 @@ class PageController extends Controller
     }
 
     /**
+     * @Route("/grandemarcheeurope", defaults={"_enable_campaign_silence"=true}, name="page_grande_marche_europe")
+     * @Method("GET")
+     */
+    public function grandeMarcheEuropeAction()
+    {
+        return $this->render('page/grande-marche-europe/grande-marche-europe.html.twig');
+    }
+
+    /**
      * @Route("/action-talents/candidater", defaults={"_enable_campaign_silence"=true}, name="page_action_talents_apply")
      * @Method("GET")
      * @Entity("page", expr="repository.findOneBySlug('action-talents/candidater')")

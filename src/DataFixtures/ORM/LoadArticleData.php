@@ -35,6 +35,7 @@ class LoadArticleData extends Fixture
         $manager->persist($mediasCategory = new ArticleCategory('Médias', 'medias', 4));
         $manager->persist($communiquesCategory = new ArticleCategory('Communiqués', 'communiques', 5));
         $manager->persist($opinionsCategory = new ArticleCategory('Opinions', 'opinions', 6, 'http://www.google.fr', 'Google link'));
+        $manager->persist($noDisplayCategory = new ArticleCategory('Not displayed', 'nodisplay', 7, null, null, false));
 
         $manager->flush();
 
@@ -91,8 +92,21 @@ class LoadArticleData extends Fixture
             'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
+        $manager->persist($factory->createFromArray([
+            'title' => 'Article dans une category pas affichée',
+            'slug' => 'article-avec-category-non-afficher',
+            'description' => 'Article dans une category pas affichée',
+            'media' => $media,
+            'displayMedia' => true,
+            'published' => true,
+            'publishedAt' => $faker->dateTimeThisDecade,
+            'category' => $noDisplayCategory,
+            'content' => file_get_contents(__DIR__.'/../content.md'),
+            'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
+        ]));
+
         // A lot of articles for listing
-        foreach ([$newsCategory, $videosCategory, $speechCategory, $mediasCategory, $communiquesCategory, $opinionsCategory] as $category) {
+        foreach ([$newsCategory, $videosCategory, $speechCategory, $mediasCategory, $communiquesCategory, $opinionsCategory, $noDisplayCategory] as $category) {
             for ($i = 0; $i < 25; ++$i) {
                 $manager->persist($factory->createFromArray([
                     'title' => $faker->sentence(),

@@ -3,11 +3,15 @@
 .gitignore
 .idea
 .sensiolabs.yml
-.styleci.yml
 .tmp
-circle.yml
+docker-dev.md5
+.circleci
 dev.dockerfile
 docker-compose.yml
+phpunit
+behat
+features
+dump
 docs
 node_modules
 package.json

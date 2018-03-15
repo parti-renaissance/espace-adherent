@@ -1,0 +1,106 @@
+.complete {
+    display: flex;
+    justify-content: space-between;
+    height: 100vh;
+    overflow: hidden;
+
+    @media (max-width: $tablet) {
+        height: 100vh;
+        flex-direction: column;
+    }
+
+    &__anim {
+        width: 100%;
+        height: 100vh;
+        transition: all 1.5s;
+        transition-timing-function: ease-in-out;
+
+        @media (max-width: $tablet) {
+            height: 30vh;
+            width: 100%;
+        }
+
+        .anim {
+            text-align: center;
+            height: 100vh;
+
+            @media (max-width: $tablet) {
+                height: 100%;
+                width: 100%;
+            }
+
+            img {
+                top: 35%;
+                transform: translateY(-50%);
+                position: relative;
+
+                @media (max-width: $tablet) {
+                    height: 100%;
+                }
+            }
+        }
+
+        h1 {
+            position: absolute;
+            margin: 30px;
+            z-index: 100;
+        }
+    }
+
+    &__desc {
+        width: 0;
+        transition: all 1.5s;
+        transition-timing-function: ease-in-out;
+        background-color: $yellow;
+        height: auto;
+        overflow: scroll;
+        padding: 10% 0;
+
+        @media (max-width: $tablet) {
+            width: 100%;
+            height: 50vh;
+        }
+
+        .desc__texts {
+            opacity: 0;
+            transform: translateX(-150%);
+            position: relative;
+            transition: all 3s;
+            @include vertical--align;
+            padding: 60px 0;
+
+            @media (max-width: $tablet) {
+                padding: 30px 0;
+                opacity: 1;
+                margin: 0 auto;
+                width: 100%;
+                top: 0;
+                transform: translateX(0);
+                transform: translateY(0);
+            }
+
+            & > div {
+                width: 100%;
+            }
+
+            span {
+                @include text--large;
+                @include text--bold;
+                font-family: $font-gillsans;
+                display: block;
+                margin-bottom: 40px;
+
+                @media (max-width: $tablet) {
+                    @include text--medium;
+                    padding: 0 20px;
+                    margin-bottom: 20px;
+                }
+            }
+
+            p {
+                text-align: justify;
+                padding: 2em;
+            }
+        }
+    }
+}

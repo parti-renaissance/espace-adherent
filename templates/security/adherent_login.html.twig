@@ -1,10 +1,10 @@
 {% extends 'oauth/base.html.twig' %}
 
-{% block page_title 'Connectez-vous avec vos identifiants En Marche afin d’accéder à cette application.' %}
+{% block page_title 'Connectez-vous avec vos identifiants En Marche.' %}
 
 {% block content %}
     <section class="l__inner">
-        <h1>Connectez-vous avec vos identifiants <em>En Marche</em> afin d’accéder à cette application.</h1>
+        <h1>Connexion</h1>
 
         {% if error %}
             <div id="auth-error" class="form__error">
@@ -12,18 +12,18 @@
             </div>
         {% endif %}
 
-        {{ form_start(form, {'action': path('app_user_login_check')}) }}
+        {{ form_start(form, { action: path('app_user_login_check') }) }}
             <ul class="form">
                 <li>
-                     {{ form_label(form._adherent_email, 'E-mail',{ 'label_attr': {'class': 'visually-hidden'} }) }}
-                     {{ form_errors(form._adherent_email) }}
-                     {{ form_widget(form._adherent_email, {'attr': {'placeholder': 'E-mail' }}) }}
+                     {{ form_label(form._login_email, 'E-mail', { label_attr: { class: 'visually-hidden' } }) }}
+                     {{ form_errors(form._login_email) }}
+                     {{ form_widget(form._login_email, { attr: { placeholder: 'E-mail' } }) }}
                 </li>
 
                 <li>
-                    {{ form_label(form._adherent_password,'Mot de passe',{ 'label_attr': {'class': 'visually-hidden'} }) }}
-                    {{ form_errors(form._adherent_password) }}
-                    {{ form_widget(form._adherent_password, {'attr': {'placeholder': 'Mot de passe' }}) }}
+                    {{ form_label(form._login_password, 'Mot de passe', { label_attr: { class: 'visually-hidden' } }) }}
+                    {{ form_errors(form._login_password) }}
+                    {{ form_widget(form._login_password, { attr: { placeholder: 'Mot de passe' } }) }}
 
                     <a href="{{ path('forgot_password') }}" class="form__forgotten-pw">Oublié ?</a>
                 </li>
@@ -36,9 +36,6 @@
     </section>
 
     <section class="l__inner__footer">
-        Pas de compte ? <a href="{{ path('app_membership_register') }}">S’inscrire</a>.
-        <div>
-            Créer un compte ne vous engage pas à adhérer au mouvement En Marche.
-        </div>
+        Pas encore adhérent(e) ? <a href="{{ path('app_membership_join') }}">S’inscrire</a>.
     </section>
 {% endblock %}

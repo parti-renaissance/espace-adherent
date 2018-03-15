@@ -19,3 +19,4 @@
 /supervisord.pid
 /yarn-error.log
 /.php_cs
+/.docker-dev.md5

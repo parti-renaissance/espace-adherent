@@ -16,7 +16,11 @@ use AppBundle\Form\ContactMessageType;
 use AppBundle\Form\CreateCommitteeCommandType;
 use AppBundle\Form\CitizenProjectCommandType;
 use AppBundle\CitizenProject\CitizenProjectCreationCommand;
+use AppBundle\Geocoder\Exception\GeocodingException;
+use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CitizenProjectRepository;
+use AppBundle\Search\SearchParametersFilter;
+use AppBundle\Search\SearchResultsProvidersManager;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -36,9 +40,30 @@ class AdherentController extends Controller
      * @Route("/accueil", name="app_adherent_home")
      * @Method("GET")
      */
-    public function homeAction(): Response
+    public function homeAction(Request $request, AdherentRepository $adherentRepository, SearchResultsProvidersManager $searchResultsProvidersManager, SearchParametersFilter $searchParametersFilter): Response
     {
-        return $this->render('adherent/home.html.twig');
+        $user = $this->getUser();
+        $searchParametersFilter->setCity(sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
+        $searchParametersFilter->setMaxResults(3);
+        $searchParametersFilter->setRadius(SearchParametersFilter::RADIUS_150);
+        $params = [];
+        $searchParams = [SearchParametersFilter::TYPE_EVENTS, SearchParametersFilter::TYPE_COMMITTEES, SearchParametersFilter::TYPE_CITIZEN_PROJECTS];
+
+        foreach ($searchParams as $type) {
+            try {
+                $searchParametersFilter->setType($type);
+                $params[$type] = $searchResultsProvidersManager->find($searchParametersFilter);
+            } catch (GeocodingException $exception) {
+            }
+        }
+        if ($request->query->getBoolean('from_activation')) {
+            $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
+        }
+
+        return $this->render('adherent/home.html.twig', array_merge([
+            'nb_adherent' => $adherentRepository->countAdherents(),
+            'from_activation' => $request->query->getBoolean('from_activation'),
+        ], $params));
     }
 
     /**

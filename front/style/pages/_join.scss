@@ -1,0 +1,211 @@
+.join {
+    display: flex;
+    justify-content: space-between;
+    height: 100vh;
+    overflow: hidden;
+
+    @media (max-width: $tablet) {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .progressive-background {
+        background-size: cover;
+    }
+
+    &__cta {
+        text-align: center;
+        position: absolute;
+        bottom: 30px;
+        left: 0;
+        right: 0;
+
+        a {
+            border-bottom: 0;
+        }
+
+        .btn {
+            @include btn;
+            background-color: transparent;
+            border: 1px solid $white;
+            color: $white;
+
+            &:hover {
+                background-color: $white;
+                border: 1px solid $white;
+                color: $black;
+            }
+        }
+    }
+
+    &__desc {
+        width: 35%;
+        height: 100vh;
+        transition: all 0.5s;
+        position: relative;
+        background-color: $blue--dark;
+
+        @media (min-width: $large--screen) {
+            height: auto;
+            width: 50%;
+        }
+
+        @media (max-width: $tablet) {
+            height: auto;
+            width: 100%;
+        }
+
+        h1 {
+            position: absolute;
+            margin: 30px;
+            z-index: 100;
+        }
+
+        .desc__texts {
+            position: relative;
+            @include vertical--align;
+
+            @media (max-width: $tablet) {
+                top: 0;
+                transform: translateY(0);
+                margin: 0 auto;
+                width: 100%;
+            }
+
+            span {
+                @include text--large;
+                @include text--bold;
+                font-family: 'Gillsans';
+                display: inline-block;
+                padding: 0 10px;
+                height: 30px;
+                color: $white;
+                text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.22);
+
+                @media (max-width: $tablet) {
+                    height: 25px;
+                }
+
+                &:nth-child(1) {
+                    border-bottom: 10px solid $yellow;
+                    box-shadow: inset 0 -5px 0 $yellow;
+                }
+            }
+
+            p {
+                max-width: 500px;
+                padding: 0 2em 2em;
+                font-size: 18px;
+                color: $white;
+            }
+        }
+    }
+
+    &__form {
+        width: 65%;
+        background-color: $gray--white;
+        height: auto;
+        overflow: scroll;
+        padding: 10% 0;
+
+        @media (min-width: $large--screen) {
+            height: auto;
+            width: 50%;
+        }
+
+        @media (max-width: $tablet) {
+            width: 100%;
+            overflow: hidden;
+            padding: 5% 0;
+        }
+
+        textarea:focus,
+        input:focus,
+        select:focus {
+            outline: 0;
+            border: 1px solid $green--apple;
+            transition: all 1s;
+        }
+
+        input,
+        select {
+            padding-left: 12px;
+            padding-right: 12px;
+            border-radius: 3px;
+            border: solid 1px $gray--light;
+            height: 60px;
+            box-sizing: border-box;
+            font-size: 16px;
+            font-family: "Roboto", Helvetica, sans-serif;
+        }
+
+        .register__form--full,
+        .register__form--mid,
+        .register__form--third {
+            margin: 10px 0;
+        }
+
+        .register__form--mid {
+            width: 48%;
+
+            @media (max-width: $mobile) {
+                width: 100%;
+            }
+        }
+
+        select#adherent_registration_birthdate_day,
+        select#become_adherent_birthdate_day,
+        select#adherent_registration_birthdate_month,
+        select#become_adherent_birthdate_month {
+            width: 90%;
+            margin-right: 10px;
+        }
+
+        select#user_registration_birthdate_year,
+        select#become_adherent_birthdate_year {
+            width: 90%;
+        }
+
+        .form__captcha {
+            width: 100%;
+        }
+
+        .register__form--full {
+            width: 100%;
+        }
+
+        .form__checkbox input[type="checkbox"]:checked+label:before {
+            transition: all 1s;
+            border-color: $green--apple;
+            background: $green--apple;
+        }
+
+        &__legal {
+            overflow: scroll;
+            border: 1px solid $gray--light;
+            border-radius: 3px;
+            padding: 1em;
+            margin-top: 30px;
+
+            @media (max-width: $tablet) {
+                margin-bottom: 0;
+            }
+        }
+
+        .btn {
+            border-radius: 3px;
+            max-width: 100%;
+            width: 100%;
+            color: $white;
+        }
+
+        .text__checkbox {
+            color: $gray--muted;
+
+            a {
+                color: $black--half;
+                border-bottom: 1px solid $black--half;
+            }
+        }
+    }
+}

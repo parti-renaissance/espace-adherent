@@ -24,12 +24,16 @@ export default class ReqwestApiClient {
         });
     }
 
-    getSearchResults(query, radius, city, type, offset, eventCategory, callback) {
+    getSearchResults(query, radius, city, type, offset, eventCategory, skillIds, callback) {
         var url = '/recherche?q='+query+'&r='+radius+'&c='+city+'&t='+type+'&offset='+offset;
 
         if (eventCategory) {
             url += '&ec='+eventCategory;
         }
+
+        skillIds.forEach((id) => {
+            url += '&citizen_project_skill_ids[]=' + id;
+        });
 
         let request = this._reqwest({
             url: url,

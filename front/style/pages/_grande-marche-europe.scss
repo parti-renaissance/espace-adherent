@@ -1,0 +1,209 @@
+.gme {
+    overflow: hidden;
+
+    @media (max-width: $mobile) {
+        height: 100%;
+        overflow: scroll;
+    }
+
+    .splash-screen {
+        @include splash--screen($blue--europe, 2s, 300);
+
+        .logo {
+            @include vertical--align;
+            z-index: 400;
+            position: relative;
+            font-size: $text--size-extra-large;
+            @include text--bold;
+            opacity: 0;
+            transition: all 1s;
+
+            img {
+                width: 30%;
+
+                @media (max-width: $mobile) {
+                    width: 50%;
+                }
+            }
+        }
+    }
+
+    .filter {
+        background-color: $blue--europe;
+        height: 100%;
+        width: 100%;
+        opacity: 0.5;
+        position: absolute;
+        top: 0;
+    }
+
+    .video--bkg {
+        width: 100%;
+        height: 100vh;
+
+        video {
+            object-fit: cover;
+            @include full--size;
+
+             ::-webkit-media-controls {
+                display: none !important;
+            }
+        }
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 200;
+
+        .logo {
+            padding: 1.2em;
+            width: 110px;
+
+            @media (max-width: $mobile) {
+                padding: 1em;
+                width: 70px;
+            }
+        }
+
+        .socials {
+            width: 15em;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 2em;
+            line-height: 1em;
+            font-weight: 100;
+
+            @media (max-width: $mobile) {
+                padding: 0;
+            }
+
+            a {
+                color: $white;
+                border: none;
+
+                &:hover {
+                    color: $blue--europe;
+                }
+            }
+        }
+    }
+
+    &__title {
+        position: absolute;
+        @include vertical--align;
+        width: 100%;
+        z-index: 200;
+
+        h1 {
+            color: $white;
+            position: relative;
+            text-align: center;
+            font-size: $text--size-extra-large--medium;
+            margin-bottom: 0.5em;
+            line-height: 70px;
+            width: 80%;
+            margin: 0 auto;
+
+            @media (max-width: $tablet) {
+                @include text--larger;
+            }
+
+            @media (max-width: $mobile) {
+                width: 90%;
+                @include text--medium-large;
+            }
+
+            span {
+                color: $yellow--europe;
+            }
+        }
+
+        form {
+            margin-top: 30px;
+            display: none;
+            justify-content: center;
+            position: relative;
+            top: 60px;
+            transform: translateY(400%);
+            transition: all 1.5s;
+            animation-timing-function: ease-in-out;
+
+            @media (max-width: $tablet) {
+                flex-direction: column;
+            }
+
+            @media (max-width: $mobile) {
+                margin: 0;
+            }
+
+            .gme__input {
+                border-radius: 0;
+                transition: all 1.5s;
+                width: 40%;
+                padding: 20px;
+                font-size: 30px;
+                font-family: $font-roboto;
+                font-weight: 200;
+                margin: 0;
+                border: 0;
+                box-sizing: border-box;
+                font-size: 25px;
+                color: $blue--europe;
+
+                &::placeholder {
+                    color: $gray--muted;
+                }
+
+                @media (max-width: $tablet) {
+                    font-size: 20px;
+                    text-align: center;
+                    width: 90%;
+                    margin: 0 auto;
+                }
+
+                @media (max-width: $mobile) {
+                    font-size: 15px;
+                }
+            }
+
+            .gme__button {
+                transition: all 0.5s;
+                margin: 0;
+                background-color: $yellow--europe;
+                border: 0;
+                padding: 20px;
+                box-sizing: border-box;
+                color: $black;
+                white-space: normal;
+
+                &:hover {
+                    color: $white;
+                    background-color: $blue--europe;
+                }
+
+                @media (max-width: $tablet) {
+                    width: 90%;
+                    margin: 0 auto;
+                }
+            }
+        }
+
+        p {
+            color: $white;
+            width: 60%;
+            @include text--medium-large;
+            margin: 20px auto 0 auto;
+            text-align: center;
+
+            @media (max-width: $mobile) {
+                width: 90%;
+                @include text--medium-small;
+            }
+        }
+    }
+}

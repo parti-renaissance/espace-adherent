@@ -24,13 +24,7 @@ class AdherentAdminTest extends MysqlWebTestCase
 
         $this->assertTrue($adherent->isBoardMember());
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
-
-        // connect as admin
-        $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_admin_email' => 'admin@en-marche-dev.fr',
-            '_admin_password' => 'admin',
-        ]));
+        $this->authenticateAsAdmin($this->client);
 
         $editUrl = sprintf('/admin/app/adherent/%s/edit', $adherent->getId());
 

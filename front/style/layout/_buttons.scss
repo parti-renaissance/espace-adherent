@@ -101,6 +101,17 @@
     }
 }
 
+@mixin btn--green--apple {
+    background: $green--apple;
+    border-color: $green--apple;
+
+    &:hover {
+        color: black;
+        background: $green-hover;
+        border-color: $green-hover;
+    }
+}
+
 @mixin btn--orange {
     background: $orange;
     border-color: $orange;
@@ -142,6 +153,18 @@
         color: black;
         background: $yellow-hover;
         border-color: $yellow-hover;
+    }
+}
+
+@mixin btn--pink {
+    color: $white;
+    background: $pink;
+    border-color: $pink;
+
+    &:hover {
+        color: $white;
+        background: $pink-hover;
+        border-color: $pink-hover;
     }
 }
 
@@ -228,6 +251,10 @@ input {
 
     &--medium {
         font-size: $text--size-medium--small;
+
+        @media(max-width: $mobile) {
+          font-size: $text--size-default;
+        }
     }
 
     &--large-and-medium {
@@ -282,8 +309,16 @@ input {
         @include btn--green;
     }
 
+    &--green--apple {
+        @include btn--green--apple;
+    }
+
     &--blue {
         @include btn--blue;
+    }
+
+    &--pink {
+        @include btn--pink;
     }
 
     &--muted {

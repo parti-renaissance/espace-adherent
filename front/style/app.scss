@@ -5,6 +5,8 @@
 @import "mixins/icons";
 @import "mixins/colors";
 @import "mixins/text";
+@import "mixins/spinner";
+@import "mixins/positioning";
 
 @import "layout/base";
 @import "layout/banners";
@@ -56,3 +58,7 @@
 @import "pages/wall";
 @import "pages/oauth";
 @import "pages/image-generator";
+@import "pages/home_adherent";
+@import "pages/join";
+@import "pages/complete";
+@import "pages/grande-marche-europe";

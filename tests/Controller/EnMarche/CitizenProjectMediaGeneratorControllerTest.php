@@ -39,7 +39,7 @@ class CitizenProjectMediaGeneratorControllerTest extends WebTestCase
         $this->isSuccessful($this->client->getResponse());
 
         $this->assertContains(
-            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAzQAAAE4CAYAAACNL7YlAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALiQAAC4kBN8nLrQAAIABJREFUeAEAKoDVfwFfbdn/AAEAAAAAAAABAAEAAAAAAAAAAAAAAQAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAA',
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAzQAAAE4CAYAAACNL7YlAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALiQAAC4kBN8nLrQAAIABJREFUeAEAKoDVfwFGTpn/AAEAAAEAAQAAAQEAAQEAAAEAAQAAAQEAAQAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAQEBAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
             $crawler->selectImage('Cover Facebook image')->image()->getUri()
         );
     }
