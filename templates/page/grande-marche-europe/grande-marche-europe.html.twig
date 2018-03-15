@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title 'La Grande marche' %} 
-{% block meta_description 'Aujourd\'hui le combat pour l\'égalité réelle femme / homme est culturel. 
-Les lois existent, c\'est maintenant aux mentalités d\'évoluer. 
-Ce sera la grande cause nationale du quinquennat d\'Emmanuel Macron.' %} 
-{% block canonical_url url('page_grande_marche_europe') %} 
+{% block page_title 'La Grande marche' %}
+{% block meta_description 'La Grande Marche pour l\'Europe démarre le 24 mars 2018. Nous partons à l\'écoute de nos concitoyens, afin de réinventer avec eux notre projet pour l\'Europe.' %}
+{% block canonical_url url('page_grande_marche_europe') %}
+{% block open_graph_image (url('homepage')|trim('/') ~ static_asset('grande-marche-social-media.jpg', {'q': 70}))|raw %}
+
 {% block header '' %}
 {% block banner '' %}
 {% block footer '' %}
 
-{% block javascripts %} 
+{% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
         Kernel.onLoad(function() {
@@ -31,7 +31,7 @@ Ce sera la grande cause nationale du quinquennat d\'Emmanuel Macron.' %}
                     <img src="https://storage.googleapis.com/en-marche-staging/static/images/logoGme.svg" alt="">
                 </div>
                 <div class="socials text--white">
-                    <p class="text--bold">Partager sur :</p>
+                    <p class="text--uppercase text--body text--bold text--small">Partager sur :</p>
                     <a href="#" onclick="App.share('facebook', window.location.href, 'La grande Marche de l\'Europe')">
                         <i class="fa fa-lg fa-facebook "></i>
                     </a>
@@ -53,12 +53,12 @@ Ce sera la grande cause nationale du quinquennat d\'Emmanuel Macron.' %}
                     <div style="position: absolute; left: -5000px;" aria-hidden="true">
                         <input type="text" name="b_55827081e9c72c969a6fa0ea5_1b1d13be5b" tabindex="-1" value="">
                     </div>
-                    <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="btn btn--medium btn--primary gme__button" value="être tenu au courant"></input>
+                    <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="btn btn--medium btn--primary gme__button" value="Être tenu(e) au courant"></input>
                 </form>
             </div>
             <div class="filter"></div>
             <video src="https://storage.googleapis.com/en-marche-staging/static/videos/gMarche.mp4" autoplay loop>
-            </video> 
+            </video>
         </section>
 </main>
 {% endblock %}
