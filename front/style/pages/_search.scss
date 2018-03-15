@@ -291,9 +291,13 @@
         }
 
         &__skills {
-            margin-top: 5px;
-            display: flex;
-            flex-wrap: wrap;
+            display: none;
+
+            ul {
+                margin-top: 5px;
+                display: flex;
+                flex-wrap: wrap;
+            }
 
             li {
                 padding: 3px 10px;
