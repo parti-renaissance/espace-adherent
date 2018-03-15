@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Geocoder\Subscriber;
 
-use AppBundle\Committee\CommitteeWasCreatedEvent;
+use AppBundle\Committee\CommitteeEvent;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProjectCategory;
 use AppBundle\Entity\Committee;
@@ -99,7 +99,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         $this->assertNull($committee->getLongitude());
 
         $this->manager->expects($this->once())->method('flush');
-        $this->subscriber->updateCoordinates(new CommitteeWasCreatedEvent($committee, $this->createAdherent('92 bld Victor Hugo')));
+        $this->subscriber->updateCoordinates(new CommitteeEvent($committee));
 
         $this->assertSame(45.7713288, $committee->getLatitude());
         $this->assertSame(4.8288758, $committee->getLongitude());
@@ -114,7 +114,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         $this->assertNull($committee->getLongitude());
 
         $this->manager->expects($this->never())->method('flush');
-        $this->subscriber->updateCoordinates(new CommitteeWasCreatedEvent($committee, $this->createAdherent('92 bld Victor Hugo')));
+        $this->subscriber->updateCoordinates(new CommitteeEvent($committee));
 
         $this->assertNull($committee->getLatitude());
         $this->assertNull($committee->getLongitude());

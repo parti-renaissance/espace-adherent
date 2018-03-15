@@ -3,6 +3,8 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Event;
+use AppBundle\Event\EventEvent;
+use AppBundle\Events;
 use AppBundle\Form\EventCategoryType;
 use AppBundle\Form\UnitedNationsCountryType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -15,6 +17,7 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -26,6 +29,15 @@ class EventAdmin extends AbstractAdmin
         '_sort_order' => 'DESC',
         '_sort_by' => 'createdAt',
     ];
+
+    private $dispatcher;
+
+    public function __construct($code, $class, $baseControllerName, EventDispatcherInterface $dispatcher)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->dispatcher = $dispatcher;
+    }
 
     public function getTemplate($name)
     {
@@ -102,6 +114,13 @@ class EventAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
+    }
+
+    public function postUpdate($object)
+    {
+        $event = new EventEvent($object->getOrganizer(), $object);
+
+        $this->dispatcher->dispatch(Events::EVENT_UPDATED, $event);
     }
 
     protected function configureFormFields(FormMapper $formMapper)
