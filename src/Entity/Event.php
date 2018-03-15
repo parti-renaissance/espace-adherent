@@ -26,7 +26,6 @@ class Event extends BaseEvent implements UserDocumentInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      *
      * @Algolia\Attribute
      */
