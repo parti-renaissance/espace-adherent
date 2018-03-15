@@ -9,21 +9,20 @@ use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Membership\ActivityPositions;
+use AppBundle\Membership\AdherentEmailSubscription;
 use Doctrine\Common\Collections\ArrayCollection;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\UuidInterface;
 use Tests\AppBundle\TestHelperTrait;
 
 class AdherentTest extends TestCase
 {
     use TestHelperTrait;
 
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $adherent = $this->createAdherent();
 
-        $this->assertInstanceOf(UuidInterface::class, $adherent->getUuid());
         $this->assertInstanceOf(PhoneNumber::class, $adherent->getPhone());
         $this->assertFalse($adherent->isEnabled());
         $this->assertNull($adherent->getSalt());
@@ -49,32 +48,47 @@ class AdherentTest extends TestCase
         $this->assertSame(-1, $adherent->getCitizenProjectCreationEmailSubscriptionRadius());
     }
 
-    public function testAdherentCitizenProjectCreationEmailSubscriptionRadiusIsRelatedToComEmail()
+    public function testAdherentCitizenProjectCreationEmailSubscriptionRadiusIsRelatedToComEmail(): void
     {
         $adherent = $this->createAdherent();
 
         $this->assertSame(-1, $adherent->getCitizenProjectCreationEmailSubscriptionRadius());
-        $this->assertFalse($adherent->hasSubscribedMainEmails());
         $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
-        $this->assertFalse($adherent->hasSubscribedReferentsEmails());
+        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOVEMENT_INFORMATION));
+        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_GOVERNMENT_INFORMATION));
+        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_WEEKLY_LETTER));
+        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MICROLEARNING));
+        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOOC));
+        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_DONATOR_INFORMATION));
+        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS));
         $this->assertFalse($adherent->hasCitizenProjectCreationEmailSubscription());
 
         $adherent->setComEmail(true);
         $this->assertSame(10, $adherent->getCitizenProjectCreationEmailSubscriptionRadius());
-        $this->assertTrue($adherent->hasSubscribedMainEmails());
         $this->assertTrue($adherent->hasSubscribedLocalHostEmails());
-        $this->assertTrue($adherent->hasSubscribedReferentsEmails());
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOVEMENT_INFORMATION));
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_GOVERNMENT_INFORMATION));
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_WEEKLY_LETTER));
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MICROLEARNING));
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOOC));
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_DONATOR_INFORMATION));
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS));
         $this->assertTrue($adherent->hasCitizenProjectCreationEmailSubscription());
 
         $adherent->setComEmail(false);
         $this->assertSame(-1, $adherent->getCitizenProjectCreationEmailSubscriptionRadius());
-        $this->assertFalse($adherent->hasSubscribedMainEmails());
         $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
-        $this->assertFalse($adherent->hasSubscribedReferentsEmails());
+        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOVEMENT_INFORMATION));
+        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_GOVERNMENT_INFORMATION));
+        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_WEEKLY_LETTER));
+        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MICROLEARNING));
+        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOOC));
+        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_DONATOR_INFORMATION));
+        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS));
         $this->assertFalse($adherent->hasCitizenProjectCreationEmailSubscription());
     }
 
-    public function testAdherentsAreEqual()
+    public function testAdherentsAreEqual(): void
     {
         $adherent1 = $this->createAdherent('john.smith@example.org');
         $adherent2 = $this->createAdherent('john.smith@example.org');
@@ -87,7 +101,7 @@ class AdherentTest extends TestCase
         $this->assertFalse($adherent3->equals($adherent2));
     }
 
-    public function testGeoAddressAndCoordinates()
+    public function testGeoAddressAndCoordinates(): void
     {
         $adherent = $this->createAdherent();
         $adherent->updateCoordinates(new Coordinates(12.456323, 89.735324));
@@ -97,7 +111,7 @@ class AdherentTest extends TestCase
         $this->assertSame(89.735324, $adherent->getLongitude());
     }
 
-    public function testActivateAdherentAccount()
+    public function testActivateAdherentAccount(): void
     {
         $adherent = $this->createAdherent();
         $activationToken = AdherentActivationToken::generate($adherent);
@@ -116,7 +130,7 @@ class AdherentTest extends TestCase
     /**
      * @expectedException \AppBundle\Exception\AdherentAlreadyEnabledException
      */
-    public function testActivateAdherentAccountTwice()
+    public function testActivateAdherentAccountTwice(): void
     {
         $adherent = $this->createAdherent();
         $activationToken = AdherentActivationToken::generate($adherent);
@@ -126,7 +140,7 @@ class AdherentTest extends TestCase
         $adherent->activate($activationToken);
     }
 
-    public function testAuthenticateAdherentAccount()
+    public function testAuthenticateAdherentAccount(): void
     {
         $adherent = $this->createAdherent();
         $this->assertNull($adherent->getLastLoggedAt());
@@ -136,7 +150,7 @@ class AdherentTest extends TestCase
         $this->assertEquals(new \DateTime('2016-01-01 13:30:00'), $adherent->getLastLoggedAt());
     }
 
-    public function testUserWithLegislativeCandidateRole()
+    public function testUserWithLegislativeCandidateRole(): void
     {
         $adherent = $this->createAdherent();
         $this->assertNotContains('ROLE_LEGISLATIVE_CANDIDATE', $adherent->getRoles());
@@ -145,7 +159,7 @@ class AdherentTest extends TestCase
         $this->assertNotContains('ROLE_LEGISLATIVE_CANDIDATE', $adherent->getRoles());
     }
 
-    public function testIsBasicAdherent()
+    public function testIsBasicAdherent(): void
     {
         // User
         $adherent = $this->createAdherent();

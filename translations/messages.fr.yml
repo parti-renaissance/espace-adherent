@@ -23,6 +23,16 @@ adherent.activity_position.retired: Retraité
 adherent.activity_position.employed: En activité
 adherent.activity_position.unemployed: En recherche d'emploi
 
+
+subscribed_emails_movement_information: 'Informations du mouvement'
+subscribed_emails_government_information: 'Informations du gouvernement'
+subscribed_emails_weekly_letter: 'Lettre hebdomadaire '
+subscribed_emails_mooc: 'Mooc'
+subscribed_emails_microlearning: 'Microlearning'
+subscribed_emails_donator_information: 'Informations donateur'
+subscribed_emails_referents: 'Emails de vos référents'
+subscribed_emails_citizen_project_creation: 'Être notifié(e) de la création de nouveaux projets citoyens'
+
 adherent.registration.success: |
     Vous venez de rejoindre En Marche, nous vous en remercions !
     Pour finaliser votre inscription et accéder à votre espace adhérent, vous devez
