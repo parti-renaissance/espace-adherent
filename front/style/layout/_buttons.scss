@@ -251,6 +251,10 @@ input {
 
     &--medium {
         font-size: $text--size-medium--small;
+
+        @media(max-width: $mobile) {
+          font-size: $text--size-default;
+        }
     }
 
     &--large-and-medium {
