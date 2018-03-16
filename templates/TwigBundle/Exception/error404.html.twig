@@ -2,24 +2,9 @@
 
 {% block banner '' %}
 {% block page_title 'Page introuvable' %}
-{% block stylesheets %}
-    <style type="text/css">
-        header,
-        footer {
-            display: none !important;
-        }
-    </style>
-{% endblock %}
 
 {% block content %}
     <main class="error">
-        <div class="header l__wrapper">
-            <h1>
-                <a href="{{ path('homepage') }}">
-                    En Marche !
-                </a>
-            </h1>
-        </div>
         <section class="l__wrapper--slim">
             <div class="error__box error__box--404"></div>
             <div>
