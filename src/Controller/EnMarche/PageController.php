@@ -184,7 +184,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/grandemarcheeurope", defaults={"_enable_campaign_silence"=true}, name="page_grande_marche_europe")
+     * @Route("/grande-marche-europe", defaults={"_enable_campaign_silence"=true}, name="page_grande_marche_europe")
      * @Method("GET")
      */
     public function grandeMarcheEuropeAction()
