@@ -135,13 +135,6 @@ class CitizenProjectRepository extends BaseGroupRepository
             $qb->setParameter('query', "%$query%");
         }
 
-        if ($skillIds = $search->getCitizenProjecSkillIds()) {
-            $qb->join('n.skills', 'skills')
-                ->andWhere('skills.id in (:skillIds)')
-                ->setParameter('skillIds', $skillIds)
-            ;
-        }
-
         return $qb
             ->andWhere('n.status = :status')
             ->setParameter('status', CitizenProject::APPROVED)

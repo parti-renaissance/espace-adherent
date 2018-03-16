@@ -7,15 +7,14 @@
             var page = 1;
             var limit = {{ search.maxResults }};
             var moreButton = dom('#search-more');
-            var query = dom("[name='{{ constant("PARAMETER_QUERY", search) }}']");
-            var radius = dom("[name='{{ constant("PARAMETER_RADIUS", search) }}']");
-            var city = dom("[name='{{ constant("PARAMETER_CITY", search) }}']");
-            var type = dom("[name='{{ constant("PARAMETER_TYPE", search) }}']").value;
-            var eventCategory = dom("[name='{{ constant("PARAMETER_EVENT_CATEGORY", search) }}']");
-            var skills = dom("[name='{{ constant("PARAMETER_CITIZEN_PROJECT_SKILL_IDS", search) }}']");
+            var query = dom("[name='q']");
+            var radius = dom("[name='r']");
+            var city = dom("[name='c']");
+            var type = dom("[name='t']").value;
+            var eventCategory = dom("[name='ec']");
 
             on(moreButton, 'click', function () {
-                di.get('api').getSearchResults(query.value, radius.value, city.value, type, (page * limit), eventCategory.value, getSkillIds(skills), function (response) {
+                di.get('api').getSearchResults(query.value, radius.value, city.value, type, (page * limit), eventCategory.value, function (response) {
                     if (response instanceof XMLHttpRequest) {
                         hide(moreButton);
                         return;
@@ -41,14 +40,7 @@
             if (eventCategory) {
                 on(eventCategory, 'change', fetchResults);
             } else {
-                eventCategory = {value: null};
-            }
-
-            // Citizen project filter does not apply for committees
-            if (skills) {
-                on(skills, 'change', fetchResults);
-            } else {
-                skills = {value: null};
+                var eventCategory = {value: null};
             }
 
             var waitQueue;
@@ -61,7 +53,7 @@
                 // setTimeout avoids sending all HTTP request while the user is typing
                 clearTimeout(waitQueue);
                 waitQueue = setTimeout(function() {
-                    di.get('api').getSearchResults(query.value, radius.value, city.value, type, 0, eventCategory.value, getSkillIds(skills), function (response) {
+                    di.get('api').getSearchResults(query.value, radius.value, city.value, type, 0, eventCategory.value, function (response) {
                         if (response instanceof XMLHttpRequest) {
                             hide(moreButton);
                             dom('#search-results').innerHTML = '<div class="text--body text--center l__wrapper">Aucun résultat pour ces critères de recherche.</div>';
@@ -72,24 +64,6 @@
                         dom('#search-results').innerHTML = response;
                     });
                 }, 200);
-            }
-
-            /**
-             * Get selected ids of skills select form
-             */
-            function getSkillIds(skills) {
-                if (!skills.value) {
-                    return [];
-                }
-
-                return Array.prototype
-                    .filter.apply(skills.options, [function (option) {
-                        return option.selected;
-                    }])
-                    .map(function (option) {
-                        return option.value;
-                    })
-                ;
             }
 
             autocomplete = new google.maps.places.Autocomplete(city, {
