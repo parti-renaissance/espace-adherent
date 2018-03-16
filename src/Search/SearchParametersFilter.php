@@ -15,13 +15,12 @@ class SearchParametersFilter
 {
     public const CACHE_KEY_PREFIX = 'search_geocoding_city_';
 
-    public const PARAMETER_QUERY = 'q';
-    public const PARAMETER_RADIUS = 'r';
-    public const PARAMETER_CITY = 'c';
-    public const PARAMETER_TYPE = 't';
-    public const PARAMETER_OFFSET = 'offset';
-    public const PARAMETER_EVENT_CATEGORY = 'ec';
-    public const PARAMETER_CITIZEN_PROJECT_SKILL_IDS = 'citizen_project_skill_ids';
+    const PARAMETER_QUERY = 'q';
+    const PARAMETER_RADIUS = 'r';
+    const PARAMETER_CITY = 'c';
+    const PARAMETER_TYPE = 't';
+    const PARAMETER_OFFSET = 'offset';
+    const PARAMETER_EVENT_CATEGORY = 'ec';
 
     public const DEFAULT_QUERY = '';
     public const DEFAULT_TYPE = self::TYPE_COMMITTEES;
@@ -70,7 +69,6 @@ class SearchParametersFilter
     private $maxResults;
     private $eventCategory;
     private $cache;
-    private $citizenProjecSkillIds;
 
     public function __construct(GeocoderInterface $geocoder, AdapterInterface $cache)
     {
@@ -82,7 +80,6 @@ class SearchParametersFilter
         $this->city = self::DEFAULT_CITY;
         $this->offset = 0;
         $this->maxResults = self::DEFAULT_MAX_RESULTS;
-        $this->citizenProjecSkillIds = [];
     }
 
     /**
@@ -97,12 +94,6 @@ class SearchParametersFilter
         $this->setRadius($request->query->getInt(self::PARAMETER_RADIUS, self::DEFAULT_RADIUS));
         $this->setOffset($request->query->getInt(self::PARAMETER_OFFSET));
         $this->setEventCategory($request->query->getAlnum(self::PARAMETER_EVENT_CATEGORY, null));
-
-        if (!is_array($skillIds = $request->query->get(self::PARAMETER_CITIZEN_PROJECT_SKILL_IDS, []))) {
-            $skillIds = [$skillIds];
-        }
-
-        $this->setCitizenProjecSkillIds($skillIds);
 
         if (null !== $city = $request->query->get(self::PARAMETER_CITY)) {
             $this->setCity((string) $city);
@@ -211,16 +202,6 @@ class SearchParametersFilter
     public function setEventCategory(?string $eventCategory): void
     {
         $this->eventCategory = $eventCategory;
-    }
-
-    public function getCitizenProjecSkillIds(): array
-    {
-        return $this->citizenProjecSkillIds;
-    }
-
-    public function setCitizenProjecSkillIds(array $ids): void
-    {
-        $this->citizenProjecSkillIds = $ids;
     }
 
     public function isTypeCommittees(): bool

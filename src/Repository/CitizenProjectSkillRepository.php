@@ -11,13 +11,4 @@ class CitizenProjectSkillRepository extends EntityRepository
     {
         return $this->findOneBy(['name' => $name]);
     }
-
-    public function findAllAsPartialArray(): array
-    {
-        return $this->createQueryBuilder('skill')
-            ->select('skill.id, skill.name')
-            ->getQuery()
-            ->getArrayResult()
-        ;
-    }
 }
