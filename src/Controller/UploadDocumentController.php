@@ -4,12 +4,15 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\UserDocument;
 use AppBundle\UserDocument\UserDocumentManager;
+use AppBundle\UserDocument\UserDocumentRole;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use League\Flysystem\FileNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -19,11 +22,22 @@ class UploadDocumentController extends Controller
     /**
      * @Route("/upload/{type}", defaults={"_enable_campaign_silence"=true}, name="app_filebrowser_upload")
      * @Method("POST")
+     * @Security("has_role('ROLE_UPLOAD_USER_DOCUMENT')")
      */
     public function filebrowserUploadAction(string $type, Request $request)
     {
         if (!in_array($type, UserDocument::ALL_TYPES)) {
             throw new NotFoundHttpException("File upload is not defined for type '$type'.");
+        }
+
+        if (
+            (UserDocument::TYPE_REFERENT === $type && !$this->isGranted(UserDocumentRole::ROLE_UPLOAD_REFERENT_DOCUMENT))
+            || (
+                in_array($type, [UserDocument::TYPE_COMMITTEE_CONTACT, UserDocument::TYPE_COMMITTEE_FEED], true)
+                && !$this->isGranted(UserDocumentRole::ROLE_UPLOAD_COMMITTEE_DOCUMENT)
+            )
+        ) {
+            throw new AccessDeniedHttpException();
         }
 
         if (!$request->query->has('CKEditorFuncNum') || 0 == $request->files->count()) {
