@@ -9,7 +9,7 @@ App.createAddressSelector(
 );
 {% endmacro %}
 
-{% macro ckeditor(element, height, uploadType = 'none') %}
+{% macro ckeditor(element, height, uploadType = false) %}
 CKEDITOR.replace('{{ element }}', {
     extraPlugins : 'confighelper',
     removePlugins: 'elementspath',
@@ -24,7 +24,9 @@ CKEDITOR.replace('{{ element }}', {
         { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
         { name: 'links', items: [ 'Link', 'Image' ] }
     ],
-    filebrowserUploadUrl: "{{ path('app_filebrowser_upload', { type: uploadType }) }}",
+    {% if uploadType %}
+        filebrowserUploadUrl: "{{ path('app_filebrowser_upload', { type: uploadType }) }}",
+    {% endif %}
     linkShowAdvancedTab: false,
     linkShowTargetTab: false,
 });
