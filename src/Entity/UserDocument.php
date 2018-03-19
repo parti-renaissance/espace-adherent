@@ -26,9 +26,12 @@ class UserDocument
 
     public const TYPE_COMMITTEE_FEED = 'committee_feed';
     public const TYPE_EVENT = 'event';
+    public const TYPE_REFERENT = 'referent';
+
     public const ALL_TYPES = [
         self::TYPE_COMMITTEE_FEED,
         self::TYPE_EVENT,
+        self::TYPE_REFERENT,
     ];
 
     /**

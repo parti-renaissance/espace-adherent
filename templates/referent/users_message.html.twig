@@ -7,7 +7,7 @@
     <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            {{ js.ckeditor('referent_message_content') }}
+            {{ js.ckeditor('referent_message_content', null, constant('AppBundle\\Entity\\UserDocument::TYPE_REFERENT')) }}
         });
     </script>
 {% endblock %}
