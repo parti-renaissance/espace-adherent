@@ -228,6 +228,7 @@ snc_redis:
             dsn: "redis://%env(REDIS_HOST)%"
     session:
         client: default
+        ttl: 900 # 15 min
 
 old_sound_rabbit_mq:
     connections:
