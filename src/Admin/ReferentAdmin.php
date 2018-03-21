@@ -4,6 +4,7 @@ namespace AppBundle\Admin;
 
 use AppBundle\Entity\Referent;
 use AppBundle\Form\GenderType;
+use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use AppBundle\ValueObject\Genders;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -19,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class ReferentAdmin extends AbstractAdmin
 {
+    public $OCItems = [];
     protected $datagridValues = [
         '_page' => 1,
         '_sort_order' => 'ASC',
@@ -26,20 +28,18 @@ class ReferentAdmin extends AbstractAdmin
     ];
     protected $maxPerPage = 100;
     protected $perPageOptions = [];
-
     protected $formOptions = [
         'validation_groups' => ['Default', 'Admin'],
     ];
-
-    /**
-     * @var DataTransformerInterface
-     */
     private $dataTransformer;
+    private $organizationalChartItemRepository;
 
-    public function __construct($code, $class, $baseControllerName, DataTransformerInterface $dataTransformer)
+    public function __construct(string $code, string $class, string $baseControllerName, DataTransformerInterface $dataTransformer, OrganizationalChartItemRepository $organizationalChartItemRepository)
     {
         parent::__construct($code, $class, $baseControllerName);
+
         $this->dataTransformer = $dataTransformer;
+        $this->organizationalChartItemRepository = $organizationalChartItemRepository;
     }
 
     protected function configureDatagridFilters(DatagridMapper $mapper)
@@ -93,6 +93,10 @@ class ReferentAdmin extends AbstractAdmin
             ->add('areas', null, [
                 'label' => 'Zone',
             ])
+            ->add('referentPersonLinks', null, [
+                'label' => 'Equipe départementale',
+                'associated_property' => 'getAdminDisplay',
+            ])
             ->add('status', null, [
                 'label' => 'Visibilité',
                 'show_filter' => true,
@@ -100,6 +104,9 @@ class ReferentAdmin extends AbstractAdmin
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [
+                    'export_team_xlsx' => [
+                        'template' => 'admin/referent/export_team_xlsx_button.html.twig',
+                    ],
                     'show' => [],
                     'edit' => [],
                 ],
@@ -198,49 +205,66 @@ class ReferentAdmin extends AbstractAdmin
 
     protected function configureShowFields(ShowMapper $mapper)
     {
+        $this->OCItems = $this->organizationalChartItemRepository->getRootNodes();
+
         $mapper
             ->with('Informations générales', ['class' => 'col-md-5'])
-            ->add('id', null, [
-                'label' => 'ID',
-            ])
-            ->add('status', null, [
-                'label' => 'Visibilité',
-            ])
-            ->add('gender', null, [
-                'label' => 'Genre',
-            ])
-            ->add('lastName', null, [
-                'label' => 'Nom',
-            ])
-            ->add('firstName', null, [
-                'label' => 'Prénom',
-            ])
-            ->add('emailAddress', null, [
-                'label' => 'Adresse e-mail',
-            ])
+                ->add('id', null, [
+                    'label' => 'ID',
+                ])
+                ->add('status', null, [
+                    'label' => 'Visibilité',
+                ])
+                ->add('gender', null, [
+                    'label' => 'Genre',
+                ])
+                ->add('lastName', null, [
+                    'label' => 'Nom',
+                ])
+                ->add('firstName', null, [
+                    'label' => 'Prénom',
+                ])
+                ->add('emailAddress', null, [
+                    'label' => 'Adresse e-mail',
+                ])
             ->end()
             ->with('Zone', ['class' => 'col-md-7'])
-            ->add('geojson', null, [
-                'label' => 'Données GeoJSON',
-            ])
-            ->add('areas', null, [
-                'label' => 'Zones',
-            ])
+                ->add('geojson', null, [
+                    'label' => 'Données GeoJSON',
+                ])
+                ->add('areas', null, [
+                    'label' => 'Zones',
+                ])
             ->end()
             ->with('Photo de profil', ['class' => 'col-md-5'])
-            ->add('media', null)
+                ->add('media', null)
             ->end()
             ->with('Pages Web', ['class' => 'col-md-7'])
-            ->add('twitterPageUrl', 'url', [
-                'label' => 'Twitter',
-            ])
-            ->add('facebookPageUrl', 'url', [
-                'label' => 'Facebook',
-            ])
+                ->add('twitterPageUrl', 'url', [
+                    'label' => 'Twitter',
+                ])
+                ->add('facebookPageUrl', 'url', [
+                    'label' => 'Facebook',
+                ])
             ->end()
             ->with('Description', ['class' => 'col-md-12'])
-            ->add('description', null)
+                ->add('description', null)
+            ->end()
+            ->with('Organigrame', ['class' => 'col-md-12'])
+                ->add('referentPersonLinks', null, [
+                    'template' => 'admin/referent/organization_chart.html.twig',
+                ])
             ->end()
         ;
+    }
+
+    protected function configureBatchActions($actions)
+    {
+        $actions['exportTeams'] = [
+            'label' => 'Exporter les équipes',
+            'ask_confirmation' => false,
+        ];
+
+        return $actions;
     }
 }

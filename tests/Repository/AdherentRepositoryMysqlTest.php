@@ -30,7 +30,7 @@ class AdherentRepositoryMysqlTest extends MysqlWebTestCase
         $referents = $this->repository->findReferentsByCommittee($committee);
 
         $this->assertNotEmpty($referents);
-        $this->assertCount(1, $referents);
+        $this->assertCount(2, $referents);
 
         $referent = $referents->first();
 

@@ -56,13 +56,16 @@
             <argument type="service" id="app.mailer.transactional" />
         </service>
 
-		<!-- EventListener -->
-		<service id="AppBundle\EventListener\ProcurationMailerSubscriber">
-			<argument key="$mailer" type="service" id="app.mailer.transactional" />
-		</service>
+        <!-- EventListener -->
+        <service id="AppBundle\EventListener\ProcurationMailerSubscriber">
+            <argument key="$mailer" type="service" id="app.mailer.transactional" />
+        </service>
         <prototype namespace="AppBundle\EntityListener\" resource="../../../src/EntityListener/">
             <tag name="doctrine.orm.entity_listener" />
         </prototype>
+
+        <!-- Exporter -->
+        <prototype namespace="AppBundle\Exporter\" resource="../../../src/Exporter/" />
 
         <!-- Form -->
         <service id="AppBundle\Form\CitizenProjectCommentCommandType"/>

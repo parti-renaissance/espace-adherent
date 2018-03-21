@@ -3,188 +3,192 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
+        <defaults autowire="true" autoconfigure="true" public="false" />
 
-        <service id="app.repository.adherent" class="AppBundle\Repository\AdherentRepository" public="false">
+        <prototype namespace="AppBundle\Repository\ReferentOrganizationalChart\" resource="../../../src/Repository/ReferentOrganizationalChart/*" />
+        <service id="AppBundle\Repository\ReferentRepository" />
+
+        <service id="app.repository.adherent" class="AppBundle\Repository\AdherentRepository" >
             <argument>AppBundle\Entity\Adherent</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.committee" class="AppBundle\Repository\CommitteeRepository" public="false">
+        <service id="app.repository.committee" class="AppBundle\Repository\CommitteeRepository" >
             <argument>AppBundle\Entity\Committee</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.committee_membership" class="AppBundle\Repository\CommitteeMembershipRepository" public="false">
+        <service id="app.repository.committee_membership" class="AppBundle\Repository\CommitteeMembershipRepository" >
             <argument>AppBundle\Entity\CommitteeMembership</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.committee_feed_item" class="AppBundle\Repository\CommitteeFeedItemRepository" public="false">
+        <service id="app.repository.committee_feed_item" class="AppBundle\Repository\CommitteeFeedItemRepository" >
             <argument>AppBundle\Entity\CommitteeFeedItem</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.event" class="AppBundle\Repository\EventRepository" public="false">
+        <service id="app.repository.event" class="AppBundle\Repository\EventRepository" >
             <argument>AppBundle\Entity\Event</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.citizen_action" class="AppBundle\Repository\CitizenActionRepository" public="false">
+        <service id="app.repository.citizen_action" class="AppBundle\Repository\CitizenActionRepository" >
             <argument>AppBundle\Entity\CitizenAction</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.event_registration" class="AppBundle\Repository\EventRegistrationRepository" public="false">
+        <service id="app.repository.event_registration" class="AppBundle\Repository\EventRegistrationRepository" >
             <argument>AppBundle\Entity\EventRegistration</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.email" class="AppBundle\Repository\EmailRepository" public="false">
+        <service id="app.repository.email" class="AppBundle\Repository\EmailRepository" >
             <argument>AppBundle\Entity\Email</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.ton_macron_choice" class="AppBundle\Repository\TonMacronChoiceRepository" public="false">
+        <service id="app.repository.ton_macron_choice" class="AppBundle\Repository\TonMacronChoiceRepository" >
             <argument>AppBundle\Entity\TonMacronChoice</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.purchasing_power_choice_repository" class="AppBundle\Repository\PurchasingPowerChoiceRepository" public="false">
+        <service id="app.repository.purchasing_power_choice_repository" class="AppBundle\Repository\PurchasingPowerChoiceRepository" >
             <argument>AppBundle\Entity\PurchasingPowerChoice</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.redirection" class="AppBundle\Repository\RedirectionRepository" public="false">
+        <service id="app.repository.redirection" class="AppBundle\Repository\RedirectionRepository" >
             <argument>AppBundle\Entity\Redirection</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.procuration_request" class="AppBundle\Repository\ProcurationRequestRepository" public="false">
+        <service id="app.repository.procuration_request" class="AppBundle\Repository\ProcurationRequestRepository" >
             <argument>AppBundle\Entity\ProcurationRequest</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.procuration_proxy" class="AppBundle\Repository\ProcurationProxyRepository" public="false">
+        <service id="app.repository.procuration_proxy" class="AppBundle\Repository\ProcurationProxyRepository" >
             <argument>AppBundle\Entity\ProcurationProxy</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.facebook_profile" class="AppBundle\Repository\FacebookProfileRepository" public="false">
+        <service id="app.repository.facebook_profile" class="AppBundle\Repository\FacebookProfileRepository" >
             <argument>AppBundle\Entity\FacebookProfile</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.legislative_candidate" class="AppBundle\Repository\LegislativeCandidateRepository" public="false">
+        <service id="app.repository.legislative_candidate" class="AppBundle\Repository\LegislativeCandidateRepository" >
             <argument>AppBundle\Entity\LegislativeCandidate</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.summary" class="AppBundle\Repository\SummaryRepository" public="false">
+        <service id="app.repository.summary" class="AppBundle\Repository\SummaryRepository" >
             <argument>AppBundle\Entity\Summary</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.skill" class="AppBundle\Repository\SkillRepository" public="false">
+        <service id="app.repository.skill" class="AppBundle\Repository\SkillRepository" >
             <argument>AppBundle\Entity\Skill</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.article" class="AppBundle\Repository\ArticleRepository" public="false">
+        <service id="app.repository.article" class="AppBundle\Repository\ArticleRepository" >
             <argument>AppBundle\Entity\Article</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.proposal" class="AppBundle\Repository\ProposalRepository" public="false">
+        <service id="app.repository.proposal" class="AppBundle\Repository\ProposalRepository" >
             <argument>AppBundle\Entity\Proposal</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.order_article" class="AppBundle\Repository\OrderArticleRepository" public="false">
+        <service id="app.repository.order_article" class="AppBundle\Repository\OrderArticleRepository" >
             <argument>AppBundle\Entity\OrderArticle</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.citizen_project" class="AppBundle\Repository\CitizenProjectRepository" public="false">
+        <service id="app.repository.citizen_project" class="AppBundle\Repository\CitizenProjectRepository" >
             <argument>AppBundle\Entity\CitizenProject</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.citizen_project_comment" class="AppBundle\Repository\CitizenProjectCommentRepository" public="false">
+        <service id="app.repository.citizen_project_comment" class="AppBundle\Repository\CitizenProjectCommentRepository" >
             <argument>AppBundle\Entity\CitizenProjectComment</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.citizen_project_membership" class="AppBundle\Repository\CitizenProjectMembershipRepository" public="false">
+        <service id="app.repository.citizen_project_membership" class="AppBundle\Repository\CitizenProjectMembershipRepository" >
             <argument>AppBundle\Entity\CitizenProjectMembership</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.referent_managed_user" class="AppBundle\Repository\Projection\ReferentManagedUserRepository" public="false">
+        <service id="app.repository.referent_managed_user" class="AppBundle\Repository\Projection\ReferentManagedUserRepository" >
             <argument>AppBundle\Entity\Projection\ReferentManagedUser</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.referent_managed_users_message" class="AppBundle\Repository\ReferentManagedUsersMessageRepository" public="false">
+        <service id="app.repository.referent_managed_users_message" class="AppBundle\Repository\ReferentManagedUsersMessageRepository" >
             <argument>AppBundle\Entity\ReferentManagedUsersMessage</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="app.repository.board_member_role" class="AppBundle\Repository\BoardMember\RoleRepository" public="false">
+        <service id="app.repository.board_member_role" class="AppBundle\Repository\BoardMember\RoleRepository" >
             <argument>AppBundle\Entity\BoardMember\Role</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="AppBundle\Repository\CitizenProjectSkillRepository" public="false">
+        <service id="AppBundle\Repository\CitizenProjectSkillRepository" >
             <argument>AppBundle\Entity\CitizenProjectSkill</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="AppBundle\Repository\ReportRepository" public="false">
+        <service id="AppBundle\Repository\ReportRepository" >
             <argument>AppBundle\Entity\Report\Report</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="AppBundle\Repository\MediaRepository" public="false">
+        <service id="AppBundle\Repository\MediaRepository" >
             <argument>AppBundle\Entity\Media</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="AppBundle\Repository\Timeline\MeasureRepository" public="false">
+        <service id="AppBundle\Repository\Timeline\MeasureRepository" >
             <argument>AppBundle\Entity\Timeline\Measure</argument>
             <factory service="doctrine" method="getRepository"/>
         </service>
 
-        <service id="AppBundle\Repository\OAuth\AccessTokenRepository" public="false">
+        <service id="AppBundle\Repository\OAuth\AccessTokenRepository" >
             <factory service="doctrine" method="getRepository" />
             <argument>AppBundle\Entity\OAuth\AccessToken</argument>
         </service>
 
-        <service id="AppBundle\Repository\OAuth\AuthorizationCodeRepository" public="false">
+        <service id="AppBundle\Repository\OAuth\AuthorizationCodeRepository" >
             <factory service="doctrine" method="getRepository" />
             <argument>AppBundle\Entity\OAuth\AuthorizationCode</argument>
         </service>
 
-        <service id="AppBundle\Repository\OAuth\RefreshTokenRepository" public="false">
+        <service id="AppBundle\Repository\OAuth\RefreshTokenRepository" >
             <factory service="doctrine" method="getRepository" />
             <argument>AppBundle\Entity\OAuth\RefreshToken</argument>
         </service>
 
-        <service id="AppBundle\Repository\OAuth\ClientRepository" public="false">
+        <service id="AppBundle\Repository\OAuth\ClientRepository" >
             <factory service="doctrine" method="getRepository" />
             <argument>AppBundle\Entity\OAuth\Client</argument>
         </service>
 
-        <service id="AppBundle\Repository\OAuth\UserAuthorizationRepository" public="false">
+        <service id="AppBundle\Repository\OAuth\UserAuthorizationRepository" >
             <factory service="doctrine" method="getRepository" />
             <argument>AppBundle\Entity\OAuth\UserAuthorization</argument>
         </service>
 
-        <service id="AppBundle\Repository\FailedLoginAttemptRepository" public="false">
+        <service id="AppBundle\Repository\FailedLoginAttemptRepository" >
             <factory service="doctrine" method="getRepository" />
             <argument>AppBundle\Entity\FailedLoginAttempt</argument>
         </service>
 
-        <service id="AppBundle\Repository\WebHookRepository" public="false">
+        <service id="AppBundle\Repository\WebHookRepository" >
             <factory service="doctrine" method="getRepository" />
             <argument>AppBundle\Entity\WebHook\WebHook</argument>
         </service>

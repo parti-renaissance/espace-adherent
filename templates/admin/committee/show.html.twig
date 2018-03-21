@@ -2,7 +2,7 @@
 
 {% block actions %}
     <li>
-        <a href="{{ path('app_admin_committee_members', {id: object.id}) }}" class="sonata-action-element" title="Approuver">
+        <a href="{{ path('app_admin_committee_members', { id: object.id }) }}" class="sonata-action-element" title="Approuver">
             <i class="fa fa-users" aria-hidden="true"></i>
             Membres
         </a>
@@ -17,7 +17,7 @@
         </li>
     {% endif %}
     <li>
-        <a href="{{ path('admin_app_committee_edit', {id: object.id}) }}" class="sonata-action-element" title="Éditer">
+        <a href="{{ path('admin_app_committee_edit', { id: object.id }) }}" class="sonata-action-element" title="Éditer">
             <i class="fa fa-pencil" aria-hidden="true"></i>
             Éditer
         </a>

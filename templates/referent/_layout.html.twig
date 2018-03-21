@@ -28,11 +28,16 @@
                     {
                         'route': 'app_referent_commitees',
                         'label': 'Comités'
+                    },
+                    {
+                        'route': 'app_referent_organizational_chart',
+                        'label': 'Equipe départementale',
+                        'role': 'IS_ROOT_REFERENT'
                     }
                 ] %}
 
                 <ul class="procuration-manager__tabs">
-                    {% for page in pages %}
+                    {% for page in pages if page.role is not defined or is_granted(page.role) %}
                         <li class="{{ app.request.attributes.get('_route') == page.route ? 'active' : '' }}">
                             <a href="{{ path(page.route) }}">
                                 {{ page.label }}

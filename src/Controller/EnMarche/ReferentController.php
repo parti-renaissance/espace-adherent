@@ -5,13 +5,20 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Projection\ReferentManagedUser;
+use AppBundle\Entity\Referent;
+use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
+use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\ReferentMessageType;
+use AppBundle\Form\ReferentPersonLinkType;
 use AppBundle\Referent\ManagedUsersFilter;
 use AppBundle\Referent\ReferentMessage;
 use AppBundle\Referent\ReferentMessageNotifier;
+use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
+use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
+use AppBundle\Repository\ReferentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -25,7 +32,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ReferentController extends Controller
 {
-    const TOKEN_ID = 'referent_managed_users';
+    public const TOKEN_ID = 'referent_managed_users';
 
     /**
      * @Route("/utilisateurs", name="app_referent_users")
@@ -142,6 +149,53 @@ class ReferentController extends Controller
 
         return $this->render('referent/committees_list.html.twig', [
             'managedCommitteesJson' => $exporter->exportAsJson($list),
+        ]);
+    }
+
+    /**
+     * @Route("/organigramme", name="app_referent_organizational_chart")
+     * @Security("is_granted('IS_ROOT_REFERENT')")
+     */
+    public function organizationalChartAction(OrganizationalChartItemRepository $organizationalChartItemRepository, ReferentRepository $referentRepository)
+    {
+        return $this->render('referent/organizational_chart.html.twig', [
+            'organization_chart_items' => $organizationalChartItemRepository->getRootNodes(),
+            'referent' => $referentRepository->findOneByEmailAndSelectPersonOrgaChart($this->getUser()->getEmailAddress()),
+        ]);
+    }
+
+    /**
+     * @Route("/organigramme/{id}", name="app_referent_referent_person_link_edit")
+     * @Security("is_granted('IS_ROOT_REFERENT')")
+     */
+    public function editReferentPersonLink(Request $request, ReferentPersonLinkRepository $referentPersonLinkRepository, ReferentRepository $referentRepository, PersonOrganizationalChartItem $personOrganizationalChartItem)
+    {
+        $form = $this->createForm(
+            ReferentPersonLinkType::class,
+            $referentPersonLinkRepository->findOrCreateByOrgaItemAndReferent(
+                $personOrganizationalChartItem,
+                $referentRepository->findOneByEmail($this->getUser()->getEmailAddress())
+            )
+        );
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var ReferentPersonLink $referentPersonLink */
+            $referentPersonLink = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($referentPersonLink);
+            $em->flush();
+
+            $this->addFlash('success', 'Organigramme mis à jour.');
+
+            return $this->redirectToRoute('app_referent_organizational_chart');
+        }
+
+        return $this->render('referent/edit_referent_person_link.html.twig', [
+            'form_referent_person_link' => $form->createView(),
+            'person_organizational_chart_item' => $personOrganizationalChartItem,
         ]);
     }
 }
