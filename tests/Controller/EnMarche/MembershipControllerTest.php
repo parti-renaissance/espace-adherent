@@ -41,9 +41,9 @@ class MembershipControllerTest extends MysqlWebTestCase
     /**
      * @dataProvider provideEmailAddress
      */
-    public function testCannotCreateMembershipAccountWithSomeoneElseEmailAddress($emailAddress)
+    public function testCannotCreateMembershipAccountWithSomeoneElseEmailAddress(string $emailAddress): void
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
+        $crawler = $this->client->request(Request::METHOD_GET, '/inscription-utilisateur');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -63,7 +63,7 @@ class MembershipControllerTest extends MysqlWebTestCase
      *
      * @see LoadAdherentData
      */
-    public function provideEmailAddress()
+    public function provideEmailAddress(): array
     {
         return [
             ['michelle.dufour@example.ch'],
@@ -71,9 +71,9 @@ class MembershipControllerTest extends MysqlWebTestCase
         ];
     }
 
-    public function testCreateMembershipAccountForFrenchAdherentIsSuccessful()
+    public function testCreateMembershipAccountForFrenchAdherentIsSuccessful(): void
     {
-        $this->client->request(Request::METHOD_GET, '/inscription');
+        $this->client->request(Request::METHOD_GET, '/inscription-utilisateur');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -143,7 +143,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->client->followRedirect();
     }
 
-    private static function createFormData()
+    private static function createFormData(): array
     {
         return [
             'g-recaptcha-response' => 'dummy',

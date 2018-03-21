@@ -73,7 +73,7 @@ Feature:
     Then I should be on "/espace-adherent/accueil"
 
   Scenario: I can register as a user
-    Given I am on "/inscription"
+    Given I am on "/inscription-utilisateur"
     When I fill in the following:
       | Prénom             | Jean-Pierre |
       | Nom                | DURAND      |
@@ -265,7 +265,7 @@ Feature:
     And I should see "Votre compte adhérent est maintenant actif."
 
   Scenario: I have great error message when register is misfiled
-    Given I am on "/inscription"
+    Given I am on "/inscription-utilisateur"
     When I fill in the following:
       | Prénom             |                  |
       | Nom                |                  |
