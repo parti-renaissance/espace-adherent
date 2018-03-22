@@ -33,9 +33,10 @@ class AdherentRepositoryTest extends SqliteWebTestCase
             'Enabled adherent must be returned.'
         );
 
-        $this->assertNull(
+        $this->assertInstanceOf(
+            Adherent::class,
             $this->repository->loadUserByUsername('michelle.dufour@example.ch'),
-            'Disabled adherent must not be returned.'
+            'Disabled adherent must be returned.'
         );
 
         $this->assertNull(

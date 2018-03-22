@@ -67,7 +67,7 @@ Feature:
       | E-mail       | jp@test.com |
       | Mot de passe | testtest    |
     And I press "Connexion"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau."
 
     When I click on the email link "activation_link"
     Then I should be on "/espace-adherent/accueil"
@@ -118,7 +118,7 @@ Feature:
       | E-mail       | jp@test.com |
       | Mot de passe | testtest    |
     And I press "Connexion"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau."
 
     When I click on the email link "activation_link"
     Then I should be on "/adhesion"
@@ -282,3 +282,40 @@ Feature:
     And I should see "Vous avez été détecté en tant que robot, pourriez-vous réessayer ?"
     And I should see "Le code postal doit contenir moins de 15 caractères"
     And I should see "Cette valeur ne doit pas être vide."
+
+  Scenario: A new user should see personal message to help him to validate his account
+    Given the following fixtures are loaded:
+      | LoadUserData |
+    And I am on "/connexion"
+    When I fill in the following:
+      | E-mail       | simple-user-not-activated@example.ch |
+      | Mot de passe | secret!12345                         |
+    And I press "Connexion"
+    Then I should see "Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau."
+
+    When I follow "cliquer ici"
+    Then I should be on "/connexion"
+    And I should have 1 email
+    And I should have 1 email "AdherentAccountActivationMessage" for "simple-user-not-activated@example.ch" with payload:
+    """
+    {
+      "FromEmail": "contact@en-marche.fr",
+      "FromName": "En Marche !",
+      "Subject": "Confirmez votre compte En-Marche.fr",
+      "MJ-TemplateID": "292269",
+      "MJ-TemplateLanguage": true,
+      "Recipients": [
+        {
+      "Email": "simple-user-not-activated@example.ch",
+          "Name": "Simple User",
+          "Vars": {
+            "first_name": "Simple",
+            "activation_link": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
+          }
+        }
+      ]
+    }
+    """
+
+    When I click on the email link "activation_link"
+    Then I should be on "/adhesion"

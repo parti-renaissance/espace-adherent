@@ -139,7 +139,7 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $this->assertContains('L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.', $crawler->filter('#auth-error')->text());
+        $this->assertContains('Pour vous connecter vous devez confirmer votre adhésion. Si vous n\'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau.', $crawler->filter('#auth-error')->text());
     }
 
     public function testEditAdherentProfile()
