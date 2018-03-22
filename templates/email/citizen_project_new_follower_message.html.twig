@@ -1,10 +1,10 @@
-{% block subject %} 
-    {# A REMPLIR #} 
-{% endblock %} 
+{% block subject %}
+    {# A REMPLIR #}
+{% endblock %}
 
-{% block body_html %} 
+{% block body_html %}
 
-    {% embed 'email/layout.html.twig' %} 
+    {% embed 'email/layout.html.twig' %}
         {% block content %}
             <tr>
                 <td align="left">
@@ -12,13 +12,13 @@
                         Bonjour @@citizen_project_host_firstname@@,
                     </p>
                     <p>
-                        Un nouveau membre vient de rejoindre votre projet citoyen @@citizen_project_name@@ sur le site de La République En Marche ! 
+                        Un nouveau membre vient de rejoindre votre projet citoyen @@citizen_project_name@@ sur le site de La République En Marche.
                     </p>
                     <p>
                         Voici ses informations : <br>
                         @@follower_firstname@@ @@follower_lastname@@ <br>
                         @@follower_age@@ ans <br>
-                        @@follower_city@@ 
+                        @@follower_city@@
                     </p>
                     <p>
                         <strong>Nous vous invitons à lui souhaiter la bienvenue en répondant à cet e-mail !</strong>
@@ -31,7 +31,7 @@
                     </p>
                 </td>
             </tr>
-            {% endblock %} 
-    {% endembed %} 
+            {% endblock %}
+    {% endembed %}
 
 {% endblock %}

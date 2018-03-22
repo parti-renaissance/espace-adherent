@@ -1,10 +1,10 @@
-{% block subject %} 
-    {# A REMPLIR #} 
-{% endblock %} 
+{% block subject %}
+    {# A REMPLIR #}
+{% endblock %}
 
-{% block body_html %} 
+{% block body_html %}
 
-    {% embed 'email/layout.html.twig' %} 
+    {% embed 'email/layout.html.twig' %}
         {% block content %}
             <tr>
                 <td align="left">
@@ -44,7 +44,7 @@
                     </p>
                 </td>
             </tr>
-            {% endblock %} 
-    {% endembed %} 
+            {% endblock %}
+    {% endembed %}
 
 {% endblock %}
