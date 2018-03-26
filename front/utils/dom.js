@@ -20,7 +20,7 @@ window.remove = (element) => {
     element.parentNode.removeChild(element);
 };
 
-window.toggleCLass = (element, className) => {
+window.toggleClass = (element, className) => {
     if (element.classList) {
         element.classList.toggle(className);
     } else {
