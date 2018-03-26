@@ -206,6 +206,12 @@ class App {
             module.default();
         });
     }
+
+    runArticle() {
+        System.import('pages/article').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        });
+    }
 }
 
 window.App = new App();

@@ -1,0 +1,42 @@
+.article__main{
+    display: flex;
+    justify-content: space-evenly;
+
+    .article__social {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        right: 5%;
+        width: 200px;
+
+        @media($tablet) {
+
+        }
+
+        .btn{
+            min-width: 130px;
+            margin-bottom: 10px;
+        }
+    }
+    .content {
+        width: 60%;
+    }
+
+    .article__sidebar {
+        &--left,
+        &--right{
+            width: 20%;
+
+            .fixed {
+                position: fixed;
+            }
+
+            .newsletter{
+                width: 150px;
+                left: 30px;
+                position: relative;
+                top:-30px;
+            }
+        }
+    }
+}

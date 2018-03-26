@@ -16,6 +16,15 @@
 {% block open_graph_image_width (article.media ? article.media.width : default_sharer_width) %}
 {% block open_graph_image_height (article.media ? article.media.height : default_sharer_height) %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runArticle();
+        });
+    </script>
+{% endblock %}
+
 {% block json_ld %}
     <script type="application/ld+json">
     {
@@ -64,102 +73,101 @@
 {% block final_javascripts include('bot/_javascript.html.twig') %}
 
 {% block content %}
-<main>
+<main class="article__main">
+    <section class="article__sidebar--left">
+        <div class="fixed">
+            <div class="newsletter l__row l__row--h-stretch space--20-30 l__row--wrap l__tablet--col b__nudge--top">
+                <div class="text--small text--uppercase space--10-0">Recevez la newsletter du mouvement</div>
+                <form method="post" action="{{ path('newsletter_subscription') }}" class="l__row l__row--wrap" name="app_newsletter_subscription">
+                    <input type="text">
+                    <input type="text">
+                    <button title="Je m'inscris" type="submit" class="form btn btn--green">Je m'inscris</button>
+                </form>
+            </div>
+        </div>
+    </section>
     <section class="content">
-        <article class="l__wrapper--slim">
-            <header class="space--60-0">
-                <h1 class="text--large b__nudge--bottom-small">
-                    {{ article.title }}
-                </h1>
-                <h2 class="text--gray b__nudge--bottom">{{ article.publishedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }} - {{ article.description }}</h2>
-                <ul class="article__social">
-                    <li role="button" aria-label="Partagez sur Facebook"
-                        class="btn btn--social btn--facebook"
-                        onclick="App.share('facebook', window.location.href, '{{ article.title|escape('js') }}')">
-                        <i class="fa fa-facebook-square"></i> <span>Partagez</span>
-                    </li>
-                    <li role="button" aria-label="Partagez via Twitter"
-                        class="btn btn--social btn--twitter"
-                        onclick="App.share('twitter', window.location.href, '{{ article.title|escape('js') }}')">
-                        <i class="fa fa-twitter"></i> <span>Tweetez</span>
-                    </li>
-                    <li role="button" aria-label="Partagez via email"
-                        class="btn btn--social btn--email"
-                        onclick="App.share('email', window.location.href, '{{ article.title }}')">
-                        <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
-                    </li>
-                </ul>
-            </header>
+        <section>
+            <article class="l__wrapper--slim">
+                <header class="space--60-0">
+                    <h1 class="text--large b__nudge--bottom-small">
+                        {{ article.title }}
+                    </h1>
+                    <h2 class="text--gray b__nudge--bottom">{{ article.publishedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }} - {{ article.description }}</h2>
+                </header>
 
-            {% if article.media and article.displayMedia %}
-                <figure class="fullscreen">
-                    <img src="{{ media_asset(article.media, {'q': 70}) }}"
-                         title="{{ article.media.name }}"
-                         alt="{{ article.media.name }}" />
-                </figure>
-            {% endif %}
+                {% if article.media and article.displayMedia %}
+                    <figure class="fullscreen">
+                        <img src="{{ media_asset(article.media, {'q': 70}) }}"
+                             title="{{ article.media.name }}"
+                             alt="{{ article.media.name }}" />
+                    </figure>
+                {% endif %}
 
-            {{ article.content|markdown }}
+                {{ article.content|markdown }}
 
-            {% if article.category.ctaLink and article.category.ctaLabel %}
-                <a href="{{ article.category.ctaLink }}" class="category category--{{ article.category.slug }}">
-                    <div class="category__label">
-                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                        {{ article.category.ctaLabel }}
-                    </div>
-                </a>
-            {% endif %}
-        </article>
-
-        <ul class="article__social space--60-0 l__wrapper--slim">
-            <li role="button" aria-label="Partagez sur Facebook" class="btn btn--social btn--facebook"
-                onclick="App.share('facebook', window.location.href, '{{ article.title|escape('js') }}')">
-                <i class="fa fa-facebook-square"></i> <span>Partagez</span>
-            </li>
-            <li role="button" aria-label="Partagez sur Twitter"
-                class="btn btn--social btn--twitter"
-                onclick="App.share('twitter', window.location.href, '{{ article.title|escape('js') }}')">
-                <i class="fa fa-twitter"></i> <span>Tweetez</span>
-            </li>
-            <li role="button" aria-label="Partagez via email"
-                class="btn btn--social btn--email"
-                onclick="App.share('email', window.location.href, '{{ article.title }}')">
-                <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
-            </li>
-        </ul>
-
-    </section>
-
-    <section class="l__wrapper--narrow">
-        <h2 class="text--large">Dernières actualités</h2>
-        <ul class="l__row l__row--wrap l__row--top space--20-0 l__row--h-stretch-around l__mobile--col">
-            {% for article in latestArticles %}
-                <li class="card card--content card--content--article l__col--bottom">
-                    <div class="cs card--small">
-                        <a href="{{ path('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}" class="background-container">
-                            <div class="background card__background progressive-background"
-                                 data-sd="{{ media_asset(article.media, {'w': 300, 'q': 20}) }}"
-                                 data-hd="{{ media_asset(article.media, {'w': 1200, 'q': 70}) }}"
-                                 style="background-color: #000000;">
-                            </div>
-                        </a>
-                        <a href="{{ path('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}" class="headline link--no-decor">
-                            <h2>{{ article.title }}</h2>
-                        </a>
-                        <div class="share">
-                            Partagez
-                            <span role="button" onclick="App.share('facebook', '{{ url('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}', '{{ article.title|escape('js') }}')">
-                                <i class="fa fa-facebook-square"></i>
-                            </span>
-                            <span role="button" onclick="App.share('twitter', '{{ url('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}', '{{ article.title|escape('js') }}')">
-                                <i class="fa fa-twitter"></i>
-                            </span>
+                {% if article.category.ctaLink and article.category.ctaLabel %}
+                    <a href="{{ article.category.ctaLink }}" class="category category--{{ article.category.slug }}">
+                        <div class="category__label">
+                            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                            {{ article.category.ctaLabel }}
                         </div>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
+                    </a>
+                {% endif %}
+            </article>
+        </section>
+
+        <section class="l__wrapper--narrow">
+            <h2 class="text--large">Dernières actualités</h2>
+            <ul class="l__row l__row--wrap l__row--top space--20-0 l__row--h-stretch-around l__mobile--col">
+                {% for article in latestArticles %}
+                    <li class="card card--content card--content--article l__col--bottom">
+                        <div class="cs card--small">
+                            <a href="{{ path('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}" class="background-container">
+                                <div class="background card__background progressive-background"
+                                     data-sd="{{ media_asset(article.media, {'w': 300, 'q': 20}) }}"
+                                     data-hd="{{ media_asset(article.media, {'w': 1200, 'q': 70}) }}"
+                                     style="background-color: #000000;">
+                                </div>
+                            </a>
+                            <a href="{{ path('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}" class="headline link--no-decor">
+                                <h2>{{ article.title }}</h2>
+                            </a>
+                            <div class="share">
+                                Partagez
+                                <span role="button" onclick="App.share('facebook', '{{ url('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}', '{{ article.title|escape('js') }}')">
+                                    <i class="fa fa-facebook-square"></i>
+                                </span>
+                                <span role="button" onclick="App.share('twitter', '{{ url('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}', '{{ article.title|escape('js') }}')">
+                                    <i class="fa fa-twitter"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
     </section>
+    <section class="article__sidebar--right">
+            <ul class="article__social">
+                <li>
+                    <span>Partagez</span>
+                </li>
+                <li role="button" aria-label="Partagez sur Facebook"
+                    onclick="App.share('facebook', window.location.href, '{{ article.title|escape('js') }}')">
+                    <i class="fa fa-facebook fa-lg text--pink"></i>
+                </li>
+                <li role="button" aria-label="Partagez via Twitter"
+                    onclick="App.share('twitter', window.location.href, '{{ article.title|escape('js') }}')">
+                    <i class="fa fa-twitter fa-lg text--pink"></i>
+                </li>
+                <li role="button" aria-label="Partagez via email"
+                    onclick="App.share('email', window.location.href, '{{ article.title }}')">
+                    <i class="fa fa-envelope-o fa-lg text--pink"></i>
+                </li>
+            </ul>
+    </section>
+
 
 </main>
 {% endblock %}
