@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -141,6 +142,11 @@ class Event extends BaseEvent implements UserDocumentInterface
     public function isForLegislatives()
     {
         return $this->isForLegislatives;
+    }
+
+    public function getReportType(): string
+    {
+        return ReportType::COMMUNITY_EVENT;
     }
 
     /**

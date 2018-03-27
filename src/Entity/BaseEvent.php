@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\Report\ReportableInterface;
 use AppBundle\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -26,7 +27,7 @@ use JMS\Serializer\Annotation as JMS;
  *
  * @Algolia\Index
  */
-abstract class BaseEvent implements GeoPointInterface
+abstract class BaseEvent implements GeoPointInterface, ReportableInterface
 {
     const EVENT_TYPE = 'event';
     const CITIZEN_ACTION_TYPE = 'citizen_action';

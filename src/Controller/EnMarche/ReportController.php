@@ -18,31 +18,25 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class ReportController extends AbstractController
 {
-    private const REPORT_TYPE_MAPPING = [
-        'citizen-project' => ReportType::CITIZEN_PROJECT,
-    ];
-
     /**
      * @Route(
      *     "/report/{type}/{uuid}",
      *     name="app_report",
-     *     requirements={"type"="citizen-project"}
+     *     requirements={"type"=AppBundle\Report\ReportType::TYPES_URI_PATTERN}
      * )
      * @Method("GET|POST")
      * @Security("is_granted('REPORT')")
      */
     public function reportAction(Request $request, string $type, string $uuid, ReportManager $reportManager, ReportCreationCommandHandler $handler): Response
     {
-        $subjectType = self::REPORT_TYPE_MAPPING[$type];
-        $subject = $reportManager->getSubjectByUuid($subjectType, $uuid);
+        $subject = $reportManager->getSubjectByUuid(ReportType::URI_MAP[$type], $uuid);
 
         if (!$subject) {
             throw $this->createNotFoundException('Subject of the report cannot be found');
         }
 
-        $command = new ReportCommand($subject, $subjectType, $this->getUser());
-        $form = $this
-            ->createForm(ReportCommandType::class, $command)
+        $command = new ReportCommand($subject, $this->getUser());
+        $form = $this->createForm(ReportCommandType::class, $command)
             ->handleRequest($request)
         ;
 

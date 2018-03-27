@@ -1,9 +1,15 @@
+# Reasons
 en_marche_values: Ce que je vois ne correspond pas aux valeurs du Mouvement
 inappropriate: Ce n'est pas du contenu approprié
 commercial_content: Il s'agit de contenu commercial
 other: Autre
 
-report.type.citizen_project: Projet citoyen
+# Types
+citizen_action: Action citoyenne
+citizen_project: Projet citoyen
+committee: Comité
+community_event: Événement
 
+# Statuses
 resolved: 'Résolu'
 unresolved: 'Non résolu'

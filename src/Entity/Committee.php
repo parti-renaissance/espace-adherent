@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Exception\CommitteeAlreadyApprovedException;
+use AppBundle\Report\ReportType;
 use AppBundle\ValueObject\Link;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,7 +32,7 @@ use Sabre\DAV\Collection;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Committee extends BaseGroup implements CoordinatorAreaInterface
+class Committee extends BaseGroup
 {
     use EntityPostAddressTrait;
     use CoordinatorAreaTrait;
@@ -362,6 +363,11 @@ class Committee extends BaseGroup implements CoordinatorAreaInterface
                 return;
             }
         }
+    }
+
+    public function getReportType(): string
+    {
+        return ReportType::COMMITTEE;
     }
 
     /**

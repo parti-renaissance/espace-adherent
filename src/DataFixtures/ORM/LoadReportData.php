@@ -2,8 +2,8 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\CitizenProjectReport;
-use AppBundle\Entity\Report;
+use AppBundle\Entity\Report\CitizenProjectReport;
+use AppBundle\Entity\Report\Report;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
