@@ -7,13 +7,13 @@ use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Mailer\EmailClientInterface;
 use AppBundle\Mailer\Exception\MailerException;
 use AppBundle\Repository\EmailRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Exception\ConnectException;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AbstractMailerConsumerTest extends TestCase
@@ -43,7 +43,7 @@ class AbstractMailerConsumerTest extends TestCase
         $emailRepository = $this->createMock(EmailRepository::class);
         $emailRepository->expects($this->once())->method('findOneByUuid')->willReturn(null);
 
-        $collections = $this->createMock(ArrayCollection::class);
+        $collections = $this->createMock(ConstraintViolationListInterface::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
 
         $this->validator
@@ -89,7 +89,7 @@ class AbstractMailerConsumerTest extends TestCase
             ->willThrowException($invalidUuidException)
         ;
 
-        $collections = $this->createMock(ArrayCollection::class);
+        $collections = $this->createMock(ConstraintViolationListInterface::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
 
         $this->validator
@@ -165,7 +165,7 @@ class AbstractMailerConsumerTest extends TestCase
             ->with($messagePayloadEncoded)
         ;
 
-        $collections = $this->createMock(ArrayCollection::class);
+        $collections = $this->createMock(ConstraintViolationListInterface::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
 
         $this->validator
@@ -239,7 +239,7 @@ class AbstractMailerConsumerTest extends TestCase
             ->with($messagePayloadEncoded)
         ;
 
-        $collections = $this->createMock(ArrayCollection::class);
+        $collections = $this->createMock(ConstraintViolationListInterface::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
 
         $this->validator
@@ -315,7 +315,7 @@ class AbstractMailerConsumerTest extends TestCase
             ->willThrowException($mailerException)
         ;
 
-        $collections = $this->createMock(ArrayCollection::class);
+        $collections = $this->createMock(ConstraintViolationListInterface::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
 
         $this->validator
@@ -389,7 +389,7 @@ class AbstractMailerConsumerTest extends TestCase
             ->willThrowException($connectException)
         ;
 
-        $collections = $this->createMock(ArrayCollection::class);
+        $collections = $this->createMock(ConstraintViolationListInterface::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
 
         $this->validator

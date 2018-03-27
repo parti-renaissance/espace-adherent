@@ -2,13 +2,13 @@
 
 namespace Tests\AppBundle\Consumer;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AbstractConsumerTest extends TestCase
@@ -57,7 +57,7 @@ class AbstractConsumerTest extends TestCase
         $violation = $this->getMockBuilder(ConstraintViolationInterface::class)->getMockForAbstractClass();
         $violation->expects($this->once())->method('getPropertyPath')->willReturn('name');
         $violation->expects($this->once())->method('getMessage')->willReturn('is missing');
-        $collections = new ArrayCollection([$violation]);
+        $collections = new ConstraintViolationList([$violation]);
 
         $this->validator
             ->expects($this->once())

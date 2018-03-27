@@ -8,7 +8,6 @@ use AppBundle\Consumer\ProjectCitizenCreationNotificationConsumer;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Repository\CitizenProjectRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -17,6 +16,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProjectCitizenCreationNotificationConsumerTest extends TestCase
@@ -59,7 +59,7 @@ class ProjectCitizenCreationNotificationConsumerTest extends TestCase
         $citizenProjectRepository = $this->createMock(CitizenProjectRepository::class);
         $citizenProjectRepository->expects($this->once())->method('findOneByUuid')->willReturn(null);
 
-        $collections = $this->createMock(ArrayCollection::class);
+        $collections = $this->createMock(ConstraintViolationListInterface::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
 
         $this->validator->expects($this->once())->method('validate')->willReturn($collections);
@@ -89,7 +89,7 @@ class ProjectCitizenCreationNotificationConsumerTest extends TestCase
         $citizenProjectRepository = $this->createMock(CitizenProjectRepository::class);
         $citizenProjectRepository->expects($this->once())->method('findOneByUuid')->willReturn($citizenProject);
 
-        $collections = $this->createMock(ArrayCollection::class);
+        $collections = $this->createMock(ConstraintViolationListInterface::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
 
         $this->validator->expects($this->once())->method('validate')->willReturn($collections);
@@ -128,7 +128,7 @@ class ProjectCitizenCreationNotificationConsumerTest extends TestCase
         $citizenProjectRepository = $this->createMock(CitizenProjectRepository::class);
         $citizenProjectRepository->expects($this->once())->method('findOneByUuid')->willReturn($citizenProject);
 
-        $collections = $this->createMock(ArrayCollection::class);
+        $collections = $this->createMock(ConstraintViolationListInterface::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
 
         $this->validator->expects($this->once())->method('validate')->willReturn($collections);
