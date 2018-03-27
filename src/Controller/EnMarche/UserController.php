@@ -86,9 +86,7 @@ class UserController extends Controller
      */
     public function setEmailNotificationsAction(Request $request): Response
     {
-        $form = $this->createForm(AdherentEmailSubscriptionType::class, $this->getUser())
-            ->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications'])
-        ;
+        $form = $this->createForm(AdherentEmailSubscriptionType::class, $this->getUser(), ['with_submit_button' => true]);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();

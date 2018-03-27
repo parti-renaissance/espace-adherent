@@ -4,6 +4,7 @@ namespace AppBundle\Event;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
+use AppBundle\Membership\AdherentEmailSubscription;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -52,13 +53,13 @@ class EventRegistrationCommand
         }
     }
 
-    private function setAdherent(Adherent $adherent)
+    private function setAdherent(Adherent $adherent): void
     {
         $this->adherent = $adherent;
         $this->firstName = $adherent->getFirstName();
         $this->lastName = $adherent->getLastName();
         $this->emailAddress = $adherent->getEmailAddress();
-        $this->newsletterSubscriber = $adherent->hasSubscribedMainEmails();
+        $this->newsletterSubscriber = $adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOVEMENT_INFORMATION);
     }
 
     public function getEvent(): BaseEvent
@@ -71,7 +72,7 @@ class EventRegistrationCommand
         return $this->firstName;
     }
 
-    public function setFirstName(string $firstName)
+    public function setFirstName(string $firstName): void
     {
         $this->firstName = $firstName;
     }
@@ -91,7 +92,7 @@ class EventRegistrationCommand
         return $this->emailAddress;
     }
 
-    public function setEmailAddress(string $emailAddress)
+    public function setEmailAddress(string $emailAddress): void
     {
         $this->emailAddress = mb_strtolower($emailAddress);
     }
@@ -101,7 +102,7 @@ class EventRegistrationCommand
         return $this->newsletterSubscriber;
     }
 
-    public function setNewsletterSubscriber(bool $newsletterSubscriber)
+    public function setNewsletterSubscriber(bool $newsletterSubscriber): void
     {
         $this->newsletterSubscriber = $newsletterSubscriber;
     }
