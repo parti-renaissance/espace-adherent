@@ -1,24 +1,39 @@
 export default () => {
-    const socialBlock = find(document, '.article__main .article__social');
-    const topOfSocialBlock = socialBlock.offsetTop;
-    const heightOfSocialBlock = socialBlock.offsetHeight;
-    const articleTitle = find(document, '.article__main article h1:nth-child(2)');
-    const sidebar = find(document, '.article__sidebar');
 
+    const inputNewsLetter = find(document, '.newsletter input');
+    let isExpanded;
+    let isFixed;
+    let isFixedToBottom;
+    const socialBlock = find(document, '.article__social');
+    const topSocialBlock = socialBlock.getBoundingClientRect().top;
+    const article = find(document, '.article__main');
+    const botArticle = article.getBoundingClientRect().bottom;
 
-    // socialBlock.style.marginLeft = (sidebar.offsetWidth /4) + 'px';
-    // socialBlock.style.marginRight = (sidebar.offsetWidth /4) + 'px';
+    function expandInput(e) {
+        if (e.target == inputNewsLetter && !isExpanded){
+            addClass(inputNewsLetter, 'isExpanded');
+            isExpanded = true;}
+        else if (e.target != inputNewsLetter && isExpanded){
+            removeClass(inputNewsLetter, 'isExpanded');
+            isExpanded = false;
+        }
+    };
+    on(document,'click', expandInput)
 
-    // function fixSocialBlock(){
-    //     if(window.scrollY >= topOfSocialBlock){
-    //         const socialBlockFix = find(document, '.article__social.isFixe');
-    //         addClass(socialBlock, 'isFixe');
-    //         socialBlockFix.style.marginLeft = (socialBlock.offsetWidth / 4) + 'px';
-    //         socialBlockFix.style.marginRight = (socialBlock.offsetWidth / 4) + 'px';
-    //     } else{
-    //         removeClass(socialBlock, 'isFixe')
-    //     }
-    // };
-    //
-    // on(document,'scroll', fixSocialBlock);
+    function socialToFixed() {
+        if ((window.scrollY >= topSocialBlock) && (window.scrollY < (botArticle - 600))){
+            addClass(socialBlock, 'isFixed')
+            isFixed = true;
+            console.log('1 ' + isFixed)}
+        else if (isFixed  &&  (window.scrollY < topSocialBlock)) {
+            removeClass(socialBlock, 'isFixed')}
+        else if (isFixed  &&  (window.scrollY > (botArticle - 600))) {
+            removeClass(socialBlock, 'isFixed')
+            addClass(socialBlock, 'isFixedToBottom')
+        }
+
+        console.log('scrollY = ' + window.scrollY)
+        console.log('botArticle = ' + botArticle)
+    }
+    on(document, 'scroll', socialToFixed)
 };

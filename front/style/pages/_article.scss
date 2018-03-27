@@ -1,21 +1,34 @@
-.article__main{
+.article__main {
     display: flex;
     justify-content: space-evenly;
 
     .article__social {
         display: flex;
         flex-direction: column;
-        position: fixed;
-        right: 5%;
-        width: 200px;
+        position: relative;
+        align-items: center;
+        margin-top: 35px;
 
-        @media($tablet) {
+        li {
+            margin-bottom: 20px;
 
+            span {
+                text-transform: uppercase;
+            }
+
+            i {
+                cursor: pointer;
+            }
         }
 
-        .btn{
-            min-width: 130px;
-            margin-bottom: 10px;
+        &.isFixed{
+            position: fixed;
+            top: 0;
+            margin-top: 0;
+        }
+        &.isFixedToBottom{
+            position: absolute;
+            bottom: 0;
         }
     }
     .content {
@@ -26,16 +39,36 @@
         &--left,
         &--right{
             width: 20%;
+            position: relative;
+            text-align: center;
+            justify-content: center;
+            display: flex;
 
-            .fixed {
-                position: fixed;
-            }
-
-            .newsletter{
-                width: 150px;
-                left: 30px;
+            .newsletter {
+                width: 100%;
                 position: relative;
-                top:-30px;
+                margin-top: 25px;
+                display: flex;
+                flex-direction: column;
+
+                form {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                input {
+                    position: relative;
+                    border: 1px solid $black;
+                    padding: 10px 0px;
+                    margin-bottom: 20px;
+                    text-align: center;
+                    text-transform: uppercase;
+
+                    &.isExpanded {
+                        width: 300px;
+                        right: 87px;
+                    }
+                }
             }
         }
     }
