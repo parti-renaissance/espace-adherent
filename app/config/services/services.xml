@@ -114,6 +114,8 @@
         </service>
 
         <!--Command-->
+        <service id="AppBundle\Command\ApiSynchronizeCommitteesCommand" />
+        <service id="AppBundle\Command\ApiSynchronizeEventsCommand" />
         <service id="AppBundle\Command\FixTitleCaseCommand" />
 
         <!-- UserDocument -->

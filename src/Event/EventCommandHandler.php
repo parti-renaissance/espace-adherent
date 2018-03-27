@@ -36,7 +36,7 @@ class EventCommandHandler
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(Events::EVENT_CREATED, new EventCreatedEvent(
+        $this->dispatcher->dispatch(Events::EVENT_CREATED, new EventEvent(
             $command->getAuthor(),
             $event,
             $command->getCommittee()
@@ -51,7 +51,7 @@ class EventCommandHandler
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(Events::EVENT_UPDATED, new EventUpdatedEvent(
+        $this->dispatcher->dispatch(Events::EVENT_UPDATED, new EventEvent(
             $command->getAuthor(),
             $event,
             $command->getCommittee()
@@ -66,7 +66,7 @@ class EventCommandHandler
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(Events::EVENT_CANCELLED, new EventCancelledEvent(
+        $this->dispatcher->dispatch(Events::EVENT_CANCELLED, new EventEvent(
             $command->getAuthor(),
             $event,
             $command->getCommittee()
