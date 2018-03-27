@@ -7,7 +7,7 @@ use AppBundle\Utils\AreaUtils;
 
 class ManagedAreaUtils extends AreaUtils
 {
-    public static function getCodeFromCommittee(Committee $committee): string
+    public static function getCodeFromCommittee(Committee $committee): ?string
     {
         if (self::CODE_FRANCE === $committee->getCountry()) {
             return static::getCodeFromPostalCode($committee->getPostalCode());
