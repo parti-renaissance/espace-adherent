@@ -21,19 +21,28 @@ export default () => {
     on(document,'click', expandInput)
 
     function socialToFixed() {
-        if ((window.scrollY >= topSocialBlock) && (window.scrollY < (botArticle - 600))){
+        if ((window.scrollY >= topSocialBlock) && (window.scrollY < (botArticle - 600)) && !isFixedToBottom){
             addClass(socialBlock, 'isFixed')
             isFixed = true;
-            console.log('1 ' + isFixed)}
+            console.log('POSITION FIX')
+        }
         else if (isFixed  &&  (window.scrollY < topSocialBlock)) {
-            removeClass(socialBlock, 'isFixed')}
+            removeClass(socialBlock, 'isFixed')
+            console.log('POSITION  RELATIVE')
+        }
         else if (isFixed  &&  (window.scrollY > (botArticle - 600))) {
             removeClass(socialBlock, 'isFixed')
             addClass(socialBlock, 'isFixedToBottom')
+            isFixedToBottom = true;
+            console.log('POSITION FIX BOTTOM')
         }
-
-        console.log('scrollY = ' + window.scrollY)
-        console.log('botArticle = ' + botArticle)
+        else if (isFixedToBottom && (window.scrollY < (botArticle - 600))){
+            addClass(socialBlock, 'isFixed')
+            removeClass(socialBlock, 'isFixedToBottom')
+            isFixedToBottom = false;
+            isFixed = true;
+            console.log('REMOVE POSITION FIX BOTTOM & ADD POSITION FIX')
+        }
     }
     on(document, 'scroll', socialToFixed)
 };
