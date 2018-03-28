@@ -1,5 +1,11 @@
 <aside class="text--body text--dark b__nudge--top-40 citizen_action__aside l__wrapper--aside">
 
+    <div class="citizen_action__card b__nudge--top-40">
+        {% if is_granted('REPORT') %}
+            <a href="{{ report_path(citizen_action, app.request.pathInfo) }}" class="text--body link--newblue">Signaler cette action</a>
+        {% endif %}
+    </div>
+
     <div class="citizen_action__card">
         <h3>Quand</h3>
         <div>{{ citizen_action.beginAt|localizeddate('full', 'none')|capitalize }}</div>

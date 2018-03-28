@@ -7,6 +7,7 @@ use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
+use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\EmailRepository;
@@ -41,9 +42,9 @@ class MembershipControllerTest extends MysqlWebTestCase
     /**
      * @dataProvider provideEmailAddress
      */
-    public function testCannotCreateMembershipAccountWithSomeoneElseEmailAddress($emailAddress)
+    public function testCannotCreateMembershipAccountWithSomeoneElseEmailAddress(string $emailAddress): void
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/inscription');
+        $crawler = $this->client->request(Request::METHOD_GET, '/inscription-utilisateur');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -63,7 +64,7 @@ class MembershipControllerTest extends MysqlWebTestCase
      *
      * @see LoadAdherentData
      */
-    public function provideEmailAddress()
+    public function provideEmailAddress(): array
     {
         return [
             ['michelle.dufour@example.ch'],
@@ -71,9 +72,9 @@ class MembershipControllerTest extends MysqlWebTestCase
         ];
     }
 
-    public function testCreateMembershipAccountForFrenchAdherentIsSuccessful()
+    public function testCreateMembershipAccountForFrenchAdherentIsSuccessful(): void
     {
-        $this->client->request(Request::METHOD_GET, '/inscription');
+        $this->client->request(Request::METHOD_GET, '/inscription-utilisateur');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -94,9 +95,14 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->assertNull($adherent->getLatitude());
         $this->assertNull($adherent->getLongitude());
         $this->assertNull($adherent->getPosition());
-        $this->assertTrue($adherent->hasSubscribedMainEmails());
         $this->assertTrue($adherent->hasSubscribedLocalHostEmails());
-        $this->assertTrue($adherent->hasSubscribedReferentsEmails());
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOVEMENT_INFORMATION));
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_GOVERNMENT_INFORMATION));
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_WEEKLY_LETTER));
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MICROLEARNING));
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOOC));
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_DONATOR_INFORMATION));
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS));
         $this->assertTrue($adherent->hasCitizenProjectCreationEmailSubscription());
 
         /** @var Adherent $adherent */
@@ -143,7 +149,7 @@ class MembershipControllerTest extends MysqlWebTestCase
         $this->client->followRedirect();
     }
 
-    private static function createFormData()
+    private static function createFormData(): array
     {
         return [
             'g-recaptcha-response' => 'dummy',

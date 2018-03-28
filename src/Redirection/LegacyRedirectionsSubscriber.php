@@ -19,7 +19,7 @@ class LegacyRedirectionsSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onKernelException(GetResponseForExceptionEvent $event)
+    public function onKernelException(GetResponseForExceptionEvent $event): void
     {
         if (!$event->getException() instanceof NotFoundHttpException) {
             return;
@@ -137,7 +137,5 @@ class LegacyRedirectionsSubscriber implements EventSubscriberInterface
         '/emmanuel-macron' => '/emmanuel-macron',
         '/en-marche' => '/le-mouvement',
         '/suivez-en-marche' => '/le-mouvement',
-        '/login' => '/connexion',
-        '/register' => '/inscription',
     ];
 }

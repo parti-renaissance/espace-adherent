@@ -101,9 +101,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             ->leftJoin('a.citizenProjectMemberships', 'cpm')
             ->leftJoin('a.boardMember', 'bm')
             ->where('a.emailAddress = :username')
-            ->andWhere('a.status = :status')
             ->setParameter('username', $username)
-            ->setParameter('status', Adherent::ENABLED)
             ->getQuery()
         ;
 

@@ -121,7 +121,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     """
 
   Scenario: Register a user with callback URI
-    Given I am on "/inscription?client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19&redirect_uri=https%3A%2F%2Fen-marche.fr%2Fcallback"
+    Given I am on "/inscription-utilisateur?client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19&redirect_uri=https%3A%2F%2Fen-marche.fr%2Fcallback"
     When I fill in the following:
       | Prénom               | Jean-pierre |
       | Nom                  | D'ARTAGNAN  |
@@ -160,5 +160,5 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
 
     # Already logged in user returning to register are redirected to the redirect_uri
     Given I am logged as "jp@test.com"
-    When I am on "/inscription?client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19&redirect_uri=https%3A%2F%2Fen-marche.fr%2Fcallback"
+    When I am on "/inscription-utilisateur?client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19&redirect_uri=https%3A%2F%2Fen-marche.fr%2Fcallback"
     Then I should be on "https://en-marche.fr/callback"

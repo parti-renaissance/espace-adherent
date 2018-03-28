@@ -1,0 +1,12 @@
+{#
+    Override sonata template to have something more readable.
+    The old one had something like [key => value], ...
+    Now it's with html integration or simply with comma if inline is true
+#}
+{% import 'admin/CRUD/base_array_macro.html.twig' as list %}
+
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
+    {{ list.render_array(value, field_description.options.inline is not defined or field_description.options.inline) }}
+{% endblock %}

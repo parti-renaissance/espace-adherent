@@ -27,11 +27,6 @@
         <li>
             <a href="{{ path('articles_list', { category: 'tout' }) }}">Actualités</a>
         </li>
-        {% if app.user and not has_role_adherent %}
-            <li>
-                <a href="{{ path('app_membership_join') }}">Adhérer</a>
-            </li>
-        {% endif %}
         <li {% if not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
             <a href="javascript:void(0)" class="je-cherche">
                 {{ include('components/search.html.twig') }}
@@ -159,13 +154,13 @@
                     {% endif %}
                 {% endif %}
             </div>
-            {% if (not app.user) %}
+            {% if not app.user %}
                 <a href="{{ path('app_user_login') }}" class="text--body link--no-decor b__nudge--right">Connexion</a>
-                <a href="{{ path('app_membership_join') }}" class="text--body b__nudge--right">Adhérer</a>
-            {% elseif not has_role_adherent and has_role_user %}
+            {% endif %}
+            {% if not has_role_adherent %}
                 <a href="{{ path('app_membership_join') }}" class="text--body b__nudge--right">Adhérer</a>
             {% endif %}
-                <a href="{{ path('donation_index') }}" class="btn btn--pink">Donner</a>
+            <a href="{{ path('donation_index') }}" class="btn btn--pink">Donner</a>
     </div>
 </nav>
 {% if is_granted('ROLE_SUPERVISOR') or is_granted('ROLE_HOST') or is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') or is_granted('ROLE_REFERENT') or is_granted('ROLE_BOARD_MEMBER') or is_granted('ROLE_COORDINATOR') or is_granted('ROLE_PROCURATION_MANAGER') or is_granted('ROLE_LEGISLATIVE_CANDIDATE') %}

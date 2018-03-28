@@ -210,6 +210,14 @@ sonata_admin:
         handler: sonata.admin.security.handler.role
     persist_filters: true
 
+sonata_doctrine_orm_admin:
+    templates:
+        types:
+            list:
+                array: admin/CRUD/list_array.html.twig
+            show:
+                array: admin/CRUD/show_array.html.twig
+
 bazinga_geocoder:
     providers:
         cache:
@@ -262,7 +270,7 @@ old_sound_rabbit_mq:
             connection: default
             exchange_options: { name: 'project_citizen_creation_notification', type: direct }
 
-        user_sync_api:
+        sync_api:
             connection: default
             exchange_options: { name: 'api', type: topic }
 
