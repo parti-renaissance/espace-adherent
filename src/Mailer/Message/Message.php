@@ -4,7 +4,7 @@ namespace AppBundle\Mailer\Message;
 
 use Ramsey\Uuid\UuidInterface;
 
-abstract class Message
+class Message
 {
     protected $uuid;
     protected $vars;
