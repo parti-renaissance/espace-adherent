@@ -241,12 +241,17 @@ input {
     }
 }
 
+button.btn {
+    display: inline-block;
+    padding: 10px 15px 9px;
+}
+
 .btn {
     @include btn;
 
     &--small {
         font-size: $text--size-smallest;
-        padding: 2px 10px;
+        padding: 2px 10px !important;
     }
 
     &--medium {
@@ -442,11 +447,6 @@ input {
             color: #999;
         }
     }
-}
-
-button.btn {
-    display: inline-block;
-    padding: 10px 15px 9px;
 }
 
 .newbtn {
