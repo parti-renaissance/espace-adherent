@@ -2,12 +2,30 @@
     display: flex;
     justify-content: space-evenly;
 
+    @media (max-width: $mobile) {
+        flex-direction: column;
+    }
+
     .article__social {
         display: flex;
         flex-direction: column;
         position: relative;
         align-items: center;
         margin-top: 35px;
+
+        @media (max-width: $mobile) {
+            display: inline;
+            width: 100%;
+        }
+
+        ul {
+
+            @media (max-width: $mobile) {
+                padding: 0;
+                display: flex;
+                justify-content: space-evenly;
+            }
+        }
 
         li {
             margin-bottom: 20px;
@@ -21,28 +39,47 @@
             }
         }
 
-        &.isFixed{
+        &.isFixed {
             position: fixed;
             top: 0;
             margin-top: 0;
+
+            @media (max-width: $mobile) {
+                position: relative;
+            }
         }
-        &.isFixedToBottom{
+
+        &.isFixedToBottom {
             position: absolute;
-            bottom: 0;
+            bottom: 30px;
+
+            @media (max-width: $mobile) {
+                position: relative;
+            }
         }
     }
+
     .content {
         width: 60%;
+
+        @media (max-width: $mobile) {
+            width: 100%;
+        }
     }
 
     .article__sidebar {
+
         &--left,
-        &--right{
+        &--right {
             width: 20%;
             position: relative;
             text-align: center;
             justify-content: center;
             display: flex;
+
+            @media (max-width: $mobile) {
+                width: 100%;
+            }
 
             .newsletter {
                 width: 100%;
@@ -51,9 +88,28 @@
                 display: flex;
                 flex-direction: column;
 
+                @media (max-width: $mobile) {
+                    flex-direction: column;
+                    width: 80%;
+                    margin: 20px auto;
+                }
+
+                &>div {
+                    width: 50%;
+                    margin: 0 auto;
+
+                    @media (max-width: $mobile) {
+                        width: 100%;
+                    }
+                }
+
                 form {
                     display: flex;
                     flex-direction: column;
+
+                    @media (max-width: $mobile) {
+                        flex-direction: row;
+                    }
                 }
 
                 input {
@@ -64,9 +120,20 @@
                     text-align: center;
                     text-transform: uppercase;
 
+                    @media (max-width: $mobile) {
+                        width: 100%;
+                        text-align: left;
+                        padding-left: 10px;
+                    }
+
                     &.isExpanded {
                         width: 300px;
                         right: 87px;
+
+                        @media (max-width: $mobile) {
+                            width: 100%;
+                            right: 0;
+                        }
                     }
                 }
             }
