@@ -1,10 +1,7 @@
 <?php
 
-namespace AppBundle\Entity\Report;
+namespace AppBundle\Entity;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AuthoredTrait;
-use AppBundle\Entity\EntityIdentityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Ramsey\Uuid\Uuid;
@@ -13,12 +10,7 @@ use Ramsey\Uuid\Uuid;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ReportRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({
- *     "citizen_project" = "CitizenProjectReport",
- *     "citizen_action" = "CitizenActionReport",
- *     "committee" = "CommitteeReport",
- *     "community_event" = "CommunityEventReport",
- * })
+ * @ORM\DiscriminatorMap({"citizen_project" = "CitizenProjectReport"})
  *
  * @ORM\Table(
  *   name="reports",
@@ -35,9 +27,6 @@ use Ramsey\Uuid\Uuid;
  */
 abstract class Report
 {
-    use EntityIdentityTrait;
-    use AuthoredTrait;
-
     public const STATUS_RESOLVED = 'resolved';
     public const STATUS_UNRESOLVED = 'unresolved';
 
@@ -58,10 +47,8 @@ abstract class Report
         self::REASON_OTHER,
     ];
 
-    /*
-     * Mapping to be defined in concrete classes.
-     */
-    protected $subject;
+    use EntityIdentityTrait;
+    use AuthoredTrait;
 
     /**
      * @var array
@@ -80,9 +67,9 @@ abstract class Report
     /**
      * @var string
      *
-     * @ORM\Column(length=16, options={"default": AppBundle\Entity\Report\Report::STATUS_UNRESOLVED})
+     * @ORM\Column(length=16)
      */
-    private $status = self::STATUS_UNRESOLVED;
+    private $status;
 
     /**
      * @var \DateTimeImmutable
@@ -101,16 +88,18 @@ abstract class Report
     /**
      * @throws \InvalidArgumentException
      */
-    final public function __construct(ReportableInterface $subject, Adherent $author, array $reasons, ?string $comment)
+    public function __construct(Adherent $author, array $reasons, ?string $comment)
     {
         if (!count($reasons)) {
             throw new \InvalidArgumentException('At least one reason must be provided');
         }
 
-        if ($invalid = array_diff($reasons, self::REASONS_LIST)) {
-            throw new \InvalidArgumentException(
-                sprintf('Some reasons are not valid "%s", they are defined in %s::REASONS_LIST', implode(', ', $invalid), __CLASS__)
-            );
+        foreach ($reasons as $reason) {
+            if (!in_array($reason, self::REASONS_LIST, true)) {
+                throw new \InvalidArgumentException(
+                    sprintf('%s is not a valid reason, you must choose one from %s::REASONS_LIST', $reason, self::class)
+                );
+            }
         }
 
         $isOtherReasonChecked = in_array(self::REASON_OTHER, $reasons, true);
@@ -128,34 +117,24 @@ abstract class Report
         }
 
         $this->uuid = Uuid::uuid4();
-        $this->subject = $subject;
-        $this->author = $author;
-        $this->reasons = $reasons;
         $this->comment = $comment;
+        $this->reasons = $reasons;
+        $this->author = $author;
         $this->createdAt = new \DateTimeImmutable();
+        $this->status = self::STATUS_UNRESOLVED;
     }
 
-    final public function __toString(): string
-    {
-        return sprintf('Signalement #%d (%s)', $this->id, $this->subject->getReportType());
-    }
-
-    final public function getSubject(): ReportableInterface
-    {
-        return $this->subject;
-    }
-
-    final public function getReasons(): array
+    public function getReasons(): array
     {
         return $this->reasons;
     }
 
-    final public function getComment(): ?string
+    public function getComment(): ?string
     {
         return $this->comment;
     }
 
-    final public function getStatus(): string
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -163,7 +142,7 @@ abstract class Report
     /**
      * @throws \LogicException if report already approved
      */
-    final public function resolve(): void
+    public function resolve(): void
     {
         if ($this->isResolved()) {
             throw new \LogicException('Report already resolved');
@@ -173,12 +152,12 @@ abstract class Report
         $this->resolvedAt = new \DateTimeImmutable();
     }
 
-    final public function isResolved(): bool
+    public function isResolved(): bool
     {
         return self::STATUS_RESOLVED === $this->status;
     }
 
-    final public function getCreatedAt(): \DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         if ($this->createdAt instanceof \DateTime) {
             $this->createdAt = \DateTimeImmutable::createFromMutable($this->createdAt);
@@ -187,7 +166,7 @@ abstract class Report
         return $this->createdAt;
     }
 
-    final public function getResolvedAt(): ?\DateTimeImmutable
+    public function getResolvedAt(): ?\DateTimeImmutable
     {
         if ($this->resolvedAt instanceof \DateTime) {
             $this->resolvedAt = \DateTimeImmutable::createFromMutable($this->resolvedAt);
@@ -196,11 +175,22 @@ abstract class Report
         return $this->resolvedAt;
     }
 
-    /**
-     * Returns the discriminator. Useful.
-     */
-    final public function getType(): string
+    public function __toString()
     {
-        return $this->subject->getReportType();
+        return 'Signalement #'.$this->getId();
     }
+
+    /**
+     * Return the subject of the report.
+     *
+     * @return mixed
+     */
+    abstract public function getSubject();
+
+    /**
+     * Return the type of the subject. Useful.
+     *
+     * @return mixed
+     */
+    abstract public function getSubjectType(): string;
 }

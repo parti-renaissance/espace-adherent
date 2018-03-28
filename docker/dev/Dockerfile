@@ -54,8 +54,6 @@ RUN apt-get update -q && \
         wget \
         wkhtmltopdf && \
 
-    phpdismod xdebug && \
-
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
 
     cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && echo "Europe/Paris" > /etc/timezone && \

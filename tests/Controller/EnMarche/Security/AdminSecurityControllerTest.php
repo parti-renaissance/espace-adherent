@@ -16,7 +16,7 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
 {
     use ControllerTestTrait;
 
-    public function testAuthenticationIsSuccessful(): void
+    public function testAuthenticationIsSuccessful()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
 
@@ -35,7 +35,7 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    public function testAuthenticationIfSecretCode(): void
+    public function testAuthenticationIfSecretCode()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
 
@@ -58,7 +58,7 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
     /**
      * @dataProvider provideInvalidCredentials
      */
-    public function testLoginCheckFails(string $username, string $password): void
+    public function testLoginCheckFails($username, $password)
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
 
@@ -80,7 +80,7 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
         $this->assertSame('L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.', trim($error->text()));
     }
 
-    public function provideInvalidCredentials(): array
+    public function provideInvalidCredentials()
     {
         return [
             'Valid username, invalid password' => [

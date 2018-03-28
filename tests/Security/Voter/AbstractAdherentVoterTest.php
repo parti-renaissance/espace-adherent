@@ -123,6 +123,8 @@ abstract class AbstractAdherentVoterTest extends TestCase
      */
     protected function createAdherentMock(): Adherent
     {
-        return $this->createMock(Adherent::class);
+        $adherent = $this->createMock(Adherent::class);
+
+        return $adherent;
     }
 }

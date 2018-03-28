@@ -39,10 +39,10 @@ use JMS\Serializer\Annotation as JMS;
  */
 class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface
 {
-    public const ENABLED = 'ENABLED';
-    public const DISABLED = 'DISABLED';
-    public const DISABLED_CITIZEN_PROJECT_EMAIL = -1;
-    public const CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE = 10;
+    const ENABLED = 'ENABLED';
+    const DISABLED = 'DISABLED';
+    const DISABLED_CITIZEN_PROJECT_EMAIL = -1;
+    const CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE = 10;
 
     use EntityCrudTrait;
     use EntityIdentityTrait;
@@ -122,14 +122,17 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     /**
      * @ORM\Column(type="boolean")
      */
-    private $localHostEmailsSubscription = false;
+    private $mainEmailsSubscription = false;
 
     /**
-     * @var string[]
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
+     * @ORM\Column(type="boolean")
      */
-    private $emailsSubscriptions;
+    private $referentsEmailsSubscription = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $localHostEmailsSubscription = false;
 
     /**
      * @ORM\Column(type="integer", options={"default"=10})
@@ -139,7 +142,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $comMobile;
+    private $comMobile = false;
 
     /**
      * @ORM\Column(type="boolean", options={"default": 0})
@@ -268,7 +271,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->getUuid()->toString();
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
         $roles = ['ROLE_USER'];
 
@@ -344,7 +347,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->isReferent() || $this->isCoordinator() || $this->isProcurationManager() || $this->isHost() || $this->isCitizenProjectAdministrator() || $this->isBoardMember();
     }
 
-    public function getPassword()
+    public function getPassword(): string
     {
         return !$this->password ? $this->oldPassword : $this->password;
     }
@@ -367,12 +370,12 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     {
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->emailAddress;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 
@@ -408,7 +411,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function getAge(): ?int
     {
-        return $this->birthdate ? $this->birthdate->diff(new \DateTime())->y : null;
+        return $this->birthdate ? ($this->birthdate->diff(new \DateTime()))->y : null;
     }
 
     public function getPosition(): ?string
@@ -440,14 +443,20 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->password = $newPassword;
     }
 
-    public function hasEmailSubscription(string $emailSubscription): bool
-    {
-        return \in_array($emailSubscription, $this->getEmailsSubscriptions(), true);
-    }
-
     public function getEmailsSubscriptions(): array
     {
-        $subscriptions = $this->emailsSubscriptions;
+        $subscriptions = [];
+        if ($this->mainEmailsSubscription) {
+            $subscriptions[] = AdherentEmailSubscription::SUBSCRIBED_EMAILS_MAIN;
+        }
+
+        if ($this->referentsEmailsSubscription) {
+            $subscriptions[] = AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS;
+        }
+
+        if ($this->localHostEmailsSubscription) {
+            $subscriptions[] = AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST;
+        }
 
         if ($this->hasCitizenProjectCreationEmailSubscription()) {
             $subscriptions[] = AdherentEmailSubscription::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION;
@@ -458,17 +467,19 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function setEmailsSubscriptions(array $emailsSubscriptions): void
     {
-        if ($key = array_search(AdherentEmailSubscription::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION, $emailsSubscriptions, true)) {
-            unset($emailsSubscriptions[$key]);
-        }
-        $this->emailsSubscriptions = $emailsSubscriptions;
+        $this->mainEmailsSubscription = in_array(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MAIN, $emailsSubscriptions, true);
+        $this->referentsEmailsSubscription = in_array(AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS, $emailsSubscriptions, true);
+        $this->localHostEmailsSubscription = in_array(AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST, $emailsSubscriptions, true);
     }
 
-    public function addEmailsSubscription(string $emailsSubscription): void
+    public function hasSubscribedMainEmails(): bool
     {
-        if (AdherentEmailSubscription::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION !== $emailsSubscription) {
-            $this->emailsSubscriptions[] = $emailsSubscription;
-        }
+        return $this->mainEmailsSubscription;
+    }
+
+    public function hasSubscribedReferentsEmails(): bool
+    {
+        return $this->referentsEmailsSubscription;
     }
 
     public function hasSubscribedLocalHostEmails(): bool
@@ -673,7 +684,17 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->updatedAt;
     }
 
-    public function setHasSubscribedLocalHostEmails(bool $localHostEmailsSubscription): void
+    public function setHasSubscribedMainEmails($mainEmailsSubscription): void
+    {
+        $this->mainEmailsSubscription = $mainEmailsSubscription;
+    }
+
+    public function setHasSubscribedReferentsEmails($referentsEmailsSubscription): void
+    {
+        $this->referentsEmailsSubscription = $referentsEmailsSubscription;
+    }
+
+    public function setHasSubscribedLocalHostEmails($localHostEmailsSubscription): void
     {
         $this->localHostEmailsSubscription = $localHostEmailsSubscription;
     }
@@ -784,7 +805,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
             $this->procurationManagedArea->setAdherent($this);
         }
 
-        $this->procurationManagedArea->setCodesAsString($codes);
+        $this->procurationManagedArea->setCodesAsString((string) $codes);
     }
 
     public function isCoordinator(): bool
@@ -934,10 +955,12 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
             $comEmail ? self::CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE : self::DISABLED_CITIZEN_PROJECT_EMAIL
         );
 
-        $this->localHostEmailsSubscription = $comEmail;
-
         if ($comEmail) {
-            $subscriptions = AdherentEmailSubscription::getMergedSubscriptions();
+            $subscriptions = [
+                AdherentEmailSubscription::SUBSCRIBED_EMAILS_MAIN,
+                AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS,
+                AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST,
+            ];
         }
 
         $this->setEmailsSubscriptions($subscriptions ?? []);

@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Report\ReportType;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
@@ -96,10 +95,5 @@ class CitizenAction extends BaseEvent
     public function getType(): string
     {
         return self::CITIZEN_ACTION_TYPE;
-    }
-
-    public function getReportType(): string
-    {
-        return ReportType::CITIZEN_ACTION;
     }
 }
