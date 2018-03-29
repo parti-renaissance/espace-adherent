@@ -32,7 +32,7 @@ use Sabre\DAV\Collection;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Committee extends BaseGroup
+class Committee extends BaseGroup implements SynchronizedEntity
 {
     use EntityPostAddressTrait;
     use CoordinatorAreaTrait;

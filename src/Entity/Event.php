@@ -15,7 +15,7 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @Algolia\Index
  */
-class Event extends BaseEvent implements UserDocumentInterface
+class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEntity
 {
     use UserDocumentTrait;
 
