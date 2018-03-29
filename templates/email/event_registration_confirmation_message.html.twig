@@ -1,5 +1,5 @@
 {% block subject %}
-    Confirmez votre compte En-Marche.fr
+    Confirmation de participation à un événement En Marche !
 {% endblock %}
 
 {% block body_html %}
@@ -12,19 +12,23 @@
                         Bonjour @@first_name@@,
                     </p>
                     <p>
-                        Merci d'avoir rejoint le mouvement !
+                        Vous êtes bien inscrit(e) à l'événement
+                        <strong>@@event_name@@</strong>
+                        organisé par @@event_organizer@@.
                     </p>
                     <p>
-                        Il ne vous reste plus qu’une étape : confirmer  votre adresse e-mail.
+                        Celui-ci se déroulera le @@event_date@@
+                        à @@event_hour@@ au @@event_address@@.
+                    </p>
+                    <p>
+                        Merci pour votre engagement !
                     </p>
                 </td>
             </tr>
             <tr>
-              <td align="center">
-                  <a href="@@confirmation_link@@" class="btn" target="_blank">
-                    Confirmer mon adresse e-mail
-                  </a>
-              </td>
+                <td align="center">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=@@event_link@@" target="_blank" class="btn">Partager sur Facebook !</a>
+                </td>
             </tr>
             <tr>
                 <td align="left">

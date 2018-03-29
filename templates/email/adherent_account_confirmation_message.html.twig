@@ -1,0 +1,46 @@
+{% block subject %}
+    Et maintenant ?
+{% endblock %}
+{# CHECKER LINK CTA #}
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        Vous venez de rejoindre les @@adherents_count@@ adhérents d’En Marche, bienvenue !
+                    </p>
+                    <p>
+                        <strong>Notre mouvement s'est fixé un objectif</strong> : rassembler l'ensemble des Français décidés à renouveler notre vie démocratique.
+                    </p>
+                    <p>
+                        Nous sommes donc heureux de vous accueillir parmi nous.
+                    </p>
+                    <p>
+                        <strong>La prochaine étape ?</strong> Nous vous proposons de renseigner votre profil En Marche avec vos compétences pour que nous puissions travailler ensemble sur des projets, sur vos projets, sur notre projet.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <a href="{{ url('app_summary_manager_index') }}" class="btn" target="_blank">Remplir mon profil !</a>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+                        À vous de jouer,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

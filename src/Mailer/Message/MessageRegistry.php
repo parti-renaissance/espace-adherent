@@ -51,19 +51,22 @@ class MessageRegistry
         TonMacronFriendMessage::class => 'ton_macron_friend_message',
     ];
 
+    public function getTemplateName(string $messageClass): string
+    {
+        if (\array_key_exists($messageClass, $this->transactional)) {
+            return $this->transactional[$messageClass];
+        }
+
+        if (\array_key_exists($messageClass, $this->campaign)) {
+            return $this->campaign[$messageClass];
+        }
+
+        throw new \Exception("Message $messageClass does not exist.");
+    }
+
     public function getMessageTemplate(Message $message): string
     {
-        $class = get_class($message);
-
-        if (\array_key_exists($class, $this->transactional)) {
-            return $this->transactional[$class];
-        }
-
-        if (\array_key_exists($class, $this->campaign)) {
-            return $this->campaign[$class];
-        }
-
-        throw new \Exception("Message $class does not exist.");
+        return $this->getTemplateName(get_class($message));
     }
 
     public function getMessageClass(string $name): string

@@ -16,6 +16,9 @@ default:
                     doctrine: "@doctrine"
                     dispatcher: "@event_dispatcher"
                 - EmailContext
+                - EmailTemplateContext:
+                    twig: "@twig"
+                    messageRegistry: "@AppBundle\\Mailer\\Message\\MessageRegistry"
                 - SecurityContext
                 - FeatureContext
     extensions:

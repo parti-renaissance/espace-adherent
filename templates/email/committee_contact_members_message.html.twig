@@ -1,5 +1,5 @@
 {% block subject %}
-    Confirmez votre compte En-Marche.fr
+    @@subject@@
 {% endblock %}
 
 {% block body_html %}
@@ -12,22 +12,32 @@
                         Bonjour @@first_name@@,
                     </p>
                     <p>
-                        Merci d'avoir rejoint le mouvement !
+                        @@member_firstname@@ vous envoie ce message :
+                    </p>
+                </td>
+            </tr>
+            <tr align="center">
+                <td>
+                    <p>
+                        ------
                     </p>
                     <p>
-                        Il ne vous reste plus qu’une étape : confirmer  votre adresse e-mail.
+                        @@message@@
+                    </p>
+                     <p>
+                        ------
                     </p>
                 </td>
             </tr>
             <tr>
-              <td align="center">
-                  <a href="@@confirmation_link@@" class="btn" target="_blank">
-                    Confirmer mon adresse e-mail
-                  </a>
-              </td>
+                <td align="left">
+                    <p>
+                        Si nécessaire, vous pouvez échanger avec @@member_firstname@@ en répondant à cet e-mail.
+                    </p>
+                </td>
             </tr>
             <tr>
-                <td align="left">
+                <td>
                     <p>
                         À très bientôt,
                     </p>

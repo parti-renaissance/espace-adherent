@@ -1,0 +1,66 @@
+{% block subject %}
+    Rejoins En Marche !
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        @@sender_firstname@@ @@sender_lastname@@
+                        vous invite à nous rejoindre. Voici son message :
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <p>
+                       -------
+                    </p>
+                    <p>
+                        @@message@@
+                    </p>
+                    <p>
+                       -------
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+                        L'adhésion est gratuite.
+                    </p>
+                    <p>
+                        Cela ne vous prendra pas plus de 3 minutes.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <a href="https://en-marche.fr/inscription?utm_source=INVITSITE&utm_medium=EMAIL&utm_campaign=PARRAINAGESITE" class="btn" target="_blank">
+                        Rejoindre le mouvement !
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <p>
+                        Nous restons bien sûr à votre disposition.
+                    </p>
+                    <p>
+                        À très bientôt !
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

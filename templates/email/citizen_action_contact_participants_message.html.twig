@@ -1,5 +1,5 @@
 {% block subject %}
-    Confirmez votre compte En-Marche.fr
+    @@citizen_project_host_subject@@
 {% endblock %}
 
 {% block body_html %}
@@ -12,24 +12,31 @@
                         Bonjour @@first_name@@,
                     </p>
                     <p>
-                        Merci d'avoir rejoint le mouvement !
+                        @@citizen_project_host_firstname@@ vous envoie ce message :
+
+                    </p>
+                </td>
+            </tr>
+            <tr align="center">
+                <td>
+                    <p>
+                       -------
                     </p>
                     <p>
-                        Il ne vous reste plus qu’une étape : confirmer  votre adresse e-mail.
+                        @@citizen_project_host_message@@
+                    </p>
+                    <p>
+                       -------
                     </p>
                 </td>
             </tr>
             <tr>
-              <td align="center">
-                  <a href="@@confirmation_link@@" class="btn" target="_blank">
-                    Confirmer mon adresse e-mail
-                  </a>
-              </td>
-            </tr>
-            <tr>
                 <td align="left">
                     <p>
-                        À très bientôt,
+                        Si nécessaire, vous pouvez échanger avec @@citizen_project_host_firstname@@ en répondant à cet e-mail.
+                    </p>
+                    <p>
+                        A très bientôt,
                     </p>
                     <p>
                         L'équipe de La République En Marche !

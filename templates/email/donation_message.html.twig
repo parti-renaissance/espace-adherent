@@ -1,0 +1,40 @@
+{% block subject %}
+    Merci pour votre engagement, @@first_name@@ !
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        <strong>L’équipe de la République En Marche tient à vous remercier très sincèrement pour votre soutien financier important.</strong>
+                    </p>
+                    <p>
+                        Chaque euro reçu nous permet d'aller plus loin et de continuer à innover pour que chacun puisse s'impliquer concrètement dans la vie politique ! Ce sont vos contributions qui nous permettent de fournir à nos adhérents et à l’ensemble des Français les outils nécessaires à la mise en oeuvre des changements dont notre pays a besoin.
+                    </p>
+                    <p>
+                        Vous recevrez votre reçu fiscal dans le courant du premier semestre de l'année suivante à l'adresse que vous nous avez indiquée. Pour un don en 2018 par exemple, vous le recevrez durant le 2ème trimestre 2019.
+                    </p>
+                    <p>
+                        Si vous avez la moindre question, contactez-nous par téléphone au 01 86 95 02 86 ou par e-mail, en cliquant ici : contact@en-marche.fr
+                    </p>
+                    <p>
+                        C'est grâce à vous qu'un vent nouveau souffle sur la France ! Et ce n'est que le début. Nous avons besoin de vous pour qu’ensemble nous continuions à transformer le pays au profit de chacun. Partagez votre engagement autour de vous et continuez à être un acteur du changement de la France.
+                    </p>
+                    <p>
+                        Encore un grand merci et à bientôt,
+                    </p>
+                    <p>
+                        L'équipe de La République En Marche !
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% block subject %}
+    Annulation de la mise en relation
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            <tr>
+                <td align="left">
+                    <p>
+                        Bonjour @@first_name@@,
+                    </p>
+                    <p>
+                        Nous vous informons que votre association avec @@voter_first_name@@ @@voter_last_name@@ dans le cadre d'une procuration a été annulée, l'un(e) de vous deux n'étant plus disponible.
+                    </p>
+                    <p>
+                        À très vite,
+                    </p>
+                    <p>
+                        L'équipe de la République En Marche !
+                    </p>
+                </td>
+            </tr>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}
