@@ -1,5 +1,5 @@
 {% block subject %}
-    Un message au sujet de @@event_name@@
+    @@subject@@
 {% endblock %}
 
 {% block body_html %}
@@ -12,7 +12,7 @@
                         Bonjour @@first_name@@,
                     </p>
                     <p>
-                        @@organizer_firstname@@, organisateur de l'événement @@event_name@@, vous envoie ce message :
+                        @@organizer_first_name@@, organisateur de l'événement @@event_name@@, vous envoie ce message :
                     </p>
                 </td>
             </tr>
@@ -22,7 +22,7 @@
                         -------
                     </p>
                     <p>
-                        @@target_message@@
+                        @@message@@
                     </p>
                     <p>
                         -------
