@@ -116,7 +116,6 @@
         <!--Command-->
         <service id="AppBundle\Command\ApiScheduleCommitteeCreationCommand" />
         <service id="AppBundle\Command\ApiScheduleEventCreationCommand" />
-        <service id="AppBundle\Command\FixTitleCaseCommand" />
 
         <!-- UserDocument -->
         <service id="AppBundle\UserDocument\UserDocumentManager" public="true" />
