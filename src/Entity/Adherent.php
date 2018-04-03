@@ -452,20 +452,47 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         if ($this->hasCitizenProjectCreationEmailSubscription()) {
             $subscriptions[] = AdherentEmailSubscription::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION;
         }
+//      CANARY !
+        if ($this->localHostEmailsSubscription) {
+            $subscriptions[] = AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST;
+        }
 
         return $subscriptions;
     }
 
     public function setEmailsSubscriptions(array $emailsSubscriptions): void
     {
-        if ($key = array_search(AdherentEmailSubscription::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION, $emailsSubscriptions, true)) {
+        if ($key = \array_search(AdherentEmailSubscription::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION, $emailsSubscriptions, true)) {
             unset($emailsSubscriptions[$key]);
+        }
+//      CANARY !
+        if ($key = \array_search(AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST, $emailsSubscriptions, true)) {
+            unset($emailsSubscriptions[$key]);
+            $this->localHostEmailsSubscription = true;
+        } else {
+            $this->localHostEmailsSubscription = false;
+        }
+        if (\in_array(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MAIN, $emailsSubscriptions, true)) {
+            $emailsSubscriptions = array_merge($emailsSubscriptions, [
+                AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOVEMENT_INFORMATION,
+                AdherentEmailSubscription::SUBSCRIBED_EMAILS_GOVERNMENT_INFORMATION,
+                AdherentEmailSubscription::SUBSCRIBED_EMAILS_WEEKLY_LETTER,
+                AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOOC,
+                AdherentEmailSubscription::SUBSCRIBED_EMAILS_MICROLEARNING,
+                AdherentEmailSubscription::SUBSCRIBED_EMAILS_DONATOR_INFORMATION,
+            ]);
         }
         $this->emailsSubscriptions = $emailsSubscriptions;
     }
 
     public function addEmailsSubscription(string $emailsSubscription): void
     {
+//      CANARY !
+        if (AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST === $emailsSubscription) {
+            $this->localHostEmailsSubscription = true;
+
+            return;
+        }
         if (AdherentEmailSubscription::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION !== $emailsSubscription) {
             $this->emailsSubscriptions[] = $emailsSubscription;
         }

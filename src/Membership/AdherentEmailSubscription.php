@@ -4,6 +4,10 @@ namespace AppBundle\Membership;
 
 final class AdherentEmailSubscription
 {
+//    CANARY !
+    public const SUBSCRIBED_EMAILS_MAIN = 'subscribed_emails_main';
+    public const SUBSCRIBED_EMAILS_LOCAL_HOST = 'subscribed_emails_local_host';
+
     public const SUBSCRIBED_EMAILS_MOVEMENT_INFORMATION = 'subscribed_emails_movement_information';
     public const SUBSCRIBED_EMAILS_GOVERNMENT_INFORMATION = 'subscribed_emails_government_information';
     public const SUBSCRIBED_EMAILS_WEEKLY_LETTER = 'subscribed_emails_weekly_letter';
@@ -12,24 +16,31 @@ final class AdherentEmailSubscription
     public const SUBSCRIBED_EMAILS_DONATOR_INFORMATION = 'subscribed_emails_donator_information';
     public const SUBSCRIBED_EMAILS_REFERENTS = 'subscribed_emails_referents';
     public const SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION = 'subscribed_emails_citizen_project_creation';
+//
+//    public const SUBSCRIPTIONS = [
+//        'E-mails de communication' => [
+//            'Recevoir les informations sur le mouvement' => self::SUBSCRIBED_EMAILS_MOVEMENT_INFORMATION,
+//            'Recevoir les informations sur le gouvernement' => self::SUBSCRIBED_EMAILS_GOVERNMENT_INFORMATION,
+//            'Recevoir la newsletter hebdomadaire LaREM' => self::SUBSCRIBED_EMAILS_WEEKLY_LETTER,
+//        ],
+//        'E-mails liés à la formation' => [
+//            'Recevoir les informations sur le MOOC' => self::SUBSCRIBED_EMAILS_MOOC,
+//            'Recevoir les informations sur le micro-learning' => self::SUBSCRIBED_EMAILS_MICROLEARNING,
+//        ],
+//        'Donateurs' => [
+//            'Recevoir les informations destinées aux donateurs' => self::SUBSCRIBED_EMAILS_DONATOR_INFORMATION,
+//        ],
+//        'Autres e-mails' => [
+//            'Recevoir les e-mails de votre référent départemental' => self::SUBSCRIBED_EMAILS_REFERENTS,
+//            'Être notifié(e) de la création de nouveaux projets citoyens' => self::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION,
+//        ],
+//    ];
 
     public const SUBSCRIPTIONS = [
-        'Mails de communication' => [
-            'Informations du mouvement' => self::SUBSCRIBED_EMAILS_MOVEMENT_INFORMATION,
-            'Informations du gouvernement' => self::SUBSCRIBED_EMAILS_GOVERNMENT_INFORMATION,
-            'Lettre hebdomadaire ' => self::SUBSCRIBED_EMAILS_WEEKLY_LETTER,
-        ],
-        'Formation' => [
-            'Mooc' => self::SUBSCRIBED_EMAILS_MOOC,
-            'Microlearning' => self::SUBSCRIBED_EMAILS_MICROLEARNING,
-        ],
-        'Donateurs' => [
-            'Informations donateur' => self::SUBSCRIBED_EMAILS_DONATOR_INFORMATION,
-        ],
-        'Mails locaux' => [
-            'Emails de vos référents' => self::SUBSCRIBED_EMAILS_REFERENTS,
-            'Être notifié(e) de la création de nouveaux projets citoyens' => self::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION,
-        ],
+        'Emails En Marche !' => self::SUBSCRIBED_EMAILS_MAIN,
+        'Emails de vos référents' => self::SUBSCRIBED_EMAILS_REFERENTS,
+        'Emails de votre animateur local' => self::SUBSCRIBED_EMAILS_LOCAL_HOST,
+        'Être notifié(e) de la création de nouveaux projets citoyens' => self::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION,
     ];
 
     public const DISTANCE_2KM = 2;
@@ -59,6 +70,8 @@ final class AdherentEmailSubscription
      */
     public static function getMergedSubscriptions(): array
     {
-        return array_merge_recursive(...array_values(static::SUBSCRIPTIONS));
+//        CANARY !
+//        return array_merge_recursive(...array_values(static::SUBSCRIPTIONS));
+        return static::SUBSCRIPTIONS;
     }
 }
