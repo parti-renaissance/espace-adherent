@@ -20,6 +20,11 @@
                 </div>
             {% endif %}
         </div>
+        <div class="b__nudge--top-40">
+            {% if is_granted('REPORT') %}
+                <a href="{{ report_path(event, app.request.pathInfo) }}" class="text--body link--red">Signaler cet événement</a>
+            {% endif %}
+        </div>
     </div>
     <div class="committee__event__header__cta">
         {% set isFull = true %}
@@ -69,10 +74,5 @@
                 </a>
             </li>
         </ul>
-        <div class="b__nudge--top-40">
-        {% if is_granted('REPORT') %}
-            <a href="{{ report_path(event, app.request.pathInfo) }}" class="text--body link--newblue">Signaler cet événement</a>
-        {% endif %}
-    </div>
     </div>
 </div>

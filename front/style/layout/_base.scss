@@ -79,6 +79,15 @@ a {
         }
     }
 
+    &.link--red {
+        color: $red;
+        border-color: transparent;
+
+        &:hover {
+            border-color: $red;
+        }
+    }
+
     &.link--white {
         @include link--white;
     }
