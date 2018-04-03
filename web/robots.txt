@@ -1,9 +1,5 @@
 # www.robotstxt.org/
 # www.google.com/support/webmasters/bin/answer.py?hl=en&answer=156449
 
-User-agent: *
-Disallow: /evenements/2017-07-19-test-de-tess
-Disallow: /comites/comite-en-marche-test
-
 Sitemap: https://en-marche.fr/sitemap.xml
 Sitemap: https://m.en-marche.fr/sitemap.xml

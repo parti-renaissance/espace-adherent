@@ -266,7 +266,6 @@ security:
                 target: homepage
 
         main:
-            user_checker: AppBundle\Security\UserChecker
             context: main_context
             # No pattern means every path is behind this firewall
             provider: users_db

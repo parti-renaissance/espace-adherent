@@ -127,15 +127,7 @@ app_redirect_register:
     path: /register
     defaults:
         _controller: FrameworkBundle:Redirect:redirect
-        route: app_membership_join
-
-app_redirect_inscription:
-    host: "%app_host%"
-    path: /inscription
-    defaults:
-        _controller: FrameworkBundle:Redirect:redirect
-        route: app_membership_join
-        permanent: true
+        route: app_membership_register
 
 # This route must be loaded the last to prevent an override
 app_static_page:

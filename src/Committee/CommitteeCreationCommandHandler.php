@@ -43,7 +43,7 @@ class CommitteeCreationCommandHandler
         $this->manager->persist($adherent->followCommittee($committee));
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(Events::COMMITTEE_CREATED, new CommitteeEvent($committee));
+        $this->dispatcher->dispatch(Events::COMMITTEE_CREATED, new CommitteeWasCreatedEvent($committee, $adherent));
 
         $message = CommitteeCreationConfirmationMessage::create($adherent, $committee->getCityName());
         $this->mailer->sendMessage($message);

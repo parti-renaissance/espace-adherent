@@ -350,27 +350,9 @@
             <tag name="validator.constraint_validator" />
         </service>
 
-        <!-- Sync with API -->
-
-        <!-- User subscriber -->
+        <!-- User subscriber (Sync with API) -->
         <service autowire="true" id="AppBundle\Membership\EventListener\UserSubscriber">
-            <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
-        <!-- Committee subscriber -->
-        <service autowire="true" id="AppBundle\Committee\EventListener\CommitteeSubscriber">
-            <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
-        <service autowire="true" id="AppBundle\Committee\Serializer\CommitteeSerializationSubscriber">
-            <tag name="jms_serializer.event_subscriber"/>
-        </service>
-
-        <!-- Event subscriber -->
-        <service autowire="true" id="AppBundle\Event\EventListener\EventSubscriber">
-            <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
+            <argument key="$producer" type="service" id="old_sound_rabbit_mq.user_sync_api_producer"/>
             <tag name="kernel.event_subscriber"/>
         </service>
     </services>

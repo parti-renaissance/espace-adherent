@@ -8,7 +8,6 @@ use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use League\Flysystem\FileNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -20,7 +19,6 @@ class UploadDocumentController extends Controller
     /**
      * @Route("/upload/{type}", defaults={"_enable_campaign_silence"=true}, name="app_filebrowser_upload")
      * @Method("POST")
-     * @Security("is_granted('FILE_UPLOAD', type)")
      */
     public function filebrowserUploadAction(string $type, Request $request)
     {

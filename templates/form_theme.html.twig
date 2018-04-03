@@ -2,24 +2,6 @@
 
 {# Override #}
 
-{%- block choice_widget_expanded -%}
-    <div {{ block('widget_container_attributes') }}>
-        {% set start = 0 %}
-        {% for key, choice in choices %}
-            {% if choice.choices is defined %}
-                <h3>{{ key|trans }}</h3>
-                {% set size = choice.choices|length %}
-            {% else %}
-                {% set size = 1 %}
-            {% endif %}
-            {%- for child in form.children|slice(start,size) %}
-                {{- form_row(child, {translation_domain: choice_translation_domain}) -}}
-            {% endfor -%}
-            {% set start = start + size %}
-        {% endfor -%}
-    </div>
-{%- endblock choice_widget_expanded -%}
-
 {% block form_widget_simple -%}
     {% if type is not defined or type not in ['file', 'hidden'] %}
         {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form form__field')|trim}) -%}
@@ -188,11 +170,3 @@
         </div>
     </label>
 {% endblock %}
-
-{%- block checkbox_row -%}
-    <div class="form__checkbox">
-        {{ form_widget(form) }}
-        {{ form_label(form) }}
-        {{ form_errors(form) }}
-    </div>
-{%- endblock -%}

@@ -7,8 +7,6 @@ use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Exception\AdherentTokenExpiredException;
 use AppBundle\Form\AdherentResetPasswordType;
 use AppBundle\Form\LoginType;
-use AppBundle\Membership\MembershipRequestHandler;
-use AppBundle\Repository\AdherentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -16,7 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SecurityController extends Controller
@@ -134,22 +131,5 @@ class SecurityController extends Controller
         return $this->render('security/adherent_reset_password.html.twig', [
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @Route("/renvoyer-validation", name="adherent_resend_validation")
-     * @Method("GET")
-     */
-    public function resendValidationEmailAction(MembershipRequestHandler $membershipRequestHandler, AuthenticationUtils $authenticationUtils, AdherentRepository $adherentRepository): Response
-    {
-        /** @var Adherent $adherent */
-        $adherent = $adherentRepository->loadUserByUsername($authenticationUtils->getLastUsername());
-
-        if ($adherent && !$adherent->isEnabled() && !$adherent->getActivatedAt()) {
-            $membershipRequestHandler->sendEmailValidation($adherent);
-            $this->addFlash('success', 'Un email de validation a bien été envoyé.');
-        }
-
-        return $this->redirectToRoute('app_user_login');
     }
 }

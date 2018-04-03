@@ -3,114 +3,87 @@
 namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\Report\Report;
+use AppBundle\Entity\Report;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
 class ReportTest extends TestCase
 {
-    public function provideSubjectClass(): iterable
+    public function testConstructor(): void
     {
-        yield [CitizenAction::class];
-        yield [CitizenProject::class];
-        yield [Committee::class];
-        yield [Event::class];
+        $report = $this->createReport(['other', 'en_marche_values', 'commercial_content', 'inappropriate'], 'One comment');
+
+        self::assertSame(['other', 'en_marche_values', 'commercial_content', 'inappropriate'], $report->getReasons());
+        self::assertSame('One comment', $report->getComment());
+        self::assertSame('unresolved', $report->getStatus());
+        self::assertNull($report->getId());
+        self::assertInstanceOf(UuidInterface::class, $report->getUuid());
+        self::assertFalse($report->isResolved());
+        self::assertInstanceOf(Adherent::class, $report->getAuthor());
     }
 
-    /**
-     * @dataProvider provideSubjectClass
-     */
-    public function testConstructor(string $subjectClass): void
+    public function testItShouldContainAtLeastOneReason(): void
     {
-        $report = $this->createReport($subjectClass, ['other', 'en_marche_values', 'commercial_content', 'inappropriate'], 'One comment');
-
-        $this->assertSame(['other', 'en_marche_values', 'commercial_content', 'inappropriate'], $report->getReasons());
-        $this->assertSame('One comment', $report->getComment());
-        $this->assertSame('unresolved', $report->getStatus());
-        $this->assertNull($report->getId());
-        $this->assertInstanceOf(UuidInterface::class, $report->getUuid());
-        $this->assertFalse($report->isResolved(), 'Report should not be resolved.');
-        $this->assertInstanceOf(Adherent::class, $report->getAuthor());
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('At least one reason must be provided');
+        $this->createReport([]);
     }
 
-    /**
-     * @dataProvider provideSubjectClass
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage At least one reason must be provided
-     */
-    public function testItShouldContainAtLeastOneReason(string $subjectClass): void
+    public function testItShouldValidateReasons(): void
     {
-        $this->createReport($subjectClass, []);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('toto is not a valid reason, you must choose one from AppBundle\Entity\Report::REASONS_LIST');
+        $this->createReport(['toto']);
     }
 
-    /**
-     * @dataProvider provideSubjectClass
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Some reasons are not valid "toto", they are defined in AppBundle\Entity\Report\Report::REASONS_LIST
-     */
-    public function testItShouldValidateReasons(string $subjectClass): void
+    public function testItShouldRequireACommentWhenOtherReasonIsProvided(): void
     {
-        $this->createReport($subjectClass, ['toto']);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$comment is not filed while AppBundle\Entity\Report::REASON_OTHER is provided');
+        $this->createReport(['other']);
     }
 
-    /**
-     * @dataProvider provideSubjectClass
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $comment is not filed while AppBundle\Entity\Report\Report::REASON_OTHER is provided
-     */
-    public function testItShouldRequireACommentWhenOtherReasonIsProvided(string $subjectClass): void
+    public function testItShouldRequireOtherReasonWhenCommentIsProvided(): void
     {
-        $this->createReport($subjectClass, ['other']);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$comment is filed but AppBundle\Entity\Report::REASON_OTHER is not provided in $reasons');
+        $this->createReport(['inappropriate'], 'comment');
     }
 
-    /**
-     * @dataProvider provideSubjectClass
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $comment is filed but AppBundle\Entity\Report\Report::REASON_OTHER is not provided in $reasons
-     */
-    public function testItShouldRequireOtherReasonWhenCommentIsProvided(string $subjectClass): void
+    public function testItShouldNotBeResolvedTwice(): void
     {
-        $this->createReport($subjectClass, ['inappropriate'], 'comment');
-    }
-
-    /**
-     * @dataProvider provideSubjectClass
-     * @expectedException \LogicException
-     * @expectedExceptionMessage Report already resolved
-     */
-    public function testItShouldNotBeResolvedTwice(string $subjectClass): void
-    {
-        $report = $this->createReport($subjectClass, ['inappropriate']);
-
+        $report = $this->createReport(['inappropriate']);
         $report->resolve();
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Report already resolved');
         $report->resolve();
     }
 
-    /**
-     * @dataProvider provideSubjectClass
-     */
-    public function testStatusCanBeSetToResolved(string $subjectClass): void
+    public function testStatusCanBeSetToResolved(): void
     {
-        $report = $this->createReport($subjectClass, ['inappropriate']);
+        $report = $this->createReport(['inappropriate']);
 
-        $this->assertFalse($report->isResolved(), 'Report should not be resolved.');
-        $this->assertNull($report->getResolvedAt());
-
+        self::assertFalse($report->isResolved());
+        self::assertNull($report->getResolvedAt());
         $report->resolve();
-
-        $this->assertTrue($report->isResolved(), 'Report should be resolved.');
-        $this->assertSame('resolved', $report->getStatus());
-        $this->assertNotNull($report->getResolvedAt());
+        self::assertTrue($report->isResolved());
+        self::assertSame('resolved', $report->getStatus());
+        self::assertNotNull($report->getResolvedAt());
     }
 
-    private function createReport(string $subjectClass, array $reasons, string $comment = null): Report
+    private function createReport(array $reasons, string $comment = null): Report
     {
-        return new class($this->createMock($subjectClass), $this->createMock(Adherent::class), $reasons, $comment) extends Report {
-            // CS needed for Style CI
+        return new class($this->createMock(Adherent::class), $reasons, $comment) extends Report {
+            public function getSubject()
+            {
+                return 'Foo';
+            }
+
+            public function getSubjectType(): string
+            {
+                return 'Bar';
+            }
         };
     }
 }

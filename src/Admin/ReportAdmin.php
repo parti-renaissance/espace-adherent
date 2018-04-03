@@ -2,7 +2,7 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Entity\Report\Report;
+use AppBundle\Entity\Report;
 use AppBundle\Report\ReportType;
 use AppBundle\Repository\ReportRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -36,7 +36,6 @@ class ReportAdmin extends AbstractAdmin
     public function __construct(string $code, string $class, string $baseControllerName, ReportRepository $reportRepository)
     {
         parent::__construct($code, $class, $baseControllerName);
-
         $this->reportRepository = $reportRepository;
     }
 
@@ -64,7 +63,7 @@ class ReportAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => TextType::class,
             ])
-            ->add('type', CallbackFilter::class, [
+            ->add('subjectType', CallbackFilter::class, [
                 'label' => 'Type d\'objet signalé',
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
@@ -74,7 +73,7 @@ class ReportAdmin extends AbstractAdmin
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
-                        return false;
+                        return;
                     }
 
                     $qb->andWhere(sprintf('%s INSTANCE OF %s', $alias, $value['value']));
@@ -88,14 +87,10 @@ class ReportAdmin extends AbstractAdmin
                 'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
-                        return false;
+                        return;
                     }
 
-                    $ids = $this->reportRepository->findIdsByNameForAll($value['value']);
-
-                    if (!$ids) {
-                        return true;
-                    }
+                    $ids = $this->reportRepository->findIdsByName($value['value']);
 
                     /* @var ProxyQuery|QueryBuilder $qb */
                     $qb->andWhere($qb->expr()->in("$alias.id", $ids));
@@ -109,7 +104,7 @@ class ReportAdmin extends AbstractAdmin
                 'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
-                        return false;
+                        return;
                     }
 
                     /* @var ProxyQuery|QueryBuilder $qb */
@@ -128,7 +123,7 @@ class ReportAdmin extends AbstractAdmin
                 'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
-                        return false;
+                        return;
                     }
 
                     /* @var ProxyQuery|QueryBuilder $qb */
@@ -150,7 +145,7 @@ class ReportAdmin extends AbstractAdmin
                 'field_type' => EmailType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
-                        return false;
+                        return;
                     }
 
                     /* @var ProxyQuery|QueryBuilder $qb */
@@ -176,7 +171,7 @@ class ReportAdmin extends AbstractAdmin
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
-                        return false;
+                        return;
                     }
 
                     $qb->andWhere($qb->expr()->eq(sprintf('json_contains(%s.reasons, :reason)', $alias), 1));
@@ -221,7 +216,7 @@ class ReportAdmin extends AbstractAdmin
                 'label' => 'ID',
                 'route' => ['name' => 'show'],
             ])
-            ->add('type', 'trans', [
+            ->add('subjectType', 'trans', [
                 'label' => 'Type d\'objet signalé',
                 'catalogue' => 'reports',
             ])
@@ -274,7 +269,7 @@ class ReportAdmin extends AbstractAdmin
             ->add('id', null, [
                 'label' => 'ID',
             ])
-            ->add('type', 'trans', [
+            ->add('subjectType', 'trans', [
                 'label' => 'Type d\'objet signalé',
                 'catalogue' => 'reports',
             ])

@@ -7,7 +7,7 @@ PHPCSFIXER?=$(EXEC) php -d memory_limit=1024m vendor/bin/php-cs-fixer
 .DEFAULT_GOAL := help
 .PHONY: help start stop reset db db-diff db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt
 .PHONY: lj build up perm deps cc phpcs phpcsfix tty tfp tfp-rabbitmq tfp-db test-behat test-phpunit-functional
-.PHONY: wait-for-rabbitmq wait-for-db security-check
+.PHONY: wait-for-rabbitmq wait-for-db up-without-xdebug security-check
 
 help:
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
@@ -221,6 +221,10 @@ build:
 
 up:
 	$(DOCKER_COMPOSE) up -d --remove-orphans
+
+up-without-xdebug: up
+	$(EXEC) phpdismod xdebug
+	$(DOCKER_COMPOSE) restart app
 
 perm:
 	$(EXEC) chmod -R 777 var app/data/images

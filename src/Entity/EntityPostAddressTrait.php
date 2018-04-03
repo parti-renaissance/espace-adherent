@@ -31,7 +31,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"user_profile", "public", "committee_read", "event_read"})
+     * @JMS\Groups({"user_profile", "public"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("country")
      */
@@ -51,7 +51,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"user_profile", "public", "committee_read", "event_read"})
+     * @JMS\Groups({"user_profile", "public"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("zipCode")
      */
@@ -78,21 +78,11 @@ trait EntityPostAddressTrait
         return $this->postAddress->getInseeCode();
     }
 
-    /**
-     * @JMS\Groups({"committee_read", "event_read"})
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("latitude")
-     */
     public function getLatitude()
     {
         return $this->postAddress->getLatitude();
     }
 
-    /**
-     * @JMS\Groups({"committee_read", "event_read"})
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("longitude")
-     */
     public function getLongitude()
     {
         return $this->postAddress->getLongitude();

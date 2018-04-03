@@ -3,11 +3,9 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Report\ReportableInterface;
 use AppBundle\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as JMS;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -17,7 +15,7 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @ORM\MappedSuperclass
  */
-abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface, ReportableInterface
+abstract class BaseGroup implements GeoPointInterface
 {
     public const APPROVED = 'APPROVED';
     public const PENDING = 'PENDING';
@@ -33,8 +31,6 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
      * @ORM\Column
      *
      * @Algolia\Attribute
-     *
-     * @JMS\Groups({"public", "committee_read"})
      */
     protected $name;
 
@@ -55,8 +51,6 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
      * @Gedmo\Slug(fields={"canonicalName"})
      *
      * @Algolia\Attribute
-     *
-     * @JMS\Groups({"public", "committee_read"})
      */
     protected $slug;
 
@@ -64,8 +58,6 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
      * The group current status.
      *
      * @ORM\Column(length=20)
-     *
-     * @JMS\Groups({"public", "committee_read"})
      */
     protected $status;
 
@@ -101,9 +93,6 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
      * @ORM\Column(type="smallint", options={"unsigned": true})
      *
      * @Algolia\Attribute
-     *
-     * @JMS\Groups({"public", "committee_read"})
-     * @JMS\SerializedName("membersCount")
      */
     protected $membersCounts;
 
@@ -257,15 +246,5 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
     public function equals(self $other): bool
     {
         return $this->uuid->equals($other->getUuid());
-    }
-
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("uuid"),
-     * @JMS\Groups({"public", "committee_read"})
-     */
-    public function getUuidAsString(): string
-    {
-        return $this->getUuid()->toString();
     }
 }
