@@ -40,7 +40,7 @@ references:
             echo 127.0.0.1 test.legislatives.enmarche.code | sudo tee -a /etc/hosts
 
     start_containers: &start_containers
-        run: make up-without-xdebug perm
+        run: make up perm
 
 jobs:
     build:
@@ -64,7 +64,7 @@ jobs:
 
                 make build
 
-                make up-without-xdebug
+                make up
                 make -j2 node_modules assets-prod assets-amp var/public.key
                 make vendor cc
 

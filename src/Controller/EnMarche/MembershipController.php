@@ -29,7 +29,7 @@ class MembershipController extends Controller
     /**
      * This action enables a guest user to adhere to the community.
      *
-     * @Route("/inscription", name="app_membership_register")
+     * @Route("/inscription-utilisateur", name="app_membership_register")
      * @Method("GET|POST")
      */
     public function registerAction(Request $request, GeoCoder $geoCoder, AuthorizationChecker $authorizationChecker, CallbackManager $callbackManager): Response

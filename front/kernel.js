@@ -52,12 +52,6 @@ window.Kernel = class {
             app = true;
             runIfReady();
         });
-
-        if ('debug' !== release) {
-            System.import('utils/analytics').catch(handleError).then((module) => {
-                module.default();
-            });
-        }
     }
 
     static onLoad(callback) {

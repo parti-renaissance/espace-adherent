@@ -240,6 +240,7 @@
             <argument />
             <argument>AppBundle\Entity\Event</argument>
             <argument />
+            <argument type="service" id="event_dispatcher"/>
         </service>
 
         <service id="app.admin.event_category" class="AppBundle\Admin\EventCategoryAdmin">
@@ -404,7 +405,7 @@
             <tag name="sonata.admin" manager-type="orm" label="Signalements" group="Système" />
 
             <argument />
-            <argument>AppBundle\Entity\Report</argument>
+            <argument>AppBundle\Entity\Report\Report</argument>
             <argument />
             <argument type="service" id="AppBundle\Repository\ReportRepository" />
         </service>

@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Entity\Report;
+use AppBundle\Entity\Report\Report;
 use AppBundle\Report\ReportManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -35,6 +35,6 @@ class AdminReportController extends Controller
             throw new BadRequestHttpException($e->getMessage(), $e);
         }
 
-        return $this->redirectToRoute('admin_app_report_list');
+        return $this->redirectToRoute('admin_app_report_report_list');
     }
 }

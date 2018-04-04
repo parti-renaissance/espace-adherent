@@ -33,7 +33,7 @@ class EventMessageNotifier implements EventSubscriberInterface
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function onEventCreated(EventCreatedEvent $event): void
+    public function onEventCreated(EventEvent $event): void
     {
         if (!$committee = $event->getCommittee()) {
             return;
@@ -49,7 +49,7 @@ class EventMessageNotifier implements EventSubscriberInterface
         }
     }
 
-    public function onEventCancelled(EventCancelledEvent $event): void
+    public function onEventCancelled(EventEvent $event): void
     {
         if (!$event->getCommittee()) {
             return;

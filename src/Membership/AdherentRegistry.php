@@ -12,7 +12,7 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
-use AppBundle\Entity\Report;
+use AppBundle\Entity\Report\Report;
 use AppBundle\Entity\Summary;
 use AppBundle\Entity\Unregistration;
 use AppBundle\Repository\CitizenActionRepository;

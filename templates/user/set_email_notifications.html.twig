@@ -1,40 +1,44 @@
 {% extends 'adherent/layout.twig' %}
 
 {% block adherent_profile_form %}
-
-    <h2>Notifications</h2>
-    <p>Cochez les cases des e-mails que vous souhaitez recevoir.</p>
-
     {{ form_start(form, { attr: { class: 'form' } }) }}
+        <h2>Notifications par emails activées</h2>
+        <button type="button" class="btn--green click-all-checkbox" data-target="{{ form.emails_subscriptions.vars.id }}">Activer</button>
+        <button type="button" class="btn--error un-click-all-checkbox" data-target="{{ form.emails_subscriptions.vars.id }}">Désactiver</button>
 
-    {{ form_errors(form.emails_subscriptions) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.emails_subscriptions) }}
+        {{ form_row(form.citizenProjectCreationEmailSubscriptionRadius) }}
 
-        {% for subscription in form.emails_subscriptions %}
-            <div class="form__checkbox">
-                {{ form_widget(subscription) }}
-                {{ form_label(subscription) }}
-            </div>
-        {% endfor %}
-
-        {{ form_widget(form.citizenProjectCreationEmailSubscriptionRadius) }}
+        <p>Si vous souhaitez recevoir ou non les e-mails des comités ou projets citoyens que vous suivez, assurez-vous d'en être membre ou de plus les suivre en allant directement sur leur page</p>
 
         <div class="b__nudge--top">
-            {{ form_widget(form.submit, { label: 'Enregistrer les modifications', attr: { class: 'btn--blue' } }) }}
+            {{ form_widget(form.submit, { attr: { class: 'btn--blue' } }) }}
         </div>
 
     {{ form_end(form) }}
-
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-    <script type="application/javascript">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.click-all-checkbox').on('click', function () {
+                $('#'+$(this).data('target')).find(':checkbox').prop('checked', true);
+            });
 
-        $(document).ready(function() {
+            $('.un-click-all-checkbox').on('click', function () {
+                $('#'+$(this).data('target')).find(':checkbox').prop('checked', false);
+            });
+        });
+    </script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
             var selectDistanceNotificationPc = $('#adherent_email_subscription_citizenProjectCreationEmailSubscriptionRadius'),
-                checkBoxNotificationPc = $('#adherent_email_subscription_emails_subscriptions_3'),
-                labelCheckBoxNotificationPc = $('label[for="adherent_email_subscription_emails_subscriptions_3"]');
+                checkBoxNotificationPc = $('#adherent_email_subscription_emails_subscriptions_7'),
+                labelCheckBoxNotificationPc = $('label[for="adherent_email_subscription_emails_subscriptions_7"]');
 
             checkboxHandler();
 
@@ -81,6 +85,6 @@
 
             checkBoxNotificationPc.on('change', checkboxHandler);
             selectDistanceNotificationPc.on('change', selectHandler);
-        })
+        });
     </script>
 {% endblock %}

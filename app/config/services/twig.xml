@@ -7,6 +7,10 @@
 
         <prototype namespace="AppBundle\Twig\" resource="../../../src/Twig" />
 
+        <service id="AppBundle\Twig\AdminReportRuntime">
+            <tag name="twig.runtime" />
+        </service>
+
         <service id="AppBundle\Twig\AdherentExtension">
             <argument>%adherent_interests%</argument>
         </service>
@@ -38,6 +42,10 @@
         </service>
 
         <service id="AppBundle\Twig\MarkdownRuntime">
+            <tag name="twig.runtime" />
+        </service>
+
+        <service id="AppBundle\Twig\ReportRuntime">
             <tag name="twig.runtime" />
         </service>
 
