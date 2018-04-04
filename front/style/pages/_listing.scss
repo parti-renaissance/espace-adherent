@@ -33,7 +33,7 @@
         ul li {
             display: inline-block;
             height: 40px;
-            width: 40px;
+            min-width: 40px;
             border: 1px solid black;
 
             &:hover {
