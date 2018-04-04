@@ -162,4 +162,18 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
 
         return $committee->getUuid()->toString();
     }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("categoryName")
+     * @JMS\Groups({"public", "event_read"})
+     */
+    public function getEventCategoryName(): ?string
+    {
+        if (!$category = $this->getCategory()) {
+            return null;
+        }
+
+        return $category->getName();
+    }
 }
