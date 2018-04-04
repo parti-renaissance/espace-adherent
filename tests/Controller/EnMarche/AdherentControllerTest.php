@@ -399,7 +399,9 @@ class AdherentControllerTest extends MysqlWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/preferences-des-emails');
         $subscriptions = $crawler->filter('input[name="adherent_email_subscription[emails_subscriptions][]"]');
 
-        $this->assertCount(8, $subscriptions);
+//        CANARY
+        $this->assertCount(4, $subscriptions);
+//        $this->assertCount(8, $subscriptions);
 
         // Submit the emails subscription form with invalid data
         // We need to use a POST request because the crawler does not
@@ -420,16 +422,23 @@ class AdherentControllerTest extends MysqlWebTestCase
         // Submit the emails subscription form with valid data
         $this->client->submit($crawler->selectButton('adherent_email_subscription[submit]')->form(), [
             'adherent_email_subscription' => [
+//              CANARY
                 'emails_subscriptions' => [
-                    AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOVEMENT_INFORMATION,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
+                    AdherentEmailSubscription::SUBSCRIBED_EMAILS_MAIN,
                     AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS,
                     false,
+                    false,
                 ],
+//                'emails_subscriptions' => [
+//                    AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOVEMENT_INFORMATION,
+//                    false,
+//                    false,
+//                    false,
+//                    false,
+//                    false,
+//                    AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS,
+//                    false,
+//                ],
             ],
         ]);
 
@@ -440,11 +449,14 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
         $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOVEMENT_INFORMATION));
-        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_GOVERNMENT_INFORMATION));
-        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_WEEKLY_LETTER));
-        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MICROLEARNING));
-        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOOC));
-        $this->assertFalse($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_DONATOR_INFORMATION));
+
+//      CANARY
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MAIN));
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_GOVERNMENT_INFORMATION));
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_WEEKLY_LETTER));
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MICROLEARNING));
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOOC));
+        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_DONATOR_INFORMATION));
         $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS));
         $this->assertFalse($adherent->hasCitizenProjectCreationEmailSubscription());
     }

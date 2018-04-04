@@ -2,19 +2,28 @@
 
 {% block adherent_profile_form %}
     {{ form_start(form, { attr: { class: 'form' } }) }}
-        <h2>Notifications par emails activées</h2>
-        <button type="button" class="btn--green click-all-checkbox" data-target="{{ form.emails_subscriptions.vars.id }}">Activer</button>
-        <button type="button" class="btn--error un-click-all-checkbox" data-target="{{ form.emails_subscriptions.vars.id }}">Désactiver</button>
+        <h2>Notifications</h2>
+        <br>
+        <div class="b__nudge--bottom">
+            <button type="button" class="btn btn--small click-all-checkbox" data-target="{{ form.emails_subscriptions.vars.id }}">
+                Tout sélectionner
+            </button>
+            <button type="button" class="btn btn--small un-click-all-checkbox" data-target="{{ form.emails_subscriptions.vars.id }}">
+                Tout désélectionner
+            </button>
+        </div>
 
         {{ form_errors(form) }}
         {{ form_row(form.emails_subscriptions) }}
         {{ form_row(form.citizenProjectCreationEmailSubscriptionRadius) }}
 
-        <p>Si vous souhaitez recevoir ou non les e-mails des comités ou projets citoyens que vous suivez, assurez-vous d'en être membre ou de plus les suivre en allant directement sur leur page</p>
-
         <div class="b__nudge--top">
             {{ form_widget(form.submit, { attr: { class: 'btn--blue' } }) }}
         </div>
+
+        <p class="text--small">
+            Pour ne plus recevoir les notifications des <strong>animateurs de comités</strong> ou de <strong>porteurs de projets citoyens</strong>, rendez-vous sur leurs pages respectives et arretez de les suivre.
+        </p>
 
     {{ form_end(form) }}
 {% endblock %}
@@ -37,8 +46,8 @@
 
         $(document).ready(function () {
             var selectDistanceNotificationPc = $('#adherent_email_subscription_citizenProjectCreationEmailSubscriptionRadius'),
-                checkBoxNotificationPc = $('#adherent_email_subscription_emails_subscriptions_7'),
-                labelCheckBoxNotificationPc = $('label[for="adherent_email_subscription_emails_subscriptions_7"]');
+                checkBoxNotificationPc = $('#adherent_email_subscription_emails_subscriptions_3'),
+                labelCheckBoxNotificationPc = $('label[for="adherent_email_subscription_emails_subscriptions_3"]');
 
             checkboxHandler();
 
