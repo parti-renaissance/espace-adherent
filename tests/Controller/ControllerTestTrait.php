@@ -136,9 +136,11 @@ trait ControllerTestTrait
 
     protected function assertSeeCommitteeTimelineMessage(Crawler $crawler, int $position, string $author, string $role, string $text)
     {
-        $this->assertContains($author, $crawler->filter('.committee__timeline__message h3')->eq($position)->text());
-        $this->assertSame($role, $crawler->filter('.committee__timeline__message h3 span')->eq($position)->text());
-        $this->assertContains($text, $crawler->filter('.committee__timeline__message div')->eq($position)->text());
+        $message = $crawler->filter('.committee__timeline__message')->eq($position);
+
+        $this->assertContains($author, $message->filter('h3')->text());
+        $this->assertSame($role, $message->filter('h3 span')->text());
+        $this->assertContains($text, $message->filter('div')->first()->text());
     }
 
     private function getEventCategoryIdForName(string $categoryName): int
