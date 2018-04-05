@@ -2,7 +2,8 @@
 
 namespace AppBundle\Report;
 
-use AppBundle\Entity\Report;
+use AppBundle\Entity\Report\Report;
+use AppBundle\Entity\Report\ReportableInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ReportManager
@@ -20,7 +21,7 @@ class ReportManager
     public function resolve(Report $report): void
     {
         $report->resolve();
-        $this->em->flush($report);
+        $this->em->flush();
     }
 
     /**
@@ -28,11 +29,11 @@ class ReportManager
      *
      * @throws \InvalidArgumentException if $type is not valid
      *
-     * @return mixed|null Object matching $type and $uuid
+     * @return ReportableInterface|null Object matching $type and $uuid
      */
-    public function getSubjectByUuid(string $type, string $uuid)
+    public function getSubjectByUuid(string $type, string $uuid): ?ReportableInterface
     {
-        $reportFQCN = ReportType::getEntityFQCN($type);
+        $reportFQCN = ReportType::getReportClassForType($type);
 
         // By convention the subclass should call the doctrine attribute of the subject "subject". Like this we can get
         // the FQCN of the property thanks to Doctrine metadata

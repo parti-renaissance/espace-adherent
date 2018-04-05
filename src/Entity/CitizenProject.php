@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Exception\CitizenProjectAlreadyApprovedException;
+use AppBundle\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,7 +31,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
+class CitizenProject extends BaseGroup
 {
     use EntityNullablePostAddressTrait;
     use SkillTrait;
@@ -671,6 +672,11 @@ class CitizenProject extends BaseGroup implements CoordinatorAreaInterface
     public function setNextAction(CitizenAction $citizenAction): void
     {
         $this->nextAction = $citizenAction;
+    }
+
+    public function getReportType(): string
+    {
+        return ReportType::CITIZEN_PROJECT;
     }
 
     public function exportCommitteeSupports(): string

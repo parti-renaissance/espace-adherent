@@ -80,6 +80,12 @@ class App {
         });
     }
 
+    runReport() {
+        System.import('pages/report').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        });
+    }
+
     runCommitteesMap() {
         System.import('pages/committees_map').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('map_factory'), this.get('api'));
@@ -191,10 +197,10 @@ class App {
 
     runManageParticipants() {
         System.import('pages/manage_participants').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('api'));
+            module.default();
         });
     }
-    
+
     runGrandeMarcheEurope() {
         System.import('pages/grande_marche_europe').catch((error) => { throw error; }).then((module) => {
             module.default();

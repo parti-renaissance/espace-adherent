@@ -8,7 +8,7 @@
 
         {% if error %}
             <div id="auth-error" class="form__error">
-                {{- error.messageKey|trans(error.messageData) -}}
+                {{- error.messageKey|trans(error.messageData)|raw -}}
             </div>
         {% endif %}
 

@@ -12,6 +12,7 @@ use AppBundle\Form\EventListener\BoardMemberListener;
 use AppBundle\Form\EventListener\CoordinatorManagedAreaListener;
 use AppBundle\Form\GenderType;
 use AppBundle\Intl\UnitedNationsBundle;
+use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Membership\UserEvent;
 use AppBundle\Membership\UserEvents;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
@@ -131,11 +132,8 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('status', null, [
                     'label' => 'Etat du compte',
                 ])
-                ->add('hasSubscribedMainEmails', 'boolean', [
-                    'label' => 'Abonné aux mails nationaux ?',
-                ])
-                ->add('hasSubscribedReferentsEmails', 'boolean', [
-                    'label' => 'Abonné aux mails de référents ?',
+                ->add('emailsSubscriptions', 'array', [
+                    'label' => 'Abonné aux mails',
                 ])
                 ->add('hasSubscribedLocalHostEmails', 'boolean', [
                     'label' => 'Abonné aux mails de comités ?',
@@ -203,13 +201,11 @@ class AdherentAdmin extends AbstractAdmin
                         'Désactivé' => Adherent::DISABLED,
                     ],
                 ])
-                ->add('hasSubscribedMainEmails', CheckboxType::class, [
-                    'label' => 'Abonné aux mails nationaux ?',
+                ->add('emailsSubscriptions', ChoiceType::class, [
+                    'choices' => AdherentEmailSubscription::SUBSCRIPTIONS,
+                    'label' => 'Abonné aux mails :',
                     'required' => false,
-                ])
-                ->add('hasSubscribedReferentsEmails', CheckboxType::class, [
-                    'label' => 'Abonné aux mails de référents ?',
-                    'required' => false,
+                    'multiple' => true,
                 ])
                 ->add('hasSubscribedLocalHostEmails', CheckboxType::class, [
                     'label' => 'Abonné aux mails de comités ?',
@@ -433,8 +429,9 @@ class AdherentAdmin extends AbstractAdmin
             ->add('postAddress.country', null, [
                 'label' => 'Pays',
             ])
-            ->add('hasSubscribedMainEmails', 'boolean', [
+            ->add('emailsSubscriptions', 'array', [
                 'label' => 'Accepte les e-mails',
+                'inline' => false,
             ])
             ->add('comMobile', 'boolean', [
                 'label' => 'Accepte les SMS',

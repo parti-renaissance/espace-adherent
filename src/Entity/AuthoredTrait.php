@@ -7,7 +7,7 @@ trait AuthoredTrait
     /**
      * @var Adherent|null
      *
-     * @ORM\ManyToOne(targetEntity="Adherent", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent", fetch="EAGER")
      */
     private $author;
 

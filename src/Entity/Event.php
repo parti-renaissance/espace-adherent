@@ -3,9 +3,11 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -31,6 +33,9 @@ class Event extends BaseEvent implements UserDocumentInterface
      */
     private $committee;
 
+    /**
+     * @JMS\Exclude
+     */
     private $type;
 
     /**
@@ -137,5 +142,24 @@ class Event extends BaseEvent implements UserDocumentInterface
     public function isForLegislatives()
     {
         return $this->isForLegislatives;
+    }
+
+    public function getReportType(): string
+    {
+        return ReportType::COMMUNITY_EVENT;
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("committeeUuid")
+     * @JMS\Groups({"public", "event_read"})
+     */
+    public function getCommitteeUuidAsString(): ?string
+    {
+        if (!$committee = $this->getCommittee()) {
+            return null;
+        }
+
+        return $committee->getUuid()->toString();
     }
 }

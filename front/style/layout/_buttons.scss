@@ -241,6 +241,11 @@ input {
     }
 }
 
+button.btn {
+    display: inline-block;
+    padding: 10px 15px 9px;
+}
+
 .btn {
     @include btn;
 
@@ -444,11 +449,6 @@ input {
             color: #999;
         }
     }
-}
-
-button.btn {
-    display: inline-block;
-    padding: 10px 15px 9px;
 }
 
 .newbtn {

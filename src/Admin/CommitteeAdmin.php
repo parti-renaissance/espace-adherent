@@ -2,8 +2,8 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Committee\CommitteeEvent;
 use AppBundle\Committee\CommitteeManager;
-use AppBundle\Committee\CommitteeWasUpdatedEvent;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
@@ -153,7 +153,7 @@ class CommitteeAdmin extends AbstractAdmin
 
     public function postUpdate($object)
     {
-        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeWasUpdatedEvent($object));
+        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($object));
     }
 
     protected function configureFormFields(FormMapper $formMapper)

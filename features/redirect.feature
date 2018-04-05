@@ -11,7 +11,14 @@ Feature:
 
   Scenario: Register
     When I am on "/register"
-    Then I should be on "/inscription"
+    Then I should be on "/adhesion"
 
     When I am on "/register?foo=bar"
-    Then I should be on "/inscription?foo=bar"
+    Then I should be on "/adhesion?foo=bar"
+
+  Scenario: Inscription
+    When I am on "/inscription"
+    Then I should be on "/adhesion"
+
+    When I am on "/inscription?foo=bar"
+    Then I should be on "/adhesion?foo=bar"

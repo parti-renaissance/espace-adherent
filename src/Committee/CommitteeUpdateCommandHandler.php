@@ -51,6 +51,6 @@ class CommitteeUpdateCommandHandler
         $this->manager->persist($committee);
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeWasUpdatedEvent($committee));
+        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
     }
 }
