@@ -44,6 +44,7 @@ class NewsletterControllerTest extends WebTestCase
         $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
             'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',
             'app_newsletter_subscription[postalCode]' => '10000',
+            'app_newsletter_subscription[country]' => 'FR',
         ]));
 
         // Subscription should have been saved
@@ -54,6 +55,7 @@ class NewsletterControllerTest extends WebTestCase
 
         $this->assertSame('titouan.galopin@en-marche.fr', $subscription->getEmail());
         $this->assertSame('10000', $subscription->getPostalCode());
+        $this->assertSame('FR', $subscription->getCountry());
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
         // Email should have been sent
@@ -67,6 +69,7 @@ class NewsletterControllerTest extends WebTestCase
         $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
             'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',
             'app_newsletter_subscription[postalCode]' => '20000',
+            'app_newsletter_subscription[country]' => 'FR',
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -87,6 +90,7 @@ class NewsletterControllerTest extends WebTestCase
         $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
             'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',
             'app_newsletter_subscription[postalCode]' => '10000',
+            'app_newsletter_subscription[country]' => 'FR',
         ]));
 
         // Subscription should have been saved
@@ -180,6 +184,7 @@ class NewsletterControllerTest extends WebTestCase
         $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
             'app_newsletter_subscription[email]' => 'abc@en-marche-dev.fr',
             'app_newsletter_subscription[postalCode]' => '59000',
+            'app_newsletter_subscription[country]' => 'FR',
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());

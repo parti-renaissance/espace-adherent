@@ -1,0 +1,28 @@
+{{ form_start(newsletter_form, { attr: {class: options.form_class|default() }}) }}
+    {{ form_widget(newsletter_form.email, {
+        'attr': {
+            'aria-label': 'Entrez votre adresse email',
+            'title': 'common.email_address',
+            'placeholder': 'common.email_address',
+            'class': 'form__email ' ~ options.input_class|default()
+        }
+    }) }}
+    {{ form_widget(newsletter_form.postalCode, {
+        'attr': {
+            'aria-label': 'Entrez votre code postal',
+            'title': 'common.zip_code',
+            'placeholder': 'common.zip_code',
+            'class': 'form__zipcode ' ~ options.input_class|default()
+        }
+    }) }}
+    {{ form_widget(newsletter_form.country, {
+        'attr': {
+            'aria-label': 'Entrez votre pays',
+            'title': 'common.country',
+            'placeholder': 'common.country',
+            'class': 'form__country ' ~ options.input_class|default()
+        }
+    }) }}
+
+    <button title="{{ options.button_label|default() }}" type="submit" class="{{ options.button_class|default() }}">{{ options.button_label|default() }}</button>
+{{ form_end(newsletter_form) }}

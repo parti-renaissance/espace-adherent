@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
+use AppBundle\Form\NewsletterSubscriptionType;
 use Psr\Cache\CacheItemPoolInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -72,6 +73,7 @@ class ArticleController extends Controller
         return $this->render('article/article.html.twig', [
             'article' => $article,
             'latestArticles' => $latestArticles,
+            'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class)->createView(),
         ]);
     }
 
