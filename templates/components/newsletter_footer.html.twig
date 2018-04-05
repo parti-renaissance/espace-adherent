@@ -5,26 +5,11 @@
             à <span class="text--on-white">la newsletter</span> !
         </div>
         <div class="l__row l__row--wrap newsletter__banner__form">
-            <form method="post" action="{{ path('newsletter_subscription') }}" name="app_newsletter_banner">
-                <input type="email"
-                       id="app_newsletter_subscription_email"
-                       name="app_newsletter_subscription[email]"
-                       required="required"
-                       aria-label="Entrez votre adresse email"
-                       title="Adresse email"
-                       placeholder="Adresse email"
-                       class="form__email form form__field form__field--no-border" />
-
-                <input type="text"
-                       id="app_newsletter_subscription_postalCode"
-                       name="app_newsletter_subscription[postalCode]"
-                       aria-label="Entrez votre code postal"
-                       title="Code postal"
-                       placeholder="Code postal"
-                       class="form__zipcode form form__field form__field--no-border" />
-
-                <button title="OK" type="submit" class="btn btn--no-border btn--black">OK</button>
-            </form>
+            {% include 'newsletter/render_form.html.twig' with { options: {
+                input_class: 'form__field--no-border',
+                button_class: 'btn btn--no-border btn--black',
+                button_label: 'OK'
+            } } %}
         </div>
     </div>
 </div>

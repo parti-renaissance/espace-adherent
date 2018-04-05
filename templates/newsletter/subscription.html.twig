@@ -7,7 +7,6 @@
 {% block canonical_url url('newsletter_subscription') %}
 
 {% block content %}
-
     <main>
         <section>
             <div class="newsletter-page">
@@ -35,6 +34,12 @@
                         {{ form_label(form.postalCode, 'Votre code postal') }}
                         {{ form_errors(form.postalCode) }}
                         {{ form_widget(form.postalCode, { 'attr': { 'class': 'form--full' } }) }}
+                    </div>
+
+                    <div class="form__row">
+                        {{ form_label(form.country, 'Votre Pays') }}
+                        {{ form_errors(form.country) }}
+                        {{ form_widget(form.country, { 'attr': { 'class': 'form--full' } }) }}
                     </div>
 
                     <div class="l__row l__row--center b__nudge--top">

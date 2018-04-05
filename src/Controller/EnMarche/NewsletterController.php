@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException;
 
 class NewsletterController extends Controller
@@ -112,6 +113,16 @@ class NewsletterController extends Controller
 
         return $this->render('newsletter/invitation_sent.html.twig', [
             'invitations_count' => $invitationsCount,
+        ]);
+    }
+
+    public function renderNewsletterFormAction(array $options): Response
+    {
+        return $this->render('newsletter/form.html.twig', [
+            'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class, null, [
+                'action' => $this->generateUrl('newsletter_subscription'),
+            ])->createView(),
+            'options' => $options,
         ]);
     }
 }

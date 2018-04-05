@@ -9,112 +9,99 @@
 {% block content %}
     <main>
         <section class="l__wrapper">
-            <div class="l__row l__tablet--col l__row--v-stretch">
-                {% if blocks[0].media and blocks[0].media.video %}
-                    {% include 'video.html.twig' with {'block': blocks[0], 'width': 1200 } %}
-                {% else %}
-                    <a href="{{ blocks[0].link }}" class="card card__background card--large card--large__desktop l__hide--on-tablet l__col--bottom {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}"
-                       style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}'); height: 370px;">
+            {% if blocks is not empty %}
+                <div class="l__row l__tablet--col l__row--v-stretch">
+                    {% if blocks[0].media and blocks[0].media.video %}
+                        {% include 'video.html.twig' with {'block': blocks[0], 'width': 1200 } %}
+                    {% else %}
+                        <a href="{{ blocks[0].link }}" class="card card__background card--large card--large__desktop l__hide--on-tablet l__col--bottom {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}"
+                           style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}'); height: 370px;">
+                            <div class="background">
+                                <div class="content">
+                                    {% if blocks[0].hasDisplayTitles %}
+                                        <h1 class="text--large b__nudge--bottom-small">{{ blocks[0].title }}</h1>
+                                        <div class="text--body">{{ blocks[0].subtitle }}</div>
+                                    {% endif %}
+                                    <div class="btn btn--no-border">Découvrir</div>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="card card--large card--large__tablet l__hide--on-desktop {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}">
+                            <a href="{{ blocks[0].link }}" class="background-container">
+                                <div class="background card__background"
+                                     style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}')"></div>
+                            </a>
+                            {% if blocks[0].hasDisplayTitles %}
+                                <a class="content" href="{{ blocks[0].link }}">
+                                    <h2>{{ blocks[0].title }}</h2>
+                                    <p class="text--summary">{{ blocks[0].subtitle }}</p>
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    <a href="{{ blocks[1].link }}" class="topstory-side card card--large-secondary l__col l__col--bottom space--30 card__background"
+                         style="background-image: url('{{ media_asset(blocks[1].media, {'w': 1000, 'q': 70}) }}');">
                         <div class="background">
                             <div class="content">
-                                {% if blocks[0].hasDisplayTitles %}
-                                    <h1 class="text--large b__nudge--bottom-small">{{ blocks[0].title }}</h1>
-                                    <div class="text--body">{{ blocks[0].subtitle }}</div>
-                                {% endif %}
-                                <div class="btn btn--no-border">Découvrir</div>
+                                <h2 class="text--large text--italic text--white">{{ blocks[1].title }}</h2>
+                                <p class="text--white text--summary">{{ blocks[1].subtitle }}</p>
+                                <div class="btn btn--no-border">Voir</div>
                             </div>
                         </div>
                     </a>
-                    <div class="card card--large card--large__tablet l__hide--on-desktop {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}">
-                        <a href="{{ blocks[0].link }}" class="background-container">
-                            <div class="background card__background"
-                                 style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}')"></div>
-                        </a>
-                        {% if blocks[0].hasDisplayTitles %}
-                            <a class="content" href="{{ blocks[0].link }}">
-                                <h2>{{ blocks[0].title }}</h2>
-                                <p class="text--summary">{{ blocks[0].subtitle }}</p>
+                </div>
+
+                {% if not campaign_expired %}
+                    <div class="content b__nudge--top">
+                        <article class="l__row l__row--v-stretch l__tablet--col">
+                            <div class="action action__home {{ blocks[9].bgColor|default('black') }}">
+                                {% if blocks[9].media and blocks[9].media.video %}
+                                    {% include 'video.html.twig' with {'block': blocks[9], 'width': 550 } %}
+                                {% else %}
+                                    <p class="{{ blocks[9].colorCta }}">{{ blocks[9].title }}</p>
+                                    <a href="{{ blocks[9].link }}" class="{{ blocks[9].colorCta }}">
+                                        {{ blocks[9].titleCta }}
+                                    </a>
+                                {% endif %}
+                            </div>
+                            <div class="action action__home {{ blocks[10].bgColor|default('black') }}">
+                                {% if  blocks[10].media and blocks[10].media.video %}
+                                    {% include 'video.html.twig' with {'block': blocks[10], 'width': 550 } %}
+                                {% else %}
+                                    <p class="{{ blocks[10].colorCta }}">{{ blocks[10].title }}</p>
+                                    <a href="{{ blocks[10].link }}" class="{{ blocks[10].colorCta }}" target="_blank" rel="noreferrer noopener">
+                                        {{ blocks[10].titleCta }}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </article>
+                    </div>
+                {% else %}
+                    <div class="newsletter background--light space--20-30">
+                        <div class="text--small text--center text--body space--10-0">
+                            <div class="b__nudge--bottom">
+                                La campagne du second tour des élections législatives est terminée.
+                                <br />
+                                Certains services du site sont donc temporairement indisponibles.
+                                <br />
+                                Désolé du désagrément et n'oubliez pas d'aller voter ! On compte sur vous !
+                            </div>
+                            <a href="{{ path('article_view', {'categorySlug': 'actualites', 'articleSlug': 'le-silence-républicain-le-rituel-du-vote'}) }}" class="btn btn--blue">
+                                En savoir plus sur le silence républicain
                             </a>
-                        {% endif %}
+                        </div>
                     </div>
                 {% endif %}
-
-                <a href="{{ blocks[1].link }}" class="topstory-side card card--large-secondary l__col l__col--bottom space--30 card__background"
-                     style="background-image: url('{{ media_asset(blocks[1].media, {'w': 1000, 'q': 70}) }}');">
-                    <div class="background">
-                        <div class="content">
-                            <h2 class="text--large text--italic text--white">{{ blocks[1].title }}</h2>
-                            <p class="text--white text--summary">{{ blocks[1].subtitle }}</p>
-                            <div class="btn btn--no-border">Voir</div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            {% if not campaign_expired %}
-                <div class="content b__nudge--top">
-                    <article class="l__row l__row--v-stretch l__tablet--col">
-                        <div class="action action__home {{ blocks[9].bgColor|default('black') }}">
-                            {% if blocks[9].media and blocks[9].media.video %}
-                                {% include 'video.html.twig' with {'block': blocks[9], 'width': 550 } %}
-                            {% else %}
-                                <p class="{{ blocks[9].colorCta }}">{{ blocks[9].title }}</p>
-                                <a href="{{ blocks[9].link }}" class="{{ blocks[9].colorCta }}">
-                                    {{ blocks[9].titleCta }}
-                                </a>
-                            {% endif %}
-                        </div>
-                        <div class="action action__home {{ blocks[10].bgColor|default('black') }}">
-                            {% if  blocks[10].media and blocks[10].media.video %}
-                                {% include 'video.html.twig' with {'block': blocks[10], 'width': 550 } %}
-                            {% else %}
-                                <p class="{{ blocks[10].colorCta }}">{{ blocks[10].title }}</p>
-                                <a href="{{ blocks[10].link }}" class="{{ blocks[10].colorCta }}" target="_blank" rel="noreferrer noopener">
-                                    {{ blocks[10].titleCta }}
-                                </a>
-                            {% endif %}
-                        </div>
-                    </article>
-                </div>
-            {% else %}
-                <div class="newsletter background--light space--20-30">
-                    <div class="text--small text--center text--body space--10-0">
-                        <div class="b__nudge--bottom">
-                            La campagne du second tour des élections législatives est terminée.
-                            <br />
-                            Certains services du site sont donc temporairement indisponibles.
-                            <br />
-                            Désolé du désagrément et n'oubliez pas d'aller voter ! On compte sur vous !
-                        </div>
-                        <a href="{{ path('article_view', {'categorySlug': 'actualites', 'articleSlug': 'le-silence-républicain-le-rituel-du-vote'}) }}" class="btn btn--blue">
-                            En savoir plus sur le silence républicain
-                        </a>
-                    </div>
-                </div>
             {% endif %}
 
             <div class="newsletter l__row l__row--h-stretch background--light space--20-30 l__row--wrap l__tablet--col b__nudge--top">
                 <div class="text--small text--uppercase space--10-0">Recevez la newsletter du mouvement</div>
-                <form method="post" action="{{ path('newsletter_subscription') }}" class="l__row l__row--wrap" name="app_newsletter_subscription">
-                    {{ form_widget(newsletter_form.email, {
-                        'attr': {
-                            'aria-label': 'Entrez votre adresse email',
-                            'title': 'common.email_address',
-                            'placeholder': 'common.email_address',
-                            'class': 'form__email'
-                        }
-                    }) }}
-                    {{ form_widget(newsletter_form.postalCode, {
-                        'attr': {
-                            'aria-label': 'Entrez votre code postal',
-                            'title': 'common.zip_code',
-                            'placeholder': 'common.zip_code',
-                            'class': 'form__zipcode'
-                        }
-                    }) }}
-
-                    <button title="Je m'inscris" type="submit" class="form btn btn--green">Je m'inscris</button>
-                </form>
+                {% include 'newsletter/render_form.html.twig' with { options: {
+                    form_class: 'l__row l__row--wrap',
+                    button_class: 'form btn btn--green',
+                    button_label: 'Je m\'inscris'
+                } } %}
             </div>
 
             <ul class="list__links list__links--row list__links--no-decor list__links--svgs l__hide--on-mobile space--35-15">
@@ -173,7 +160,7 @@
         <section class="l__wrapper b__nudge--bottom-larger">
             <ul class="l__row l__row--wrap l__row--top space--20-0 l__row--h-stretch-around l__mobile--col">
                 {% for block in blocks|slice(2,6) %}
-                {{ include('home/articles.html.twig') }}
+                    {{ include('home/articles.html.twig') }}
                 {% endfor %}
             </ul>
             <div class="l__row l__row--center b__nudge--bottom-large">
