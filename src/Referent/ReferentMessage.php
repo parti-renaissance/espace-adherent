@@ -40,7 +40,7 @@ class ReferentMessage
      * @Assert\NotBlank
      * @Assert\Length(
      *     min=10,
-     *     max=10000,
+     *     max=5000,
      *     minMessage="referent.message.min_length",
      *     maxMessage="referent.message.max_length",
      * )

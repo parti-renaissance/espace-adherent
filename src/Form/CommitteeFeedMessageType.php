@@ -26,9 +26,13 @@ class CommitteeFeedMessageType extends AbstractType
             ])
             ->add('content', TextareaType::class, [
                 'label' => false,
-                'attr' => ['placeholder' => 'Écrivez ici votre message'],
+                'attr' => [
+                    'maxlength' => 5000,
+                    'placeholder' => 'Écrivez ici votre message',
+                ],
                 'filter_emojis' => true,
                 'purify_html' => true,
+                'with_character_count' => true,
             ])
             ->add('published', CheckboxType::class, [
                 'label' => 'Publier sur la page du comité',
