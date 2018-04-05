@@ -241,6 +241,11 @@ input {
     }
 }
 
+button.btn {
+    display: inline-block;
+    padding: 10px 15px 9px;
+}
+
 .btn {
     @include btn;
 
@@ -250,10 +255,12 @@ input {
     }
 
     &--medium {
-        font-size: $text--size-medium--small;
+        @include text--medium-small;
+        letter-spacing: 1.9px;
+        padding: 20px 25px;
 
         @media(max-width: $mobile) {
-          font-size: $text--size-default;
+          @include text--default;
         }
     }
 

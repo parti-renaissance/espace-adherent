@@ -40,6 +40,8 @@
     .video--bkg {
         width: 100%;
         height: 100vh;
+        display: flex;
+        justify-content: center;
 
         video {
             object-fit: cover;
@@ -47,6 +49,20 @@
 
              ::-webkit-media-controls {
                 display: none !important;
+            }
+        }
+    }
+
+    &__btn {
+        &--yellow {
+            background: $yellow--europe;
+            border-color: $yellow--europe;
+            color: $black;
+
+            &:hover {
+                background: $blue--europe;
+                border-color: $blue--europe;
+                color: $white;
             }
         }
     }
@@ -98,6 +114,10 @@
         @include vertical--align;
         width: 100%;
         z-index: 200;
+
+        @media (max-width: $mobile) {
+            width: 80%;
+        }
 
         h1 {
             color: $white;
