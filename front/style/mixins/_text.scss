@@ -273,6 +273,10 @@ $text--size-extra-large--big: 128px;
         color: $dark;
     }
 
+    &--error {
+        color: $error;
+    }
+
     &--inline {
         display: inline;
     }
