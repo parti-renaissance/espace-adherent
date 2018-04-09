@@ -6,6 +6,7 @@ use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Mailer\EmailClientInterface;
 use AppBundle\Mailer\Exception\MailerException;
 use AppBundle\Repository\EmailRepository;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -42,10 +43,26 @@ abstract class AbstractMailerConsumer extends AbstractConsumer
             }
 
             return $delivered ? ConsumerInterface::MSG_ACK : ConsumerInterface::MSG_REJECT_REQUEUE;
+        } catch (ClientException $clientException) {
+            $this->writeln($data['uuid'], 'Http Client Exception');
+            $this->getLogger()->error(
+                sprintf(
+                    'Http client error while sending a mail with UUID %s. (%s)',
+                    $data['uuid'],
+                    $clientException->getMessage()
+                ),
+                ['exception' => $clientException]
+            );
+
+            return ConsumerInterface::MSG_REJECT;
         } catch (ConnectException $error) {
             $this->writeln($data['uuid'], 'API timeout');
             $this->getLogger()->error(
-                'RabbitMQ connection timeout while sending a mail with UUID '.$data['uuid'],
+                sprintf(
+                    'Error with HTTP connection while sending a mail with UUID %s. (%s)',
+                    $data['uuid'],
+                    $error->getMessage()
+                ),
                 ['exception' => $error]
             );
 
