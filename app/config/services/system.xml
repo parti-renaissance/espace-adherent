@@ -42,6 +42,12 @@
             </call>
         </service>
 
+        <service id="AppBundle\Consumer\MailerConsumer" parent="app_abstract_consumer">
+            <call method="setMailerService">
+                <argument type="service" id="app.mailer.campaign"/>
+            </call>
+        </service>
+
         <service id="AppBundle\Consumer\ReferentMessageDispatcherConsumer" parent="app_abstract_consumer">
             <argument type="service" id="app.consumer.service_locator" />
             <call method="setMailer">

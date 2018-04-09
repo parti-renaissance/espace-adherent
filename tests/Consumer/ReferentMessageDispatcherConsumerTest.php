@@ -9,7 +9,6 @@ use AppBundle\Entity\ReferentManagedUsersMessage;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Repository\Projection\ReferentManagedUserRepository;
 use AppBundle\Repository\ReferentManagedUsersMessageRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
@@ -18,6 +17,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ReferentMessageDispatcherConsumerTest extends TestCase
@@ -60,7 +60,7 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
         $referentMessageRepository = $this->createMock(ReferentManagedUsersMessageRepository::class);
         $referentMessageRepository->expects($this->once())->method('findOneByUuid')->willReturn(null);
 
-        $collections = $this->createMock(ArrayCollection::class);
+        $collections = $this->createMock(ConstraintViolationListInterface::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
 
         $this->validator->expects($this->once())->method('validate')->willReturn($collections);
@@ -98,7 +98,7 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
         $referentManagedUserRepository = $this->createMock(ReferentManagedUserRepository::class);
         $referentManagedUserRepository->expects($this->once())->method('createDispatcherIterator')->willReturn($iterableResult);
 
-        $collections = $this->createMock(ArrayCollection::class);
+        $collections = $this->createMock(ConstraintViolationListInterface::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
 
         $this->validator->expects($this->once())->method('validate')->willReturn($collections);
@@ -155,7 +155,7 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
         $referentManagedUserRepository = $this->createMock(ReferentManagedUserRepository::class);
         $referentManagedUserRepository->expects($this->once())->method('createDispatcherIterator')->willReturn($iterableResult);
 
-        $collections = $this->createMock(ArrayCollection::class);
+        $collections = $this->createMock(ConstraintViolationListInterface::class);
         $collections->expects($this->once())->method('count')->willReturn(0);
 
         $this->validator->expects($this->once())->method('validate')->willReturn($collections);

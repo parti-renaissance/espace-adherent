@@ -76,10 +76,15 @@ abstract class AbstractConsumer implements ConsumerInterface
         return $this->manager;
     }
 
+    protected function isExtraFieldsAllowed(): bool
+    {
+        return false;
+    }
+
     private function validate(array $data): ? array
     {
         $violations = $this->getValidator()->validate($data, new Assert\Collection([
-            'allowExtraFields' => false,
+            'allowExtraFields' => $this->isExtraFieldsAllowed(),
             'allowMissingFields' => false,
             'fields' => $this->configureDataConstraints(),
         ]));

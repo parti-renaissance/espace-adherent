@@ -303,6 +303,13 @@ old_sound_rabbit_mq:
             callback:          AppBundle\Consumer\ProjectCitizenCreationNotificationConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
 
+        mailer:
+            connection:        default
+            exchange_options:  { name: 'mails', type: direct }
+            queue_options:     { name: 'mails', durable: false }
+            callback:          AppBundle\Consumer\MailerConsumer
+            qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
+
 knp_snappy:
     pdf:
         binary: "%kernel.root_dir%/../vendor/bin/wkhtmltopdf-amd64"

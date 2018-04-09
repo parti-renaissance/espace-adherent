@@ -17,7 +17,7 @@ class AreaUtils
     const PREFIX_POSTALCODE_PARIS_DISTRICTS = '75';
     const PREFIX_POSTALCODE_TOM = '98';
 
-    public static function getCodeFromPostalCode(string $postalCode): string
+    public static function getCodeFromPostalCode(?string $postalCode): ?string
     {
         $department = \substr($postalCode, 0, 2);
 
