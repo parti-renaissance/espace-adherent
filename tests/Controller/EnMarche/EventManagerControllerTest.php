@@ -127,7 +127,7 @@ class EventManagerControllerTest extends SqliteWebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertContains('L\'événement a bien été modifié.', $crawler->filter('#notice-flashes')->text());
-        $this->assertSame('Écologie, débatons-en ! | La République En Marche !', $crawler->filter('title')->text());
+        $this->assertSame('Écologie, débatons-en ! - Lyon 1er, 02/03/2022 | La République En Marche !', $crawler->filter('title')->text());
         $this->assertSame('Écologie, débatons-en !', $crawler->filter('.committee-event-name')->text());
         $this->assertSame('Organisé par Jacques Picard du comité En Marche Paris 8', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
         $this->assertSame('Mercredi 2 mars 2022, 9h30', $crawler->filter('.committee-event-date')->text());
