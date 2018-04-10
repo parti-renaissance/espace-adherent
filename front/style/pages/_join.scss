@@ -119,6 +119,18 @@
             padding: 5% 0;
         }
 
+        .form__checkbox {
+            display: block;
+        }
+        
+        .form__error {
+            margin-top: 10px;
+        }
+
+        .form__errors {
+            padding-left: 5px;
+        }
+
         textarea:focus,
         input:focus,
         select:focus {
