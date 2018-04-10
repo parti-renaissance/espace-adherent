@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title current.name %}
+{% block page_title %}{{  current.name }} - Page {{ currentPage }}{% endblock %}
 {% block canonical_url url('articles_list', {category: current.slug, page: currentPage}) %}
 
 {% block final_javascripts include('bot/_javascript.html.twig') %}

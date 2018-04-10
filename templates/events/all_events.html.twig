@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% set pagination_route_name = 'app_search_all_events' %}
 
-{% block page_title 'Tous les événements' %}
+{% block page_title %}Tous les événements - Page {{ currentPage }}{% endblock %}
 {% block canonical_url url(pagination_route_name, { page: currentPage }) %}
 
 {% block extra_link %}
