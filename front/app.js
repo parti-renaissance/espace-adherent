@@ -74,6 +74,12 @@ class App {
         });
     }
 
+    runDonationInformations(formType) {
+        System.import('pages/donation_informations').catch((error) => { throw error; }).then((module) => {
+            module.default(formType);
+        });
+    }
+
     runOrganisation() {
         System.import('pages/organisation').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('map_factory'), this.get('api'));
@@ -116,15 +122,15 @@ class App {
         });
     }
 
-    runRegistration() {
+    runRegistration(formType) {
         System.import('pages/registration').catch((error) => { throw error; }).then((module) => {
-            module.default();
+            module.default(formType);
         });
     }
 
-    runJoin() {
+    runJoin(formType) {
         System.import('pages/join').catch((error) => { throw error; }).then((module) => {
-            module.default();
+            module.default(formType);
         });
     }
 

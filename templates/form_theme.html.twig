@@ -78,7 +78,7 @@
 
 {% block form_errors -%}
     {% if errors|length > 0 -%}
-    <ul class="form form__errors">
+    <ul id="{{ id }}_errors" class="form form__errors">
         {%- for error in errors -%}
             <li class="form__error">
                 {{- error.message -}}

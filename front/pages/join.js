@@ -1,6 +1,8 @@
 import validateEmail from '../validator/emailValidator';
+import formValidator from '../validator/formValidator';
 
-export default () => {
+export default (formType) => {
+    const form = dom('form[name="adherent_registration"]') || dom('form[name="become_adherent"]');
     const emailField = dom('#adherent_registration_emailAddress_first');
     const confirmEmailField = dom('#adherent_registration_emailAddress_second');
     let zipCodeField = dom('#adherent_registration_address_postalCode');
@@ -45,4 +47,6 @@ export default () => {
 
     on(zipCodeField, 'input', displayCaptcha);
     zipCodeField.dispatchEvent(new Event('input'));
+
+    formValidator(formType, form);
 };
