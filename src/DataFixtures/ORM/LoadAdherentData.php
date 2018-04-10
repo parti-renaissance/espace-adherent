@@ -15,43 +15,43 @@ use AppBundle\Membership\AdherentFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadAdherentData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, DependentFixtureInterface
+class LoadAdherentData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
 {
-    const ADHERENT_1_UUID = '313bd28f-efc8-57c9-8ab7-2106c8be9697';
-    const ADHERENT_2_UUID = 'e6977a4d-2646-5f6c-9c82-88e58dca8458';
-    const ADHERENT_3_UUID = 'a046adbe-9c7b-56a9-a676-6151a6785dda';
-    const ADHERENT_4_UUID = '29461c49-6316-5be1-9ac3-17816bf2d819';
-    const ADHERENT_5_UUID = 'b4219d47-3138-5efd-9762-2ef9f9495084';
-    const ADHERENT_6_UUID = 'acc73b03-9743-47d8-99db-5a6c6f55ad67';
-    const ADHERENT_7_UUID = 'a9fc8d48-6f57-4d89-ae73-50b3f9b586f4';
-    const ADHERENT_8_UUID = '29461c49-2646-4d89-9c82-50b3f9b586f4';
-    const ADHERENT_9_UUID = '93de5d98-383a-4863-9f47-eb7a348873a8';
-    const ADHERENT_10_UUID = 'd4b1e7e1-ba18-42a9-ace9-316440b30fa7';
-    const ADHERENT_11_UUID = 'f458cc73-3678-4bd0-8e2f-d1c83be3a7e1';
-    const ADHERENT_12_UUID = 'cd76b8cf-af20-4976-8dd9-eb067a2f30c7';
-    const ADHERENT_13_UUID = '46ab0600-b5a0-59fc-83a7-cc23ca459ca0';
-    const ADHERENT_14_UUID = '511c21bf-1240-5271-abaa-3393d3f40740';
-    const ADHERENT_15_UUID = 'd72d88ee-44bf-5059-bd19-02af28f0c7dc';
-    const ADHERENT_16_UUID = '0a68eb57-c88a-5f34-9e9d-27f85e68af4f';
-    const ADHERENT_17_UUID = '1ebee762-4dc1-42f6-9884-1c83ba9c6d71';
+    public const ADHERENT_1_UUID = '313bd28f-efc8-57c9-8ab7-2106c8be9697';
+    public const ADHERENT_2_UUID = 'e6977a4d-2646-5f6c-9c82-88e58dca8458';
+    public const ADHERENT_3_UUID = 'a046adbe-9c7b-56a9-a676-6151a6785dda';
+    public const ADHERENT_4_UUID = '29461c49-6316-5be1-9ac3-17816bf2d819';
+    public const ADHERENT_5_UUID = 'b4219d47-3138-5efd-9762-2ef9f9495084';
+    public const ADHERENT_6_UUID = 'acc73b03-9743-47d8-99db-5a6c6f55ad67';
+    public const ADHERENT_7_UUID = 'a9fc8d48-6f57-4d89-ae73-50b3f9b586f4';
+    public const ADHERENT_8_UUID = '29461c49-2646-4d89-9c82-50b3f9b586f4';
+    public const ADHERENT_9_UUID = '93de5d98-383a-4863-9f47-eb7a348873a8';
+    public const ADHERENT_10_UUID = 'd4b1e7e1-ba18-42a9-ace9-316440b30fa7';
+    public const ADHERENT_11_UUID = 'f458cc73-3678-4bd0-8e2f-d1c83be3a7e1';
+    public const ADHERENT_12_UUID = 'cd76b8cf-af20-4976-8dd9-eb067a2f30c7';
+    public const ADHERENT_13_UUID = '46ab0600-b5a0-59fc-83a7-cc23ca459ca0';
+    public const ADHERENT_14_UUID = '511c21bf-1240-5271-abaa-3393d3f40740';
+    public const ADHERENT_15_UUID = 'd72d88ee-44bf-5059-bd19-02af28f0c7dc';
+    public const ADHERENT_16_UUID = '0a68eb57-c88a-5f34-9e9d-27f85e68af4f';
+    public const ADHERENT_17_UUID = '1ebee762-4dc1-42f6-9884-1c83ba9c6d71';
+    public const ADHERENT_18_UUID = 'e1bee762-4dc1-42f6-9884-1c83ba9c6d17';
 
-    const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
-    const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
-    const COMMITTEE_3_UUID = 'b0cd0e52-a5a4-410b-bba3-37afdd326a0a';
-    const COMMITTEE_4_UUID = 'd648d486-fbb3-4394-b4b3-016fac3658af';
-    const COMMITTEE_5_UUID = '464d4c23-cf4c-4d3a-8674-a43910da6419';
-    const COMMITTEE_6_UUID = '508d4ac0-27d6-4635-8953-4cc8600018f9';
-    const COMMITTEE_7_UUID = '40b6e2e5-2499-438b-93ab-ef08860a1845';
-    const COMMITTEE_8_UUID = '93b72179-7d27-40c4-948c-5188aaf264b6';
-    const COMMITTEE_9_UUID = '62ea97e7-6662-427b-b90a-23429136d0dd';
-    const COMMITTEE_10_UUID = '79638242-5101-11e7-b114-b2f933d5fe66';
+    public const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
+    public const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
+    public const COMMITTEE_3_UUID = 'b0cd0e52-a5a4-410b-bba3-37afdd326a0a';
+    public const COMMITTEE_4_UUID = 'd648d486-fbb3-4394-b4b3-016fac3658af';
+    public const COMMITTEE_5_UUID = '464d4c23-cf4c-4d3a-8674-a43910da6419';
+    public const COMMITTEE_6_UUID = '508d4ac0-27d6-4635-8953-4cc8600018f9';
+    public const COMMITTEE_7_UUID = '40b6e2e5-2499-438b-93ab-ef08860a1845';
+    public const COMMITTEE_8_UUID = '93b72179-7d27-40c4-948c-5188aaf264b6';
+    public const COMMITTEE_9_UUID = '62ea97e7-6662-427b-b90a-23429136d0dd';
+    public const COMMITTEE_10_UUID = '79638242-5101-11e7-b114-b2f933d5fe66';
 
-    const DEFAULT_PASSWORD = 'secret!12345';
+    public const DEFAULT_PASSWORD = 'secret!12345';
 
     use ContainerAwareTrait;
 
@@ -195,6 +195,22 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $roles->add($this->getReference('referent'));
         $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $referent->enableCommitteesNotifications();
+
+        $referentChild = $adherentFactory->createFromArray([
+            'uuid' => self::ADHERENT_18_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'referent-child@en-marche-dev.fr',
+            'gender' => 'male',
+            'first_name' => 'Referent child',
+            'last_name' => 'Referent child',
+            'address' => PostAddress::createFrenchAddress('3 avenue Jean Jaurès', '77000-77288', 48.5278939, 2.6484923),
+            'birthdate' => '1962-02-07',
+            'position' => 'employed',
+            'phone' => '33 673654348',
+            'registered_at' => '2017-01-25 19:31:45',
+        ]);
+        $referentChild->setReferent(['CH', '93'], -1.6743, 48.112);
+        $referentChild->enableCommitteesNotifications();
 
         $coordinator = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_15_UUID,
@@ -356,6 +372,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $key6 = AdherentActivationToken::generate($adherent6);
         $key7 = AdherentActivationToken::generate($adherent7);
         $key8 = AdherentActivationToken::generate($referent);
+        $key18 = AdherentActivationToken::generate($referentChild);
         $key9 = AdherentActivationToken::generate($adherent9);
         $key10 = AdherentActivationToken::generate($adherent10);
         $key11 = AdherentActivationToken::generate($adherent11);
@@ -374,6 +391,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $adherent6->activate($key6, '2017-01-17 08:07:45');
         $adherent7->activate($key7, '2017-01-25 19:34:02');
         $referent->activate($key8, '2017-02-07 13:20:45');
+        $referentChild->activate($key18, '2017-02-07 13:20:45');
         $adherent9->activate($key9, '2017-02-16 17:23:15');
         $adherent10->activate($key10, '2017-02-23 14:02:18');
         $adherent11->activate($key11, '2017-04-10 14:12:56');
@@ -513,6 +531,7 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
         $manager->persist($adherent6);
         $manager->persist($adherent7);
         $manager->persist($referent);
+        $manager->persist($referentChild);
         $manager->persist($adherent9);
         $manager->persist($adherent10);
         $manager->persist($adherent11);

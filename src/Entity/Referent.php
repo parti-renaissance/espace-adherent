@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="referent", uniqueConstraints={
  *   @ORM\UniqueConstraint(name="referent_slug_unique", columns="slug")
  * })
- * @ORM\Entity(repositoryClass="AppBundle\Repository\LegislativeCandidateRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ReferentRepository")
  *
  * @Algolia\Index(autoIndex=false)
  * @UniqueEntity(fields="slug", groups="Admin")
@@ -24,8 +25,8 @@ class Referent implements EntityMediaInterface
     use EntityPersonNameTrait;
     use EntityMediaTrait;
 
-    const ENABLED = 'ENABLED';
-    const DISABLED = 'DISABLED';
+    public const ENABLED = 'ENABLED';
+    public const DISABLED = 'DISABLED';
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true})
@@ -120,9 +121,17 @@ class Referent implements EntityMediaInterface
      */
     private $status;
 
+    /**
+     * @var Collection|ReferentPersonLink[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink", mappedBy="referent", cascade={"persist"})
+     */
+    private $referentPersonLinks;
+
     public function __construct()
     {
         $this->areas = new ArrayCollection();
+        $this->referentPersonLinks = new ArrayCollection();
         $this->status = self::ENABLED;
     }
 
@@ -232,7 +241,7 @@ class Referent implements EntityMediaInterface
     /**
      * @param mixed $areaLabel
      */
-    public function setAreaLabel($areaLabel)
+    public function setAreaLabel($areaLabel): void
     {
         $this->areaLabel = $areaLabel;
     }
@@ -244,7 +253,7 @@ class Referent implements EntityMediaInterface
         }
     }
 
-    public function removeArea(ReferentArea $referentArea)
+    public function removeArea(ReferentArea $referentArea): void
     {
         $this->areas->removeElement($referentArea);
     }
@@ -254,7 +263,7 @@ class Referent implements EntityMediaInterface
         return $this->areas;
     }
 
-    public function getAreasIdAsString()
+    public function getAreasIdAsString(): string
     {
         if ($this->areas->isEmpty()) {
             return '';
@@ -264,6 +273,21 @@ class Referent implements EntityMediaInterface
 
         foreach ($this->areas as $area) {
             $areasIds[] = $area->getId();
+        }
+
+        return implode(',', $areasIds);
+    }
+
+    public function getAreasToString(): string
+    {
+        if ($this->areas->isEmpty()) {
+            return '';
+        }
+
+        $areasIds = [];
+
+        foreach ($this->areas as $area) {
+            $areasIds[] = (string) $area;
         }
 
         return implode(',', $areasIds);
@@ -282,5 +306,18 @@ class Referent implements EntityMediaInterface
     public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return Collection|ReferentPersonLink[]
+     */
+    public function getReferentPersonLinks(): Collection
+    {
+        return $this->referentPersonLinks;
+    }
+
+    public function setReferentPersonLinks(Collection $referentPersonLinks): void
+    {
+        $this->referentPersonLinks = $referentPersonLinks;
     }
 }

@@ -1,0 +1,14 @@
+{% extends 'referent/_layout.html.twig' %}
+
+{% import 'referent/organizational_chart_macros.html.twig' as oc %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/organizational_chart.css') }}">
+{% endblock %}
+
+{% block referent_content %}
+    <h3>Equipe départementale</h3>
+    <hr>
+    {{ oc.orga_chart_row(organization_chart_items, referent, true) }}
+{% endblock %}

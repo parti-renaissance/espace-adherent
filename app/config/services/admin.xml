@@ -3,6 +3,7 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
+        <defaults autowire="true" autoconfigure="true"/>
 
         <service id="app.admin.administrator_factory" class="AppBundle\Admin\AdministratorFactory">
             <argument type="service" id="security.encoder_factory" />
@@ -136,6 +137,24 @@
             <argument />
             <argument>AppBundle\Entity\OrderSection</argument>
             <argument />
+        </service>
+
+        <service id="app.admin.organizational_chart_item_admin" class="AppBundle\Admin\OrganizationalChartItemAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Organigramme" group="Territoire" />
+
+            <argument />
+            <argument>AppBundle\Entity\ReferentOrganizationalChart\AbstractOrganizationalChartItem</argument>
+            <argument />
+            <call method="setSubClasses">
+                <argument type="collection">
+                    <argument key="person">AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem</argument>
+                    <argument key="group">AppBundle\Entity\ReferentOrganizationalChart\GroupOrganizationalChartItem</argument>
+                </argument>
+            </call>
+            <call method="setTemplate">
+                <argument>list</argument>
+                <argument>admin/organizational_chart/admin_list.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.order_article" class="AppBundle\Admin\OrderArticleAdmin">
@@ -272,7 +291,7 @@
 
             <argument />
             <argument>AppBundle\Entity\Referent</argument>
-            <argument />
+            <argument>AppBundle\Controller\Admin\AdminReferentController</argument>
             <argument type="service" id="app.form.data_transformer.referent_area_transformer" />
         </service>
 

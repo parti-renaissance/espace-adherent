@@ -24,8 +24,9 @@ class ReferentNominationControllerTest extends SqliteWebTestCase
         $referents = $crawler->filter('.legislatives_candidate');
 
         // Check the order of candidates
-        $this->assertSame(1, $referents->count());
+        $this->assertSame(2, $referents->count());
         $this->assertSame('Nicolas Bordes', $referents->first()->filter('h1')->text());
+        $this->assertSame('Jean Dupont', $referents->eq(1)->filter('h1')->text());
 
         $crawler = $this->client->click($crawler->selectLink('Nicolas Bordes')->link());
 
@@ -42,7 +43,7 @@ class ReferentNominationControllerTest extends SqliteWebTestCase
         $this->assertSame('https://www.facebook.com/nyko24', $links->eq(1)->attr('href'));
         $this->assertSame(4, $description->filter('p')->count());
 
-        $crawler = $this->client->click($crawler->selectLink('Retour à la liste des référents')->link());
+        $this->client->click($crawler->selectLink('Retour à la liste des référents')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }

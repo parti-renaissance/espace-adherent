@@ -1,0 +1,15 @@
+{% extends 'referent/_layout.html.twig' %}
+
+{% block referent_content %}
+    <h3>Edition de {{ person_organizational_chart_item.label }}</h3>
+    <hr>
+    <div class="l__wrapper--slim">
+        {{ form_start(form_referent_person_link, { attr: { class: 'b__nudge--top-40' } }) }}
+            {{ form_row(form_referent_person_link) }}
+
+            <div class="form__row text--center b__nudge--top">
+                <button type="submit" class="btn btn--blue btn--medium b__nudge--bottom-huge">Enregistrer</button>
+            </div>
+        {{ form_end(form_referent_person_link) }}
+    </div>
+{% endblock %}

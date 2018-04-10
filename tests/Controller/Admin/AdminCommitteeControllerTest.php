@@ -20,7 +20,7 @@ class AdminCommitteeControllerTest extends MysqlWebTestCase
 
     private $committeeRepository;
 
-    public function testApproveAction()
+    public function testApproveAction(): void
     {
         $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
 
@@ -50,7 +50,6 @@ class AdminCommitteeControllerTest extends MysqlWebTestCase
         ]);
 
         $this->committeeRepository = $this->getCommitteeRepository();
-        $this->emailRepository = $this->getEmailRepository();
     }
 
     protected function tearDown()
@@ -58,7 +57,6 @@ class AdminCommitteeControllerTest extends MysqlWebTestCase
         $this->kill();
 
         $this->committeeRepository = null;
-        $this->emailRepository = null;
 
         parent::tearDown();
     }
