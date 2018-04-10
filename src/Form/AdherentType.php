@@ -18,7 +18,7 @@ class AdherentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $countryCode = $builder->getData()->getAddress() ? $builder->getData()->getAddress()->getCountry() : null;
+        $countryCode = $builder->getData() && $builder->getData()->getAddress() ? $builder->getData()->getAddress()->getCountry() : null;
 
         $builder
             ->add('firstName', TextType::class, [

@@ -40,13 +40,16 @@ class AdherentRegistrationType extends AbstractType
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $formEvent) {
             /** @var MembershipRequest $membershipRequest */
             $membershipRequest = $formEvent->getData();
-            $membershipRequest->comMobile = $membershipRequest->comEmail;
+            if ($membershipRequest) {
+                $membershipRequest->comMobile = $membershipRequest->comEmail;
+            }
         });
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'data_class' => MembershipRequest::class,
             'validation_groups' => ['Update', 'Conditions', 'Registration'],
         ]);
     }
