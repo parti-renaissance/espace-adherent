@@ -307,7 +307,7 @@ old_sound_rabbit_mq:
         mailer:
             connection:        default
             exchange_options:  { name: 'mails', type: direct }
-            queue_options:     { name: 'mails', durable: false }
+            queue_options:     { name: 'mails', durable: false, routing_keys: [mailer.scheduled_mail] }
             callback:          AppBundle\Consumer\MailerConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
 
