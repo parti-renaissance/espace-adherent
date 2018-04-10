@@ -45,6 +45,10 @@ trait EntityPostAddressTrait
         return Intl::getRegionBundle()->getCountryName($this->postAddress->getCountry());
     }
 
+    /**
+     * @JMS\Groups({"committee_read", "event_read"})
+     * @JMS\VirtualProperty
+     */
     public function getAddress(): ?string
     {
         return $this->postAddress->getAddress();
@@ -62,6 +66,9 @@ trait EntityPostAddressTrait
 
     /**
      * @Algolia\Attribute(algoliaName="address_city")
+     * @JMS\Groups({"committee_read", "event_read"})
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("city")
      */
     public function getCityName(): ?string
     {
