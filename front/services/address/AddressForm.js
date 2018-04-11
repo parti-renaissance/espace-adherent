@@ -20,10 +20,10 @@ export default class AddressForm {
     }
 
     prepare() {
-            this.resetCity();
-            this.resetSelect();
-            this.loadCities();
-        }
+        this.resetCity();
+        this.resetSelect();
+        this.loadCities();
+    }
 
     attachEvents() {
         const resetCityAndRefresh = () => {
@@ -34,7 +34,7 @@ export default class AddressForm {
 
         on(this._country, 'change', (event) => {
             this._state.country = event.target.value;
-                resetCityAndRefresh();
+            resetCityAndRefresh();
         });
 
         on(this._postalCode, 'input', (event) => {
@@ -47,7 +47,8 @@ export default class AddressForm {
         this.resetSelect();
         this.resetCity();
 
-        if ('FR' !== this._state.country) {
+        // Display City name field if the country is not FR or the zip code is unknown
+        if ('FR' !== this._state.country || Array.isArray(this._state.cities) && 0 === this._state.cities.length) {
             show(this._cityName);
             this._cityName.required = this._cityNameRequired;
             this._cityName.value = this._initialCityName;

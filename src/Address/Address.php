@@ -31,13 +31,12 @@ class Address implements AddressInterface, GeocodableInterface
 
     /**
      * @Assert\Length(max=15, groups={"Default", "Update"})
-     * @Assert\Expression(expression="this.getCountry() !== constant('AppBundle\\Address\\Address::FRANCE') or value", message="common.city_name.not_blank", groups={"Update"})
      */
     private $city;
 
     /**
      * @Assert\Length(max=255, groups={"Default", "Update"})
-     * @Assert\Expression(expression="this.getCountry() === constant('AppBundle\\Address\\Address::FRANCE') or value", message="common.city_name.not_blank", groups={"Update"})
+     * @Assert\Expression(expression="(this.getCountry() === constant('AppBundle\\Address\\Address::FRANCE') and this.getCity()) or value", message="common.city_name.not_blank", groups={"Update"})
      */
     private $cityName;
 
