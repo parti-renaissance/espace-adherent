@@ -71,7 +71,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->assertSame('Carl Mirabeau', $resultRow->eq(0)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
         $this->assertSame('67, M, Mouxy', $resultRow->eq(0)->filter('li')->eq(1)->filter('div')->eq(1)->text());
         $this->assertSame('Laura Deloche', $resultRow->eq(1)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
-        $this->assertSame('44, F, Rouen', $resultRow->eq(1)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertSame('45, F, Rouen', $resultRow->eq(1)->filter('li')->eq(1)->filter('div')->eq(1)->text());
         $this->assertSame('Martine Lindt', $resultRow->eq(2)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
         $this->assertSame('17, F, Berlin', $resultRow->eq(2)->filter('li')->eq(1)->filter('div')->eq(1)->text());
         $this->assertSame('Élodie Dutemps', $resultRow->eq(3)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
@@ -161,7 +161,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->assertContains('Carl Mirabeau', $members->first()->text());
         $this->assertContains('67, M, Mouxy', $members->first()->text());
         $this->assertContains('Laura Deloche', $members->eq(1)->text());
-        $this->assertContains('44, F, Rouen', $members->eq(1)->text());
+        $this->assertContains('45, F, Rouen', $members->eq(1)->text());
         $this->assertContains('Martine Lindt', $members->eq(2)->text());
         $this->assertContains('17, F, Berlin', $members->eq(2)->text());
         $this->assertContains('Élodie Dutemps', $members->eq(3)->text());
