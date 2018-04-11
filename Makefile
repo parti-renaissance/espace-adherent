@@ -139,7 +139,7 @@ test-phpunit-functional:
 	$(EXEC) vendor/bin/phpunit --group functional
 
 tu:                      ## Run the PHP unit tests
-tu: vendor
+tu: vendor app/config/assets_version.yml
 	$(EXEC) vendor/bin/phpunit --exclude-group functional
 
 tf:                      ## Run the PHP functional tests
@@ -246,3 +246,6 @@ yarn.lock: package.json
 
 web/built: front node_modules
 	$(EXEC) yarn build-dev
+
+app/config/assets_version.yml:
+	 $(EXEC) yarn build-prod
