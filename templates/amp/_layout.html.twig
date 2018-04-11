@@ -22,6 +22,10 @@
     <style amp-custom>
         {{ include('amp/style.css.twig') }}
     </style>
+
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+    <script async custom-element="amp-video" src="https://cdn.ampproject.org/v0/amp-video-0.1.js"></script>
+    <script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
 </head>
 <body>
     {% block header %}
@@ -120,10 +124,6 @@
     {% endblock %}
 
     {% block content '' %}
-
-    <script async src="https://cdn.ampproject.org/v0.js"></script>
-    <script async custom-element="amp-video" src="https://cdn.ampproject.org/v0/amp-video-0.1.js"></script>
-    <script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
 
     {% if not app.debug %}
     <amp-analytics config="https://www.googletagmanager.com/amp.json?id=GTM-TTW2FMQ&gtm.url=SOURCE_URL" data-credentials="include">
