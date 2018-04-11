@@ -370,14 +370,4 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface
     {
         return $this->getUuid()->toString();
     }
-
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("address"),
-     * @JMS\Groups({"public", "event_read"})
-     */
-    public function getInlineFormattedAddress($locale = 'fr_FR'): string
-    {
-        return $this->postAddress->getInlineFormattedAddress($locale);
-    }
 }
