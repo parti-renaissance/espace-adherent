@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% set pagination_route_name = 'app_search_all_committees' %}
 
-{% block page_title 'Tous les comités' %}
+{% block page_title %}Tous les comités - Page {{ currentPage }}{% endblock %}
 {% block canonical_url url(pagination_route_name, {page: currentPage}) %}
 
 {% block extra_link %}
