@@ -92,7 +92,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form([
             'g' => null,
             'amin' => 43,
-            'amax' => 45,
+            'amax' => 46,
         ]));
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
