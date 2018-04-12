@@ -292,6 +292,7 @@ class AdherentAdmin extends AbstractAdmin
             ])
             ->add('firstName', null, [
                 'label' => 'Prénom',
+                'show_filter' => true,
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
