@@ -27,7 +27,9 @@ class OrganizationalChartItemAdmin extends AbstractAdmin
 
         $list
             ->add('typeLabel')
-            ->addIdentifier('label')
+            ->addIdentifier('label', null, [
+                'label' => 'Fonction',
+            ])
             ->add('parent', null, [
                 'associated_property' => 'label',
             ])
@@ -38,7 +40,9 @@ class OrganizationalChartItemAdmin extends AbstractAdmin
     {
         $show
             ->add('typeLabel')
-            ->add('label')
+            ->add('label', null, [
+                'label' => 'Fonction',
+            ])
             ->add('parent', null, [
                 'associated_property' => 'label',
             ])
@@ -48,7 +52,9 @@ class OrganizationalChartItemAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form)
     {
         $form
-            ->add('label')
+            ->add('label', null, [
+                'label' => 'Fonction',
+            ])
             ->add('parent', ModelListType::class)
         ;
     }

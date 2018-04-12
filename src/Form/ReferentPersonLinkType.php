@@ -30,7 +30,7 @@ class ReferentPersonLinkType extends AbstractType
                 'form_full' => true,
             ])
             ->add('postalAddress', TextType::class, [
-                'label' => 'Addresse postale',
+                'label' => 'Adresse postale',
                 'form_full' => true,
             ])
         ;

@@ -139,24 +139,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.organizational_chart_item_admin" class="AppBundle\Admin\OrganizationalChartItemAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Organigramme" group="Territoire" />
-
-            <argument />
-            <argument>AppBundle\Entity\ReferentOrganizationalChart\AbstractOrganizationalChartItem</argument>
-            <argument />
-            <call method="setSubClasses">
-                <argument type="collection">
-                    <argument key="person">AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem</argument>
-                    <argument key="group">AppBundle\Entity\ReferentOrganizationalChart\GroupOrganizationalChartItem</argument>
-                </argument>
-            </call>
-            <call method="setTemplate">
-                <argument>list</argument>
-                <argument>admin/organizational_chart/admin_list.html.twig</argument>
-            </call>
-        </service>
-
         <service id="app.admin.order_article" class="AppBundle\Admin\OrderArticleAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Explications » Articles" group="Contenu" />
 
@@ -301,6 +283,24 @@
             <argument />
             <argument>AppBundle\Entity\ReferentArea</argument>
             <argument />
+        </service>
+
+        <service id="app.admin.organizational_chart_item_admin" class="AppBundle\Admin\OrganizationalChartItemAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Organigramme" group="Territoire" />
+
+            <argument />
+            <argument>AppBundle\Entity\ReferentOrganizationalChart\AbstractOrganizationalChartItem</argument>
+            <argument />
+            <call method="setSubClasses">
+                <argument type="collection">
+                    <argument key="person">AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem</argument>
+                    <argument key="group">AppBundle\Entity\ReferentOrganizationalChart\GroupOrganizationalChartItem</argument>
+                </argument>
+            </call>
+            <call method="setTemplate">
+                <argument>list</argument>
+                <argument>admin/organizational_chart/admin_list.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.election" class="AppBundle\Admin\ElectionAdmin">

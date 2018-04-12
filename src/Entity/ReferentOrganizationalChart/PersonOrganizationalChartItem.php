@@ -27,7 +27,7 @@ class PersonOrganizationalChartItem extends AbstractOrganizationalChartItem
 
     public function getTypeLabel(): string
     {
-        return 'Person';
+        return 'Individu';
     }
 
     /**
