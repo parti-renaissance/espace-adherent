@@ -3,6 +3,7 @@
 namespace AppBundle\Referent;
 
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\Event;
 use AppBundle\Utils\AreaUtils;
 
 class ManagedAreaUtils extends AreaUtils
@@ -14,5 +15,14 @@ class ManagedAreaUtils extends AreaUtils
         }
 
         return static::getCodeFromCountry($committee->getCountry());
+    }
+
+    public static function getCodeFromEvent(Event $event): ?string
+    {
+        if (self::CODE_FRANCE === $event->getCountry()) {
+            return static::getCodeFromPostalCode($event->getPostalCode());
+        }
+
+        return static::getCodeFromCountry($event->getCountry());
     }
 }
