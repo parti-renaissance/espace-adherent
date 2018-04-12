@@ -94,7 +94,7 @@ class ReferentAdmin extends AbstractAdmin
                 'label' => 'Zone',
             ])
             ->add('referentPersonLinks', null, [
-                'label' => 'Equipe départementale',
+                'label' => 'Équipe départementale',
                 'associated_property' => 'getAdminDisplay',
             ])
             ->add('status', null, [

@@ -11,6 +11,6 @@ class GroupOrganizationalChartItem extends AbstractOrganizationalChartItem
 {
     public function getTypeLabel(): string
     {
-        return 'Group';
+        return 'Groupe';
     }
 }

@@ -18,7 +18,7 @@ class ReferentPersonLinkExport
     {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->fromArray(['Référent', 'Zones', 'Prénom', 'Nom', 'Status', 'Email', 'Téléphone', 'Adresse']);
+        $sheet->fromArray(['Référent', 'Zones', 'Prénom', 'Nom', 'Statut', 'Email', 'Téléphone', 'Adresse']);
         $sheet->fromArray($this->arrayObjectToArrayValues($referentPersonLinks), null, 'A2');
 
         return $spreadsheet;
