@@ -1,0 +1,19 @@
+.dashboard__ctn {
+
+    .wrapper {
+        @include wrapper;
+    }
+
+    .ctn__title {
+        @include  text--medium;
+        text-align: left;
+        margin: 100px 0;
+        border-bottom: 10px solid $pink-lighter;
+        display: table;
+        line-height: 0px;
+
+        @media (max-width: $mobile) {
+            text-align: center;
+        }
+    }
+}
