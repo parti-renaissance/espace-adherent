@@ -1,0 +1,15 @@
+.committee__ctn__summary,
+.committee__ctn__bars,
+.committee__ctn__ranking {
+    display: flex;
+    justify-content: space-evenly;
+
+    @media (max-width: $mobile) {
+        flex-direction: column;
+    }
+}
+
+.committee__ctn__select {
+    display: flex;
+    justify-content: space-between;
+}

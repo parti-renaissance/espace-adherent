@@ -1,0 +1,9 @@
+.event__ctn__summary,
+.event__ctn__bars {
+    display: flex;
+    justify-content: space-evenly;
+
+    @media (max-width: $mobile) {
+        flex-direction: column;
+    }
+}

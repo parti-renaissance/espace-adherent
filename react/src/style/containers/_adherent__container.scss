@@ -1,0 +1,10 @@
+.adherent__ctn__summary,
+.adherent__ctn__bars,
+ {
+    display: flex;
+    justify-content: space-evenly;
+
+    @media (max-width: $mobile) {
+        flex-direction: column;
+    }
+}
