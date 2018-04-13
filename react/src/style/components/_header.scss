@@ -1,0 +1,17 @@
+.header__title {
+    background-color: $blue-lighter;
+    text-align: left;
+    padding: 50px;
+    h2 {
+        @include wrapper;
+        @include text--medium-large;
+        color: $blue-primary;
+        font-weight: normal;
+        line-height: 48px;
+
+        span {
+            font-weight: bold;
+        }
+
+    }
+}
