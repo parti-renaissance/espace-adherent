@@ -2,6 +2,12 @@
 
 {% block referent_content %}
     <h3>Edition de {{ person_organizational_chart_item.label }}</h3>
+    <a href="{{ path('app_referent_organizational_chart') }}" class="back-to-list icon--with-text text--summary">
+        <svg width="10px" height="16px" viewBox="-1 0 10 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <polygon id="caret-left" stroke="none" fill="#000000" fill-rule="nonzero" points="8.46391544 1.3808921 7.81608456 0.619107904 -0.771841426 7.92238841 7.81611398 15.2245509 8.46388602 14.4627167 0.771841426 7.92232879"></polygon>
+        </svg>
+        Retour à l'Équipe départementale
+    </a>
     <hr>
     <div class="l__wrapper--slim">
         {{ form_start(form_referent_person_link, { attr: { class: 'b__nudge--top-40' } }) }}
