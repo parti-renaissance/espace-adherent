@@ -1,0 +1,26 @@
+.recharts-wrapper {
+    border: 1px solid $pink-lighter;
+    border-radius: 3px;
+    box-shadow: 0 1px 12px 0 rgba(248, 188, 188, 0.14);
+    margin: 10px;
+    width: 100% !important;
+    height: 360px;
+}
+
+.svg.recharts-surface {
+    width: 100% !important;
+}
+
+.recharts-legend-wrapper {
+    border-top: 1px solid $pink-lighter;
+    line-height: 50px;
+}
+
+.recharts-surface {
+    @media (max-width: $tablet) {
+        width: 50%;
+    }
+    @media (max-width: $mobile) {
+        width: 100%;
+    }
+}
