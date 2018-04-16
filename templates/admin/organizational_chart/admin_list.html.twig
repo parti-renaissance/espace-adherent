@@ -11,7 +11,7 @@
     <tbody>
         {% if not app.request.isXmlHttpRequest %}
             <br>
-            <p class="text-center">Ajouter un individu permet de pouvoir entrer des informations relatives à celui-ci, ajouter un groupe permet de créer un texte statique purement informatif dont découleront les individus/groupes</p>
+            <p class="text-center"><strong>Ajouter un membre</strong> permet de pouvoir entrer des informations relatives à celui-ci, <strong>ajouter un groupe</strong> permet de créer un texte statique purement informatif dont découleront les individus/groupes</p>
             <hr>
             {{ oc.orga_chart_row(admin.OCItems, null, true, admin) }}
         {% endif %}
