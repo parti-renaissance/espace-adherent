@@ -4,7 +4,8 @@
         background-color: $pink-lighter;
         width: 90%;
         padding: 20px 10px 10px 10px;
-        margin-right: 20px;
+        margin: 10px;
+        border-radius: 3px;
 
         @media (max-width: $mobile) {
             margin-bottom: 20px;
@@ -12,7 +13,7 @@
 
         h2 {
             color: $blue-primary;
-            @include text--large
+            @include text--extra-large--medium;
         }
 
         p {

@@ -4,32 +4,30 @@ import ManSign from './../../../images/pictos/man_sign.svg';
 
 class Summary extends Component {
     render() {
-
-        const {womanPercentage, manPercentage, summaryDescription } = this.props;
+        const { womanPercentage, manPercentage, summaryDescription, summaryTotal } = this.props;
 
         return (
             <div className="summary__cpn">
-                <h2>9768</h2>
+                <h2>{summaryTotal}</h2>
                 <p>{summaryDescription}</p>
                 <div className="summary__parity">
-                    {womanPercentage ?
+                    {womanPercentage ? (
                         <div>
                             <p>{womanPercentage}</p>
-                            <img src={WomanSign} alt="Woman Sign"/>
+                            <img src={WomanSign} alt="Woman Sign" />
                         </div>
-                    : null }
+                    ) : null}
 
-                    {manPercentage ?
+                    {manPercentage ? (
                         <div>
                             <p>{manPercentage}</p>
-                            <img src={ManSign} alt="Man Sign"/>
+                            <img src={ManSign} alt="Man Sign" />
                         </div>
-                    : null}
-
+                    ) : null}
                 </div>
             </div>
-        )
+        );
     }
-};
+}
 
 export default Summary;

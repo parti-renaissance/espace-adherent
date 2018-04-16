@@ -1,51 +1,53 @@
 // IMPORT STYLES FROM /FRONT
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
 
-@import "../../front/style/mixins/vars";
-@import "../../front/style/mixins/fonts";
-@import "../../front/style/mixins/icons";
-@import "../../front/style/mixins/colors";
-@import "../../front/style/mixins/text";
-@import "../../front/style/mixins/spinner";
-@import "../../front/style/mixins/positioning";
+@import '../../front/style/mixins/vars';
+@import '../../front/style/mixins/fonts';
+@import '../../front/style/mixins/icons';
+@import '../../front/style/mixins/colors';
+@import '../../front/style/mixins/text';
+@import '../../front/style/mixins/spinner';
+@import '../../front/style/mixins/positioning';
 
-@import "../../front/style/layout/base";
-@import "../../front/style/layout/banners";
-@import "../../front/style/layout/buttons";
-@import "../../front/style/layout/cards";
-@import "../../front/style/layout/carousel";
-@import "../../front/style/layout/spaces";
-@import "../../front/style/layout/footer";
-@import "../../front/style/layout/forms";
-@import "../../front/style/layout/hero";
-@import "../../front/style/layout/layout";
-@import "../../front/style/layout/loader";
-@import "../../front/style/layout/nav";
-@import "../../front/style/layout/datagrid";
-@import "../../front/style/layout/search";
-@import "../../front/style/layout/utilities";
-@import "../../front/style/layout/vendors";
+@import '../../front/style/layout/base';
+@import '../../front/style/layout/banners';
+@import '../../front/style/layout/buttons';
+@import '../../front/style/layout/cards';
+@import '../../front/style/layout/carousel';
+@import '../../front/style/layout/spaces';
+@import '../../front/style/layout/footer';
+@import '../../front/style/layout/forms';
+@import '../../front/style/layout/hero';
+@import '../../front/style/layout/layout';
+@import '../../front/style/layout/loader';
+@import '../../front/style/layout/nav';
+@import '../../front/style/layout/datagrid';
+@import '../../front/style/layout/search';
+@import '../../front/style/layout/utilities';
+@import '../../front/style/layout/vendors';
 
-@import "../../front/style/content/header";
-@import "../../front/style/content/inside-common";
-@import "../../front/style/content/inside-html";
-@import "../../front/style/content/movement";
-@import "../../front/style/content/program";
-@import "../../front/style/content/read-more";
+@import '../../front/style/content/header';
+@import '../../front/style/content/inside-common';
+@import '../../front/style/content/inside-html';
+@import '../../front/style/content/movement';
+@import '../../front/style/content/program';
+@import '../../front/style/content/read-more';
 
 //IMPORT STYLES FROM React
 
-@import "./style/base/_general";
+@import './style/base/_general';
 
-@import "./style/vars/_colors";
-@import "./style/mixins/_text";
+@import './style/vars/_colors';
+@import './style/mixins/_text';
 
-@import "./style/containers/_dashboard__container";
-@import "./style/containers/_adherent__container";
-@import "./style/containers/_committee__container";
-@import "./style/containers/_event__container";
+@import './style/containers/_dashboard__container';
+@import './style/containers/_adherent__container';
+@import './style/containers/_committee__container';
+@import './style/containers/_event__container';
 
-@import "./style/components/_header";
-@import "./style/components/_nav";
-@import "./style/components/_summary";
-@import "./style/components/_select";
+@import './style/components/_header';
+@import './style/components/_nav';
+@import './style/components/_summary';
+@import './style/components/_select';
+@import './style/components/_barcharts';
+@import './style/components/_ranking';
