@@ -326,6 +326,7 @@ class SitemapFactory
     private function addEvents(Sitemap $sitemap, int $page, int $perPage): void
     {
         $events = $this->manager->getRepository(Event::class)->findSitemapEvents($page, $perPage);
+
         if (!$events) {
             throw new SitemapException('No event');
         }
@@ -338,6 +339,24 @@ class SitemapFactory
                 $event['updatedAt']->format(\DATE_ATOM),
                 ChangeFrequency::WEEKLY,
                 0.6
+            );
+
+            $sitemap->add(
+                $this->generateUrl('app_event_attend', [
+                    'slug' => $event['slug'],
+                ]),
+                $event['updatedAt']->format(\DATE_ATOM),
+                ChangeFrequency::MONTHLY,
+                0.1
+            );
+
+            $sitemap->add(
+                $this->generateUrl('app_event_invite', [
+                    'slug' => $event['slug'],
+                ]),
+                $event['updatedAt']->format(\DATE_ATOM),
+                ChangeFrequency::MONTHLY,
+                0.1
             );
         }
     }
