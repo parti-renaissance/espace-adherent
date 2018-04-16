@@ -512,4 +512,15 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             return $uuid->toString();
         }, array_column($query->getArrayResult(), 'uuid'));
     }
+
+    public function countByGender(): array
+    {
+        return $this->createQueryBuilder('a', 'a.gender')
+            ->select('a.gender, COUNT(a.id) AS count')
+            ->where('a.adherent = 1')
+            ->groupBy('a.gender')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
 }
