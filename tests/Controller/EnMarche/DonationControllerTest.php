@@ -156,7 +156,7 @@ class DonationControllerTest extends SqliteWebTestCase
         }
         $callbackUrlRegExp .= '&authorization=XXXXXX&result=00000';
         $callbackUrlRegExp .= '&transaction=(\d+)&amount=3000&date=(\d+)&time=(.+)';
-        $callbackUrlRegExp .= '&card_type=(CB|Visa)&card_end=3212&card_print=(.+)&Sign=(.+)';
+        $callbackUrlRegExp .= '&card_type=(CB|Visa|MasterCard)&card_end=3212&card_print=(.+)&Sign=(.+)';
 
         $this->assertRegExp('#'.$callbackUrlRegExp.'#', $content);
         $this->assertRegExp('#'.$callbackUrlRegExp.'#', $callbackUrl);
