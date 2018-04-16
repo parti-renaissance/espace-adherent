@@ -14,19 +14,15 @@ class ReferentRepository extends ServiceEntityRepository
         parent::__construct($registry, Referent::class);
     }
 
-    /**
-     * @return Referent[]
-     */
-    public function findByStatus(string $status = Referent::ENABLED): array
+    public function findByStatusOrderedByAreaLabel(string $status = Referent::ENABLED): array
     {
-        $qb = $this->createQueryBuilder('lc');
-
-        $qb
-            ->where('lc.status = :status')
+        return $this->createQueryBuilder('referent')
+            ->where('referent.status = :status')
             ->setParameter('status', $status)
+            ->orderBy('referent.areaLabel')
+            ->getQuery()
+            ->getResult()
         ;
-
-        return $qb->getQuery()->getResult();
     }
 
     public function findOneByEmailAndSelectPersonOrgaChart(string $email): Referent
