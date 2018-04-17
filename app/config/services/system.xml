@@ -186,6 +186,8 @@
             <argument type="service">
                 <service class="Symfony\Component\Cache\Adapter\RedisAdapter">
                     <argument type="service" id="snc_redis.default" />
+                    <argument />
+                    <argument>86400</argument>
                 </service>
             </argument>
         </service>
