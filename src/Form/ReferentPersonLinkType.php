@@ -13,12 +13,12 @@ class ReferentPersonLinkType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('lastName', TextType::class, [
-                'label' => 'Nom',
-                'form_full' => true,
-            ])
             ->add('firstName', TextType::class, [
                 'label' => 'Prénom',
+                'form_full' => true,
+            ])
+            ->add('lastName', TextType::class, [
+                'label' => 'Nom',
                 'form_full' => true,
             ])
             ->add('email', TextType::class, [
