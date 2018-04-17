@@ -31,11 +31,14 @@ class DonationControllerTest extends SqliteWebTestCase
 
     public function getDonationSubscriptions(): iterable
     {
-        foreach (PayboxPaymentSubscription::DURATIONS as $test => $duration) {
-            yield $test => [$duration];
-        }
+        yield [PayboxPaymentSubscription::NONE];
+        yield [PayboxPaymentSubscription::UNLIMITED];
+    }
 
-        yield 'None' => [PayboxPaymentSubscription::NONE];
+    public function getInvalidSubscriptionsUrl(): iterable
+    {
+        yield ['/don/coordonnees?montant=30&abonnement=42']; // invalid subscription
+        yield ['/don/coordonnees?abonnement=-1']; // without amount
     }
 
     public function testPayboxPreprodIsHealthy()
@@ -315,6 +318,17 @@ class DonationControllerTest extends SqliteWebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $appClient);
         $this->assertContains('Doe', $crawler->filter('input[name="app_donation[lastName]"]')->attr('value'), 'Retry should be prefilled.');
+    }
+
+    /**
+     * @depends testPayboxPreprodIsHealthy
+     * @dataProvider getInvalidSubscriptionsUrl
+     */
+    public function testInvalidSubscription(string $url)
+    {
+        $this->client->request(Request::METHOD_GET, $url);
+
+        $this->assertClientIsRedirectedTo('/don', $this->client);
     }
 
     public function testCallbackWithNoId()
