@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title event.name %}
+{% block page_title %}{{ event.name }} - {{ event.cityName }}, {{ event.beginAt|date('d/m/Y') }}{% endblock %}
 {% block canonical_url url('app_event_show', {'slug': event.slug}) %}
 
 {%- block meta_description -%}

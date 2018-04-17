@@ -412,7 +412,18 @@ class AbstractMailerConsumerTest extends TestCase
         $this->setOutputCallback(function () {
         });
 
-        $logger->expects($this->once())->method('error')->with('RabbitMQ connection timeout while sending a mail with UUID '.$uuid, ['exception' => $connectException]);
+        $logger
+            ->expects($this->once())
+            ->method('error')
+            ->with(
+                sprintf(
+                    'Error with HTTP connection while sending a mail with UUID %s. (%s)',
+                    $uuid,
+                    null
+                ),
+                ['exception' => $connectException]
+            )
+        ;
         $abstractConsumer->expects($this->once())->method('getLogger')->willReturn($logger);
         $abstractConsumer->expects($this->any())->method('getEmailRepository')->willReturn($emailRepository);
         $abstractConsumer->expects($this->once())->method('getEmailClient')->willReturn($emailClient);

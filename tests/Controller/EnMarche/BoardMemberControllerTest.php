@@ -69,15 +69,15 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->assertSame('Tous les résultats (5)', $crawler->filter('h2')->first()->text());
         $this->assertSame(5, $resultRow->count());
         $this->assertSame('Carl Mirabeau', $resultRow->eq(0)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
-        $this->assertSame('67, M, Mouxy', $resultRow->eq(0)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertRegExp('/\d+, M, Mouxy/', $resultRow->eq(0)->filter('li')->eq(1)->filter('div')->eq(1)->text());
         $this->assertSame('Laura Deloche', $resultRow->eq(1)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
-        $this->assertSame('45, F, Rouen', $resultRow->eq(1)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertRegExp('/\d+, F, Rouen/', $resultRow->eq(1)->filter('li')->eq(1)->filter('div')->eq(1)->text());
         $this->assertSame('Martine Lindt', $resultRow->eq(2)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
-        $this->assertSame('17, F, Berlin', $resultRow->eq(2)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertRegExp('/\d+, F, Berlin/', $resultRow->eq(2)->filter('li')->eq(1)->filter('div')->eq(1)->text());
         $this->assertSame('Élodie Dutemps', $resultRow->eq(3)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
-        $this->assertSame('15, F, Singapour', $resultRow->eq(3)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertRegExp('/\d+, F, Singapour/', $resultRow->eq(3)->filter('li')->eq(1)->filter('div')->eq(1)->text());
         $this->assertSame('Referent Referent', $resultRow->eq(4)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
-        $this->assertSame('56, M, Melun', $resultRow->eq(4)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertRegExp('/\d+, M, Melun/', $resultRow->eq(4)->filter('li')->eq(1)->filter('div')->eq(1)->text());
 
         // Gender
         $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form(['g' => 'male']));
@@ -92,7 +92,7 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form([
             'g' => null,
             'amin' => 43,
-            'amax' => 46,
+            'amax' => 1 + (int) $resultRow->eq(1)->filter('li')->eq(1)->filter('div')->eq(1)->text(),
         ]));
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -159,13 +159,13 @@ class BoardMemberControllerTest extends SqliteWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(4, $members);
         $this->assertContains('Carl Mirabeau', $members->first()->text());
-        $this->assertContains('67, M, Mouxy', $members->first()->text());
+        $this->assertRegExp('/\d+, M, Mouxy/', $members->first()->text());
         $this->assertContains('Laura Deloche', $members->eq(1)->text());
-        $this->assertContains('45, F, Rouen', $members->eq(1)->text());
+        $this->assertRegExp('/\d+, F, Rouen/', $members->eq(1)->text());
         $this->assertContains('Martine Lindt', $members->eq(2)->text());
-        $this->assertContains('17, F, Berlin', $members->eq(2)->text());
+        $this->assertRegExp('/\d+, F, Berlin/', $members->eq(2)->text());
         $this->assertContains('Élodie Dutemps', $members->eq(3)->text());
-        $this->assertContains('15, F, Singapour', $members->eq(3)->text());
+        $this->assertRegExp('/\d+, F, Singapour/', $members->eq(3)->text());
         $this->assertContains('4 profils sauvegardés', $crawler->filter('h2')->eq(1)->text());
 
         // Statistics

@@ -17,7 +17,10 @@ version: "3.2"
 #    nginx-proxy:
 #        image: jwilder/nginx-proxy
 #        networks:
-#            default: ~
+#            default:
+#                aliases:
+#                    - test.enmarche.code
+#                    - enmarche.code
 #            enmarche:
 #                aliases:
 #                    - test.enmarche.code

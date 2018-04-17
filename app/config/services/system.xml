@@ -145,29 +145,6 @@
             <argument type="service" id="app.dynamic_redirections_provider" />
         </service>
 
-        <!-- Campaign silence -->
-        <service id="app.feature_flag.campaign_silence_listener" class="AppBundle\Campaign\CampaignSilenceSubscriber">
-            <argument type="service">
-                <service class="AppBundle\Campaign\CampaignSilenceProcessor">
-                    <argument type="service">
-                        <service class="GeoIp2\Database\Reader">
-                            <argument>%kernel.project_dir%/app/data/geolite2-countries.mmdb</argument>
-                        </service>
-                    </argument>
-                    <argument type="service">
-                        <service class="Symfony\Component\ExpressionLanguage\ExpressionLanguage">
-                            <argument type="service" id="cache.app" />
-                        </service>
-                    </argument>
-                    <argument type="service" id="cache.app" />
-                    <argument>%env(ENABLE_SILENCE_RULE)%</argument>
-                </service>
-            </argument>
-            <argument type="service" id="twig" />
-
-            <tag name="kernel.event_subscriber" />
-        </service>
-
         <!-- Security -->
         <service id="app.security.adherent_login_timestamp_recorder" class="AppBundle\Security\AdherentLoginTimestampRecorder">
             <argument type="service" id="doctrine.orm.entity_manager"/>

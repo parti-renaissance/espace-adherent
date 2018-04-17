@@ -126,6 +126,7 @@ Feature:
 
     When I am on "/adhesion"
     Then I should not see "Bienvenue ! Votre e-mail est confirmé."
+    And I should not see "L'un des champs du formulaire est mal renseigné."
 
     And I fill in the following:
       | become_adherent[address][address]    |  |
@@ -145,6 +146,7 @@ Feature:
     And I should see "Vous devez spécifier votre date de naissance."
     And I should see "Le numéro de téléphone est obligatoire."
     And I should see "Vous devez accepter la charte."
+    And I should see "L'un des champs du formulaire est mal renseigné."
 
     Given I fill in hidden field "become_adherent_address_city" with "06000-6088"
     And I fill in the following:

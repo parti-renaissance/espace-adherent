@@ -22,6 +22,16 @@
     <style amp-custom>
         {{ include('amp/style.css.twig') }}
     </style>
+
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+    <script async custom-element="amp-video" src="https://cdn.ampproject.org/v0/amp-video-0.1.js"></script>
+    <script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
+    <script async custom-element="amp-twitter" src="https://cdn.ampproject.org/v0/amp-twitter-0.1.js"></script>
+    <script async custom-element="amp-facebook" src="https://cdn.ampproject.org/v0/amp-facebook-0.1.js"></script>
+    <script async custom-element="amp-youtube" src="https://cdn.ampproject.org/v0/amp-youtube-0.1.js"></script>
+    <script async custom-element="amp-dailymotion" src="https://cdn.ampproject.org/v0/amp-dailymotion-0.1.js"></script>
+    <script async custom-element="amp-soundcloud" src="https://cdn.ampproject.org/v0/amp-soundcloud-0.1.js"></script>
+    <script async custom-element="amp-iframe" src="https://cdn.ampproject.org/v0/amp-iframe-0.1.js"></script>
 </head>
 <body>
     {% block header %}
@@ -29,7 +39,7 @@
             <!--  Header / Navigation Desktop -->
             <nav class="l__wrapper l__row l__row--h-stretch space--20-0 l__hide--on-small-laptop">
                 <ul class="list__links list__links--row list__links--row-top list__links--no-decor list__links--nav">
-                    <li><h1><a href="{{ path('homepage') }}">En Marche !</a></h1></li>
+                    <li><a href="{{ path('homepage') }}">En Marche !</a></li>
                     <li><a class="text--medium-small" href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
                     <li><a class="text--medium-small" href="https://legislatives.en-marche.fr/">Législatives</a></li>
                     <li><a class="text--medium-small" href="{{ path('page_emmanuel_macron') }}">Emmanuel Macron</a></li>
@@ -50,7 +60,7 @@
             <!--  Header / Navigation Mobile-->
             <nav class="l__wrapper l__hide--above-small-laptop space--20-0">
                 <ul class="list__links list__links--row list__links--nav l__row--h-stretch">
-                    <li><h1><a href="{{ path('homepage') }}" class="link--no-decor">En Marche !</a></h1></li>
+                    <li><a href="{{ path('homepage') }}" class="link--no-decor">En Marche !</a></li>
                     <a href="{{ path('donation_index') }}" class="btn btn--primary b__nudge--right-larger">
                         Je donne
                     </a>
@@ -121,10 +131,6 @@
 
     {% block content '' %}
 
-    <script async src="https://cdn.ampproject.org/v0.js"></script>
-    <script async custom-element="amp-video" src="https://cdn.ampproject.org/v0/amp-video-0.1.js"></script>
-    <script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
-    
     {% if not app.debug %}
     <amp-analytics config="https://www.googletagmanager.com/amp.json?id=GTM-TTW2FMQ&gtm.url=SOURCE_URL" data-credentials="include">
         <script type="application/json">

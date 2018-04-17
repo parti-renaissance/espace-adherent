@@ -322,7 +322,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertContains('Le nouvel événement a bien été créé et publié sur la page du comité.', $crawler->filter('#notice-flashes')->text());
-        $this->assertSame('Débat sur l\'agriculture écologique | La République En Marche !', $crawler->filter('title')->text());
+        $this->assertSame('Débat sur l\'agriculture écologique - Lyon 1er, 02/03/2022 | La République En Marche !', $crawler->filter('title')->text());
         $this->assertSame('Débat sur l\'agriculture écologique', $crawler->filter('.committee-event-name')->text());
         $this->assertSame('Organisé par Gisele Berthoux du comité En Marche Paris 8', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
         $this->assertSame('Mercredi 2 mars 2022, 9h30', $crawler->filter('.committee-event-date')->text());

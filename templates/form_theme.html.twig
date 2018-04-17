@@ -20,6 +20,17 @@
     </div>
 {%- endblock choice_widget_expanded -%}
 
+{%- block form_row -%}
+    {% if form_full %}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form--full')|trim}) -%}
+    {% endif %}
+    <div{% if form_full %} class="form__row"{% endif %}>
+        {{- form_label(form) -}}
+        {{- form_errors(form) -}}
+        {{- form_widget(form, { attr: attr }) -}}
+    </div>
+{%- endblock form_row -%}
+
 {% block form_widget_simple -%}
     {% if type is not defined or type not in ['file', 'hidden'] %}
         {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form form__field')|trim}) -%}

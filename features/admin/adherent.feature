@@ -9,7 +9,7 @@ Feature: Manage adherent from admin panel
   Scenario: Display list of adherents
     When I am on "/admin/app/adherent/list"
     Then the response status code should be 200
-    And I should see 17 "tbody tr" elements
+    And I should see 18 "tbody tr" elements
 
   Scenario: A user update must trigger an event in RabbitMQ
     Given I am on "/admin/app/adherent/list"

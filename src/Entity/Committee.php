@@ -8,7 +8,6 @@ use AppBundle\Report\ReportType;
 use AppBundle\ValueObject\Link;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -368,15 +367,5 @@ class Committee extends BaseGroup implements SynchronizedEntity
     public function getReportType(): string
     {
         return ReportType::COMMITTEE;
-    }
-
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("address"),
-     * @JMS\Groups({"public", "committee_read"})
-     */
-    public function getInlineFormattedAddress($locale = 'fr_FR'): string
-    {
-        return $this->postAddress->getInlineFormattedAddress($locale);
     }
 }

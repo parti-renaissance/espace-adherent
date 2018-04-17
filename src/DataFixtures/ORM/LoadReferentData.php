@@ -5,15 +5,11 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Entity\ReferentArea;
 use AppBundle\Entity\Referent;
 use AppBundle\ValueObject\Genders;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadReferentData implements FixtureInterface, ContainerAwareInterface
+class LoadReferentData extends Fixture
 {
-    use ContainerAwareTrait;
-
     public function load(ObjectManager $manager)
     {
         foreach ($areas = $this->createReferentArea() as $area) {
@@ -48,10 +44,29 @@ class LoadReferentData implements FixtureInterface, ContainerAwareInterface
         $candidate002->setFacebookPageUrl('https://www.facebook.com/fakeaccount');
         $candidate002->setTwitterPageUrl('https://twitter.com/fakeaccount');
 
+        $candidate003 = $this->createReferent(
+            [$areas['92']],
+            'Haut-de-seine',
+            Genders::MALE,
+            'Jean',
+            'Dupont',
+            null,
+            'jean',
+            Referent::ENABLED
+        );
+        $candidate003->setEmailAddress('referent@en-marche-dev.fr');
+        $candidate003->setFacebookPageUrl('https://www.facebook.com/fakeaccount');
+        $candidate003->setTwitterPageUrl('https://twitter.com/fakeaccount');
+
         $manager->persist($candidate001);
         $manager->persist($candidate002);
+        $manager->persist($candidate003);
 
         $manager->flush();
+
+        $this->setReference('referent1', $candidate001);
+        $this->setReference('referent2', $candidate002);
+        $this->setReference('referent3', $candidate003);
     }
 
     private function createReferent(
