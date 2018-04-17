@@ -39,7 +39,7 @@
             <!--  Header / Navigation Desktop -->
             <nav class="l__wrapper l__row l__row--h-stretch space--20-0 l__hide--on-small-laptop">
                 <ul class="list__links list__links--row list__links--row-top list__links--no-decor list__links--nav">
-                    <li><a href="{{ path('homepage') }}">En Marche !</a></li>
+                    <li><a class="link--no-decor text--logo" href="{{ path('homepage') }}">En Marche !</a></li>
                     <li><a class="text--medium-small" href="{{ path('page_le_mouvement') }}">Le Mouvement</a></li>
                     <li><a class="text--medium-small" href="https://legislatives.en-marche.fr/">Législatives</a></li>
                     <li><a class="text--medium-small" href="{{ path('page_emmanuel_macron') }}">Emmanuel Macron</a></li>
@@ -60,7 +60,7 @@
             <!--  Header / Navigation Mobile-->
             <nav class="l__wrapper l__hide--above-small-laptop space--20-0">
                 <ul class="list__links list__links--row list__links--nav l__row--h-stretch">
-                    <li><a href="{{ path('homepage') }}" class="link--no-decor">En Marche !</a></li>
+                    <li><a class="link--no-decor text--logo" href="{{ path('homepage') }}">En Marche !</a></li>
                     <a href="{{ path('donation_index') }}" class="btn btn--primary b__nudge--right-larger">
                         Je donne
                     </a>
