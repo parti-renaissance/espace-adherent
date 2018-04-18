@@ -7,12 +7,8 @@ import EventContainer from './EventContainer';
 class DashboardPage extends Component {
     render() {
         return (
-            <div className="dashboard__ctn">
-                <div className="wrapper">
-                    <AdherentContainer />
-                    <CommitteeContainer />
-                    <EventContainer />
-                </div>
+            <div className="wrapper">
+                <h2>EVENT PAGE</h2>
             </div>
         );
     }

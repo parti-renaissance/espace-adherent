@@ -39,7 +39,14 @@ class CommitteeContainer extends Component {
                             itemStyle={{ textAlign: 'left', stroke: '#FEF0F0' }}
                         />
                         <Legend height={50} align="left" verticalAlign="bottom" iconType="circle" />
-                        <Bar name="Evénements" dataKey="adherent" fill="#F8BCBC" barSize={10} stroke-linecap="round" />
+                        <Bar
+                            name="Evénements"
+                            dataKey="adherent"
+                            fill="#F8BCBC"
+                            barSize={10}
+                            stroke-linecap="round"
+                            animationEasing="ease-in-out"
+                        />
                     </BarChart>
 
                     <BarChart width={600} height={400} data={data} margin={{ top: 50, right: 30, left: 20, bottom: 5 }}>
@@ -56,7 +63,7 @@ class CommitteeContainer extends Component {
                             dataKey="adherent"
                             fill="#6BA0EE"
                             barSize={10}
-                            stroke-linecap="round"
+                            animationEasing="ease-in-out"
                         />
                         <Bar
                             name="Participants aux événements"
@@ -64,6 +71,7 @@ class CommitteeContainer extends Component {
                             fill="#F8BCBC"
                             barSize={10}
                             offsetRadius={10}
+                            animationEasing="ease-in-out"
                         />
                     </BarChart>
                 </div>

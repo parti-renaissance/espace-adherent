@@ -1,22 +1,21 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-const Nav = (props) => {
-    return(
-        <ul className="referent__nav">
-            <li className="active">
-                Tableau de bord
-            </li>
-            <li>
-                Evénement
-            </li>
-            <li>
-                Comités
-            </li>
-            <li>
-                Envoyer un message
-            </li>
-        </ul>
-    )
-}
+const Nav = props => (
+    <ul className="referent__nav">
+        <Link to="dashboard-referent">
+            <li className="active">Tableau de bord</li>
+        </Link>
+        <Link to="/event">
+            <li>Evénement</li>
+        </Link>
+        <Link to="/committee">
+            <li>Comités</li>
+        </Link>
+        <Link to="/send-a-message">
+            <li>Envoyer un message</li>
+        </Link>
+    </ul>
+);
 
 export default Nav;

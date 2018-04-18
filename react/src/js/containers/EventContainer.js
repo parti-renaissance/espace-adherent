@@ -28,28 +28,28 @@ class EventContainer extends Component {
                             dataKey="adherent"
                             fill="#6BA0EE"
                             barSize={10}
-                            stroke-linecap="round"
+                            animationEasing="ease-in-out"
                         />
                         <Bar
                             name="Evénement PC"
                             dataKey="adherentMembre"
                             fill="#F8BCBC"
                             barSize={10}
-                            offsetRadius={10}
+                            animationEasing="ease-in-out"
                         />
                         <Bar
                             name="Evénement Ref"
                             dataKey="adherentMembre"
                             fill="#F8BCBC"
                             barSize={10}
-                            offsetRadius={10}
+                            animationEasing="ease-in-out"
                         />
                         <Bar
                             name="Evénement Député"
                             dataKey="adherentMembre"
                             fill="#F8BCBC"
                             barSize={10}
-                            offsetRadius={10}
+                            animationEasing="ease-in-out"
                         />
                     </BarChart>
 
