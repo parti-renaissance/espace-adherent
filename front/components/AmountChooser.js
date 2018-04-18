@@ -93,6 +93,9 @@ export default class AmountChooser extends React.Component {
                     <input type="checkbox" name="abonnement" id="donation-monthly"/>
                     <label htmlFor="donation-monthly">Je veux donner ce montant chaque mois</label>
                 </div>
+                <div className="amount-chooser__help">
+                    Vous aurez la possibilité d'annuler votre don mensuel à tout moment depuis votre espace adhérent.
+                </div>
             </div>
         );
     }

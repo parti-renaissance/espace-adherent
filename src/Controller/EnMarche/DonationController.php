@@ -6,7 +6,6 @@ use AppBundle\Donation\DonationRequest;
 use AppBundle\Donation\DonationRequestUtils;
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
-use AppBundle\Form\DonationSubscriptionRequestType;
 use AppBundle\Form\DonationRequestType;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -31,38 +30,10 @@ class DonationController extends Controller
             ]);
         }
 
-        if ($request->query->has('abonnement')) {
-            return $this->redirectToRoute('donation_subscription', ['montant' => $amount]);
-        }
-
-        return $this->redirectToRoute('donation_informations', ['montant' => $amount]);
-    }
-
-    /**
-     * @Route("/mensuel", name="donation_subscription")
-     * @Method("GET|POST")
-     */
-    public function subscriptionAction(Request $request)
-    {
-        if (!$amount = $request->query->get('montant')) {
-            return $this->redirectToRoute('donation_index');
-        }
-
-        $form = $this->createForm(DonationSubscriptionRequestType::class, [
-            'duration' => PayboxPaymentSubscription::UNLIMITED,
-        ]);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            return $this->redirectToRoute('donation_informations', [
-                'montant' => $amount,
-                'abonnement' => $form->get('duration')->getData(),
-            ]);
-        }
-
-        return $this->render('donation/subscription.html.twig', [
-            'amount' => $amount,
-            'form' => $form->createView(),
+        return $this->redirectToRoute('donation_informations', [
+            'montant' => $amount,
+            'abonnement' => $request->query->has('abonnement') ? // Force unlimited subscription if needed
+                PayboxPaymentSubscription::UNLIMITED : PayboxPaymentSubscription::NONE,
         ]);
     }
 
@@ -79,7 +50,7 @@ class DonationController extends Controller
         $subscription = $request->query->getInt('abonnement', PayboxPaymentSubscription::NONE);
 
         if (!PayboxPaymentSubscription::isValid($subscription)) {
-            return $this->redirectToRoute('donation_subscription', ['montant' => $amount]);
+            return $this->redirectToRoute('donation_index');
         }
 
         $donationRequest = $this->get(DonationRequestUtils::class)

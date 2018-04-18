@@ -32,7 +32,18 @@
     }
 
     &__monthly {
-        margin: auto;
+        text-align: left;
+
+        label {
+            margin-top: 10px;
+            cursor: pointer
+        }
+    }
+
+    &__help {
+        text-align: left;
+        margin-top: 5px;
+        color: #7f7f7f;
     }
 
     &__button {

@@ -7,11 +7,10 @@
         <li>Paiement</li>
         <li>Confirmation</li>
     </ul>
-
     <div class="donation__informations">
         <div class="donation__informations__amount">
             Je donne<br />
-            <h3>{{ donation.amount }}€</h3>
+            <h3>{{ donation.amount }}€{{ app.request.query.get('abonnement') == constant('AppBundle\\Donation\\PayboxPaymentSubscription::UNLIMITED') ? ' / mois' }}</h3>
         </div>
 
         {{ form_start(form, { attr: { class: 'form' } }) }}
