@@ -21,8 +21,13 @@ class ReferentMessageType extends AbstractType
             ])
             ->add('content', TextareaType::class, [
                 'label' => false,
-                'attr' => ['placeholder' => 'Écrivez votre message'],
+                'attr' => [
+                    'maxlength' => 5000,
+                    'placeholder' => 'Écrivez votre message',
+                ],
                 'filter_emojis' => true,
+                'purify_html' => true,
+                'with_character_count' => true,
             ])
         ;
     }

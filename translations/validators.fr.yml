@@ -84,6 +84,7 @@ committee.description.min_length: Votre texte de description est trop court. Il 
 committee.description.max_length: Votre texte de description est trop long. Il doit compter {{ limit }} caractères maximum.
 
 committee.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
+committee.message.max_length: Le message ne doit pas contenir plus de {{ limit }} caractères.
 
 #
 # CitizenProject

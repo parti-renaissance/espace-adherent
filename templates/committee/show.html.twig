@@ -45,6 +45,7 @@
     {% if is_host %}
         <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
         <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
+        <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     {% endif %}
 
     <script type="text/javascript">
@@ -100,7 +101,7 @@
             {% endif %}
 
             {% if is_host %}
-                {{ js.ckeditor(form.vars.id ~ '_content', null, constant('AppBundle\\Entity\\UserDocument::TYPE_COMMITTEE_FEED')) }}
+                {{ js.ckeditor(form.vars.id ~ '_content', null, constant('AppBundle\\Entity\\UserDocument::TYPE_COMMITTEE_FEED'), 5000) }}
             {% endif %}
         });
     </script>

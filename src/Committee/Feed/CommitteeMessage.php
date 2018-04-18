@@ -19,7 +19,12 @@ class CommitteeMessage
 
     /**
      * @Assert\NotBlank
-     * @Assert\Length(min=10, minMessage="committee.message.min_length")
+     * @Assert\Length(
+     *     min=10,
+     *     max=5000,
+     *     minMessage="committee.message.min_length",
+     *     maxMessage="committee.message.max_length"
+     * )
      */
     private $content;
     private $published;

@@ -26,7 +26,7 @@ class ReferentNominationController extends Controller
         $referentAreasRepository = $doctrine->getRepository(ReferentArea::class);
 
         return $this->render('referent/nomination/homepage.html.twig', [
-            'referents' => $referentsRepository->findByStatus(Referent::ENABLED),
+            'referents' => $referentsRepository->findByStatusOrderedByAreaLabel(),
             'groupedZones' => $referentAreasRepository->findAllGrouped(),
         ]);
     }
