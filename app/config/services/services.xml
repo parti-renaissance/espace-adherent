@@ -51,6 +51,16 @@
             <tag name="controller.service_arguments" />
         </prototype>
 
+        <!-- Donation -->
+        <service id="AppBundle\Donation\DonationFactory" />
+        <service id="AppBundle\Donation\PayboxPaymentUnsubscription">
+            <argument type="service" id="app.mailer.transactional" key="$mailer"/>
+        </service>
+
+        <service id="AppBundle\Donation\DonationRequestUtils">
+            <argument type="service" id="app.donation_request.utils.locator" key="$locator" />
+        </service>
+
         <!-- Event -->
         <service id="AppBundle\Event\EventRegistrationSubscriber" >
             <argument type="service" id="app.mailer.transactional" />

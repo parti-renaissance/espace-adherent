@@ -3,7 +3,6 @@
 namespace AppBundle\Donation;
 
 use AppBundle\Entity\Donation;
-use Cocur\Slugify\Slugify;
 use Lexik\Bundle\PayboxBundle\Paybox\System\Base\Request as LexikRequestHandler;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -13,24 +12,22 @@ class PayboxFormFactory
     private $environment;
     private $requestHandler;
     private $router;
-    private $slugify;
     private $donationRequestUtils;
 
-    public function __construct(string $environment, LexikRequestHandler $requestHandler, Router $router, Slugify $slugify, DonationRequestUtils $donationRequestUtils)
+    public function __construct(string $environment, LexikRequestHandler $requestHandler, Router $router, DonationRequestUtils $donationRequestUtils)
     {
         $this->environment = $environment;
         $this->requestHandler = $requestHandler;
         $this->router = $router;
-        $this->slugify = $slugify;
         $this->donationRequestUtils = $donationRequestUtils;
     }
 
-    public function createPayboxFormForDonation(Donation $donation)
+    public function createPayboxFormForDonation(Donation $donation): LexikRequestHandler
     {
         $callbackParameters = $this->donationRequestUtils->buildCallbackParameters();
 
         $parameters = [
-            'PBX_CMD' => $donation->getUuid()->toString().'_'.$this->slugify->slugify($donation->getFullName()).$this->getCommandSuffix($donation),
+            'PBX_CMD' => $this->donationRequestUtils->buildDonationReference($donation),
             'PBX_PORTEUR' => $donation->getEmailAddress(),
             'PBX_TOTAL' => $donation->getAmount(),
             'PBX_DEVISE' => '978',
@@ -49,13 +46,5 @@ class PayboxFormFactory
         }
 
         return $this->requestHandler->setParameters($parameters);
-    }
-
-    /**
-     * Gets suffix to PBX_CMD for monthly donations.
-     */
-    private function getCommandSuffix(Donation $donation): string
-    {
-        return PayboxPaymentSubscription::getCommandSuffix($donation->getAmount(), $donation->getDuration());
     }
 }

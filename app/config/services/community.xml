@@ -3,13 +3,7 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-
         <!-- Donation -->
-        <service id="app.donation.factory" class="AppBundle\Donation\DonationFactory" />
-
-        <service id="AppBundle\Donation\DonationRequestUtils">
-            <argument type="service" id="app.donation_request.utils.locator" />
-        </service>
 
         <service id="app.donation_request.utils.locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
             <argument type="collection">
@@ -22,14 +16,13 @@
         <service id="app.donation_request.handler" class="AppBundle\Donation\DonationRequestHandler">
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="doctrine" />
-            <argument type="service" id="app.donation.factory" />
+            <argument type="service" id="AppBundle\Donation\DonationFactory"/>
         </service>
 
         <service id="app.donation.form_factory" class="AppBundle\Donation\PayboxFormFactory">
             <argument>%kernel.environment%</argument>
             <argument type="service" id="lexik_paybox.request_handler" />
             <argument type="service" id="router" />
-            <argument type="service" id="sonata.core.slugify.cocur" />
             <argument type="service" id="AppBundle\Donation\DonationRequestUtils" />
         </service>
 

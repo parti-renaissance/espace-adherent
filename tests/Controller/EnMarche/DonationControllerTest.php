@@ -31,8 +31,8 @@ class DonationControllerTest extends SqliteWebTestCase
 
     public function getDonationSubscriptions(): iterable
     {
-        yield [PayboxPaymentSubscription::NONE];
-        yield [PayboxPaymentSubscription::UNLIMITED];
+        yield 'None' => [PayboxPaymentSubscription::NONE];
+        yield 'Unlimited' => [PayboxPaymentSubscription::UNLIMITED];
     }
 
     public function getInvalidSubscriptionsUrl(): iterable
@@ -87,6 +87,7 @@ class DonationControllerTest extends SqliteWebTestCase
             ],
         ]));
 
+        $this->assertStatusCode(302, $this->client);
         // Donation should have been saved
         $this->assertCount(1, $donations = $this->donationRepository->findAll());
         $this->assertInstanceOf(Donation::class, $donation = $donations[0]);

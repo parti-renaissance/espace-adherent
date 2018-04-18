@@ -5,14 +5,20 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Donation\DonationRequest;
 use AppBundle\Donation\DonationRequestUtils;
 use AppBundle\Donation\PayboxPaymentSubscription;
+use AppBundle\Donation\PayboxPaymentUnsubscription;
 use AppBundle\Entity\Donation;
+use AppBundle\Exception\PayboxPaymentUnsubscriptionException;
 use AppBundle\Exception\InvalidPayboxPaymentSubscriptionValueException;
 use AppBundle\Form\DonationRequestType;
+use AppBundle\Form\ConfirmActionType;
+use AppBundle\Repository\DonationRepository;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/don")
@@ -128,6 +134,52 @@ class DonationController extends Controller
             'error_code' => $request->query->get('code'),
             'donation' => $donation,
             'retry_url' => $retryUrl,
+        ]);
+    }
+
+    /**
+     * @Route("/mensuel/annuler", name="donation_subscription_cancel")
+     * @Method({"GET", "POST"})
+     */
+    public function cancelSubscriptionAction(Request $request, DonationRepository $donationRepository, PayboxPaymentUnsubscription $payboxPaymentUnsubscription, LoggerInterface $logger): Response
+    {
+        $donations = $donationRepository->findAllSubscribedDonationByEmail($this->getUser()->getEmailAddress());
+
+        if (!$donations) {
+            $this->addFlash(
+                'danger',
+                'Aucun don mensuel n\'a été trouvé'
+            );
+
+            return $this->redirect($this->generateUrl('app_user_profile_donation'));
+        }
+
+        $form = $this->createForm(ConfirmActionType::class)->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if ($form->get('allow')->isClicked()) {
+                foreach ($donations as $donation) {
+                    try {
+                        $payboxPaymentUnsubscription->unsubscribe($donation);
+                        $this->getDoctrine()->getManager()->flush();
+                        $payboxPaymentUnsubscription->sendConfirmationMessage($donation, $this->getUser());
+                        $this->addFlash(
+                            'success',
+                            'Votre don mensuel a bien été annulé. Vous recevrez bientôt un mail de confirmation.'
+                        );
+                        $logger->info(sprintf('Subscription donation id(%d) from user email %s have been cancel successfully.', $donation->getId(), $this->getUser()->getEmailAddress()));
+                    } catch (PayboxPaymentUnsubscriptionException $e) {
+                        $this->addFlash('danger', 'La requête n\'a pas abouti, veuillez réessayer s\'il vous plait. Si le problème persiste, merci de nous contacter en <a href="https://contact.en-marche.fr/" target="_blank">cliquant ici</a>');
+
+                        $logger->error(sprintf('Subscription donation id(%d) from user email %s have an error.', $donation->getId(), $this->getUser()->getEmailAddress()), ['exception' => $e]);
+                    }
+                }
+            }
+
+            return $this->redirect($this->generateUrl('app_user_profile_donation'));
+        }
+
+        return $this->render('user/donation_subscription_cancel_confirmation.html.twig', [
+            'confirmation_form' => $form->createView(),
         ]);
     }
 }

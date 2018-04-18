@@ -110,11 +110,13 @@
             </noscript>
             <!-- End Google Tag Manager (noscript) -->
         {% endif %}
-        {% for message in app.flashes('info') %}
-            <div class="flash" id="notice-flashes">
-                <div class="flash__inner">{{ message|trans }}</div>
-            </div>
-        {% endfor %}
+        {% block flash_message %}
+            {% for message in app.flashes('info') %}
+                <div class="flash" id="notice-flashes">
+                    <div class="flash__inner">{{ message|trans }}</div>
+                </div>
+            {% endfor %}
+        {% endblock %}
 
         {% block banner include('banner/call.html.twig', { banner: get_home_block(constant('AppBundle\\Entity\\HomeBlock::HEADER_BANNER')) }) %}
 
