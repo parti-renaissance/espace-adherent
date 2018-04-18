@@ -30,13 +30,14 @@ const AdherentContainer = props => (
                     itemStyle={{ textAlign: 'left', stroke: '#FEF0F0' }}
                 />
                 <Legend height={50} align="left" verticalAlign="bottom" iconType="circle" />
-                <Bar name="Adhérent" dataKey="adherent" fill="#6BA0EE" barSize={10} stroke-linecap="round" />
+                <Bar name="Adhérent" dataKey="adherent" fill="#6BA0EE" barSize={10} animationEasing="ease-in-out" />
                 <Bar
                     name="Adhérent membre d'un comité"
                     dataKey="adherentMembre"
                     fill="#F8BCBC"
                     barSize={10}
                     offsetRadius={10}
+                    animationEasing="ease-in-out"
                 />
             </BarChart>
 

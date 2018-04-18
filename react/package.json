@@ -3,12 +3,17 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "axios": "^0.18.0",
         "node-sass-chokidar": "^1.2.2",
         "npm-run-all": "^4.1.2",
         "react": "^16.3.1",
         "react-dom": "^16.3.1",
+        "react-redux": "^5.0.7",
+        "react-router-dom": "^4.2.2",
         "react-scripts": "1.1.4",
-        "recharts": "^1.0.0-beta.10"
+        "recharts": "^1.0.0-beta.10",
+        "redux": "^3.7.2",
+        "redux-thunk": "^2.2.0"
     },
     "scripts": {
         "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
@@ -19,5 +24,8 @@
         "build": "npm-run-all build-css build-js",
         "test": "react-scripts test --env=jsdom",
         "eject": "react-scripts eject"
+    },
+    "devDependencies": {
+        "redux-devtools": "^3.4.1"
     }
 }
