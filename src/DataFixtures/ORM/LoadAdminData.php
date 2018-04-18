@@ -48,6 +48,7 @@ class LoadAdminData implements FixtureInterface, ContainerAwareInterface
             'ROLE_ADMIN_REFERENTS_AREAS',
             'ROLE_ADMIN_TIMELINE',
             'ROLE_ADMIN_CLIENTS',
+            'ROLE_ADMIN_ORGANIGRAMM',
         ];
 
         $writerRoles = [

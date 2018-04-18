@@ -160,6 +160,9 @@ security:
             - ROLE_APP_ADMIN_EMAIL_LIST
             - ROLE_APP_ADMIN_EMAIL_VIEW
 
+        ROLE_ADMIN_ORGANIGRAMM:
+            - ROLE_APP_ADMIN_ORGANIZATIONAL_CHART_ITEM_ADMIN_ALL
+
         ROLE_ADMIN_ADHERENT_TAGS:
             - ROLE_APP_ADMIN_ADHERENT_TAG_ALL
 
@@ -219,6 +222,7 @@ security:
             - ROLE_ADMIN_BOARD_MEMBER_ROLES
             - ROLE_ADMIN_TIMELINE
             - ROLE_ADMIN_CLIENTS
+            - ROLE_ADMIN_ORGANIGRAMM
 
     access_decision_manager:
         strategy: unanimous
