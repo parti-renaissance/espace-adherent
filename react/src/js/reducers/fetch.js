@@ -1,4 +1,4 @@
-import { REFERENT_DATA, COMMITTEE_FILTER } from './../actions';
+import { REFERENT_DATA, COMMITTEE_FILTER, CONSOLE_LOG } from './../actions';
 
 const initiaState = {
     data: null,
@@ -11,6 +11,8 @@ export default (state = initiaState, action) => {
         return { ...state, data: action.data };
     case COMMITTEE_FILTER:
         return { ...state, committee: action.committee };
+    case CONSOLE_LOG:
+        console.log('This is good !');
     default:
         return state;
     }
