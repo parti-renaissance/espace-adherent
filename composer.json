@@ -72,7 +72,7 @@
         "symfony/monolog-bundle": "^3.1.0",
         "symfony/polyfill-apcu": "^1.0",
         "symfony/psr-http-message-bridge": "^1.0",
-        "symfony/symfony": "3.3.*",
+        "symfony/symfony": "3.4.*",
         "symfony/thanks": "^1.0",
         "tackk/cartographer": "^1.1",
         "twig/twig": "^1.0||^2.0",
