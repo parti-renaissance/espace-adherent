@@ -37,7 +37,7 @@ use JMS\Serializer\Annotation as JMS;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface
+class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, \Serializable
 {
     public const ENABLED = 'ENABLED';
     public const DISABLED = 'DISABLED';
@@ -1073,5 +1073,19 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         }
 
         return $this->oAuthUser;
+    }
+
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->emailAddress,
+            $this->password,
+        ]);
+    }
+
+    public function unserialize($serialized)
+    {
+        list($this->id, $this->emailAddress, $this->password) = unserialize($serialized);
     }
 }
