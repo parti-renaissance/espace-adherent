@@ -70,7 +70,11 @@ Feature:
     Then I should see "Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau."
 
     When I click on the email link "activation_link"
+    Then I should be on "/inscription/centre-interets"
+    And I check "Sport"
+    And I press "Continuer"
     Then I should be on "/espace-adherent/accueil"
+    And the response status code should be 200
 
   Scenario: I can register as a user
     Given I am on "/inscription-utilisateur"
