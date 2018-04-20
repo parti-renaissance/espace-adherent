@@ -209,3 +209,11 @@
         {{ form_errors(form) }}
     </div>
 {%- endblock -%}
+
+{# Bug Fix for waiting this PR: https://github.com/misd-service-development/phone-number-bundle/pull/175 #}
+{% block misd_tel_widget %}
+    <div {{ block('widget_container_attributes') }}>
+        {{- form_widget(form.country) -}}
+        {{- form_widget(form.number) -}}
+    </div>
+{% endblock %}

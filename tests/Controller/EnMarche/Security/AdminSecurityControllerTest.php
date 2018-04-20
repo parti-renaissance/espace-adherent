@@ -51,7 +51,7 @@ class AdminSecurityControllerTest extends SqliteWebTestCase
         $this->assertClientIsRedirectedTo('/admin/dashboard', $this->client, true);
 
         $crawler = $this->client->followRedirect();
-        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(1, $crawler->filter('#_auth_code'));
     }
 

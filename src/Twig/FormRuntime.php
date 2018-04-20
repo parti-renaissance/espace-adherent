@@ -12,8 +12,8 @@
 namespace AppBundle\Twig;
 
 use AppBundle\Form\DeleteEntityType;
-use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormRenderer;
 use Twig\Environment;
 
 class FormRuntime
@@ -27,7 +27,7 @@ class FormRuntime
 
     public function createDeleteForm(Environment $env, string $action, string $tokenId): string
     {
-        return $env->getRuntime(TwigRenderer::class)->renderBlock($this->formFactory->create(DeleteEntityType::class, null, [
+        return $env->getRuntime(FormRenderer::class)->renderBlock($this->formFactory->create(DeleteEntityType::class, null, [
             'action' => $action,
             'csrf_token_id' => $tokenId,
         ])->createView(), 'form');
