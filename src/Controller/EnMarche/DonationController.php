@@ -48,7 +48,7 @@ class DonationController extends Controller
      * @Route("/coordonnees", defaults={"_enable_campaign_silence"=true}, name="donation_informations")
      * @Method({"GET", "POST"})
      */
-    public function informationsAction(Request $request)
+    public function informationsAction(Request $request, DonationRequestUtils $donationRequestUtils)
     {
         if (!$amount = $request->query->get('montant')) {
             return $this->redirectToRoute('donation_index');
@@ -64,11 +64,14 @@ class DonationController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.donation_request.handler')->handle($donationRequest);
+            $donationRequestUtils->terminateDonationRequest();
 
             return $this->redirectToRoute('donation_pay', [
                 'uuid' => $donationRequest->getUuid()->toString(),
             ]);
         }
+
+        $donationRequestUtils->startDonationRequest($donationRequest);
 
         return $this->render('donation/informations.html.twig', [
             'form' => $form->createView(),
@@ -169,6 +172,7 @@ class DonationController extends Controller
                         $logger->info(sprintf('Subscription donation id(%d) from user email %s have been cancel successfully.', $donation->getId(), $this->getUser()->getEmailAddress()));
                     } catch (PayboxPaymentUnsubscriptionException $e) {
                         $this->addFlash('danger', 'La requête n\'a pas abouti, veuillez réessayer s\'il vous plait. Si le problème persiste, merci de nous contacter en <a href="https://contact.en-marche.fr/" target="_blank">cliquant ici</a>');
+                        $this->addFlash('danger', $e->getCodeError());
 
                         $logger->error(sprintf('Subscription donation id(%d) from user email %s have an error.', $donation->getId(), $this->getUser()->getEmailAddress()), ['exception' => $e]);
                     }

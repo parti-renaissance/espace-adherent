@@ -8,6 +8,7 @@
         <service id="app.donation_request.utils.locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
             <argument type="collection">
                 <argument key="validator" type="service" id="validator" />
+                <argument key="session" type="service" id="session" />
                 <argument key="security.csrf.token_manager" type="service" id="security.csrf.token_manager" />
             </argument>
             <tag name="container.service_locator" />

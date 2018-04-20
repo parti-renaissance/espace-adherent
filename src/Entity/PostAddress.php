@@ -104,7 +104,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         float $latitude = null,
         float $longitude = null
     ): self {
-        list($postalCode, $inseeCode) = explode('-', $cityCode);
+        [$postalCode, $inseeCode] = explode('-', $cityCode);
 
         $address = new self(
             self::FRANCE,
