@@ -17,6 +17,15 @@ version: "3.2"
 #    nginx-proxy:
 #        image: jwilder/nginx-proxy
 #        networks:
+#            - default
+#            - enmarche
+#        ports:
+#            - "80:80"
+#        volumes:
+#            - /var/run/docker.sock:/tmp/docker.sock:ro
+
+#    app:
+#        networks:
 #            default:
 #                aliases:
 #                    - test.enmarche.code
@@ -25,15 +34,6 @@ version: "3.2"
 #                aliases:
 #                    - test.enmarche.code
 #                    - enmarche.code
-#        ports:
-#            - "80:80"
-#        volumes:
-#            - /var/run/docker.sock:/tmp/docker.sock:ro
-
-#    app:
-#        networks:
-#            - default
-#            - enmarche
 #        volumes:
 #            - "~/.composer:/root/.composer"
 #        environment:
