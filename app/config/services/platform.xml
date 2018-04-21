@@ -378,5 +378,7 @@
         <service autowire="true" id="AppBundle\Event\Serializer\EventSerializationSubscriber">
             <tag name="jms_serializer.event_subscriber"/>
         </service>
+
+        <service autoconfigure="true" autowire="true" class="AppBundle\RepublicanSilence\CheckRepublicanSilenceListener"/>
     </services>
 </container>

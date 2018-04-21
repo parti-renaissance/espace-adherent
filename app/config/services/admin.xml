@@ -575,6 +575,20 @@
 
         <!--
         ######################################################
+        # Republican Silence
+        ######################################################
+         -->
+
+        <service id="app.admin.republican_silence" class="AppBundle\Admin\RepublicSilenceAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Silence républicain" group="Campagne"/>
+
+            <argument />
+            <argument>AppBundle\Entity\RepublicanSilence</argument>
+            <argument />
+        </service>
+
+        <!--
+        ######################################################
         # Data Transformer
         ######################################################
          -->
