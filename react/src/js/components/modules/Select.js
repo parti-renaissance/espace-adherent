@@ -1,17 +1,35 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actionCreators from './../../actions/index.js';
 
-const Select = props => (
-    <select id="{props.id}" name="{props.name}" className="select__cpt">
-        <option value="" defaultValue>
-			Choisir un comité
-        </option>
-        <option value="Mr">comité #1</option>
-        <option value="Miss">comité #2</option>
-        <option value="Mrs">comité #3</option>
-        <option value="Ms">comité #4</option>
-        <option value="Dr">comité #5</option>
-        <option value="Other">comité #6</option>
-    </select>
-);
+class Select extends Component {
+    constructor(props) {
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+    }
 
-export default Select;
+	handleChange = (e) => {
+	    this.props.committeeFilter(e.target.value);
+	};
+	render() {
+	    const { committees, id, name, committeeSelected } = this.props;
+
+	    return (
+	        <select id={id} name={name} className="select__cpt" onChange={this.handleChange}>
+	            <option>Choisir un comité</option>
+	            {committees.map((committee, i) => (
+	                <option value={committee.countryName} key={i}>
+	                    {committee.countryName}
+	                </option>
+	            ))}
+	        </select>
+	    );
+	}
+}
+
+const mapStateToProps = state => ({
+    committees: state.fetch.committees,
+    committeeSelected: state.filter.committeeFilter,
+});
+
+export default connect(mapStateToProps, actionCreators)(Select);

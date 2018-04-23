@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Nav = () => (
+const Nav = props => (
     <ul className="referent__nav">
         <Link to="dashboard-referent">
             <li className="active">Tableau de bord</li>

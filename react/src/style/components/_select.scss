@@ -8,4 +8,8 @@
 	@include text--default;
 	color: $blue-primary;
 	text-transform: uppercase;
+
+	@media (max-width: $mobile) {
+		width: 100%;
+	}
 }

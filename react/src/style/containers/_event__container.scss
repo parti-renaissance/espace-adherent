@@ -1,9 +1,10 @@
 .event__ctn__summary,
 .event__ctn__bars {
-    display: flex;
-    justify-content: space-evenly;
+	display: flex;
+	justify-content: space-evenly;
 
-    @media (max-width: $mobile) {
-        flex-direction: column;
-    }
+	@media (max-width: $tablet) {
+		flex-direction: column;
+		align-items: center;
+	}
 }

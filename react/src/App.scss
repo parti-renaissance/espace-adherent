@@ -35,10 +35,10 @@
 
 //IMPORT STYLES FROM React
 
-@import './style/base/_general';
-
 @import './style/vars/_colors';
 @import './style/mixins/_text';
+
+@import './style/base/_general';
 
 @import './style/containers/_dashboard__container';
 @import './style/containers/_adherent__container';

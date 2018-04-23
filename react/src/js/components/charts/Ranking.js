@@ -3,19 +3,20 @@ import BulletRanking from './symbols/BulletRanking';
 
 class Ranking extends Component {
     render() {
+        const { rankingTitle, committees } = this.props;
         return (
             <div className="ranking__cpt">
                 <div className="left--side">
-                    <p>{this.props.rankingTitle}</p>
+                    <p>{rankingTitle}</p>
                 </div>
                 <div className="right--side">
-                    <BulletRanking nbTotalEvent={1} eventTitle="Mon Event" />
-                    <BulletRanking nbTotalEvent={3} eventTitle="Mon Event" />
-                    <BulletRanking nbTotalEvent={4} eventTitle="Mon Event" />
-                    <BulletRanking nbTotalEvent={8} eventTitle="Mon Event" />
-                    <BulletRanking nbTotalEvent={100} eventTitle="Mon Event" />
-                    <BulletRanking nbTotalEvent={13} eventTitle="Mon Event" />
-                    <BulletRanking nbTotalEvent={100000} eventTitle="Mon Event" />
+                    {committees.map((committee, i) => (
+                        <BulletRanking
+                            key={i}
+                            nbTotalEvent={committee.population.substring(0, 4)}
+                            eventTitle={committee.countryName}
+                        />
+                    ))}
                 </div>
             </div>
         );

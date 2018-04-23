@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
-// import { routerReducer as routing } from 'react-router-redux';
-
-import fetch from './fetch';
+import { fetch } from './fetch';
+import { filter } from './filter';
+import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux';
 
 export default combineReducers({
     fetch,
-    // routing,
+    filter,
+    routing: routerReducer,
 });
