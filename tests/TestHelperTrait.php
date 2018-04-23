@@ -258,6 +258,11 @@ trait TestHelperTrait
         return $this->getAdherentRepository()->findByUuid($uuid);
     }
 
+    protected function getCommittee(string $uuid): ?Committee
+    {
+        return $this->getCommitteeRepository()->findOneByUuid($uuid);
+    }
+
     /**
      * @param bool $refresh Leave to false to avoid reloading from database
      *
