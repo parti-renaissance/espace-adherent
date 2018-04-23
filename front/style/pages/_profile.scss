@@ -133,4 +133,23 @@
             font-weight: bold;
         }
     }
+
+    &__donations {
+        font-family: $font-roboto;
+        width: 100%;
+        border-collapse: collapse;
+
+        tr, td {
+            padding: 8px;
+        }
+
+        tr:hover {
+            background-color: $gray--lighter;
+        }
+
+        th {
+            text-align: left;
+            background-color: white;
+        }
+    }
 }

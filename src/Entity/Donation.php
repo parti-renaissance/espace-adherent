@@ -30,7 +30,7 @@ class Donation implements GeoPointInterface
     /**
      * @ORM\Column(type="smallint", options={"default": 0})
      */
-    private $duration = PayboxPaymentSubscription::NONE;
+    private $duration;
 
     /**
      * @ORM\Column(length=6)
@@ -92,7 +92,7 @@ class Donation implements GeoPointInterface
         PostAddress $postAddress,
         ?PhoneNumber $phone,
         string $clientIp,
-        int $duration
+        int $duration = PayboxPaymentSubscription::NONE
     ) {
         $this->uuid = $uuid;
         $this->amount = $amount;
@@ -103,7 +103,6 @@ class Donation implements GeoPointInterface
         $this->postAddress = $postAddress;
         $this->phone = $phone;
         $this->clientIp = $clientIp;
-        $this->finished = false;
         $this->createdAt = new \DateTime();
         $this->duration = $duration;
     }
@@ -113,7 +112,7 @@ class Donation implements GeoPointInterface
         return $this->lastName.' '.$this->firstName.' ('.($this->amount / 100).' €)';
     }
 
-    public function finish(array $payboxPayload)
+    public function finish(array $payboxPayload): void
     {
         $this->finished = true;
         $this->payboxPayload = $payboxPayload;
