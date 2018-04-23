@@ -6,7 +6,6 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventCategory;
-use AppBundle\Entity\ManagedArea;
 use AppBundle\Entity\PostAddress;
 use Doctrine\ORM\Internal\Hydration\AbstractHydrator;
 use Ramsey\Uuid\Uuid;
@@ -58,13 +57,6 @@ class EventHydrator extends AbstractHydrator
 
         $password = $row['adherent_password'] ?? $row['adherent_old_password'];
         $organizer = new Adherent($uuidOrganizer, $row['adherent_email_address'], $password, $row['adherent_gender'], $row['adherent_first_name'], $row['adherent_last_name'], new \DateTime($row['adherent_birthdate']), $row['adherent_position'], $addressAdherent);
-        if ($row['adherent_managed_area_codes']) {
-            $managedArea = new ManagedArea();
-            $managedArea->setCodes(explode(',', $row['adherent_managed_area_codes']));
-            $managedArea->setMarkerLatitude($row['adherent_managed_area_marker_latitude']);
-            $managedArea->setMarkerLongitude($row['adherent_managed_area_marker_longitude']);
-            $organizer->setManagedArea($managedArea);
-        }
 
         $event = new Event(
             $uuidEvent,

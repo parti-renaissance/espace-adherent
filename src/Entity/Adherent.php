@@ -147,9 +147,9 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $legislativeCandidate;
 
     /**
-     * @ORM\Embedded(class="ManagedArea", columnPrefix="managed_area_")
+     * @var ReferentManagedArea|null
      *
-     * @var ManagedArea
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ReferentManagedArea", cascade={"all"}, orphanRemoval=true)
      */
     private $managedArea;
 
@@ -201,6 +201,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $tags;
 
     /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     */
+    private $referentTags;
+
+    /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $adherent = false;
@@ -230,7 +235,8 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         string $registeredAt = 'now',
         bool $comEmail = false,
         bool $comMobile = false,
-        ?array $tags = []
+        ?array $tags = [],
+        ?array $referentTags = []
     ) {
         $this->uuid = $uuid;
         $this->password = $password;
@@ -250,6 +256,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->setComEmail($comEmail);
         $this->comMobile = $comMobile;
         $this->tags = new ArrayCollection($tags);
+        $this->referentTags = new ArrayCollection($referentTags);
         $this->coordinatorManagedAreas = new ArrayCollection();
     }
 
@@ -705,12 +712,12 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->localHostEmailsSubscription = $localHostEmailsSubscription;
     }
 
-    public function getManagedArea(): ?ManagedArea
+    public function getManagedArea(): ?ReferentManagedArea
     {
         return $this->managedArea;
     }
 
-    public function setManagedArea(ManagedArea $managedArea): void
+    public function setManagedArea(ReferentManagedArea $managedArea): void
     {
         $this->managedArea = $managedArea;
     }
@@ -757,31 +764,37 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->boardMember = null;
     }
 
-    public function setReferent(array $codes, string $markerLatitude, string $markerLongitude): void
+    public function setReferent(array $tags, string $markerLatitude = null, string $markerLongitude = null): void
     {
-        $this->managedArea = new ManagedArea();
-        $this->managedArea->setCodes($codes);
-        $this->managedArea->setMarkerLatitude($markerLatitude);
-        $this->managedArea->setMarkerLongitude($markerLongitude);
+        $this->managedArea = new ReferentManagedArea($tags, $markerLatitude, $markerLongitude);
     }
 
     public function isReferent(): bool
     {
-        return $this->managedArea instanceof ManagedArea && !empty($this->managedArea->getCodes());
+        return $this->managedArea instanceof ReferentManagedArea
+            && !$this->managedArea->getTags()->isEmpty();
     }
 
-    public function getManagedAreaCodesAsString(): ?string
+    public function revokeReferent(): void
     {
-        return $this->managedArea->getCodesAsString();
+        $this->managedArea = null;
     }
 
     public function getManagedAreaMarkerLatitude(): ?string
     {
+        if (!$this->managedArea) {
+            return '';
+        }
+
         return $this->managedArea->getMarkerLatitude();
     }
 
     public function getManagedAreaMarkerLongitude(): ?string
     {
+        if (!$this->managedArea) {
+            return '';
+        }
+
         return $this->managedArea->getMarkerLongitude();
     }
 
@@ -997,6 +1010,28 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function removeTag(AdherentTag $adherentTag): void
     {
         $this->tags->removeElement($adherentTag);
+    }
+
+    public function getReferentTags(): Collection
+    {
+        return $this->referentTags;
+    }
+
+    public function addReferentTag(ReferentTag $referentTag): void
+    {
+        if (!$this->referentTags->contains($referentTag)) {
+            $this->referentTags->add($referentTag);
+        }
+    }
+
+    public function removeReferentTag(ReferentTag $referentTag): void
+    {
+        $this->referentTags->remove($referentTag);
+    }
+
+    public function removeReferentTags(): void
+    {
+        $this->referentTags = new ArrayCollection();
     }
 
     public function getCitizenProjectCreationEmailSubscriptionRadius(): int

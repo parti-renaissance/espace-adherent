@@ -319,6 +319,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.referent_tag" class="AppBundle\Admin\ReferentTagAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Tags réferent" group="Territoire" />
+
+            <argument />
+            <argument>AppBundle\Entity\ReferentTag</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Legislatives

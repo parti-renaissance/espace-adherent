@@ -3,7 +3,9 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\EventCategory;
+use AppBundle\Entity\ReferentTag;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\DomCrawler\Crawler;
@@ -146,6 +148,20 @@ trait ControllerTestTrait
     private function getEventCategoryIdForName(string $categoryName): int
     {
         return $this->manager->getRepository(EventCategory::class)->findOneBy(['name' => $categoryName])->getId();
+    }
+
+    private static function assertAdherentHasReferentTag(Adherent $adherent, string $code): void
+    {
+        $referentTag = $adherent
+            ->getReferentTags()
+            ->filter(function (ReferentTag $referentTag) use ($code) {
+                return $code === $referentTag->getCode();
+            })
+            ->first()
+        ;
+
+        self::assertInstanceOf(ReferentTag::class, $referentTag);
+        self::assertSame($referentTag->getCode(), $code);
     }
 
     protected function init(array $fixtures = [], string $host = 'app')

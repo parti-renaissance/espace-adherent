@@ -14,10 +14,10 @@ Feature: Manage adherent from admin panel
   Scenario: A user update must trigger an event in RabbitMQ
     Given I am on "/admin/app/adherent/list"
     And I follow "SCHMIDT"
-    And I clean the "api_user" queue
+    And I clean the "api_sync" queue
     When I press "Mettre à jour"
     Then the response status code should be 200
-    And "api_user" should have 1 message
-    And "api_user" should have message below:
+    And "api_sync" should have 1 message
+    And "api_sync" should have message below:
       | routing_key  | body                                                                                                                                                                 |
       | user.updated | {"uuid":"511c21bf-1240-5271-abaa-3393d3f40740","country":"CH","zipCode":"8802","emailAddress":"damien.schmidt@example.ch","firstName":"Damien","lastName":"Schmidt"} |

@@ -70,6 +70,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', 47.3950786, 8.5361402),
             'birthdate' => '1972-11-23',
         ]);
+        $adherent1->addReferentTag($this->getReference('referent_tag_ch'));
         $this->addReference('adherent-1', $adherent1);
 
         $adherent2 = $adherentFactory->createFromArray([
@@ -89,6 +90,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
         $adherent2->setBoardMember(BoardMember::AREA_ABROAD, $roles);
+        $adherent2->addReferentTag($this->getReference('referent_tag_73'));
         $this->addReference('adherent-2', $adherent2);
 
         $adherent3 = $adherentFactory->createFromArray([
@@ -105,6 +107,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2017-01-03 08:47:54',
         ]);
         $adherent3->enableCommitteesNotifications();
+        $adherent3->addReferentTag($this->getReference('referent_tag_75008'));
         $this->addReference('adherent-3', $adherent3);
 
         $adherent4 = $adherentFactory->createFromArray([
@@ -124,6 +127,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent4->setInterests(['jeunesse']);
         $adherent4->enableCommitteesNotifications();
         $adherent4->setProcurationManagedAreaCodesAsString('75, 44, GB, 92130, 91300');
+        $adherent4->addReferentTag($this->getReference('referent_tag_75009'));
         $this->addReference('adherent-4', $adherent4);
 
         $adherent5 = $adherentFactory->createFromArray([
@@ -140,6 +144,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2017-01-08 05:55:43',
         ]);
         $adherent5->enableCommitteesNotifications();
+        $adherent5->addReferentTag($this->getReference('referent_tag_92'));
         $this->addReference('adherent-5', $adherent5);
 
         $adherent6 = $adherentFactory->createFromArray([
@@ -156,10 +161,11 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2017-01-16 18:33:22',
         ]);
         $adherent6->enableCommitteesNotifications();
-        $this->addReference('adherent-6', $adherent6);
         $adherent6->addTag($this->getReference('adherent_tag_at001'));
         $adherent6->addTag($this->getReference('adherent_tag_at002'));
         $adherent6->addTag($this->getReference('adherent_tag_at003'));
+        $adherent6->addReferentTag($this->getReference('referent_tag_13'));
+        $this->addReference('adherent-6', $adherent6);
 
         $adherent7 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_7_UUID,
@@ -175,6 +181,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2017-01-25 19:31:45',
         ]);
         $adherent7->enableCommitteesNotifications();
+        $adherent7->addReferentTag($this->getReference('referent_tag_77'));
         $this->addReference('adherent-7', $adherent7);
 
         $referent = $adherentFactory->createFromArray([
@@ -190,11 +197,21 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 673654349',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
-        $referent->setReferent(['CH', '92', '77', '13'], -1.6743, 48.112);
+        $referent->setReferent(
+            [
+                $this->getReference('referent_tag_ch'),
+                $this->getReference('referent_tag_92'),
+                $this->getReference('referent_tag_77'),
+                $this->getReference('referent_tag_13'),
+            ],
+            -1.6743,
+            48.112
+        );
         $roles = new ArrayCollection();
         $roles->add($this->getReference('referent'));
         $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $referent->enableCommitteesNotifications();
+        $referent->addReferentTag($this->getReference('referent_tag_77'));
 
         $referentChild = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_18_UUID,
@@ -209,8 +226,16 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 673654348',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
-        $referentChild->setReferent(['CH', '93'], -1.6743, 48.112);
+        $referentChild->setReferent(
+            [
+                $this->getReference('referent_tag_ch'),
+                $this->getReference('referent_tag_93'),
+            ],
+            -1.6743,
+            48.112
+        );
         $referentChild->enableCommitteesNotifications();
+        $referentChild->addReferentTag($this->getReference('referent_tag_77'));
 
         $coordinator = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_15_UUID,
@@ -226,6 +251,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2017-09-20 15:31:21',
         ]);
         $coordinator->addCoordinatorManagedArea(new CoordinatorManagedArea(['FR'], CoordinatorAreaSectors::COMMITTEE_SECTOR));
+        $coordinator->addReferentTag($this->getReference('referent_tag_94'));
 
         $coordinatorCP = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_17_UUID,
@@ -241,6 +267,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2017-09-20 15:31:21',
         ]);
         $coordinatorCP->addCoordinatorManagedArea(new CoordinatorManagedArea(['US', '59290', '77'], CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR));
+        $coordinatorCP->addReferentTag($this->getReference('referent_tag_75008'));
 
         $adherent9 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_9_UUID,
@@ -260,6 +287,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $roles->add($this->getReference('adherent'));
         $adherent9->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $adherent9->enableCommitteesNotifications();
+        $adherent9->addReferentTag($this->getReference('referent_tag_76'));
         $this->addReference('adherent-9', $adherent9);
 
         $adherent10 = $adherentFactory->createFromArray([
@@ -279,6 +307,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $roles->add($this->getReference('adherent'));
         $adherent10->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $adherent10->enableCommitteesNotifications();
+        $adherent10->addReferentTag($this->getReference('referent_tag_de'));
         $this->addReference('adherent-10', $adherent10);
 
         $adherent11 = $adherentFactory->createFromArray([
@@ -298,6 +327,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
         $adherent11->setBoardMember(BoardMember::AREA_ABROAD, $roles);
+        $adherent11->addReferentTag($this->getReference('referent_tag_sg'));
         $this->addReference('adherent-11', $adherent11);
 
         $adherent12 = $adherentFactory->createFromArray([
@@ -322,6 +352,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent12->getBoardMember()->addSavedBoardMember($adherent2->getBoardMember());
         $adherent12->enableCommitteesNotifications();
         $adherent12->setLegislativeCandidate(true);
+        $adherent12->addReferentTag($this->getReference('referent_tag_us'));
         $this->addReference('adherent-12', $adherent12);
 
         $adherent13 = $adherentFactory->createFromArray([
@@ -334,6 +365,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', 47.321569, 8.549968799999988),
             'birthdate' => '1987-05-13',
         ]);
+        $adherent13->addReferentTag($this->getReference('referent_tag_ch'));
         $this->addReference('adherent-13', $adherent13);
 
         $adherent14 = $adherentFactory->createFromArray([
@@ -346,6 +378,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', 'Seestrasse 204', 47.3180696, 8.552615),
             'birthdate' => '1988-04-13',
         ]);
+        $adherent14->addReferentTag($this->getReference('referent_tag_ch'));
         $this->addReference('adherent-14', $adherent14);
 
         // Non activated, enabled adherent
@@ -361,6 +394,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2017-04-09 06:20:38',
         ]);
         $adherent15->setStatus(Adherent::ENABLED);
+        $adherent15->addReferentTag($this->getReference('referent_tag_ch'));
         $this->addReference('adherent-15', $adherent15);
 
         // Create adherents accounts activation keys
@@ -617,6 +651,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         return [
             LoadBoardMemberRoleData::class,
             LoadAdherentTagData::class,
+            LoadReferentTagData::class,
         ];
     }
 }

@@ -8,8 +8,10 @@ use AppBundle\Entity\BoardMember\Role;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Form\ActivityPositionType;
 use AppBundle\Form\Admin\CoordinatorManagedAreaType;
+use AppBundle\Form\Admin\ReferentManagedAreaType;
 use AppBundle\Form\EventListener\BoardMemberListener;
 use AppBundle\Form\EventListener\CoordinatorManagedAreaListener;
+use AppBundle\Form\EventListener\ReferentManagedAreaListener;
 use AppBundle\Form\GenderType;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\AdherentEmailSubscription;
@@ -102,8 +104,8 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('isReferent', 'boolean', [
                     'label' => 'Est référent ?',
                 ])
-                ->add('managedAreaCodesAsString', null, [
-                    'label' => 'coordinator.label.codes',
+                ->add('managedArea.tags', null, [
+                    'label' => 'referent.label.tags',
                 ])
                 ->add('managedAreaMarkerLatitude', null, [
                     'label' => 'Latitude du point sur la carte',
@@ -213,18 +215,8 @@ class AdherentAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Référent', ['class' => 'col-md-6'])
-                ->add('managedArea.codesAsString', TextType::class, [
-                    'label' => 'coordinator.label.codes',
-                    'required' => false,
-                    'help' => 'Laisser vide si l\'adhérent n\'est pas référent. '.
-                        'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
-                ])
-                ->add('managedArea.markerLatitude', TextType::class, [
-                    'label' => 'Latitude du point sur la carte des référents',
-                    'required' => false,
-                ])
-                ->add('managedArea.markerLongitude', TextType::class, [
-                    'label' => 'Longitude du point sur la carte des référents',
+                ->add('managedArea', ReferentManagedAreaType::class, [
+                    'label' => false,
                     'required' => false,
                 ])
             ->end()
@@ -277,6 +269,7 @@ class AdherentAdmin extends AbstractAdmin
         $formMapper->getFormBuilder()
             ->addEventSubscriber(new BoardMemberListener())
             ->addEventSubscriber(new CoordinatorManagedAreaListener())
+            ->addEventSubscriber(new ReferentManagedAreaListener())
         ;
     }
 
@@ -311,7 +304,7 @@ class AdherentAdmin extends AbstractAdmin
                     }
 
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
-                    $qb->setParameter('cityName', '%'.strtolower($value['value']).'%');
+                    $qb->setParameter('cityName', '%'.mb_strtolower($value['value']).'%');
 
                     return true;
                 },
@@ -328,7 +321,7 @@ class AdherentAdmin extends AbstractAdmin
                     }
 
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.country)', $alias).' = :country');
-                    $qb->setParameter('country', strtolower($value['value']));
+                    $qb->setParameter('country', mb_strtolower($value['value']));
 
                     return true;
                 },
@@ -338,10 +331,10 @@ class AdherentAdmin extends AbstractAdmin
                 'field_type' => CheckboxType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
-                        return;
+                        return false;
                     }
 
-                    $qb->andWhere(sprintf('%s.managedArea.codes', $alias).' IS NOT NULL');
+                    $qb->andWhere("$alias.managedArea IS NOT NULL");
 
                     return true;
                 },
@@ -376,17 +369,45 @@ class AdherentAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-
             ->add('tags', CallbackFilter::class, [
-                'label' => 'Tags',
+                'label' => 'Tags adhérent',
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return;
                     }
 
-                    $value = array_map('trim', explode(',', strtolower($value['value'])));
+                    $value = array_map('trim', explode(',', mb_strtolower($value['value'])));
                     $qb->leftJoin(sprintf('%s.tags', $alias), 't');
                     $qb->andWhere($qb->expr()->in('LOWER(t.name)', $value));
+
+                    return true;
+                },
+            ])
+            ->add('referentTags', CallbackFilter::class, [
+                'label' => 'Tags référent souscrits',
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $value = array_map('trim', explode(',', mb_strtolower($value['value'])));
+                    $qb->leftJoin("$alias.referentTags", 'referent_tag');
+                    $qb->andWhere($qb->expr()->in('LOWER(referent_tag.name)', $value));
+
+                    return true;
+                },
+            ])
+            ->add('managedAreaTags', CallbackFilter::class, [
+                'label' => 'Tags référent gérés',
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $value = array_map('trim', explode(',', mb_strtolower($value['value'])));
+                    $qb->leftJoin("$alias.managedArea", 'managed_area');
+                    $qb->leftJoin('managed_area.tags', 'managed_area_tag');
+                    $qb->andWhere($qb->expr()->in('LOWER(managed_area_tag.name)', $value));
 
                     return true;
                 },
@@ -445,7 +466,15 @@ class AdherentAdmin extends AbstractAdmin
                 'template' => 'admin/adherent/list_status.html.twig',
             ])
             ->add('tags', null, [
-                'label' => 'Tags',
+                'label' => 'Tags adhérent',
+            ])
+            ->add('referentTags', null, [
+                'label' => 'Tags souscrits',
+            ])
+            ->add('managedAreaTags', null, [
+                'label' => 'Tags gérés',
+                'virtual_field' => true,
+                'template' => 'admin/adherent/list_managed_area_tags.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

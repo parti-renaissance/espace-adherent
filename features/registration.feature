@@ -23,12 +23,12 @@ Feature:
     And I fill in hidden field "adherent_registration_address_country" with "FR"
     And I check "Oui, j'adhère à la charte des valeurs, aux statuts et aux règles de fonctionnement de La République En Marche, ainsi qu'aux conditions générales d'utilisation du site"
     And I resolved the captcha
-    And I clean the "api_user" queue
+    And I clean the "api_sync" queue
     And I press "Je rejoins La République En Marche"
     And the response status code should be 200
     And I should be on "/presque-fini"
-    And "api_user" should have 1 message
-    And "api_user" should have message below:
+    And "api_sync" should have 1 message
+    And "api_sync" should have message below:
       | routing_key  | body                                                                                                                            |
       | user.created | {"uuid":"@string@","country":"FR","zipCode":"94320","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
     And I should have 1 email
@@ -77,8 +77,10 @@ Feature:
     And the response status code should be 200
 
   Scenario: I can register as a user
-    Given I am on "/inscription-utilisateur"
-    When I fill in the following:
+    Given the following fixtures are loaded:
+      | LoadReferentTagData |
+    When I am on "/inscription-utilisateur"
+    And I fill in the following:
       | Prénom             | Jean-Pierre |
       | Nom                | DURAND      |
       | E-mail             | jp@test.com |
@@ -87,14 +89,15 @@ Feature:
       | Code postal        | 38000       |
       | Pays               | CH          |
     And I resolved the captcha
-    And I clean the "api_user" queue
+    And I clean the "api_sync" queue
     And I press "Créer mon compte"
     Then I should be on "/presque-fini"
     And the response status code should be 200
-    And "api_user" should have 1 message
-    And "api_user" should have message below:
+    And "api_sync" should have 1 message
+    And "api_sync" should have message below:
       | routing_key  | body                                                                                                                            |
       | user.created | {"uuid":"@string@","country":"CH","zipCode":"38000","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
+    And I clean the "api_sync" queue
     And I should have 1 email
     And I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
     """
@@ -157,6 +160,7 @@ Feature:
       | become_adherent[address][address]    | 1 rue de l'egalite |
       | become_adherent[address][cityName]   | Nice               |
       | become_adherent[address][postalCode] | 06000              |
+      | become_adherent[address][country]    | FR                 |
       | become_adherent[gender]              | male               |
       | become_adherent[phone][country]      | FR                 |
       | become_adherent[phone][number]       | 0600000000         |
@@ -164,15 +168,15 @@ Feature:
       | become_adherent[birthdate][month]    | 1                  |
       | become_adherent[birthdate][year]     | 1980               |
     And I check "Oui, j'adhère à la charte des valeurs, aux statuts et aux règles de fonctionnement de La République En Marche, ainsi qu'aux conditions générales d'utilisation du site"
-    And I clean the "api_user" queue
     When I press "Je rejoins La République En Marche"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
-    And "api_user" should have 1 message
-    And "api_user" should have message below:
+    And "api_sync" should have 1 message
+    And "api_sync" should have message below:
       | routing_key  | body                                                                                                                            |
-      | user.updated | {"uuid":"@string@","country":"CH","zipCode":"06000","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
+      | user.updated | {"uuid":"@string@","country":"FR","zipCode":"06000","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
     And I should have 2 emails
+    And the adherent "jp@test.com" should have the "06" referent tag
     And I should have 1 email "AdherentAccountConfirmationMessage" for "jp@test.com" with payload:
     """
     {
@@ -202,7 +206,7 @@ Feature:
     Given I follow "Mes informations personnelles"
     Then I should be on "/parametres/mon-compte/modifier"
     And the "adherent[address][address]" field should contain "1 rue de l'egalite"
-    And the "adherent[address][country]" field should contain "CH"
+    And the "adherent[address][country]" field should contain "FR"
     And the "adherent[phone][country]" field should contain "FR"
     And the "adherent[phone][number]" field should contain "06 00 00 00 00"
     And the "adherent[birthdate][day]" field should contain "1"
@@ -223,10 +227,12 @@ Feature:
   @javascript
   Scenario: I can become adherent with a foreign country
     Given the following fixtures are loaded:
-      | LoadUserData |
+      | LoadUserData        |
+      | LoadReferentTagData |
     And I am logged as "simple-user@example.ch"
     And I am on "/adhesion"
     And I fill in the following:
+      | become_adherent[address][country]    | CH                 |
       | become_adherent[address][address]    | 32 Zeppelinstrasse |
       | become_adherent[address][postalCode] | 8057               |
       | become_adherent[gender]              | male               |
@@ -242,12 +248,14 @@ Feature:
       | become_adherent[address][cityName] | Zürich |
     When I press "Je rejoins La République En Marche"
     Then I should be on "/espace-adherent/accueil"
+    And the adherent "simple-user@example.ch" should have the "CH" referent tag
     And I should see "Votre compte adhérent est maintenant actif."
 
   @javascript
   Scenario: I can become adherent with a french address
     Given the following fixtures are loaded:
-      | LoadUserData |
+      | LoadUserData        |
+      | LoadReferentTagData |
     And I am logged as "simple-user@example.ch"
     And I am on "/adhesion"
     And I fill in the following:
@@ -264,11 +272,13 @@ Feature:
     And I should see "Veuillez renseigner une ville."
 
     Given I fill in the following:
-      | become_adherent[address][postalCode] | 69001 |
+      | become_adherent[address][country]    | FR       |
+      | become_adherent[address][postalCode] | 69001    |
     And I wait until I see "Lyon" in the "#become_adherent_address_city" element
     When I press "Je rejoins La République En Marche"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
+    And the adherent "simple-user@example.ch" should have the "69" referent tag
 
   Scenario: I have great error message when register is misfiled
     Given I am on "/inscription-utilisateur"

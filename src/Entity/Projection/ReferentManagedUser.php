@@ -160,6 +160,13 @@ class ReferentManagedUser
     private $isMailSubscriber;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $subscribedTags;
+
+    /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime")
@@ -184,6 +191,7 @@ class ReferentManagedUser
         int $isCommitteeHost = 0,
         int $isCommitteeSupervisor = 0,
         int $isMailSubscriber = 0,
+        string $subscribedTags = null,
         \DateTime $createdAt = null
     ) {
         $this->status = $status;
@@ -203,6 +211,7 @@ class ReferentManagedUser
         $this->isCommitteeHost = $isCommitteeHost;
         $this->isCommitteeSupervisor = $isCommitteeSupervisor;
         $this->isMailSubscriber = $isMailSubscriber;
+        $this->subscribedTags = $subscribedTags;
         $this->createdAt = $createdAt;
     }
 
@@ -308,6 +317,11 @@ class ReferentManagedUser
     public function isMailSubscriber(): bool
     {
         return $this->isMailSubscriber;
+    }
+
+    public function getSubscribedTags(): string
+    {
+        return $this->subscribedTags;
     }
 
     public function getCreatedAt(): ?\DateTime
