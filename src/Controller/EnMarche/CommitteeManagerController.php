@@ -122,7 +122,7 @@ class CommitteeManagerController extends Controller
     }
 
     /**
-     * @Route("/membres/contact", name="app_commitee_contact_members")
+     * @Route("/membres/contact", name="app_committee_contact_members")
      * @Method("POST")
      */
     public function contactMembersAction(Request $request, Committee $committee): Response

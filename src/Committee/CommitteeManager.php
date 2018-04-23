@@ -35,7 +35,7 @@ class CommitteeManager
 
     public function isPromotableHost(Adherent $adherent, Committee $committee): bool
     {
-        if (!$membership = $this->getMembershipRepository()->findMembership($adherent, $committee->getUuid())) {
+        if (!$membership = $this->getMembershipRepository()->findMembership($adherent, $committee)) {
             return false;
         }
 
@@ -44,7 +44,7 @@ class CommitteeManager
 
     public function isDemotableHost(Adherent $adherent, Committee $committee): bool
     {
-        if (!$membership = $this->getMembershipRepository()->findMembership($adherent, $committee->getUuid())) {
+        if (!$membership = $this->getMembershipRepository()->findMembership($adherent, $committee)) {
             return false;
         }
 
@@ -70,7 +70,7 @@ class CommitteeManager
             return true;
         }
 
-        return $this->getMembershipRepository()->hostCommittee($adherent, $committee->getUuid());
+        return $this->getMembershipRepository()->hostCommittee($adherent, $committee);
     }
 
     public function superviseCommittee(Adherent $adherent, Committee $committee): bool
@@ -81,7 +81,7 @@ class CommitteeManager
             return true;
         }
 
-        return $this->getMembershipRepository()->superviseCommittee($adherent, $committee->getUuid());
+        return $this->getMembershipRepository()->superviseCommittee($adherent, $committee);
     }
 
     public function getAdherentCommittees(Adherent $adherent): array
@@ -137,17 +137,17 @@ class CommitteeManager
 
     public function countCommitteeHosts(Committee $committee): int
     {
-        return $this->getMembershipRepository()->countHostMembers($committee->getUuid());
+        return $this->getMembershipRepository()->countHostMembers($committee);
     }
 
     public function countCommitteeSupervisors(Committee $committee): int
     {
-        return $this->getMembershipRepository()->countSupervisorMembers($committee->getUuid());
+        return $this->getMembershipRepository()->countSupervisorMembers($committee);
     }
 
     public function getCommitteeHosts(Committee $committee): AdherentCollection
     {
-        return $this->getMembershipRepository()->findHostMembers($committee->getUuid());
+        return $this->getMembershipRepository()->findHostMembers($committee);
     }
 
     public function getCommitteeCreator(Committee $committee): ?Adherent
@@ -162,7 +162,7 @@ class CommitteeManager
 
     public function getCommitteeFollowers(Committee $committee, bool $withHosts = self::INCLUDE_HOSTS): AdherentCollection
     {
-        return $this->getMembershipRepository()->findFollowers($committee->getUuid(), $withHosts);
+        return $this->getMembershipRepository()->findFollowers($committee, $withHosts);
     }
 
     public function getOptinCommitteeFollowers(Committee $committee): AdherentCollection
@@ -197,12 +197,15 @@ class CommitteeManager
 
     public function getCommitteeMembers(Committee $committee): AdherentCollection
     {
-        return $this->getMembershipRepository()->findMembers($committee->getUuid());
+        return $this->getMembershipRepository()->findMembers($committee);
     }
 
+    /**
+     * @return CommitteeMembershipCollection|CommitteeMembership[]
+     */
     public function getCommitteeMemberships(Committee $committee): CommitteeMembershipCollection
     {
-        return $this->getMembershipRepository()->findCommitteeMemberships($committee->getUuid());
+        return $this->getMembershipRepository()->findCommitteeMemberships($committee);
     }
 
     public function getCommitteeMembership(Adherent $adherent, Committee $committee): ?CommitteeMembership
@@ -213,7 +216,7 @@ class CommitteeManager
             return $adherent->getMembershipFor($committee);
         }
 
-        return $this->getMembershipRepository()->findMembership($adherent, $committee->getUuid());
+        return $this->getMembershipRepository()->findMembership($adherent, $committee);
     }
 
     /**
@@ -225,7 +228,7 @@ class CommitteeManager
      */
     public function promote(Adherent $adherent, Committee $committee, bool $flush = true): void
     {
-        $membership = $this->getMembershipRepository()->findMembership($adherent, $committee->getUuid());
+        $membership = $this->getMembershipRepository()->findMembership($adherent, $committee);
         $membership->promote();
 
         if ($flush) {
@@ -242,7 +245,7 @@ class CommitteeManager
      */
     public function demote(Adherent $adherent, Committee $committee, bool $flush = true): void
     {
-        $membership = $this->getMembershipRepository()->findMembership($adherent, $committee->getUuid());
+        $membership = $this->getMembershipRepository()->findMembership($adherent, $committee);
         $membership->demote();
 
         if ($flush) {
@@ -296,7 +299,7 @@ class CommitteeManager
         $memberships = $this->getCommitteeMemberships($committee);
         foreach ($memberships as $membership) {
             if ($membership->isSupervisor() || $membership->isHostMember()) {
-                $committee = $this->getCommitteeRepository()->findOneByUuid($membership->getCommitteeUuid()->toString());
+                $committee = $this->getCommitteeRepository()->findOneByUuid($membership->getCommittee()->getUuidAsString());
                 $this->changePrivilege($membership->getAdherent(), $committee, CommitteeMembership::COMMITTEE_FOLLOWER, false);
             }
         }
@@ -376,7 +379,7 @@ class CommitteeManager
         if ($adherent->hasLoadedMemberships()) {
             $membership = $adherent->getMembershipFor($committee);
         } else {
-            $membership = $this->getMembershipRepository()->findMembership($adherent, $committee->getUuid());
+            $membership = $this->getMembershipRepository()->findMembership($adherent, $committee);
         }
 
         if ($membership) {
@@ -477,6 +480,6 @@ class CommitteeManager
 
     public function getCommitteeSupervisor(Committee $committee): ?Adherent
     {
-        return $this->getMembershipRepository()->findSupervisor($committee->getUuid()->toString());
+        return $this->getMembershipRepository()->findSupervisor($committee);
     }
 }

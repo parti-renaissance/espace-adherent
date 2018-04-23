@@ -76,7 +76,6 @@ class RepublicanSilence
 
     public function getFinishAt(): ?\DateTime
     {
-
         return $this->finishAt;
     }
 

@@ -25,10 +25,10 @@ class RepublicSilenceAdmin extends AbstractAdmin
             ->with('General', ['class' => 'col-md-6'])
                 ->add('zones')
                 ->add('beginAt', DateTimePickerType::class, [
-                    'label' => 'common.begin_at'
+                    'label' => 'common.begin_at',
                 ])
                 ->add('finishAt', DateTimePickerType::class, [
-                    'label' => 'common.finish_at'
+                    'label' => 'common.finish_at',
                 ])
             ->end()
         ;

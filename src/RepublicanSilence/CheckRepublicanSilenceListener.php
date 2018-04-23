@@ -3,19 +3,27 @@
 namespace AppBundle\RepublicanSilence;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\RepublicanSilence\AdherentZone\AdherentZoneRetrieverInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class CheckRepublicanSilenceListener implements EventSubscriberInterface
 {
     private const ROUTES = [
-        'app_referent_users' => AdherentZoneRetriever::ADHERENT_TYPE_REFERENT,
-        'app_referent_users_message' => AdherentZoneRetriever::ADHERENT_TYPE_REFERENT,
-        'app_referent_events_create' => AdherentZoneRetriever::ADHERENT_TYPE_REFERENT,
+        // Referent Space
+        'app_referent_users' => AdherentZoneRetrieverInterface::ADHERENT_TYPE_REFERENT,
+        'app_referent_users_message' => AdherentZoneRetrieverInterface::ADHERENT_TYPE_REFERENT,
+        'app_referent_events_create' => AdherentZoneRetrieverInterface::ADHERENT_TYPE_REFERENT,
+
+        // Committee
+        'app_committee_show' => AdherentZoneRetrieverInterface::ADHERENT_TYPE_HOST,
+        'app_committee_contact_members' => AdherentZoneRetrieverInterface::ADHERENT_TYPE_HOST,
+        'app_committee_manager_add_event' => AdherentZoneRetrieverInterface::ADHERENT_TYPE_HOST,
     ];
 
     private $tokenStorage;
@@ -42,26 +50,41 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
             return;
         }
 
+        /** @var Adherent $user */
+        if (!($token = $this->tokenStorage->getToken()) || !($user = $token->getUser()) || !$this->supportUser($user)) {
+            return;
+        }
+
         $route = $event->getRequest()->attributes->get('_route');
+
         if (!$this->supportRoute($route)) {
             return;
         }
 
-        /** @var Adherent $user */
-        $user = $this->tokenStorage->getToken()->getUser();
-        dump($user->getMemberships());
-        if (!$userZones = AdherentZoneRetriever::getAdherentZone($user, self::ROUTES[$route])) {
+        $context = ZoneRetrieverFactory::create(self::ROUTES[$route]);
+
+        if (!$userZones = $context->getAdherentZone($user, $event->getRequest())) {
             return;
         }
 
         if ($this->republicanSilenceManager->hasStartedSilence($userZones)) {
-            //$event->setResponse($this->templateEngine->renderResponse('republican_silence/landing.html.twig'));
-            dump('BLOCK !!!!!!');
+            $event->setResponse($this->templateEngine->renderResponse('republican_silence/landing.html.twig'));
         }
     }
 
     private function supportRoute(string $route): bool
     {
         return array_key_exists($route, self::ROUTES);
+    }
+
+    private function supportUser(UserInterface $user): bool
+    {
+        return $user instanceof Adherent
+            && (
+                $user->isHost()
+                || $user->isSupervisor()
+                || $user->isReferent()
+                || $user->isCitizenProjectAdministrator()
+            );
     }
 }
