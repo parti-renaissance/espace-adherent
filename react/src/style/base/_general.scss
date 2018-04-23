@@ -1,7 +1,12 @@
 .App {
-    text-align: center;
+	text-align: center;
+	overflow-x: hidden;
 }
 
 a {
-    border-bottom: 0;
+	border-bottom: 0;
+}
+
+.text--blue--primary {
+	color: $blue-primary;
 }

@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-
-import AdherentContainer from './AdherentContainer';
-import CommitteeContainer from './CommitteeContainer';
-import EventContainer from './EventContainer';
+import { withRouter } from 'react-router';
 
 class SendAMessagePage extends Component {
     render() {
@@ -14,4 +11,4 @@ class SendAMessagePage extends Component {
     }
 }
 
-export default SendAMessagePage;
+export default withRouter(SendAMessagePage);

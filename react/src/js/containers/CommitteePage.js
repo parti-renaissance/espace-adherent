@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-
-import AdherentContainer from './AdherentContainer';
-import CommitteeContainer from './CommitteeContainer';
-import EventContainer from './EventContainer';
+import { withRouter } from 'react-router';
 
 class CommittePage extends Component {
     render() {
@@ -14,4 +11,4 @@ class CommittePage extends Component {
     }
 }
 
-export default CommittePage;
+export default withRouter(CommittePage);

@@ -1,19 +1,35 @@
 .dashboard__ctn {
+	.wrapper {
+		@include wrapper;
+	}
 
-    .wrapper {
-        @include wrapper;
-    }
+	.ctn__title {
+		@include text--medium;
+		text-align: left;
+		margin: 100px 0;
+		border-bottom: 10px solid $pink-lighter;
+		display: table;
+		line-height: 0px;
 
-    .ctn__title {
-        @include  text--medium;
-        text-align: left;
-        margin: 100px 0;
-        border-bottom: 10px solid $pink-lighter;
-        display: table;
-        line-height: 0px;
+		@media (max-width: $mobile) {
+			text-align: center;
+		}
+	}
 
-        @media (max-width: $mobile) {
-            text-align: center;
-        }
-    }
+	.dashboard__title {
+		@include text--default;
+		font-weight: 100;
+		margin-left: 10px;
+		text-align: left;
+		color: black;
+
+		@media (max-width: $mobile) {
+			text-align: center;
+		}
+
+		span {
+			display: inline-block;
+			margin-left: 10px;
+		}
+	}
 }

@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 
-import AdherentContainer from './AdherentContainer';
-import CommitteeContainer from './CommitteeContainer';
-import EventContainer from './EventContainer';
-
-class DashboardPage extends Component {
+class EventPage extends Component {
     render() {
         return (
             <div className="wrapper">
@@ -14,4 +11,4 @@ class DashboardPage extends Component {
     }
 }
 
-export default DashboardPage;
+export default withRouter(EventPage);

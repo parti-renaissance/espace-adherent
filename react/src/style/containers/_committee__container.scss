@@ -1,17 +1,18 @@
 .committee__ctn__summary,
 .committee__ctn__bars,
 .committee__ctn__ranking {
-    display: flex;
-    justify-content: space-evenly;
+	display: flex;
+	justify-content: space-evenly;
 
-    @media (max-width: $mobile) {
-        flex-direction: column;
-    }
+	@media (max-width: $tablet) {
+		flex-direction: column;
+		align-items: center;
+	}
 }
 
 .committee__ctn__select {
-    display: flex;
-    justify-content: space-between;
-    margin: 10px;
-    width: 100%;
+	display: flex;
+	justify-content: space-between;
+	margin: 10px;
+	width: 100%;
 }
