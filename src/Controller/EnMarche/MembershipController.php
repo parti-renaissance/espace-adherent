@@ -7,6 +7,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentTokenExpiredException;
+use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\AdherentRegistrationType;
 use AppBundle\Form\BecomeAdherentType;
 use AppBundle\Form\UserRegistrationType;
@@ -18,6 +19,7 @@ use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -181,7 +183,9 @@ class MembershipController extends Controller
             if ($adherent->isAdherent()) {
                 $this->get(MembershipRequestHandler::class)->sendConfirmationJoinMessage($adherent);
 
-                return $callbackManager->redirectToClientIfValid('app_adherent_home', ['from_activation' => 1]);
+                $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
+
+                return $callbackManager->redirectToClientIfValid('app_membership_pin_interests');
             }
 
             return $callbackManager->redirectToClientIfValid('app_membership_join');
@@ -194,5 +198,33 @@ class MembershipController extends Controller
         // Other exceptions that may be raised will be caught by Symfony.
 
         return $this->redirectToRoute('app_user_login');
+    }
+
+    /**
+     * This action enables a new user to pin his/her interests after the account activation by email.
+     *
+     * @Route("/inscription/centre-interets", name="app_membership_pin_interests")
+     * @Method("GET|POST")
+     *
+     * @Security("is_granted('ROLE_ADHERENT')")
+     */
+    public function pinInterestsAction(Request $request): Response
+    {
+        $form = $this->createForm(AdherentInterestsFormType::class, $this->getUser())
+            ->add('pass', SubmitType::class)
+            ->add('submit', SubmitType::class)
+        ;
+
+        if ($form->handleRequest($request)->isSubmitted()) {
+            if ($form->get('submit')->isClicked() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
+            }
+
+            return $this->redirectToRoute('app_adherent_home');
+        }
+
+        return $this->render('membership/pin_interests.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }
