@@ -3,37 +3,46 @@
 {% block adherent_profile_form %}
     <h2>Mes dons</h2>
 
-    {% if donations %}
-        <p>Votre dernier don a été fait {{ donations|first.donatedAt|ago }}. <a href="{{ path('donation_index') }}">Faire un nouveau don</a></p>
-    {% endif %}
+    <div class="b__nudge--top b__nudge--bottom">
+        {% if donations %}
+            Merci pour votre engagement à nos côtés ! <br/>
+            Votre dernier don a été fait {{ donations|first.donatedAt|ago }}. <a href="{{ path('donation_index') }}">Faire un nouveau don</a>.
+            <div class="b__nudge--top text--small text--gray">
+                Veuillez noter que :
+                <ol>
+                    <li>Les dons effectués par chèque ne sont pas encore visibles sur cette page</li>
+                    <li>Vous recevrez votre reçu fiscal entre avril et juin. Il n'est pas nécessaire de le joindre à la déclaration de revenus de mai. Quand vous l'aurez obtenu, conserver-le pour pouvoir le présenter en cas de contrôle de l'administration fiscale.</li>
+                </ol>
+            </div>
+        {% else %}
+            Vos dons sont essentiels pour la réussite de notre mouvement.<br/>
+            Ils nous donnent de la force pour transformer le pays.
 
-    <p>Veuillez noter que seuls les dons effectués sur le site sont actuellement affichés.</p>
+            <div class="b__nudge--top">
+                <a href="{{ path('donation_index') }}" class="btn btn--primary">Je donne à La République En Marche</a>
+            </div>
+        {% endif %}
+    </div>
 
-    <table>
+    <table class="settings__donations">
         <thead>
             <tr>
                 <th>
-                    Quand ?
+                    Date
                 </th>
                 <th>
-                    Combien ?
-                </th>
-                <th>
-                    Mode
+                    Montant
                 </th>
             </tr>
         </thead>
         <tbody>
-            {% for donation in donations %}
+            {% for donation in donations|reverse %}
                 <tr>
                     <td>
-                        {{ donation.donatedAt|date('Y/m/d') }}
+                        {{ donation.donatedAt|date('d M Y') }}
                     </td>
                     <td>
                         {{ donation.amountInEuros }} €
-                    </td>
-                    <td>
-                        CB
                     </td>
                 </tr>
             {% endfor %}
