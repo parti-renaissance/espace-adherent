@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import { connect } from 'react-redux';
 import * as actionCreators from './../../actions/index.js';
 
@@ -12,7 +14,7 @@ class Select extends Component {
 	    this.props.committeeFilter(e.target.value);
 	};
 	render() {
-	    const { committees, id, name, committeeSelected } = this.props;
+	    const { committees, id, name } = this.props;
 
 	    return (
 	        <select id={id} name={name} className="select__cpt" onChange={this.handleChange}>
@@ -29,7 +31,14 @@ class Select extends Component {
 
 const mapStateToProps = state => ({
     committees: state.fetch.committees,
-    committeeSelected: state.filter.committeeFilter,
 });
 
 export default connect(mapStateToProps, actionCreators)(Select);
+
+Select.propTypes = {
+    id: PropTypes.string,
+    name: PropTypes.string,
+    value: PropTypes.string,
+    key: PropTypes.number,
+    onChange: PropTypes.func,
+};

@@ -18,7 +18,7 @@ class Timer extends Component {
     }
 
     componentDidMount() {
-        const timer = setInterval(this.countingSecond, 1000);
+        setInterval(this.countingSecond, 1000);
     }
 
     componentDidUpdate() {

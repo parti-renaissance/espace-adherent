@@ -17,7 +17,7 @@ export function fetchData() {
 }
 
 export function changeColor(value) {
-    console.log(value);
+    // console.log(value);
     return {
         type: 'FETCH_DATA',
         value,
@@ -25,7 +25,6 @@ export function changeColor(value) {
 }
 
 export function committeeFilter(comitteeSelected) {
-    console.log(`action : ${comitteeSelected}`);
     return {
         type: 'COMMITTEE_FILTER',
         committeeFilter: comitteeSelected,
