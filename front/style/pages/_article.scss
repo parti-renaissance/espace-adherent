@@ -1,142 +1,166 @@
 .article__main {
-    display: flex;
-    justify-content: space-evenly;
+	display: flex;
+	justify-content: space-evenly;
 
-    @media (max-width: $mobile) {
-        flex-direction: column;
-    }
+	@media (max-width: $tablet) {
+		flex-direction: column;
+	}
 
-    .article__social {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        align-items: center;
-        margin-top: 35px;
+	.article__social {
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		align-items: center;
+		margin-top: 35px;
 
-        @media (max-width: $mobile) {
-            display: inline;
-            width: 100%;
-        }
+		@media (max-width: $tablet) {
+			width: 100%;
+		}
 
-        ul {
+		ul {
+			@media (max-width: $tablet) {
+				padding: 0;
+				display: flex;
+				justify-content: space-evenly;
+			}
+		}
 
-            @media (max-width: $mobile) {
-                padding: 0;
-                display: flex;
-                justify-content: space-evenly;
-            }
-        }
+		li {
+			margin-bottom: 20px;
 
-        li {
-            margin-bottom: 20px;
+			@media (max-width: $tablet) {
+				margin-right: 20px;
+			}
 
-            span {
-                text-transform: uppercase;
-            }
+			span {
+				text-transform: uppercase;
+			}
 
-            i {
-                cursor: pointer;
-            }
-        }
+			i {
+				cursor: pointer;
+			}
+		}
 
-        &.isFixed {
-            position: fixed;
-            top: 0;
-            margin-top: 0;
+		&.isFixed {
+			position: fixed;
+			top: 0;
+			margin-top: 0;
 
-            @media (max-width: $mobile) {
-                position: relative;
-            }
-        }
+			@media (max-width: $tablet) {
+				position: relative;
+			}
+		}
 
-        &.isFixedToBottom {
-            position: absolute;
-            bottom: 30px;
+		&.isFixedToBottom {
+			position: absolute;
+			bottom: 30px;
 
-            @media (max-width: $mobile) {
-                position: relative;
-            }
-        }
-    }
+			@media (max-width: $tablet) {
+				position: relative;
+			}
+		}
+	}
 
-    .content {
-        width: 60%;
+	.content {
+		width: 60%;
 
-        @media (max-width: $mobile) {
-            width: 100%;
-        }
-    }
+		@media (max-width: $tablet) {
+			width: 100%;
+		}
+	}
 
-    .article__sidebar {
+	.article__sidebar {
+		&--left,
+		&--right {
+			width: 20%;
+			position: relative;
+			text-align: center;
+			justify-content: center;
+			display: flex;
 
-        &--left,
-        &--right {
-            width: 20%;
-            position: relative;
-            text-align: center;
-            justify-content: center;
-            display: flex;
+			@media (max-width: $tablet) {
+				width: 100%;
+			}
 
-            @media (max-width: $mobile) {
-                width: 100%;
-            }
+			.newsletter {
+				width: 100%;
+				position: relative;
+				margin-top: 25px;
+				display: flex;
+				flex-direction: column;
 
-            .newsletter {
-                width: 100%;
-                position: relative;
-                margin-top: 25px;
-                display: flex;
-                flex-direction: column;
+				@media (max-width: $tablet) {
+					flex-direction: column;
+					width: 80%;
+					margin: 20px auto;
+				}
 
-                @media (max-width: $mobile) {
-                    flex-direction: column;
-                    width: 80%;
-                    margin: 20px auto;
-                }
+				& > div {
+					width: 50%;
+					margin: 0 auto;
 
-                &>div {
-                    width: 50%;
-                    margin: 0 auto;
+					@media (max-width: $tablet) {
+						width: 100%;
+					}
+				}
 
-                    @media (max-width: $mobile) {
-                        width: 100%;
-                    }
-                }
+				form {
+					display: flex;
+					flex-direction: column;
+				}
 
-                form {
-                    display: flex;
-                    flex-direction: column;
+				input,
+				select {
+					position: relative;
+					width: 200px;
+					border: 1px solid $black;
+					border-radius: 0;
+					padding: 10px 0px;
+					margin-bottom: 20px;
+					text-align: center;
+					background-color: $white;
+					margin-right: 0;
 
-                    @media (max-width: $mobile) {
-                        flex-direction: row;
-                    }
-                }
+					@media (max-width: $tablet) {
+						width: 50%;
+						text-align: left;
+						padding-left: 10px;
+					}
 
-                input {
-                    position: relative;
-                    border: 1px solid $black;
-                    padding: 10px 0px;
-                    margin-bottom: 20px;
-                    text-align: center;
-                    text-transform: uppercase;
+					@media (max-width: $mobile) {
+						width: 100%;
+						text-align: left;
+						padding-left: 10px;
+					}
 
-                    @media (max-width: $mobile) {
-                        width: 100%;
-                        text-align: left;
-                        padding-left: 10px;
-                    }
+					&.isExpanded {
+						width: 300px;
+						right: 50px;
 
-                    &.isExpanded {
-                        width: 300px;
-                        right: 87px;
+						@media (max-width: $tablet) {
+							width: 100%;
+							right: 0;
+						}
+					}
+				}
 
-                        @media (max-width: $mobile) {
-                            width: 100%;
-                            right: 0;
-                        }
-                    }
-                }
-            }
-        }
-    }
+				button {
+					width: 200px;
+
+					@media (max-width: $tablet) {
+						width: 50%;
+					}
+
+					@media (max-width: $mobile) {
+						width: 100%;
+					}
+				}
+
+				select {
+					border: 0;
+					outline: 1px solid $black;
+				}
+			}
+		}
+	}
 }
