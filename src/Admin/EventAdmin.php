@@ -84,9 +84,8 @@ class EventAdmin extends AbstractAdmin
                 ->add('participantsCount', null, [
                     'label' => 'Nombre de participants',
                 ])
-                ->add('status', 'choice', [
+                ->add('status', 'trans', [
                     'label' => 'Statut',
-                    'choices' => Event::STATUSES,
                     'catalogue' => 'forms',
                 ])
                 ->add('published', null, [
@@ -152,6 +151,7 @@ class EventAdmin extends AbstractAdmin
                     'label' => 'Statut',
                     'choices' => Event::STATUSES,
                     'choice_translation_domain' => 'forms',
+                    'choice_label' => function (?string $choice) { return $choice; },
                 ])
                 ->add('published', null, [
                     'label' => 'Publié',
