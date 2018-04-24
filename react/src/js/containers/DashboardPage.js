@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
+import * as actionCreators from './../actions/index.js';
 
 import AdherentContainer from './AdherentContainer';
 import CommitteeContainer from './CommitteeContainer';
 import EventContainer from './EventContainer';
-import { connect } from 'react-redux';
-import * as actionCreators from './../actions/index.js';
-import { withRouter } from 'react-router';
 
 class DashboardPage extends Component {
     componentDidMount() {
-        console.log('il est monté');
         this.props.fetchData();
     }
     componentWillUnmount() {
@@ -33,3 +33,7 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(connect(mapStateToProps, actionCreators)(DashboardPage));
+
+DashboardPage.propTypes = {
+    committees: PropTypes.array,
+};

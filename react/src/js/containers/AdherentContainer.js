@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Summary from './../components/charts/Summary';
 import Timer from './../components/Timer';
-// import { animateNb } from './../utils';
+
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
 import data from './../fakeData/data';
-import { connect } from 'react-redux';
-import * as actionCreators from './../actions/index.js';
 
 class AdherentContainer extends Component {
     render() {
@@ -59,7 +59,6 @@ class AdherentContainer extends Component {
                                 dataKey="adherentMembre"
                                 fill="#F8BCBC"
                                 barSize={10}
-                                offsetRadius={10}
                                 animationEasing="ease-in-out"
                             />
                         </BarChart>
@@ -83,14 +82,12 @@ class AdherentContainer extends Component {
                                 dataKey="adherent"
                                 fill="#6BA0EE"
                                 barSize={10}
-                                stroke-linecap="round"
                             />
                             <Bar
                                 name="Recevant des e-mails de leur(s) comité(s)"
                                 dataKey="adherentMembre"
                                 fill="#F8BCBC"
                                 barSize={10}
-                                offsetRadius={10}
                             />
                         </BarChart>
                     </ResponsiveContainer>
@@ -101,3 +98,23 @@ class AdherentContainer extends Component {
 }
 
 export default AdherentContainer;
+
+AdherentContainer.propTypes = {
+    summaryTotal: PropTypes.string,
+    summaryDescription: PropTypes.string,
+    womanPercentage: PropTypes.number,
+    manPercentage: PropTypes.number,
+    width: PropTypes.number,
+    height: PropTypes.number,
+    data: PropTypes.array,
+    margin: PropTypes.object,
+    stroke: PropTypes.string,
+    vertical: PropTypes.bool,
+    dataKey: PropTypes.string,
+    cursor: PropTypes.object,
+    itemStyle: PropTypes.object,
+    name: PropTypes.string,
+    fill: PropTypes.string,
+    barSize: PropTypes.number,
+    animationEasing: PropTypes.string,
+};

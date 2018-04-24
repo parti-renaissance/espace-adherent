@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import BulletRanking from './symbols/BulletRanking';
 
 class Ranking extends Component {
@@ -24,3 +26,9 @@ class Ranking extends Component {
 }
 
 export default Ranking;
+
+Ranking.propTypes = {
+    key: PropTypes.number,
+    nbTotalEvent: PropTypes.number,
+    eventTitle: PropTypes.string,
+};
