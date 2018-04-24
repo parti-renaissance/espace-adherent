@@ -29,7 +29,7 @@ class CitizenProjectAdherentZoneRetriever implements AdherentZoneRetrieverInterf
                     $citizenProject->getCountry(),
                 ];
 
-                if ($citizenProject->getCountry() === PostAddress::FRANCE) {
+                if (PostAddress::FRANCE === $citizenProject->getCountry()) {
                     $zone[] = \mb_substr($citizenProject->getPostalCode(), 0, 2);
                 }
 

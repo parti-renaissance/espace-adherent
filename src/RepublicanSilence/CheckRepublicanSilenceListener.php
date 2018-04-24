@@ -71,8 +71,6 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
             return;
         }
 
-        dump($userZones);
-
         if ($this->republicanSilenceManager->hasStartedSilence($userZones)) {
             $event->setResponse($this->templateEngine->renderResponse('republican_silence/landing.html.twig'));
         }
