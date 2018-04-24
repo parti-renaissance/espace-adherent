@@ -5,11 +5,9 @@ namespace Tests\AppBundle\Committee;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Exception\CommitteeMembershipException;
 use AppBundle\Geocoder\Coordinates;
-use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\MysqlWebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 

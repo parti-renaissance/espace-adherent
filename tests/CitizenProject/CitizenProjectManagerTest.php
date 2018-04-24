@@ -8,9 +8,7 @@ use AppBundle\Collection\AdherentCollection;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\CitizenProject;
 use AppBundle\Membership\AdherentEmailSubscription;
-use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\MysqlWebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 

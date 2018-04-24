@@ -2,14 +2,26 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Entity\RepublicanSilence;
 use AppBundle\Form\DataTransformer\ArrayToStringTransformer;
+use AppBundle\RepublicanSilence\Manager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\CoreBundle\Form\Type\DateTimePickerType;
 
-class RepublicSilenceAdmin extends AbstractAdmin
+class RepublicanSilenceAdmin extends AbstractAdmin
 {
+    /**
+     * @var Manager
+     */
+    private $republicanSilenceManager;
+
+    public function setRepublicanSilenceManager(Manager $manager): void
+    {
+        $this->republicanSilenceManager = $manager;
+    }
+
     protected function configureListFields(ListMapper $list)
     {
         $list
@@ -36,8 +48,26 @@ class RepublicSilenceAdmin extends AbstractAdmin
         $form->getFormBuilder()->get('zones')->addModelTransformer(new ArrayToStringTransformer());
     }
 
+    public function postPersist($object)
+    {
+        $this->clearRepublicanSilenceCache($object);
+    }
+
+    public function postUpdate($object)
+    {
+        $this->clearRepublicanSilenceCache($object);
+    }
+
     public function toString($object)
     {
         return implode(', ', $object->getZones());
+    }
+
+    private function clearRepublicanSilenceCache(RepublicanSilence $silence): void
+    {
+        $now = new \DateTime();
+        if ($silence->getBeginAt() <= $now && $now < $silence->getFinishAt()) {
+            $this->republicanSilenceManager->clearCache($now);
+        }
     }
 }

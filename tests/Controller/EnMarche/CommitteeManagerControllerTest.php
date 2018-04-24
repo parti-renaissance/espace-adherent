@@ -654,7 +654,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
     {
         return $this
             ->committeeMembershipRepository
-            ->findFollowers($committeeUuid)
+            ->findFollowers($this->getCommitteeRepository()->findOneByUuid($committeeUuid))
             ->getCommitteesNotificationsSubscribers()
             ->count()
         ;

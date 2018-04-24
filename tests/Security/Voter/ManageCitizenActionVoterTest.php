@@ -8,7 +8,6 @@ use AppBundle\Entity\CitizenProject;
 use AppBundle\Repository\CitizenProjectMembershipRepository;
 use AppBundle\Security\Voter\AbstractAdherentVoter;
 use AppBundle\Security\Voter\ManageCitizenActionVoter;
-use Ramsey\Uuid\UuidInterface;
 
 class ManageCitizenActionVoterTest extends AbstractAdherentVoterTest
 {
@@ -94,7 +93,7 @@ class ManageCitizenActionVoterTest extends AbstractAdherentVoterTest
      */
     public function testAdherentIsGrantedIfAdministratorWithoutLoadedMemberships(string $attribute)
     {
-        $project = $this->getCitizenProjectMock(true, false, true);
+        $project = $this->getCitizenProjectMock(true, false);
         $adherent = $this->getAdherentMock(true, false, true, $project);
 
         // assert repository is invoked
@@ -120,7 +119,7 @@ class ManageCitizenActionVoterTest extends AbstractAdherentVoterTest
      */
     public function testAdherentIsNotGrantedIfAdministratorWithoutLoadedMemberships(string $attribute)
     {
-        $project = $this->getCitizenProjectMock(true, false, true);
+        $project = $this->getCitizenProjectMock(true, false);
         $adherent = $this->getAdherentMock(true, false, false, $project);
 
         // assert repository is invoked
@@ -184,7 +183,7 @@ class ManageCitizenActionVoterTest extends AbstractAdherentVoterTest
      *
      * @return CitizenProject|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function getCitizenProjectMock(bool $approved, bool $fromCreator = false, bool $uuidChecked = false): CitizenProject
+    private function getCitizenProjectMock(bool $approved, bool $fromCreator = false): CitizenProject
     {
         $project = $this->createMock(CitizenProject::class);
 
@@ -200,22 +199,6 @@ class ManageCitizenActionVoterTest extends AbstractAdherentVoterTest
             ;
         }
 
-        if ($uuidChecked) {
-            $uuid = $this->createMock(UuidInterface::class);
-            $uuid->expects($this->once())
-                ->method('toString')
-                ->willReturn('test')
-            ;
-            $project->expects($this->once())
-                ->method('getUuid')
-                ->willReturn($uuid)
-            ;
-        } else {
-            $project->expects($this->never())
-                ->method('getUuid')
-            ;
-        }
-
         return $project;
     }
 
@@ -224,7 +207,7 @@ class ManageCitizenActionVoterTest extends AbstractAdherentVoterTest
         if (null !== $hasAdministrator) {
             $this->membershipRepository->expects($this->once())
                 ->method('administrateCitizenProject')
-                ->with($host, 'test')
+                ->with($host, $this->isInstanceOf(CitizenProject::class))
                 ->willReturn($hasAdministrator)
             ;
         } else {

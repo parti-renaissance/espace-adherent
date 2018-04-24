@@ -379,6 +379,14 @@
             <tag name="jms_serializer.event_subscriber"/>
         </service>
 
-        <service autoconfigure="true" autowire="true" class="AppBundle\RepublicanSilence\CheckRepublicanSilenceListener"/>
+        <service autoconfigure="true" autowire="true" id="AppBundle\RepublicanSilence\CheckRepublicanSilenceListener"/>
+
+        <service autowire="true" id="AppBundle\RepublicanSilence\Manager">
+            <argument type="service" key="$cache">
+                <service class="Symfony\Component\Cache\Simple\Psr6Cache">
+                    <argument type="service" id="app.cache.republican_silence" />
+                </service>
+            </argument>
+        </service>
     </services>
 </container>

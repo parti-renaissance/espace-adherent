@@ -10,7 +10,6 @@ use AppBundle\Entity\CitizenProjectMembership;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 class CitizenProjectMembershipRepository extends EntityRepository

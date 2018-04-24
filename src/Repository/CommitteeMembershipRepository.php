@@ -10,7 +10,6 @@ use AppBundle\Entity\CommitteeMembership;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 class CommitteeMembershipRepository extends EntityRepository
