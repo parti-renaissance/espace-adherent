@@ -44,7 +44,7 @@ class CommitteeMembership
     use EntityIdentityTrait;
 
     /**
-     * @var Adherent|null
+     * @var Adherent
      *
      * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="memberships")
      * @ORM\JoinColumn(nullable=false)
@@ -231,7 +231,7 @@ class CommitteeMembership
 
     private static function createUuid(UuidInterface $adherentUuid, UuidInterface $committeeUuid): UuidInterface
     {
-        $key = sha1(sprintf('%s|%s', $adherentUuid, $committeeUuid));
+        $key = sha1(sprintf('%s|%s', $adherentUuid->toString(), $committeeUuid->toString()));
 
         return Uuid::uuid5(Uuid::NAMESPACE_OID, $key);
     }

@@ -36,7 +36,7 @@ class CommitteeFeedManagerTest extends SqliteWebTestCase
     public function testCreateMessage()
     {
         $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
-        $author = $this->committeeMembershipRepository->findHostMembers(LoadAdherentData::COMMITTEE_1_UUID)->first();
+        $author = $this->committeeMembershipRepository->findHostMembers($this->getCommittee(LoadAdherentData::COMMITTEE_1_UUID))->first();
 
         $messageContent = 'Bienvenue !';
         $message = $this->manager->createMessage(new CommitteeMessage($author, $committee, 'Foo subject', $messageContent));
@@ -53,7 +53,7 @@ class CommitteeFeedManagerTest extends SqliteWebTestCase
     public function testCreateNoNotificationMessage()
     {
         $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
-        $author = $this->committeeMembershipRepository->findHostMembers(LoadAdherentData::COMMITTEE_1_UUID)->first();
+        $author = $this->committeeMembershipRepository->findHostMembers($this->getCommittee(LoadAdherentData::COMMITTEE_1_UUID))->first();
 
         $messageContent = 'Bienvenue !';
         $message = $this->manager->createMessage(new CommitteeMessage($author, $committee, 'Foo subject', $messageContent, true, 'now', false));
