@@ -4085,6 +4085,55 @@ a {
       .referent__nav li {
         margin: 10px; } }
 
+#sse1 {
+  /*You can decorate the menu's container, such as adding background images through this block*/
+  height: 38px;
+  padding: 15px;
+  border-radius: 3px;
+  box-sizing: content-box; }
+
+#sses1 {
+  margin: 0 auto;
+  /*This will make the menu center-aligned. Removing this line will make the menu align left.*/ }
+
+#sses1 ul {
+  position: relative;
+  list-style-type: none;
+  float: left;
+  padding: 0;
+  margin: 0; }
+
+#sses1 li {
+  float: left;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  background-image: none; }
+
+/*CSS for background bubble*/
+#sses1 li.highlight {
+  background-color: #4A90E2;
+  bottom: -3px;
+  height: 5px;
+  z-index: 1;
+  position: absolute;
+  overflow: hidden; }
+
+#sses1 li a {
+  box-sizing: content-box;
+  height: 30px;
+  padding-top: 8px;
+  margin: 0 20px;
+  /*used to adjust the distance between each menu item. Now the distance is 20+20=40px.*/
+  color: #fff;
+  font: normal 12px arial;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  float: left;
+  position: relative;
+  z-index: 2; }
+
 .summary__cpn {
   text-align: center;
   background-color: rgba(248, 188, 188, 0.2);
