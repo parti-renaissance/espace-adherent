@@ -180,7 +180,7 @@ class CommitteeManagerController extends Controller
         $committeeManager = $this->get('app.committee.manager');
         if (!$committeeManager->isPromotableHost($member, $committee)) {
             throw $this->createNotFoundException(sprintf(
-                'Member "%s" of committee "%s" can not be promoted as a host priviledged person.',
+                'Member "%s" of committee "%s" can not be promoted as a host privileged person.',
                 $member->getUuid(),
                 $committee->getUuid()
             ));

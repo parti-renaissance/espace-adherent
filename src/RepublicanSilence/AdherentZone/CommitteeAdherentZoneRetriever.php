@@ -3,10 +3,10 @@
 namespace AppBundle\RepublicanSilence\AdherentZone;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProjectMembership;
+use AppBundle\Entity\CommitteeMembership;
 use Symfony\Component\HttpFoundation\Request;
 
-class CitizenProjectHostZoneRetriever implements AdherentZoneRetrieverInterface
+class CommitteeAdherentZoneRetriever implements AdherentZoneRetrieverInterface
 {
     public function getAdherentZone(Adherent $adherent, Request $request): array
     {
@@ -14,11 +14,11 @@ class CitizenProjectHostZoneRetriever implements AdherentZoneRetrieverInterface
             return [];
         }
 
-        $citizenProjectSlug = $request->attributes->get('slug');
+        $committeeSlug = $request->attributes->get('slug');
 
-        /** @var CitizenProjectMembership $membership */
-        foreach ($adherent->getCitizenProjectMemberships() as $membership) {
-            $committee = $membership->get;
+        /** @var CommitteeMembership $membership */
+        foreach ($adherent->getMemberships() as $membership) {
+            $committee = $membership->getCommittee();
             if ($committee->getSlug() === $committeeSlug) {
                 return [
                     $committee->getPostalCode(),

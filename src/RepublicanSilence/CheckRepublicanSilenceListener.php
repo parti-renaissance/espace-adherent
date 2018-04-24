@@ -10,7 +10,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class CheckRepublicanSilenceListener implements EventSubscriberInterface
 {
@@ -21,9 +20,14 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         'app_referent_events_create' => AdherentZoneRetrieverInterface::ADHERENT_TYPE_REFERENT,
 
         // Committee
-        'app_committee_show' => AdherentZoneRetrieverInterface::ADHERENT_TYPE_HOST,
-        'app_committee_contact_members' => AdherentZoneRetrieverInterface::ADHERENT_TYPE_HOST,
-        'app_committee_manager_add_event' => AdherentZoneRetrieverInterface::ADHERENT_TYPE_HOST,
+        'app_committee_show' => AdherentZoneRetrieverInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
+        'app_committee_contact_members' => AdherentZoneRetrieverInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
+        'app_committee_manager_add_event' => AdherentZoneRetrieverInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
+
+        // Citizen Project
+        'app_citizen_project_show_comments' => AdherentZoneRetrieverInterface::ADHERENT_TYPE_CITIZEN_PROJECT_ADMINISTRATOR,
+        'app_citizen_project_contact_actors' => AdherentZoneRetrieverInterface::ADHERENT_TYPE_CITIZEN_PROJECT_ADMINISTRATOR,
+        'app_citizen_action_manager_create' => AdherentZoneRetrieverInterface::ADHERENT_TYPE_CITIZEN_PROJECT_ADMINISTRATOR,
     ];
 
     private $tokenStorage;
@@ -61,11 +65,13 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
             return;
         }
 
-        $context = ZoneRetrieverFactory::create(self::ROUTES[$route]);
+        $zoneRetriever = ZoneRetrieverFactory::create(self::ROUTES[$route]);
 
-        if (!$userZones = $context->getAdherentZone($user, $event->getRequest())) {
+        if (!$userZones = $zoneRetriever->getAdherentZone($user, $event->getRequest())) {
             return;
         }
+
+        dump($userZones);
 
         if ($this->republicanSilenceManager->hasStartedSilence($userZones)) {
             $event->setResponse($this->templateEngine->renderResponse('republican_silence/landing.html.twig'));
@@ -77,7 +83,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         return array_key_exists($route, self::ROUTES);
     }
 
-    private function supportUser(UserInterface $user): bool
+    private function supportUser($user): bool
     {
         return $user instanceof Adherent
             && (

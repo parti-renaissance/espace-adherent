@@ -42,8 +42,8 @@ class CitizenProjectAuthority
             return;
         }
         if (CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR === $privilege) {
-            $membershipAdmins = $this->membershipRepository->findPriviledgedMemberships(
-                $citizenProject->getUuid(),
+            $membershipAdmins = $this->membershipRepository->findPrivilegedMemberships(
+                $citizenProject,
                 [CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR]
             );
             foreach ($membershipAdmins as $membershipAdmin) {
@@ -62,6 +62,6 @@ class CitizenProjectAuthority
             return $adherent->getCitizenProjectMembershipFor($citizenProject);
         }
 
-        return $this->membershipRepository->findCitizenProjectMembership($adherent, $citizenProject->getUuid());
+        return $this->membershipRepository->findCitizenProjectMembership($adherent, $citizenProject);
     }
 }
