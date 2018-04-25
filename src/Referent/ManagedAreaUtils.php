@@ -27,7 +27,14 @@ class ManagedAreaUtils extends AreaUtils
         return static::getCodeFromCountry($event->getCountry());
     }
 
-    public static function getCodeFromAdherent(Adherent $adherent): string
+    public static function getCodesFromAdherent(Adherent $adherent): array
+    {
+        $localCode = static::getLocalCodeFromAdherent($adherent);
+
+        return array_merge([$localCode], static::getRelatedCodes($localCode));
+    }
+
+    private static function getLocalCodeFromAdherent(Adherent $adherent): string
     {
         if (self::CODE_FRANCE === $adherent->getCountry()) {
             return static::getCodeFromPostalCode($adherent->getPostalCode());

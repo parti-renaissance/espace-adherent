@@ -18,12 +18,14 @@ class ReferentTagManager
     {
         $adherent->removeReferentTags();
 
-        $code = ManagedAreaUtils::getCodeFromAdherent($adherent);
+        $codes = ManagedAreaUtils::getCodesFromAdherent($adherent);
 
-        if (!$tag = $this->referentTagRepository->findOneByCode($code)) {
+        if (empty($codes)) {
             return;
         }
 
-        $adherent->addReferentTag($tag);
+        foreach ($this->referentTagRepository->findByCodes($codes) as $referentTag) {
+            $adherent->addReferentTag($referentTag);
+        }
     }
 }

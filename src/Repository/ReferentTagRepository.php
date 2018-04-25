@@ -2,13 +2,12 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Entity\ReferentTag;
 use Doctrine\ORM\EntityRepository;
 
 class ReferentTagRepository extends EntityRepository
 {
-    public function findOneByCode(string $code): ?ReferentTag
+    public function findByCodes(array $codes): array
     {
-        return $this->findOneBy(['code' => $code]);
+        return $this->findBy(['code' => $codes]);
     }
 }
