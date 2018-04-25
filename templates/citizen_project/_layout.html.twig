@@ -26,22 +26,21 @@
                 });
             {% endif %}
         });
-
     </script>
 {% endblock %}
 {% block content %}
     <main class="citizen-project">
         <header class="background--purple">
             {% if citizen_project.hasImageUploaded %}
-                <div class="l__wrapper l__row space--60-0"
+                <div class="citizen-project--bkg"
                      style="background-image:url('{{ asset(citizen_project.getAssetImagePath) }}')">
              {% else %}
                 <div class="l__wrapper l__row space--60-0">
              {% endif %}
-                <div class="l__col text--white">
+                <div class="l__wrapper space--60-0 text--white l__row--h-start">
                     <div class="b__nudge--bottom-larger">
                         <ul class="text--small b__nudge--bottom-tiny list__links list__links--vertical-align list__links--margin-right">
-                            <li class="text--body text--small text--uppercase">Projet citoyen</li>
+                            <li class="text--body text--small text--uppercase text--shadow">Projet citoyen</li>
                             {% if citizen_project.isFeatured %}
                                 <li class="citizen_project_featured newbtn--orange newbtn--smaller">Nos coups de cœur</li>
                             {% endif %}
@@ -49,10 +48,10 @@
                                 <li class="newbtn--orange newbtn--smaller">{{ 'citizen_project.committees_count'|transchoice(citizen_project.approvedCommitteeSupports|length) }}</li>
                             {% endif %}
                         </ul>
-                        <h1 class="text--larger" id="citizen-project-name">
+                        <h1 class="text--larger text--shadow" id="citizen-project-name">
                             {{ citizen_project.name }}
                         </h1>
-                        <div class="text--body b__nudge--top-5">{{ citizen_project.subtitle }}</div>
+                        <div class="text--body b__nudge--top-5 text--shadow">{{ citizen_project.subtitle }}</div>
                     </div>
                     <div class="l__row l__row--h-stretch l__mobile--col">
                         {% if citizen_project.isApproved %}

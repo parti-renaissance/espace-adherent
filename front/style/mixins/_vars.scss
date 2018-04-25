@@ -88,3 +88,9 @@ $zIndex__overlay-caret: 600;
         }
     }
 }
+
+@mixin flex($positioning) {
+    display: flex;
+    justify-content: $positioning;
+    flex-direction: column;
+}

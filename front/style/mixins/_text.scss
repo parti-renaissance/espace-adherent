@@ -1,3 +1,4 @@
+$text--size-xs: 9px;
 $text--size-smallest: 12px;
 $text--size-small: 14px;
 $text--size-default: 16px;
@@ -266,7 +267,7 @@ $text--size-extra-large--big: 128px;
     }
 
     &--blue--dark {
-      color: $blue--dark;
+        color: $blue--dark;
     }
 
     &--dark {
@@ -330,7 +331,7 @@ $text--size-extra-large--big: 128px;
     }
 
     &--block {
-      white-space: nowrap;
+        white-space: nowrap;
     }
 
     &--white {
@@ -373,6 +374,10 @@ $text--size-extra-large--big: 128px;
     &--margin-right {
         margin-right: 15px;
     }
+
+    &--shadow {
+        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+    }
 }
 
 .link {
@@ -393,11 +398,11 @@ $text--size-extra-large--big: 128px;
     font-weight: bold;
     font-family: $font-roboto;
 
-  &--orange {
-      padding: 0 5px;
-      background: $orange;
-      color: white;
-  }
+    &--orange {
+        padding: 0 5px;
+        background: $orange;
+        color: white;
+    }
 }
 
 .list {

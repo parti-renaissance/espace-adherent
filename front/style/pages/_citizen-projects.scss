@@ -30,7 +30,8 @@
                 width: 340px;
             }
 
-            button, a {
+            button,
+            a {
                 @include text--medium-small;
                 @include newbtn;
                 padding: 29px 20px 24px;
@@ -63,6 +64,10 @@
         }
     }
 
+    .form__label {
+        font-family: inherit;
+    }
+
     &__create {
         background: $gray--white;
 
@@ -81,13 +86,19 @@
                 line-height: 1.25;
             }
 
+            textarea {
+                min-height: 60px;
+                max-width: 100%;
+                min-width: 100%;
+            }
+
             select {
                 -webkit-appearance: none;
                 background: white no-repeat url('/images/icons/chevron-down.svg') right 15px center;
                 background-size: 34px;
             }
 
-            input[type="file"] {
+            input[type='file'] {
                 border: 1px dashed #ddd;
                 background-color: white;
                 position: relative;
@@ -125,13 +136,66 @@
 }
 
 .citizen-project {
-    header > div {
+    &--bkg {
         background-position: right center;
         background-repeat: no-repeat;
-        background-size: contain;
+        background-size: cover;
 
         @media (max-width: $tablet) {
             background: $purple;
+        }
+    }
+
+    &-comments {
+        label {
+            font-family: inherit;
+        }
+
+        form {
+            background-color: $gray--lighter;
+            padding: 20px;
+        }
+
+        input {
+            border: 1px solid $blue--dark;
+            border-radius: 0;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        button {
+            margin-top: 20px;
+        }
+
+        .form__checkbox {
+            width: 190px;
+        }
+
+        & > div {
+            border: 1px solid $blue--dark;
+            padding: 20px;
+            margin: 20px 0;
+
+            .header {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px 10px 0 0;
+
+                small {
+                    color: $blue--dark;
+                    font-weight: 100;
+                }
+
+                p {
+                    margin: 0;
+                    color: $blue--dark;
+                    font-weight: 800;
+                }
+            }
+
+            p {
+                font-weight: 100;
+            }
         }
     }
 
@@ -147,6 +211,8 @@
     }
 
     &__skills {
+        margin-top: 10px;
+
         li {
             border-radius: 50px;
             background-color: $gray--lighter;
@@ -175,5 +241,38 @@
                 border: 0;
             }
         }
+    }
+
+    &__waiting-for-approval {
+        background-color: $yellow--light;
+        padding: 10px;
+    }
+}
+
+.skill-remove,
+.committee-remove {
+    font-size: $text--size-xs;
+    position: relative;
+    bottom: 1px;
+    margin-right: 5px;
+}
+
+.summary-skill,
+.summary-committee {
+    background-color: $purple;
+    color: white;
+    display: inline;
+    padding: 5px 10px;
+    border-radius: 50px;
+    font-size: $text--size-smallest;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: all 0.5s;
+    border: 1px solid $purple;
+
+    &:hover {
+        transition: all 0.5s;
+        background-color: white;
+        color: $purple;
     }
 }

@@ -10,19 +10,22 @@
             {% if can_comment_citizen_project(citizen_project) %}
                 {{ form_start(form) }}
                     {{ form_errors(form.content) }}
-                    {{ form_widget(form.content) }}
-                    <button>Publier</button>
+                    {{ form_widget(form.content, { attr: { placeholder: "Ecrivez votre message ici (soyez courtois et respectueux)" } }) }}
+                    {{ form_rest(form) }}
+                    <button class="newbtn--small btn--blue">Publier</button>
                 {{ form_end(form) }}
 
-                <div class="text--body b__nudge--bottom-small">
-                    Restez courtois et respectueux.
-                </div>
             {% endif %}
 
             {% for comment in comments %}
                 <div class="citizen-project-comment">
-                    {{ comment.authorFullName }} ({{ comment.createdAt|ago|capitalize }})
-                    <p>{{ comment.content }}</p>
+                    <div class="header">
+                        <p>{{ comment.authorFullName }} </p>
+                        <small> {{ comment.createdAt|ago|capitalize }}</small>
+                    </div>
+                    <div>
+                        <p>{{ comment.content }}</p>
+                    </div>
                 </div>
             {% endfor %}
         </div>
