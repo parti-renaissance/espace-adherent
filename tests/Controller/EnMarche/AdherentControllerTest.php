@@ -94,8 +94,11 @@ class AdherentControllerTest extends MysqlWebTestCase
     {
         yield 'Mon compte' => ['/parametres/mon-compte'];
         yield 'Mes informations personnelles' => ['/parametres/mon-compte/modifier'];
-        yield 'Mot de passe' => ['/parametres/mon-compte/changer-mot-de-passe'];
+        yield 'Mes dons' => ['/parametres/mon-compte/mes-dons'];
+        yield 'Mes centres d\'intérêt' => ['/espace-adherent/mon-compte/centres-d-interet'];
+        yield 'Modifier mon profil' => ['/espace-adherent/mon-profil'];
         yield 'Notifications' => ['/parametres/mon-compte/preferences-des-emails'];
+        yield 'Mot de passe' => ['/parametres/mon-compte/changer-mot-de-passe'];
     }
 
     public function testProfileActionIsAccessibleForAdherent(): void

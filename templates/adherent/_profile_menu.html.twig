@@ -15,6 +15,11 @@
         </li>
 
         {% if app.user.isAdherent %}
+            <li class="{{ route == 'app_adherent_pin_interests' ? 'active' }}">
+                <a href="{{ path('app_adherent_pin_interests') }}">
+                    Mes centres d'intérêt
+                </a>
+            </li>
             <li class="{{ route == 'app_summary_manager_index' ? 'active' }}">
                 <a target="_blank" href="{{ path('app_summary_manager_index') }}">
                     Modifier mon profil <i class="fa fa-external-link"></i>
