@@ -141,6 +141,7 @@ class CitizenActionAdmin extends AbstractAdmin
                     'label' => 'Statut',
                     'choices' => CitizenAction::STATUSES,
                     'choice_translation_domain' => 'forms',
+                    'choice_label' => function (?string $choice) { return $choice; },
                 ])
                 ->add('published', null, [
                     'label' => 'Publié',
