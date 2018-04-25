@@ -497,8 +497,30 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
     public function countByGender(): array
     {
         return $this->createQueryBuilder('a', 'a.gender')
-            ->select('a.gender, COUNT(a.id) AS count')
+            ->select('a.gender, COUNT(a) AS count')
             ->where('a.adherent = 1')
+            ->andWhere('a.status = :status')
+            ->setParameter('status', Adherent::ENABLED)
+            ->groupBy('a.gender')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
+
+    public function countByGenderManagedBy(Adherent $referent): array
+    {
+        if (!$referent->isReferent()) {
+            throw new \InvalidArgumentException('Adherent must be a referent.');
+        }
+
+        return $this->createQueryBuilder('a', 'a.gender')
+            ->select('a.gender, COUNT(a) AS count')
+            ->innerJoin('a.referentTags', 'tag')
+            ->where('tag IN (:tags)')
+            ->andWhere('a.adherent = 1')
+            ->andWhere('a.status = :status')
+            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('status', Adherent::ENABLED)
             ->groupBy('a.gender')
             ->getQuery()
             ->getArrayResult()

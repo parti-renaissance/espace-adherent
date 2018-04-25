@@ -17,30 +17,35 @@ use Symfony\Component\HttpFoundation\Response;
 class AdherentsController extends Controller
 {
     /**
-     * @Route("/count", name="app_referent_dashboard_users")
+     * @Route("/count", name="app_adherents_count")
      * @Method("GET")
      */
-    public function usersAction(AdherentRepository $adherentRepository): Response
+    public function adherentsCountAction(AdherentRepository $adherentRepository): Response
     {
         $count = $adherentRepository->countByGender();
 
+        return new JsonResponse($this->aggregateCount($count));
+    }
+
+    /**
+     * @Route("/count-by-referent-area", name="app_adherents_count_for_referent_managed_area")
+     * @Method("GET")
+     */
+    public function adherentsCountForReferentManagedAreaAction(AdherentRepository $adherentRepository): Response
+    {
+        $count = $adherentRepository->countByGenderManagedBy($this->getUser());
+
+        return new JsonResponse($this->aggregateCount($count));
+    }
+
+    private function aggregateCount(array $count): array
+    {
         array_walk($count, function (&$item) {
             $item = (int) $item['count'];
         });
 
-        $total = array_sum($count);
+        $count['total'] = array_sum($count);
 
-        array_walk($count, function (&$item) use ($total) {
-            $item = $this->calculatePercentage($item, $total);
-        });
-
-        $count['total'] = $total;
-
-        return new JsonResponse($count);
-    }
-
-    private function calculatePercentage(int $nb, int $total): int
-    {
-        return round($nb / $total * 100);
+        return $count;
     }
 }
