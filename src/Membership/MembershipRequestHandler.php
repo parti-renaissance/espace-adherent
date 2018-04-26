@@ -79,6 +79,9 @@ class MembershipRequestHandler
     {
         $adherent = $this->adherentFactory->createFromMembershipRequest($membershipRequest);
         $this->manager->persist($adherent);
+
+        $this->referentTagManager->assignAdherentLocalTag($adherent);
+
         $adherent->join();
         $this->sendEmailValidation($adherent);
 
