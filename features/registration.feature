@@ -4,8 +4,10 @@ Feature:
   I can register
 
   Scenario: I can register as an adherent
-    Given I am on "/adhesion"
-    When I fill in the following:
+    Given the following fixtures are loaded:
+      | LoadReferentTagData |
+    When I am on "/adhesion"
+    And I fill in the following:
       | adherent_registration[firstName]            | Jean-Pierre         |
       | adherent_registration[lastName]             | DURAND              |
       | adherent_registration[emailAddress][first]  | jp@test.com         |
@@ -27,6 +29,7 @@ Feature:
     And I press "Je rejoins La République En Marche"
     And the response status code should be 200
     And I should be on "/presque-fini"
+    Then the adherent "jp@test.com" should have the "94" referent tag
     And "api_sync" should have 1 message
     And "api_sync" should have message below:
       | routing_key  | body                                                                                                                            |
