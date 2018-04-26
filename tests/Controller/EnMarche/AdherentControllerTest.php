@@ -160,8 +160,8 @@ class AdherentControllerTest extends MysqlWebTestCase
         $histories73Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '73');
         $histories73Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '73');
 
-        $this->assertCount(18, $histories73Subscriptions);
-        $this->assertCount(9, $histories73Unsubscriptions);
+        $this->assertCount(9, $histories73Subscriptions);
+        $this->assertCount(0, $histories73Unsubscriptions);
         $this->assertCount(0, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
 
@@ -311,8 +311,8 @@ class AdherentControllerTest extends MysqlWebTestCase
         $histories73Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '73');
         $histories73Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '73');
 
-        $this->assertCount(18, $histories73Subscriptions);
-        $this->assertCount(18, $histories73Unsubscriptions);
+        $this->assertCount(9, $histories73Subscriptions);
+        $this->assertCount(9, $histories73Unsubscriptions);
         $this->assertCount(9, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
     }
@@ -481,16 +481,14 @@ class AdherentControllerTest extends MysqlWebTestCase
         $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS);
         $historiesCitizenProjectCreation = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, AdherentEmailSubscription::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION);
 
-        $this->assertCount(29, $histories);
+        $this->assertCount(11, $histories);
         $this->assertCount(1, $historiesHost);
-        $this->assertCount(3, $historiesReferents);
-        $this->assertCount(4, $historiesCitizenProjectCreation);
+        $this->assertCount(1, $historiesReferents);
+        $this->assertCount(2, $historiesCitizenProjectCreation);
         $this->assertSame('subscribe', $historiesHost[0]->getAction());
         $this->assertSame('subscribe', $historiesReferents[0]->getAction());
-        $this->assertSame('unsubscribe', $historiesReferents[1]->getAction());
         $this->assertSame('unsubscribe', $historiesCitizenProjectCreation[0]->getAction());
         $this->assertSame('subscribe', $historiesCitizenProjectCreation[1]->getAction());
-        $this->assertSame('unsubscribe', $historiesCitizenProjectCreation[2]->getAction());
         $this->assertTrue($adherent->hasSubscribedLocalHostEmails());
         $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOVEMENT_INFORMATION));
 
@@ -525,9 +523,9 @@ class AdherentControllerTest extends MysqlWebTestCase
         $historiesHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST);
         $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS);
 
-        $this->assertCount(31, $histories);
+        $this->assertCount(13, $histories);
         $this->assertCount(2, $historiesHost);
-        $this->assertCount(4, $historiesReferents);
+        $this->assertCount(2, $historiesReferents);
         $this->assertSame('unsubscribe', $historiesHost[0]->getAction());
         $this->assertSame('unsubscribe', $historiesReferents[0]->getAction());
 
@@ -552,9 +550,9 @@ class AdherentControllerTest extends MysqlWebTestCase
         $historiesHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST);
         $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS);
 
-        $this->assertCount(33, $histories);
+        $this->assertCount(15, $histories);
         $this->assertCount(3, $historiesHost);
-        $this->assertCount(5, $historiesReferents);
+        $this->assertCount(3, $historiesReferents);
         $this->assertSame('subscribe', $historiesHost[0]->getAction());
         $this->assertSame('subscribe', $historiesReferents[0]->getAction());
         Chronos::setTestNow();
@@ -948,11 +946,6 @@ class AdherentControllerTest extends MysqlWebTestCase
     {
         /** @var Adherent $adherent */
         $adherentBeforeUnregistration = $this->getAdherentRepository()->findOneByEmail($userEmail);
-        $mailHistorySubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherentBeforeUnregistration, 'subscribe');
-        $mailHistoryUnsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherentBeforeUnregistration, 'unsubscribe');
-
-        $this->assertCount(20, $mailHistorySubscriptions);
-        $this->assertCount(10, $mailHistoryUnsubscriptions);
 
         $this->authenticateAsAdherent($this->client, $userEmail);
 
@@ -1021,8 +1014,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $mailHistorySubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherentBeforeUnregistration, 'subscribe');
         $mailHistoryUnsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherentBeforeUnregistration, 'unsubscribe');
 
-        $this->assertCount(20, $mailHistorySubscriptions);
-        $this->assertCount(20, $mailHistoryUnsubscriptions);
+        $this->assertSame(count($mailHistorySubscriptions), count($mailHistoryUnsubscriptions));
         $this->assertSame(array_values($chosenReasons), $unregistration->getReasons());
         $this->assertSame('Je me désinscris', $unregistration->getComment());
         $this->assertSame($adherentBeforeUnregistration->getRegisteredAt()->format('Y-m-d H:i:s'), $unregistration->getRegisteredAt()->format('Y-m-d H:i:s'));

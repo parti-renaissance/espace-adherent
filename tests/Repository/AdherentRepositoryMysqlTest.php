@@ -62,7 +62,7 @@ class AdherentRepositoryMysqlTest extends MysqlWebTestCase
 
         $this->assertEmpty($referents);
 
-        // Departemental Committee with Referent
+        // Departmental Committee with Referent
         $committeeTags = new ArrayCollection([
             $this->referentTagRepository->findOneByCode('77'),
         ]);
@@ -72,12 +72,9 @@ class AdherentRepositoryMysqlTest extends MysqlWebTestCase
 
         $referents = $this->adherentRepository->findReferentsByCommittee($committee);
 
-        $this->assertCount(1, $referents);
-
-        $referent = $referents->first();
-
-        $this->assertSame('Referent Referent', $referent->getFullName());
-        $this->assertSame('referent@en-marche-dev.fr', $referent->getEmailAddress());
+        $this->assertCount(2, $referents);
+        $this->assertSame('referent@en-marche-dev.fr', $referents[0]->getEmailAddress());
+        $this->assertSame('referent-75-77@en-marche-dev.fr', $referents[1]->getEmailAddress());
     }
 
     public function testFindCoordinatorsByCitizenProject()

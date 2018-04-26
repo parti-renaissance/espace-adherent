@@ -1,11 +1,27 @@
 <?php
 
 use Behat\MinkExtension\Context\RawMinkContext;
-
-require_once __DIR__.'/../../vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
+use Cake\Chronos\Chronos;
+use Webmozart\Assert\Assert;
 
 class FeatureContext extends RawMinkContext
 {
+    /**
+     * @Given (I )freeze the clock to :dateTime
+     */
+    public function freezeClock(string $dateTime): void
+    {
+        Chronos::setTestNow($dateTime);
+    }
+
+    /**
+     * @AfterScenario
+     */
+    public function defreezeClock(): void
+    {
+        Chronos::setTestNow();
+    }
+
     /**
      * @Given I resolved the captcha
      */
@@ -29,7 +45,7 @@ class FeatureContext extends RawMinkContext
     {
         $field = $this->getSession()->getPage()->findById($elementId);
 
-        assertNotNull($field, 'Cannot find "'.$elementId.'"');
+        Assert::notNull($field, 'Cannot find "'.$elementId.'"');
 
         $field->click();
     }

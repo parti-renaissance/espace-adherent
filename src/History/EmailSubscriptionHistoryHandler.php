@@ -5,15 +5,20 @@ namespace AppBundle\History;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
 use AppBundle\Entity\Reporting\EmailSubscriptionHistoryAction;
+use AppBundle\Membership\AdherentEmailSubscription;
+use AppBundle\Repository\EmailSubscriptionHistoryRepository;
+use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManagerInterface;
 
 class EmailSubscriptionHistoryHandler
 {
     private $em;
+    private $historyRepository;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, EmailSubscriptionHistoryRepository $historyRepository)
     {
         $this->em = $em;
+        $this->historyRepository = $historyRepository;
     }
 
     /**
@@ -87,5 +92,25 @@ class EmailSubscriptionHistoryHandler
                 );
             }
         }
+    }
+
+    public function queryCountByMonth(Adherent $referent, int $months = 6): array
+    {
+        foreach (range(0, $months - 1) as $month) {
+            $until = (new Chronos("last day of -$month month"))->setTime(23, 59, 59, 999);
+
+            $subscriptions = $this->historyRepository->countAllByTypeForReferentManagedArea(
+                $referent,
+                [
+                    AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST,
+                    AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS,
+                ],
+                $until
+            );
+
+            $countByMonth[$until->format('Y-m')] = $subscriptions;
+        }
+
+        return $countByMonth;
     }
 }
