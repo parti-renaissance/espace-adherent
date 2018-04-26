@@ -101,6 +101,7 @@ class MembershipController extends Controller
             'membership' => $membership,
             'form' => $form->createView(),
             'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
+            'nb_adherent' => $this->getDoctrine()->getRepository(Adherent::class)->countAdherents(),
         ]);
     }
 
@@ -137,6 +138,7 @@ class MembershipController extends Controller
             'membership' => $membership,
             'form' => $form->createView(),
             'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
+            'nb_adherent' => $this->getDoctrine()->getRepository(Adherent::class)->countAdherents(),
         ]);
     }
 
