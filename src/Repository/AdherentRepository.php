@@ -12,7 +12,6 @@ use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Membership\AdherentEmailSubscription;
-use AppBundle\Referent\ManagedAreaUtils;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -217,8 +216,8 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
     {
         $qb = $this
             ->createReferentQueryBuilder()
-            ->andWhere('managed_area_tag.code = :code')
-            ->setParameter('code', ManagedAreaUtils::getCodeFromCommittee($committee))
+            ->andWhere('managed_area_tag IN (:tags)')
+            ->setParameter('tags', $committee->getReferentTags())
         ;
 
         return new AdherentCollection($qb->getQuery()->getResult());

@@ -134,6 +134,7 @@
         </service>
 
         <service id="app.committee.factory" class="AppBundle\Committee\CommitteeFactory">
+            <argument type="service" id="AppBundle\Referent\ReferentTagManager"/>
             <argument type="service" id="app.address.post_address_factory"/>
         </service>
 
@@ -142,6 +143,7 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.address.post_address_factory"/>
             <argument type="service" id="app.committee.photo.manager"/>
+            <argument type="service" id="AppBundle\Referent\ReferentTagManager"/>
         </service>
 
         <service id="app.committee.creation_handler" class="AppBundle\Committee\CommitteeCreationCommandHandler">
@@ -150,6 +152,7 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="app.committee.photo.manager"/>
+            <argument type="service" id="AppBundle\Referent\ReferentTagManager"/>
         </service>
 
         <service id="app.committee.contact_members_handler" class="AppBundle\Committee\CommitteeContactMembersCommandHandler">
@@ -224,13 +227,11 @@
         </service>
 
         <!-- Events -->
-        <service id="app.event.factory" class="AppBundle\Event\EventFactory"/>
-
         <service id="app.event.registration_factory" class="AppBundle\Event\EventRegistrationFactory"/>
 
         <service id="app.event.handler" class="AppBundle\Event\EventCommandHandler">
             <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.event.factory"/>
+            <argument type="service" id="AppBundle\Event\EventFactory"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>
 
@@ -362,18 +363,10 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service autowire="true" id="AppBundle\Committee\Serializer\CommitteeSerializationSubscriber">
-            <tag name="jms_serializer.event_subscriber"/>
-        </service>
-
         <!-- Event subscriber -->
         <service autowire="true" id="AppBundle\Event\EventListener\EventSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
             <tag name="kernel.event_subscriber"/>
-        </service>
-
-        <service autowire="true" id="AppBundle\Event\Serializer\EventSerializationSubscriber">
-            <tag name="jms_serializer.event_subscriber"/>
         </service>
     </services>
 </container>

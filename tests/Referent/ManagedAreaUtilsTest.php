@@ -3,43 +3,15 @@
 namespace Tests\AppBundle\Referent;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
 use AppBundle\Referent\ManagedAreaUtils;
 use PHPUnit\Framework\TestCase;
 
 class ManagedAreaUtilsTest extends TestCase
 {
     /**
-     * @dataProvider dataProviderCommittees
-     */
-    public function testGetCodeFromCommittee(string $country, ?string $postalCode, string $expectedCode)
-    {
-        $committee = $this->createMock(Committee::class);
-        $committee->expects(self::any())->method('getCountry')->willReturn($country);
-        $committee->expects(self::any())->method('getPostalCode')->willReturn($postalCode);
-
-        $this->assertSame($expectedCode, ManagedAreaUtils::getCodeFromCommittee($committee));
-    }
-
-    public function dataProviderCommittees(): array
-    {
-        return [
-            ['CH', null, 'CH'],
-            ['MC', '98000', 'MC'],
-            ['FR', '98000', 'MC'],
-            ['FR', '77000', '77'],
-            ['FR', '75008', '75008'],
-            ['FR', '20100', '2A'],
-            ['FR', '20200', '2B'],
-            ['FR', '97427', '974'],
-            ['FR', '98890', '988'],
-        ];
-    }
-
-    /**
      * @dataProvider provideLocationsAndTags
      */
-    public function testGetCodesFromAdherent(
+    public function testGetLocalCodes(
         string $country,
         ?string $postalCode,
         array $expectedCodes
@@ -48,7 +20,7 @@ class ManagedAreaUtilsTest extends TestCase
         $adherent->expects(self::any())->method('getCountry')->willReturn($country);
         $adherent->expects(self::any())->method('getPostalCode')->willReturn($postalCode);
 
-        $this->assertSame($expectedCodes, ManagedAreaUtils::getCodesFromAdherent($adherent));
+        $this->assertSame($expectedCodes, ManagedAreaUtils::getLocalCodes($adherent));
     }
 
     public function provideLocationsAndTags(): \Generator

@@ -7,6 +7,7 @@ use AppBundle\Event\EventEvent;
 use AppBundle\Events;
 use AppBundle\Form\EventCategoryType;
 use AppBundle\Form\UnitedNationsCountryType;
+use AppBundle\Referent\ReferentTagManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -31,12 +32,19 @@ class EventAdmin extends AbstractAdmin
     ];
 
     private $dispatcher;
+    private $referentTagManager;
 
-    public function __construct($code, $class, $baseControllerName, EventDispatcherInterface $dispatcher)
-    {
+    public function __construct(
+        $code,
+        $class,
+        $baseControllerName,
+        EventDispatcherInterface $dispatcher,
+        ReferentTagManager $referentTagManager
+    ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->dispatcher = $dispatcher;
+        $this->referentTagManager = $referentTagManager;
     }
 
     public function getTemplate($name)
@@ -117,6 +125,8 @@ class EventAdmin extends AbstractAdmin
 
     public function postUpdate($object)
     {
+        $this->referentTagManager->assignReferentLocalTags($object);
+
         $event = new EventEvent($object->getOrganizer(), $object);
 
         $this->dispatcher->dispatch(Events::EVENT_UPDATED, $event);

@@ -8,6 +8,7 @@ use AppBundle\Committee\CommitteeFactory;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\PostAddress;
+use AppBundle\Referent\ReferentTagManager;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 
@@ -45,7 +46,13 @@ class CommitteeFactoryTest extends TestCase
         $command->twitterNickname = $twitter;
         $command->googlePlusPageUrl = $googlePlus;
 
-        $committeeFactory = new CommitteeFactory();
+        $referentTagManager = $this->createMock(ReferentTagManager::class);
+        $referentTagManager
+            ->expects(self::never())
+            ->method('assignReferentLocalTags')
+        ;
+
+        $committeeFactory = new CommitteeFactory($referentTagManager);
         $committee = $committeeFactory->createFromCommitteeCreationCommand($command);
 
         $this->assertInstanceOf(Committee::class, $committee);

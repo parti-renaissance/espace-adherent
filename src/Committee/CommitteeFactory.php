@@ -4,15 +4,20 @@ namespace AppBundle\Committee;
 
 use AppBundle\Address\PostAddressFactory;
 use AppBundle\Entity\Committee;
+use AppBundle\Referent\ReferentTagManager;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 
 class CommitteeFactory
 {
     private $addressFactory;
+    private $referentTagManager;
 
-    public function __construct(PostAddressFactory $addressFactory = null)
-    {
+    public function __construct(
+        ReferentTagManager $referentTagManager,
+        PostAddressFactory $addressFactory = null
+    ) {
+        $this->referentTagManager = $referentTagManager;
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
     }
 
@@ -53,6 +58,8 @@ class CommitteeFactory
         if (isset($data['slug'])) {
             $committee->updateSlug($data['slug']);
         }
+
+        $this->referentTagManager->assignReferentLocalTags($committee);
 
         return $committee;
     }

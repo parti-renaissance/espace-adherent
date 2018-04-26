@@ -2,7 +2,7 @@
 
 namespace AppBundle\Referent;
 
-use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ReferentTaggableEntity;
 use AppBundle\Repository\ReferentTagRepository;
 
 class ReferentTagManager
@@ -14,18 +14,16 @@ class ReferentTagManager
         $this->referentTagRepository = $referentTagRepository;
     }
 
-    public function assignAdherentLocalTag(Adherent $adherent): void
+    public function assignReferentLocalTags(ReferentTaggableEntity $entity): void
     {
-        $adherent->removeReferentTags();
+        $entity->clearReferentTags();
 
-        $codes = ManagedAreaUtils::getCodesFromAdherent($adherent);
-
-        if (empty($codes)) {
+        if (empty($codes = ManagedAreaUtils::getLocalCodes($entity))) {
             return;
         }
 
         foreach ($this->referentTagRepository->findByCodes($codes) as $referentTag) {
-            $adherent->addReferentTag($referentTag);
+            $entity->addReferentTag($referentTag);
         }
     }
 }
