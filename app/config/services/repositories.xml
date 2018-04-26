@@ -200,9 +200,11 @@
             <argument>AppBundle\Entity\WebHook\WebHook</argument>
         </service>
 
-        <service id="AppBundle\Repository\ReferentTagRepository" public="false">
+        <service id="AppBundle\Repository\ReferentTagRepository">
             <factory service="doctrine" method="getRepository" />
             <argument>AppBundle\Entity\ReferentTag</argument>
         </service>
+
+        <service id="AppBundle\Repository\EmailSubscriptionHistoryRepository" />
     </services>
 </container>

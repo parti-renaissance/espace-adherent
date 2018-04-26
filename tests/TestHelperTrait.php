@@ -42,6 +42,7 @@ use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\DonationRepository;
 use AppBundle\Repository\EmailRepository;
+use AppBundle\Repository\EmailSubscriptionHistoryRepository;
 use AppBundle\Repository\EventRegistrationRepository;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\InvitationRepository;
@@ -57,7 +58,6 @@ use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\Repository\TonMacronFriendInvitationRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\ORM\EntityRepository;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;
 use libphonenumber\PhoneNumber;
@@ -243,7 +243,7 @@ trait TestHelperTrait
         return $this->getRepository(PurchasingPowerInvitation::class);
     }
 
-    public function getEmailSubscriptionHistoryRepository(): EntityRepository
+    public function getEmailSubscriptionHistoryRepository(): EmailSubscriptionHistoryRepository
     {
         return $this->getRepository(EmailSubscriptionHistory::class);
     }

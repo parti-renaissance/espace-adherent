@@ -20,7 +20,7 @@ use Ramsey\Uuid\UuidInterface;
  *          @ORM\Index(name="adherent_email_subscription_histories_adherent_email_type_idx", columns="subscribed_email_type"),
  *      }
  * )
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\EmailSubscriptionHistoryRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
