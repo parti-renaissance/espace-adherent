@@ -2,12 +2,14 @@
 
 namespace AppBundle\Mailer\Message;
 
-use AppBundle\Entity\Donation;
+use AppBundle\Entity\Transaction;
 
 final class DonationMessage extends Message
 {
-    public static function createFromDonation(Donation $donation): self
+    public static function createFromTransaction(Transaction $transaction): self
     {
+        $donation = $transaction->getDonation();
+
         return new self(
             $donation->getUuid(),
             '54677',
@@ -16,7 +18,7 @@ final class DonationMessage extends Message
             'Merci pour votre engagement',
             [
                 'target_firstname' => self::escape($donation->getFirstName()),
-                'year' => (int) $donation->getDonatedAt()->format('Y') + 1,
+                'year' => (int) $transaction->getPayboxDateTime()->format('Y') + 1,
             ]
         );
     }

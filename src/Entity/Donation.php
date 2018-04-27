@@ -6,11 +6,17 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Table(name="donations")
+ * @ORM\Table(name="donations", indexes={
+ *     @ORM\Index(name="donation_uuid_idx", columns={"uuid"}),
+ *     @ORM\Index(name="donation_email_idx", columns={"email_address"}),
+ *     @ORM\Index(name="donation_duration_idx", columns={"duration"}),
+ *     @ORM\Index(name="donation_status_idx", columns={"status"})
+ * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DonationRepository")
  *
  * @Algolia\Index(autoIndex=false)
@@ -21,6 +27,13 @@ class Donation implements GeoPointInterface
     use EntityCrudTrait;
     use EntityPostAddressTrait;
     use EntityPersonNameTrait;
+
+    public const STATUS_WAITING_CONFIRMATION = 'waiting_confirmation';
+    public const STATUS_SUBSCRIPTION_IN_PROGRESS = 'subscription_in_progress';
+    public const STATUS_REFUNDED = 'refunded';
+    public const STATUS_CANCELED = 'canceled';
+    public const STATUS_FINISHED = 'finished';
+    public const STATUS_ERROR = 'error';
 
     /**
      * @ORM\Column(type="integer")
@@ -43,58 +56,54 @@ class Donation implements GeoPointInterface
     private $emailAddress;
 
     /**
+     * @var PhoneNumber|null
+     *
      * @ORM\Column(type="phone_number", nullable=true)
      */
     private $phone;
 
     /**
-     * @ORM\Column(length=100, nullable=true)
-     */
-    private $payboxResultCode;
-
-    /**
-     * @ORM\Column(length=100, nullable=true)
-     */
-    private $payboxAuthorizationCode;
-
-    /**
-     * @ORM\Column(type="json_array", nullable=true)
-     */
-    private $payboxPayload;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $finished = false;
-
-    /**
+     * Client IP is registered only one time when the order(donation) is created
+     *
+     * @var string|null
+     *
      * @ORM\Column(length=50, nullable=true)
      */
     private $clientIp;
 
     /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $donatedAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime_immutable")
      */
     private $createdAt;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeInterface|null
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $subscriptionEndedAt;
 
+    /**
+     * @ORM\Column(length=25)
+     */
+    private $status;
+
+    /**
+     * @var \DateTimeInterface
+     *
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $updatedAt;
+
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private $payboxOrderRef;
+
     public function __construct(
         UuidInterface $uuid,
+        string $payboxOrderRef,
         int $amount,
         string $gender,
         string $firstName,
@@ -114,43 +123,37 @@ class Donation implements GeoPointInterface
         $this->postAddress = $postAddress;
         $this->phone = $phone;
         $this->clientIp = $clientIp;
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new \DateTimeImmutable();
         $this->duration = $duration;
+        $this->status = self::STATUS_WAITING_CONFIRMATION;
+        $this->payboxOrderRef = $payboxOrderRef;
     }
 
     public function __toString(): string
     {
-        return $this->lastName.' '.$this->firstName.' ('.($this->amount / 100).' €)';
+        return sprintf('%s %s (%.2f €)', $this->lastName, $this->firstName, $this->amount / 100);
     }
 
-    public function finish(array $payboxPayload): void
+    public function processPayload(array $payboxPayload): Transaction
     {
-        $this->finished = true;
-        $this->payboxPayload = $payboxPayload;
-        $this->payboxResultCode = $payboxPayload['result'];
+        $transaction = new Transaction($this, $payboxPayload);
 
-        if (isset($payboxPayload['authorization'])) {
-            $this->payboxAuthorizationCode = $payboxPayload['authorization'];
+        if ($transaction->isSuccessful()) {
+            $this->status = self::STATUS_FINISHED;
+            if (PayboxPaymentSubscription::NONE !== $this->duration) {
+                $this->status = self::STATUS_SUBSCRIPTION_IN_PROGRESS;
+            }
+        } else {
+            $this->status = self::STATUS_ERROR;
         }
 
-        if ('00000' === $this->payboxResultCode) {
-            $this->donatedAt = new \DateTime();
-        }
+        return $transaction;
     }
 
     public function stopSubscription(): void
     {
-        $this->setSubscriptionEndedAt(new \DateTime());
-    }
-
-    public function isFinished(): bool
-    {
-        return $this->finished;
-    }
-
-    public function isSuccessful(): bool
-    {
-        return $this->finished && $this->donatedAt;
+        $this->subscriptionEndedAt = new \DateTimeImmutable();
+        $this->status = self::STATUS_CANCELED;
     }
 
     public function getAmount(): int
@@ -161,11 +164,6 @@ class Donation implements GeoPointInterface
     public function getDuration(): int
     {
         return $this->duration;
-    }
-
-    public function setDuration(int $duration): void
-    {
-        $this->duration = $duration;
     }
 
     public function hasSubscription(): bool
@@ -198,42 +196,12 @@ class Donation implements GeoPointInterface
         return $this->phone;
     }
 
-    public function getPayboxResultCode(): ?string
-    {
-        return $this->payboxResultCode;
-    }
-
-    public function getPayboxAuthorizationCode(): ?string
-    {
-        return $this->payboxAuthorizationCode;
-    }
-
-    public function getPayboxPayload(): ?array
-    {
-        return $this->payboxPayload;
-    }
-
-    public function getPayboxPayloadAsJson(): string
-    {
-        return json_encode($this->payboxPayload, JSON_PRETTY_PRINT);
-    }
-
-    public function getFinished(): bool
-    {
-        return $this->finished;
-    }
-
     public function getClientIp(): ?string
     {
         return $this->clientIp;
     }
 
-    public function getDonatedAt(): ?\DateTimeInterface
-    {
-        return $this->donatedAt;
-    }
-
-    public function getCreatedAt(): \DateTimeInterface
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -259,17 +227,12 @@ class Donation implements GeoPointInterface
         return $payload;
     }
 
-    public function getSubscriptionEndedAt(): ?\DateTime
+    public function getSubscriptionEndedAt(): ?\DateTimeInterface
     {
         return $this->subscriptionEndedAt;
     }
 
-    public function setSubscriptionEndedAt(?\DateTime $subscriptionEndedAt): void
-    {
-        $this->subscriptionEndedAt = $subscriptionEndedAt;
-    }
-
-    public function nextDonationAt(\DateTime $fromDay = null): \DateTime
+    public function nextDonationAt(\DateTime $fromDay = null): \DateTimeInterface
     {
         if (!$this->hasSubscription()) {
             throw new \LogicException('Donation without subscription can\'t have next donation date.');
@@ -279,10 +242,55 @@ class Donation implements GeoPointInterface
             $fromDay = new \DateTime();
         }
 
-        $donationDate = clone $this->donatedAt;
+        $donationDate = clone $this->createdAt;
 
         return $donationDate->modify(
             sprintf('+%d months', $donationDate->diff($fromDay)->m + 1)
         );
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function hasError(): bool
+    {
+        return self::STATUS_ERROR === $this->getStatus();
+    }
+
+    public function isFinished(): bool
+    {
+        return self::STATUS_FINISHED === $this->getStatus();
+    }
+
+    public function isCanceled(): bool
+    {
+        return self::STATUS_CANCELED === $this->getStatus();
+    }
+
+    public function isWaitingConfirmation(): bool
+    {
+        return self::STATUS_WAITING_CONFIRMATION === $this->getStatus();
+    }
+
+    public function isSubscriptionInProgress(): bool
+    {
+        return self::STATUS_SUBSCRIPTION_IN_PROGRESS === $this->getStatus();
+    }
+
+    public function getPayboxOrderRef(): string
+    {
+        return $this->payboxOrderRef;
+    }
+
+    public function getPayboxOrderRefWithSuffix(): string
+    {
+        return $this->payboxOrderRef.PayboxPaymentSubscription::getCommandSuffix($this->amount, $this->duration);
+    }
+
+    public function getUpdatedAt(): \DateTimeInterface
+    {
+        return $this->updatedAt;
     }
 }

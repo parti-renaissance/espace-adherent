@@ -2,8 +2,10 @@
 
 namespace AppBundle\Donation;
 
+use AppBundle\Controller\EnMarche\DonationController;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Donation;
+use AppBundle\Entity\Transaction;
 use AppBundle\Exception\InvalidDonationCallbackException;
 use AppBundle\Exception\InvalidDonationPayloadException;
 use AppBundle\Exception\InvalidDonationStatusException;
@@ -11,6 +13,7 @@ use AppBundle\Membership\MembershipRegistrationProcess;
 use Cocur\Slugify\Slugify;
 use AppBundle\Exception\InvalidPayboxPaymentSubscriptionValueException;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -28,19 +31,19 @@ class DonationRequestUtils
     private const PAYBOX_UNKNOWN = 'donation_paybox_unknown';
     private const PAYBOX_STATUSES = [
         // Success
-        '00000' => self::PAYBOX_SUCCESS,
+        Transaction::PAYBOX_SUCCESS => self::PAYBOX_SUCCESS,
 
         // Platform or authorization center error
-        '00001' => 'paybox',
-        '00003' => 'paybox',
+        Transaction::PAYBOX_CONNECTION_FAILED => 'paybox',
+        Transaction::PAYBOX_INTERNAL_ERROR => 'paybox',
 
         // Invalid card number/validity
-        '00004' => 'invalid-card',
-        '00008' => 'invalid-card',
-        '00021' => 'invalid-card',
+        Transaction::PAYBOX_CARD_NUMBER_INVALID => 'invalid-card',
+        Transaction::PAYBOX_CARD_END_DATE_INVALID => 'invalid-card',
+        Transaction::PAYBOX_CARD_UNAUTHORIZED => 'invalid-card',
 
         // Timeout
-        '00030' => 'timeout',
+        Transaction::PAYBOX_PAYMENT_PAGE_TIMEOUT => 'timeout',
 
         // Other
         self::PAYBOX_UNKNOWN => 'error',
@@ -51,9 +54,9 @@ class DonationRequestUtils
     private $slugify;
     private $membershipRegistrationProcess;
 
-    public function __construct(ServiceLocator $locator, Slugify $slugify, MembershipRegistrationProcess $membershipRegistrationProcess)
+    public function __construct(ServiceLocator $donationRequestUtilsLocator, Slugify $slugify, MembershipRegistrationProcess $membershipRegistrationProcess)
     {
-        $this->locator = $locator;
+        $this->locator = $donationRequestUtilsLocator;
         $this->slugify = $slugify;
         $this->membershipRegistrationProcess = $membershipRegistrationProcess;
     }
@@ -111,7 +114,7 @@ class DonationRequestUtils
         return ['_callback_token' => $this->getTokenManager()->getToken(self::CALLBACK_TOKEN)];
     }
 
-    public function extractPayboxResultFromCallBack(Request $request, string $token): array
+    public function extractPayboxResultFromCallback(Request $request, string $token): array
     {
         $this->validateCallback($token);
 
@@ -138,29 +141,26 @@ class DonationRequestUtils
         ];
     }
 
-    public function createCallbackStatus(Donation $donation): array
+    public function createCallbackStatus(Transaction $transaction): array
     {
-        $code = self::PAYBOX_STATUSES[$donation->getPayboxResultCode()] ?? self::PAYBOX_STATUSES[self::PAYBOX_UNKNOWN];
+        $code = self::PAYBOX_STATUSES[$transaction->getPayboxResultCode()] ?? self::PAYBOX_STATUSES[self::PAYBOX_UNKNOWN];
 
         return [
             'code' => $code,
-            'uuid' => $donation->getUuid()->toString(),
+            'uuid' => $transaction->getDonation()->getUuid()->toString(),
             'is_registration' => $this->membershipRegistrationProcess->isStarted(),
-            'status' => self::PAYBOX_SUCCESS === $code ? 'effectue' : 'erreur',
+            'status' => self::PAYBOX_SUCCESS === $code ? DonationController::RESULT_STATUS_EFFECTUE : DonationController::RESULT_STATUS_ERREUR,
             '_status_token' => (string) $this->getTokenManager()->getToken(self::STATUS_TOKEN),
         ];
     }
 
-    public function buildDonationReference(Donation $donation, bool $withSuffix = true): string
+    public function buildDonationReference(UuidInterface $uuid, string $fullName): string
     {
         $str = sprintf(
             '%s_%s',
-            $donation->getUuid()->toString(),
-            $this->slugify->slugify($donation->getFullName())
+            $uuid,
+            $this->slugify->slugify($fullName)
         );
-        if ($withSuffix) {
-            $str .= PayboxPaymentSubscription::getCommandSuffix($donation->getAmount(), $donation->getDuration());
-        }
 
         return $str;
     }
@@ -174,7 +174,7 @@ class DonationRequestUtils
         }
 
         $data = array_filter($data);
-        if (!is_array($data) || !$data) {
+        if (!\is_array($data) || !$data) {
             return $request;
         }
 
@@ -210,7 +210,7 @@ class DonationRequestUtils
     {
         if ($this->getTokenManager()->isTokenValid(new CsrfToken(self::RETRY_TOKEN, $token))
         ) {
-            return 0 === count($this->getValidator()->validate($retry));
+            return 0 === \count($this->getValidator()->validate($retry));
         }
 
         throw new InvalidDonationPayloadException();
@@ -218,7 +218,7 @@ class DonationRequestUtils
 
     private function isValidStatus(string $status)
     {
-        return in_array($status, self::PAYBOX_STATUSES, true);
+        return \in_array($status, self::PAYBOX_STATUSES, true);
     }
 
     private function getValidator(): ValidatorInterface

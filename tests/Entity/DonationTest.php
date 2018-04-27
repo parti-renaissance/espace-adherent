@@ -5,6 +5,7 @@ namespace Tests\AppBundle\Entity;
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\PostAddress;
+use AppBundle\Entity\Transaction;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -52,10 +53,11 @@ class DonationTest extends TestCase
         );
     }
 
-    private function createDonation(string $donatedAt): Donation
+    private function createDonation(string $donatedAt = null): Donation
     {
         $donation = new Donation(
             Uuid::uuid4(),
+            '10',
             '10',
             'male',
             'jean',
@@ -67,12 +69,122 @@ class DonationTest extends TestCase
             PayboxPaymentSubscription::UNLIMITED
         );
 
-        $reflectObject = new \ReflectionObject($donation);
-        $reflectProp = $reflectObject->getProperty('donatedAt');
-        $reflectProp->setAccessible(true);
-        $reflectProp->setValue($donation, \DateTime::createFromFormat('Y/m/d H:i:s', $donatedAt));
-        $reflectProp->setAccessible(false);
+        if ($donatedAt) {
+            $reflectObject = new \ReflectionObject($donation);
+            $reflectProp = $reflectObject->getProperty('createdAt');
+            $reflectProp->setAccessible(true);
+            $reflectProp->setValue($donation, \DateTime::createFromFormat('Y/m/d H:i:s', $donatedAt));
+            $reflectProp->setAccessible(false);
+        }
 
         return $donation;
+    }
+
+    public function processPayloadProvider(): iterable
+    {
+        $uuid = Uuid::uuid4();
+        yield 'success_without_subscription' => [
+            new Donation(
+                $uuid,
+                '10',
+                '10',
+                'male',
+                'jean',
+                'dupont',
+                'jp@j.p',
+                $this->createMock(PostAddress::class),
+                null,
+                '127.0.0.1',
+                PayboxPaymentSubscription::NONE
+            ),
+            [
+                'result' => Transaction::PAYBOX_SUCCESS,
+                'transaction' => '42',
+                'date' => '02022018',
+                'time' => '15:16:17',
+                'authorization' => 'XXXXXX',
+                'subscription' => '0',
+            ],
+            [
+                'isFinished' => true,
+                'isSubscriptionInProgress' => false,
+                'getStatus' => Donation::STATUS_FINISHED,
+            ],
+        ];
+        yield 'success_subscription' => [
+            new Donation(
+                $uuid,
+                '10',
+                '10',
+                'male',
+                'jean',
+                'dupont',
+                'jp@j.p',
+                $this->createMock(PostAddress::class),
+                null,
+                '127.0.0.1',
+                PayboxPaymentSubscription::UNLIMITED
+            ),
+            [
+                'result' => Transaction::PAYBOX_SUCCESS,
+                'transaction' => '42',
+                'date' => '02022018',
+                'time' => '15:16:17',
+                'authorization' => 'XXXXXX',
+                'subscription' => '21',
+            ],
+            [
+                'isFinished' => false,
+                'isSubscriptionInProgress' => true,
+                'getStatus' => Donation::STATUS_SUBSCRIPTION_IN_PROGRESS,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider processPayloadProvider
+     */
+    public function testProcessPayload(Donation $donation, array $payload, array $expectations): void
+    {
+        $donation->processPayload($payload);
+
+        foreach ($expectations as $key => $expectation) {
+            if ($expectation instanceof \DateTimeInterface) {
+                self::assertSame($expectation->format('YmdHis'), $donation->$key()->format('YmdHis'));
+            } else {
+                self::assertSame($expectation, $donation->$key());
+            }
+        }
+    }
+
+    public function testStopSubscription(): void
+    {
+        $donation = $this->createDonation();
+
+        self::assertTrue($donation->isWaitingConfirmation());
+        self::assertFalse($donation->isSubscriptionInProgress());
+        self::assertFalse($donation->isFinished());
+        self::assertFalse($donation->isCanceled());
+
+        $donation->processPayload([
+            'result' => Transaction::PAYBOX_SUCCESS,
+            'transaction' => '42',
+            'date' => '02022018',
+            'time' => '15:16:17',
+            'authorization' => 'XXXXXX',
+            'subscription' => '21',
+        ]);
+
+        self::assertFalse($donation->isWaitingConfirmation());
+        self::assertTrue($donation->isSubscriptionInProgress());
+        self::assertFalse($donation->isFinished());
+        self::assertFalse($donation->isCanceled());
+
+        $donation->stopSubscription();
+
+        self::assertFalse($donation->isWaitingConfirmation());
+        self::assertFalse($donation->isSubscriptionInProgress());
+        self::assertFalse($donation->isFinished());
+        self::assertTrue($donation->isCanceled());
     }
 }

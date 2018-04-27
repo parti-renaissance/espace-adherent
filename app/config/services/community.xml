@@ -3,44 +3,6 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <!-- Donation -->
-        <service id="app.donation_request.utils.locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
-            <argument type="collection">
-                <argument key="validator" type="service" id="validator" />
-                <argument key="session" type="service" id="session" />
-                <argument key="security.csrf.token_manager" type="service" id="security.csrf.token_manager" />
-            </argument>
-            <tag name="container.service_locator" />
-        </service>
-
-        <service id="app.donation_request.handler" class="AppBundle\Donation\DonationRequestHandler">
-            <argument type="service" id="event_dispatcher" />
-            <argument type="service" id="doctrine" />
-            <argument type="service" id="AppBundle\Donation\DonationFactory"/>
-        </service>
-
-        <service id="app.donation.form_factory" class="AppBundle\Donation\PayboxFormFactory">
-            <argument>%kernel.environment%</argument>
-            <argument type="service" id="lexik_paybox.request_handler" />
-            <argument type="service" id="router" />
-            <argument type="service" id="AppBundle\Donation\DonationRequestUtils" />
-        </service>
-
-        <service id="app.donation.transaction_listener" class="AppBundle\Donation\TransactionSuccessListener">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailer.transactional" />
-            <argument type="service" id="request_stack" />
-
-            <tag name="kernel.event_listener" event="paybox.ipn_response" method="onPayboxIpnResponse" />
-        </service>
-
-        <service id="app.donation.transaction_callback_handler" class="AppBundle\Donation\TransactionCallbackHandler">
-            <argument type="service" id="router" />
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailer.transactional" />
-            <argument type="service" id="AppBundle\Donation\DonationRequestUtils" />
-        </service>
-
         <!-- Newsletter -->
         <service id="app.newsletter_subscription.factory" class="AppBundle\Newsletter\NewsletterSubscriptionFactory" />
 

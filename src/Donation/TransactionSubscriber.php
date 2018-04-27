@@ -6,10 +6,12 @@ use AppBundle\Entity\Donation;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\DonationMessage;
 use Doctrine\Common\Persistence\ObjectManager;
+use Lexik\Bundle\PayboxBundle\Event\PayboxEvents;
 use Lexik\Bundle\PayboxBundle\Event\PayboxResponseEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class TransactionSuccessListener
+class TransactionSubscriber implements EventSubscriberInterface
 {
     private $manager;
     private $mailer;
@@ -22,12 +24,17 @@ class TransactionSuccessListener
         $this->requestStack = $requestStack;
     }
 
+    public static function getSubscribedEvents()
+    {
+        return [
+            PayboxEvents::PAYBOX_IPN_RESPONSE => ['onPayboxIpnResponse'],
+        ];
+    }
+
     /**
      * Update the database for the given donation with the Paybox data.
-     *
-     * @param PayboxResponseEvent $event
      */
-    public function onPayboxIpnResponse(PayboxResponseEvent $event)
+    public function onPayboxIpnResponse(PayboxResponseEvent $event): void
     {
         if (!$event->isVerified()) {
             return;
@@ -35,7 +42,7 @@ class TransactionSuccessListener
 
         $payboxPayload = $event->getData();
 
-        if (!isset($payboxPayload['id'], $payboxPayload['authorization'], $payboxPayload['result'])) {
+        if (!isset($payboxPayload['id'])) {
             return;
         }
 
@@ -46,14 +53,13 @@ class TransactionSuccessListener
             return;
         }
 
-        $donation->finish($payboxPayload);
-
         $this->manager->persist($donation);
+        $this->manager->persist($transaction = $donation->processPayload($payboxPayload));
         $this->manager->flush();
 
         $campaignExpired = (bool) $this->requestStack->getCurrentRequest()->attributes->get('_campaign_expired', false);
-        if (!$campaignExpired && $donation->isSuccessful()) {
-            $this->mailer->sendMessage(DonationMessage::createFromDonation($donation));
+        if (!$campaignExpired && $transaction->isSuccessful()) {
+            $this->mailer->sendMessage(DonationMessage::createFromTransaction($transaction));
         }
     }
 }

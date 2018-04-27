@@ -4,20 +4,22 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
+use AppBundle\Entity\Transaction;
 use AppBundle\Mailer\Message\DonationMessage;
 use AppBundle\Repository\DonationRepository;
+use AppBundle\Repository\TransactionRepository;
 use Goutte\Client as PayboxClient;
 use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Tests\AppBundle\MysqlWebTestCase;
 
 /**
  * @group functional
  * @group donation
  */
-class DonationControllerTest extends SqliteWebTestCase
+class DonationControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
 
@@ -25,9 +27,10 @@ class DonationControllerTest extends SqliteWebTestCase
 
     /* @var PayboxClient */
     private $payboxClient;
-
     /* @var DonationRepository */
     private $donationRepository;
+    /* @var TransactionRepository */
+    private $transactionRepository;
 
     public function getDonationSubscriptions(): iterable
     {
@@ -160,7 +163,7 @@ class DonationControllerTest extends SqliteWebTestCase
         }
         $callbackUrlRegExp .= '&authorization=XXXXXX&result=00000';
         $callbackUrlRegExp .= '&transaction=(\d+)&amount=3000&date=(\d+)&time=(.+)';
-        $callbackUrlRegExp .= '&card_type=(CB|Visa|MasterCard)&card_end=3212&card_print=(.+)&Sign=(.+)';
+        $callbackUrlRegExp .= '&card_type=(CB|Visa|MasterCard)&card_end=3212&card_print=(.+)&subscription=(\d+)&Sign=(.+)';
 
         $this->assertRegExp('#'.$callbackUrlRegExp.'#', $content);
         $this->assertRegExp('#'.$callbackUrlRegExp.'#', $callbackUrl);
@@ -182,10 +185,23 @@ class DonationControllerTest extends SqliteWebTestCase
         // Donation should have been completed
         $this->getEntityManager(Donation::class)->refresh($donation);
 
-        $this->assertTrue($donation->isFinished());
-        $this->assertNotNull($donation->getDonatedAt());
-        $this->assertSame('00000', $donation->getPayboxResultCode());
-        $this->assertSame('XXXXXX', $donation->getPayboxAuthorizationCode());
+        $this->assertFalse($donation->hasError());
+        if ($donation->hasSubscription()) {
+            $this->assertTrue($donation->isSubscriptionInProgress());
+            $donation->nextDonationAt();
+        } else {
+            $this->assertTrue($donation->isFinished());
+
+            $this->expectException(\LogicException::class);
+            $this->expectExceptionMessage('Donation without subscription can\'t have next donation date.');
+            $donation->nextDonationAt();
+        }
+        /** @var Transaction[] $transactions */
+        $transactions = $this->transactionRepository->findBy(['donation' => $donation]);
+        $this->assertCount(1, $transactions);
+        $transaction = $transactions[0];
+        $this->assertSame('00000', $transaction->getPayboxResultCode());
+        $this->assertSame('XXXXXX', $transaction->getPayboxAuthorizationCode());
 
         // Email should have been sent
         $this->assertCount(1, $this->getEmailRepository()->findMessages(DonationMessage::class));
@@ -281,7 +297,7 @@ class DonationControllerTest extends SqliteWebTestCase
             $cancelUrlRegExp .= 'PBX_2MONT0000003000PBX_NBPAIE0'.$durationRegExp.'PBX_FREQ01PBX_QUAND00';
         }
         $cancelUrlRegExp .= '&result=00001'; // error code
-        $cancelUrlRegExp .= '&transaction=0&Sign=(.+)';
+        $cancelUrlRegExp .= '&transaction=0&subscription=0&Sign=(.+)';
 
         $this->assertRegExp('#'.$cancelUrlRegExp.'#', $cancelUrl);
 
@@ -302,10 +318,15 @@ class DonationControllerTest extends SqliteWebTestCase
         // Donation should have been aborted
         $this->getEntityManager(Donation::class)->refresh($donation);
 
-        $this->assertTrue($donation->isFinished());
-        $this->assertNull($donation->getDonatedAt());
-        $this->assertSame('00001', $donation->getPayboxResultCode());
-        $this->assertNull($donation->getPayboxAuthorizationCode());
+        $this->assertTrue($donation->hasError());
+
+        /** @var Transaction[] $transactions */
+        $transactions = $this->transactionRepository->findBy(['donation' => $donation]);
+        $this->assertCount(1, $transactions);
+        $transaction = $transactions[0];
+        $this->assertSame('00001', $transaction->getPayboxResultCode());
+        $this->assertNull($transaction->getPayboxAuthorizationCode());
+        $this->assertNull($transaction->getPayboxTransactionId());
 
         // Email should not have been sent
         $this->assertCount(0, $this->getEmailRepository()->findMessages(DonationMessage::class));
@@ -371,11 +392,12 @@ class DonationControllerTest extends SqliteWebTestCase
         ]));
 
         // Donation should have been saved
+        /** @var Donation[] $donations */
         $this->assertCount(1, $donations = $this->donationRepository->findAll());
         $this->assertInstanceOf(Donation::class, $donation = $donations[0]);
 
         $this->client->request(Request::METHOD_GET, '/don/callback/token', [
-            'id' => $donation->getUuid().'_',
+            'id' => $donation->getUuid()->toString().'_',
         ]);
 
         $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
@@ -390,6 +412,7 @@ class DonationControllerTest extends SqliteWebTestCase
 
         $this->payboxClient = new PayboxClient();
         $this->donationRepository = $this->getDonationRepository();
+        $this->transactionRepository = $this->getTransactionRepository();
     }
 
     protected function tearDown()

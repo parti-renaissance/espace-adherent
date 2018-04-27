@@ -30,6 +30,7 @@ use AppBundle\Entity\PurchasingPowerInvitation;
 use AppBundle\Entity\Summary;
 use AppBundle\Entity\TonMacronChoice;
 use AppBundle\Entity\TonMacronFriendInvitation;
+use AppBundle\Entity\Transaction;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
@@ -56,6 +57,7 @@ use AppBundle\Repository\PurchasingPowerInvitationRepository;
 use AppBundle\Repository\SummaryRepository;
 use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\Repository\TonMacronFriendInvitationRepository;
+use AppBundle\Repository\TransactionRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use League\Flysystem\Filesystem;
@@ -181,6 +183,11 @@ trait TestHelperTrait
     public function getDonationRepository(): DonationRepository
     {
         return $this->getRepository(Donation::class);
+    }
+
+    public function getTransactionRepository(): TransactionRepository
+    {
+        return $this->getRepository(Transaction::class);
     }
 
     public function getInvitationRepository(): InvitationRepository

@@ -12,14 +12,12 @@ use Lexik\Bundle\PayboxBundle\Paybox\System\Cancellation\Request as LexikRequest
 class PayboxPaymentUnsubscription
 {
     private $request;
-    private $donationRequestUtils;
     private $mailer;
 
-    public function __construct(MailerService $mailer, LexikRequest $request, DonationRequestUtils $donationRequestUtils)
+    public function __construct(MailerService $mailer, LexikRequest $request)
     {
         $this->mailer = $mailer;
         $this->request = $request;
-        $this->donationRequestUtils = $donationRequestUtils;
     }
 
     /**
@@ -28,7 +26,7 @@ class PayboxPaymentUnsubscription
     public function unsubscribe(Donation $donation): void
     {
         $result = [];
-        parse_str($this->request->cancel($this->donationRequestUtils->buildDonationReference($donation, false)), $result);
+        parse_str($this->request->cancel($donation->getPayboxOrderRef()), $result);
 
         if ('OK' !== $result['ACQ']) {
             throw new PayboxPaymentUnsubscriptionException($result['ERREUR']);
