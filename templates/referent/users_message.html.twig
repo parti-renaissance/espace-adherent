@@ -1,11 +1,14 @@
 {% extends 'referent/_layout.html.twig' %}
 
+{% block head_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+{% endblock %}
+
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
 
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
-    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.ckeditor('referent_message_content', null, constant('AppBundle\\Entity\\UserDocument::TYPE_REFERENT'), 5000) }}
