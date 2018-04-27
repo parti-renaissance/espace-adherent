@@ -6,10 +6,10 @@ use JMS\Serializer\Serializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use WebDriver\Exception\NoParametersExpected;
 
 /**
  * @Route("/form")
@@ -29,13 +29,13 @@ class FormController extends Controller
         $form = $this->createForm($formType, null, ['csrf_protection' => false]);
 
         if (!$request->request->has($form->getName())) {
-            throw new NoParametersExpected(sprintf('No parameters with key "%s" founded.', $form->getName()));
+            throw new InvalidArgumentException(sprintf('No parameters with key "%s" founded.', $form->getName()));
         }
 
-        $form->submit($params = $request->request->get($form->getName()), false)->isValid();
+        $form->submit($request->request->get($form->getName()), false)->isValid();
 
         return new Response($serializer->serialize(
-            $form->getErrors(true, false),
+            $form->getErrors(true),
             'json'
         ));
     }
