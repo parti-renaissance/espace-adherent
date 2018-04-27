@@ -23,8 +23,10 @@ class EventRegistrationCommandHandler
 
     public function handle(EventRegistrationCommand $command, bool $sendMail = true): void
     {
+        $event = $command->getEvent();
+
         $registration = $this->manager->searchRegistration(
-            $command->getEvent(),
+            $event,
             $command->getEmailAddress(),
             $command->getAdherent()
         );
@@ -38,8 +40,14 @@ class EventRegistrationCommandHandler
 
         $this->dispatcher->dispatch(Events::EVENT_REGISTRATION_CREATED, new EventRegistrationEvent(
             $registration,
-            $command->getEvent()->getSlug(),
-            $sendMail)
-        );
+            $event->getSlug(),
+            $sendMail
+        ));
+
+        $this->dispatcher->dispatch(Events::EVENT_UPDATED, new EventEvent(
+            null,
+            $event,
+            $event->getCommittee()
+        ));
     }
 }
