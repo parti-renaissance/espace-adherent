@@ -1,10 +1,8 @@
-.select__cpt {
+.input__cpt {
     border: 1px solid $pink-lighter;
     background: none;
-    padding: 30px;
     border-radius: 0;
     width: 48%;
-    height: 50px;
     @include text--default;
     color: $blue-primary;
     text-transform: uppercase;
@@ -13,4 +11,9 @@
     @media (max-width: $mobile) {
         width: 100%;
     }
+}
+
+.select__cpt__control {
+    border: 1px solid $pink-lighter;
+    background: none;
 }

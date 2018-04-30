@@ -3,16 +3,28 @@ import PropTypes from 'prop-types';
 
 import Summary from './../components/charts/Summary';
 import Ranking from './../components/charts/Ranking';
-import Select from './../components/modules/Select';
+import SelectCustom from './../components/modules/SelectCustom';
+// import Input from './../components/modules/Input';
+
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import Select from 'react-select';
 
 import data from './../fakeData/data';
 
 class CommitteeContainer extends Component {
     // CALL {committeeSelected} to get the committee value selected
+    state = {
+        selectedOption: '',
+    };
+
+    handleChange = (selectedOption) => {
+        this.setState({ selectedOption });
+        console.log(`Selected: ${selectedOption.label}`);
+    };
 
     render() {
         const { committees, committeeSelected } = this.props;
+        const { selectedOption } = this.state;
 
         return (
             <div className="committee__ctn">
@@ -38,7 +50,7 @@ class CommitteeContainer extends Component {
                 </div>
 
                 <div className="committee__ctn__select">
-                    <Select committees={committees} id={'selectCommittee'} name={'selectCommittee'} />
+                    <SelectCustom committees={committees} id={'selectCommittee'} name={'selectCommittee'} />
                 </div>
                 <div className="committee__ctn__bars">
                     <ResponsiveContainer>
@@ -67,7 +79,7 @@ class CommitteeContainer extends Component {
                             />
                             <Legend height={50} align="left" verticalAlign="bottom" iconType="circle" />
                             <Bar
-                                name={committeeSelected}
+                                name={`Adhérents ${committeeSelected}`}
                                 dataKey={'adherent'}
                                 fill={'#F8BCBC'}
                                 barSize={10}
@@ -86,8 +98,8 @@ class CommitteeContainer extends Component {
                                 left: 20,
                                 bottom: 5,
                             }}>
-                            <CartesianGrid stroke="#FEF2F2" vertical={false} />
-                            <XAxis dataKey={'name'} />
+                            <CartesianGrid stroke={'#FEF2F2'} vertical={false} />
+                            <XAxis dataKey="name" stroke="" />
                             <YAxis stroke={'#FEF2F2'} />
                             <Tooltip
                                 cursor={{
@@ -101,7 +113,7 @@ class CommitteeContainer extends Component {
                             />
                             <Legend height={50} align="left" verticalAlign="bottom" iconType="circle" />
                             <Bar
-                                name={'Membres comités locaux'}
+                                name={`Membres comités locaux ${committeeSelected}`}
                                 dataKey={'adherent'}
                                 fill={'#6BA0EE'}
                                 barSize={10}
@@ -117,8 +129,19 @@ class CommitteeContainer extends Component {
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
-                <div className="committee__ctn__select">
-                    <Select committees={committees} id={'selectCommittee'} name={'selectCommittee'} />
+                <div className="committee__ctn__input">
+                    {/* <Input committees={committees} id={'selectCommittee'} name={'selectCommittee'} /> */}
+                    <Select
+                        value={selectedOption}
+                        onChange={this.handleChange}
+                        className="input__cpt"
+                        name="form-field-name"
+                        options={committees.map(committee => ({
+                            value: committee.countryName,
+                            label: committee.countryName,
+                        }))}
+                        placeholder="Rechercher par Code postal, ville ou commité"
+                    />
                 </div>
                 <div className="committee__ctn__bars">
                     <ResponsiveContainer>
@@ -166,8 +189,8 @@ class CommitteeContainer extends Component {
                                 left: 20,
                                 bottom: 5,
                             }}>
-                            <CartesianGrid stroke="#FEF2F2" vertical={false} />
-                            <XAxis dataKey={'name'} />
+                            <CartesianGrid stroke={'#FEF2F2'} vertical={false} />
+                            <XAxis dataKey="name" stroke="" />
                             <YAxis stroke={'#FEF2F2'} />
                             <Tooltip
                                 cursor={{
@@ -181,7 +204,7 @@ class CommitteeContainer extends Component {
                             />
                             <Legend height={50} align="left" verticalAlign="bottom" iconType="circle" />
                             <Bar
-                                name={'Membres comités locaux'}
+                                name={`Membres comités locaux ${committeeSelected}`}
                                 dataKey={'adherent'}
                                 fill={'#6BA0EE'}
                                 barSize={10}
