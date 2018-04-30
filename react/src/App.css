@@ -4035,6 +4035,12 @@ a {
   margin: 10px;
   width: 100%; }
 
+.committee__ctn__input {
+  display: flex;
+  justify-content: space-between;
+  margin: 25px 20px 20px 20px;
+  width: 100%; }
+
 .event__ctn__summary,
 .event__ctn__bars {
   display: flex;
@@ -4176,10 +4182,29 @@ a {
   font-size: 16px;
   line-height: 24px;
   color: #4A90E2;
-  text-transform: uppercase; }
+  text-transform: uppercase;
+  font-weight: 100; }
   @media (max-width: 650px) {
     .select__cpt {
       width: 100%; } }
+
+.input__cpt {
+  border: 1px solid rgba(248, 188, 188, 0.2);
+  background: none;
+  border-radius: 0;
+  width: 48%;
+  font-size: 16px;
+  line-height: 24px;
+  color: #4A90E2;
+  text-transform: uppercase;
+  font-weight: 100; }
+  @media (max-width: 650px) {
+    .input__cpt {
+      width: 100%; } }
+
+.select__cpt__control {
+  border: 1px solid rgba(248, 188, 188, 0.2);
+  background: none; }
 
 .recharts-wrapper {
   border: 1px solid rgba(248, 188, 188, 0.2);

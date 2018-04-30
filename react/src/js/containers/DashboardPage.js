@@ -10,7 +10,7 @@ import EventContainer from './EventContainer';
 
 class DashboardPage extends Component {
     componentDidMount() {
-        this.props.fetchData();
+        this.props.callApi();
     }
     componentWillUnmount() {
         console.log('il est démonté');
@@ -19,8 +19,14 @@ class DashboardPage extends Component {
         return (
             <div className="dashboard__ctn">
                 <div className="wrapper">
-                    <AdherentContainer committees={this.props.committees} />
-                    <CommitteeContainer committees={this.props.committees} />
+                    <AdherentContainer
+                        committees={this.props.committees}
+                        committeeSelected={this.props.committeeSelected}
+                    />
+                    <CommitteeContainer
+                        committees={this.props.committees}
+                        committeeSelected={this.props.committeeSelected}
+                    />
                     <EventContainer committees={this.props.committees} />
                 </div>
             </div>
@@ -30,6 +36,7 @@ class DashboardPage extends Component {
 
 const mapStateToProps = state => ({
     committees: state.fetch.committees,
+    committeeSelected: state.filter.committeeFilter,
 });
 
 export default withRouter(connect(mapStateToProps, actionCreators)(DashboardPage));
