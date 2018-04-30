@@ -307,7 +307,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertInstanceOf(Event::class, $event = $this->committeeEventRepository->findMostRecentEvent());
         $this->assertSame("Débat sur l'agriculture écologique", $event->getName());
-        $this->assertSame(('Cette journée sera consacrée à un grand débat sur la question de l&#039;agriculture écologique.'), $event->getDescription());
+        $this->assertSame('Cette journée sera consacrée à un grand débat sur la question de l\'agriculture écologique.', $event->getDescription());
         $this->assertFalse($event->isForLegislatives());
         $this->assertCountMails(1, EventNotificationMessage::class, 'jacques.picard@en-marche.fr');
         $this->assertCountMails(1, EventNotificationMessage::class, 'gisele-berthoux@caramail.com');

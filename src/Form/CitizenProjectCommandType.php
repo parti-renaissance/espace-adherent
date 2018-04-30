@@ -66,10 +66,10 @@ class CitizenProjectCommandType extends AbstractType
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 500],
             ])
-            ->add('proposed_solution', TextareaType::class, [
+            ->add('proposed_solution', PurifiedTextareaType::class, [
                 'property_path' => 'proposedSolution',
                 'filter_emojis' => true,
-                'purify_html' => true,
+                'purifier_type' => 'enrich_content',
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 800],
             ])

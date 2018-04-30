@@ -73,6 +73,12 @@
         <service id="AppBundle\Form\EventListener\AmpSynchronisedListener"/>
         <service id="AppBundle\Form\EventRegistrationType"/>
         <service id="AppBundle\Form\ColorChoiceType"/>
+        <service id="AppBundle\Form\PurifiedTextareaType">
+            <argument type="collection">
+                <argument key="default" type="service" id="app.html_purifier.default"/>
+                <argument key="enrich_content" type="service" id="app.html_purifier.enrich_content"/>
+            </argument>
+        </service>
 
         <!-- GeoCoder -->
         <service id="GeoIp2\WebService\Client">
@@ -127,5 +133,16 @@
 
         <!-- UserDocument -->
         <service id="AppBundle\UserDocument\UserDocumentManager" public="true" />
+
+        <!-- HTML Purifiers -->
+        <service id="app.html_purifier.default" class="Exercise\HTMLPurifierBundle\Form\HTMLPurifierTransformer">
+            <argument type="service" id="exercise_html_purifier.default"/>
+        </service>
+        <service id="app.html_purifier.enrich_content" class="Exercise\HTMLPurifierBundle\Form\HTMLPurifierTransformer">
+            <argument type="service" id="exercise_html_purifier.enrich_content"/>
+        </service>
+        <service id="AppBundle\HTMLPurifier\Injector\ImageDimension">
+            <argument>%image_max_length%</argument>
+        </service>
     </services>
 </container>

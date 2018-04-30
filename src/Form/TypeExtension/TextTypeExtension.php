@@ -3,7 +3,6 @@
 namespace AppBundle\Form\TypeExtension;
 
 use AppBundle\Utils\EmojisRemover;
-use AppBundle\Utils\HtmlPurifier;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,13 +27,11 @@ class TextTypeExtension extends AbstractTypeExtension
                 'empty_data' => function (Options $options) {
                     return $options['required'] ? '' : null;
                 },
-                'purify_html' => false,
                 'filter_emojis' => false,
                 'format_title_case' => false,
                 'format_identity_case' => false,
                 'with_character_count' => false,
             ])
-            ->setAllowedTypes('purify_html', 'bool')
             ->setAllowedTypes('filter_emojis', 'bool')
             ->setAllowedTypes('format_title_case', 'bool')
             ->setAllowedTypes('format_identity_case', 'bool')
@@ -46,10 +43,6 @@ class TextTypeExtension extends AbstractTypeExtension
     {
         if ($options['filter_emojis']) {
             $builder->addEventListener(FormEvents::PRE_SUBMIT, [__CLASS__, 'filterEmojis'], 10);
-        }
-
-        if ($options['purify_html']) {
-            $builder->addEventListener(FormEvents::SUBMIT, [__CLASS__, 'purifyHtml']);
         }
 
         if ($options['format_title_case']) {
@@ -72,15 +65,6 @@ class TextTypeExtension extends AbstractTypeExtension
 
         if (\is_string($data) && '' !== $data) {
             $event->setData(EmojisRemover::remove($data));
-        }
-    }
-
-    public static function purifyHtml(FormEvent $event): void
-    {
-        $data = $event->getData();
-
-        if (\is_string($data) && '' !== $data) {
-            $event->setData(HtmlPurifier::purify($data));
         }
     }
 

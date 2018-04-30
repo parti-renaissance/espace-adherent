@@ -4,7 +4,6 @@ namespace AppBundle\Form;
 
 use AppBundle\Referent\ReferentMessage;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,14 +18,14 @@ class ReferentMessageType extends AbstractType
                 'attr' => ['placeholder' => 'Entrez l\'objet de votre message'],
                 'filter_emojis' => true,
             ])
-            ->add('content', TextareaType::class, [
+            ->add('content', PurifiedTextareaType::class, [
                 'label' => false,
                 'attr' => [
                     'maxlength' => 5000,
                     'placeholder' => 'Écrivez votre message',
                 ],
                 'filter_emojis' => true,
-                'purify_html' => true,
+                'purifier_type' => 'enrich_content',
                 'with_character_count' => true,
             ])
         ;

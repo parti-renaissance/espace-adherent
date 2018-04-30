@@ -43,6 +43,8 @@ class AppKernel extends Kernel
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
             new Knp\Bundle\TimeBundle\KnpTimeBundle(),
 
+            new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
+
             new AppBundle\AppBundle(),
         ];
 

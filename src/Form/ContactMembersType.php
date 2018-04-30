@@ -3,7 +3,6 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,8 +16,8 @@ class ContactMembersType extends AbstractType
                 'label' => false,
                 'attr' => ['placeholder' => 'Entrez l\'objet de votre message'],
             ])
-            ->add('message', TextareaType::class, [
-                'purify_html' => true,
+            ->add('message', PurifiedTextareaType::class, [
+                'purifier_type' => 'enrich_content',
                 'attr' => ['placeholder' => 'Écrivez votre message'],
             ])
         ;
