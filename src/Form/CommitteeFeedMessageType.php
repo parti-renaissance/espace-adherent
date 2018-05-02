@@ -6,7 +6,6 @@ use AppBundle\Committee\Feed\CommitteeMessage;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -24,14 +23,14 @@ class CommitteeFeedMessageType extends AbstractType
                     'placeholder' => 'Entrez l\'objet de votre message',
                 ],
             ])
-            ->add('content', TextareaType::class, [
+            ->add('content', PurifiedTextareaType::class, [
                 'label' => false,
                 'attr' => [
                     'maxlength' => 5000,
                     'placeholder' => 'Écrivez ici votre message',
                 ],
                 'filter_emojis' => true,
-                'purify_html' => true,
+                'purifier_type' => 'enrich_content',
                 'with_character_count' => true,
             ])
             ->add('published', CheckboxType::class, [

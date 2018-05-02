@@ -5,6 +5,7 @@ namespace AppBundle\Admin;
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectSkill;
+use AppBundle\Form\PurifiedTextareaType;
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Repository\AdherentRepository;
@@ -154,10 +155,10 @@ class CitizenProjectAdmin extends AbstractAdmin
                 ->add('problemDescription', null, [
                     'label' => 'Description du problème',
                 ])
-                ->add('proposedSolution', null, [
+                ->add('proposedSolution', PurifiedTextareaType::class, [
                     'label' => 'Solution du problème',
                     'filter_emojis' => true,
-                    'purify_html' => true,
+                    'purifier_type' => 'enrich_content',
                     'attr' => ['class' => 'ck-editor'],
                 ])
                 ->add('requiredMeans', null, [

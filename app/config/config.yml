@@ -29,6 +29,7 @@ parameters:
     legislatives_host:                    "%env(LEGISLATIVES_HOST)%"
     router.request_context.scheme:        "%env(APP_SCHEME)%"
     router.request_context.host:          "%app_host%"
+    image_max_length:                     450px
 
 framework:
     translator:      { fallbacks: ["%locale%"], paths: ["%kernel.project_dir%/translations"] }
@@ -316,3 +317,14 @@ knp_snappy:
         binary: "%kernel.root_dir%/../vendor/bin/wkhtmltopdf-amd64"
     image:
         binary: "%kernel.root_dir%/../vendor/bin/wkhtmltoimage-amd64"
+
+exercise_html_purifier:
+    default:
+        Core.Encoding: 'UTF-8'
+        Cache.SerializerPermissions: ~
+    enrich_content:
+        HTML.AllowedElements: p,h1,h2,h3,h4,h5,h6,div,address,center,em,strong,pre,div,u,s,ol,ul,li,br,img,a
+        HTML.AllowedAttributes: "*.style,img.src,a.href"
+        CSS.AllowedProperties: text-align
+        AutoFormat.Custom:
+            - '@AppBundle\HTMLPurifier\Injector\ImageDimension'
