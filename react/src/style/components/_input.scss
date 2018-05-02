@@ -2,7 +2,7 @@
     border: 1px solid $pink-lighter;
     background: none;
     border-radius: 0;
-    width: 48%;
+    width: 97%;
     @include text--default;
     color: $blue-primary;
     text-transform: uppercase;
@@ -11,6 +11,35 @@
     @media (max-width: $mobile) {
         width: 100%;
     }
+}
+
+.Select {
+    &-placeholder {
+        height: 50px;
+        color: $blue-primary;
+        padding-top: 10px;
+    }
+
+    &-input {
+        padding-top: 10px;
+    }
+
+    &-control {
+        border: 1px solid $pink-lighter;
+        height: 50px;
+    }
+
+    &-value {
+        padding-top: 10px;
+    }
+
+    &-clear {
+        line-height: 2;
+    }
+}
+
+.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label {
+    color: $blue-primary;
 }
 
 .select__cpt__control {

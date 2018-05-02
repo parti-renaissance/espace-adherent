@@ -13,14 +13,15 @@ class Summary extends Component {
                 <div className="summary__parity">
                     {womanPercentage ? (
                         <div>
-                            <p>{womanPercentage}</p>
+                            <p>{womanPercentage}% </p>
                             <img src={WomanSign} alt="Woman Sign" />
+                            {40 > womanPercentage ? <p>😤</p> : <p>👍</p>}
                         </div>
                     ) : null}
 
                     {manPercentage ? (
                         <div>
-                            <p>{manPercentage}</p>
+                            <p>{manPercentage}%</p>
                             <img src={ManSign} alt="Man Sign" />
                         </div>
                     ) : null}

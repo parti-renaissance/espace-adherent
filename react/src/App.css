@@ -4192,7 +4192,7 @@ a {
   border: 1px solid rgba(248, 188, 188, 0.2);
   background: none;
   border-radius: 0;
-  width: 48%;
+  width: 97%;
   font-size: 16px;
   line-height: 24px;
   color: #4A90E2;
@@ -4201,6 +4201,27 @@ a {
   @media (max-width: 650px) {
     .input__cpt {
       width: 100%; } }
+
+.Select-placeholder {
+  height: 50px;
+  color: #4A90E2;
+  padding-top: 10px; }
+
+.Select-input {
+  padding-top: 10px; }
+
+.Select-control {
+  border: 1px solid rgba(248, 188, 188, 0.2);
+  height: 50px; }
+
+.Select-value {
+  padding-top: 10px; }
+
+.Select-clear {
+  line-height: 2; }
+
+.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label {
+  color: #4A90E2; }
 
 .select__cpt__control {
   border: 1px solid rgba(248, 188, 188, 0.2);

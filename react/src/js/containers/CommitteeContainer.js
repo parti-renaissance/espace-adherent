@@ -8,18 +8,19 @@ import SelectCustom from './../components/modules/SelectCustom';
 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 import data from './../fakeData/data';
 
 class CommitteeContainer extends Component {
     // CALL {committeeSelected} to get the committee value selected
     state = {
-        selectedOption: '',
+        selectedOption: null,
     };
 
     handleChange = (selectedOption) => {
         this.setState({ selectedOption });
-        console.log(`Selected: ${selectedOption.label}`);
+        // console.log(`Selected: ${selectedOption.label}`);
     };
 
     render() {
@@ -33,14 +34,14 @@ class CommitteeContainer extends Component {
                     <Summary
                         summaryTotal={876}
                         summaryDescription={'Comités créés'}
-                        womanPercentage={`${983}% 😤`}
-                        manPercentage={`${67}%`}
+                        womanPercentage={50}
+                        manPercentage={50}
                     />
                     <Summary
                         summaryTotal={76}
                         summaryDescription={'Inscrits dans un comité'}
-                        womanPercentage={`${33}%`}
-                        manPercentage={`${67}%`}
+                        womanPercentage={33}
+                        manPercentage={67}
                     />
                 </div>
 
@@ -78,6 +79,7 @@ class CommitteeContainer extends Component {
                                 }}
                             />
                             <Legend height={50} align="left" verticalAlign="bottom" iconType="circle" />
+
                             <Bar
                                 name={`Adhérents ${committeeSelected}`}
                                 dataKey={'adherent'}
@@ -132,6 +134,7 @@ class CommitteeContainer extends Component {
                 <div className="committee__ctn__input">
                     {/* <Input committees={committees} id={'selectCommittee'} name={'selectCommittee'} /> */}
                     <Select
+                        isMulti
                         value={selectedOption}
                         onChange={this.handleChange}
                         className="input__cpt"
@@ -143,83 +146,89 @@ class CommitteeContainer extends Component {
                         placeholder="Rechercher par Code postal, ville ou commité"
                     />
                 </div>
-                <div className="committee__ctn__bars">
-                    <ResponsiveContainer>
-                        <BarChart
-                            width={600}
-                            height={400}
-                            data={data}
-                            margin={{
-                                top: 50,
-                                right: 30,
-                                left: 20,
-                                bottom: 5,
-                            }}>
-                            <CartesianGrid stroke={'#FEF2F2'} vertical={false} />
-                            <XAxis dataKey="name" stroke="" />
-                            <YAxis stroke={'#FEF2F2'} />
-                            <Tooltip
-                                cursor={{
-                                    stroke: '#FEF0F0',
-                                    fill: '#FFF',
-                                }}
-                                itemStyle={{
-                                    textAlign: 'left',
-                                    stroke: '#FEF0F0',
-                                }}
-                            />
-                            <Legend height={50} align="left" verticalAlign="bottom" iconType="circle" />
-                            <Bar
-                                name={committeeSelected}
-                                dataKey={'adherent'}
-                                fill={'#F8BCBC'}
-                                barSize={10}
-                                animationEasing={'ease-in-out'}
-                            />
-                        </BarChart>
-                    </ResponsiveContainer>
-                    <ResponsiveContainer>
-                        <BarChart
-                            width={600}
-                            height={400}
-                            data={data}
-                            margin={{
-                                top: 50,
-                                right: 30,
-                                left: 20,
-                                bottom: 5,
-                            }}>
-                            <CartesianGrid stroke={'#FEF2F2'} vertical={false} />
-                            <XAxis dataKey="name" stroke="" />
-                            <YAxis stroke={'#FEF2F2'} />
-                            <Tooltip
-                                cursor={{
-                                    stroke: '#FEF0F0',
-                                    fill: '#FFF',
-                                }}
-                                itemStyle={{
-                                    textAlign: 'left',
-                                    stroke: '#FEF0F0',
-                                }}
-                            />
-                            <Legend height={50} align="left" verticalAlign="bottom" iconType="circle" />
-                            <Bar
-                                name={`Membres comités locaux ${committeeSelected}`}
-                                dataKey={'adherent'}
-                                fill={'#6BA0EE'}
-                                barSize={10}
-                                animationEasing={'ease-in-out'}
-                            />
-                            <Bar
-                                name={'Participants aux événements'}
-                                dataKey={'adherentMembre'}
-                                fill={'#F8BCBC'}
-                                barSize={10}
-                                animationEasing={'ease-in-out'}
-                            />
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
+                {null !== selectedOption ? (
+                    <div className="committee__ctn__bars">
+                        {console.log(selectedOption.label)}
+                        <ResponsiveContainer>
+                            <BarChart
+                                width={600}
+                                height={400}
+                                data={data}
+                                margin={{
+                                    top: 50,
+                                    right: 30,
+                                    left: 20,
+                                    bottom: 5,
+                                }}>
+                                <CartesianGrid stroke={'#FEF2F2'} vertical={false} />
+                                <XAxis dataKey="name" stroke="" />
+                                <YAxis stroke={'#FEF2F2'} />
+                                <Tooltip
+                                    cursor={{
+                                        stroke: '#FEF0F0',
+                                        fill: '#FFF',
+                                    }}
+                                    itemStyle={{
+                                        textAlign: 'left',
+                                        stroke: '#FEF0F0',
+                                    }}
+                                />
+                                <Legend height={50} align="left" verticalAlign="bottom" iconType="circle" />
+                                <Bar
+                                    name={`Données ${selectedOption.label}`}
+                                    dataKey={'adherent'}
+                                    fill={'#F8BCBC'}
+                                    barSize={10}
+                                    animationEasing={'ease-in-out'}
+                                />
+                            </BarChart>
+                        </ResponsiveContainer>
+                        <ResponsiveContainer>
+                            <BarChart
+                                width={600}
+                                height={400}
+                                data={data}
+                                margin={{
+                                    top: 50,
+                                    right: 30,
+                                    left: 20,
+                                    bottom: 5,
+                                }}>
+                                <CartesianGrid stroke={'#FEF2F2'} vertical={false} />
+                                <XAxis dataKey="name" stroke="" />
+                                <YAxis stroke={'#FEF2F2'} />
+                                <Tooltip
+                                    cursor={{
+                                        stroke: '#FEF0F0',
+                                        fill: '#FFF',
+                                    }}
+                                    itemStyle={{
+                                        textAlign: 'left',
+                                        stroke: '#FEF0F0',
+                                    }}
+                                />
+                                <Legend height={50} align="left" verticalAlign="bottom" iconType="circle" />
+
+                                <Bar
+                                    name={`Membres comités locaux ${selectedOption.label}`}
+                                    dataKey={'adherent'}
+                                    fill={'#6BA0EE'}
+                                    barSize={10}
+                                    animationEasing={'ease-in-out'}
+                                />
+                                <Bar
+                                    name={'Participants aux événements'}
+                                    dataKey={'adherentMembre'}
+                                    fill={'#F8BCBC'}
+                                    barSize={10}
+                                    animationEasing={'ease-in-out'}
+                                />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                ) : (
+                    <p>EM !</p>
+                )}
             </div>
         );
     }
