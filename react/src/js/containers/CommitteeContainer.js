@@ -8,7 +8,6 @@ import SelectCustom from './../components/modules/SelectCustom';
 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Select from 'react-select';
-import 'react-select/dist/react-select.css';
 
 import data from './../fakeData/data';
 
