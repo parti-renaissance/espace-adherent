@@ -34,13 +34,13 @@ export default (formType, form) => {
         const url = `/api/form/validate/${formType}`;
 
         const formData = new FormData(form);
-        const toRemove = [];
-        for (const field of formData.entries()) {
+        const emptyFieldNames = [];
+        for (let field of formData.entries()) {
             if (!field[1]) {
-                toRemove.push(field[0]);
+                emptyFieldNames.push(field[0]);
             }
         }
-        for (const fieldName of toRemove) {
+        for (let fieldName of emptyFieldNames) {
             formData.delete(fieldName);
         }
 
@@ -50,7 +50,7 @@ export default (formType, form) => {
             data: formData,
             processData: false,
             success(resp) {
-                displayErrors(resp.form, form.name);
+                displayErrors(resp, form.name);
             },
         });
     });

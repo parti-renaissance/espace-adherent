@@ -6,6 +6,7 @@ use JMS\Serializer\Serializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +36,11 @@ class FormController extends Controller
         $form->submit($request->request->get($form->getName()), false)->isValid();
 
         return new Response($serializer->serialize(
-            $form->getErrors(true),
+            [
+                'children' => array_filter($form->all(), function (FormInterface $form) {
+                    return 0 < $form->getErrors(true)->count();
+                })
+            ],
             'json'
         ));
     }
