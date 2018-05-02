@@ -77,7 +77,7 @@ class DonationRequestType extends AbstractType
             ]);
         }
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'preSetData']);
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'createInitialDonationRequest']);
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
@@ -87,7 +87,7 @@ class DonationRequestType extends AbstractType
         }
     }
 
-    public function preSetData(FormEvent $formEvent): void
+    public function createInitialDonationRequest(FormEvent $formEvent): void
     {
         if (!$formEvent->getData()) {
             $user = $this->tokenStorage->getToken()->getUser();
