@@ -39,13 +39,18 @@
     </script>
 {% endblock %}
 
+{% block head_javascripts %}
+    {% if is_host %}
+        <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    {% endif %}
+{% endblock %}
+
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
 
     {% if is_host %}
         <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
         <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
-        <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     {% endif %}
 
     <script type="text/javascript">
