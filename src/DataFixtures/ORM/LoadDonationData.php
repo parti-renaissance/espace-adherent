@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Donation;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -12,51 +13,61 @@ class LoadDonationData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        /** @var Adherent $adherent */
-        $adherent = $this->getReference('adherent-3');
+        /** @var Adherent $adherent1 */
+        $adherent1 = $this->getReference('adherent-1');
+        /** @var Adherent $adherent2 */
+        $adherent2 = $this->getReference('adherent-3');
 
-        $donation1 = new Donation(
-            Uuid::uuid4(),
-            5000,
-            $adherent->getGender(),
-            $adherent->getFirstName(),
-            $adherent->getLastName(),
-            $adherent->getEmailAddress(),
-            $adherent->getPostAddress(),
-            $adherent->getPhone(),
-            '0.0.0.0'
-        );
+        $donation0 = $this->create($adherent1, 50.);
+        $donation1 = $this->create($adherent2, 50.);
+        $donation2 = $this->create($adherent2, 40.);
+        $donation3 = $this->create($adherent2, 60., PayboxPaymentSubscription::UNLIMITED);
+        $donation4 = $this->create($adherent2, 100., PayboxPaymentSubscription::UNLIMITED);
 
-        $donation2 = new Donation(
-            Uuid::uuid4(),
-            7000,
-            $adherent->getGender(),
-            $adherent->getFirstName(),
-            $adherent->getLastName(),
-            $adherent->getEmailAddress(),
-            $adherent->getPostAddress(),
-            $adherent->getPhone(),
-            '0.0.0.0'
-        );
+        $donation3->stopSubscription();
 
-        $donation1->finish([
-            'result' => '00000',
-            'authorization' => 'test',
-        ]);
-        $donation2->finish([
-            'result' => '00000',
-            'authorization' => 'test',
-        ]);
+        $this->setDonateAt($donation2, '-1 day');
+        $this->setDonateAt($donation3, '-100 day');
+        $this->setDonateAt($donation4, '-50 day');
 
-        $reflectDonation = new \ReflectionObject($donation2);
-        $reflectDonationAt = $reflectDonation->getProperty('donatedAt');
-        $reflectDonationAt->setAccessible(true);
-        $reflectDonationAt->setValue($donation2, new \DateTime('-1 day'));
-        $reflectDonationAt->setAccessible(false);
-
+        $manager->persist($donation0);
         $manager->persist($donation1);
         $manager->persist($donation2);
+        $manager->persist($donation3);
+        $manager->persist($donation4);
         $manager->flush();
+    }
+
+    public function create(Adherent $adherent, float $amount = 50.0, int $duration = PayboxPaymentSubscription::NONE): Donation
+    {
+        $donation = new Donation(
+            Uuid::uuid4(),
+            $amount * 100,
+            $adherent->getGender(),
+            $adherent->getFirstName(),
+            $adherent->getLastName(),
+            $adherent->getEmailAddress(),
+            $adherent->getPostAddress(),
+            $adherent->getPhone(),
+            '127.0.0.1',
+            $duration
+        );
+
+        $donation->finish([
+            'result' => '00000',
+            'authorization' => 'test',
+        ]);
+
+        return $donation;
+    }
+
+    public function setDonateAt(Donation $donation, string $modifier): void
+    {
+        $reflectDonation = new \ReflectionObject($donation);
+        $reflectDonationAt = $reflectDonation->getProperty('donatedAt');
+        $reflectDonationAt->setAccessible(true);
+        $reflectDonationAt->setValue($donation, new \DateTime($modifier));
+        $reflectDonationAt->setAccessible(false);
     }
 
     public function getDependencies()

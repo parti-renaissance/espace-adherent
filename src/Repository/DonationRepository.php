@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
 use Doctrine\ORM\EntityRepository;
 
@@ -25,5 +26,24 @@ class DonationRepository extends EntityRepository
             ['emailAddress' => $email],
             ['donatedAt' => $order]
         );
+    }
+
+    /**
+     * @return Donation[]
+     */
+    public function findAllSubscribedDonationByEmail(string $email): array
+    {
+        return $this->createQueryBuilder('donation')
+            ->andWhere('donation.emailAddress = :email')
+            ->andWhere('donation.duration != :duration')
+            ->andWhere('donation.subscriptionEndedAt IS NULL')
+            ->setParameters([
+                'email' => $email,
+                'duration' => PayboxPaymentSubscription::NONE,
+            ])
+            ->orderBy('donation.donatedAt', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

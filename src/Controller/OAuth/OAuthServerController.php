@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller\OAuth;
 
-use AppBundle\OAuth\Form\ConfirmActionType;
+use AppBundle\Form\ConfirmActionType;
 use AppBundle\OAuth\OAuthAuthorizationManager;
 use AppBundle\Repository\OAuth\ClientRepository;
 use Lcobucci\JWT\Parser;

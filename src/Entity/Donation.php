@@ -73,14 +73,25 @@ class Donation implements GeoPointInterface
     private $clientIp;
 
     /**
+     * @var \DateTime|null
+     *
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $donatedAt;
 
     /**
+     * @var \DateTime
+     *
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $subscriptionEndedAt;
 
     public function __construct(
         UuidInterface $uuid,
@@ -125,6 +136,11 @@ class Donation implements GeoPointInterface
         if ('00000' === $this->payboxResultCode) {
             $this->donatedAt = new \DateTime();
         }
+    }
+
+    public function stopSubscription(): void
+    {
+        $this->setSubscriptionEndedAt(new \DateTime());
     }
 
     public function isFinished(): bool
@@ -241,5 +257,32 @@ class Donation implements GeoPointInterface
         }
 
         return $payload;
+    }
+
+    public function getSubscriptionEndedAt(): ?\DateTime
+    {
+        return $this->subscriptionEndedAt;
+    }
+
+    public function setSubscriptionEndedAt(?\DateTime $subscriptionEndedAt): void
+    {
+        $this->subscriptionEndedAt = $subscriptionEndedAt;
+    }
+
+    public function nextDonationAt(\DateTime $fromDay = null): \DateTime
+    {
+        if (!$this->hasSubscription()) {
+            throw new \LogicException('Donation without subscription can\'t have next donation date.');
+        }
+
+        if (!$fromDay) {
+            $fromDay = new \DateTime();
+        }
+
+        $donationDate = clone $this->donatedAt;
+
+        return $donationDate->modify(
+            sprintf('+%d months', $donationDate->diff($fromDay)->m + 1)
+        );
     }
 }

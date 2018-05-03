@@ -41,8 +41,11 @@ class UserController extends Controller
      */
     public function profileDonationAction(DonationRepository $donationRepository): Response
     {
+        $userEmail = $this->getUser()->getEmailAddress();
+
         return $this->render('user/my_donation.html.twig', [
-            'donations' => $donationRepository->findByEmailAddressOrderedByDonatedAt($this->getUser()->getEmailAddress()),
+            'donations' => $donationRepository->findByEmailAddressOrderedByDonatedAt($userEmail, 'DESC'),
+            'subscribed_donations' => $donationRepository->findAllSubscribedDonationByEmail($userEmail),
         ]);
     }
 
