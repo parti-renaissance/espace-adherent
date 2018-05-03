@@ -20,7 +20,7 @@
             'placeholder': 'Un nom court et clair',
         }
     }) }}
-    <small>Ex. "Un stage pour tous"</small>
+    <small>Ex: "Un stage pour tous"</small>
 </div>
 
 <div class="form__new" id="field-subtitle">
@@ -32,7 +32,7 @@
             'placeholder': 'Un sous-titre explicatif',
         }
     }) }}
-    <small>Ex. "Aider les élèves de 3e à trouver un stage en entreprise"</small>
+    <small>Ex: "Aider les élèves de 3e à trouver un stage en entreprise"</small>
 </div>
 
 <div class="form__new" id="field-category">
@@ -53,7 +53,7 @@
         <div class="citizen_project_form__picture_preview">
             <img style="max-width: 400px" src="{{ asset(citizen_project.getAssetImagePath) }}" />
         </div>
-        <div class="form__new form__new__checkbox">
+        <div class="form__checkbox form__checkbox--large">
             {{ form_widget(form.remove_image) }}
             {{ form_label(form.remove_image, 'Supprimer l\'image') }}
         </div>
@@ -77,7 +77,7 @@
         }
     }) }}
     <small>
-        Ex. "Les collégiens doivent effectuer un stage d'observation en classe de 3e ou de 4e
+        Ex: "Les collégiens doivent effectuer un stage d'observation en classe de 3e ou de 4e
         pour les aider à déterminer leur orientation professionnelle mais
         ils ont parfois du mal à le trouver en dehors de leur réseau famillial."
     </small>
@@ -93,7 +93,7 @@
         }
     }) }}
     <small>
-        Ex. Le projet a pour objectif de mettre en relation ces élèves avec un réseau de professionnels
+        Ex: Le projet a pour objectif de mettre en relation ces élèves avec un réseau de professionnels
         (entreprises, commerçants, artisans, etc.) volontaires pour les accueillir.
     </small>
 </div>
@@ -108,7 +108,7 @@
         }
     }) }}
     <small>
-        Ex. Nous vous proposons:<br>
+        Ex: Nous vous proposons:<br>
         (i) de nous aider à identifier des professionnels susceptibles de proposer des stages<br>
         (ii) de faire connaître l'initiative auprès d'un maximum d'élèves, notamment via des associations<br>
         (iii) de participer à des ateliers d'orientation de collégiens, via des associations partenaires.<br>
@@ -119,8 +119,8 @@
     {{ form_errors(form.skills) }}
     <label class="label__header--large">Ce projet a besoin de : <span>(Optionnel)</span></label>
     <div>
-        {{ form_widget(form.skills_search, {attr: {style: 'margin-bottom: 10px', class: 'form--full'} }) }}
-        {{ form_widget(form.skills, {attr: {class: 'citizen_project__skills'} }) }}
+        {{ form_widget(form.skills_search, {attr: {class: 'form--full'} }) }}
+        {{ form_widget(form.skills, {attr: {class: 'citizen-project__skills'} }) }}
     </div>
 </div>
 
@@ -152,7 +152,7 @@
     <label class="label__header--large">Vous avez déjà le soutien d'un comité local ?<br />Indiquez son nom : <span>(Optionnel)</span></label>
     <div>
         {{ form_widget(form.committees_search, {attr: {class: 'form--full'} }) }}
-        {{ form_widget(form.committees, {attr: {class: 'citizen_project__skills'} }) }}
+        {{ form_widget(form.committees, {attr: {class: 'citizen-project__skills'} }) }}
     </div>
 </div>
 
@@ -172,23 +172,23 @@
 
 <div class="form__new" id="field-personal-phone">
     <label class="label__header--large">Vérifiez votre e-mail :</label>
-    <div>
-        <div>{{ app.user.emailAddress }}</div>
-        <a href="{{ path('app_user_profile') }}" class="link--blue" target="_blank">Modifier</a>
+    <div class="flex--left">
+        <div class="b__nudge--right-small">{{ app.user.emailAddress }}</div>
+        <a href="{{ path('app_user_profile') }}" class="link--blue link--no-decor" target="_blank"><i class="fa fa-pencil"></i></a>
     </div>
 
 </div>
 
-<div class="form__new form__new__checkbox" id="field-assistance-needed">
+<div class="form__checkbox form__checkbox--large" id="field-assistance-needed">
     <div>
         {{ form_errors(form.assistance_needed) }}
         {{ form_widget(form.assistance_needed) }}
         <label for="{{ form.assistance_needed.vars.id }}">
-            Je sollicite un accompagnement personnalisé de l'équipe Projet citoyens de La République En Marche <span class="text--gray text--italic">(Optionnel)</span>
+            Je sollicite un accompagnement personnalisé de l'équipe Projet citoyens de La République En Marche <span class="text--gray text--italic"> (Optionnel)</span>
         </label>
     </div>
 </div>
-
+<hr>
 <div class="form__new">
     {{ form_label(form.assistance_content, 'En quoi l\'équipe d\'accompagnement peut-elle vous aider ?', {'label_attr': { class: 'label__header--small' }}) }}
     {{ form_errors(form.assistance_content) }}
@@ -198,5 +198,3 @@
         }
     }) }}
 </div>
-
-<hr/>

@@ -41,7 +41,7 @@
 
 {% block citizen_project_content %}
     {% if is_administrator %}
-        <nav class="b__nudge--top">
+        <nav class="b__nudge--top b__nudge--bottom">
             <ul class="list__links list__links--margin-right">
                 <li>
                     <a href="{{ path('app_citizen_project_manager_edit', { slug: citizen_project.slug }) }}"
@@ -60,28 +60,30 @@
 
     {% if not citizen_project.isApproved %}
         <section>
-            <div class="citizen-project__waiting-for-approval">
+            <div class="citizen-project__waiting-for-approval flex--left flex--center--mobile">
                 Votre projet citoyen est en attente de validation par les équipes d'En Marche !
                 Vous serez alerté(e) par e-mail quand il sera validé.
-            </div>
-
-            <p>
+                <br>
                 Une fois que votre projet citoyen sera validé, vous pourrez contacter les adhérents suivants votre projet citoyen
                 sur cette page.
-            </p>
+            </div>
         </section>
     {% else %}
-        <h2 class="space--20-0 b__nudge--top-40">À propos</h2>
-
+        {% if can_create_citizen_action(citizen_project) %}
+            <a class=" newbtn--small btn--pink btn" href="{{ path('app_citizen_action_manager_create', {project_slug: citizen_project.slug}) }}">Créer une action citoyenne</a>
+        {% endif %}
+        <h2 class="space--20-0 b__nudge--top">À propos</h2>
+        <hr>
         <div class="text--body text--dark" id="citizen-project-problem-description">
             <p class="text--bold">Le problème</p>
             <p>{{ citizen_project.problemDescription|nl2br }}</p>
         </div>
-
+        <hr>
         <div class="text--body text--dark" id="citizen-project-proposed-solution">
             <p class="text--bold">Notre projet</p>
             <p>{{ citizen_project.proposedSolution|raw }}</p>
         </div>
+        <hr>
 
         <div class="text--body text--dark" id="citizen-project-required-means">
             <p class="text--bold">Les actions à lancer</p>
@@ -94,17 +96,11 @@
                 <a class="{{ currentRoute == 'app_citizen_project_show' ? 'active' }}" href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}">Actions terrain à venir</a>
             </li>
             {% if can_see_comment_citizen_project(citizen_project) %}
-            <li>
-                <a href="{{ path('app_citizen_project_show_comments', {slug: citizen_project.slug}) }}">Discussions</a>
-            </li>
-            <li>
-                {% if can_create_citizen_action(citizen_project) %}
-                    <a href="{{ path('app_citizen_action_manager_create', {project_slug: citizen_project.slug}) }}">Créer une action citoyenne</a>
-                {% endif %}
-            </li>
+                <li>
+                    <a class="{{ currentRoute == 'app_citizen_project_show_comments' ? 'active' }}" href="{{ path('app_citizen_project_show_comments', {slug: citizen_project.slug}) }}">Fil de discussion</a>
+                </li>
             {% endif %}
         </ul>
-
         <section>
             {% block citizen_project_show_content %}{% endblock %}
         </section>

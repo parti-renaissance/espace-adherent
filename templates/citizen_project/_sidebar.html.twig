@@ -2,7 +2,7 @@
 
     <div class="citizen-project__card b__nudge--top-40">
         {% if is_granted('REPORT') %}
-            <a href="{{ report_path(citizen_project, app.request.pathInfo) }}" class="text--body link--newblue">Signaler ce projet</a>
+            <a href="{{ report_path(citizen_project, app.request.pathInfo) }}" class="text--body link--newblue">Signaler un abus</a>
         {% endif %}
     </div>
 
@@ -87,7 +87,7 @@
             <form method="post" id="committee-confirm-support-form" class="form citizen-project-form" action="{{ path('app_citizen_project_committee_support', {slug: citizen_project.slug}) }}">
                 {{ form_widget(form_committee_support) }}
                 <div>
-                    <button type="submit" id="committee-confirm-support" class="newbtn newbtn--hollow newbtn--smaller">
+                    <button type="submit" id="committee-confirm-support" class="newbtn--small btn--blue b__nudge--top">
                         {% if citizen_project.isSupportedByCommitteeUuid(app.user.memberships.committeeSupervisorMemberships.last.committeeUuid.toString) %}
                             Retirer mon soutien à ce projet
                         {% else %}

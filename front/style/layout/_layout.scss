@@ -36,7 +36,6 @@
         &-left {
             margin-right: 30px;
         }
-
         @media (max-width: $tablet) {
             order: 2;
             margin: 0;
@@ -50,7 +49,6 @@
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
         border: solid 1px $border-gray;
         text-align: center;
-
         @media (max-width: $mobile) {
             border: 0;
             width: 100%;
@@ -183,7 +181,7 @@
         }
 
         &--half {
-          flex-basis: 50%;
+            flex-basis: 50%;
         }
     }
 
@@ -246,13 +244,10 @@
         }
     }
 }
-
 // Blocks
-
 .space {
     &--100-0 {
         padding: 100px 0;
-
         @media (max-width: $mobile) {
             padding: 70px 0;
         }
@@ -322,7 +317,6 @@
     }
 
     &__nudge {
-
         &--top-50 {
             margin-top: 50px;
         }
@@ -420,9 +414,7 @@
         }
     }
 }
-
 // TODO: need better way to manage bg images, maybe a scss file just for that
-
 .topstory-side {
     flex: 1;
     height: 370px;
@@ -440,4 +432,24 @@
     background-size: cover;
     background-position: center;
     padding: 0 25px;
+}
+
+.flex {
+    &--center {
+        @include flex(center);
+
+        &--mobile {
+            @media (max-width: $mobile) {
+                @include flex(center);
+            }
+        }
+    }
+
+    &--left {
+        @include flex(flex-start);
+    }
+}
+
+.block {
+    display: block !important;
 }

@@ -584,7 +584,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
     {
         $crawler = $this->client->getCrawler();
         $this->assertContains($author, $crawler->filter('.citizen-project-comment')->eq($position)->text());
-        $this->assertContains($text, $crawler->filter('.citizen-project-comment p')->eq($position)->text());
+        $this->assertContains($text, $crawler->filter('.citizen-project-comment div:nth-child(2) p')->eq($position)->text());
     }
 
     private function seeCommentSection(): bool
@@ -619,7 +619,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
     private function seeReportLink(): bool
     {
         try {
-            $this->client->getCrawler()->selectLink('Signaler ce projet')->link();
+            $this->client->getCrawler()->selectLink('Signaler un abus')->link();
         } catch (\InvalidArgumentException $e) {
             return false;
         }

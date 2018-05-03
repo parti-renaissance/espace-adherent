@@ -42,7 +42,7 @@
                         {{ include('citizen_project/_form.html.twig') }}
 
                         {% if form.cgu is defined %}
-                            <div class="form__new form__new__checkbox">
+                            <div class="form__checkbox form__checkbox--large">
                                 <div>
                                     {{ form_widget(form.cgu) }}
                                     {% block _form_cgu_label %}
@@ -61,11 +61,11 @@
                         </p>
 
                         {% if form.data_processing is defined %}
-                            <div class="form__new form__new__checkbox">
+                            <div class="form__checkbox form__checkbox--large ">
                                 <div>
                                     {{ form_widget(form.data_processing) }}
                                     {% block _form_data_processing_label %}
-                                        <label for="citizen_project_data_processing">J’adhère aux <a href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/CGU%20-%20Projets%20Citoyens.pdf" target="_blank" rel="noopener" class="link--blue">Conditions Générales d’Utilisation des Projets citoyens</a> et à la <a href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/La%20Charte%20des%20Projets%20Citoyens.pdf" target="_blank" class="link--blue">Charte des Projets citoyens</a></label>
+                                        <label class="block" for="citizen_project_data_processing">J’adhère aux <a href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/CGU%20-%20Projets%20Citoyens.pdf" target="_blank" rel="noopener" class="link--blue">Conditions Générales d’Utilisation des Projets citoyens</a> et à la <a href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/La%20Charte%20des%20Projets%20Citoyens.pdf" target="_blank" class="link--blue">Charte des Projets citoyens</a></label>
                                     {% endblock %}
                                 </div>
                                 {{ form_errors(form.data_processing) }}

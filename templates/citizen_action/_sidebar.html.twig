@@ -1,8 +1,8 @@
 <aside class="text--body text--dark b__nudge--top-40 citizen_action__aside l__wrapper--aside">
 
-    <div class="citizen_action__card b__nudge--top-40">
+    <div class="citizen_action__card b__nudge--bottom">
         {% if is_granted('REPORT') %}
-            <a href="{{ report_path(citizen_action, app.request.pathInfo) }}" class="text--body link--newblue">Signaler cette action</a>
+            <a href="{{ report_path(citizen_action, app.request.pathInfo) }}" class="text--body link--newblue b__nudge--bottom">Signaler un abus</a>
         {% endif %}
     </div>
 
@@ -10,7 +10,7 @@
         <h3>Quand</h3>
         <div>{{ citizen_action.beginAt|localizeddate('full', 'none')|capitalize }}</div>
         <div>De {{ citizen_action.beginAt|date('G\\hi') }} à {{ citizen_action.finishAt|date('G\\hi') }}</div>
-        <a href="{{ path('app_citizen_action_export_ical', {slug: citizen_action.slug}) }}">Ajouter au calendrier</a>
+        <a href="{{ path('app_citizen_action_export_ical', {slug: citizen_action.slug}) }}" class="link--no-decor text--blue text--normal text--summary">Ajouter au calendrier</a>
     </div>
 
     <div class="citizen_action__card b__nudge--top-large">
@@ -19,17 +19,17 @@
         <div>{{ citizen_action.address }}</div>
         <div>{{ citizen_action.cityName }}, {{ citizen_action.postalCode }}</div>
 
-        <a href="https://www.google.fr/maps/place/'{{ citizen_action.address }},+{{ citizen_action.postalCode }}+{{ citizen_action.cityName }}'">Itinéraire</a>
+        <a href="https://www.google.fr/maps/place/'{{ citizen_action.address }},+{{ citizen_action.postalCode }}+{{ citizen_action.cityName }}'" class="link--no-decor text--blue text--normal text--summary">Itinéraire</a>
     </div>
 
-    <div class="citizen_action__card b__nudge--top-large">
+    <div class="citizen_action__card b__nudge--bottom-large b__nudge--top-large">
         <h3>Organisé par</h3>
         {% if citizen_action.organizer %}
-            <div class="citizen-action-organizer text--body">
-                <span class="text--bold">{{ is_granted('IS_AUTHENTICATED_FULLY') ? citizen_action.organizer.fullName : citizen_action.organizer.partialName }}</span>
+            <div class="citizen-action-organizer text--body b__nudge--bottom">
+                <span class="text--bold flex--center">{{ is_granted('IS_AUTHENTICATED_FULLY') ? citizen_action.organizer.fullName : citizen_action.organizer.partialName }}</span>
                 <a href="{{ path('app_adherent_contact', {uuid: citizen_action.organizer.uuid, from: 'citizen_project', id: citizen_action.uuid.toString}) }}"
-                   class="link--no-decor text--blue text--normal text--summary">
-                    Contacter >
+                   class="link--no-decor text--blue text--normal text--summary ">
+                    Contacter
                 </a>
             </div>
         {% else %}
