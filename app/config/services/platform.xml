@@ -71,6 +71,7 @@
             <argument type="service" id="AppBundle\Membership\AdherentManager"/>
             <argument type="service" id="app.committee.manager"/>
             <argument type="service" id="AppBundle\Referent\ReferentTagManager"/>
+            <argument type="service" id="AppBundle\Membership\MembershipRegistrationProcess"/>
         </service>
 
         <service id="app.adherent_change_password_handler" class="AppBundle\Membership\AdherentChangePasswordHandler">

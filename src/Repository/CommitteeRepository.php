@@ -21,8 +21,9 @@ class CommitteeRepository extends EntityRepository
         findOneByUuid as findOneByValidUuid;
     }
 
-    const ONLY_APPROVED = 1;
-    const INCLUDE_UNAPPROVED = 2;
+    public const ONLY_APPROVED = 1;
+    public const INCLUDE_UNAPPROVED = 2;
+    public const DEFAULT_MAX_RESULTS_LIST = 3;
 
     public function countElements(): int
     {
@@ -85,13 +86,26 @@ class CommitteeRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
+    public function findLastApprovedCommittees(int $count = self::DEFAULT_MAX_RESULTS_LIST): array
+    {
+        return $this
+            ->createQueryBuilder('committee')
+            ->where('committee.status = :status')
+            ->setParameter('status', Committee::APPROVED)
+            ->orderBy('committee.approvedAt', 'DESC')
+            ->setMaxResults($count)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     /**
-     * @param int         $count
      * @param Coordinates $coordinates
+     * @param int         $count
      *
      * @return Committee[]
      */
-    public function findNearbyCommittees(int $count, Coordinates $coordinates)
+    public function findNearbyCommittees(Coordinates $coordinates, int $count = self::DEFAULT_MAX_RESULTS_LIST)
     {
         $qb = $this
             ->createNearbyQueryBuilder($coordinates)

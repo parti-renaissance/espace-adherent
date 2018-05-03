@@ -33,4 +33,18 @@ class FeatureContext extends RawMinkContext
 
         $field->click();
     }
+
+    /**
+     * @Then I should see :text :times times
+     */
+    public function iShouldSeeTextManyTimes(string $text, int $times)
+    {
+        $count = substr_count($this->getSession()->getPage()->getText(), $text);
+
+        if ($times !== $count) {
+            throw new \Exception(
+                sprintf('Found %d occurences of "%s" when expecting %d', $count, $text, $times)
+            );
+        }
+    }
 }

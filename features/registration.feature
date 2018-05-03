@@ -6,6 +6,7 @@ Feature:
   Scenario: I can register as an adherent
     Given the following fixtures are loaded:
       | LoadReferentTagData |
+      | LoadAdherentData    |
     When I am on "/adhesion"
     And I fill in the following:
       | adherent_registration[firstName]            | Jean-Pierre         |
@@ -28,6 +29,21 @@ Feature:
     And I clean the "api_sync" queue
     And I press "Je rejoins La République En Marche"
     And the response status code should be 200
+    Then I should be on "/inscription/centre-interets"
+
+    Given I check "Sport"
+    When I press "Continuer"
+    Then I should be on "/inscription/choisir-des-comites"
+    And the response status code should be 200
+    And I should see "Je veux suivre ce comité" 3 times
+
+    Given I press "Continuer"
+    Then I should be on "/inscription/don"
+    And the response status code should be 200
+    And I should see "Vous êtes une majorité à donner 50€"
+
+    When I click the "skip-donation" element
+    Then the response status code should be 200
     And I should be on "/presque-fini"
     Then the adherent "jp@test.com" should have the "94" referent tag
     And "api_sync" should have 1 message
@@ -73,9 +89,6 @@ Feature:
     Then I should see "Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau."
 
     When I click on the email link "activation_link"
-    Then I should be on "/inscription/centre-interets"
-    And I check "Sport"
-    And I press "Continuer"
     Then I should be on "/espace-adherent/accueil"
     And the response status code should be 200
 

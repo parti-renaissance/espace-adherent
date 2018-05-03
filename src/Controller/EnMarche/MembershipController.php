@@ -3,6 +3,8 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Address\GeoCoder;
+use AppBundle\Committee\CommitteeManager;
+use AppBundle\Donation\DonationRequest;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
@@ -10,11 +12,16 @@ use AppBundle\Exception\AdherentTokenExpiredException;
 use AppBundle\Form\AdherentInterestsFormType;
 use AppBundle\Form\AdherentRegistrationType;
 use AppBundle\Form\BecomeAdherentType;
+use AppBundle\Form\CommitteeAroundAdherentType;
 use AppBundle\Form\UserRegistrationType;
+use AppBundle\Geocoder\CoordinatesFactory;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\Membership\MembershipRequestHandler;
+use AppBundle\Membership\MembershipRegistrationProcess;
 use AppBundle\OAuth\CallbackManager;
+use AppBundle\Repository\AdherentRepository;
+use AppBundle\Repository\CommitteeRepository;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -91,7 +98,7 @@ class MembershipController extends Controller
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->get(MembershipRequestHandler::class)->registerAsAdherent($membership);
 
-                return $this->redirectToRoute('app_membership_complete');
+                return $this->redirectToRoute('app_membership_pin_interests');
             }
         } catch (ConnectException $e) {
             $this->addFlash('error_recaptcha', $this->get('translator')->trans('recaptcha.error'));
@@ -148,8 +155,10 @@ class MembershipController extends Controller
      * @Route("/presque-fini", name="app_membership_complete")
      * @Method("GET")
      */
-    public function completeAction(): Response
+    public function completeAction(MembershipRegistrationProcess $membershipRegistrationProcess): Response
     {
+        $membershipRegistrationProcess->terminate();
+
         if ($this->getUser()) {
             $this->redirectToRoute('homepage');
         }
@@ -187,7 +196,7 @@ class MembershipController extends Controller
 
                 $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
 
-                return $callbackManager->redirectToClientIfValid('app_membership_pin_interests');
+                return $callbackManager->redirectToClientIfValid('app_adherent_home');
             }
 
             return $callbackManager->redirectToClientIfValid('app_membership_join');
@@ -203,16 +212,22 @@ class MembershipController extends Controller
     }
 
     /**
-     * This action enables a new user to pin his/her interests after the account activation by email.
+     * This action enables a new user to pin his/her interests during the registration process.
      *
      * @Route("/inscription/centre-interets", name="app_membership_pin_interests")
      * @Method("GET|POST")
-     *
-     * @Security("is_granted('ROLE_ADHERENT')")
+     * @Security("is_granted('MEMBERSHIP_REGISTRATION_IN_PROGRESS')")
      */
-    public function pinInterestsAction(Request $request): Response
-    {
-        $form = $this->createForm(AdherentInterestsFormType::class, $this->getUser())
+    public function pinInterestsAction(
+        Request $request,
+        AdherentRepository $adherentRepository,
+        MembershipRegistrationProcess $membershipRegistrationProcess
+    ): Response {
+        if (!$adherent = $adherentRepository->findByUuid($membershipRegistrationProcess->getAdherentUuid())) {
+            throw $this->createNotFoundException('New adherent not found.');
+        }
+
+        $form = $this->createForm(AdherentInterestsFormType::class, $adherent)
             ->add('pass', SubmitType::class)
             ->add('submit', SubmitType::class)
         ;
@@ -222,11 +237,78 @@ class MembershipController extends Controller
                 $this->getDoctrine()->getManager()->flush();
             }
 
-            return $this->redirectToRoute('app_adherent_home');
+            return $this->redirectToRoute('app_membership_choose_committees_around_adherent');
         }
 
         return $this->render('membership/pin_interests.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * This action enables a user to follow some committees during the registration process.
+     *
+     * @Route("/inscription/choisir-des-comites", name="app_membership_choose_committees_around_adherent")
+     * @Method("GET|POST")
+     * @Security("is_granted('MEMBERSHIP_REGISTRATION_IN_PROGRESS')")
+     */
+    public function chooseCommitteesAction(
+        Request $request,
+        AdherentRepository $adherentRepository,
+        CommitteeRepository $committeeRepository,
+        MembershipRegistrationProcess $membershipRegistrationProcess,
+        CoordinatesFactory $coordinatesFactory,
+        CommitteeManager $committeeManager
+    ): Response {
+        /** @var Adherent $adherent */
+        if (!$adherent = $adherentRepository->findByUuid($membershipRegistrationProcess->getAdherentUuid())) {
+            throw $this->createNotFoundException('New adherent not found.');
+        }
+
+        $coordinates = $coordinatesFactory->createFromPostAddress($adherent->getPostAddress());
+        $committees = null === $coordinates ?
+            $committeeManager->getLastApprovedCommitteesAndMembers() :
+            $committeeManager->getCommitteesAndMembersByCoordinates($coordinates)
+        ;
+
+        $form = $this
+            ->createForm(CommitteeAroundAdherentType::class, null, [
+                'committees' => $committees,
+            ])
+            ->add('pass', SubmitType::class)
+            ->add('submit', SubmitType::class)
+        ;
+
+        if ($form->handleRequest($request)->isSubmitted()) {
+            if ($form->get('submit')->isClicked() && $form->isValid()) {
+                $committeeManager->followCommittees($adherent, $form->get('committees')->getData());
+            }
+
+            return $this->redirectToRoute('app_membership_donation');
+        }
+
+        return $this->render('membership/choose_committees.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * This action enables a user to donate during the registration process.
+     *
+     * @Route("/inscription/don", name="app_membership_donation")
+     * @Method("GET")
+     * @Security("is_granted('MEMBERSHIP_REGISTRATION_IN_PROGRESS')")
+     */
+    public function donationAction(
+        AdherentRepository $adherentRepository,
+        MembershipRegistrationProcess $membershipRegistrationProcess
+    ): Response {
+        if (!$adherentRepository->findByUuid($membershipRegistrationProcess->getAdherentUuid())) {
+            throw $this->createNotFoundException('New adherent not found.');
+        }
+
+        return $this->render('membership/donation.html.twig', [
+            'amount' => DonationRequest::DEFAULT_AMOUNT,
         ]);
     }
 }

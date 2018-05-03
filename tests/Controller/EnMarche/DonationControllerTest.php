@@ -171,7 +171,7 @@ class DonationControllerTest extends SqliteWebTestCase
 
         $statusUrl = $appClient->getResponse()->headers->get('location');
         $statusUrlRegExp = '/don/(.+)'; // uuid
-        $statusUrlRegExp .= '/effectue\?code=donation_paybox_success&_status_token=(.+)';
+        $statusUrlRegExp .= '/effectue\?code=donation_paybox_success&is_new_adherent=0&_status_token=(.+)';
 
         $this->assertRegExp('#'.$statusUrlRegExp.'#', $statusUrl);
 
@@ -291,7 +291,7 @@ class DonationControllerTest extends SqliteWebTestCase
 
         $statusUrl = $appClient->getResponse()->headers->get('location');
         $statusUrlRegExp = '/don/(.+)'; // uuid
-        $statusUrlRegExp .= '/erreur\?code=paybox&_status_token=(.+)';
+        $statusUrlRegExp .= '/erreur\?code=paybox&is_new_adherent=0&_status_token=(.+)';
 
         $this->assertRegExp('#'.$statusUrlRegExp.'#', $statusUrl);
 
