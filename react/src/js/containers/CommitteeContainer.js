@@ -8,6 +8,7 @@ import SelectCustom from './../components/modules/SelectCustom';
 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Select from 'react-select';
+import * as Animated from 'react-select/lib/animated';
 
 import data from './../fakeData/data';
 
@@ -19,7 +20,7 @@ class CommitteeContainer extends Component {
 
     handleChange = (selectedOption) => {
         this.setState({ selectedOption });
-        // console.log(`Selected: ${selectedOption.label}`);
+        console.log(`Selected: ${selectedOption[1].value}`);
     };
 
     render() {
@@ -133,6 +134,7 @@ class CommitteeContainer extends Component {
                 <div className="committee__ctn__input">
                     {/* <Input committees={committees} id={'selectCommittee'} name={'selectCommittee'} /> */}
                     <Select
+                        components={Animated}
                         isMulti
                         value={selectedOption}
                         onChange={this.handleChange}
@@ -147,7 +149,6 @@ class CommitteeContainer extends Component {
                 </div>
                 {null !== selectedOption ? (
                     <div className="committee__ctn__bars">
-                        {console.log(selectedOption.label)}
                         <ResponsiveContainer>
                             <BarChart
                                 width={600}
@@ -182,6 +183,7 @@ class CommitteeContainer extends Component {
                                 />
                             </BarChart>
                         </ResponsiveContainer>
+
                         <ResponsiveContainer>
                             <BarChart
                                 width={600}

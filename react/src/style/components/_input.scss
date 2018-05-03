@@ -1,5 +1,4 @@
 .input__cpt {
-    border: 1px solid $pink-lighter;
     background: none;
     border-radius: 0;
     width: 97%;
@@ -42,7 +41,19 @@
     color: $blue-primary;
 }
 
-.select__cpt__control {
-    border: 1px solid $pink-lighter;
-    background: none;
+.input__cpt__control {
+    height: 50px;
+    border: 1px solid $pink-lighter !important;
+    background: none !important;
+}
+.input__cpt__multi-value {
+    background-color: $blue-primary !important;
+
+    &__label {
+        color: white !important;
+    }
+
+    &__remove {
+        color: white !important;
+    }
 }
