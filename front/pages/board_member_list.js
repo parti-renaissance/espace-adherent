@@ -20,8 +20,10 @@ export default (api) => {
             'btn-remove-member-list newbtn--green');
         }).catch((err) => {
             element.innerHTML = 'Sauvegarder ce profil';
+            /* eslint-disable no-alert */
             window.alert('Nous n\'arrivons pas à ajouter cette personne à votre liste.\n' +
                          'Actualisez votre page et réessayez !');
+            /* eslint-enable no-alert */
         });
     }
 
@@ -37,8 +39,10 @@ export default (api) => {
             element.innerHTML = 'Sauvegarder ce profil';
         }).catch((err) => {
             element.innerHTML = 'Profil sauvegardé';
+            /* eslint-disable no-alert */
             window.alert('Nous n\'arrivons pas à supprimer cette personne de votre liste.\n' +
                          'Actualisez votre page et réessayez !');
+            /* eslint-enable no-alert */
         });
     }
 

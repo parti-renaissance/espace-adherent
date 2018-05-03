@@ -12,7 +12,7 @@
     {% import 'javascript.js.twig' as js %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            App.runRegistration();
+            App.runRegistration('{{ form.vars.form_type_class|e('js') }}');
         });
     </script>
     <script src="https://www.google.com/recaptcha/api.js"></script>

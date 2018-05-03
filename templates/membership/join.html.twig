@@ -17,7 +17,7 @@
     {% import 'javascript.js.twig' as js %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            App.runJoin();
+            App.runJoin('{{ form.vars.form_type_class|e('js') }}');
             {{ js.address(form.address) }}
         });
     </script>
@@ -113,18 +113,20 @@
                                      {{ form_errors(form.gender) }}
                                  </div>
                             </div>
-                            <p class="b__nudge--bottom-tiny text--bold">Téléphone</p>
-                            <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                                <div class=" register__form--mid">
-                                    {{ form_widget(form.phone.country, { placeholder: 'Indicatif Pays' }) }}
+                            <div id="{{ form.phone.vars.id }}">
+                                <p class="b__nudge--bottom-tiny text--bold">Téléphone</p>
+                                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                                    <div class=" register__form--mid">
+                                        {{ form_widget(form.phone.country, { placeholder: 'Indicatif Pays' }) }}
+                                    </div>
+                                    <div class="register__form--mid">
+                                        {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
+                                        {{ form_errors(form.phone.country) }}
+                                        {{ form_errors(form.phone.number) }}
+                                    </div>
                                 </div>
-                                <div class="register__form--mid">
-                                    {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
-                                    {{ form_errors(form.phone.country) }}
-                                    {{ form_errors(form.phone.number) }}
-                                </div>
+                                {{ form_errors(form.phone) }}
                             </div>
-                            {{ form_errors(form.phone) }}
                         </div>
 
                         <div class="space--10-0"></div>

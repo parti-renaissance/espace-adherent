@@ -37,8 +37,8 @@ class DonationControllerTest extends SqliteWebTestCase
 
     public function getInvalidSubscriptionsUrl(): iterable
     {
-        yield ['/don/coordonnees?montant=30&abonnement=42']; // invalid subscription
-        yield ['/don/coordonnees?abonnement=-1']; // without amount
+        yield 'invalid subscription' => ['/don/coordonnees?montant=30&abonnement=42'];
+        yield 'without amount' => ['/don/coordonnees?abonnement=-1'];
     }
 
     public function testPayboxPreprodIsHealthy()

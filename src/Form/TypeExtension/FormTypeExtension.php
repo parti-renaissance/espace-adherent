@@ -22,6 +22,7 @@ class FormTypeExtension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['form_full'] = $options['form_full'];
+        $view->vars['form_type_class'] = \get_class($form->getConfig()->getType()->getInnerType());
     }
 
     public function configureOptions(OptionsResolver $resolver)
