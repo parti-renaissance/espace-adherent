@@ -4188,45 +4188,6 @@ a {
     .select__cpt {
       width: 100%; } }
 
-.input__cpt {
-  border: 1px solid rgba(248, 188, 188, 0.2);
-  background: none;
-  border-radius: 0;
-  width: 97%;
-  font-size: 16px;
-  line-height: 24px;
-  color: #4A90E2;
-  text-transform: uppercase;
-  font-weight: 100; }
-  @media (max-width: 650px) {
-    .input__cpt {
-      width: 100%; } }
-
-.Select-placeholder {
-  height: 50px;
-  color: #4A90E2;
-  padding-top: 10px; }
-
-.Select-input {
-  padding-top: 10px; }
-
-.Select-control {
-  border: 1px solid rgba(248, 188, 188, 0.2);
-  height: 50px; }
-
-.Select-value {
-  padding-top: 10px; }
-
-.Select-clear {
-  line-height: 2; }
-
-.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label {
-  color: #4A90E2; }
-
-.select__cpt__control {
-  border: 1px solid rgba(248, 188, 188, 0.2);
-  background: none; }
-
 .recharts-wrapper {
   border: 1px solid rgba(248, 188, 188, 0.2);
   border-radius: 3px;
@@ -4303,3 +4264,49 @@ span.recharts-legend-item-text {
     font-size: 10px;
     color: white;
     margin-right: 20px; }
+
+.input__cpt {
+  background: none;
+  border-radius: 0;
+  width: 97%;
+  font-size: 16px;
+  line-height: 24px;
+  color: #4A90E2;
+  text-transform: uppercase;
+  font-weight: 100; }
+  @media (max-width: 650px) {
+    .input__cpt {
+      width: 100%; } }
+
+.Select-placeholder {
+  height: 50px;
+  color: #4A90E2;
+  padding-top: 10px; }
+
+.Select-input {
+  padding-top: 10px; }
+
+.Select-control {
+  border: 1px solid rgba(248, 188, 188, 0.2);
+  height: 50px; }
+
+.Select-value {
+  padding-top: 10px; }
+
+.Select-clear {
+  line-height: 2; }
+
+.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label {
+  color: #4A90E2; }
+
+.input__cpt__control {
+  height: 50px;
+  border: 1px solid rgba(248, 188, 188, 0.2) !important;
+  background: none !important; }
+
+.input__cpt__multi-value {
+  background-color: #4A90E2 !important; }
+  .input__cpt__multi-value__label {
+    color: white !important; }
+  .input__cpt__multi-value__remove {
+    color: white !important; }
