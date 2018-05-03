@@ -30,7 +30,8 @@
                 width: 340px;
             }
 
-            button, a {
+            button,
+            a {
                 @include text--medium-small;
                 @include newbtn;
                 padding: 29px 20px 24px;
@@ -87,7 +88,7 @@
                 background-size: 34px;
             }
 
-            input[type="file"] {
+            input[type='file'] {
                 border: 1px dashed #ddd;
                 background-color: white;
                 position: relative;
@@ -175,5 +176,38 @@
                 border: 0;
             }
         }
+    }
+
+    &__waiting-for-approval {
+        background-color: $yellow--light;
+        padding: 10px;
+    }
+}
+
+.skill-remove,
+.committee-remove {
+    font-size: $text--size-xs;
+    position: relative;
+    bottom: 1px;
+    margin-right: 5px;
+}
+
+.summary-skill,
+.summary-committee {
+    background-color: $purple;
+    color: white;
+    display: inline;
+    padding: 5px 10px;
+    border-radius: 50px;
+    font-size: $text--size-smallest;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: all 0.5s;
+    border: 1px solid $purple;
+
+    &:hover {
+        transition: all 0.5s;
+        background-color: white;
+        color: $purple;
     }
 }
