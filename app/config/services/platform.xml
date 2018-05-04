@@ -123,6 +123,7 @@
         </service>
         <service id="AppBundle\Committee\CommitteeManager">
             <argument type="service" id="doctrine"/>
+            <argument type="service" id="event_dispatcher"/>
         </service>
 
         <service id="app.committee.authority" class="AppBundle\Committee\CommitteeManagementAuthority">

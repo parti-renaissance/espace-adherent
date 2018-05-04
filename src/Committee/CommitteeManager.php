@@ -8,6 +8,7 @@ use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
+use AppBundle\Events;
 use AppBundle\Exception\CommitteeMembershipException;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Coordinator\Filter\CommitteeFilter;
@@ -18,6 +19,7 @@ use AppBundle\Repository\CommitteeRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeManager
 {
@@ -27,10 +29,12 @@ class CommitteeManager
     private const COMMITTEE_PROPOSALS_COUNT = 3;
 
     private $registry;
+    private $disaptcher;
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, EventDispatcherInterface $dispatcher)
     {
         $this->registry = $registry;
+        $this->dispatcher = $dispatcher;
     }
 
     public function isPromotableHost(Adherent $adherent, Committee $committee): bool
@@ -266,6 +270,8 @@ class CommitteeManager
         if ($flush) {
             $this->getManager()->flush();
         }
+
+        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
     }
 
     /**
@@ -281,6 +287,8 @@ class CommitteeManager
         if ($flush) {
             $this->getManager()->flush();
         }
+
+        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
     }
 
     /**
@@ -304,6 +312,8 @@ class CommitteeManager
         if ($flush) {
             $this->getManager()->flush();
         }
+
+        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
     }
 
     /**
@@ -319,6 +329,8 @@ class CommitteeManager
         if ($flush) {
             $this->getManager()->flush();
         }
+
+        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
     }
 
     public function isFollowingCommittee(Adherent $adherent, Committee $committee): bool
@@ -362,6 +374,8 @@ class CommitteeManager
         if ($flush) {
             $manager->flush();
         }
+
+        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
     }
 
     /**
