@@ -52,6 +52,8 @@
         </prototype>
 
         <!-- Donation -->
+        <service id="AppBundle\Validator\PayboxSubscriptionValidator" />
+        <service id="AppBundle\Validator\UniqueDonationSubscriptionValidator" />
         <service id="AppBundle\Donation\DonationFactory" />
         <service id="AppBundle\Donation\PayboxPaymentUnsubscription">
             <argument type="service" id="app.mailer.transactional" key="$mailer"/>

@@ -7,6 +7,7 @@
 
         <prototype namespace="AppBundle\Repository\ReferentOrganizationalChart\" resource="../../../src/Repository/ReferentOrganizationalChart/*" />
         <service id="AppBundle\Repository\ReferentRepository" />
+        <service id="AppBundle\Repository\DonationRepository" />
 
         <service id="app.repository.adherent" class="AppBundle\Repository\AdherentRepository" >
             <argument>AppBundle\Entity\Adherent</argument>

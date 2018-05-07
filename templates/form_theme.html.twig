@@ -81,7 +81,11 @@
     <ul id="{{ id }}_errors" class="form form__errors">
         {%- for error in errors -%}
             <li class="form__error">
-                {{- error.message -}}
+                {%- if error_raw -%}
+                    {{- error.message|raw -}}
+                {%- else -%}
+                    {{- error.message -}}
+                {%- endif -%}
             </li>
         {%- endfor -%}
     </ul>

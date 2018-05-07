@@ -36,9 +36,9 @@ Feature: Test donation page
     And I should see "La requête n'a pas abouti, veuillez réessayer s'il vous plait."
 
   Scenario: Be able to navigate in my donation page as an adherent without monthly donations
-    Given I am logged as "michelle.dufour@example.ch"
+    Given I am logged as "luciole1989@spambox.fr"
     And I am on "/parametres/mon-compte"
-    And I should see "michelle.dufour@example.ch"
+    And I should see "luciole1989@spambox.fr"
 
     When I follow "Mes dons"
     Then I should be on "/parametres/mon-compte/mes-dons"

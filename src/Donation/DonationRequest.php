@@ -4,6 +4,7 @@ namespace AppBundle\Donation;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Validator\PayboxSubscription as AssertPayboxSubscription;
+use AppBundle\Validator\UniqueDonationSubscription;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use AppBundle\ValueObject\Genders;
 use libphonenumber\PhoneNumber;
@@ -12,9 +13,12 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @UniqueDonationSubscription
+ */
 class DonationRequest
 {
-    const DEFAULT_AMOUNT = 50.0;
+    public const DEFAULT_AMOUNT = 50.0;
 
     private $uuid;
 
@@ -326,5 +330,10 @@ class DonationRequest
         }
 
         return $phone;
+    }
+
+    public function isSubscription(): bool
+    {
+        return PayboxPaymentSubscription::NONE !== $this->duration;
     }
 }

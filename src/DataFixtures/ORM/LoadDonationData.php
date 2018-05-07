@@ -14,7 +14,7 @@ class LoadDonationData extends Fixture
     public function load(ObjectManager $manager)
     {
         /** @var Adherent $adherent1 */
-        $adherent1 = $this->getReference('adherent-1');
+        $adherent1 = $this->getReference('adherent-4');
         /** @var Adherent $adherent2 */
         $adherent2 = $this->getReference('adherent-3');
 
@@ -35,6 +35,16 @@ class LoadDonationData extends Fixture
         $manager->persist($donation2);
         $manager->persist($donation3);
         $manager->persist($donation4);
+
+        /** @var Adherent $adherent1 */
+        $adherent1 = $this->getReference('adherent-1');
+
+        $donationNormal = $this->create($adherent1);
+        $donationMonthly = $this->create($adherent1, 42., PayboxPaymentSubscription::UNLIMITED);
+
+        $manager->persist($donationNormal);
+        $manager->persist($donationMonthly);
+
         $manager->flush();
     }
 

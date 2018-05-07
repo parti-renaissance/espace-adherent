@@ -4,12 +4,18 @@ namespace AppBundle\Repository;
 
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
-class DonationRepository extends EntityRepository
+class DonationRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
+    }
+
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Donation::class);
     }
 
     /**

@@ -28,7 +28,7 @@ class PayboxPaymentUnsubscription
     public function unsubscribe(Donation $donation): void
     {
         $result = [];
-        parse_str($this->request->cancel($this->donationRequestUtils->buildDonationReference($donation)), $result);
+        parse_str($this->request->cancel($this->donationRequestUtils->buildDonationReference($donation, false)), $result);
 
         if ('OK' !== $result['ACQ']) {
             throw new PayboxPaymentUnsubscriptionException($result['ERREUR']);

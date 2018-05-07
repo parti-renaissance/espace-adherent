@@ -12,6 +12,7 @@ use AppBundle\Exception\InvalidPayboxPaymentSubscriptionValueException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -43,6 +44,7 @@ class DonationRequestUtils
         // Other
         self::PAYBOX_UNKNOWN => 'error',
     ];
+    private const SESSION_KEY = 'donation_request';
 
     private $locator;
     private $slugify;
@@ -58,6 +60,10 @@ class DonationRequestUtils
      */
     public function createFromRequest(Request $request, ?Adherent $currentUser): DonationRequest
     {
+        if ($donation = $this->getSession()->get(static::SESSION_KEY)) {
+            return $donation;
+        }
+
         $clientIp = $request->getClientIp();
         $amount = (float) $request->query->get('montant');
         $duration = $request->query->getInt('abonnement', PayboxPaymentSubscription::NONE);
@@ -77,6 +83,16 @@ class DonationRequestUtils
         }
 
         return $donation;
+    }
+
+    public function startDonationRequest(DonationRequest $donationRequest): void
+    {
+        $this->getSession()->set(static::SESSION_KEY, $donationRequest);
+    }
+
+    public function terminateDonationRequest(): void
+    {
+        $this->getSession()->remove(static::SESSION_KEY);
     }
 
     public function buildCallbackParameters()
@@ -123,14 +139,18 @@ class DonationRequestUtils
         ];
     }
 
-    public function buildDonationReference(Donation $donation): string
+    public function buildDonationReference(Donation $donation, bool $withSuffix = true): string
     {
-        return sprintf(
-            '%s_%s%s',
+        $str = sprintf(
+            '%s_%s',
             $donation->getUuid()->toString(),
-            $this->slugify->slugify($donation->getFullName()),
-            PayboxPaymentSubscription::getCommandSuffix($donation->getAmount(), $donation->getDuration())
+            $this->slugify->slugify($donation->getFullName())
         );
+        if ($withSuffix) {
+            $str .= PayboxPaymentSubscription::getCommandSuffix($donation->getAmount(), $donation->getDuration());
+        }
+
+        return $str;
     }
 
     private function hydrateFromRetryPayload(DonationRequest $request, string $payload): DonationRequest
@@ -192,6 +212,11 @@ class DonationRequestUtils
     private function getValidator(): ValidatorInterface
     {
         return $this->locator->get('validator');
+    }
+
+    private function getSession(): SessionInterface
+    {
+        return $this->locator->get('session');
     }
 
     private function getTokenManager(): CsrfTokenManagerInterface

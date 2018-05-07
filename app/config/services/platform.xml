@@ -346,11 +346,6 @@
             <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
         </service>
 
-        <!-- Donation Frequency -->
-        <service id="AppBundle\Validator\PayboxSubscriptionValidator">
-            <tag name="validator.constraint_validator" />
-        </service>
-
         <!-- Sync with API -->
 
         <!-- User subscriber -->
