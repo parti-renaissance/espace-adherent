@@ -69,7 +69,7 @@ class UserDocument
     /**
      * @var string|null
      *
-     * @ORM\Column(length=50)
+     * @ORM\Column
      */
     private $mimeType;
 
