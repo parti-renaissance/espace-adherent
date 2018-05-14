@@ -12,6 +12,7 @@ use AppBundle\Entity\CoordinatorManagedArea;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentFactory;
+use AppBundle\Referent\ReferentTagManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -588,6 +589,18 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         ]);
         $committee10->approved('2017-05-09 13:17:42');
 
+        $referentTagManager = $this->getReferentTagManager();
+        $referentTagManager->assignReferentLocalTags($committee1);
+        $referentTagManager->assignReferentLocalTags($committee2);
+        $referentTagManager->assignReferentLocalTags($committee3);
+        $referentTagManager->assignReferentLocalTags($committee4);
+        $referentTagManager->assignReferentLocalTags($committee5);
+        $referentTagManager->assignReferentLocalTags($committee6);
+        $referentTagManager->assignReferentLocalTags($committee7);
+        $referentTagManager->assignReferentLocalTags($committee8);
+        $referentTagManager->assignReferentLocalTags($committee9);
+        $referentTagManager->assignReferentLocalTags($committee10);
+
         // Make an adherent request a new password
         $resetPasswordToken = AdherentResetPasswordToken::generate($adherent1);
 
@@ -680,6 +693,11 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
     private function getCommitteeFactory(): CommitteeFactory
     {
         return $this->container->get('app.committee.factory');
+    }
+
+    private function getReferentTagManager(): ReferentTagManager
+    {
+        return $this->container->get(ReferentTagManager::class);
     }
 
     public function getDependencies()
