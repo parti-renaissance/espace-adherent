@@ -58,16 +58,17 @@ class AdherentRepositoryTest extends SqliteWebTestCase
 
         $managedByReferent = $this->repository->findAllManagedBy($referent);
 
-        $this->assertCount(9, $managedByReferent, 'Referent should manage 8 adherents + himself in his area.');
+        $this->assertCount(10, $managedByReferent, 'Referent should manage 9 adherents + himself in his area.');
         $this->assertSame('Damien SCHMIDT', $managedByReferent[0]->getFullName());
         $this->assertSame('Michel VASSEUR', $managedByReferent[1]->getFullName());
         $this->assertSame('Michelle Dufour', $managedByReferent[2]->getFullName());
         $this->assertSame('Thomas Leclerc', $managedByReferent[3]->getFullName());
-        $this->assertSame('Francis Brioul', $managedByReferent[4]->getFullName());
-        $this->assertSame('Referent Referent', $managedByReferent[5]->getFullName());
-        $this->assertSame('Referent child Referent child', $managedByReferent[6]->getFullName());
-        $this->assertSame('Benjamin Duroc', $managedByReferent[7]->getFullName());
-        $this->assertSame('Gisele Berthoux', $managedByReferent[8]->getFullName());
+        $this->assertSame('Laura Deloche', $managedByReferent[4]->getFullName());
+        $this->assertSame('Francis Brioul', $managedByReferent[5]->getFullName());
+        $this->assertSame('Referent Referent', $managedByReferent[6]->getFullName());
+        $this->assertSame('Referent child Referent child', $managedByReferent[7]->getFullName());
+        $this->assertSame('Benjamin Duroc', $managedByReferent[8]->getFullName());
+        $this->assertSame('Gisele Berthoux', $managedByReferent[9]->getFullName());
     }
 
     /**

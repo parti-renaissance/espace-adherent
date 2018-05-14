@@ -5,6 +5,7 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CommitteeFeedItem;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
@@ -74,7 +75,7 @@ class CommitteeFeedItemRepository extends EntityRepository
         $qb
             ->select('i, a, e')
             ->leftJoin('i.author', 'a')
-            ->leftJoin('i.event', 'e', 'WITH', 'e.id = :e_null OR e.published = :e_published')
+            ->leftJoin('i.event', 'e', Join::WITH, 'e.id = :e_null OR e.published = :e_published')
             ->leftJoin('i.committee', 'c')
             ->where('c.uuid = :committee')
             ->andWhere('i.published = :published')
