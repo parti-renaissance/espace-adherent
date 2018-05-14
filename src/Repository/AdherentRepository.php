@@ -576,4 +576,25 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
 
         return $count;
     }
+
+    public function countCommitteeMembersByGenderForReferentManagedArea(Adherent $referent): array
+    {
+        if (!$referent->isReferent()) {
+            throw new \InvalidArgumentException('Adherent must be a referent.');
+        }
+
+        return $this->createQueryBuilder('a', 'a.gender')
+            ->select('a.gender, COUNT(DISTINCT a) AS count')
+            ->join('a.memberships', 'cm')
+            ->join(Committee::class, 'c', 'WITH', 'c.uuid = cm.committeeUuid')
+            ->innerJoin('c.referentTags', 'tag')
+            ->where('tag IN (:tags)')
+            ->andWhere('c.status = :status')
+            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('status', Committee::APPROVED)
+            ->groupBy('a.gender')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
 }
