@@ -1,29 +1,29 @@
 .recharts-wrapper {
-	border: 1px solid $pink-lighter;
-	border-radius: 3px;
-	box-shadow: 0 1px 12px 0 rgba(248, 188, 188, 0.14);
+    border: 1px solid $pink-lighter;
+    border-radius: 3px;
+    box-shadow: 0 1px 12px 0 rgba(248, 188, 188, 0.14);
 }
 
 .recharts-legend-wrapper {
-	border-top: 1px solid $pink-lighter;
-	line-height: 50px;
-	@media (max-width: $mobile) {
-		display: none;
-	}
+    border-top: 1px solid $pink-lighter;
+    line-height: 50px;
+    @media (max-width: $mobile) {
+        display: none;
+    }
 }
 
 span.recharts-legend-item-text {
-	font-size: 13px;
-	margin-left: 5px;
+    font-size: 13px;
+    margin-left: 5px;
 }
 
 .recharts-responsive-container {
-	height: 300px !important;
-	max-width: 570px;
-	margin-top: 5px;
+    height: 300px !important;
+    max-width: 580px;
+    margin-top: 5px;
 
-	@media (max-width: $tablet) {
-		max-width: 100%;
-		margin-top: 20px;
-	}
+    @media (max-width: $tablet) {
+        max-width: 100%;
+        margin-top: 20px;
+    }
 }

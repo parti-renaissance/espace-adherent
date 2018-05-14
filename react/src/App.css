@@ -215,6 +215,9 @@
 .text--dark {
   color: #444; }
 
+.text--error {
+  color: #EE324A; }
+
 .text--inline {
   display: inline; }
 
@@ -287,6 +290,9 @@
 
 .text--margin-right {
   margin-right: 15px; }
+
+.text--shadow {
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4); }
 
 .link--white {
   color: white;
@@ -2104,18 +2110,18 @@ label {
     border-radius: 50px;
     margin-right: 10px;
     border: 7px solid #E5E5E5;
-    transition: all .2s;
+    transition: all 0.2s;
     background: #fff;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box; }
 
-.form__radio-button input[type="radio"] {
+.form__radio-button input[type='radio'] {
   position: absolute;
   z-index: -1;
   opacity: 0; }
-  .form__radio-button input[type="radio"]:checked + label:before {
+  .form__radio-button input[type='radio']:checked + label:before {
     border-color: #2ABAFF;
     background: white; }
 
@@ -2124,7 +2130,7 @@ label {
   background: white;
   display: inline-block;
   padding: 10px 20px;
-  transition: all .2s;
+  transition: all 0.2s;
   font-family: "Roboto", Helvetica, sans-serif;
   line-height: 1.5;
   font-size: 16px;
@@ -2142,7 +2148,7 @@ label {
   border-radius: 0 3px 3px 0;
   border-left: 0; }
 
-.form__radio-button--tab input[type="radio"] {
+.form__radio-button--tab input[type='radio'] {
   position: absolute;
   left: -50%;
   top: 50%;
@@ -2151,13 +2157,13 @@ label {
   margin: -11px 0 0 -9px;
   outline: 0;
   z-index: 1; }
-  .form__radio-button--tab input[type="radio"]:checked + label {
+  .form__radio-button--tab input[type='radio']:checked + label {
     background-color: #1D5FD1;
     color: white; }
 
 .form__checkbox {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   position: relative; }
   .form__checkbox--col {
     width: 25%; }
@@ -2166,7 +2172,7 @@ label {
         width: 50%; } }
   .form__checkbox label {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     margin: 5px 0;
     text-align: left; }
     .form__checkbox label:before {
@@ -2177,7 +2183,7 @@ label {
       min-height: 20px;
       margin-right: 10px;
       border: 1px solid #BCBCBC;
-      transition: all .2s;
+      transition: all 0.2s;
       background: #fff;
       display: inline-flex;
       align-items: center;
@@ -2194,11 +2200,11 @@ label {
     border-width: 2px; }
   .form__checkbox:hover label:before {
     background: #F6F6F6; }
-  .form__checkbox input[type="checkbox"] {
+  .form__checkbox input[type='checkbox'] {
     position: absolute;
     z-index: -1;
     opacity: 0; }
-    .form__checkbox input[type="checkbox"]:checked + label:before {
+    .form__checkbox input[type='checkbox']:checked + label:before {
       border-color: #1D5FD1;
       background: #1D5FD1;
       content: url("data:image/svg+xml;utf8,<svg width='14px' height='10px' viewBox='73 77 14 10' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><polygon id='check' stroke='none' fill='#ffffff' fill-rule='evenodd' points='73.1888049 82.5586077 74.5051607 80.8107776 80.0959758 85.0260906 78.77962 86.7739208'></polygon><polygon id='mark' stroke='none' fill='#ffffff' fill-rule='evenodd' points='77.2807085 85.3731308 85.0384399 77.0539824 86.6382761 78.5458538 78.8805447 86.8650022'></polygon></svg>"); }
@@ -2216,12 +2222,15 @@ label {
   .newsletter input {
     margin-right: 0; } }
 
-.newsletter-page, .invitation-page {
+.newsletter-page,
+.invitation-page {
   margin: 20px 0 100px 0; }
-  .newsletter-page__form, .invitation-page__form {
+  .newsletter-page__form,
+  .invitation-page__form {
     margin-top: 20px; }
 
-.newsletter-result, .invitation-result {
+.newsletter-result,
+.invitation-result {
   margin: 80px 0 100px 0;
   text-align: center; }
 
@@ -2290,7 +2299,7 @@ label {
     font-family: "Roboto", Helvetica, sans-serif;
     text-align: center; }
 
-input[type=date]::-webkit-inner-spin-button {
+input[type='date']::-webkit-inner-spin-button {
   display: none;
   -webkit-appearance: none; }
 
@@ -2370,7 +2379,7 @@ input[type=date]::-webkit-inner-spin-button {
   .form__new__checkbox > div {
     display: flex;
     align-items: flex-start; }
-  .form__new__checkbox input[type="checkbox"] {
+  .form__new__checkbox input[type='checkbox'] {
     width: 60px; }
   .form__new__checkbox label {
     order: 2;
@@ -2473,7 +2482,7 @@ input[type=date]::-webkit-inner-spin-button {
   .form__new__checkbox > div {
     display: flex;
     align-items: flex-start; }
-  .form__new__checkbox input[type="checkbox"] {
+  .form__new__checkbox input[type='checkbox'] {
     width: 20px;
     flex: none; }
   .form__new__checkbox label {
@@ -2892,6 +2901,24 @@ input[type=date]::-webkit-inner-spin-button {
   background-size: cover;
   background-position: center;
   padding: 0 25px; }
+
+.flex--center {
+  display: flex;
+  justify-content: center;
+  flex-direction: column; }
+  @media (max-width: 650px) {
+    .flex--center--mobile {
+      display: flex;
+      justify-content: center;
+      flex-direction: column; } }
+
+.flex--left {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column; }
+
+.block {
+  display: block !important; }
 
 @keyframes bigSpin {
   0% { }
@@ -4010,22 +4037,18 @@ a {
 .adherent__ctn__summary,
 .adherent__ctn__bars {
   display: flex;
-  justify-content: space-evenly; }
+  justify-content: space-around; }
   @media (max-width: 1000px) {
     .adherent__ctn__summary,
     .adherent__ctn__bars {
       flex-direction: column;
       align-items: center; } }
 
-.committee__ctn__summary,
-.committee__ctn__bars,
-.committee__ctn__ranking {
+.committee__ctn__summary, .committee__ctn__bars, .committee__ctn__ranking {
   display: flex;
-  justify-content: space-evenly; }
+  justify-content: space-between; }
   @media (max-width: 1000px) {
-    .committee__ctn__summary,
-    .committee__ctn__bars,
-    .committee__ctn__ranking {
+    .committee__ctn__summary, .committee__ctn__bars, .committee__ctn__ranking {
       flex-direction: column;
       align-items: center; } }
 
@@ -4040,6 +4063,10 @@ a {
   justify-content: space-between;
   margin: 25px 20px 20px 20px;
   width: 100%; }
+
+.committee__ctn__bars {
+  margin-bottom: 15px;
+  justify-content: space-around; }
 
 .event__ctn__summary,
 .event__ctn__bars {
@@ -4206,7 +4233,7 @@ span.recharts-legend-item-text {
 
 .recharts-responsive-container {
   height: 300px !important;
-  max-width: 570px;
+  max-width: 580px;
   margin-top: 5px; }
   @media (max-width: 1000px) {
     .recharts-responsive-container {
@@ -4216,7 +4243,7 @@ span.recharts-legend-item-text {
 .ranking__cpt {
   display: flex;
   justify-content: space-around;
-  width: 90%;
+  width: 100%;
   padding: 20px 10px;
   margin: 10px;
   border: 1px solid rgba(248, 188, 188, 0.2);

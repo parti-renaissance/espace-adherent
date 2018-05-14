@@ -15,7 +15,6 @@ class Summary extends Component {
                         <div>
                             <p>{womanPercentage}% </p>
                             <img src={WomanSign} alt="Woman Sign" />
-                            {40 > womanPercentage ? <p>😤</p> : <p>👍</p>}
                         </div>
                     ) : null}
 

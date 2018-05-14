@@ -8,12 +8,13 @@ import data from './../fakeData/data';
 
 class EventContainer extends Component {
     render() {
+        const { summaryTotal } = this.props;
         return (
             <div className="event__ctn">
                 <h2 className="ctn__title">Evénements</h2>
                 <div className="event__ctn__summary">
-                    <Summary summaryTotal={716} summaryDescription="Evénéments Indre et Loire" />
-                    <Summary summaryTotal={760} summaryDescription="inscrits dans un événement" />
+                    <Summary summaryTotal={summaryTotal} summaryDescription="Evénéments Indre et Loire" />
+                    <Summary summaryTotal={summaryTotal} summaryDescription="inscrits dans un événement" />
                 </div>
                 <div className="event__ctn__bars">
                     <ResponsiveContainer>

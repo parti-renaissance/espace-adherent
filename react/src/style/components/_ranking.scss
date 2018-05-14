@@ -1,68 +1,68 @@
 .ranking__cpt {
-	display: flex;
-	justify-content: space-around;
-	width: 90%;
-	padding: 20px 10px;
-	margin: 10px;
-	border: 1px solid $pink-lighter;
-	border-radius: 3px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    padding: 20px 10px;
+    margin: 10px;
+    border: 1px solid $pink-lighter;
+    border-radius: 3px;
 
-	.left--side {
-		display: flex;
-		align-items: center;
-		width: 30%;
-		border-right: 1px solid $pink-lighter;
-		color: $blue-primary;
+    .left--side {
+        display: flex;
+        align-items: center;
+        width: 30%;
+        border-right: 1px solid $pink-lighter;
+        color: $blue-primary;
 
-		p:first-child {
-			text-transform: uppercase;
-			width: 50%;
-			margin: 0 auto;
-			text-align: center;
-		}
-		p:nth-child(2) {
-			text-align: left;
-		}
-	}
-	.right--side {
-		display: flex;
-		flex-direction: column;
-		align-items: baseline;
-		width: 70%;
-		color: $blue-primary;
-		height: 200px;
-		overflow-y: scroll;
+        p:first-child {
+            text-transform: uppercase;
+            width: 50%;
+            margin: 0 auto;
+            text-align: center;
+        }
+        p:nth-child(2) {
+            text-align: left;
+        }
+    }
+    .right--side {
+        display: flex;
+        flex-direction: column;
+        align-items: baseline;
+        width: 70%;
+        color: $blue-primary;
+        height: 200px;
+        overflow-y: scroll;
 
-		&::-webkit-scrollbar {
-			width: 10px;
-		}
+        &::-webkit-scrollbar {
+            width: 10px;
+        }
 
-		&::-webkit-scrollbar-thumb {
-			background-color: $pink-lighter;
-			border-radius: 30px;
-		}
+        &::-webkit-scrollbar-thumb {
+            background-color: $pink-lighter;
+            border-radius: 30px;
+        }
 
-		& > div {
-			margin-left: 25px;
-		}
-	}
+        & > div {
+            margin-left: 25px;
+        }
+    }
 }
 
 .bullet--ranking__cpt {
-	display: flex;
+    display: flex;
 
-	.bullet__title {
-		text-transform: uppercase;
-		@include text--smallest;
-	}
+    .bullet__title {
+        text-transform: uppercase;
+        @include text--smallest;
+    }
 
-	.bullet {
-		background-color: $blue-primary;
-		padding: 0px 10px;
-		border-radius: 30px;
-		margin-bottom: 20px;
-		font-size: 10px;
-		color: white;
-		margin-right: 20px;
-	}
+    .bullet {
+        background-color: $blue-primary;
+        padding: 0px 10px;
+        border-radius: 30px;
+        margin-bottom: 20px;
+        font-size: 10px;
+        color: white;
+        margin-right: 20px;
+    }
 }
