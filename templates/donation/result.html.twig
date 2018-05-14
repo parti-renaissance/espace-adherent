@@ -24,22 +24,31 @@
                 Paiement réussi de<br />
                 <h3>{{ (donation.amount/100)|round(2) }}€</h3>
             </div>
-            <div class="donation__result--successful__thankyou">
-                Votre soutien compte<br />
-                beaucoup pour moi.<br />
-                Vous êtes maintenant<br />
-                un acteur de la révolution<br />
-                En Marche !
-            </div>
-
             {% if not campaign_expired %}
                 <div class="donation__result--successful__thankyou">
-                    Faites le savoir à vos<br />
-                    proches, diffusez nos idées,<br />
-                    rejoignez nos comités<br />
-                    locaux. Soyez fier d’être<br />
+                    {% if is_new_adherent %}
+                        <span>Nous sommes heureux de vous compter parmi nous.</span>
+                        <span>
+                            Nous venons de vous envoyer un email pour confirmer votre adhésion.<br/>
+                            Rendez-vous sur votre boîte email.
+                        </span>
+                    {% else %}
+                        Faites le savoir à vos<br />
+                        proches, diffusez nos idées,<br />
+                        rejoignez nos comités<br />
+                        locaux. Soyez fier d’être<br />
+                        En Marche !
+                    {% endif %}
+                </div>
+
+                <div class="donation__result--successful__thankyou">
+                    Votre soutien compte<br />
+                    beaucoup pour moi.<br />
+                    Vous êtes maintenant<br />
+                    un acteur de la révolution<br />
                     En Marche !
                 </div>
+
                 <div class="donation__result--successful__share-pride">
                     « Fier d’être en Marche ! »
                 </div>

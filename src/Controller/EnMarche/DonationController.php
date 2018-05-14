@@ -11,6 +11,7 @@ use AppBundle\Exception\PayboxPaymentUnsubscriptionException;
 use AppBundle\Exception\InvalidPayboxPaymentSubscriptionValueException;
 use AppBundle\Form\DonationRequestType;
 use AppBundle\Form\ConfirmActionType;
+use AppBundle\Membership\MembershipRegistrationProcess;
 use AppBundle\Repository\DonationRepository;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
@@ -122,7 +123,7 @@ class DonationController extends Controller
      * )
      * @Method("GET")
      */
-    public function resultAction(Request $request, Donation $donation)
+    public function resultAction(Request $request, Donation $donation, MembershipRegistrationProcess $membershipRegistrationProcess)
     {
         $retryUrl = null;
         if (!$donation->isSuccessful()) {
@@ -132,11 +133,14 @@ class DonationController extends Controller
             );
         }
 
+        $membershipRegistrationProcess->terminate();
+
         return $this->render('donation/result.html.twig', [
             'successful' => $donation->isSuccessful(),
             'error_code' => $request->query->get('code'),
             'donation' => $donation,
             'retry_url' => $retryUrl,
+            'is_new_adherent' => $request->query->get('is_new_adherent'),
         ]);
     }
 

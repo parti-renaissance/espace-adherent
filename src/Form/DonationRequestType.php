@@ -6,6 +6,9 @@ use AppBundle\Donation\DonationRequest;
 use AppBundle\Donation\DonationRequestUtils;
 use AppBundle\Entity\Adherent;
 use AppBundle\Form\DataTransformer\FloatToStringTransformer;
+use AppBundle\Membership\MembershipRegistrationProcess;
+use AppBundle\Repository\AdherentRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -24,14 +27,26 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class DonationRequestType extends AbstractType
 {
     private $donationRequestUtils;
+    private $membershipRegistrationProcess;
     private $tokenStorage;
     private $requestStack;
+    private $entityManager;
+    private $adherentRepository;
 
-    public function __construct(DonationRequestUtils $donationRequestUtils, RequestStack $requestStack, TokenStorageInterface $tokenStorage)
-    {
+    public function __construct(
+        DonationRequestUtils $donationRequestUtils,
+        MembershipRegistrationProcess $membershipRegistrationProcess,
+        RequestStack $requestStack,
+        TokenStorageInterface $tokenStorage,
+        EntityManagerInterface $entityManager,
+        AdherentRepository $adherentRepository
+) {
+        $this->membershipRegistrationProcess = $membershipRegistrationProcess;
         $this->donationRequestUtils = $donationRequestUtils;
-        $this->tokenStorage = $tokenStorage;
         $this->requestStack = $requestStack;
+        $this->tokenStorage = $tokenStorage;
+        $this->entityManager = $entityManager;
+        $this->adherentRepository = $adherentRepository;
     }
 
     /**
@@ -94,6 +109,11 @@ class DonationRequestType extends AbstractType
 
             if (!$user instanceof Adherent) {
                 $user = null;
+            }
+
+            // The user comes from the registration process
+            if (null == $user && $uuid = $this->membershipRegistrationProcess->getAdherentUuid()) {
+                $user = $this->adherentRepository->findByUuid($uuid);
             }
 
             $formEvent->setData($this->donationRequestUtils->createFromRequest($this->requestStack->getCurrentRequest(), $user));

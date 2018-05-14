@@ -63,6 +63,9 @@
             <argument type="service" id="app.donation_request.utils.locator" key="$locator" />
         </service>
 
+        <!-- Membership -->
+        <service id="AppBundle\Membership\MembershipRegistrationProcess"/>
+
         <!-- Event -->
         <service id="AppBundle\Event\EventRegistrationSubscriber" >
             <argument type="service" id="app.mailer.transactional" />
@@ -92,6 +95,7 @@
                 <argument key="enrich_content" type="service" id="app.html_purifier.enrich_content"/>
             </argument>
         </service>
+        <service id="AppBundle\Form\CommitteeAroundAdherentType"/>
 
         <!-- GeoCoder -->
         <service id="GeoIp2\WebService\Client">

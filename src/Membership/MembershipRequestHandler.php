@@ -39,7 +39,8 @@ class MembershipRequestHandler
         AdherentRegistry $adherentRegistry,
         AdherentManager $adherentManager,
         CommitteeManager $committeeManager,
-        ReferentTagManager $referentTagManager
+        ReferentTagManager $referentTagManager,
+        MembershipRegistrationProcess $membershipRegistrationProcess
     ) {
         $this->adherentFactory = $adherentFactory;
         $this->addressFactory = $addressFactory;
@@ -51,6 +52,7 @@ class MembershipRequestHandler
         $this->adherentManager = $adherentManager;
         $this->committeeManager = $committeeManager;
         $this->referentTagManager = $referentTagManager;
+        $this->membershipRegistrationProcess = $membershipRegistrationProcess;
     }
 
     public function registerAsUser(MembershipRequest $membershipRequest): Adherent
@@ -81,6 +83,7 @@ class MembershipRequestHandler
         $this->manager->persist($adherent);
 
         $this->referentTagManager->assignAdherentLocalTag($adherent);
+        $this->membershipRegistrationProcess->start($adherent->getUuid()->toString());
 
         $adherent->join();
         $this->sendEmailValidation($adherent);
