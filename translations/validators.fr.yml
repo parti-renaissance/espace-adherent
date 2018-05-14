@@ -48,6 +48,8 @@ common.recaptcha.invalid_message: Vous avez été détecté en tant que robot, p
 
 common.twitter_nickname.invalid_format: Un identifiant Twitter ne peut contenir que des lettres, des chiffres et des underscores.
 
+common.date_range.invalid_interval: La date de fin ne doit pas dépasser le {{ limit }}.
+
 #
 # Adherent
 #
@@ -78,6 +80,7 @@ committee.must_accept_contacting_terms: Vous devez accepter d'être contacté(e)
 
 committee.event.invalid_category: Le type d'événement sélectionné n'est pas valide.
 committee.event.invalid_date_range: La date de fin de l'événement doit être postérieure à la date de début.
+committee.event.invalid_finish_date: La date de fin de votre événement ne peut pas dépasser le {{ limit }}.
 committee.event.invalid_capacity: La capacité doit être un nombre entier valide.
 
 committee.description.min_length: Votre texte de description est trop court. Il doit compter {{ limit }} caractères minimum.
@@ -96,6 +99,8 @@ citizen_project.description.max_length: Votre texte de description est trop long
 
 citizen_project.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
 citizen_project.emoji.max_length: Vous devez coller un emoji.
+
+citizen_project.action.invalid_finish_date: La date de fin de votre action ne peut pas dépasser le {{ limit }}.
 
 #
 # Donation
