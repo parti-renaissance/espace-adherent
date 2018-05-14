@@ -9,6 +9,7 @@
         "npm-run-all": "^4.1.2",
         "prop-types": "^15.6.1",
         "react": "^16.3.1",
+        "react-countup": "^3.0.3",
         "react-dom": "^16.3.1",
         "react-redux": "^5.0.7",
         "react-router-dom": "^4.2.2",
@@ -22,8 +23,7 @@
     },
     "scripts": {
         "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
-        "watch-css":
-            "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
+        "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
         "start-js": "react-scripts start",
         "start": "npm-run-all -p watch-css start-js",
         "build-js": "react-scripts build",

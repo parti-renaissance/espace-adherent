@@ -7,27 +7,45 @@ import * as actionCreators from './../actions/index.js';
 import AdherentContainer from './AdherentContainer';
 import CommitteeContainer from './CommitteeContainer';
 import EventContainer from './EventContainer';
+import data, { fakeNb } from './../fakeData/data';
 
 class DashboardPage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            fakeNb1: fakeNb(),
+            fakeNb2: fakeNb(),
+            fakeNb3: fakeNb(),
+        };
+    }
     componentDidMount() {
         this.props.callApi();
+        console.log('Dashboard est monté');
     }
+
     componentWillUnmount() {
-        console.log('il est démonté');
+        console.log('Dashboard est démonté');
     }
+
     render() {
+        {
+            console.log('Dashboard rend');
+        }
+        const { committeeSelected, committees } = this.props;
         return (
             <div className="dashboard__ctn">
                 <div className="wrapper">
                     <AdherentContainer
-                        committees={this.props.committees}
-                        committeeSelected={this.props.committeeSelected}
+                        committees={committees}
+                        committeeSelected={committeeSelected}
+                        summaryTotal={this.state.fakeNb1}
                     />
                     <CommitteeContainer
-                        committees={this.props.committees}
-                        committeeSelected={this.props.committeeSelected}
+                        committees={committees}
+                        committeeSelected={committeeSelected}
+                        summaryTotal={this.state.fakeNb2}
                     />
-                    <EventContainer committees={this.props.committees} />
+                    <EventContainer committees={committees} summaryTotal={this.state.fakeNb3} />
                 </div>
             </div>
         );

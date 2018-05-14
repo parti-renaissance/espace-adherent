@@ -5,7 +5,7 @@ import Timer from './../components/Timer';
 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-import data from './../fakeData/data';
+import data, { fakeDate } from './../fakeData/data';
 
 class AdherentContainer extends Component {
     render() {
@@ -13,23 +13,23 @@ class AdherentContainer extends Component {
             <div className="adherent__ctn">
                 <h2 className="ctn__title">Adhérents</h2>
                 <h2 className="dashboard__title">
-					Résultats à
+                    Résultats à
                     <span className="text--blue--primary">
                         <Timer />
                     </span>
                 </h2>
                 <div className="adherent__ctn__summary">
                     <Summary
-                        summaryTotal={98756}
+                        summaryTotal={this.props.summaryTotal}
                         summaryDescription={'Adhérents Indre et Loire'} // Mettre en variable.
-                        womanPercentage={`${33}%`}
-                        manPercentage={`${67}%`}
+                        womanPercentage={`${33}`}
+                        manPercentage={`${67}`}
                     />
                     <Summary
-                        summaryTotal={400987}
+                        summaryTotal={this.props.summaryTotal}
                         summaryDescription="Adhérents Total"
-                        womanPercentage={`${33}%`}
-                        manPercentage={`${67}%`}
+                        womanPercentage={`${33}`}
+                        manPercentage={`${67}`}
                     />
                 </div>
                 <div className="adherent__ctn__bars">

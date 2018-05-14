@@ -4,47 +4,47 @@ import PropTypes from 'prop-types';
 import Summary from './../components/charts/Summary';
 import Ranking from './../components/charts/Ranking';
 import SelectCustom from './../components/modules/SelectCustom';
-// import Input from './../components/modules/Input';
 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Select from 'react-select';
 import * as Animated from 'react-select/lib/animated';
 
+import { connect } from 'react-redux';
+import * as actionCreators from './../actions';
+
 import data from './../fakeData/data';
 
 class CommitteeContainer extends Component {
-    // CALL {committeeSelected} to get the committee value selected
-    state = {
-        selectedOption: null,
-    };
+    constructor(props) {
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+        this.state = { input: [] };
+    }
 
-    handleChange = (selectedOption) => {
-        this.setState({ selectedOption });
-        console.log(`Selected: ${selectedOption[1].value}`);
+    handleChange = (input) => {
+        this.setState({ input });
     };
 
     render() {
-        const { committees, committeeSelected } = this.props;
-        const { selectedOption } = this.state;
+        const { committees, committeeSelected, input, summaryTotal } = this.props;
 
         return (
             <div className="committee__ctn">
                 <h2 className="ctn__title">Comités</h2>
                 <div className="committee__ctn__summary">
                     <Summary
-                        summaryTotal={876}
+                        summaryTotal={summaryTotal}
                         summaryDescription={'Comités créés'}
                         womanPercentage={50}
                         manPercentage={50}
                     />
                     <Summary
-                        summaryTotal={76}
+                        summaryTotal={summaryTotal}
                         summaryDescription={'Inscrits dans un comité'}
                         womanPercentage={33}
                         manPercentage={67}
                     />
                 </div>
-
                 <div className="committee__ctn__ranking">
                     <Ranking committees={committees} rankingTitle={'Comites les plus actifs'} />
                     <Ranking committees={committees} rankingTitle={'Comites les moins actifs'} />
@@ -132,11 +132,10 @@ class CommitteeContainer extends Component {
                     </ResponsiveContainer>
                 </div>
                 <div className="committee__ctn__input">
-                    {/* <Input committees={committees} id={'selectCommittee'} name={'selectCommittee'} /> */}
                     <Select
                         components={Animated}
                         isMulti
-                        value={selectedOption}
+                        value={input}
                         onChange={this.handleChange}
                         className="input__cpt"
                         name="form-field-name"
@@ -147,8 +146,9 @@ class CommitteeContainer extends Component {
                         placeholder="Rechercher par Code postal, ville ou commité"
                     />
                 </div>
-                {null !== selectedOption ? (
-                    <div className="committee__ctn__bars">
+
+                {this.state.input.map((el, i) => (
+                    <div className="committee__ctn__bars" key={i}>
                         <ResponsiveContainer>
                             <BarChart
                                 width={600}
@@ -175,7 +175,7 @@ class CommitteeContainer extends Component {
                                 />
                                 <Legend height={50} align="left" verticalAlign="bottom" iconType="circle" />
                                 <Bar
-                                    name={`Données ${selectedOption.label}`}
+                                    name={`Comités ${this.state.input[i].value}`}
                                     dataKey={'adherent'}
                                     fill={'#F8BCBC'}
                                     barSize={10}
@@ -183,7 +183,6 @@ class CommitteeContainer extends Component {
                                 />
                             </BarChart>
                         </ResponsiveContainer>
-
                         <ResponsiveContainer>
                             <BarChart
                                 width={600}
@@ -211,7 +210,7 @@ class CommitteeContainer extends Component {
                                 <Legend height={50} align="left" verticalAlign="bottom" iconType="circle" />
 
                                 <Bar
-                                    name={`Membres comités locaux ${selectedOption.label}`}
+                                    name={`Memmbres comités locaux ${this.state.input[i].value}`}
                                     dataKey={'adherent'}
                                     fill={'#6BA0EE'}
                                     barSize={10}
@@ -227,15 +226,18 @@ class CommitteeContainer extends Component {
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
-                ) : (
-                    <p>EM !</p>
-                )}
+                ))}
             </div>
         );
     }
 }
 
-export default CommitteeContainer;
+const mapStateToProps = state => ({
+    committeeSearched: state.filter.committeeSearched,
+    committees: state.fetch.committees,
+});
+
+export default connect(mapStateToProps, actionCreators)(CommitteeContainer);
 
 CommitteeContainer.propTypes = {
     committees: PropTypes.array,

@@ -1,24 +1,32 @@
-.committee__ctn__summary,
-.committee__ctn__bars,
-.committee__ctn__ranking {
-    display: flex;
-    justify-content: space-evenly;
+.committee__ctn {
+    &__summary,
+    &__bars,
+    &__ranking {
+        display: flex;
+        justify-content: space-between;
 
-    @media (max-width: $tablet) {
-        flex-direction: column;
-        align-items: center;
+        @media (max-width: $tablet) {
+            flex-direction: column;
+            align-items: center;
+        }
     }
-}
 
-.committee__ctn__select {
-    display: flex;
-    justify-content: space-between;
-    margin: 10px;
-    width: 100%;
-}
-.committee__ctn__input {
-    display: flex;
-    justify-content: space-between;
-    margin: 25px 20px 20px 20px;
-    width: 100%;
+    &__select {
+        display: flex;
+        justify-content: space-between;
+        margin: 10px;
+        width: 100%;
+    }
+
+    &__input {
+        display: flex;
+        justify-content: space-between;
+        margin: 25px 20px 20px 20px;
+        width: 100%;
+    }
+
+    &__bars {
+        margin-bottom: 15px;
+        justify-content: space-around;
+    }
 }

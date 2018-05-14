@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { sse1 } from './../utils/';
 
 const Nav = props => (
     <ul className="referent__nav">
