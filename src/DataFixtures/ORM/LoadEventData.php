@@ -13,6 +13,7 @@ use AppBundle\Entity\Event as EntityEvent;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Event\EventRegistrationFactory;
+use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -78,8 +79,8 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
             'category' => $eventCategory5,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.870507, 2.303243),
-            'begin_at' => date('Y-m-d', strtotime('+3 days')).' 09:30:00',
-            'finish_at' => date('Y-m-d', strtotime('+3 days')).' 19:00:00',
+            'begin_at' => (new Chronos('+3 days'))->format('Y-m-d').' 09:30:00',
+            'finish_at' => (new Chronos('+3 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
             'is_for_legislatives' => true,
         ]);
@@ -93,8 +94,8 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
             'category' => $eventCategory1,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', 48.518219, 2.622016),
-            'begin_at' => date('Y-m-d', strtotime('+10 days')).' 09:30:00',
-            'finish_at' => date('Y-m-d', strtotime('+ 10 days')).' 19:00:00',
+            'begin_at' => (new Chronos('+10 days'))->format('Y-m-d').' 09:30:00',
+            'finish_at' => (new Chronos('+10 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
         ]);
         $event2->incrementParticipantsCount();
@@ -108,8 +109,8 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
             'category' => $eventCategory2,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', 48.404765, 2.698759),
-            'begin_at' => date('Y-m-d', strtotime('tomorrow')).' 09:30:00',
-            'finish_at' => date('Y-m-d', strtotime('tomorrow')).' 19:00:00',
+            'begin_at' => (new Chronos('tomorrow'))->format('Y-m-d').' 09:30:00',
+            'finish_at' => (new Chronos('tomorrow'))->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
         ]);
         $event3->incrementParticipantsCount();
@@ -122,8 +123,8 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
             'category' => $eventCategory3,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => PostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', 48.624157, 2.4266),
-            'begin_at' => date('Y-m-d', strtotime('+15 days')).' 09:30:00',
-            'finish_at' => date('Y-m-d', strtotime('+15 days')).' 19:00:00',
+            'begin_at' => (new Chronos('+15 days'))->format('Y-m-d').' 09:30:00',
+            'finish_at' => (new Chronos('+15 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
         ]);
         $event4->incrementParticipantsCount();
@@ -136,8 +137,8 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
             'category' => $eventCategory6,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => PostAddress::createFrenchAddress('2 Place de la Major', '13002-13202', 43.2984913, 5.3623771),
-            'begin_at' => date('Y-m-d', strtotime('+17 days')).' 09:30:00',
-            'finish_at' => date('Y-m-d', strtotime('+17 days')).' 19:00:00',
+            'begin_at' => (new Chronos('+17 days'))->format('Y-m-d').' 09:30:00',
+            'finish_at' => (new Chronos('+17 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 1,
         ]);
         $event5->incrementParticipantsCount();
@@ -150,8 +151,8 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
             'category' => $eventCategory5,
             'description' => 'Nous allons échanger autour de différents sujets',
             'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.870507, 2.303243),
-            'begin_at' => date('Y-m-d', strtotime('+60 days')).' 09:30:00',
-            'finish_at' => date('Y-m-d', strtotime('+60 days')).' 19:00:00',
+            'begin_at' => (new Chronos('+60 days'))->format('Y-m-d').' 09:30:00',
+            'finish_at' => (new Chronos('+60 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
         ]);
         $event6->cancel();
@@ -207,8 +208,8 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
             'category' => $eventCategory10,
             'description' => 'Débatons ensemble du programme.',
             'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.870507, 2.303243),
-            'begin_at' => date('Y-m-d', strtotime('yesterday')).' 09:30:00',
-            'finish_at' => date('Y-m-d', strtotime('yesterday')).' 19:00:00',
+            'begin_at' => (new Chronos('yesterday'))->format('Y-m-d').' 09:30:00',
+            'finish_at' => (new Chronos('yesterday'))->format('Y-m-d').' 19:00:00',
             'capacity' => 100,
         ]);
         $event10->incrementParticipantsCount();
@@ -221,8 +222,8 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
             'category' => $eventCategory10,
             'description' => 'Ouvert aux français de Singapour.',
             'address' => PostAddress::createForeignAddress('SG', '018956', 'Singapour', '10 Bayfront Avenue', 1.2835627, 103.8606872),
-            'begin_at' => (new \DateTime('now', new \DateTimeZone('Asia/Singapore')))->modify('-4 hours')->format('Y-m-d H:00:00'),
-            'finish_at' => (new \DateTime('now', new \DateTimeZone('Asia/Singapore')))->modify('-2 hours')->format('Y-m-d H:00:00'),
+            'begin_at' => (new Chronos('now', new \DateTimeZone('Asia/Singapore')))->modify('-4 hours')->format('Y-m-d H:00:00'),
+            'finish_at' => (new Chronos('now', new \DateTimeZone('Asia/Singapore')))->modify('-2 hours')->format('Y-m-d H:00:00'),
             'capacity' => 100,
         ]);
         $event11->incrementParticipantsCount(2);
@@ -235,8 +236,8 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
             'category' => $eventCategory10,
             'description' => 'Ouvert aux français de New York.',
             'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
-            'begin_at' => (new \DateTime('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),
-            'finish_at' => (new \DateTime('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00'),
+            'begin_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),
+            'finish_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00'),
             'capacity' => 55,
         ]);
         $event12->incrementParticipantsCount(2);
@@ -249,8 +250,8 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
             'category' => $eventCategory10,
             'description' => 'Ouvert aux français de New York.',
             'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
-            'begin_at' => (new \DateTime('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),
-            'finish_at' => (new \DateTime('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00'),
+            'begin_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),
+            'finish_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00'),
             'capacity' => 55,
         ]);
         $event13->setPublished(false);
@@ -263,8 +264,8 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
             'category' => $eventCategory10,
             'description' => 'Ouvert aux français de New York.',
             'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
-            'begin_at' => (new \DateTime('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),
-            'finish_at' => (new \DateTime('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00'),
+            'begin_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),
+            'finish_at' => (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00'),
             'capacity' => 55,
         ]);
         $event14->setPublished(true);
@@ -277,8 +278,8 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
             'category' => $eventCategory10,
             'description' => 'HAPPINESS FOR EVERYBODY, FREE, AND NO ONE WILL GO AWAY UNSATISFIED!',
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', 47.321569, 8.549968799999988),
-            'begin_at' => date('Y-m-d', strtotime('yesterday')).' 10:00:00',
-            'finish_at' => date('Y-m-d', strtotime('yesterday')).' 18:00:00',
+            'begin_at' => (new Chronos('yesterday'))->format('Y-m-d').' 10:00:00',
+            'finish_at' => (new Chronos('yesterday'))->format('Y-m-d').' 18:00:00',
             'capacity' => 5,
         ]);
         $event15->setPublished(true);

@@ -37,4 +37,19 @@ class CommitteesController extends Controller
             'supervisors' => $adherentRepository->countSupervisorsByGenderForReferent($referent),
         ]);
     }
+
+    /**
+     * @Route("/committees/top-5-in-referent-area", name="app_most_active_committees")
+     * @Method("GET")
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function getTopCommitteesInReferentManagedAreaAction(CommitteeRepository $committeeRepository): Response
+    {
+        $referent = $this->getUser();
+
+        return new JsonResponse([
+            'most_active' => $committeeRepository->retrieveMostActiveCommitteesInReferentManagedArea($referent),
+            'least_active' => $committeeRepository->retrieveLeastActiveCommitteesInReferentManagedArea($referent),
+        ]);
+    }
 }

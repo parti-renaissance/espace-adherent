@@ -5,11 +5,14 @@ namespace AppBundle\Repository;
 use AppBundle\Collection\CommitteeCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\Event;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Coordinator\Filter\CommitteeFilter;
 use AppBundle\Search\SearchParametersFilter;
+use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -353,5 +356,54 @@ class CommitteeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
+    }
+
+    public function retrieveMostActiveCommitteesInReferentManagedArea(Adherent $referent, int $limit = 5): array
+    {
+        return $this->retrieveTopCommitteesInReferentManagedArea($referent, $limit);
+    }
+
+    public function retrieveLeastActiveCommitteesInReferentManagedArea(Adherent $referent, int $limit = 5): array
+    {
+        return $this->retrieveTopCommitteesInReferentManagedArea($referent, $limit, false);
+    }
+
+    private function retrieveTopCommitteesInReferentManagedArea(Adherent $referent, int $limit = 5, bool $mostActive = true): array
+    {
+        if (!$referent->isReferent()) {
+            throw new \InvalidArgumentException('Adherent must be a referent.');
+        }
+
+        $result = $this->createQueryBuilder('committee')
+            ->select('committee.name, COUNT(event) AS events, SUM(event.participantsCount) as participants')
+            ->join(Event::class, 'event', Join::WITH, 'event.committee = committee.id')
+            ->join('committee.referentTags', 'tag')
+            ->where('tag.id IN (:tags)')
+            ->andWhere('committee.status = :status')
+            ->andWhere('event.beginAt >= :from')
+            ->andWhere('event.beginAt < :until')
+            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('status', Committee::APPROVED)
+            ->setParameter('from', (new Chronos('first day of this month'))->setTime(0, 0, 0))
+            ->setParameter('until', (new Chronos('first day of next month'))->setTime(0, 0, 0))
+            ->setMaxResults($limit)
+            ->orderBy('events', $mostActive ? 'DESC' : 'ASC')
+            ->addOrderBy('participants', $mostActive ? 'DESC' : 'ASC')
+            ->addOrderBy('committee.id', 'ASC')
+            ->groupBy('committee.id')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return $this->removeParticipantionsCountAndId($result);
+    }
+
+    private function removeParticipantionsCountAndId(array $committees): array
+    {
+        array_walk($committees, function (&$item) {
+            unset($item['participants']);
+        });
+
+        return $committees;
     }
 }
