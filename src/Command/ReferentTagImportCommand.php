@@ -44,8 +44,10 @@ class ReferentTagImportCommand extends Command
             $this->initializeAdherentTags($output);
 
             $this->em->commit();
-        } finally {
+        } catch (\Exception $exception) {
             $this->em->rollback();
+
+            throw $exception;
         }
 
         $output->writeln(['', 'Referent Tags imported successfully!']);
