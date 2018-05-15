@@ -25,8 +25,8 @@ class ManagedAreaUtilsTest extends TestCase
     {
         return [
             ['CH', null, 'CH'],
-            ['MC', '98000', '06'],
-            ['FR', '98000', '06'],
+            ['MC', '98000', 'MC'],
+            ['FR', '98000', 'MC'],
             ['FR', '77000', '77'],
             ['FR', '75008', '75008'],
             ['FR', '20100', '2A'],
@@ -66,6 +66,6 @@ class ManagedAreaUtilsTest extends TestCase
         yield ['FR', '97150', ['97150']];
         yield ['FR', '97240', ['972']];
         yield ['FR', '98820', ['988']];
-        yield ['MC', '98000', ['06']];
+        yield ['MC', '98000', ['MC']];
     }
 }

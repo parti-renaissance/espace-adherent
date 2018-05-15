@@ -9,7 +9,7 @@ class AreaUtils
     public const CODE_CORSICA_A = '2A';
     public const CODE_CORSICA_B = '2B';
     public const CODE_FRANCE = 'FR';
-    public const CODE_MONACO = '06';
+    public const CODE_MONACO = 'MC';
     public const CODE_SAINT_BARTHELEMY = '97133';
     public const CODE_SAINT_MARTIN = '97150';
     public const POSTALCODE_MONACO = '98000';

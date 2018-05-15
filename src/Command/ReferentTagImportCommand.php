@@ -38,10 +38,15 @@ class ReferentTagImportCommand extends Command
 
         $this->em->beginTransaction();
 
-        $this->importReferentTags($input, $output);
-        $this->importReferentManagedAreas($input, $output);
+        try {
+            $this->importReferentTags($input, $output);
+            $this->importReferentManagedAreas($input, $output);
+            $this->initializeAdherentTags($output);
 
-        $this->em->commit();
+            $this->em->commit();
+        } finally {
+            $this->em->rollback();
+        }
 
         $output->writeln(['', 'Referent Tags imported successfully!']);
     }
@@ -73,6 +78,71 @@ class ReferentTagImportCommand extends Command
         $this->em->clear();
 
         $output->writeln("Saved $count Referent tags.");
+    }
+
+    private function initializeAdherentTags(OutputInterface $output): void
+    {
+        $sql = <<<SQL
+INSERT INTO adherent_referent_tag (adherent_id, referent_tag_id)
+(
+   SELECT adherent.id, tag.id
+   FROM adherents adherent
+   INNER JOIN referent_tags tag ON tag.code = IF(
+       adherent.address_country != 'FR',
+       adherent.address_country,
+       CASE SUBSTRING(adherent.address_postal_code, 1, 2)
+           -- Corsica
+           WHEN '20' THEN IF(
+               SUBSTRING(adherent.address_postal_code, 1, 3) IN ('200', '201'),
+               '2A',
+               '2B'
+           )
+           -- Paris district
+           WHEN '75' THEN adherent.address_postal_code
+           -- DOM
+           WHEN '97' THEN IF(
+               SUBSTRING(adherent.address_postal_code, 1, 3) IN ('97133', '97150'),
+               adherent.address_postal_code,
+               SUBSTRING(adherent.address_postal_code, 1, 3)
+           )
+           -- TOM
+           WHEN '98' THEN IF(
+               adherent.address_postal_code = '98000',
+               'MC',
+               SUBSTRING(adherent.address_postal_code, 1, 3)
+           )
+           -- Regular departement code
+           ELSE SUBSTRING(adherent.address_postal_code, 1, 2)
+       END
+   )
+);
+
+-- Additional tags for Corsica (20)
+INSERT INTO adherent_referent_tag (adherent_id, referent_tag_id)
+(
+    SELECT adherent.id, tag.id
+    FROM adherents adherent
+    INNER JOIN referent_tags tag ON tag.code = '20'
+    WHERE adherent.address_country = 'FR' 
+    AND SUBSTRING(adherent.address_postal_code, 1, 2) = '20'
+);
+
+-- Additional tags for Paris (75)
+INSERT INTO adherent_referent_tag (adherent_id, referent_tag_id)
+(
+    SELECT adherent.id, tag.id
+    FROM adherents adherent
+    INNER JOIN referent_tags tag ON tag.code = '75'
+    WHERE adherent.address_country = 'FR' 
+    AND SUBSTRING(adherent.address_postal_code, 1, 2) = '75'
+);
+SQL;
+
+        $output->writeln(['', 'Tagging adherents.']);
+
+        $this->em->getConnection()->exec($sql);
+
+        $output->writeln(['', 'Adherents tagged successfully.']);
     }
 
     private function importReferentManagedAreas(InputInterface $input, OutputInterface $output): void
