@@ -25,7 +25,7 @@ class AreaUtilsTest extends TestCase
         yield ['75008', '75008'];
         yield ['97427', '974'];
         yield ['98890', '988'];
-        yield ['98000', '06'];
+        yield ['98000', 'MC'];
     }
 
     /**
@@ -41,7 +41,7 @@ class AreaUtilsTest extends TestCase
         yield ['DE', 'DE'];
         yield ['IT', 'IT'];
         yield ['CH', 'CH'];
-        yield ['MC', '06'];
+        yield ['MC', 'MC'];
         yield ['unknown', 'unknown'];
     }
 
