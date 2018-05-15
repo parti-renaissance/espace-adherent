@@ -89,7 +89,7 @@ class CommitteeManagementAuthority
             $committee,
             $hosts,
             $adherent,
-            $this->urlGenerator->generate('app_commitee_manager_list_members', [
+            $this->urlGenerator->generate('app_committee_manager_list_members', [
                 'slug' => $committee->getSlug(),
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ));
