@@ -112,7 +112,6 @@
 
         <!-- Referent -->
         <service id="AppBundle\Command\ReferentTagImportCommand"/>
-        <service id="AppBundle\Command\ReferentTagInitializeCommand" />
         <service id="AppBundle\Referent\ReferentTagManager" />
 
         <!-- Report -->
