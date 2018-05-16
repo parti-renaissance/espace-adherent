@@ -226,10 +226,11 @@ class PersistentTokenFactoryTest extends TestCase
 
     public function testCreateRefreshToken(): void
     {
+        $expirationDate = new \DateTime('+6 hours');
         $token = new InMemoryRefreshToken();
         $token->setIdentifier(self::REFRESH_TOKEN_IDENTIFIER);
         $token->setAccessToken($this->createAccessToken());
-        $token->setExpiryDateTime(new \DateTime('+6 hours'));
+        $token->setExpiryDateTime($expirationDate);
 
         $this
             ->accessTokenRepository
@@ -246,7 +247,7 @@ class PersistentTokenFactoryTest extends TestCase
             $refreshToken->getUuid()
         );
         $this->assertSame(self::REFRESH_TOKEN_IDENTIFIER, $refreshToken->getIdentifier());
-        $this->assertSame((new \DateTime('+6 hours'))->format('U'), $refreshToken->getExpiryDateTime()->format('U'));
+        $this->assertSame($expirationDate->format('U'), $refreshToken->getExpiryDateTime()->format('U'));
         $this->assertSame($accessToken, $refreshToken->getAccessToken());
     }
 
