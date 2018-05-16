@@ -86,7 +86,7 @@ class CommitteeManagerController extends Controller
     }
 
     /**
-     * @Route("/membres", name="app_commitee_manager_list_members")
+     * @Route("/membres", name="app_committee_manager_list_members")
      * @Method("GET")
      */
     public function listMembersAction(Committee $committee): Response
@@ -101,7 +101,7 @@ class CommitteeManagerController extends Controller
     }
 
     /**
-     * @Route("/membres/export", name="app_commitee_manager_export_members")
+     * @Route("/membres/export", name="app_committee_manager_export_members")
      * @Method("POST")
      */
     public function exportMembersAction(Request $request, Committee $committee): Response
@@ -122,7 +122,7 @@ class CommitteeManagerController extends Controller
     }
 
     /**
-     * @Route("/membres/contact", name="app_commitee_contact_members")
+     * @Route("/membres/contact", name="app_committee_contact_members")
      * @Method("POST")
      */
     public function contactMembersAction(Request $request, Committee $committee): Response
@@ -142,7 +142,7 @@ class CommitteeManagerController extends Controller
         if (empty($contacts)) {
             $this->addFlash('info', $this->get('translator')->trans('committee.contact_members.none'));
 
-            return $this->redirectToRoute('app_commitee_manager_list_members', [
+            return $this->redirectToRoute('app_committee_manager_list_members', [
                 'slug' => $committee->getSlug(),
             ]);
         }
@@ -156,7 +156,7 @@ class CommitteeManagerController extends Controller
             $this->get('app.committee.contact_members_handler')->handle($command);
             $this->addFlash('info', $this->get('translator')->trans('committee.contact_members.success'));
 
-            return $this->redirectToRoute('app_commitee_manager_list_members', [
+            return $this->redirectToRoute('app_committee_manager_list_members', [
                 'slug' => $committee->getSlug(),
             ]);
         }
@@ -193,7 +193,7 @@ class CommitteeManagerController extends Controller
             $committeeManager->promote($member, $committee);
             $this->addFlash('info', $this->get('translator')->trans('committee.promote_host.success'));
 
-            return $this->redirectToRoute('app_commitee_manager_list_members', [
+            return $this->redirectToRoute('app_committee_manager_list_members', [
                 'slug' => $committee->getSlug(),
             ]);
         }
@@ -230,7 +230,7 @@ class CommitteeManagerController extends Controller
             $committeeManager->demote($member, $committee);
             $this->addFlash('info', $this->get('translator')->trans('committee.demote_host.success'));
 
-            return $this->redirectToRoute('app_commitee_manager_list_members', [
+            return $this->redirectToRoute('app_committee_manager_list_members', [
                 'slug' => $committee->getSlug(),
             ]);
         }

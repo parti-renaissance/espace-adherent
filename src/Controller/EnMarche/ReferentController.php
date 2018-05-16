@@ -139,10 +139,10 @@ class ReferentController extends Controller
     }
 
     /**
-     * @Route("/comites", name="app_referent_commitees")
+     * @Route("/comites", name="app_referent_committees")
      * @Method("GET")
      */
-    public function commiteesAction(): Response
+    public function committeesAction(): Response
     {
         $list = $this->getDoctrine()->getRepository(Committee::class)->findManagedBy($this->getUser());
         $exporter = $this->get('app.referent.managed_committees.exporter');

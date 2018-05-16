@@ -1,5 +1,5 @@
 /*
- * Commitees map
+ * Committees map
  */
 export default (mapFactory, api) => {
     api.getCommittees((committees) => {
