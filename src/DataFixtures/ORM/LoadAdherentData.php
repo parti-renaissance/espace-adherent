@@ -487,6 +487,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'twitter_nickname' => 'enmarche75008',
         ]);
         $committee1->approved('2017-01-12 15:54:18');
+        $this->addReference('committee-1', $committee1);
 
         $committee2 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_2_UUID,
@@ -497,6 +498,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
             'phone' => '33 673643424',
         ]);
+        $this->addReference('committee-2', $committee2);
 
         $committee3 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_3_UUID,
@@ -510,6 +512,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'name_locked' => true,
         ]);
         $committee3->approved('2017-01-27 09:18:33');
+        $this->addReference('committee-3', $committee3);
 
         $committee4 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_4_UUID,
@@ -521,6 +524,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 673654349',
         ]);
         $committee4->approved();
+        $this->addReference('committee-4', $committee4);
 
         $committee5 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_5_UUID,
@@ -532,6 +536,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 673654349',
         ]);
         $committee5->approved();
+        $this->addReference('committee-5', $committee5);
 
         $committee6 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_6_UUID,
@@ -543,6 +548,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 234823644',
         ]);
         $committee6->approved('2017-03-19 09:17:24');
+        $this->addReference('committee-6', $committee6);
 
         $committee7 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_7_UUID,
@@ -554,6 +560,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '49 2211653540',
         ]);
         $committee7->approved('2017-03-19 13:43:26');
+        $this->addReference('committee-7', $committee7);
 
         $committee8 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_8_UUID,
@@ -565,6 +572,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '65 66888868',
         ]);
         $committee8->approved('2017-04-10 20:23:18');
+        $this->addReference('committee-8', $committee8);
 
         $committee9 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_9_UUID,
@@ -576,6 +584,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '1 2123150100',
         ]);
         $committee9->approved('2017-04-09 13:27:42');
+        $this->addReference('committee-9', $committee9);
 
         $committee10 = $committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_10_UUID,
@@ -587,6 +596,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 673654349',
         ]);
         $committee10->approved('2017-05-09 13:17:42');
+        $this->addReference('committee-10', $committee10);
 
         // Make an adherent request a new password
         $resetPasswordToken = AdherentResetPasswordToken::generate($adherent1);

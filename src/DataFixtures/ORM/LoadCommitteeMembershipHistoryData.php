@@ -2,9 +2,12 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Reporting\CommitteeMembershipAction;
 use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
+use Cake\Chronos\Chronos;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -20,7 +23,36 @@ class LoadCommitteeMembershipHistoryData extends Fixture
             $manager->persist($event);
         }
 
+        $manager->persist($this->createJoinHistory($this->getReference('adherent-3'), $this->getReference('committee-1'), '2018-01-18'));
+        $manager->persist($this->createLeaveHistory($this->getReference('adherent-3'), $this->getReference('committee-1'), '2018-02-18'));
+
+        $manager->persist($this->createJoinHistory($this->getReference('adherent-4'), $this->getReference('committee-1'), '2018-03-18'));
+        $manager->persist($this->createLeaveHistory($this->getReference('adherent-4'), $this->getReference('committee-1'), '2018-04-18'));
+
+        $manager->persist($this->createJoinHistory($this->getReference('adherent-7'), $this->getReference('committee-4'), '2017-12-11'));
+        $manager->persist($this->createLeaveHistory($this->getReference('adherent-7'), $this->getReference('committee-4'), '2017-12-13'));
+
+        $manager->persist($this->createJoinHistory($this->getReference('adherent-7'), $this->getReference('committee-3'), '2017-10-18'));
+        $manager->persist($this->createLeaveHistory($this->getReference('adherent-7'), $this->getReference('committee-3'), '2018-04-19'));
+
         $manager->flush();
+    }
+
+    private function createJoinHistory(Adherent $adherent, Committee $committee, string $date): CommitteeMembershipHistory
+    {
+        return $this->createHistory(CommitteeMembershipAction::JOIN(), $adherent, $committee, $date);
+    }
+
+    private function createLeaveHistory(Adherent $adherent, Committee $committee, string $date): CommitteeMembershipHistory
+    {
+        return $this->createHistory(CommitteeMembershipAction::LEAVE(), $adherent, $committee, $date);
+    }
+
+    private function createHistory(CommitteeMembershipAction $action, Adherent $adherent, Committee $committee, string $date): CommitteeMembershipHistory
+    {
+        $membership = $adherent->getMembershipFor($committee);
+
+        return new CommitteeMembershipHistory($membership, $action, new Chronos($date));
     }
 
     public function getDependencies()

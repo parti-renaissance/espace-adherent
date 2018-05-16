@@ -94,8 +94,11 @@ class EmailSubscriptionHistoryHandler
 
     public function queryCountByMonth(Adherent $referent, int $months = 6): array
     {
-        foreach (range(0, $months - 1) as $month) {
-            $until = (new Chronos("last day of -$month month"))->setTime(23, 59, 59, 999);
+        foreach (range(0, $months - 1) as $monthInterval) {
+            $until = $monthInterval
+                        ? (new Chronos("last day of -$monthInterval month"))->setTime(23, 59, 59, 999)
+                        : new Chronos()
+            ;
 
             $subscriptions = $this->historyRepository->countAllByTypeForReferentManagedArea(
                 $referent,
