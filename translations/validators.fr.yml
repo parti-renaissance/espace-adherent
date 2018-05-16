@@ -105,7 +105,8 @@ citizen_project.action.invalid_finish_date: La date de fin de votre action ne pe
 #
 # Donation
 #
-donation.subscription.not_unique: Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez <a href="{{ profile_url }}">vous rendre sur votre profil</a> pour en modifier le montant ou <a href="{{ donation_url }}">faire un nouveau don unique</a>.
+donation.subscription.not_unique: Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez <a href="{{ profile_url }}">vous rendre sur votre profil</a> pour l’annuler ou <a href="{{ donation_url }}">faire un nouveau don unique</a>.
+donation.subscription.not_unique_from_anonymous: Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez <a href="https://contact.en-marche.fr/">nous contacter pour l’annuler</a> ou <a href="{{ donation_url }}">faire un nouveau don unique</a>.
 donation.amount.not_blank: Cette valeur ne doit pas être vide.
 donation.amount.greater_than_0: La valeur minimale d'un don est de 0.01 €.
 donation.amount.less_than_7500: La valeur maximale d'un don est de 7500 €.

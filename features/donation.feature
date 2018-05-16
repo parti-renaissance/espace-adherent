@@ -114,7 +114,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "donation_check_nationality_label" element
     And I press "Je donne"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
-    And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez vous rendre sur votre profil pour en modifier le montant ou faire un nouveau don unique."
+    And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez nous contacter pour l’annuler ou faire un nouveau don unique."
 
     When I follow "faire un nouveau don unique"
     Then I should be on "/don/coordonnees?montant=50"
@@ -163,13 +163,13 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "donation_check_nationality_label" element
     And I press "Je donne"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
-    And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez vous rendre sur votre profil pour en modifier le montant ou faire un nouveau don unique."
+    And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez vous rendre sur votre profil pour l’annuler ou faire un nouveau don unique."
 
     When I follow "vous rendre sur votre profil"
     Then I should be on "/parametres/mon-compte"
 
     When I follow "Mes dons"
-    And I follow "Arrêter mon don mensuel"
+    And I follow "Mettre fin à mon don mensuel"
     And I press "Oui"
     Then I should see "Votre don mensuel a bien été annulé. Vous recevrez bientôt un mail de confirmation."
 

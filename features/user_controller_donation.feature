@@ -17,19 +17,19 @@ Feature: Test donation page
     And I should see "Votre dernier don a été fait"
     And I should see "50 €"
     And I should not see "Faire un nouveau don"
-    And I should see "Arrêter mon don mensuel"
+    And I should see "Mettre fin à mon don mensuel"
 
-    When I follow "Arrêter mon don mensuel"
+    When I follow "Mettre fin à mon don mensuel"
     Then I should be on "/don/mensuel/annuler"
-    And I should see "Êtes-vous sûr de vouloir arrêter votre don mensuel ?"
+    And I should see "Êtes-vous sûr(e) de vouloir arrêter votre don mensuel ?"
 
     When I press "Non"
     Then I should be on "/parametres/mon-compte/mes-dons"
     And I should not see "La requête n'a pas abouti, veuillez réessayer s'il vous plait."
 
-    When I follow "Arrêter mon don mensuel"
+    When I follow "Mettre fin à mon don mensuel"
     Then I should be on "/don/mensuel/annuler"
-    And I should see "Êtes-vous sûr de vouloir arrêter votre don mensuel ?"
+    And I should see "Êtes-vous sûr(e) de vouloir arrêter votre don mensuel ?"
 
     When I press "Oui"
     Then I should be on "/parametres/mon-compte/mes-dons"
@@ -45,7 +45,7 @@ Feature: Test donation page
     And I should see "Votre dernier don a été fait"
     And I should see "50 €"
     And I should see "Faire un nouveau don"
-    And I should not see "Arrêter mon don mensuel"
+    And I should not see "Mettre fin à mon don mensuel"
 
     When I follow "Faire un nouveau don"
     Then I should be on "/don"

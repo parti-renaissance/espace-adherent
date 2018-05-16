@@ -26,11 +26,11 @@ class DonationRepository extends ServiceEntityRepository
         return $this->findOneByValidUuid($uuid);
     }
 
-    public function findByEmailAddressOrderedByDonatedAt(string $email, string $order = 'ASC'): array
+    public function findByEmailAddressOrderedByDonatedAt(string $email): array
     {
         return $this->findBy(
             ['emailAddress' => $email],
-            ['donatedAt' => $order]
+            ['donatedAt' => 'DESC']
         );
     }
 
@@ -47,9 +47,22 @@ class DonationRepository extends ServiceEntityRepository
                 'email' => $email,
                 'duration' => PayboxPaymentSubscription::NONE,
             ])
-            ->orderBy('donation.donatedAt', 'ASC')
+            ->orderBy('donation.donatedAt', 'DESC')
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function findLastSubscriptionEndedDonationByEmail(string $email): ?Donation
+    {
+        return $this->createQueryBuilder('donation')
+            ->andWhere('donation.emailAddress = :email')
+            ->andWhere('donation.subscriptionEndedAt IS NOT NULL')
+            ->setParameter('email', $email)
+            ->orderBy('donation.subscriptionEndedAt', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 }

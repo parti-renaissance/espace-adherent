@@ -15,18 +15,20 @@
 
     {% if donations %}
         <div class="b__nudge--top b__nudge--bottom">
-            Merci pour votre engagement à nos côtés ! <br/>
+            Merci pour votre engagement à nos côtés ! <br/><br/>
             Votre dernier don a été fait {{ donations|first.donatedAt|ago }}.
             {% if subscribed_donations %}
                 <a href="{{ path('donation_subscription_cancel') }}">
                     {{ 'adherent.stop_donation'|transchoice(subscribed_donations|length) }}
                 </a>. <br />
                 {% for subscribed_donation in subscribed_donations %}
-                    Prochaine échéance du don mensuel de {{ subscribed_donation.amountInEuros }}€ le {{ subscribed_donation.nextDonationAt|date('d M Y') }}
+                    Prochaine échéance du don mensuel de {{ subscribed_donation.amountInEuros }}€ le {{ subscribed_donation.nextDonationAt|localizeddate('medium', 'none') }}
                     {% if not loop.last %}
                         <br />
                     {% endif %}
                 {% endfor %}
+            {% elseif last_subscription_ended %}
+                Vous avez mis fin à votre don mensuel le {{ last_subscription_ended.subscriptionEndedAt|localizeddate('medium', 'none') }}. Vous pouvez en refaire un <a href="{{ path('donation_index') }}">en cliquant ici</a>.
             {% else %}
                 <a href="{{ path('donation_index') }}">Faire un nouveau don</a>.
             {% endif %}
@@ -57,7 +59,7 @@
                 {% for donation in donations %}
                     <tr>
                         <td>
-                            {{ donation.donatedAt|date('d M Y') }}
+                            {{ donation.donatedAt|localizeddate('medium', 'none') }}
                         </td>
                         <td>
                             {{ donation.amountInEuros }} €
@@ -65,9 +67,9 @@
                         <td>
                             {% if donation.duration %}
                                 {% if donation.subscriptionEndedAt %}
-                                    Souscription don mensuel arrêtée le {{ donation.subscriptionEndedAt|date('d M Y h:i') }}
+                                    Don mensuel arrêté le {{ donation.subscriptionEndedAt|localizeddate('medium', 'none') }}
                                 {% else %}
-                                    Souscription don mensuel.
+                                    Don mensuel
                                 {% endif %}
                             {% else %}
                                 Don ponctuel
