@@ -7,9 +7,18 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventCategory;
+use AppBundle\Validator\DateRange;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @DateRange(
+ *     startDateField="beginAt",
+ *     endDateField="finishAt",
+ *     interval="3 days",
+ *     message="committee.event.invalid_finish_date"
+ * )
+ */
 class EventCommand extends BaseEventCommand
 {
     /**

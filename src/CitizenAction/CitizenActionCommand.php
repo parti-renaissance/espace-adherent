@@ -8,8 +8,17 @@ use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\CitizenActionCategory;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Event\BaseEventCommand;
+use AppBundle\Validator\DateRange;
 use Ramsey\Uuid\UuidInterface;
 
+/**
+ * @DateRange(
+ *     startDateField="beginAt",
+ *     endDateField="finishAt",
+ *     interval="3 days",
+ *     message="citizen_project.action.invalid_finish_date"
+ * )
+ */
 class CitizenActionCommand extends BaseEventCommand
 {
     /**

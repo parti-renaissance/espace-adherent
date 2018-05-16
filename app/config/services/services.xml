@@ -161,5 +161,8 @@
         <service id="AppBundle\HTMLPurifier\Injector\ImageDimension">
             <argument>%image_max_length%</argument>
         </service>
+
+        <!-- Validators -->
+        <service id="AppBundle\Validator\DateRangeValidator" />
     </services>
 </container>

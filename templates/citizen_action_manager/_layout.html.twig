@@ -54,6 +54,7 @@
                     {{ form_errors(citizen_action_form.finishAt) }}
                     {{ form_label(citizen_action_form.finishAt, 'Fin', { label_attr: { class: 'text--bold' } }) }}
                     {{ form_widget(citizen_action_form.finishAt, { attr: { class: 'citizen_action__finish_at l__row' } }) }}
+                    <div class="form__info">Votre action citoyenne ne peut pas durer plus de 3 jours.</div>
                 </div>
 
                 <div class="form__row" id="citizen-initiative-description-field">

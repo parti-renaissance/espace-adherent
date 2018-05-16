@@ -323,6 +323,11 @@ label {
             }
         }
     }
+
+    &__info {
+        padding-top: 15px;
+        color: $black--half;
+    }
 }
 
 .newsletter {

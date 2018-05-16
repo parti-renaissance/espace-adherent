@@ -54,6 +54,7 @@
                 {{ form_errors(form.finishAt) }}
                 {{ form_label(form.finishAt, 'Fin') }}
                 {{ form_widget(form.finishAt, { attr: { class: 'event__finish_at' } }) }}
+                <div class="form__info">Votre événement ne peut pas durer plus de 3 jours.</div>
             </div>
 
             <div id="committee-event-address">
