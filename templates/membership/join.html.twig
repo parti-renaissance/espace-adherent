@@ -65,7 +65,7 @@
                                     </div>
                                 </div>
                                  <div class="l__row--h-stretch register__form--full">
-                                     {{ form_widget(form.emailAddress.first, { attr: { placeholder: 'E-mail' } }) }}
+                                     {{ form_widget(form.emailAddress.first, { attr: { placeholder: 'E-mail', 'data-validated-with': form.emailAddress.second.vars.id } }) }}
                                      {{ form_errors(form.emailAddress.first) }}
                                 </div>
                                  <div class="l__row l__row--h-stretch register__form--full visually-hidden">
@@ -117,7 +117,7 @@
                                 <p class="b__nudge--bottom-tiny text--bold">Téléphone</p>
                                 <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
                                     <div class=" register__form--mid">
-                                        {{ form_widget(form.phone.country, { placeholder: 'Indicatif Pays' }) }}
+                                        {{ form_widget(form.phone.country, { placeholder: 'Indicatif Pays', attr: { 'data-validated-with': form.phone.number.vars.id } }) }}
                                     </div>
                                     <div class="register__form--mid">
                                         {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
