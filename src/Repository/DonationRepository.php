@@ -43,6 +43,7 @@ class DonationRepository extends ServiceEntityRepository
             ->andWhere('donation.emailAddress = :email')
             ->andWhere('donation.duration != :duration')
             ->andWhere('donation.subscriptionEndedAt IS NULL')
+            ->andWhere('donation.donatedAt IS NOT NULL')
             ->setParameters([
                 'email' => $email,
                 'duration' => PayboxPaymentSubscription::NONE,
