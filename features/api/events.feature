@@ -12,6 +12,36 @@ Feature:
       | LoadCitizenActionData |
 
   Scenario: As a non logged-in user I can not get events count in the referent managed zone
+    When I am on "/api/events/count"
+    Then the response status code should be 200
+    And I should be on "/connexion"
+
+  Scenario: As an adherent I can not get events count in the referent managed zone
+    When I am logged as "jacques.picard@en-marche.fr"
+    And I am on "/api/events/count"
+    Then the response status code should be 403
+
+  Scenario: As a referent I can get events count in the referent managed zone
+    When I am logged as "referent@en-marche-dev.fr"
+    And I am on "/api/events/count"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "monthly":
+        {
+          "2018-05":{"events":1, "referent_events":0},
+          "2018-04":{"events":0, "referent_events":0},
+          "2018-03":{"events":0, "referent_events":0},
+          "2018-02":{"events":0, "referent_events":0},
+          "2018-01":{"events":0, "referent_events":0},
+          "2017-12":{"events":0, "referent_events":0}
+        }
+    }
+    """
+
+  Scenario: As a non logged-in user I can not get events count in the referent managed zone
     When I am on "/api/events/count-by-month?country=fr"
     Then the response status code should be 200
     And I should be on "/connexion"
