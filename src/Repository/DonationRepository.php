@@ -26,12 +26,19 @@ class DonationRepository extends ServiceEntityRepository
         return $this->findOneByValidUuid($uuid);
     }
 
+    /**
+     * @return Donation[]
+     */
     public function findByEmailAddressOrderedByDonatedAt(string $email): array
     {
-        return $this->findBy(
-            ['emailAddress' => $email],
-            ['donatedAt' => 'DESC']
-        );
+        return $this->createQueryBuilder('donation')
+            ->where('donation.emailAddress = :email')
+            ->andWhere('donation.donatedAt IS NOT NULL')
+            ->setParameter('email', $email)
+            ->orderBy('donation.donatedAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     /**
