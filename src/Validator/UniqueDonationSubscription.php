@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraint;
 class UniqueDonationSubscription extends Constraint
 {
     public $message = 'donation.subscription.not_unique';
+    public $messageForAnonymous = 'donation.subscription.not_unique_from_anonymous';
 
     public function getTargets()
     {

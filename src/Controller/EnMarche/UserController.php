@@ -44,8 +44,9 @@ class UserController extends Controller
         $userEmail = $this->getUser()->getEmailAddress();
 
         return $this->render('user/my_donation.html.twig', [
-            'donations' => $donationRepository->findByEmailAddressOrderedByDonatedAt($userEmail, 'DESC'),
+            'donations' => $donationRepository->findByEmailAddressOrderedByDonatedAt($userEmail),
             'subscribed_donations' => $donationRepository->findAllSubscribedDonationByEmail($userEmail),
+            'last_subscription_ended' => $donationRepository->findLastSubscriptionEndedDonationByEmail($userEmail),
         ]);
     }
 
