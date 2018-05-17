@@ -6,6 +6,7 @@ import AddressFormFactory from './services/address/AddressFormFactory';
 import VoteLocationFormFactory from './services/vote/VoteLocationFormFactory';
 import Slugifier from './services/slugifier/Slugifier';
 import MapFactory from './services/map/MapFactory';
+import DateFieldsSynchronizer from './services/form/DateFieldsSynchronizer';
 
 /**
  * @param {Container} di
@@ -81,4 +82,7 @@ export default (di) => {
         return new MapFactory();
     });
 
+    di.set('form.date_synchronizer', () => {
+        return new DateFieldsSynchronizer();
+    });
 };

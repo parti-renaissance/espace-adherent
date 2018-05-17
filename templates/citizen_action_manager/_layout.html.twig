@@ -8,6 +8,10 @@
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.address(citizen_action_form.address) }}
+            App.startDateFieldsSynchronisation(
+                '{{ citizen_action_form.beginAt.vars.full_name|e('js') }}',
+                '{{ citizen_action_form.finishAt.vars.full_name|e('js') }}'
+            );
         });
     </script>
 {% endblock %}
