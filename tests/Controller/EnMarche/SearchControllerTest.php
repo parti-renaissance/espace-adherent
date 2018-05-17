@@ -80,7 +80,7 @@ class SearchControllerTest extends MysqlWebTestCase
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
 
-        $this->assertSame(3, $crawler->filter('div.search__results__row')->count());
+        $this->assertSame(4, $crawler->filter('div.search__results__row')->count());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements/categorie/conference-debat');
 

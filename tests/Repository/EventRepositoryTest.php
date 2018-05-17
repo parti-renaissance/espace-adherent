@@ -25,17 +25,17 @@ class EventRepositoryTest extends MysqlWebTestCase
 
     public function testCountEvents()
     {
-        $this->assertSame(14, $this->repository->countElements());
+        $this->assertSame(15, $this->repository->countElements());
     }
 
     public function testFindUpcomingEvents()
     {
-        $this->assertCount(8, $this->repository->findUpcomingEvents());
+        $this->assertCount(9, $this->repository->findUpcomingEvents());
     }
 
     public function testCountUpcomingEvents()
     {
-        $this->assertSame(8, $this->repository->countUpcomingEvents());
+        $this->assertSame(9, $this->repository->countUpcomingEvents());
     }
 
     public function testSearchAllEvents()
@@ -49,7 +49,7 @@ class EventRepositoryTest extends MysqlWebTestCase
         $request = new Request($query);
         $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
 
-        $this->assertSame(4, count($this->repository->searchAllEvents($search)));
+        $this->assertSame(5, count($this->repository->searchAllEvents($search)));
 
         $query = [
             'q' => '',

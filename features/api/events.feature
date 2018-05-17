@@ -22,16 +22,17 @@ Feature:
     Then the response status code should be 403
 
   Scenario: As a referent I can get events count in the referent managed zone
-    When I am logged as "referent@en-marche-dev.fr"
+    When I am logged as "referent-75-77@en-marche-dev.fr"
     And I am on "/api/events/count"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
     """
     {
+      "current_total":2,
       "monthly":
         {
-          "2018-05":{"events":1, "referent_events":0},
+          "2018-05":{"events":1, "referent_events":1},
           "2018-04":{"events":0, "referent_events":0},
           "2018-03":{"events":0, "referent_events":0},
           "2018-02":{"events":0, "referent_events":0},
@@ -59,7 +60,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "2018-05":{"events":2},
+      "2018-05":{"events":1},
       "2018-04":{"events":0},
       "2018-03":{"events":0},
       "2018-02":{"events":0},
@@ -74,7 +75,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "2018-05":{"events":2},
+      "2018-05":{"events":1},
       "2018-04":{"events":0},
       "2018-03":{"events":0},
       "2018-02":{"events":0},
@@ -89,7 +90,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "2018-05":{"events":2},
+      "2018-05":{"events":1},
       "2018-04":{"events":0},
       "2018-03":{"events":0},
       "2018-02":{"events":0},
@@ -119,7 +120,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "2018-05":{"events":2},
+      "2018-05":{"events":1},
       "2018-04":{"events":0},
       "2018-03":{"events":0},
       "2018-02":{"events":0},
