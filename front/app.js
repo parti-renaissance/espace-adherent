@@ -68,6 +68,10 @@ class App {
         form.attachEvents();
     }
 
+    startDateFieldsSynchronisation(referenceDateFieldName, targetDateFieldName) {
+        this._di.get('form.date_synchronizer').sync(referenceDateFieldName, targetDateFieldName);
+    }
+
     runDonation() {
         System.import('pages/donation').catch((error) => { throw error; }).then((module) => {
             module.default();
