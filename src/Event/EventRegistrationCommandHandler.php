@@ -2,6 +2,7 @@
 
 namespace AppBundle\Event;
 
+use AppBundle\Entity\Event;
 use AppBundle\Events;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -44,10 +45,12 @@ class EventRegistrationCommandHandler
             $sendMail
         ));
 
-        $this->dispatcher->dispatch(Events::EVENT_UPDATED, new EventEvent(
-            null,
-            $event,
-            $event->getCommittee()
-        ));
+        if ($event instanceof Event) {
+            $this->dispatcher->dispatch(Events::EVENT_UPDATED, new EventEvent(
+                null,
+                $event,
+                $event->getCommittee()
+            ));
+        }
     }
 }
