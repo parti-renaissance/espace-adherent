@@ -137,6 +137,9 @@ Permet une indentation d'un paragraphe avec la même profondeur que les listes c
 ```
 
 ## Les appels à action
+
+NB : ils ne sont pas disponibles sur les sites départementaux. 
+
 La version défault:
 
 ```
