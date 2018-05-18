@@ -4,10 +4,16 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\NewsletterSubscription;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
-class NewsletterSubscriptionRepository extends EntityRepository
+class NewsletterSubscriptionRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, NewsletterSubscription::class);
+    }
+
     /**
      * Finds the list of newsletter subscribers managed by the given referent.
      *
@@ -54,5 +60,17 @@ class NewsletterSubscriptionRepository extends EntityRepository
         $qb->andWhere($codesFilter);
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function isSubscribed(string $email): bool
+    {
+        return (bool) $this
+            ->createQueryBuilder('newsletter')
+            ->select('COUNT(newsletter)')
+            ->where('newsletter.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 }

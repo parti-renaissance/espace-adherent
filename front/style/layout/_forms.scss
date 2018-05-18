@@ -351,6 +351,12 @@ label {
             margin-right: 0;
         }
     }
+
+    .form {
+        &__zipcode {
+            width: 150px;
+        }
+    }
 }
 
 .newsletter-page,
