@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\PostAddress;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +26,7 @@ class CommitteeMembershipTest extends TestCase
 
     public function testCreateSupervisorMembership()
     {
-        $membership = CommitteeMembership::createForSupervisor(Uuid::fromString(self::COMMITTEE_UUID), $adherent = $this->createAdherent());
+        $membership = CommitteeMembership::createForSupervisor($this->createCommitteeMock(self::COMMITTEE_UUID), $adherent = $this->createAdherent());
 
         $this->assertInstanceOf(CommitteeMembership::class, $membership);
         $this->assertInstanceOf(UuidInterface::class, $membership->getUuid());
@@ -40,7 +41,7 @@ class CommitteeMembershipTest extends TestCase
 
     public function testCreateHostMembership()
     {
-        $membership = CommitteeMembership::createForHost(Uuid::fromString(self::COMMITTEE_UUID), $adherent = $this->createAdherent());
+        $membership = CommitteeMembership::createForHost($this->createCommitteeMock(self::COMMITTEE_UUID), $adherent = $this->createAdherent());
 
         $this->assertInstanceOf(CommitteeMembership::class, $membership);
         $this->assertInstanceOf(UuidInterface::class, $membership->getUuid());
@@ -55,7 +56,7 @@ class CommitteeMembershipTest extends TestCase
 
     public function testCreateFollowerMembership()
     {
-        $membership = CommitteeMembership::createForAdherent(Uuid::fromString(self::COMMITTEE_UUID), $adherent = $this->createAdherent());
+        $membership = CommitteeMembership::createForAdherent($this->createCommitteeMock(self::COMMITTEE_UUID), $adherent = $this->createAdherent());
 
         $this->assertInstanceOf(CommitteeMembership::class, $membership);
         $this->assertInstanceOf(UuidInterface::class, $membership->getUuid());
@@ -70,7 +71,7 @@ class CommitteeMembershipTest extends TestCase
 
     public function testPromoteFollowerMembershipToHostMembership()
     {
-        $membership = CommitteeMembership::createForAdherent(Uuid::fromString(self::COMMITTEE_UUID), $adherent = $this->createAdherent());
+        $membership = CommitteeMembership::createForAdherent($this->createCommitteeMock(self::COMMITTEE_UUID), $adherent = $this->createAdherent());
 
         $this->assertFalse($membership->isSupervisor());
         $this->assertFalse($membership->isHostMember());
@@ -90,7 +91,7 @@ class CommitteeMembershipTest extends TestCase
      */
     public function testUnableToPromoteHostMembership()
     {
-        $membership = CommitteeMembership::createForHost(Uuid::fromString(self::COMMITTEE_UUID), $this->createAdherent());
+        $membership = CommitteeMembership::createForHost($this->createCommitteeMock(self::COMMITTEE_UUID), $this->createAdherent());
         $membership->promote();
     }
 
@@ -99,13 +100,13 @@ class CommitteeMembershipTest extends TestCase
      */
     public function testUnableToPromoteSupervisorMembership()
     {
-        $membership = CommitteeMembership::createForSupervisor(Uuid::fromString(self::COMMITTEE_UUID), $this->createAdherent());
+        $membership = CommitteeMembership::createForSupervisor($this->createCommitteeMock(self::COMMITTEE_UUID), $this->createAdherent());
         $membership->promote();
     }
 
     public function testChangePrivileges()
     {
-        $membership = CommitteeMembership::createForSupervisor(Uuid::fromString(self::COMMITTEE_UUID), $this->createAdherent());
+        $membership = CommitteeMembership::createForSupervisor($this->createCommitteeMock(self::COMMITTEE_UUID), $this->createAdherent());
 
         $this->assertTrue($membership->isSupervisor());
         $this->assertFalse($membership->isHostMember());
@@ -146,5 +147,10 @@ class CommitteeMembershipTest extends TestCase
             'position',
             PostAddress::createFrenchAddress('50 Rue de la Villette', '69003-69383')
         );
+    }
+
+    private function createCommitteeMock(string $uuid): Committee
+    {
+        return $this->createConfiguredMock(Committee::class, ['getUuid' => Uuid::fromString($uuid)]);
     }
 }

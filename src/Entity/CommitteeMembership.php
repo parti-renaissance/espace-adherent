@@ -18,7 +18,7 @@ use Ramsey\Uuid\UuidInterface;
  *   uniqueConstraints={
  *     @ORM\UniqueConstraint(
  *       name="adherent_has_joined_committee",
- *       columns={"adherent_id", "committee_uuid"}
+ *       columns={"adherent_id", "committee_id"}
  *     )
  *   },
  *   indexes={
@@ -44,20 +44,20 @@ class CommitteeMembership
     use EntityIdentityTrait;
 
     /**
-     * The committee UUID.
-     *
-     * @var UuidInterface
-     *
-     * @ORM\Column(type="uuid")
-     */
-    private $committeeUuid;
-
-    /**
      * @var Adherent|null
      *
      * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="memberships")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $adherent;
+
+    /**
+     * @var Committee
+     *
+     * @ORM\ManyToOne(targetEntity="Committee")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $committee;
 
     /**
      * The privilege given to the member in the committee.
@@ -79,24 +79,15 @@ class CommitteeMembership
      */
     private $joinedAt;
 
-    /**
-     * Constructor.
-     *
-     * @param UuidInterface $uuid
-     * @param UuidInterface $committeeUuid
-     * @param Adherent      $adherent
-     * @param string        $privilege
-     * @param string        $subscriptionDate
-     */
     private function __construct(
         UuidInterface $uuid,
-        UuidInterface $committeeUuid,
+        Committee $committee,
         Adherent $adherent,
         string $privilege = self::COMMITTEE_FOLLOWER,
         string $subscriptionDate = 'now'
     ) {
         $this->uuid = $uuid;
-        $this->committeeUuid = $committeeUuid;
+        $this->committee = $committee;
         $this->adherent = $adherent;
         $this->privilege = $privilege;
         $this->joinedAt = new \DateTime($subscriptionDate);
@@ -107,46 +98,28 @@ class CommitteeMembership
         return [self::COMMITTEE_SUPERVISOR, self::COMMITTEE_HOST];
     }
 
-    public static function createForSupervisor(UuidInterface $committeeUuid, Adherent $supervisor, string $subscriptionDate = 'now'): self
+    public static function createForSupervisor(Committee $committee, Adherent $supervisor, string $subscriptionDate = 'now'): self
     {
-        $committeeUuid = clone $committeeUuid;
-
-        return new self(
-            self::createUuid($supervisor->getUuid(), $committeeUuid),
-            $committeeUuid,
-            $supervisor,
-            self::COMMITTEE_SUPERVISOR,
-            $subscriptionDate
-        );
+        return static::createForAdherent($committee, $supervisor, self::COMMITTEE_SUPERVISOR, $subscriptionDate);
     }
 
-    public static function createForHost(UuidInterface $committeeUuid, Adherent $host, string $subscriptionDate = 'now'): self
+    public static function createForHost(Committee $committee, Adherent $host, string $subscriptionDate = 'now'): self
     {
-        $committeeUuid = clone $committeeUuid;
-
-        return new self(
-            self::createUuid($host->getUuid(), $committeeUuid),
-            $committeeUuid,
-            $host,
-            self::COMMITTEE_HOST,
-            $subscriptionDate
-        );
+        return static::createForAdherent($committee, $host, self::COMMITTEE_HOST, $subscriptionDate);
     }
 
     /**
      * Creates a new membership relationship between an adherent and a committee.
      */
     public static function createForAdherent(
-        UuidInterface $committeeUuid,
+        Committee $committee,
         Adherent $adherent,
         string $privilege = self::COMMITTEE_FOLLOWER,
         string $subscriptionDate = 'now'
     ): self {
-        $committeeUuid = clone $committeeUuid;
-
         return new self(
-            self::createUuid($adherent->getUuid(), $committeeUuid),
-            $committeeUuid,
+            self::createUuid($adherent->getUuid(), clone $committee->getUuid()),
+            $committee,
             $adherent,
             $privilege,
             $subscriptionDate
@@ -198,6 +171,11 @@ class CommitteeMembership
         return $this->adherent;
     }
 
+    public function getCommittee(): Committee
+    {
+        return $this->committee;
+    }
+
     public function getAdherentUuid(): UuidInterface
     {
         return $this->adherent->getUuid();
@@ -205,7 +183,7 @@ class CommitteeMembership
 
     public function getCommitteeUuid(): UuidInterface
     {
-        return $this->committeeUuid;
+        return $this->committee->getUuid();
     }
 
     public function setPrivilege(string $privilege): void
@@ -248,7 +226,7 @@ class CommitteeMembership
 
     public function matches(Adherent $adherent, Committee $committee): bool
     {
-        return $adherent->equals($this->getAdherent()) && $this->committeeUuid->equals($committee->getUuid());
+        return $adherent->equals($this->getAdherent()) && $this->committee->getUuid()->equals($committee->getUuid());
     }
 
     private static function createUuid(UuidInterface $adherentUuid, UuidInterface $committeeUuid): UuidInterface

@@ -644,7 +644,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     {
         $committee->incrementMembersCount();
 
-        return CommitteeMembership::createForAdherent($committee->getUuid(), $this, $privilege, $subscriptionDate);
+        return CommitteeMembership::createForAdherent($committee, $this, $privilege, $subscriptionDate);
     }
 
     /**
@@ -667,7 +667,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     {
         $citizenProject->incrementMembersCount();
 
-        $memberShip = CitizenProjectMembership::createForAdherent($citizenProject->getUuid(), $this, $privilege, $subscriptionDate);
+        $memberShip = CitizenProjectMembership::createForAdherent($citizenProject, $this, $privilege, $subscriptionDate);
 
         $this->citizenProjectMemberships->add($memberShip);
 

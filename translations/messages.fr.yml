@@ -8,6 +8,8 @@ common.zip_code: Code postal
 common.show_more: Voir plus
 common.show_less: Voir moins
 common.sector: Secteur
+common.begin_at: Date de début
+common.finish_at: Date de fin
 pending: En attente
 approved: Approuvé
 group: un groupe

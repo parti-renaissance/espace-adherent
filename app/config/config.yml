@@ -59,6 +59,7 @@ framework:
         pools:
             app.cache.redirection:
                 adapter: cache.adapter.doctrine
+            app.cache.republican_silence: ~
 
 twig:
     debug:            "%kernel.debug%"

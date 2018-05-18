@@ -18,7 +18,7 @@ use Ramsey\Uuid\UuidInterface;
  *   uniqueConstraints={
  *     @ORM\UniqueConstraint(
  *       name="adherent_has_joined_citizen_project",
- *       columns={"adherent_id", "citizen_project_uuid"}
+ *       columns={"adherent_id", "citizen_project_id"}
  *     )
  *   },
  *   indexes={
@@ -42,18 +42,18 @@ class CitizenProjectMembership
     use EntityIdentityTrait;
 
     /**
-     * The citizen project UUID.
+     * @var CitizenProject
      *
-     * @var UuidInterface
-     *
-     * @ORM\Column(type="uuid")
+     * @ORM\ManyToOne(targetEntity="CitizenProject")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $citizenProjectUuid;
+    private $citizenProject;
 
     /**
      * @var Adherent
      *
      * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="citizenProjectMemberships")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $adherent;
 
@@ -79,25 +79,22 @@ class CitizenProjectMembership
 
     private function __construct(
         UuidInterface $uuid,
-        UuidInterface $citizenProjectUuid,
+        CitizenProject $citizenProject,
         Adherent $adherent,
         string $privilege = self::CITIZEN_PROJECT_FOLLOWER,
         string $subscriptionDate = 'now'
     ) {
         $this->uuid = $uuid;
-        $this->citizenProjectUuid = $citizenProjectUuid;
+        $this->citizenProject = $citizenProject;
         $this->adherent = $adherent;
         $this->privilege = $privilege;
         $this->joinedAt = new \DateTime($subscriptionDate);
     }
 
-    public static function createForAdministrator(UuidInterface $citizenProjectUuid, Adherent $administrator, string $subscriptionDate = 'now'): self
+    public static function createForAdministrator(CitizenProject $citizenProject, Adherent $administrator, string $subscriptionDate = 'now'): self
     {
-        $citizenProjectUuid = clone $citizenProjectUuid;
-
-        return new self(
-            self::createUuid($administrator->getUuid(), $citizenProjectUuid),
-            $citizenProjectUuid,
+        return static::createForAdherent(
+            $citizenProject,
             $administrator,
             self::CITIZEN_PROJECT_ADMINISTRATOR,
             $subscriptionDate
@@ -108,16 +105,14 @@ class CitizenProjectMembership
      * Creates a new membership relationship between an adherent and a citizen project.
      */
     public static function createForAdherent(
-        UuidInterface $citizenProjectUuid,
+        CitizenProject $citizenProject,
         Adherent $adherent,
         string $privilege = self::CITIZEN_PROJECT_FOLLOWER,
         string $subscriptionDate = 'now'
     ): self {
-        $citizenProjectUuid = clone $citizenProjectUuid;
-
         return new self(
-            self::createUuid($adherent->getUuid(), $citizenProjectUuid),
-            $citizenProjectUuid,
+            self::createUuid($adherent->getUuid(), clone $citizenProject->getUuid()),
+            $citizenProject,
             $adherent,
             $privilege,
             $subscriptionDate
@@ -126,7 +121,7 @@ class CitizenProjectMembership
 
     public static function checkPrivilege(string $privilege): void
     {
-        if (!in_array($privilege, self::PRIVILEGES, true)) {
+        if (!\in_array($privilege, self::PRIVILEGES, true)) {
             throw new \InvalidArgumentException(sprintf('Invalid privilege %s', $privilege));
         }
     }
@@ -165,9 +160,14 @@ class CitizenProjectMembership
         return $this->adherent->getUuid();
     }
 
+    public function getCitizenProject(): CitizenProject
+    {
+        return $this->citizenProject;
+    }
+
     public function getCitizenProjectUuid(): UuidInterface
     {
-        return $this->citizenProjectUuid;
+        return $this->citizenProject->getUuid();
     }
 
     public function setPrivilege(string $privilege): void
@@ -212,7 +212,8 @@ class CitizenProjectMembership
 
     public function matches(Adherent $adherent, CitizenProject $citizenProject): bool
     {
-        return $adherent->equals($this->getAdherent()) && $this->citizenProjectUuid->equals($citizenProject->getUuid());
+        return $adherent->equals($this->getAdherent())
+            && $this->citizenProject->getUuid()->equals($citizenProject->getUuid());
     }
 
     private static function createUuid(UuidInterface $adherentUuid, UuidInterface $citizenProjectUuid): UuidInterface

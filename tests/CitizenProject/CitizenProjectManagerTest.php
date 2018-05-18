@@ -8,9 +8,7 @@ use AppBundle\Collection\AdherentCollection;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\CitizenProject;
 use AppBundle\Membership\AdherentEmailSubscription;
-use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\MysqlWebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
@@ -29,34 +27,34 @@ class CitizenProjectManagerTest extends MysqlWebTestCase
     {
         $this->assertInstanceOf(
             AdherentCollection::class,
-            $administrators = $this->citizenProjectManager->getCitizenProjectAdministrators($this->getCitizenProjectMock(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID))
+            $administrators = $this->citizenProjectManager->getCitizenProjectAdministrators($this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID))
         );
 
         // Approved citizen projects
         $this->assertCount(2, $administrators);
-        $this->assertCount(2, $this->citizenProjectManager->getCitizenProjectAdministrators($this->getCitizenProjectMock(LoadCitizenProjectData::CITIZEN_PROJECT_3_UUID)));
-        $this->assertCount(1, $this->citizenProjectManager->getCitizenProjectAdministrators($this->getCitizenProjectMock(LoadCitizenProjectData::CITIZEN_PROJECT_4_UUID)));
-        $this->assertCount(1, $this->citizenProjectManager->getCitizenProjectAdministrators($this->getCitizenProjectMock(LoadCitizenProjectData::CITIZEN_PROJECT_5_UUID)));
+        $this->assertCount(2, $this->citizenProjectManager->getCitizenProjectAdministrators($this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_3_UUID)));
+        $this->assertCount(1, $this->citizenProjectManager->getCitizenProjectAdministrators($this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_4_UUID)));
+        $this->assertCount(1, $this->citizenProjectManager->getCitizenProjectAdministrators($this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_5_UUID)));
 
         // Unapproved citizen projects
-        $this->assertCount(0, $this->citizenProjectManager->getCitizenProjectAdministrators($this->getCitizenProjectMock(LoadCitizenProjectData::CITIZEN_PROJECT_2_UUID)));
+        $this->assertCount(0, $this->citizenProjectManager->getCitizenProjectAdministrators($this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_2_UUID)));
     }
 
     public function testGetCitizenProjectFollowers()
     {
         $this->assertInstanceOf(
             AdherentCollection::class,
-            $followers = $this->citizenProjectManager->getCitizenProjectFollowers($this->getCitizenProjectMock(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID))
+            $followers = $this->citizenProjectManager->getCitizenProjectFollowers($this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID))
         );
 
         // Approved citizen projects
         $this->assertCount(2, $followers);
-        $this->assertCount(0, $this->citizenProjectManager->getCitizenProjectFollowers($this->getCitizenProjectMock(LoadCitizenProjectData::CITIZEN_PROJECT_3_UUID)));
-        $this->assertCount(1, $this->citizenProjectManager->getCitizenProjectFollowers($this->getCitizenProjectMock(LoadCitizenProjectData::CITIZEN_PROJECT_4_UUID)));
-        $this->assertCount(2, $this->citizenProjectManager->getCitizenProjectFollowers($this->getCitizenProjectMock(LoadCitizenProjectData::CITIZEN_PROJECT_5_UUID)));
+        $this->assertCount(0, $this->citizenProjectManager->getCitizenProjectFollowers($this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_3_UUID)));
+        $this->assertCount(1, $this->citizenProjectManager->getCitizenProjectFollowers($this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_4_UUID)));
+        $this->assertCount(2, $this->citizenProjectManager->getCitizenProjectFollowers($this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_5_UUID)));
 
         // Unapproved citizen projects
-        $this->assertCount(1, $this->citizenProjectManager->getCitizenProjectFollowers($this->getCitizenProjectMock(LoadCitizenProjectData::CITIZEN_PROJECT_2_UUID)));
+        $this->assertCount(1, $this->citizenProjectManager->getCitizenProjectFollowers($this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_2_UUID)));
     }
 
     public function testFindAdherentNearCitizenProjectOrAcceptAllNotification()
@@ -84,16 +82,9 @@ class CitizenProjectManagerTest extends MysqlWebTestCase
         $this->assertSame(6, $adherents->count());
     }
 
-    private function getCitizenProjectMock(string $uuid)
+    private function getCitizenProject(string $uuid)
     {
-        $mock = $this->createMock(CitizenProject::class);
-        $mock
-            ->expects($this->any())
-            ->method('getUuid')
-            ->willReturn(Uuid::fromString($uuid))
-        ;
-
-        return $mock;
+        return $this->getCitizenProjectRepository()->findOneByUuid($uuid);
     }
 
     protected function setUp()

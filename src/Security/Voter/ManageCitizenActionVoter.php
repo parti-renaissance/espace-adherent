@@ -47,6 +47,6 @@ class ManageCitizenActionVoter extends AbstractAdherentVoter
             return $adherent->isAdministratorOf($subject); // Prevent SQL query
         }
 
-        return $this->projectMembershipRepository->administrateCitizenProject($adherent, $subject->getUuid()->toString());
+        return $this->projectMembershipRepository->administrateCitizenProject($adherent, $subject);
     }
 }
