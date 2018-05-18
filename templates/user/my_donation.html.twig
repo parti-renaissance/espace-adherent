@@ -66,11 +66,7 @@
                         </td>
                         <td>
                             {% if donation.duration %}
-                                {% if donation.subscriptionEndedAt %}
-                                    Don mensuel arrêté le {{ donation.subscriptionEndedAt|localizeddate('medium', 'none') }}
-                                {% else %}
-                                    Don mensuel
-                                {% endif %}
+                                Don mensuel
                             {% else %}
                                 Don ponctuel
                             {% endif %}
