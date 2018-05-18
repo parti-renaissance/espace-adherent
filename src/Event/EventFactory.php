@@ -8,15 +8,20 @@ use AppBundle\CitizenAction\CitizenActionCommand;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\PostAddress;
+use AppBundle\Referent\ReferentTagManager;
 use Ramsey\Uuid\Uuid;
 
 class EventFactory
 {
     private $addressFactory;
+    private $referentTagManager;
 
-    public function __construct(PostAddressFactory $addressFactory = null)
-    {
+    public function __construct(
+        ReferentTagManager $referentTagManager,
+        PostAddressFactory $addressFactory = null
+    ) {
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
+        $this->referentTagManager = $referentTagManager;
     }
 
     public function createFromArray(array $data): Event
@@ -29,7 +34,7 @@ class EventFactory
 
         $uuid = Uuid::fromString($data['uuid']);
 
-        return new Event(
+        $event = new Event(
             $uuid,
             $data['organizer'] ?? null,
             $data['committee'],
@@ -42,6 +47,10 @@ class EventFactory
             $data['capacity'],
             $data['is_for_legislatives'] ?? false
         );
+
+        $this->referentTagManager->assignReferentLocalTags($event);
+
+        return $event;
     }
 
     public function createCitizenActionFromArray(array $data): CitizenAction
@@ -69,7 +78,7 @@ class EventFactory
 
     public function createFromEventCommand(EventCommand $command): Event
     {
-        return new Event(
+        $event = new Event(
             $command->getUuid(),
             $command->getAuthor(),
             $command->getCommittee(),
@@ -82,6 +91,10 @@ class EventFactory
             $command->getCapacity(),
             $command->isForLegislatives()
         );
+
+        $this->referentTagManager->assignReferentLocalTags($event);
+
+        return $event;
     }
 
     public function updateFromEventCommand(Event $event, EventCommand $command): Event
@@ -96,6 +109,8 @@ class EventFactory
             $command->getCapacity(),
             $command->isForLegislatives()
         );
+
+        $this->referentTagManager->assignReferentLocalTags($event);
 
         return $event;
     }

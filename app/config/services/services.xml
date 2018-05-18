@@ -67,6 +67,8 @@
         <service id="AppBundle\Membership\MembershipRegistrationProcess"/>
 
         <!-- Event -->
+        <service id="AppBundle\Event\EventFactory" public="true"/>
+
         <service id="AppBundle\Event\EventRegistrationSubscriber" >
             <argument type="service" id="app.mailer.transactional" />
         </service>
@@ -112,6 +114,7 @@
 
         <!-- Referent -->
         <service id="AppBundle\Command\ReferentTagImportCommand"/>
+        <service id="AppBundle\Command\ReferentTagInitializeCommitteeEvent"/>
         <service id="AppBundle\Referent\ReferentTagManager" />
 
         <!-- Report -->

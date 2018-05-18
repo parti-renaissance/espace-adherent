@@ -15,7 +15,7 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @Algolia\Index
  */
-class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEntity
+class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEntity, ReferentTaggableEntity
 {
     use UserDocumentTrait;
 
@@ -59,6 +59,13 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
      */
     protected $documents;
 
+    /**
+     * @var Collection|ReferentTag[]
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     */
+    private $referentTags;
+
     public function __construct(
         UuidInterface $uuid,
         ?Adherent $organizer,
@@ -74,7 +81,8 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
         string $createdAt = null,
         int $participantsCount = 0,
         string $slug = null,
-        string $type = null
+        string $type = null,
+        array $referentTags = []
     ) {
         $this->uuid = $uuid;
         $this->organizer = $organizer;
@@ -94,6 +102,7 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
         $this->isForLegislatives = $isForLegislatives;
         $this->type = $type;
         $this->documents = new ArrayCollection();
+        $this->referentTags = new ArrayCollection($referentTags);
     }
 
     public function __toString(): string
@@ -150,6 +159,31 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
     }
 
     /**
+     * @return Collection|ReferentTag[]
+     */
+    public function getReferentTags(): Collection
+    {
+        return $this->referentTags;
+    }
+
+    public function addReferentTag(ReferentTag $referentTag): void
+    {
+        if (!$this->referentTags->contains($referentTag)) {
+            $this->referentTags->add($referentTag);
+        }
+    }
+
+    public function removeReferentTag(ReferentTag $referentTag): void
+    {
+        $this->referentTags->remove($referentTag);
+    }
+
+    public function clearReferentTags(): void
+    {
+        $this->referentTags->clear();
+    }
+
+    /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("committeeUuid")
      * @JMS\Groups({"public", "event_read"})
@@ -175,5 +209,17 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
         }
 
         return $category->getName();
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("tags")
+     * @JMS\Groups({"public", "event_read"})
+     */
+    public function getReferentTagsCodes(): array
+    {
+        return array_map(function (ReferentTag $referentTag) {
+            return $referentTag->getCode();
+        }, $this->referentTags->toArray());
     }
 }

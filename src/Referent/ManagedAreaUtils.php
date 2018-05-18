@@ -2,44 +2,24 @@
 
 namespace AppBundle\Referent;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\Event;
+use AppBundle\Entity\EntityPostAddressInterface;
 use AppBundle\Utils\AreaUtils;
 
 class ManagedAreaUtils extends AreaUtils
 {
-    public static function getCodeFromCommittee(Committee $committee): ?string
+    public static function getLocalCodes(EntityPostAddressInterface $entity): array
     {
-        if (self::CODE_FRANCE === $committee->getCountry()) {
-            return static::getCodeFromPostalCode($committee->getPostalCode());
-        }
-
-        return static::getCodeFromCountry($committee->getCountry());
-    }
-
-    public static function getCodeFromEvent(Event $event): ?string
-    {
-        if (self::CODE_FRANCE === $event->getCountry()) {
-            return static::getCodeFromPostalCode($event->getPostalCode());
-        }
-
-        return static::getCodeFromCountry($event->getCountry());
-    }
-
-    public static function getCodesFromAdherent(Adherent $adherent): array
-    {
-        $localCode = static::getLocalCodeFromAdherent($adherent);
+        $localCode = static::getLocalCode($entity);
 
         return array_merge([$localCode], static::getRelatedCodes($localCode));
     }
 
-    private static function getLocalCodeFromAdherent(Adherent $adherent): string
+    public static function getLocalCode(EntityPostAddressInterface $entity): string
     {
-        if (self::CODE_FRANCE === $adherent->getCountry()) {
-            return static::getCodeFromPostalCode($adherent->getPostalCode());
+        if (self::CODE_FRANCE === $entity->getCountry()) {
+            return static::getCodeFromPostalCode($entity->getPostalCode());
         }
 
-        return static::getCodeFromCountry($adherent->getCountry());
+        return static::getCodeFromCountry($entity->getCountry());
     }
 }

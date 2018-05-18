@@ -82,7 +82,7 @@ class MembershipRequestHandler
         $adherent = $this->adherentFactory->createFromMembershipRequest($membershipRequest);
         $this->manager->persist($adherent);
 
-        $this->referentTagManager->assignAdherentLocalTag($adherent);
+        $this->referentTagManager->assignReferentLocalTags($adherent);
         $this->membershipRegistrationProcess->start($adherent->getUuid()->toString());
 
         $adherent->join();
@@ -97,7 +97,7 @@ class MembershipRequestHandler
         $user->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
         $user->join();
 
-        $this->referentTagManager->assignAdherentLocalTag($user);
+        $this->referentTagManager->assignReferentLocalTags($user);
 
         $this->manager->flush();
 
@@ -120,7 +120,7 @@ class MembershipRequestHandler
     {
         $adherent->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
 
-        $this->referentTagManager->assignAdherentLocalTag($adherent);
+        $this->referentTagManager->assignReferentLocalTags($adherent);
 
         $this->dispatcher->dispatch(AdherentEvents::PROFILE_UPDATED, new AdherentProfileWasUpdatedEvent($adherent));
         $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($adherent));

@@ -37,7 +37,7 @@ use JMS\Serializer\Annotation as JMS;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, \Serializable
+class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, \Serializable
 {
     public const ENABLED = 'ENABLED';
     public const DISABLED = 'DISABLED';
@@ -201,6 +201,8 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $tags;
 
     /**
+     * @var Collection|ReferentTag[]
+     *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
      */
     private $referentTags;
@@ -1012,6 +1014,9 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->tags->removeElement($adherentTag);
     }
 
+    /**
+     * @return Collection|ReferentTag[]
+     */
     public function getReferentTags(): Collection
     {
         return $this->referentTags;
@@ -1029,9 +1034,9 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->referentTags->remove($referentTag);
     }
 
-    public function removeReferentTags(): void
+    public function clearReferentTags(): void
     {
-        $this->referentTags = new ArrayCollection();
+        $this->referentTags->clear();
     }
 
     public function getCitizenProjectCreationEmailSubscriptionRadius(): int

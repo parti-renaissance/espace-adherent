@@ -193,7 +193,7 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
 
     private function getEventFactory(): EventFactory
     {
-        return $this->container->get('app.event.factory');
+        return $this->container->get(EventFactory::class);
     }
 
     private function getEventRegistrationFactory(): EventRegistrationFactory

@@ -242,6 +242,7 @@
             <argument>AppBundle\Entity\Event</argument>
             <argument />
             <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="AppBundle\Referent\ReferentTagManager"/>
         </service>
 
         <service id="app.admin.event_category" class="AppBundle\Admin\EventCategoryAdmin">
