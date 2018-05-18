@@ -48,8 +48,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi"
 
     When I fill in the following:
-      | NUMERO_CARTE | 1111 2222 3333 4444 |
-      | CVVX         | 123                 |
+      | NUMERO_CARTE | 4012001037141112 |
+      | CVVX         | 123              |
     And I select "12" from "MOIS_VALIDITE"
     And I select "18" from "AN_VALIDITE"
     And I press "VALIDER"
@@ -84,8 +84,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi"
 
     When I fill in the following:
-      | NUMERO_CARTE | 1111 2222 3333 4444 |
-      | CVVX         | 123                 |
+      | NUMERO_CARTE | 4012001037141112 |
+      | CVVX         | 123              |
     And I select "12" from "MOIS_VALIDITE"
     And I select "18" from "AN_VALIDITE"
     And I press "VALIDER"
@@ -142,8 +142,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi"
 
     When I fill in the following:
-      | NUMERO_CARTE | 1111 2222 3333 4444 |
-      | CVVX         | 123                 |
+      | NUMERO_CARTE | 4012001037141112 |
+      | CVVX         | 123              |
     And I select "12" from "MOIS_VALIDITE"
     And I select "18" from "AN_VALIDITE"
     And I press "VALIDER"
@@ -185,8 +185,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi"
 
     When I fill in the following:
-      | NUMERO_CARTE | 1111 2222 3333 4444 |
-      | CVVX         | 123                 |
+      | NUMERO_CARTE | 4012001037141112 |
+      | CVVX         | 123              |
     And I select "12" from "MOIS_VALIDITE"
     And I select "18" from "AN_VALIDITE"
     And I press "VALIDER"

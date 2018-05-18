@@ -142,7 +142,7 @@ class DonationControllerTest extends SqliteWebTestCase
 
         // Pay using a testing account
         $crawler = $this->payboxClient->submit($crawler->filter('form[name=form_pay]')->form([
-            'NUMERO_CARTE' => '1111222233334444',
+            'NUMERO_CARTE' => '4012001037141112',
             'MOIS_VALIDITE' => '12',
             'AN_VALIDITE' => '32',
             'CVVX' => '123',
