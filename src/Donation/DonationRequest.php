@@ -3,6 +3,7 @@
 namespace AppBundle\Donation;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Validator\MaxFiscalYearDonation;
 use AppBundle\Validator\PayboxSubscription as AssertPayboxSubscription;
 use AppBundle\Validator\UniqueDonationSubscription;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
@@ -25,7 +26,7 @@ class DonationRequest
     /**
      * @Assert\NotBlank(message="donation.amount.not_blank")
      * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0")
-     * @Assert\LessThanOrEqual(value=7500, message="donation.amount.less_than_7500")
+     * @MaxFiscalYearDonation
      */
     private $amount;
 
