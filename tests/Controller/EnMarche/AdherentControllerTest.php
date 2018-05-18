@@ -946,6 +946,7 @@ class AdherentControllerTest extends MysqlWebTestCase
     {
         /** @var Adherent $adherent */
         $adherentBeforeUnregistration = $this->getAdherentRepository()->findOneByEmail($userEmail);
+        $referentTagsBeforeUnregistration = $adherentBeforeUnregistration->getReferentTags()->toArray(); // It triggers the real SQL query instead of lazy-load
 
         $this->authenticateAsAdherent($this->client, $userEmail);
 
@@ -1022,6 +1023,7 @@ class AdherentControllerTest extends MysqlWebTestCase
         $this->assertSame($adherentBeforeUnregistration->getUuid()->toString(), $unregistration->getUuid()->toString());
         $this->assertSame($adherentBeforeUnregistration->getPostalCode(), $unregistration->getPostalCode());
         $this->assertCount(0, $this->getCitizenProjectCommentRepository()->findForAuthor($adherentBeforeUnregistration));
+        $this->assertEquals($referentTagsBeforeUnregistration, $unregistration->getReferentTags()->toArray());
     }
 
     public function provideAdherentCredentials(): array
