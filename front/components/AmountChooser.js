@@ -96,7 +96,7 @@ export default class AmountChooser extends React.Component {
                     </label>
                 </div>
                 <div className="amount-chooser__help">
-                    Vous aurez la possibilité d'annuler votre don mensuel à tout moment depuis votre espace adhérent.
+                    Vous aurez la possibilité d'annuler votre don mensuel à tout moment depuis votre espace adhérent ou en <a href="/contact">nous contactant directement</a>.
                 </div>
             </div>
         );
