@@ -436,17 +436,17 @@
 
 .flex {
     &--center {
-        @include flex(center);
+        @include flex(center, column);
 
         &--mobile {
             @media (max-width: $mobile) {
-                @include flex(center);
+                @include flex(center, column);
             }
         }
     }
 
     &--left {
-        @include flex(flex-start);
+      @include flex(start, row);
     }
 }
 

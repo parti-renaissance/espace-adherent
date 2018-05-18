@@ -89,8 +89,8 @@ $zIndex__overlay-caret: 600;
     }
 }
 
-@mixin flex($positioning) {
+@mixin flex($positioning, $direction) {
     display: flex;
     justify-content: $positioning;
-    flex-direction: column;
+    flex-direction: $direction;
 }
