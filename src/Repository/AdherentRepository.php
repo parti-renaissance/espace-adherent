@@ -63,6 +63,19 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         return $this->findOneBy(['emailAddress' => $email]);
     }
 
+    public function isAdherent(string $email): bool
+    {
+        return (bool) $this
+            ->createQueryBuilder('adherent')
+            ->select('COUNT(adherent)')
+            ->where('adherent.emailAddress = :email')
+            ->andWhere('adherent.adherent = 1')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
     /**
      * Finds an Adherent instance by its unique UUID.
      *

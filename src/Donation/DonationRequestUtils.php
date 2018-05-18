@@ -137,7 +137,7 @@ class DonationRequestUtils
         return [
             'code' => $code,
             'uuid' => $donation->getUuid()->toString(),
-            'is_new_adherent' => $this->membershipRegistrationProcess->isStarted(),
+            'is_registration' => $this->membershipRegistrationProcess->isStarted(),
             'status' => self::PAYBOX_SUCCESS === $code ? 'effectue' : 'erreur',
             '_status_token' => (string) $this->getTokenManager()->getToken(self::STATUS_TOKEN),
         ];

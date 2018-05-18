@@ -4,7 +4,6 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <!-- Donation -->
-
         <service id="app.donation_request.utils.locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
             <argument type="collection">
                 <argument key="validator" type="service" id="validator" />
