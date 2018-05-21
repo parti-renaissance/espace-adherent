@@ -98,6 +98,7 @@
             </argument>
         </service>
         <service id="AppBundle\Form\CommitteeAroundAdherentType"/>
+        <service id="AppBundle\Form\AdherentEmailSubscriptionType"/>
 
         <!-- GeoCoder -->
         <service id="GeoIp2\WebService\Client">
@@ -149,6 +150,7 @@
         <!--Command-->
         <service id="AppBundle\Command\ApiScheduleCommitteeCreationCommand" />
         <service id="AppBundle\Command\ApiScheduleEventCreationCommand" />
+        <service id="AppBundle\Command\InitializeEmailSubscriptionHistoryCommand"/>
 
         <!-- UserDocument -->
         <service id="AppBundle\UserDocument\UserDocumentManager" public="true" />
@@ -166,5 +168,8 @@
 
         <!-- Validators -->
         <service id="AppBundle\Validator\DateRangeValidator" />
+
+        <!-- History -->
+        <service id="AppBundle\History\EmailSubscriptionHistoryHandler" />
     </services>
 </container>

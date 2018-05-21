@@ -2,11 +2,13 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Unregistration;
 use AppBundle\Form\AdherentChangePasswordType;
 use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentType;
 use AppBundle\Form\UnregistrationType;
+use AppBundle\History\EmailSubscriptionHistoryHandler;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\Membership\MembershipRequestHandler;
 use AppBundle\Membership\UnregistrationCommand;
@@ -100,12 +102,16 @@ class UserController extends Controller
      * @Route("/preferences-des-emails", name="app_user_set_email_notifications")
      * @Method("GET|POST")
      */
-    public function setEmailNotificationsAction(Request $request): Response
+    public function setEmailNotificationsAction(Request $request, EmailSubscriptionHistoryHandler $historyManager): Response
     {
-        $form = $this->createForm(AdherentEmailSubscriptionType::class, $this->getUser(), ['with_submit_button' => true]);
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+        $form = $this->createForm(AdherentEmailSubscriptionType::class, $adherent);
+        $oldEmailsSubscriptions = $adherent->getEmailsSubscriptions();
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $historyManager->handleSubscriptionsUpdate($adherent, $oldEmailsSubscriptions);
+
             $this->addFlash('info', $this->get('translator')->trans('adherent.set_emails_notifications.success'));
 
             return $this->redirectToRoute('app_user_set_email_notifications');

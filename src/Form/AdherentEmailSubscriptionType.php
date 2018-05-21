@@ -10,7 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Choice;
 
@@ -40,11 +39,8 @@ class AdherentEmailSubscriptionType extends AbstractType
                 ],
                 'error_bubbling' => true,
             ])
+            ->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications'])
         ;
-
-        if ($options['with_submit_button']) {
-            $builder->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications']);
-        }
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $formData = $event->getData();
@@ -57,13 +53,5 @@ class AdherentEmailSubscriptionType extends AbstractType
                 $event->setData($formData);
             }
         });
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'with_submit_button' => false,
-        ]);
-        $resolver->setAllowedTypes('with_submit_button', ['boolean']);
     }
 }

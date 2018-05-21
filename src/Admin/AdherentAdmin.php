@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\History\EmailSubscriptionHistoryHandler;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\BoardMember\Role;
 use AppBundle\Entity\CommitteeMembership;
@@ -44,12 +45,24 @@ class AdherentAdmin extends AbstractAdmin
     ];
 
     private $dispatcher;
+    private $emailSubscriptionHistoryManager;
 
-    public function __construct($code, $class, $baseControllerName, EventDispatcherInterface $dispatcher)
-    {
+    /**
+     * @var array Useful on update to know state before update
+     */
+    private $oldEmailsSubscriptions;
+
+    public function __construct(
+        $code,
+        $class,
+        $baseControllerName,
+        EventDispatcherInterface $dispatcher,
+        EmailSubscriptionHistoryHandler $emailSubscriptionHistoryManager
+    ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->dispatcher = $dispatcher;
+        $this->emailSubscriptionHistoryManager = $emailSubscriptionHistoryManager;
     }
 
     public function getTemplate($name)
@@ -416,10 +429,24 @@ class AdherentAdmin extends AbstractAdmin
     }
 
     /**
+     * @param Adherent $subject
+     */
+    public function setSubject($subject)
+    {
+        if (null === $this->oldEmailsSubscriptions) {
+            $this->oldEmailsSubscriptions = $subject->getEmailsSubscriptions();
+        }
+        parent::setSubject($subject);
+    }
+
+    /**
      * @param Adherent $object
      */
     public function postUpdate($object)
     {
+        // No need to handle referent tags update as they are not update-able from admin
+        $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object, $this->oldEmailsSubscriptions);
+
         $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($object));
     }
 

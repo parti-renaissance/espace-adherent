@@ -15,6 +15,7 @@ use AppBundle\Entity\EventRegistration;
 use AppBundle\Entity\Report\Report;
 use AppBundle\Entity\Summary;
 use AppBundle\Entity\Unregistration;
+use AppBundle\History\EmailSubscriptionHistoryHandler;
 use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,10 +23,12 @@ use Doctrine\ORM\EntityManagerInterface;
 class AdherentRegistry
 {
     private $em;
+    private $emailSubscriptionHistoryHandler;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler)
     {
         $this->em = $em;
+        $this->emailSubscriptionHistoryHandler = $emailSubscriptionHistoryHandler;
     }
 
     public function unregister(Adherent $adherent, Unregistration $unregistration): void
@@ -36,6 +39,8 @@ class AdherentRegistry
 
         $this->em->getRepository(CitizenProject::class)->unfollowCitizenProjectsOnUnregistration($adherent);
         $this->em->getRepository(Committee::class)->unfollowCommitteesOnUnregistration($adherent);
+
+        $this->emailSubscriptionHistoryHandler->handleUnsubscriptions($adherent);
 
         $citizenActionRepository = $this->em->getRepository(CitizenAction::class);
         $citizenActionRepository->removeOrganizerEvents($adherent, CitizenActionRepository::TYPE_PAST, true);
