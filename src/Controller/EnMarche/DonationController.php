@@ -11,9 +11,11 @@ use AppBundle\Exception\PayboxPaymentUnsubscriptionException;
 use AppBundle\Exception\InvalidPayboxPaymentSubscriptionValueException;
 use AppBundle\Form\DonationRequestType;
 use AppBundle\Form\ConfirmActionType;
+use AppBundle\Form\NewsletterSubscriptionType;
 use AppBundle\Membership\MembershipRegistrationProcess;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\DonationRepository;
+use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -128,7 +130,8 @@ class DonationController extends Controller
         Request $request,
         Donation $donation,
         MembershipRegistrationProcess $membershipRegistrationProcess,
-        AdherentRepository $adherentRepository
+        AdherentRepository $adherentRepository,
+        NewsletterSubscriptionRepository $newsletterSubscriptionRepository
     ) {
         $retryUrl = null;
         if (!$donation->isSuccessful()) {
@@ -147,6 +150,8 @@ class DonationController extends Controller
             'retry_url' => $retryUrl,
             'is_registration' => $request->query->get('is_registration'),
             'is_adherent' => $adherentRepository->isAdherent($donation->getEmailAddress()),
+            'is_newsletter_subscribed' => $newsletterSubscriptionRepository->isSubscribed($donation->getEmailAddress()),
+            'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class)->createView(),
         ]);
     }
 

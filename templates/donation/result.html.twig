@@ -78,6 +78,35 @@
                 </p>
             {% endif %}
 
+            {% if not is_newsletter_subscribed %}
+                <div class="newsletter l__row l__row--h-stretch space--20-30 l__row--wrap l__tablet--col b__nudge--top">
+                    <div class="text--small text--uppercase space--10-0">
+                        Tenez-vous au courant des actualités du mouvement et du gouvernement en vous abonnant à notre newsletter hebdomadaire !
+                    </div>
+                    {{ form_start(newsletter_form, { action: path('newsletter_subscription'), attr: { class: 'l__row l__row--wrap'} }) }}
+                        <p>
+                            {{ form_widget(newsletter_form.email, {
+                                attr: {
+                                    title: 'common.email_address',
+                                    placeholder: 'common.email_address',
+                                    class: 'form__email'
+                                }
+                            }) }}
+                        </p>
+                        <p>
+                            {{ form_widget(newsletter_form.postalCode, {
+                                attr: {
+                                    title: 'common.zip_code',
+                                    placeholder: 'common.zip_code',
+                                    class: 'form__zipcode'
+                                }
+                            }) }}
+                            <button title="Je m'inscris à la newsletter" type="submit" class="form btn">Je m'inscris</button>
+                        </p>
+                    {{ form_end(newsletter_form) }}
+                </div>
+            {% endif %}
+
             <p>
                 <a href="{{ path('homepage') }}" class="btn btn-medium">
                     Retour à l'accueil
