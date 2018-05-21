@@ -6,12 +6,12 @@ use AppBundle\Entity\Referent;
 use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
 use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ReferentPersonLinkRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, ReferentPersonLink::class);
     }

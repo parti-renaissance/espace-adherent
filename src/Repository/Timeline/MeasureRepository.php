@@ -3,10 +3,16 @@
 namespace AppBundle\Repository\Timeline;
 
 use AppBundle\Entity\Timeline\Measure;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class MeasureRepository extends EntityRepository
+class MeasureRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Measure::class);
+    }
+
     public function findOneByTitle(string $title): ?Measure
     {
         $qb = $this

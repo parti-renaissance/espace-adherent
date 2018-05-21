@@ -3,10 +3,16 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Proposal;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ProposalRepository extends EntityRepository
+class ProposalRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Proposal::class);
+    }
+
     /**
      * @return Proposal[]
      */

@@ -8,12 +8,13 @@ use AppBundle\Entity\Committee;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Coordinator\Filter\CommitteeFilter;
 use AppBundle\Search\SearchParametersFilter;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class CommitteeRepository extends EntityRepository
+class CommitteeRepository extends ServiceEntityRepository
 {
     use GeoFilterTrait;
     use NearbyTrait;
@@ -24,6 +25,11 @@ class CommitteeRepository extends EntityRepository
     public const ONLY_APPROVED = 1;
     public const INCLUDE_UNAPPROVED = 2;
     public const DEFAULT_MAX_RESULTS_LIST = 3;
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Committee::class);
+    }
 
     public function countElements(): int
     {

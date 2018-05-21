@@ -4,11 +4,17 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\TonMacronChoice;
 use AppBundle\ValueObject\Genders;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class TonMacronChoiceRepository extends EntityRepository
+class TonMacronChoiceRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, TonMacronChoice::class);
+    }
+
     public function createQueryBuilderForStep(string $step): QueryBuilder
     {
         return $this

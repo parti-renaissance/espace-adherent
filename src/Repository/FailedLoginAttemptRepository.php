@@ -3,13 +3,19 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\FailedLoginAttempt;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class FailedLoginAttemptRepository extends EntityRepository
+class FailedLoginAttemptRepository extends ServiceEntityRepository
 {
     private const MAX_ATTEMPTS = 5;
     private const LAST_MINUTE = 'PT1M';
     private const LAST_TEN_MINUTES = 'PT10M';
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, FailedLoginAttempt::class);
+    }
 
     public function save(FailedLoginAttempt $failedLoginAttempt): void
     {

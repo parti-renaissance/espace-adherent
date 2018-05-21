@@ -4,11 +4,17 @@ namespace AppBundle\Repository\OAuth;
 
 use AppBundle\Entity\OAuth\AccessToken;
 use AppBundle\Entity\OAuth\Client;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class AccessTokenRepository extends EntityRepository
+class AccessTokenRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, AccessToken::class);
+    }
+
     public function save(AccessToken $token): void
     {
         $this->_em->persist($token);

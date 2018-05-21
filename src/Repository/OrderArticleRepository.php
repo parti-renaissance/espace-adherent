@@ -3,10 +3,16 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\OrderArticle;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class OrderArticleRepository extends EntityRepository
+class OrderArticleRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, OrderArticle::class);
+    }
+
     public function findOneBySlug(string $slug): ?OrderArticle
     {
         return $this

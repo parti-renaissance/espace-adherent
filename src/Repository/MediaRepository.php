@@ -3,19 +3,25 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Media;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class MediaRepository extends EntityRepository
+class MediaRepository extends ServiceEntityRepository
 {
     public const TYPE_IMAGE = 'image';
     public const TYPE_VIDEO = 'video';
 
-    public function findOneByName(string $name): ? Media
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Media::class);
+    }
+
+    public function findOneByName(string $name): ?Media
     {
         return $this->findOneBy(['name' => $name]);
     }
 
-    public function findOneByPath(string $path): ? Media
+    public function findOneByPath(string $path): ?Media
     {
         return $this->findOneBy(['path' => $path]);
     }

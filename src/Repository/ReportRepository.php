@@ -5,10 +5,16 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Report\Report;
 use AppBundle\Report\ReportType;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ReportRepository extends EntityRepository
+class ReportRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Report::class);
+    }
+
     /**
      * @return int[]
      */

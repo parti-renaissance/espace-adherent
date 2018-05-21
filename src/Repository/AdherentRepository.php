@@ -13,23 +13,29 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Membership\AdherentEmailSubscription;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class AdherentRepository extends EntityRepository implements UserLoaderInterface, UserProviderInterface
+class AdherentRepository extends ServiceEntityRepository implements UserLoaderInterface, UserProviderInterface
 {
     use NearbyTrait;
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
+    }
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Adherent::class);
     }
 
     public function countElements(): int

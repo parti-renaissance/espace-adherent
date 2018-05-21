@@ -3,10 +3,16 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\LegislativeCandidate;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class LegislativeCandidateRepository extends EntityRepository
+class LegislativeCandidateRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, LegislativeCandidate::class);
+    }
+
     public function findDistrictZoneCandidate(string $areaCode, string $areaNumber): ?LegislativeCandidate
     {
         return $this

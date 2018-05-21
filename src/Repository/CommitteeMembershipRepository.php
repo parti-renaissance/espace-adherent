@@ -6,14 +6,20 @@ use AppBundle\Collection\AdherentCollection;
 use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CommitteeMembership;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class CommitteeMembershipRepository extends EntityRepository
+class CommitteeMembershipRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, CommitteeMembership::class);
+    }
+
     /**
      * Returns whether or not the given adherent is already an host of at least
      * one committee.

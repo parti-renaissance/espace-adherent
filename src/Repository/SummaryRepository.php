@@ -4,11 +4,17 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Summary;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class SummaryRepository extends EntityRepository
+class SummaryRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Summary::class);
+    }
+
     public function createQueryBuilderForAdherent(Adherent $adherent): QueryBuilder
     {
         return $this->createQueryBuilder('s')

@@ -4,13 +4,19 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CommitteeFeedItem;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class CommitteeFeedItemRepository extends EntityRepository
+class CommitteeFeedItemRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, CommitteeFeedItem::class);
+    }
+
     public function findPaginatedMostRecentFeedItems(string $committeeUuid, int $limit, int $firstResultIndex = 0): Paginator
     {
         $qb = $this

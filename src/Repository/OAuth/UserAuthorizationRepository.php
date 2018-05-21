@@ -5,11 +5,17 @@ namespace AppBundle\Repository\OAuth;
 use AppBundle\Entity\OAuth\Client;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\OAuth\UserAuthorization;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class UserAuthorizationRepository extends EntityRepository
+class UserAuthorizationRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, UserAuthorization::class);
+    }
+
     /**
      * @return UserAuthorization[]
      */

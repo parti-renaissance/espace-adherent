@@ -3,12 +3,18 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\ReferentManagedUsersMessage;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ReferentManagedUsersMessageRepository extends EntityRepository
+class ReferentManagedUsersMessageRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
+    }
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, ReferentManagedUsersMessage::class);
     }
 
     /**

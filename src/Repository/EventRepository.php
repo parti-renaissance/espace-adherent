@@ -8,12 +8,13 @@ use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Search\SearchParametersFilter;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class EventRepository extends EntityRepository
+class EventRepository extends ServiceEntityRepository
 {
     const TYPE_PAST = 'past';
     const TYPE_UPCOMING = 'upcoming';
@@ -23,6 +24,11 @@ class EventRepository extends EntityRepository
     use NearbyTrait;
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
+    }
+
+    public function __construct(RegistryInterface $registry, string $className = Event::class)
+    {
+        parent::__construct($registry, $className);
     }
 
     public function countElements(bool $onlyPublished = true): int
