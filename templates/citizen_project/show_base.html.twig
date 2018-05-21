@@ -84,21 +84,22 @@
             <p>{{ citizen_project.proposedSolution|raw }}</p>
         </div>
         <hr>
-
         <div class="text--body text--dark" id="citizen-project-required-means">
             <p class="text--bold">Les actions à lancer</p>
             <p>{{ citizen_project.requiredMeans|nl2br }}</p>
         </div>
-
+        <hr>
         <ul id="citizen-project-menu" class="citizen-project__menu list__links list__links--left list__links--row">
             {% set currentRoute = app.request.attributes.get('_route') %}
             <li>
                 <a class="{{ currentRoute == 'app_citizen_project_show' ? 'active' }}" href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}">Actions terrain à venir</a>
             </li>
+            <hr>
             {% if can_see_comment_citizen_project(citizen_project) %}
                 <li>
                     <a class="{{ currentRoute == 'app_citizen_project_show_comments' ? 'active' }}" href="{{ path('app_citizen_project_show_comments', {slug: citizen_project.slug}) }}">Fil de discussion</a>
                 </li>
+                <hr>
             {% endif %}
         </ul>
         <section>
