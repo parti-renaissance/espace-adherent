@@ -1,7 +1,7 @@
 <?php
 
 use Behat\MinkExtension\Context\RawMinkContext;
-use Carbon\Carbon;
+use Cake\Chronos\Chronos;
 use Webmozart\Assert\Assert;
 
 class FeatureContext extends RawMinkContext
@@ -11,7 +11,7 @@ class FeatureContext extends RawMinkContext
      */
     public function freezeClock(string $dateTime): void
     {
-        Carbon::setTestNow($dateTime);
+        Chronos::setTestNow($dateTime);
     }
 
     /**
@@ -19,7 +19,7 @@ class FeatureContext extends RawMinkContext
      */
     public function defreezeClock(): void
     {
-        Carbon::setTestNow();
+        Chronos::setTestNow();
     }
 
     /**

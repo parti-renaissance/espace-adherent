@@ -7,7 +7,7 @@ use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
 use AppBundle\Entity\Reporting\EmailSubscriptionHistoryAction;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Repository\EmailSubscriptionHistoryRepository;
-use Carbon\Carbon;
+use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManagerInterface;
 
 class EmailSubscriptionHistoryHandler
@@ -97,7 +97,7 @@ class EmailSubscriptionHistoryHandler
     public function queryCountByMonth(Adherent $referent, int $months = 6): array
     {
         foreach (range(0, $months - 1) as $month) {
-            $until = (new Carbon("last day of -$month month"))->setTime(23, 59, 59, 999);
+            $until = (new Chronos("last day of -$month month"))->setTime(23, 59, 59, 999);
 
             $subscriptions = $this->historyRepository->countAllByTypeForReferentManagedArea(
                 $referent,

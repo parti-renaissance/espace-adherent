@@ -39,6 +39,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
     public const ADHERENT_16_UUID = '0a68eb57-c88a-5f34-9e9d-27f85e68af4f';
     public const ADHERENT_17_UUID = '1ebee762-4dc1-42f6-9884-1c83ba9c6d71';
     public const ADHERENT_18_UUID = 'e1bee762-4dc1-42f6-9884-1c83ba9c6d17';
+    public const ADHERENT_19_UUID = '2f69db3c-ecd7-4a8a-bd23-bb4c9cfd70cf';
 
     public const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     public const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
@@ -107,6 +108,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2017-01-03 08:47:54',
         ]);
         $adherent3->enableCommitteesNotifications();
+        $adherent3->addReferentTag($this->getReference('referent_tag_75'));
         $adherent3->addReferentTag($this->getReference('referent_tag_75008'));
         $this->addReference('adherent-3', $adherent3);
 
@@ -127,6 +129,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent4->setInterests(['jeunesse']);
         $adherent4->enableCommitteesNotifications();
         $adherent4->setProcurationManagedAreaCodesAsString('75, 44, GB, 92130, 91300');
+        $adherent3->addReferentTag($this->getReference('referent_tag_75'));
         $adherent4->addReferentTag($this->getReference('referent_tag_75009'));
         $this->addReference('adherent-4', $adherent4);
 
@@ -212,6 +215,33 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $referent->enableCommitteesNotifications();
         $referent->addReferentTag($this->getReference('referent_tag_77'));
+        $this->addReference('adherent-8', $referent);
+
+        $referent75and77 = $adherentFactory->createFromArray([
+            'uuid' => self::ADHERENT_19_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'referent-75-77@en-marche-dev.fr',
+            'gender' => 'female',
+            'first_name' => 'Referent75and77',
+            'last_name' => 'Referent75and77',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '75001-75101', 48.5278939, 2.6484923),
+            'birthdate' => '1970-01-08',
+            'position' => 'employed',
+            'phone' => '33 6765204050',
+            'registered_at' => '2018-05-12 12:31:45',
+        ]);
+        $referent75and77->setReferent(
+            [
+                $this->getReference('referent_tag_77'),
+                $this->getReference('referent_tag_75'),
+                $this->getReference('referent_tag_75008'),
+                $this->getReference('referent_tag_75009'),
+            ],
+            -1.6743,
+            48.112
+        );
+        $referent75and77->addReferentTag($this->getReference('referent_tag_75'));
+        $this->addReference('adherent-19', $referent75and77);
 
         $referentChild = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_18_UUID,
@@ -267,7 +297,9 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2017-09-20 15:31:21',
         ]);
         $coordinatorCP->addCoordinatorManagedArea(new CoordinatorManagedArea(['US', '59290', '77'], CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR));
+        $coordinatorCP->addReferentTag($this->getReference('referent_tag_75'));
         $coordinatorCP->addReferentTag($this->getReference('referent_tag_75008'));
+        $this->addReference('adherent-17', $coordinatorCP);
 
         $adherent9 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_9_UUID,
@@ -406,6 +438,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $key6 = AdherentActivationToken::generate($adherent6);
         $key7 = AdherentActivationToken::generate($adherent7);
         $key8 = AdherentActivationToken::generate($referent);
+        $key19 = AdherentActivationToken::generate($referent75and77);
         $key18 = AdherentActivationToken::generate($referentChild);
         $key9 = AdherentActivationToken::generate($adherent9);
         $key10 = AdherentActivationToken::generate($adherent10);
@@ -425,6 +458,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent6->activate($key6, '2017-01-17 08:07:45');
         $adherent7->activate($key7, '2017-01-25 19:34:02');
         $referent->activate($key8, '2017-02-07 13:20:45');
+        $referent75and77->activate($key19, '2018-05-13 07:21:01');
         $referentChild->activate($key18, '2017-02-07 13:20:45');
         $adherent9->activate($key9, '2017-02-16 17:23:15');
         $adherent10->activate($key10, '2017-02-23 14:02:18');
@@ -565,6 +599,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($adherent6);
         $manager->persist($adherent7);
         $manager->persist($referent);
+        $manager->persist($referent75and77);
         $manager->persist($referentChild);
         $manager->persist($adherent9);
         $manager->persist($adherent10);

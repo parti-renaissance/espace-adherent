@@ -28,7 +28,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "female":6,"male":11,"total":17
+      "female":7,"male":11,"total":18
     }
     """
 
@@ -43,23 +43,23 @@ Feature:
     Then the response status code should be 403
 
   Scenario: As a referent I can access the managed by referent adherents count information
-    When I am logged as "referent@en-marche-dev.fr"
+    When I am logged as "referent-75-77@en-marche-dev.fr"
     And I am on "/api/adherents/count-by-referent-area"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
     """
     {
-      "female":1,
-      "male":7,
-      "total":8,
+      "female":4,
+      "male":5,
+      "total":9,
       "email_subscriptions": {
-          "2018-04": {"subscribed_emails_local_host": 9, "subscribed_emails_referents": 9},
+          "2018-04": {"subscribed_emails_local_host": 7, "subscribed_emails_referents": 7},
           "2018-03": {"subscribed_emails_local_host": 0, "subscribed_emails_referents": 0},
-          "2018-02": {"subscribed_emails_local_host": 0, "subscribed_emails_referents": 0},
-          "2018-01": {"subscribed_emails_local_host": 0, "subscribed_emails_referents": 0},
-          "2017-12": {"subscribed_emails_local_host": 1, "subscribed_emails_referents": 1},
-          "2017-11": {"subscribed_emails_local_host": 1, "subscribed_emails_referents": 1}
+          "2018-02": {"subscribed_emails_local_host": 4, "subscribed_emails_referents": 0},
+          "2018-01": {"subscribed_emails_local_host": 3, "subscribed_emails_referents": 0},
+          "2017-12": {"subscribed_emails_local_host": 2, "subscribed_emails_referents": 0},
+          "2017-11": {"subscribed_emails_local_host": 1, "subscribed_emails_referents": 0}
       }
     }
     """
