@@ -33,7 +33,7 @@ class CommitteesController extends Controller
 
         return new JsonResponse([
             'committees' => $committeeRepository->countApprovedForReferent($referent),
-            'members' => $adherentRepository->countCommitteeMembersByGenderForReferentManagedArea($this->getUser()),
+            'members' => $adherentRepository->countMembersByGenderForReferent($referent),
             'supervisors' => $adherentRepository->countSupervisorsByGenderForReferent($referent),
         ]);
     }
