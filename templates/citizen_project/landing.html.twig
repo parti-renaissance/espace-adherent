@@ -3,6 +3,10 @@
 {% block banner '' %}
 {% block page_title 'Agissez près de chez vous !' %}
 
+{%- block meta_description -%}
+    Les projets citoyens initiés par La République En Marche ! sont des actions locales qui permettent d'améliorer concrètement le quotidien des habitants d'un quartier, d'un village, en réunissant la force et les compétences de tous ceux qui veulent agir.
+{%- endblock -%}
+
 {% block javascripts %}
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places"></script>
     <script type="text/javascript">
