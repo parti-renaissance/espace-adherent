@@ -118,7 +118,7 @@ class CommitteeMembership
         string $subscriptionDate = 'now'
     ): self {
         return new self(
-            self::createUuid($adherent->getUuid(), clone $committee->getUuid()),
+            self::createUuid($adherent->getUuid(), $committee->getUuid()),
             $committee,
             $adherent,
             $privilege,

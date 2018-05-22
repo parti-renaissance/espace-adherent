@@ -152,7 +152,7 @@ class CommitteeMembershipTest extends TestCase
     private function createCommittee(): Committee
     {
         return $this->createConfiguredMock(Committee::class, [
-            'getUuid' => $this->createConfiguredMock(UuidInterface::class, ['toString' => self::COMMITTEE_UUID]),
+            'getUuid' => Uuid::fromString(self::COMMITTEE_UUID),
         ]);
     }
 }
