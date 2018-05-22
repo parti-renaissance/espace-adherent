@@ -10,9 +10,11 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Membership\AdherentEmailSubscription;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ramsey\Uuid\Uuid;
@@ -528,7 +530,7 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         return $this->createQueryBuilder('a', 'a.gender')
             ->select('a.gender, COUNT(a) AS count')
             ->innerJoin('a.referentTags', 'tag')
-            ->where('tag IN (:tags)')
+            ->where('tag.id IN (:tags)')
             ->andWhere('a.adherent = 1')
             ->andWhere('a.status = :status')
             ->setParameter('tags', $referent->getManagedArea()->getTags())
@@ -537,5 +539,41 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
             ->getQuery()
             ->getArrayResult()
         ;
+    }
+
+    public function countSupervisorsByGenderForReferent(Adherent $referent): array
+    {
+        if (!$referent->isReferent()) {
+            throw new \InvalidArgumentException('Adherent must be a referent.');
+        }
+
+        $result = $this->createQueryBuilder('adherent', 'adherent.gender')
+            ->select('adherent.gender, COUNT(DISTINCT adherent) AS count')
+            ->join('adherent.memberships', 'membership')
+            ->join(Committee::class, 'committee', Join::WITH, 'committee.uuid = membership.committeeUuid')
+            ->join('committee.referentTags', 'tag')
+            ->where('tag.id IN (:tags)')
+            ->andWhere('committee.status = :status')
+            ->andWhere('membership.privilege = :supervisor')
+            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('status', Committee::APPROVED)
+            ->setParameter('supervisor', CommitteeMembership::COMMITTEE_SUPERVISOR)
+            ->groupBy('adherent.gender')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return $this->formatCount($result);
+    }
+
+    private function formatCount(array $count): array
+    {
+        array_walk($count, function (&$item) {
+            $item = (int) $item['count'];
+        });
+
+        $count['total'] = array_sum($count);
+
+        return $count;
     }
 }

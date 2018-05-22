@@ -334,4 +334,18 @@ class CommitteeRepository extends EntityRepository
 
         return new Paginator($query);
     }
+
+    public function countApprovedForReferent(Adherent $referent): int
+    {
+        return (int) $this->createQueryBuilder('committee')
+            ->select('COUNT(committee) AS count')
+            ->join('committee.referentTags', 'tag')
+            ->where('committee.status = :status')
+            ->andWhere('tag.id IN (:tags)')
+            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('status', Committee::APPROVED)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
 }
