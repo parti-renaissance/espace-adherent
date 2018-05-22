@@ -263,6 +263,11 @@ trait TestHelperTrait
         return $this->getCommitteeRepository()->findOneByUuid($uuid);
     }
 
+    protected function getCitizenProject(string $uuid): ?CitizenProject
+    {
+        return $this->getCitizenProjectRepository()->findOneByUuid($uuid);
+    }
+
     /**
      * @param bool $refresh Leave to false to avoid reloading from database
      *

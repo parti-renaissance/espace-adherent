@@ -60,7 +60,7 @@ class CitizenProjectManagerTest extends MysqlWebTestCase
 
     public function testFindAdherentNearCitizenProjectOrAcceptAllNotification()
     {
-        $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
+        $citizenProject = $this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
         $adherents = $this->citizenProjectManager->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject);
 
         $this->assertSame(4, $adherents->count());
@@ -81,11 +81,6 @@ class CitizenProjectManagerTest extends MysqlWebTestCase
         $adherents = $this->citizenProjectManager->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject, 0, true, CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN);
 
         $this->assertSame(6, $adherents->count());
-    }
-
-    private function getCitizenProject(string $uuid)
-    {
-        return $this->getCitizenProjectRepository()->findOneByUuid($uuid);
     }
 
     protected function setUp()
