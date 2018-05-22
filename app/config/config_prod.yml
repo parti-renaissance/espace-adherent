@@ -35,7 +35,7 @@ monolog:
 
 lexik_paybox:
     parameters:
-        production: true
+        production: "%env(bool:PAYBOX_PRODUCTION)%"
 
 algolia:
     application_id:    "%env(ALGOLIA_APP_ID)%"
