@@ -373,7 +373,7 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $mail = $this->getEmailRepository()->findMostRecentMessage(CommitteeMessageNotificationMessage::class);
         $this->assertMailCountRecipients(
             $this->getCommitteeSubscribersCount(
-                $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID)
+                $this->getCommittee(LoadAdherentData::COMMITTEE_1_UUID)
             ),
             $mail
         );

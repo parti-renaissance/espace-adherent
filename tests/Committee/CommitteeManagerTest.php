@@ -81,8 +81,7 @@ class CommitteeManagerTest extends MysqlWebTestCase
 
     public function testGetNearbyCommittees()
     {
-        $adherentRepository = $this->getAdherentRepository();
-        $adherent = $adherentRepository->findByUuid(LoadAdherentData::ADHERENT_1_UUID);
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_1_UUID);
         $coordinates = new Coordinates($adherent->getLatitude(), $adherent->getLongitude());
 
         $this->assertSame([
@@ -91,7 +90,7 @@ class CommitteeManagerTest extends MysqlWebTestCase
             LoadAdherentData::COMMITTEE_3_UUID,
         ], array_keys($this->committeeManager->getNearbyCommittees($coordinates)));
 
-        $adherent = $adherentRepository->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_3_UUID);
         $coordinates = new Coordinates($adherent->getLatitude(), $adherent->getLongitude());
 
         $this->assertSame([
@@ -103,7 +102,7 @@ class CommitteeManagerTest extends MysqlWebTestCase
 
     public function testFollowCommittees()
     {
-        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_1_UUID);
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_1_UUID);
 
         $this->assertCount(0, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
 
@@ -125,7 +124,7 @@ class CommitteeManagerTest extends MysqlWebTestCase
 
     public function testFollowCommitteesTwice()
     {
-        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_2_UUID);
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_2_UUID);
 
         $this->assertCount(1, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
 
@@ -136,7 +135,7 @@ class CommitteeManagerTest extends MysqlWebTestCase
 
     public function testGetAdherentCommittees()
     {
-        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_3_UUID);
 
         // Without any fixed limit.
         $this->assertCount(8, $committees = $this->committeeManager->getAdherentCommittees($adherent));
@@ -152,7 +151,7 @@ class CommitteeManagerTest extends MysqlWebTestCase
 
     public function testGetAdherentCommitteesSupervisor()
     {
-        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_3_UUID);
 
         // Without any fixed limit.
         $this->assertCount(1, $committees = $this->committeeManager->getAdherentCommitteesSupervisor($adherent));
@@ -161,8 +160,8 @@ class CommitteeManagerTest extends MysqlWebTestCase
 
     public function testChangePrivilegeNotDefinedPrivilege()
     {
-        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
-        $committee = $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_3_UUID);
+        $committee = $this->getCommittee(LoadAdherentData::COMMITTEE_1_UUID);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid privilege WRONG_PRIVILEGE');
@@ -172,8 +171,8 @@ class CommitteeManagerTest extends MysqlWebTestCase
 
     public function testChangePrivilegeException()
     {
-        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
-        $committee = $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_3_UUID);
+        $committee = $this->getCommittee(LoadAdherentData::COMMITTEE_1_UUID);
 
         $this->expectException(CommitteeMembershipException::class);
         $this->expectExceptionMessage(sprintf('Committee membership "%s" cannot be promoted to the supervisor privilege.', $adherent->getMembershipFor($committee)->getUuid()));
@@ -183,9 +182,9 @@ class CommitteeManagerTest extends MysqlWebTestCase
 
     public function testChangePrivilege()
     {
-        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
-        $adherent2 = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_2_UUID);
-        $committee = $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_3_UUID);
+        $adherent2 = $this->getAdherent(LoadAdherentData::ADHERENT_2_UUID);
+        $committee = $this->getCommittee(LoadAdherentData::COMMITTEE_1_UUID);
 
         // Change privileges of the first member SUPERVISOR => FOLLOWER => HOST
         $this->assertEquals(true, $adherent->getMembershipFor($committee)->isSupervisor());
@@ -217,8 +216,8 @@ class CommitteeManagerTest extends MysqlWebTestCase
     public function testApproveRefuseCommittee()
     {
         // Creator of committee
-        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_6_UUID);
-        $committee = $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_6_UUID);
+        $committee = $this->getCommittee(LoadAdherentData::COMMITTEE_2_UUID);
 
         $this->assertEquals(true, $adherent->getMembershipFor($committee)->isFollower());
         $this->assertEquals(false, $adherent->getMembershipFor($committee)->isSupervisor());

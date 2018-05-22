@@ -213,7 +213,7 @@ class CitizenProjectControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
 
         $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
-        $committee = $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
+        $committee = $this->getCommittee(LoadAdherentData::COMMITTEE_1_UUID);
         $this->assertCount(0, $citizenProject->getCommitteeSupports());
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/projets-citoyens/mon-comite-soutien/%s', $citizenProject->getSlug()));
