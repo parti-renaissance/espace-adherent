@@ -566,6 +566,29 @@ class AdherentRepository extends EntityRepository implements UserLoaderInterface
         return $this->formatCount($result);
     }
 
+    public function countMembersByGenderForReferent(Adherent $referent): array
+    {
+        if (!$referent->isReferent()) {
+            throw new \InvalidArgumentException('Adherent must be a referent.');
+        }
+
+        $result = $this->createQueryBuilder('adherent', 'adherent.gender')
+            ->select('adherent.gender, COUNT(DISTINCT adherent) AS count')
+            ->join('adherent.memberships', 'membership')
+            ->join(Committee::class, 'committee', Join::WITH, 'committee.uuid = membership.committeeUuid')
+            ->innerJoin('committee.referentTags', 'tag')
+            ->where('tag.id IN (:tags)')
+            ->andWhere('committee.status = :status')
+            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('status', Committee::APPROVED)
+            ->groupBy('adherent.gender')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return $this->formatCount($result);
+    }
+
     private function formatCount(array $count): array
     {
         array_walk($count, function (&$item) {

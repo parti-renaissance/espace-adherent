@@ -27,6 +27,11 @@ Feature:
     """
     {
       "committees":4,
+      "members": {
+        "female":1,
+        "male":5,
+        "total":6
+      },
       "supervisors": {
         "female":1,
         "male":2,
