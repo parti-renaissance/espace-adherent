@@ -231,7 +231,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
         if (null !== $manyHost) {
             $this->membershipRepository->expects($this->once())
                 ->method('countHostMembers')
-                ->with($this->isType('string'))
+                ->with($this->isInstanceOf(Committee::class))
                 ->willReturn($manyHost ? 2 : 1)
             ;
         } else {

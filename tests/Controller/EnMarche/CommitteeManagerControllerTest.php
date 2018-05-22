@@ -7,6 +7,7 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\CommitteeFeedItem;
@@ -370,7 +371,12 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $this->assertSame('Bienvenue !', $message->getContent());
 
         $mail = $this->getEmailRepository()->findMostRecentMessage(CommitteeMessageNotificationMessage::class);
-        $this->assertMailCountRecipients($this->getCommitteeSubscribersCount(LoadAdherentData::COMMITTEE_1_UUID), $mail);
+        $this->assertMailCountRecipients(
+            $this->getCommitteeSubscribersCount(
+                $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID)
+            ),
+            $mail
+        );
 
         $this->client->submit($crawler->selectButton('committee_feed_message[send]')->form([
             'committee_feed_message' => [
@@ -650,11 +656,11 @@ class CommitteeManagerControllerTest extends MysqlWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    private function getCommitteeSubscribersCount(string $committeeUuid): int
+    private function getCommitteeSubscribersCount(Committee $committee): int
     {
         return $this
             ->committeeMembershipRepository
-            ->findFollowers($committeeUuid)
+            ->findFollowers($committee)
             ->getCommitteesNotificationsSubscribers()
             ->count()
         ;
