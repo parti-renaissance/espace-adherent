@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Report\ReportType;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -101,5 +102,19 @@ class CitizenAction extends BaseEvent
     public function getReportType(): string
     {
         return ReportType::CITIZEN_ACTION;
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("citizenProjectUuid")
+     * @JMS\Groups({"public", "citizen_action_read"})
+     */
+    public function getCitizenProjectUuidAsString(): ?string
+    {
+        if (!$citizenProject = $this->getCitizenProject()) {
+            return null;
+        }
+
+        return $citizenProject->getUuidAsString();
     }
 }

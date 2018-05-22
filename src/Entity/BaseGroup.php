@@ -32,7 +32,7 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
      *
      * @ORM\Column(length=20)
      *
-     * @JMS\Groups({"public", "committee_read"})
+     * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
      */
     protected $status;
 
@@ -69,7 +69,7 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
      *
      * @Algolia\Attribute
      *
-     * @JMS\Groups({"public", "committee_read"})
+     * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
      * @JMS\SerializedName("membersCount")
      */
     protected $membersCounts;
@@ -199,7 +199,7 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
     /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("uuid"),
-     * @JMS\Groups({"public", "committee_read"})
+     * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
      */
     public function getUuidAsString(): string
     {

@@ -31,9 +31,8 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"user_profile", "public", "committee_read", "event_read"})
+     * @JMS\Groups({"user_profile", "public", "committee_read", "event_read", "citizen_action_read"})
      * @JMS\VirtualProperty
-     * @JMS\SerializedName("country")
      */
     public function getCountry(): ?string
     {
@@ -46,7 +45,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"committee_read", "event_read"})
+     * @JMS\Groups({"committee_read", "event_read", "citizen_action_read"})
      * @JMS\VirtualProperty
      */
     public function getAddress(): ?string
@@ -55,7 +54,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"user_profile", "public", "committee_read", "event_read"})
+     * @JMS\Groups({"user_profile", "public", "committee_read", "event_read", "citizen_action_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("zipCode")
      */
@@ -66,7 +65,7 @@ trait EntityPostAddressTrait
 
     /**
      * @Algolia\Attribute(algoliaName="address_city")
-     * @JMS\Groups({"committee_read", "event_read"})
+     * @JMS\Groups({"committee_read", "event_read", "citizen_action_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("city")
      */
@@ -86,7 +85,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"committee_read", "event_read"})
+     * @JMS\Groups({"committee_read", "event_read", "citizen_action_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("latitude")
      */
@@ -96,7 +95,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"committee_read", "event_read"})
+     * @JMS\Groups({"committee_read", "event_read", "citizen_action_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("longitude")
      */

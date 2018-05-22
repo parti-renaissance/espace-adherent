@@ -53,7 +53,7 @@ class CitizenProject extends BaseGroup
      *
      * @Algolia\Attribute
      *
-     * @JMS\Groups({"public"})
+     * @JMS\Groups({"public", "citizen_project_read"})
      */
     protected $slug;
 
@@ -265,6 +265,16 @@ class CitizenProject extends BaseGroup
     public function getCategory(): CitizenProjectCategory
     {
         return $this->category;
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("category"),
+     * @JMS\Groups({"public", "citizen_project_read"})
+     */
+    public function getCategoryName(): string
+    {
+        return $this->category->getName();
     }
 
     public function setPhone(PhoneNumber $phone = null): void

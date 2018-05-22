@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Address\NullableAddress;
 use AppBundle\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Intl\Intl;
 
 trait EntityNullablePostAddressTrait
@@ -30,6 +31,11 @@ trait EntityNullablePostAddressTrait
         return $this->postAddress ? $this->postAddress->getInlineFormattedAddress($locale) : '';
     }
 
+    /**
+     * @JMS\Groups({"public", "citizen_project_read"})
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("country")
+     */
     public function getCountry(): ?string
     {
         return $this->postAddress ? $this->postAddress->getCountry() : null;
@@ -40,11 +46,20 @@ trait EntityNullablePostAddressTrait
         return $this->postAddress ? Intl::getRegionBundle()->getCountryName($this->postAddress->getCountry()) : null;
     }
 
+    /**
+     * @JMS\Groups({"public", "citizen_project_read"})
+     * @JMS\VirtualProperty
+     */
     public function getAddress(): ?string
     {
         return $this->postAddress ? $this->postAddress->getAddress() : null;
     }
 
+    /**
+     * @JMS\Groups({"public", "citizen_project_read"})
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("zipCode")
+     */
     public function getPostalCode(): ?string
     {
         return $this->postAddress ? $this->postAddress->getPostalCode() : null;
@@ -52,6 +67,9 @@ trait EntityNullablePostAddressTrait
 
     /**
      * @Algolia\Attribute(algoliaName="address_city")
+     * @JMS\Groups({"public", "citizen_project_read"})
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("city")
      */
     public function getCityName(): ?string
     {
@@ -68,11 +86,21 @@ trait EntityNullablePostAddressTrait
         return $this->postAddress ? $this->postAddress->getInseeCode() : null;
     }
 
+    /**
+     * @JMS\Groups({"public", "citizen_project_read"})
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("latitude")
+     */
     public function getLatitude()
     {
         return $this->postAddress ? $this->postAddress->getLatitude() : null;
     }
 
+    /**
+     * @JMS\Groups({"public", "citizen_project_read"})
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("longitude")
+     */
     public function getLongitude()
     {
         return $this->postAddress ? $this->postAddress->getLongitude() : null;
