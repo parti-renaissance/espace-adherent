@@ -21,68 +21,46 @@
     <div class="donation__result {{ successful ? 'donation__result--successful' : 'donation__result--failure' }}">
         {% if successful %}
             <div class="donation__result--successful__amount">
-                Paiement réussi de<br />
-                <h3>{{ (donation.amount/100)|round(2) }}€</h3>
+                Votre don {% if donation.hasUnlimitedSubscription %}mensuel{% endif %} de <h3>{{ donation.getAmountInEuros }}€</h3> est validé !
             </div>
             {% if not campaign_expired %}
-                <div class="donation__result--successful__thankyou">
-                    {% if is_registration %}
+                {% if is_registration %}
+                    <div class="donation__result--successful__thankyou">
                         <span>Nous sommes heureux de vous compter parmi nous.</span>
                         <span>
                             Nous venons de vous envoyer un email pour confirmer votre adhésion.<br/>
                             Rendez-vous sur votre boîte email.
                         </span>
-                    {% else %}
-                        Faites le savoir à vos<br />
-                        proches, diffusez nos idées,<br />
-                        rejoignez nos comités<br />
-                        locaux. Soyez fier d’être<br />
-                        En Marche !
-                    {% endif %}
-                </div>
-
+                    </div>
+                {% endif %}
                 <div class="donation__result--successful__thankyou">
-                    Votre soutien compte<br />
-                    beaucoup pour moi.<br />
-                    Vous êtes maintenant<br />
-                    un acteur de la révolution<br />
-                    En Marche !
+                    Les dons sont la première source de revenus de La République En Marche !<br/>
+                    <br/>
+                    Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos
+                    militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie
+                    politique et au rayonnement des idées progressistes.
                 </div>
-
-                <div class="donation__result--successful__share-pride">
-                    « Fier d’être en Marche ! »
-                </div>
-                <ul class="donation__result--successful__sharer">
-                    <li role="button" aria-label="Partagez sur Facebook"
-                        class="btn btn-medium btn--social btn--facebook"
-                        onclick="App.share('facebook', '{{ url('donation_index') }}', 'Fier d’être en Marche ! J\'ai donné, et vous ?')">
-                        <i class="fa fa-facebook-square"></i> <span>Je partage</span>
-                    </li>
-                    <li role="button" aria-label="Partagez via Twitter"
-                        class="btn btn-medi<um btn--social btn--twitter"
-                        onclick="App.share('twitter', '{{ url('donation_index') }}', 'Fier d’être en Marche ! J\'ai donné, et vous ? http://en-marche.fr/don via @enmarchefr')">
-                        <i class="fa fa-twitter"></i> <span>Je tweete</span>
-                    </li>
-                </ul>
             {% endif %}
 
             {% if not is_adherent %}
-                <p>
-                    Vous n'êtes pas encore adhérent(e)<br/>
-                    de La République En Marche ? Rejoignez-nous !
-                </p>
-                <p>
-                    <a href="{{ path('app_membership_join') }}" class="btn btn-medium">
-                        J'adhère à La République En Marche !
-                    </a>
-                </p>
+                <div class="space--20-0">
+                    <p>
+                        Vous n'êtes pas encore adhérent(e)<br/>
+                        de La République En Marche ? Rejoignez-nous !
+                    </p>
+                    <p>
+                        <a href="{{ path('app_membership_join') }}" class="btn btn--pink">
+                            J'adhère à La République En Marche !
+                        </a>
+                    </p>
+                </div>
             {% endif %}
 
             {% if not is_newsletter_subscribed %}
-                <div class="newsletter l__row l__row--h-stretch space--20-30 l__row--wrap l__tablet--col b__nudge--top">
-                    <div class="text--small text--uppercase space--10-0">
+                <div class="newsletter l__row l__row--h-stretch space--5-30 l__row--wrap l__tablet--col">
+                    <p>
                         Tenez-vous au courant des actualités du mouvement et du gouvernement en vous abonnant à notre newsletter hebdomadaire !
-                    </div>
+                    </p>
                     {{ form_start(newsletter_form, { action: path('newsletter_subscription'), attr: { class: 'l__row l__row--wrap'} }) }}
                         <p>
                             {{ form_widget(newsletter_form.email, {
@@ -101,7 +79,7 @@
                                     class: 'form__zipcode'
                                 }
                             }) }}
-                            <button title="Je m'inscris à la newsletter" type="submit" class="form btn">Je m'inscris</button>
+                            <button title="Je m'inscris à la newsletter" type="submit" class="form btn btn--blue">Je m'inscris</button>
                         </p>
                     {{ form_end(newsletter_form) }}
                 </div>

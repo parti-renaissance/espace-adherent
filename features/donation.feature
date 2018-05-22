@@ -57,7 +57,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi"
 
     When I click on the "1" "img" element
-    Then I should see "Votre soutien compte beaucoup pour moi."
+    Then I should see "Votre soutien financier est donc essentiel pour le mouvement !"
 
   @javascript
   Scenario: The user can subscribe to donate each month successfully but can't have a second subscription
@@ -93,7 +93,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi"
 
     When I click on the "1" "img" element
-    Then I should see "Votre soutien compte beaucoup pour moi."
+    Then I should see "Votre soutien financier est donc essentiel pour le mouvement !"
 
     Given I am on "/don"
     And wait 1 second until I see "Continuer"
@@ -151,7 +151,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi"
 
     When I click on the "1" "img" element
-    Then I should see "Votre soutien compte beaucoup pour moi."
+    Then I should see "Votre soutien financier est donc essentiel pour le mouvement !"
 
     Given I am on "/don"
     And wait 1 second until I see "Continuer"
@@ -194,5 +194,5 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi"
 
     When I click on the "1" "img" element
-    Then I should see "Votre soutien compte beaucoup pour moi."
+    Then I should see "Votre soutien financier est donc essentiel pour le mouvement !"
 
