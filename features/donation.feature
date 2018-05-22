@@ -153,6 +153,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     When I click on the "1" "img" element
     Then I should see "Votre soutien compte beaucoup pour moi."
 
+    # Check if I can't continue create a new subscription and then can cancel a subscription
     Given I am on "/don"
     And wait 1 second until I see "Continuer"
     And I click the "donation-monthly_label" element
@@ -173,6 +174,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I press "Oui"
     Then I should see "Votre don mensuel a bien été annulé. Vous recevrez bientôt un mail de confirmation."
 
+    # Check if I can create a new subscription after cancel subscription
     Given I am on "/don"
     When I click the "donation-monthly_label" element
     And I press "Continuer"
@@ -196,3 +198,42 @@ Feature: The goal is to donate one time or multiple time with a subscription
     When I click on the "1" "img" element
     Then I should see "Votre soutien compte beaucoup pour moi."
 
+  @javascript
+  Scenario: The logged user can continue to donate punctually with a subscription currently running
+    Given the following fixtures are loaded:
+      | LoadDonationData |
+    And I am logged as "jacques.picard@en-marche.fr"
+    And I am on "/don"
+    And I press "OK"
+    And wait 1 second until I see "Continuer"
+    When I click the "donation-monthly_label" element
+    And I press "Continuer"
+    Then I should be on "/don/coordonnees?montant=50&abonnement=1"
+
+    When I click the "donation_check_label" element
+    And I click the "donation_check_nationality_label" element
+    And I press "Je donne"
+    Then I should be on "/don/coordonnees?montant=50&abonnement=1"
+    And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez vous rendre sur votre profil pour l’annuler ou faire un nouveau don unique."
+
+    When I follow "faire un nouveau don unique"
+    Then I should be on "/don/coordonnees?montant=50"
+    And I should not see "200€ / mois"
+
+    When I click the "donation_check_label" element
+    And I click the "donation_check_nationality_label" element
+    And I press "Je donne"
+    Then I wait 5 second until I see "Numéro de carte"
+    And I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi"
+
+    When I fill in the following:
+      | NUMERO_CARTE | 4012001037141112 |
+      | CVVX         | 123              |
+    And I select "12" from "MOIS_VALIDITE"
+    And I select "18" from "AN_VALIDITE"
+    And I press "VALIDER"
+    Then I wait 5 second until I see "Paiement accepté"
+    And I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi"
+
+    When I click on the "1" "img" element
+    Then I should see "Votre soutien compte beaucoup pour moi."
