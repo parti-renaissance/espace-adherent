@@ -4,6 +4,10 @@
 {% block page_title %}Tous les comités - Page {{ currentPage }}{% endblock %}
 {% block canonical_url url(pagination_route_name, {page: currentPage}) %}
 
+{%- block meta_description -%}
+    Accédez à la liste de tous les comités locaux du mouvement La République En Marche ! - page {{ currentPage }}
+{%- endblock -%}
+
 {% block extra_link %}
     {{ parent() }}
     {% if currentPage > 1 %}
