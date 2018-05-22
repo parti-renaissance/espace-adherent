@@ -158,7 +158,7 @@ jobs:
             - *authenticate_on_registry
             - setup_remote_docker
             - run: |
-                bash scripts/build.sh ${CIRCLE_BRANCH}
+                bash scripts/build.sh
 
 workflows:
     version: 2
@@ -185,3 +185,5 @@ workflows:
                     branches:
                         only:
                             - master
+                    tags:
+                        only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
