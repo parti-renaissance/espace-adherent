@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -96,13 +98,21 @@ class Unregistration
      */
     private $isAdherent = false;
 
+    /**
+     * @var Collection|ReferentTag[]
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     */
+    private $referentTags;
+
     public function __construct(
         UuidInterface $uuid,
         array $reasons,
         ?string $comment,
         \DateTime $registeredAt,
-        string $postalCode = null,
-        bool $isAdherent = false
+        ?string $postalCode,
+        bool $isAdherent,
+        array $referentTags
     ) {
         $this->uuid = $uuid;
         $this->postalCode = $postalCode;
@@ -111,20 +121,20 @@ class Unregistration
         $this->registeredAt = $registeredAt;
         $this->unregisteredAt = new \DateTime('now');
         $this->isAdherent = $isAdherent;
+        $this->referentTags = new ArrayCollection($referentTags);
     }
 
     public static function createFromAdherent(Adherent $adherent): self
     {
-        $unregistration = new self(
+        return new self(
             $adherent->getUuid(),
             ['autre'],
             'Adhérent supprimé par l\'administrateur',
             $adherent->getRegisteredAt(),
             $adherent->getPostAddress()->getPostalCode(),
-            $adherent->isAdherent()
+            $adherent->isAdherent(),
+            $adherent->getReferentTags()
         );
-
-        return $unregistration;
     }
 
     public function getId(): ?int
@@ -180,5 +190,13 @@ class Unregistration
     public function isAdherent(): bool
     {
         return $this->isAdherent;
+    }
+
+    /**
+     * @return ReferentTag[]|Collection
+     */
+    public function getReferentTags(): Collection
+    {
+        return $this->referentTags;
     }
 }
