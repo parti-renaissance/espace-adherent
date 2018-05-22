@@ -96,7 +96,7 @@
 
         <service id="app.ton_macron.message_body_builder" class="AppBundle\TonMacron\TonMacronMessageBodyBuilder">
             <argument type="service" id="twig"/>
-            <argument type="service" id="app.repository.ton_macron_choice"/>
+            <argument type="service" id="AppBundle\Repository\TonMacronChoiceRepository"/>
         </service>
 
         <service id="app.ton_macron.serializer" class="AppBundle\TonMacron\TonMacronSerializer" />
@@ -111,7 +111,7 @@
 
         <service id="app.purchasing_power.message_body_builder" class="AppBundle\Interactive\PurchasingPowerMessageBodyBuilder">
             <argument type="service" id="twig"/>
-            <argument type="service" id="app.repository.purchasing_power_choice_repository"/>
+            <argument type="service" id="AppBundle\Repository\PurchasingPowerChoiceRepository"/>
         </service>
 
         <service id="app.purchasing_power.serializer" class="AppBundle\Interactive\PurchasingPowerSerializer" />
@@ -119,7 +119,7 @@
         <!-- Facebook filters -->
         <service id="app.facebook.profile_importer" class="AppBundle\Facebook\ProfileImporter">
             <argument type="service" id="app.facebook.api" />
-            <argument type="service" id="app.repository.facebook_profile" />
+            <argument type="service" id="AppBundle\Repository\FacebookProfileRepository" />
         </service>
 
         <service id="app.facebook.picture_importer" class="AppBundle\Facebook\PictureImporter">
@@ -144,7 +144,7 @@
 
         <service id="AppBundle\Summary\SummaryManager">
             <argument type="service" id="AppBundle\Summary\SummaryFactory" />
-            <argument type="service" id="app.repository.summary" />
+            <argument type="service" id="AppBundle\Repository\SummaryRepository" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="router" />
             <argument type="service" id="app.storage" />

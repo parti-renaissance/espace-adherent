@@ -5,13 +5,19 @@ namespace AppBundle\Repository\Projection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Referent\ManagedUsersFilter;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ReferentManagedUserRepository extends EntityRepository
+class ReferentManagedUserRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, ReferentManagedUser::class);
+    }
+
     public function search(Adherent $referent, ManagedUsersFilter $filter = null): Paginator
     {
         $qb = $this->createFilterQueryBuilder($referent, $filter);

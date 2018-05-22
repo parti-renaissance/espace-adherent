@@ -23,7 +23,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CitizenProjectManager
@@ -37,7 +37,7 @@ class CitizenProjectManager
      */
     private $glide;
 
-    public function __construct(ManagerRegistry $registry, Filesystem $storage, CitizenProjectAuthority $projectAuthority)
+    public function __construct(RegistryInterface $registry, Filesystem $storage, CitizenProjectAuthority $projectAuthority)
     {
         $this->registry = $registry;
         $this->storage = $storage;

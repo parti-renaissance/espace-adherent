@@ -6,12 +6,18 @@ use AppBundle\Collection\EventRegistrationCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\EventRegistration;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class EventRegistrationRepository extends EntityRepository
+class EventRegistrationRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, EventRegistration::class);
+    }
 
     public function findOneByUuid(string $uuid): ?EventRegistration
     {

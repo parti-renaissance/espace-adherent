@@ -3,17 +3,17 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\BaseGroup;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
-class BaseGroupRepository extends EntityRepository
+abstract class AbstractGroupRepository extends ServiceEntityRepository
 {
     use NearbyTrait;
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
     }
 
-    const ONLY_APPROVED = 1;
-    const INCLUDE_UNAPPROVED = 2;
+    public const ONLY_APPROVED = 1;
+    public const INCLUDE_UNAPPROVED = 2;
 
     /**
      * Finds a BaseGroup instance by its unique canonical name.

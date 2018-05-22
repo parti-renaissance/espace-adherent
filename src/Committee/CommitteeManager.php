@@ -16,9 +16,9 @@ use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeManager
@@ -31,7 +31,7 @@ class CommitteeManager
     private $registry;
     private $disaptcher;
 
-    public function __construct(ManagerRegistry $registry, EventDispatcherInterface $dispatcher)
+    public function __construct(RegistryInterface $registry, EventDispatcherInterface $dispatcher)
     {
         $this->registry = $registry;
         $this->dispatcher = $dispatcher;

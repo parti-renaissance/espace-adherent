@@ -5,11 +5,17 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Procuration\Filter\ProcurationRequestFilters;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ProcurationRequestRepository extends EntityRepository
+class ProcurationRequestRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, ProcurationRequest::class);
+    }
+
     /**
      * @return ProcurationRequest[]
      */

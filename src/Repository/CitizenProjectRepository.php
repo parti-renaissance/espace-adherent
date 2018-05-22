@@ -9,10 +9,16 @@ use AppBundle\Entity\CitizenProject;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Search\SearchParametersFilter;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class CitizenProjectRepository extends BaseGroupRepository
+class CitizenProjectRepository extends AbstractGroupRepository
 {
     use NearbyTrait;
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, CitizenProject::class);
+    }
 
     /**
      * Returns the total number of approved citizen projects.

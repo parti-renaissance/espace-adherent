@@ -6,14 +6,20 @@ use AppBundle\Collection\AdherentCollection;
 use AppBundle\Collection\CitizenProjectMembershipCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProjectMembership;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class CitizenProjectMembershipRepository extends EntityRepository
+class CitizenProjectMembershipRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, CitizenProjectMembership::class);
+    }
+
     /**
      * Creates the query builder to fetch the membership relationship between
      * an adherent and a citizen project.

@@ -3,12 +3,18 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Email;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class EmailRepository extends EntityRepository
+class EmailRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
+    }
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Email::class);
     }
 
     /**

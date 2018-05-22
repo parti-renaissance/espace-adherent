@@ -3,12 +3,18 @@
 namespace AppBundle\Repository\OAuth;
 
 use AppBundle\Entity\OAuth\Client;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ClientRepository extends EntityRepository
+class ClientRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Client::class);
+    }
+
     public function findClientByCredentials(string $identifier, string $secret = ''): ?Client
     {
         $qb = $this

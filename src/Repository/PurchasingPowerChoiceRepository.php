@@ -3,11 +3,17 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\PurchasingPowerChoice;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class PurchasingPowerChoiceRepository extends EntityRepository
+class PurchasingPowerChoiceRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, PurchasingPowerChoice::class);
+    }
+
     public function createQueryBuilderForStep(string $step): QueryBuilder
     {
         return $this

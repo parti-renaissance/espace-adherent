@@ -6,11 +6,17 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Procuration\Filter\ProcurationProxyProposalFilters;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ProcurationProxyRepository extends EntityRepository
+class ProcurationProxyRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, ProcurationProxy::class);
+    }
+
     /**
      * @return ProcurationProxy[]
      */

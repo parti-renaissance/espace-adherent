@@ -5,11 +5,11 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\NewsletterSubscription;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class NewsletterSubscriptionRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, NewsletterSubscription::class);
     }

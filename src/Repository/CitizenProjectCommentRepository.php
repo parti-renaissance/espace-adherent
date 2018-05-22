@@ -5,10 +5,16 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectComment;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class CitizenProjectCommentRepository extends EntityRepository
+class CitizenProjectCommentRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, CitizenProjectComment::class);
+    }
+
     /**
      * @return CitizenProjectComment[]
      */

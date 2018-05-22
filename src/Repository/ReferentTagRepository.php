@@ -2,10 +2,17 @@
 
 namespace AppBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use AppBundle\Entity\ReferentTag;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ReferentTagRepository extends EntityRepository
+class ReferentTagRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, ReferentTag::class);
+    }
+
     public function findByCodes(array $codes): array
     {
         return $this->findBy(['code' => $codes]);

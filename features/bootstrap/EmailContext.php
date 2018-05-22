@@ -84,6 +84,6 @@ class EmailContext extends RawMinkContext
 
     private function getEmailRepository(): EmailRepository
     {
-        return $this->getContainer()->get('app.repository.email');
+        return $this->getContainer()->get(EmailRepository::class);
     }
 }

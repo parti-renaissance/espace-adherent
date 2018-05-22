@@ -123,6 +123,9 @@
         <service id="AppBundle\Form\ReportCommandType"/>
         <service id="AppBundle\Report\ReportCreationCommandHandler"/>
 
+        <!-- Repository -->
+        <prototype namespace="AppBundle\Repository\" resource="../../../src/Repository/*" />
+
         <!-- Security -->
         <prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter"/>
         <service id="AppBundle\Security\Http\AuthenticationFailureHandler"/>

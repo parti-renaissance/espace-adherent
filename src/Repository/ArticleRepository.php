@@ -4,11 +4,17 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ArticleRepository extends EntityRepository
+class ArticleRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Article::class);
+    }
+
     public function countAllByCategory(string $category): int
     {
         $qb = $this->createQueryBuilder('a')

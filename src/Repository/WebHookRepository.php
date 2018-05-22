@@ -4,10 +4,16 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\WebHook\WebHook;
 use AppBundle\WebHook\Event;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class WebHookRepository extends EntityRepository
+class WebHookRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, WebHook::class);
+    }
+
     public function findCallbacksByEvent(Event $event): array
     {
         $callbacks = $this->createQueryBuilder('web_hook')

@@ -3,11 +3,18 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
-use Doctrine\ORM\EntityRepository;
+use AppBundle\Entity\Skill;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class SkillRepository extends EntityRepository
+class SkillRepository extends ServiceEntityRepository
 {
     const FIND_FOR_SUMMARY = 'summaries';
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Skill::class);
+    }
 
     /**
      * Finds all available skills for autocomplete.

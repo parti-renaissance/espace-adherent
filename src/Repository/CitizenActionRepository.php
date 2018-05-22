@@ -5,9 +5,15 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\CitizenProject;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CitizenActionRepository extends EventRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, CitizenAction::class);
+    }
+
     public function findNextCitizenActionForCitizenProject(CitizenProject $citizenProject): ?CitizenAction
     {
         return $this

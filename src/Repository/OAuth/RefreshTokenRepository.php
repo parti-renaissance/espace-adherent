@@ -4,11 +4,17 @@ namespace AppBundle\Repository\OAuth;
 
 use AppBundle\Entity\OAuth\Client;
 use AppBundle\Entity\OAuth\RefreshToken;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class RefreshTokenRepository extends EntityRepository
+class RefreshTokenRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, RefreshToken::class);
+    }
+
     public function save(RefreshToken $token): void
     {
         $this->_em->persist($token);
