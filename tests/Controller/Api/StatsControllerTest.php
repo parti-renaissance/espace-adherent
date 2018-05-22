@@ -29,7 +29,7 @@ class StatsControllerTest extends SqliteWebTestCase
         $data = \GuzzleHttp\json_decode($content, true);
 
         $this->assertArraySubset([
-            'userCount' => 18,
+            'userCount' => 19,
             'eventCount' => 14,
             'committeeCount' => 9,
         ], $data);
