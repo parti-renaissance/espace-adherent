@@ -156,13 +156,12 @@ jobs:
         steps:
             - *attach_workspace
             - *authenticate_on_registry
-            - setup_remote_docker
             - run: |
-                bash scripts/build.sh ${CIRCLE_BRANCH}
+                bash scripts/build.sh
 
 workflows:
     version: 2
-    build_test_deploy:
+    test_deploy:
         jobs:
             - build
 
@@ -185,3 +184,21 @@ workflows:
                     branches:
                         only:
                             - master
+
+    prod_deploy:
+        jobs:
+            - build:
+                filters:
+                  branches:
+                      ignore: /.*/
+                  tags:
+                      only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
+
+            - deployment:
+                requires:
+                    - build
+                filters:
+                    branches:
+                        ignore: /.*/
+                    tags:
+                        only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
