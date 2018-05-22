@@ -21,7 +21,6 @@ Feature:
       | adherent_registration[birthdate][month]     | 1                   |
       | adherent_registration[birthdate][year]      | 1989                |
       | adherent_registration[gender]               | male                |
-      | adherent_registration[phone][number]        | 123456789           |
     And I fill in hidden field "adherent_registration_address_city" with "94320-94073"
     And I fill in hidden field "adherent_registration_address_country" with "FR"
     And I check "Oui, j'adhère à la charte des valeurs, aux statuts et aux règles de fonctionnement de La République En Marche, ainsi qu'aux conditions générales d'utilisation du site"
@@ -161,13 +160,12 @@ Feature:
       | become_adherent[birthdate][month]    |  |
       | become_adherent[birthdate][year]     |  |
     When I press "Je rejoins La République En Marche"
-    Then I should see 7 ".form__error" elements
+    Then I should see 6 ".form__error" elements
     And I should see "L'adresse est obligatoire."
     And I should see "Veuillez renseigner un code postal."
     And I should see "Veuillez renseigner une ville."
     And I should see "Veuillez renseigner un sexe."
     And I should see "Vous devez spécifier votre date de naissance."
-    And I should see "Le numéro de téléphone est obligatoire."
     And I should see "Vous devez accepter la charte."
     And I should see "L'un des champs du formulaire est mal renseigné."
 
