@@ -2,10 +2,12 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Adherent\AdherentRoleEnum;
 use AppBundle\Entity\Adherent;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\BoardMember\Role;
+use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Form\ActivityPositionType;
 use AppBundle\Form\Admin\CoordinatorManagedAreaType;
@@ -18,6 +20,8 @@ use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Membership\UserEvent;
 use AppBundle\Membership\UserEvents;
+use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -339,49 +343,6 @@ class AdherentAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('referent', CallbackFilter::class, [
-                'label' => 'N\'afficher que les référents',
-                'field_type' => CheckboxType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return false;
-                    }
-
-                    $qb->andWhere("$alias.managedArea IS NOT NULL");
-
-                    return true;
-                },
-            ])
-            ->add('supervisor', CallbackFilter::class, [
-                'label' => 'N\'afficher que les animateurs',
-                'field_type' => CheckboxType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
-                    }
-
-                    $qb->leftJoin(sprintf('%s.memberships', $alias), 'ms');
-                    $qb->andWhere(sprintf('ms.privilege', $alias).' = :privilege');
-                    $qb->setParameter('privilege', CommitteeMembership::COMMITTEE_SUPERVISOR);
-
-                    return true;
-                },
-            ])
-            ->add('host', CallbackFilter::class, [
-                'label' => 'N\'afficher que les co-animateurs',
-                'field_type' => CheckboxType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
-                    }
-
-                    $qb->leftJoin(sprintf('%s.memberships', $alias), 'mss');
-                    $qb->andWhere(sprintf('mss.privilege', $alias).' = :privilege');
-                    $qb->setParameter('privilege', CommitteeMembership::COMMITTEE_HOST);
-
-                    return true;
-                },
-            ])
             ->add('tags', CallbackFilter::class, [
                 'label' => 'Tags adhérent',
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
@@ -421,6 +382,83 @@ class AdherentAdmin extends AbstractAdmin
                     $qb->leftJoin("$alias.managedArea", 'managed_area');
                     $qb->leftJoin('managed_area.tags', 'managed_area_tag');
                     $qb->andWhere($qb->expr()->in('LOWER(managed_area_tag.name)', $value));
+
+                    return true;
+                },
+            ])
+            ->add('role', CallbackFilter::class, [
+                'label' => 'common.role',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => AdherentRoleEnum::toArray(),
+                    'choice_label' => function (string $value) {
+                        return $value;
+                    },
+                    'multiple' => true,
+                ],
+                'show_filter' => true,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $where = new Expr\Orx();
+
+                    /** @var QueryBuilder $qb */
+
+                    // Referent
+                    if (\in_array(AdherentRoleEnum::REFERENT, $value['value'], true)) {
+                        $where->add(sprintf('%s.managedArea IS NOT NULL', $alias));
+                    }
+
+                    // Committee supervisor & host
+                    if ($committeeRoles = array_intersect([AdherentRoleEnum::COMMITTEE_SUPERVISOR, AdherentRoleEnum::COMMITTEE_HOST], $value['value'])) {
+                        $qb->leftJoin(sprintf('%s.memberships', $alias), 'ms');
+                        $where->add('ms.privilege IN (:privileges)');
+                        if (\in_array(AdherentRoleEnum::COMMITTEE_SUPERVISOR, $committeeRoles, true)) {
+                            $privileges[] = CommitteeMembership::COMMITTEE_SUPERVISOR;
+                        }
+                        if (\in_array(AdherentRoleEnum::COMMITTEE_HOST, $committeeRoles, true)) {
+                            $privileges[] = CommitteeMembership::COMMITTEE_HOST;
+                        }
+                        $qb->setParameter('privileges', $privileges);
+                    }
+
+                    // Board Member
+                    if (\in_array(AdherentRoleEnum::BOARD_MEMBER, $value['value'], true)) {
+                        $qb->leftJoin(sprintf('%s.boardMember', $alias), 'boardMember');
+                        $where->add('boardMember IS NOT NULL');
+                    }
+
+                    // Coordinator
+                    if (\in_array(AdherentRoleEnum::COORDINATOR, $value['value'], true)) {
+                        $qb->leftJoin(sprintf('%s.coordinatorManagedAreas', $alias), 'coordinatorManagedArea');
+                        $where->add('coordinatorManagedArea IS NOT NULL');
+                    }
+
+                    // Procuration Manager
+                    if (\in_array(AdherentRoleEnum::PROCURATION_MANAGER, $value['value'], true)) {
+                        $qb->leftJoin(sprintf('%s.procurationManagedArea', $alias), 'procurationManagedArea');
+                        $where->add('procurationManagedArea IS NOT NULL AND procurationManagedArea.codes IS NOT NULL');
+                    }
+
+                    // User
+                    if (\in_array(AdherentRoleEnum::USER, $value['value'], true)) {
+                        $where->add(sprintf('%s.adherent = 0', $alias));
+                    }
+
+                    // Citizen project holder
+                    if (\in_array(AdherentRoleEnum::CITIZEN_PROJECT_HOLDER, $value['value'], true)) {
+                        $qb->leftJoin(
+                            CitizenProject::class,
+                            'citizenProject',
+                            Expr\Join::WITH,
+                            sprintf('citizenProject.createdBy = %s.uuid', $alias)
+                        );
+                        $where->add('citizenProject IS NOT NULL');
+                    }
+
+                    $qb->andWhere($where);
 
                     return true;
                 },

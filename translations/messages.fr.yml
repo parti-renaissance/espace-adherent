@@ -8,6 +8,7 @@ common.zip_code: Code postal
 common.show_more: Voir plus
 common.show_less: Voir moins
 common.sector: Secteur
+common.role: Rôle
 pending: En attente
 approved: Approuvé
 group: un groupe
@@ -27,6 +28,14 @@ adherent.activity_position.retired: Retraité
 adherent.activity_position.employed: En activité
 adherent.activity_position.unemployed: En recherche d'emploi
 
+referent: référent
+committee_supervisor: animateur
+committee_host: co-animateur
+board_member: membre du conseil
+coordinator: coordinateur
+procuration_manager: responsable procuration
+user: utilisateur
+citizen_project_holder: porteur de projet
 
 subscribed_emails_movement_information: 'Recevoir les informations sur le mouvement'
 subscribed_emails_government_information: 'Recevoir les informations sur le gouvernement'
