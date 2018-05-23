@@ -80,7 +80,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I press "Je donne"
-    Then I wait 5 second until I see "Numéro de carte"
+    Then I wait 7 second until I see "Numéro de carte"
     And I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi"
 
     When I fill in the following:
