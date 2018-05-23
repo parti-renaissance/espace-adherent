@@ -5,11 +5,11 @@ namespace AppBundle\Repository;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Collection\CitizenProjectMembershipCollection;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectMembership;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -23,22 +23,15 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
     /**
      * Creates the query builder to fetch the membership relationship between
      * an adherent and a citizen project.
-     *
-     * @param Adherent $adherent
-     * @param string   $citizenProjectUuid
-     *
-     * @return QueryBuilder
      */
-    private function createMembershipQueryBuilder(Adherent $adherent, string $citizenProjectUuid): QueryBuilder
+    private function createMembershipQueryBuilder(Adherent $adherent, CitizenProject $citizenProject): QueryBuilder
     {
-        $citizenProjectUuid = Uuid::fromString($citizenProjectUuid);
-
         return $this
             ->createQueryBuilder('cpm')
             ->where('cpm.adherent = :adherent')
-            ->andWhere('cpm.citizenProjectUuid = :citizenProject')
+            ->andWhere('cpm.citizenProject = :citizenProject')
             ->setParameter('adherent', $adherent)
-            ->setParameter('citizenProject', (string) $citizenProjectUuid)
+            ->setParameter('citizenProject', $citizenProject)
         ;
     }
 
@@ -54,10 +47,10 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
         return new CitizenProjectMembershipCollection($query->getResult());
     }
 
-    public function findCitizenProjectMembership(Adherent $adherent, string $citizenProjectUuid): ?CitizenProjectMembership
+    public function findCitizenProjectMembership(Adherent $adherent, CitizenProject $citizenProject): ?CitizenProjectMembership
     {
         return $this
-            ->createMembershipQueryBuilder($adherent, $citizenProjectUuid)
+            ->createMembershipQueryBuilder($adherent, $citizenProject)
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -66,13 +59,8 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
     /**
      * Returns whether or not the given adherent is already an administrator of at least
      * one citizen project.
-     *
-     * @param Adherent $adherent
-     * @param string   $citizenProjectUuid
-     *
-     * @return bool
      */
-    public function administrateCitizenProject(Adherent $adherent, string $citizenProjectUuid = null): bool
+    public function administrateCitizenProject(Adherent $adherent, CitizenProject $citizenProject = null): bool
     {
         $qb = $this->createQueryBuilder('cpm');
 
@@ -86,27 +74,24 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
             ])
         ;
 
-        if ($citizenProjectUuid) {
-            $citizenProjectUuid = Uuid::fromString($citizenProjectUuid);
+        if ($citizenProject) {
             $qb
-                ->andWhere('cpm.citizenProjectUuid = :citizenProject')
-                ->setParameter('citizenProject', (string) $citizenProjectUuid)
+                ->andWhere('cpm.citizenProject = :citizenProject')
+                ->setParameter('citizenProject', $citizenProject)
             ;
         }
 
         return (int) $qb->getQuery()->getSingleScalarResult() >= 1;
     }
 
-    public function countAdministratorMembers(string $citizenProjectUuid): int
+    public function countAdministratorMembers(CitizenProject $citizenProject): int
     {
-        $citizenProjectUuid = Uuid::fromString($citizenProjectUuid);
-
         return $this->createQueryBuilder('cpm')
             ->select('COUNT(cpm.uuid)')
-            ->where('cpm.citizenProjectUuid = :citizenProject')
+            ->where('cpm.citizenProject = :citizenProject')
             ->andWhere('cpm.privilege = :privilege')
             ->setParameters([
-                'citizenProject' => (string) $citizenProjectUuid,
+                'citizenProject' => $citizenProject,
                 'privilege' => CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR,
             ])
             ->getQuery()
@@ -116,44 +101,38 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
 
     /**
      * Returns the list of all administrator memberships of a citizen project.
-     *
-     * @param string $citizenProjectUuid
-     *
-     * @return AdherentCollection
      */
-    public function findAdministrators(string $citizenProjectUuid): AdherentCollection
+    public function findAdministrators(CitizenProject $citizenProject): AdherentCollection
     {
-        return $this->findPriviledgedMembers($citizenProjectUuid, [CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR]);
+        return $this->findPrivilegedMembers($citizenProject, [CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR]);
     }
 
     /**
-     * Returns the list of all priviledged members of a citizen project.
+     * Returns the list of all privileged members of a citizen project.
      *
-     * @param string $citizenProjectUuid The citizen project UUID
-     * @param array  $privileges         An array of privilege constants (see {@link : CitizenProjectMembership}
+     * @param CitizenProject $citizenProject The citizen project
+     * @param array          $privileges     An array of privilege constants (see {@link : CitizenProjectMembership}
      *
      * @return AdherentCollection
      */
-    public function findPriviledgedMembers(string $citizenProjectUuid, array $privileges): AdherentCollection
+    public function findPrivilegedMembers(CitizenProject $citizenProject, array $privileges): AdherentCollection
     {
-        $citizenProjectUuid = Uuid::fromString($citizenProjectUuid);
-
         $qb = $this->createQueryBuilder('cpm');
 
         $query = $qb
             ->select('cpm', 'adherent')
             ->leftJoin('cpm.adherent', 'adherent')
-            ->where('cpm.citizenProjectUuid = :citizenProject')
+            ->where('cpm.citizenProject = :citizenProject')
             ->andWhere($qb->expr()->in('cpm.privilege', $privileges))
             ->orderBy('cpm.joinedAt', 'ASC')
-            ->setParameter('citizenProject', (string) $citizenProjectUuid)
+            ->setParameter('citizenProject', $citizenProject)
             ->getQuery()
         ;
 
         return $this->createAdherentCollection($query);
     }
 
-    public function findFollowers(string $citizenProjectUuid, bool $includeAdministrators = true): AdherentCollection
+    public function findFollowers(CitizenProject $citizenProject, bool $includeAdministrators = true): AdherentCollection
     {
         $privileges = [CitizenProjectMembership::CITIZEN_PROJECT_FOLLOWER];
 
@@ -161,28 +140,26 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
             $privileges[] = CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR;
         }
 
-        return $this->findPriviledgedMembers($citizenProjectUuid, $privileges);
+        return $this->findPrivilegedMembers($citizenProject, $privileges);
     }
 
     /**
-     * Returns the list of all priviledged memberships of a citizen project.
+     * Returns the list of all privileged memberships of a citizen project.
      *
-     * @param string $citizenProjectUuid The citizen project UUID
-     * @param array  $privileges         An array of privilege constants (see {@link : CitizenProjectMembership}
+     * @param CitizenProject $citizenProject The citizen project
+     * @param array          $privileges     An array of privilege constants (see {@link : CitizenProjectMembership}
      *
      * @return CitizenProjectMembershipCollection
      */
-    public function findPriviledgedMemberships(string $citizenProjectUuid, array $privileges): CitizenProjectMembershipCollection
+    public function findPrivilegedMemberships(CitizenProject $citizenProject, array $privileges): CitizenProjectMembershipCollection
     {
-        $citizenProjectUuid = Uuid::fromString($citizenProjectUuid);
-
         $qb = $this->createQueryBuilder('cpm');
 
         $query = $qb
-            ->where('cpm.citizenProjectUuid = :citizenProject')
+            ->where('cpm.citizenProject = :citizenProject')
             ->andWhere($qb->expr()->in('cpm.privilege', $privileges))
             ->orderBy('cpm.joinedAt', 'ASC')
-            ->setParameter('citizenProject', (string) $citizenProjectUuid)
+            ->setParameter('citizenProject', $citizenProject)
             ->getQuery()
         ;
 
@@ -191,14 +168,10 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
 
     /**
      * Returns the list of all members of a citizen project.
-     *
-     * @param string $citizenProjectUuid The citizen project UUID
-     *
-     * @return AdherentCollection
      */
-    public function findMembers(string $citizenProjectUuid): AdherentCollection
+    public function findMembers(CitizenProject $citizenProject): AdherentCollection
     {
-        return $this->createAdherentCollection($this->createCitizenProjectMembershipsQueryBuilder($citizenProjectUuid)->getQuery());
+        return $this->createAdherentCollection($this->createCitizenProjectMembershipsQueryBuilder($citizenProject)->getQuery());
     }
 
     /**
@@ -209,8 +182,9 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('cpm');
 
         $query = $qb
-            ->select('cpm.citizenProjectUuid')
-            ->leftJoin('cpm.adherent', 'a')
+            ->select('cp.uuid')
+            ->innerJoin('cpm.adherent', 'a')
+            ->innerJoin('cpm.citizenProject', 'cp')
             ->where('LOWER(a.firstName) LIKE :firstName')
             ->andWhere('cpm.privilege = :privilege')
             ->setParameters([
@@ -222,7 +196,7 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
 
         return array_map(function (UuidInterface $uuid) {
             return $uuid->toString();
-        }, array_column($query->getArrayResult(), 'citizenProjectUuid'));
+        }, array_column($query->getArrayResult(), 'uuid'));
     }
 
     /**
@@ -233,8 +207,9 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('cpm');
 
         $query = $qb
-            ->select('cpm.citizenProjectUuid')
-            ->leftJoin('cpm.adherent', 'a')
+            ->select('cp.uuid')
+            ->innerJoin('cpm.adherent', 'a')
+            ->innerJoin('cpm.citizenProject', 'cp')
             ->where('LOWER(a.lastName) LIKE :lastName')
             ->andWhere('cpm.privilege = :privilege')
             ->setParameters([
@@ -246,7 +221,7 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
 
         return array_map(function (UuidInterface $uuid) {
             return $uuid->toString();
-        }, array_column($query->getArrayResult(), 'citizenProjectUuid'));
+        }, array_column($query->getArrayResult(), 'uuid'));
     }
 
     /**
@@ -257,8 +232,9 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('cpm');
 
         $query = $qb
-            ->select('cpm.citizenProjectUuid')
-            ->leftJoin('cpm.adherent', 'a')
+            ->select('cp.uuid')
+            ->innerJoin('cpm.adherent', 'a')
+            ->innerJoin('cpm.citizenProject', 'cp')
             ->where('LOWER(a.emailAddress) LIKE :emailAddress')
             ->andWhere('cpm.privilege = :privilege')
             ->setParameters([
@@ -270,40 +246,34 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
 
         return array_map(function (UuidInterface $uuid) {
             return $uuid->toString();
-        }, array_column($query->getArrayResult(), 'citizenProjectUuid'));
+        }, array_column($query->getArrayResult(), 'uuid'));
     }
 
     /**
      * Creates a QueryBuilder instance to fetch memberships of a citizen project.
      *
-     * @param string $citizenProjectUuid The citizen project UUID for which the memberships to fetch belong
-     * @param string $alias              The custom root alias for the query
+     * @param CitizenProject $citizenProject The citizen project for which the memberships to fetch belong
+     * @param string         $alias          The custom root alias for the query
      *
      * @return QueryBuilder
      */
-    private function createCitizenProjectMembershipsQueryBuilder(string $citizenProjectUuid, string $alias = 'cpm'): QueryBuilder
+    private function createCitizenProjectMembershipsQueryBuilder(CitizenProject $citizenProject, string $alias = 'cpm'): QueryBuilder
     {
-        $citizenProjectUuid = Uuid::fromString($citizenProjectUuid);
-
         return $this->createQueryBuilder($alias)
             ->leftJoin($alias.'.adherent', 'a')
-            ->where($alias.'.citizenProjectUuid = :citizenProject')
+            ->where($alias.'.citizenProject = :citizenProject')
             ->orderBy('a.firstName', 'ASC')
-            ->setParameter('citizenProject', (string) $citizenProjectUuid)
+            ->setParameter('citizenProject', $citizenProject)
         ;
     }
 
     /**
      * Returns the list of all citizen project memberships of a citizen project.
-     *
-     * @param string $citizenProjectUuid The citizen project UUID
-     *
-     * @return CitizenProjectMembershipCollection
      */
-    public function findCitizenProjectMemberships(string $citizenProjectUuid): CitizenProjectMembershipCollection
+    public function findCitizenProjectMemberships(CitizenProject $citizenProject): CitizenProjectMembershipCollection
     {
         $query = $this
-            ->createCitizenProjectMembershipsQueryBuilder($citizenProjectUuid)
+            ->createCitizenProjectMembershipsQueryBuilder($citizenProject)
             ->addSelect('a')
             ->getQuery()
         ;

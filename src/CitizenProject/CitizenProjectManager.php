@@ -77,7 +77,7 @@ class CitizenProjectManager
 
     public function getCitizenProjectAdministrators(CitizenProject $citizenProject): AdherentCollection
     {
-        return $this->getCitizenProjectMembershipRepository()->findAdministrators($citizenProject->getUuid());
+        return $this->getCitizenProjectMembershipRepository()->findAdministrators($citizenProject);
     }
 
     public function getCitizenProjectCreator(CitizenProject $citizenProject): ?Adherent
@@ -135,20 +135,20 @@ class CitizenProjectManager
 
     public function getCitizenProjectMembers(CitizenProject $citizenProject): AdherentCollection
     {
-        return $this->getCitizenProjectMembershipRepository()->findMembers($citizenProject->getUuid());
+        return $this->getCitizenProjectMembershipRepository()->findMembers($citizenProject);
     }
 
     public function getCitizenProjectFollowers(CitizenProject $citizenProject, bool $withHosts = false): AdherentCollection
     {
         return $this
             ->getCitizenProjectMembershipRepository()
-            ->findFollowers($citizenProject->getUuid(), $withHosts)
+            ->findFollowers($citizenProject, $withHosts)
         ;
     }
 
     public function getCitizenProjectMemberships(CitizenProject $citizenProject): CitizenProjectMembershipCollection
     {
-        return $this->getCitizenProjectMembershipRepository()->findCitizenProjectMemberships($citizenProject->getUuid());
+        return $this->getCitizenProjectMembershipRepository()->findCitizenProjectMemberships($citizenProject);
     }
 
     public function getOptinCitizenProjectFollowers(CitizenProject $citizenProject): AdherentCollection
@@ -170,7 +170,7 @@ class CitizenProjectManager
      */
     public function promote(Adherent $adherent, CitizenProject $citizenProject, bool $flush = true): void
     {
-        $membership = $this->getCitizenProjectMembershipRepository()->findCitizenProjectMembership($adherent, $citizenProject->getUuid());
+        $membership = $this->getCitizenProjectMembershipRepository()->findCitizenProjectMembership($adherent, $citizenProject);
         $membership->promote();
 
         if ($flush) {
@@ -187,7 +187,7 @@ class CitizenProjectManager
      */
     public function demote(Adherent $adherent, CitizenProject $citizenProject, bool $flush = true): void
     {
-        $membership = $this->getCitizenProjectMembershipRepository()->findCitizenProjectMembership($adherent, $citizenProject->getUuid());
+        $membership = $this->getCitizenProjectMembershipRepository()->findCitizenProjectMembership($adherent, $citizenProject);
         $membership->demote();
 
         if ($flush) {
@@ -251,7 +251,7 @@ class CitizenProjectManager
 
     public function unfollowCitizenProject(Adherent $adherent, CitizenProject $citizenProject, bool $flush = true): void
     {
-        if (!$membership = $this->getCitizenProjectMembershipRepository()->findCitizenProjectMembership($adherent, $citizenProject->getUuid())) {
+        if (!$membership = $this->getCitizenProjectMembershipRepository()->findCitizenProjectMembership($adherent, $citizenProject)) {
             return;
         }
 
