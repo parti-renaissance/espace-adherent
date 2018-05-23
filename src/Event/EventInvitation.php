@@ -3,6 +3,7 @@
 namespace AppBundle\Event;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class EventInvitation
@@ -29,9 +30,15 @@ class EventInvitation
     public $lastName = '';
 
     /**
-     * @Assert\Length(max=500, maxMessage="event.invitation.message.max_length")
+     * @Assert\Length(max=200, maxMessage="event.invitation.message.max_length")
      */
     public $message = '';
+
+    /**
+     * @Assert\NotBlank(message="common.recaptcha.invalid_message")
+     * @AssertRecaptcha
+     */
+    public $recaptcha;
 
     /**
      * @Assert\Type("array")
@@ -44,7 +51,7 @@ class EventInvitation
      */
     public $guests = [];
 
-    public static function createFromAdherent(?Adherent $adherent): self
+    public static function createFromAdherent(?Adherent $adherent, ?string $recaptchaAnswer): self
     {
         $dto = new self();
 
@@ -53,6 +60,8 @@ class EventInvitation
             $dto->firstName = $adherent->getFirstName();
             $dto->email = $adherent->getEmailAddress();
         }
+
+        $dto->recaptcha = $recaptchaAnswer;
 
         return $dto;
     }
