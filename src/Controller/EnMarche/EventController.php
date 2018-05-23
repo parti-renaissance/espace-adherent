@@ -121,7 +121,10 @@ class EventController extends Controller
      */
     public function inviteAction(Request $request, Event $event): Response
     {
-        $eventInvitation = EventInvitation::createFromAdherent($this->getUser());
+        $eventInvitation = EventInvitation::createFromAdherent(
+            $this->getUser(),
+            $request->request->get('g-recaptcha-response')
+        );
 
         $form = $this->createForm(EventInvitationType::class, $eventInvitation)
             ->handleRequest($request)
