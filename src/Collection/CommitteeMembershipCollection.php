@@ -24,7 +24,7 @@ class CommitteeMembershipCollection extends ArrayCollection
     {
         return array_map(
             function (CommitteeMembership $membership) {
-                return (string) $membership->getCommitteeUuid();
+                return $membership->getCommittee()->getUuidAsString();
             },
             $this->getValues()
         );
