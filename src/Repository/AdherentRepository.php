@@ -14,7 +14,6 @@ use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Membership\AdherentEmailSubscription;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ramsey\Uuid\Uuid;
@@ -556,7 +555,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $result = $this->createQueryBuilder('adherent', 'adherent.gender')
             ->select('adherent.gender, COUNT(DISTINCT adherent) AS count')
             ->join('adherent.memberships', 'membership')
-            ->join(Committee::class, 'committee', Join::WITH, 'committee.uuid = membership.committeeUuid')
+            ->join('membership.committee', 'committee')
             ->join('committee.referentTags', 'tag')
             ->where('tag.id IN (:tags)')
             ->andWhere('committee.status = :status')
@@ -581,7 +580,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $result = $this->createQueryBuilder('adherent', 'adherent.gender')
             ->select('adherent.gender, COUNT(DISTINCT adherent) AS count')
             ->join('adherent.memberships', 'membership')
-            ->join(Committee::class, 'committee', Join::WITH, 'committee.uuid = membership.committeeUuid')
+            ->join('membership.committee', 'committee')
             ->innerJoin('committee.referentTags', 'tag')
             ->where('tag.id IN (:tags)')
             ->andWhere('committee.status = :status')
