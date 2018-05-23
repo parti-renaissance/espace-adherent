@@ -156,6 +156,7 @@ jobs:
         steps:
             - *attach_workspace
             - *authenticate_on_registry
+            - setup_remote_docker
             - run: |
                 bash scripts/build.sh
 
