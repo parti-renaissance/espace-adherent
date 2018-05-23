@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MembershipRequest implements MembershipInterface
 {
     /**
+     * @var string|null
+     *
      * @Assert\NotBlank(message="common.gender.not_blank", groups={"Update"})
      * @Assert\Choice(
      *   callback = {"AppBundle\ValueObject\Genders", "all"},
@@ -27,6 +29,8 @@ class MembershipRequest implements MembershipInterface
     public $gender;
 
     /**
+     * @var string
+     *
      * @Assert\NotBlank(message="common.first_name.not_blank", groups={"Registration", "Update"})
      * @Assert\Length(
      *   min=2,
@@ -39,6 +43,8 @@ class MembershipRequest implements MembershipInterface
     public $firstName;
 
     /**
+     * @var string
+     *
      * @Assert\NotBlank(message="common.first_name.not_blank", groups={"Registration", "Update"})
      * @Assert\Length(
      *   min=2,
@@ -58,6 +64,8 @@ class MembershipRequest implements MembershipInterface
     private $address;
 
     /**
+     * @var string|null
+     *
      * @Assert\Choice(
      *   callback = {"AppBundle\Membership\ActivityPositions", "all"},
      *   message="adherent.activity_position.invalid_choice",
@@ -68,12 +76,16 @@ class MembershipRequest implements MembershipInterface
     public $position;
 
     /**
+     * @var string
+     *
      * @Assert\NotBlank(groups="Registration")
      * @Assert\Length(min=8, minMessage="adherent.plain_password.min_length", groups={"Registration"})
      */
     public $password;
 
     /**
+     * @var bool
+     *
      * @Assert\IsTrue(message="common.conditions.not_accepted", groups={"Conditions"})
      */
     public $conditions;
@@ -83,12 +95,16 @@ class MembershipRequest implements MembershipInterface
     public $comEmail = false;
 
     /**
+     * @var string|null
+     *
      * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"Registration"})
      * @AssertRecaptcha(groups={"Registration"})
      */
     public $recaptcha;
 
     /**
+     * @var string
+     *
      * @Assert\NotBlank(message="common.email.not_blank", groups={"Registration", "Update"})
      * @Assert\Email(message="common.email.invalid", groups={"Registration", "Update"})
      * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Registration", "Update"})
@@ -96,12 +112,15 @@ class MembershipRequest implements MembershipInterface
     private $emailAddress;
 
     /**
+     * @var PhoneNumber|null
+     *
      * @AssertPhoneNumber(defaultRegion="FR", groups={"Update"})
-     * @Assert\NotBlank(message="common.phone_number.required", groups={"Update"})
      */
     private $phone;
 
     /**
+     * @var \DateTime|null
+     *
      * @Assert\NotBlank(message="adherent.birthdate.not_blank", groups={"Update"})
      * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age", groups={"Update"})
      */
@@ -140,17 +159,17 @@ class MembershipRequest implements MembershipInterface
         return $dto;
     }
 
-    public function setAddress(Address $address = null): void
+    public function setAddress(Address $address): void
     {
         $this->address = $address;
     }
 
-    public function getAddress(): ?Address
+    public function getAddress(): Address
     {
         return $this->address;
     }
 
-    public function setEmailAddress(?string $emailAddress): void
+    public function setEmailAddress(string $emailAddress): void
     {
         $this->emailAddress = mb_strtolower($emailAddress);
     }
@@ -160,7 +179,7 @@ class MembershipRequest implements MembershipInterface
         return $this->emailAddress ?: '';
     }
 
-    public function setPhone(PhoneNumber $phone = null): void
+    public function setPhone(?PhoneNumber $phone): void
     {
         $this->phone = $phone;
     }
@@ -170,7 +189,7 @@ class MembershipRequest implements MembershipInterface
         return $this->phone;
     }
 
-    public function setBirthdate(\DateTime $birthdate = null): void
+    public function setBirthdate(?\DateTime $birthdate): void
     {
         $this->birthdate = $birthdate;
     }
