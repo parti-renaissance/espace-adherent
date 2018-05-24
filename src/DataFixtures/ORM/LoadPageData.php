@@ -155,6 +155,14 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
         ]));
 
         $manager->persist($factory->createFromArray([
+            'title' => '1000 Talents',
+            'slug' => '1000-talents',
+            'description' => 'Faire tomber les barrières de l\'engagement politique.',
+            'content' => file_get_contents(__DIR__.'/../1000-talents/home.html'),
+            'media' => $media,
+        ]));
+
+        $manager->persist($factory->createFromArray([
             'title' => 'Carrières',
             'slug' => 'nos-offres',
             'description' => $description,

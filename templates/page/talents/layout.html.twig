@@ -17,31 +17,23 @@
 
 {% block content %}
     <main>
-        {% block action_talents_header %}
+        {% block talents_header %}
             <header class="hero hero--minimalist hero--gradient hero--minimalist--center-20 progressive-background"
-                    data-sd="{{ static_asset('action-talents/home.jpg', {'w': 300, 'q': 20}) }}"
-                    data-hd="{{ static_asset('action-talents/home.jpg', {'w': 2000, 'q': 70}) }}">
+                    data-sd="{{ static_asset(talents_header_image, {'w': 300, 'q': 20}) }}"
+                    data-hd="{{ static_asset(talents_header_image, {'w': 2000, 'q': 70}) }}">
                 <div class="hero--minimalist__nav">
                     <a href="{{ path('homepage') }}">En Marche !</a>
                 </div>
                 <div class="hero--minimalist__content">
-                    <h1>
-                        Action talents !
-                    </h1>
-                    <p>
-                        Faire émerger, inspirer et accompagner une communauté de
-                        talents citoyens qui veulent transformer la France avec nous.
-                    </p>
-                    <a href="{{ path('page_action_talents_apply') }}" class="btn btn--hollow">
-                        Candidater
-                    </a>
+                    <h1>{% block talents_header_title %}{{ block('page_title') }}{% endblock %}</h1>
+                    {% block talents_header_content %}{% endblock %}
                 </div>
             </header>
         {% endblock %}
 
         <section class="content">
             <article class="l__wrapper--600">
-                {% block action_talents_content %}{% endblock %}
+                {% block talents_content %}{% endblock %}
             </article>
         </section>
 
