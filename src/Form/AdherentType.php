@@ -41,6 +41,7 @@ class AdherentType extends AbstractType
             ])
             ->add('address', AddressType::class)
             ->add('phone', PhoneNumberType::class, [
+                'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                 'preferred_country_choices' => $countryCode ? [$countryCode] : [],
             ])
