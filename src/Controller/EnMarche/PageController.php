@@ -174,13 +174,23 @@ class PageController extends Controller
     }
 
     /**
+     * @Route("/1000-talents", name="page_1000_talents")
+     * @Method("GET")
+     * @Entity("page", expr="repository.findOneBySlug('1000-talents')")
+     */
+    public function page1000TalentsAction(Page $page)
+    {
+        return $this->render('page/talents/1000-talents/home.html.twig', ['page' => $page]);
+    }
+
+    /**
      * @Route("/action-talents", defaults={"_enable_campaign_silence"=true}, name="page_action_talents")
      * @Method("GET")
      * @Entity("page", expr="repository.findOneBySlug('action-talents')")
      */
     public function actionTalentsAction(Page $page)
     {
-        return $this->render('page/action-talents/home.html.twig', ['page' => $page]);
+        return $this->render('page/talents/action-talents/home.html.twig', ['page' => $page]);
     }
 
     /**
@@ -199,7 +209,7 @@ class PageController extends Controller
      */
     public function actionTalentsApplicationAction(Page $page)
     {
-        return $this->render('page/action-talents/apply.html.twig', ['page' => $page]);
+        return $this->render('page/talents/action-talents/apply.html.twig', ['page' => $page]);
     }
 
     /**
