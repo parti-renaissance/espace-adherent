@@ -47,7 +47,7 @@ class FormControllerTest extends MysqlWebTestCase
                     ],
                     'emailAddress' => [
                         'children' => [
-                            'first' => [
+                            'second' => [
                                 'errors' => [
                                     'Les adresses email ne correspondent pas.',
                                 ],
@@ -103,7 +103,7 @@ class FormControllerTest extends MysqlWebTestCase
                     ],
                     'emailAddress' => [
                         'children' => [
-                            'first' => [
+                            'second' => [
                                 'errors' => [
                                     'Les adresses email ne correspondent pas.',
                                 ],

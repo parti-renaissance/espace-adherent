@@ -248,10 +248,11 @@ class AdherentControllerTest extends MysqlWebTestCase
         $errors = $crawler->filter('.form__errors > li');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertSame(3, $errors->count());
+        $this->assertSame(4, $errors->count());
         $this->assertSame('Le code postal doit contenir moins de 15 caractères.', $errors->eq(0)->text());
-        $this->assertSame('L\'adresse ne peut pas dépasser 150 caractères.', $errors->eq(1)->text());
-        $this->assertSame('Cette adresse e-mail existe déjà.', $errors->eq(2)->text());
+        $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(1)->text());
+        $this->assertSame('L\'adresse ne peut pas dépasser 150 caractères.', $errors->eq(2)->text());
+        $this->assertSame('Cette adresse e-mail existe déjà.', $errors->eq(3)->text());
 
         // Submit the profile form with valid data
         $this->client->submit($crawler->selectButton('adherent[submit]')->form([

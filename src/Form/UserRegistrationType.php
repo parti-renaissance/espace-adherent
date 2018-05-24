@@ -2,7 +2,9 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\DataTransformer\ValueToDuplicatesTransformer;
 use AppBundle\Membership\MembershipRequest;
+use AppBundle\Validator\Repeated;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -30,9 +32,19 @@ class UserRegistrationType extends AbstractType
             ->add('emailAddress', RepeatedType::class, [
                 'type' => EmailType::class,
                 'invalid_message' => 'common.email.repeated',
+                'options' => ['constraints' => [new Repeated([
+                    'message' => 'common.email.repeated',
+                    'groups' => ['Registration', 'Update'],
+                ])]],
             ])
             ->add('password', PasswordType::class)
         ;
+
+        $emailForm = $builder->get('emailAddress');
+        $emailForm->resetViewTransformers()->addViewTransformer(new ValueToDuplicatesTransformer([
+            $emailForm->getOption('first_name'),
+            $emailForm->getOption('second_name'),
+        ]));
     }
 
     public function configureOptions(OptionsResolver $resolver)
