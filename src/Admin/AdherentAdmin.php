@@ -4,10 +4,10 @@ namespace AppBundle\Admin;
 
 use AppBundle\Adherent\AdherentRoleEnum;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\CitizenProjectMembership;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\BoardMember\Role;
-use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Form\ActivityPositionType;
 use AppBundle\Form\Admin\CoordinatorManagedAreaType;
@@ -414,14 +414,14 @@ class AdherentAdmin extends AbstractAdmin
                     // Committee supervisor & host
                     if ($committeeRoles = array_intersect([AdherentRoleEnum::COMMITTEE_SUPERVISOR, AdherentRoleEnum::COMMITTEE_HOST], $value['value'])) {
                         $qb->leftJoin(sprintf('%s.memberships', $alias), 'ms');
-                        $where->add('ms.privilege IN (:privileges)');
+                        $where->add('ms.privilege IN (:committee_privileges)');
                         if (\in_array(AdherentRoleEnum::COMMITTEE_SUPERVISOR, $committeeRoles, true)) {
                             $privileges[] = CommitteeMembership::COMMITTEE_SUPERVISOR;
                         }
                         if (\in_array(AdherentRoleEnum::COMMITTEE_HOST, $committeeRoles, true)) {
                             $privileges[] = CommitteeMembership::COMMITTEE_HOST;
                         }
-                        $qb->setParameter('privileges', $privileges);
+                        $qb->setParameter('committee_privileges', $privileges);
                     }
 
                     // Board Member
@@ -449,13 +449,9 @@ class AdherentAdmin extends AbstractAdmin
 
                     // Citizen project holder
                     if (\in_array(AdherentRoleEnum::CITIZEN_PROJECT_HOLDER, $value['value'], true)) {
-                        $qb->leftJoin(
-                            CitizenProject::class,
-                            'citizenProject',
-                            Expr\Join::WITH,
-                            sprintf('citizenProject.createdBy = %s.uuid', $alias)
-                        );
-                        $where->add('citizenProject IS NOT NULL');
+                        $qb->leftJoin(sprintf('%s.citizenProjectMemberships', $alias), 'cpms');
+                        $where->add('cpms.privilege = :cp_privilege');
+                        $qb->setParameter('cp_privilege', CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR);
                     }
 
                     $qb->andWhere($where);
