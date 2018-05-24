@@ -21,6 +21,7 @@ class CommitteeRepository extends ServiceEntityRepository
 {
     use GeoFilterTrait;
     use NearbyTrait;
+    use ReferentTrait;
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
     }
@@ -358,6 +359,46 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findApprovedForReferentAutocomplete(Adherent $referent, $value): array
+    {
+        $this->checkReferent($referent);
+
+        $qb = $this->createQueryBuilder('committee')
+            ->select('committee.uuid, committee.name')
+            ->join('committee.referentTags', 'tag')
+            ->where('committee.status = :status')
+            ->andWhere('committee.name LIKE :searchedName')
+            ->andWhere('tag.id IN (:tags)')
+            ->setParameter('searchedName', $value.'%')
+            ->setParameter('status', Committee::APPROVED)
+            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->orderBy('committee.name')
+        ;
+
+        return array_map(function (array $committee) {
+            return [$committee['uuid'] => $committee['name']];
+        }, $qb->getQuery()->getScalarResult());
+    }
+
+    public function findCitiesForReferentAutocomplete(Adherent $referent, $value): array
+    {
+        $this->checkReferent($referent);
+
+        $qb = $this->createQueryBuilder('committee')
+            ->select('DISTINCT committee.postAddress.cityName as city')
+            ->join('committee.referentTags', 'tag')
+            ->where('committee.status = :status')
+            ->andWhere('committee.postAddress.cityName LIKE :searchedCityName')
+            ->andWhere('tag.id IN (:tags)')
+            ->setParameter('searchedCityName', $value.'%')
+            ->setParameter('status', Committee::APPROVED)
+            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->orderBy('city')
+        ;
+
+        return array_column($qb->getQuery()->getArrayResult(), 'city');
+    }
+
     public function retrieveMostActiveCommitteesInReferentManagedArea(Adherent $referent, int $limit = 5): array
     {
         return $this->retrieveTopCommitteesInReferentManagedArea($referent, $limit);
@@ -370,9 +411,7 @@ class CommitteeRepository extends ServiceEntityRepository
 
     private function retrieveTopCommitteesInReferentManagedArea(Adherent $referent, int $limit = 5, bool $mostActive = true): array
     {
-        if (!$referent->isReferent()) {
-            throw new \InvalidArgumentException('Adherent must be a referent.');
-        }
+        $this->checkReferent($referent);
 
         $result = $this->createQueryBuilder('committee')
             ->select('committee.name, COUNT(event) AS events, SUM(event.participantsCount) as participants')

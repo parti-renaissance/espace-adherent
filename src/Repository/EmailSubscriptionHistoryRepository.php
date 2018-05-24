@@ -11,6 +11,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class EmailSubscriptionHistoryRepository extends ServiceEntityRepository
 {
+    use ReferentTrait;
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, EmailSubscriptionHistory::class);
@@ -21,9 +23,7 @@ class EmailSubscriptionHistoryRepository extends ServiceEntityRepository
      */
     public function countAllByTypeForReferentManagedArea(Adherent $referent, array $subscriptionsTypes, \DateTimeInterface $until): array
     {
-        if (!$referent->isReferent()) {
-            throw new \InvalidArgumentException('Adherent must be a referent.');
-        }
+        $this->checkReferent($referent);
 
         $qb = $this->createQueryBuilder('history')
             ->select('history.adherentUuid, history.subscribedEmailType, history.action, COUNT(history) AS count')

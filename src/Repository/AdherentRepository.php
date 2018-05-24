@@ -28,6 +28,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class AdherentRepository extends ServiceEntityRepository implements UserLoaderInterface, UserProviderInterface
 {
     use NearbyTrait;
+    use ReferentTrait;
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
     }
@@ -528,9 +529,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     public function countByGenderManagedBy(Adherent $referent): array
     {
-        if (!$referent->isReferent()) {
-            throw new \InvalidArgumentException('Adherent must be a referent.');
-        }
+        $this->checkReferent($referent);
 
         return $this->createQueryBuilder('a', 'a.gender')
             ->select('a.gender, COUNT(a) AS count')
@@ -548,9 +547,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     public function countSupervisorsByGenderForReferent(Adherent $referent): array
     {
-        if (!$referent->isReferent()) {
-            throw new \InvalidArgumentException('Adherent must be a referent.');
-        }
+        $this->checkReferent($referent);
 
         $result = $this->createQueryBuilder('adherent', 'adherent.gender')
             ->select('adherent.gender, COUNT(DISTINCT adherent) AS count')
@@ -573,9 +570,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     public function countMembersByGenderForReferent(Adherent $referent): array
     {
-        if (!$referent->isReferent()) {
-            throw new \InvalidArgumentException('Adherent must be a referent.');
-        }
+        $this->checkReferent($referent);
 
         $result = $this->createQueryBuilder('adherent', 'adherent.gender')
             ->select('adherent.gender, COUNT(DISTINCT adherent) AS count')

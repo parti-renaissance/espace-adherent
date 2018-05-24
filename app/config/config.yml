@@ -125,6 +125,8 @@ doctrine:
                 enabled: true
 
         dql:
+            datetime_functions:
+                year_month: DoctrineExtensions\Query\Mysql\YearMonth
             numeric_functions:
                 acos: DoctrineExtensions\Query\Mysql\Acos
                 cos: DoctrineExtensions\Query\Mysql\Cos
