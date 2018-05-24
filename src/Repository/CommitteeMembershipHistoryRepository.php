@@ -5,6 +5,8 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Reporting\CommitteeMembershipAction;
 use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
+use AppBundle\Statistics\StatisticsParametersFilter;
+use AppBundle\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -19,7 +21,7 @@ class CommitteeMembershipHistoryRepository extends ServiceEntityRepository
         parent::__construct($registry, CommitteeMembershipHistory::class);
     }
 
-    public function countAdherentMemberOfAtLeastOneCommitteeManagedBy(Adherent $referent, \DateTimeInterface $until): int
+    public function countAdherentMemberOfAtLeastOneCommitteeManagedBy(Adherent $referent, \DateTimeInterface $until, StatisticsParametersFilter $filter = null): int
     {
         $this->checkReferent($referent);
 
@@ -31,8 +33,13 @@ class CommitteeMembershipHistoryRepository extends ServiceEntityRepository
             ->groupBy('history.action, history.adherentUuid')
             ->setParameter('tags', $referent->getManagedArea()->getTags())
             ->setParameter('until', $until)
-            ->getQuery()
         ;
+
+        if ($filter) {
+            $query->leftJoin('history.committee', 'committee');
+            RepositoryUtils::addStatstFilter($filter, $query, 'history', 'committee');
+        }
+        $query = $query->getQuery();
 
         // Let's cache past data as they are never going to change
         $firstDayOfMonth = (new Chronos('first day of this month'))->setTime(0, 0);

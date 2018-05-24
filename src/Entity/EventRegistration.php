@@ -8,7 +8,9 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRegistrationRepository")
- * @ORM\Table(name="events_registrations")
+ * @ORM\Table(name="events_registrations", indexes={
+ *     @ORM\Index(name="event_registration_email_address_idx", columns={"email_address"}),
+ * })
  *
  * @Algolia\Index(autoIndex=false)
  */

@@ -28,7 +28,7 @@ class MapControllerTest extends SqliteWebTestCase
         $this->assertSame(1, $crawler->filter('html:contains("La carte des comités")')->count());
         $this->assertContains('19 adhérents', $crawler->filter('#counter-adherents')->text());
         $this->assertContains('9 comités', $crawler->filter('#counter-committees')->text());
-        $this->assertContains('15 événements', $crawler->filter('#counter-events')->text());
+        $this->assertContains('19 événements', $crawler->filter('#counter-events')->text());
     }
 
     public function testCommitteesEventsMap()

@@ -30,7 +30,7 @@ class StatsControllerTest extends SqliteWebTestCase
 
         $this->assertArraySubset([
             'userCount' => 19,
-            'eventCount' => 15,
+            'eventCount' => 19,
             'committeeCount' => 9,
         ], $data);
     }

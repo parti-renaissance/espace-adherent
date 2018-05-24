@@ -25,7 +25,7 @@ class EventRepositoryTest extends MysqlWebTestCase
 
     public function testCountEvents()
     {
-        $this->assertSame(15, $this->repository->countElements());
+        $this->assertSame(19, $this->repository->countElements());
     }
 
     public function testFindUpcomingEvents()

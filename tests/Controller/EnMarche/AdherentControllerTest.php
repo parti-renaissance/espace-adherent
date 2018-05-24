@@ -72,13 +72,15 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertSame(5, $crawler->filter('.event-registration')->count());
+        $this->assertSame(7, $crawler->filter('.event-registration')->count());
 
         $titles = $crawler->filter('.event-registration h2 a');
         $this->assertSame('Meeting de Singapour', trim($titles->first()->text()));
         $this->assertSame('Grand débat parisien', trim($titles->eq(1)->text()));
-        $this->assertSame('Marche Parisienne', trim($titles->eq(2)->text()));
-        $this->assertSame('Grand Meeting de Paris', trim($titles->eq(3)->text()));
+        $this->assertSame('Événement à Paris 1', trim($titles->eq(2)->text()));
+        $this->assertSame('Événement à Paris 2', trim($titles->eq(3)->text()));
+        $this->assertSame('Marche Parisienne', trim($titles->eq(4)->text()));
+        $this->assertSame('Grand Meeting de Paris', trim($titles->eq(5)->text()));
         $this->assertSame('Grand Meeting de Marseille', trim($titles->last()->text()));
     }
 
