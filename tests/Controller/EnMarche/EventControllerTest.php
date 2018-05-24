@@ -181,6 +181,7 @@ class EventControllerTest extends MysqlWebTestCase
             'event_invitation[message]' => 'Venez !',
             'event_invitation[guests][0]' => 'hugo.hamon@clichy-beach.com',
             'event_invitation[guests][1]' => 'jules.pietri@clichy-beach.com',
+            'g-recaptcha-response' => 'foobar',
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
@@ -227,6 +228,7 @@ class EventControllerTest extends MysqlWebTestCase
             'event_invitation[message]' => '',
             'event_invitation[guests][0]' => 'hugo.hamon@clichy-beach.com',
             'event_invitation[guests][1]' => 'jules.pietri@clichy-beach.com',
+            'g-recaptcha-response' => 'foobar',
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
