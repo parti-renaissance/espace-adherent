@@ -848,7 +848,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         })->count();
     }
 
-    final public function getMemberships(): CommitteeMembershipCollection
+    public function getMemberships(): CommitteeMembershipCollection
     {
         if (!$this->memberships instanceof CommitteeMembershipCollection) {
             $this->memberships = new CommitteeMembershipCollection($this->memberships->toArray());
@@ -873,7 +873,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return null;
     }
 
-    final public function getCitizenProjectMemberships(): CitizenProjectMembershipCollection
+    public function getCitizenProjectMemberships(): CitizenProjectMembershipCollection
     {
         if (!$this->citizenProjectMemberships instanceof CitizenProjectMembershipCollection) {
             $this->citizenProjectMemberships = new CitizenProjectMembershipCollection($this->citizenProjectMemberships->toArray());

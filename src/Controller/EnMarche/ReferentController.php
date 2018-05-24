@@ -5,7 +5,6 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Projection\ReferentManagedUser;
-use AppBundle\Entity\Referent;
 use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
 use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use AppBundle\Event\EventCommand;

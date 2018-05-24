@@ -2,7 +2,6 @@
 
 namespace AppBundle\CitizenAction;
 
-use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Event\EventFactory;
 use AppBundle\Events;
@@ -46,14 +45,5 @@ class CitizenActionCommandHandler
         $this->dispatcher->dispatch(Events::CITIZEN_ACTION_UPDATED, new CitizenActionEvent($action));
 
         return $action;
-    }
-
-    public function handleCancel(CitizenAction $action, Adherent $author): void
-    {
-        $action->cancel();
-
-        $this->manager->flush();
-
-        $this->dispatcher->dispatch(Events::CITIZEN_ACTION_CANCELLED, new CitizenActionEvent($action, $author));
     }
 }
