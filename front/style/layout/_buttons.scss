@@ -204,9 +204,9 @@
 }
 
 @mixin btn--as-link {
-    background: none!important;
+    background: none;
     border: none;
-    padding: 0!important;
+    padding: 0;
     border-bottom: 1px solid transparent;
 
     &:hover {
@@ -233,10 +233,10 @@ input {
 
 .btn--as-link {
     &--error {
-        color: $red!important;
+        color: $red;
         &:hover {
-            border-color: $red!important;;
-            color: $red!important;;
+            border-color: $red;
+            color: $red;
         }
     }
 }
@@ -259,7 +259,7 @@ button.btn {
         padding: 20px 25px;
 
         @media(max-width: $mobile) {
-          @include text--default;
+            @include text--default;
         }
     }
 
@@ -279,10 +279,10 @@ button.btn {
         height: 70px;
 
         @media(max-width: $mobile) {
-          padding: 0 18px;
-          font-size: $text--size-medium--small;
-          letter-spacing: 2px;
-          height: 50px;
+            padding: 0 18px;
+            font-size: $text--size-medium--small;
+            letter-spacing: 2px;
+            height: 50px;
         }
     }
 
