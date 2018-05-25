@@ -27,7 +27,8 @@ class EmailSubscriptionHistoryRepository extends ServiceEntityRepository
 
         $qb = $this->createQueryBuilder('history')
             ->select('history.adherentUuid, history.subscribedEmailType, history.action, COUNT(history) AS count')
-            ->where('history.referentTag IN (:tags)')
+            ->join('history.referentTags', 'tags')
+            ->where('tags IN (:tags)')
             ->andWhere('history.subscribedEmailType IN (:subscriptions)')
             ->andWhere('history.date <= :until')
             ->groupBy('history.adherentUuid, history.subscribedEmailType, history.action')

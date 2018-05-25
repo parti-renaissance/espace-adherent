@@ -579,8 +579,8 @@ class AdherentControllerTest extends MysqlWebTestCase
 
         if ($referentTagCode) {
             $qb
-                ->leftJoin('history.referentTag', 'referentTag')
-                ->andWhere('referentTag.code = :code')
+                ->leftJoin('history.referentTags', 'tag')
+                ->andWhere('tag.code = :code')
                 ->setParameter('code', $referentTagCode)
             ;
         }

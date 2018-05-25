@@ -86,11 +86,9 @@ class EmailSubscriptionHistoryHandler
         EmailSubscriptionHistoryAction $action
     ): void {
         foreach ($subscriptions as $subscription) {
-            foreach ($referentTags as $tag) {
-                $this->em->persist(
-                    new EmailSubscriptionHistory($adherent, $subscription, $tag, $action)
-                );
-            }
+            $this->em->persist(
+                new EmailSubscriptionHistory($adherent, $subscription, $referentTags, $action)
+            );
         }
     }
 
