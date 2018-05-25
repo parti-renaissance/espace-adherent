@@ -5,17 +5,19 @@ namespace Tests\AppBundle\Donation;
 use AppBundle\Address\PostAddressFactory;
 use AppBundle\Donation\DonationFactory;
 use AppBundle\Donation\DonationRequest;
-use AppBundle\Entity\Donation;
+use AppBundle\Donation\DonationRequestUtils;
+use AppBundle\Membership\MembershipRegistrationProcess;
+use Cocur\Slugify\Slugify;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class DonationFactoryTest extends TestCase
 {
-    const DONATION_REQUEST_UUID = 'cfd3c04f-cce0-405d-865f-f5f3a2c1792e';
+    private const DONATION_REQUEST_UUID = 'cfd3c04f-cce0-405d-865f-f5f3a2c1792e';
 
-    public function testCreateDonationFromDonationRequest()
+    public function testCreateDonationFromDonationRequest(): void
     {
         $uuid = Uuid::fromString(self::DONATION_REQUEST_UUID);
         $phone = new PhoneNumber();
@@ -38,8 +40,6 @@ class DonationFactoryTest extends TestCase
         $factory = $this->createFactory();
         $donation = $factory->createFromDonationRequest($request);
 
-        $this->assertInstanceOf(Donation::class, $donation);
-        $this->assertInstanceOf(UuidInterface::class, $donation->getUuid());
         $this->assertSame('m.dupont@example.fr', $donation->getEmailAddress());
         $this->assertSame('male', $donation->getGender());
         $this->assertSame('Damien', $donation->getFirstName());
@@ -58,6 +58,13 @@ class DonationFactoryTest extends TestCase
 
     private function createFactory()
     {
-        return new DonationFactory(new PostAddressFactory());
+        return new DonationFactory(
+            new PostAddressFactory(),
+            new DonationRequestUtils(
+                $this->createMock(ServiceLocator::class),
+                Slugify::create(),
+                $this->createMock(MembershipRegistrationProcess::class)
+            )
+        );
     }
 }

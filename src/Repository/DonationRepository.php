@@ -29,33 +29,19 @@ class DonationRepository extends ServiceEntityRepository
     /**
      * @return Donation[]
      */
-    public function findByEmailAddressOrderedByDonatedAt(string $email): array
-    {
-        return $this->createQueryBuilder('donation')
-            ->where('donation.emailAddress = :email')
-            ->andWhere('donation.donatedAt IS NOT NULL')
-            ->setParameter('email', $email)
-            ->orderBy('donation.donatedAt', 'DESC')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    /**
-     * @return Donation[]
-     */
     public function findAllSubscribedDonationByEmail(string $email): array
     {
         return $this->createQueryBuilder('donation')
             ->andWhere('donation.emailAddress = :email')
             ->andWhere('donation.duration != :duration')
+            ->andWhere('donation.status = :status')
             ->andWhere('donation.subscriptionEndedAt IS NULL')
-            ->andWhere('donation.donatedAt IS NOT NULL')
             ->setParameters([
+                'status' => Donation::STATUS_SUBSCRIPTION_IN_PROGRESS,
                 'email' => $email,
                 'duration' => PayboxPaymentSubscription::NONE,
             ])
-            ->orderBy('donation.donatedAt', 'DESC')
+            ->orderBy('donation.createdAt', 'DESC')
             ->getQuery()
             ->getResult()
         ;

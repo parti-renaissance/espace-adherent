@@ -4,7 +4,10 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <defaults autowire="true" autoconfigure="true" public="false" />
+        <defaults autowire="true" autoconfigure="true" public="false">
+            <bind key="$donationRequestUtilsLocator" type="service" id="app.donation_request.utils.locator" />
+            <bind key="$environment">%kernel.environment%</bind>
+        </defaults>
 
         <!-- Adherents -->
         <service id="AppBundle\Membership\AdherentManager" />
@@ -56,20 +59,35 @@
         <service id="AppBundle\Validator\UniqueDonationSubscriptionValidator" />
         <service id="AppBundle\Donation\DonationFactory" />
         <service id="AppBundle\Donation\PayboxPaymentUnsubscription">
-            <argument type="service" id="app.mailer.transactional" key="$mailer"/>
+            <argument type="service" key="$mailer" id="app.mailer.transactional" />
+        </service>
+        <service id="AppBundle\Donation\TransactionSubscriber">
+            <argument type="service" key="$mailer" id="app.mailer.transactional" />
+        </service>
+        <service id="AppBundle\Donation\TransactionCallbackHandler">
+            <argument type="service" key="$mailer" id="app.mailer.transactional" />
+        </service>
+        <service id="AppBundle\Donation\DonationRequestHandler"/>
+        <service id="AppBundle\Donation\DonationRequestUtils" />
+
+        <service id="app.donation_request.utils.locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
+            <argument type="collection">
+                <argument key="validator" type="service" id="validator" />
+                <argument key="session" type="service" id="session" />
+                <argument key="security.csrf.token_manager" type="service" id="security.csrf.token_manager" />
+            </argument>
+            <tag name="container.service_locator" />
         </service>
 
-        <service id="AppBundle\Donation\DonationRequestUtils">
-            <argument type="service" id="app.donation_request.utils.locator" key="$locator" />
-        </service>
+        <service id="AppBundle\Donation\PayboxFormFactory" />
 
         <!-- Membership -->
         <service id="AppBundle\Membership\MembershipRegistrationProcess"/>
 
         <!-- Event -->
-        <service id="AppBundle\Event\EventFactory" public="true"/>
+        <service id="AppBundle\Event\EventFactory" public="true" />
 
-        <service id="AppBundle\Event\EventRegistrationSubscriber" >
+        <service id="AppBundle\Event\EventRegistrationSubscriber">
             <argument type="service" id="app.mailer.transactional" />
         </service>
 

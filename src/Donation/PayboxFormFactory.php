@@ -27,11 +27,11 @@ class PayboxFormFactory
         $callbackParameters = $this->donationRequestUtils->buildCallbackParameters();
 
         $parameters = [
-            'PBX_CMD' => $this->donationRequestUtils->buildDonationReference($donation),
+            'PBX_CMD' => $donation->getPayboxOrderRefWithSuffix(),
             'PBX_PORTEUR' => $donation->getEmailAddress(),
             'PBX_TOTAL' => $donation->getAmount(),
             'PBX_DEVISE' => '978',
-            'PBX_RETOUR' => 'id:R;authorization:A;result:E;transaction:S;amount:M;date:W;time:Q;card_type:C;card_end:D;card_print:H',
+            'PBX_RETOUR' => 'id:R;authorization:A;result:E;transaction:S;amount:M;date:W;time:Q;card_type:C;card_end:D;card_print:H;subscription:B',
             'PBX_TYPEPAIEMENT' => 'CARTE',
             'PBX_TYPECARTE' => 'CB',
             'PBX_RUF1' => 'POST',

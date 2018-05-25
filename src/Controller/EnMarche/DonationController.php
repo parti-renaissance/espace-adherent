@@ -3,9 +3,12 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Donation\DonationRequest;
+use AppBundle\Donation\DonationRequestHandler;
 use AppBundle\Donation\DonationRequestUtils;
+use AppBundle\Donation\PayboxFormFactory;
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Donation\PayboxPaymentUnsubscription;
+use AppBundle\Donation\TransactionCallbackHandler;
 use AppBundle\Entity\Donation;
 use AppBundle\Exception\PayboxPaymentUnsubscriptionException;
 use AppBundle\Exception\InvalidPayboxPaymentSubscriptionValueException;
@@ -19,6 +22,7 @@ use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,6 +33,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DonationController extends Controller
 {
+    public const RESULT_STATUS_EFFECTUE = 'effectue';
+    public const RESULT_STATUS_ERREUR = 'erreur';
+
     /**
      * @Route(defaults={"_enable_campaign_silence"=true}, name="donation_index")
      * @Method("GET")
@@ -52,7 +59,7 @@ class DonationController extends Controller
      * @Route("/coordonnees", defaults={"_enable_campaign_silence"=true}, name="donation_informations")
      * @Method({"GET", "POST"})
      */
-    public function informationsAction(Request $request, DonationRequestUtils $donationRequestUtils)
+    public function informationsAction(Request $request, DonationRequestUtils $donationRequestUtils, DonationRequestHandler $donationRequestHandler)
     {
         if (!$amount = $request->query->get('montant')) {
             return $this->redirectToRoute('donation_index');
@@ -67,7 +74,7 @@ class DonationController extends Controller
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.donation_request.handler')->handle($donationRequest);
+            $donationRequestHandler->handle($donationRequest);
             $donationRequestUtils->terminateDonationRequest();
 
             return $this->redirectToRoute('donation_pay', [
@@ -92,9 +99,9 @@ class DonationController extends Controller
      * )
      * @Method("GET")
      */
-    public function payboxAction(Donation $donation)
+    public function payboxAction(PayboxFormFactory $payboxFormFactory, Donation $donation)
     {
-        $paybox = $this->get('app.donation.form_factory')->createPayboxFormForDonation($donation);
+        $paybox = $payboxFormFactory->createPayboxFormForDonation($donation);
 
         return $this->render('donation/paybox.html.twig', [
             'url' => $paybox->getUrl(),
@@ -106,7 +113,7 @@ class DonationController extends Controller
      * @Route("/callback/{_callback_token}", defaults={"_enable_campaign_silence"=true}, name="donation_callback")
      * @Method("GET")
      */
-    public function callbackAction(Request $request, $_callback_token)
+    public function callbackAction(Request $request, TransactionCallbackHandler $transactionCallbackHandler, string $_callback_token)
     {
         $id = explode('_', $request->query->get('id'))[0];
 
@@ -114,7 +121,7 @@ class DonationController extends Controller
             return $this->redirectToRoute('donation_index');
         }
 
-        return $this->get('app.donation.transaction_callback_handler')->handle($id, $request, $_callback_token);
+        return $transactionCallbackHandler->handle($id, $request, $_callback_token);
     }
 
     /**
@@ -124,17 +131,19 @@ class DonationController extends Controller
      *     defaults={"_enable_campaign_silence"=true},
      *     name="donation_result"
      * )
+     * @ParamConverter("donation", options={"mapping": {"uuid": "uuid"}})
      * @Method("GET")
      */
     public function resultAction(
         Request $request,
-        Donation $donation,
         MembershipRegistrationProcess $membershipRegistrationProcess,
         AdherentRepository $adherentRepository,
-        NewsletterSubscriptionRepository $newsletterSubscriptionRepository
+        NewsletterSubscriptionRepository $newsletterSubscriptionRepository,
+        Donation $donation,
+        string $status
     ) {
         $retryUrl = null;
-        if (!$donation->isSuccessful()) {
+        if ($donation->hasError()) {
             $retryUrl = $this->generateUrl(
                 'donation_informations',
                 $this->get(DonationRequestUtils::class)->createRetryPayload($donation, $request)
@@ -144,7 +153,7 @@ class DonationController extends Controller
         $membershipRegistrationProcess->terminate();
 
         return $this->render('donation/result.html.twig', [
-            'successful' => $donation->isSuccessful(),
+            'successful' => self::RESULT_STATUS_EFFECTUE === $status,
             'error_code' => $request->query->get('code'),
             'donation' => $donation,
             'retry_url' => $retryUrl,

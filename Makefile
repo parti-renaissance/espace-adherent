@@ -6,7 +6,7 @@ PHPCSFIXER?=$(EXEC) php -d memory_limit=1024m vendor/bin/php-cs-fixer
 BEHAT_ARGS?=-vvv
 
 .DEFAULT_GOAL := help
-.PHONY: help start stop reset db db-diff db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt
+.PHONY: help start stop reset db db-diff db-diff-dump db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt
 .PHONY: lj build up perm deps cc phpcs phpcsfix tty tfp tfp-rabbitmq tfp-db test-behat test-phpunit-functional
 .PHONY: wait-for-rabbitmq wait-for-db security-check
 
@@ -72,6 +72,9 @@ db: vendor wait-for-db                                                          
 
 db-diff: vendor wait-for-db                                                                            ## Generate a migration by comparing your current database to your mapping information
 	$(EXEC) $(CONSOLE) doctrine:migration:diff
+
+db-diff-dump: vendor wait-for-db                                                                       ## Generate a migration by comparing your current database to your mapping information and display it in console
+	$(EXEC) $(CONSOLE) doctrine:schema:update --dump-sql
 
 db-migrate: vendor wait-for-db                                                                         ## Migrate database schema to the latest available version
 	$(EXEC) $(CONSOLE) doctrine:migration:migrate -n

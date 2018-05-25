@@ -13,6 +13,7 @@ use AppBundle\Membership\MembershipRequest;
 use AppBundle\Membership\MembershipRequestHandler;
 use AppBundle\Membership\UnregistrationCommand;
 use AppBundle\Repository\DonationRepository;
+use AppBundle\Repository\TransactionRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -41,12 +42,12 @@ class UserController extends Controller
      * @Route("/mes-dons", name="app_user_profile_donation")
      * @Method("GET")
      */
-    public function profileDonationAction(DonationRepository $donationRepository): Response
+    public function profileDonationAction(DonationRepository $donationRepository, TransactionRepository $transactionRepository): Response
     {
         $userEmail = $this->getUser()->getEmailAddress();
 
         return $this->render('user/my_donation.html.twig', [
-            'donations' => $donationRepository->findByEmailAddressOrderedByDonatedAt($userEmail),
+            'successful_transactions' => $transactionRepository->findAllSuccessfulTransactionByEmail($userEmail),
             'subscribed_donations' => $donationRepository->findAllSubscribedDonationByEmail($userEmail),
             'last_subscription_ended' => $donationRepository->findLastSubscriptionEndedDonationByEmail($userEmail),
         ]);
