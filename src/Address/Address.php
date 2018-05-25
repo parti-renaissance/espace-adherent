@@ -8,6 +8,7 @@ use AppBundle\Validator\Address as AssertValidAddress;
 use AppBundle\Validator\GeocodableAddress as AssertGeocodableAddress;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\FrenchZipCode;
 
 /**
  * @AssertValidAddress
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Address implements AddressInterface, GeocodableInterface
 {
-    const FRANCE = 'FR';
+    public const FRANCE = 'FR';
 
     /**
      * @Assert\NotBlank(message="common.address.required", groups={"Default", "Update"})
@@ -26,6 +27,7 @@ class Address implements AddressInterface, GeocodableInterface
     /**
      * @Assert\NotBlank(message="common.postal_code.not_blank", groups={"Default", "Registration", "Update"})
      * @Assert\Length(max=15, maxMessage="common.postal_code.max_length", groups={"Default", "Registration", "Update"})
+     * @FrenchZipCode(groups={"Default", "Registration", "Update"})
      */
     private $postalCode;
 
@@ -80,7 +82,7 @@ class Address implements AddressInterface, GeocodableInterface
     {
         if ($city) {
             $parts = explode('-', $city);
-            if (2 !== count($parts)) {
+            if (2 !== \count($parts)) {
                 throw new \InvalidArgumentException(sprintf('Invalid french city format: %s.', $city));
             }
 
@@ -149,7 +151,7 @@ class Address implements AddressInterface, GeocodableInterface
      */
     private static function getInseeCode(string $cityCode): string
     {
-        list(, $inseeCode) = explode('-', $cityCode);
+        [, $inseeCode] = explode('-', $cityCode);
 
         return $inseeCode;
     }

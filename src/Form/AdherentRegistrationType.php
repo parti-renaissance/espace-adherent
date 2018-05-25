@@ -2,7 +2,9 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\DataTransformer\ValueToDuplicatesTransformer;
 use AppBundle\Membership\MembershipRequest;
+use AppBundle\Validator\Repeated;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -30,12 +32,22 @@ class AdherentRegistrationType extends AbstractType
             ->add('emailAddress', RepeatedType::class, [
                 'type' => EmailType::class,
                 'invalid_message' => 'common.email.repeated',
+                'options' => ['constraints' => [new Repeated([
+                    'message' => 'common.email.repeated',
+                    'groups' => ['Registration', 'Update'],
+                ])]],
             ])
             ->add('address', AddressType::class, [
                 'label' => false,
                 'child_error_bubbling' => false,
             ])
         ;
+
+        $emailForm = $builder->get('emailAddress');
+        $emailForm->resetViewTransformers()->addViewTransformer(new ValueToDuplicatesTransformer([
+            $emailForm->getOption('first_name'),
+            $emailForm->getOption('second_name'),
+        ]));
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $formEvent) {
             /** @var MembershipRequest $membershipRequest */
