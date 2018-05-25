@@ -204,10 +204,16 @@
             max-width: 400px;
         }
 
-        .amount-chooser__monthly {
-            background: rgba(0, 0, 0, 0.2);
-            color: #fff;
-            padding: 3px 10px;
+        .amount-chooser {
+            &__monthly {
+                background: rgba(0, 0, 0, 0.2);
+                color: #fff;
+                padding: 3px 10px;
+            }
+
+            &__help {
+                display: none;
+            }
         }
     }
 }
