@@ -3,6 +3,12 @@ footer {
         width: 190px;
     }
 
+    .donate-mail {
+        font-family: $font-roboto;
+        margin-bottom: 20px;
+    }
+
+
     @media (max-width: $tablet) {
         .donate-mail {
             border-top: 1px solid $gray;

@@ -122,7 +122,7 @@
         .form__checkbox {
             display: block;
         }
-        
+
         .form__error {
             margin-top: 10px;
         }
@@ -212,11 +212,11 @@
         }
 
         .text__checkbox {
-            color: $gray--muted;
+            color: $gray--dark;
 
             a {
-                color: $black--half;
-                border-bottom: 1px solid $black--half;
+                color: $green--apple;
+                border-bottom: 1px solid $green--apple;
             }
         }
     }
