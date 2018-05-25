@@ -193,7 +193,7 @@ class Donation implements GeoPointInterface
         return $this->emailAddress;
     }
 
-    public function getPhone(): PhoneNumber
+    public function getPhone(): ?PhoneNumber
     {
         return $this->phone;
     }
