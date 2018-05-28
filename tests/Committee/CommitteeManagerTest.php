@@ -5,8 +5,11 @@ namespace Tests\AppBundle\Committee;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\Committee;
+use AppBundle\DataFixtures\ORM\LoadCommitteeMembershipHistoryData;
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CommitteeMembership;
+use AppBundle\Entity\ReferentTag;
+use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
 use AppBundle\Exception\CommitteeMembershipException;
 use AppBundle\Geocoder\Coordinates;
 use Tests\AppBundle\MysqlWebTestCase;
@@ -100,11 +103,12 @@ class CommitteeManagerTest extends MysqlWebTestCase
         ], array_keys($this->committeeManager->getNearbyCommittees($coordinates)));
     }
 
-    public function testFollowCommittees()
+    public function testFollowCommittees(): void
     {
         $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_1_UUID);
 
         $this->assertCount(0, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
+        $this->assertCount(0, $this->findCommitteeMembershipHistoryByAdherent($adherent));
 
         $committees = [
             LoadAdherentData::COMMITTEE_1_UUID,
@@ -115,22 +119,95 @@ class CommitteeManagerTest extends MysqlWebTestCase
         $this->committeeManager->followCommittees($adherent, $committees);
 
         $this->assertCount(3, $memberships = $this->getCommitteeMembershipRepository()->findMemberships($adherent));
+        $this->assertCount(3, $membershipEvents = $this->findCommitteeMembershipHistoryByAdherent($adherent));
 
         foreach ($memberships as $i => $membership) {
             /* @var CommitteeMembership $membership */
             $this->assertSame($committees[$i], $membership->getCommitteeUuid()->toString());
         }
+
+        foreach ($membershipEvents as $membershipEvent) {
+            /* @var CommitteeMembershipHistory $membershipEvent */
+            $this->assertContains($membershipEvent->getCommittee()->getUuid()->toString(), $committees);
+            $this->assertSame(LoadAdherentData::ADHERENT_1_UUID, $membershipEvent->getAdherentUuid()->toString());
+            $this->assertSame('FOLLOWER', $membershipEvent->getPrivilege());
+            $this->assertSame('join', $membershipEvent->getAction());
+        }
     }
 
-    public function testFollowCommitteesTwice()
+    public function testMembershipEventIsRecordedWhenFollowOrUnfollowCommittee(): void
+    {
+        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_1_UUID);
+        $committee = $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
+
+        $this->committeeManager->followCommittee($adherent, $committee);
+
+        $this->assertCount(1, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
+        $membershipHistory = $this->getCommitteeMembershipHistoryRepository()->findOneBy(['adherentUuid' => $adherent->getUuid()]);
+
+        /* @var CommitteeMembershipHistory $membershipHistory */
+        $this->assertSame($committee, $membershipHistory->getCommittee());
+        $this->assertSame(LoadAdherentData::ADHERENT_1_UUID, $membershipHistory->getAdherentUuid()->toString());
+        $this->assertSame('FOLLOWER', $membershipHistory->getPrivilege());
+        $this->assertSame('join', $membershipHistory->getAction());
+        $this->assertEquals(['75008', '75'], $this->getReferentTagCodes($membershipHistory));
+
+        $this->committeeManager->unfollowCommittee($adherent, $committee);
+
+        $this->assertCount(0, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
+        $membershipHistory = $this->getCommitteeMembershipHistoryRepository()->findOneBy(['adherentUuid' => $adherent->getUuid(), 'action' => 'leave']);
+
+        /* @var CommitteeMembershipHistory $membershipHistory */
+        $this->assertSame($committee, $membershipHistory->getCommittee());
+        $this->assertSame(LoadAdherentData::ADHERENT_1_UUID, $membershipHistory->getAdherentUuid()->toString());
+        $this->assertSame('FOLLOWER', $membershipHistory->getPrivilege());
+        $this->assertSame('leave', $membershipHistory->getAction());
+        $this->assertEquals(['75008', '75'], $this->getReferentTagCodes($membershipHistory));
+    }
+
+    private function getReferentTagCodes(CommitteeMembershipHistory $history): array
+    {
+        return array_map(
+            function (ReferentTag $tag) { return $tag->getCode(); },
+            $history->getReferentTags()->toArray()
+        );
+    }
+
+    public function testFollowCommitteesTwice(): void
     {
         $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_2_UUID);
 
         $this->assertCount(1, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
+        $this->assertCount(1, $this->findCommitteeMembershipHistoryByAdherent($adherent));
 
         $this->committeeManager->followCommittees($adherent, [LoadAdherentData::COMMITTEE_1_UUID]);
 
         $this->assertCount(1, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
+        $this->assertCount(1, $this->findCommitteeMembershipHistoryByAdherent($adherent));
+    }
+
+    public function testFollowThenUnfollowCommittees(): void
+    {
+        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_1_UUID);
+        $committee = $this->getCommitteeRepository()->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
+
+        $this->assertCount(0, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
+        $this->assertCount(0, $this->findCommitteeMembershipHistoryByAdherent($adherent));
+
+        $this->committeeManager->followCommittee($adherent, $committee);
+
+        $this->assertCount(1, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
+        $this->assertCount(1, $this->findCommitteeMembershipHistoryByAdherent($adherent));
+
+        $this->committeeManager->unfollowCommittee($adherent, $committee);
+
+        $this->assertCount(0, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
+        $this->assertCount(2, $this->findCommitteeMembershipHistoryByAdherent($adherent));
+
+        $this->committeeManager->followCommittee($adherent, $committee);
+
+        $this->assertCount(1, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
+        $this->assertCount(3, $this->findCommitteeMembershipHistoryByAdherent($adherent));
     }
 
     public function testGetAdherentCommittees()
@@ -251,6 +328,7 @@ class CommitteeManagerTest extends MysqlWebTestCase
 
         $this->loadFixtures([
             LoadAdherentData::class,
+            LoadCommitteeMembershipHistoryData::class,
         ]);
 
         $this->container = $this->getContainer();
@@ -268,5 +346,14 @@ class CommitteeManagerTest extends MysqlWebTestCase
         $this->committeeManager = null;
 
         parent::tearDown();
+    }
+
+    private function findCommitteeMembershipHistoryByAdherent(Adherent $adherent): array
+    {
+        $membershipEvent = $this->getCommitteeMembershipHistoryRepository()->findBy(
+            ['adherentUuid' => $adherent->getUuid()]
+        );
+
+        return $membershipEvent;
     }
 }

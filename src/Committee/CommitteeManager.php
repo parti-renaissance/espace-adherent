@@ -8,6 +8,9 @@ use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
+use AppBundle\Entity\ReferentTag;
+use AppBundle\Entity\Reporting\CommitteeMembershipAction;
+use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
 use AppBundle\Events;
 use AppBundle\Exception\CommitteeMembershipException;
 use AppBundle\Geocoder\Coordinates;
@@ -16,6 +19,7 @@ use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
+use AppBundle\Repository\ReferentTagRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -372,7 +376,9 @@ class CommitteeManager
     public function followCommittee(Adherent $adherent, Committee $committee, $flush = true): void
     {
         $manager = $this->getManager();
-        $manager->persist($adherent->followCommittee($committee));
+        $manager->persist($membership = $adherent->followCommittee($committee));
+
+        $manager->persist($this->createCommitteeMembershipHistory($membership, CommitteeMembershipAction::JOIN()));
 
         if ($flush) {
             $manager->flush();
@@ -408,6 +414,8 @@ class CommitteeManager
         $manager->remove($membership);
         $committee->decrementMembersCount();
 
+        $manager->persist($this->createCommitteeMembershipHistory($membership, CommitteeMembershipAction::LEAVE()));
+
         if ($flush) {
             $manager->flush();
         }
@@ -436,6 +444,11 @@ class CommitteeManager
     private function getAdherentRepository(): AdherentRepository
     {
         return $this->registry->getRepository(Adherent::class);
+    }
+
+    private function getReferentTagRepository(): ReferentTagRepository
+    {
+        return $this->registry->getRepository(ReferentTag::class);
     }
 
     public function countApprovedCommittees(): int
@@ -507,5 +520,10 @@ class CommitteeManager
     public function getLastApprovedCommitteesAndMembers(int $count = self::COMMITTEE_PROPOSALS_COUNT): array
     {
         return $this->getCommitteeRepository()->findLastApprovedCommittees($count);
+    }
+
+    private function createCommitteeMembershipHistory(CommitteeMembership $membership, CommitteeMembershipAction $action): CommitteeMembershipHistory
+    {
+        return new CommitteeMembershipHistory($membership, $action);
     }
 }

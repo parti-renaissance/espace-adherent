@@ -13,6 +13,11 @@ class ReferentTagRepository extends ServiceEntityRepository
         parent::__construct($registry, ReferentTag::class);
     }
 
+    public function findOneByCode(string $code): ?ReferentTag
+    {
+        return $this->findOneBy(['code' => $code]);
+    }
+
     public function findByCodes(array $codes): array
     {
         return $this->findBy(['code' => $codes]);

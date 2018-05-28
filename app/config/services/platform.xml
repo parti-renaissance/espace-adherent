@@ -150,7 +150,7 @@
         <service id="app.committee.creation_handler" class="AppBundle\Committee\CommitteeCreationCommandHandler">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.committee.factory"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="AppBundle\Committee\CommitteeManager"/>
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="app.committee.photo.manager"/>
             <argument type="service" id="AppBundle\Referent\ReferentTagManager"/>

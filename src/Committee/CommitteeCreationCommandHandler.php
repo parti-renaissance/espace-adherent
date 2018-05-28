@@ -6,7 +6,6 @@ use AppBundle\Events;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\CommitteeCreationConfirmationMessage;
 use AppBundle\Referent\ReferentTagManager;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeCreationCommandHandler
@@ -21,7 +20,7 @@ class CommitteeCreationCommandHandler
     public function __construct(
         EventDispatcherInterface $dispatcher,
         CommitteeFactory $factory,
-        ObjectManager $manager,
+        CommitteeManager $manager,
         MailerService $mailer,
         PhotoManager $photoManager,
         ReferentTagManager $referentTagManager
@@ -45,9 +44,7 @@ class CommitteeCreationCommandHandler
 
         $command->setCommittee($committee);
 
-        $this->manager->persist($committee);
-        $this->manager->persist($adherent->followCommittee($committee));
-        $this->manager->flush();
+        $this->manager->followCommittee($adherent, $committee);
 
         $this->dispatcher->dispatch(Events::COMMITTEE_CREATED, new CommitteeEvent($committee));
 
