@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TransactionRepository")
- * @ORM\Table(indexes={
- *     @ORM\Index(name="transaction_result_idx", columns={"paybox_result_code"})
+ * @ORM\Table(name="donation_transactions", indexes={
+ *     @ORM\Index(name="donation_transactions_result_idx", columns={"paybox_result_code"})
  * })
  *
  * @Algolia\Index(autoIndex=false)
