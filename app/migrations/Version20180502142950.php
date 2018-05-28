@@ -65,7 +65,7 @@ class Version20180502142950 extends AbstractMigration implements ContainerAwareI
                           \',\',
                           SUBSTR(paybox_payload->"$.date", 6, 4),
                           \' \',
-                          SUBSTR(paybox_payload->"$.time", 2, 8)
+                          SUBSTR(REPLACE(paybox_payload->"$.time", \'%3A\', \':\'), 2, 8)
                         ),
                         \'%d,%m,%Y %H:%i:%s\'
                       ), NULL),
