@@ -313,3 +313,10 @@ timeline.measure.status.upcoming: à venir
 # UserDocument
 #
 document.upload.success: Le document a été uploadé avec succès.
+
+#
+# Transactions
+#
+transaction.type.cb: Carte bleue
+transaction.type.check: Chèque
+transaction.type.transfer: Virement

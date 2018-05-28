@@ -23,6 +23,10 @@ class Transaction
     public const PAYBOX_CARD_UNAUTHORIZED = '000021';
     public const PAYBOX_PAYMENT_PAGE_TIMEOUT = '000030';
 
+    public const TYPE_CB = 'cb';
+    public const TYPE_CHECK = 'check';
+    public const TYPE_TRANSFER = 'transfer';
+
     /**
      * @var int
      *
@@ -75,6 +79,13 @@ class Transaction
     private $payboxSubscriptionId;
 
     /**
+     * @var string
+     *
+     * @ORM\Column
+     */
+    private $type;
+
+    /**
      * @var \DateTimeImmutable
      *
      * @ORM\Column(type="datetime_immutable")
@@ -93,6 +104,7 @@ class Transaction
         $this->donation = $donation;
         $this->createdAt = new \DateTimeImmutable();
         $this->payboxPayload = $payboxPayload;
+        $this->type = self::TYPE_CB;
         $this->payboxResultCode = $payboxPayload['result'];
         $this->payboxAuthorizationCode = $payboxPayload['authorization'] ?: null;
         $this->payboxSubscriptionId = $payboxPayload['subscription'] ?: null;
@@ -154,5 +166,10 @@ class Transaction
     public function isSuccessful(): bool
     {
         return self::PAYBOX_SUCCESS === $this->payboxResultCode;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
     }
 }
