@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class ReferentsController extends Controller
 {
     /**
-     * @Route("/referents", defaults={"_enable_campaign_silence"=true}, name="api_referents")
+     * @Route("/referents", name="api_referents")
      * @Method("GET")
      */
     public function indexAction()

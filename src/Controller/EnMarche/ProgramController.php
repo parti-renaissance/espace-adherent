@@ -15,8 +15,8 @@ class ProgramController extends AbstractController
     /**
      * Redirection to the program.
      *
-     * @Route("/programme", defaults={"_enable_campaign_silence"=true})
-     * @Route("/le-programme", defaults={"_enable_campaign_silence"=true})
+     * @Route("/programme")
+     * @Route("/le-programme")
      * @Method("GET")
      */
     public function redirectAction()
@@ -25,7 +25,7 @@ class ProgramController extends AbstractController
     }
 
     /**
-     * @Route("/emmanuel-macron/le-programme", defaults={"_enable_campaign_silence"=true}, name="program_index")
+     * @Route("/emmanuel-macron/le-programme", name="program_index")
      * @Method("GET")
      * @Entity("page", expr="repository.findOneBySlug('emmanuel-macron-propositions')")
      */
@@ -38,7 +38,7 @@ class ProgramController extends AbstractController
     }
 
     /**
-     * @Route("/emmanuel-macron/le-programme/{slug}", defaults={"_enable_campaign_silence"=true}, name="program_proposal")
+     * @Route("/emmanuel-macron/le-programme/{slug}", name="program_proposal")
      * @Method("GET")
      * @Entity("proposal", expr="repository.findPublishedProposal(slug)")
      */

@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 class CommitteesController extends Controller
 {
     /**
-     * @Route("/committees", defaults={"_enable_campaign_silence"=true}, name="api_committees")
+     * @Route("/committees", name="api_committees")
      * @Method("GET")
      */
     public function getApprovedCommitteesAction(): Response

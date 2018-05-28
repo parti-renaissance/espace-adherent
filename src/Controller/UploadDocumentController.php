@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class UploadDocumentController extends Controller
 {
     /**
-     * @Route("/upload/{type}", defaults={"_enable_campaign_silence"=true}, name="app_filebrowser_upload")
+     * @Route("/upload/{type}", name="app_filebrowser_upload")
      * @Method("POST")
      * @Security("is_granted('FILE_UPLOAD', type)")
      */
@@ -49,7 +49,7 @@ class UploadDocumentController extends Controller
     }
 
     /**
-     * @Route("/documents-partages/{uuid}/{filename}", requirements={"uuid": "%pattern_uuid%"}, defaults={"_enable_campaign_silence"=true}, name="app_download_user_document")
+     * @Route("/documents-partages/{uuid}/{filename}", requirements={"uuid": "%pattern_uuid%"}, name="app_download_user_document")
      * @Method("GET")
      */
     public function downloadDocumentAction(UserDocument $document, string $filename, Request $request)

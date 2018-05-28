@@ -37,7 +37,7 @@ class DonationController extends Controller
     public const RESULT_STATUS_ERREUR = 'erreur';
 
     /**
-     * @Route(defaults={"_enable_campaign_silence"=true}, name="donation_index")
+     * @Route(name="donation_index")
      * @Method("GET")
      */
     public function indexAction(Request $request)
@@ -56,7 +56,7 @@ class DonationController extends Controller
     }
 
     /**
-     * @Route("/coordonnees", defaults={"_enable_campaign_silence"=true}, name="donation_informations")
+     * @Route("/coordonnees", name="donation_informations")
      * @Method({"GET", "POST"})
      */
     public function informationsAction(Request $request, DonationRequestUtils $donationRequestUtils, DonationRequestHandler $donationRequestHandler)
@@ -91,12 +91,7 @@ class DonationController extends Controller
     }
 
     /**
-     * @Route(
-     *     "/{uuid}/paiement",
-     *     requirements={"uuid"="%pattern_uuid%"},
-     *     defaults={"_enable_campaign_silence"=true},
-     *     name="donation_pay"
-     * )
+     * @Route("/{uuid}/paiement", requirements={"uuid"="%pattern_uuid%"}, name="donation_pay")
      * @Method("GET")
      */
     public function payboxAction(PayboxFormFactory $payboxFormFactory, Donation $donation)
@@ -110,7 +105,7 @@ class DonationController extends Controller
     }
 
     /**
-     * @Route("/callback/{_callback_token}", defaults={"_enable_campaign_silence"=true}, name="donation_callback")
+     * @Route("/callback/{_callback_token}", name="donation_callback")
      * @Method("GET")
      */
     public function callbackAction(Request $request, TransactionCallbackHandler $transactionCallbackHandler, string $_callback_token)
@@ -128,7 +123,6 @@ class DonationController extends Controller
      * @Route(
      *     "/{uuid}/{status}",
      *     requirements={"status"="effectue|erreur", "uuid"="%pattern_uuid%"},
-     *     defaults={"_enable_campaign_silence"=true},
      *     name="donation_result"
      * )
      * @ParamConverter("donation", options={"mapping": {"uuid": "uuid"}})

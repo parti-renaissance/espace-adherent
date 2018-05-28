@@ -23,7 +23,7 @@ class BoardMemberController extends Controller
     const TOKEN_ID = 'board_member_search';
 
     /**
-     * @Route("/", defaults={"_enable_campaign_silence"=true}, name="app_board_member_home")
+     * @Route("/", name="app_board_member_home")
      * @Method("GET")
      */
     public function indexAction()
@@ -32,7 +32,7 @@ class BoardMemberController extends Controller
     }
 
     /**
-     * @Route("/recherche", defaults={"_enable_campaign_silence"=true}, name="app_board_member_search")
+     * @Route("/recherche", name="app_board_member_search")
      * @Method("GET")
      */
     public function searchAction(Request $request): Response
@@ -58,7 +58,7 @@ class BoardMemberController extends Controller
     }
 
     /**
-     * @Route("/profils-sauvegardes", defaults={"_enable_campaign_silence"=true}, name="app_board_member_saved_profile")
+     * @Route("/profils-sauvegardes", name="app_board_member_saved_profile")
      * @Method("GET")
      */
     public function savedProfilAction()
@@ -163,7 +163,7 @@ class BoardMemberController extends Controller
     }
 
     /**
-     * @Route("/list/boardmember", defaults={"_enable_campaign_silence"=true}, name="app_board_add_profile_on_list")
+     * @Route("/list/boardmember", name="app_board_add_profile_on_list")
      * @Method("POST")
      */
     public function addBoardMemberOnListAction(Request $request)
@@ -188,7 +188,7 @@ class BoardMemberController extends Controller
     }
 
     /**
-     * @Route("/list/boardmember/{boardMemberId}", defaults={"_enable_campaign_silence"=true}, name="app_board_remove_profile_on_list")
+     * @Route("/list/boardmember/{boardMemberId}", name="app_board_remove_profile_on_list")
      * @Method("DELETE")
      */
     public function deleteBoardMemberOnListAction($boardMemberId)

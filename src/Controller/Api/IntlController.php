@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class IntlController extends Controller
 {
     /**
-     * @Route("/postal-code/{postalCode}", defaults={"_enable_campaign_silence"=true}, name="api_postal_code")
+     * @Route("/postal-code/{postalCode}", name="api_postal_code")
      * @Method("GET")
      */
     public function postalCodeAction(string $postalCode): JsonResponse
@@ -21,7 +21,7 @@ class IntlController extends Controller
     }
 
     /**
-     * @Route("/vote-offices/{countryCode}", defaults={"_enable_campaign_silence"=true}, name="api_vote_offices")
+     * @Route("/vote-offices/{countryCode}", name="api_vote_offices")
      * @Method("GET")
      */
     public function voteOfficesAction(string $countryCode): JsonResponse

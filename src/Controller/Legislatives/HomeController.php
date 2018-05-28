@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 class HomeController extends Controller
 {
     /**
-     * @Route("/", defaults={"_enable_campaign_silence"=true}, name="legislatives_homepage")
+     * @Route("/", name="legislatives_homepage")
      * @Method("GET")
      */
     public function indexAction(Request $request): Response
@@ -35,7 +35,7 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/redirection-en-marche", defaults={"_enable_campaign_silence"=true}, name="legislatives_redirect_en_marche")
+     * @Route("/redirection-en-marche", name="legislatives_redirect_en_marche")
      * @Method("GET")
      */
     public function redirectEnMarcheAction(): Response
@@ -44,7 +44,7 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/candidat/{slug}", defaults={"_enable_campaign_silence"=true}, name="legislatives_candidate")
+     * @Route("/candidat/{slug}", name="legislatives_candidate")
      * @Method("GET")
      */
     public function candidateAction(LegislativeCandidate $candidate): Response

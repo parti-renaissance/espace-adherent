@@ -18,7 +18,7 @@ class AmpController extends Controller
     use CanaryControllerTrait;
 
     /**
-     * @Route("/articles/{categorySlug}/{articleSlug}", defaults={"_enable_campaign_silence"=true}, name="amp_article_view")
+     * @Route("/articles/{categorySlug}/{articleSlug}", name="amp_article_view")
      * @Method("GET")
      * @Entity("article", expr="repository.findOnePublishedBySlugAndCategorySlug(articleSlug, categorySlug)")
      */
@@ -30,7 +30,7 @@ class AmpController extends Controller
     }
 
     /**
-     * @Route("/proposition/{slug}", defaults={"_enable_campaign_silence"=true}, name="amp_proposal_view")
+     * @Route("/proposition/{slug}", name="amp_proposal_view")
      * @Method("GET")
      * @Entity("proposal", expr="repository.findPublishedProposal(slug)")
      */

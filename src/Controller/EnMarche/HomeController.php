@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 class HomeController extends Controller
 {
     /**
-     * @Route("/", defaults={"_enable_campaign_silence"=true}, name="homepage")
+     * @Route("/", name="homepage")
      * @Method("GET")
      */
     public function indexAction(): Response
@@ -26,7 +26,7 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/sitemap.xml", defaults={"_enable_campaign_silence"=true}, name="app_sitemap_index")
+     * @Route("/sitemap.xml", name="app_sitemap_index")
      * @Method("GET")
      */
     public function sitemapIndexAction(): Response
@@ -38,7 +38,7 @@ class HomeController extends Controller
      * @Route(
      *     "/sitemap_{type}_{page}.xml",
      *     requirements={"type"=AppBundle\Sitemap\SitemapFactory::ALL_TYPES, "page"="\d+"},
-     *     defaults={"page"="1", "_enable_campaign_silence"=true},
+     *     defaults={"page"="1"},
      *     name="app_sitemap"
      * )
      * @Method("GET")

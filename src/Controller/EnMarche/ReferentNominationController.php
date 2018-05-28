@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ReferentNominationController extends Controller
 {
     /**
-     * @Route("", defaults={"_enable_campaign_silence"=true}, name="our_referents_homepage")
+     * @Route("", name="our_referents_homepage")
      * @Method("GET")
      */
     public function indexAction(Request $request): Response
@@ -32,7 +32,7 @@ class ReferentNominationController extends Controller
     }
 
     /**
-     * @Route("/{slug}", defaults={"_enable_campaign_silence"=true}, name="our_referents_referent")
+     * @Route("/{slug}", name="our_referents_referent")
      * @Method("GET")
      */
     public function candidateAction(Referent $referent): Response
