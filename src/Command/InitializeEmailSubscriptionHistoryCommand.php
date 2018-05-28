@@ -64,17 +64,15 @@ class InitializeEmailSubscriptionHistoryCommand extends Command
             $adherent = $result[0];
 
             /** @var Adherent $adherent */
-            foreach ($adherent->getReferentTags() as $referentTag) {
-                foreach ($adherent->getEmailsSubscriptions() as $subscription) {
-                    $subscriptionHistory = new EmailSubscriptionHistory(
-                        $adherent,
-                        $subscription,
-                        $referentTag,
-                        EmailSubscriptionHistoryAction::SUBSCRIBE(),
-                        $adherent->getActivatedAt() ?: $adherent->getRegisteredAt()
-                    );
-                    $this->em->persist($subscriptionHistory);
-                }
+            foreach ($adherent->getEmailsSubscriptions() as $subscription) {
+                $subscriptionHistory = new EmailSubscriptionHistory(
+                    $adherent,
+                    $subscription,
+                    $adherent->getReferentTags()->toArray(),
+                    EmailSubscriptionHistoryAction::SUBSCRIBE(),
+                    \DateTimeImmutable::createFromMutable($adherent->getActivatedAt() ?: $adherent->getRegisteredAt())
+                );
+                $this->em->persist($subscriptionHistory);
             }
 
             $progressBar->advance();

@@ -3,7 +3,6 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ReferentTag;
 use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
 use AppBundle\Entity\Reporting\EmailSubscriptionHistoryAction;
 use AppBundle\Membership\AdherentEmailSubscription;
@@ -34,30 +33,52 @@ class LoadEmailSubscriptionHistoryData extends AbstractFixture implements Depend
         // Create current subscription history
         foreach ($adherents as $adherent) {
             foreach ($adherent->getEmailsSubscriptions() as $subscription) {
-                foreach ($adherent->getReferentTags() as $tag) {
-                    $manager->persist(new EmailSubscriptionHistory($adherent, $subscription, $tag, EmailSubscriptionHistoryAction::SUBSCRIBE()));
-                }
+                $manager->persist(new EmailSubscriptionHistory($adherent, $subscription, $adherent->getReferentTags()->toArray(), EmailSubscriptionHistoryAction::SUBSCRIBE()));
             }
         }
 
-        // Create some old subscription history for testing
-        $this->createSubscribedUnsubscribedHistory($this->getReference('adherent-3'), $this->getReference('referent_tag_75'), '-5 months');
-        $this->createSubscribedUnsubscribedHistory($this->getReference('adherent-3'), $this->getReference('referent_tag_75008'), '-5 months');
+        /*
+         * Create some old subscription history for testing
+         */
 
-        $this->createSubscribedUnsubscribedHistory($this->getReference('adherent-4'), $this->getReference('referent_tag_75'), '-4 months');
-        $this->createSubscribedUnsubscribedHistory($this->getReference('adherent-4'), $this->getReference('referent_tag_75009'), '-4 months');
+        // Create 2 history lines while it could be one, why?
+        // It's done on purpose to make sure stats are calculated correctly in the case where
+        // one updates his address and the new one have common referent tag(s) with the old one (it can happen with paris district for example)
+        $this->createSubscribedUnsubscribedHistory(
+            $this->getReference('adherent-3'),
+            [$this->getReference('referent_tag_75')],
+            '-5 months'
+        );
+        $this->createSubscribedUnsubscribedHistory(
+            $this->getReference('adherent-3'),
+            [$this->getReference('referent_tag_75008')],
+            '-5 months'
+        );
 
-        $this->createSubscribedUnsubscribedHistory($this->getReference('adherent-7'), $this->getReference('referent_tag_77'), '-3 months');
+        $this->createSubscribedUnsubscribedHistory(
+            $this->getReference('adherent-4'),
+            [$this->getReference('referent_tag_75'), $this->getReference('referent_tag_75009')],
+            '-4 months'
+        );
 
-        $this->createSubscribedUnsubscribedHistory($this->getReference('adherent-17'), $this->getReference('referent_tag_75'), '-2 months');
-        $this->createSubscribedUnsubscribedHistory($this->getReference('adherent-17'), $this->getReference('referent_tag_75008'), '-2 months');
+        $this->createSubscribedUnsubscribedHistory(
+            $this->getReference('adherent-7'),
+            [$this->getReference('referent_tag_77')],
+            '-3 months'
+        );
+
+        $this->createSubscribedUnsubscribedHistory(
+            $this->getReference('adherent-17'),
+            [$this->getReference('referent_tag_75'), $this->getReference('referent_tag_75008')],
+            '-2 months'
+        );
 
         $manager->flush();
     }
 
     private function createSubscribedUnsubscribedHistory(
         Adherent $adherent,
-        ReferentTag $tag,
+        array $tags,
         string $subscribedAt,
         string $unsubscribedAt = '-1 month',
         string $subscriptionType = AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST
@@ -65,7 +86,7 @@ class LoadEmailSubscriptionHistoryData extends AbstractFixture implements Depend
         $this->manager->persist(new EmailSubscriptionHistory(
             $adherent,
             $subscriptionType,
-            $tag,
+            $tags,
             EmailSubscriptionHistoryAction::SUBSCRIBE(),
             new Chronos($subscribedAt)
         ));
@@ -73,7 +94,7 @@ class LoadEmailSubscriptionHistoryData extends AbstractFixture implements Depend
         $this->manager->persist(new EmailSubscriptionHistory(
             $adherent,
             $subscriptionType,
-            $tag,
+            $tags,
             EmailSubscriptionHistoryAction::UNSUBSCRIBE(),
             new Chronos($unsubscribedAt)
         ));

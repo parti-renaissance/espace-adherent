@@ -6,9 +6,11 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ReferentTag;
 use Cake\Chronos\Chronos;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @ORM\Table(
@@ -27,12 +29,13 @@ use Ramsey\Uuid\UuidInterface;
 class EmailSubscriptionHistory
 {
     /**
-     * @var UuidInterface
+     * @var int|null
      *
-     * @ORM\Column(type="uuid")
      * @ORM\Id
+     * @ORM\Column(type="integer", options={"unsigned": true})
+     * @ORM\GeneratedValue
      */
-    private $uuid;
+    private $id;
 
     /**
      * Only UUID is used instead of the Entity because we cannot lose this data if one unsubscribes.
@@ -52,11 +55,12 @@ class EmailSubscriptionHistory
     private $subscribedEmailType;
 
     /**
-     * @var ReferentTag
+     * @var Collection|ReferentTag[]
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\JoinTable(name="adherent_email_subscription_history_referent_tag")
      */
-    private $referentTag;
+    private $referentTags;
 
     /**
      * @var string
@@ -75,21 +79,26 @@ class EmailSubscriptionHistory
     public function __construct(
         Adherent $adherent,
         string $subscribedEmailType,
-        ReferentTag $referentTag,
+        array $referentTags,
         EmailSubscriptionHistoryAction $action,
         \DateTimeImmutable $date = null
     ) {
-        $this->uuid = Uuid::uuid4();
         $this->adherentUuid = $adherent->getUuid();
         $this->subscribedEmailType = $subscribedEmailType;
-        $this->referentTag = $referentTag;
         $this->action = $action->getValue();
         $this->date = $date ?: new Chronos();
+
+        $this->referentTags = new ArrayCollection();
+        foreach ($referentTags as $tag) {
+            Assert::isInstanceOf($tag, ReferentTag::class);
+
+            $this->referentTags->add($tag);
+        }
     }
 
-    public function getUuid(): UuidInterface
+    public function getId(): ?int
     {
-        return $this->uuid;
+        return $this->id;
     }
 
     public function getAdherentUuid(): UuidInterface
@@ -102,9 +111,12 @@ class EmailSubscriptionHistory
         return $this->subscribedEmailType;
     }
 
-    public function getReferentTag(): ReferentTag
+    /**
+     * @return Collection|ReferentTag[]
+     */
+    public function getReferentTags(): Collection
     {
-        return $this->referentTag;
+        return $this->referentTags;
     }
 
     public function getDate(): \DateTimeImmutable
