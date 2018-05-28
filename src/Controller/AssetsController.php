@@ -25,7 +25,7 @@ class AssetsController extends Controller
     private const HEIGHT = 170;
 
     /**
-     * @Route("/assets/{path}", defaults={"_enable_campaign_silence"=true}, requirements={"path"=".+"}, name="asset_url")
+     * @Route("/assets/{path}", requirements={"path"=".+"}, name="asset_url")
      * @Method("GET")
      * @Cache(maxage=900, smaxage=900)
      */
@@ -70,7 +70,6 @@ class AssetsController extends Controller
     /**
      * @Route(
      *     "/maps/{latitude},{longitude}",
-     *     defaults={"_enable_campaign_silence"=true},
      *     requirements={"latitude"="^%pattern_coordinate%$", "longitude"="^%pattern_coordinate%$"},
      *     name="map_url"
      * )
@@ -90,12 +89,7 @@ class AssetsController extends Controller
     }
 
     /**
-     * @Route(
-     *     "/video/homepage.{format}",
-     *     requirements={"format"="mov|mp4"},
-     *     defaults={"_enable_campaign_silence"=true},
-     *     name="homepage_video_url"
-     * )
+     * @Route("/video/homepage.{format}", requirements={"format"="mov|mp4"}, name="homepage_video_url")
      * @Method("GET")
      * @Cache(maxage=60, smaxage=60)
      */
@@ -109,11 +103,7 @@ class AssetsController extends Controller
     }
 
     /**
-     * @Route(
-     *     "/algolia/{type}/{slug}",
-     *     defaults={"_enable_campaign_silence"=true},
-     *     requirements={"type"="proposal|custom|article|clarification"}
-     * )
+     * @Route("/algolia/{type}/{slug}", requirements={"type"="proposal|custom|article|clarification"})
      * @Method("GET")
      * @Cache(maxage=900, smaxage=900)
      */
@@ -191,7 +181,7 @@ class AssetsController extends Controller
     }
 
     /**
-     * @Route("/image-transformer.jpg", defaults={"_enable_campaign_silence"=true}, name="asset_timeline")
+     * @Route("/image-transformer.jpg", name="asset_timeline")
      * @Method("GET")
      * @Cache(maxage=900, smaxage=900)
      */

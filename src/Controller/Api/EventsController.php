@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 class EventsController extends Controller
 {
     /**
-     * @Route("/events", defaults={"_enable_campaign_silence"=true}, name="api_committees_events")
+     * @Route("/events", name="api_committees_events")
      * @Method("GET")
      */
     public function getUpcomingCommitteesEventsAction(Request $request)

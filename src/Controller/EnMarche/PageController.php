@@ -20,7 +20,7 @@ class PageController extends Controller
     use CanaryControllerTrait;
 
     /**
-     * @Route("/campus/mooc", defaults={"_enable_campaign_silence"=true}, name="page_mooc")
+     * @Route("/campus/mooc", name="page_mooc")
      * @Method("GET")
      */
     public function moocAction()
@@ -29,7 +29,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/campus", defaults={"_enable_campaign_silence"=true}, name="page_campus")
+     * @Route("/campus", name="page_campus")
      * @Method("GET")
      */
     public function campusAction()
@@ -38,7 +38,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/campus/dificultes-internet", defaults={"_enable_campaign_silence"=true}, name="page_campus_internet")
+     * @Route("/campus/dificultes-internet", name="page_campus_internet")
      * @Method("GET")
      */
     public function campusInternetAction()
@@ -47,7 +47,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/emmanuel-macron", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron")
+     * @Route("/emmanuel-macron", name="page_emmanuel_macron")
      * @Method("GET")
      * @Entity("page", expr="repository.findOneBySlug('emmanuel-macron')")
      */
@@ -57,7 +57,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/emmanuel-macron/revolution", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_revolution")
+     * @Route("/emmanuel-macron/revolution", name="page_emmanuel_macron_revolution")
      * @Method("GET")
      * @Entity("page", expr="repository.findOneBySlug('emmanuel-macron/revolution')")
      */
@@ -67,7 +67,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/emmanuel-macron/videos", defaults={"_enable_campaign_silence"=true}, name="page_emmanuel_macron_videos")
+     * @Route("/emmanuel-macron/videos", name="page_emmanuel_macron_videos")
      * @Method("GET")
      */
     public function emmanuelMacronVideosAction()
@@ -78,7 +78,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/le-mouvement", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement")
+     * @Route("/le-mouvement", name="page_le_mouvement")
      * @Method("GET")
      * @Entity("page", expr="repository.findOneBySlug('le-mouvement')")
      */
@@ -88,7 +88,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/le-mouvement/notre-organisation", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement_notre_organisation")
+     * @Route("/le-mouvement/notre-organisation", name="page_le_mouvement_notre_organisation")
      * @Method("GET")
      * @Entity("page", expr="repository.findOneBySlug('le-mouvement/notre-organisation')")
      */
@@ -98,7 +98,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/le-mouvement/legislatives", defaults={"_enable_campaign_silence"=true}, name="page_le_mouvement_legislatives")
+     * @Route("/le-mouvement/legislatives", name="page_le_mouvement_legislatives")
      * @Method("GET")
      */
     public function mouvementLegislativesAction()
@@ -127,7 +127,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/mentions-legales", defaults={"_enable_campaign_silence"=true}, name="page_mentions_legales")
+     * @Route("/mentions-legales", name="page_mentions_legales")
      * @Method("GET")
      * @Entity("page", expr="repository.findOneBySlug('mentions-legales')")
      */
@@ -137,7 +137,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/politique-cookies", defaults={"_enable_campaign_silence"=true}, name="page_politique_cookies")
+     * @Route("/politique-cookies", name="page_politique_cookies")
      * @Method("GET")
      * @Entity("page", expr="repository.findOneBySlug('politique-cookies')")
      */
@@ -156,7 +156,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/elles-marchent", defaults={"_enable_campaign_silence"=true}, name="page_elles_marchent")
+     * @Route("/elles-marchent", name="page_elles_marchent")
      * @Method("GET")
      */
     public function ellesMarchentAction()
@@ -165,7 +165,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/candidatures-delegue-general-et-bureau-executif", defaults={"_enable_campaign_silence"=true}, name="page_burex")
+     * @Route("/candidatures-delegue-general-et-bureau-executif", name="page_burex")
      * @Method("GET")
      */
     public function burexAction()
@@ -184,7 +184,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/action-talents", defaults={"_enable_campaign_silence"=true}, name="page_action_talents")
+     * @Route("/action-talents", name="page_action_talents")
      * @Method("GET")
      * @Entity("page", expr="repository.findOneBySlug('action-talents')")
      */
@@ -194,7 +194,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/grande-marche-europe", defaults={"_enable_campaign_silence"=true}, name="page_grande_marche_europe")
+     * @Route("/grande-marche-europe", name="page_grande_marche_europe")
      * @Method("GET")
      */
     public function grandeMarcheEuropeAction()
@@ -203,7 +203,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/action-talents/candidater", defaults={"_enable_campaign_silence"=true}, name="page_action_talents_apply")
+     * @Route("/action-talents/candidater", name="page_action_talents_apply")
      * @Method("GET")
      * @Entity("page", expr="repository.findOneBySlug('action-talents/candidater')")
      */
@@ -213,7 +213,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/nos-offres", defaults={"_enable_campaign_silence"=true}, name="page_jobs")
+     * @Route("/nos-offres", name="page_jobs")
      * @Method("GET")
      * @Entity("page", expr="repository.findOneBySlug('nos-offres')")
      */

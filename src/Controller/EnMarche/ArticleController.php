@@ -20,7 +20,7 @@ class ArticleController extends Controller
      * @Route(
      *     "/articles/{category}/{page}",
      *     requirements={"category"="\w+", "page"="\d+"},
-     *     defaults={"category"="tout", "page"=1, "_enable_campaign_silence"=true},
+     *     defaults={"category"="tout", "page"=1},
      *     name="articles_list"
      * )
      * @Method("GET")
@@ -61,7 +61,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * @Route("/articles/{categorySlug}/{articleSlug}", defaults={"_enable_campaign_silence"=true}, name="article_view")
+     * @Route("/articles/{categorySlug}/{articleSlug}", name="article_view")
      * @Method("GET")
      * @Entity("article", expr="repository.findOnePublishedBySlugAndCategorySlug(articleSlug, categorySlug)")
      */
@@ -76,7 +76,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * @Route("/feed.xml", defaults={"_enable_campaign_silence"=true}, name="articles_feed")
+     * @Route("/feed.xml", name="articles_feed")
      * @Method("GET")
      */
     public function feedAction(): Response
