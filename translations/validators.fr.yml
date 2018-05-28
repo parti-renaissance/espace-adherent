@@ -50,6 +50,8 @@ common.twitter_nickname.invalid_format: Un identifiant Twitter ne peut contenir 
 
 common.date_range.invalid_interval: La date de fin ne doit pas dépasser le {{ limit }}.
 
+common.repeated: Les valeurs ne correspondent pas.
+
 #
 # Adherent
 #
