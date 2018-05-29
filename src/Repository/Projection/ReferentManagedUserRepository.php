@@ -5,6 +5,7 @@ namespace AppBundle\Repository\Projection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Referent\ManagedUsersFilter;
+use AppBundle\Repository\ReferentTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;
@@ -13,6 +14,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ReferentManagedUserRepository extends ServiceEntityRepository
 {
+    use ReferentTrait;
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, ReferentManagedUser::class);
@@ -48,9 +51,7 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
 
     private function createFilterQueryBuilder(Adherent $referent, ManagedUsersFilter $filter = null): QueryBuilder
     {
-        if (!$referent->isReferent()) {
-            throw new \InvalidArgumentException(sprintf('User %s is not a referent', $referent->getEmailAddress()));
-        }
+        $this->checkReferent($referent);
 
         $qb = $this->createQueryBuilder('u');
         $qb
