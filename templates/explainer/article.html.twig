@@ -10,8 +10,6 @@
 {% block amp_link %}<link rel="amphtml" href="{{ url('amp_explainer_article_show', {'slug': article.slug}) }}" />{% endblock %}
 
 {% block open_graph_image (article.media ? (homepage_url ~ media_asset(article.media)) : default_sharer)|raw %}
-{% block open_graph_image_width (article.media ? article.media.width : default_sharer_width) %}
-{% block open_graph_image_height (article.media ? article.media.height : default_sharer_height) %}
 
 {% block final_javascripts include('bot/_javascript.html.twig') %}
 
