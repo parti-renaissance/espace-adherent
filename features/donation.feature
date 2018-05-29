@@ -169,7 +169,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     When I follow "vous rendre sur votre profil"
     Then I should be on "/parametres/mon-compte"
 
-    When I follow "Mes dons"
+    When I follow "my_donations"
     And I follow "Mettre fin à mon don mensuel"
     And I press "Oui"
     Then I should see "Votre don mensuel a bien été annulé. Vous recevrez bientôt un mail de confirmation."
