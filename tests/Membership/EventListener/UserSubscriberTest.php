@@ -15,7 +15,7 @@ class UserSubscriberTest extends KernelTestCase
     public function testSerialiseUser()
     {
         self::bootKernel();
-        $serializer = self::$kernel->getContainer()->get('serializer');
+        $serializer = self::$kernel->getContainer()->get('jms_serializer');
 
         $producer = $this->getMockBuilder(ProducerInterface::class)->getMock();
         $userSubscriber = new UserSubscriber($producer, $serializer);

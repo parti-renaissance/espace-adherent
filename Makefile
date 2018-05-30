@@ -1,6 +1,7 @@
 DOCKER_COMPOSE?=docker-compose
 RUN=$(DOCKER_COMPOSE) run --rm app
 EXEC?=$(DOCKER_COMPOSE) exec app
+COMPOSER=$(EXEC) composer
 CONSOLE=bin/console
 PHPCSFIXER?=$(EXEC) php -d memory_limit=1024m vendor/bin/php-cs-fixer
 BEHAT_ARGS?=-vvv
@@ -175,7 +176,6 @@ security-check: vendor                                                          
 
 deps: vendor web/built                                                                                 ## Install the project PHP and JS dependencies
 
-
 ##
 
 
@@ -196,7 +196,7 @@ perm:
 # Rules from files
 
 vendor: composer.lock
-	$(EXEC) composer install -n
+	$(COMPOSER) install -n
 
 composer.lock: composer.json
 	@echo compose.lock is not up to date.
