@@ -107,7 +107,7 @@ class CitizenActionControllerTest extends MysqlWebTestCase
         $icalRegex = <<<CONTENT
 BEGIN\:VCALENDAR
 VERSION\:2\.0
-PRODID\:\-\/\/Sabre\/\/Sabre VObject 4\.1\.4\/\/EN
+PRODID\:\-\/\/Sabre\/\/Sabre VObject 4\.1\.6\/\/EN
 CALSCALE\:GREGORIAN
 ORGANIZER\:CN\="Jacques PICARD"\\\\;mailto\:jacques\.picard@en\-marche\.fr
 BEGIN\:VEVENT
