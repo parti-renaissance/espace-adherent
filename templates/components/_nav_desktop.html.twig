@@ -79,6 +79,9 @@
                                                 <li>
                                                     <a href="{{ path('app_adherent_events') }}">Mes activités</a>
                                                 </li>
+                                                <li>
+                                                    <a href="{{ path('app_user_profile_donation') }}">Mes dons</a>
+                                                </li>
                                             {% if app.user and (has_role_adherent or app.user.isHost) %}
                                                 <li>
                                                     <a href="{{ path('app_documents_index') }}">Mes documents</a>
