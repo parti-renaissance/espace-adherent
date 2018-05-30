@@ -19,8 +19,8 @@ class ArticleController extends Controller
     /**
      * @Route(
      *     "/articles/{category}/{page}",
-     *     requirements={"category"="\w+", "page"="\d+"},
-     *     defaults={"category"="tout", "page"=1},
+     *     requirements={"category": "\w+", "page": "\d+"},
+     *     defaults={"category": "tout", "page": 1},
      *     name="articles_list"
      * )
      * @Method("GET")

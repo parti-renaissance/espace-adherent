@@ -136,7 +136,7 @@ class Summary
      * @var JobExperience[]|Collection
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\JobExperience", mappedBy="summary", indexBy="id", cascade={"all"}, orphanRemoval=true)
-     * @ORM\OrderBy({"displayOrder"="ASC"})
+     * @ORM\OrderBy({"displayOrder": "ASC"})
      */
     private $experiences;
 
@@ -172,7 +172,7 @@ class Summary
      * @var Training[]|Collection
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\Training", mappedBy="summary", indexBy="id", cascade={"all"}, orphanRemoval=true)
-     * @ORM\OrderBy({"displayOrder"="ASC"})
+     * @ORM\OrderBy({"displayOrder": "ASC"})
      *
      * @Assert\Valid
      */
@@ -241,14 +241,14 @@ class Summary
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default"=false})
+     * @ORM\Column(type="boolean", options={"default": false})
      */
     private $public = false;
 
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default"=false})
+     * @ORM\Column(type="boolean", options={"default": false})
      */
     private $pictureUploaded = false;
 
@@ -258,8 +258,8 @@ class Summary
      * @var UploadedFile|null
      *
      * @Assert\Image(
-     *     maxSize = "1M",
-     *     mimeTypes = {"image/jpeg", "image/png"},
+     *     maxSize="1M",
+     *     mimeTypes={"image/jpeg", "image/png"},
      *     groups={"photo"}
      * )
      */
@@ -303,7 +303,7 @@ class Summary
 
     /**
      * @Assert\Choice(
-     *     callback = {"AppBundle\Membership\ActivityPositions", "all"},
+     *     callback={"AppBundle\Membership\ActivityPositions", "all"},
      *     message="adherent.activity_position.invalid_choice",
      *     strict=true,
      *     groups={"synthesis"}

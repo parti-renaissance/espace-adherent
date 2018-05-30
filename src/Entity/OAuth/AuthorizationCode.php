@@ -10,8 +10,8 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OAuth\AuthorizationCodeRepository")
  * @ORM\Table(name="oauth_auth_codes", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="oauth_auth_codes_uuid_unique", columns="uuid"),
- *   @ORM\UniqueConstraint(name="oauth_auth_codes_identifier_unique", columns="identifier")
+ *     @ORM\UniqueConstraint(name="oauth_auth_codes_uuid_unique", columns="uuid"),
+ *     @ORM\UniqueConstraint(name="oauth_auth_codes_identifier_unique", columns="identifier")
  * })
  *
  * @Algolia\Index(autoIndex=false)

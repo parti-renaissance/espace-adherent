@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LegislativeDistrictZoneRepository")
  * @ORM\Table(name="legislative_district_zones", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="legislative_district_zones_area_code_unique", columns="area_code")
+ *     @ORM\UniqueConstraint(name="legislative_district_zones_area_code_unique", columns="area_code")
  * })
  * @UniqueEntity(fields="areaCode", message="legislative_district_zone.area_code.unique", groups="Admin")
  *
@@ -42,9 +42,9 @@ class LegislativeDistrictZone
      *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Regex(
-     *   pattern="/^([0-1]\d{3}|002[A-B])$/",
-     *   message="legislative_district_zone.area_code.invalid",
-     *   groups="Admin"
+     *     pattern="/^([0-1]\d{3}|002[A-B])$/",
+     *     message="legislative_district_zone.area_code.invalid",
+     *     groups="Admin"
      * )
      */
     private $areaCode;
@@ -54,10 +54,10 @@ class LegislativeDistrictZone
      *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Choice(
-     *   callback = "getAreaTypeChoices",
-     *   message="legislative_district_zone.area_type.invalid",
-     *   strict=true,
-     *   groups="Admin"
+     *     callback="getAreaTypeChoices",
+     *     message="legislative_district_zone.area_type.invalid",
+     *     strict=true,
+     *     groups="Admin"
      * )
      */
     private $areaType = self::TYPE_DEPARTMENT;

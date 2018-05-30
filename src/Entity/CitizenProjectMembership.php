@@ -14,16 +14,16 @@ use Ramsey\Uuid\UuidInterface;
  * Each instance of CitizenProjectMembership means an Adherent is a member of a CitizenProject.
  *
  * @ORM\Table(
- *   name="citizen_project_memberships",
- *   uniqueConstraints={
- *     @ORM\UniqueConstraint(
- *       name="adherent_has_joined_citizen_project",
- *       columns={"adherent_id", "citizen_project_id"}
- *     )
- *   },
- *   indexes={
- *     @ORM\Index(name="citizen_project_memberships_role_idx", columns="privilege")
- *   }
+ *     name="citizen_project_memberships",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(
+ *             name="adherent_has_joined_citizen_project",
+ *             columns={"adherent_id", "citizen_project_id"}
+ *         )
+ *     },
+ *     indexes={
+ *         @ORM\Index(name="citizen_project_memberships_role_idx", columns="privilege")
+ *     }
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CitizenProjectMembershipRepository")
  *

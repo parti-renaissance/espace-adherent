@@ -12,11 +12,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(
- *   name="citizen_project_categories",
- *   uniqueConstraints={
- *     @ORM\UniqueConstraint(name="citizen_project_category_name_unique", columns="name"),
- *     @ORM\UniqueConstraint(name="citizen_project_category_slug_unique", columns="slug")
- *   }
+ *     name="citizen_project_categories",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="citizen_project_category_name_unique", columns="name"),
+ *         @ORM\UniqueConstraint(name="citizen_project_category_slug_unique", columns="slug")
+ *     }
  * )
  *
  * @UniqueEntity("name")

@@ -91,7 +91,7 @@ class DonationController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/paiement", requirements={"uuid"="%pattern_uuid%"}, name="donation_pay")
+     * @Route("/{uuid}/paiement", requirements={"uuid": "%pattern_uuid%"}, name="donation_pay")
      * @Method("GET")
      */
     public function payboxAction(PayboxFormFactory $payboxFormFactory, Donation $donation)
@@ -122,7 +122,7 @@ class DonationController extends Controller
     /**
      * @Route(
      *     "/{uuid}/{status}",
-     *     requirements={"status"="effectue|erreur", "uuid"="%pattern_uuid%"},
+     *     requirements={"status": "effectue|erreur", "uuid": "%pattern_uuid%"},
      *     name="donation_result"
      * )
      * @ParamConverter("donation", options={"mapping": {"uuid": "uuid"}})

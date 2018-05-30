@@ -11,10 +11,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(
- *   name="user_documents",
- *   uniqueConstraints={
- *     @ORM\UniqueConstraint(name="document_uuid_unique", columns="uuid")
- *   }
+ *     name="user_documents",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="document_uuid_unique", columns="uuid")
+ *     }
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserDocumentRepository")
  *

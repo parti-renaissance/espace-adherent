@@ -8,9 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CitizenProjectCategorySkillRepository")
- * @ORM\Table(
- *   name="citizen_project_category_skills",
- * )
+ * @ORM\Table(name="citizen_project_category_skills")
  *
  * @UniqueEntity(
  *     fields={"category", "skill"},

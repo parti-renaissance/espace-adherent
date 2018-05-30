@@ -47,9 +47,9 @@ class BoardMember
      *
      * @Assert\NotBlank(message="board_member.area.invalid_choice", groups={"elections"})
      * @Assert\Choice(
-     *      callback={"AppBundle\Entity\BoardMember\BoardMember", "getAreas"},
-     *      message="board_member.area.invalid_choice",
-     *      strict=true
+     *     callback={"AppBundle\Entity\BoardMember\BoardMember", "getAreas"},
+     *     message="board_member.area.invalid_choice",
+     *     strict=true
      * )
      */
     private $area;
@@ -67,7 +67,7 @@ class BoardMember
      *         @ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")
      *     }
      * )
-     * @ORM\OrderBy({"name"="ASC"})
+     * @ORM\OrderBy({"name": "ASC"})
      * @Assert\NotNull
      */
     private $roles;

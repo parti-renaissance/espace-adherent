@@ -37,7 +37,7 @@ class SocialShare
     /**
      * @ORM\Column(length=100)
      *
-     * @Assert\Length(max = 100)
+     * @Assert\Length(max=100)
      */
     private $name = '';
 
@@ -65,7 +65,7 @@ class SocialShare
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank
-     * @Assert\Length(max = 200)
+     * @Assert\Length(max=200)
      */
     private $description;
 

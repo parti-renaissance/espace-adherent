@@ -14,21 +14,21 @@ use Ramsey\Uuid\Uuid;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
- *     "citizen_project" = "CitizenProjectReport",
- *     "citizen_action" = "CitizenActionReport",
- *     "committee" = "CommitteeReport",
- *     "community_event" = "CommunityEventReport",
+ *     "citizen_project": "CitizenProjectReport",
+ *     "citizen_action": "CitizenActionReport",
+ *     "committee": "CommitteeReport",
+ *     "community_event": "CommunityEventReport",
  * })
  *
  * @ORM\Table(
- *   name="reports",
- *   uniqueConstraints={
- *     @ORM\UniqueConstraint(name="report_uuid_unique", columns="uuid"),
- *   },
- *   indexes={
- *     @ORM\Index(name="report_status_idx", columns="status"),
- *     @ORM\Index(name="report_type_idx", columns="type")
- *   }
+ *     name="reports",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="report_uuid_unique", columns="uuid"),
+ *     },
+ *     indexes={
+ *         @ORM\Index(name="report_status_idx", columns="status"),
+ *         @ORM\Index(name="report_type_idx", columns="type")
+ *     }
  * )
  *
  * @Algolia\Index(autoIndex=false)

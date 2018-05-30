@@ -61,10 +61,10 @@ class JeMarcheReport
      *
      * @Assert\NotBlank(message="jemarche.postal_code.not_blank")
      * @Assert\Length(
-     *   min=2,
-     *   max=11,
-     *   minMessage="jemarche.postal_code.invalid",
-     *   maxMessage="jemarche.postal_code.invalid"
+     *     min=2,
+     *     max=11,
+     *     minMessage="jemarche.postal_code.invalid",
+     *     maxMessage="jemarche.postal_code.invalid"
      * )
      */
     private $postalCode = '';
@@ -75,8 +75,8 @@ class JeMarcheReport
      * @ORM\Column(type="simple_array", nullable=true)
      *
      * @Assert\All({
-     *    @Assert\Email(message="jemarche.email.invalid"),
-     *    @Assert\Length(max=255, maxMessage="common.email.max_length")
+     *     @Assert\Email(message="jemarche.email.invalid"),
+     *     @Assert\Length(max=255, maxMessage="common.email.max_length")
      * })
      */
     private $convinced = [];
@@ -87,8 +87,8 @@ class JeMarcheReport
      * @ORM\Column(type="simple_array", nullable=true)
      *
      * @Assert\All({
-     *    @Assert\Email(message="jemarche.email.invalid"),
-     *    @Assert\Length(max=255, maxMessage="common.email.max_length")
+     *     @Assert\Email(message="jemarche.email.invalid"),
+     *     @Assert\Length(max=255, maxMessage="common.email.max_length")
      * })
      */
     private $almostConvinced = [];

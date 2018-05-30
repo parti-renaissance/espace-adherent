@@ -11,12 +11,12 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\InteractiveInvitationRepository")
  * @ORM\Table(name="interactive_invitations", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="interactive_invitations_uuid_unique", columns="uuid")
+ *     @ORM\UniqueConstraint(name="interactive_invitations_uuid_unique", columns="uuid")
  * })
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
- *     "purchasing_power" = "AppBundle\Entity\PurchasingPowerInvitation",
+ *     "purchasing_power": "AppBundle\Entity\PurchasingPowerInvitation",
  * })
  *
  * @Algolia\Index(autoIndex=false)
@@ -84,13 +84,13 @@ abstract class InteractiveInvitation
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\InteractiveChoice", fetch="EAGER")
      * @ORM\JoinTable(
-     *   name="interactive_invitation_has_choices",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="invitation_id", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="choice_id", referencedColumnName="id")
-     *   }
+     *     name="interactive_invitation_has_choices",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="invitation_id", referencedColumnName="id")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="choice_id", referencedColumnName="id")
+     *     }
      * )
      */
     protected $choices;

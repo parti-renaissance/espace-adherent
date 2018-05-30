@@ -22,7 +22,7 @@ class ReportController extends AbstractController
      * @Route(
      *     "/report/{type}/{uuid}",
      *     name="app_report",
-     *     requirements={"type"=AppBundle\Report\ReportType::TYPES_URI_PATTERN}
+     *     requirements={"type": AppBundle\Report\ReportType::TYPES_URI_PATTERN}
      * )
      * @Method("GET|POST")
      * @Security("is_granted('REPORT')")

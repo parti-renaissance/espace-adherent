@@ -14,13 +14,13 @@ use Webmozart\Assert\Assert;
 
 /**
  * @ORM\Table(
- *      name="adherent_email_subscription_histories",
- *      indexes={
- *          @ORM\Index(name="adherent_email_subscription_histories_adherent_uuid_idx", columns="adherent_uuid"),
- *          @ORM\Index(name="adherent_email_subscription_histories_adherent_action_idx", columns="action"),
- *          @ORM\Index(name="adherent_email_subscription_histories_adherent_date_idx", columns="date"),
- *          @ORM\Index(name="adherent_email_subscription_histories_adherent_email_type_idx", columns="subscribed_email_type"),
- *      }
+ *     name="adherent_email_subscription_histories",
+ *     indexes={
+ *         @ORM\Index(name="adherent_email_subscription_histories_adherent_uuid_idx", columns="adherent_uuid"),
+ *         @ORM\Index(name="adherent_email_subscription_histories_adherent_action_idx", columns="action"),
+ *         @ORM\Index(name="adherent_email_subscription_histories_adherent_date_idx", columns="date"),
+ *         @ORM\Index(name="adherent_email_subscription_histories_adherent_email_type_idx", columns="subscribed_email_type"),
+ *     }
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EmailSubscriptionHistoryRepository")
  *

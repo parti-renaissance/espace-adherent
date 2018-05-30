@@ -30,8 +30,8 @@ use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Table(name="adherents", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="adherents_uuid_unique", columns="uuid"),
- *   @ORM\UniqueConstraint(name="adherents_email_address_unique", columns="email_address")
+ *     @ORM\UniqueConstraint(name="adherents_uuid_unique", columns="uuid"),
+ *     @ORM\UniqueConstraint(name="adherents_email_address_unique", columns="email_address")
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AdherentRepository")
  *
@@ -89,7 +89,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $position;
 
     /**
-     * @ORM\Column(length=10, options={"default"="DISABLED"})
+     * @ORM\Column(length=10, options={"default": "DISABLED"})
      */
     private $status;
 
@@ -132,7 +132,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $emailsSubscriptions;
 
     /**
-     * @ORM\Column(type="integer", options={"default"=10})
+     * @ORM\Column(type="integer", options={"default": 10})
      */
     private $citizenProjectCreationEmailSubscriptionRadius = self::CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE;
 

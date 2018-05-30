@@ -11,7 +11,7 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Table(name="ton_macron_friend_invitations", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="ton_macron_friend_invitations_uuid_unique", columns="uuid")
+ *     @ORM\UniqueConstraint(name="ton_macron_friend_invitations_uuid_unique", columns="uuid")
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TonMacronFriendInvitationRepository")
  *
@@ -80,13 +80,13 @@ class TonMacronFriendInvitation
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\TonMacronChoice", fetch="EAGER")
      * @ORM\JoinTable(
-     *   name="ton_macron_friend_invitation_has_choices",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="invitation_id", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="choice_id", referencedColumnName="id")
-     *   }
+     *     name="ton_macron_friend_invitation_has_choices",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="invitation_id", referencedColumnName="id")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="choice_id", referencedColumnName="id")
+     *     }
      * )
      */
     private $choices;

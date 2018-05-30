@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 class RedirectingController extends Controller
 {
     /**
-     * @Route("/{url}", name="remove_trailing_slash", requirements={"url" = ".*\/$"}, methods={"GET"})
+     * @Route("/{url}", name="remove_trailing_slash", requirements={"url": ".*\/$"}, methods={"GET"})
      */
     public function removeTrailingSlashAction(Request $request): Response
     {

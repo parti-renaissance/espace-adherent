@@ -18,15 +18,15 @@ use Ramsey\Uuid\UuidInterface;
  * This entity represents a committee group.
  *
  * @ORM\Table(
- *   name="committees",
- *   uniqueConstraints={
- *     @ORM\UniqueConstraint(name="committee_uuid_unique", columns="uuid"),
- *     @ORM\UniqueConstraint(name="committee_canonical_name_unique", columns="canonical_name"),
- *     @ORM\UniqueConstraint(name="committee_slug_unique", columns="slug")
- *   },
- *   indexes={
- *     @ORM\Index(name="committee_status_idx", columns="status")
- *   }
+ *     name="committees",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="committee_uuid_unique", columns="uuid"),
+ *         @ORM\UniqueConstraint(name="committee_canonical_name_unique", columns="canonical_name"),
+ *         @ORM\UniqueConstraint(name="committee_slug_unique", columns="slug")
+ *     },
+ *     indexes={
+ *         @ORM\Index(name="committee_status_idx", columns="status")
+ *     }
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CommitteeRepository")
  *
@@ -102,7 +102,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default"=false})
+     * @ORM\Column(type="boolean", options={"default": false})
      */
     private $photoUploaded = false;
 

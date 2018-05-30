@@ -96,11 +96,11 @@ class CitizenProjectCommand
      * @var UploadedFile|null
      *
      * @Assert\Image(
-     *     maxSize = "5M",
-     *     mimeTypes = {"image/jpeg", "image/png"},
-     *     minWidth = "1200",
-     *     minHeight = "675",
-     *     minRatio = 1.77,
+     *     maxSize="5M",
+     *     mimeTypes={"image/jpeg", "image/png"},
+     *     minWidth="1200",
+     *     minHeight="675",
+     *     minRatio=1.77,
      * )
      */
     private $image;

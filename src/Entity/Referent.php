@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="referent", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="referent_slug_unique", columns="slug")
+ *     @ORM\UniqueConstraint(name="referent_slug_unique", columns="slug")
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ReferentRepository")
  *
@@ -40,10 +40,10 @@ class Referent implements EntityMediaInterface
      *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Choice(
-     *   callback = {"AppBundle\ValueObject\Genders", "all"},
-     *   message="common.gender.invalid_choice",
-     *   strict=true,
-     *   groups="Admin"
+     *     callback={"AppBundle\ValueObject\Genders", "all"},
+     *     message="common.gender.invalid_choice",
+     *     strict=true,
+     *     groups="Admin"
      * )
      */
     private $gender;
@@ -58,7 +58,7 @@ class Referent implements EntityMediaInterface
 
     /**
      * @ORM\Column(length=100)
-     * @Gedmo\Slug(fields={"firstName","lastName"})
+     * @Gedmo\Slug(fields={"firstName", "lastName"})
      *
      * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="legislative_candidate.slug.invalid", groups="Admin")
      */
@@ -94,7 +94,7 @@ class Referent implements EntityMediaInterface
 
     /**
      * @ORM\Column(length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      */
     private $areaLabel = '';
 
@@ -117,7 +117,7 @@ class Referent implements EntityMediaInterface
     private $areas;
 
     /**
-     * @ORM\Column(length=10, options={"default"="DISABLED"})
+     * @ORM\Column(length=10, options={"default": "DISABLED"})
      */
     private $status;
 

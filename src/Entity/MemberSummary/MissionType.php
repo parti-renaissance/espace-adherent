@@ -10,10 +10,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(
- *   name="member_summary_mission_types",
- *   uniqueConstraints={
- *     @ORM\UniqueConstraint(name="member_summary_mission_type_name_unique", columns="name")
- *   }
+ *     name="member_summary_mission_types",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="member_summary_mission_type_name_unique", columns="name")
+ *     }
  * )
  *
  * @UniqueEntity("name")

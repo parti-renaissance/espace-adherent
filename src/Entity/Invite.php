@@ -33,10 +33,10 @@ class Invite
      *
      * @Assert\NotBlank(message="common.first_name.not_blank")
      * @Assert\Length(
-     *   min=2,
-     *   max=50,
-     *   minMessage="common.first_name.min_length",
-     *   maxMessage="common.first_name.max_length"
+     *     min=2,
+     *     max=50,
+     *     minMessage="common.first_name.min_length",
+     *     maxMessage="common.first_name.max_length"
      * )
      */
     private $firstName;
@@ -48,10 +48,10 @@ class Invite
      *
      * @Assert\NotBlank(message="common.last_name.not_blank")
      * @Assert\Length(
-     *   min=2,
-     *   max=50,
-     *   minMessage="common.last_name.min_length",
-     *   maxMessage="common.last_name.max_length"
+     *     min=2,
+     *     max=50,
+     *     minMessage="common.last_name.min_length",
+     *     maxMessage="common.last_name.max_length"
      * )
      */
     private $lastName;

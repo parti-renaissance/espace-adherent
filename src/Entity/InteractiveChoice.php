@@ -10,13 +10,13 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * @ORM\Entity
  * @ORM\Table(name="interactive_choices", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="interactive_choices_uuid_unique", columns="uuid"),
- *   @ORM\UniqueConstraint(name="interactive_choices_content_key_unique", columns="content_key")
+ *     @ORM\UniqueConstraint(name="interactive_choices_uuid_unique", columns="uuid"),
+ *     @ORM\UniqueConstraint(name="interactive_choices_content_key_unique", columns="content_key")
  * })
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
- *     "purchasing_power" = "AppBundle\Entity\PurchasingPowerChoice",
+ *     "purchasing_power": "AppBundle\Entity\PurchasingPowerChoice",
  * })
  * @Algolia\Index(autoIndex=false)
  */

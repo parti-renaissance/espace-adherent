@@ -171,12 +171,12 @@ class MembershipController extends Controller
      * membership account.
      *
      * @Route(
-     *   path="/inscription/finaliser/{adherent_uuid}/{activation_token}",
-     *   name="app_membership_activate",
-     *   requirements={
-     *     "adherent_uuid": "%pattern_uuid%",
-     *     "activation_token": "%pattern_sha1%"
-     *   }
+     *     path="/inscription/finaliser/{adherent_uuid}/{activation_token}",
+     *     name="app_membership_activate",
+     *     requirements={
+     *         "adherent_uuid": "%pattern_uuid%",
+     *         "activation_token": "%pattern_sha1%"
+     *     }
      * )
      * @Method("GET")
      * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")

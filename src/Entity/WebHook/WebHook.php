@@ -14,8 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\WebHookRepository")
  * @ORM\Table(name="web_hooks", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="web_hook_uuid_unique", columns="uuid"),
- *   @ORM\UniqueConstraint(name="web_hook_event_client_id_unique", columns={"event", "client_id"})
+ *     @ORM\UniqueConstraint(name="web_hook_uuid_unique", columns="uuid"),
+ *     @ORM\UniqueConstraint(name="web_hook_event_client_id_unique", columns={"event", "client_id"})
  * })
  * @UniqueEntity(fields={"event", "client"})
  *
@@ -51,7 +51,7 @@ class WebHook
      *
      * @ORM\Column(type="json")
      *
-     * @Assert\Count(min=1, minMessage = "Veuillez spécifier au moins une url de callback.")
+     * @Assert\Count(min=1, minMessage="Veuillez spécifier au moins une url de callback.")
      */
     private $callbacks = [];
 

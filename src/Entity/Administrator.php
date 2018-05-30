@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Table(name="administrators", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="administrators_email_address_unique", columns="email_address")
+ *     @ORM\UniqueConstraint(name="administrators_email_address_unique", columns="email_address")
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AdministratorRepository")
  *
