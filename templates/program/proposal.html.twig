@@ -8,8 +8,6 @@
 {% block canonical_url url('program_proposal', {'slug': proposal.slug}) %}
 
 {% block open_graph_image (proposal.media ? (homepage_url ~ media_asset(proposal.media)) : default_sharer)|raw %}
-{% block open_graph_image_width (proposal.media ? proposal.media.width : default_sharer_width) %}
-{% block open_graph_image_height (proposal.media ? proposal.media.height : default_sharer_height) %}
 
 {% block final_javascripts include('bot/_javascript.html.twig') %}
 

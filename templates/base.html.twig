@@ -3,8 +3,8 @@
 {% set campaign_expired = app.request.attributes.get('_campaign_expired') %}
 
 {% set default_sharer = 'https://storage.googleapis.com/en-marche-fr/E-MAILING/2017/images/REM/Logo-LREM-noir.jpg' %}
-{% set default_sharer_width = 1698 %}
-{% set default_sharer_height = 550 %}
+{% set default_sharer_width = 1600 %}
+{% set default_sharer_height = 800 %}
 
 {% set has_role_user = is_granted('ROLE_USER') %}
 {% set has_role_adherent = is_granted('ROLE_ADHERENT') %}
@@ -69,7 +69,7 @@
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="{{ block('open_graph_title') }}" />
         <meta name="twitter:description" content="{% block meta_twitter_description block('meta_description') %}" />
-        <meta name="twitter:image:src" content="{{ block('open_graph_image')|raw }}" />
+        <meta name="twitter:image" content="{{ block('open_graph_image')|raw }}" />
 
         {% block meta_rss %}
             <link rel="alternate" type="application/rss+xml" title="La République En Marche !" href="{{ url('articles_feed') }}" />

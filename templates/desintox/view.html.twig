@@ -8,8 +8,6 @@
 {% block canonical_url url('program_proposal', {'slug': clarification.slug}) %}
 
 {% block open_graph_image (clarification.media ? (homepage_url ~ media_asset(clarification.media)) : default_sharer)|raw %}
-{% block open_graph_image_width (clarification.media ? clarification.media.width : default_sharer_width) %}
-{% block open_graph_image_height (clarification.media ? clarification.media.height : default_sharer_height) %}
 
 {% block final_javascripts include('bot/_javascript.html.twig') %}
 
