@@ -6,6 +6,7 @@ use AppBundle\Event\EventFactory;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Event\EventRegistrationFactory;
+use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -40,8 +41,8 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'category' => $this->getReference('citizen-action-category'),
             'description' => 'Un projet citoyen pour les Zurichois(es)',
             'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '30 Zeppelinstrasse', 47.3950062, 8.53838),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('+3 days')).' 09:30:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('+3 days')).' 19:00:00'),
+            'begin_at' => (new Chronos('+3 days'))->setTime(9, 30, 00, 000),
+            'finish_at' => (new Chronos('+3 days'))->setTime(19, 00, 00, 000),
             'capacity' => 1,
         ]);
         $actionCitoyenne1->setPublished(true);
@@ -55,8 +56,8 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'category' => $this->getReference('citizen-action-category'),
             'description' => 'Projet citoyen à Mouxy',
             'address' => PostAddress::createFrenchAddress('122 rue de Mouxy', '73100-73182', 45.7218703, 5.929463),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('+9 days')).' 09:00:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('+ 9 days')).' 19:00:00'),
+            'begin_at' => (new Chronos('+9 days'))->setTime(9, 00, 00, 000),
+            'finish_at' => (new Chronos('+9 days'))->setTime(19, 00, 00, 000),
             'capacity' => 30,
         ]);
         $actionCitoyenne2->setPublished(false);
@@ -70,8 +71,8 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'category' => $this->getReference('citizen-action-category'),
             'description' => 'Un troisième projet citoyen',
             'address' => PostAddress::createFrenchAddress('16 rue de la Paix', '75008-75108', 48.869331, 2.331595),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('tomorrow')).' 09:30:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('tomorrow')).' 16:00:00'),
+            'begin_at' => (new Chronos('tomorrow'))->setTime(9, 30, 00, 000),
+            'finish_at' => (new Chronos('tomorrow'))->setTime(16, 00, 00, 000),
             'capacity' => 20,
         ]);
         $actionCitoyenne3->setPublished(true);
@@ -85,8 +86,8 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'category' => $this->getReference('citizen-action-category'),
             'description' => 'Séance dans le 18è arrondissement',
             'address' => PostAddress::createFrenchAddress('26 rue de la Paix', '75008-75108', 48.869878, 2.332197),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 10:00:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 15:00:00'),
+            'begin_at' => (new Chronos('+11 days'))->setTime(10, 00, 00, 000),
+            'finish_at' => (new Chronos('+11 days'))->setTime(15, 00, 00, 000),
             'capacity' => 20,
         ]);
         $actionCitoyenne4->setPublished(true);
@@ -100,8 +101,8 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'category' => $this->getReference('citizen-action-category'),
             'description' => 'Nous allons rendre Kilchberg propre',
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '54 Pilgerweg', 47.3164934, 8.553012),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 09:00:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('+11 days')).' 12:00:00'),
+            'begin_at' => (new Chronos('+11 days'))->setTime(9, 00, 00, 000),
+            'finish_at' => (new Chronos('+11 days'))->setTime(12, 00, 00, 000),
             'capacity' => 10,
         ]);
         $actionCitoyenne5->setPublished(true);
@@ -115,8 +116,8 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'category' => $this->getReference('citizen-action-category'),
             'description' => 'On a annulé ce projet citoyen.',
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '54 Pilgerweg', 47.3164934, 8.553012),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('+20 days')).' 09:00:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('+20 days')).' 18:00:00'),
+            'begin_at' => (new Chronos('+20 days'))->setTime(9, 00, 00, 000),
+            'finish_at' => (new Chronos('+20 days'))->setTime(18, 00, 00, 000),
             'capacity' => 5,
         ]);
         $actionCitoyenne6->setPublished(true);
@@ -131,8 +132,8 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'category' => $this->getReference('citizen-action-category'),
             'description' => 'Nous allons rendre notre Kilchberg propre',
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '54 Pilgerweg', 47.3164934, 8.553012),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('+15 days')).' 09:00:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('+15 days')).' 12:00:00'),
+            'begin_at' => (new Chronos('+15 days'))->setTime(9, 00, 00, 000),
+            'finish_at' => (new Chronos('+15 days'))->setTime(12, 00, 00, 000),
             'capacity' => 10,
         ]);
         $actionCitoyenne7->setPublished(true);
@@ -146,8 +147,8 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'category' => $this->getReference('citizen-action-category'),
             'description' => 'Nous allons rendre Kilchberg propre',
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '54 Pilgerweg', 47.3164934, 8.553012),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('+15 days')).' 09:00:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('+15 days')).' 12:00:00'),
+            'begin_at' => (new Chronos('+15 days'))->setTime(9, 00, 00, 000),
+            'finish_at' => (new Chronos('+15 days'))->setTime(12, 00, 00, 000),
             'capacity' => 10,
         ]);
 
@@ -159,8 +160,8 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'category' => $this->getReference('citizen-action-category'),
             'description' => 'Nous allons rendre notre Vieux-Port propre',
             'address' => PostAddress::createForeignAddress('FR', '13001', 'Marseille', '25 Quai des Belges', 43.2943855, 5.3737235),
-            'begin_at' => new \DateTime(date('Y-m-d', strtotime('-15 days')).' 09:00:00'),
-            'finish_at' => new \DateTime(date('Y-m-d', strtotime('-15 days')).' 12:00:00'),
+            'begin_at' => (new Chronos('-15 days'))->setTime(9, 00, 00, 000),
+            'finish_at' => (new Chronos('-15 days'))->setTime(12, 00, 00, 000),
             'capacity' => 10,
         ]);
         $actionCitoyenne9->setPublished(true);

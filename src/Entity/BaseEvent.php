@@ -30,6 +30,7 @@ use JMS\Serializer\Annotation as JMS;
 abstract class BaseEvent implements GeoPointInterface, ReportableInterface
 {
     const EVENT_TYPE = 'event';
+    const REFERENT_EVENT_TYPE = 'referent_event';
     const CITIZEN_ACTION_TYPE = 'citizen_action';
 
     const STATUS_SCHEDULED = 'SCHEDULED';

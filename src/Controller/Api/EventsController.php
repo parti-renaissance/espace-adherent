@@ -3,9 +3,9 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\Committee;
+use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Statistics\StatisticsParametersFilter;
-use Psr\Log\InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -39,11 +39,27 @@ class EventsController extends Controller
         $referent = $this->getUser();
         try {
             $filter = StatisticsParametersFilter::createFromRequest($request, $this->getDoctrine()->getRepository(Committee::class));
-        } catch (InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
         $events = $eventRepository->countCommitteeEventsInReferentManagedArea($referent, $filter);
 
         return new JsonResponse($events);
+    }
+
+    /**
+     * @Route("/count", name="app_events_count")
+     * @Method("GET")
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function allTypesEventsCountInReferentManagedAreaAction(EventRepository $eventRepository, CitizenActionRepository $citizenActionRepository): Response
+    {
+        $referent = $this->getUser();
+        $events = $eventRepository->countCommitteeEventsInReferentManagedArea($referent);
+        $referentEvents = $eventRepository->countReferentEventsInReferentManagedArea($referent);
+
+        return new JsonResponse([
+            'monthly' => array_merge_recursive($events, $referentEvents),
+        ]);
     }
 }

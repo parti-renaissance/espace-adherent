@@ -468,22 +468,24 @@ SQL;
 
         $query = $this->queryCountByMonth($referent);
 
-        if ($filter->getCommittee()) {
-            $query->andWhere('event.committee = :committee')
-                ->setParameter('committee', $filter->getCommittee())
-            ;
-        }
+        if ($filter) {
+            if ($filter->getCommittee()) {
+                $query->andWhere('event.committee = :committee')
+                    ->setParameter('committee', $filter->getCommittee())
+                ;
+            }
 
-        if ($filter->getCityName()) {
-            $query->andWhere('event.postAddress.cityName = :city')
-                ->setParameter('city', $filter->getCityName())
-            ;
-        }
+            if ($filter->getCityName()) {
+                $query->andWhere('event.postAddress.cityName = :city')
+                    ->setParameter('city', $filter->getCityName())
+                ;
+            }
 
-        if ($filter->getCountryCode()) {
-            $query->andWhere('event.postAddress.country = :country')
-                ->setParameter('country', $filter->getCountryCode())
-            ;
+            if ($filter->getCountryCode()) {
+                $query->andWhere('event.postAddress.country = :country')
+                    ->setParameter('country', $filter->getCountryCode())
+                ;
+            }
         }
 
         $result = $query
@@ -493,6 +495,21 @@ SQL;
         ;
 
         return $this->aggregateCountByMonth($result, BaseEvent::EVENT_TYPE.'s');
+    }
+
+    public function countReferentEventsInReferentManagedArea(Adherent $referent): array
+    {
+        $this->checkReferent($referent);
+
+        $query = $this->queryCountByMonth($referent);
+
+        $result = $query
+            ->andWhere('event.committee IS NULL')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return $this->aggregateCountByMonth($result, BaseEvent::REFERENT_EVENT_TYPE.'s');
     }
 
     protected function aggregateCountByMonth(array $eventsCount, string $type, int $months = 6): array
