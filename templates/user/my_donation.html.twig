@@ -53,6 +53,9 @@
                     <th>
                         Type
                     </th>
+                    <th>
+                        Moyen de paiement
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -71,6 +74,9 @@
                             {% else %}
                                 Don ponctuel
                             {% endif %}
+                        </td>
+                        <td>
+                            {{ ('transaction.type.' ~ transaction.type)|trans }}
                         </td>
                     </tr>
                 {% endfor %}
