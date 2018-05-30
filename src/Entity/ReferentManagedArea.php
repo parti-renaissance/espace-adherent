@@ -116,4 +116,9 @@ class ReferentManagedArea
 
         $this->markerLongitude = $markerLongitude;
     }
+
+    public function getReferentTagCodes(): array
+    {
+        return array_map(function (ReferentTag $tag) { return $tag->getCode(); }, $this->getTags()->toArray());
+    }
 }

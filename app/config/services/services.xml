@@ -86,6 +86,7 @@
 
         <!-- Event -->
         <service id="AppBundle\Event\EventFactory" public="true" />
+        <service id="AppBundle\Event\EventCanceledHandler" />
 
         <service id="AppBundle\Event\EventRegistrationSubscriber">
             <argument type="service" id="app.mailer.transactional" />
@@ -192,5 +193,16 @@
 
         <!-- History -->
         <service id="AppBundle\History\EmailSubscriptionHistoryHandler" />
+
+        <!-- Republican Silence -->
+        <service id="AppBundle\Command\RepublicanSilenceCloseEventCommand" />
+        <service id="AppBundle\RepublicanSilence\CheckRepublicanSilenceListener" />
+        <service id="AppBundle\RepublicanSilence\RepublicanSilenceManager">
+            <argument type="service" key="$cache">
+                <service class="Symfony\Component\Cache\Simple\Psr6Cache">
+                    <argument type="service" id="app.cache.republican_silence" />
+                </service>
+            </argument>
+        </service>
     </services>
 </container>

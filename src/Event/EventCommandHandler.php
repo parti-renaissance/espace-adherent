@@ -59,19 +59,4 @@ class EventCommandHandler
 
         return $event;
     }
-
-    public function handleCancel(Event $event, EventCommand $command)
-    {
-        $event->cancel();
-
-        $this->manager->flush();
-
-        $this->dispatcher->dispatch(Events::EVENT_CANCELLED, new EventEvent(
-            $command->getAuthor(),
-            $event,
-            $command->getCommittee()
-        ));
-
-        return $event;
-    }
 }

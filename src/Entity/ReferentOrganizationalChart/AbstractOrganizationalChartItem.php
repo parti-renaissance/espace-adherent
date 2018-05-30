@@ -86,7 +86,7 @@ abstract class AbstractOrganizationalChartItem
      */
     private $children;
 
-    public function __construct(string $label = null, AbstractOrganizationalChartItem $parent = null)
+    public function __construct(string $label = null, self $parent = null)
     {
         $this->children = new ArrayCollection();
         $this->label = $label;
@@ -128,24 +128,24 @@ abstract class AbstractOrganizationalChartItem
         $this->children = $children;
     }
 
-    public function addChild(AbstractOrganizationalChartItem $child): void
+    public function addChild(self $child): void
     {
         $child->setParent($this);
         $this->children[] = $child;
     }
 
-    public function removeChild(AbstractOrganizationalChartItem $child): void
+    public function removeChild(self $child): void
     {
         $child->setParent(null);
         $this->children[] = $child;
     }
 
-    public function getParent(): ?AbstractOrganizationalChartItem
+    public function getParent(): ?self
     {
         return $this->parent;
     }
 
-    public function setParent(?AbstractOrganizationalChartItem $parent): void
+    public function setParent(?self $parent): void
     {
         $this->parent = $parent;
     }
@@ -189,12 +189,12 @@ abstract class AbstractOrganizationalChartItem
         $this->rgt = $rgt;
     }
 
-    public function getRoot(): AbstractOrganizationalChartItem
+    public function getRoot(): self
     {
         return $this->root;
     }
 
-    public function setRoot(AbstractOrganizationalChartItem $root): void
+    public function setRoot(self $root): void
     {
         $this->root = $root;
     }

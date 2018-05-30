@@ -16,6 +16,11 @@ use JMS\Serializer\Annotation as JMS;
  *   uniqueConstraints={
  *     @ORM\UniqueConstraint(name="event_uuid_unique", columns="uuid"),
  *     @ORM\UniqueConstraint(name="event_slug_unique", columns="slug")
+ *   },
+ *   indexes={
+ *     @ORM\Index(columns={"begin_at"}),
+ *     @ORM\Index(columns={"finish_at"}),
+ *     @ORM\Index(columns={"status"})
  *   }
  * )
  * @ORM\InheritanceType("SINGLE_TABLE")
