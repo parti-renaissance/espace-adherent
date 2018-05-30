@@ -37,6 +37,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
     const EVENT_13_UUID = '30dd58d7-c540-3874-8fbb-6b26ca06d5d5';
     const EVENT_14_UUID = 'f0574b51-40e0-4236-a2ff-62c42cb16029';
     const EVENT_15_UUID = 'a6709808-b3fa-40fc-95a4-da49ddc314ff';
+    const EVENT_16_UUID = '15acb775-3425-4f3a-97fb-9c7725c53bbc';
 
     use ContainerAwareTrait;
 
@@ -47,6 +48,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         $eventCategory3 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']]);
         $eventCategory5 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE005']]);
         $eventCategory6 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE006']]);
+        $eventCategory9 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE009']]);
         $eventCategory10 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE010']]);
 
         $author3 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
@@ -54,6 +56,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         $author11 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_11_UUID);
         $author12 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_12_UUID);
         $author13 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_13_UUID);
+        $referent75and77 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_19_UUID);
 
         $committee1 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
         $committee2 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
@@ -284,6 +287,19 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         ]);
         $event15->setPublished(true);
 
+        $event16 = $committeeEventFactory->createFromArray([
+            'uuid' => self::EVENT_16_UUID,
+            'organizer' => $referent75and77,
+            'name' => 'Référent event',
+            'category' => $eventCategory9,
+            'description' => 'Du bonheur pour tout le monde, gratuitement, et que personne ne reparte lésé ! ',
+            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.870507, 2.303243),
+            'begin_at' => (new Chronos('now'))->format('Y-m-d').' 10:00:00',
+            'finish_at' => (new Chronos('now'))->format('Y-m-d').' 18:00:00',
+            'capacity' => 15,
+        ]);
+        $event16->setPublished(true);
+
         $manager->persist($event1);
         $manager->persist($event2);
         $manager->persist($event3);
@@ -299,6 +315,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         $manager->persist($event13);
         $manager->persist($event14);
         $manager->persist($event15);
+        $manager->persist($event16);
 
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event8, $author3)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event9, $author3)));
@@ -315,6 +332,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event11, $author3)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event12, $author12)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event12, $author3)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event16, $referent75and77)));
 
         $manager->flush();
 

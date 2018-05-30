@@ -57,8 +57,10 @@ class EventsController extends Controller
         $referent = $this->getUser();
         $events = $eventRepository->countCommitteeEventsInReferentManagedArea($referent);
         $referentEvents = $eventRepository->countReferentEventsInReferentManagedArea($referent);
+        $total = $eventRepository->countTotalEventsInReferentManagedAreaForCurrentMonth($referent);
 
         return new JsonResponse([
+            'current_total' => $total,
             'monthly' => array_merge_recursive($events, $referentEvents),
         ]);
     }

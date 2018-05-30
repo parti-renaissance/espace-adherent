@@ -450,7 +450,7 @@ SQL;
     public function queryCountByMonth(Adherent $referent, int $months = 5): QueryBuilder
     {
         return $this->createQueryBuilder('event')
-            ->select('COUNT(event) AS count, YEAR_MONTH(event.beginAt) AS yearmonth')
+            ->select('COUNT(DISTINCT event.id) AS count, YEAR_MONTH(event.beginAt) AS yearmonth')
             ->innerJoin('event.referentTags', 'tag')
             ->where('tag IN (:tags)')
             ->setParameter('tags', $referent->getManagedArea()->getTags())
@@ -510,6 +510,15 @@ SQL;
         ;
 
         return $this->aggregateCountByMonth($result, BaseEvent::REFERENT_EVENT_TYPE.'s');
+    }
+
+    public function countTotalEventsInReferentManagedAreaForCurrentMonth(Adherent $referent): int
+    {
+        $this->checkReferent($referent);
+
+        $query = $this->queryCountByMonth($referent, 0);
+
+        return (int) $query->getQuery()->getSingleResult()['count'];
     }
 
     protected function aggregateCountByMonth(array $eventsCount, string $type, int $months = 6): array

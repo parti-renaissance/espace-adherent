@@ -36,8 +36,8 @@ class EventsControllerTest extends MysqlWebTestCase
         $this->assertEachJsonItemContainsKey('name', $content);
         $this->assertEachJsonItemContainsKey('url', $content);
         $this->assertEachJsonItemContainsKey('position', $content);
-        $this->assertEachJsonItemContainsKey('committee_name', $content);
-        $this->assertEachJsonItemContainsKey('committee_url', $content);
+        $this->assertEachJsonItemContainsKey('committee_name', $content, 0);
+        $this->assertEachJsonItemContainsKey('committee_url', $content, 0);
     }
 
     /**
