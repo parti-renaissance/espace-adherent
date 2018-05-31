@@ -7,7 +7,7 @@
     }
 
     .splash-screen {
-        @include splash--screen($blue--europe, 2s, 300);
+        @include splash--screen($blue--europe, .8s, 300);
 
         .logo {
             @include vertical--align;
