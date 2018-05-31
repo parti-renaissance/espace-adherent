@@ -188,6 +188,11 @@ security:
             - ROLE_APP_ADMIN_TIMELINE_THEME_ALL
             - ROLE_APP_ADMIN_TIMELINE_MEASURE_ALL
 
+        ROLE_ADMIN_MOOC:
+            - ROLE_APP_ADMIN_MOOC_MOOC_ALL
+            - ROLE_APP_ADMIN_MOOC_CHAPTER_ALL
+            - ROLE_APP_ADMIN_MOOC_VIDEO_ALL
+
         ROLE_ADMIN_CLIENTS:
             - ROLE_APP_ADMIN_CLIENT_ALL
 
@@ -225,6 +230,7 @@ security:
             - ROLE_ADMIN_REFERENTS_AREAS
             - ROLE_ADMIN_BOARD_MEMBER_ROLES
             - ROLE_ADMIN_TIMELINE
+            - ROLE_ADMIN_MOOC
             - ROLE_ADMIN_CLIENTS
             - ROLE_ADMIN_ORGANIGRAMM
 

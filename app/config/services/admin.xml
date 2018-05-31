@@ -558,6 +558,35 @@
 
         <!--
         ######################################################
+        # MOOC
+        ######################################################
+        -->
+        <service id="app.admin.mooc_mooc" class="AppBundle\Admin\MoocAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Mooc" group="Mooc" />
+
+            <argument />
+            <argument>AppBundle\Entity\Mooc\Mooc</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.mooc_chapter" class="AppBundle\Admin\MoocChapterAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Chapitres" group="Mooc" />
+
+            <argument />
+            <argument>AppBundle\Entity\Mooc\Chapter</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.mooc_video" class="AppBundle\Admin\MoocVideoAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Vidéos" group="Mooc" />
+
+            <argument />
+            <argument>AppBundle\Entity\Mooc\Video</argument>
+            <argument />
+        </service>
+
+        <!--
+        ######################################################
         # OAuth
         ######################################################
          -->
