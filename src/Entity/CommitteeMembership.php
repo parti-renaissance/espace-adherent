@@ -14,16 +14,16 @@ use Ramsey\Uuid\UuidInterface;
  * Each instance of CommitteeMembership means an Adherent is a member of a Committee.
  *
  * @ORM\Table(
- *   name="committees_memberships",
- *   uniqueConstraints={
- *     @ORM\UniqueConstraint(
- *       name="adherent_has_joined_committee",
- *       columns={"adherent_id", "committee_id"}
- *     )
- *   },
- *   indexes={
- *     @ORM\Index(name="committees_memberships_role_idx", columns="privilege")
- *   }
+ *     name="committees_memberships",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(
+ *             name="adherent_has_joined_committee",
+ *             columns={"adherent_id", "committee_id"}
+ *         )
+ *     },
+ *     indexes={
+ *         @ORM\Index(name="committees_memberships_role_idx", columns="privilege")
+ *     }
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CommitteeMembershipRepository")
  *

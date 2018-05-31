@@ -44,7 +44,7 @@ class OrderSection
      * @var OrderArticle[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\OrderArticle", mappedBy="sections")
-     * @ORM\OrderBy({"position"="ASC"})
+     * @ORM\OrderBy({"position": "ASC"})
      */
     private $articles;
 

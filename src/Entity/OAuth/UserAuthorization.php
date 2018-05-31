@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OAuth\UserAuthorizationRepository")
  * @ORM\Table(name="user_authorizations", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="user_authorizations_unique", columns={"user_id", "client_id"})
+ *     @ORM\UniqueConstraint(name="user_authorizations_unique", columns={"user_id", "client_id"})
  * })
  * @UniqueEntity(fields={"user", "client"}, message="user_authorization.non_unique")
  *

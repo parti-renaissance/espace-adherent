@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 class LegacyController extends Controller
 {
     /**
-     * @Route("/espaceperso/evenement/{id}-{slug}", requirements={"id"="\d+"})
+     * @Route("/espaceperso/evenement/{id}-{slug}", requirements={"id": "\d+"})
      * @Method("GET")
      * @Entity("event", expr="repository.find(id)")
      */
@@ -25,7 +25,7 @@ class LegacyController extends Controller
     }
 
     /**
-     * @Route("/espaceperso/comite/{id}-{slug}", requirements={"id"="\d+"})
+     * @Route("/espaceperso/comite/{id}-{slug}", requirements={"id": "\d+"})
      * @Method("GET")
      * @Entity("committee", expr="repository.find(id)")
      */

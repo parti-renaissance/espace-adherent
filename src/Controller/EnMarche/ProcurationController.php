@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ProcurationController extends Controller
 {
     /**
-     * @Route( name="app_procuration_landing")
+     * @Route(name="app_procuration_landing")
      * @Method("GET")
      */
     public function landingAction(ProcurationSession $procurationSession): Response
@@ -39,7 +39,7 @@ class ProcurationController extends Controller
     /**
      * @Route(
      *     "/choisir/{action}",
-     *     requirements={"action"=AppBundle\Procuration\ElectionContext::CONTROLLER_ACTION_REQUIREMENT},
+     *     requirements={"action": AppBundle\Procuration\ElectionContext::CONTROLLER_ACTION_REQUIREMENT},
      *     name="app_procuration_choose_election"
      * )
      * @Method("GET|POST")
@@ -70,7 +70,7 @@ class ProcurationController extends Controller
      * @Route("/je-demande", name="app_procuration_index_legacy")
      * @Route(
      *     "/je-demande/{step}",
-     *     requirements={"step"="mon-lieu-de-vote|mes-coordonnees|ma-procuration"},
+     *     requirements={"step": "mon-lieu-de-vote|mes-coordonnees|ma-procuration"},
      *     name="app_procuration_request"
      * )
      * @Method("GET|POST")

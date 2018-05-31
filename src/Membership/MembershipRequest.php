@@ -20,10 +20,10 @@ class MembershipRequest implements MembershipInterface
      *
      * @Assert\NotBlank(message="common.gender.not_blank", groups={"Update"})
      * @Assert\Choice(
-     *   callback = {"AppBundle\ValueObject\Genders", "all"},
-     *   message="common.gender.invalid_choice",
-     *   strict=true,
-     *   groups={"Update"}
+     *     callback={"AppBundle\ValueObject\Genders", "all"},
+     *     message="common.gender.invalid_choice",
+     *     strict=true,
+     *     groups={"Update"}
      * )
      */
     public $gender;
@@ -33,11 +33,11 @@ class MembershipRequest implements MembershipInterface
      *
      * @Assert\NotBlank(message="common.first_name.not_blank", groups={"Registration", "Update"})
      * @Assert\Length(
-     *   min=2,
-     *   max=50,
-     *   minMessage="common.first_name.min_length",
-     *   maxMessage="common.first_name.max_length",
-     *   groups={"Registration", "Update"}
+     *     min=2,
+     *     max=50,
+     *     minMessage="common.first_name.min_length",
+     *     maxMessage="common.first_name.max_length",
+     *     groups={"Registration", "Update"}
      * )
      */
     public $firstName;
@@ -47,11 +47,11 @@ class MembershipRequest implements MembershipInterface
      *
      * @Assert\NotBlank(message="common.first_name.not_blank", groups={"Registration", "Update"})
      * @Assert\Length(
-     *   min=2,
-     *   max=50,
-     *   minMessage="common.last_name.min_length",
-     *   maxMessage="common.last_name.max_length",
-     *   groups={"Registration", "Update"}
+     *     min=2,
+     *     max=50,
+     *     minMessage="common.last_name.min_length",
+     *     maxMessage="common.last_name.max_length",
+     *     groups={"Registration", "Update"}
      * )
      */
     public $lastName;
@@ -67,10 +67,10 @@ class MembershipRequest implements MembershipInterface
      * @var string|null
      *
      * @Assert\Choice(
-     *   callback = {"AppBundle\Membership\ActivityPositions", "all"},
-     *   message="adherent.activity_position.invalid_choice",
-     *   strict=true,
-     *   groups={"Update"}
+     *     callback={"AppBundle\Membership\ActivityPositions", "all"},
+     *     message="adherent.activity_position.invalid_choice",
+     *     strict=true,
+     *     groups={"Update"}
      * )
      */
     public $position;

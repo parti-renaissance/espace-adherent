@@ -14,7 +14,7 @@ class ReferentPersonLink
     /**
      * @var int
      *
-     * @ORM\Column(type="integer", options={"unsigned"=true})
+     * @ORM\Column(type="integer", options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */

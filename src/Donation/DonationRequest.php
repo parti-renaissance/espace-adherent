@@ -32,9 +32,9 @@ class DonationRequest
     /**
      * @Assert\NotBlank(message="common.gender.invalid_choice")
      * @Assert\Choice(
-     *   callback = {"AppBundle\ValueObject\Genders", "all"},
-     *   message="common.gender.invalid_choice",
-     *   strict=true
+     *     callback={"AppBundle\ValueObject\Genders", "all"},
+     *     message="common.gender.invalid_choice",
+     *     strict=true
      * )
      */
     public $gender;
@@ -42,10 +42,10 @@ class DonationRequest
     /**
      * @Assert\NotBlank(message="common.first_name.not_blank")
      * @Assert\Length(
-     *   min=2,
-     *   max=50,
-     *   minMessage="common.first_name.min_length",
-     *   maxMessage="common.first_name.max_length"
+     *     min=2,
+     *     max=50,
+     *     minMessage="common.first_name.min_length",
+     *     maxMessage="common.first_name.max_length"
      * )
      */
     public $firstName;
@@ -53,10 +53,10 @@ class DonationRequest
     /**
      * @Assert\NotBlank(message="common.first_name.not_blank")
      * @Assert\Length(
-     *   min=2,
-     *   max=50,
-     *   minMessage="common.last_name.min_length",
-     *   maxMessage="common.last_name.max_length"
+     *     min=2,
+     *     max=50,
+     *     minMessage="common.last_name.min_length",
+     *     maxMessage="common.last_name.max_length"
      * )
      */
     public $lastName;

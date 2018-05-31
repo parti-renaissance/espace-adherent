@@ -46,7 +46,7 @@ abstract class BaseEventCategory
     protected $slug;
 
     /**
-     * @ORM\Column(length=10, options={"default"="ENABLED"})
+     * @ORM\Column(length=10, options={"default": "ENABLED"})
      * @Algolia\Attribute
      */
     protected $status;

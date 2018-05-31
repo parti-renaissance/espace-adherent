@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="legislative_candidates", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="legislative_candidates_slug_unique", columns="slug")
+ *     @ORM\UniqueConstraint(name="legislative_candidates_slug_unique", columns="slug")
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LegislativeCandidateRepository")
  *
@@ -53,10 +53,10 @@ class LegislativeCandidate implements EntityMediaInterface
      *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Choice(
-     *   callback = {"AppBundle\ValueObject\Genders", "all"},
-     *   message="common.gender.invalid_choice",
-     *   strict=true,
-     *   groups="Admin"
+     *     callback={"AppBundle\ValueObject\Genders", "all"},
+     *     message="common.gender.invalid_choice",
+     *     strict=true,
+     *     groups="Admin"
      * )
      */
     private $gender;

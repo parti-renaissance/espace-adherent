@@ -97,9 +97,9 @@ class CitizenActionController extends Controller
 
     /**
      * @Route(
-     *   path="/{slug}/confirmation",
-     *   name="app_citizen_action_attend_confirmation",
-     *   condition="request.query.has('registration')"
+     *     path="/{slug}/confirmation",
+     *     name="app_citizen_action_attend_confirmation",
+     *     condition="request.query.has('registration')"
      * )
      * @Method("GET")
      */

@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ReferentAreaRepository")
  * @ORM\Table(name="referent_area", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="referent_area_area_code_unique", columns="area_code")
+ *     @ORM\UniqueConstraint(name="referent_area_area_code_unique", columns="area_code")
  * })
  * @UniqueEntity(fields="areaCode", message="legislative_district_zone.area_code.unique", groups="Admin")
  *
@@ -52,10 +52,10 @@ class ReferentArea
      *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Choice(
-     *   callback = "getAreaTypeChoices",
-     *   message="legislative_district_zone.area_type.invalid",
-     *   strict=true,
-     *   groups="Admin"
+     *     callback="getAreaTypeChoices",
+     *     message="legislative_district_zone.area_type.invalid",
+     *     strict=true,
+     *     groups="Admin"
      * )
      */
     private $areaType = self::TYPE_DEPARTMENT;

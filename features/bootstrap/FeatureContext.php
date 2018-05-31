@@ -7,7 +7,7 @@ use Webmozart\Assert\Assert;
 class FeatureContext extends RawMinkContext
 {
     /**
-     * @Given (I )freeze the clock to :dateTime
+     * @Given I freeze the clock to :dateTime
      */
     public function freezeClock(string $dateTime): void
     {

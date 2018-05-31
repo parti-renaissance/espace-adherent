@@ -10,11 +10,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ReferentTagRepository")
  * @ORM\Table(
- *   name="referent_tags",
- *   uniqueConstraints={
- *     @ORM\UniqueConstraint(name="referent_tag_name_unique", columns="name"),
- *     @ORM\UniqueConstraint(name="referent_tag_code_unique", columns="code")
- *   }
+ *     name="referent_tags",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="referent_tag_name_unique", columns="name"),
+ *         @ORM\UniqueConstraint(name="referent_tag_code_unique", columns="code")
+ *     }
  * )
  *
  * @UniqueEntity("name")

@@ -8,9 +8,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 /**
  * This entity represents a link between CitizenProject and Committee.
  *
- * @ORM\Table(
- *   name="citizen_project_committee_supports"
- * )
+ * @ORM\Table(name="citizen_project_committee_supports")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CitizenProjectCommitteeSupportRepository")
  * @Algolia\Index(autoIndex=false)
  */

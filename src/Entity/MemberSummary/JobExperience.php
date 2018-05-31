@@ -120,7 +120,7 @@ class JobExperience implements SummaryItemPositionableInterface
     /**
      * @var int
      *
-     * @ORM\Column(type="smallint", options={"default"=1})
+     * @ORM\Column(type="smallint", options={"default": 1})
      */
     private $displayOrder = 1;
 

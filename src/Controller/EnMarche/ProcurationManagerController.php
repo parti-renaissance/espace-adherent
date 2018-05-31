@@ -117,7 +117,7 @@ class ProcurationManagerController extends Controller
     /**
      * @Route(
      *     "/mandataires/{id}/{action}",
-     *     requirements={ "id"="\d+", "action"=AppBundle\Entity\ProcurationProxy::ACTIONS_URI_REGEX },
+     *     requirements={ "id": "\d+", "action": AppBundle\Entity\ProcurationProxy::ACTIONS_URI_REGEX },
      *     name="app_procuration_manager_proposal_transform"
      * )
      * @Method("GET")
@@ -142,7 +142,7 @@ class ProcurationManagerController extends Controller
     /**
      * @Route(
      *     "/demande/{id}",
-     *     requirements={"id"="\d+"},
+     *     requirements={"id": "\d+"},
      *     name="app_procuration_manager_request"
      * )
      * @Method("GET")
@@ -162,7 +162,7 @@ class ProcurationManagerController extends Controller
     /**
      * @Route(
      *     "/demande/{id}/{action}/{token}",
-     *     requirements={"id"="\d+", "action"=AppBundle\Entity\ProcurationRequest::ACTIONS_URI_REGEX},
+     *     requirements={"id": "\d+", "action": AppBundle\Entity\ProcurationRequest::ACTIONS_URI_REGEX},
      *     name="app_procuration_manager_request_transform"
      * )
      * @Method("GET")
@@ -191,7 +191,7 @@ class ProcurationManagerController extends Controller
     /**
      * @Route(
      *     "/demande/{id}/associer/{proxyId}",
-     *     requirements={"id"="\d+"},
+     *     requirements={"id": "\d+"},
      *     name="app_procuration_manager_request_associate"
      * )
      * @Method("GET|POST")
@@ -235,7 +235,7 @@ class ProcurationManagerController extends Controller
     /**
      * @Route(
      *     "/demande/{id}/desassocier",
-     *     requirements={"id"="\d+"},
+     *     requirements={"id": "\d+"},
      *     name="app_procuration_manager_request_deassociate"
      * )
      * @Method("GET|POST")

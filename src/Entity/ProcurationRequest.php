@@ -91,10 +91,10 @@ class ProcurationRequest
      *
      * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"profile"})
      * @Assert\Choice(
-     *      callback={"AppBundle\ValueObject\Genders", "all"},
-     *      message="common.gender.invalid_choice",
-     *      strict=true,
-     *      groups={"profile"}
+     *     callback={"AppBundle\ValueObject\Genders", "all"},
+     *     message="common.gender.invalid_choice",
+     *     strict=true,
+     *     groups={"profile"}
      * )
      */
     private $gender;
@@ -106,11 +106,11 @@ class ProcurationRequest
      *
      * @Assert\NotBlank(message="procuration.last_name.not_blank", groups={"profile"})
      * @Assert\Length(
-     *      min=2,
-     *      max=50,
-     *      minMessage="procuration.last_name.min_length",
-     *      maxMessage="procuration.last_name.max_length",
-     *      groups={"profile"}
+     *     min=2,
+     *     max=50,
+     *     minMessage="procuration.last_name.min_length",
+     *     maxMessage="procuration.last_name.max_length",
+     *     groups={"profile"}
      * )
      */
     private $lastName = '';
@@ -122,11 +122,11 @@ class ProcurationRequest
      *
      * @Assert\NotBlank(message="procuration.first_names.not_blank", groups={"profile"})
      * @Assert\Length(
-     *      min=2,
-     *      max=100,
-     *      minMessage="procuration.first_names.min_length",
-     *      maxMessage="procuration.first_names.max_length",
-     *      groups={"profile"}
+     *     min=2,
+     *     max=100,
+     *     minMessage="procuration.first_names.min_length",
+     *     maxMessage="procuration.first_names.max_length",
+     *     groups={"profile"}
      * )
      */
     private $firstNames = '';
@@ -273,10 +273,10 @@ class ProcurationRequest
      *
      * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"election_rounds"})
      * @Assert\Choice(
-     *      callback={"AppBundle\Entity\ProcurationRequest", "getReasons"},
-     *      message="common.gender.invalid_choice",
-     *      strict=true,
-     *      groups={"election_rounds"}
+     *     callback={"AppBundle\Entity\ProcurationRequest", "getReasons"},
+     *     message="common.gender.invalid_choice",
+     *     strict=true,
+     *     groups={"election_rounds"}
      * )
      */
     private $reason = self::REASON_RESIDENCY;

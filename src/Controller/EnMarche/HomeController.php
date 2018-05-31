@@ -37,8 +37,8 @@ class HomeController extends Controller
     /**
      * @Route(
      *     "/sitemap_{type}_{page}.xml",
-     *     requirements={"type"=AppBundle\Sitemap\SitemapFactory::ALL_TYPES, "page"="\d+"},
-     *     defaults={"page"="1"},
+     *     requirements={"type": AppBundle\Sitemap\SitemapFactory::ALL_TYPES, "page": "\d+"},
+     *     defaults={"page": "1"},
      *     name="app_sitemap"
      * )
      * @Method("GET")

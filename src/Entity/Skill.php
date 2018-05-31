@@ -10,10 +10,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SkillRepository")
  * @ORM\Table(
- *   name="skills",
- *   uniqueConstraints={
- *     @ORM\UniqueConstraint(name="skill_slug_unique", columns="slug")
- *   }
+ *     name="skills",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="skill_slug_unique", columns="slug")
+ *     }
  * )
  *
  * @UniqueEntity("name")

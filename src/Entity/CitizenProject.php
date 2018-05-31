@@ -17,15 +17,15 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * This entity represents a citizen project.
  *
  * @ORM\Table(
- *   name="citizen_projects",
- *   uniqueConstraints={
- *     @ORM\UniqueConstraint(name="citizen_project_uuid_unique", columns="uuid"),
- *     @ORM\UniqueConstraint(name="citizen_project_canonical_name_unique", columns="canonical_name"),
- *     @ORM\UniqueConstraint(name="citizen_project_slug_unique", columns="slug")
- *   },
- *   indexes={
- *     @ORM\Index(name="citizen_project_status_idx", columns="status")
- *   }
+ *     name="citizen_projects",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="citizen_project_uuid_unique", columns="uuid"),
+ *         @ORM\UniqueConstraint(name="citizen_project_canonical_name_unique", columns="canonical_name"),
+ *         @ORM\UniqueConstraint(name="citizen_project_slug_unique", columns="slug")
+ *     },
+ *     indexes={
+ *         @ORM\Index(name="citizen_project_status_idx", columns="status")
+ *     }
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CitizenProjectRepository")
  *
@@ -94,8 +94,13 @@ class CitizenProject extends BaseGroup
     /**
      * @var CitizenProjectCommitteeSupport[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CitizenProjectCommitteeSupport", fetch="EAGER", mappedBy="citizenProject", orphanRemoval=true,
-     *      cascade={"persist"})
+     * @ORM\OneToMany(
+     *     targetEntity="AppBundle\Entity\CitizenProjectCommitteeSupport",
+     *     fetch="EAGER",
+     *     mappedBy="citizenProject",
+     *     orphanRemoval=true,
+     *     cascade={"persist"}
+     * )
      */
     private $committeeSupports;
 
@@ -147,7 +152,7 @@ class CitizenProject extends BaseGroup
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default"=false})
+     * @ORM\Column(type="boolean", options={"default": false})
      */
     private $imageUploaded = false;
 

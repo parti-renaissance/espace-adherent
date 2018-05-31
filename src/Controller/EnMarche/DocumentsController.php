@@ -29,7 +29,7 @@ class DocumentsController extends Controller
     /**
      * @Route(
      *     "/dossier/{type}/{path}",
-     *     requirements={"type"="adherents|animateurs|referents|animateurs-etrangers|candidats-legislatives", "path"=".+"},
+     *     requirements={"type": "adherents|animateurs|referents|animateurs-etrangers|candidats-legislatives", "path": ".+"},
      *     name="app_documents_directory"
      * )
      * @Method("GET")
@@ -52,7 +52,7 @@ class DocumentsController extends Controller
     /**
      * @Route(
      *     "/telecharger/{type}/{path}",
-     *     requirements={"type"="adherents|animateurs|referents|animateurs-etrangers|candidats-legislatives", "path"=".+"},
+     *     requirements={"type": "adherents|animateurs|referents|animateurs-etrangers|candidats-legislatives", "path": ".+"},
      *     name="app_documents_file"
      * )
      * @Method("GET")

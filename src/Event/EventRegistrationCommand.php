@@ -123,7 +123,7 @@ class EventRegistrationCommand
     }
 
     /**
-     * @Assert\IsTrue(message = "event.full")
+     * @Assert\IsTrue(message="event.full")
      */
     public function isNotFull(): bool
     {

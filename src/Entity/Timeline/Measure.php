@@ -64,8 +64,8 @@ class Measure implements AlgoliaIndexedEntityInterface
      *
      * @Assert\NotBlank
      * @Assert\Choice(
-     *      choices=Measure::STATUSES,
-     *      strict=true
+     *     choices=Measure::STATUSES,
+     *     strict=true
      * )
      *
      * @Algolia\Attribute

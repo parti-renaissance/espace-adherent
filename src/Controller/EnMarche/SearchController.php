@@ -134,7 +134,7 @@ class SearchController extends Controller
     }
 
     /**
-     * @Route("/tous-les-evenements/{page}", requirements={"page"="\d+"}, name="app_search_all_events")
+     * @Route("/tous-les-evenements/{page}", requirements={"page": "\d+"}, name="app_search_all_events")
      * @Method("GET")
      */
     public function allEventsAction(int $page = 1)
@@ -158,7 +158,7 @@ class SearchController extends Controller
     }
 
     /**
-     * @Route("/tous-les-comites/{page}", requirements={"page"="\d+"}, name="app_search_all_committees")
+     * @Route("/tous-les-comites/{page}", requirements={"page": "\d+"}, name="app_search_all_committees")
      * @Method("GET")
      */
     public function allCommitteesAction(int $page = 1)

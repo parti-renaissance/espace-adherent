@@ -86,9 +86,9 @@ class EventController extends Controller
 
     /**
      * @Route(
-     *   path="/confirmation",
-     *   name="app_event_attend_confirmation",
-     *   condition="request.query.has('registration')"
+     *     path="/confirmation",
+     *     name="app_event_attend_confirmation",
+     *     condition="request.query.has('registration')"
      * )
      * @Method("GET")
      */

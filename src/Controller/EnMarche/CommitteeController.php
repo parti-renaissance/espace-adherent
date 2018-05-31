@@ -69,8 +69,8 @@ class CommitteeController extends Controller
 
     /**
      * @Route("/timeline/{id}/modifier", name="app_committee_timeline_edit")
-     * @ParamConverter("committee", options={"mapping":{"slug": "slug"}})
-     * @ParamConverter("committeeFeedItem", options={"mapping":{"id": "id"}})
+     * @ParamConverter("committee", options={"mapping": {"slug": "slug"}})
+     * @ParamConverter("committeeFeedItem", options={"mapping": {"id": "id"}})
      * @Method("GET|POST")
      * @Security("is_granted('ADMIN_FEED_COMMITTEE', committeeFeedItem)")
      */
@@ -103,8 +103,8 @@ class CommitteeController extends Controller
 
     /**
      * @Route("/timeline/{id}/supprimer", name="app_committee_timeline_delete")
-     * @ParamConverter("committee", options={"mapping":{"slug": "slug"}})
-     * @ParamConverter("committeeFeedItem", options={"mapping":{"id": "id"}})
+     * @ParamConverter("committee", options={"mapping": {"slug": "slug"}})
+     * @ParamConverter("committeeFeedItem", options={"mapping": {"id": "id"}})
      * @Method("DELETE")
      * @Security("is_granted('ADMIN_FEED_COMMITTEE', committeeFeedItem)")
      */

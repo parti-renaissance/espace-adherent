@@ -14,8 +14,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string", length=20)
  * @ORM\DiscriminatorMap({
- *    "person_orga_item" = "AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem",
- *    "group_orga_item" = "AppBundle\Entity\ReferentOrganizationalChart\GroupOrganizationalChartItem"
+ *     "person_orga_item": "AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem",
+ *     "group_orga_item": "AppBundle\Entity\ReferentOrganizationalChart\GroupOrganizationalChartItem"
  * })
  */
 abstract class AbstractOrganizationalChartItem
@@ -23,7 +23,7 @@ abstract class AbstractOrganizationalChartItem
     /**
      * @var int
      *
-     * @ORM\Column(type="integer", options={"unsigned"=true})
+     * @ORM\Column(type="integer", options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */

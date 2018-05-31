@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OAuth\ClientRepository")
  * @ORM\Table(name="oauth_clients", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="oauth_clients_uuid_unique", columns="uuid")
+ *     @ORM\UniqueConstraint(name="oauth_clients_uuid_unique", columns="uuid")
  * })
  *
  * @Algolia\Index(autoIndex=false)
@@ -35,7 +35,7 @@ class Client
     use EntityTimestampableTrait;
 
     /**
-     * @Assert\Length(max = 32, maxMessage = "client.name.constraint.length.max")
+     * @Assert\Length(max=32, maxMessage="client.name.constraint.length.max")
      *
      * @ORM\Column
      */
@@ -43,10 +43,10 @@ class Client
 
     /**
      * @Assert\Length(
-     *     min = 10,
-     *     max = 200,
-     *     minMessage = "La description doit faire au moins {{ limit }} caractères.",
-     *     maxMessage = "La description ne doit pas dépasser {{ limit }} caractères."
+     *     min=10,
+     *     max=200,
+     *     minMessage="La description doit faire au moins {{ limit }} caractères.",
+     *     maxMessage="La description ne doit pas dépasser {{ limit }} caractères."
      * )
      *
      * @ORM\Column
@@ -54,7 +54,7 @@ class Client
     private $description;
 
     /**
-     * @Assert\Count(min = 1, minMessage = "Veuillez spécifier au moins une adresse de redirection.")
+     * @Assert\Count(min=1, minMessage="Veuillez spécifier au moins une adresse de redirection.")
      *
      * @ORM\Column(type="json")
      */
@@ -68,7 +68,7 @@ class Client
     /**
      * @ORM\Column(type="simple_array")
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      */
     private $allowedGrantTypes;
 
@@ -78,7 +78,7 @@ class Client
     private $supportedScopes;
 
     /**
-     * @ORM\Column(type="boolean", nullable=false, options={"default":true})
+     * @ORM\Column(type="boolean", nullable=false, options={"default": true})
      */
     private $askUserForAuthorization;
 

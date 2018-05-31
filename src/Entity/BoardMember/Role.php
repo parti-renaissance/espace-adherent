@@ -10,11 +10,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\BoardMember\RoleRepository")
  * @ORM\Table(
- *   name="roles",
- *   uniqueConstraints={
- *     @ORM\UniqueConstraint(name="board_member_role_code_unique", columns="code"),
- *     @ORM\UniqueConstraint(name="board_member_role_name_unique", columns="name")
- *   }
+ *     name="roles",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="board_member_role_code_unique", columns="code"),
+ *         @ORM\UniqueConstraint(name="board_member_role_name_unique", columns="name")
+ *     }
  * )
  *
  * @UniqueEntity("code")

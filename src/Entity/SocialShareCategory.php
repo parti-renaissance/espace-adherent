@@ -26,7 +26,7 @@ class SocialShareCategory
      * @ORM\Column(length=100)
      *
      * @Assert\NotBlank
-     * @Assert\Length(max = 100)
+     * @Assert\Length(max=100)
      */
     private $name;
 

@@ -44,9 +44,9 @@ class EventInvitation
      * @Assert\Type("array")
      * @Assert\Count(min=1, minMessage="event.invitation.guests.min")
      * @Assert\All({
-     *    @Assert\Email(message="common.email.invalid"),
-     *    @Assert\NotBlank(message="common.email.not_blank"),
-     *    @Assert\Length(max=255, maxMessage="common.email.max_length")
+     *     @Assert\Email(message="common.email.invalid"),
+     *     @Assert\NotBlank(message="common.email.not_blank"),
+     *     @Assert\Length(max=255, maxMessage="common.email.max_length")
      * })
      */
     public $guests = [];

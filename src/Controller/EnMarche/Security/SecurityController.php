@@ -95,12 +95,12 @@ class SecurityController extends Controller
 
     /**
      * @Route(
-     *   path="/changer-mot-de-passe/{adherent_uuid}/{reset_password_token}",
-     *   name="adherent_reset_password",
-     *   requirements={
-     *     "adherent_uuid": "%pattern_uuid%",
-     *     "reset_password_token": "%pattern_sha1%"
-     *   }
+     *     path="/changer-mot-de-passe/{adherent_uuid}/{reset_password_token}",
+     *     name="adherent_reset_password",
+     *     requirements={
+     *         "adherent_uuid": "%pattern_uuid%",
+     *         "reset_password_token": "%pattern_sha1%"
+     *     }
      * )
      * @Method("GET|POST")
      * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")

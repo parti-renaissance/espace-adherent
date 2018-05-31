@@ -16,7 +16,7 @@ class RepublicanSilence implements \Serializable
      * @var int
      *
      * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned"=true})
+     * @ORM\Column(type="integer", options={"unsigned": true})
      * @ORM\GeneratedValue
      */
     private $id;
