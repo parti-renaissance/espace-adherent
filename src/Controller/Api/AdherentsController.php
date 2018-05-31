@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\History\CommitteeMembershipHistoryHandler;
+use AppBundle\Membership\AdherentManager;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
 use AppBundle\Repository\AdherentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -34,13 +36,23 @@ class AdherentsController extends Controller
      */
     public function adherentsCountForReferentManagedAreaAction(
         AdherentRepository $adherentRepository,
-        EmailSubscriptionHistoryHandler $historyHandler
+        EmailSubscriptionHistoryHandler $historyHandler,
+        AdherentManager $adherentManager,
+        CommitteeMembershipHistoryHandler $committeeMembershipHistoryHandler
     ): Response {
         $referent = $this->getUser();
         $count = $adherentRepository->countByGenderManagedBy($referent);
+        $countByMonth = $adherentManager->countMembersByMonthManagedBy($referent);
+        $countByMonth = array_merge_recursive($countByMonth, $committeeMembershipHistoryHandler->queryCountByMonth($referent));
         $subscriptions = $historyHandler->queryCountByMonth($referent);
 
-        return new JsonResponse(array_merge($this->aggregateCount($count), ['email_subscriptions' => $subscriptions]));
+        return new JsonResponse(
+            array_merge(
+                $this->aggregateCount($count),
+                ['monthly' => $countByMonth],
+                ['email_subscriptions' => $subscriptions]
+            )
+        );
     }
 
     private function aggregateCount(array $count): array

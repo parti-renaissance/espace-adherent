@@ -9,6 +9,9 @@
             <bind key="$environment">%kernel.environment%</bind>
         </defaults>
 
+        <!-- History -->
+        <prototype namespace="AppBundle\History\" resource="../../../src/History/" />
+
         <!-- Adherents -->
         <service id="AppBundle\Membership\AdherentManager" />
         <service id="AppBundle\Membership\AdherentRegistry" public="true" />

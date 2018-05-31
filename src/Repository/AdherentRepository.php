@@ -14,6 +14,7 @@ use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Membership\AdherentEmailSubscription;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Cake\Chronos\Chronos;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ramsey\Uuid\Uuid;
@@ -532,7 +533,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $this->checkReferent($referent);
 
         return $this->createQueryBuilder('a', 'a.gender')
-            ->select('a.gender, COUNT(a) AS count')
+            ->select('a.gender, COUNT(DISTINCT a) AS count')
             ->innerJoin('a.referentTags', 'tag')
             ->where('tag.id IN (:tags)')
             ->andWhere('a.adherent = 1')
@@ -598,5 +599,38 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $count['total'] = array_sum($count);
 
         return $count;
+    }
+
+    public function countMembersManagedBy(Adherent $referent, \DateTimeInterface $until): int
+    {
+        $this->assertReferent($referent);
+
+        $query = $this->createQueryBuilder('adherent')
+            ->select('COUNT(DISTINCT adherent) AS count')
+            ->innerJoin('adherent.referentTags', 'tag')
+            ->where('tag IN (:tags)')
+            ->andWhere('adherent.activatedAt <= :until')
+            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('until', $until)
+            ->getQuery()
+        ;
+
+        // Let's cache past data as they are never going to change
+        $firstDayOfMonth = (new Chronos('first day of this month'))->setTime(0, 0);
+        if ($firstDayOfMonth > $until) {
+            $query->useResultCache(true, 5184000); // 60 days
+        }
+
+        return (int) $query->getSingleScalarResult();
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    protected function assertReferent(Adherent $referent): void
+    {
+        if (!$referent->isReferent()) {
+            throw new \InvalidArgumentException('Adherent must be a referent.');
+        }
     }
 }
