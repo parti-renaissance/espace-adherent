@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller\Api;
 
-use AppBundle\Entity\Committee;
+use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Repository\EventRegistrationRepository;
 use AppBundle\Repository\EventRepository;
@@ -35,11 +35,11 @@ class EventsController extends Controller
      * @Method("GET")
      * @Security("is_granted('ROLE_REFERENT')")
      */
-    public function eventsCountInReferentManagedAreaAction(Request $request, EventRepository $eventRepository, EventRegistrationRepository $eventRegistrationRepository): Response
+    public function eventsCountInReferentManagedAreaAction(Request $request, EventRepository $eventRepository, EventRegistrationRepository $eventRegistrationRepository, CommitteeRepository $committeeRepository): Response
     {
         $referent = $this->getUser();
         try {
-            $filter = StatisticsParametersFilter::createFromRequest($request, $this->getDoctrine()->getRepository(Committee::class));
+            $filter = StatisticsParametersFilter::createFromRequest($request, $committeeRepository);
         } catch (\InvalidArgumentException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
@@ -64,6 +64,20 @@ class EventsController extends Controller
         return new JsonResponse([
             'current_total' => $total,
             'monthly' => array_merge_recursive($events, $referentEvents),
+        ]);
+    }
+
+    /**
+     * @Route("/count-participants", name="app_committee_events_count_participants")
+     * @Method("GET")
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function eventsCountInReferentManagedArea(EventRepository $eventRepository): Response
+    {
+        $referent = $this->getUser();
+
+        return new JsonResponse([
+            'total' => $eventRepository->countParticipantsInReferentManagedArea($referent),
         ]);
     }
 }
