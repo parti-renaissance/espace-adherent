@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\CoreBundle\Form\Type\BooleanType;
 use Sonata\CoreBundle\Form\Type\DatePickerType;
@@ -35,6 +36,7 @@ class MoocChapterAdmin extends AbstractAdmin
                     ->add('publishedAt', DatePickerType::class, [
                         'label' => 'Date de publication',
                     ])
+                    ->add('mooc', ModelListType::class)
                     ->add('displayOrder', IntegerType::class, [
                         'label' => 'Ordre d\'affichage',
                         'scale' => 0,
@@ -43,14 +45,20 @@ class MoocChapterAdmin extends AbstractAdmin
                         ],
                     ])
                 ->end()
+        ;
+        if (!$this->request->isXmlHttpRequest()) {
+            $formMapper
                 ->with('Media', ['class' => 'col-md-6'])
-                    ->add('videos', EntityType::class, [
-                        'label' => 'Vidéos',
+                    ->add('elements', EntityType::class, [
+                        'label' => 'Éléments',
                         'multiple' => true,
                         'class' => Video::class,
                         'by_reference' => false,
                     ])
                 ->end()
+            ;
+        }
+        $formMapper
             ->end()
         ;
     }

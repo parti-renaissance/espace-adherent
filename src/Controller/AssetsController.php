@@ -39,7 +39,7 @@ class AssetsController extends Controller
             ]);
         }
 
-        if (count($parameters) > 0) {
+        if (\count($parameters) > 0) {
             try {
                 // No signature validation if no parameters
                 // added to generate URL without parameters that not produce 404, useful especially for sitemap

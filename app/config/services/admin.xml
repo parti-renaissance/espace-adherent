@@ -577,12 +577,18 @@
             <argument />
         </service>
 
-        <service id="app.admin.mooc_video" class="AppBundle\Admin\MoocVideoAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Vidéos" group="Mooc" />
+        <service id="app.admin.mooc_element" class="AppBundle\Admin\MoocElementAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Éléments" group="Mooc" />
 
             <argument />
-            <argument>AppBundle\Entity\Mooc\Video</argument>
-            <argument />
+            <argument>AppBundle\Entity\Mooc\BaseMoocElement</argument>
+            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
+            <call method="setSubClasses">
+                <argument type="collection">
+                    <argument key="Vidéo">AppBundle\Entity\Mooc\Video</argument>
+                    <argument key="Quizz">AppBundle\Entity\Mooc\Quizz</argument>
+                </argument>
+            </call>
         </service>
 
         <!--
