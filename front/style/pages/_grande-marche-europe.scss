@@ -6,6 +6,31 @@
         overflow: scroll;
     }
 
+    ul {
+        list-style: disc;
+        padding-left: 40px;
+    }
+
+    blockquote {
+        @include text--medium-small;
+        font-family: $font-gillsans;
+        font-weight: bold;
+        font-style: italic;
+
+        @media (max-width: $mobile) {
+            @include text--default;
+        }
+
+        span {
+            @include text--smallest;
+            @include text--uppercase;
+            font-style: normal;
+            font-family: $font-roboto;
+            color: $blue--dark;
+            font-weight: normal;
+        }
+    }
+
     .splash-screen {
         @include splash--screen($blue--europe, .8s, 300);
 
@@ -37,15 +62,25 @@
         top: 0;
     }
 
+    &__text {
+        width: 100%;
+        position: absolute;
+    }
+
     .video--bkg {
         width: 100%;
-        height: 100vh;
         display: flex;
         justify-content: center;
+        position: relative;
 
         video {
             object-fit: cover;
-            @include full--size;
+            width: 100%;
+            height: 420px;
+
+            @media (max-width: $mobile) {
+                height: 270px;
+            }
 
              ::-webkit-media-controls {
                 display: none !important;
