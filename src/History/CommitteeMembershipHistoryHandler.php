@@ -4,6 +4,7 @@ namespace AppBundle\History;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Repository\CommitteeMembershipHistoryRepository;
+use AppBundle\Statistics\StatisticsParametersFilter;
 use Cake\Chronos\Chronos;
 
 class CommitteeMembershipHistoryHandler
@@ -15,7 +16,7 @@ class CommitteeMembershipHistoryHandler
         $this->historyRepository = $historyRepository;
     }
 
-    public function queryCountByMonth(Adherent $referent, int $months = 6): array
+    public function queryCountByMonth(Adherent $referent, int $months = 6, StatisticsParametersFilter $filter = null, string $keyName = 'in_at_least_one_committee'): array
     {
         foreach (range(0, $months - 1) as $monthInterval) {
             $until = $monthInterval
@@ -23,9 +24,9 @@ class CommitteeMembershipHistoryHandler
                         : new Chronos()
             ;
 
-            $count = $this->historyRepository->countAdherentMemberOfAtLeastOneCommitteeManagedBy($referent, $until);
+            $count = $this->historyRepository->countAdherentMemberOfAtLeastOneCommitteeManagedBy($referent, $until, $filter);
 
-            $countByMonth[$until->format('Y-m')] = ['in_at_least_one_committee' => $count];
+            $countByMonth[$until->format('Y-m')] = [$keyName => $count];
         }
 
         return $countByMonth;

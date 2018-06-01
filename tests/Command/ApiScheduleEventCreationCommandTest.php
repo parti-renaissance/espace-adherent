@@ -16,7 +16,7 @@ class ApiScheduleEventCreationCommandTest extends SqliteWebTestCase
         $output = $this->runCommand('app:sync:events');
 
         $this->assertContains('Starting synchronization.', $output);
-        $this->assertContains('16/16', $output);
+        $this->assertContains('20/20', $output);
         $this->assertContains('Successfully scheduled for synchronization!', $output);
     }
 

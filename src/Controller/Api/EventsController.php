@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\Committee;
 use AppBundle\Repository\CitizenActionRepository;
+use AppBundle\Repository\EventRegistrationRepository;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Statistics\StatisticsParametersFilter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -34,7 +35,7 @@ class EventsController extends Controller
      * @Method("GET")
      * @Security("is_granted('ROLE_REFERENT')")
      */
-    public function eventsCountInReferentManagedAreaAction(Request $request, EventRepository $eventRepository): Response
+    public function eventsCountInReferentManagedAreaAction(Request $request, EventRepository $eventRepository, EventRegistrationRepository $eventRegistrationRepository): Response
     {
         $referent = $this->getUser();
         try {
@@ -43,8 +44,9 @@ class EventsController extends Controller
             throw new BadRequestHttpException($e->getMessage());
         }
         $events = $eventRepository->countCommitteeEventsInReferentManagedArea($referent, $filter);
+        $eventParticipants = $eventRegistrationRepository->countEventParticipantsInReferentManagedArea($this->getUser(), $filter);
 
-        return new JsonResponse($events);
+        return new JsonResponse(array_merge_recursive($events, $eventParticipants));
     }
 
     /**

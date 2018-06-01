@@ -2,13 +2,17 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\Entity\Committee;
+use AppBundle\History\CommitteeMembershipHistoryHandler;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CommitteeRepository;
+use AppBundle\Statistics\StatisticsParametersFilter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class CommitteesController extends Controller
@@ -36,6 +40,22 @@ class CommitteesController extends Controller
             'members' => $adherentRepository->countMembersByGenderForReferent($referent),
             'supervisors' => $adherentRepository->countSupervisorsByGenderForReferent($referent),
         ]);
+    }
+
+    /**
+     * @Route("/committees/members/count-by-month", name="app_committee_members_count_by_month_for_referent_area")
+     * @Method("GET")
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function getMembersCommitteeCountAction(
+        Request $request,
+        CommitteeMembershipHistoryHandler $committeeMembershipHistoryHandler
+    ): Response {
+        $referent = $this->getUser();
+
+        $filter = StatisticsParametersFilter::createFromRequest($request, $this->getDoctrine()->getRepository(Committee::class));
+
+        return new JsonResponse($committeeMembershipHistoryHandler->queryCountByMonth($referent, 6, $filter, 'committee_members'));
     }
 
     /**

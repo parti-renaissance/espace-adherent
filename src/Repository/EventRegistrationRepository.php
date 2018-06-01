@@ -5,13 +5,19 @@ namespace AppBundle\Repository;
 use AppBundle\Collection\EventRegistrationCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
+use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
+use AppBundle\Statistics\StatisticsParametersFilter;
+use AppBundle\Utils\RepositoryUtils;
+use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class EventRegistrationRepository extends ServiceEntityRepository
 {
+    use ReferentTrait;
     use UuidEntityRepositoryTrait;
 
     public function __construct(RegistryInterface $registry)
@@ -161,6 +167,30 @@ class EventRegistrationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    public function countEventParticipantsInReferentManagedArea(Adherent $referent, StatisticsParametersFilter $filter = null, int $months = 5): array
+    {
+        $this->checkReferent($referent);
+
+        $query = $this->createQueryBuilder('event_registrations')
+            ->select('DISTINCT event_registrations.emailAddress, COUNT(DISTINCT event_registrations) AS count, YEAR_MONTH(event.beginAt) as yearmonth')
+            ->join(Event::class, 'event', Join::WITH, 'event_registrations.event = event.id')
+            ->leftJoin(Adherent::class, 'adherent', Join::WITH, 'adherent.uuid = event_registrations.adherentUuid')
+            ->join('event.referentTags', 'tag')
+            ->where('tag IN (:tags)')
+            ->andWhere('event.beginAt >= :from')
+            ->andWhere('event.beginAt <= :until')
+            ->andWhere('event.committee IS NOT NULL')
+            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('until', (new Chronos('now'))->setTime(23, 59, 59, 999))
+            ->setParameter('from', (new Chronos("first day of -$months months"))->setTime(0, 0, 0, 000))
+            ->groupBy('yearmonth')
+        ;
+
+        $query = RepositoryUtils::addStatstFilter($filter, $query);
+
+        return RepositoryUtils::aggregateCountByMonth($query->getQuery()->getArrayResult(), 'event_participants');
     }
 
     private function createEventRegistrationQueryBuilder(string $eventUuid): QueryBuilder

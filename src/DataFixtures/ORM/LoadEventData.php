@@ -38,6 +38,10 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
     const EVENT_14_UUID = 'f0574b51-40e0-4236-a2ff-62c42cb16029';
     const EVENT_15_UUID = 'a6709808-b3fa-40fc-95a4-da49ddc314ff';
     const EVENT_16_UUID = '15acb775-3425-4f3a-97fb-9c7725c53bbc';
+    const EVENT_17_UUID = '84e124a7-7afd-4f63-a2a7-e18545f18e24';
+    const EVENT_18_UUID = 'c09fde77-cc05-4139-a127-f71c2702f281';
+    const EVENT_19_UUID = '67e75e81-ad27-4414-bb0b-9e0c6e12b275';
+    const EVENT_20_UUID = '65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e';
 
     use ContainerAwareTrait;
 
@@ -57,6 +61,9 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         $author12 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_12_UUID);
         $author13 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_13_UUID);
         $referent75and77 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_19_UUID);
+
+        $adherent4 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_4_UUID);
+        $adherent17 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_17_UUID);
 
         $committee1 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
         $committee2 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
@@ -300,6 +307,62 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         ]);
         $event16->setPublished(true);
 
+        $event17 = $committeeEventFactory->createFromArray([
+            'uuid' => self::EVENT_17_UUID,
+            'organizer' => $author3,
+            'committee' => $committee1,
+            'name' => 'Événement à Paris 1',
+            'category' => $eventCategory10,
+            'description' => 'Allons à la rencontre des citoyens.',
+            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.870507, 2.303243),
+            'begin_at' => (new Chronos('-3 days'))->format('Y-m-d').' 09:30:00',
+            'finish_at' => (new Chronos('-3 days'))->format('Y-m-d').' 19:00:00',
+            'capacity' => 100,
+        ]);
+        $event17->setPublished(true);
+
+        $event18 = $committeeEventFactory->createFromArray([
+            'uuid' => self::EVENT_18_UUID,
+            'organizer' => $author3,
+            'committee' => $committee1,
+            'name' => 'Événement à Paris 2',
+            'category' => $eventCategory1,
+            'description' => 'Allons à la rencontre des citoyens.',
+            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.870507, 2.303243),
+            'begin_at' => (new Chronos('-10 days'))->format('Y-m-d').' 09:30:00',
+            'finish_at' => (new Chronos('-10 days'))->format('Y-m-d').' 19:00:00',
+            'capacity' => 100,
+        ]);
+        $event18->setPublished(true);
+
+        $event19 = $committeeEventFactory->createFromArray([
+            'uuid' => self::EVENT_19_UUID,
+            'organizer' => $author7,
+            'committee' => $committee4,
+            'name' => 'Événements à Fontainebleau 1',
+            'category' => $eventCategory5,
+            'description' => 'Allons à la rencontre des citoyens.',
+            'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', 48.404765, 2.698759),
+            'begin_at' => (new Chronos('-1 month'))->format('Y-m-d').' 09:30:00',
+            'finish_at' => (new Chronos('-1 month'))->format('Y-m-d').' 19:00:00',
+            'capacity' => 50,
+        ]);
+        $event19->setPublished(true);
+
+        $event20 = $committeeEventFactory->createFromArray([
+            'uuid' => self::EVENT_20_UUID,
+            'organizer' => $author7,
+            'committee' => $committee4,
+            'name' => 'Événements à Fontainebleau 2',
+            'category' => $eventCategory3,
+            'description' => 'Allons à la rencontre des citoyens.',
+            'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', 48.404765, 2.698759),
+            'begin_at' => (new Chronos('-1 month'))->format('Y-m-d').' 09:30:00',
+            'finish_at' => (new Chronos('-1 month'))->format('Y-m-d').' 19:00:00',
+            'capacity' => 50,
+        ]);
+        $event20->setPublished(true);
+
         $manager->persist($event1);
         $manager->persist($event2);
         $manager->persist($event3);
@@ -316,6 +379,10 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         $manager->persist($event14);
         $manager->persist($event15);
         $manager->persist($event16);
+        $manager->persist($event17);
+        $manager->persist($event18);
+        $manager->persist($event19);
+        $manager->persist($event20);
 
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event8, $author3)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event9, $author3)));
@@ -333,6 +400,28 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event12, $author12)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event12, $author3)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event16, $referent75and77)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event17, $author3)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event18, $author3)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event19, $author7)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event20, $author7)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event20, $adherent4)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event20, $adherent17)));
+        // Registrations of not connected users
+        $eventRegistration1 = new EventRegistrationCommand($event10);
+        $eventRegistration1->setFirstName('Marie');
+        $eventRegistration1->setLastName('CLAIRE');
+        $eventRegistration1->setEmailAddress('marie.claire@test.com');
+        $eventRegistration2 = new EventRegistrationCommand($event10);
+        $eventRegistration2->setFirstName('Pierre');
+        $eventRegistration2->setLastName('FRANCE');
+        $eventRegistration2->setEmailAddress('pierre.france@test.com');
+        $eventRegistration3 = new EventRegistrationCommand($event16);
+        $eventRegistration3->setFirstName('Jean');
+        $eventRegistration3->setLastName('PIERRE');
+        $eventRegistration3->setEmailAddress('jean.pierre@test.com');
+        $manager->persist($registrationFactory->createFromCommand($eventRegistration1));
+        $manager->persist($registrationFactory->createFromCommand($eventRegistration2));
+        $manager->persist($registrationFactory->createFromCommand($eventRegistration3));
 
         $manager->flush();
 

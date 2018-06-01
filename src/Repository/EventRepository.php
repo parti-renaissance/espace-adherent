@@ -10,6 +10,7 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\ReferentTag;
 use AppBundle\Search\SearchParametersFilter;
 use AppBundle\Statistics\StatisticsParametersFilter;
+use AppBundle\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -520,25 +521,8 @@ SQL;
         $this->checkReferent($referent);
 
         $query = $this->queryCountByMonth($referent);
-
         if ($filter) {
-            if ($filter->getCommittee()) {
-                $query->andWhere('event.committee = :committee')
-                    ->setParameter('committee', $filter->getCommittee())
-                ;
-            }
-
-            if ($filter->getCityName()) {
-                $query->andWhere('event.postAddress.cityName = :city')
-                    ->setParameter('city', $filter->getCityName())
-                ;
-            }
-
-            if ($filter->getCountryCode()) {
-                $query->andWhere('event.postAddress.country = :country')
-                    ->setParameter('country', $filter->getCountryCode())
-                ;
-            }
+            $query = RepositoryUtils::addStatstFilter($filter, $query);
         }
 
         $result = $query
@@ -547,7 +531,7 @@ SQL;
             ->getArrayResult()
         ;
 
-        return $this->aggregateCountByMonth($result, BaseEvent::EVENT_TYPE.'s');
+        return RepositoryUtils::aggregateCountByMonth($result, BaseEvent::EVENT_TYPE.'s');
     }
 
     public function countReferentEventsInReferentManagedArea(Adherent $referent): array
@@ -562,7 +546,7 @@ SQL;
             ->getArrayResult()
         ;
 
-        return $this->aggregateCountByMonth($result, BaseEvent::REFERENT_EVENT_TYPE.'s');
+        return RepositoryUtils::aggregateCountByMonth($result, BaseEvent::REFERENT_EVENT_TYPE.'s');
     }
 
     public function countTotalEventsInReferentManagedAreaForCurrentMonth(Adherent $referent): int
@@ -572,20 +556,5 @@ SQL;
         $query = $this->queryCountByMonth($referent, 0);
 
         return (int) $query->getQuery()->getSingleResult()['count'];
-    }
-
-    protected function aggregateCountByMonth(array $eventsCount, string $type, int $months = 6): array
-    {
-        foreach (range(0, $months - 1) as $month) {
-            $until = (new Chronos("first day of -$month month"));
-            $countByMonth[$until->format('Y-m')][$type] = 0;
-            foreach ($eventsCount as $count) {
-                if ($until->format('Ym') === $count['yearmonth']) {
-                    $countByMonth[$until->format('Y-m')][$type] = (int) $count['count'];
-                }
-            }
-        }
-
-        return $countByMonth;
     }
 }
