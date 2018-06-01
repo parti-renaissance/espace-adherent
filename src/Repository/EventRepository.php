@@ -517,6 +517,31 @@ SQL;
         ;
     }
 
+    public function countParticipantsInReferentManagedAreaByMonthForTheLastSixMonths(Adherent $referent): array
+    {
+        $this->checkReferent($referent);
+
+        $eventsCount = $this->createQueryBuilder('event')
+            ->select('YEAR_MONTH(event.beginAt) AS yearmonth, event.participantsCount as count')
+            ->innerJoin('event.referentTags', 'tag')
+            ->where('tag IN (:tags)')
+            ->andWhere('event.committee IS NOT NULL')
+            ->andWhere("event.status = '".Event::STATUS_SCHEDULED."'")
+            ->andWhere('event.participantsCount > 0')
+            ->andWhere('event.beginAt >= :from')
+            ->andWhere('event.beginAt <= :until')
+            ->setParameter('from', (new Chronos('first day of -5 months'))->setTime(0, 0, 0, 000))
+            ->setParameter('until', (new Chronos('now'))->setTime(23, 59, 59, 999))
+            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->groupBy('event.id')
+            ->getQuery()
+            ->useResultCache(true, 3600)
+            ->getArrayResult()
+        ;
+
+        return RepositoryUtils::aggregateCountByMonth($eventsCount, 'total_participants');
+    }
+
     public function countParticipantsInReferentManagedArea(Adherent $referent): int
     {
         $this->checkReferent($referent);
@@ -539,7 +564,7 @@ FROM (
         AND events.committee_id IS NOT NULL 
         AND events.status = ? 
         AND events.participants_count > 0) 
-    AND events.type IN ('event') 
+        AND events.type IN ('event') 
     GROUP BY events.id
 ) AS events_count
 SQL;

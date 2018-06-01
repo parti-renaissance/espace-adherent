@@ -72,12 +72,16 @@ class EventsController extends Controller
      * @Method("GET")
      * @Security("is_granted('ROLE_REFERENT')")
      */
-    public function eventsCountInReferentManagedArea(EventRepository $eventRepository): Response
+    public function eventsCountInReferentManagedArea(EventRepository $eventRepository, EventRegistrationRepository $eventRegistrationRepository): Response
     {
         $referent = $this->getUser();
 
         return new JsonResponse([
             'total' => $eventRepository->countParticipantsInReferentManagedArea($referent),
+            'monthly' => array_merge_recursive(
+                $eventRegistrationRepository->countEventParticipantsInReferentManagedArea($referent),
+                $eventRegistrationRepository->countEventParticipantsInReferentManagedAreaInAtLeastOneCommittee($referent)
+            ),
         ]);
     }
 }
