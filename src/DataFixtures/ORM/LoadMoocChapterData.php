@@ -17,8 +17,9 @@ class LoadMoocChapterData extends AbstractFixture implements DependentFixtureInt
             new \DateTime(date('Y-m-d', strtotime('+1 days')).' 09:30:00')
         );
 
-        $chapter1->addVideo($this->getReference('mooc-video-1'));
-        $chapter1->addVideo($this->getReference('mooc-video-2'));
+        $chapter1->addElement($this->getReference('mooc-video-1'));
+        $chapter1->addElement($this->getReference('mooc-video-2'));
+        $chapter1->addElement($this->getReference('mooc-quizz-1'));
         $this->addReference('mooc-chapter-1', $chapter1);
 
         $manager->persist($chapter1);
@@ -28,7 +29,7 @@ class LoadMoocChapterData extends AbstractFixture implements DependentFixtureInt
             true,
             new \DateTime(date('Y-m-d', strtotime('+5 days')).' 09:30:00')
         );
-        $chapter2->addVideo($this->getReference('mooc-video-3'));
+        $chapter2->addElement($this->getReference('mooc-video-3'));
         $this->addReference('mooc-chapter-2', $chapter2);
 
         $manager->persist($chapter2);
@@ -40,6 +41,7 @@ class LoadMoocChapterData extends AbstractFixture implements DependentFixtureInt
     {
         return [
             LoadMoocVideoData::class,
+            LoadMoocQuizzData::class,
         ];
     }
 }

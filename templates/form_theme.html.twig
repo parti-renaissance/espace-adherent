@@ -221,3 +221,10 @@
         {{- form_widget(form.number) -}}
     </div>
 {% endblock %}
+
+{% block attachment_file_widget %}
+    {{ form_widget(form) }}
+    {% if form.path is defined %}
+        <a href="{{ path('mooc_get_file', { 'uuid': form.vars.value.uuid }) }}" target="_blank">Voir le fichier</a>
+    {% endif %}
+{% endblock %}

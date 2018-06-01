@@ -29,6 +29,11 @@ class MoocAdmin extends AbstractAdmin
                         'disabled' => true,
                     ])
                 ->end()
+            ->end()
+        ;
+
+        if (!$this->request->isXmlHttpRequest()) {
+            $formMapper
                 ->with('Chapitres', ['class' => 'col-md-6'])
                     ->add('chapters', EntityType::class, [
                         'class' => Chapter::class,
@@ -37,8 +42,10 @@ class MoocAdmin extends AbstractAdmin
                         'multiple' => true,
                     ])
                 ->end()
-            ->end()
-        ;
+            ;
+        }
+
+        $formMapper->end();
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)

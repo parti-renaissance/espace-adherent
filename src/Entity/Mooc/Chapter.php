@@ -57,6 +57,8 @@ class Chapter
     private $publishedAt;
 
     /**
+     * @var int
+     *
      * @ORM\Column(type="smallint")
      * @Gedmo\SortablePosition
      */
@@ -71,21 +73,21 @@ class Chapter
     private $mooc;
 
     /**
-     * @var Chapter[]|Collection
+     * @var BaseMoocElement[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="Video", mappedBy="chapter", cascade={"all"})
-     * @ORM\OrderBy({"displayOrder": "ASC"})
+     * @ORM\OneToMany(targetEntity="BaseMoocElement", mappedBy="chapter", cascade={"all"})
+     * @ORM\OrderBy({"position": "ASC"})
      *
      * @Assert\Valid
      */
-    private $videos;
+    private $elements;
 
     public function __construct(string $title = null, bool $published = false, \DateTime $publishedAt = null)
     {
         $this->title = $title;
         $this->published = $published;
         $this->publishedAt = $publishedAt;
-        $this->videos = new ArrayCollection();
+        $this->elements = new ArrayCollection();
     }
 
     public function __toString()
@@ -164,24 +166,24 @@ class Chapter
     }
 
     /**
-     * @return Video[]|Collection|iterable
+     * @return BaseMoocElement[]|Collection
      */
-    public function getVideos(): iterable
+    public function getElements(): Collection
     {
-        return $this->videos;
+        return $this->elements;
     }
 
-    public function addVideo(Video $video): void
+    public function addElement(BaseMoocElement $element): void
     {
-        if (!$this->videos->contains($video)) {
-            $video->setChapter($this);
-            $this->videos->add($video);
+        if (!$this->elements->contains($element)) {
+            $element->setChapter($this);
+            $this->elements->add($element);
         }
     }
 
-    public function removeVideo(Video $video): void
+    public function removeElement(BaseMoocElement $element): void
     {
-        $video->detachChapter();
-        $this->videos->removeElement($video);
+        $element->detachChapter();
+        $this->elements->removeElement($element);
     }
 }
