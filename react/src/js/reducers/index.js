@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import { fetch } from './fetch';
-import { filter } from './filter';
+import filter from './filter';
+import stats from './stats';
+import user from './user';
 import { routerReducer } from 'react-router-redux';
 
 export default combineReducers({
-    fetch,
     filter,
+    stats,
+    user,
     routing: routerReducer,
 });

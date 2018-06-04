@@ -1,35 +1,33 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Summary from './../components/charts/Summary';
-import Timer from './../components/Timer';
-
+import Summary from './../../components/charts/Summary';
+import { getPercentage } from '../../utils/math';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-
-import data, { fakeDate } from './../fakeData/data';
 
 class AdherentContainer extends Component {
     render() {
+        const { graphData, summaryTotal } = this.props;
+
+        const areaMale = getPercentage(summaryTotal.area.male, summaryTotal.area.total);
+        const areaFemale = getPercentage(summaryTotal.area.female, summaryTotal.area.total);
+        const totalMale = getPercentage(summaryTotal.total.male, summaryTotal.total.total);
+        const totalFemale = getPercentage(summaryTotal.total.female, summaryTotal.total.total);
+
         return (
             <div className="adherent__ctn">
                 <h2 className="ctn__title">Adhérents</h2>
-                <h2 className="dashboard__title">
-                    Résultats à
-                    <span className="text--blue--primary">
-                        <Timer />
-                    </span>
-                </h2>
                 <div className="adherent__ctn__summary">
                     <Summary
-                        summaryTotal={this.props.summaryTotal}
-                        summaryDescription={'Adhérents Indre et Loire'} // Mettre en variable.
-                        womanPercentage={`${33}`}
-                        manPercentage={`${67}`}
+                        summaryTotal={summaryTotal.area.total}
+                        summaryDescription={'Adhérents dans ma zone'}
+                        womanPercentage={`${areaFemale}`}
+                        manPercentage={`${areaMale}`}
                     />
                     <Summary
-                        summaryTotal={this.props.summaryTotal}
+                        summaryTotal={summaryTotal.total.total}
                         summaryDescription="Adhérents Total"
-                        womanPercentage={`${33}`}
-                        manPercentage={`${67}`}
+                        womanPercentage={`${totalFemale}`}
+                        manPercentage={`${totalMale}`}
                     />
                 </div>
                 <div className="adherent__ctn__bars">
@@ -37,26 +35,30 @@ class AdherentContainer extends Component {
                         <BarChart
                             width={600}
                             height={400}
-                            data={data}
-                            margin={{ top: 50, right: 30, left: 20, bottom: 5 }}>
+                            data={graphData}
+                            margin={{ top: 50, right: 30, left: 20, bottom: 5 }}
+                        >
                             <CartesianGrid stroke="#FEF2F2" vertical={false} />
-                            <XAxis dataKey="name" stroke="" />
+                            <XAxis dataKey="date" stroke="" />
                             <YAxis stroke="#FEF2F2" />
                             <Tooltip
                                 cursor={{ stroke: '#FEF0F0', fill: '#FFF' }}
-                                itemStyle={{ textAlign: 'left', stroke: '#FEF0F0' }}
+                                itemStyle={{
+                                    textAlign: 'left',
+                                    stroke: '#FEF0F0',
+                                }}
                             />
                             <Legend height={50} align="left" verticalAlign="bottom" iconType="circle" />
                             <Bar
                                 name="Adhérent"
-                                dataKey="adherent"
+                                dataKey="total"
                                 fill="#6BA0EE"
                                 barSize={10}
                                 animationEasing="ease-in-out"
                             />
                             <Bar
                                 name="Adhérent membre d'un comité"
-                                dataKey="adherentMembre"
+                                dataKey="count"
                                 fill="#F8BCBC"
                                 barSize={10}
                                 animationEasing="ease-in-out"
@@ -67,25 +69,29 @@ class AdherentContainer extends Component {
                         <BarChart
                             width={600}
                             height={400}
-                            data={data}
-                            margin={{ top: 50, right: 30, left: 20, bottom: 5 }}>
+                            data={graphData}
+                            margin={{ top: 50, right: 30, left: 20, bottom: 5 }}
+                        >
                             <CartesianGrid stroke="#FEF2F2" vertical={false} />
-                            <XAxis dataKey="name" stroke="" />
+                            <XAxis dataKey="date" stroke="" />
                             <YAxis stroke="#FEF2F2" />
                             <Tooltip
                                 cursor={{ stroke: '#FEF0F0', fill: '#FFF' }}
-                                itemStyle={{ textAlign: 'left', stroke: '#FEF0F0' }}
+                                itemStyle={{
+                                    textAlign: 'left',
+                                    stroke: '#FEF0F0',
+                                }}
                             />
                             <Legend height={50} align="left" verticalAlign="bottom" iconType="circle" />
                             <Bar
                                 name="Recevant des e-mails (référents)"
-                                dataKey="adherent"
+                                dataKey="subscribed_emails_referents"
                                 fill="#6BA0EE"
                                 barSize={10}
                             />
                             <Bar
                                 name="Recevant des e-mails de leur(s) comité(s)"
-                                dataKey="adherentMembre"
+                                dataKey="subscribed_emails_local_host"
                                 fill="#F8BCBC"
                                 barSize={10}
                             />
@@ -100,7 +106,7 @@ class AdherentContainer extends Component {
 export default AdherentContainer;
 
 AdherentContainer.propTypes = {
-    summaryTotal: PropTypes.string,
+    summaryTotal: PropTypes.object,
     summaryDescription: PropTypes.string,
     womanPercentage: PropTypes.number,
     manPercentage: PropTypes.number,

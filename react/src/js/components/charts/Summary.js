@@ -1,10 +1,15 @@
-import React, { Component } from 'react';
-import WomanSign from './../../../images/pictos/woman_sign.svg';
-import ManSign from './../../../images/pictos/man_sign.svg';
+import React, { Component } from "react";
+import WomanSign from "./../../../images/pictos/woman_sign.svg";
+import ManSign from "./../../../images/pictos/man_sign.svg";
 
 class Summary extends Component {
     render() {
-        const { womanPercentage, manPercentage, summaryDescription, summaryTotal } = this.props;
+        const {
+            womanPercentage,
+            manPercentage,
+            summaryDescription,
+            summaryTotal
+        } = this.props;
 
         return (
             <div className="summary__cpn">

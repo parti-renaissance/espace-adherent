@@ -1,21 +1,35 @@
-import { COMMITTEE_SEARCH, COMMITTEE_FILTER } from './../actions';
+import { AUTOCOMPLETE_SEARCH, FILTERED_ITEM } from './../actions/filter';
 
 const defaultState = {
-    committeeFilter: '',
-    committeeSearched: [],
+    autocomplete: {
+        committees: [],
+        cities: [],
+        countries: [],
+    },
+    filteredItem: '',
+    autocompletePending: false,
 };
 
-export const filter = (state = defaultState, action) => {
+export default (state = defaultState, action) => {
     switch (action.type) {
-    case COMMITTEE_FILTER:
+    case `${FILTERED_ITEM}`:
         return {
             ...state,
-            committeeFilter: action.value,
+            filteredItem: action.payload,
         };
-    case COMMITTEE_SEARCH:
+    case `${AUTOCOMPLETE_SEARCH}_PENDING`:
         return {
             ...state,
-            committeeSearched: action.value,
+            autocompletePending: true,
+        };
+    case `${AUTOCOMPLETE_SEARCH}_FULFILLED`:
+        return {
+            ...state,
+            autocompletePending: false,
+            autocomplete: {
+                ...state.autocomplete,
+                ...action.payload,
+            },
         };
     default:
         return {
