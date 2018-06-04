@@ -139,6 +139,10 @@ input.img-gen__input {
   margin-bottom: 10px;
 }
 
+[name="citizen_project_media[backgroundColor]"] + label:before {
+  content: none;
+}
+
 [name="citizen_project_media[backgroundColor]"] + label:after {
   content: '';
   position: absolute;
