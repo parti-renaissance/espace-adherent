@@ -56,6 +56,7 @@
         "lullabot/amp": "^1.1",
         "misd/phone-number-bundle": "^1.2",
         "myclabs/php-enum": "^1.5",
+        "nelmio/cors-bundle": "^1.5",
         "php-amqplib/rabbitmq-bundle": "^1.12",
         "phpoffice/phpspreadsheet": "^1.2",
         "predis/predis": "^1.1.0",

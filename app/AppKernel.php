@@ -44,6 +44,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\TimeBundle\KnpTimeBundle(),
 
             new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
+            new Nelmio\CorsBundle\NelmioCorsBundle(),
 
             new AppBundle\AppBundle(),
         ];
