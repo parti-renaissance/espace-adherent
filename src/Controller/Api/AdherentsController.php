@@ -42,15 +42,13 @@ class AdherentsController extends Controller
     ): Response {
         $referent = $this->getUser();
         $count = $adherentRepository->countByGenderManagedBy($referent);
-        $countByMonth = $adherentManager->countMembersByMonthManagedBy($referent);
-        $countByMonth = array_merge_recursive($countByMonth, $committeeMembershipHistoryHandler->queryCountByMonth($referent));
-        $subscriptions = $historyHandler->queryCountByMonth($referent);
 
         return new JsonResponse(
             array_merge(
                 $this->aggregateCount($count),
-                ['monthly' => $countByMonth],
-                ['email_subscriptions' => $subscriptions]
+                ['adherents' => $adherentManager->countMembersByMonthManagedBy($referent)],
+                ['committee_members' => $committeeMembershipHistoryHandler->queryCountByMonth($referent)],
+                ['email_subscriptions' => $historyHandler->queryCountByMonth($referent)]
             )
         );
     }

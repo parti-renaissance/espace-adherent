@@ -61,14 +61,12 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "most_active":
-        [
-          {"name":"En Marche Dammarie-les-Lys","events":"1"},
-          {"name":"Antenne En Marche de Fontainebleau","events":"1"},
-          {"name":"En Marche - Suisse","events":"1"}
-        ],
-      "least_active":
-      [
+      "most_active": [
+        {"name":"En Marche Dammarie-les-Lys","events":"1"},
+        {"name":"Antenne En Marche de Fontainebleau","events":"1"},
+        {"name":"En Marche - Suisse","events":"1"}
+      ],
+      "least_active": [
         {"name":"En Marche - Suisse","events":"1"},
         {"name":"Antenne En Marche de Fontainebleau","events":"1"},
         {"name":"En Marche Dammarie-les-Lys","events":"1"}
@@ -94,12 +92,14 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "2018-04": {"committee_members":3},
-      "2018-03": {"committee_members":3},
-      "2018-02": {"committee_members":2},
-      "2018-01": {"committee_members":2},
-      "2017-12": {"committee_members":2},
-      "2017-11": {"committee_members":2}
+      "committee_members": [
+        {"date": "2018-04", "count":3},
+        {"date": "2018-03", "count":3},
+        {"date": "2018-02", "count":2},
+        {"date": "2018-01", "count":2},
+        {"date": "2017-12", "count":2},
+        {"date": "2017-11", "count":2}
+      ]
     }
     """
 
@@ -109,12 +109,14 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "2018-04": {"committee_members":3},
-      "2018-03": {"committee_members":3},
-      "2018-02": {"committee_members":2},
-      "2018-01": {"committee_members":2},
-      "2017-12": {"committee_members":2},
-      "2017-11": {"committee_members":2}
+      "committee_members": [
+        {"date": "2018-04", "count":3},
+        {"date": "2018-03", "count":3},
+        {"date": "2018-02", "count":2},
+        {"date": "2018-01", "count":2},
+        {"date": "2017-12", "count":2},
+        {"date": "2017-11", "count":2}
+      ]
     }
     """
 
@@ -124,12 +126,14 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "2018-04": {"committee_members":0},
-      "2018-03": {"committee_members":0},
-      "2018-02": {"committee_members":0},
-      "2018-01": {"committee_members":0},
-      "2017-12": {"committee_members":0},
-      "2017-11": {"committee_members":0}
+      "committee_members": [
+        {"date": "2018-04", "count":0},
+        {"date": "2018-03", "count":0},
+        {"date": "2018-02", "count":0},
+        {"date": "2018-01", "count":0},
+        {"date": "2017-12", "count":0},
+        {"date": "2017-11", "count":0}
+      ]
     }
     """
 
@@ -139,12 +143,14 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "2018-04": {"committee_members":2},
-      "2018-03": {"committee_members":2},
-      "2018-02": {"committee_members":1},
-      "2018-01": {"committee_members":1},
-      "2017-12": {"committee_members":1},
-      "2017-11": {"committee_members":1}
+      "committee_members": [
+        {"date": "2018-04", "count":2},
+        {"date": "2018-03", "count":2},
+        {"date": "2018-02", "count":1},
+        {"date": "2018-01", "count":1},
+        {"date": "2017-12", "count":1},
+        {"date": "2017-11", "count":1}
+      ]
     }
     """
 
@@ -153,14 +159,16 @@ Feature:
     And the response should be in JSON
     And the JSON should be equal to:
     """
-      {
-        "2018-04": {"committee_members":1},
-        "2018-03": {"committee_members":1},
-        "2018-02": {"committee_members":1},
-        "2018-01": {"committee_members":1},
-        "2017-12": {"committee_members":1},
-        "2017-11": {"committee_members":1}
-      }
+    {
+      "committee_members": [
+        {"date": "2018-04", "count":1},
+        {"date": "2018-03", "count":1},
+        {"date": "2018-02", "count":1},
+        {"date": "2018-01", "count":1},
+        {"date": "2017-12", "count":1},
+        {"date": "2017-11", "count":1}
+      ]
+    }
     """
 
     When I am on "/api/committees/members/count-by-month?committee=515a56c0-bde8-56ef-b90c-4745b1c93818"
@@ -169,12 +177,14 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "2018-04": {"committee_members":2},
-      "2018-03": {"committee_members":2},
-      "2018-02": {"committee_members":1},
-      "2018-01": {"committee_members":1},
-      "2017-12": {"committee_members":1},
-      "2017-11": {"committee_members":1}
+      "committee_members": [
+        {"date": "2018-04", "count":2},
+        {"date": "2018-03", "count":2},
+        {"date": "2018-02", "count":1},
+        {"date": "2018-01", "count":1},
+        {"date": "2017-12", "count":1},
+        {"date": "2017-11", "count":1}
+      ]
     }
     """
 
@@ -185,11 +195,13 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "2018-04": {"committee_members":1},
-      "2018-03": {"committee_members":1},
-      "2018-02": {"committee_members":1},
-      "2018-01": {"committee_members":1},
-      "2017-12": {"committee_members":1},
-      "2017-11": {"committee_members":1}
+      "committee_members": [
+        {"date": "2018-04", "count":1},
+        {"date": "2018-03", "count":1},
+        {"date": "2018-02", "count":1},
+        {"date": "2018-01", "count":1},
+        {"date": "2017-12", "count":1},
+        {"date": "2017-11", "count":1}
+      ]
     }
     """

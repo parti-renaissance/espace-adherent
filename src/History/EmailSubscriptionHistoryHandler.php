@@ -109,7 +109,8 @@ class EmailSubscriptionHistoryHandler
                 $until
             );
 
-            $countByMonth[$until->format('Y-m')] = $subscriptions;
+            $subscriptions['date'] = $until->format('Y-m');
+            $countByMonth[] = $subscriptions;
         }
 
         return $countByMonth;

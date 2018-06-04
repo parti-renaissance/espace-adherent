@@ -36,15 +36,22 @@ Feature:
     """
     {
       "current_total":4,
-      "monthly":
-        {
-          "2018-05":{"events":3, "referent_events":1},
-          "2018-04":{"events":2, "referent_events":0},
-          "2018-03":{"events":0, "referent_events":0},
-          "2018-02":{"events":0, "referent_events":0},
-          "2018-01":{"events":0, "referent_events":0},
-          "2017-12":{"events":0, "referent_events":0}
-        }
+      "events": [
+        {"date": "2018-05", "count":3},
+        {"date": "2018-04", "count":2},
+        {"date": "2018-03", "count":0},
+        {"date": "2018-02", "count":0},
+        {"date": "2018-01", "count":0},
+        {"date": "2017-12", "count":0}
+      ],
+      "referent_events": [
+        {"date": "2018-05", "count":1},
+        {"date": "2018-04", "count":0},
+        {"date": "2018-03", "count":0},
+        {"date": "2018-02", "count":0},
+        {"date": "2018-01", "count":0},
+        {"date": "2017-12", "count":0}
+      ]
     }
     """
 
@@ -61,12 +68,22 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "2018-05":{"events":3, "event_participants":5},
-      "2018-04":{"events":2, "event_participants":4},
-      "2018-03":{"events":0, "event_participants":0},
-      "2018-02":{"events":0, "event_participants":0},
-      "2018-01":{"events":0, "event_participants":0},
-      "2017-12":{"events":0, "event_participants":0}
+      "events": [
+        {"date": "2018-05", "count":3},
+        {"date": "2018-04", "count":2},
+        {"date": "2018-03", "count":0},
+        {"date": "2018-02", "count":0},
+        {"date": "2018-01", "count":0},
+        {"date": "2017-12", "count":0}
+      ],
+      "event_participants": [
+        {"date": "2018-05", "count":5},
+        {"date": "2018-04", "count":4},
+        {"date": "2018-03", "count":0},
+        {"date": "2018-02", "count":0},
+        {"date": "2018-01", "count":0},
+        {"date": "2017-12", "count":0}
+      ]
     }
     """
 
@@ -76,12 +93,22 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "2018-05":{"events":3, "event_participants":5},
-      "2018-04":{"events":2, "event_participants":4},
-      "2018-03":{"events":0, "event_participants":0},
-      "2018-02":{"events":0, "event_participants":0},
-      "2018-01":{"events":0, "event_participants":0},
-      "2017-12":{"events":0, "event_participants":0}
+      "events": [
+        {"date": "2018-05", "count":3},
+        {"date": "2018-04", "count":2},
+        {"date": "2018-03", "count":0},
+        {"date": "2018-02", "count":0},
+        {"date": "2018-01", "count":0},
+        {"date": "2017-12", "count":0}
+      ],
+      "event_participants": [
+        {"date": "2018-05", "count":5},
+        {"date": "2018-04", "count":4},
+        {"date": "2018-03", "count":0},
+        {"date": "2018-02", "count":0},
+        {"date": "2018-01", "count":0},
+        {"date": "2017-12", "count":0}
+      ]
     }
     """
 
@@ -91,12 +118,22 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "2018-05":{"events":3, "event_participants":5},
-      "2018-04":{"events":0, "event_participants":0},
-      "2018-03":{"events":0, "event_participants":0},
-      "2018-02":{"events":0, "event_participants":0},
-      "2018-01":{"events":0, "event_participants":0},
-      "2017-12":{"events":0, "event_participants":0}
+      "events": [
+        {"date": "2018-05", "count":3},
+        {"date": "2018-04", "count":0},
+        {"date": "2018-03", "count":0},
+        {"date": "2018-02", "count":0},
+        {"date": "2018-01", "count":0},
+        {"date": "2017-12", "count":0}
+      ],
+      "event_participants": [
+        {"date": "2018-05", "count":5},
+        {"date": "2018-04", "count":0},
+        {"date": "2018-03", "count":0},
+        {"date": "2018-02", "count":0},
+        {"date": "2018-01", "count":0},
+        {"date": "2017-12", "count":0}
+      ]
     }
     """
 
@@ -105,14 +142,24 @@ Feature:
     And the response should be in JSON
     And the JSON should be equal to:
     """
-      {
-        "2018-05":{"events":0, "event_participants":0},
-        "2018-04":{"events":2, "event_participants":4},
-        "2018-03":{"events":0, "event_participants":0},
-        "2018-02":{"events":0, "event_participants":0},
-        "2018-01":{"events":0, "event_participants":0},
-        "2017-12":{"events":0, "event_participants":0}
-      }
+    {
+      "events": [
+        {"date": "2018-05", "count":0},
+        {"date": "2018-04", "count":2},
+        {"date": "2018-03", "count":0},
+        {"date": "2018-02", "count":0},
+        {"date": "2018-01", "count":0},
+        {"date": "2017-12", "count":0}
+      ],
+      "event_participants": [
+        {"date": "2018-05", "count":0},
+        {"date": "2018-04", "count":4},
+        {"date": "2018-03", "count":0},
+        {"date": "2018-02", "count":0},
+        {"date": "2018-01", "count":0},
+        {"date": "2017-12", "count":0}
+      ]
+    }
     """
 
     When I am on "/api/events/count-by-month?committee=515a56c0-bde8-56ef-b90c-4745b1c93818"
@@ -121,12 +168,22 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "2018-05":{"events":3, "event_participants":5},
-      "2018-04":{"events":0, "event_participants":0},
-      "2018-03":{"events":0, "event_participants":0},
-      "2018-02":{"events":0, "event_participants":0},
-      "2018-01":{"events":0, "event_participants":0},
-      "2017-12":{"events":0, "event_participants":0}
+      "events": [
+        {"date": "2018-05", "count":3},
+        {"date": "2018-04", "count":0},
+        {"date": "2018-03", "count":0},
+        {"date": "2018-02", "count":0},
+        {"date": "2018-01", "count":0},
+        {"date": "2017-12", "count":0}
+      ],
+      "event_participants": [
+        {"date": "2018-05", "count":5},
+        {"date": "2018-04", "count":0},
+        {"date": "2018-03", "count":0},
+        {"date": "2018-02", "count":0},
+        {"date": "2018-01", "count":0},
+        {"date": "2017-12", "count":0}
+      ]
     }
     """
 
@@ -137,12 +194,22 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "2018-05":{"events":0, "event_participants":0},
-      "2018-04":{"events":0, "event_participants":0},
-      "2018-03":{"events":0, "event_participants":0},
-      "2018-02":{"events":0, "event_participants":0},
-      "2018-01":{"events":0, "event_participants":0},
-      "2017-12":{"events":0, "event_participants":0}
+      "events": [
+        {"date": "2018-05", "count":0},
+        {"date": "2018-04", "count":0},
+        {"date": "2018-03", "count":0},
+        {"date": "2018-02", "count":0},
+        {"date": "2018-01", "count":0},
+        {"date": "2017-12", "count":0}
+      ],
+      "event_participants": [
+        {"date": "2018-05", "count":0},
+        {"date": "2018-04", "count":0},
+        {"date": "2018-03", "count":0},
+        {"date": "2018-02", "count":0},
+        {"date": "2018-01", "count":0},
+        {"date": "2017-12", "count":0}
+      ]
     }
     """
 
@@ -155,13 +222,21 @@ Feature:
     """
     {
       "total": 7,
-      "monthly": {
-        "2018-05": {"event_participants": 5, "in_at_least_one_committee": 3},
-        "2018-04": {"event_participants": 4, "in_at_least_one_committee": 3},
-        "2018-03": {"event_participants": 0, "in_at_least_one_committee": 0},
-        "2018-02": {"event_participants": 0, "in_at_least_one_committee": 0},
-        "2018-01": {"event_participants": 0, "in_at_least_one_committee": 0},
-        "2017-12": {"event_participants": 0, "in_at_least_one_committee": 0}
-      }
+      "event_participants": [
+        {"date": "2018-05", "count": 5},
+        {"date": "2018-04", "count": 4},
+        {"date": "2018-03", "count": 0},
+        {"date": "2018-02", "count": 0},
+        {"date": "2018-01", "count": 0},
+        {"date": "2017-12", "count": 0}
+      ],
+      "in_at_least_one_committee": [
+        {"date": "2018-05", "count": 3},
+        {"date": "2018-04", "count": 3},
+        {"date": "2018-03", "count": 0},
+        {"date": "2018-02", "count": 0},
+        {"date": "2018-01", "count": 0},
+        {"date": "2017-12", "count": 0}
+      ]
     }
     """

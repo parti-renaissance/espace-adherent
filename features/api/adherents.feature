@@ -54,21 +54,29 @@ Feature:
       "female":3,
       "male":4,
       "total":7,
-      "monthly": {
-          "2018-04": {"total": 6, "in_at_least_one_committee": 3},
-          "2018-03": {"total": 6, "in_at_least_one_committee": 3},
-          "2018-02": {"total": 6, "in_at_least_one_committee": 2},
-          "2018-01": {"total": 6, "in_at_least_one_committee": 2},
-          "2017-12": {"total": 5, "in_at_least_one_committee": 2},
-          "2017-11": {"total": 5, "in_at_least_one_committee": 2}
-      },
-      "email_subscriptions": {
-          "2018-04": {"subscribed_emails_local_host": 7, "subscribed_emails_referents": 7},
-          "2018-03": {"subscribed_emails_local_host": 0, "subscribed_emails_referents": 0},
-          "2018-02": {"subscribed_emails_local_host": 4, "subscribed_emails_referents": 0},
-          "2018-01": {"subscribed_emails_local_host": 3, "subscribed_emails_referents": 0},
-          "2017-12": {"subscribed_emails_local_host": 2, "subscribed_emails_referents": 0},
-          "2017-11": {"subscribed_emails_local_host": 1, "subscribed_emails_referents": 0}
-      }
+      "adherents": [
+          {"date": "2018-04", "total": 6},
+          {"date": "2018-03", "total": 6},
+          {"date": "2018-02", "total": 6},
+          {"date": "2018-01", "total": 6},
+          {"date": "2017-12", "total": 5},
+          {"date": "2017-11", "total": 5}
+      ],
+      "committee_members": [
+          {"date": "2018-04", "count": 3},
+          {"date": "2018-03", "count": 3},
+          {"date": "2018-02", "count": 2},
+          {"date": "2018-01", "count": 2},
+          {"date": "2017-12", "count": 2},
+          {"date": "2017-11", "count": 2}
+      ],
+      "email_subscriptions": [
+          {"date": "2018-04", "subscribed_emails_local_host": 7, "subscribed_emails_referents": 7},
+          {"date": "2018-03", "subscribed_emails_local_host": 0, "subscribed_emails_referents": 0},
+          {"date": "2018-02", "subscribed_emails_local_host": 4, "subscribed_emails_referents": 0},
+          {"date": "2018-01", "subscribed_emails_local_host": 3, "subscribed_emails_referents": 0},
+          {"date": "2017-12", "subscribed_emails_local_host": 2, "subscribed_emails_referents": 0},
+          {"date": "2017-11", "subscribed_emails_local_host": 1, "subscribed_emails_referents": 0}
+      ]
     }
     """

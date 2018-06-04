@@ -615,7 +615,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $query = RepositoryUtils::addStatstFilter($filter, $query)->getQuery();
         $query->useResultCache(true, 3600); // 1 hour
 
-        return RepositoryUtils::aggregateCountByMonth($query->getArrayResult(), 'committee_members');
+        return RepositoryUtils::aggregateCountByMonth($query->getArrayResult());
     }
 
     private function formatCount(array $count): array
