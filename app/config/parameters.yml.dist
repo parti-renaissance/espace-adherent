@@ -68,3 +68,5 @@ parameters:
 
     env(MAXMIND_LICENSE_KEY): ''
     env(MAXMIND_USER_ID):     ''
+
+    env(CORS_ALLOW_ORIGIN): '^https?://localhost:?[0-9]*$'
