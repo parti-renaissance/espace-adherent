@@ -9,11 +9,11 @@ export default () => {
     }, 100);
     setInterval(() => {
         splashScreen.style.transform = 'translateY(-150%)';
-    }, 3000);
+    }, 800);
     setInterval(() => {
         form.style.display = 'flex';
-    }, 3100);
+    }, 900);
     setInterval(() => {
         form.style.transform = 'translateY(0)';
-    }, 3200);
+    }, 1000);
 };
