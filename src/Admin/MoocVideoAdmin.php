@@ -40,6 +40,7 @@ class MoocVideoAdmin extends AbstractAdmin
                     ])
                     ->add('displayOrder', IntegerType::class, [
                         'label' => 'Ordre d\'affichage',
+                        'required' => false,
                         'scale' => 0,
                         'attr' => [
                             'min' => 0,

@@ -14,13 +14,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity
  * @ORM\Table(
  *     name="mooc_chapter",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="mooc_chapter_slug", columns="slug"),
- *         @ORM\UniqueConstraint(name="mooc_chapter_order_display_by_mooc", columns={"display_order", "mooc_id"})
- *     }
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="mooc_chapter_slug", columns="slug")}
  * )
  *
- * @UniqueEntity(fields={"displayOrder", "mooc"})
+ * @UniqueEntity(fields={"slug", "mooc"})
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -60,14 +57,16 @@ class Chapter
     private $publishedAt;
 
     /**
-     * @ORM\Column(type="smallint", options={"default": 1})
+     * @ORM\Column(type="smallint")
+     * @Gedmo\SortablePosition
      */
-    private $displayOrder = 1;
+    private $displayOrder;
 
     /**
      * @var Mooc
      *
      * @ORM\ManyToOne(targetEntity="Mooc", inversedBy="chapters")
+     * @Gedmo\SortableGroup
      */
     private $mooc;
 
@@ -81,16 +80,11 @@ class Chapter
      */
     private $videos;
 
-    public function __construct(
-        string $title = null,
-        bool $published = false,
-        \DateTime $publishedAt = null,
-        int $displayOrder = null
-    ) {
+    public function __construct(string $title = null, bool $published = false, \DateTime $publishedAt = null)
+    {
         $this->title = $title;
         $this->published = $published;
         $this->publishedAt = $publishedAt;
-        $this->displayOrder = $displayOrder;
         $this->videos = new ArrayCollection();
     }
 

@@ -17,8 +17,7 @@ class LoadMoocVideoData extends AbstractFixture implements FixtureInterface
             'ktHEfEDhscU',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
             dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
-            ex ea commodo consequat.',
-            1
+            ex ea commodo consequat.'
         );
 
         $video1->addAttachmentLink(
@@ -36,8 +35,7 @@ class LoadMoocVideoData extends AbstractFixture implements FixtureInterface
             'ktHEfEDhscU',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
             dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
-            ex ea commodo consequat.',
-            2
+            ex ea commodo consequat.'
         );
         $manager->persist($video2);
         $this->addReference('mooc-video-2', $video2);
@@ -47,8 +45,7 @@ class LoadMoocVideoData extends AbstractFixture implements FixtureInterface
             'ktHEfEDhscU',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
             dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
-            ex ea commodo consequat.',
-            2
+            ex ea commodo consequat.'
         );
 
         $manager->persist($video3);
