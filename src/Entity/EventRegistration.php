@@ -10,6 +10,7 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRegistrationRepository")
  * @ORM\Table(name="events_registrations", indexes={
  *     @ORM\Index(name="event_registration_email_address_idx", columns={"email_address"}),
+ *     @ORM\Index(name="event_registration_adherent_uuid_idx", columns={"adherent_uuid"}),
  * })
  *
  * @Algolia\Index(autoIndex=false)

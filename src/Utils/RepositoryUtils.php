@@ -42,7 +42,7 @@ class RepositoryUtils
             $countByMonth[$until->format('Y-m')][$type] = 0;
             foreach ($itemsCount as $count) {
                 if ($until->format('Ym') === $count['yearmonth']) {
-                    $countByMonth[$until->format('Y-m')][$type] = (int) $count['count'];
+                    $countByMonth[$until->format('Y-m')][$type] += $count['count'];
                 }
             }
         }

@@ -154,6 +154,14 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "total": 7
+      "total": 7,
+      "monthly": {
+        "2018-05": {"event_participants": 5, "in_at_least_one_committee": 3},
+        "2018-04": {"event_participants": 4, "in_at_least_one_committee": 3},
+        "2018-03": {"event_participants": 0, "in_at_least_one_committee": 0},
+        "2018-02": {"event_participants": 0, "in_at_least_one_committee": 0},
+        "2018-01": {"event_participants": 0, "in_at_least_one_committee": 0},
+        "2017-12": {"event_participants": 0, "in_at_least_one_committee": 0}
+      }
     }
     """
