@@ -724,6 +724,21 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->managedArea = $managedArea;
     }
 
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("managedAreaTagCodes"),
+     * @JMS\Groups({"referent"})
+     *
+     * @return string[]
+     */
+    public function getManagedAreaTagCodes(): array
+    {
+        return $this->getManagedArea()
+            ? $this->getManagedArea()->getReferentTagCodes()
+            : []
+        ;
+    }
+
     public function getProcurationManagedArea(): ?ProcurationManagedArea
     {
         return $this->procurationManagedArea;

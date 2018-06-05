@@ -80,3 +80,48 @@ Feature:
       ]
     }
     """
+
+  Scenario: As an anonymous user I cannot access to my information
+    And I am on "/api/users/me"
+    Then the response status code should be 200
+    And I should be on "/connexion"
+
+  Scenario: As a referent I can access to my information
+    When I am logged as "referent-75-77@en-marche-dev.fr"
+    And I am on "/api/users/me"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "uuid": "2f69db3c-ecd7-4a8a-bd23-bb4c9cfd70cf",
+      "managedAreaTagCodes": [
+        "75008",
+        "75009",
+        "75",
+        "77"
+      ],
+      "country": "FR",
+      "zipCode": "75001",
+      "emailAddress": "referent-75-77@en-marche-dev.fr",
+      "firstName": "Referent75and77",
+      "lastName": "Referent75and77"
+    }
+    """
+
+  Scenario: As a standard adherent I can access to my information
+    When I am logged as "jacques.picard@en-marche.fr"
+    And I am on "/api/users/me"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+      "country":"FR",
+      "zipCode":"75008",
+      "emailAddress":"jacques.picard@en-marche.fr",
+      "firstName":"Jacques",
+      "lastName":"Picard"
+    }
+    """
