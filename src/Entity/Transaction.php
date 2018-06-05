@@ -113,7 +113,7 @@ class Transaction
         if (isset($payboxPayload['date'], $payboxPayload['time'])) {
             $this->payboxDateTime = \DateTimeImmutable::createFromFormat(
                 'dmYH:i:s',
-                $payboxPayload['date'].$payboxPayload['time']
+                $payboxPayload['date'].str_replace('%3A', ':', $payboxPayload['time'])
             );
         }
     }
