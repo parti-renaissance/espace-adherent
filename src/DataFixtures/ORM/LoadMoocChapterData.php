@@ -14,8 +14,7 @@ class LoadMoocChapterData extends AbstractFixture implements DependentFixtureInt
         $chapter1 = new Chapter(
             'Semaine 1 : Le coup de fourchette pour détendre notre santé',
             true,
-            new \DateTime(date('Y-m-d', strtotime('+1 days')).' 09:30:00'),
-            1
+            new \DateTime(date('Y-m-d', strtotime('+1 days')).' 09:30:00')
         );
 
         $chapter1->addVideo($this->getReference('mooc-video-1'));
@@ -27,8 +26,7 @@ class LoadMoocChapterData extends AbstractFixture implements DependentFixtureInt
         $chapter2 = new Chapter(
             'Semaine 2 : Le coup de fourchette pour défendre la nature',
             true,
-            new \DateTime(date('Y-m-d', strtotime('+5 days')).' 09:30:00'),
-            2
+            new \DateTime(date('Y-m-d', strtotime('+5 days')).' 09:30:00')
         );
         $chapter2->addVideo($this->getReference('mooc-video-3'));
         $this->addReference('mooc-chapter-2', $chapter2);
