@@ -14,6 +14,7 @@ use AppBundle\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
@@ -539,7 +540,7 @@ SQL;
             ->getArrayResult()
         ;
 
-        return RepositoryUtils::aggregateCountByMonth($eventsCount, 'total_participants');
+        return RepositoryUtils::aggregateCountByMonth($eventsCount);
     }
 
     public function countParticipantsInReferentManagedArea(Adherent $referent): int
@@ -593,7 +594,7 @@ SQL;
             ->getArrayResult()
         ;
 
-        return RepositoryUtils::aggregateCountByMonth($result, BaseEvent::EVENT_TYPE.'s');
+        return RepositoryUtils::aggregateCountByMonth($result);
     }
 
     public function countReferentEventsInReferentManagedArea(Adherent $referent): array
@@ -608,7 +609,7 @@ SQL;
             ->getArrayResult()
         ;
 
-        return RepositoryUtils::aggregateCountByMonth($result, BaseEvent::REFERENT_EVENT_TYPE.'s');
+        return RepositoryUtils::aggregateCountByMonth($result);
     }
 
     public function countTotalEventsInReferentManagedAreaForCurrentMonth(Adherent $referent): int
@@ -617,6 +618,10 @@ SQL;
 
         $query = $this->queryCountByMonth($referent, 0);
 
-        return (int) $query->getQuery()->getSingleResult()['count'];
+        try {
+            return (int) $query->getQuery()->getSingleResult()['count'];
+        } catch (NoResultException $e) {
+            return 0;
+        }
     }
 }

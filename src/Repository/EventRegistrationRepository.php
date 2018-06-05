@@ -192,7 +192,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
             $query = RepositoryUtils::addStatstFilter($filter, $query);
         }
 
-        return RepositoryUtils::aggregateCountByMonth($query->getQuery()->getArrayResult(), 'event_participants');
+        return RepositoryUtils::aggregateCountByMonth($query->getQuery()->getArrayResult());
     }
 
     public function countEventParticipantsInReferentManagedAreaInAtLeastOneCommittee(Adherent $referent, StatisticsParametersFilter $filter = null, int $months = 5): array
@@ -224,7 +224,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
             $query = RepositoryUtils::addStatstFilter($filter, $query);
         }
 
-        return RepositoryUtils::aggregateCountByMonth($query->getQuery()->getArrayResult(), 'in_at_least_one_committee');
+        return RepositoryUtils::aggregateCountByMonth($query->getQuery()->getArrayResult());
     }
 
     private function createEventRegistrationQueryBuilder(string $eventUuid): QueryBuilder

@@ -35,18 +35,18 @@ class RepositoryUtils
         return $query;
     }
 
-    public static function aggregateCountByMonth(array $itemsCount, string $type, int $months = 6): array
+    public static function aggregateCountByMonth(array $itemsCount, int $months = 6): array
     {
         foreach (range(0, $months - 1) as $month) {
             $until = (new Chronos("first day of -$month month"));
-            $countByMonth[$until->format('Y-m')][$type] = 0;
+            $countByMonth[$until->format('Y-m')] = ['date' => $until->format('Y-m'), 'count' => 0];
             foreach ($itemsCount as $count) {
                 if ($until->format('Ym') === $count['yearmonth']) {
-                    $countByMonth[$until->format('Y-m')][$type] += $count['count'];
+                    $countByMonth[$until->format('Y-m')]['count'] += $count['count'];
                 }
             }
         }
 
-        return $countByMonth;
+        return array_values($countByMonth);
     }
 }

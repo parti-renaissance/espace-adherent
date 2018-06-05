@@ -43,10 +43,11 @@ class EventsController extends Controller
         } catch (\InvalidArgumentException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
-        $events = $eventRepository->countCommitteeEventsInReferentManagedArea($referent, $filter);
-        $eventParticipants = $eventRegistrationRepository->countEventParticipantsInReferentManagedArea($this->getUser(), $filter);
 
-        return new JsonResponse(array_merge_recursive($events, $eventParticipants));
+        return new JsonResponse([
+            'events' => $eventRepository->countCommitteeEventsInReferentManagedArea($referent, $filter),
+            'event_participants' => $eventRegistrationRepository->countEventParticipantsInReferentManagedArea($this->getUser(), $filter),
+        ]);
     }
 
     /**
@@ -57,13 +58,11 @@ class EventsController extends Controller
     public function allTypesEventsCountInReferentManagedAreaAction(EventRepository $eventRepository, CitizenActionRepository $citizenActionRepository): Response
     {
         $referent = $this->getUser();
-        $events = $eventRepository->countCommitteeEventsInReferentManagedArea($referent);
-        $referentEvents = $eventRepository->countReferentEventsInReferentManagedArea($referent);
-        $total = $eventRepository->countTotalEventsInReferentManagedAreaForCurrentMonth($referent);
 
         return new JsonResponse([
-            'current_total' => $total,
-            'monthly' => array_merge_recursive($events, $referentEvents),
+            'current_total' => $eventRepository->countTotalEventsInReferentManagedAreaForCurrentMonth($referent),
+            'events' => $eventRepository->countCommitteeEventsInReferentManagedArea($referent),
+            'referent_events' => $eventRepository->countReferentEventsInReferentManagedArea($referent),
         ]);
     }
 
@@ -78,10 +77,8 @@ class EventsController extends Controller
 
         return new JsonResponse([
             'total' => $eventRepository->countParticipantsInReferentManagedArea($referent),
-            'monthly' => array_merge_recursive(
-                $eventRegistrationRepository->countEventParticipantsInReferentManagedArea($referent),
-                $eventRegistrationRepository->countEventParticipantsInReferentManagedAreaInAtLeastOneCommittee($referent)
-            ),
+            'event_participants' => $eventRegistrationRepository->countEventParticipantsInReferentManagedArea($referent),
+            'in_at_least_one_committee' => $eventRegistrationRepository->countEventParticipantsInReferentManagedAreaInAtLeastOneCommittee($referent),
         ]);
     }
 }

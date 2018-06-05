@@ -45,7 +45,7 @@ class AdherentManager
 
             $count = $this->repository->countMembersManagedBy($referent, $until);
 
-            $countByMonth[$until->format('Y-m')] = ['total' => $count];
+            $countByMonth[] = ['date' => $until->format('Y-m'), 'total' => $count];
         }
 
         return $countByMonth;

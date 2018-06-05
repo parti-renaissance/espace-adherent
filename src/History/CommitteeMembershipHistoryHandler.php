@@ -16,7 +16,7 @@ class CommitteeMembershipHistoryHandler
         $this->historyRepository = $historyRepository;
     }
 
-    public function queryCountByMonth(Adherent $referent, int $months = 6, StatisticsParametersFilter $filter = null, string $keyName = 'in_at_least_one_committee'): array
+    public function queryCountByMonth(Adherent $referent, int $months = 6, StatisticsParametersFilter $filter = null): array
     {
         foreach (range(0, $months - 1) as $monthInterval) {
             $until = $monthInterval
@@ -26,7 +26,7 @@ class CommitteeMembershipHistoryHandler
 
             $count = $this->historyRepository->countAdherentMemberOfAtLeastOneCommitteeManagedBy($referent, $until, $filter);
 
-            $countByMonth[$until->format('Y-m')] = [$keyName => $count];
+            $countByMonth[] = ['date' => $until->format('Y-m'), 'count' => $count];
         }
 
         return $countByMonth;
