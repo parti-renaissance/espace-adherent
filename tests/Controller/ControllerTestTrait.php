@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\TestHelperTrait;
 
 /**
- * @method assertSame($expected, $actual, $message = '')
+ * @method static assertSame($expected, $actual, $message = '')
  */
 trait ControllerTestTrait
 {

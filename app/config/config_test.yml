@@ -108,3 +108,6 @@ old_sound_rabbit_mq:
                     - event.*
                     - committee.*
             callback: Tests\AppBundle\Consumer\DummyConsumer
+
+lexik_paybox:
+    public_key: "%env(SSL_PUBLIC_KEY)%"
