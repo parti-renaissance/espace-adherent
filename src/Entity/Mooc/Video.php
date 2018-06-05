@@ -5,6 +5,7 @@ namespace AppBundle\Entity\Mooc;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -12,29 +13,28 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity
  * @ORM\Table(
- *     name="mooc_chapter",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="mooc_chapter_video_slug", columns="slug"),
- *         @ORM\UniqueConstraint(name="mooc_chapter_video_order_display_by_chapter", columns={"display_order", "chapter_id"})
- *     }
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="mooc_chapter_video_slug", columns="slug")}
  * )
  *
- * @UniqueEntity(
- *     fields={"displayOrder", "chapter"},
- * )
+ * @UniqueEntity(fields={"slug", "chapter"})
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Video extends BaseElement
+class Video extends BaseMoocElement
 {
     /**
-     * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="mooc.video.youtubeid_syntax")
-     * @Assert\Length(min=2, max=11)
+     * @ORM\Column(type="smallint")
+     * @Gedmo\SortablePosition
      */
-    private $youtubeId;
+    protected $displayOrder;
+
+    /**
+     * @var Chapter
+     *
+     * @ORM\ManyToOne(targetEntity="Chapter", inversedBy="videos")
+     * @Gedmo\SortableGroup
+     */
+    protected $chapter;
 
     /**
      * @ORM\Column(length=800, nullable=true)
@@ -44,11 +44,13 @@ class Video extends BaseElement
     private $content;
 
     /**
-     * @var Chapter
+     * @ORM\Column
      *
-     * @ORM\ManyToOne(targetEntity="Chapter", inversedBy="videos")
+     * @Assert\NotBlank
+     * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="mooc.video.youtubeid_syntax")
+     * @Assert\Length(min=2, max=11)
      */
-    private $chapter;
+    private $youtubeId;
 
     /**
      * @var AttachmentLink[]|Collection
@@ -66,17 +68,22 @@ class Video extends BaseElement
      */
     private $attachmentLinks;
 
-    public function __construct(
-        string $title = null,
-        string $youtubeId = null,
-        string $content = null,
-        int $displayOrder = null
-    ) {
+    public function __construct(string $title = null, string $youtubeId = null, string $content = null)
+    {
         $this->title = $title;
         $this->youtubeId = $youtubeId;
         $this->content = $content;
-        $this->displayOrder = $displayOrder;
         $this->attachmentLinks = new ArrayCollection();
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(string $content): void
+    {
+        $this->content = $content;
     }
 
     public function getYoutubeId(): ?string
@@ -97,31 +104,6 @@ class Video extends BaseElement
     public function getYoutubeThumbnail(): ?string
     {
         return sprintf('https://img.youtube.com/vi/%s/0.jpg', $this->youtubeId);
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(string $content): void
-    {
-        $this->content = $content;
-    }
-
-    public function getChapter(): ?Chapter
-    {
-        return $this->chapter;
-    }
-
-    public function setChapter(Chapter $chapter): void
-    {
-        $this->chapter = $chapter;
-    }
-
-    public function detachChapter(): void
-    {
-        $this->chapter = null;
     }
 
     /**

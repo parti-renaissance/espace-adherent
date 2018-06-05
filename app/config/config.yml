@@ -151,6 +151,7 @@ stof_doctrine_extensions:
             sluggable: true
             softdeleteable: true
             timestampable: true
+            sortable: true
 
 a2lix_translation_form:
     locales: "%locales%"

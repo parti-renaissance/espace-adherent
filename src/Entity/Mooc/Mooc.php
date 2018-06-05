@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
- *
  * @ORM\Table(
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="mooc_slug", columns="slug")

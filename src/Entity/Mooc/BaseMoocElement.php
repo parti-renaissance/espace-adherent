@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Mooc;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\AppBundle;
 use AppBundle\Entity\EntityTimestampableTrait;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-abstract class BaseElement
+abstract class BaseMoocElement
 {
     use EntityTimestampableTrait;
 
@@ -46,9 +47,20 @@ abstract class BaseElement
     protected $slug;
 
     /**
-     * @ORM\Column(type="smallint", options={"default": 1})
+     * This attribute should be overridden in the child class for the SortablePosition.
+     *
+     * @see AppBundle\Entity\Mooc\Video::$displayOrder
+     * @see https://github.com/Atlantic18/DoctrineExtensions/blob/master/doc/sortable.md
      */
-    protected $displayOrder = 1;
+    protected $displayOrder;
+
+    /**
+     * This attribute should be overridden in the child class for the relation.
+     * A Mooc element must have a relation with a Chapter.
+     *
+     * @see AppBundle\Entity\Mooc\Video::$chapter
+     */
+    protected $chapter;
 
     public function __toString()
     {
@@ -88,5 +100,20 @@ abstract class BaseElement
     public function setDisplayOrder(int $displayOrder): void
     {
         $this->displayOrder = $displayOrder;
+    }
+
+    public function getChapter(): ?Chapter
+    {
+        return $this->chapter;
+    }
+
+    public function setChapter(Chapter $chapter): void
+    {
+        $this->chapter = $chapter;
+    }
+
+    public function detachChapter(): void
+    {
+        $this->chapter = null;
     }
 }
