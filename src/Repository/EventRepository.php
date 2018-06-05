@@ -13,6 +13,7 @@ use AppBundle\Statistics\StatisticsParametersFilter;
 use AppBundle\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
@@ -514,6 +515,42 @@ SQL;
             ->setParameter('until', (new Chronos('now'))->setTime(23, 59, 59, 999))
             ->groupBy('yearmonth')
         ;
+    }
+
+    public function countParticipantsInReferentManagedArea(Adherent $referent): int
+    {
+        $this->checkReferent($referent);
+
+        $referentTagIds = array_map(
+            function (ReferentTag $tag) {
+                return $tag->getId();
+            },
+            $referent->getManagedArea()->getTags()->toArray()
+        );
+
+        $query = <<<'SQL'
+SELECT SUM(events_count.count) as count
+FROM (
+    SELECT events.participants_count AS count
+    FROM events 
+        INNER JOIN event_referent_tag ert ON events.id = ert.event_id 
+        INNER JOIN referent_tags tags ON tags.id = ert.referent_tag_id 
+    WHERE (tags.id IN (?) 
+        AND events.committee_id IS NOT NULL 
+        AND events.status = ? 
+        AND events.participants_count > 0) 
+    AND events.type IN ('event') 
+    GROUP BY events.id
+) AS events_count
+SQL;
+
+        $results = $this->_em->getConnection()->executeQuery(
+            $query,
+            [$referentTagIds, Event::STATUS_SCHEDULED],
+            [Connection::PARAM_STR_ARRAY, \PDO::PARAM_STR]
+        );
+
+        return $results->fetchColumn();
     }
 
     public function countCommitteeEventsInReferentManagedArea(Adherent $referent, StatisticsParametersFilter $filter = null): array
