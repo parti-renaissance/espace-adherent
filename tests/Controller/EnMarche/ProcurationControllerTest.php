@@ -402,7 +402,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertCount($initialProcurationProxyCount, $this->procurationProxyRepostitory->findAll(), 'There should not be any proposal at the moment');
 
         // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-propose?uuid='.LoadAdherentData::ADHERENT_8_UUID);
+        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-propose?uuid='.LoadAdherentData::REFERENT_1_UUID);
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -476,7 +476,7 @@ class ProcurationControllerTest extends WebTestCase
         ]));
 
         // Redirected to thanks
-        $this->assertClientIsRedirectedTo('/procuration/je-propose/merci?uuid='.LoadAdherentData::ADHERENT_8_UUID, $this->client);
+        $this->assertClientIsRedirectedTo('/procuration/je-propose/merci?uuid='.LoadAdherentData::REFERENT_1_UUID, $this->client);
 
         $this->client->followRedirect();
 
@@ -587,7 +587,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->setElectionContext();
 
         // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-propose?uuid='.LoadAdherentData::ADHERENT_8_UUID);
+        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-propose?uuid='.LoadAdherentData::REFERENT_1_UUID);
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -624,7 +624,7 @@ class ProcurationControllerTest extends WebTestCase
         ]));
 
         // Redirected to thanks
-        $this->assertClientIsRedirectedTo('/procuration/je-propose/merci?uuid='.LoadAdherentData::ADHERENT_8_UUID, $this->client);
+        $this->assertClientIsRedirectedTo('/procuration/je-propose/merci?uuid='.LoadAdherentData::REFERENT_1_UUID, $this->client);
 
         $this->client->followRedirect();
 

@@ -60,10 +60,10 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         $author11 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_11_UUID);
         $author12 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_12_UUID);
         $author13 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_13_UUID);
-        $referent75and77 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_19_UUID);
+        $referent75and77 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::REFERENT_2_UUID);
 
         $adherent4 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_4_UUID);
-        $adherent17 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_17_UUID);
+        $coordinator = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::COORDINATOR_2_UUID);
 
         $committee1 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
         $committee2 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
@@ -405,7 +405,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event19, $author7)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event20, $author7)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event20, $adherent4)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event20, $adherent17)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event20, $coordinator)));
         // Registrations of not connected users
         $eventRegistration1 = new EventRegistrationCommand($event10);
         $eventRegistration1->setFirstName('Marie');

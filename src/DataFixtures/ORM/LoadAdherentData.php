@@ -9,6 +9,7 @@ use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\CoordinatorManagedArea;
+use AppBundle\Entity\District;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentFactory;
@@ -28,18 +29,19 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
     public const ADHERENT_5_UUID = 'b4219d47-3138-5efd-9762-2ef9f9495084';
     public const ADHERENT_6_UUID = 'acc73b03-9743-47d8-99db-5a6c6f55ad67';
     public const ADHERENT_7_UUID = 'a9fc8d48-6f57-4d89-ae73-50b3f9b586f4';
-    public const ADHERENT_8_UUID = '29461c49-2646-4d89-9c82-50b3f9b586f4';
     public const ADHERENT_9_UUID = '93de5d98-383a-4863-9f47-eb7a348873a8';
     public const ADHERENT_10_UUID = 'd4b1e7e1-ba18-42a9-ace9-316440b30fa7';
     public const ADHERENT_11_UUID = 'f458cc73-3678-4bd0-8e2f-d1c83be3a7e1';
     public const ADHERENT_12_UUID = 'cd76b8cf-af20-4976-8dd9-eb067a2f30c7';
     public const ADHERENT_13_UUID = '46ab0600-b5a0-59fc-83a7-cc23ca459ca0';
     public const ADHERENT_14_UUID = '511c21bf-1240-5271-abaa-3393d3f40740';
-    public const ADHERENT_15_UUID = 'd72d88ee-44bf-5059-bd19-02af28f0c7dc';
-    public const ADHERENT_16_UUID = '0a68eb57-c88a-5f34-9e9d-27f85e68af4f';
-    public const ADHERENT_17_UUID = '1ebee762-4dc1-42f6-9884-1c83ba9c6d71';
-    public const ADHERENT_18_UUID = 'e1bee762-4dc1-42f6-9884-1c83ba9c6d17';
-    public const ADHERENT_19_UUID = '2f69db3c-ecd7-4a8a-bd23-bb4c9cfd70cf';
+    public const ADHERENT_15_UUID = '0a68eb57-c88a-5f34-9e9d-27f85e68af4f';
+    public const COORDINATOR_1_UUID = 'd72d88ee-44bf-5059-bd19-02af28f0c7dc';
+    public const COORDINATOR_2_UUID = '1ebee762-4dc1-42f6-9884-1c83ba9c6d71';
+    public const REFERENT_1_UUID = '29461c49-2646-4d89-9c82-50b3f9b586f4';
+    public const REFERENT_2_UUID = '2f69db3c-ecd7-4a8a-bd23-bb4c9cfd70cf';
+    public const REFERENT_3_UUID = 'e1bee762-4dc1-42f6-9884-1c83ba9c6d17';
+    public const DEPUTY_1_UUID = '918f07e5-676b-49c0-b76d-72ce01cb2404';
 
     public const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     public const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
@@ -187,121 +189,6 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent7->addReferentTag($this->getReference('referent_tag_77'));
         $this->addReference('adherent-7', $adherent7);
 
-        $referent = $adherentFactory->createFromArray([
-            'uuid' => self::ADHERENT_8_UUID,
-            'password' => self::DEFAULT_PASSWORD,
-            'email' => 'referent@en-marche-dev.fr',
-            'gender' => 'male',
-            'first_name' => 'Referent',
-            'last_name' => 'Referent',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', 48.5278939, 2.6484923),
-            'birthdate' => '1962-01-07',
-            'position' => 'employed',
-            'phone' => '33 673654349',
-            'registered_at' => '2017-01-25 19:31:45',
-        ]);
-        $referent->setReferent(
-            [
-                $this->getReference('referent_tag_ch'),
-                $this->getReference('referent_tag_92'),
-                $this->getReference('referent_tag_76'),
-                $this->getReference('referent_tag_77'),
-                $this->getReference('referent_tag_13'),
-            ],
-            -1.6743,
-            48.112
-        );
-        $roles = new ArrayCollection();
-        $roles->add($this->getReference('referent'));
-        $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
-        $referent->enableCommitteesNotifications();
-        $referent->addReferentTag($this->getReference('referent_tag_77'));
-        $this->addReference('adherent-8', $referent);
-
-        $referent75and77 = $adherentFactory->createFromArray([
-            'uuid' => self::ADHERENT_19_UUID,
-            'password' => self::DEFAULT_PASSWORD,
-            'email' => 'referent-75-77@en-marche-dev.fr',
-            'gender' => 'female',
-            'first_name' => 'Referent75and77',
-            'last_name' => 'Referent75and77',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '75001-75101', 48.5278939, 2.6484923),
-            'birthdate' => '1970-01-08',
-            'position' => 'employed',
-            'phone' => '33 6765204050',
-            'registered_at' => '2018-05-12 12:31:45',
-        ]);
-        $referent75and77->setReferent(
-            [
-                $this->getReference('referent_tag_77'),
-                $this->getReference('referent_tag_75'),
-                $this->getReference('referent_tag_75008'),
-                $this->getReference('referent_tag_75009'),
-            ],
-            -1.6743,
-            48.112
-        );
-        $referent75and77->addReferentTag($this->getReference('referent_tag_75'));
-        $this->addReference('adherent-19', $referent75and77);
-
-        $referentChild = $adherentFactory->createFromArray([
-            'uuid' => self::ADHERENT_18_UUID,
-            'password' => self::DEFAULT_PASSWORD,
-            'email' => 'referent-child@en-marche-dev.fr',
-            'gender' => 'male',
-            'first_name' => 'Referent child',
-            'last_name' => 'Referent child',
-            'address' => PostAddress::createFrenchAddress('3 avenue Jean Jaurès', '77000-77288', 48.5278939, 2.6484923),
-            'birthdate' => '1962-02-07',
-            'position' => 'employed',
-            'phone' => '33 673654348',
-            'registered_at' => '2017-01-25 19:31:45',
-        ]);
-        $referentChild->setReferent(
-            [
-                $this->getReference('referent_tag_ch'),
-                $this->getReference('referent_tag_93'),
-            ],
-            -1.6743,
-            48.112
-        );
-        $referentChild->enableCommitteesNotifications();
-        $referentChild->addReferentTag($this->getReference('referent_tag_77'));
-
-        $coordinator = $adherentFactory->createFromArray([
-            'uuid' => self::ADHERENT_15_UUID,
-            'password' => self::DEFAULT_PASSWORD,
-            'email' => 'coordinateur@en-marche-dev.fr',
-            'gender' => 'male',
-            'first_name' => 'Coordinateur',
-            'last_name' => 'Coordinateur',
-            'address' => PostAddress::createFrenchAddress('75 Avenue Aristide Briand', '94110-94003', 48.805347, 2.325805),
-            'birthdate' => '1969-04-10',
-            'position' => 'employed',
-            'phone' => '33 665859053',
-            'registered_at' => '2017-09-20 15:31:21',
-        ]);
-        $coordinator->addCoordinatorManagedArea(new CoordinatorManagedArea(['FR'], CoordinatorAreaSectors::COMMITTEE_SECTOR));
-        $coordinator->addReferentTag($this->getReference('referent_tag_94'));
-
-        $coordinatorCP = $adherentFactory->createFromArray([
-            'uuid' => self::ADHERENT_17_UUID,
-            'password' => self::DEFAULT_PASSWORD,
-            'email' => 'coordinatrice-cp@en-marche-dev.fr',
-            'gender' => 'female',
-            'first_name' => 'Coordinatrice',
-            'last_name' => 'CITIZEN PROJECT',
-            'address' => PostAddress::createFrenchAddress('Place de la Madeleine', '75008-75108', 48.8704135, 2.324256),
-            'birthdate' => '1989-03-13',
-            'position' => 'employed',
-            'phone' => '33 665859053',
-            'registered_at' => '2017-09-20 15:31:21',
-        ]);
-        $coordinatorCP->addCoordinatorManagedArea(new CoordinatorManagedArea(['US', '59290', '77'], CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR));
-        $coordinatorCP->addReferentTag($this->getReference('referent_tag_75'));
-        $coordinatorCP->addReferentTag($this->getReference('referent_tag_75008'));
-        $this->addReference('adherent-17', $coordinatorCP);
-
         $adherent9 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_9_UUID,
             'password' => self::DEFAULT_PASSWORD,
@@ -416,7 +303,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
 
         // Non activated, enabled adherent
         $adherent15 = $adherentFactory->createFromArray([
-            'uuid' => self::ADHERENT_16_UUID,
+            'uuid' => self::ADHERENT_15_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'thomas.leclerc@example.ch',
             'gender' => 'male',
@@ -430,6 +317,141 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent15->addReferentTag($this->getReference('referent_tag_ch'));
         $this->addReference('adherent-15', $adherent15);
 
+        $referent = $adherentFactory->createFromArray([
+            'uuid' => self::REFERENT_1_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'referent@en-marche-dev.fr',
+            'gender' => 'male',
+            'first_name' => 'Referent',
+            'last_name' => 'Referent',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', 48.5278939, 2.6484923),
+            'birthdate' => '1962-01-07',
+            'position' => 'employed',
+            'phone' => '33 673654349',
+            'registered_at' => '2017-01-25 19:31:45',
+        ]);
+        $referent->setReferent(
+            [
+                $this->getReference('referent_tag_ch'),
+                $this->getReference('referent_tag_92'),
+                $this->getReference('referent_tag_76'),
+                $this->getReference('referent_tag_77'),
+                $this->getReference('referent_tag_13'),
+            ],
+            -1.6743,
+            48.112
+        );
+        $roles = new ArrayCollection();
+        $roles->add($this->getReference('referent'));
+        $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
+        $referent->enableCommitteesNotifications();
+        $referent->addReferentTag($this->getReference('referent_tag_77'));
+        $this->addReference('adherent-8', $referent);
+
+        $referent75and77 = $adherentFactory->createFromArray([
+            'uuid' => self::REFERENT_2_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'referent-75-77@en-marche-dev.fr',
+            'gender' => 'female',
+            'first_name' => 'Referent75and77',
+            'last_name' => 'Referent75and77',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '75001-75101', 48.5278939, 2.6484923),
+            'birthdate' => '1970-01-08',
+            'position' => 'employed',
+            'phone' => '33 6765204050',
+            'registered_at' => '2018-05-12 12:31:45',
+        ]);
+        $referent75and77->setReferent(
+            [
+                $this->getReference('referent_tag_77'),
+                $this->getReference('referent_tag_75'),
+                $this->getReference('referent_tag_75008'),
+                $this->getReference('referent_tag_75009'),
+            ],
+            -1.6743,
+            48.112
+        );
+        $referent75and77->addReferentTag($this->getReference('referent_tag_75'));
+        $this->addReference('adherent-19', $referent75and77);
+
+        $referentChild = $adherentFactory->createFromArray([
+            'uuid' => self::REFERENT_3_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'referent-child@en-marche-dev.fr',
+            'gender' => 'male',
+            'first_name' => 'Referent child',
+            'last_name' => 'Referent child',
+            'address' => PostAddress::createFrenchAddress('3 avenue Jean Jaurès', '77000-77288', 48.5278939, 2.6484923),
+            'birthdate' => '1962-02-07',
+            'position' => 'employed',
+            'phone' => '33 673654348',
+            'registered_at' => '2017-01-25 19:31:45',
+        ]);
+        $referentChild->setReferent(
+            [
+                $this->getReference('referent_tag_ch'),
+                $this->getReference('referent_tag_93'),
+            ],
+            -1.6743,
+            48.112
+        );
+        $referentChild->enableCommitteesNotifications();
+        $referentChild->addReferentTag($this->getReference('referent_tag_77'));
+
+        $coordinator = $adherentFactory->createFromArray([
+            'uuid' => self::COORDINATOR_1_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'coordinateur@en-marche-dev.fr',
+            'gender' => 'male',
+            'first_name' => 'Coordinateur',
+            'last_name' => 'Coordinateur',
+            'address' => PostAddress::createFrenchAddress('75 Avenue Aristide Briand', '94110-94003', 48.805347, 2.325805),
+            'birthdate' => '1969-04-10',
+            'position' => 'employed',
+            'phone' => '33 665859053',
+            'registered_at' => '2017-09-20 15:31:21',
+        ]);
+        $coordinator->addCoordinatorManagedArea(new CoordinatorManagedArea(['FR'], CoordinatorAreaSectors::COMMITTEE_SECTOR));
+        $coordinator->addReferentTag($this->getReference('referent_tag_94'));
+
+        $coordinatorCP = $adherentFactory->createFromArray([
+            'uuid' => self::COORDINATOR_2_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'coordinatrice-cp@en-marche-dev.fr',
+            'gender' => 'female',
+            'first_name' => 'Coordinatrice',
+            'last_name' => 'CITIZEN PROJECT',
+            'address' => PostAddress::createFrenchAddress('Place de la Madeleine', '75008-75108', 48.8704135, 2.324256),
+            'birthdate' => '1989-03-13',
+            'position' => 'employed',
+            'phone' => '33 665859053',
+            'registered_at' => '2017-09-20 15:31:21',
+        ]);
+        $coordinatorCP->addCoordinatorManagedArea(new CoordinatorManagedArea(['US', '59290', '77'], CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR));
+        $coordinatorCP->addReferentTag($this->getReference('referent_tag_75'));
+        $coordinatorCP->addReferentTag($this->getReference('referent_tag_75008'));
+        $this->addReference('adherent-17', $coordinatorCP);
+
+        $deputy_75_1 = $adherentFactory->createFromArray([
+            'uuid' => self::DEPUTY_1_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'deputy@example.ch',
+            'gender' => 'male',
+            'first_name' => 'Député',
+            'last_name' => 'PARIS I',
+            'address' => PostAddress::createFrenchAddress('3 Avenue du Général Eisenhower', '75008-75108', 48.8665777, 2.311635),
+            'birthdate' => '1982-06-02',
+            'registered_at' => '2017-06-01 09:26:31',
+        ]);
+        $district_75_8 = $manager->getRepository(District::class)->findOneBy(['code' => '75008']);
+        $deputy_75_1->setManagedDistrict($district_75_8);
+        $roles = new ArrayCollection();
+        $roles->add($this->getReference('deputy'));
+        $deputy_75_1->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
+        $deputy_75_1->addReferentTag($this->getReference('referent_tag_75'));
+        $deputy_75_1->addReferentTag($this->getReference('referent_tag_75008'));
+        $this->addReference('deputy-75-8', $deputy_75_1);
+
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
         $key2 = AdherentActivationToken::generate($adherent2);
@@ -439,8 +461,6 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $key6 = AdherentActivationToken::generate($adherent6);
         $key7 = AdherentActivationToken::generate($adherent7);
         $key8 = AdherentActivationToken::generate($referent);
-        $key19 = AdherentActivationToken::generate($referent75and77);
-        $key18 = AdherentActivationToken::generate($referentChild);
         $key9 = AdherentActivationToken::generate($adherent9);
         $key10 = AdherentActivationToken::generate($adherent10);
         $key11 = AdherentActivationToken::generate($adherent11);
@@ -450,6 +470,9 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $key15 = AdherentActivationToken::generate($adherent15);
         $key16 = AdherentActivationToken::generate($coordinator);
         $key17 = AdherentActivationToken::generate($coordinatorCP);
+        $key18 = AdherentActivationToken::generate($referentChild);
+        $key19 = AdherentActivationToken::generate($referent75and77);
+        $key20 = AdherentActivationToken::generate($deputy_75_1);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -458,9 +481,6 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent5->activate($key5, '2017-01-08 06:42:56');
         $adherent6->activate($key6, '2017-01-17 08:07:45');
         $adherent7->activate($key7, '2017-01-25 19:34:02');
-        $referent->activate($key8, '2017-02-07 13:20:45');
-        $referent75and77->activate($key19, '2018-05-13 07:21:01');
-        $referentChild->activate($key18, '2017-02-07 13:20:45');
         $adherent9->activate($key9, '2017-02-16 17:23:15');
         $adherent10->activate($key10, '2017-02-23 14:02:18');
         $adherent11->activate($key11, '2017-04-10 14:12:56');
@@ -468,8 +488,12 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent13->activate($key13, '2017-05-03 09:16:54');
         $adherent14->activate($key14, '2017-05-04 09:34:21');
         // $key15 is not activated, but adherent is enabled
+        $referent->activate($key8, '2017-02-07 13:20:45');
         $coordinator->activate($key16, '2017-09-20 17:44:32');
         $coordinatorCP->activate($key17, '2018-01-20 14:34:11');
+        $referentChild->activate($key18, '2017-02-07 13:20:45');
+        $referent75and77->activate($key19, '2018-05-13 07:21:01');
+        $deputy_75_1->activate($key20, '2017-06-01 12:14:51');
 
         // Create some default committees and make people join them
         $committeeFactory = $this->getCommitteeFactory();
@@ -609,9 +633,6 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($adherent5);
         $manager->persist($adherent6);
         $manager->persist($adherent7);
-        $manager->persist($referent);
-        $manager->persist($referent75and77);
-        $manager->persist($referentChild);
         $manager->persist($adherent9);
         $manager->persist($adherent10);
         $manager->persist($adherent11);
@@ -619,8 +640,12 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($adherent13);
         $manager->persist($adherent14);
         $manager->persist($adherent15);
+        $manager->persist($referent);
+        $manager->persist($referent75and77);
+        $manager->persist($referentChild);
         $manager->persist($coordinator);
         $manager->persist($coordinatorCP);
+        $manager->persist($deputy_75_1);
 
         $manager->persist($key1);
         $manager->persist($key2);
@@ -638,6 +663,10 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($key14);
         $manager->persist($key15);
         $manager->persist($key16);
+        $manager->persist($key17);
+        $manager->persist($key18);
+        $manager->persist($key19);
+        $manager->persist($key20);
 
         $manager->persist($resetPasswordToken);
 
@@ -696,6 +725,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
     {
         return [
             LoadBoardMemberRoleData::class,
+            LoadDistrictData::class,
             LoadAdherentTagData::class,
             LoadReferentTagData::class,
         ];

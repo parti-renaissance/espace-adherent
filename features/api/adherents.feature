@@ -29,7 +29,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "female":7,"male":11,"total":18
+      "female":7,"male":12,"total":19
     }
     """
 
@@ -52,15 +52,15 @@ Feature:
     """
     {
       "female":3,
-      "male":4,
-      "total":7,
+      "male":5,
+      "total":8,
       "adherents": [
-          {"date": "2018-04", "total": 6},
-          {"date": "2018-03", "total": 6},
-          {"date": "2018-02", "total": 6},
-          {"date": "2018-01", "total": 6},
-          {"date": "2017-12", "total": 5},
-          {"date": "2017-11", "total": 5}
+          {"date": "2018-04", "total": 7},
+          {"date": "2018-03", "total": 7},
+          {"date": "2018-02", "total": 7},
+          {"date": "2018-01", "total": 7},
+          {"date": "2017-12", "total": 6},
+          {"date": "2017-11", "total": 6}
       ],
       "committee_members": [
           {"date": "2018-04", "count": 3},
@@ -71,7 +71,7 @@ Feature:
           {"date": "2017-11", "count": 2}
       ],
       "email_subscriptions": [
-          {"date": "2018-04", "subscribed_emails_local_host": 7, "subscribed_emails_referents": 7},
+          {"date": "2018-04", "subscribed_emails_local_host": 8, "subscribed_emails_referents": 8},
           {"date": "2018-03", "subscribed_emails_local_host": 0, "subscribed_emails_referents": 0},
           {"date": "2018-02", "subscribed_emails_local_host": 4, "subscribed_emails_referents": 0},
           {"date": "2018-01", "subscribed_emails_local_host": 3, "subscribed_emails_referents": 0},

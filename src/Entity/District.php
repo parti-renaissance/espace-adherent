@@ -175,7 +175,12 @@ class District
         return $this->geoShape->toArray();
     }
 
-    public function setAdherent(Adherent $adherent = null)
+    public function getAdherent(): ?Adherent
+    {
+        return $this->adherent;
+    }
+
+    public function setAdherent(?Adherent $adherent)
     {
         $this->adherent = $adherent;
     }
@@ -187,5 +192,10 @@ class District
         $this->geoShape = $geoShape;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return sprintf('%s, %sème circonscription (%s)', $this->name, $this->number, substr_replace($this->code, '-', -3, 1));
     }
 }
