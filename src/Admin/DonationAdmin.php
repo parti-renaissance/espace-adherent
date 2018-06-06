@@ -2,11 +2,13 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Entity\Donation;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class DonationAdmin extends AbstractAdmin
@@ -21,11 +23,9 @@ class DonationAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $show)
     {
         $show
-            ->add('isFinished', 'boolean', [
-                'label' => 'Don terminé ?',
-            ])
-            ->add('isSuccessful', 'boolean', [
-                'label' => 'Don réussi ?',
+            ->add('status', null, [
+                'label' => 'Statut du don',
+                'template' => 'admin/donation/show_status.html.twig',
             ])
             ->add('amountInEuros', null, [
                 'label' => 'Montant',
@@ -62,17 +62,8 @@ class DonationAdmin extends AbstractAdmin
             ->add('createdAt', null, [
                 'label' => 'Date de création',
             ])
-            ->add('donatedAt', null, [
-                'label' => 'Date de don',
-            ])
-            ->add('payboxResultCode', null, [
-                'label' => 'Code de résultat Paybox',
-            ])
-            ->add('payboxAuthorizationCode', null, [
-                'label' => 'Code d\'autorisation Paybox',
-            ])
-            ->add('payboxPayloadAsJson', null, [
-                'label' => 'Payload Paybox',
+            ->add('updatedAt', null, [
+                'label' => 'Dernier update',
             ])
         ;
     }
@@ -86,6 +77,24 @@ class DonationAdmin extends AbstractAdmin
             ->add('lastName', null, [
                 'label' => 'Nom',
             ])
+            ->add('emailAddress', null, [
+                'label' => 'Adresse e-mail',
+            ])
+            ->add(
+                'status',
+                'doctrine_orm_choice',
+                ['label' => 'Statut'],
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        'donation.status.'.Donation::STATUS_WAITING_CONFIRMATION => Donation::STATUS_WAITING_CONFIRMATION,
+                        'donation.status.'.Donation::STATUS_SUBSCRIPTION_IN_PROGRESS => Donation::STATUS_SUBSCRIPTION_IN_PROGRESS,
+                        'donation.status.'.Donation::STATUS_ERROR => Donation::STATUS_ERROR,
+                        'donation.status.'.Donation::STATUS_CANCELED => Donation::STATUS_CANCELED,
+                        'donation.status.'.Donation::STATUS_FINISHED => Donation::STATUS_FINISHED,
+                    ],
+                ]
+            )
         ;
     }
 
@@ -104,11 +113,9 @@ class DonationAdmin extends AbstractAdmin
             ->add('amountInEuros', NumberType::class, [
                 'label' => 'Montant',
             ])
-            ->add('isFinished', 'boolean', [
-                'label' => 'Don terminé ?',
-            ])
-            ->add('isSuccessful', 'boolean', [
-                'label' => 'Don réussi ?',
+            ->add('status', null, [
+                'label' => 'Statut du don',
+                'template' => 'admin/donation/list_status.html.twig',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
