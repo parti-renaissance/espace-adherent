@@ -16,7 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class InitializeEmailSubscriptionHistoryCommand extends Command
 {
-    private const BATCH_SIZE = 50;
+    private const BATCH_SIZE = 5000;
 
     protected static $defaultName = 'app:adherent:initialize-email-subscriptions-history';
 
@@ -55,40 +55,63 @@ class InitializeEmailSubscriptionHistoryCommand extends Command
 
         $this->io->title('Starting email subscription history initialization.');
 
+        $historyQuery = <<<'SQL'
+INSERT INTO adherent_email_subscription_histories (adherent_uuid, subscribed_email_type, action, date) 
+VALUES (:adherent_uuid, :subscribed_email_type, :action, :date)
+SQL;
+        $historyVsTagQuery = <<<'SQL'
+INSERT INTO adherent_email_subscription_history_referent_tag (email_subscription_history_id, referent_tag_id) 
+VALUES (:email_subscription_history_id, :referent_tag_id)
+SQL;
+
+        $connection = $this->em->getConnection();
+        $connection->getConfiguration()->setSQLLogger(null); // Like this we are sure nothing is logged. Memory usage stays stable and it speeds things up.
         $progressBar = new ProgressBar($output, $this->getAdherentCount());
 
-        $this->em->beginTransaction();
-
-        $nb = 0;
+        $i = 0;
         foreach ($this->getAdherents() as $result) {
+            /* @var Adherent $adherent */
             $adherent = $result[0];
+
+            if (!$connection->isTransactionActive()) {
+                $connection->beginTransaction();
+            }
 
             /** @var Adherent $adherent */
             foreach ($adherent->getEmailsSubscriptions() as $subscription) {
-                $subscriptionHistory = new EmailSubscriptionHistory(
-                    $adherent,
-                    $subscription,
-                    $adherent->getReferentTags()->toArray(),
-                    EmailSubscriptionHistoryAction::SUBSCRIBE(),
-                    \DateTimeImmutable::createFromMutable($adherent->getActivatedAt() ?: $adherent->getRegisteredAt())
+                $connection->executeQuery(
+                    $historyQuery,
+                    [
+                        'adherent_uuid' => $adherent->getUuid(),
+                        'subscribed_email_type' => $subscription,
+                        'action' => EmailSubscriptionHistoryAction::SUBSCRIBE,
+                        'date' => $adherent->getActivatedAt() ? $adherent->getActivatedAt()->format('Y-m-d H:i:s') : $adherent->getRegisteredAt()->format('Y-m-d H:i:s'),
+                    ]
                 );
-                $this->em->persist($subscriptionHistory);
+                $idHistory = $connection->lastInsertId();
+
+                foreach ($adherent->getReferentTags() as $tag) {
+                    $connection->executeQuery(
+                        $historyVsTagQuery,
+                        [
+                            'email_subscription_history_id' => $idHistory,
+                            'referent_tag_id' => $tag->getId(),
+                        ]
+                    );
+                }
+            }
+
+            if (0 === (++$i % self::BATCH_SIZE)) {
+                $connection->commit();
+                $this->em->clear();
             }
 
             $progressBar->advance();
-
-            ++$nb;
-
-            if (0 === ($nb % self::BATCH_SIZE)) {
-                $this->em->flush();
-                $this->em->clear();
-                $nb = 0;
-            }
         }
 
-        $this->em->flush();
-        $this->em->commit();
-
+        if ($connection->isTransactionActive()) {
+            $connection->commit();
+        }
         $progressBar->finish();
 
         $this->io->newLine(2);
