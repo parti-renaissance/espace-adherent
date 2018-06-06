@@ -3,12 +3,12 @@
 namespace Tests\AppBundle\Command;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class ApiScheduleCommitteeCreationCommandTest extends SqliteWebTestCase
+class ApiScheduleCommitteeCreationCommandTest extends WebTestCase
 {
     public function testCommand(): void
     {

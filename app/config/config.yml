@@ -104,6 +104,9 @@ doctrine:
             uuid:           Ramsey\Uuid\Doctrine\UuidType
             phone_number:   Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType
             geo_point:      AppBundle\Doctrine\DBAL\Types\GeoPointType
+            geometry:       CrEOF\Spatial\DBAL\Types\GeometryType
+            polygon:        CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
+            multipolygon:   CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore

@@ -24,7 +24,7 @@ default:
         Behat\Symfony2Extension:
             kernel:
                 class: AppKernel
-                env: test_mysql
+                env: test
         Behat\MinkExtension:
             base_url: "http://test.enmarche.code"
             sessions:

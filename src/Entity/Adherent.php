@@ -208,6 +208,13 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $referentTags;
 
     /**
+     * @var District|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\District", mappedBy="adherent")
+     */
+    private $managedDistrict;
+
+    /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $adherent = false;
@@ -1104,6 +1111,16 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
                 $this->removeCoordinatorManagedArea($area);
             }
         }
+    }
+
+    public function getManagedDistrict(): ?District
+    {
+        return $this->managedDistrict;
+    }
+
+    public function setManagedDistrict(?District $district): void
+    {
+        $this->managedDistrict = $district;
     }
 
     public function isAdherent(): bool

@@ -4,12 +4,12 @@ namespace Tests\AppBundle\Redirection\Dynamic;
 
 use AppBundle\Entity\Redirection;
 use AppBundle\Redirection\Dynamic\RedirectionManager;
-use Tests\AppBundle\MysqlWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class RedirectionManagerTest extends MysqlWebTestCase
+class RedirectionManagerTest extends WebTestCase
 {
     public function testSimpleResolveRedirection(): void
     {

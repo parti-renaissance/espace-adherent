@@ -6,12 +6,12 @@ use AppBundle\DataFixtures\ORM\LoadLegislativesData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class HomeControllerTest extends SqliteWebTestCase
+class HomeControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 

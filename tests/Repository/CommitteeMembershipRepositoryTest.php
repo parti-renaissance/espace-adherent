@@ -6,12 +6,12 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class CommitteeMembershipRepositoryTest extends SqliteWebTestCase
+class CommitteeMembershipRepositoryTest extends WebTestCase
 {
     /**
      * @var CommitteeMembershipRepository

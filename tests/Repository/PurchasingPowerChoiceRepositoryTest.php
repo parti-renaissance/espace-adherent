@@ -6,12 +6,12 @@ use AppBundle\DataFixtures\ORM\LoadPurchasingPowerData;
 use AppBundle\Entity\PurchasingPowerChoice;
 use AppBundle\Repository\PurchasingPowerChoiceRepository;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class PurchasingPowerChoiceRepositoryTest extends SqliteWebTestCase
+class PurchasingPowerChoiceRepositoryTest extends WebTestCase
 {
     /**
      * @var PurchasingPowerChoiceRepository

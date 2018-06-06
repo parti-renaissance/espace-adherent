@@ -27,13 +27,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MysqlWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  * @group adherent
  */
-class AdherentControllerTest extends MysqlWebTestCase
+class AdherentControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 

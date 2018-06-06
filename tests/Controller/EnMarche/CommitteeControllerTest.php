@@ -13,13 +13,13 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MysqlWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  * @group committee
  */
-class CommitteeControllerTest extends MysqlWebTestCase
+class CommitteeControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 

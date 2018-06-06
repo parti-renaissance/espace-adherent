@@ -8,13 +8,13 @@ use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group time-sensitive
  * @group functional
  */
-class InactiveAdminDisconnectionTest extends SqliteWebTestCase
+class InactiveAdminDisconnectionTest extends WebTestCase
 {
     use ControllerTestTrait;
 

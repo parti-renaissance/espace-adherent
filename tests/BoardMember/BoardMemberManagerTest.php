@@ -12,12 +12,12 @@ use AppBundle\Entity\BoardMember\Role;
 use AppBundle\Repository\AdherentRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class BoardMemberManagerTest extends SqliteWebTestCase
+class BoardMemberManagerTest extends WebTestCase
 {
     /**
      * @var AdherentRepository

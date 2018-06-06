@@ -9,12 +9,12 @@ use AppBundle\Mailer\Message\CommitteeApprovalReferentMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MysqlWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class AdminCommitteeControllerTest extends MysqlWebTestCase
+class AdminCommitteeControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 

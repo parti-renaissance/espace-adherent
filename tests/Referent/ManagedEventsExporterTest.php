@@ -7,12 +7,12 @@ use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Referent\ManagedEventsExporter;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class ManagedEventsExporterTest extends SqliteWebTestCase
+class ManagedEventsExporterTest extends WebTestCase
 {
     /**
      * @var ManagedEventsExporter

@@ -10,12 +10,12 @@ use AppBundle\Entity\OAuth\RefreshToken;
 use Doctrine\ORM\EntityManager;
 use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MysqlWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class ClientAdminControllerTest extends MysqlWebTestCase
+class ClientAdminControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 

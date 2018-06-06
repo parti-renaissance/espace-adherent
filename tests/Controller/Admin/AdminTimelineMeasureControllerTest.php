@@ -13,13 +13,13 @@ use AppBundle\Repository\Timeline\ThemeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MysqlWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\Test\Algolia\DummyIndexer;
 
 /**
  * @group functional
  */
-class AdminTimelineMeasureControllerTest extends MysqlWebTestCase
+class AdminTimelineMeasureControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 

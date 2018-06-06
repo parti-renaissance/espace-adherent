@@ -7,12 +7,12 @@ use AppBundle\Repository\DonationRepository;
 use AppBundle\Repository\TransactionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class TransactionSubscriberTest extends SqliteWebTestCase
+class TransactionSubscriberTest extends WebTestCase
 {
     use ControllerTestTrait;
 

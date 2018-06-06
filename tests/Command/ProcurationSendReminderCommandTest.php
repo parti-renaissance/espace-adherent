@@ -7,14 +7,14 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadProcurationData;
 use AppBundle\Mailer\Message\ProcurationProxyReminderMessage;
 use AppBundle\Repository\ProcurationRequestRepository;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
 /**
  * @group functional
  * @group procuration
  */
-class ProcurationSendReminderCommandTest extends SqliteWebTestCase
+class ProcurationSendReminderCommandTest extends WebTestCase
 {
     use TestHelperTrait;
 

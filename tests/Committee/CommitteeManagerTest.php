@@ -12,14 +12,14 @@ use AppBundle\Entity\ReferentTag;
 use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
 use AppBundle\Exception\CommitteeMembershipException;
 use AppBundle\Geocoder\Coordinates;
-use Tests\AppBundle\MysqlWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
 /**
  * @group functional
  * @group committeeManager
  */
-class CommitteeManagerTest extends MysqlWebTestCase
+class CommitteeManagerTest extends WebTestCase
 {
     use TestHelperTrait;
 

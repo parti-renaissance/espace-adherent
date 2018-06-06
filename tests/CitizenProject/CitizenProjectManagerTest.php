@@ -10,14 +10,14 @@ use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Membership\AdherentEmailSubscription;
-use Tests\AppBundle\MysqlWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
 /**
  * @group functional
  * @group citizenProject
  */
-class CitizenProjectManagerTest extends MysqlWebTestCase
+class CitizenProjectManagerTest extends WebTestCase
 {
     use TestHelperTrait;
 

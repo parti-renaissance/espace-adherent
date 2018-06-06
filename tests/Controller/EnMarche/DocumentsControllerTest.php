@@ -7,13 +7,13 @@ use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  * @group documents
  */
-class DocumentsControllerTest extends SqliteWebTestCase
+class DocumentsControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 

@@ -9,12 +9,12 @@ use AppBundle\Repository\EventRepository;
 use AppBundle\Search\SearchParametersFilter;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MysqlWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class EventRepositoryTest extends MysqlWebTestCase
+class EventRepositoryTest extends WebTestCase
 {
     /**
      * @var EventRepository
