@@ -77,8 +77,8 @@ class EventsController extends Controller
 
         return new JsonResponse([
             'total' => $eventRepository->countParticipantsInReferentManagedArea($referent),
-            'event_participants' => $eventRegistrationRepository->countEventParticipantsInReferentManagedArea($referent),
-            'in_at_least_one_committee' => $eventRegistrationRepository->countEventParticipantsInReferentManagedAreaInAtLeastOneCommittee($referent),
+            'participants' => $eventRegistrationRepository->countEventParticipantsInReferentManagedArea($referent),
+            'participants_as_adherent' => $eventRegistrationRepository->countEventParticipantsAsAdherentInReferentManagedArea($referent),
         ]);
     }
 }

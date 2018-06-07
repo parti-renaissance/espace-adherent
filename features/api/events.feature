@@ -222,7 +222,7 @@ Feature:
     """
     {
       "total": 7,
-      "event_participants": [
+      "participants": [
         {"date": "2018-05", "count": 5},
         {"date": "2018-04", "count": 4},
         {"date": "2018-03", "count": 0},
@@ -230,9 +230,9 @@ Feature:
         {"date": "2018-01", "count": 0},
         {"date": "2017-12", "count": 0}
       ],
-      "in_at_least_one_committee": [
+      "participants_as_adherent": [
         {"date": "2018-05", "count": 3},
-        {"date": "2018-04", "count": 3},
+        {"date": "2018-04", "count": 4},
         {"date": "2018-03", "count": 0},
         {"date": "2018-02", "count": 0},
         {"date": "2018-01", "count": 0},

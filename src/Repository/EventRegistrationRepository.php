@@ -173,7 +173,33 @@ class EventRegistrationRepository extends ServiceEntityRepository
     {
         $this->checkReferent($referent);
 
-        $query = $this->createQueryBuilder('eventRegistrations')
+        $query = $this->createQueryBuilderForEventParticipantsInReferentManagedArea($referent, $months);
+
+        if ($filter) {
+            $query = RepositoryUtils::addStatstFilter($filter, $query);
+        }
+
+        return RepositoryUtils::aggregateCountByMonth($query->getQuery()->getArrayResult());
+    }
+
+    public function countEventParticipantsAsAdherentInReferentManagedArea(Adherent $referent, StatisticsParametersFilter $filter = null, int $months = 5): array
+    {
+        $this->checkReferent($referent);
+
+        $query = $this->createQueryBuilderForEventParticipantsInReferentManagedArea($referent, $months)
+            ->andWhere('eventRegistrations.adherentUuid is not null')
+        ;
+
+        if ($filter) {
+            $query = RepositoryUtils::addStatstFilter($filter, $query);
+        }
+
+        return RepositoryUtils::aggregateCountByMonth($query->getQuery()->getArrayResult());
+    }
+
+    private function createQueryBuilderForEventParticipantsInReferentManagedArea(Adherent $referent, int $months): QueryBuilder
+    {
+        return $this->createQueryBuilder('eventRegistrations')
             ->select('DISTINCT eventRegistrations.emailAddress, COUNT(DISTINCT eventRegistrations) AS count, YEAR_MONTH(event.beginAt) as yearmonth')
             ->join(Event::class, 'event', Join::WITH, 'eventRegistrations.event = event.id')
             ->join('event.referentTags', 'tag')
@@ -187,44 +213,6 @@ class EventRegistrationRepository extends ServiceEntityRepository
             ->setParameter('from', (new Chronos("first day of -$months months"))->setTime(0, 0, 0, 000))
             ->groupBy('yearmonth')
         ;
-
-        if ($filter) {
-            $query = RepositoryUtils::addStatstFilter($filter, $query);
-        }
-
-        return RepositoryUtils::aggregateCountByMonth($query->getQuery()->getArrayResult());
-    }
-
-    public function countEventParticipantsInReferentManagedAreaInAtLeastOneCommittee(Adherent $referent, StatisticsParametersFilter $filter = null, int $months = 5): array
-    {
-        $this->checkReferent($referent);
-
-        $query = $this->createQueryBuilder('eventRegistrations')
-            ->select('COUNT(DISTINCT eventRegistrations) AS count, YEAR_MONTH(event.beginAt) as yearmonth')
-            ->join(Event::class, 'event', Join::WITH, 'eventRegistrations.event = event.id')
-            ->join('event.referentTags', 'eventTag')
-            ->join(Adherent::class, 'adherent', Join::WITH, 'adherent.uuid = eventRegistrations.adherentUuid')
-            ->join('adherent.memberships', 'memberships')
-            ->join('memberships.committee', 'committee')
-            ->join('committee.referentTags', 'committeeTag')
-            ->where('eventTag IN (:eventTags)')
-            ->andWhere('committeeTag in (:committeeTags)')
-            ->andWhere("event.status = '".Event::STATUS_SCHEDULED."'")
-            ->andWhere('event.beginAt >= :from')
-            ->andWhere('event.beginAt <= :until')
-            ->andWhere('event.committee IS NOT NULL')
-            ->setParameter('eventTags', $referent->getManagedArea()->getTags())
-            ->setParameter('committeeTags', $referent->getManagedArea()->getTags())
-            ->setParameter('until', (new Chronos('now'))->setTime(23, 59, 59, 999))
-            ->setParameter('from', (new Chronos("first day of -$months months"))->setTime(0, 0, 0, 000))
-            ->groupBy('yearmonth')
-        ;
-
-        if ($filter) {
-            $query = RepositoryUtils::addStatstFilter($filter, $query);
-        }
-
-        return RepositoryUtils::aggregateCountByMonth($query->getQuery()->getArrayResult());
     }
 
     private function createEventRegistrationQueryBuilder(string $eventUuid): QueryBuilder
