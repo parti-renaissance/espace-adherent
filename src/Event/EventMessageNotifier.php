@@ -61,7 +61,7 @@ class EventMessageNotifier implements EventSubscriberInterface
 
         $subscriptions = $this->registrationRepository->findByEvent($event->getEvent());
 
-        if (count($subscriptions) > 0) {
+        if (\count($subscriptions) > 0) {
             $chunks = array_chunk($subscriptions->toArray(), MailerService::PAYLOAD_MAXSIZE);
 
             foreach ($chunks as $chunk) {
@@ -77,7 +77,6 @@ class EventMessageNotifier implements EventSubscriberInterface
     private function createMessage(array $followers, Event $event, Adherent $host): EventNotificationMessage
     {
         $params = [
-            'uuid' => (string) $event->getUuid(),
             'slug' => $event->getSlug(),
         ];
 
