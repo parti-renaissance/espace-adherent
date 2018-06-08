@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Form\Mooc;
+namespace AppBundle\Form;
 
 use AppBundle\Entity\Mooc\AttachmentLink;
 use Symfony\Component\Form\AbstractType;

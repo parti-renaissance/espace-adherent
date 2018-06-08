@@ -14,6 +14,13 @@ app_assets:
     type:     "annotation"
 
 #
+# Mooc
+#
+app_mooc:
+    resource: "@AppBundle/Controller/MoocController.php"
+    type:     "annotation"
+
+#
 # User uploaded documents
 #
 app_documents:

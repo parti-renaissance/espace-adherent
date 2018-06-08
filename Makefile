@@ -183,13 +183,13 @@ deps: vendor web/built                                                          
 
 build:
 	$(DOCKER_COMPOSE) pull --parallel --ignore-pull-failures
-	$(DOCKER_COMPOSE) build --force-rm
+	$(DOCKER_COMPOSE) build --force-rm --pull
 
 up:
 	$(DOCKER_COMPOSE) up -d --remove-orphans
 
 perm:
-	$(EXEC) chmod -R 777 var app/data/images
+	$(EXEC) chmod -R 777 var app/data/images app/data/files
 	$(EXEC) chown -R www-data:root var
 	$(EXEC) chmod 660 var/public.key var/private.key
 

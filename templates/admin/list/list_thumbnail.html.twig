@@ -2,7 +2,7 @@
 
 {% block field %}
     <div style="text-align: center;">
-        {% if object.hasYoutubeThumbnail %}
+        {% if object.hasYoutubeThumbnail is defined and object.hasYoutubeThumbnail %}
             <img src="{{ object.getYoutubeThumbnail }}" style="max-height: 70px; max-width: 100px;" />
         {% endif %}
     </div>
