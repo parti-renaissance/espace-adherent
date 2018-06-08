@@ -40,6 +40,6 @@ class Quizz extends BaseMoocElement
 
     public function getType(): string
     {
-        return parent::ELEMENT_TYPE_QUIZZ;
+        return parent::ELEMENT_TYPE_QUIZ;
     }
 }

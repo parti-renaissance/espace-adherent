@@ -22,10 +22,22 @@ class Video extends BaseMoocElement
      */
     private $youtubeId;
 
-    public function __construct(string $title = null, string $description = null, string $youtubeId = null)
-    {
+    /**
+     * @ORM\Column(type="time")
+     *
+     * @Assert\Time
+     */
+    private $duration;
+
+    public function __construct(
+        string $title = null,
+        string $description = null,
+        string $youtubeId = null,
+        \DateTime $duration = null
+    ) {
         parent::__construct($title, $description);
         $this->youtubeId = $youtubeId;
+        $this->duration = $duration;
     }
 
     public function getYoutubeId(): ?string
@@ -46,6 +58,16 @@ class Video extends BaseMoocElement
     public function getYoutubeThumbnail(): ?string
     {
         return sprintf('https://img.youtube.com/vi/%s/0.jpg', $this->youtubeId);
+    }
+
+    public function getDuration(): ?\DateTime
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(\DateTime $duration): void
+    {
+        $this->duration = $duration;
     }
 
     public function getType(): string

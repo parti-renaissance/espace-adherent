@@ -4,6 +4,7 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Mooc\AttachmentLink;
 use AppBundle\Entity\Mooc\Video;
+use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -12,11 +13,10 @@ class LoadMoocVideoData extends AbstractFixture
     public function load(ObjectManager $manager)
     {
         $video1 = new Video(
-            'Les produits transformés',
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
-            ex ea commodo consequat.',
-            'ktHEfEDhscU'
+            'Les produits transformés dans une première vidéo',
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            'ktHEfEDhscU',
+            new \DateTime(Chronos::createFromTime(00, 02, 10))
         );
 
         $video1->addLink(
@@ -31,20 +31,18 @@ class LoadMoocVideoData extends AbstractFixture
 
         $video2 = new Video(
             'Les produits transformés dans une deuxième vidéo',
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
-            ex ea commodo consequat.',
-            'ktHEfEDhscU'
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et.',
+            'ktHEfEDhscU',
+            new \DateTime(Chronos::createFromTime(01, 30, 00))
         );
         $manager->persist($video2);
         $this->addReference('mooc-video-2', $video2);
 
         $video3 = new Video(
             'Les produits transformés dans une troisième vidéo',
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
-            ex ea commodo consequat.',
-            'ktHEfEDhscU'
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            'ktHEfEDhscU',
+            new \DateTime(Chronos::createFromTime(00, 30, 15))
         );
 
         $manager->persist($video3);

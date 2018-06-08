@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\MoocRepository")
  * @ORM\Table(
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="mooc_slug", columns="slug")
