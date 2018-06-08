@@ -29,7 +29,6 @@ class MoocAdmin extends AbstractAdmin
                         'disabled' => true,
                     ])
                 ->end()
-            ->end()
         ;
 
         if (!$this->request->isXmlHttpRequest()) {

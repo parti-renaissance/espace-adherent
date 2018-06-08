@@ -15,7 +15,6 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\DatagridBundle\ProxyQuery\ProxyQueryInterface;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,7 +24,7 @@ class MoocElementAdmin extends AbstractAdmin
 {
     public function createQuery($context = 'list')
     {
-        /** @var ProxyQueryInterface|QueryBuilder $proxyQuery */
+        /** @var QueryBuilder $proxyQuery */
         $proxyQuery = parent::createQuery($context);
         $proxyQuery->addOrderBy('o.chapter', 'ASC');
         $proxyQuery->addOrderBy('o.position', 'ASC');
@@ -63,12 +62,12 @@ class MoocElementAdmin extends AbstractAdmin
         if ($this->getSubject() instanceof Video) {
             $formMapper
                 ->add('youtubeId', TextType::class, [
-                    'label' => 'ID de la vidéo Youtube',
-                    'help' => 'L\'ID ne peut contenir que des chiffres, des lettres, ou les caractères "_" et "-"',
+                    'label' => 'Youtube ID',
+                    'help' => 'L\'ID de la vidéo Youtube ne peut contenir que des chiffres, des lettres, et les caractères "_" et "-"',
                     'filter_emojis' => true,
                 ])
                 ->add('duration', TimeType::class, [
-                    'label' => 'Durée de la vidéo Youtube',
+                    'label' => 'Durée de la vidéo',
                     'widget' => 'single_text',
                     'with_seconds' => true,
                 ])
@@ -129,10 +128,10 @@ class MoocElementAdmin extends AbstractAdmin
                 'label' => 'Slug',
             ])
             ->add('youtubeId', null, [
-                'label' => 'ID de la vidéo Youtube',
+                'label' => 'Youtube ID',
             ])
             ->add('_thumbnail', 'thumbnail', [
-                'label' => 'Miniature Youtube',
+                'label' => 'Miniature',
             ])
             ->add('chapter', null, [
                 'label' => 'Chapitre associé',

@@ -574,7 +574,7 @@
 
             <argument />
             <argument>AppBundle\Entity\Mooc\Chapter</argument>
-            <argument />
+            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
         </service>
 
         <service id="app.admin.mooc_element" class="AppBundle\Admin\MoocElementAdmin">

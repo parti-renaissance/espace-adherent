@@ -62,7 +62,7 @@ class Chapter
      * @ORM\Column(type="smallint")
      * @Gedmo\SortablePosition
      */
-    private $displayOrder;
+    private $position;
 
     /**
      * @var Mooc
@@ -155,14 +155,14 @@ class Chapter
         $this->mooc = null;
     }
 
-    public function getDisplayOrder(): ?int
+    public function getPosition(): ?int
     {
-        return $this->displayOrder;
+        return $this->position;
     }
 
-    public function setDisplayOrder(int $displayOrder): void
+    public function setPosition(int $position): void
     {
-        $this->displayOrder = $displayOrder;
+        $this->position = $position;
     }
 
     /**

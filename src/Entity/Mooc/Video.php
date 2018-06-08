@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Mooc;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use Cake\Chronos\MutableDate;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -37,7 +38,7 @@ class Video extends BaseMoocElement
     ) {
         parent::__construct($title, $description);
         $this->youtubeId = $youtubeId;
-        $this->duration = $duration;
+        $this->duration = $duration ?? MutableDate::create();
     }
 
     public function getYoutubeId(): ?string

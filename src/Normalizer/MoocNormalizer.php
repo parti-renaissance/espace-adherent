@@ -94,7 +94,7 @@ class MoocNormalizer implements NormalizerInterface
 
         /** @var AttachmentLink $link */
         foreach ($links as $link) {
-            $attachmentLinks = [
+            $attachmentLinks[] = [
                 'linkName' => $link->getTitle(),
                 'linkUrl' => $link->getLink(),
             ];
@@ -109,7 +109,7 @@ class MoocNormalizer implements NormalizerInterface
 
         /** @var AttachmentFile $file */
         foreach ($files as $file) {
-            $attachmentFiles = [
+            $attachmentFiles[] = [
                 'attachmentName' => $file->getTitle(),
                 'attachmentUrl' => $this->router->generate(
                     'mooc_get_file', ['uuid' => $file->getUuid()], UrlGenerator::ABSOLUTE_URL
