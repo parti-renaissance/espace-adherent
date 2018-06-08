@@ -19,6 +19,7 @@ use Sonata\DatagridBundle\ProxyQuery\ProxyQueryInterface;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 class MoocElementAdmin extends AbstractAdmin
 {
@@ -65,6 +66,11 @@ class MoocElementAdmin extends AbstractAdmin
                     'label' => 'ID de la vidéo Youtube',
                     'help' => 'L\'ID ne peut contenir que des chiffres, des lettres, ou les caractères "_" et "-"',
                     'filter_emojis' => true,
+                ])
+                ->add('duration', TimeType::class, [
+                    'label' => 'Durée de la vidéo Youtube',
+                    'widget' => 'single_text',
+                    'with_seconds' => true,
                 ])
             ;
         } elseif ($this->getSubject() instanceof Quizz) {
