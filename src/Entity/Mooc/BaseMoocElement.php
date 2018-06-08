@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
  *     BaseMoocElement::ELEMENT_TYPE_VIDEO: "AppBundle\Entity\Mooc\Video",
- *     BaseMoocElement::ELEMENT_TYPE_QUIZZ: "AppBundle\Entity\Mooc\Quizz",
+ *     BaseMoocElement::ELEMENT_TYPE_QUIZ: "AppBundle\Entity\Mooc\Quizz",
  * })
  *
  * @Algolia\Index(autoIndex=false)
@@ -34,7 +34,7 @@ abstract class BaseMoocElement
     use EntityTimestampableTrait;
 
     public const ELEMENT_TYPE_VIDEO = 'video';
-    public const ELEMENT_TYPE_QUIZZ = 'quizz';
+    public const ELEMENT_TYPE_QUIZ = 'quiz';
 
     /**
      * @ORM\Id
