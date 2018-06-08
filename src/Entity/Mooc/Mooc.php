@@ -59,7 +59,7 @@ class Mooc
      * @var Chapter[]|Collection
      *
      * @ORM\OneToMany(targetEntity="Chapter", mappedBy="mooc", cascade={"all"})
-     * @ORM\OrderBy({"displayOrder": "ASC"})
+     * @ORM\OrderBy({"position": "ASC"})
      *
      * @Assert\Valid
      */
