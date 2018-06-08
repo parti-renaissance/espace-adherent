@@ -151,11 +151,29 @@ jobs:
     deployment:
         <<: *working_directory
         docker:
-            - image: google/cloud-sdk
+            - image: circleci/node:8.9
         steps:
             - *attach_workspace
             - *authenticate_on_registry
             - setup_remote_docker
+            - run:
+                name: "[install] install GCloud SDK"
+                command: |
+                    curl -sSL https://sdk.cloud.google.com > /tmp/gcl && bash /tmp/gcl --disable-prompts
+                    ~/google-cloud-sdk/install.sh --usage-reporting=false --path-update=true --bash-completion=true --rc-path=~/.bashrc --additional-components kubectl
+                    sudo ln -s ~/google-cloud-sdk/bin/gcloud /usr/bin
+                    sudo ln -s ~/google-cloud-sdk/bin/kubectl /usr/bin
+            - run:
+                name: "[env] setup .env"
+                command: |
+                  if [[ "${CIRCLE_BRANCH}" == "dashboard-referent" ]]; then
+                      env | sed -n 's/^DEMO_//p' > .env
+                  elif grep -q "v[0-9]\+\.[0-9]\+\.[0-9]\+" <<< "$CIRCLE_TAG"; then
+                      env | sed -n 's/^PROD_//p' > .env
+                  fi
+            - run:
+                name: Build static files
+                command: yarn build
             - run: |
                 bash scripts/build.sh
 
@@ -183,7 +201,7 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - master
+                            - dashboard-referent
 
     prod_deploy:
         jobs:
