@@ -26,7 +26,6 @@ class ProcurationProxyCancelledMessageTest extends MessageTestCase
         self::assertMessage(
             ProcurationProxyCancelledMessage::class,
             [
-                'target_first_name' => 'Jean',
                 'voter_first_name' => 'Bernard',
                 'voter_last_name' => 'Smith',
             ],
@@ -42,9 +41,9 @@ class ProcurationProxyCancelledMessageTest extends MessageTestCase
             'jean@example.com',
             null,
             [
-                'target_first_name' => 'Jean',
                 'voter_first_name' => 'Bernard',
                 'voter_last_name' => 'Smith',
+                'recipient_first_name' => 'Jean',
             ],
             $message
         );

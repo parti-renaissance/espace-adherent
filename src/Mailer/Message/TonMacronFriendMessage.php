@@ -14,7 +14,7 @@ final class TonMacronFriendMessage extends Message
             $invitation->getFriendEmailAddress(),
             null,
             static::getTemplateVars($invitation),
-            [],
+            ['recipient_first_name' => self::escape($invitation->getFriendFirstName())],
             $invitation->getAuthorEmailAddress()
         );
 
@@ -27,7 +27,7 @@ final class TonMacronFriendMessage extends Message
     private static function getTemplateVars(TonMacronFriendInvitation $invitation): array
     {
         return [
-            'message' => $invitation->getMailBody(),
+            'message' => self::escape($invitation->getMailBody()),
         ];
     }
 }

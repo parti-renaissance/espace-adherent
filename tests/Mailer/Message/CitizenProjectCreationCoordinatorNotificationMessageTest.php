@@ -28,10 +28,10 @@ class CitizenProjectCreationCoordinatorNotificationMessageTest extends MessageTe
             CitizenProjectCreationCoordinatorNotificationMessage::class,
             [
                 'first_name' => 'Coordinateur',
-                'citizen_project_name' => 'Projet Citoyen #1',
-                'host_first_name' => 'Créateur',
-                'host_last_name' => 'Jones',
-                'coordinator_space_url' => 'https://enmarche.code/espace-coordinateur',
+                'citizen_project_host_first_name' => 'Projet Citoyen #1',
+                'citizen_project_host_last_name' => 'Créateur',
+                'citizen_project_name' => 'Jones',
+                'citizen_project_url' => 'https://enmarche.code/espace-coordinateur',
             ],
             $message
         );
@@ -46,10 +46,10 @@ class CitizenProjectCreationCoordinatorNotificationMessageTest extends MessageTe
             'Coordinateur Smith',
             [
                 'first_name' => 'Coordinateur',
-                'citizen_project_name' => 'Projet Citoyen #1',
-                'host_first_name' => 'Créateur',
-                'host_last_name' => 'Jones',
-                'coordinator_space_url' => 'https://enmarche.code/espace-coordinateur',
+                'citizen_project_host_first_name' => 'Projet Citoyen #1',
+                'citizen_project_host_last_name' => 'Créateur',
+                'citizen_project_name' => 'Jones',
+                'citizen_project_url' => 'https://enmarche.code/espace-coordinateur',
             ],
             $message
         );

@@ -15,7 +15,7 @@ final class EventInvitationMessage extends Message
             $invite->getEmail(),
             self::escape($invite->getFullName()),
             static::getTemplateVars($invite, $event, $eventUrl),
-            [],
+            ['recipient_first_name' => $invite->getFirstName()],
             $invite->getEmail()
         );
 
@@ -30,10 +30,9 @@ final class EventInvitationMessage extends Message
     {
         return [
             'sender_first_name' => self::escape($invite->getFirstName()),
-            'sender_full_name' => self::escape($invite->getFullName()),
             'sender_message' => self::escape($invite->getMessage()),
             'event_name' => self::escape($event->getName()),
-            'event_slug' => $eventUrl,
+            'event_url' => $eventUrl,
         ];
     }
 }

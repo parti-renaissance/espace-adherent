@@ -14,14 +14,14 @@ final class CommitteeApprovalConfirmationMessage extends Message
             Uuid::uuid4(),
             $host->getEmailAddress(),
             $host->getFullName(),
-            static::getTemplateVars($host, $committee, $committeeUrl)
+            static::getTemplateVars($committee, $committeeUrl),
+            ['recipient_first_name' => self::escape($host->getFirstName())]
         );
     }
 
-    private static function getTemplateVars(Adherent $host, Committee $committee, string $committeeUrl): array
+    private static function getTemplateVars(Committee $committee, string $committeeUrl): array
     {
         return [
-            'first_name' => self::escape($host->getFirstName()),
             'committee_city' => $committee->getCityName(),
             'committee_url' => $committeeUrl,
         ];

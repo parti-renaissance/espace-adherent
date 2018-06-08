@@ -33,10 +33,9 @@ class EventInvitationMessageTest extends MessageTestCase
             EventInvitationMessage::class,
             [
                 'sender_first_name' => 'Jean',
-                'sender_full_name' => 'Jean Doe',
                 'sender_message' => 'Contenu du message de test.',
                 'event_name' => 'Événement #1',
-                'event_slug' => 'https://enmarche.code/evenement/foo-bar',
+                'event_url' => 'https://enmarche.code/evenement/foo-bar',
             ],
             $message
         );
@@ -51,10 +50,10 @@ class EventInvitationMessageTest extends MessageTestCase
             'Jean Doe',
             [
                 'sender_first_name' => 'Jean',
-                'sender_full_name' => 'Jean Doe',
                 'sender_message' => 'Contenu du message de test.',
                 'event_name' => 'Événement #1',
-                'event_slug' => 'https://enmarche.code/evenement/foo-bar',
+                'event_url' => 'https://enmarche.code/evenement/foo-bar',
+                'recipient_first_name' => 'Jean',
             ],
             $message
         );
@@ -74,12 +73,12 @@ class EventInvitationMessageTest extends MessageTestCase
             ->willReturn('jean@example.com')
         ;
         $this->eventInvitation
-            ->expects(self::exactly(2))
+            ->expects(self::once())
             ->method('getFullName')
             ->willReturn('Jean Doe')
         ;
         $this->eventInvitation
-            ->expects(self::once())
+            ->expects(self::exactly(2))
             ->method('getFirstName')
             ->willReturn('Jean')
         ;

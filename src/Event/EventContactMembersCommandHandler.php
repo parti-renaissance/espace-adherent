@@ -22,6 +22,7 @@ class EventContactMembersCommandHandler
             $this->mailer->sendMessage(EventContactMembersMessage::create(
                 $chunk,
                 $command->getSender(),
+                $command->getEventName(),
                 $command->getSubject(),
                 $command->getMessage()
             ));

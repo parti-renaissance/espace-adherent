@@ -17,6 +17,7 @@ class EventContactMembersMessageTest extends MessageTestCase
                 $this->createEventRegistration('bernard@example.com', 'Bernard', 'Smith'),
             ],
             $this->createAdherent('organizer@example.com', 'Organisateur', 'Jones'),
+            'Event Name',
             'Sujet de test',
             'Contenu du message de test.'
         );
@@ -25,6 +26,7 @@ class EventContactMembersMessageTest extends MessageTestCase
             EventContactMembersMessage::class,
             [
                 'organizer_first_name' => 'Organisateur',
+                'event_name' => 'Event Name',
                 'subject' => 'Sujet de test',
                 'message' => 'Contenu du message de test.',
             ],
@@ -41,9 +43,10 @@ class EventContactMembersMessageTest extends MessageTestCase
             'Jean Doe',
             [
                 'organizer_first_name' => 'Organisateur',
+                'event_name' => 'Event Name',
                 'subject' => 'Sujet de test',
                 'message' => 'Contenu du message de test.',
-                'first_name' => 'Jean',
+                'recipient_first_name' => 'Jean',
             ],
             $message
         );
@@ -52,9 +55,10 @@ class EventContactMembersMessageTest extends MessageTestCase
             'Bernard Smith',
             [
                 'organizer_first_name' => 'Organisateur',
+                'event_name' => 'Event Name',
                 'subject' => 'Sujet de test',
                 'message' => 'Contenu du message de test.',
-                'first_name' => 'Bernard',
+                'recipient_first_name' => 'Bernard',
             ],
             $message
         );

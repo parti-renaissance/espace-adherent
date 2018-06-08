@@ -23,8 +23,8 @@ class InvitationMessageTest extends MessageTestCase
         self::assertMessage(
             InvitationMessage::class,
             [
-                'sender_firstname' => 'Jean',
-                'sender_lastname' => 'Bernard',
+                'sender_first_name' => 'Jean',
+                'sender_last_name' => 'Bernard',
                 'message' => 'Bonjour, ici Jean.',
             ],
             $message
@@ -39,8 +39,8 @@ class InvitationMessageTest extends MessageTestCase
             'recipient@example.com',
             null,
             [
-                'sender_firstname' => 'Jean',
-                'sender_lastname' => 'Bernard',
+                'sender_first_name' => 'Jean',
+                'sender_last_name' => 'Bernard',
                 'message' => 'Bonjour, ici Jean.',
             ],
             $message

@@ -66,7 +66,7 @@ final class EventCancellationMessage extends Message
     private static function getRecipientVars(EventRegistration $registration): array
     {
         return [
-            'first_name' => self::escape($registration->getFirstName()),
+            'recipient_first_name' => self::escape($registration->getFirstName()),
         ];
     }
 }

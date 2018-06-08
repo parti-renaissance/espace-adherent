@@ -71,15 +71,15 @@ class EventNotificationMessage extends Message
                 static::formatDate($event->getBeginAt(), 'mm')
             ),
             'event_address' => self::escape($event->getInlineFormattedAddress()),
-            'event_show_link' => $eventShowLink,
-            'event_attend_link' => $eventAttendLink,
+            'event_show_url' => $eventShowLink,
+            'event_attend_url' => $eventAttendLink,
         ];
     }
 
     private static function getRecipientVars(Adherent $recipient): array
     {
         return [
-            'first_name' => self::escape($recipient->getFirstName()),
+            'recipient_first_name' => self::escape($recipient->getFirstName()),
         ];
     }
 

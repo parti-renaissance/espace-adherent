@@ -64,7 +64,7 @@ class CommitteeMessageNotificationMessage extends Message
     private static function getRecipientVars(Adherent $recipient): array
     {
         return [
-            'first_name' => self::escape($recipient->getFirstName()),
+            'recipient_first_name' => self::escape($recipient->getFirstName()),
         ];
     }
 }

@@ -28,7 +28,7 @@ final class CitizenProjectContactActorsMessage extends Message
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
             static::getTemplateVars($host, $subject, $content),
-            [],
+            static::getRecipentVars($recipient),
             $host->getEmailAddress()
         );
 
@@ -41,7 +41,8 @@ final class CitizenProjectContactActorsMessage extends Message
 
             $message->addRecipient(
                 $recipient->getEmailAddress(),
-                $recipient->getFullName()
+                $recipient->getFullName(),
+                static::getRecipentVars($recipient)
             );
         }
 
@@ -51,9 +52,16 @@ final class CitizenProjectContactActorsMessage extends Message
     private static function getTemplateVars(Adherent $host, string $subject, string $content): array
     {
         return [
-            'host_first_name' => self::escape($host->getFirstName()),
             'subject' => $subject,
-            'message' => $content,
+            'citizen_project_host_first_name' => self::escape($host->getFirstName()),
+            'citizen_project_host_message' => $content,
+        ];
+    }
+
+    private static function getRecipentVars(Adherent $recipient): array
+    {
+        return [
+            'recipient_first_name' => self::escape($recipient->getFirstName()),
         ];
     }
 }

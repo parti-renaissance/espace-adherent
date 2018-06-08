@@ -54,17 +54,6 @@ class AdminEmailTemplateController extends Controller
         return new Response($this->renderBlock($name, 'body_html'));
     }
 
-    /**
-     * @Route("/text/{name}", name="app_admin_email_template_text")
-     * @Method("GET")
-     */
-    public function textAction(string $name): Response
-    {
-        $this->get('profiler')->disable();
-
-        return new Response($this->renderBlock($name, 'body_text'));
-    }
-
     private function renderBlock(string $templateName, string $blockName): string
     {
         /* @var \Twig_TemplateWrapper $template */

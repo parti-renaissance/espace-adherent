@@ -12,7 +12,7 @@ final class CommitteeContactMembersMessage extends Message
      *
      * @return CommitteeContactMembersMessage
      */
-    public static function create(array $recipients, Adherent $host, string $subject, string $content): self
+    public static function create(array $recipients, Adherent $sender, string $subject, string $content): self
     {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one recipient is required.');
@@ -27,12 +27,12 @@ final class CommitteeContactMembersMessage extends Message
             Uuid::uuid4(),
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            static::getTemplateVars($host, $subject, $content),
+            static::getTemplateVars($sender, $subject, $content),
             static::getRecipientVars($recipient),
-            $host->getEmailAddress()
+            $sender->getEmailAddress()
         );
 
-        $message->setSenderName($host->getFullName());
+        $message->setSenderName($sender->getFullName());
 
         foreach ($recipients as $recipient) {
             if (!$recipient instanceof Adherent) {
@@ -52,7 +52,7 @@ final class CommitteeContactMembersMessage extends Message
     private static function getTemplateVars(Adherent $host, string $subject, string $content): array
     {
         return [
-            'host_first_name' => self::escape($host->getFirstName()),
+            'sender_first_name' => self::escape($host->getFirstName()),
             'subject' => $subject,
             'message' => $content,
         ];
@@ -61,7 +61,7 @@ final class CommitteeContactMembersMessage extends Message
     private static function getRecipientVars(Adherent $adherent): array
     {
         return [
-            'first_name' => self::escape($adherent->getFirstName()),
+            'recipient_first_name' => self::escape($adherent->getFirstName()),
         ];
     }
 }

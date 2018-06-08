@@ -196,7 +196,7 @@ class DonationController extends Controller
                     try {
                         $payboxPaymentUnsubscription->unsubscribe($donation);
                         $this->getDoctrine()->getManager()->flush();
-                        $payboxPaymentUnsubscription->sendConfirmationMessage($donation, $this->getUser());
+                        $payboxPaymentUnsubscription->sendConfirmationMessage($this->getUser());
                         $this->addFlash(
                             'success',
                             'Votre don mensuel a bien été annulé. Vous recevrez bientôt un mail de confirmation.'

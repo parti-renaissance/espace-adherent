@@ -61,7 +61,6 @@ class ProjectCitizenCreationNotificationConsumer extends AbstractConsumer
             return self::MSG_ACK;
         }
 
-        $creator = $this->citizenProjectManager->getCitizenProjectCreator($citizenProject);
         $offset = $data['offset'];
         $totalAdherent = $this->citizenProjectManager->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject, $offset)->count();
 
@@ -79,7 +78,7 @@ class ProjectCitizenCreationNotificationConsumer extends AbstractConsumer
 
                 /** @var Adherent $adherent */
                 foreach ($adherents as $adherent) {
-                    $this->citizenProjectMessageNotifier->sendAdherentNotificationCreation($adherent, $citizenProject, $creator);
+                    $this->citizenProjectMessageNotifier->sendAdherentNotificationCreation($adherent, $citizenProject);
                 }
 
                 $offset += CitizenProjectMessageNotifier::NOTIFICATION_PER_PAGE;

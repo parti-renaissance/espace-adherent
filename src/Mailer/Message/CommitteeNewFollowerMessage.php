@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 final class CommitteeNewFollowerMessage extends Message
 {
-    public static function create(Committee $committee, array $hosts, Adherent $newFollower, string $hostUrl): self
+    public static function create(Committee $committee, array $hosts, Adherent $newFollower): self
     {
         if (!$hosts) {
             throw new \InvalidArgumentException('At least one recipient is required.');
@@ -23,7 +23,7 @@ final class CommitteeNewFollowerMessage extends Message
             Uuid::uuid4(),
             $host->getEmailAddress(),
             $host->getFullName(),
-            static::getTemplateVars($committee, $newFollower, $hostUrl),
+            static::getTemplateVars($committee, $newFollower),
             static::getRecipientVars($host),
             $newFollower->getEmailAddress()
         );
@@ -43,21 +43,21 @@ final class CommitteeNewFollowerMessage extends Message
         return $message;
     }
 
-    private static function getTemplateVars(Committee $committee, Adherent $newFollower, string $hostUrl): array
+    private static function getTemplateVars(Committee $committee, Adherent $newFollower): array
     {
         return [
             'committee_name' => self::escape($committee->getName()),
-            'committee_admin_url' => $hostUrl,
             'member_first_name' => self::escape($newFollower->getFirstName()),
             'member_last_name' => $newFollower->getLastNameInitial(),
-            'member_age' => $newFollower->getAge() ?? 'n/a',
+            'member_age' => $newFollower->getAge() ?: 'n/a',
+            'member_city' => $newFollower->getCity() ?: 'n/a',
         ];
     }
 
     private static function getRecipientVars(Adherent $host): array
     {
         return [
-            'first_name' => self::escape($host->getFirstName()),
+            'recipient_first_name' => self::escape($host->getFirstName()),
         ];
     }
 }

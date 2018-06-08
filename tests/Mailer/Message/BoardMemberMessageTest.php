@@ -49,6 +49,7 @@ class BoardMemberMessageTest extends MessageTestCase
                 'member_last_name' => 'Jones',
                 'subject' => 'Sujet de test',
                 'message' => 'Contenu du message de test.',
+                'recipient_first_name' => 'Jean',
             ],
             $message
         );
@@ -60,6 +61,7 @@ class BoardMemberMessageTest extends MessageTestCase
                 'member_last_name' => 'Jones',
                 'subject' => 'Sujet de test',
                 'message' => 'Contenu du message de test.',
+                'recipient_first_name' => 'Bernard',
             ],
             $message
         );

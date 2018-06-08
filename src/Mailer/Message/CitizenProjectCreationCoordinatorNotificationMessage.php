@@ -12,13 +12,13 @@ final class CitizenProjectCreationCoordinatorNotificationMessage extends Message
         Adherent $coordinator,
         CitizenProject $citizenProject,
         Adherent $creator,
-        string $coordinatorSpaceUrl
+        string $citizenProjectUrl
     ): self {
         $message = new self(
             Uuid::uuid4(),
             $coordinator->getEmailAddress(),
             $coordinator->getFullName(),
-            static::getTemplateVars($citizenProject, $creator, $coordinator, $coordinatorSpaceUrl)
+            static::getTemplateVars($citizenProject, $creator, $coordinator, $citizenProjectUrl)
         );
 
         $message->setSenderEmail('projetscitoyens@en-marche.fr');
@@ -30,14 +30,14 @@ final class CitizenProjectCreationCoordinatorNotificationMessage extends Message
         CitizenProject $citizenProject,
         Adherent $creator,
         Adherent $coordinator,
-        string $coordinatorSpaceUrl
+        string $citizenProjectUrl
     ): array {
         return [
             'first_name' => self::escape($coordinator->getFirstName()),
-            'citizen_project_name' => self::escape($citizenProject->getName()),
-            'host_first_name' => self::escape($creator->getFirstName()),
-            'host_last_name' => self::escape($creator->getLastName()),
-            'coordinator_space_url' => $coordinatorSpaceUrl,
+            'citizen_project_host_first_name' => self::escape($citizenProject->getName()),
+            'citizen_project_host_last_name' => self::escape($creator->getFirstName()),
+            'citizen_project_name' => self::escape($creator->getLastName()),
+            'citizen_project_url' => $citizenProjectUrl,
         ];
     }
 }

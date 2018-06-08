@@ -13,7 +13,7 @@ final class EventContactMembersMessage extends Message
      *
      * @return EventContactMembersMessage
      */
-    public static function create(array $recipients, Adherent $organizer, string $subject, string $content): self
+    public static function create(array $recipients, Adherent $organizer, string $eventName, string $subject, string $content): self
     {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one recipient is required.');
@@ -28,7 +28,7 @@ final class EventContactMembersMessage extends Message
             Uuid::uuid4(),
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            static::getTemplateVars($organizer, $subject, $content),
+            static::getTemplateVars($organizer, $eventName, $subject, $content),
             static::getRecipientVars($recipient),
             $organizer->getEmailAddress()
         );
@@ -48,19 +48,20 @@ final class EventContactMembersMessage extends Message
         return $message;
     }
 
-    private static function getTemplateVars(Adherent $organizer, string $subject, string $content): array
+    private static function getTemplateVars(Adherent $organizer, string $eventName, string $subject, string $content): array
     {
         return [
-            'organizer_first_name' => self::escape($organizer->getFirstName()),
-            'subject' => $subject,
-            'message' => $content,
+            'organizer_first_name' => static::escape($organizer->getFirstName()),
+            'event_name' => static::escape($eventName),
+            'subject' => static::escape($subject),
+            'message' => static::escape($content),
         ];
     }
 
     private static function getRecipientVars(EventRegistration $registration): array
     {
         return [
-            'first_name' => self::escape($registration->getFirstName()),
+            'recipient_first_name' => self::escape($registration->getFirstName()),
         ];
     }
 }

@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProjectCitizenCreationNotificationConsumerTest extends TestCase
 {
-    const CLASS_NAME = 'AppBundle\Consumer\ProjectCitizenCreationNotificationConsumer';
+    const CLASS_NAME = ProjectCitizenCreationNotificationConsumer::class;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|ValidatorInterface
@@ -148,7 +148,6 @@ class ProjectCitizenCreationNotificationConsumerTest extends TestCase
 
         $citizenProjectManager = $this->createMock(CitizenProjectManager::class);
         $citizenProjectManager->expects($this->exactly(3))->method('findAdherentNearCitizenProjectOrAcceptAllNotification')->willReturn($paginator);
-        $citizenProjectManager->expects($this->once())->method('getCitizenProjectCreator')->with($citizenProject)->willReturn($this->createMock(Adherent::class));
         $citizenProjectMessageNotifier = $this->createMock(CitizenProjectMessageNotifier::class);
         $citizenProjectMessageNotifier->expects($this->exactly(CitizenProjectMessageNotifier::NOTIFICATION_PER_PAGE + 1))->method('sendAdherentNotificationCreation');
 

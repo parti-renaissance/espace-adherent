@@ -19,8 +19,8 @@ final class InvitationMessage extends Message
     private static function getTemplateVars(Invite $invite): array
     {
         return [
-            'sender_firstname' => self::escape($invite->getFirstName()),
-            'sender_lastname' => self::escape($invite->getLastName()),
+            'sender_first_name' => self::escape($invite->getFirstName()),
+            'sender_last_name' => self::escape($invite->getLastName()),
             'message' => nl2br(self::escape($invite->getMessage())),
         ];
     }

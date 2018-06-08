@@ -1,0 +1,22 @@
+{% block subject %}
+    TODO
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            TODO 
+
+            @@recipient_first_name@@
+            @@host_first_name@@
+            @@event_name@@
+            @@event_date@@
+            @@event_hour@@
+            @@event_address@@
+            @@event_show_url@@
+            @@event_attend_url@@
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

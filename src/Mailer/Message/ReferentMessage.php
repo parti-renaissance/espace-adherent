@@ -2,7 +2,6 @@
 
 namespace AppBundle\Mailer\Message;
 
-use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Referent\ReferentMessage as ReferentMessageModel;
 use Ramsey\Uuid\Uuid;
@@ -31,7 +30,7 @@ final class ReferentMessage extends Message
             Uuid::uuid4(),
             $recipient->getEmail(),
             $recipient->getFullName() ?: '',
-            static::getTemplateVars($referent, $model->getContent()),
+            static::getTemplateVars($model->getContent()),
             static::getRecipientVars($recipient),
             $referent->getEmailAddress()
         );
@@ -53,18 +52,17 @@ final class ReferentMessage extends Message
         return $message;
     }
 
-    private static function getTemplateVars(Adherent $referent, string $message): array
+    private static function getTemplateVars(string $message): array
     {
         return [
-            'referent_first_name' => self::escape($referent->getFirstName()),
-            'message' => $message,
+            'message' => self::escape($message),
         ];
     }
 
     private static function getRecipientVars(ReferentManagedUser $recipient): array
     {
         return [
-            'first_name' => self::escape($recipient->getFirstName() ?: ''),
+            'recipient_first_name' => self::escape($recipient->getFirstName() ?: ''),
         ];
     }
 }

@@ -8,3 +8,4 @@ Feature:
     Then the email template should contain the following variables:
       | first_name          |
       | citizen_action_name |
+      | events_link         |

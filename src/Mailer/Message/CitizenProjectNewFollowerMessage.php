@@ -24,7 +24,7 @@ final class CitizenProjectNewFollowerMessage extends Message
             $host->getEmailAddress(),
             $host->getFullName(),
             static::getTemplateVars($citizenProject, $newFollower),
-            [],
+            static::getRecipientVars($host),
             $newFollower->getEmailAddress()
         );
 
@@ -35,11 +35,19 @@ final class CitizenProjectNewFollowerMessage extends Message
 
             $message->addRecipient(
                 $host->getEmailAddress(),
-                $host->getFullName()
+                $host->getFullName(),
+                static::getRecipientVars($host)
             );
         }
 
         return $message;
+    }
+
+    private static function getRecipientVars(Adherent $recipent): array
+    {
+        return [
+            'recipient_first_name' => self::escape($recipent->getFirstName()),
+        ];
     }
 
     private static function getTemplateVars(CitizenProject $citizenProject, Adherent $newFollower): array

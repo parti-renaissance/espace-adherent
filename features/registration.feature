@@ -55,8 +55,7 @@ Feature:
     {
       "FromEmail": "contact@en-marche.fr",
       "FromName": "En Marche !",
-      "Subject": "Confirmez votre compte En-Marche.fr",
-      "MJ-TemplateID": "292269",
+      "MJ-TemplateID": "adherent_account_activation_message",
       "MJ-TemplateLanguage": true,
       "Recipients": [
         {
@@ -64,7 +63,7 @@ Feature:
             "Name": "Jean-Pierre Durand",
             "Vars": {
               "first_name": "Jean-Pierre",
-              "activation_link": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
+              "activation_url": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
             }
         }
       ]
@@ -87,7 +86,7 @@ Feature:
     And I press "Connexion"
     Then I should see "Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau."
 
-    When I click on the email link "activation_link"
+    When I click on the email link "activation_url"
     Then I should be on "/espace-adherent/accueil"
     And the response status code should be 200
 
@@ -204,9 +203,7 @@ Feature:
                 "Name":"Jean-Pierre Durand",
                 "Vars":{
                     "first_name":"Jean-Pierre",
-                    "last_name":"Durand",
-                    "adherents_count":1,
-                    "committees_count":0
+                    "adherents_count":1
                 }
             }
         ]
@@ -344,8 +341,7 @@ Feature:
     {
       "FromEmail": "contact@en-marche.fr",
       "FromName": "En Marche !",
-      "Subject": "Confirmez votre compte En-Marche.fr",
-      "MJ-TemplateID": "292269",
+      "MJ-TemplateID": "adherent_account_activation_message",
       "MJ-TemplateLanguage": true,
       "Recipients": [
         {
@@ -353,12 +349,12 @@ Feature:
           "Name": "Simple User",
           "Vars": {
             "first_name": "Simple",
-            "activation_link": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
+            "activation_url": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
           }
         }
       ]
     }
     """
 
-    When I click on the email link "activation_link"
+    When I click on the email link "activation_url"
     Then I should be on "/adhesion"

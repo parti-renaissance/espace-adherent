@@ -1,4 +1,4 @@
-{% block subject %}
+c'{% block subject %}
     Un projet citoyen a besoin du soutien de votre comité !
 {% endblock %}
 
@@ -9,10 +9,10 @@
             <tr>
                 <td align="left">
                     <p>
-                        Bonjour @@first_name@@,
+                        Bonjour @@recipient_first_name@@,
                     </p>
                     <p>
-                        @@citizen_project_host_firstname@@ @@citizen_project_host_lastname@@ vient de créer le projet citoyen @@citizen_project_name@@ et a besoin de votre soutien pour avancer.
+                        @@citizen_project_host_first_name@@ @@citizen_project_host_last_name@@ vient de créer le projet citoyen @@citizen_project_name@@ et a besoin de votre soutien pour avancer.
                     </p>
                     <p>
                         En soutenant son projet, vous afficherez le nom de votre comité sur sa page.
@@ -21,7 +21,7 @@
             </tr>
             <tr>
                 <td align="center">
-                    <a href="@@validation_url@@" target="_blank" class="btn">Soutenir ce projet citoyen</a>
+                    <a href="@@citizen_project_committee_support_url@@" target="_blank" class="btn">Soutenir ce projet citoyen</a>
                 </td>
             </tr>
             <tr>

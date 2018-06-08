@@ -1,7 +1,7 @@
 @emailTemplate
 Feature:
-  In order to 
-  An email should be sent 
+  In order to
+  An email should be sent
 
   Scenario: A LegislativeCampaignContactMessage template is rendered
     When the "LegislativeCampaignContactMessage" email template is rendered

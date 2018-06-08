@@ -35,8 +35,8 @@ class PayboxPaymentUnsubscription
         $donation->stopSubscription();
     }
 
-    public function sendConfirmationMessage(Donation $donation, Adherent $adherent): void
+    public function sendConfirmationMessage(Adherent $adherent): void
     {
-        $this->mailer->sendMessage(PayboxPaymentUnsubscriptionConfirmationMessage::create($adherent, $donation));
+        $this->mailer->sendMessage(PayboxPaymentUnsubscriptionConfirmationMessage::create($adherent));
     }
 }

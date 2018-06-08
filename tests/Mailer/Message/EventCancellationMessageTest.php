@@ -47,7 +47,7 @@ class EventCancellationMessageTest extends MessageTestCase
             [
                 'event_name' => 'Événement #1',
                 'event_url' => 'https://enmarche.code/evenements',
-                'first_name' => 'Jean',
+                'recipient_first_name' => 'Jean',
             ],
             $message
         );
@@ -57,7 +57,7 @@ class EventCancellationMessageTest extends MessageTestCase
             [
                 'event_name' => 'Événement #1',
                 'event_url' => 'https://enmarche.code/evenements',
-                'first_name' => 'Bernard',
+                'recipient_first_name' => 'Bernard',
             ],
             $message
         );

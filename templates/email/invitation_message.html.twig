@@ -9,10 +9,10 @@
             <tr>
                 <td align="left">
                     <p>
-                        Bonjour @@first_name@@,
+                        Bonjour,
                     </p>
                     <p>
-                        @@sender_firstname@@ @@sender_lastname@@
+                        @@sender_first_name@@ @@sender_last_name@@
                         vous invite à nous rejoindre. Voici son message :
                     </p>
                 </td>
@@ -42,7 +42,7 @@
             </tr>
             <tr>
                 <td align="center">
-                    <a href="https://en-marche.fr/inscription?utm_source=INVITSITE&utm_medium=EMAIL&utm_campaign=PARRAINAGESITE" class="btn" target="_blank">
+                    <a href="{{ url('app_membership_join', {utm_source: 'INVITSITE', utm_medium: 'EMAIL', utm_campaign: 'PARRAINAGESITE'}) }}" class="btn" target="_blank">
                         Rejoindre le mouvement !
                     </a>
                 </td>

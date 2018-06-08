@@ -58,6 +58,7 @@ class CitizenProjectNewFollowerMessageTest extends MessageTestCase
                 'follower_last_name' => 'J.',
                 'follower_age' => 29,
                 'follower_city' => 'Lille',
+                'recipient_first_name' => 'Jean',
             ],
             $message
         );
@@ -70,6 +71,7 @@ class CitizenProjectNewFollowerMessageTest extends MessageTestCase
                 'follower_last_name' => 'J.',
                 'follower_age' => 29,
                 'follower_city' => 'Lille',
+                'recipient_first_name' => 'Bernard',
             ],
             $message
         );

@@ -36,8 +36,8 @@ class EventNotificationMessageTest extends MessageTestCase
                 'event_date' => 'jeudi 1 mars 2018',
                 'event_hour' => '09h30',
                 'event_address' => '1 rue Montaigne, 06200 Nice',
-                'event_show_link' => 'https://enmarche.code/evenement/foo-bar',
-                'event_attend_link' => 'https://enmarche.code/evenement/foo-bar/participer',
+                'event_show_url' => 'https://enmarche.code/evenement/foo-bar',
+                'event_attend_url' => 'https://enmarche.code/evenement/foo-bar/participer',
             ],
             $message
         );
@@ -56,9 +56,9 @@ class EventNotificationMessageTest extends MessageTestCase
                 'event_date' => 'jeudi 1 mars 2018',
                 'event_hour' => '09h30',
                 'event_address' => '1 rue Montaigne, 06200 Nice',
-                'event_show_link' => 'https://enmarche.code/evenement/foo-bar',
-                'event_attend_link' => 'https://enmarche.code/evenement/foo-bar/participer',
-                'first_name' => 'Jean',
+                'event_show_url' => 'https://enmarche.code/evenement/foo-bar',
+                'event_attend_url' => 'https://enmarche.code/evenement/foo-bar/participer',
+                'recipient_first_name' => 'Jean',
             ],
             $message
         );
@@ -71,9 +71,9 @@ class EventNotificationMessageTest extends MessageTestCase
                 'event_date' => 'jeudi 1 mars 2018',
                 'event_hour' => '09h30',
                 'event_address' => '1 rue Montaigne, 06200 Nice',
-                'event_show_link' => 'https://enmarche.code/evenement/foo-bar',
-                'event_attend_link' => 'https://enmarche.code/evenement/foo-bar/participer',
-                'first_name' => 'Bernard',
+                'event_show_url' => 'https://enmarche.code/evenement/foo-bar',
+                'event_attend_url' => 'https://enmarche.code/evenement/foo-bar/participer',
+                'recipient_first_name' => 'Bernard',
             ],
             $message
         );

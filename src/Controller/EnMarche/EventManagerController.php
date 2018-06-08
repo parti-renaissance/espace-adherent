@@ -140,7 +140,7 @@ class EventManagerController extends Controller
             ]);
         }
 
-        $command = new EventContactMembersCommand($registrations, $this->getUser());
+        $command = new EventContactMembersCommand($registrations, $this->getUser(), $event->getName());
 
         $form = $this->createForm(ContactMembersType::class, $command, ['csrf_token_id' => 'event.contact_members'])
             ->add('submit', SubmitType::class)

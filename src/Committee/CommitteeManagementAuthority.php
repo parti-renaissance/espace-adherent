@@ -88,10 +88,7 @@ class CommitteeManagementAuthority
         $this->mailer->sendMessage(CommitteeNewFollowerMessage::create(
             $committee,
             $hosts,
-            $adherent,
-            $this->urlGenerator->generate('app_committee_manager_list_members', [
-                'slug' => $committee->getSlug(),
-            ], UrlGeneratorInterface::ABSOLUTE_URL)
+            $adherent
         ));
     }
 }

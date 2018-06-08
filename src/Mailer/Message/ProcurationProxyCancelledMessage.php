@@ -17,7 +17,8 @@ final class ProcurationProxyCancelledMessage extends Message
             Uuid::uuid4(),
             $request->getEmailAddress(),
             null,
-            static::getTemplateVars($request, $proxy)
+            static::getTemplateVars($proxy),
+            ['recipient_first_name' => $request->getFirstNames()]
         );
 
         $message->setSenderName('Procuration En Marche !');
@@ -35,10 +36,9 @@ final class ProcurationProxyCancelledMessage extends Message
         return $message;
     }
 
-    private static function getTemplateVars(ProcurationRequest $request, ProcurationProxy $proxy): array
+    private static function getTemplateVars(ProcurationProxy $proxy): array
     {
         return [
-            'target_first_name' => self::escape($request->getFirstNames()),
             'voter_first_name' => $proxy->getFirstNames(),
             'voter_last_name' => $proxy->getLastName(),
         ];

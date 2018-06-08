@@ -17,13 +17,14 @@ class CitizenProjectApprovalConfirmationMessageTest extends MessageTestCase
 
     public function testCreateFromRegistration(): void
     {
-        $message = CitizenProjectApprovalConfirmationMessage::create($this->citizenProject);
+        $message = CitizenProjectApprovalConfirmationMessage::create($this->citizenProject, 'https://foo.bar');
 
         self::assertMessage(
             CitizenProjectApprovalConfirmationMessage::class,
             [
                 'first_name' => 'Créateur',
                 'citizen_project_name' => 'Projet Citoyen #1',
+                'create_citizen_action_url' => 'https://foo.bar',
             ],
             $message
         );
@@ -39,6 +40,7 @@ class CitizenProjectApprovalConfirmationMessageTest extends MessageTestCase
             [
                 'first_name' => 'Créateur',
                 'citizen_project_name' => 'Projet Citoyen #1',
+                'create_citizen_action_url' => 'https://foo.bar',
             ],
             $message
         );

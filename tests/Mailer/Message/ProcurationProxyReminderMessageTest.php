@@ -26,14 +26,10 @@ class ProcurationProxyReminderMessageTest extends MessageTestCase
         self::assertMessage(
             ProcurationProxyReminderMessage::class,
             [
-                'first_name' => 'Jean',
-                'info_link' => 'https://enmarche.code/procurations/informations',
-                'elections' => '1er tour, 2eme tour',
+                'info_url' => 'https://enmarche.code/procurations/informations',
                 'voter_first_name' => 'Bernard',
-                'voter_last_name' => 'Smith',
                 'voter_phone' => '06 12 34 56 78',
                 'mandant_first_name' => 'Jean',
-                'mandant_last_name' => 'Doe',
                 'mandant_phone' => '06 87 65 43 21',
             ],
             $message
@@ -48,14 +44,10 @@ class ProcurationProxyReminderMessageTest extends MessageTestCase
             'jean@example.com',
             null,
             [
-                'first_name' => 'Jean',
-                'info_link' => 'https://enmarche.code/procurations/informations',
-                'elections' => '1er tour, 2eme tour',
+                'info_url' => 'https://enmarche.code/procurations/informations',
                 'voter_first_name' => 'Bernard',
-                'voter_last_name' => 'Smith',
                 'voter_phone' => '06 12 34 56 78',
                 'mandant_first_name' => 'Jean',
-                'mandant_last_name' => 'Doe',
                 'mandant_phone' => '06 87 65 43 21',
             ],
             $message
@@ -65,14 +57,10 @@ class ProcurationProxyReminderMessageTest extends MessageTestCase
             'bernard@example.com',
             null,
             [
-                'first_name' => 'Jean',
-                'info_link' => 'https://enmarche.code/procurations/informations',
-                'elections' => '1er tour, 2eme tour',
+                'info_url' => 'https://enmarche.code/procurations/informations',
                 'voter_first_name' => 'Bernard',
-                'voter_last_name' => 'Smith',
                 'voter_phone' => '06 12 34 56 78',
                 'mandant_first_name' => 'Jean',
-                'mandant_last_name' => 'Doe',
                 'mandant_phone' => '06 87 65 43 21',
             ],
             $message
@@ -97,11 +85,6 @@ class ProcurationProxyReminderMessageTest extends MessageTestCase
         ;
         $procurationProxy
             ->expects(self::once())
-            ->method('getLastName')
-            ->willReturn('Smith')
-        ;
-        $procurationProxy
-            ->expects(self::once())
             ->method('getPhone')
             ->willReturn(self::createPhoneNumber('06 12 34 56 78'))
         ;
@@ -114,24 +97,14 @@ class ProcurationProxyReminderMessageTest extends MessageTestCase
             ->willReturn('jean@example.com')
         ;
         $this->procurationRequest
-            ->expects(self::exactly(2))
+            ->expects(self::once())
             ->method('getFirstNames')
             ->willReturn('Jean')
         ;
         $this->procurationRequest
             ->expects(self::once())
-            ->method('getLastName')
-            ->willReturn('Doe')
-        ;
-        $this->procurationRequest
-            ->expects(self::once())
             ->method('getPhone')
             ->willReturn(self::createPhoneNumber('06 87 65 43 21'))
-        ;
-        $this->procurationRequest
-            ->expects(self::once())
-            ->method('getElectionRoundLabels')
-            ->willReturn(['1er tour', '2eme tour'])
         ;
         $this->procurationRequest
             ->expects(self::once())

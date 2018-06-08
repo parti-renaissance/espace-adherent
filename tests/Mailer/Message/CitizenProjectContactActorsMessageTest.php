@@ -24,9 +24,9 @@ class CitizenProjectContactActorsMessageTest extends MessageTestCase
         self::assertMessage(
             CitizenProjectContactActorsMessage::class,
             [
-                'host_first_name' => 'Animateur',
                 'subject' => 'Sujet de test',
-                'message' => 'Contenu du message de test.',
+                'citizen_project_host_first_name' => 'Animateur',
+                'citizen_project_host_message' => 'Contenu du message de test.',
             ],
             $message
         );
@@ -40,9 +40,10 @@ class CitizenProjectContactActorsMessageTest extends MessageTestCase
             'jean@example.com',
             'Jean Doe',
             [
-                'host_first_name' => 'Animateur',
                 'subject' => 'Sujet de test',
-                'message' => 'Contenu du message de test.',
+                'citizen_project_host_first_name' => 'Animateur',
+                'citizen_project_host_message' => 'Contenu du message de test.',
+                'recipient_first_name' => 'Jean',
             ],
             $message
         );
@@ -50,9 +51,10 @@ class CitizenProjectContactActorsMessageTest extends MessageTestCase
             'bernard@example.com',
             'Bernard Smith',
             [
-                'host_first_name' => 'Animateur',
                 'subject' => 'Sujet de test',
-                'message' => 'Contenu du message de test.',
+                'citizen_project_host_first_name' => 'Animateur',
+                'citizen_project_host_message' => 'Contenu du message de test.',
+                'recipient_first_name' => 'Bernard',
             ],
             $message
         );

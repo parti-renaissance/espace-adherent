@@ -21,9 +21,7 @@ class AdherentAccountConfirmationMessageTest extends MessageTestCase
             AdherentAccountConfirmationMessage::class,
             [
                 'adherents_count' => 8,
-                'committees_count' => 15,
                 'first_name' => 'Jean',
-                'last_name' => 'Doe',
             ],
             $message
         );
@@ -38,9 +36,7 @@ class AdherentAccountConfirmationMessageTest extends MessageTestCase
             'Jean Doe',
             [
                 'adherents_count' => 8,
-                'committees_count' => 15,
                 'first_name' => 'Jean',
-                'last_name' => 'Doe',
             ],
             $message
         );

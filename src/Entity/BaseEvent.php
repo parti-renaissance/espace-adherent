@@ -98,7 +98,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface
     protected $description;
 
     /**
-     * @var \DateTimeInterface|null
+     * @var \DateTime|null
      *
      * @ORM\Column(type="datetime")
      *
@@ -108,7 +108,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface
     protected $beginAt;
 
     /**
-     * @var \DateTimeInterface|null
+     * @var \DateTime|null
      *
      * @ORM\Column(type="datetime")
      *
@@ -197,7 +197,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface
         return $this->description;
     }
 
-    public function getBeginAt(): \DateTimeInterface
+    public function getBeginAt(): \DateTime
     {
         return $this->beginAt;
     }

@@ -8,13 +8,13 @@ use Ramsey\Uuid\Uuid;
 
 final class CitizenProjectCreationNotificationMessage extends Message
 {
-    public static function create(Adherent $adherent, CitizenProject $citizenProject, Adherent $creator): self
+    public static function create(Adherent $adherent, CitizenProject $citizenProject, string $citizenProjectsUrl): self
     {
         $message = new self(
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            static::getTemplateVars($adherent, $citizenProject, $creator)
+            static::getTemplateVars($adherent, $citizenProject, $citizenProjectsUrl)
         );
 
         $message->setSenderEmail('projetscitoyens@en-marche.fr');
@@ -25,14 +25,12 @@ final class CitizenProjectCreationNotificationMessage extends Message
     private static function getTemplateVars(
         Adherent $adherent,
         CitizenProject $citizenProject,
-        Adherent $creator
+        string $citizenProjectsUrl
     ): array {
         return [
             'first_name' => self::escape($adherent->getFirstName()),
-            'citizen_project_name' => self::escape($citizenProject->getName()),
-            'citizen_project_slug' => self::escape($citizenProject->getSlug()),
-            'creator_first_name' => self::escape($creator->getFirstName()),
-            'creator_last_name' => self::escape($creator->getLastName()),
+            'citizen_project_list' => self::escape($citizenProject->getName()),
+            'all_citizen_projects_url' => $citizenProjectsUrl,
         ];
     }
 }

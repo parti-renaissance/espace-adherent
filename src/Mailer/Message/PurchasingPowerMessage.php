@@ -27,7 +27,7 @@ final class PurchasingPowerMessage extends Message
     private static function getTemplateVars(PurchasingPowerInvitation $invitation): array
     {
         return [
-            'message' => $invitation->getMailBody(),
+            'message' => static::escape($invitation->getMailBody()),
         ];
     }
 }

@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 final class CitizenProjectApprovalConfirmationMessage extends Message
 {
-    public static function create(CitizenProject $citizenProject): self
+    public static function create(CitizenProject $citizenProject, string $createCitizenActionUrl): self
     {
         if (!$creator = $citizenProject->getCreator()) {
             throw new \InvalidArgumentException('A recipient is required.');
@@ -18,7 +18,7 @@ final class CitizenProjectApprovalConfirmationMessage extends Message
             Uuid::uuid4(),
             $creator->getEmailAddress(),
             $creator->getFullName(),
-            static::getTemplateVars($citizenProject, $creator)
+            static::getTemplateVars($citizenProject, $creator, $createCitizenActionUrl)
         );
 
         $message->setSenderEmail('projetscitoyens@en-marche.fr');
@@ -26,11 +26,12 @@ final class CitizenProjectApprovalConfirmationMessage extends Message
         return $message;
     }
 
-    private static function getTemplateVars(CitizenProject $citizenProject, Adherent $creator): array
+    private static function getTemplateVars(CitizenProject $citizenProject, Adherent $creator, $createCitizenActionUrl): array
     {
         return [
             'first_name' => self::escape($creator->getFirstName()),
             'citizen_project_name' => self::escape($citizenProject->getName()),
+            'create_citizen_action_url' => $createCitizenActionUrl,
         ];
     }
 }

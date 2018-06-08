@@ -8,12 +8,8 @@ use Ramsey\Uuid\Uuid;
 
 class CitizenActionNotificationMessage extends Message
 {
-    public static function create(
-        array $recipients,
-        Adherent $host,
-        CitizenAction $citizenAction,
-        string $citizenActionAttendLink
-    ): self {
+    public static function create(array $recipients, Adherent $host, CitizenAction $citizenAction, string $citizenActionAttendUrl): self
+    {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one recipient is required.');
         }
@@ -28,11 +24,9 @@ class CitizenActionNotificationMessage extends Message
 
         $message = new static(
             Uuid::uuid4(),
-            '326404',
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            '[Projets citoyens] Une nouvelle action citoyenne au sein de votre projet citoyen !',
-            static::getTemplateVars($host, $citizenAction, $citizenActionAttendLink),
+            static::getTemplateVars($host, $citizenAction, $citizenActionAttendUrl),
             static::getRecipientVars($recipient),
             $host->getEmailAddress()
         );
@@ -55,30 +49,27 @@ class CitizenActionNotificationMessage extends Message
         return $message;
     }
 
-    private static function getTemplateVars(
-        Adherent $host,
-        CitizenAction $citizenAction,
-        string $citizenActionAttendLink
-    ): array {
+    private static function getTemplateVars(Adherent $host, CitizenAction $citizenAction, string $citizenActionAttendUrl): array
+    {
         return [
-            'host_first_name' => self::escape($host->getFirstName()),
-            'citizen_project_name' => self::escape($citizenAction->getCitizenProject()->getName()),
-            'citizen_action_name' => self::escape($citizenAction->getName()),
+            'host_first_name' => static::escape($host->getFirstName()),
+            'citizen_project_name' => static::escape($citizenAction->getCitizenProject()->getName()),
+            'citizen_action_name' => static::escape($citizenAction->getName()),
             'citizen_action_date' => static::formatDate($citizenAction->getBeginAt(), 'EEEE d MMMM y'),
             'citizen_action_hour' => sprintf(
                 '%sh%s',
                 static::formatDate($citizenAction->getBeginAt(), 'HH'),
                 static::formatDate($citizenAction->getBeginAt(), 'mm')
             ),
-            'citizen_action_address' => self::escape($citizenAction->getInlineFormattedAddress()),
-            'citizen_action_attend_link' => $citizenActionAttendLink,
+            'citizen_action_address' => static::escape($citizenAction->getInlineFormattedAddress()),
+            'citizen_action_attend_url' => $citizenActionAttendUrl,
         ];
     }
 
     private static function getRecipientVars(Adherent $recipient): array
     {
         return [
-            'first_name' => self::escape($recipient->getFirstName()),
+            'recipient_first_name' => static::escape($recipient->getFirstName()),
         ];
     }
 

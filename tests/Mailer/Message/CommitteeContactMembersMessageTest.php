@@ -24,7 +24,7 @@ class CommitteeContactMembersMessageTest extends MessageTestCase
         self::assertMessage(
             CommitteeContactMembersMessage::class,
             [
-                'host_first_name' => 'Animateur',
+                'sender_first_name' => 'Animateur',
                 'subject' => 'Sujet de test',
                 'message' => 'Contenu du message de test.',
             ],
@@ -40,10 +40,10 @@ class CommitteeContactMembersMessageTest extends MessageTestCase
             'jean@example.com',
             'Jean Doe',
             [
-                'host_first_name' => 'Animateur',
+                'sender_first_name' => 'Animateur',
                 'subject' => 'Sujet de test',
                 'message' => 'Contenu du message de test.',
-                'first_name' => 'Jean',
+                'recipient_first_name' => 'Jean',
             ],
             $message
         );
@@ -51,10 +51,10 @@ class CommitteeContactMembersMessageTest extends MessageTestCase
             'bernard@example.com',
             'Bernard Smith',
             [
-                'host_first_name' => 'Animateur',
+                'sender_first_name' => 'Animateur',
                 'subject' => 'Sujet de test',
                 'message' => 'Contenu du message de test.',
-                'first_name' => 'Bernard',
+                'recipient_first_name' => 'Bernard',
             ],
             $message
         );

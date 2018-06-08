@@ -13,6 +13,9 @@ class EventContactMembersCommand
     /** @var Adherent */
     private $sender;
 
+    /** @var string */
+    private $eventName;
+
     /**
      * @Assert\NotBlank
      * @Assert\Length(max=80)
@@ -24,12 +27,13 @@ class EventContactMembersCommand
      */
     private $message;
 
-    public function __construct(array $recipients, Adherent $sender, string $subject = null, string $message = null)
+    public function __construct(array $recipients, Adherent $sender, string $eventName, string $subject = null, string $message = null)
     {
         $this->recipients = $recipients;
         $this->sender = $sender;
         $this->subject = $subject;
         $this->message = $message;
+        $this->eventName = $eventName;
     }
 
     public function getRecipients(): array
@@ -60,5 +64,10 @@ class EventContactMembersCommand
     public function getMessage(): ?string
     {
         return $this->message;
+    }
+
+    public function getEventName(): string
+    {
+        return $this->eventName;
     }
 }
