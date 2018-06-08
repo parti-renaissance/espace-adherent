@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TransactionRepository")
@@ -171,5 +172,25 @@ class Transaction
     public function getType(): string
     {
         return $this->type;
+    }
+
+    public function getDonationUuid(): UuidInterface
+    {
+        return $this->getDonation()->getUuid();
+    }
+
+    public function getEmailAddress(): string
+    {
+        return $this->getDonation()->getEmailAddress();
+    }
+
+    public function getFullName(): string
+    {
+        return $this->getDonation()->getFullName();
+    }
+
+    public function getFirstName(): string
+    {
+        return $this->getDonation()->getFirstName();
     }
 }

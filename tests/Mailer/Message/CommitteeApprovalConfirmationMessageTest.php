@@ -26,7 +26,6 @@ class CommitteeApprovalConfirmationMessageTest extends MessageTestCase
         self::assertMessage(
             CommitteeApprovalConfirmationMessage::class,
             [
-                'first_name' => 'Bernard',
                 'committee_city' => 'Lille',
                 'committee_url' => 'https://enmarche.code/comites/foo-bar',
             ],
@@ -42,9 +41,9 @@ class CommitteeApprovalConfirmationMessageTest extends MessageTestCase
             'bernard@example.com',
             'Bernard Smith',
             [
-                'first_name' => 'Bernard',
                 'committee_city' => 'Lille',
                 'committee_url' => 'https://enmarche.code/comites/foo-bar',
+                'recipient_first_name' => 'Bernard',
             ],
             $message
         );

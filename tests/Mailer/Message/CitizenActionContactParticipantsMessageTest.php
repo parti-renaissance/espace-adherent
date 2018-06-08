@@ -43,6 +43,7 @@ class CitizenActionContactParticipantsMessageTest extends MessageTestCase
                 'citizen_project_host_first_name' => 'Organisateur',
                 'citizen_project_host_subject' => 'Sujet de test',
                 'citizen_project_host_message' => 'Contenu du message de test.',
+                'recipient_first_name' => 'Jean',
             ],
             $message
         );
@@ -53,6 +54,7 @@ class CitizenActionContactParticipantsMessageTest extends MessageTestCase
                 'citizen_project_host_first_name' => 'Organisateur',
                 'citizen_project_host_subject' => 'Sujet de test',
                 'citizen_project_host_message' => 'Contenu du message de test.',
+                'recipient_first_name' => 'Bernard',
             ],
             $message
         );

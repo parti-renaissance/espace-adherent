@@ -26,7 +26,6 @@ class MailerConsumer extends AbstractConsumer
         return [
             'fromName' => [new NotBlank()],
             'fromEmail' => [new NotBlank()],
-            'subject' => [new NotBlank()],
             'templateKey' => [new NotBlank()],
             'recipients' => [new Count(['min' => 1])],
         ];
@@ -41,12 +40,12 @@ class MailerConsumer extends AbstractConsumer
     {
         $firstRecipient = array_pop($data['recipients']);
 
+//        TODO Something with that $data['templateKey'] and instanciate the right message
+
         $message = new Message(
             Uuid::uuid4(),
-            $data['templateKey'],
             $firstRecipient['email'],
             $firstRecipient['name'],
-            $data['subject'],
             $data['templateVars'] ?? [],
             $firstRecipient['templateVars'] ?? []
         );

@@ -48,7 +48,7 @@ class CommitteeMessageNotificationMessageTest extends MessageTestCase
                 'host_first_name' => 'Animateur',
                 'subject' => 'Sujet de message test',
                 'message' => 'Contenu de message test.',
-                'first_name' => 'Jean',
+                'recipient_first_name' => 'Jean',
             ],
             $message
         );
@@ -59,7 +59,7 @@ class CommitteeMessageNotificationMessageTest extends MessageTestCase
                 'host_first_name' => 'Animateur',
                 'subject' => 'Sujet de message test',
                 'message' => 'Contenu de message test.',
-                'first_name' => 'Bernard',
+                'recipient_first_name' => 'Bernard',
             ],
             $message
         );

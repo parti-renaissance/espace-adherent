@@ -1,0 +1,22 @@
+{% block subject %}
+    [Projets citoyens] Une nouvelle action citoyenne au sein de votre projet citoyen !
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            TODO 
+
+            @@recipient_first_name@@
+            @@host_first_name@@
+            @@citizen_project_name@@
+            @@citizen_action_name@@
+            @@citizen_action_date@@
+            @@citizen_action_hour@@
+            @@citizen_action_address@@
+            @@citizen_action_attend_url@@
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

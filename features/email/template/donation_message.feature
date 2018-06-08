@@ -6,5 +6,4 @@ Feature:
   Scenario: A DonationMessage template is rendered
     When the "DonationMessage" email template is rendered
     Then the email template should contain the following variables:
-      | first_name |
-      | year       |
+      | recipient_first_name |

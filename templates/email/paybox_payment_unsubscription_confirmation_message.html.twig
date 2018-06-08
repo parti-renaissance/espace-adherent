@@ -1,0 +1,15 @@
+{% block subject %}
+    Votre don mensuel a bien été annulé
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            TODO 
+
+            @@recipient_first_name@@
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

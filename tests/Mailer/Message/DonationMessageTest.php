@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Mailer\Message;
 
 use AppBundle\Entity\Donation;
+use AppBundle\Entity\Transaction;
 use AppBundle\Mailer\Message\DonationMessage;
 use Ramsey\Uuid\Uuid;
 
@@ -22,10 +23,7 @@ class DonationMessageTest extends MessageTestCase
 
         self::assertMessage(
             DonationMessage::class,
-            [
-                'first_name' => 'Jean',
-                'year' => 2019,
-            ],
+            [],
             $message
         );
 
@@ -37,10 +35,7 @@ class DonationMessageTest extends MessageTestCase
         self::assertMessageRecipient(
             'donator@example.com',
             'Jean Doe',
-            [
-                'first_name' => 'Jean',
-                'year' => 2019,
-            ],
+            ['recipient_first_name' => 'Jean'],
             $message
         );
 
@@ -49,11 +44,11 @@ class DonationMessageTest extends MessageTestCase
 
     protected function setUp()
     {
-        $this->donation = $this->createMock(Donation::class);
+        $this->donation = $this->createMock(Transaction::class);
 
         $this->donation
             ->expects(self::once())
-            ->method('getUuid')
+            ->method('getDonationUuid')
             ->willReturn(Uuid::uuid4())
         ;
         $this->donation
@@ -70,11 +65,6 @@ class DonationMessageTest extends MessageTestCase
             ->expects(self::once())
             ->method('getFirstName')
             ->willReturn('Jean')
-        ;
-        $this->donation
-            ->expects(self::once())
-            ->method('getDonatedAt')
-            ->willReturn(new \DateTime('2018-02-25'))
         ;
     }
 

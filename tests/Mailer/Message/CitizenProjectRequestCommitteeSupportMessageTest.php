@@ -26,11 +26,10 @@ class CitizenProjectRequestCommitteeSupportMessageTest extends MessageTestCase
         self::assertMessage(
             CitizenProjectRequestCommitteeSupportMessage::class,
             [
-                'first_name' => 'Superviseur',
                 'citizen_project_name' => 'Projet Citoyen #1',
-                'creator_first_name' => 'Bernard',
-                'creator_last_name' => 'Smith',
-                'validation_url' => 'https://enmarche.code/projet-citoyen/foo-bar/support',
+                'citizen_project_host_first_name' => 'Bernard',
+                'citizen_project_host_last_name' => 'Smith',
+                'citizen_project_committee_support_url' => 'https://enmarche.code/projet-citoyen/foo-bar/support',
             ],
             $message
         );
@@ -44,11 +43,11 @@ class CitizenProjectRequestCommitteeSupportMessageTest extends MessageTestCase
             'supervisor@example.com',
             'Superviseur Jones',
             [
-                'first_name' => 'Superviseur',
                 'citizen_project_name' => 'Projet Citoyen #1',
-                'creator_first_name' => 'Bernard',
-                'creator_last_name' => 'Smith',
-                'validation_url' => 'https://enmarche.code/projet-citoyen/foo-bar/support',
+                'citizen_project_host_first_name' => 'Bernard',
+                'citizen_project_host_last_name' => 'Smith',
+                'citizen_project_committee_support_url' => 'https://enmarche.code/projet-citoyen/foo-bar/support',
+                'recipient_first_name' => 'Superviseur',
             ],
             $message
         );

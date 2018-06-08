@@ -1,0 +1,22 @@
+{% block subject %}
+    TODO
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            TODO 
+
+            @@email@@
+            @@first_name@@
+            @@last_name@@
+            @@department_number@@
+            @@electoral_district_number@@
+            @@role@@
+            @@subject@@
+            @@message@@
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

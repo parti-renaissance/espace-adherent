@@ -6,9 +6,7 @@ Feature:
   Scenario: A ProcurationProxyFoundMessage template is rendered
     When the "ProcurationProxyFoundMessage" email template is rendered
     Then the email template should contain the following variables:
-      | first_name         |
-      | info_link          |
-      | elections          |
+      | info_url           |
       | voter_first_name   |
       | voter_last_name    |
       | voter_phone        |

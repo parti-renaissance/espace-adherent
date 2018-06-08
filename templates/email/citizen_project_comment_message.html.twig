@@ -1,0 +1,15 @@
+{% block subject %}
+    TODO
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            TODO
+            @@citizen_project_host_first_name@@
+            @@citizen_project_host_message@@
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

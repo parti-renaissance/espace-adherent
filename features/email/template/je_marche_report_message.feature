@@ -1,7 +1,7 @@
 @emailTemplate
 Feature:
-  In order to 
-  An email should be sent 
+  In order to
+  An email should be sent
 
   Scenario: A JeMarcheReportMessage template is rendered
     When the "JeMarcheReportMessage" email template is rendered

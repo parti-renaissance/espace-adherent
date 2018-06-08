@@ -69,7 +69,7 @@ Feature:
     And I press "Connexion"
     Then I should see "Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau."
 
-    When I click on the link "activation_link" of the last email
+    When I click on the link "activation_url" of the last email
     Then I should be on "/espace-adherent/accueil"
     And the response status code should be 200
 
@@ -294,5 +294,5 @@ Feature:
       | first_name      | Simple                                                                  |
       | activation_link | @string@.startsWith('http://test.enmarche.code/inscription/finaliser/') |
 
-    When I click on the link "activation_link" of the last email
+    When I click on the link "activation_url" of the last email
     Then I should be on "/adhesion"

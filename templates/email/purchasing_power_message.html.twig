@@ -1,0 +1,15 @@
+{% block subject %}
+    TODO
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            TODO 
+
+            @@message@@
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

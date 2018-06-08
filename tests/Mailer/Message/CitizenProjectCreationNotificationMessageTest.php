@@ -20,17 +20,15 @@ class CitizenProjectCreationNotificationMessageTest extends MessageTestCase
         $message = CitizenProjectCreationNotificationMessage::create(
             $this->createAdherent('bernard@example.com', 'Bernard', 'Smith'),
             $this->citizenProject,
-            $this->createAdherent('creator@example.com', 'Créateur', 'Jones')
+            'https://bar.foo'
         );
 
         self::assertMessage(
             CitizenProjectCreationNotificationMessage::class,
             [
                 'first_name' => 'Bernard',
-                'citizen_project_name' => 'Projet Citoyen #1',
-                'citizen_project_slug' => 'projet-citoyen-1',
-                'creator_first_name' => 'Créateur',
-                'creator_last_name' => 'Jones',
+                'citizen_project_list' => 'Projet Citoyen #1',
+                'all_citizen_projects_url' => 'https://bar.foo',
             ],
             $message
         );
@@ -45,10 +43,8 @@ class CitizenProjectCreationNotificationMessageTest extends MessageTestCase
             'Bernard Smith',
             [
                 'first_name' => 'Bernard',
-                'citizen_project_name' => 'Projet Citoyen #1',
-                'citizen_project_slug' => 'projet-citoyen-1',
-                'creator_first_name' => 'Créateur',
-                'creator_last_name' => 'Jones',
+                'citizen_project_list' => 'Projet Citoyen #1',
+                'all_citizen_projects_url' => 'https://bar.foo',
             ],
             $message
         );
@@ -64,11 +60,6 @@ class CitizenProjectCreationNotificationMessageTest extends MessageTestCase
             ->expects(self::once())
             ->method('getName')
             ->willReturn('Projet Citoyen #1')
-        ;
-        $this->citizenProject
-            ->expects(self::once())
-            ->method('getSlug')
-            ->willReturn('projet-citoyen-1')
         ;
     }
 

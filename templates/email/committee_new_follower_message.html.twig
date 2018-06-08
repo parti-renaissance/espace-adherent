@@ -1,5 +1,5 @@
 {% block subject %}
-    Un nouveau membre dans votre comité: @@member_firstname@@ @@member_lastname@@
+    Un nouveau membre dans votre comité: @@member_first_name@@ @@member_last_name@@
 {% endblock %}
 
 {% block body_html %}
@@ -9,7 +9,7 @@
             <tr>
                 <td align="left">
                     <p>
-                        Bonjour @@first_name@@,
+                        Bonjour @@recipient_first_name@@,
                     </p>
                     <p>
                         Un nouveau membre vient de rejoindre votre comité “@@committee_name@@” sur le site de La République En Marche.
@@ -17,7 +17,7 @@
                     <p>
                         Voici ses coordonnées :
                         <br>
-                        @@member_firstname@@ @@member_lastname@@
+                        @@member_first_name@@ @@member_last_name@@
                         <br>
                         @@member_age@@ ans
                         <br>

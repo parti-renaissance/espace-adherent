@@ -18,10 +18,8 @@ class Message
      * Message constructor.
      *
      * @param UuidInterface $uuid           The unique identifier of this message
-     * @param string        $template       The Message template ID
      * @param string        $recipientEmail The first recipient email address
      * @param string|null   $recipientName  The first recipient name
-     * @param string        $subject        The message subject
      * @param array         $commonVars     The common variables shared by all recipients
      * @param array         $recipientVars  The recipient's specific variables
      * @param string        $replyTo        The email address to use for the Reply-to header
@@ -97,6 +95,11 @@ class Message
     final protected static function escape(string $string): string
     {
         return htmlspecialchars($string, \ENT_NOQUOTES, 'UTF-8', false);
+    }
+
+    final protected static function urlEncode(string $string): string
+    {
+        return urlencode($string);
     }
 
     public function getSenderEmail(): ?string

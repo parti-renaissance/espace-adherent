@@ -28,7 +28,6 @@ class CitizenProjectCreationConfirmationMessageTest extends MessageTestCase
             [
                 'first_name' => 'Créateur',
                 'citizen_project_name' => 'Projet Citoyen #1',
-                'create_action_link' => 'https://enmarche.code/citizen-project/foo-bar/create-action',
             ],
             $message
         );
@@ -44,7 +43,6 @@ class CitizenProjectCreationConfirmationMessageTest extends MessageTestCase
             [
                 'first_name' => 'Créateur',
                 'citizen_project_name' => 'Projet Citoyen #1',
-                'create_action_link' => 'https://enmarche.code/citizen-project/foo-bar/create-action',
             ],
             $message
         );

@@ -29,7 +29,6 @@ class ReferentMessageTest extends MessageTestCase
         self::assertMessage(
             ReferentMessage::class,
             [
-                'referent_first_name' => 'Référent',
                 'message' => 'Contenu du message de test.',
             ],
             $message
@@ -44,9 +43,8 @@ class ReferentMessageTest extends MessageTestCase
             'jean@example.com',
             'Jean Doe',
             [
-                'referent_first_name' => 'Référent',
                 'message' => 'Contenu du message de test.',
-                'first_name' => 'Jean',
+                'recipient_first_name' => 'Jean',
             ],
             $message
         );
@@ -54,9 +52,8 @@ class ReferentMessageTest extends MessageTestCase
             'bernard@example.com',
             'Bernard Smith',
             [
-                'referent_first_name' => 'Référent',
                 'message' => 'Contenu du message de test.',
-                'first_name' => 'Bernard',
+                'recipient_first_name' => 'Bernard',
             ],
             $message
         );
@@ -69,12 +66,10 @@ class ReferentMessageTest extends MessageTestCase
         $this->referentMessage = $this->createMock(ReferentMessageModel::class);
 
         $this->referentMessage
-            ->expects(self::once())
             ->method('getFrom')
             ->willReturn($this->createAdherent('referent@example.com', 'Référent', 'Jones'))
         ;
         $this->referentMessage
-            ->expects(self::once())
             ->method('getContent')
             ->willReturn('Contenu du message de test.')
         ;
@@ -85,25 +80,19 @@ class ReferentMessageTest extends MessageTestCase
         $this->referentMessage = null;
     }
 
-    private function createReferentManagedUser(
-        string $email,
-        string $firstName,
-        string $lastName
-    ): ReferentManagedUser {
+    private function createReferentManagedUser(string $email, string $firstName, string $lastName): ReferentManagedUser
+    {
         $referentManagedUser = $this->createMock(ReferentManagedUser::class);
 
         $referentManagedUser
-            ->expects(self::any())
             ->method('getEmail')
             ->willReturn($email)
         ;
         $referentManagedUser
-            ->expects(self::any())
             ->method('getFullName')
             ->willReturn("$firstName $lastName")
         ;
         $referentManagedUser
-            ->expects(self::any())
             ->method('getFirstName')
             ->willReturn($firstName)
         ;

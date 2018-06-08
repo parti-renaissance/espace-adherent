@@ -29,18 +29,17 @@ class CommitteeNewFollowerMessageTest extends MessageTestCase
                 $this->createAdherent('jean@example.com', 'Jean', 'Doe'),
                 $this->createAdherent('bernard@example.com', 'Bernard', 'Smith'),
             ],
-            $this->newFollower,
-            'https://enmarche.code/comites/foo-bar/administration'
+            $this->newFollower
         );
 
         self::assertMessage(
             CommitteeNewFollowerMessage::class,
             [
                 'committee_name' => 'Comité #1',
-                'committee_admin_url' => 'https://enmarche.code/comites/foo-bar/administration',
                 'member_first_name' => 'Follower',
                 'member_last_name' => 'J.',
                 'member_age' => 29,
+                'member_city' => 'Paris',
             ],
             $message
         );
@@ -55,11 +54,11 @@ class CommitteeNewFollowerMessageTest extends MessageTestCase
             'Jean Doe',
             [
                 'committee_name' => 'Comité #1',
-                'committee_admin_url' => 'https://enmarche.code/comites/foo-bar/administration',
                 'member_first_name' => 'Follower',
                 'member_last_name' => 'J.',
                 'member_age' => 29,
-                'first_name' => 'Jean',
+                'member_city' => 'Paris',
+                'recipient_first_name' => 'Jean',
             ],
             $message
         );
@@ -68,11 +67,11 @@ class CommitteeNewFollowerMessageTest extends MessageTestCase
             'Bernard Smith',
             [
                 'committee_name' => 'Comité #1',
-                'committee_admin_url' => 'https://enmarche.code/comites/foo-bar/administration',
                 'member_first_name' => 'Follower',
                 'member_last_name' => 'J.',
                 'member_age' => 29,
-                'first_name' => 'Bernard',
+                'member_city' => 'Paris',
+                'recipient_first_name' => 'Bernard',
             ],
             $message
         );
@@ -92,11 +91,8 @@ class CommitteeNewFollowerMessageTest extends MessageTestCase
 
         $this->newFollower = $this->createAdherent('follower@example.com', 'Follower', 'Jones');
 
-        $this->newFollower
-            ->expects(self::once())
-            ->method('getAge')
-            ->willReturn(29)
-        ;
+        $this->newFollower->method('getAge')->willReturn(29);
+        $this->newFollower->method('getCity')->willReturn('Paris');
     }
 
     protected function tearDown()

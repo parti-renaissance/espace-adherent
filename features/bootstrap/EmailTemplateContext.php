@@ -22,6 +22,14 @@ class EmailTemplateContext extends RawMinkContext
     }
 
     /**
+     * @BeforeScenario @emailTemplate
+     */
+    public function before(): void
+    {
+        $this->currentTemplate = null;
+    }
+
+    /**
      * @When the :messageClass email template is rendered
      */
     public function theMessageTemplateIsRendered(string $messageClass): void

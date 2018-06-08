@@ -1,0 +1,18 @@
+{% block subject %}
+    TODO
+{% endblock %}
+
+{% block body_html %}
+
+    {% embed 'email/layout.html.twig' %}
+        {% block content %}
+            TODO 
+
+            @@nombre_emails_convaincus@@
+            @@nombre_emails_indecis@@
+            @@emails_collected_convaincus@@
+            @@emails_collected_indecis@@
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

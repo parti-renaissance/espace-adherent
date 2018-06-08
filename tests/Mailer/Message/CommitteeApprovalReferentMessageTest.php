@@ -27,11 +27,10 @@ class CommitteeApprovalReferentMessageTest extends MessageTestCase
         self::assertMessage(
             CommitteeApprovalReferentMessage::class,
             [
-                'first_name' => 'Référent',
                 'committee_name' => 'Comité #1',
                 'committee_city' => 'Lille',
                 'creator_first_name' => 'Créateur',
-                'creator_contact_link' => 'https://enmarche.code/contact/foo-bar',
+                'creator_contact_url' => 'https://enmarche.code/contact/foo-bar',
             ],
             $message
         );
@@ -45,11 +44,11 @@ class CommitteeApprovalReferentMessageTest extends MessageTestCase
             'referent@example.com',
             'Référent Jones',
             [
-                'first_name' => 'Référent',
                 'committee_name' => 'Comité #1',
                 'committee_city' => 'Lille',
                 'creator_first_name' => 'Créateur',
-                'creator_contact_link' => 'https://enmarche.code/contact/foo-bar',
+                'creator_contact_url' => 'https://enmarche.code/contact/foo-bar',
+                'recipient_first_name' => 'Référent',
             ],
             $message
         );

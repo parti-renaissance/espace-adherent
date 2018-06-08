@@ -6,5 +6,5 @@ Feature:
   Scenario: An AdherentAccountActivationMessage template is rendered
     When the "AdherentAccountActivationMessage" email template is rendered
     Then the email template should contain the following variables:
-      | first_name        |
-      | confirmation_link |
+      | first_name     |
+      | activation_url |

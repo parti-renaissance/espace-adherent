@@ -100,7 +100,6 @@ class CitizenProjectMessageNotifierTest extends TestCase
         $mailPost = $this->createMock(MailPostInterface::class);
         $manager = $this->createManager();
         $adherent = $this->createMock(Adherent::class);
-        $creator = $this->createMock(Adherent::class);
         $citizenProject = $this->createCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID, 'Paris 8e');
         $committeeManager = $this->createMock(CommitteeManager::class);
         $router = $this->createMock(RouterInterface::class);

@@ -26,9 +26,7 @@ class ProcurationProxyFoundMessageTest extends MessageTestCase
         self::assertMessage(
             ProcurationProxyFoundMessage::class,
             [
-                'first_name' => 'Jean',
-                'info_link' => 'https://enmarche.code/procurations/informations',
-                'elections' => '1er tour, 2eme tour',
+                'info_url' => 'https://enmarche.code/procurations/informations',
                 'voter_first_name' => 'Bernard',
                 'voter_last_name' => 'Smith',
                 'voter_phone' => '06 12 34 56 78',
@@ -48,9 +46,7 @@ class ProcurationProxyFoundMessageTest extends MessageTestCase
             'jean@example.com',
             null,
             [
-                'first_name' => 'Jean',
-                'info_link' => 'https://enmarche.code/procurations/informations',
-                'elections' => '1er tour, 2eme tour',
+                'info_url' => 'https://enmarche.code/procurations/informations',
                 'voter_first_name' => 'Bernard',
                 'voter_last_name' => 'Smith',
                 'voter_phone' => '06 12 34 56 78',
@@ -99,7 +95,7 @@ class ProcurationProxyFoundMessageTest extends MessageTestCase
             ->willReturn('jean@example.com')
         ;
         $this->procurationRequest
-            ->expects(self::exactly(2))
+            ->expects(self::once())
             ->method('getFirstNames')
             ->willReturn('Jean')
         ;
@@ -112,11 +108,6 @@ class ProcurationProxyFoundMessageTest extends MessageTestCase
             ->expects(self::once())
             ->method('getPhone')
             ->willReturn(self::createPhoneNumber('06 87 65 43 21'))
-        ;
-        $this->procurationRequest
-            ->expects(self::once())
-            ->method('getElectionRoundLabels')
-            ->willReturn(['1er tour', '2eme tour'])
         ;
         $this->procurationRequest
             ->expects(self::once())

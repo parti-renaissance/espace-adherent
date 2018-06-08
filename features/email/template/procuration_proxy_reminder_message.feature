@@ -1,17 +1,13 @@
 @emailTemplate
 Feature:
-  In order to 
-  An email should be sent 
+  In order to
+  An email should be sent
 
   Scenario: A ProcurationProxyReminderMessage template is rendered
     When the "ProcurationProxyReminderMessage" email template is rendered
     Then the email template should contain the following variables:
-      | first_name         |
-      | info_link          |
-      | elections          |
+      | info_url           |
       | voter_first_name   |
-      | voter_last_name    |
       | voter_phone        |
       | mandant_first_name |
-      | mandant_last_name  |
       | mandant_phone      |

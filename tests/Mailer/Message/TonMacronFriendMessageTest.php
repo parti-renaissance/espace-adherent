@@ -37,6 +37,7 @@ class TonMacronFriendMessageTest extends MessageTestCase
             null,
             [
                 'message' => 'Contenu du message de test.',
+                'recipient_first_name' => 'Jean',
             ],
             $message
         );
@@ -53,6 +54,11 @@ class TonMacronFriendMessageTest extends MessageTestCase
             ->expects(self::once())
             ->method('getFriendEmailAddress')
             ->willReturn('jean@example.com')
+        ;
+        $this->tonMacronFriendInvitation
+            ->expects(self::once())
+            ->method('getFriendFirstName')
+            ->willReturn('Jean')
         ;
         $this->tonMacronFriendInvitation
             ->expects(self::exactly(2))
