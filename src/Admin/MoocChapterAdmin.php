@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Mooc\Video;
+use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -17,6 +18,16 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class MoocChapterAdmin extends AbstractAdmin
 {
+    public function createQuery($context = 'list')
+    {
+        /** @var QueryBuilder $proxyQuery */
+        $proxyQuery = parent::createQuery($context);
+        $proxyQuery->addOrderBy('o.mooc', 'ASC');
+        $proxyQuery->addOrderBy('o.position', 'ASC');
+
+        return $proxyQuery;
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -37,7 +48,7 @@ class MoocChapterAdmin extends AbstractAdmin
                         'label' => 'Date de publication',
                     ])
                     ->add('mooc', ModelListType::class)
-                    ->add('displayOrder', IntegerType::class, [
+                    ->add('position', IntegerType::class, [
                         'label' => 'Ordre d\'affichage',
                         'scale' => 0,
                         'attr' => [
@@ -70,7 +81,7 @@ class MoocChapterAdmin extends AbstractAdmin
                 'label' => 'Titre',
                 'show_filter' => true,
             ])
-            ->add('displayOrder', null, [
+            ->add('position', null, [
                 'label' => 'Ordre d\'affichage',
                 'show_filter' => true,
             ])
@@ -95,11 +106,15 @@ class MoocChapterAdmin extends AbstractAdmin
             ->add('mooc', null, [
                 'label' => 'MOOC associé',
             ])
-            ->add('displayOrder', null, [
+            ->add('position', null, [
                 'label' => 'Ordre d\'affichage',
             ])
             ->add('_action', null, [
                 'actions' => [
+                    'move' => [
+                        'template' => '@PixSortableBehavior/Default/_sort_drag_drop.html.twig',
+                        'enable_top_bottom_buttons' => true,
+                    ],
                     'edit' => [],
                     'delete' => [],
                 ],
@@ -110,5 +125,6 @@ class MoocChapterAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('show');
+        $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
     }
 }

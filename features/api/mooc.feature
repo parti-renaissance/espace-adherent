@@ -24,17 +24,23 @@ Feature:
           "type":"chapter",
           "title":"Semaine 1 : Le coup de fourchette pour détendre notre santé",
           "slug":"semaine-1-le-coup-de-fourchette-pour-detendre-notre-sante",
-          "publishedAt":"2018-06-09 09:30:00"
+          "publishedAt":"@string@.isDateTime()"
         },
         {
           "type":"video",
           "title":"Les produits transformés dans une première vidéo",
           "slug":"les-produits-transformes-dans-une-premiere-video",
           "content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          "links":{
-            "linkName":"Les sites départementaux de La République En Marche",
-            "linkUrl":"http://dpt.en-marche.fr"
-          },
+          "links":[
+            {
+              "linkName":"Site officiel de La République En Marche",
+              "linkUrl":"http://www.en-marche.fr"
+            },
+            {
+              "linkName":"Les sites départementaux de La République En Marche",
+              "linkUrl":"http://dpt.en-marche.fr"
+            }
+          ],
           "attachments":[],
           "youtubeId":"ktHEfEDhscU",
           "youtubeThumbnail":"https://img.youtube.com/vi/ktHEfEDhscU/0.jpg",
@@ -64,7 +70,7 @@ Feature:
           "type":"chapter",
           "title":"Semaine 2 : Le coup de fourchette pour défendre la nature",
           "slug":"semaine-2-le-coup-de-fourchette-pour-defendre-la-nature",
-          "publishedAt":"2018-06-13 09:30:00"
+          "publishedAt":"@string@.isDateTime()"
         },
         {
           "type":"video",
