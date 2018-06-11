@@ -3,18 +3,18 @@ import { Link } from 'react-router-dom';
 
 const Nav = props => (
     <ul className="referent__nav">
-        <Link to="/app/espace-referent/dashboard-referent">
+        <Link to="/espace-referent/dashboard-referent">
             <li className="active">Tableau de bord</li>
         </Link>
-        <Link to="/espace-referent/evenements">
+        <a href={`${process.env.REACT_APP_API_URL}/espace-referent/evenements`}>
             <li>Evénement</li>
-        </Link>
-        <Link to="/espace-referent/comites">
+        </a>
+        <a href={`${process.env.REACT_APP_API_URL}/espace-referent/comites`}>
             <li>Comités</li>
-        </Link>
-        <Link to="/espace-referent/utilisateurs">
+        </a>
+        <a href={`${process.env.REACT_APP_API_URL}/espace-referent/utilisateurs`}>
             <li>Envoyer un message</li>
-        </Link>
+        </a>
     </ul>
 );
 

@@ -152,31 +152,73 @@ jobs:
     deployment:
         <<: *working_directory
         docker:
-            - image: circleci/node:8.9
+            - image: google/cloud-sdk
         steps:
             - *attach_workspace
             - *authenticate_on_registry
             - setup_remote_docker
-            - run:
-                name: "[install] install GCloud SDK"
-                command: |
-                    curl -sSL https://sdk.cloud.google.com > /tmp/gcl && bash /tmp/gcl --disable-prompts
-                    ~/google-cloud-sdk/install.sh --usage-reporting=false --path-update=true --bash-completion=true --rc-path=~/.bashrc --additional-components kubectl
-                    sudo ln -s ~/google-cloud-sdk/bin/gcloud /usr/bin
-                    sudo ln -s ~/google-cloud-sdk/bin/kubectl /usr/bin
-            - run:
-                name: "[env] setup .env"
-                command: |
-                  if [[ "${CIRCLE_BRANCH}" == "dashboard-referent" ]]; then
-                      env | sed -n 's/^DEMO_//p' > .env
-                  elif grep -q "v[0-9]\+\.[0-9]\+\.[0-9]\+" <<< "$CIRCLE_TAG"; then
-                      env | sed -n 's/^PROD_//p' > .env
-                  fi
-            - run:
-                name: Build static files
-                command: yarn build
             - run: |
                 bash scripts/build.sh
+    react-deployment:
+        docker:
+            - image: circleci/node:8.9
+        working_directory: ~/app
+        environment:
+            GCR_PROJECT_NAME: app-front
+        steps:
+          - checkout
+          - restore_cache:
+              key: node-deps-{{ checksum "yarn.lock" }}-{{ checksum "package.json" }}
+          - run:
+              name: "[env] setup .env"
+              command: |
+                if [[ "${CIRCLE_BRANCH}" == "master" ]]; then
+                    env | sed -n 's/^DEMO_//p' > react/.env
+                elif grep -q "v[0-9]\+\.[0-9]\+\.[0-9]\+" <<< "$CIRCLE_TAG"; then
+                    env | sed -n 's/^PROD_//p' > react/.env
+                fi
+          - run:
+              name: Build static files
+              command: cd react && yarn install && yarn build
+          - run:
+              name: "[install] install GCloud SDK"
+              command: |
+                  curl -sSL https://sdk.cloud.google.com > /tmp/gcl && bash /tmp/gcl --disable-prompts
+                  ~/google-cloud-sdk/install.sh --usage-reporting=false --path-update=true --bash-completion=true --rc-path=~/.bashrc --additional-components kubectl
+                  sudo ln -s ~/google-cloud-sdk/bin/gcloud /usr/bin
+                  sudo ln -s ~/google-cloud-sdk/bin/kubectl /usr/bin
+          - setup_remote_docker:
+                docker_layer_caching: true
+          - run:
+              name: "[docker] prepare ENV vars"
+              command: |
+                  if [[ $CIRCLE_TAG ]]; then
+                      GCR_IMAGE_TAG_PREFIX=$CIRCLE_TAG
+                      GCLOUD_ENV_NAME=$GCR_PROJECT_NAME
+                  else
+                      GCR_IMAGE_TAG_PREFIX=$CIRCLE_BRANCH
+                      GCLOUD_ENV_NAME="staging-${GCR_PROJECT_NAME}"
+                  fi
+                  echo "export GCR_IMAGE_TAG_PREFIX=${GCR_IMAGE_TAG_PREFIX}" > /tmp/env_var
+                  echo "export GCLOUD_ENV_NAME=${GCLOUD_ENV_NAME}" >> /tmp/env_var
+          - run:
+              name: "[docker] build Docker image"
+              command: |
+                  source /tmp/env_var
+                  docker build --compress --tag eu.gcr.io/$GCLOUD_PROJECT/$GCR_PROJECT_NAME:${GCR_IMAGE_TAG_PREFIX}-${CIRCLE_SHA1} react/
+          - run:
+              name: "[gcloud] push Docker image"
+              command: |
+                  source /tmp/env_var
+                  echo "${GCLOUD_SERVICE_KEY}" | base64 --decode > $HOME/gcloud-service-key.json
+                  gcloud auth activate-service-account --key-file $HOME/gcloud-service-key.json
+                  gcloud config set project $GCLOUD_PROJECT
+          - run:
+              name: "[gcloud] deploy"
+              command: |
+                  source /tmp/env_var
+                  gcloud docker -- push eu.gcr.io/$GCLOUD_PROJECT/$GCR_PROJECT_NAME:${GCR_IMAGE_TAG_PREFIX}-${CIRCLE_SHA1}
+                  gcloud container images add-tag eu.gcr.io/$GCLOUD_PROJECT/$GCR_PROJECT_NAME:${GCR_IMAGE_TAG_PREFIX}-${CIRCLE_SHA1} eu.gcr.io/$GCLOUD_PROJECT/$GCR_PROJECT_NAME:${GCR_IMAGE_TAG_PREFIX}-default
 
 workflows:
     version: 2
@@ -193,7 +235,11 @@ workflows:
             - behat:
                 requires:
                     - build
-
+            - react-deployment:
+                filters:
+                    branches:
+                        only:
+                            - master
             - deployment:
                 requires:
                     - phpunit
@@ -202,7 +248,7 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - dashboard-referent
+                            - master
 
     prod_deploy:
         jobs:

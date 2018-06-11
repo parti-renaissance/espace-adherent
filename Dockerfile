@@ -96,7 +96,6 @@ RUN chmod 0444 gcloud-service-key.json && \
     mv docker/prod/pool.conf /etc/php/7.1/fpm/pool.d/www.conf && \
     rm -rf /etc/nginx/nginx.conf && \
     mv docker/prod/nginx.conf /etc/nginx/nginx.conf && \
-    mv docker/prod/react.conf /etc/nginx/react.conf && \
     mv docker/prod/supervisord.conf /etc/supervisor/conf.d/ && \
 
     rm -rf docker && \

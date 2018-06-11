@@ -1,18 +1,30 @@
-import axios from "axios";
+import axios from 'axios';
 
-export default (endpoint, method = "get", data) => {
+// Add a response interceptor
+axios.interceptors.response.use(
+    r => r,
+    (error) => {
+        if ('Network Error' === error.message) {
+            window.location = `${process.env.REACT_APP_API_URL}/connexion`;
+        }
+        return Promise.reject(error);
+    }
+);
+
+export default (endpoint, method = 'get', data) => {
     const headers =
-        method === "get"
+        'get' === method
             ? {}
             : {
-                  "Content-Type": "application/json"
-              };
+                'Content-Type': 'application/json',
+            };
 
     return axios({
         url: `${process.env.REACT_APP_API_URL}${endpoint}`,
         headers,
         method,
         withCredentials: true,
-        data
+        maxRedirects: 0,
+        data,
     }).then(r => r.data);
 };
