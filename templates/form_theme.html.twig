@@ -225,6 +225,6 @@
 {% block attachment_file_widget %}
     {{ form_widget(form) }}
     {% if form.path is defined %}
-        <a href="{{ path('mooc_get_file', { 'uuid': form.vars.value.uuid }) }}" target="_blank">Voir le fichier</a>
+        <a href="{{ path('mooc_get_file', { slug: form.vars.value.slug, extension: form.vars.value.extension }) }}" target="_blank">Télécharger le fichier</a>
     {% endif %}
 {% endblock %}
