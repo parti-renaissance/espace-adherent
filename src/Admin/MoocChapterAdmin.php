@@ -10,9 +10,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\CoreBundle\Form\Type\BooleanType;
 use Sonata\CoreBundle\Form\Type\DatePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -41,8 +41,9 @@ class MoocChapterAdmin extends AbstractAdmin
                         'label' => 'Slug',
                         'disabled' => true,
                     ])
-                    ->add('published', BooleanType::class, [
+                    ->add('published', CheckboxType::class, [
                         'label' => 'Publié',
+                        'required' => false,
                     ])
                     ->add('publishedAt', DatePickerType::class, [
                         'label' => 'Date de publication',
