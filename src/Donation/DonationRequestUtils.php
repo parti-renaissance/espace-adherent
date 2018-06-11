@@ -67,15 +67,17 @@ class DonationRequestUtils
     public function createFromRequest(Request $request, ?Adherent $currentUser): DonationRequest
     {
         $duration = $this->getDuration($request);
+        $amount = (float) $request->query->get('montant');
 
+        /** @var DonationRequest $donation */
         if ($donation = $this->getSession()->get(static::SESSION_KEY)) {
             $donation->setDuration($duration);
+            $donation->setAmount($amount);
 
             return $donation;
         }
 
         $clientIp = $request->getClientIp();
-        $amount = (float) $request->query->get('montant');
 
         if (!PayboxPaymentSubscription::isValid($duration)) {
             throw new InvalidPayboxPaymentSubscriptionValueException($duration);

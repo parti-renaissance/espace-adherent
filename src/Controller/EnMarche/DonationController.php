@@ -61,7 +61,7 @@ class DonationController extends Controller
      */
     public function informationsAction(Request $request, DonationRequestUtils $donationRequestUtils, DonationRequestHandler $donationRequestHandler)
     {
-        if (!$amount = $request->query->get('montant')) {
+        if (!$request->query->get('montant')) {
             return $this->redirectToRoute('donation_index');
         }
 
@@ -73,16 +73,18 @@ class DonationController extends Controller
             return $this->redirectToRoute('donation_index');
         }
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $donationRequestHandler->handle($donationRequest);
-            $donationRequestUtils->terminateDonationRequest();
+        if ($form->isSubmitted()) {
+            $donationRequestUtils->startDonationRequest($donationRequest);
 
-            return $this->redirectToRoute('donation_pay', [
-                'uuid' => $donationRequest->getUuid()->toString(),
-            ]);
+            if ($form->isValid()) {
+                $donationRequestHandler->handle($donationRequest);
+                $donationRequestUtils->terminateDonationRequest();
+
+                return $this->redirectToRoute('donation_pay', [
+                    'uuid' => $donationRequest->getUuid()->toString(),
+                ]);
+            }
         }
-
-        $donationRequestUtils->startDonationRequest($donationRequest);
 
         return $this->render('donation/informations.html.twig', [
             'form' => $form->createView(),
