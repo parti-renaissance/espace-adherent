@@ -16,7 +16,7 @@ class App extends Component {
                 <ConnectedRouter history={history}>
                     <Layout>
                         <Switch>
-                            <Route exact path="/app/espace-referent/dashboard-referent" component={DashboardPage} />
+                            <Route exact path="/espace-referent/dashboard-referent" component={DashboardPage} />
                         </Switch>
                     </Layout>
                 </ConnectedRouter>
