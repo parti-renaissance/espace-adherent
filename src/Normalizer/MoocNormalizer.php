@@ -112,7 +112,12 @@ class MoocNormalizer implements NormalizerInterface
             $attachmentFiles[] = [
                 'attachmentName' => $file->getTitle(),
                 'attachmentUrl' => $this->router->generate(
-                    'mooc_get_file', ['uuid' => $file->getUuid()], UrlGenerator::ABSOLUTE_URL
+                    'mooc_get_file',
+                    [
+                        'slug' => $file->getSlug(),
+                        'extension' => $file->getExtension(),
+                    ],
+                    UrlGenerator::ABSOLUTE_URL
                 ),
             ];
         }
