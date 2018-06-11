@@ -24,7 +24,7 @@ class RepublicanSilenceAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list)
     {
         $list
-            ->addIdentifier('referentTags', 'array')
+            ->addIdentifier('referentTags', 'array', ['label' => 'silence_republican.referent_tags.label'])
             ->add('beginAt', null, ['label' => 'common.begin_at'])
             ->add('finishAt', null, ['label' => 'common.finish_at'])
         ;
@@ -33,8 +33,8 @@ class RepublicanSilenceAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form)
     {
         $form
-            ->with('Général', ['class' => 'col-md-6'])
-                ->add('referentTags')
+            ->with('Général', ['class' => 'col-md-6', 'description' => 'silence_republican.help'])
+                ->add('referentTags', null, ['label' => 'silence_republican.referent_tags.label'])
                 ->add('beginAt', DateTimePickerType::class, [
                     'label' => 'common.begin_at',
                 ])

@@ -48,10 +48,8 @@ class RepublicanSilenceCloseEventCommand extends Command
         [$startDate, $endDate] = $this->getDates((int) $input->getArgument('interval'));
 
         foreach ($this->getSilences($startDate, $endDate) as $silence) {
-            $tags = $silence->getReferentTags()->toArray();
-
-            $this->closeEvents($startDate, $endDate, $tags);
-            $this->closeActions($startDate, $endDate, $tags);
+            $this->closeEvents($silence);
+            $this->closeActions($silence);
         }
     }
 
@@ -71,17 +69,29 @@ class RepublicanSilenceCloseEventCommand extends Command
         return $this->manager->getRepublicanSilencesBetweenDates($startDate, $endDate);
     }
 
-    private function closeEvents(\DateTimeInterface $startDate, \DateTimeInterface $endDate, array $tags): void
+    private function closeEvents(RepublicanSilence $silence): void
     {
-        foreach ($this->eventRepository->findStartedEventBetweenDatesForTags($startDate, $endDate, $tags) as $event) {
+        $events = $this->eventRepository->findStartedEventBetweenDatesForTags(
+            (clone $silence->getBeginAt())->modify('-30 minutes'),
+            $silence->getFinishAt(),
+            $silence->getReferentTags()->toArray()
+        );
+
+        foreach ($events as $event) {
             $this->eventCanceledHandler->handle($event);
         }
     }
 
-    private function closeActions(\DateTimeInterface $startDate, \DateTimeInterface $endDate, array $tags): void
+    private function closeActions(RepublicanSilence $silence): void
     {
-        foreach ($this->actionRepository->findStartedEventBetweenDatesForTags($startDate, $endDate, $tags) as $event) {
-            $this->eventCanceledHandler->handle($event);
+        $actions = $this->actionRepository->findStartedEventBetweenDatesForTags(
+            (clone $silence->getBeginAt())->modify('-30 minutes'),
+            $silence->getFinishAt(),
+            $silence->getReferentTags()->toArray()
+        );
+
+        foreach ($actions as $action) {
+            $this->eventCanceledHandler->handle($action);
         }
     }
 }
