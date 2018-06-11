@@ -212,6 +212,16 @@ abstract class BaseMoocElement
 
     abstract public function getType(): string;
 
+    public function isVideo(): bool
+    {
+        return BaseMoocElement::ELEMENT_TYPE_VIDEO === $this->getType();
+    }
+
+    public function isQuiz(): bool
+    {
+        return BaseMoocElement::ELEMENT_TYPE_QUIZ === $this->getType();
+    }
+
     public function getContent(): ?string
     {
         return $this->content;

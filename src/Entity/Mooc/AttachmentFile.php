@@ -4,22 +4,29 @@ namespace AppBundle\Entity\Mooc;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\EntityFileInterface;
-use AppBundle\Entity\EntityIdentityTrait;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="mooc_attachment_file")
+ * @ORM\Table(
+ *     name="mooc_attachment_file",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="mooc_attachment_file_slug", columns={"slug", "extension"})}
+ * )
  * @ORM\EntityListeners({"AppBundle\EntityListener\FileListener"})
  *
  * @Algolia\Index(autoIndex=false)
  */
 class AttachmentFile implements EntityFileInterface
 {
-    use EntityIdentityTrait;
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer", options={"unsigned": true})
+     * @ORM\GeneratedValue
+     */
+    private $id;
 
     /**
      * @var string
@@ -29,6 +36,12 @@ class AttachmentFile implements EntityFileInterface
      * @Assert\NotBlank
      */
     private $title;
+
+    /**
+     * @ORM\Column
+     * @Gedmo\Slug(fields={"title"})
+     */
+    private $slug;
 
     /**
      * @var string
@@ -58,7 +71,11 @@ class AttachmentFile implements EntityFileInterface
 
     public function __construct()
     {
-        $this->uuid = Uuid::uuid4();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getTitle(): ?string
@@ -69,6 +86,16 @@ class AttachmentFile implements EntityFileInterface
     public function setTitle(string $title): void
     {
         $this->title = $title;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
     }
 
     public function getPath(): ?string

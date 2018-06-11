@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class MoocController extends Controller
 {
     /**
-     * @Route("/file/{uuid}", requirements={"uuid": "%pattern_uuid%"}, name="mooc_get_file")
+     * @Route("/file/{slug}.{extension}", name="mooc_get_file")
      * @Method("GET")
      * @Cache(maxage=900, smaxage=900)
      */
@@ -29,7 +29,7 @@ class MoocController extends Controller
 
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $file->getTitle().'.'.$file->getExtension()
+            $file->getSlug().'.'.$file->getExtension()
         );
 
         $response->headers->set('Content-Disposition', $disposition);

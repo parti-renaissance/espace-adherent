@@ -49,7 +49,11 @@ class MoocElementAdmin extends AbstractAdmin
                     'attr' => ['class' => 'ck-editor'],
                     'purifier_type' => 'enrich_content',
                 ])
-                ->add('chapter', ModelListType::class)
+                ->add('chapter', ModelListType::class, [
+                    'btn_add' => false,
+                    'btn_edit' => false,
+                    'btn_delete' => false,
+                ])
                 ->add('position', IntegerType::class, [
                     'label' => 'Ordre d\'affichage',
                     'required' => false,
@@ -135,6 +139,10 @@ class MoocElementAdmin extends AbstractAdmin
             ])
             ->add('chapter', null, [
                 'label' => 'Chapitre associé',
+            ])
+            ->add('type', null, [
+                'label' => 'Type',
+                'template' => 'admin/mooc/list_type.html.twig',
             ])
             ->add('position', null, [
                 'label' => 'Ordre d\'affichage',

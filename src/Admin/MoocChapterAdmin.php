@@ -47,7 +47,11 @@ class MoocChapterAdmin extends AbstractAdmin
                     ->add('publishedAt', DatePickerType::class, [
                         'label' => 'Date de publication',
                     ])
-                    ->add('mooc', ModelListType::class)
+                    ->add('mooc', ModelListType::class, [
+                        'btn_add' => false,
+                        'btn_edit' => false,
+                        'btn_delete' => false,
+                    ])
                     ->add('position', IntegerType::class, [
                         'label' => 'Ordre d\'affichage',
                         'scale' => 0,
