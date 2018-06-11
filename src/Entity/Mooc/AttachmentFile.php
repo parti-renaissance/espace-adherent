@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(
  *     name="mooc_attachment_file",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="mooc_attachment_file_slug", columns={"slug", "extension"})}
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="mooc_attachment_file_slug_extension", columns={"slug", "extension"})}
  * )
  * @ORM\EntityListeners({"AppBundle\EntityListener\FileListener"})
  *
