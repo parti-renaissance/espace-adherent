@@ -7,6 +7,8 @@ use AppBundle\Entity\Mooc\AttachmentLink;
 use AppBundle\Entity\Mooc\BaseMoocElement;
 use AppBundle\Entity\Mooc\Chapter;
 use AppBundle\Entity\Mooc\Mooc;
+use AppBundle\Entity\Mooc\Quizz;
+use AppBundle\Entity\Mooc\Video;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RouterInterface;
@@ -75,14 +77,16 @@ class MoocNormalizer implements NormalizerInterface
             'attachments' => $this->normalizeFiles($element->getFiles()),
         ];
 
-        if (BaseMoocElement::ELEMENT_TYPE_VIDEO === $element->getType()) {
+        /** @var Video $element */
+        if ($element->isVideo()) {
             $moocElement['youtubeId'] = $element->getYoutubeId();
             $moocElement['youtubeThumbnail'] = $element->getYoutubeThumbnail();
             $moocElement['duration'] = $element->getDuration()->format('H:i:s');
         }
 
-        if (BaseMoocElement::ELEMENT_TYPE_QUIZ === $element->getType()) {
-            $moocElement['typeformEmbed'] = $element->getTypeForm();
+        /** @var Quizz $element */
+        if ($element->isQuiz()) {
+            $moocElement['typeformUrl'] = $element->getTypeformUrl();
         }
 
         return $moocElement;

@@ -16,30 +16,31 @@ class Quizz extends BaseMoocElement
     /**
      * @var string
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column
      *
      * @Assert\NotBlank
+     * @Assert\Url
      */
-    private $typeForm;
+    private $typeformUrl;
 
-    public function __construct(string $title = null, string $content = null, string $typeForm = null)
+    public function __construct(string $title = null, string $content = null, string $typeformUrl = null)
     {
         parent::__construct($title, $content);
-        $this->typeForm = $typeForm;
-    }
-
-    public function getTypeForm(): ?string
-    {
-        return $this->typeForm;
-    }
-
-    public function setTypeForm(string $typeForm): void
-    {
-        $this->typeForm = $typeForm;
+        $this->typeformUrl = $typeformUrl;
     }
 
     public function getType(): string
     {
         return parent::ELEMENT_TYPE_QUIZ;
+    }
+
+    public function getTypeformUrl(): ?string
+    {
+        return $this->typeformUrl;
+    }
+
+    public function setTypeformUrl(string $typeformUrl): void
+    {
+        $this->typeformUrl = $typeformUrl;
     }
 }
