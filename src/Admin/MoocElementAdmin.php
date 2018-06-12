@@ -16,9 +16,9 @@ use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class MoocElementAdmin extends AbstractAdmin
 {
@@ -78,8 +78,8 @@ class MoocElementAdmin extends AbstractAdmin
             ;
         } elseif ($this->getSubject() instanceof Quizz) {
             $formMapper
-                ->add('typeForm', TextareaType::class, [
-                    'label' => 'Contenu du type form',
+                ->add('typeformUrl', UrlType::class, [
+                    'label' => 'Lien du type form',
                 ])
             ;
         }

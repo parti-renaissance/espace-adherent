@@ -91,6 +91,7 @@ abstract class BaseMoocElement
      *
      * @ORM\ManyToMany(targetEntity="AttachmentLink", cascade={"persist"}, orphanRemoval=true)
      * @ORM\JoinTable(name="mooc_element_attachment_link")
+     * @ORM\OrderBy({"id": "ASC"})
      *
      * @Assert\Valid
      */
@@ -101,6 +102,7 @@ abstract class BaseMoocElement
      *
      * @ORM\ManyToMany(targetEntity="AttachmentFile", cascade={"persist"}, orphanRemoval=true)
      * @ORM\JoinTable(name="mooc_element_attachment_file")
+     * @ORM\OrderBy({"id": "ASC"})
      *
      * @Assert\Valid
      */
@@ -214,12 +216,12 @@ abstract class BaseMoocElement
 
     public function isVideo(): bool
     {
-        return BaseMoocElement::ELEMENT_TYPE_VIDEO === $this->getType();
+        return self::ELEMENT_TYPE_VIDEO === $this->getType();
     }
 
     public function isQuiz(): bool
     {
-        return BaseMoocElement::ELEMENT_TYPE_QUIZ === $this->getType();
+        return self::ELEMENT_TYPE_QUIZ === $this->getType();
     }
 
     public function getContent(): ?string
