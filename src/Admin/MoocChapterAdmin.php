@@ -104,6 +104,7 @@ class MoocChapterAdmin extends AbstractAdmin
             ])
             ->add('published', null, [
                 'label' => 'Publié',
+                'editable' => true,
             ])
             ->add('publishedAt', null, [
                 'label' => 'Date de publication',
