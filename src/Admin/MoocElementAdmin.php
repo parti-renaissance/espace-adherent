@@ -2,7 +2,7 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Entity\Mooc\Quizz;
+use AppBundle\Entity\Mooc\Quiz;
 use AppBundle\Entity\Mooc\Video;
 use AppBundle\Form\AttachmentFileType;
 use AppBundle\Form\AttachmentLinkType;
@@ -76,7 +76,7 @@ class MoocElementAdmin extends AbstractAdmin
                     'with_seconds' => true,
                 ])
             ;
-        } elseif ($this->getSubject() instanceof Quizz) {
+        } elseif ($this->getSubject() instanceof Quiz) {
             $formMapper
                 ->add('typeformUrl', UrlType::class, [
                     'label' => 'Lien du type form',

@@ -23,8 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
- *     BaseMoocElement::ELEMENT_TYPE_VIDEO: "AppBundle\Entity\Mooc\Video",
- *     BaseMoocElement::ELEMENT_TYPE_QUIZ: "AppBundle\Entity\Mooc\Quizz",
+ *     "video": "AppBundle\Entity\Mooc\Video",
+ *     "quiz": "AppBundle\Entity\Mooc\Quiz",
  * })
  *
  * @Algolia\Index(autoIndex=false)
@@ -32,9 +32,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 abstract class BaseMoocElement
 {
     use EntityTimestampableTrait;
-
-    public const ELEMENT_TYPE_VIDEO = 'video';
-    public const ELEMENT_TYPE_QUIZ = 'quiz';
 
     /**
      * @ORM\Id
@@ -203,25 +200,12 @@ abstract class BaseMoocElement
     {
         if (!$this->files->contains($file)) {
             $this->files->add($file);
-            $file->setType($this->getType());
         }
     }
 
     public function removeFile(AttachmentFile $file): void
     {
         $this->files->removeElement($file);
-    }
-
-    abstract public function getType(): string;
-
-    public function isVideo(): bool
-    {
-        return self::ELEMENT_TYPE_VIDEO === $this->getType();
-    }
-
-    public function isQuiz(): bool
-    {
-        return self::ELEMENT_TYPE_QUIZ === $this->getType();
     }
 
     public function getContent(): ?string

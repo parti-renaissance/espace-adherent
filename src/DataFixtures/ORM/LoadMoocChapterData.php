@@ -19,7 +19,7 @@ class LoadMoocChapterData extends AbstractFixture implements DependentFixtureInt
 
         $chapter1->addElement($this->getReference('mooc-video-1'));
         $chapter1->addElement($this->getReference('mooc-video-2'));
-        $chapter1->addElement($this->getReference('mooc-quizz-1'));
+        $chapter1->addElement($this->getReference('mooc-quiz-1'));
         $this->addReference('mooc-chapter-1', $chapter1);
 
         $manager->persist($chapter1);
@@ -41,7 +41,7 @@ class LoadMoocChapterData extends AbstractFixture implements DependentFixtureInt
     {
         return [
             LoadMoocVideoData::class,
-            LoadMoocQuizzData::class,
+            LoadMoocQuizData::class,
         ];
     }
 }
