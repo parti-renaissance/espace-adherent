@@ -5,12 +5,12 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class ObsoleteControllerTest extends SqliteWebTestCase
+class ObsoleteControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 

@@ -7,12 +7,12 @@ use AppBundle\DataFixtures\ORM\LoadArticleData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadProposalData;
 use AppBundle\DataFixtures\ORM\LoadTimelineData;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class AlgoliaSynchronizeCommandTest extends SqliteWebTestCase
+class AlgoliaSynchronizeCommandTest extends WebTestCase
 {
     /**
      * @dataProvider dataProviderTestCommand

@@ -7,12 +7,12 @@ use AppBundle\DataFixtures\ORM\LoadAdminData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MysqlWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class AdherentAdminTest extends MysqlWebTestCase
+class AdherentAdminTest extends WebTestCase
 {
     use ControllerTestTrait;
 

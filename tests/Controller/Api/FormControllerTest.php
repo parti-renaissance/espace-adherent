@@ -10,12 +10,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ApiControllerTestTrait;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MysqlWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class FormControllerTest extends MysqlWebTestCase
+class FormControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;

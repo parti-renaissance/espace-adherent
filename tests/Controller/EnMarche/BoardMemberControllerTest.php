@@ -8,13 +8,13 @@ use AppBundle\Mailer\Message\BoardMemberMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  * @group boardMember
  */
-class BoardMemberControllerTest extends SqliteWebTestCase
+class BoardMemberControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 

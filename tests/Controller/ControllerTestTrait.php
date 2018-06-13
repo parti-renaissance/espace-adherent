@@ -6,6 +6,7 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\EventCategory;
 use AppBundle\Entity\ReferentTag;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\DomCrawler\Crawler;
@@ -166,9 +167,12 @@ trait ControllerTestTrait
 
     protected function init(array $fixtures = [], string $host = 'app')
     {
-        $this->loadFixtures($fixtures);
-
         $this->container = $this->getContainer();
+        $this->manager = $this->container->get('doctrine.orm.entity_manager');
+
+        $this->manager->getConnection()->executeUpdate('SET foreign_key_checks = 0;');
+        $this->loadFixtures($fixtures, null, 'doctrine', ORMPurger::PURGE_MODE_TRUNCATE);
+        $this->manager->getConnection()->executeUpdate('SET foreign_key_checks = 1;');
 
         $this->hosts = [
             'scheme' => $this->container->getParameter('router.request_context.scheme'),
@@ -178,7 +182,6 @@ trait ControllerTestTrait
         ];
 
         $this->client = $this->makeClient(false, ['HTTP_HOST' => $this->hosts[$host]]);
-        $this->manager = $this->container->get('doctrine.orm.entity_manager');
     }
 
     protected function kill()
@@ -186,6 +189,7 @@ trait ControllerTestTrait
         $this->loadFixtures([]);
         $this->client = null;
         $this->container = null;
+        $this->manager->getConnection()->close();
         $this->manager = null;
         $this->hosts = [];
     }

@@ -8,12 +8,12 @@ use AppBundle\DataFixtures\ORM\LoadPageData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class PageControllerTest extends SqliteWebTestCase
+class PageControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 

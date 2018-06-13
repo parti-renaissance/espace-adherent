@@ -16,12 +16,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class TonMacronControllerTest extends SqliteWebTestCase
+class TonMacronControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 

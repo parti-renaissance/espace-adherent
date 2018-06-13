@@ -5,13 +5,13 @@ namespace Tests\Utils;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Utils\GroupUtils;
 use Ramsey\Uuid\Uuid;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
 /**
  * @group functional
  */
-class GroupUtilsTest extends SqliteWebTestCase
+class GroupUtilsTest extends WebTestCase
 {
     use TestHelperTrait;
 

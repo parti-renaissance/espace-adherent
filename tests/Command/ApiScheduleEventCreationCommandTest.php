@@ -4,12 +4,12 @@ namespace Tests\AppBundle\Command;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class ApiScheduleEventCreationCommandTest extends SqliteWebTestCase
+class ApiScheduleEventCreationCommandTest extends WebTestCase
 {
     public function testCommand(): void
     {

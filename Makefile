@@ -133,13 +133,11 @@ tfp-rabbitmq: wait-for-rabbitmq                                                 
 
 tfp-db: wait-for-db                                                                                    ## Init databases for tests
 	$(EXEC) rm -rf /tmp/data.db app/data/dumped_referents_users || true
-	$(EXEC) $(CONSOLE) doctrine:database:create --env=test_sqlite
-	$(EXEC) $(CONSOLE) doctrine:schema:create --env=test_sqlite
-	$(EXEC) $(CONSOLE) doctrine:database:drop --force --if-exists --env=test_mysql
-	$(EXEC) $(CONSOLE) doctrine:database:create --env=test_mysql
-	$(EXEC) $(CONSOLE) doctrine:database:import --env=test_mysql -n -- dump/dump-2017.sql
-	$(EXEC) $(CONSOLE) doctrine:migration:migrate -n --env=test_mysql
-	$(EXEC) $(CONSOLE) doctrine:schema:validate --env=test_mysql
+	$(EXEC) $(CONSOLE) doctrine:database:drop --force --if-exists --env=test
+	$(EXEC) $(CONSOLE) doctrine:database:create --env=test
+	$(EXEC) $(CONSOLE) doctrine:database:import --env=test -n -- dump/dump-2017.sql
+	$(EXEC) $(CONSOLE) doctrine:migration:migrate -n --env=test
+	$(EXEC) $(CONSOLE) doctrine:schema:validate --env=test
 
 tj: node_modules                                                                                       ## Run the Javascript tests
 	$(EXEC) yarn test

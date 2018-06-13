@@ -6,12 +6,12 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class NewsletterSubscriptionRepositoryTest extends SqliteWebTestCase
+class NewsletterSubscriptionRepositoryTest extends WebTestCase
 {
     /** @var NewsletterSubscriptionRepository */
     private $repository;

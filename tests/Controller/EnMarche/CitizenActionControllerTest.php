@@ -10,13 +10,13 @@ use AppBundle\Mailer\Message\CitizenActionRegistrationConfirmationMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MysqlWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  * @group citizenAction
  */
-class CitizenActionControllerTest extends MysqlWebTestCase
+class CitizenActionControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 

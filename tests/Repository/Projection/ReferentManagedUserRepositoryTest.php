@@ -10,13 +10,13 @@ use AppBundle\Entity\ReferentTag;
 use AppBundle\Referent\ManagedUsersFilter;
 use AppBundle\Repository\Projection\ReferentManagedUserRepository;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Tests\AppBundle\MysqlWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
 /**
  * @group functional
  */
-class ReferentManagedUserRepositoryTest extends MysqlWebTestCase
+class ReferentManagedUserRepositoryTest extends WebTestCase
 {
     use TestHelperTrait;
 

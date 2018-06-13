@@ -6,12 +6,12 @@ use AppBundle\DataFixtures\ORM\LoadSocialShareData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  */
-class SocialShareControllerTest extends SqliteWebTestCase
+class SocialShareControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 

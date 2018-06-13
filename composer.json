@@ -28,6 +28,7 @@
         "beberlei/DoctrineExtensions": "^1.0",
         "cakephp/chronos": "^1.1",
         "cocur/slugify": "^2.5",
+        "creof/doctrine2-spatial": "^1.2",
         "csa/guzzle-bundle": "^2.0",
         "danhunsaker/flysystem-redis": "^1.0",
         "doctrine/doctrine-bundle": "^1.6",

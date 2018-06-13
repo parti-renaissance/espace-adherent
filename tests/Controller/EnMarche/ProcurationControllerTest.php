@@ -18,13 +18,13 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  * @group procuration
  */
-class ProcurationControllerTest extends SqliteWebTestCase
+class ProcurationControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 

@@ -8,13 +8,13 @@ use AppBundle\Repository\JeMarcheReportRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  * @group jeMarche
  */
-class JeMarcheControllerTest extends SqliteWebTestCase
+class JeMarcheControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 

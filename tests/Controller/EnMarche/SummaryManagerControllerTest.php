@@ -20,13 +20,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  * @group summary
  */
-class SummaryManagerControllerTest extends SqliteWebTestCase
+class SummaryManagerControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
@@ -862,9 +862,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
 
         $this->client->submit($crawler->filter('form[name=summary]')->form([
-            'summary[mission_type_wishes][0]' => '1',
-            'summary[mission_type_wishes][2]' => '3',
-            'summary[mission_type_wishes][4]' => '5',
+            'summary[mission_type_wishes][5]' => '1',
+            'summary[mission_type_wishes][3]' => '3',
+            'summary[mission_type_wishes][1]' => '5',
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
@@ -900,9 +900,9 @@ class SummaryManagerControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
 
         $this->client->submit($crawler->filter('form[name=summary]')->form([
-            'summary[mission_type_wishes][1]' => '2',
-            'summary[mission_type_wishes][3]' => '4',
-            'summary[mission_type_wishes][5]' => '6',
+            'summary[mission_type_wishes][2]' => '2',
+            'summary[mission_type_wishes][4]' => '4',
+            'summary[mission_type_wishes][7]' => '6',
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);

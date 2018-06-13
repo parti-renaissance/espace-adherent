@@ -10,13 +10,13 @@ use AppBundle\DataFixtures\ORM\LoadSummaryData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  * @group summary
  */
-class SummaryControllerTest extends SqliteWebTestCase
+class SummaryControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 

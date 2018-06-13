@@ -5,10 +5,10 @@ namespace Tests\AppBundle\Repository;
 use AppBundle\DataFixtures\ORM\LoadDonationData;
 use AppBundle\Repository\TransactionRepository;
 use Cake\Chronos\Chronos;
-use Tests\AppBundle\MysqlWebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
-class TransactionRepositoryTest extends MysqlWebTestCase
+class TransactionRepositoryTest extends WebTestCase
 {
     use TestHelperTrait;
 

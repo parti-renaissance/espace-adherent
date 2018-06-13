@@ -4,8 +4,8 @@ services:
     app:
         image: ${APP_DOCKER_IMAGE_NAME}:${APP_DOCKER_IMAGE_MD5}
         environment:
-            - SYMFONY_ENV=test_mysql
-            - APP_ENV=test_mysql
+            - SYMFONY_ENV=test
+            - APP_ENV=test
         volumes:
             - ./var/cache:/app/var/cache
             - ./var/logs:/app/var/logs

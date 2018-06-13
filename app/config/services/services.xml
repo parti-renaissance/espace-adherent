@@ -177,6 +177,7 @@
         <service id="AppBundle\Command\ApiScheduleCommitteeCreationCommand" />
         <service id="AppBundle\Command\ApiScheduleEventCreationCommand" />
         <service id="AppBundle\Command\InitializeEmailSubscriptionHistoryCommand"/>
+        <service id="AppBundle\Command\ImportDistrictsCommand"/>
 
         <!-- UserDocument -->
         <service id="AppBundle\UserDocument\UserDocumentManager" public="true" />
@@ -208,5 +209,8 @@
                 </service>
             </argument>
         </service>
+
+        <!-- Deputy -->
+        <service id="AppBundle\Deputy\DistrictLoader" public="true" />
     </services>
 </container>
