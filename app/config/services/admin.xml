@@ -586,7 +586,7 @@
             <call method="setSubClasses">
                 <argument type="collection">
                     <argument key="Vidéo">AppBundle\Entity\Mooc\Video</argument>
-                    <argument key="Quizz">AppBundle\Entity\Mooc\Quizz</argument>
+                    <argument key="Quiz">AppBundle\Entity\Mooc\Quiz</argument>
                 </argument>
             </call>
         </service>

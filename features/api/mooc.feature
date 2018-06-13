@@ -8,7 +8,7 @@ Feature:
       | LoadMoocData        |
       | LoadMoocChapterData |
       | LoadMoocVideoData   |
-      | LoadMoocQuizzData   |
+      | LoadMoocQuizData    |
 
   Scenario: As a non logged-in user I can get MOOC configuration
     When I am on "/api/mooc/faire-de-sa-fourchette-un-acte-politique"
