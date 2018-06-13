@@ -30,13 +30,12 @@ class RepublicanSilenceRepository extends ServiceEntityRepository
     /**
      * @return RepublicanSilence[]
      */
-    public function findActiveBetweenDates(\DateTimeInterface $startDate, \DateTimeInterface $endDate): iterable
+    public function findFromDate(\DateTimeInterface $date): iterable
     {
         return $this
             ->createQueryBuilder('silence')
-            ->where('silence.beginAt <= :end_date AND silence.finishAt >= :start_date')
-            ->setParameter('start_date', $startDate)
-            ->setParameter('end_date', $endDate)
+            ->where('silence.finishAt >= :date')
+            ->setParameter('date', $date)
             ->getQuery()
             ->getResult()
         ;

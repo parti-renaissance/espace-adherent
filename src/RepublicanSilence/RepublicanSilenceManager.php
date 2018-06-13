@@ -40,9 +40,9 @@ class RepublicanSilenceManager
     /**
      * @return RepublicanSilence[]
      */
-    public function getRepublicanSilencesBetweenDates(\DateTimeInterface $startDate, \DateTimeInterface $endDate): iterable
+    public function getRepublicanSilencesFromDate(\DateTimeInterface $date): iterable
     {
-        return $this->repository->findActiveBetweenDates($startDate, $endDate);
+        return $this->repository->findFromDate($date);
     }
 
     public function hasStartedSilence(array $referentTagCodes): bool
