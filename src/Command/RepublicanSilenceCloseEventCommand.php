@@ -20,6 +20,7 @@ class RepublicanSilenceCloseEventCommand extends Command
     private $eventRepository;
     private $actionRepository;
     private $eventCanceledHandler;
+    private $interval;
 
     public function __construct(
         RepublicanSilenceManager $manager,
@@ -39,40 +40,35 @@ class RepublicanSilenceCloseEventCommand extends Command
     {
         $this
             ->setDescription('This command closes each committee event or citizen action when it matches a republican silence criteria')
-            ->addArgument('interval', InputArgument::REQUIRED, 'Interval of time (in minutes) to search Event/Action')
+            ->addArgument('interval', InputArgument::OPTIONAL, 'Number of minutes to remove from silence start date for closing the events [x] minutes before (default: 0)', 0)
         ;
+    }
+
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $this->interval = (int) $input->getArgument('interval');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        [$startDate, $endDate] = $this->getDates((int) $input->getArgument('interval'));
-
-        foreach ($this->getSilences($startDate, $endDate) as $silence) {
+        foreach ($this->getSilences() as $silence) {
             $this->closeEvents($silence);
             $this->closeActions($silence);
         }
     }
 
-    private function getDates(int $interval): array
-    {
-        return [
-            new \DateTime(),
-            new \DateTime(sprintf('+%d minutes', $interval)),
-        ];
-    }
-
     /**
      * @return RepublicanSilence[]
      */
-    private function getSilences(\DateTimeInterface $startDate, \DateTimeInterface $endDate): iterable
+    private function getSilences(): iterable
     {
-        return $this->manager->getRepublicanSilencesBetweenDates($startDate, $endDate);
+        return $this->manager->getRepublicanSilencesFromDate(new \DateTime());
     }
 
     private function closeEvents(RepublicanSilence $silence): void
     {
         $events = $this->eventRepository->findStartedEventBetweenDatesForTags(
-            (clone $silence->getBeginAt())->modify('-30 minutes'),
+            (clone $silence->getBeginAt())->modify(sprintf('-%d minutes', $this->interval)),
             $silence->getFinishAt(),
             $silence->getReferentTags()->toArray()
         );
@@ -85,7 +81,7 @@ class RepublicanSilenceCloseEventCommand extends Command
     private function closeActions(RepublicanSilence $silence): void
     {
         $actions = $this->actionRepository->findStartedEventBetweenDatesForTags(
-            (clone $silence->getBeginAt())->modify('-30 minutes'),
+            (clone $silence->getBeginAt())->modify(sprintf('-%d minutes', $this->interval)),
             $silence->getFinishAt(),
             $silence->getReferentTags()->toArray()
         );
