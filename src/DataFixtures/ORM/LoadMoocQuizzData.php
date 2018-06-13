@@ -13,7 +13,7 @@ class LoadMoocQuizzData extends Fixture
         $quizz = new Quizz(
             'Le test de votre vie',
             '<p>une description</p>',
-            '<p>le quizz</p>'
+            'https://developerplatform.typeform.com/to/Xc7NMh'
         );
 
         $manager->persist($quizz);
