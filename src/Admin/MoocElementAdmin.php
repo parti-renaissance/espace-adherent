@@ -85,6 +85,17 @@ class MoocElementAdmin extends AbstractAdmin
         }
         $formMapper
             ->end()
+            ->with('Boutons de partage', ['class' => 'col-md-6'])
+                ->add('twitterText', TextType::class, [
+                    'label' => 'Texte du partage sur Twitter',
+                ])
+                ->add('facebookText', TextType::class, [
+                    'label' => 'Texte du partage sur Facebook',
+                ])
+                ->add('emailText', TextType::class, [
+                    'label' => 'Texte du partage par email',
+                ])
+            ->end()
             ->with('Liens attachés', ['class' => 'col-md-6'])
                 ->add('links', CollectionType::class, [
                     'label' => false,

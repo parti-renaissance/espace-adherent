@@ -105,12 +105,44 @@ abstract class BaseMoocElement
      */
     protected $files;
 
-    public function __construct(string $title = null, string $content = null)
-    {
+    /**
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
+     */
+    private $twitterText;
+
+    /**
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
+     */
+    private $facebookText;
+
+    /**
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
+     */
+    private $emailText;
+
+    public function __construct(
+        string $title = null,
+        string $content = null,
+        string $twitterText = null,
+        string $facebookText = null,
+        string $emailText = null
+    ) {
         $this->title = $title;
         $this->content = $content;
         $this->links = new ArrayCollection();
         $this->files = new ArrayCollection();
+        $this->twitterText = $twitterText;
+        $this->facebookText = $facebookText;
+        $this->emailText = $emailText;
     }
 
     public function __toString()
@@ -216,5 +248,35 @@ abstract class BaseMoocElement
     public function setContent(string $content): void
     {
         $this->content = $content;
+    }
+
+    public function getTwitterText(): ?string
+    {
+        return $this->twitterText;
+    }
+
+    public function setTwitterText(string $twitterText): void
+    {
+        $this->twitterText = $twitterText;
+    }
+
+    public function getFacebookText(): ?string
+    {
+        return $this->facebookText;
+    }
+
+    public function setFacebookText(string $facebookText): void
+    {
+        $this->facebookText = $facebookText;
+    }
+
+    public function getEmailText(): ?string
+    {
+        return $this->emailText;
+    }
+
+    public function setEmailText(string $emailText): void
+    {
+        $this->emailText = $emailText;
     }
 }

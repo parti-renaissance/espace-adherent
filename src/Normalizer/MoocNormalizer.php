@@ -78,6 +78,9 @@ class MoocNormalizer implements NormalizerInterface
             'title' => $element->getTitle(),
             'slug' => $element->getSlug(),
             'content' => $element->getContent(),
+            'twitterText' => $element->getTwitterText(),
+            'facebookText' => $element->getFacebookText(),
+            'emailText' => $element->getEmailText(),
             'links' => $this->normalizeLinks($element->getLinks()),
             'attachments' => $this->normalizeFiles($element->getFiles()),
         ];
