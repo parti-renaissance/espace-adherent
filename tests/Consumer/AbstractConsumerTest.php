@@ -11,6 +11,9 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @group membership
+ */
 class AbstractConsumerTest extends TestCase
 {
     const CLASS_NAME = 'AppBundle\Consumer\AbstractConsumer';

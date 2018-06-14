@@ -17,6 +17,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
+ * @group api
  */
 class OAuthServerControllerTest extends WebTestCase
 {

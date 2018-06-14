@@ -9,7 +9,6 @@ use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\CoordinatorManagedArea;
-use AppBundle\Entity\District;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentFactory;
@@ -435,7 +434,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $deputy_75_1 = $adherentFactory->createFromArray([
             'uuid' => self::DEPUTY_1_UUID,
             'password' => self::DEFAULT_PASSWORD,
-            'email' => 'deputy@example.ch',
+            'email' => 'deputy@en-marche-dev.fr',
             'gender' => 'male',
             'first_name' => 'Député',
             'last_name' => 'PARIS I',
@@ -443,8 +442,6 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'birthdate' => '1982-06-02',
             'registered_at' => '2017-06-01 09:26:31',
         ]);
-        $district_75_8 = $manager->getRepository(District::class)->findOneBy(['code' => '75008']);
-        $deputy_75_1->setManagedDistrict($district_75_8);
         $roles = new ArrayCollection();
         $roles->add($this->getReference('deputy'));
         $deputy_75_1->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
@@ -725,7 +722,6 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
     {
         return [
             LoadBoardMemberRoleData::class,
-            LoadDistrictData::class,
             LoadAdherentTagData::class,
             LoadReferentTagData::class,
         ];

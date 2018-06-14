@@ -19,6 +19,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
+ * @group controller
  */
 class ReportControllerTest extends WebTestCase
 {

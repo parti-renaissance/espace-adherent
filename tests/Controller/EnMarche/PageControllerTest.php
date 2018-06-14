@@ -3,7 +3,6 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadFacebookVideoData;
-use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadPageData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -79,7 +78,6 @@ class PageControllerTest extends WebTestCase
 
         $this->init([
             LoadFacebookVideoData::class,
-            LoadHomeBlockData::class,
             LoadPageData::class,
         ]);
     }

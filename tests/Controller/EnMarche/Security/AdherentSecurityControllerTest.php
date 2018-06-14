@@ -3,7 +3,6 @@
 namespace Tests\AppBundle\Controller\EnMarche\Security;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadUserData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Mailer\Message\AdherentResetPasswordMessage;
@@ -17,6 +16,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
+ * @group security
  */
 class AdherentSecurityControllerTest extends WebTestCase
 {
@@ -227,7 +227,6 @@ class AdherentSecurityControllerTest extends WebTestCase
         $this->init([
             LoadUserData::class,
             LoadAdherentData::class,
-            LoadHomeBlockData::class,
         ]);
 
         $this->adherentRepository = $this->getAdherentRepository();

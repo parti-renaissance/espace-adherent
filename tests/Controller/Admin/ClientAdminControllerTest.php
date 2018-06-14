@@ -14,6 +14,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
+ * @group admin
  */
 class ClientAdminControllerTest extends WebTestCase
 {

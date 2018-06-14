@@ -12,6 +12,9 @@ use AppBundle\Referent\ReferentTagManager;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group committee
+ */
 class CommitteeFactoryTest extends TestCase
 {
     public function testCreateCommitteeFromCommitteeCreationCommand()

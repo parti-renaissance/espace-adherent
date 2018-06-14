@@ -10,7 +10,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
 /**
- * @group functional
+ * @group command
  */
 class ImportReferentBioPictureCommandTest extends WebTestCase
 {

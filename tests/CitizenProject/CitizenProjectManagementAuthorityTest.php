@@ -15,6 +15,9 @@ use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+/**
+ * @group citizenProject
+ */
 class CitizenProjectManagementAuthorityTest extends TestCase
 {
     public function testApprove()

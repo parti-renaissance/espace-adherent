@@ -18,6 +18,7 @@ use Tests\AppBundle\Test\Algolia\DummyIndexer;
 
 /**
  * @group functional
+ * @group admin
  */
 class AdminTimelineMeasureControllerTest extends WebTestCase
 {

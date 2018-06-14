@@ -12,6 +12,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
+ * @group admin
  */
 class ArticleAdminTest extends WebTestCase
 {

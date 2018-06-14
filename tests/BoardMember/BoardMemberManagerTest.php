@@ -16,6 +16,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
+ * @group boardMember
  */
 class BoardMemberManagerTest extends WebTestCase
 {

@@ -14,6 +14,9 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
 
+/**
+ * @group membership
+ */
 class AdherentFactoryTest extends TestCase
 {
     public function testCreateNonFrenchAdherentFromArray()

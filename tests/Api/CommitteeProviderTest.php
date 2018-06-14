@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+/**
+ * @group api
+ */
 class CommitteeProviderTest extends TestCase
 {
     public function testGetApprovedCommittees()

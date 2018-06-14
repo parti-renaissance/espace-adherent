@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadTonMacronData;
 use AppBundle\Entity\Email;
 use AppBundle\Entity\TonMacronChoice;
@@ -20,6 +19,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
+ * @group controller
  */
 class TonMacronControllerTest extends WebTestCase
 {
@@ -188,7 +188,6 @@ class TonMacronControllerTest extends WebTestCase
         parent::setUp();
 
         $this->init([
-            LoadHomeBlockData::class,
             LoadTonMacronData::class,
         ]);
 

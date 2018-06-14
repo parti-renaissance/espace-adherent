@@ -10,6 +10,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
+ * @group api
  */
 class ReferentsControllerTest extends WebTestCase
 {

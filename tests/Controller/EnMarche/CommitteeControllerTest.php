@@ -5,7 +5,6 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
-use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Mailer\Message\CommitteeNewFollowerMessage;
 use AppBundle\Entity\Committee;
@@ -521,7 +520,6 @@ class CommitteeControllerTest extends WebTestCase
         parent::setUp();
 
         $this->init([
-            LoadHomeBlockData::class,
             LoadAdherentData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,

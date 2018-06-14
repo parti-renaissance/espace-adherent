@@ -14,7 +14,6 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
 /**
- * @group functional
  * @group citizenProject
  */
 class CitizenProjectManagerTest extends WebTestCase

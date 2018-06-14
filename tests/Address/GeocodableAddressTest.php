@@ -6,6 +6,9 @@ use AppBundle\Address\Address;
 use AppBundle\Address\GeocodableAddress;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group address
+ */
 class GeocodableAddressTest extends TestCase
 {
     public function testCreateGeocodableAddressFromAddress()

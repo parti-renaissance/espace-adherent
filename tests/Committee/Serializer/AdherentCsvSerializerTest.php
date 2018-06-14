@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
 
+/**
+ * @group committee
+ */
 class AdherentCsvSerializerTest extends TestCase
 {
     public function testSerialize()

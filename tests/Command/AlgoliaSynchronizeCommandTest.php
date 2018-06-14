@@ -10,7 +10,7 @@ use AppBundle\DataFixtures\ORM\LoadTimelineData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
- * @group functional
+ * @group command
  */
 class AlgoliaSynchronizeCommandTest extends WebTestCase
 {

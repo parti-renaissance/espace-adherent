@@ -4,7 +4,6 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
-use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
 use AppBundle\DataFixtures\ORM\LoadReferentManagedUserData;
 use AppBundle\Entity\Event;
@@ -408,7 +407,6 @@ class ReferentControllerTest extends WebTestCase
         $this->init([
             LoadAdherentData::class,
             LoadEventCategoryData::class,
-            LoadHomeBlockData::class,
             LoadNewsletterSubscriptionData::class,
             LoadReferentManagedUserData::class,
         ]);

@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadPurchasingPowerData;
 use AppBundle\Entity\PurchasingPowerChoice;
 use AppBundle\Repository\EmailRepository;
@@ -91,7 +90,6 @@ class InteractiveControllerTest extends WebTestCase
         parent::setUp();
 
         $this->init([
-            LoadHomeBlockData::class,
             LoadPurchasingPowerData::class,
         ]);
 

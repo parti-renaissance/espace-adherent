@@ -5,6 +5,9 @@ namespace Tests\AppBundle\Address;
 use AppBundle\Address\Address;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group address
+ */
 class AddressTest extends TestCase
 {
     public function testCreateValidForeignAddress()

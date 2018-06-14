@@ -6,7 +6,6 @@ use AppBundle\Committee\CommitteeManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
-use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Event;
@@ -702,7 +701,6 @@ class CommitteeManagerControllerTest extends WebTestCase
             LoadAdherentData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,
-            LoadHomeBlockData::class,
         ]);
 
         $this->committeeEventRepository = $this->getEventRepository();

@@ -12,6 +12,9 @@ use AppBundle\Routing\RemoteUrlGenerator;
 use libphonenumber\PhoneNumberUtil;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group procuration
+ */
 class ProcurationProxyMessageFactoryTest extends TestCase
 {
     /**

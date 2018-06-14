@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
+/**
+ * @group procuration
+ */
 class ProcurationSessionTest extends TestCase
 {
     /** @var SessionInterface|\PHPUnit_Framework_MockObject_MockObject */

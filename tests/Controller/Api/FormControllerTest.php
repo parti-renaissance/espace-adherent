@@ -14,6 +14,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
+ * @group api
  */
 class FormControllerTest extends WebTestCase
 {
