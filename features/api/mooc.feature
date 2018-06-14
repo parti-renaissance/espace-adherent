@@ -19,6 +19,10 @@ Feature:
     {
       "title":"Faire de sa fourchette un acte politique",
       "slug":"faire-de-sa-fourchette-un-acte-politique",
+      "content": "<strong>Lorem ipsum</strong> dolor sit amet, consectetur adipiscing elit.",
+      "youtubeId": "ktHEfEDhscU",
+      "youtubeThumbnail": "https://img.youtube.com/vi/ktHEfEDhscU/0.jpg",
+      "youtubeDuration": "00:02:10",
       "elements":[
         {
           "type":"chapter",
