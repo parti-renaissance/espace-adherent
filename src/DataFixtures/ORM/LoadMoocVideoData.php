@@ -15,6 +15,9 @@ class LoadMoocVideoData extends AbstractFixture
         $video1 = new Video(
             'Les produits transformés dans une première vidéo',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            'Bonsoir, voici un tweet de partage d\'un MOOC #enmarche',
+            'Bonsoir, voici un partage avec Facebook',
+            'Bonsoir, voici un email',
             'ktHEfEDhscU',
             new \DateTime(Chronos::createFromTime(00, 02, 10))
         );
@@ -32,6 +35,9 @@ class LoadMoocVideoData extends AbstractFixture
         $video2 = new Video(
             'Les produits transformés dans une deuxième vidéo',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et.',
+            'Bonsoir, voici un tweet de partage d\'un MOOC #enmarche',
+            'Bonsoir, voici un partage avec Facebook',
+            'Bonsoir, voici un email',
             'ktHEfEDhscU',
             new \DateTime(Chronos::createFromTime(01, 30, 00))
         );
@@ -41,6 +47,9 @@ class LoadMoocVideoData extends AbstractFixture
         $video3 = new Video(
             'Les produits transformés dans une troisième vidéo',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            'Bonsoir, voici un tweet de partage d\'un MOOC #enmarche',
+            'Bonsoir, voici un partage avec Facebook',
+            'Bonsoir, voici un email',
             'ktHEfEDhscU',
             new \DateTime(Chronos::createFromTime(00, 30, 15))
         );
