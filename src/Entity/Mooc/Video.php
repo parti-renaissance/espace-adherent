@@ -70,9 +70,4 @@ class Video extends BaseMoocElement
     {
         $this->duration = $duration;
     }
-
-    public function getType(): string
-    {
-        return parent::ELEMENT_TYPE_VIDEO;
-    }
 }

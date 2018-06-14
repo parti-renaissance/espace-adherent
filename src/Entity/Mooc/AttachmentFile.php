@@ -64,15 +64,6 @@ class AttachmentFile implements EntityFileInterface
      */
     private $file;
 
-    /**
-     * @var string|null
-     */
-    private $type;
-
-    public function __construct()
-    {
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -120,10 +111,6 @@ class AttachmentFile implements EntityFileInterface
 
     public function getPrefixPath(): string
     {
-        if ($this->type) {
-            return 'files/mooc/'.$this->type;
-        }
-
         return 'files/mooc';
     }
 
