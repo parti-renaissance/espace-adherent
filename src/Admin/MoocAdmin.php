@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Mooc\Chapter;
+use AppBundle\Form\PurifiedTextareaType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -10,6 +11,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 class MoocAdmin extends AbstractAdmin
 {
@@ -27,6 +29,21 @@ class MoocAdmin extends AbstractAdmin
                     ->add('slug', TextType::class, [
                         'label' => 'Slug',
                         'disabled' => true,
+                    ])
+                    ->add('content', PurifiedTextareaType::class, [
+                        'label' => 'Contenu',
+                        'attr' => ['class' => 'ck-editor'],
+                        'purifier_type' => 'enrich_content',
+                    ])
+                    ->add('youtubeId', TextType::class, [
+                        'label' => 'Youtube ID',
+                        'help' => 'L\'ID de la vidéo Youtube ne peut contenir que des chiffres, des lettres, et les caractères "_" et "-"',
+                        'filter_emojis' => true,
+                    ])
+                    ->add('youtubeDuration', TimeType::class, [
+                        'label' => 'Durée de la vidéo',
+                        'widget' => 'single_text',
+                        'with_seconds' => true,
                     ])
                 ->end()
         ;
@@ -72,6 +89,12 @@ class MoocAdmin extends AbstractAdmin
             ])
             ->add('slug', null, [
                 'label' => 'Slug',
+            ])
+            ->add('youtubeId', null, [
+                'label' => 'Youtube ID',
+            ])
+            ->add('_thumbnail', 'thumbnail', [
+                'label' => 'Miniature',
             ])
             ->add('_action', null, [
                 'actions' => [

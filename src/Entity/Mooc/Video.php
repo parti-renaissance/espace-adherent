@@ -18,7 +18,7 @@ class Video extends BaseMoocElement
      * @ORM\Column
      *
      * @Assert\NotBlank
-     * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="mooc.video.youtubeid_syntax")
+     * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="mooc.youtubeid_syntax")
      * @Assert\Length(min=2, max=11)
      */
     private $youtubeId;
@@ -61,7 +61,7 @@ class Video extends BaseMoocElement
         return sprintf('https://img.youtube.com/vi/%s/0.jpg', $this->youtubeId);
     }
 
-    public function getDuration(): ?\DateTime
+    public function getDuration(): \DateTime
     {
         return $this->duration;
     }

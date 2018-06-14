@@ -53,6 +53,10 @@ class MoocNormalizer implements NormalizerInterface
         return [
             'title' => $mooc->getTitle(),
             'slug' => $mooc->getSlug(),
+            'content' => $mooc->getContent(),
+            'youtubeId' => $mooc->getYoutubeId(),
+            'youtubeThumbnail' => $mooc->getYoutubeThumbnail(),
+            'youtubeDuration' => $mooc->getYoutubeDuration()->format('H:i:s'),
             'elements' => $elements,
         ];
     }
