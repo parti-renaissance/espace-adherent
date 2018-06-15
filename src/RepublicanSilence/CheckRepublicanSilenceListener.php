@@ -29,6 +29,9 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         'app_citizen_project_show_comments' => ReferentTagExtractorInterface::ADHERENT_TYPE_CITIZEN_PROJECT_ADMINISTRATOR,
         'app_citizen_project_contact_actors' => ReferentTagExtractorInterface::ADHERENT_TYPE_CITIZEN_PROJECT_ADMINISTRATOR,
         'app_citizen_action_manager_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_CITIZEN_PROJECT_ADMINISTRATOR,
+
+        // Deputy Space
+        'app_deputy_users_message' => ReferentTagExtractorInterface::ADHERENT_TYPE_DEPUTY,
     ];
 
     private $tokenStorage;
@@ -89,6 +92,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
                 $user->isHost()
                 || $user->isSupervisor()
                 || $user->isReferent()
+                || $user->isDeputy()
                 || $user->isCitizenProjectAdministrator()
             );
     }

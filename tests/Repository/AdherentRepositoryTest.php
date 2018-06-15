@@ -58,7 +58,7 @@ class AdherentRepositoryTest extends WebTestCase
 
     public function testCountActiveAdherents()
     {
-        $this->assertSame(19, $this->adherentRepository->countActiveAdherents());
+        $this->assertSame(20, $this->adherentRepository->countActiveAdherents());
     }
 
     public function testFindAllManagedBy()
@@ -69,17 +69,18 @@ class AdherentRepositoryTest extends WebTestCase
 
         $managedByReferent = $this->adherentRepository->findAllManagedBy($referent);
 
-        $this->assertCount(10, $managedByReferent, 'Referent should manage 9 adherents + himself in his area.');
+        $this->assertCount(11, $managedByReferent, 'Referent should manage 9 adherents + himself in his area.');
         $this->assertSame('Damien SCHMIDT', $managedByReferent[0]->getFullName());
         $this->assertSame('Michel VASSEUR', $managedByReferent[1]->getFullName());
         $this->assertSame('Michelle Dufour', $managedByReferent[2]->getFullName());
-        $this->assertSame('Thomas Leclerc', $managedByReferent[3]->getFullName());
-        $this->assertSame('Laura Deloche', $managedByReferent[4]->getFullName());
-        $this->assertSame('Francis Brioul', $managedByReferent[5]->getFullName());
-        $this->assertSame('Referent Referent', $managedByReferent[6]->getFullName());
-        $this->assertSame('Referent child Referent child', $managedByReferent[7]->getFullName());
-        $this->assertSame('Benjamin Duroc', $managedByReferent[8]->getFullName());
-        $this->assertSame('Gisele Berthoux', $managedByReferent[9]->getFullName());
+        $this->assertSame('Député CHLI FDESIX', $managedByReferent[3]->getFullName());
+        $this->assertSame('Thomas Leclerc', $managedByReferent[4]->getFullName());
+        $this->assertSame('Laura Deloche', $managedByReferent[5]->getFullName());
+        $this->assertSame('Francis Brioul', $managedByReferent[6]->getFullName());
+        $this->assertSame('Referent Referent', $managedByReferent[7]->getFullName());
+        $this->assertSame('Referent child Referent child', $managedByReferent[8]->getFullName());
+        $this->assertSame('Benjamin Duroc', $managedByReferent[9]->getFullName());
+        $this->assertSame('Gisele Berthoux', $managedByReferent[10]->getFullName());
     }
 
     /**
@@ -214,7 +215,7 @@ class AdherentRepositoryTest extends WebTestCase
             ],
             [
                 ['g' => 'male'],
-                ['carl999@example.fr', 'deputy@en-marche-dev.fr', 'referent@en-marche-dev.fr'],
+                ['carl999@example.fr', 'deputy@en-marche-dev.fr', 'deputy-ch-li@en-marche-dev.fr', 'referent@en-marche-dev.fr'],
             ],
             // Age
             [
@@ -223,7 +224,7 @@ class AdherentRepositoryTest extends WebTestCase
             ],
             [
                 ['amax' => 54],
-                ['deputy@en-marche-dev.fr', 'laura@deloche.com', 'martine.lindt@gmail.com', 'lolodie.dutemps@hotnix.tld'],
+                ['deputy@en-marche-dev.fr', 'deputy-ch-li@en-marche-dev.fr', 'laura@deloche.com', 'martine.lindt@gmail.com', 'lolodie.dutemps@hotnix.tld'],
             ],
             [
                 ['amin' => 55, 'amax' => 60],

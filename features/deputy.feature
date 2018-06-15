@@ -40,7 +40,7 @@ Feature:
   Scenario: As deputy of 1st Paris district I can send message to the adherents.
     Given I am logged as "deputy@en-marche-dev.fr"
     When I am on "/espace-depute/utilisateurs/message"
-    Then the "recipient" field should contain "4 marcheurs(s)"
+    Then the "recipient" field should contain "5 marcheurs(s)"
     And the "sender" field should contain "Député PARIS I"
 
     # Try to send an empty form
@@ -106,6 +106,16 @@ Feature:
               "target_message": "Content of a deputy message",
               "target_firstname": "D\u00e9put\u00e9"
           }
+      },
+      {
+        "Email": "deputy-ch-li@en-marche-dev.fr",
+        "Name": "D\u00e9put\u00e9 CHLI FDESIX",
+        "Vars": {
+          "deputy_fullname": "D\u00e9put\u00e9 PARIS I",
+          "circonscription_name": "Paris, 1\u00e8me circonscription (75-01)",
+          "target_message": "Content of a deputy message",
+          "target_firstname": "D\u00e9put\u00e9"
+        }
       }],
       "Headers": {
         "Reply-To": "deputy@en-marche-dev.fr"

@@ -66,8 +66,8 @@ class BoardMemberControllerTest extends WebTestCase
 
         $resultRow = $crawler->filter('.spaces__results__row');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('Tous les résultats (6)', $crawler->filter('h2')->first()->text());
-        $this->assertSame(6, $resultRow->count());
+        $this->assertSame('Tous les résultats (7)', $crawler->filter('h2')->first()->text());
+        $this->assertSame(7, $resultRow->count());
         $this->assertSame('Carl Mirabeau', $resultRow->eq(0)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
         $this->assertRegExp('/\d+, M, Mouxy/', $resultRow->eq(0)->filter('li')->eq(1)->filter('div')->eq(1)->text());
         $this->assertSame('Laura Deloche', $resultRow->eq(1)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
@@ -78,18 +78,21 @@ class BoardMemberControllerTest extends WebTestCase
         $this->assertRegExp('/\d+, F, Singapour/', $resultRow->eq(3)->filter('li')->eq(1)->filter('div')->eq(1)->text());
         $this->assertSame('Député PARIS I', $resultRow->eq(4)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
         $this->assertRegExp('/\d+, M, Paris/', $resultRow->eq(4)->filter('li')->eq(1)->filter('div')->eq(1)->text());
-        $this->assertSame('Referent Referent', $resultRow->eq(5)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
-        $this->assertRegExp('/\d+, M, Melun/', $resultRow->eq(5)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertSame('Député CHLI FDESIX', $resultRow->eq(5)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
+        $this->assertRegExp('/\d+, M, Paris/', $resultRow->eq(5)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertSame('Referent Referent', $resultRow->eq(6)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
+        $this->assertRegExp('/\d+, M, Melun/', $resultRow->eq(6)->filter('li')->eq(1)->filter('div')->eq(1)->text());
 
         // Gender
         $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form(['g' => 'male']));
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $results = $this->client->getCrawler()->filter('.spaces__results__row');
-        $this->assertCount(3, $results);
+        $this->assertCount(4, $results);
         $this->assertContains('Carl Mirabeau', $results->first()->text());
         $this->assertContains('Député PARIS I', $results->eq(1)->text());
-        $this->assertContains('Referent Referent', $results->eq(2)->text());
+        $this->assertContains('Député CHLI FDESIX', $results->eq(2)->text());
+        $this->assertContains('Referent Referent', $results->eq(3)->text());
 
         // Age
         $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form([
@@ -189,7 +192,7 @@ class BoardMemberControllerTest extends WebTestCase
         $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form(['g' => 'male']));
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->click($this->client->getCrawler()->selectLink('Envoyer un message à ces 3 personnes')->link());
+        $this->client->click($this->client->getCrawler()->selectLink('Envoyer un message à ces 4 personnes')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form([

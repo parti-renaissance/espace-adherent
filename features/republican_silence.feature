@@ -1,11 +1,12 @@
 Feature:
-  As Referent|CP-Host|Committee-Host or Committee-Supervisor
+  As Referent|Deputy|CP-Host|Committee-Host or Committee-Supervisor
   I cannot communicate with the adherents when one republican silence is declared for the same Referent Tags
 
   Background:
     Given the following fixtures are loaded:
       | LoadCitizenActionData     |
       | LoadRepublicanSilenceData |
+      | LoadDistrictData          |
 
   Scenario Outline: As referent of department 92 I cannot communicate with adherent from my referent space.
     Given I am logged as "referent@en-marche-dev.fr"
@@ -52,3 +53,8 @@ Feature:
     When I click the "members-contact-button" element
     Then I should be on "/projets-citoyens/en-marche-projet-citoyen/acteurs/contact"
     And I should see "En raison du silence républicain, votre espace est momentanément désactivé. Vous pourrez de nouveau y accéder à la fin de celui-ci."
+
+  Scenario: As deputy of FDE-06 (CH and LI) I cannot communicate with adherents from my deputy space.
+    Given I am logged as "deputy-ch-li@en-marche-dev.fr"
+    When I go to "/espace-depute/utilisateurs/message"
+    Then I should see "En raison du silence républicain, votre espace est momentanément désactivé. Vous pourrez de nouveau y accéder à la fin de celui-ci."
