@@ -4,6 +4,7 @@ namespace AppBundle\Entity\Mooc;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\EntityTimestampableTrait;
+use Cake\Chronos\MutableDate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -65,11 +66,42 @@ class Mooc
      */
     private $chapters;
 
-    public function __construct(string $title = null, string $description = null)
-    {
+    /**
+     * @ORM\Column(length=800, nullable=true)
+     *
+     * @Assert\Length(min=5, max=800)
+     */
+    private $content;
+
+    /**
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="mooc.youtubeid_syntax")
+     * @Assert\Length(min=2, max=11)
+     */
+    private $youtubeId;
+
+    /**
+     * @ORM\Column(type="time")
+     *
+     * @Assert\Time
+     */
+    private $youtubeDuration;
+
+    public function __construct(
+        string $title = null,
+        string $description = null,
+        string $content = null,
+        string $youtubeId = null,
+        \DateTime $youtubeDuration = null
+    ) {
         $this->title = $title;
         $this->description = $description;
         $this->chapters = new ArrayCollection();
+        $this->content = $content;
+        $this->youtubeId = $youtubeId;
+        $this->youtubeDuration = $youtubeDuration ?? MutableDate::create();
     }
 
     public function __toString()
@@ -132,5 +164,45 @@ class Mooc
     {
         $chapter->detachMooc();
         $this->chapters->removeElement($chapter);
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(string $content): void
+    {
+        $this->content = $content;
+    }
+
+    public function getYoutubeId(): ?string
+    {
+        return $this->youtubeId;
+    }
+
+    public function setYoutubeId(string $youtubeId): void
+    {
+        $this->youtubeId = $youtubeId;
+    }
+
+    public function hasYoutubeThumbnail(): bool
+    {
+        return null !== $this->youtubeId;
+    }
+
+    public function getYoutubeThumbnail(): ?string
+    {
+        return sprintf('https://img.youtube.com/vi/%s/0.jpg', $this->youtubeId);
+    }
+
+    public function getYoutubeDuration(): \DateTime
+    {
+        return $this->youtubeDuration;
+    }
+
+    public function setYoutubeDuration(\DateTime $youtubeDuration): void
+    {
+        $this->youtubeDuration = $youtubeDuration;
     }
 }

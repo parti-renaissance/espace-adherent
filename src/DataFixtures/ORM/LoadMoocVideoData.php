@@ -4,7 +4,7 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Mooc\AttachmentLink;
 use AppBundle\Entity\Mooc\Video;
-use Cake\Chronos\Chronos;
+use Cake\Chronos\MutableDateTime;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -16,7 +16,7 @@ class LoadMoocVideoData extends AbstractFixture
             'Les produits transformés dans une première vidéo',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'ktHEfEDhscU',
-            new \DateTime(Chronos::createFromTime(00, 02, 10))
+            MutableDateTime::createFromTime(00, 02, 10)
         );
 
         $video1->addLink(
@@ -33,7 +33,7 @@ class LoadMoocVideoData extends AbstractFixture
             'Les produits transformés dans une deuxième vidéo',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et.',
             'ktHEfEDhscU',
-            new \DateTime(Chronos::createFromTime(01, 30, 00))
+            MutableDateTime::createFromTime(01, 30, 00)
         );
         $manager->persist($video2);
         $this->addReference('mooc-video-2', $video2);
@@ -42,7 +42,7 @@ class LoadMoocVideoData extends AbstractFixture
             'Les produits transformés dans une troisième vidéo',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'ktHEfEDhscU',
-            new \DateTime(Chronos::createFromTime(00, 30, 15))
+            MutableDateTime::createFromTime(00, 30, 15)
         );
 
         $manager->persist($video3);
