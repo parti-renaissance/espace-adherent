@@ -32,11 +32,14 @@ class Video extends BaseMoocElement
 
     public function __construct(
         string $title = null,
-        string $description = null,
+        string $content = null,
+        string $twitterText = null,
+        string $facebokText = null,
+        string $emailText = null,
         string $youtubeId = null,
         \DateTime $duration = null
     ) {
-        parent::__construct($title, $description);
+        parent::__construct($title, $content, $twitterText, $facebokText, $emailText);
         $this->youtubeId = $youtubeId;
         $this->duration = $duration ?? MutableDate::create();
     }
