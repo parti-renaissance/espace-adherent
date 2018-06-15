@@ -53,7 +53,8 @@ class AdherentControllerTest extends WebTestCase
 
     public function testAuthenticatedAdherentCanSeeHisUpcomingAndPastEvents(): void
     {
-        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $crawler = $this->client->request(Request::METHOD_GET, '/');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $crawler = $this->client->click($crawler->selectLink('Mes activités')->link());
@@ -358,6 +359,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte/centres-d-interet', $this->client);
 
         /* @var Adherent $adherent */
+        $this->container->get('doctrine.orm.entity_manager')->clear();
         $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
 
         $this->assertSame(array_values($chosenInterests), $adherent->getInterests());
@@ -619,7 +621,9 @@ class AdherentControllerTest extends WebTestCase
 
     public function testAdherentCanCreateNewCitizenProject(): void
     {
-        $crawler = $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/');
         $this->assertSame(3, $crawler->selectLink('Lancer mon projet')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
@@ -628,7 +632,8 @@ class AdherentControllerTest extends WebTestCase
 
     public function testCitizenProjectAdministratorCannotCreateAnotherCitizenProject(): void
     {
-        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $crawler = $this->client->request(Request::METHOD_GET, '/');
         $this->assertSame(0, $crawler->selectLink('Lancer mon projet')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
@@ -731,7 +736,8 @@ class AdherentControllerTest extends WebTestCase
      */
     public function testCommitteesAdherentsHostsAreNotAllowedToCreateNewCommittees(string $emailAddress): void
     {
-        $crawler = $this->authenticateAsAdherent($this->client, $emailAddress);
+        $this->authenticateAsAdherent($this->client, $emailAddress);
+        $crawler = $this->client->request(Request::METHOD_GET, '/');
         $this->assertSame(0, $crawler->selectLink('Créer un comité')->count());
 
         // Try to cheat the system with a direct URL access.
@@ -758,7 +764,8 @@ class AdherentControllerTest extends WebTestCase
      */
     public function testRegularAdherentCanCreateOneNewCommittee(string $emaiLAddress, string $phone): void
     {
-        $crawler = $this->authenticateAsAdherent($this->client, $emaiLAddress);
+        $this->authenticateAsAdherent($this->client, $emaiLAddress);
+        $crawler = $this->client->request(Request::METHOD_GET, '/');
         $crawler = $this->client->click($crawler->selectLink('Créer un comité')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());

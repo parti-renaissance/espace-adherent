@@ -6,6 +6,7 @@ use AppBundle\Committee\Feed\CommitteeFeedManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
+use AppBundle\Entity\Administrator;
 use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\CitizenAction;
@@ -36,6 +37,7 @@ use AppBundle\Membership\ActivityPositions;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\AdherentResetPasswordTokenRepository;
+use AppBundle\Repository\AdministratorRepository;
 use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Repository\CitizenProjectCommentRepository;
 use AppBundle\Repository\CitizenProjectRepository;
@@ -140,6 +142,11 @@ trait TestHelperTrait
     public function getAdherentRepository(): AdherentRepository
     {
         return $this->getRepository(Adherent::class);
+    }
+
+    protected function getAdministratorRepository(): AdministratorRepository
+    {
+        return $this->getRepository(Administrator::class);
     }
 
     public function getCommitteeRepository(): CommitteeRepository

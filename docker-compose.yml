@@ -19,6 +19,8 @@ services:
 
     db:
         image: mysql:5.7
+        volumes:
+            - ./docker/dev/my.cnf:/etc/mysql/conf.d/my.cnf
         environment:
             MYSQL_ROOT_PASSWORD: root
 
