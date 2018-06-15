@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e1eae9a581a98710e7edb48d8ef6ff7",
+    "content-hash": "7762fd7a6a073777059c3931e2d7283b",
     "packages": [
         {
             "name": "a2lix/i18n-doctrine-bundle",
@@ -2893,7 +2893,7 @@
             "keywords": [
                 "parameters management"
             ],
-            "time": "2015-11-10T17:04:01+01:00"
+            "time": "2015-11-10T17:04:01+00:00"
         },
         {
             "name": "intervention/image",
@@ -4077,7 +4077,7 @@
             ],
             "description": "Glide adapter for Symfony",
             "homepage": "http://glide.thephpleague.com",
-            "time": "2016-07-01T16:05:08+02:00"
+            "time": "2016-07-01T16:05:08+00:00"
         },
         {
             "name": "league/oauth2-server",
@@ -7987,7 +7987,7 @@
             ],
             "description": "Symfony Security Component - ACL (Access Control List)",
             "homepage": "https://symfony.com",
-            "time": "2015-12-28T09:39:46+01:00"
+            "time": "2015-12-28T09:39:46+00:00"
         },
         {
             "name": "symfony/symfony",
@@ -9957,6 +9957,9 @@
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause|MIT"
+            ],
             "authors": [
                 {
                     "name": "Kore Nordmann",
@@ -11354,7 +11357,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2016-11-23T20:04:58+01:00"
+            "time": "2016-11-23T20:04:58+00:00"
         }
     ],
     "aliases": [],
