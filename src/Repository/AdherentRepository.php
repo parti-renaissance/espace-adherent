@@ -11,12 +11,14 @@ use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
+use AppBundle\Entity\District;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Statistics\StatisticsParametersFilter;
 use AppBundle\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ramsey\Uuid\Uuid;
@@ -660,5 +662,25 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         if (!$referent->isReferent()) {
             throw new \InvalidArgumentException('Adherent must be a referent.');
         }
+    }
+
+    /**
+     * Finds enabled adherents in the deputy district.
+     *
+     * @param District $district
+     *
+     * @return Adherent[]
+     */
+    public function findAllInDistrict(District $district): array
+    {
+        return $this->createQueryBuilder('a')
+            ->innerJoin(District::class, 'd', Join::WITH, 'd.id = :district_id')
+            ->where("ST_Within(ST_GeomFromText(CONCAT('POINT(',a.postAddress.longitude,' ',a.postAddress.latitude,')')), d.geoShape) = 1")
+            ->andWhere('a.status = :status')
+            ->setParameter('district_id', $district->getId())
+            ->setParameter('status', Adherent::ENABLED)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

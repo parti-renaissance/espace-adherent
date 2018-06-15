@@ -18,6 +18,9 @@ use Doctrine\ORM\Mapping as ORM;
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="district_code_unique", columns="code"),
  *         @ORM\UniqueConstraint(name="district_department_code_number", columns={"department_code", "number"})
+ *     },
+ *     indexes={
+ *         @ORM\Index(name="district_geo_shape_idx", columns={"geo_shape"}, flags={"spatial"})
  *     }
  * )
  */

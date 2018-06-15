@@ -184,6 +184,11 @@
                 <a href="{{ path('app_referent_events') }}">Espace référent</a>
             </li>
         {% endif %}
+        {% if app.user.isDeputy %}
+            <li>
+                <a href="{{ path('app_deputy_users_message') }}">Espace député</a>
+            </li>
+        {% endif %}
         {# Space temporarily closed #}
         {#{% if app.user.isBoardMember %}#}
             {#<li>#}

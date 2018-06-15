@@ -296,6 +296,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
             $roles[] = 'ROLE_REFERENT';
         }
 
+        if ($this->isDeputy()) {
+            $roles[] = 'ROLE_DEPUTY';
+        }
+
         if ($this->isCoordinator()) {
             $roles[] = 'ROLE_COORDINATOR';
         }

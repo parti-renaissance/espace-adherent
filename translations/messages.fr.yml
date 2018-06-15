@@ -337,3 +337,8 @@ donation.status.refunded: Remboursé
 donation.status.canceled: Souscription annulée/désabonnée
 donation.status.finished: Don terminé avec succes
 donation.status.error: Erreur
+
+#
+# Deputy
+#
+deputy.message.success: Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer.
