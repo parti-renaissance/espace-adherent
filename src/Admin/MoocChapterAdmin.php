@@ -2,7 +2,7 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Entity\Mooc\Video;
+use AppBundle\Entity\Mooc\BaseMoocElement;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -68,7 +68,7 @@ class MoocChapterAdmin extends AbstractAdmin
                     ->add('elements', EntityType::class, [
                         'label' => 'Éléments',
                         'multiple' => true,
-                        'class' => Video::class,
+                        'class' => BaseMoocElement::class,
                         'by_reference' => false,
                     ])
                 ->end()
