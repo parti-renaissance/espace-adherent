@@ -6,6 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\District;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\ReferentTag;
 use AppBundle\Search\SearchParametersFilter;
@@ -15,6 +16,7 @@ use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
@@ -206,6 +208,26 @@ class EventRepository extends ServiceEntityRepository
         $this->applyReferentGeoFilter($qb, $referent, 'e');
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @return BaseEvent[]
+     */
+    public function findAllInDistrict(District $district): array
+    {
+        return $this->_em->getRepository(BaseEvent::class)->createQueryBuilder('e')
+            ->select('e', 'o')
+            ->leftJoin('e.organizer', 'o')
+            ->innerJoin(District::class, 'd', Join::WITH, 'd.id = :district_id')
+            ->where('e.published = :published')
+            ->andWhere("ST_Within(ST_GeomFromText(CONCAT('POINT(',e.postAddress.longitude,' ',e.postAddress.latitude,')')), d.geoShape) = 1")
+            ->setParameter('district_id', $district->getId())
+            ->orderBy('e.beginAt', 'DESC')
+            ->addOrderBy('e.name', 'ASC')
+            ->setParameter('published', true)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     /**

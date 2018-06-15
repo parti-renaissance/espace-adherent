@@ -38,6 +38,8 @@ class ManagedEventsExporter
                 'postalCode' => $event->getPostalCode(),
                 'organizer' => $event->getOrganizer() ? $event->getOrganizer()->getPartialName() : 'un ancien adhérent',
                 'participants' => $event->getParticipantsCount(),
+                'type' => $event->isCitizenAction() ? 'Projet citoyen' : ($event->isReferentEvent() ? 'Référent' : 'Comité'),
+                'category' => $event->getCategoryName(),
             ];
         }
 

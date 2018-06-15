@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\Entity\Event;
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
 use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
@@ -12,10 +11,12 @@ use AppBundle\Form\EventCommandType;
 use AppBundle\Form\ReferentMessageType;
 use AppBundle\Form\ReferentPersonLinkType;
 use AppBundle\Referent\ManagedCommitteesExporter;
+use AppBundle\Referent\ManagedEventsExporter;
 use AppBundle\Referent\ManagedUsersFilter;
 use AppBundle\Referent\ReferentMessage;
 use AppBundle\Referent\ReferentMessageNotifier;
 use AppBundle\Repository\CommitteeRepository;
+use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use AppBundle\Repository\ReferentRepository;
@@ -100,13 +101,10 @@ class ReferentController extends Controller
      * @Route("/evenements", name="app_referent_events")
      * @Method("GET")
      */
-    public function eventsAction(): Response
+    public function eventsAction(EventRepository $eventRepository, ManagedEventsExporter $eventsExporter): Response
     {
-        $list = $this->getDoctrine()->getRepository(Event::class)->findManagedBy($this->getUser());
-        $exporter = $this->get('app.referent.managed_events.exporter');
-
         return $this->render('referent/events_list.html.twig', [
-            'managedEventsJson' => $exporter->exportAsJson($list),
+            'managedEventsJson' => $eventsExporter->exportAsJson($eventRepository->findManagedBy($this->getUser())),
         ]);
     }
 

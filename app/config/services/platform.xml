@@ -279,10 +279,6 @@
         </service>
 
         <!-- Referents -->
-        <service id="app.referent.managed_events.exporter" class="AppBundle\Referent\ManagedEventsExporter">
-            <argument type="service" id="router" />
-        </service>
-
         <service id="AppBundle\Referent\ReferentMessageNotifier">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="old_sound_rabbit_mq.referent_message_dispatcher_producer" />
