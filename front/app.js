@@ -114,8 +114,8 @@ class App {
         });
     }
 
-    runReferentList(columns, items) {
-        System.import('pages/referent_list').catch((error) => { throw error; }).then((module) => {
+    runManagedList(columns, items) {
+        System.import('pages/managed_list').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('slugifier'), columns, items);
         });
     }

@@ -5,7 +5,9 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Form\DeputyMessageType;
 use AppBundle\Deputy\DeputyMessage;
 use AppBundle\Deputy\DeputyMessageNotifier;
+use AppBundle\Referent\ManagedCommitteesExporter;
 use AppBundle\Repository\AdherentRepository;
+use AppBundle\Repository\CommitteeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -58,9 +60,13 @@ class DeputyController extends Controller
      * @Route("/comites", name="app_deputy_committees")
      * @Method("GET")
      */
-    public function listCommitteesAction(): Response
+    public function listCommitteesAction(CommitteeRepository $committeeRepository, ManagedCommitteesExporter $committeesExporter): Response
     {
-        return new Response();
+        return $this->render('deputy/committees_list.html.twig', [
+            'managedCommitteesJson' => $committeesExporter->exportAsJson(
+                $committeeRepository->findAllInDistrict($this->getUser()->getManagedDistrict())
+            ),
+        ]);
     }
 
     private function createMessage(array $recipients): DeputyMessage

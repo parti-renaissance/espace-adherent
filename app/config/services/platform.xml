@@ -283,10 +283,6 @@
             <argument type="service" id="router" />
         </service>
 
-        <service id="app.referent.managed_committees.exporter" class="AppBundle\Referent\ManagedCommitteesExporter">
-            <argument type="service" id="router" />
-        </service>
-
         <service id="AppBundle\Referent\ReferentMessageNotifier">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="old_sound_rabbit_mq.referent_message_dispatcher_producer" />
