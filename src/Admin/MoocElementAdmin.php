@@ -92,8 +92,13 @@ class MoocElementAdmin extends AbstractAdmin
                 ->add('facebookText', TextType::class, [
                     'label' => 'Texte du partage sur Facebook',
                 ])
-                ->add('emailText', TextType::class, [
-                    'label' => 'Texte du partage par email',
+                ->add('emailObject', TextType::class, [
+                    'label' => 'Sujet de l\'email de partage',
+                ])
+                ->add('emailBody', PurifiedTextareaType::class, [
+                    'label' => 'Corps de l\'email de partage',
+                    'attr' => ['class' => 'ck-editor'],
+                    'purifier_type' => 'enrich_content',
                 ])
             ->end()
             ->with('Liens attachés', ['class' => 'col-md-6'])
