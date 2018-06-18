@@ -23,9 +23,7 @@ SQL
         $this->addSql('ALTER TABLE adherent_email_subscription_histories DROP FOREIGN KEY FK_272CB3E99C262DB3');
         $this->addSql('DROP INDEX IDX_51AD83549C262DB3 ON adherent_email_subscription_histories');
         $this->addSql('ALTER TABLE adherent_email_subscription_histories DROP PRIMARY KEY');
-        $this->addSql('ALTER TABLE adherent_email_subscription_histories ADD id INT UNSIGNED NOT NULL, DROP uuid, DROP referent_tag_id');
-        $this->addSql('ALTER TABLE adherent_email_subscription_histories ADD PRIMARY KEY (id)');
-        $this->addSql('ALTER TABLE adherent_email_subscription_histories CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
+        $this->addSql('ALTER TABLE adherent_email_subscription_histories ADD id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL, DROP uuid, DROP referent_tag_id');
         $this->addSql('ALTER TABLE adherent_email_subscription_history_referent_tag ADD CONSTRAINT FK_6FFBE6E88FCB8132 FOREIGN KEY (email_subscription_history_id) REFERENCES adherent_email_subscription_histories (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE adherent_email_subscription_history_referent_tag ADD CONSTRAINT FK_6FFBE6E89C262DB3 FOREIGN KEY (referent_tag_id) REFERENCES referent_tags (id) ON DELETE CASCADE');
     }
