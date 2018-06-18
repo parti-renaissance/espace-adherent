@@ -357,7 +357,14 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function hasAdvancedPrivileges(): bool
     {
-        return $this->isReferent() || $this->isCoordinator() || $this->isProcurationManager() || $this->isHost() || $this->isCitizenProjectAdministrator() || $this->isBoardMember();
+        return $this->isReferent()
+            || $this->isCoordinator()
+            || $this->isProcurationManager()
+            || $this->isHost()
+            || $this->isCitizenProjectAdministrator()
+            || $this->isBoardMember()
+            || $this->isDeputy()
+        ;
     }
 
     public function getPassword()

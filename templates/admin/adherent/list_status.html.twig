@@ -29,6 +29,10 @@
         {% if object.isBoardMember %}
             <span class="label label-primary" style="padding: 2px;">Membre du Conseil</span><br/>
         {% endif %}
+
+        {% if object.isDeputy %}
+            <span class="label label-primary" style="padding: 2px;">Député</span><br/>
+        {% endif %}
     {% elseif object.isAdherent %}
         <span class="label label-primary">Adhérent</span>
     {% else %}
