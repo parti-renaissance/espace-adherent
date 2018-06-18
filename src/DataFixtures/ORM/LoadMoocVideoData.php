@@ -17,7 +17,8 @@ class LoadMoocVideoData extends AbstractFixture
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'Bonsoir, voici un tweet de partage d\'un MOOC #enmarche',
             'Bonsoir, voici un partage avec Facebook',
-            'Bonsoir, voici un email',
+            'Bonsoir, voici un email de partage !',
+            'Voici le contenu de l\'email de partage. Merci.',
             'ktHEfEDhscU',
             MutableDateTime::createFromTime(00, 02, 10)
         );
@@ -37,7 +38,8 @@ class LoadMoocVideoData extends AbstractFixture
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et.',
             'Bonsoir, voici un tweet de partage d\'un MOOC #enmarche',
             'Bonsoir, voici un partage avec Facebook',
-            'Bonsoir, voici un email',
+            'Bonsoir, voici un email de partage !',
+            'Voici le contenu de l\'email de partage. Merci.',
             'ktHEfEDhscU',
             MutableDateTime::createFromTime(01, 30, 00)
         );
@@ -49,7 +51,8 @@ class LoadMoocVideoData extends AbstractFixture
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'Bonsoir, voici un tweet de partage d\'un MOOC #enmarche',
             'Bonsoir, voici un partage avec Facebook',
-            'Bonsoir, voici un email',
+            'Bonsoir, voici un email de partage !',
+            'Voici le contenu de l\'email de partage. Merci.',
             'ktHEfEDhscU',
             MutableDateTime::createFromTime(00, 30, 15)
         );

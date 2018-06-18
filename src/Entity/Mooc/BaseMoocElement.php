@@ -127,14 +127,22 @@ abstract class BaseMoocElement
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
-    private $emailText;
+    private $emailObject;
+
+    /**
+     * @ORM\Column(length=800)
+     *
+     * @Assert\Length(min=5, max=800)
+     */
+    protected $emailBody;
 
     public function __construct(
         string $title = null,
         string $content = null,
         string $twitterText = null,
         string $facebookText = null,
-        string $emailText = null
+        string $emailObject = null,
+        string $emailBody = null
     ) {
         $this->title = $title;
         $this->content = $content;
@@ -142,7 +150,8 @@ abstract class BaseMoocElement
         $this->files = new ArrayCollection();
         $this->twitterText = $twitterText;
         $this->facebookText = $facebookText;
-        $this->emailText = $emailText;
+        $this->emailObject = $emailObject;
+        $this->emailBody = $emailBody;
     }
 
     public function __toString()
@@ -270,13 +279,23 @@ abstract class BaseMoocElement
         $this->facebookText = $facebookText;
     }
 
-    public function getEmailText(): ?string
+    public function getEmailObject(): ?string
     {
-        return $this->emailText;
+        return $this->emailObject;
     }
 
-    public function setEmailText(string $emailText): void
+    public function setEmailObject(string $emailObject): void
     {
-        $this->emailText = $emailText;
+        $this->emailObject = $emailObject;
+    }
+
+    public function getEmailBody(): ?string
+    {
+        return $this->emailBody;
+    }
+
+    public function setEmailBody(string $emailBody): void
+    {
+        $this->emailBody = $emailBody;
     }
 }
