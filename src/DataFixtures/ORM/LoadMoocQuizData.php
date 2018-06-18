@@ -15,7 +15,8 @@ class LoadMoocQuizData extends Fixture
             '<p>une description</p>',
             'Bonsoir, voici un tweet de partage d\'un MOOC #enmarche',
             'Bonsoir, voici un partage avec Facebook',
-            'Bonsoir, voici un email',
+            'Bonsoir, voici un email de partage !',
+            'Voici le contenu de l\'email de partage. Merci.',
             'https://developerplatform.typeform.com/to/Xc7NMh'
         );
 
