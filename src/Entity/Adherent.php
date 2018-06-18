@@ -210,7 +210,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     /**
      * @var District|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\District", mappedBy="adherent")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\District", mappedBy="adherent", cascade={"persist"})
      */
     private $managedDistrict;
 
@@ -922,7 +922,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function isBasicAdherent(): bool
     {
-        return $this->isAdherent() && !$this->isHost() && !$this->isReferent() && !$this->isBoardMember();
+        return $this->isAdherent() && !$this->isHost() && !$this->isReferent() && !$this->isBoardMember() && !$this->isDeputy();
     }
 
     public function isHost(): bool
@@ -1120,7 +1120,23 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function setManagedDistrict(?District $district): void
     {
+        if ($district && $district->getAdherent() && !$this->equals($district->getAdherent())) {
+            throw new \InvalidArgumentException('District is already managed by another deputy.');
+        }
+
+        if ($this->managedDistrict) {
+            $this->managedDistrict->setAdherent(null);
+        }
+
         $this->managedDistrict = $district;
+        if ($district) {
+            $this->managedDistrict->setAdherent($this);
+        }
+    }
+
+    public function isDeputy(): bool
+    {
+        return $this->managedDistrict instanceof District;
     }
 
     public function isAdherent(): bool

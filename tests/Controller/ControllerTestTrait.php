@@ -192,5 +192,7 @@ trait ControllerTestTrait
         $this->manager->getConnection()->close();
         $this->manager = null;
         $this->hosts = [];
+
+        gc_collect_cycles();
     }
 }

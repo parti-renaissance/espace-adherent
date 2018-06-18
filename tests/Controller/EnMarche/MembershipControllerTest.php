@@ -3,7 +3,6 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
@@ -176,7 +175,6 @@ class MembershipControllerTest extends WebTestCase
 
         $this->init([
             LoadAdherentData::class,
-            LoadHomeBlockData::class,
         ]);
 
         $this->adherentRepository = $this->getAdherentRepository();

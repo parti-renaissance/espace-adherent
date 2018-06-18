@@ -11,7 +11,6 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\TestHelperTrait;
 
 /**
- * @group functional
  * @group procuration
  */
 class ProcurationSendReminderCommandTest extends WebTestCase

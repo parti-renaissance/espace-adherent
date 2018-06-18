@@ -14,6 +14,9 @@ use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
+/**
+ * @group citizenProject
+ */
 class CitizenProjectCommandTest extends TestCase
 {
     const CREATOR_UUID = '0214e826-0116-4caa-a635-3f6f51a86750';

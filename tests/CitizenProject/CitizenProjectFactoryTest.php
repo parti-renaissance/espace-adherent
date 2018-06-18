@@ -14,6 +14,9 @@ use AppBundle\Entity\CitizenProject;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group citizenProject
+ */
 class CitizenProjectFactoryTest extends TestCase
 {
     public function testCreateCitizenProjectFromCitizenProjectCreationCommand()

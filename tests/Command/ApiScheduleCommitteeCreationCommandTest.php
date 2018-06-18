@@ -6,7 +6,7 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
- * @group functional
+ * @group command
  */
 class ApiScheduleCommitteeCreationCommandTest extends WebTestCase
 {

@@ -320,6 +320,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.district" class="AppBundle\Admin\DistrictAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Circonscriptions" group="Territoire" show_in_dashboard="false" />
+
+            <argument />
+            <argument>AppBundle\Entity\District</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.referent_tag" class="AppBundle\Admin\ReferentTagAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Tags réferent" group="Territoire" />
 

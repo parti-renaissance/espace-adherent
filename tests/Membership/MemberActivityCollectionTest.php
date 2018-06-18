@@ -8,6 +8,9 @@ use AppBundle\Entity\EventRegistration;
 use AppBundle\Membership\MemberActivityCollection;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group membership
+ */
 class MemberActivityCollectionTest extends TestCase
 {
     public function testGetLogsWithRegisteredAt()

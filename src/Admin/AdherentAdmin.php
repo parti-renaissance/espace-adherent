@@ -173,6 +173,14 @@ class AdherentAdmin extends AbstractAdmin
                     'template' => 'admin/adherent/list_board_member_roles.html.twig',
                 ])
             ->end()
+            ->with('Député(e)', ['class' => 'col-md-6'])
+                ->add('isDeputy', 'boolean', [
+                    'label' => 'Est un(e) député(e) ?',
+                ])
+                ->add('managedDistrict.name', null, [
+                    'label' => 'Nom de la circonscription du député',
+                ])
+            ->end()
             ->with('Tags', ['class' => 'col-md-6'])
                 ->add('tags', null, [
                     'label' => 'Tags de l\'adhérent',
@@ -237,24 +245,11 @@ class AdherentAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
-            ->with('Coordinateur', ['class' => 'col-md-3'])
-                ->add('coordinatorManagedAreas', CollectionType::class, [
-                    'label' => false,
-                    'required' => false,
-                    'help' => 'Laisser vide si l\'adhérent n\'est pas coordinateur. '.
-                        'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
-                    'entry_type' => CoordinatorManagedAreaType::class,
-                    'allow_add' => false,
-                    'allow_delete' => false,
+            ->with('Tags', ['class' => 'col-md-6'])
+                ->add('tags', 'sonata_type_model', [
+                    'multiple' => true,
                     'by_reference' => false,
-                ])
-            ->end()
-            ->with('Responsable procuration', ['class' => 'col-md-3'])
-                ->add('procurationManagedAreaCodesAsString', TextType::class, [
-                    'label' => 'coordinator.label.codes',
-                    'required' => false,
-                    'help' => 'Laisser vide si l\'adhérent n\'est pas responsable procuration. '.
-                        'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
+                    'btn_add' => false,
                 ])
             ->end()
             ->with('Membre du Conseil', ['class' => 'col-md-6'])
@@ -274,11 +269,32 @@ class AdherentAdmin extends AbstractAdmin
                     'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
                 ])
             ->end()
-            ->with('Tags', ['class' => 'col-md-6'])
-                ->add('tags', 'sonata_type_model', [
-                    'multiple' => true,
+            ->with('Circonscription du député', ['class' => 'col-md-6'])
+                ->add('managedDistrict', 'sonata_type_model', [
+                    'label' => 'Nom de la circonscription du député',
                     'by_reference' => false,
                     'btn_add' => false,
+                    'required' => false,
+                ])
+            ->end()
+            ->with('Coordinateur', ['class' => 'col-md-6'])
+                ->add('coordinatorManagedAreas', CollectionType::class, [
+                    'label' => false,
+                    'required' => false,
+                    'help' => 'Laisser vide si l\'adhérent n\'est pas coordinateur. '.
+                        'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
+                    'entry_type' => CoordinatorManagedAreaType::class,
+                    'allow_add' => false,
+                    'allow_delete' => false,
+                    'by_reference' => false,
+                ])
+            ->end()
+            ->with('Responsable procuration', ['class' => 'col-md-6'])
+                ->add('procurationManagedAreaCodesAsString', TextType::class, [
+                    'label' => 'coordinator.label.codes',
+                    'required' => false,
+                    'help' => 'Laisser vide si l\'adhérent n\'est pas responsable procuration. '.
+                        'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
                 ])
             ->end()
         ;

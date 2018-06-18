@@ -58,7 +58,7 @@ class AdherentRepositoryTest extends WebTestCase
 
     public function testCountActiveAdherents()
     {
-        $this->assertSame(18, $this->adherentRepository->countActiveAdherents());
+        $this->assertSame(19, $this->adherentRepository->countActiveAdherents());
     }
 
     public function testFindAllManagedBy()
@@ -214,7 +214,7 @@ class AdherentRepositoryTest extends WebTestCase
             ],
             [
                 ['g' => 'male'],
-                ['carl999@example.fr', 'referent@en-marche-dev.fr'],
+                ['carl999@example.fr', 'deputy@en-marche-dev.fr', 'referent@en-marche-dev.fr'],
             ],
             // Age
             [
@@ -223,7 +223,7 @@ class AdherentRepositoryTest extends WebTestCase
             ],
             [
                 ['amax' => 54],
-                ['laura@deloche.com', 'martine.lindt@gmail.com', 'lolodie.dutemps@hotnix.tld'],
+                ['deputy@en-marche-dev.fr', 'laura@deloche.com', 'martine.lindt@gmail.com', 'lolodie.dutemps@hotnix.tld'],
             ],
             [
                 ['amin' => 55, 'amax' => 60],
@@ -249,7 +249,7 @@ class AdherentRepositoryTest extends WebTestCase
             ],
             [
                 ['a' => ['metropolitan']],
-                ['laura@deloche.com', 'referent@en-marche-dev.fr'],
+                ['laura@deloche.com', 'deputy@en-marche-dev.fr', 'referent@en-marche-dev.fr'],
             ],
             // Role
             [

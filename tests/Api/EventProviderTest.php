@@ -10,6 +10,9 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Tests\AppBundle\TestHelperTrait;
 
+/**
+ * @group api
+ */
 class EventProviderTest extends TestCase
 {
     use TestHelperTrait;

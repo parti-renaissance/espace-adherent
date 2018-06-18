@@ -12,6 +12,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
+ * @group api
  */
 class StatsControllerTest extends WebTestCase
 {
@@ -29,7 +30,7 @@ class StatsControllerTest extends WebTestCase
         $data = \GuzzleHttp\json_decode($content, true);
 
         $this->assertArraySubset([
-            'userCount' => 19,
+            'userCount' => 20,
             'eventCount' => 19,
             'committeeCount' => 9,
         ], $data);

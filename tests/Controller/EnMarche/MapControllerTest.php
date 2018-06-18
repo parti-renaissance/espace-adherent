@@ -5,7 +5,6 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
-use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadUserData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +25,7 @@ class MapControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("La carte des comités")')->count());
-        $this->assertContains('19 adhérents', $crawler->filter('#counter-adherents')->text());
+        $this->assertContains('20 adhérents', $crawler->filter('#counter-adherents')->text());
         $this->assertContains('9 comités', $crawler->filter('#counter-committees')->text());
         $this->assertContains('19 événements', $crawler->filter('#counter-events')->text());
     }
@@ -49,7 +48,6 @@ class MapControllerTest extends WebTestCase
             LoadUserData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,
-            LoadHomeBlockData::class,
         ]);
     }
 

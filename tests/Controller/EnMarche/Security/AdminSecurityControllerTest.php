@@ -3,7 +3,6 @@
 namespace Tests\AppBundle\Controller\EnMarche\Security;
 
 use AppBundle\DataFixtures\ORM\LoadAdminData;
-use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -11,6 +10,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
+ * @group security
  */
 class AdminSecurityControllerTest extends WebTestCase
 {
@@ -104,7 +104,6 @@ class AdminSecurityControllerTest extends WebTestCase
 
         $this->init([
             LoadAdminData::class,
-            LoadHomeBlockData::class,
         ]);
     }
 

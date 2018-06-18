@@ -9,6 +9,9 @@ use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
+/**
+ * @group committee
+ */
 class CommitteeCommandTest extends TestCase
 {
     const CREATOR_UUID = '3966af25-2b09-407c-9283-c4d2103d0448';

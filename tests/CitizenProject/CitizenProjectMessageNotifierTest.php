@@ -23,6 +23,9 @@ use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * @group citizenProject
+ */
 class CitizenProjectMessageNotifierTest extends TestCase
 {
     private $adherentRepository;

@@ -180,7 +180,7 @@ class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
             ProcurationRequest::REASON_TRAINING
         ));
 
-        $referent = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_8_UUID);
+        $referent = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::REFERENT_1_UUID);
 
         $manager->persist($this->createProxyProposal(
             $referent,

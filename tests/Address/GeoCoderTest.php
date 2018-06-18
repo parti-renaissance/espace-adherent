@@ -8,6 +8,9 @@ use GeoIp2\ProviderInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @group address
+ */
 class GeoCoderTest extends TestCase
 {
     public function testCountryIsoCodeIsReturnedWhenIpHasBeenLocated()

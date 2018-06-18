@@ -7,6 +7,9 @@ use AppBundle\Address\PostAddressFactory;
 use AppBundle\Entity\PostAddress;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group address
+ */
 class PostAddressFactoryTest extends TestCase
 {
     public function testCreateFrenchAddress()

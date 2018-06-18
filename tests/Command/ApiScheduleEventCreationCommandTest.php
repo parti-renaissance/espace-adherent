@@ -7,7 +7,7 @@ use AppBundle\DataFixtures\ORM\LoadEventData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
- * @group functional
+ * @group command
  */
 class ApiScheduleEventCreationCommandTest extends WebTestCase
 {

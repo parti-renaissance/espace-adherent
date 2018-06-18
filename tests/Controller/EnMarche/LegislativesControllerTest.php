@@ -3,7 +3,6 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Mailer\Message\LegislativeCampaignContactMessage;
 use AppBundle\Repository\EmailRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -128,7 +127,6 @@ class LegislativesControllerTest extends WebTestCase
 
         $this->init([
             LoadAdherentData::class,
-            LoadHomeBlockData::class,
         ]);
 
         $this->emailRepository = $this->getEmailRepository();
