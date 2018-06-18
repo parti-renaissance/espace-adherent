@@ -2,7 +2,7 @@
     L'événement @@event_name@@ a été annulé
 {% endblock %}
 
-{% block body_html %}
+{%- block body_html -%}
 
     {% embed 'email/layout.html.twig' %}
         {% block content %}
@@ -37,4 +37,4 @@
         {% endblock %}
     {% endembed %}
 
-{% endblock %}
+{%- endblock -%}

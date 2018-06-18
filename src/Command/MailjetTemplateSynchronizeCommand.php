@@ -2,49 +2,68 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Entity\MailjetTemplate;
+use AppBundle\Mailer\Message\MessageRegistry;
+use AppBundle\Mailjet\EmailTemplateClient;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class MailjetTemplateSynchronizeCommand extends ContainerAwareCommand
 {
-    /**
-     * @var \AppBundle\Mailjet\EmailTemplateClient
-     */
-    private $client;
+    protected static $defaultName = 'app:mailjet:synchronize-templates';
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var SymfonyStyle
      */
-    private $manager;
+    private $io;
+    private $messageRegistry;
+    private $templateClientTransactional;
+    private $templateClientCampaign;
+
+    public function __construct(MessageRegistry $messageRegistry, EmailTemplateClient $templateClientTransactional, EmailTemplateClient $templateClientCampaign)
+    {
+        $this->messageRegistry = $messageRegistry;
+        $this->templateClientTransactional = $templateClientTransactional;
+        $this->templateClientCampaign = $templateClientCampaign;
+
+        parent::__construct();
+    }
 
     protected function configure()
     {
-        $this
-            ->setName('app:mailjet:synchronize-templates')
-            ->setDescription('Synchronizes email templates with Mailjet templates.')
-        ;
+        $this->setDescription('Synchronizes email templates with Mailjet templates.');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->client = $this->getContainer()->get('app.mailer.template_client.transactional');
-        $this->manager = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $this->io = new SymfonyStyle($input, $output);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $templates = $this->manager->getRepository(MailjetTemplate::class)->findAll();
+        $this->io->section('Synchronizing transactional templates');
+        $this->synchronizeTemplate($this->messageRegistry->getTransactionalMessages(), $this->templateClientTransactional);
+
+        $this->io->section('Synchronizing campaign templates');
+        $this->synchronizeTemplate($this->messageRegistry->getCampaignMessages(), $this->templateClientCampaign);
+
+        $this->io->success('Templates synchronised');
+    }
+
+    private function synchronizeTemplate($templates, EmailTemplateClient $client): void
+    {
+        $this->io->progressStart(count($templates));
 
         foreach ($templates as $template) {
-            $output->writeln(sprintf('Synchronizing template "%s"', $template->getName()));
+            if ($this->io->isVeryVerbose()) {
+                $this->io->text("Synchronizing template $template");
+            }
 
-            $this->client->synchronize($template);
-
-            $this->manager->persist($template);
+            $client->synchronize($template);
+            $this->io->progressAdvance();
         }
 
-        $this->manager->flush();
+        $this->io->progressFinish();
     }
 }

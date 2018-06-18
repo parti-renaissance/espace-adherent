@@ -219,6 +219,10 @@
         <service id="AppBundle\Command\ImportDistrictsCommand"/>
         <service id="AppBundle\Command\BindDeputiesToDistrictsCommand"/>
         <service id="AppBundle\Command\MigrateSubscriptionTypeCommand"/>
+        <service id="AppBundle\Command\MailjetTemplateSynchronizeCommand">
+            <argument key="$templateClientTransactional" type="service" id="AppBundle\Mailjet\EmailTemplateClient.transactional" />
+            <argument key="$templateClientCampaign" type="service" id="AppBundle\Mailjet\EmailTemplateClient.campaign" />
+        </service>
 
         <!-- UserDocument -->
         <service id="AppBundle\UserDocument\UserDocumentManager" public="true" />

@@ -2,7 +2,7 @@ c'{% block subject %}
     Un projet citoyen a besoin du soutien de votre comité !
 {% endblock %}
 
-{% block body_html %}
+{%- block body_html -%}
 
     {% embed 'email/layout.html.twig' %}
         {% block content %}
@@ -37,4 +37,4 @@ c'{% block subject %}
             {% endblock %}
     {% endembed %}
 
-{% endblock %}
+{%- endblock -%}

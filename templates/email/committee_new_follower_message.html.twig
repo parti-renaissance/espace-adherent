@@ -2,7 +2,7 @@
     Un nouveau membre dans votre comité: @@member_first_name@@ @@member_last_name@@
 {% endblock %}
 
-{% block body_html %}
+{%- block body_html -%}
 
     {% embed 'email/layout.html.twig' %}
         {% block content %}
@@ -37,4 +37,4 @@
         {% endblock %}
     {% endembed %}
 
-{% endblock %}
+{%- endblock -%}
