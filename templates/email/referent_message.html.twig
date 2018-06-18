@@ -2,7 +2,7 @@
     Un message de votre référent
 {% endblock %}
 
-{% block body_html %}
+{%- block body_html -%}
 
     {% embed 'email/layout.html.twig' %}
         {% block content %}
@@ -39,4 +39,4 @@
         {% endblock %}
     {% endembed %}
 
-{% endblock %}
+{%- endblock -%}

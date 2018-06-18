@@ -3,6 +3,7 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
+        <defaults public="true" />
 
         <!-- Recaptcha -->
         <service id="app.recaptcha.api_client" class="AppBundle\Recaptcha\RecaptchaApiClient" public="false">
@@ -17,6 +18,12 @@
         <service id="app.validator.recaptcha" class="AppBundle\Validator\RecaptchaValidator">
             <argument type="service" id="app.recaptcha.api_client"/>
             <tag name="validator.constraint_validator" alias="app.validator.recaptcha"/>
+        </service>
+
+        <!-- Mailer -->
+        <service id="AppBundle\Mailjet\EmailTemplateClient" abstract="true">
+            <argument type="service" id="csa_guzzle.client.mailjet_api"/>
+            <argument type="service" id="twig" />
         </service>
 
         <!-- Mailer (transactional) -->
@@ -40,6 +47,14 @@
             <argument type="service" id="AppBundle\Mailer\Message\MessageRegistry"/>
             <argument>%transactional_sender_email%</argument>
             <argument>%transactional_sender_name%</argument>
+        </service>
+
+        <service id="AppBundle\Mailjet\EmailTemplateClient.transactional" parent="AppBundle\Mailjet\EmailTemplateClient" public="false">
+            <argument>%env(MAILJET_TRANSACTIONAL_PUBLIC_KEY)%</argument>
+            <argument>%env(MAILJET_TRANSACTIONAL_PRIVATE_KEY)%</argument>
+            <argument>%transactional_sender_email%</argument>
+            <argument>%transactional_sender_name%</argument>
+            <argument>transactional</argument>
         </service>
 
         <!-- Mailer (campaign) -->
@@ -69,6 +84,14 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="AppBundle\Repository\EmailRepository"/>
             <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="AppBundle\Mailjet\EmailTemplateClient.campaign" parent="AppBundle\Mailjet\EmailTemplateClient" public="false">
+            <argument>%env(MAILJET_CAMPAIGN_PUBLIC_KEY)%</argument>
+            <argument>%env(MAILJET_CAMPAIGN_PRIVATE_KEY)%</argument>
+            <argument>%campaign_sender_email%</argument>
+            <argument>%campaign_sender_name%</argument>
+            <argument>marketing</argument>
         </service>
 
         <!-- Facebook API -->

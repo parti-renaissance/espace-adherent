@@ -2,7 +2,7 @@
     Merci pour votre engagement, @@recipient_first_name@@ !
 {% endblock %}
 
-{% block body_html %}
+{%- block body_html -%}
 
     {% embed 'email/layout.html.twig' %}
         {% block content %}
@@ -37,4 +37,4 @@
         {% endblock %}
     {% endembed %}
 
-{% endblock %}
+{%- endblock -%}

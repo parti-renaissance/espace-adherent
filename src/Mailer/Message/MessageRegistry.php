@@ -84,6 +84,16 @@ class MessageRegistry
         throw new \Exception("Message with name $name does not exist.");
     }
 
+    public function getTransactionalMessages(): array
+    {
+        return $this->transactional;
+    }
+
+    public function getCampaignMessages(): array
+    {
+        return $this->campaign;
+    }
+
     public function getAllMessages(): array
     {
         return \array_merge($this->transactional, $this->campaign);
