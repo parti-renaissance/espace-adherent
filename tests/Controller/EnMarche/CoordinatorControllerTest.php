@@ -56,6 +56,7 @@ class CoordinatorControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr');
 
+        $this->client->request(Request::METHOD_GET, '/evenements');
         $this->client->click($this->client->getCrawler()->selectLink('Espace coordinateur régional')->link());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
@@ -91,6 +92,7 @@ class CoordinatorControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr');
 
+        $this->client->request(Request::METHOD_GET, '/evenements');
         $this->client->click($this->client->getCrawler()->selectLink('Espace coordinateur régional')->link());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
@@ -121,6 +123,7 @@ class CoordinatorControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr');
 
+        $this->client->request(Request::METHOD_GET, '/evenements');
         $this->client->click($this->client->getCrawler()->selectLink('Espace coordinateur régional')->link());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 

@@ -91,7 +91,8 @@ class EventControllerTest extends WebTestCase
 
     public function testRegisteredAdherentUserCanRegisterToEvent()
     {
-        $crawler = $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $crawler = $this->client->request(Request::METHOD_GET, '/');
 
         $crawler = $this->client->click($crawler->selectLink('Rejoindre un comité')->link());
 

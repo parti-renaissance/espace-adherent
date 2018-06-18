@@ -287,7 +287,8 @@ class CitizenProjectControllerTest extends WebTestCase
     public function testCitizenProjectContactActors()
     {
         // Authenticate as the administrator (host)
-        $crawler = $this->authenticateAsAdherent($this->client, 'lolodie.dutemps@hotnix.tld');
+        $this->authenticateAsAdherent($this->client, 'lolodie.dutemps@hotnix.tld');
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
         $crawler = $this->client->click($crawler->selectLink('En Marche - Projet citoyen')->link());
         $crawler = $this->client->click($crawler->selectLink('Voir')->link());
 

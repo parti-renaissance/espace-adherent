@@ -2,17 +2,18 @@
 
 namespace Tests\AppBundle\Controller;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\EventCategory;
 use AppBundle\Entity\ReferentTag;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Tests\AppBundle\TestHelperTrait;
 
 /**
@@ -50,57 +51,42 @@ trait ControllerTestTrait
         );
     }
 
-    public function logout(Client $client): Crawler
+    public function logout(Client $client): void
     {
-        $client->request(Request::METHOD_GET, '/deconnexion');
+        $session = $client->getContainer()->get('session');
 
-        return $client->followRedirect();
+        $client->getCookieJar()->clear();
+        $session->set('_security_main_context', null);
+        $session->save();
     }
 
-    public function authenticateAsAdherent(Client $client, string $emailAddress, string $password = LoadAdherentData::DEFAULT_PASSWORD): Crawler
+    public function authenticateAsAdherent(Client $client, string $emailAddress): void
     {
-        $crawler = $client->request(Request::METHOD_GET, '/connexion');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
-
-        $client->submit($crawler->selectButton('Connexion')->form([
-            '_login_email' => $emailAddress,
-            '_login_password' => $password,
-        ]));
-
-        $shouldBeRedirectedTo = 'http://'.$this->hosts['app'].'/evenements';
-
-        if ($shouldBeRedirectedTo !== $client->getResponse()->headers->get('location')) {
-            $this->fail(
-                'Authentication as '.$emailAddress.' failed: check the credentials used in authenticateAsAdherent() '.
-                'and ensure you are properly loading adherents fixtures.'
-            );
+        if (!$user = $this->getAdherentRepository()->findOneBy(['emailAddress' => $emailAddress])) {
+            throw new \Exception(sprintf('Adherent %s not found', $emailAddress));
         }
 
-        return $client->followRedirect();
+        $this->authenticate($client, $user);
     }
 
-    public function authenticateAsAdmin(Client $client, string $emailAddress = 'admin@en-marche-dev.fr', string $password = 'admin'): Crawler
+    public function authenticateAsAdmin(Client $client, string $email = 'admin@en-marche-dev.fr'): void
     {
-        $crawler = $client->request(Request::METHOD_GET, '/admin/login');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
-
-        $client->submit($crawler->selectButton('Connexion')->form([
-            '_login_email' => $emailAddress,
-            '_login_password' => $password,
-        ]));
-
-        $shouldBeRedirectedTo = 'http://'.$this->hosts['app'].'/admin/dashboard';
-
-        if ($shouldBeRedirectedTo !== $client->getResponse()->headers->get('location')) {
-            $this->fail(
-                'Authentication as '.$emailAddress.' failed: check the credentials used in authenticateAsAdmin() '.
-                'and ensure you are properly loading adherents fixtures.'
-            );
+        if (!$user = $this->getAdministratorRepository()->loadUserByUsername($email)) {
+            throw new \Exception(sprintf('Admin %s not found', $email));
         }
 
-        return $client->followRedirect();
+        $this->authenticate($client, $user);
+    }
+
+    private function authenticate(Client $client, UserInterface $user): void
+    {
+        $session = $client->getContainer()->get('session');
+
+        $token = new UsernamePasswordToken($user, null, 'main_context', $user->getRoles());
+        $session->set('_security_main_context', serialize($token));
+        $session->save();
+
+        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
     }
 
     protected function getFirstPrefixForm(Form $form): ?string
@@ -186,10 +172,9 @@ trait ControllerTestTrait
 
     protected function kill()
     {
-        $this->loadFixtures([]);
         $this->client = null;
+        $this->container->get('doctrine')->getConnection()->close();
         $this->container = null;
-        $this->manager->getConnection()->close();
         $this->manager = null;
         $this->hosts = [];
 
