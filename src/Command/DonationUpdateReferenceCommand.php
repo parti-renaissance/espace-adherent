@@ -7,7 +7,6 @@ use AppBundle\Entity\Donation;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -72,7 +71,6 @@ class DonationUpdateReferenceCommand extends Command
 
             $donation->setPayboxOrderRef($reference);
 
-            $this->em->persist($donation);
             $progressBar->advance();
 
             if (0 === ($count % self::BATCH_SIZE)) {
