@@ -66,7 +66,7 @@ class DonationUpdateReferenceCommand extends Command
             $donation = reset($result);
 
             $reference = $this->donationRequestUtils->buildDonationReference(
-                Uuid::fromString($donation->getUuid()),
+                $donation->getUuid(),
                 sprintf('%s %s', $donation->getFirstName(), $donation->getLastName())
             );
 
