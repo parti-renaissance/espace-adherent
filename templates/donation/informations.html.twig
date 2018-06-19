@@ -1,6 +1,7 @@
 {% extends 'donation/layout.html.twig' %}
 
 {% block javascripts %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
             App.runDonationInformations('{{ form.vars.form_type_class|e('js') }}');
@@ -46,6 +47,13 @@
 
         {{ form_errors(form.address) }}
 
+        <div class="form__row address-autocomplete"></div>
+
+        <div class="form__row">
+            {{ form_errors(form.address) }}
+            {{ form_widget(form.address, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse postale' } }) }}
+        </div>
+
         <div class="form__row">
             {{ form_errors(form.country) }}
             {{ form_widget(form.country, { 'attr': { 'class': 'form--full' } }) }}
@@ -60,11 +68,6 @@
                 {{ form_errors(form.cityName) }}
                 {{ form_widget(form.cityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
             </div>
-        </div>
-
-        <div class="form__row">
-            {{ form_errors(form.address) }}
-            {{ form_widget(form.address, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse postale' } }) }}
         </div>
 
         <div class="form__row form__row--stretch">
