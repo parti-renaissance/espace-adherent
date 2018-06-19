@@ -284,6 +284,11 @@ class Donation implements GeoPointInterface
         return $this->payboxOrderRef;
     }
 
+    public function setPayboxOrderRef(string $payboxOrderRef): void
+    {
+        $this->payboxOrderRef = $payboxOrderRef;
+    }
+
     public function getPayboxOrderRefWithSuffix(): string
     {
         return $this->payboxOrderRef.PayboxPaymentSubscription::getCommandSuffix($this->amount, $this->duration);
