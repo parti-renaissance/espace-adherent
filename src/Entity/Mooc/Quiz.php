@@ -26,13 +26,13 @@ class Quiz extends BaseMoocElement
     public function __construct(
         string $title = null,
         string $content = null,
-        string $twitterText = null,
-        string $facebokText = null,
-        string $emailObject = null,
-        string $emailBody = null,
+        string $shareTwitterText = null,
+        string $shareFacebokText = null,
+        string $shareEmailObject = null,
+        string $shareEmailBody = null,
         string $typeformUrl = null
     ) {
-        parent::__construct($title, $content, $twitterText, $facebokText, $emailObject, $emailBody);
+        parent::__construct($title, $content, $shareTwitterText, $shareFacebokText, $shareEmailObject, $shareEmailBody);
         $this->typeformUrl = $typeformUrl;
     }
 
