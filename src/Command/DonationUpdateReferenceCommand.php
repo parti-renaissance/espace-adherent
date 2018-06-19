@@ -73,9 +73,9 @@ class DonationUpdateReferenceCommand extends Command
             $donation->setPayboxOrderRef($reference);
 
             $this->em->persist($donation);
+            $progressBar->advance();
 
             if (0 === ($count % self::BATCH_SIZE)) {
-                $progressBar->advance(self::BATCH_SIZE);
                 $this->em->flush();
                 $this->em->clear(); // Detaches all objects from Doctrine for memory save
             }
@@ -88,7 +88,7 @@ class DonationUpdateReferenceCommand extends Command
         $this->em->flush();
         $this->em->clear();
 
-        $output->writeln("Updated $count Donations reference.");
+        $output->writeln(['', "Updated $count Donations reference."]);
     }
 
     private function getDonations(): IterableResult
