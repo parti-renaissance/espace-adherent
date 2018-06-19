@@ -111,7 +111,7 @@ abstract class BaseMoocElement
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
-    private $twitterText;
+    private $shareTwitterText;
 
     /**
      * @ORM\Column
@@ -119,7 +119,7 @@ abstract class BaseMoocElement
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
-    private $facebookText;
+    private $shareFacebookText;
 
     /**
      * @ORM\Column
@@ -127,31 +127,32 @@ abstract class BaseMoocElement
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
-    private $emailObject;
+    private $shareEmailSubject;
 
     /**
-     * @ORM\Column(length=800)
+     * @ORM\Column(length=500)
      *
-     * @Assert\Length(min=5, max=800)
+     * @Assert\NotBlank
+     * @Assert\Length(min=5, max=500)
      */
-    protected $emailBody;
+    protected $shareEmailBody;
 
     public function __construct(
         string $title = null,
         string $content = null,
-        string $twitterText = null,
-        string $facebookText = null,
-        string $emailObject = null,
-        string $emailBody = null
+        string $shareTwitterText = null,
+        string $shareFacebookText = null,
+        string $shareEmailSubject = null,
+        string $shareEmailBody = null
     ) {
         $this->title = $title;
         $this->content = $content;
         $this->links = new ArrayCollection();
         $this->files = new ArrayCollection();
-        $this->twitterText = $twitterText;
-        $this->facebookText = $facebookText;
-        $this->emailObject = $emailObject;
-        $this->emailBody = $emailBody;
+        $this->shareTwitterText = $shareTwitterText;
+        $this->shareFacebookText = $shareFacebookText;
+        $this->shareEmailSubject = $shareEmailSubject;
+        $this->shareEmailBody = $shareEmailBody;
     }
 
     public function __toString()
@@ -259,43 +260,43 @@ abstract class BaseMoocElement
         $this->content = $content;
     }
 
-    public function getTwitterText(): ?string
+    public function getShareTwitterText(): ?string
     {
-        return $this->twitterText;
+        return $this->shareTwitterText;
     }
 
-    public function setTwitterText(string $twitterText): void
+    public function setShareTwitterText(string $shareTwitterText): void
     {
-        $this->twitterText = $twitterText;
+        $this->shareTwitterText = $shareTwitterText;
     }
 
-    public function getFacebookText(): ?string
+    public function getShareFacebookText(): ?string
     {
-        return $this->facebookText;
+        return $this->shareFacebookText;
     }
 
-    public function setFacebookText(string $facebookText): void
+    public function setShareFacebookText(string $shareFacebookText): void
     {
-        $this->facebookText = $facebookText;
+        $this->shareFacebookText = $shareFacebookText;
     }
 
-    public function getEmailObject(): ?string
+    public function getShareEmailSubject(): ?string
     {
-        return $this->emailObject;
+        return $this->shareEmailSubject;
     }
 
-    public function setEmailObject(string $emailObject): void
+    public function setShareEmailSubject(string $shareEmailSubject): void
     {
-        $this->emailObject = $emailObject;
+        $this->shareEmailSubject = $shareEmailSubject;
     }
 
-    public function getEmailBody(): ?string
+    public function getShareEmailBody(): ?string
     {
-        return $this->emailBody;
+        return $this->shareEmailBody;
     }
 
-    public function setEmailBody(string $emailBody): void
+    public function setShareEmailBody(string $shareEmailBody): void
     {
-        $this->emailBody = $emailBody;
+        $this->shareEmailBody = $shareEmailBody;
     }
 }
