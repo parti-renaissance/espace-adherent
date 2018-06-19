@@ -58,6 +58,7 @@
         </prototype>
 
         <!-- Donation -->
+        <service id="AppBundle\Command\DonationUpdateReferenceCommand" />
         <service id="AppBundle\Validator\PayboxSubscriptionValidator" />
         <service id="AppBundle\Validator\UniqueDonationSubscriptionValidator" />
         <service id="AppBundle\Validator\MaxFiscalYearDonationValidator" />

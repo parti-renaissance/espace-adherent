@@ -2,36 +2,20 @@
 
 namespace Migrations;
 
-use AppBundle\Donation\DonationRequestUtils;
 use AppBundle\Entity\Donation;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use Ramsey\Uuid\Uuid;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class Version20180502142950 extends AbstractMigration implements ContainerAwareInterface
+class Version20180502142950 extends AbstractMigration
 {
-    use ContainerAwareTrait;
-
     public function up(Schema $schema): void
     {
-        $donationRequestUtils = $this->container->get(DonationRequestUtils::class);
-
         $this->addSql('CREATE INDEX donation_uuid_idx ON donations (uuid)');
         $this->addSql('CREATE INDEX donation_email_idx ON donations (email_address)');
         $this->addSql('CREATE INDEX donation_duration_idx ON donations (duration)');
         $this->addSql('ALTER TABLE donations ADD status VARCHAR(25) DEFAULT NULL, MODIFY created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', ADD paybox_order_ref VARCHAR(255) DEFAULT NULL');
         $this->addSql('CREATE INDEX donation_status_idx ON donations (status)');
-        $results = $this->connection->executeQuery('SELECT uuid, CONCAT(first_name, \' \', last_name) AS full_name FROM donations')->fetchAll();
 
-        foreach ($results as ['uuid' => $uuid, 'full_name' => $fullName]) {
-            $slug = $donationRequestUtils->buildDonationReference(Uuid::fromString($uuid), $fullName);
-            $this->addSql(
-                'UPDATE donations SET paybox_order_ref = :slug WHERE uuid = :uuid',
-                ['slug' => $slug, 'uuid' => $uuid]
-            );
-        }
         $this->addSql(
             'UPDATE donations SET donations.status = :status WHERE donations.finished = 1 AND donations.donated_at IS NOT NULL',
             ['status' => Donation::STATUS_FINISHED]
