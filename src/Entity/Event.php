@@ -222,4 +222,18 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
             return $referentTag->getCode();
         }, $this->referentTags->toArray());
     }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("organizer")
+     * @JMS\Groups({"public", "event_read"})
+     */
+    public function getOrganizerPartialName(): ?string
+    {
+        if (!$this->organizer) {
+            return null;
+        }
+
+        return $this->organizer->getPartialName();
+    }
 }
