@@ -36,7 +36,9 @@ class MoocNormalizer implements NormalizerInterface
             $elements[] = $this->normalizeChapter($chapter);
 
             foreach ($chapter->getElements() as $element) {
-                $elements[] = $this->normalizeElement($element);
+                if ($chapter->isPublished()) {
+                    $elements[] = $this->normalizeElement($element);
+                }
             }
         }
 
