@@ -46,7 +46,7 @@ class MoocElementAdmin extends AbstractAdmin
                 ])
                 ->add('content', PurifiedTextareaType::class, [
                     'label' => 'Contenu',
-                    'attr' => ['class' => 'ck-editor'],
+                    'attr' => ['class' => 'ck-editor-advanced'],
                     'purifier_type' => 'enrich_content',
                 ])
                 ->add('chapter', ModelListType::class, [
