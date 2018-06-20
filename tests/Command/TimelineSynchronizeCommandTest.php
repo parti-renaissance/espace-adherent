@@ -4,12 +4,15 @@ namespace Tests\AppBundle\Command;
 
 use AppBundle\DataFixtures\ORM\LoadTimelineData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group command
  */
 class TimelineSynchronizeCommandTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     public function testCommand()
     {
         $output = $this->runCommand('app:timeline:synchronize');
@@ -35,7 +38,7 @@ EOL;
 
     public function tearDown()
     {
-        $this->loadFixtures([]);
+        $this->kill();
 
         parent::tearDown();
     }

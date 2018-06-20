@@ -419,6 +419,7 @@ class DonationControllerTest extends WebTestCase
     {
         $this->kill();
 
+        $this->transactionRepository = null;
         $this->payboxClient = null;
         $this->donationRepository = null;
 

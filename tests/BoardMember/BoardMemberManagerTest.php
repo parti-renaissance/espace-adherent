@@ -103,9 +103,10 @@ class BoardMemberManagerTest extends WebTestCase
 
     protected function tearDown()
     {
-        $this->loadFixtures([]);
+        $this->kill();
 
         $this->boardMemberManager = null;
+        $this->adherentRepository = null;
         $this->container = null;
 
         parent::tearDown();

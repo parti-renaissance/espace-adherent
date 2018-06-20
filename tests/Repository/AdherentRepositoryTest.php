@@ -278,11 +278,10 @@ class AdherentRepositoryTest extends WebTestCase
 
     protected function tearDown()
     {
-        $this->loadFixtures([]);
+        $this->kill();
 
         $this->adherentRepository = null;
         $this->referentTagRepository = null;
-        $this->container = null;
 
         parent::tearDown();
     }

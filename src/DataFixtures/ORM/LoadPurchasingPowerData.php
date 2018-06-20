@@ -5,12 +5,19 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Entity\PurchasingPowerChoice;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 
 class LoadPurchasingPowerData implements FixtureInterface
 {
     public function load(ObjectManager $manager)
     {
+        if (!$manager instanceof  EntityManagerInterface) {
+            throw new \LogicException('Only EntityManager is supported');
+        }
+
+        $manager->getConnection()->executeQuery('ALTER TABLE interactive_choices AUTO_INCREMENT = 1;');
+
         $choices = self::createChoices();
 
         // Persist all the things

@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -59,6 +60,13 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
 
     public function load(ObjectManager $manager)
     {
+        if (!$manager instanceof  EntityManagerInterface) {
+            throw new \LogicException('Only EntityManager is supported');
+        }
+
+        $manager->getConnection()->executeQuery('ALTER TABLE adherents AUTO_INCREMENT = 1;');
+        $manager->getConnection()->executeQuery('ALTER TABLE board_member AUTO_INCREMENT = 1;');
+
         $adherentFactory = $this->getAdherentFactory();
 
         // Create adherent users list

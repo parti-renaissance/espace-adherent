@@ -4,12 +4,15 @@ namespace Tests\AppBundle\Command;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group command
  */
 class ApiScheduleCommitteeCreationCommandTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     public function testCommand(): void
     {
         $output = $this->runCommand('app:sync:committees');
@@ -30,7 +33,7 @@ class ApiScheduleCommitteeCreationCommandTest extends WebTestCase
 
     public function tearDown()
     {
-        $this->loadFixtures([]);
+        $this->kill();
 
         parent::tearDown();
     }

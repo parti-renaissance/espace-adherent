@@ -13,7 +13,7 @@ use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
 use AppBundle\Exception\CommitteeMembershipException;
 use AppBundle\Geocoder\Coordinates;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\TestHelperTrait;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group functional
@@ -21,7 +21,7 @@ use Tests\AppBundle\TestHelperTrait;
  */
 class CommitteeManagerTest extends WebTestCase
 {
-    use TestHelperTrait;
+    use ControllerTestTrait;
 
     /* @var CommitteeManager */
     private $committeeManager;
@@ -340,9 +340,8 @@ class CommitteeManagerTest extends WebTestCase
 
     protected function tearDown()
     {
-        $this->loadFixtures([]);
+        $this->kill();
 
-        $this->container = null;
         $this->committeeManager = null;
 
         parent::tearDown();

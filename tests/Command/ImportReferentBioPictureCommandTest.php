@@ -7,14 +7,14 @@ use AppBundle\DataFixtures\ORM\LoadReferentData;
 use AppBundle\Entity\Media;
 use AppBundle\Entity\Referent;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\TestHelperTrait;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group command
  */
 class ImportReferentBioPictureCommandTest extends WebTestCase
 {
-    use TestHelperTrait;
+    use ControllerTestTrait;
     const VALID_ARCHIVE_NAME = 'correct.zip';
     const ARCHIVE_WITHOUT_CSV_NAME = 'archive_without_csv.zip';
     const ARCHIVE_WITH_NOT_REFERENT_IN_DB = 'archive_with_not_referent_in_db.zip';
@@ -175,9 +175,7 @@ class ImportReferentBioPictureCommandTest extends WebTestCase
 
     public function tearDown()
     {
-        $this->loadFixtures([]);
-
-        $this->container = null;
+        $this->kill();
 
         foreach (self::ARCHIVES_NAME as $archiveName) {
             if (file_exists($archiveName)) {

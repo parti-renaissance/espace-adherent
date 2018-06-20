@@ -215,4 +215,14 @@ class AdherentTest extends TestCase
             $phone
         );
     }
+
+    protected function tearDown()
+    {
+        $this->cleanupContainer($this->container);
+
+        $this->container = null;
+        $this->adherents = null;
+
+        parent::tearDown();
+    }
 }

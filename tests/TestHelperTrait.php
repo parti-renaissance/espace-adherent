@@ -331,4 +331,38 @@ trait TestHelperTrait
             $phone
         );
     }
+
+    /**
+     * Remove all container references from all loaded services
+     */
+    protected function cleanupContainer($container, $exclude = ['kernel', 'libphonenumber.phone_number_util'])
+    {
+        if (!$container) {
+            return;
+        }
+
+        $object = new \ReflectionObject($container);
+        $property = $object->getProperty('services');
+        $property->setAccessible(true);
+
+        $services = $property->getValue($container) ?: [];
+        foreach ($services as $id => $service) {
+            if (in_array($id, $exclude, true)) {
+                continue;
+            }
+
+            $serviceObject = new \ReflectionObject($service);
+            foreach ($serviceObject->getProperties() as $prop) {
+                $prop->setAccessible(true);
+
+                if ($prop->isStatic()) {
+                    continue;
+                }
+
+                $prop->setValue($service, null);
+            }
+        }
+
+        $property->setValue($container, null);
+    }
 }
