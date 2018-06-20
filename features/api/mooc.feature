@@ -23,6 +23,10 @@ Feature:
       "youtubeId": "ktHEfEDhscU",
       "youtubeThumbnail": "https://img.youtube.com/vi/ktHEfEDhscU/0.jpg",
       "youtubeDuration": "00:02:10",
+      "shareTwitterText": "Bonsoir, voici un tweet de partage d'un MOOC #enmarche",
+      "shareFacebookText": "Bonsoir, voici un partage avec Facebook",
+      "shareEmailSubject": "Bonsoir, voici un email de partage !",
+      "shareEmailBody": "Voici le contenu de l'email de partage. Merci.",
       "elements":[
         {
           "type":"chapter",
