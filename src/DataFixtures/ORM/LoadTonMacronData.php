@@ -5,19 +5,12 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Entity\TonMacronChoice;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 
 class LoadTonMacronData implements FixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        if (!$manager instanceof  EntityManagerInterface) {
-            throw new \LogicException('Only EntityManager is supported');
-        }
-
-        $manager->getConnection()->executeQuery('ALTER TABLE ton_macron_choices AUTO_INCREMENT = 1;');
-
         // Step 0
         $choices[] = $this->createNoStepChoice(
             '8a2fdb59-357f-4e74-9aeb-c2b064d31064',

@@ -9,20 +9,12 @@ use AppBundle\Entity\ProcurationRequest;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
 use libphonenumber\PhoneNumber;
 
 class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        if (!$manager instanceof  EntityManagerInterface) {
-            throw new \LogicException('Only EntityManager is supported');
-        }
-
-        $manager->getConnection()->executeQuery('ALTER TABLE procuration_requests AUTO_INCREMENT = 1;');
-        $manager->getConnection()->executeQuery('ALTER TABLE procuration_proxies AUTO_INCREMENT = 1;');
-
         $electionsRepository = $manager->getRepository(Election::class);
 
         $presidentialElections = $electionsRepository->findOneBy(['name' => 'Élections Présidentielles 2017']);

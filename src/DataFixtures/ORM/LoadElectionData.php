@@ -6,19 +6,11 @@ use AppBundle\Entity\Election;
 use AppBundle\Entity\ElectionRound;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
 
 class LoadElectionData implements FixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        if (!$manager instanceof  EntityManagerInterface) {
-            throw new \LogicException('Only EntityManager is supported');
-        }
-
-        $manager->getConnection()->executeQuery('ALTER TABLE elections AUTO_INCREMENT = 1;');
-        $manager->getConnection()->executeQuery('ALTER TABLE election_rounds AUTO_INCREMENT = 1;');
-
         $presidentialElections = $this->createElection(
             'Élections Présidentielles 2017',
             <<<INTRODUCTION

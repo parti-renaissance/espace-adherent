@@ -5,7 +5,6 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Entity\MemberSummary\MissionType;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
 
 class LoadMissionTypeData implements FixtureInterface
 {
@@ -23,12 +22,6 @@ class LoadMissionTypeData implements FixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        if (!$manager instanceof  EntityManagerInterface) {
-            throw new \LogicException('Only EntityManager is supported');
-        }
-
-        $manager->getConnection()->executeQuery('ALTER TABLE member_summary_mission_types AUTO_INCREMENT = 1;');
-
         foreach (self::MISSION_TYPES as $mission) {
             $missionType = new MissionType();
             $missionType->setName($mission);

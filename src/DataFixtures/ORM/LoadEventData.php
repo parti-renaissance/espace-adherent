@@ -2,22 +2,21 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\EventCategory;
-use AppBundle\Event\EventFactory;
 use AppBundle\Committee\Feed\CommitteeEvent;
 use AppBundle\Committee\Feed\CommitteeFeedManager;
 use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event as EntityEvent;
+use AppBundle\Entity\EventCategory;
 use AppBundle\Entity\PostAddress;
+use AppBundle\Event\EventFactory;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Event\EventRegistrationFactory;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -48,12 +47,6 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
 
     public function load(ObjectManager $manager)
     {
-        if (!$manager instanceof  EntityManagerInterface) {
-            throw new \LogicException('Only EntityManager is supported');
-        }
-
-        $manager->getConnection()->executeQuery('ALTER TABLE events AUTO_INCREMENT = 1;');
-
         $eventCategory1 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE001']]);
         $eventCategory2 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE002']]);
         $eventCategory3 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']]);
