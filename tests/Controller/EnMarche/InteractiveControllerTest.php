@@ -9,7 +9,6 @@ use AppBundle\Repository\PurchasingPowerChoiceRepository;
 use AppBundle\Repository\PurchasingPowerInvitationRepository;
 use AppBundle\Interactive\PurchasingPowerProcessor;
 use AppBundle\Interactive\PurchasingPowerProcessorHandler;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -122,17 +121,5 @@ class InteractiveControllerTest extends WebTestCase
     private function getChoice(int $id): ?PurchasingPowerChoice
     {
         return $this->PurchasingPowerChoiceRepository->find($id);
-    }
-
-    /**
-     * @param int[] $ids
-     *
-     * @return PurchasingPowerChoice[]|ArrayCollection|array
-     */
-    private function getChoices(array $ids, bool $asCollection = false): iterable
-    {
-        $choices = $this->PurchasingPowerChoiceRepository->findBy(['id' => $ids]);
-
-        return $asCollection ? new ArrayCollection($choices) : $choices;
     }
 }

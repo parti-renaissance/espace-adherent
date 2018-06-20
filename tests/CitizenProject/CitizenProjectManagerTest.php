@@ -3,22 +3,21 @@
 namespace Tests\AppBundle\CitizenProject;
 
 use AppBundle\CitizenProject\CitizenProjectAuthority;
+use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
 use AppBundle\Collection\AdherentCollection;
-use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
-use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\CitizenProject;
+use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\Membership\AdherentEmailSubscription;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\TestHelperTrait;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group citizenProject
  */
 class CitizenProjectManagerTest extends WebTestCase
 {
-    use TestHelperTrait;
+    use ControllerTestTrait;
 
     /* @var CitizenProjectManager */
     private $citizenProjectManager;
@@ -101,9 +100,8 @@ class CitizenProjectManagerTest extends WebTestCase
 
     protected function tearDown()
     {
-        $this->loadFixtures([]);
+        $this->kill();
 
-        $this->container = null;
         $this->citizenProjectManager = null;
 
         parent::tearDown();

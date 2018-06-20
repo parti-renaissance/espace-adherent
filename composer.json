@@ -92,6 +92,7 @@
         "behat/symfony2-extension": "^2.1",
         "behatch/contexts": "^2.7",
         "coduo/php-matcher": "^2.2",
+        "dama/doctrine-test-bundle": "^5.0",
         "fabpot/goutte": "^3.2",
         "friendsofphp/php-cs-fixer": "^2.10.0",
         "liip/functional-test-bundle": "^1.8",

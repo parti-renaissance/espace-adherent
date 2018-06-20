@@ -5,12 +5,15 @@ namespace Tests\AppBundle\Redirection\Dynamic;
 use AppBundle\Entity\Redirection;
 use AppBundle\Redirection\Dynamic\RedirectionManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
 class RedirectionManagerTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     public function testSimpleResolveRedirection(): void
     {
         $redirectionManager = $this->getContainer()->get(RedirectionManager::class);
@@ -70,7 +73,8 @@ class RedirectionManagerTest extends WebTestCase
 
     protected function tearDown()
     {
-        $this->loadFixtures([]);
-        $this->getContainer()->get('app.cache.redirection')->clear();
+        $this->kill();
+
+        parent::tearDown();
     }
 }

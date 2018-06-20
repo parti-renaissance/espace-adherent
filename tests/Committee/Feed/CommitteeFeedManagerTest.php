@@ -11,17 +11,17 @@ use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EmailRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\TestHelperTrait;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group committee
  */
 class CommitteeFeedManagerTest extends WebTestCase
 {
-    use TestHelperTrait;
+    use ControllerTestTrait;
 
     /* @var CommitteeFeedManager */
-    private $manager;
+    private $committeeFeedManager;
 
     /* @var CommitteeRepository */
     private $committeeRepository;
@@ -38,7 +38,7 @@ class CommitteeFeedManagerTest extends WebTestCase
         $author = $this->committeeMembershipRepository->findHostMembers($this->getCommittee(LoadAdherentData::COMMITTEE_1_UUID))->first();
 
         $messageContent = 'Bienvenue !';
-        $message = $this->manager->createMessage(new CommitteeMessage($author, $committee, 'Foo subject', $messageContent));
+        $message = $this->committeeFeedManager->createMessage(new CommitteeMessage($author, $committee, 'Foo subject', $messageContent));
 
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame($messageContent, $message->getContent());
@@ -55,7 +55,7 @@ class CommitteeFeedManagerTest extends WebTestCase
         $author = $this->committeeMembershipRepository->findHostMembers($this->getCommittee(LoadAdherentData::COMMITTEE_1_UUID))->first();
 
         $messageContent = 'Bienvenue !';
-        $message = $this->manager->createMessage(new CommitteeMessage($author, $committee, 'Foo subject', $messageContent, true, 'now', false));
+        $message = $this->committeeFeedManager->createMessage(new CommitteeMessage($author, $committee, 'Foo subject', $messageContent, true, 'now', false));
 
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame($messageContent, $message->getContent());
@@ -73,7 +73,7 @@ class CommitteeFeedManagerTest extends WebTestCase
         ]);
 
         $this->container = $this->getContainer();
-        $this->manager = $this->get('app.committee.feed_manager');
+        $this->committeeFeedManager = $this->get('app.committee.feed_manager');
         $this->committeeRepository = $this->getCommitteeRepository();
         $this->committeeMembershipRepository = $this->getCommitteeMembershipRepository();
         $this->emailRepository = $this->getEmailRepository();
@@ -83,10 +83,9 @@ class CommitteeFeedManagerTest extends WebTestCase
 
     public function tearDown()
     {
-        $this->loadFixtures([]);
+        $this->kill();
 
-        $this->container = null;
-        $this->manager = null;
+        $this->committeeFeedManager = null;
         $this->committeeRepository = null;
         $this->committeeMembershipRepository = null;
         $this->emailRepository = null;

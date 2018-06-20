@@ -11,14 +11,14 @@ use AppBundle\Referent\ManagedUsersFilter;
 use AppBundle\Repository\Projection\ReferentManagedUserRepository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\TestHelperTrait;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
 class ReferentManagedUserRepositoryTest extends WebTestCase
 {
-    use TestHelperTrait;
+    use ControllerTestTrait;
 
     /**
      * @var ReferentManagedUserRepository
@@ -128,11 +128,10 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
 
     protected function tearDown()
     {
-        $this->loadFixtures([]);
+        $this->kill();
 
         $this->referentManagedUserRepository = null;
         $this->referentTagRepository = null;
-        $this->container = null;
 
         parent::tearDown();
     }

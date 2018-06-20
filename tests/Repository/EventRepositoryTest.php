@@ -80,7 +80,7 @@ class EventRepositoryTest extends WebTestCase
 
     protected function tearDown()
     {
-        $this->loadFixtures([]);
+        $this->kill();
 
         $this->repository = null;
 

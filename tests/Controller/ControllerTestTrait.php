@@ -6,7 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\EventCategory;
 use AppBundle\Entity\ReferentTag;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DomCrawler\Crawler;
@@ -31,7 +31,7 @@ trait ControllerTestTrait
     private $client;
 
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
 
@@ -173,11 +173,17 @@ trait ControllerTestTrait
     protected function kill()
     {
         $this->client = null;
-        $this->container->get('doctrine')->getConnection()->close();
-        $this->container = null;
         $this->manager = null;
+        $this->adherents = null;
         $this->hosts = [];
 
-        gc_collect_cycles();
+        if ($this->container) {
+            $this->cleanupContainer($this->container);
+            $this->container = null;
+        }
+
+        foreach ($this->containers as $container) {
+            $this->cleanupContainer($container);
+        }
     }
 }

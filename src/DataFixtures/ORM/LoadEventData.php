@@ -2,15 +2,15 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\EventCategory;
-use AppBundle\Event\EventFactory;
 use AppBundle\Committee\Feed\CommitteeEvent;
 use AppBundle\Committee\Feed\CommitteeFeedManager;
 use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event as EntityEvent;
+use AppBundle\Entity\EventCategory;
 use AppBundle\Entity\PostAddress;
+use AppBundle\Event\EventFactory;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Event\EventRegistrationFactory;
 use Cake\Chronos\Chronos;
