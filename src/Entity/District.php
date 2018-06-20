@@ -9,8 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * References :
- *   - France: https://www.data.gouv.fr/s/resources/carte-des-circonscriptions-legislatives-2012-et-2017/20170721-135742/france-circonscriptions-legislatives-2012.json
- *   - Other countries: https://gist.github.com/angelodlfrtr/cf39d7db97c335f87d22
+ *  - France: https://public.opendatasoft.com/explore/dataset/circonscriptions-legislatives-2017/export (JSON format)
+ *  - Other countries: https://gist.github.com/angelodlfrtr/cf39d7db97c335f87d22
  *
  * @ORM\Entity
  * @ORM\Table(

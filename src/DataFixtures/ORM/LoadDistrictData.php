@@ -2,7 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Deputy\DistrictLoader;
+use AppBundle\Deputy\LightFileDistrictLoader;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\District;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -20,7 +20,7 @@ class LoadDistrictData extends AbstractFixture implements FixtureInterface, Cont
 
     public function load(ObjectManager $manager)
     {
-        $this->districtLoader = $this->container->get(DistrictLoader::class);
+        $this->districtLoader = $this->container->get(LightFileDistrictLoader::class);
 
         $this->districtLoader->load(
             __DIR__.'/../deputy/circonscriptions_all.csv',
@@ -29,9 +29,9 @@ class LoadDistrictData extends AbstractFixture implements FixtureInterface, Cont
         );
 
         /** @var Adherent $deputy */
-        $deputy = $this->getReference('deputy-75-8');
-        $district_75_8 = $manager->getRepository(District::class)->findOneBy(['code' => '75008']);
-        $district_75_8->setAdherent($deputy);
+        $deputy = $this->getReference('deputy-75-1');
+        $district_75_1 = $manager->getRepository(District::class)->findOneBy(['code' => '75001']);
+        $district_75_1->setAdherent($deputy);
         $manager->flush();
     }
 

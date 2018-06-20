@@ -447,7 +447,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $deputy_75_1->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $deputy_75_1->addReferentTag($this->getReference('referent_tag_75'));
         $deputy_75_1->addReferentTag($this->getReference('referent_tag_75008'));
-        $this->addReference('deputy-75-8', $deputy_75_1);
+        $this->addReference('deputy-75-1', $deputy_75_1);
 
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
