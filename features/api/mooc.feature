@@ -23,6 +23,10 @@ Feature:
       "youtubeId": "ktHEfEDhscU",
       "youtubeThumbnail": "https://img.youtube.com/vi/ktHEfEDhscU/0.jpg",
       "youtubeDuration": "00:02:10",
+      "shareTwitterText": "Bonsoir, voici un tweet de partage d'un MOOC #enmarche",
+      "shareFacebookText": "Bonsoir, voici un partage avec Facebook",
+      "shareEmailSubject": "Bonsoir, voici un email de partage !",
+      "shareEmailBody": "Voici le contenu de l'email de partage. Merci.",
       "elements":[
         {
           "type":"chapter",
@@ -35,10 +39,10 @@ Feature:
           "title":"Les produits transformés dans une première vidéo",
           "slug":"les-produits-transformes-dans-une-premiere-video",
           "content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          "twitterText": "Bonsoir, voici un tweet de partage d'un MOOC #enmarche",
-          "facebookText": "Bonsoir, voici un partage avec Facebook",
-          "emailObject": "Bonsoir, voici un email de partage !",
-          "emailBody": "Voici le contenu de l'email de partage. Merci.",
+          "shareTwitterText": "Bonsoir, voici un tweet de partage d'un MOOC #enmarche",
+          "shareFacebookText": "Bonsoir, voici un partage avec Facebook",
+          "shareEmailSubject": "Bonsoir, voici un email de partage !",
+          "shareEmailBody": "Voici le contenu de l'email de partage. Merci.",
           "links":[
             {
               "linkName":"Site officiel de La République En Marche",
@@ -59,10 +63,10 @@ Feature:
           "title":"Les produits transformés dans une deuxième vidéo",
           "slug":"les-produits-transformes-dans-une-deuxieme-video",
           "content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et.",
-          "twitterText": "Bonsoir, voici un tweet de partage d'un MOOC #enmarche",
-          "facebookText": "Bonsoir, voici un partage avec Facebook",
-          "emailObject": "Bonsoir, voici un email de partage !",
-          "emailBody": "Voici le contenu de l'email de partage. Merci.",
+          "shareTwitterText": "Bonsoir, voici un tweet de partage d'un MOOC #enmarche",
+          "shareFacebookText": "Bonsoir, voici un partage avec Facebook",
+          "shareEmailSubject": "Bonsoir, voici un email de partage !",
+          "shareEmailBody": "Voici le contenu de l'email de partage. Merci.",
           "links":[],
           "attachments":[],
           "youtubeId":"ktHEfEDhscU",
@@ -74,10 +78,10 @@ Feature:
           "title":"Le test de votre vie",
           "slug":"le-test-de-votre-vie",
           "content":"<p>une description</p>",
-          "twitterText": "Bonsoir, voici un tweet de partage d'un MOOC #enmarche",
-          "facebookText": "Bonsoir, voici un partage avec Facebook",
-          "emailObject": "Bonsoir, voici un email de partage !",
-          "emailBody": "Voici le contenu de l'email de partage. Merci.",
+          "shareTwitterText": "Bonsoir, voici un tweet de partage d'un MOOC #enmarche",
+          "shareFacebookText": "Bonsoir, voici un partage avec Facebook",
+          "shareEmailSubject": "Bonsoir, voici un email de partage !",
+          "shareEmailBody": "Voici le contenu de l'email de partage. Merci.",
           "links":[],
           "attachments":[],
           "typeformUrl":"https://developerplatform.typeform.com/to/Xc7NMh"
@@ -87,21 +91,6 @@ Feature:
           "title":"Semaine 2 : Le coup de fourchette pour défendre la nature",
           "slug":"semaine-2-le-coup-de-fourchette-pour-defendre-la-nature",
           "publishedAt":"@string@.isDateTime()"
-        },
-        {
-          "type":"video",
-          "title":"Les produits transformés dans une troisième vidéo",
-          "slug":"les-produits-transformes-dans-une-troisieme-video",
-          "content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          "twitterText": "Bonsoir, voici un tweet de partage d'un MOOC #enmarche",
-          "facebookText": "Bonsoir, voici un partage avec Facebook",
-          "emailObject": "Bonsoir, voici un email de partage !",
-          "emailBody": "Voici le contenu de l'email de partage. Merci.",
-          "links":[],
-          "attachments":[],
-          "youtubeId":"ktHEfEDhscU",
-          "youtubeThumbnail":"https://img.youtube.com/vi/ktHEfEDhscU/0.jpg",
-          "duration":"00:30:15"
         }
       ]
     }

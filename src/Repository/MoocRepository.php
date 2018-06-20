@@ -22,9 +22,7 @@ class MoocRepository extends ServiceEntityRepository
             ->leftJoin('elements.links', 'attachmentLinks')
             ->leftJoin('elements.files', 'attachmentFiles')
             ->where('mooc.slug = :slug')
-            ->andWhere('chapters.published = :published')
             ->setParameter('slug', $slug)
-            ->setParameter('published', true)
             ->getQuery()
             ->getOneOrNullResult()
         ;

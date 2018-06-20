@@ -46,7 +46,7 @@ class MoocElementAdmin extends AbstractAdmin
                 ])
                 ->add('content', PurifiedTextareaType::class, [
                     'label' => 'Contenu',
-                    'attr' => ['class' => 'ck-editor'],
+                    'attr' => ['class' => 'ck-editor-advanced'],
                     'purifier_type' => 'enrich_content',
                 ])
                 ->add('chapter', ModelListType::class, [
@@ -86,18 +86,18 @@ class MoocElementAdmin extends AbstractAdmin
         $formMapper
             ->end()
             ->with('Boutons de partage', ['class' => 'col-md-6'])
-                ->add('twitterText', TextType::class, [
+                ->add('shareTwitterText', TextType::class, [
                     'label' => 'Texte du partage sur Twitter',
                 ])
-                ->add('facebookText', TextType::class, [
+                ->add('shareFacebookText', TextType::class, [
                     'label' => 'Texte du partage sur Facebook',
                 ])
-                ->add('emailObject', TextType::class, [
+                ->add('shareEmailSubject', TextType::class, [
                     'label' => 'Sujet de l\'email de partage',
                 ])
-                ->add('emailBody', PurifiedTextareaType::class, [
+                ->add('shareEmailBody', PurifiedTextareaType::class, [
                     'label' => 'Corps de l\'email de partage',
-                    'attr' => ['class' => 'ck-editor'],
+                    'attr' => ['rows' => 5, 'maxlength' => 500],
                     'purifier_type' => 'enrich_content',
                 ])
             ->end()

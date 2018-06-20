@@ -46,6 +46,22 @@ class MoocAdmin extends AbstractAdmin
                         'with_seconds' => true,
                     ])
                 ->end()
+                ->with('Boutons de partage', ['class' => 'col-md-6'])
+                    ->add('shareTwitterText', TextType::class, [
+                        'label' => 'Texte du partage sur Twitter',
+                    ])
+                    ->add('shareFacebookText', TextType::class, [
+                        'label' => 'Texte du partage sur Facebook',
+                    ])
+                    ->add('shareEmailSubject', TextType::class, [
+                        'label' => 'Sujet de l\'email de partage',
+                    ])
+                    ->add('shareEmailBody', PurifiedTextareaType::class, [
+                        'label' => 'Corps de l\'email de partage',
+                        'attr' => ['rows' => 5, 'maxlength' => 500],
+                        'purifier_type' => 'enrich_content',
+                    ])
+                ->end()
         ;
 
         if (!$this->request->isXmlHttpRequest()) {

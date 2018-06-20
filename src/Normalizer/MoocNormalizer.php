@@ -36,7 +36,9 @@ class MoocNormalizer implements NormalizerInterface
             $elements[] = $this->normalizeChapter($chapter);
 
             foreach ($chapter->getElements() as $element) {
-                $elements[] = $this->normalizeElement($element);
+                if ($chapter->isPublished()) {
+                    $elements[] = $this->normalizeElement($element);
+                }
             }
         }
 
@@ -57,6 +59,10 @@ class MoocNormalizer implements NormalizerInterface
             'youtubeId' => $mooc->getYoutubeId(),
             'youtubeThumbnail' => $mooc->getYoutubeThumbnail(),
             'youtubeDuration' => $mooc->getYoutubeDuration()->format('H:i:s'),
+            'shareTwitterText' => $mooc->getShareTwitterText(),
+            'shareFacebookText' => $mooc->getShareFacebookText(),
+            'shareEmailSubject' => $mooc->getShareEmailSubject(),
+            'shareEmailBody' => $mooc->getShareEmailBody(),
             'elements' => $elements,
         ];
     }
@@ -78,10 +84,10 @@ class MoocNormalizer implements NormalizerInterface
             'title' => $element->getTitle(),
             'slug' => $element->getSlug(),
             'content' => $element->getContent(),
-            'twitterText' => $element->getTwitterText(),
-            'facebookText' => $element->getFacebookText(),
-            'emailObject' => $element->getEmailObject(),
-            'emailBody' => $element->getEmailBody(),
+            'shareTwitterText' => $element->getShareTwitterText(),
+            'shareFacebookText' => $element->getShareFacebookText(),
+            'shareEmailSubject' => $element->getShareEmailSubject(),
+            'shareEmailBody' => $element->getShareEmailBody(),
             'links' => $this->normalizeLinks($element->getLinks()),
             'attachments' => $this->normalizeFiles($element->getFiles()),
         ];
