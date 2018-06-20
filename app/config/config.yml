@@ -326,7 +326,8 @@ exercise_html_purifier:
         Cache.SerializerPermissions: ~
     enrich_content:
         HTML.AllowedElements: p,h1,h2,h3,h4,h5,h6,div,address,center,em,strong,pre,div,u,s,ol,ul,li,br,img,a
-        HTML.AllowedAttributes: "*.style,img.src,a.href"
+        HTML.AllowedAttributes: "*.style,img.src,a.href,a.target,*.class"
+        Attr.AllowedFrameTargets: "_blank"
         CSS.AllowedProperties: text-align
         AutoFormat.Custom:
             - '@AppBundle\HTMLPurifier\Injector\ImageDimension'
