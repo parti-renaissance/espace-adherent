@@ -52,7 +52,7 @@
         <service id="League\Flysystem\Filesystem" alias="app.storage" />
 
         <!-- Medias -->
-        <service id="app.glide.cache_adapter" class="Danhunsaker\Flysystem\Redis\RedisAdapter" public="false">
+        <service id="app.glide.cache_adapter" class="Danhunsaker\Flysystem\Redis\RedisAdapter" public="false" lazy="true">
             <argument type="service" id="snc_redis.default" />
         </service>
 
