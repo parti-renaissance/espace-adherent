@@ -434,6 +434,9 @@ class OAuthServerControllerTest extends WebTestCase
     {
         $this->kill();
 
+        $this->privateCryptKey = null;
+        $this->encryptionKey = null;
+
         parent::tearDown();
     }
 }

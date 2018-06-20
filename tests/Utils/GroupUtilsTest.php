@@ -4,16 +4,16 @@ namespace Tests\Utils;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Utils\GroupUtils;
-use Ramsey\Uuid\Uuid;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\TestHelperTrait;
+use Ramsey\Uuid\Uuid;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group functional
  */
 class GroupUtilsTest extends WebTestCase
 {
-    use TestHelperTrait;
+    use ControllerTestTrait;
 
     public function testGetUuidsFromJson()
     {
@@ -127,10 +127,7 @@ class GroupUtilsTest extends WebTestCase
 
     protected function tearDown()
     {
-        $this->loadFixtures([]);
-
-        $this->container = null;
-        $this->adherents = null;
+        $this->kill();
 
         parent::tearDown();
     }

@@ -8,12 +8,15 @@ use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadProposalData;
 use AppBundle\DataFixtures\ORM\LoadTimelineData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group command
  */
 class AlgoliaSynchronizeCommandTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @dataProvider dataProviderTestCommand
      */
@@ -68,7 +71,7 @@ class AlgoliaSynchronizeCommandTest extends WebTestCase
 
     public function tearDown()
     {
-        $this->loadFixtures([]);
+        $this->kill();
 
         parent::tearDown();
     }

@@ -8,14 +8,14 @@ use AppBundle\DataFixtures\ORM\LoadProcurationData;
 use AppBundle\Mailer\Message\ProcurationProxyReminderMessage;
 use AppBundle\Repository\ProcurationRequestRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\TestHelperTrait;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group procuration
  */
 class ProcurationSendReminderCommandTest extends WebTestCase
 {
-    use TestHelperTrait;
+    use ControllerTestTrait;
 
     /** @var ProcurationRequestRepository */
     private $procurationRequestRepository;
@@ -45,9 +45,8 @@ class ProcurationSendReminderCommandTest extends WebTestCase
 
     public function tearDown()
     {
-        $this->loadFixtures([]);
+        $this->kill();
 
-        $this->container = null;
         $this->procurationRequestRepository = null;
 
         parent::tearDown();

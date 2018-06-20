@@ -111,3 +111,10 @@ old_sound_rabbit_mq:
 
 lexik_paybox:
     public_key: "%env(SSL_PUBLIC_KEY)%"
+
+doctrine:
+    dbal:
+        connections:
+            default:
+                logging: false
+                profiling: false

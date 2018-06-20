@@ -5,12 +5,15 @@ namespace Tests\AppBundle\Command;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group command
  */
 class ApiScheduleEventCreationCommandTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     public function testCommand(): void
     {
         $output = $this->runCommand('app:sync:events');
@@ -32,7 +35,7 @@ class ApiScheduleEventCreationCommandTest extends WebTestCase
 
     public function tearDown()
     {
-        $this->loadFixtures([]);
+        $this->kill();
 
         parent::tearDown();
     }

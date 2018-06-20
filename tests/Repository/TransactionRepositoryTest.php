@@ -6,11 +6,11 @@ use AppBundle\DataFixtures\ORM\LoadDonationData;
 use AppBundle\Repository\TransactionRepository;
 use Cake\Chronos\Chronos;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\TestHelperTrait;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 class TransactionRepositoryTest extends WebTestCase
 {
-    use TestHelperTrait;
+    use ControllerTestTrait;
 
     /**
      * @var TransactionRepository
@@ -38,10 +38,9 @@ class TransactionRepositoryTest extends WebTestCase
 
     protected function tearDown()
     {
-        $this->loadFixtures([]);
+        $this->kill();
 
         $this->transactionRepository = null;
-        $this->container = null;
 
         parent::tearDown();
     }
