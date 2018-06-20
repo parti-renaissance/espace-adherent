@@ -87,21 +87,6 @@ Feature:
           "title":"Semaine 2 : Le coup de fourchette pour défendre la nature",
           "slug":"semaine-2-le-coup-de-fourchette-pour-defendre-la-nature",
           "publishedAt":"@string@.isDateTime()"
-        },
-        {
-          "type":"video",
-          "title":"Les produits transformés dans une troisième vidéo",
-          "slug":"les-produits-transformes-dans-une-troisieme-video",
-          "content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          "shareTwitterText": "Bonsoir, voici un tweet de partage d'un MOOC #enmarche",
-          "shareFacebookText": "Bonsoir, voici un partage avec Facebook",
-          "shareEmailSubject": "Bonsoir, voici un email de partage !",
-          "shareEmailBody": "Voici le contenu de l'email de partage. Merci.",
-          "links":[],
-          "attachments":[],
-          "youtubeId":"ktHEfEDhscU",
-          "youtubeThumbnail":"https://img.youtube.com/vi/ktHEfEDhscU/0.jpg",
-          "duration":"00:30:15"
         }
       ]
     }
