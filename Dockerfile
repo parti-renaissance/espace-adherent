@@ -44,7 +44,6 @@ RUN apt-get update -q && \
         php7.1-zip \
         php-apcu \
         php-uuid \
-        redis-server \
         supervisor \
         tzdata \
         wget \
@@ -79,14 +78,9 @@ RUN chmod 0444 gcloud-service-key.json && \
     mkdir /run/php && \
     mkdir var && \
 
-    service redis-server start && \
-
-    SYMFONY_ENV=prod REDIS_HOST=127.0.0.1 composer install --optimize-autoloader --no-interaction --no-ansi --no-dev && \
-    SYMFONY_ENV=prod REDIS_HOST=127.0.0.1 bin/console cache:clear --no-warmup && \
-    SYMFONY_ENV=prod REDIS_HOST=127.0.0.1 bin/console cache:warmup && \
-
-    service redis-server stop && \
-    apt-get autoremove -y redis-server && \
+    SYMFONY_ENV=prod composer install --optimize-autoloader --no-interaction --no-ansi --no-dev && \
+    SYMFONY_ENV=prod bin/console cache:clear --no-warmup && \
+    SYMFONY_ENV=prod bin/console cache:warmup && \
 
     chown -R www-data:www-data var && \
 
@@ -98,7 +92,6 @@ RUN chmod 0444 gcloud-service-key.json && \
     mv docker/prod/nginx.conf /etc/nginx/nginx.conf && \
     mv docker/prod/supervisord.conf /etc/supervisor/conf.d/ && \
 
-    rm -rf docker && \
-    rm -rf web/app_dev.php
+    rm -rf docker composer.lock
 
     CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
