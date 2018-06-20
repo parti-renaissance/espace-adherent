@@ -89,12 +89,45 @@ class Mooc
      */
     private $youtubeDuration;
 
+    /**
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
+     */
+    private $shareTwitterText;
+    /**
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
+     */
+    private $shareFacebookText;
+    /**
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
+     */
+    private $shareEmailSubject;
+    /**
+     * @ORM\Column(length=500)
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(min=5, max=500)
+     */
+    protected $shareEmailBody;
+
     public function __construct(
         string $title = null,
         string $description = null,
         string $content = null,
         string $youtubeId = null,
-        \DateTime $youtubeDuration = null
+        \DateTime $youtubeDuration = null,
+        string $shareTwitterText = null,
+        string $shareFacebookText = null,
+        string $shareEmailSubject = null,
+        string $shareEmailBody = null
     ) {
         $this->title = $title;
         $this->description = $description;
@@ -102,6 +135,10 @@ class Mooc
         $this->content = $content;
         $this->youtubeId = $youtubeId;
         $this->youtubeDuration = $youtubeDuration ?? MutableDate::create();
+        $this->shareTwitterText = $shareTwitterText;
+        $this->shareFacebookText = $shareFacebookText;
+        $this->shareEmailSubject = $shareEmailSubject;
+        $this->shareEmailBody = $shareEmailBody;
     }
 
     public function __toString()
@@ -204,5 +241,45 @@ class Mooc
     public function setYoutubeDuration(\DateTime $youtubeDuration): void
     {
         $this->youtubeDuration = $youtubeDuration;
+    }
+
+    public function getShareTwitterText(): ?string
+    {
+        return $this->shareTwitterText;
+    }
+
+    public function setShareTwitterText(string $shareTwitterText): void
+    {
+        $this->shareTwitterText = $shareTwitterText;
+    }
+
+    public function getShareFacebookText(): ?string
+    {
+        return $this->shareFacebookText;
+    }
+
+    public function setShareFacebookText(string $shareFacebookText): void
+    {
+        $this->shareFacebookText = $shareFacebookText;
+    }
+
+    public function getShareEmailSubject(): ?string
+    {
+        return $this->shareEmailSubject;
+    }
+
+    public function setShareEmailSubject(string $shareEmailSubject): void
+    {
+        $this->shareEmailSubject = $shareEmailSubject;
+    }
+
+    public function getShareEmailBody(): ?string
+    {
+        return $this->shareEmailBody;
+    }
+
+    public function setShareEmailBody(string $shareEmailBody): void
+    {
+        $this->shareEmailBody = $shareEmailBody;
     }
 }
