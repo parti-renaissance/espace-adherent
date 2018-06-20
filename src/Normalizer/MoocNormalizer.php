@@ -59,6 +59,10 @@ class MoocNormalizer implements NormalizerInterface
             'youtubeId' => $mooc->getYoutubeId(),
             'youtubeThumbnail' => $mooc->getYoutubeThumbnail(),
             'youtubeDuration' => $mooc->getYoutubeDuration()->format('H:i:s'),
+            'shareTwitterText' => $mooc->getShareTwitterText(),
+            'shareFacebookText' => $mooc->getShareFacebookText(),
+            'shareEmailSubject' => $mooc->getShareEmailSubject(),
+            'shareEmailBody' => $mooc->getShareEmailBody(),
             'elements' => $elements,
         ];
     }

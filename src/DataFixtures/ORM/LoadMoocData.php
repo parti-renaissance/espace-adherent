@@ -17,7 +17,11 @@ class LoadMoocData extends AbstractFixture implements DependentFixtureInterface
             'Description du MOOC, faire de sa fourchette un acte politique',
             '<strong>Lorem ipsum</strong> dolor sit amet, consectetur adipiscing elit.',
             'ktHEfEDhscU',
-            MutableDateTime::createFromTime(00, 02, 10)
+            MutableDateTime::createFromTime(00, 02, 10),
+            'Bonsoir, voici un tweet de partage d\'un MOOC #enmarche',
+            'Bonsoir, voici un partage avec Facebook',
+            'Bonsoir, voici un email de partage !',
+            'Voici le contenu de l\'email de partage. Merci.'
         );
 
         $mooc->addChapter($this->getReference('mooc-chapter-1'));
