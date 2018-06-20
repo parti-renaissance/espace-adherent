@@ -234,7 +234,6 @@ class SitemapFactory
         $sitemap->add($this->generateUrl('program_index'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('map_committees'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_campus'), null, ChangeFrequency::WEEKLY, 0.6);
-        $sitemap->add($this->generateUrl('page_mooc'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_campus_internet'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_emmanuel_macron_videos'), null, ChangeFrequency::WEEKLY, 0.6);
         $sitemap->add($this->generateUrl('page_elles_marchent'), null, ChangeFrequency::WEEKLY, 0.6);

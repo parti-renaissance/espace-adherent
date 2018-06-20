@@ -20,15 +20,6 @@ class PageController extends Controller
     use CanaryControllerTrait;
 
     /**
-     * @Route("/campus/mooc", name="page_mooc")
-     * @Method("GET")
-     */
-    public function moocAction()
-    {
-        return $this->render('page/campus/mooc.html.twig');
-    }
-
-    /**
      * @Route("/campus", name="page_campus")
      * @Method("GET")
      */
