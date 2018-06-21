@@ -45,12 +45,22 @@ class RepublicanSilenceAdmin extends AbstractAdmin
         ;
     }
 
+    protected function configureBatchActions($actions)
+    {
+        return [];
+    }
+
     public function postPersist($object)
     {
         $this->clearRepublicanSilenceCache();
     }
 
     public function postUpdate($object)
+    {
+        $this->clearRepublicanSilenceCache();
+    }
+
+    public function postRemove($object)
     {
         $this->clearRepublicanSilenceCache();
     }
