@@ -22,9 +22,11 @@ class MoocAdmin extends AbstractAdmin
                 ->with('Général', ['class' => 'col-md-6'])
                     ->add('title', TextType::class, [
                         'label' => 'Titre',
+                        'filter_emojis' => true,
                     ])
                     ->add('description', TextType::class, [
                         'label' => 'Description',
+                        'filter_emojis' => true,
                     ])
                     ->add('slug', TextType::class, [
                         'label' => 'Slug',
@@ -34,6 +36,7 @@ class MoocAdmin extends AbstractAdmin
                         'label' => 'Contenu',
                         'attr' => ['class' => 'ck-editor'],
                         'purifier_type' => 'enrich_content',
+                        'filter_emojis' => true,
                     ])
                     ->add('youtubeId', TextType::class, [
                         'label' => 'Youtube ID',
@@ -49,17 +52,21 @@ class MoocAdmin extends AbstractAdmin
                 ->with('Boutons de partage', ['class' => 'col-md-6'])
                     ->add('shareTwitterText', TextType::class, [
                         'label' => 'Texte du partage sur Twitter',
+                        'filter_emojis' => true,
                     ])
                     ->add('shareFacebookText', TextType::class, [
                         'label' => 'Texte du partage sur Facebook',
+                        'filter_emojis' => true,
                     ])
                     ->add('shareEmailSubject', TextType::class, [
                         'label' => 'Sujet de l\'email de partage',
+                        'filter_emojis' => true,
                     ])
                     ->add('shareEmailBody', PurifiedTextareaType::class, [
                         'label' => 'Corps de l\'email de partage',
                         'attr' => ['rows' => 5, 'maxlength' => 500],
                         'purifier_type' => 'enrich_content',
+                        'filter_emojis' => true,
                     ])
                 ->end()
         ;

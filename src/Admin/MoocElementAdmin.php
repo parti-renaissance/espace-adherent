@@ -48,6 +48,7 @@ class MoocElementAdmin extends AbstractAdmin
                     'label' => 'Contenu',
                     'attr' => ['class' => 'ck-editor-advanced'],
                     'purifier_type' => 'enrich_content',
+                    'filter_emojis' => true,
                 ])
                 ->add('chapter', ModelListType::class, [
                     'btn_add' => false,
@@ -88,17 +89,21 @@ class MoocElementAdmin extends AbstractAdmin
             ->with('Boutons de partage', ['class' => 'col-md-6'])
                 ->add('shareTwitterText', TextType::class, [
                     'label' => 'Texte du partage sur Twitter',
+                    'filter_emojis' => true,
                 ])
                 ->add('shareFacebookText', TextType::class, [
                     'label' => 'Texte du partage sur Facebook',
+                    'filter_emojis' => true,
                 ])
                 ->add('shareEmailSubject', TextType::class, [
                     'label' => 'Sujet de l\'email de partage',
+                    'filter_emojis' => true,
                 ])
                 ->add('shareEmailBody', PurifiedTextareaType::class, [
                     'label' => 'Corps de l\'email de partage',
                     'attr' => ['rows' => 5, 'maxlength' => 500],
                     'purifier_type' => 'enrich_content',
+                    'filter_emojis' => true,
                 ])
             ->end()
             ->with('Liens attachés', ['class' => 'col-md-6'])
