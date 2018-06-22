@@ -30,7 +30,7 @@ final class BoardMemberMessage extends Message
             Uuid::uuid4(),
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            static::getTemplateVars($recipient, $boardMember, $model),
+            static::getTemplateVars($boardMember, $model),
             static::getRecipientVars($recipient),
             $boardMember->getEmailAddress()
         );
@@ -55,7 +55,7 @@ final class BoardMemberMessage extends Message
         return $message;
     }
 
-    private static function getTemplateVars(Adherent $recipient, Adherent $boardMember, BoardMemberMessageModel $message): array
+    private static function getTemplateVars(Adherent $boardMember, BoardMemberMessageModel $message): array
     {
         return [
             'member_first_name' => self::escape($boardMember->getFirstName()),

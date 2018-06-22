@@ -4,9 +4,9 @@ namespace AppBundle\Mailjet;
 
 use AppBundle\Mailer\AbstractEmailClient;
 use AppBundle\Mailer\EmailTemplateClientInterface;
+use AppBundle\Mailer\EmailTemplateService;
 use GuzzleHttp\ClientInterface as Guzzle;
 use Psr\Http\Message\ResponseInterface;
-use Twig\Environment;
 
 /**
  * @see https://dev.mailjet.com/email-api/v3
@@ -17,7 +17,7 @@ class EmailTemplateClient extends AbstractEmailClient implements EmailTemplateCl
     private const MAILJET_TEMPLATE_EDITMODE = 2; // 2 means html mode
     private const MAILJET_TEMPLATE_OWNERTYPE = 'apikey';
 
-    private $templating;
+    private $emailTemplateService;
     private $remoteTemplates;
     private $senderEmail;
     private $senderName;
@@ -25,14 +25,14 @@ class EmailTemplateClient extends AbstractEmailClient implements EmailTemplateCl
 
     public function __construct(
         Guzzle $httpClient,
-        Environment $templating,
+        EmailTemplateService $emailTemplateService,
         string $publicKey,
         string $privateKey,
         string $senderEmail,
         string $senderName,
         string $purpose
     ) {
-        $this->templating = $templating;
+        $this->emailTemplateService = $emailTemplateService;
         $this->senderEmail = $senderEmail;
         $this->senderName = $senderName;
         $this->purpose = $purpose;
@@ -88,15 +88,13 @@ class EmailTemplateClient extends AbstractEmailClient implements EmailTemplateCl
             'Purposes' => [$this->purpose],
         ];
 
-        $this->request('POST', 'REST/template', ['body' => \GuzzleHttp\json_encode($requestPayload)]);
+        $this->request('POST', 'REST/template', ['json' => $requestPayload]);
     }
 
     private function update(string $template): void
     {
-        $templateWrapper = $this->templating->load(sprintf('email/%s.html.twig', $template));
-
-        $subject = $templateWrapper->renderBlock('subject');
-        $bodyHtml = $templateWrapper->renderBlock('body_html');
+        $subject = $this->emailTemplateService->renderSubject($template);
+        $bodyHtml = $this->emailTemplateService->renderBody($template);
 
         $requestPayload = [
             'Headers' => [

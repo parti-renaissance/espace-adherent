@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Mailer\EmailTemplateService;
 use AppBundle\Mailer\Message\MessageRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -19,10 +20,10 @@ class AdminEmailTemplateController extends Controller
      * @Route(name="app_admin_email_template_list")
      * @Method("GET")
      */
-    public function listAction(): Response
+    public function listAction(MessageRegistry $messageRegistry): Response
     {
         return $this->render('admin/mailer/template/list.html.twig', [
-            'templates' => $this->get(MessageRegistry::class)->getAllMessages(),
+            'templates' => $messageRegistry->getAllMessages(),
         ]);
     }
 
@@ -30,12 +31,12 @@ class AdminEmailTemplateController extends Controller
      * @Route("/{name}", name="app_admin_email_template_show")
      * @Method("GET")
      */
-    public function showAction(string $name): Response
+    public function showAction(string $name, MessageRegistry $messageRegistry, EmailTemplateService $emailTemplateService): Response
     {
         $template = [
             'name' => $name,
-            'class' => $this->get(MessageRegistry::class)->getMessageClass($name),
-            'subject' => $this->renderBlock($name, 'subject'),
+            'class' => $messageRegistry->getMessageClass($name),
+            'subject' => $emailTemplateService->renderSubject($name),
         ];
 
         return $this->render('admin/mailer/template/show.html.twig', [
@@ -47,22 +48,10 @@ class AdminEmailTemplateController extends Controller
      * @Route("/html/{name}", name="app_admin_email_template_html")
      * @Method("GET")
      */
-    public function htmlAction(string $name): Response
+    public function htmlAction(string $name, EmailTemplateService $emailTemplateService): Response
     {
         $this->get('profiler')->disable();
 
-        return new Response($this->renderBlock($name, 'body_html'));
-    }
-
-    private function renderBlock(string $templateName, string $blockName): string
-    {
-        /* @var \Twig_TemplateWrapper $template */
-        $template = $this->get('twig')->load("email/$templateName.html.twig");
-
-        if (!$template->hasBlock($blockName)) {
-            throw $this->createNotFoundException("The template \"$templateName\" has no \"$blockName\" block.");
-        }
-
-        return $template->renderBlock($blockName);
+        return new Response($emailTemplateService->renderBody($name));
     }
 }

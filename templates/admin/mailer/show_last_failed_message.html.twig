@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field_value %}
+    {% if object.lastFailedMessage %}
+        <pre style="max-height: 400px; overflow: scroll;">
+            {{- object.lastFailedMessage|raw -}}
+        </pre>
+    {% else %}
+        Aucune détail
+    {% endif %}
+{% endblock %}

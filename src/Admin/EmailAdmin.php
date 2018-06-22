@@ -28,6 +28,9 @@ class EmailAdmin extends AbstractAdmin
             ->add('uuid', null, [
                 'label' => 'UUID',
             ])
+            ->add('app', null, [
+                'label' => 'Origine',
+            ])
             ->add('messageClass', null, [
                 'label' => 'Type du message',
             ])
@@ -53,6 +56,14 @@ class EmailAdmin extends AbstractAdmin
                 'label' => 'Réponse',
                 'template' => 'admin/mailer/show_response.html.twig',
             ])
+            ->add('lastFailedDate', null, [
+                'label' => 'Date de l\'échec d\'envoi',
+                'format' => 'Y-m-d H:i:s',
+            ])
+            ->add('lastFailedMessage', null, [
+                'label' => 'Détail concernant l\'échec d\'envoi',
+                'template' => 'admin/mailer/show_last_failed_message.html.twig',
+            ])
         ;
     }
 
@@ -62,6 +73,9 @@ class EmailAdmin extends AbstractAdmin
             ->add('uuid', null, [
                 'label' => 'UUID',
                 'show_filter' => true,
+            ])
+            ->add('app', null, [
+                'label' => 'Origine',
             ])
             ->add('messageClass', null, [
                 'label' => 'Type du message',
@@ -80,6 +94,9 @@ class EmailAdmin extends AbstractAdmin
         $listMapper
             ->add('uuid', null, [
                 'label' => 'UUID',
+            ])
+            ->add('app', null, [
+                'label' => 'Origine',
             ])
             ->add('messageClass', null, [
                 'label' => 'Type du message',

@@ -16,7 +16,6 @@ use AppBundle\Mailer\Message\CitizenProjectCreationNotificationMessage;
 use AppBundle\Mailer\Message\CitizenProjectNewFollowerMessage;
 use AppBundle\Mailer\Message\CitizenProjectRequestCommitteeSupportMessage;
 use AppBundle\Repository\AdherentRepository;
-use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -26,7 +25,6 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
     const RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN = 100;
     const NOTIFICATION_PER_PAGE = MailerService::PAYLOAD_MAXSIZE;
 
-    private $creationNotificationProducer;
     private $manager;
     private $mailer;
     private $committeeManager;
@@ -35,14 +33,12 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
 
     public function __construct(
         AdherentRepository $adherentRepository,
-        ProducerInterface $creationNotificationProducer,
         CitizenProjectManager $manager,
         MailerService $mailer,
         CommitteeManager $committeeManager,
         RouterInterface $router
     ) {
         $this->adherentRepository = $adherentRepository;
-        $this->creationNotificationProducer = $creationNotificationProducer;
         $this->manager = $manager;
         $this->mailer = $mailer;
         $this->committeeManager = $committeeManager;

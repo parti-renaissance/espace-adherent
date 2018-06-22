@@ -5,38 +5,19 @@
     <services>
 
         <!-- RabbitMQ -->
-        <service id="app.consumer.service_locator" public="false">
-            <argument type="collection">
-                <argument key="app.mailer.campaign" type="service" id="app.mailer.campaign" />
-                <argument key="app.mailer.transactional" type="service" id="app.mailer.transactional" />
-                <argument key="app.mailer.campaign_client" type="service" id="app.mailer.campaign_client" />
-                <argument key="app.mailer.transactional_client" type="service" id="app.mailer.transactional_client" />
-                <argument key="manager" type="service" id="doctrine.orm.entity_manager" />
-                <argument key="Psr\Log\LoggerInterface" type="service" id="logger" />
-                <argument key="Symfony\Component\Validator\Validator\ValidatorInterface" type="service" id="validator" />
-                <argument key="AppBundle\Repository\AdherentRepository" type="service" id="AppBundle\Repository\AdherentRepository"/>
-                <argument key="AppBundle\Repository\Projection\ReferentManagedUserRepository" type="service" id="AppBundle\Repository\Projection\ReferentManagedUserRepository"/>
-            </argument>
-
-            <tag name="container.service_locator" />
-        </service>
-
         <service id="AppBundle\Consumer\CampaignMailerConsumer" parent="app.consumer.abstract_mailer_consumer">
-            <argument type="service" id="app.consumer.service_locator" />
             <call method="setEmailClient">
                 <argument type="service" id="app.mailer.campaign_client"/>
             </call>
         </service>
 
         <service id="AppBundle\Consumer\TransactionalMailerConsumer" parent="app.consumer.abstract_mailer_consumer">
-            <argument type="service" id="app.consumer.service_locator" />
             <call method="setEmailClient">
                 <argument type="service" id="app.mailer.transactional_client"/>
             </call>
         </service>
 
         <service id="app.consumer.abstract_mailer_consumer" class="AppBundle\Consumer\AbstractMailerConsumer" parent="app_abstract_consumer">
-            <argument type="service" id="app.consumer.service_locator" />
             <call method="setEmailRepository">
                 <argument type="service" id="AppBundle\Repository\EmailRepository"/>
             </call>
@@ -44,12 +25,16 @@
 
         <service id="AppBundle\Consumer\MailerConsumer" parent="app_abstract_consumer">
             <call method="setMailerService">
-                <argument type="service" id="app.mailer.campaign"/>
+                <argument type="service" id="app.mailer.transactional"/>
             </call>
         </service>
 
+        <service id="AppBundle\Consumer\MailerConsumerV2" parent="app_abstract_consumer">
+            <argument type="service" id="AppBundle\Mailer\Message\MessageRegistry" />
+            <argument type="service" id="app.mailer.transactional" />
+        </service>
+
         <service id="AppBundle\Consumer\ReferentMessageDispatcherConsumer" parent="app_abstract_consumer">
-            <argument type="service" id="app.consumer.service_locator" />
             <call method="setMailer">
                 <argument type="service" id="app.mailer.campaign"/>
             </call>
@@ -67,12 +52,10 @@
             <call method="setLogger">
                 <argument type="service" id="logger" />
             </call>
-            <argument type="service" id="app.consumer.service_locator" />
         </service>
 
         <service id="AppBundle\Consumer\ProjectCitizenCreationNotificationConsumer" parent="app_abstract_consumer">
-            <argument type="service" id="app.consumer.service_locator" />
-            <call method="setCitizeProjectManager">
+            <call method="setCitizenProjectManager">
                 <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
             </call>
             <call method="setCitizenProjectRepository">

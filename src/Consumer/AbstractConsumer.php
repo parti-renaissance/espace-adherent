@@ -18,7 +18,6 @@ abstract class AbstractConsumer implements ConsumerInterface
 
     protected const BATCH_SIZE = 200;
 
-    protected $logger;
     protected $validator;
     protected $manager;
     private $messageCount = 0;

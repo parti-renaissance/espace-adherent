@@ -103,7 +103,7 @@ class ProjectCitizenCreationNotificationConsumer extends AbstractConsumer
         $this->citizenProjectMessageNotifier = $citizenProjectMessageNotifier;
     }
 
-    public function setCitizeProjectManager(CitizenProjectManager $citizenProjectManager): void
+    public function setCitizenProjectManager(CitizenProjectManager $citizenProjectManager): void
     {
         $this->citizenProjectManager = $citizenProjectManager;
     }

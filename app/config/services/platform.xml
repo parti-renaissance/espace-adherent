@@ -205,7 +205,6 @@
 
         <service id="app.citizen_project.citizen_project_message_notifier" class="AppBundle\CitizenProject\CitizenProjectMessageNotifier">
             <argument type="service" id="AppBundle\Repository\AdherentRepository"/>
-            <argument type="service" id="old_sound_rabbit_mq.project_citizen_creation_notification_producer"/>
             <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="app.committee.manager"/>

@@ -4,6 +4,9 @@ namespace AppBundle\Mailer\Message;
 
 use Ramsey\Uuid\UuidInterface;
 
+/**
+ * @todo set the class abstract once all projects are migrated; e.g. MailerConsumer is not receiving messages anymore
+ */
 class Message
 {
     protected $uuid;
@@ -13,6 +16,17 @@ class Message
     protected $senderEmail;
     protected $senderName;
     protected $cc;
+    protected $subject;
+    protected $app;
+    protected $messageClass;
+
+    /**
+     * Only needed to manage legacy message format
+     * If set it means it's a legacy message
+     *
+     * @todo delete me once all projects are migrated
+     */
+    protected $template;
 
     /**
      * Message constructor.
@@ -37,6 +51,7 @@ class Message
         $this->vars = $commonVars;
         $this->replyTo = $replyTo;
         $this->cc = [];
+        $this->app = 'EM';
 
         $this->addRecipient($recipientEmail, $recipientName, $recipientVars);
     }
@@ -135,5 +150,61 @@ class Message
     public function setReplyTo(string $replyTo): void
     {
         $this->replyTo = $replyTo;
+    }
+
+    public function setSubject(string $subject): void
+    {
+        $this->subject = $subject;
+    }
+
+    public function getSubject(): ?string
+    {
+        return $this->subject;
+    }
+
+    /**
+     * Only needed to manage legacy message format
+     *
+     * @todo delete me once all projects are migrated
+     */
+    public function setTemplate(string $template): void
+    {
+        // This class is meant to be abstract once the legacy code is removed -> e.g.: MailerConsumer
+        // This is a safety chek to make sure we are not using v1 message while they are v2
+        if (__CLASS__ !== get_class($this)) {
+            throw new \LogicException(sprintf('External app can only be set with %s instance', __CLASS__));
+        }
+
+        $this->template = $template;
+    }
+
+    /**
+     * Only needed to manage legacy message format
+     *
+     * @todo delete me once all projects are migrated
+     */
+    public function getTemplate(): ?string
+    {
+        return $this->template;
+    }
+
+    /**
+     * Only needed to manage legacy message format
+     *
+     * @todo delete me once all projects are migrated
+     */
+    public function isV2(): bool
+    {
+        return null === $this->getTemplate();
+    }
+
+    public function setApp(string $app): void
+    {
+        $this->app = $app;
+    }
+
+    public function getApp(): string
+    {
+        return $this->app;
     }
 }

@@ -2,6 +2,8 @@
 
 namespace AppBundle\Mailer\Message;
 
+use AppBundle\Mailer\Exception\MessageNotFoundException;
+
 class MessageRegistry
 {
     private $transactional = [
@@ -63,7 +65,7 @@ class MessageRegistry
             return $this->campaign[$messageClass];
         }
 
-        throw new \Exception("Message $messageClass does not exist.");
+        throw new MessageNotFoundException("Message $messageClass does not exist.");
     }
 
     public function getMessageTemplate(Message $message): string
@@ -81,7 +83,7 @@ class MessageRegistry
             return \array_search($name, $this->campaign);
         }
 
-        throw new \Exception("Message with name $name does not exist.");
+        throw new MessageNotFoundException("Message with name $name does not exist.");
     }
 
     public function getTransactionalMessages(): array

@@ -4,8 +4,6 @@ namespace AppBundle\Mailjet;
 
 use AppBundle\Mailer\AbstractEmailClient;
 use AppBundle\Mailer\EmailClientInterface;
-use AppBundle\Mailer\Exception\MailerException;
-use Symfony\Component\HttpFoundation\Response;
 
 class EmailClient extends AbstractEmailClient implements EmailClientInterface
 {
@@ -13,11 +11,10 @@ class EmailClient extends AbstractEmailClient implements EmailClientInterface
     {
         $response = $this->request('POST', 'send', [
             'body' => $email,
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
         ]);
-
-        if (Response::HTTP_OK !== $response->getStatusCode()) {
-            throw new MailerException('Unable to send email to recipients.');
-        }
 
         return (string) $response->getBody();
     }
