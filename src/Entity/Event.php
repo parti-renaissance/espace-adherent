@@ -194,7 +194,7 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
             return null;
         }
 
-        return $committee->getUuid()->toString();
+        return $committee->getUuidAsString();
     }
 
     /**
@@ -221,5 +221,19 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
         return array_map(function (ReferentTag $referentTag) {
             return $referentTag->getCode();
         }, $this->referentTags->toArray());
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("organizerUuid")
+     * @JMS\Groups({"public", "event_read"})
+     */
+    public function getOrganizerUuid(): ?string
+    {
+        if (!$organizer = $this->getOrganizer()) {
+            return null;
+        }
+
+        return $organizer->getUuidAsString();
     }
 }
