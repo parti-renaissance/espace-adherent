@@ -87,6 +87,8 @@ class DonationControllerTest extends WebTestCase
                     'country' => 'FR',
                     'number' => '04 01 02 03 04',
                 ],
+                'isPhysicalPerson' => true,
+                'hasFrenchNationality' => true,
             ],
         ]));
 
@@ -235,6 +237,8 @@ class DonationControllerTest extends WebTestCase
                     'country' => 'FR',
                     'number' => '04 01 02 03 04',
                 ],
+                'isPhysicalPerson' => true,
+                'hasFrenchNationality' => true,
             ],
         ]));
 
@@ -388,6 +392,8 @@ class DonationControllerTest extends WebTestCase
                     'country' => 'FR',
                     'number' => '04 01 02 03 04',
                 ],
+                'isPhysicalPerson' => true,
+                'hasFrenchNationality' => true,
             ],
         ]));
 
