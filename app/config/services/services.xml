@@ -195,8 +195,9 @@
             <tag name="jms_serializer.event_subscriber" />
         </service>
 
-        <!-- Messages -->
-        <service id="AppBundle\Mailer\Message\MessageRegistry" public="true" />
+        <!-- Messages/Emails -->
+        <service id="AppBundle\Mailer\Message\MessageRegistry" />
+        <service id="AppBundle\Mailer\EmailTemplateService" />
 
         <!-- Timeline -->
         <service id="AppBundle\Command\TimelineImportCommand"/>

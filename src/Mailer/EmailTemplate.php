@@ -38,7 +38,7 @@ abstract class EmailTemplate implements \JsonSerializable
         Message $message,
         string $template,
         string $defaultSenderEmail,
-        string $defaultSenderName = null
+        string $defaultSenderName
     ): self {
         $senderEmail = $message->getSenderEmail() ?: $defaultSenderEmail;
         $senderName = $message->getSenderName() ?: $defaultSenderName;
@@ -76,7 +76,7 @@ abstract class EmailTemplate implements \JsonSerializable
     public function getHttpRequestPayload(): string
     {
         if (!$this->httpRequestPayload) {
-            $this->httpRequestPayload = json_encode($this->getBody());
+            $this->httpRequestPayload = \GuzzleHttp\json_encode($this->getBody());
         }
 
         return $this->httpRequestPayload;
@@ -90,6 +90,27 @@ abstract class EmailTemplate implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->getBody();
+    }
+
+    public function getTemplate(): string
+    {
+        return $this->template;
+    }
+
+    public function getVariableNames(): array
+    {
+        $body = $this->getBody();
+        $variableNames[] = $body['Vars'] ?? [];
+        $recipients = $body['Recipients'] ?? [];
+
+        foreach ($recipients as $recipient) {
+            $variableNames[] = $recipient['Vars'] ?? [];
+        }
+
+        $variableNames = array_merge(...$variableNames);
+        $variableNames = array_keys($variableNames);
+
+        return array_unique($variableNames);
     }
 
     abstract public function addRecipient(string $email, string $name = null, array $vars = []);

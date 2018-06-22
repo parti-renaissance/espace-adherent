@@ -2,7 +2,7 @@
 
 namespace Test\AppBundle\Consumer;
 
-use AppBundle\Consumer\MailerConsumer;
+use AppBundle\Consumer\MailerConsumerV2;
 use AppBundle\Mailer\MailerService;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class MailerConsumerTest extends TestCase
+class MailerConsumerV2Test extends TestCase
 {
     private $validator;
     private $entityManager;
@@ -39,7 +39,7 @@ class MailerConsumerTest extends TestCase
         ];
         $messageBody = json_encode($invalidData);
 
-        $consumer = new MailerConsumer($this->validator, $this->entityManager);
+        $consumer = new MailerConsumerV2($this->validator, $this->entityManager);
 
         $logger = $this->createMock(LoggerInterface::class);
         $logger
@@ -86,7 +86,7 @@ class MailerConsumerTest extends TestCase
         ];
         $messageBody = json_encode($data);
 
-        $consumer = new MailerConsumer($this->validator, $this->entityManager);
+        $consumer = new MailerConsumerV2($this->validator, $this->entityManager);
 
         $this->validator
             ->expects($this->any())

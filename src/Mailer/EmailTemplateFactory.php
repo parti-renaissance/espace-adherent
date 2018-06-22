@@ -9,23 +9,32 @@ use AppBundle\Mailjet\EmailTemplate as MailjetTemplate;
 class EmailTemplateFactory
 {
     private $messageRegistry;
-    private $senderEmail;
-    private $senderName;
+    private $defaultSenderEmail;
+    private $defaultSenderName;
 
-    public function __construct(MessageRegistry $messageRegistry, string $senderEmail, string $senderName)
+    public function __construct(MessageRegistry $messageRegistry, string $defaultSenderEmail, string $defaultSenderName)
     {
         $this->messageRegistry = $messageRegistry;
-        $this->senderEmail = $senderEmail;
-        $this->senderName = $senderName;
+        $this->defaultSenderEmail = $defaultSenderEmail;
+        $this->defaultSenderName = $defaultSenderName;
     }
 
     public function createFromMessage(Message $message): EmailTemplate
     {
+        if ($message->isV2()) {
+            return MailjetTemplate::createWithMessage(
+                $message,
+                $this->messageRegistry->getMessageTemplate($message),
+                $this->defaultSenderEmail,
+                $this->defaultSenderName
+            );
+        }
+
         return MailjetTemplate::createWithMessage(
             $message,
-            $this->messageRegistry->getMessageTemplate($message),
-            $this->senderEmail,
-            $this->senderName
+            $message->getTemplate(),
+            $this->defaultSenderEmail,
+            $this->defaultSenderName
         );
     }
 }
