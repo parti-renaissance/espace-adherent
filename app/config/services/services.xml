@@ -213,5 +213,6 @@
 
         <!-- Deputy -->
         <service id="AppBundle\Deputy\DistrictLoader" public="true" />
+        <service id="AppBundle\Deputy\LightFileDistrictLoader" public="true" />
     </services>
 </container>
