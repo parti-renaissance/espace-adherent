@@ -8,6 +8,8 @@ class AdherentRoleEnum extends Enum
 {
     public const REFERENT = 'referent';
 
+    public const DEPUTY = 'deputy';
+
     public const COMMITTEE_SUPERVISOR = 'committee_supervisor';
     public const COMMITTEE_HOST = 'committee_host';
 

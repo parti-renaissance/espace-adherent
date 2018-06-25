@@ -440,6 +440,12 @@ class AdherentAdmin extends AbstractAdmin
                         $qb->setParameter('committee_privileges', $privileges);
                     }
 
+                    // Deputy
+                    if (\in_array(AdherentRoleEnum::DEPUTY, $value['value'], true)) {
+                        $qb->leftJoin(sprintf('%s.managedDistrict', $alias), 'district');
+                        $where->add('district IS NOT NULL');
+                    }
+
                     // Board Member
                     if (\in_array(AdherentRoleEnum::BOARD_MEMBER, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.boardMember', $alias), 'boardMember');
