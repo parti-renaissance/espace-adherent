@@ -208,6 +208,7 @@ newsletter.invitation.form.last_name: Votre nom
 newsletter.invitation.form.guest: E-mail d'un ami
 newsletter.invitation.form.invite: J'invite des amis
 newsletter.invitation.form.invite_sent: Votre invitation a bien été envoyée ! | Vos %count% invitations ont bien été envoyées !
+newsletter.subscription.success: Vous êtes maintenant inscrit(e) à notre newsletter ! Vous recevrez désormais toutes les informations concernant le mouvement.
 
 #
 # Ton Macron

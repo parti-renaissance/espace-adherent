@@ -3,7 +3,7 @@ Feature: Be able to subscribe to newsletter in multiple pages
   As an anonymous user
   I need to be able to subscribe to newsletter from Homepage, any article page, ...
 
-  Scenario Outline: In an article page I should be able to subscribe with all correct informations
+  Scenario Outline: On a few pages I should be able to subscribe with the correct information
     Given the following fixtures are loaded:
       | LoadArticleData |
     And I am on "<url>"
@@ -13,14 +13,14 @@ Feature: Be able to subscribe to newsletter in multiple pages
       | <zip_label>   | 75001                   |
     And I select "FR" from "app_newsletter_subscription_country"
     And I press "Je m'inscris"
-    Then I should be on "/newsletter/merci"
-    And I should see "Vous êtes désormais inscrit à notre newsletter !"
+    Then I should be on "<success_redirect>"
+    And I should see "Vous êtes maintenant inscrit(e) à notre newsletter !"
 
     Examples:
-      | url                            | title                              | email_label          | zip_label         |
-      | /                              | Recevez la newsletter du mouvement | Adresse email        | Code postal       |
-      | /newsletter                    | Je m'inscris à la newsletter       | Votre adresse e-mail | Votre code postal |
-      | /articles/actualites/outre-mer | Recevez la newsletter              | Adresse email        | Code postal       |
+      | url                            | success_redirect                | title                              | email_label          | zip_label         |
+      | /                              | /newsletter/merci               | Recevez la newsletter du mouvement | Adresse email        | Code postal       |
+      | /newsletter                    | /newsletter/merci               | Je m'inscris à la newsletter       | Votre adresse e-mail | Votre code postal |
+      | /articles/actualites/outre-mer | /articles/actualites/outre-mer  | Recevez la newsletter              | Adresse email        | Code postal       |
 
   Scenario: In the newsletter page I should have form error if I submit black field
     Given I am on "/newsletter"

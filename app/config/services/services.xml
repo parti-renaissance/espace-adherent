@@ -213,5 +213,8 @@
 
         <!-- Deputy -->
         <service id="AppBundle\Deputy\DistrictLoader" public="true" />
+
+        <!-- Newsletter -->
+        <service id="AppBundle\Newsletter\NewsletterSubscriptionProcess"/>
     </services>
 </container>

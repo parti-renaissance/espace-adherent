@@ -161,7 +161,8 @@
                 {% include 'newsletter/render_form.html.twig' with { options: {
                     form_class: 'l__row l__row--wrap',
                     button_class: 'form btn btn--black',
-                    button_label: 'Je m\'inscris'
+                    button_label: 'Je m\'inscris',
+                    success_redirect_path: path('article_view', { categorySlug: article.category.slug, articleSlug: article.slug })
                 } } %}
             </div>
         </div>

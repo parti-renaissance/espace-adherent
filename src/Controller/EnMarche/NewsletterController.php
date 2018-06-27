@@ -7,6 +7,7 @@ use AppBundle\Form\NewsletterInvitationType;
 use AppBundle\Form\NewsletterSubscriptionType;
 use AppBundle\Form\NewsletterUnsubscribeType;
 use AppBundle\Newsletter\Invitation;
+use AppBundle\Newsletter\NewsletterSubscriptionProcess;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,8 +21,10 @@ class NewsletterController extends Controller
      * @Route("/newsletter", name="newsletter_subscription")
      * @Method({"GET", "POST"})
      */
-    public function subscriptionAction(Request $request)
-    {
+    public function subscriptionAction(
+        Request $request,
+        NewsletterSubscriptionProcess $newsletterSubscriptionProcess
+    ): Response {
         $subscription = new NewsletterSubscription();
         $subscription->setEmail($request->query->get('mail'));
 
@@ -30,6 +33,14 @@ class NewsletterController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.newsletter_subscription.handler')->subscribe($subscription);
+
+            if ($path = $newsletterSubscriptionProcess->getSuccessRedirectPath() ?? null) {
+                $newsletterSubscriptionProcess->terminate();
+
+                $this->addFlash('info', 'newsletter.subscription.success');
+
+                return $this->redirect($path);
+            }
 
             return $this->redirectToRoute('newsletter_subscription_subscribed');
         }
@@ -116,8 +127,12 @@ class NewsletterController extends Controller
         ]);
     }
 
-    public function renderNewsletterFormAction(array $options): Response
-    {
+    public function renderNewsletterFormAction(
+        NewsletterSubscriptionProcess $newsletterSubscriptionProcess,
+        array $options
+    ): Response {
+        $newsletterSubscriptionProcess->init($options['success_redirect_path'] ?? null);
+
         return $this->render('newsletter/form.html.twig', [
             'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class, null, [
                 'action' => $this->generateUrl('newsletter_subscription'),
