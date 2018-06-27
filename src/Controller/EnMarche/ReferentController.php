@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
@@ -12,9 +11,11 @@ use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\ReferentMessageType;
 use AppBundle\Form\ReferentPersonLinkType;
+use AppBundle\Referent\ManagedCommitteesExporter;
 use AppBundle\Referent\ManagedUsersFilter;
 use AppBundle\Referent\ReferentMessage;
 use AppBundle\Referent\ReferentMessageNotifier;
+use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use AppBundle\Repository\ReferentRepository;
@@ -141,13 +142,10 @@ class ReferentController extends Controller
      * @Route("/comites", name="app_referent_committees")
      * @Method("GET")
      */
-    public function committeesAction(): Response
+    public function committeesAction(CommitteeRepository $committeeRepository, ManagedCommitteesExporter $committeesExporter): Response
     {
-        $list = $this->getDoctrine()->getRepository(Committee::class)->findManagedBy($this->getUser());
-        $exporter = $this->get('app.referent.managed_committees.exporter');
-
         return $this->render('referent/committees_list.html.twig', [
-            'managedCommitteesJson' => $exporter->exportAsJson($list),
+            'managedCommitteesJson' => $committeesExporter->exportAsJson($committeeRepository->findManagedBy($this->getUser())),
         ]);
     }
 

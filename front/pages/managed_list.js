@@ -4,7 +4,8 @@ import SearchEngine from '../services/datagrid/SearchEngine';
 import DataGridFactory from '../services/datagrid/DataGridFactory';
 
 /*
- * Referent list
+ * List of items (for example, committees or events) managed by an adherent
+ * with a specific role (for example, referent or deputy).
  */
 export default (slugifier, columns, items) => {
     const dataGridFactory = new DataGridFactory(new SearchEngine(slugifier));
@@ -13,7 +14,7 @@ export default (slugifier, columns, items) => {
         items,
         50,
         null,
-        'referent__list',
+        'managed__list',
         'name'
     );
 

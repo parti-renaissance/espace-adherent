@@ -502,7 +502,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'name' => 'En Marche Paris 8',
             'slug' => 'en-marche-paris-8',
             'description' => 'Le comité « En Marche ! » des habitants du 8ème arrondissement de Paris.',
-            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.8705073, 2.3032432),
+            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.8705073, 2.3132432),
             'phone' => '33 187264236',
             'facebook_page_url' => 'https://facebook.com/enmarche-paris-8',
             'twitter_nickname' => 'enmarche75008',
