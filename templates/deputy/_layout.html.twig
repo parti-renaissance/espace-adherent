@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Espace député' %}
+{% block canonical_url url('app_deputy_users_message') %}
+
+{% block content %}
+    <main>
+        <section class="deputy procuration-manager b__nudge--bottom-huge">
+            <header class="l__wrapper--slim b__nudge--bottom-large">
+                <h1 class="text--center text--large">
+                    {{ block('page_title') }}
+                </h1>
+                <p class="text--center">
+                    Vous gérez : {{ app.user.managedDistrict }}
+                </p>
+            </header>
+
+            <div class="l__wrapper procuration-manager__content">
+                {% set pages = [
+                    {
+                        'route': 'app_deputy_users_message',
+                        'label': 'Envoyer un message'
+                    },
+                    {
+                        'route': 'app_deputy_events',
+                        'label': 'Événements'
+                    },
+                    {
+                        'route': 'app_deputy_committees',
+                        'label': 'Comités'
+                    }
+                ] %}
+
+                <ul class="procuration-manager__tabs">
+                    {% for page in pages %}
+                        <li class="{{ app.request.attributes.get('_route') == page.route ? 'active' : '' }}">
+                            <a href="{{ path(page.route) }}">
+                                {{ page.label }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <hr />
+
+                {% block deputy_content %}{% endblock %}
+            </div>
+        </section>
+    </main>
+{% endblock %}

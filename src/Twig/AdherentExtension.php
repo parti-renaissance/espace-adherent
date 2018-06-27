@@ -42,6 +42,10 @@ class AdherentExtension extends AbstractExtension
             return $adherent->isFemale() ? 'Référente 🥇' : 'Référent 🥇';
         }
 
+        if ($adherent->isDeputy()) {
+            return $adherent->isFemale() ? 'Députée 🏛' : 'Député 🏛';
+        }
+
         if ($adherent->isSupervisor()) {
             return $adherent->isFemale() ? 'Animatrice 🏅' : 'Animateur 🏅';
         }

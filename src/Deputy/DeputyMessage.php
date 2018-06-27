@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\BoardMember;
+namespace AppBundle\Deputy;
 
 use AppBundle\Entity\Adherent;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class BoardMemberMessage
+class DeputyMessage
 {
     /**
      * @var Adherent
@@ -27,10 +27,10 @@ class BoardMemberMessage
     /**
      * @var string|null
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="message.not_blank")
      * @Assert\Length(
      *     min=10,
-     *     max=10000,
+     *     max=5000,
      *     minMessage="message.min_length",
      *     maxMessage="message.max_length",
      * )
