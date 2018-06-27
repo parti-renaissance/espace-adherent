@@ -223,6 +223,11 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
         }, $this->referentTags->toArray());
     }
 
+    public function isReferentEvent(): bool
+    {
+        return null === $this->getCommittee();
+    }
+
     /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("organizerUuid")
