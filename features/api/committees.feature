@@ -13,8 +13,7 @@ Feature:
 
   Scenario: As a non logged-in user I can not access the committee supervisors count managed by referent information
     When I am on "/api/committees/count-for-referent-area"
-    Then the response status code should be 200
-    And I should be on "/connexion"
+    Then the response status code should be 401
 
   Scenario: As an adherent I can not access the committee supervisors count managed by referent information
     When I am logged as "jacques.picard@en-marche.fr"
@@ -45,8 +44,7 @@ Feature:
 
   Scenario: As a non logged-in user I can not get the most active committees in referent managed zone
     When I am on "/api/committees/top-5-in-referent-area"
-    Then the response status code should be 200
-    And I should be on "/connexion"
+    Then the response status code should be 401
 
   Scenario: As an adherent I can not get the most active committees in referent managed zone
     When I am logged as "jacques.picard@en-marche.fr"
@@ -76,8 +74,7 @@ Feature:
 
   Scenario: As a non logged-in user I can not get the committee members count in referent managed zone
     When I am on "/api/committees/members/count-by-month"
-    Then the response status code should be 200
-    And I should be on "/connexion"
+    Then the response status code should be 401
 
   Scenario: As an adherent I can not get the committee members count in referent managed zone
     When I am logged as "jacques.picard@en-marche.fr"

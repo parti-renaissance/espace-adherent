@@ -220,5 +220,7 @@
         <service id="AppBundle\Deputy\DeputyMessageNotifier" public="true">
             <argument type="service" id="app.mailer.transactional"/>
         </service>
+
+        <service id="AppBundle\Security\ApiAuthenticationEntryPoint"/>
     </services>
 </container>

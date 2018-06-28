@@ -248,12 +248,18 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        api:
+        api_oauth:
             pattern: ^/api/(me|webhooks/)
             stateless: true
             guard:
                 authenticators:
                     - 'AppBundle\OAuth\OAuthAuthenticator'
+
+        api:
+            context: main_context
+            pattern: ^/api
+            anonymous: true
+            entry_point: AppBundle\Security\ApiAuthenticationEntryPoint
 
         admin:
             context: main_context

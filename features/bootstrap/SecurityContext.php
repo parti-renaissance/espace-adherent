@@ -56,7 +56,7 @@ class SecurityContext extends RawMinkContext
             return;
         }
 
-        $token = new UsernamePasswordToken($user, null, 'main_context', $user->getRoles());
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $session->set('_security_main_context', serialize($token));
         $session->save();
 
