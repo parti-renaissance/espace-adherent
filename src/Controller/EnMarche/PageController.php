@@ -20,7 +20,7 @@ class PageController extends Controller
     use CanaryControllerTrait;
 
     /**
-     * @Route("/campus", name="page_campus")
+     * @Route("/formation", name="page_campus")
      * @Method("GET")
      */
     public function campusAction()
@@ -29,7 +29,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/campus/dificultes-internet", name="page_campus_internet")
+     * @Route("/formation/dificultes-internet", name="page_campus_internet")
      * @Method("GET")
      */
     public function campusInternetAction()

@@ -21,7 +21,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | /le-mouvement |
       | /evenements   |
       | /comites      |
-      | /campus       |
+      | /formation       |
       | /articles     |
 
   Scenario: A user can't donate more than 7500€ per year
