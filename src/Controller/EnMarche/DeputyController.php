@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Form\DeputyMessageType;
 use AppBundle\Deputy\DeputyMessage;
 use AppBundle\Deputy\DeputyMessageNotifier;
@@ -23,12 +24,16 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DeputyController extends Controller
 {
+    use CanaryControllerTrait;
+
     /**
      * @Route("/utilisateurs/message", name="app_deputy_users_message")
      * @Method("GET|POST")
      */
     public function usersSendMessageAction(Request $request, AdherentRepository $adherentRepository): Response
     {
+        $this->disableInProduction();
+
         $recipients = $adherentRepository->findAllInDistrict($this->getUser()->getManagedDistrict());
         $message = $this->createMessage($recipients);
 
@@ -55,6 +60,8 @@ class DeputyController extends Controller
      */
     public function listEventsAction(EventRepository $eventRepository, ManagedEventsExporter $eventsExporter): Response
     {
+        $this->disableInProduction();
+
         return $this->render('deputy/events_list.html.twig', [
             'managedEventsJson' => $eventsExporter->exportAsJson($eventRepository->findAllInDistrict($this->getUser()->getManagedDistrict())),
         ]);
@@ -66,6 +73,8 @@ class DeputyController extends Controller
      */
     public function listCommitteesAction(CommitteeRepository $committeeRepository, ManagedCommitteesExporter $committeesExporter): Response
     {
+        $this->disableInProduction();
+
         return $this->render('deputy/committees_list.html.twig', [
             'managedCommitteesJson' => $committeesExporter->exportAsJson(
                 $committeeRepository->findAllInDistrict($this->getUser()->getManagedDistrict())
