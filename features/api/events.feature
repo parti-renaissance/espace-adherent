@@ -13,8 +13,7 @@ Feature:
 
   Scenario: As a non logged-in user I can not get events count in the referent managed zone
     When I am on "/api/events/count"
-    Then the response status code should be 200
-    And I should be on "/connexion"
+    Then the response status code should be 401
 
   Scenario Outline: As an adherent I can not get events count in the referent managed zone
     When I am logged as "jacques.picard@en-marche.fr"
@@ -57,8 +56,7 @@ Feature:
 
   Scenario: As a non logged-in user I can not get events count in the referent managed zone
     When I am on "/api/events/count-by-month?country=fr"
-    Then the response status code should be 200
-    And I should be on "/connexion"
+    Then the response status code should be 401
 
   Scenario: As a referent I can get events count in the referent managed zone
     When I am logged as "referent-75-77@en-marche-dev.fr"

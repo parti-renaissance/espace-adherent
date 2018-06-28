@@ -13,8 +13,7 @@ Feature:
 
   Scenario: As a non logged-in user I can not access the adherents count information
     When I am on "/api/adherents/count"
-    Then the response status code should be 200
-    And I should be on "/connexion"
+    Then the response status code should be 401
 
   Scenario: As an adherent I can not access the adherents count information
     When I am logged as "jacques.picard@en-marche.fr"
@@ -35,8 +34,7 @@ Feature:
 
   Scenario: As a non logged-in user I can not access the managed by referent adherents count information
     When I am on "/api/adherents/count-by-referent-area"
-    Then the response status code should be 200
-    And I should be on "/connexion"
+    Then the response status code should be 401
 
   Scenario: As an adherent I can not access the managed by referent adherents count information
     When I am logged as "jacques.picard@en-marche.fr"
@@ -83,8 +81,7 @@ Feature:
 
   Scenario: As an anonymous user I cannot access to my information
     And I am on "/api/users/me"
-    Then the response status code should be 200
-    And I should be on "/connexion"
+    Then the response status code should be 401
 
   Scenario: As a referent I can access to my information
     When I am logged as "referent-75-77@en-marche-dev.fr"

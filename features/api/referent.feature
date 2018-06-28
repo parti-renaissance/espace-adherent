@@ -11,8 +11,7 @@ Feature:
 
   Scenario: As a non logged-in user I can not get the committee, cities and countries managed by referent for autocomplete
     When I am on "/api/referent/search/autocomplete?type=committee&value=en"
-    Then the response status code should be 200
-    And I should be on "/connexion"
+    Then the response status code should be 401
 
   Scenario: As an adherent I can not get the committee, cities and countries managed by referent for autocomplete
     When I am logged as "jacques.picard@en-marche.fr"
