@@ -126,7 +126,7 @@ class EventManagerControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertContains('L\'événement a bien été modifié.', $crawler->filter('#notice-flashes')->text());
+        $this->seeFlashMessage($crawler, 'L\'événement a bien été modifié.');
         $this->assertSame('Écologie, débatons-en ! - Lyon 1er, 02/03/2022 | La République En Marche !', $crawler->filter('title')->text());
         $this->assertSame('Écologie, débatons-en !', $crawler->filter('.committee-event-name')->text());
         $this->assertSame('Organisé par Jacques Picard du comité En Marche Paris 8', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
@@ -151,7 +151,7 @@ class EventManagerControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertContains('L\'événement a bien été annulé.', $crawler->filter('#notice-flashes')->text());
+        $this->seeFlashMessage($crawler, 'L\'événement a bien été annulé.');
 
         $messages = $this->getEmailRepository()->findMessages(EventCancellationMessage::class);
         /** @var EventCancellationMessage $message */

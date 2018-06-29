@@ -21,7 +21,7 @@ class AdherentManager
         $this->manager = $manager;
     }
 
-    public function activateAccount(Adherent $adherent, AdherentActivationToken $token, bool $flush = true)
+    public function activateAccount(Adherent $adherent, AdherentActivationToken $token, bool $flush = true): void
     {
         $adherent->activate($token);
 

@@ -12,6 +12,12 @@
 
 {% block adherent_profile_form %}
     <h2>Mes informations personnelles</h2>
+
+    <div class="l__row l__row--top l__row--h-stretch b__border b__nudge--top space--30">
+        E-mail: <span>{{ app.user.emailAddress }}</span>
+        <a href="{{ path('app_user_change_email') }}" class="btn btn--green">Modifier mon adresse e-mail</a>
+    </div>
+
     <p>Modifiez vos informations personnelles.</p>
 
     {{ form_start(form) }}
@@ -88,11 +94,6 @@
         </div>
 
         <div class="space--10-0"></div>
-
-        <div class="register__form--full" id="field-email-address">
-            {{ form_widget(form.emailAddress, { attr: { placeholder: 'Adresse e-mail' } }) }}
-            {{ form_errors(form.emailAddress) }}
-        </div>
 
         <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-mobile">
             {{ form_widget(form.comMobile) }}

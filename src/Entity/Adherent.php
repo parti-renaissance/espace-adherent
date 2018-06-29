@@ -573,6 +573,17 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->password = $newPassword;
     }
 
+    public function changeEmail(AdherentChangeEmailToken $token): void
+    {
+        if (!$token->getEmail()) {
+            throw new \InvalidArgumentException('Token must have a new email.');
+        }
+
+        $token->consume($this);
+
+        $this->emailAddress = $token->getEmail();
+    }
+
     public function clearOldPassword(): void
     {
         $this->oldPassword = null;

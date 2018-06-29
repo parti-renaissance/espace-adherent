@@ -221,12 +221,10 @@ class CitizenProjectControllerTest extends WebTestCase
         $this->assertClientIsRedirectedTo(sprintf('/projets-citoyens/%s', $citizenProject->getSlug()), $this->client);
         $crawler = $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $flash = $crawler->filter('#notice-flashes');
-        $this->assertSame(1, count($flash));
-        $this->assertSame(sprintf('Votre comité %s soutient maintenant le projet citoyen %s',
+        $this->seeFlashMessage($crawler, sprintf('Votre comité %s soutient maintenant le projet citoyen %s',
             $committee->getName(),
             $citizenProject->getName()
-        ), trim($flash->text()));
+        ));
 
         $this->manager->clear();
         $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
@@ -239,12 +237,10 @@ class CitizenProjectControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $flash = $crawler->filter('#notice-flashes');
-        $this->assertSame(1, count($flash));
-        $this->assertSame(sprintf('Votre comité %s ne soutient plus le projet citoyen %s',
+        $this->seeFlashMessage($crawler, sprintf('Votre comité %s ne soutient plus le projet citoyen %s',
             $committee->getName(),
             $citizenProject->getName()
-        ), trim($flash->text()));
+        ));
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/projets-citoyens/%s', $citizenProject->getSlug()));
         $committeeOnSupport = $crawler->filter('#support-committee')->filter('li');
@@ -261,12 +257,10 @@ class CitizenProjectControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->client->submit($crawler->selectButton('Soutenir ce projet avec mon comité')->form());
         $crawler = $this->client->followRedirect();
-        $flash = $crawler->filter('#notice-flashes');
-        $this->assertCount(1, $flash);
-        $this->assertSame(sprintf('Votre comité %s soutient maintenant le projet citoyen %s',
+        $this->seeFlashMessage($crawler, sprintf('Votre comité %s soutient maintenant le projet citoyen %s',
             $committee->getName(),
             $citizenProject->getName()
-        ), trim($flash->text()));
+        ));
 
         $this->manager->clear();
         $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
@@ -276,12 +270,10 @@ class CitizenProjectControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->client->submit($crawler->selectButton('Retirer mon soutien à ce projet')->form());
         $crawler = $this->client->followRedirect();
-        $flash = $crawler->filter('#notice-flashes');
-        $this->assertCount(1, $flash);
-        $this->assertSame(sprintf('Votre comité %s ne soutient plus le projet citoyen %s',
+        $this->seeFlashMessage($crawler, sprintf('Votre comité %s ne soutient plus le projet citoyen %s',
             $committee->getName(),
             $citizenProject->getName()
-        ), trim($flash->text()));
+        ));
     }
 
     public function testCitizenProjectContactActors()

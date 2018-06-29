@@ -115,7 +115,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         // Follow the redirect and check the adherent can see the committee edit page again
         $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertContains('Les informations du comité ont été mises à jour avec succès.', $crawler->filter('#notice-flashes')->text());
+        $this->seeFlashMessage($crawler, 'Les informations du comité ont été mises à jour avec succès.');
         $this->assertSame('Clichy est En Marche !', $crawler->filter('#committee_name')->attr('value'));
         // Address has been changed but not city and country because the committee is approved
         $this->assertSame('12 Rue des Saussaies', $crawler->filter('#committee_address_address')->attr('value'));
@@ -327,7 +327,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         // Follow the redirect and check the adherent can see the committee page
         $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertContains('Le nouvel événement a bien été créé et publié sur la page du comité.', $crawler->filter('#notice-flashes')->text());
+        $this->seeFlashMessage($crawler, 'Le nouvel événement a bien été créé et publié sur la page du comité.');
         $this->assertSame('Débat sur l\'agriculture écologique - Lyon 1er, 02/03/2022 | La République En Marche !', $crawler->filter('title')->text());
         $this->assertSame('Débat sur l\'agriculture écologique', $crawler->filter('.committee-event-name')->text());
         $this->assertSame('Organisé par Gisele Berthoux du comité En Marche Paris 8', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
@@ -466,7 +466,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertSame(1, $crawler->filter('.promote-host-link')->count());
-        $this->assertContains('Le membre a été promu animateur du comité avec succès.', $crawler->filter('#notice-flashes')->text());
+        $this->seeFlashMessage($crawler, 'Le membre a été promu animateur du comité avec succès.');
     }
 
     public function testAuthenticatedCommitteeHostCannotPromoteNewHostsAmongMembers()

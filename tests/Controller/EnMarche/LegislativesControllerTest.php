@@ -62,7 +62,7 @@ class LegislativesControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('#legislatives_campaign_contact_form')->count());
-        $this->assertSame(0, $crawler->filter('#notice-flashes')->count());
+        $this->assertSame(0, $crawler->filter('.notice-flashes')->count());
         $this->assertSame(7, $crawler->filter('#legislatives_campaign_contact_form .form__error')->count());
         $this->assertCount(0, $this->emailRepository->findMessages(LegislativeCampaignContactMessage::class));
 
@@ -108,7 +108,7 @@ class LegislativesControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('#legislatives_campaign_contact_form')->count());
-        $this->assertContains("Votre demande d'information a été envoyée avec succès.", $crawler->filter('#notice-flashes')->text());
+        $this->seeFlashMessage($crawler, "Votre demande d'information a été envoyée avec succès. Elle sera traitée dans les plus brefs délais par le service concerné.");
         $this->assertSame(0, $crawler->filter('#legislatives_campaign_contact_form .form__error')->count());
         $this->assertCount(1, $this->emailRepository->findMessages(LegislativeCampaignContactMessage::class));
     }

@@ -4,11 +4,13 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Unregistration;
+use AppBundle\Form\AdherentChangeEmailType;
 use AppBundle\Form\AdherentChangePasswordType;
 use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentType;
 use AppBundle\Form\UnregistrationType;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
+use AppBundle\Membership\AdherentChangeEmailHandler;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\Membership\MembershipRequestHandler;
 use AppBundle\Membership\UnregistrationCommand;
@@ -62,6 +64,7 @@ class UserController extends Controller
         $adherent = $this->getUser();
         $membership = MembershipRequest::createFromAdherent($adherent);
         $form = $this->createForm(AdherentType::class, $membership)
+            ->remove('emailAddress')
             ->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications'])
         ;
 
@@ -73,6 +76,26 @@ class UserController extends Controller
         }
 
         return $this->render('adherent/profile.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/modifier-email", name="app_user_change_email")
+     * @Method({"POST", "GET"})
+     */
+    public function changeEmailAction(Request $request, AdherentChangeEmailHandler $handler): Response
+    {
+        $form = $this
+            ->createForm(AdherentChangeEmailType::class)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $handler->handleRequest($this->getUser(), $form->getData()['email']);
+
+            return $this->redirectToRoute('app_user_edit');
+        }
+
+        return $this->render('adherent/profile-email.html.twig', ['form' => $form->createView()]);
     }
 
     /**

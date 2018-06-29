@@ -3,10 +3,12 @@
 namespace AppBundle\Controller\EnMarche\Security;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\AdherentChangeEmailToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Exception\AdherentTokenExpiredException;
 use AppBundle\Form\AdherentResetPasswordType;
 use AppBundle\Form\LoginType;
+use AppBundle\Membership\AdherentChangeEmailHandler;
 use AppBundle\Membership\MembershipRequestHandler;
 use AppBundle\Repository\AdherentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -16,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -151,5 +154,40 @@ class SecurityController extends Controller
         }
 
         return $this->redirectToRoute('app_user_login');
+    }
+
+    /**
+     * @Route(
+     *     path="/valider-changement-email/{adherent_uuid}/{change_email_token}",
+     *     name="user_validate_new_email",
+     *     requirements={
+     *         "adherent_uuid": "%pattern_uuid%",
+     *         "change_email_token": "%pattern_sha1%"
+     *     }
+     * )
+     * @Method("GET")
+     * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
+     * @Entity("token", expr="repository.findByToken(change_email_token)")
+     */
+    public function activateNewEmailAction(
+        Adherent $adherent,
+        AdherentChangeEmailToken $token,
+        AdherentChangeEmailHandler $handler,
+        TokenStorageInterface $tokenStorage
+    ): Response {
+        if ($token->getUsageDate()) {
+            throw $this->createNotFoundException('No available email changing token.');
+        }
+
+        try {
+            $handler->handleValidationRequest($adherent, $token);
+
+            $this->addFlash('info', 'adherent.change_email.success');
+            $tokenStorage->setToken(null);
+        } catch (AdherentTokenExpiredException $e) {
+            $this->addFlash('info', 'adherent.change_email.expired_key');
+        }
+
+        return $this->redirectToRoute('homepage');
     }
 }

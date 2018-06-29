@@ -1,0 +1,84 @@
+<?php
+
+namespace Tests\AppBundle\Controller\EnMarche;
+
+use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\Entity\Adherent;
+use AppBundle\Entity\AdherentChangeEmailToken;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Tests\AppBundle\Controller\ControllerTestTrait;
+
+/**
+ * @group functional
+ * @group membership
+ */
+class UserControllerTest extends WebTestCase
+{
+    use ControllerTestTrait;
+
+    public function testUserCannotReplaceYourEmailByOneAlreadyUsed(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier-email');
+
+        $crawler = $this->client->submit($crawler->selectButton('Modifier')->form(), [
+            'adherent_change_email[email]' => 'referent@en-marche-dev.fr',
+        ]);
+
+        $errors = $crawler->filter('.form__errors > li');
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        self::assertSame('Cette adresse e-mail existe déjà.', $errors->eq(0)->text());
+    }
+
+    public function testUserCanValidateYourNewEmail(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
+
+        $crawler = $this->client->request('GET', '/parametres/mon-compte/modifier-email');
+
+        $this->client->submit($crawler->selectButton('Modifier')->form(), [
+            'adherent_change_email[email]' => 'new.mail@test.com',
+        ]);
+
+        $this->assertClientIsRedirectedTo('/parametres/mon-compte/modifier', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(200, $this->client);
+
+        $this->seeFlashMessage($crawler, 'Un e-mail de confirmation a été envoyé à votre nouvelle adresse. Consultez-le pour valider le changement.');
+
+        $token = $this->getRepository(AdherentChangeEmailToken::class)->findLastUnusedByEmail('new.mail@test.com');
+
+        $this->client->request(Request::METHOD_GET, sprintf('/valider-changement-email/%s/%s', $token->getAdherentUuid(), $token->getValue()));
+        $this->assertClientIsRedirectedTo('/', $this->client);
+
+        $flash = $this->client->getRequest()->getSession()->getFlashBag()->get('info');
+        self::assertCount(1, $flash);
+        self::assertSame('adherent.change_email.success', current($flash));
+
+        $this->manager->clear(Adherent::class);
+        $adherent = $this->getAdherentRepository()->findOneByUuid($token->getAdherentUuid()->toString());
+        self::assertSame('new.mail@test.com', $adherent->getEmailAddress());
+    }
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->init([
+            LoadAdherentData::class,
+        ]);
+    }
+
+    protected function tearDown()
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+}
