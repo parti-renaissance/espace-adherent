@@ -44,9 +44,9 @@ class CommitteeController extends Controller
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->get('app.committee.feed_manager')->createMessage($message);
                 if ($message->isPublished()) {
-                    $this->addFlash('info', $this->get('translator')->trans('committee.message_published'));
+                    $this->addFlash('info', 'committee.message_published');
                 } else {
-                    $this->addFlash('info', $this->get('translator')->trans('committee.message_created'));
+                    $this->addFlash('info', 'committee.message_created');
                 }
 
                 return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
@@ -83,7 +83,7 @@ class CommitteeController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('info', $this->get('translator')->trans('committee.message_edited'));
+            $this->addFlash('info', 'committee.message_edited');
 
             return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
         }
@@ -120,7 +120,7 @@ class CommitteeController extends Controller
         $em->remove($committeeFeedItem);
         $em->flush();
 
-        $this->addFlash('info', $this->get('translator')->trans('committee.message_deleted'));
+        $this->addFlash('info', 'committee.message_deleted');
 
         return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
     }

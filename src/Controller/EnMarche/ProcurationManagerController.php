@@ -130,10 +130,10 @@ class ProcurationManagerController extends Controller
 
         if (ProcurationProxy::ACTION_DISABLE === $action) {
             $manager->disableProcurationProxy($proxy);
-            $this->addFlash('info', $this->get('translator')->trans('procuration_manager.disabled.success'));
+            $this->addFlash('info', 'procuration_manager.disabled.success');
         } else {
             $manager->enableProcurationProxy($proxy);
-            $this->addFlash('info', $this->get('translator')->trans('procuration_manager.enabled.success'));
+            $this->addFlash('info', 'procuration_manager.enabled.success');
         }
 
         return $this->redirectToRoute('app_procuration_manager_proposals');
@@ -179,10 +179,10 @@ class ProcurationManagerController extends Controller
 
         if (ProcurationRequest::ACTION_PROCESS === $action) {
             $manager->processProcurationRequest($request);
-            $this->addFlash('info', $this->get('translator')->trans('procuration_manager.process.success'));
+            $this->addFlash('info', 'procuration_manager.process.success');
         } else {
             $manager->unprocessProcurationRequest($request);
-            $this->addFlash('info', $this->get('translator')->trans('procuration_manager.unprocess.success'));
+            $this->addFlash('info', 'procuration_manager.unprocess.success');
         }
 
         return $this->redirectToRoute('app_procuration_manager_request', ['id' => $id]);
@@ -216,7 +216,7 @@ class ProcurationManagerController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->tryRedirectCatchingDeadLock(function () use ($request, $proxy) {
                 $this->get(ProcurationManager::class)->processProcurationRequest($request, $proxy, $this->getUser(), true);
-                $this->addFlash('info', $this->get('translator')->trans('procuration_manager.associate.success'));
+                $this->addFlash('info', 'procuration_manager.associate.success');
 
                 return $this->redirectToRoute('app_procuration_manager_request', ['id' => $request->getId()]);
             }, 'app_procuration_manager_request_associate', [
@@ -256,7 +256,7 @@ class ProcurationManagerController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->tryRedirectCatchingDeadLock(function () use ($request) {
                 $this->get(ProcurationManager::class)->unprocessProcurationRequest($request, $this->getUser(), true);
-                $this->addFlash('info', $this->get('translator')->trans('procuration_manager.deassociate.success'));
+                $this->addFlash('info', 'procuration_manager.deassociate.success');
 
                 return $this->redirectToRoute('app_procuration_manager_request', ['id' => $request->getId()]);
             }, 'app_procuration_manager_request_deassociate', ['id' => $request->getId()]);
@@ -276,7 +276,7 @@ class ProcurationManagerController extends Controller
         } catch (DriverException $e) {
             if (stripos($e->getMessage(), 'deadlock')) {
                 // Let the user retry
-                $this->addFlash('info', $this->get('translator')->trans('procuration_manager.db_error'));
+                $this->addFlash('info', 'procuration_manager.db_error');
 
                 return $this->redirectToRoute($retryRoute, $retryParams);
             }

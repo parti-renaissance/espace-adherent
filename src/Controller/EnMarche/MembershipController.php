@@ -136,7 +136,7 @@ class MembershipController extends Controller
             $request->getSession()->invalidate();
             $this->get('app.security.authentication_utils')->authenticateAdherent($user);
 
-            $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
+            $this->addFlash('info', 'adherent.activation.success');
 
             return $this->redirectToRoute('app_adherent_home');
         }
@@ -194,16 +194,16 @@ class MembershipController extends Controller
             if ($adherent->isAdherent()) {
                 $this->get(MembershipRequestHandler::class)->sendConfirmationJoinMessage($adherent);
 
-                $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
+                $this->addFlash('info', 'adherent.activation.success');
 
                 return $callbackManager->redirectToClientIfValid('app_adherent_home');
             }
 
             return $callbackManager->redirectToClientIfValid('app_membership_join');
         } catch (AdherentAlreadyEnabledException $e) {
-            $this->addFlash('info', $this->get('translator')->trans('adherent.activation.already_active'));
+            $this->addFlash('info', 'adherent.activation.already_active');
         } catch (AdherentTokenExpiredException $e) {
-            $this->addFlash('info', $this->get('translator')->trans('adherent.activation.expired_key'));
+            $this->addFlash('info', 'adherent.activation.expired_key');
         }
 
         // Other exceptions that may be raised will be caught by Symfony.

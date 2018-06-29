@@ -37,7 +37,7 @@ class CitizenProjectManagerController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.citizen_project.update_handler')->handle($command);
-            $this->addFlash('info', $this->get('translator')->trans('citizen_project.update.success'));
+            $this->addFlash('info', 'citizen_project.update.success');
 
             return $this->redirectToRoute('app_citizen_project_manager_edit', [
                 'slug' => $citizenProject->getSlug(),
@@ -69,7 +69,7 @@ class CitizenProjectManagerController extends Controller
         $contacts = GroupUtils::getUuidsFromAdherents($adherents);
 
         if (empty($contacts)) {
-            $this->addFlash('info', $this->get('translator')->trans('citizen_project.contact_actors.none'));
+            $this->addFlash('info', 'citizen_project.contact_actors.none');
 
             return $this->redirectToRoute('app_citizen_project_list_actors', [
                 'slug' => $citizenProject->getSlug(),
@@ -83,7 +83,7 @@ class CitizenProjectManagerController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get(CitizenProjectContactActorsCommandHandler::class)->handle($command);
-            $this->addFlash('info', $this->get('translator')->trans('citizen_project.contact_actors.success'));
+            $this->addFlash('info', 'citizen_project.contact_actors.success');
 
             return $this->redirectToRoute('app_citizen_project_list_actors', [
                 'slug' => $citizenProject->getSlug(),

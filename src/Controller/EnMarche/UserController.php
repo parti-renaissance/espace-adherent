@@ -67,7 +67,7 @@ class UserController extends Controller
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $this->get(MembershipRequestHandler::class)->update($adherent, $membership);
-            $this->addFlash('info', $this->get('translator')->trans('adherent.update_profile.success'));
+            $this->addFlash('info', 'adherent.update_profile.success');
 
             return $this->redirectToRoute('app_user_profile');
         }
@@ -87,7 +87,7 @@ class UserController extends Controller
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $this->get('app.adherent_change_password_handler')->changePassword($this->getUser(), $form->get('password')->getData());
-            $this->addFlash('info', $this->get('translator')->trans('adherent.update_password.success'));
+            $this->addFlash('info', 'adherent.update_password.success');
 
             return $this->redirectToRoute('app_user_change_password');
         }
@@ -113,7 +113,7 @@ class UserController extends Controller
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $historyManager->handleSubscriptionsUpdate($adherent, $oldEmailsSubscriptions);
 
-            $this->addFlash('info', $this->get('translator')->trans('adherent.set_emails_notifications.success'));
+            $this->addFlash('info', 'adherent.set_emails_notifications.success');
 
             return $this->redirectToRoute('app_user_set_email_notifications');
         }

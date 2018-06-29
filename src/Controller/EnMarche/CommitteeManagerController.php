@@ -41,7 +41,7 @@ class CommitteeManagerController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.committee.update_handler')->handle($command);
-            $this->addFlash('info', $this->get('translator')->trans('committee.update.success'));
+            $this->addFlash('info', 'committee.update.success');
 
             return $this->redirectToRoute('app_committee_manager_edit', [
                 'slug' => $committee->getSlug(),
@@ -71,7 +71,7 @@ class CommitteeManagerController extends Controller
             $registrationCommand = new EventRegistrationCommand($event, $this->getUser());
             $this->get('app.event.registration_handler')->handle($registrationCommand);
 
-            $this->addFlash('info', $this->get('translator')->trans('committee.event.creation.success'));
+            $this->addFlash('info', 'committee.event.creation.success');
 
             return $this->redirectToRoute('app_event_show', [
                 'slug' => $event->getSlug(),
@@ -140,7 +140,7 @@ class CommitteeManagerController extends Controller
         $contacts = GroupUtils::getUuidsFromAdherents($adherents);
 
         if (empty($contacts)) {
-            $this->addFlash('info', $this->get('translator')->trans('committee.contact_members.none'));
+            $this->addFlash('info', 'committee.contact_members.none');
 
             return $this->redirectToRoute('app_committee_manager_list_members', [
                 'slug' => $committee->getSlug(),
@@ -154,7 +154,7 @@ class CommitteeManagerController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.committee.contact_members_handler')->handle($command);
-            $this->addFlash('info', $this->get('translator')->trans('committee.contact_members.success'));
+            $this->addFlash('info', 'committee.contact_members.success');
 
             return $this->redirectToRoute('app_committee_manager_list_members', [
                 'slug' => $committee->getSlug(),
@@ -191,7 +191,7 @@ class CommitteeManagerController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $committeeManager->promote($member, $committee);
-            $this->addFlash('info', $this->get('translator')->trans('committee.promote_host.success'));
+            $this->addFlash('info', 'committee.promote_host.success');
 
             return $this->redirectToRoute('app_committee_manager_list_members', [
                 'slug' => $committee->getSlug(),
@@ -228,7 +228,7 @@ class CommitteeManagerController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $committeeManager->demote($member, $committee);
-            $this->addFlash('info', $this->get('translator')->trans('committee.demote_host.success'));
+            $this->addFlash('info', 'committee.demote_host.success');
 
             return $this->redirectToRoute('app_committee_manager_list_members', [
                 'slug' => $committee->getSlug(),
