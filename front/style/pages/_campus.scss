@@ -23,6 +23,19 @@
             padding: 60px 0;
         }
 
+        &__institut {
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            background-image: none;
+            background-color: #1D5FD1; /* tous politique blue */
+            padding: 60px 0 80px;
+
+            p {
+                color: white;
+            }
+        }
+
         &__inspiration {
             padding: 0;
             background: $gray--lighter;
