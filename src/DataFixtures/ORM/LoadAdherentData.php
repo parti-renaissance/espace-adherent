@@ -41,6 +41,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
     public const REFERENT_2_UUID = '2f69db3c-ecd7-4a8a-bd23-bb4c9cfd70cf';
     public const REFERENT_3_UUID = 'e1bee762-4dc1-42f6-9884-1c83ba9c6d17';
     public const DEPUTY_1_UUID = '918f07e5-676b-49c0-b76d-72ce01cb2404';
+    public const DEPUTY_2_UUID = 'ccd87fb0-7d98-433f-81e1-3dd8b14f79c0';
 
     public const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     public const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
@@ -449,6 +450,23 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $deputy_75_1->addReferentTag($this->getReference('referent_tag_75008'));
         $this->addReference('deputy-75-1', $deputy_75_1);
 
+        $deputy_ch_li = $adherentFactory->createFromArray([
+            'uuid' => self::DEPUTY_2_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'deputy-ch-li@en-marche-dev.fr',
+            'gender' => 'male',
+            'first_name' => 'Député',
+            'last_name' => 'CHLI FDESIX',
+            'address' => PostAddress::createFrenchAddress('1 Place Colette', '75001-75101', 48.863571, 2.335938),
+            'birthdate' => '1979-07-02',
+            'registered_at' => '2017-06-26 10:15:17',
+        ]);
+        $roles = new ArrayCollection();
+        $roles->add($this->getReference('deputy'));
+        $deputy_ch_li->setBoardMember(BoardMember::AREA_ABROAD, $roles);
+        $deputy_ch_li->addReferentTag($this->getReference('referent_tag_ch'));
+        $this->addReference('deputy-ch-li', $deputy_ch_li);
+
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
         $key2 = AdherentActivationToken::generate($adherent2);
@@ -470,6 +488,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $key18 = AdherentActivationToken::generate($referentChild);
         $key19 = AdherentActivationToken::generate($referent75and77);
         $key20 = AdherentActivationToken::generate($deputy_75_1);
+        $key21 = AdherentActivationToken::generate($deputy_ch_li);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -491,6 +510,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $referentChild->activate($key18, '2017-02-07 13:20:45');
         $referent75and77->activate($key19, '2018-05-13 07:21:01');
         $deputy_75_1->activate($key20, '2017-06-01 12:14:51');
+        $deputy_ch_li->activate($key21, '2017-06-26 12:14:51');
 
         // Create some default committees and make people join them
         $committeeFactory = $this->getCommitteeFactory();
@@ -643,6 +663,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($coordinator);
         $manager->persist($coordinatorCP);
         $manager->persist($deputy_75_1);
+        $manager->persist($deputy_ch_li);
 
         $manager->persist($key1);
         $manager->persist($key2);

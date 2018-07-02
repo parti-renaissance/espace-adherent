@@ -61,11 +61,11 @@ class CitizenProjectManagerTest extends WebTestCase
         $citizenProject = $this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
         $adherents = $this->citizenProjectManager->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject);
 
-        $this->assertSame(5, $adherents->count());
+        $this->assertSame(6, $adherents->count());
 
         $adherents = $this->citizenProjectManager->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject, 0, false);
 
-        $this->assertSame(6, $adherents->count());
+        $this->assertSame(7, $adherents->count());
 
         $adherent = $this->getAdherentRepository()->findOneByEmail('francis.brioul@yahoo.com');
         $adherent->setCitizenProjectCreationEmailSubscriptionRadius(AdherentEmailSubscription::DISTANCE_100KM);
@@ -78,7 +78,7 @@ class CitizenProjectManagerTest extends WebTestCase
 
         $adherents = $this->citizenProjectManager->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject, 0, true, CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN);
 
-        $this->assertSame(7, $adherents->count());
+        $this->assertSame(8, $adherents->count());
     }
 
     protected function setUp()

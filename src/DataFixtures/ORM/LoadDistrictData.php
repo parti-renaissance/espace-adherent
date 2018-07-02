@@ -3,7 +3,6 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Deputy\LightFileDistrictLoader;
-use AppBundle\Entity\Adherent;
 use AppBundle\Entity\District;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -28,10 +27,14 @@ class LoadDistrictData extends AbstractFixture implements FixtureInterface, Cont
             __DIR__.'/../deputy/country_boundaries.json'
         );
 
-        /** @var Adherent $deputy */
-        $deputy = $this->getReference('deputy-75-1');
+        $deputy_75_1 = $this->getReference('deputy-75-1');
         $district_75_1 = $manager->getRepository(District::class)->findOneBy(['code' => '75001']);
-        $district_75_1->setAdherent($deputy);
+        $district_75_1->setAdherent($deputy_75_1);
+
+        $deputy_ch_li = $this->getReference('deputy-ch-li');
+        $district_ch_li = $manager->getRepository(District::class)->findOneBy(['code' => 'FDE-06']);
+        $district_ch_li->setAdherent($deputy_ch_li);
+
         $manager->flush();
     }
 
