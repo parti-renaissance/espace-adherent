@@ -13,8 +13,9 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\District;
 use AppBundle\Geocoder\Coordinates;
-use AppBundle\Membership\AdherentEmailSubscription;
+use AppBundle\Membership\CitizenProjectNotificationDistance;
 use AppBundle\Statistics\StatisticsParametersFilter;
+use AppBundle\Subscription\SubscriptionTypeEnum;
 use AppBundle\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -311,6 +312,12 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 )
             );
 
+        $qb
+            ->join('n.subscriptionTypes', 'subscriptionType')
+            ->andWhere('subscriptionType.code = :citizen_project_subscription_type')
+            ->setParameter('citizen_project_subscription_type', SubscriptionTypeEnum::CITIZEN_PROJECT_CREATION_EMAIL)
+        ;
+
         $distance = $qb->expr()->orX();
         $distance->add($this->getNearbyExpression().' <= :distance_max')
             ->add('n.citizenProjectCreationEmailSubscriptionRadius = :citizenProjectCreationEmailSubscriptionRadius')
@@ -318,7 +325,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         $qb->andWhere($distance)
             ->setParameter('distance_max', $radius)
-            ->setParameter('citizenProjectCreationEmailSubscriptionRadius', AdherentEmailSubscription::DISTANCE_ALL)
+            ->setParameter('citizenProjectCreationEmailSubscriptionRadius', CitizenProjectNotificationDistance::DISTANCE_ALL)
         ;
 
         $having = $qb->expr()->orX();
@@ -326,7 +333,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->add('n.citizenProjectCreationEmailSubscriptionRadius = :acceptAllNotification')
         ;
         $qb->having($having)
-            ->setParameter('acceptAllNotification', AdherentEmailSubscription::DISTANCE_ALL)
+            ->setParameter('acceptAllNotification', CitizenProjectNotificationDistance::DISTANCE_ALL)
         ;
 
         if ($excludeSupervisor) {

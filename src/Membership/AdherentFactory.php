@@ -35,9 +35,7 @@ class AdherentFactory
             $this->addressFactory->createFromAddress($request->getAddress()),
             $request->getPhone(),
             Adherent::DISABLED,
-            'now',
-            $request->comEmail,
-            $request->comMobile
+            'now'
         );
     }
 
@@ -60,8 +58,7 @@ class AdherentFactory
             $data['address'],
             $phone,
             Adherent::DISABLED,
-            isset($data['registered_at']) ? $data['registered_at'] : 'now',
-            true
+            isset($data['registered_at']) ? $data['registered_at'] : 'now'
         );
 
         if (!isset($data['isAdherent']) || $data['isAdherent']) {

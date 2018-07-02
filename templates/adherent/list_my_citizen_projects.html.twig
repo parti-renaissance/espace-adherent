@@ -1,6 +1,10 @@
 {% if citizen_projects|length < 1 %}
     <div>
-        <a class="link--blue--dark" href="{{ path('app_search_citizen_projects') }}">Découvrir des projet citoyens autour de chez moi</a>
+        {% if no_result_message %}
+            <p class="text--muted">{{ no_result_message }}</p>
+        {% else %}
+            <a class="link--blue--dark" href="{{ path('app_search_citizen_projects') }}">Découvrir des projets citoyens autour de chez moi</a>
+        {% endif %}
     </div>
 {% else %}
     <ul>

@@ -26,7 +26,7 @@ class UserRegistrationType extends AbstractType
                 'format_identity_case' => true,
             ])
             ->add('address', AddressType::class)
-            ->add('comEmail', CheckboxType::class, [
+            ->add('allowNotifications', CheckboxType::class, [
                 'required' => false,
             ])
             ->add('emailAddress', RepeatedType::class, [

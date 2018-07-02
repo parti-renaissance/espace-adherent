@@ -93,7 +93,8 @@ Feature:
 
   Scenario: I can register as a user
     Given the following fixtures are loaded:
-      | LoadReferentTagData |
+      | LoadReferentTagData      |
+      | LoadSubscriptionTypeData |
     When I am on "/inscription-utilisateur"
     And I fill in the following:
       | Prénom             | Jean-Pierre |
@@ -229,14 +230,17 @@ Feature:
 
     Given I follow "Notifications"
     Then I should be on "/parametres/mon-compte/preferences-des-emails"
-    And the element "Emails En Marche !" should be disabled
-    And the element "Emails de vos référents" should be disabled
-    And the element "Emails de votre animateur local" should be disabled
-    And the element "Être notifié(e) de la création de nouveaux projets citoyens" should be disabled
+    And the "Recevoir les actions militantes du mouvement par SMS ou MMS" checkbox should be unchecked
+    And the "Recevoir les informations sur le mouvement" checkbox should be unchecked
+    And the "Recevoir la newsletter hebdomadaire LaREM" checkbox should be unchecked
+    And I should not see an "Recevoir les e-mails de votre animateur local" element
+    And I should not see an "Recevoir les e-mails de votre référent départemental" element
+    And I should not see an "Recevoir les e-mails de votre porteur de projet" element
+    And I should not see an "Être notifié\(e\) de la création de nouveaux projets citoyens" element
 
-    When I follow "Modifier mon profil"
+    When I press "Enregistrer les modifications"
     Then the response status code should be 200
-    And I should be on "/espace-adherent/mon-profil"
+    And I should see "Vos préférences d'e-mails ont bien été mises à jour."
 
   @javascript
   Scenario: I can become adherent with a foreign country

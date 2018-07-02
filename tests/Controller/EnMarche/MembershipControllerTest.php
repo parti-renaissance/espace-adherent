@@ -6,10 +6,10 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
-use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\EmailRepository;
+use AppBundle\Subscription\SubscriptionTypeEnum;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -90,19 +90,14 @@ class MembershipControllerTest extends WebTestCase
         $this->assertEmpty($adherent->getCityName());
         $this->assertSame('FR', $adherent->getCountry());
         $this->assertNull($adherent->getBirthdate());
-        $this->assertFalse($adherent->getComMobile());
         $this->assertNull($adherent->getLatitude());
         $this->assertNull($adherent->getLongitude());
         $this->assertNull($adherent->getPosition());
-        $this->assertTrue($adherent->hasSubscribedLocalHostEmails());
-        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOVEMENT_INFORMATION));
-        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_GOVERNMENT_INFORMATION));
-        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_WEEKLY_LETTER));
-        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MICROLEARNING));
-        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOOC));
-        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_DONATOR_INFORMATION));
-        $this->assertTrue($adherent->hasEmailSubscription(AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS));
-        $this->assertTrue($adherent->hasCitizenProjectCreationEmailSubscription());
+        $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL));
+        $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL));
+        $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::MILITANT_ACTION_SMS));
+        $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
+        $this->assertFalse($adherent->hasCitizenProjectCreationEmailSubscription());
 
         /** @var Adherent $adherent */
         $this->assertInstanceOf(
@@ -148,6 +143,49 @@ class MembershipControllerTest extends WebTestCase
         $this->client->followRedirect();
     }
 
+    public function testAdherentSubscriptionTypesArePersistedCorrectly(): void
+    {
+        $this->client->request(Request::METHOD_GET, '/adhesion');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit(
+            $this->client->getCrawler()->selectButton('Je rejoins La République En Marche')->form(),
+            [
+                'g-recaptcha-response' => 'fake',
+                'adherent_registration' => [
+                    'firstName' => 'Test',
+                    'lastName' => 'Adhesion',
+                    'emailAddress' => [
+                        'first' => 'test@test.com',
+                        'second' => 'test@test.com',
+                    ],
+                    'password' => '12345678',
+                    'address' => [
+                        'address' => '1 rue des alouettes',
+                        'postalCode' => '94320',
+                        'cityName' => 'Thiais',
+                        'city' => '94320-94073',
+                        'country' => 'FR',
+                    ],
+                    'birthdate' => [
+                        'day' => 1,
+                        'month' => 1,
+                        'year' => 1989,
+                    ],
+                    'gender' => 'male',
+                    'conditions' => true,
+                    'allowNotifications' => true,
+                ],
+            ]
+        );
+
+        $this->assertClientIsRedirectedTo('/inscription/centre-interets', $this->client);
+        $adherent = $this->getAdherentRepository()->findOneByEmail('test@test.com');
+
+        self::assertCount(6, $adherent->getSubscriptionTypes());
+    }
+
     private static function createFormData(): array
     {
         return [
@@ -164,7 +202,7 @@ class MembershipControllerTest extends WebTestCase
                     'country' => 'FR',
                     'postalCode' => '92110',
                 ],
-                'comEmail' => true,
+                'allowNotifications' => true,
             ],
         ];
     }

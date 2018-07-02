@@ -12,7 +12,6 @@ class BecomeAdherentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->remove('comMobile')
             ->remove('firstName')
             ->remove('lastName')
             ->remove('emailAddress')

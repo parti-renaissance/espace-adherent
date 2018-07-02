@@ -230,12 +230,13 @@ class AdherentController extends Controller
         ]);
     }
 
-    public function listMyCommitteesAction(): Response
+    public function listMyCommitteesAction(string $noResultMessage = null): Response
     {
         $manager = $this->get('app.committee.manager');
 
         return $this->render('adherent/list_my_committees.html.twig', [
             'committees' => $manager->getAdherentCommittees($this->getUser()),
+            'no_result_message' => $noResultMessage,
         ]);
     }
 
@@ -248,10 +249,11 @@ class AdherentController extends Controller
         ]);
     }
 
-    public function listMyCitizenProjectsAction(CitizenProjectRepository $citizenProjectRepository): Response
+    public function listMyCitizenProjectsAction(CitizenProjectRepository $citizenProjectRepository, string $noResultMessage = null): Response
     {
         return $this->render('adherent/list_my_citizen_projects.html.twig', [
             'citizen_projects' => $citizenProjectRepository->findAllRegisteredCitizenProjectsForAdherent($this->getUser()),
+            'no_result_message' => $noResultMessage,
         ]);
     }
 

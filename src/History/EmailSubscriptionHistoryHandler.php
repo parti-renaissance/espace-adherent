@@ -5,8 +5,8 @@ namespace AppBundle\History;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
 use AppBundle\Entity\Reporting\EmailSubscriptionHistoryAction;
-use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Repository\EmailSubscriptionHistoryRepository;
+use AppBundle\Subscription\SubscriptionTypeEnum;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -31,8 +31,8 @@ class EmailSubscriptionHistoryHandler
      */
     public function handleSubscriptionsUpdate(Adherent $adherent, array $oldEmailsSubscriptions): void
     {
-        $subscriptions = array_diff($adherent->getEmailsSubscriptions(), $oldEmailsSubscriptions);
-        $unsubscriptions = array_diff($oldEmailsSubscriptions, $adherent->getEmailsSubscriptions());
+        $subscriptions = array_diff($adherent->getSubscriptionTypes(), $oldEmailsSubscriptions);
+        $unsubscriptions = array_diff($oldEmailsSubscriptions, $adherent->getSubscriptionTypes());
         $referentTags = $adherent->getReferentTags()->toArray();
 
         $this->createEmailSubscriptionHistory($adherent, $subscriptions, $referentTags, EmailSubscriptionHistoryAction::SUBSCRIBE());
@@ -53,7 +53,7 @@ class EmailSubscriptionHistoryHandler
     {
         $subscribedReferentTags = array_diff($adherent->getReferentTags()->toArray(), $oldReferentTags);
         $unsubscribedReferentTags = array_diff($oldReferentTags, $adherent->getReferentTags()->toArray());
-        $subscriptions = $adherent->getEmailsSubscriptions();
+        $subscriptions = $adherent->getSubscriptionTypes();
 
         $this->createEmailSubscriptionHistory($adherent, $subscriptions, $subscribedReferentTags, EmailSubscriptionHistoryAction::SUBSCRIBE());
         $this->createEmailSubscriptionHistory($adherent, $subscriptions, $unsubscribedReferentTags, EmailSubscriptionHistoryAction::UNSUBSCRIBE());
@@ -63,7 +63,7 @@ class EmailSubscriptionHistoryHandler
     {
         $this->createEmailSubscriptionHistory(
             $adherent,
-            $adherent->getEmailsSubscriptions(),
+            $adherent->getSubscriptionTypes(),
             $adherent->getReferentTags()->toArray(),
             EmailSubscriptionHistoryAction::SUBSCRIBE()
         );
@@ -73,7 +73,7 @@ class EmailSubscriptionHistoryHandler
     {
         $this->createEmailSubscriptionHistory(
             $adherent,
-            $adherent->getEmailsSubscriptions(),
+            $adherent->getSubscriptionTypes(),
             $adherent->getReferentTags()->toArray(),
             EmailSubscriptionHistoryAction::UNSUBSCRIBE()
         );
@@ -90,6 +90,7 @@ class EmailSubscriptionHistoryHandler
                 new EmailSubscriptionHistory($adherent, $subscription, $referentTags, $action)
             );
         }
+        $this->em->flush();
     }
 
     public function queryCountByMonth(Adherent $referent, int $months = 6): array
@@ -103,8 +104,8 @@ class EmailSubscriptionHistoryHandler
             $subscriptions = $this->historyRepository->countAllByTypeForReferentManagedArea(
                 $referent,
                 [
-                    AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST,
-                    AdherentEmailSubscription::SUBSCRIBED_EMAILS_REFERENTS,
+                    SubscriptionTypeEnum::LOCAL_HOST_EMAIL,
+                    SubscriptionTypeEnum::REFERENT_EMAIL,
                 ],
                 $until
             );

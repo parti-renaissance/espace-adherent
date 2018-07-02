@@ -21,19 +21,20 @@ class EmailSubscriptionHistoryRepository extends ServiceEntityRepository
     /**
      * Count active adherents (not users) history for each specified subscription types in the referent managed area before the specified date.
      */
-    public function countAllByTypeForReferentManagedArea(Adherent $referent, array $subscriptionsTypes, \DateTimeInterface $until): array
+    public function countAllByTypeForReferentManagedArea(Adherent $referent, array $subscriptionTypeCodes, \DateTimeInterface $until): array
     {
         $this->checkReferent($referent);
 
         $qb = $this->createQueryBuilder('history')
-            ->select('history.adherentUuid, history.subscribedEmailType, history.action, COUNT(history) AS count')
+            ->select('history.adherentUuid, subscriptionType.code, history.action, COUNT(history) AS count')
             ->join('history.referentTags', 'tags')
+            ->join('history.subscriptionType', 'subscriptionType')
             ->where('tags IN (:tags)')
-            ->andWhere('history.subscribedEmailType IN (:subscriptions)')
+            ->andWhere('subscriptionType.code IN (:subscriptions)')
             ->andWhere('history.date <= :until')
-            ->groupBy('history.adherentUuid, history.subscribedEmailType, history.action')
+            ->groupBy('history.adherentUuid, history.subscriptionType, history.action')
             ->setParameter('tags', $referent->getManagedArea()->getTags())
-            ->setParameter('subscriptions', $subscriptionsTypes)
+            ->setParameter('subscriptions', $subscriptionTypeCodes)
             ->setParameter('until', $until)
             ->getQuery()
         ;
@@ -47,21 +48,20 @@ class EmailSubscriptionHistoryRepository extends ServiceEntityRepository
         $results = $qb->getArrayResult();
         $countBySubscriptionType = [];
 
-        foreach ($results as ['adherentUuid' => $adherentUuid, 'action' => $action, 'subscribedEmailType' => $type, 'count' => $count]) {
+        foreach ($results as ['adherentUuid' => $adherentUuid, 'action' => $action, 'code' => $subscriptionTypeCode, 'count' => $count]) {
             $adherentUuid = (string) $adherentUuid;
 
-            if (EmailSubscriptionHistoryAction::SUBSCRIBE === $action) {
-                $countBySubscriptionType[$type][$adherentUuid] = ($countBySubscriptionType[$type][$adherentUuid] ?? 0) + $count;
-            } elseif (EmailSubscriptionHistoryAction::UNSUBSCRIBE === $action) {
-                $countBySubscriptionType[$type][$adherentUuid] = ($countBySubscriptionType[$type][$adherentUuid] ?? 0) - $count;
-            } else {
-                throw new \RuntimeException("'$action' is not handled");
+            $sign = EmailSubscriptionHistoryAction::SUBSCRIBE === $action ? 1 : -1;
+
+            if (!isset($countBySubscriptionType[$subscriptionTypeCode][$adherentUuid])) {
+                $countBySubscriptionType[$subscriptionTypeCode][$adherentUuid] = 0;
             }
+            $countBySubscriptionType[$subscriptionTypeCode][$adherentUuid] += $sign * $count;
         }
 
         // If one adherent has multiple referent tags (With paris district for example), his email subscription must count for one and not many.
         // That's why we remove values equal to 0 and then count the number of entries we have by type.
-        foreach ($subscriptionsTypes as $type) {
+        foreach ($subscriptionTypeCodes as $type) {
             if (isset($countBySubscriptionType[$type]) && \is_array($countBySubscriptionType[$type])) {
                 $countBySubscriptionType[$type] = array_filter($countBySubscriptionType[$type]);
                 $countBySubscriptionType[$type] = \count($countBySubscriptionType[$type]);

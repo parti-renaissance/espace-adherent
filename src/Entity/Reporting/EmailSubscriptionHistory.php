@@ -5,6 +5,7 @@ namespace AppBundle\Entity\Reporting;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ReferentTag;
+use AppBundle\Entity\SubscriptionType;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,8 +19,7 @@ use Webmozart\Assert\Assert;
  *     indexes={
  *         @ORM\Index(name="adherent_email_subscription_histories_adherent_uuid_idx", columns="adherent_uuid"),
  *         @ORM\Index(name="adherent_email_subscription_histories_adherent_action_idx", columns="action"),
- *         @ORM\Index(name="adherent_email_subscription_histories_adherent_date_idx", columns="date"),
- *         @ORM\Index(name="adherent_email_subscription_histories_adherent_email_type_idx", columns="subscribed_email_type"),
+ *         @ORM\Index(name="adherent_email_subscription_histories_adherent_date_idx", columns="date")
  *     }
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EmailSubscriptionHistoryRepository")
@@ -48,11 +48,12 @@ class EmailSubscriptionHistory
     private $adherentUuid;
 
     /**
-     * @var string
+     * @var SubscriptionType
      *
-     * @ORM\Column(length=50)
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\SubscriptionType")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $subscribedEmailType;
+    private $subscriptionType;
 
     /**
      * @var Collection|ReferentTag[]
@@ -78,13 +79,13 @@ class EmailSubscriptionHistory
 
     public function __construct(
         Adherent $adherent,
-        string $subscribedEmailType,
+        SubscriptionType $subscriptionType,
         array $referentTags,
         EmailSubscriptionHistoryAction $action,
         \DateTimeImmutable $date = null
     ) {
         $this->adherentUuid = $adherent->getUuid();
-        $this->subscribedEmailType = $subscribedEmailType;
+        $this->subscriptionType = $subscriptionType;
         $this->action = $action->getValue();
         $this->date = $date ?: new Chronos();
 
@@ -106,9 +107,9 @@ class EmailSubscriptionHistory
         return $this->adherentUuid;
     }
 
-    public function getSubscribedEmailType(): string
+    public function getSubscriptionType(): string
     {
-        return $this->subscribedEmailType;
+        return $this->subscriptionType;
     }
 
     /**

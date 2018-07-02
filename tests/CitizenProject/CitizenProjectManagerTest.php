@@ -8,7 +8,7 @@ use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
-use AppBundle\Membership\AdherentEmailSubscription;
+use AppBundle\Membership\CitizenProjectNotificationDistance;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 
@@ -68,10 +68,10 @@ class CitizenProjectManagerTest extends WebTestCase
         $this->assertSame(7, $adherents->count());
 
         $adherent = $this->getAdherentRepository()->findOneByEmail('francis.brioul@yahoo.com');
-        $adherent->setCitizenProjectCreationEmailSubscriptionRadius(AdherentEmailSubscription::DISTANCE_100KM);
+        $adherent->setCitizenProjectCreationEmailSubscriptionRadius(CitizenProjectNotificationDistance::DISTANCE_100KM);
 
         $adherent = $this->getAdherentRepository()->findOneByEmail('referent@en-marche-dev.fr');
-        $adherent->setCitizenProjectCreationEmailSubscriptionRadius(AdherentEmailSubscription::DISTANCE_100KM);
+        $adherent->setCitizenProjectCreationEmailSubscriptionRadius(CitizenProjectNotificationDistance::DISTANCE_100KM);
 
         $this->getManagerRegistry()->getManager()->flush();
         $this->getManagerRegistry()->getManager()->clear();

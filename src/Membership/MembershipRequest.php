@@ -90,9 +90,7 @@ class MembershipRequest implements MembershipInterface
      */
     public $conditions;
 
-    public $comMobile = false;
-
-    public $comEmail = false;
+    private $allowNotifications = false;
 
     /**
      * @var string|null
@@ -153,7 +151,6 @@ class MembershipRequest implements MembershipInterface
         $dto->position = $adherent->getPosition();
         $dto->address = Address::createFromAddress($adherent->getPostAddress());
         $dto->phone = $adherent->getPhone();
-        $dto->comMobile = $adherent->getComMobile();
         $dto->emailAddress = $adherent->getEmailAddress();
 
         return $dto;
@@ -197,5 +194,15 @@ class MembershipRequest implements MembershipInterface
     public function getBirthdate(): ?\DateTime
     {
         return $this->birthdate;
+    }
+
+    public function getAllowNotifications(): bool
+    {
+        return $this->allowNotifications;
+    }
+
+    public function setAllowNotifications(bool $allowNotifications): void
+    {
+        $this->allowNotifications = $allowNotifications;
     }
 }

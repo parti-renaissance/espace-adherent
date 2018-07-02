@@ -13,9 +13,9 @@ use AppBundle\Exception\AdherentException;
 use AppBundle\Exception\AdherentTokenException;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Membership\ActivityPositions;
-use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Membership\MembershipInterface;
 use AppBundle\Membership\MembershipRequest;
+use AppBundle\Subscription\SubscriptionTypeEnum;
 use AppBundle\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -120,26 +120,16 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $interests = [];
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $localHostEmailsSubscription = false;
-
-    /**
-     * @var string[]
+     * @var SubscriptionType[]|Collection
      *
-     * @ORM\Column(type="simple_array", nullable=true)
+     * @ORM\ManyToMany(targetEntity="SubscriptionType", cascade={"persist"})
      */
-    private $emailsSubscriptions;
+    private $subscriptionTypes;
 
     /**
      * @ORM\Column(type="integer", options={"default": 10})
      */
     private $citizenProjectCreationEmailSubscriptionRadius = self::CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $comMobile;
 
     /**
      * @ORM\Column(type="boolean", options={"default": 0})
@@ -229,6 +219,23 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      */
     private $roles = [];
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    public $localHostEmailsSubscription = false;
+
+    /**
+     * @var string[]
+     *
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    public $emailsSubscriptions;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    public $comMobile;
+
     public function __construct(
         UuidInterface $uuid,
         string $emailAddress,
@@ -242,8 +249,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         PhoneNumber $phone = null,
         string $status = self::DISABLED,
         string $registeredAt = 'now',
-        bool $comEmail = false,
-        bool $comMobile = false,
         ?array $tags = [],
         ?array $referentTags = []
     ) {
@@ -262,11 +267,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->registeredAt = new \DateTime($registeredAt);
         $this->memberships = new ArrayCollection();
         $this->citizenProjectMemberships = new ArrayCollection();
-        $this->setComEmail($comEmail);
-        $this->comMobile = $comMobile;
         $this->tags = new ArrayCollection($tags);
         $this->referentTags = new ArrayCollection($referentTags);
         $this->coordinatorManagedAreas = new ArrayCollection();
+        $this->subscriptionTypes = new ArrayCollection();
     }
 
     public static function createUuid(string $email): UuidInterface
@@ -467,77 +471,31 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->password = $newPassword;
     }
 
-    public function hasEmailSubscription(string $emailSubscription): bool
-    {
-        return \in_array($emailSubscription, $this->getEmailsSubscriptions(), true);
-    }
-
     public function getEmailsSubscriptions(): array
     {
-        $subscriptions = $this->emailsSubscriptions;
-
-        if ($this->hasCitizenProjectCreationEmailSubscription()) {
-            $subscriptions[] = AdherentEmailSubscription::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION;
-        }
-//      CANARY !
-        if ($this->localHostEmailsSubscription) {
-            $subscriptions[] = AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST;
-        }
-
-        return $subscriptions;
+        return array_map(function (SubscriptionType $type) {
+            return $type->getCode();
+        }, $this->subscriptionTypes->toArray());
     }
 
-    public function setEmailsSubscriptions(array $emailsSubscriptions): void
+    /**
+     * @return SubscriptionType[]
+     */
+    public function getSubscriptionTypes(): array
     {
-        if ($key = \array_search(AdherentEmailSubscription::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION, $emailsSubscriptions, true)) {
-            unset($emailsSubscriptions[$key]);
-        }
-//      CANARY !
-        if ($key = \array_search(AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST, $emailsSubscriptions, true)) {
-            unset($emailsSubscriptions[$key]);
-            $this->localHostEmailsSubscription = true;
-        } else {
-            $this->localHostEmailsSubscription = false;
-        }
-        if (\in_array(AdherentEmailSubscription::SUBSCRIBED_EMAILS_MAIN, $emailsSubscriptions, true)) {
-            $emailsSubscriptions = array_merge($emailsSubscriptions, [
-                AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOVEMENT_INFORMATION,
-                AdherentEmailSubscription::SUBSCRIBED_EMAILS_GOVERNMENT_INFORMATION,
-                AdherentEmailSubscription::SUBSCRIBED_EMAILS_WEEKLY_LETTER,
-                AdherentEmailSubscription::SUBSCRIBED_EMAILS_MOOC,
-                AdherentEmailSubscription::SUBSCRIBED_EMAILS_MICROLEARNING,
-                AdherentEmailSubscription::SUBSCRIBED_EMAILS_DONATOR_INFORMATION,
-            ]);
-        }
-        $this->emailsSubscriptions = $emailsSubscriptions;
+        return $this->subscriptionTypes->toArray();
     }
 
-    public function addEmailsSubscription(string $emailsSubscription): void
+    public function hasSubscriptionType(string $code): bool
     {
-//      CANARY !
-        if (AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST === $emailsSubscription) {
-            $this->localHostEmailsSubscription = true;
-
-            return;
-        }
-        if (AdherentEmailSubscription::SUBSCRIBED_EMAILS_CITIZEN_PROJECT_CREATION !== $emailsSubscription) {
-            $this->emailsSubscriptions[] = $emailsSubscription;
-        }
+        return $this->subscriptionTypes->exists(function (int $index, SubscriptionType $type) use ($code) {
+            return $type->getCode() === $code;
+        });
     }
 
     public function hasSubscribedLocalHostEmails(): bool
     {
-        return $this->localHostEmailsSubscription;
-    }
-
-    public function enableCommitteesNotifications(): void
-    {
-        $this->localHostEmailsSubscription = true;
-    }
-
-    public function disableCommitteesNotifications(): void
-    {
-        $this->localHostEmailsSubscription = false;
+        return $this->hasSubscriptionType(SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
     }
 
     /**
@@ -639,7 +597,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->birthdate = $membership->getBirthdate();
         $this->position = $membership->position;
         $this->phone = $membership->getPhone();
-        $this->comMobile = $membership->comMobile;
         $this->emailAddress = $membership->getEmailAddress();
 
         if (!$this->postAddress->equals($postAddress)) {
@@ -736,11 +693,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
-    }
-
-    public function setHasSubscribedLocalHostEmails(bool $localHostEmailsSubscription): void
-    {
-        $this->localHostEmailsSubscription = $localHostEmailsSubscription;
     }
 
     public function getManagedArea(): ?ReferentManagedArea
@@ -1004,29 +956,37 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->legislativeCandidate = $candidate;
     }
 
-    public function getComMobile(): ?bool
+    public function allowNotification(): ?bool
     {
-        return $this->comMobile;
+        return $this->allowNotification;
     }
 
-    public function setComMobile(?bool $comMobile): void
+    public function addSubscriptionType(SubscriptionType $type): void
     {
-        $this->comMobile = $comMobile;
-    }
-
-    public function setComEmail(?bool $comEmail): void
-    {
-        $this->setCitizenProjectCreationEmailSubscriptionRadius(
-            $comEmail ? self::CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE : self::DISABLED_CITIZEN_PROJECT_EMAIL
-        );
-
-        $this->localHostEmailsSubscription = $comEmail;
-
-        if ($comEmail) {
-            $subscriptions = AdherentEmailSubscription::getMergedSubscriptions();
+        if (!$this->subscriptionTypes->contains($type)) {
+            $this->subscriptionTypes->add($type);
         }
+    }
 
-        $this->setEmailsSubscriptions($subscriptions ?? []);
+    public function removeSubscriptionType(SubscriptionType $type): void
+    {
+        $this->subscriptionTypes->removeElement($type);
+    }
+
+    public function removeSubscriptionTypeByCode(string $code): void
+    {
+        foreach ($this->subscriptionTypes as $type) {
+            if ($code === $type->getCode()) {
+                $this->removeSubscriptionType($type);
+            }
+        }
+    }
+
+    public function setSubscriptionTypes(array $subscriptionTypes)
+    {
+        foreach ($subscriptionTypes as $type) {
+            $this->addSubscriptionType($type);
+        }
     }
 
     public function getCommitteeFeedItems(): iterable
@@ -1095,7 +1055,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function hasCitizenProjectCreationEmailSubscription(): bool
     {
-        return self::DISABLED_CITIZEN_PROJECT_EMAIL !== $this->getCitizenProjectCreationEmailSubscriptionRadius();
+        return $this->hasSubscriptionType(SubscriptionTypeEnum::CITIZEN_PROJECT_CREATION_EMAIL);
     }
 
     /**
