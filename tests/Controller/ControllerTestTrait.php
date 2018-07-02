@@ -103,7 +103,7 @@ trait ControllerTestTrait
 
     protected function seeFlashMessage(Crawler $crawler, ?string $message = null): bool
     {
-        $flash = $crawler->filter('#notice-flashes');
+        $flash = $crawler->filter('.notice-flashes');
 
         if ($message) {
             $this->assertSame($message, trim($flash->text()));

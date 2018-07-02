@@ -71,6 +71,10 @@ adherent.update_interests.success: Vos centres d'intérêts ont bien été mis �
 adherent.update_password.success: Vôtre mot de passe a bien été mis à jour.
 adherent.set_emails_notifications.success: Vos préférences d'e-mails ont bien été mises à jour.
 
+adherent.change_email.email_sent: Un e-mail de confirmation a été envoyé à votre nouvelle adresse. Consultez-le pour valider le changement.
+adherent.change_email.success: Votre demande de changement a bien été prise en compte. Vous pouvez désormais vous connecter avec votre nouvelle adresse e-mail.
+adherent.change_email.expired_key: Votre demande de changement d'email est expirée ! Veuillez faire une nouvelle demande.
+
 adherent.contact.success: Votre message a bien été envoyé.
 
 #

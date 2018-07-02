@@ -99,6 +99,7 @@
 
         <service id="app.validator.unique_membership" class="AppBundle\Validator\UniqueMembershipValidator">
             <argument type="service" id="AppBundle\Repository\AdherentRepository"/>
+            <argument type="service" id="AppBundle\Repository\AdherentChangeEmailTokenRepository"/>
             <argument type="service" id="security.token_storage" />
             <tag name="validator.constraint_validator" alias="app.validator.unique_membership"/>
         </service>

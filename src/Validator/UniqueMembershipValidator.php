@@ -4,6 +4,7 @@ namespace AppBundle\Validator;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Membership\MembershipInterface;
+use AppBundle\Repository\AdherentChangeEmailTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
@@ -12,13 +13,17 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class UniqueMembershipValidator extends ConstraintValidator
 {
-    private $repository;
-
+    private $adherentRepository;
     private $tokenStorage;
+    private $changeEmailTokenRepository;
 
-    public function __construct(AdherentRepository $repository, TokenStorageInterface $tokenStorage)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        AdherentRepository $adherentRepository,
+        AdherentChangeEmailTokenRepository $changeEmailTokenRepository,
+        TokenStorageInterface $tokenStorage
+    ) {
+        $this->adherentRepository = $adherentRepository;
+        $this->changeEmailTokenRepository = $changeEmailTokenRepository;
         $this->tokenStorage = $tokenStorage;
     }
 
@@ -28,11 +33,13 @@ class UniqueMembershipValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, UniqueMembership::class);
         }
 
-        if (!$member instanceof MembershipInterface) {
+        if ($member instanceof MembershipInterface) {
+            $email = $member->getEmailAddress();
+        } elseif (is_string($member)) {
+            $email = $member;
+        } else {
             throw new UnexpectedTypeException($member, MembershipInterface::class);
         }
-
-        $email = $member->getEmailAddress();
 
         // Chosen email address is not already taken by someone else
         if (!$email || !$adherent = $this->findAdherent($email)) {
@@ -69,10 +76,14 @@ class UniqueMembershipValidator extends ConstraintValidator
 
     private function findAdherent(string $emailAddress): ?Adherent
     {
-        if ($adherent = $this->repository->findOneByEmail($emailAddress)) {
+        if ($adherent = $this->adherentRepository->findOneByEmail($emailAddress)) {
             return $adherent;
         }
 
-        return $this->repository->findByUuid(Adherent::createUuid($emailAddress));
+        if ($token = $this->changeEmailTokenRepository->findLastUnusedByEmail($emailAddress)) {
+            return $this->adherentRepository->findOneByUuid($token->getAdherentUuid());
+        }
+
+        return $this->adherentRepository->findByUuid(Adherent::createUuid($emailAddress));
     }
 }

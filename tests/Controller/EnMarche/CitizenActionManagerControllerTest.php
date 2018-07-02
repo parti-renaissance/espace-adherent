@@ -156,7 +156,7 @@ class CitizenActionManagerControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertContains('L\'action citoyenne a bien été annulée.', $crawler->filter('#notice-flashes')->text());
+        $this->seeFlashMessage($crawler, 'L\'action citoyenne a bien été annulée.');
 
         $messages = $this->getEmailRepository()->findMessages(CitizenActionCancellationMessage::class);
         /** @var CitizenActionCancellationMessage $message */

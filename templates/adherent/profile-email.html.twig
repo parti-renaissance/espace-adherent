@@ -1,0 +1,16 @@
+{% extends 'adherent/layout.twig' %}
+
+{% block adherent_profile_form %}
+    <h2>Modification de mon adresse e-mail</h2>
+
+    {{ form_start(form) }}
+        <div class="register__form--full" id="field-email-address">
+            {{ form_errors(form.email) }}
+            {{ form_widget(form.email, { attr: { placeholder: 'Nouvelle adresse e-mail' } }) }}
+        </div>
+
+        <div class="register__form">
+            {{ form_widget(form.submit, { label: 'Modifier', attr: { class: 'btn btn--blue btn--medium b__nudge--top' }}) }}
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

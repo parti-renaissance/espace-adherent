@@ -4,10 +4,10 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\AdherentExpirableTokenInterface;
 use AppBundle\ValueObject\SHA1;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Ramsey\Uuid\Uuid;
 
-class AbstractAdherentTokenRepository extends EntityRepository
+abstract class AbstractAdherentTokenRepository extends ServiceEntityRepository
 {
     /**
      * Returns the most recent token of an adherent.

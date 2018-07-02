@@ -112,7 +112,7 @@
         {% endif %}
         {% block flash_message %}
             {% for message in app.flashes('info') %}
-                <div class="flash" id="notice-flashes">
+                <div class="flash notice-flashes">
                     <div class="flash__inner">{{ message|trans }}</div>
                 </div>
             {% endfor %}

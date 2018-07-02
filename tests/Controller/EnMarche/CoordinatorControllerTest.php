@@ -109,7 +109,7 @@ class CoordinatorControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertSame(0, $crawler->filter('#committee-list .coordinator__item .form__error')->count());
-        $this->assertSame('Merci. Votre appréciation a été transmise à nos équipes.', $crawler->filter('#notice-flashes > .flash__inner')->text());
+        $this->seeFlashMessage($crawler, 'Merci. Votre appréciation a été transmise à nos équipes.');
         $this->assertContains('Aucun comité ne répond à ce filtre', $crawler->filter('.coordinator-area__content')->text());
 
         $this->client->request(Request::METHOD_GET, '/espace-coordinateur/comites/list?s=PRE_APPROVED');
@@ -137,10 +137,10 @@ class CoordinatorControllerTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
         $this->assertClientIsRedirectedTo('/espace-coordinateur/comites/list', $this->client);
-        $this->client->followRedirect();
+        $crawler = $this->client->followRedirect();
 
-        $this->assertSame(0, $this->client->getCrawler()->filter('#committee-list .coordinator__item .form__error')->count());
-        $this->assertSame('Merci. Votre appréciation a été transmise à nos équipes.', $this->client->getCrawler()->filter('#notice-flashes > .flash__inner')->text());
+        $this->assertSame(0, $crawler->filter('#committee-list .coordinator__item .form__error')->count());
+        $this->seeFlashMessage($crawler, 'Merci. Votre appréciation a été transmise à nos équipes.');
         $this->assertContains('Aucun comité ne répond à ce filtre', $this->client->getCrawler()->filter('.coordinator-area__content')->text());
 
         $this->client->request(Request::METHOD_GET, '/espace-coordinateur/comites/list?s=PRE_REFUSED');
