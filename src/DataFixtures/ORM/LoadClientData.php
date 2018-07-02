@@ -21,6 +21,7 @@ class LoadClientData extends AbstractFixture implements FixtureInterface
     public const CLIENT_04_UUID = '4222f4ce-f994-45f7-9ff5-f9f09ab3991f';
     public const CLIENT_05_UUID = '4222f4ce-f994-45f7-9ff5-f9f09ab3992e';
     public const CLIENT_06_UUID = '4f3394d4-7137-424a-8c73-27e0ad641fc9';
+    public const CLIENT_07_UUID = 'e7c07c65-bba1-4a05-8d9b-76de6e5145c6';
 
     public function load(ObjectManager $manager)
     {
@@ -91,6 +92,18 @@ class LoadClientData extends AbstractFixture implements FixtureInterface
         );
         $client6->addSupportedScope(Scope::READ_TYPEFORMS);
         $manager->persist($client6);
+
+        $manager->flush();
+
+        $client7 = new Client(
+            Uuid::fromString(self::CLIENT_07_UUID),
+            'API En-Marche !',
+            'Plateforme Citoyenne de la République En-Marche !',
+            'KsvrVu9maHRW21eiOsWVuUYC//zaglQw0s60NIj3TbA=',
+            [GrantTypeEnum::CLIENT_CREDENTIALS]
+        );
+        $manager->persist($client7);
+        $this->setReference('web_hook_client_api', $client7);
 
         $manager->flush();
     }

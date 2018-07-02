@@ -14,6 +14,8 @@ use AppBundle\Membership\AdherentChangeEmailHandler;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\Membership\MembershipRequestHandler;
 use AppBundle\Membership\UnregistrationCommand;
+use AppBundle\Membership\UserEvent;
+use AppBundle\Membership\UserEvents;
 use AppBundle\Repository\DonationRepository;
 use AppBundle\Repository\SubscriptionTypeRepository;
 use AppBundle\Repository\TransactionRepository;
@@ -22,6 +24,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -131,7 +134,8 @@ class UserController extends Controller
     public function setEmailNotificationsAction(
         Request $request,
         EmailSubscriptionHistoryHandler $historyManager,
-        SubscriptionTypeRepository $subscriptionTypeRepository
+        SubscriptionTypeRepository $subscriptionTypeRepository,
+        EventDispatcher $dispatcher
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
@@ -140,6 +144,7 @@ class UserController extends Controller
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $historyManager->handleSubscriptionsUpdate($adherent, $oldEmailsSubscriptions);
+            $dispatcher->dispatch(UserEvents::USER_UPDATE_SUBSCRIPTIONS, new UserEvent($adherent, null, null, $oldEmailsSubscriptions));
 
             $this->addFlash('info', 'adherent.set_emails_notifications.success');
 

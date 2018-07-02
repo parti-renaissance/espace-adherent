@@ -46,10 +46,20 @@ class SubscriptionType
      */
     private $code;
 
-    public function __construct(string $label = null, string $code = null)
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=64, unique=true, nullable=true)
+     *
+     * @Assert\Length(max=64)
+     */
+    private $externalId;
+
+    public function __construct(string $label = null, string $code = null, string $externalId = null)
     {
         $this->label = $label;
         $this->code = $code;
+        $this->externalId = $externalId;
     }
 
     public function getId(): ?int
@@ -75,6 +85,16 @@ class SubscriptionType
     public function setCode(string $code): void
     {
         $this->code = $code;
+    }
+
+    public function getExternalId(): ?string
+    {
+        return $this->externalId;
+    }
+
+    public function setExternalId(?string $externalId): void
+    {
+        $this->externalId = $externalId;
     }
 
     public function __toString(): string

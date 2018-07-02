@@ -108,7 +108,8 @@ class RabbitMqContext implements Context
             );
 
             if (!$found) {
-                throw new \LogicException('Expected message not found');
+                $messagesString = implode("\n", array_map(function ($msg) { return $msg->getBody(); }, $messages));
+                throw new \LogicException("Expected message not found among these ones:\n$messagesString");
             }
         }
     }

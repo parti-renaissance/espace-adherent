@@ -26,4 +26,20 @@ class SyncWithAPIContext implements Context
 
         $this->dispatcher->dispatch($event, new UserEvent($adherent));
     }
+
+    /**
+     * @When I dispatch the :event user event with :email and email subscriptions
+     */
+    public function iDispatchUserEventWithEmailSubscriptions(string $event, string $email)
+    {
+        $adherent = $this->doctrine->getRepository(Adherent::class)->findOneBy(['emailAddress' => $email]);
+
+        $subscriptions = $adherent->getSubscriptionTypes();
+        if (!isset($subscriptions[0])) {
+            throw new \Exception('User has no email subscription.');
+        }
+        unset($subscriptions[0]);
+
+        $this->dispatcher->dispatch($event, new UserEvent($adherent, null, null, $subscriptions));
+    }
 }

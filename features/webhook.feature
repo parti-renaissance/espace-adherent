@@ -45,7 +45,7 @@ Feature: Allow some worker to get the list of configured web hooks
     """
     {
       "event":"user.deleted",
-      "callbacks":["http://test.com/awesome", "https://www.en-marche.fr/webhook/endpoint"]
+      "callbacks":{"http://test.com/awesome":[],"https://www.en-marche.fr/webhook/endpoint":[]}
     }
     """
 
@@ -64,7 +64,26 @@ Feature: Allow some worker to get the list of configured web hooks
     """
     {
       "event":"user.updated",
-      "callbacks":["http://test.com/awesome", "https://www.en-marche.fr/webhook/endpoint", "http://client5.com/web_hook"]
+      "callbacks":{"http://test.com/awesome":[], "https://www.en-marche.fr/webhook/endpoint":[], "http://client5.com/web_hook":[]}
+    }
+    """
+
+    Given I send a "POST" request to "/oauth/v2/token" with parameters:
+      | key           | value                                        |
+      | client_secret | dALH/khq9BcjOS0GB6u5NaJ3R9k2yvSBq5wYUHx1omA= |
+      | client_id     | 4222f4ce-f994-45f7-9ff5-f9f09ab3991f         |
+      | grant_type    | client_credentials                           |
+      | scope         | web_hook                                     |
+    And the response status code should be 200
+    And I add the access token to the Authorization header
+    When I send a "GET" request to "/api/webhooks/user.update_subscriptions"
+    Then the response should be in JSON
+    And the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "event":"user.update_subscriptions",
+      "callbacks":{"https://api.mailchimp.com/lists":{"services":"mailchimp"}}
     }
     """
 

@@ -429,6 +429,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.subscription_type" class="AppBundle\Admin\SubscriptionTypeAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Types de subscription aux e-mails" group="Système" />
+
+            <argument />
+            <argument>AppBundle\Entity\SubscriptionType</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.report" class="AppBundle\Admin\ReportAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Signalements" group="Système" />
 

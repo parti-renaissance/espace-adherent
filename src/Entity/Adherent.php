@@ -473,9 +473,9 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function getEmailsSubscriptions(): array
     {
-        return array_map(function (SubscriptionType $type) {
+        return array_values(array_map(function (SubscriptionType $type) {
             return $type->getCode();
-        }, $this->subscriptionTypes->toArray());
+        }, $this->subscriptionTypes->toArray()));
     }
 
     /**
