@@ -65,7 +65,7 @@ class CitizenActionManagerController extends Controller
             $action = $this->get(CitizenActionCommandHandler::class)->handle($command);
 
             $this->get('app.event.registration_handler')->handle(new EventRegistrationCommand($action, $this->getUser()), false);
-            $this->addFlash('info', $this->get('translator')->trans('citizen_action.creation.success'));
+            $this->addFlash('info', 'citizen_action.creation.success');
 
             return $this->redirectToRoute('app_citizen_action_show', [
                 'slug' => $action->getSlug(),
@@ -94,7 +94,7 @@ class CitizenActionManagerController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $action = $this->get(CitizenActionCommandHandler::class)->handleUpdate($command, $action);
 
-            $this->addFlash('info', $this->get('translator')->trans('citizen_action.update.success'));
+            $this->addFlash('info', 'citizen_action.update.success');
 
             return $this->redirectToRoute('app_citizen_action_show', [
                 'slug' => $action->getSlug(),
@@ -125,7 +125,7 @@ class CitizenActionManagerController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $eventCanceledHandler->handle($action);
-            $this->addFlash('info', $this->get('translator')->trans('citizen_action.cancel.success'));
+            $this->addFlash('info', 'citizen_action.cancel.success');
 
             return $this->redirectToRoute('app_citizen_action_show', [
                 'slug' => $action->getSlug(),
@@ -188,7 +188,7 @@ class CitizenActionManagerController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get(CitizenActionContactParticipantsCommandHandler::class)->handle($command);
-            $this->addFlash('info', $this->get('translator')->trans('citizen_action.contact.success'));
+            $this->addFlash('info', 'citizen_action.contact.success');
 
             return $this->redirectToRoute('app_citizen_action_list_participants', [
                 'slug' => $citizenAction->getSlug(),
@@ -243,7 +243,7 @@ class CitizenActionManagerController extends Controller
 
         if (!$uuids = json_decode($request->request->get(sprintf('%ss', $action)), true)) {
             if (self::ACTION_CONTACT === $action) {
-                $this->addFlash('info', $this->get('translator')->trans('citizen_action.contact.none'));
+                $this->addFlash('info', 'citizen_action.contact.none');
             }
 
             return new EventRegistrationCollection();

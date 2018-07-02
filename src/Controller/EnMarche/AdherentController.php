@@ -57,7 +57,7 @@ class AdherentController extends Controller
             }
         }
         if ($request->query->getBoolean('from_activation')) {
-            $this->addFlash('info', $this->get('translator')->trans('adherent.activation.success'));
+            $this->addFlash('info', 'adherent.activation.success');
         }
 
         return $this->render('adherent/home.html.twig', array_merge([
@@ -80,7 +80,7 @@ class AdherentController extends Controller
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('info', $this->get('translator')->trans('adherent.update_interests.success'));
+            $this->addFlash('info', 'adherent.update_interests.success');
 
             return $this->redirectToRoute('app_adherent_pin_interests');
         }
@@ -105,7 +105,7 @@ class AdherentController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.committee.creation_handler')->handle($command);
-            $this->addFlash('info', $this->get('translator')->trans('committee.creation.success'));
+            $this->addFlash('info', 'committee.creation.success');
 
             return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $command->getCommittee()->getSlug()]));
         }
@@ -134,7 +134,7 @@ class AdherentController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.citizen_project.creation_handler')->handle($command);
-            $this->addFlash('info', $this->get('translator')->trans('citizen_project.creation.success'));
+            $this->addFlash('info', 'citizen_project.creation.success');
 
             return $this->redirect($this->generateUrl('app_citizen_project_show', ['slug' => $command->getCitizenProject()->getSlug()]));
         }
@@ -196,7 +196,7 @@ class AdherentController extends Controller
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->get('app.adherent.contact_message_handler')->handle($message);
-                $this->addFlash('info', $this->get('translator')->trans('adherent.contact.success'));
+                $this->addFlash('info', 'adherent.contact.success');
 
                 if ($from instanceof Committee) {
                     return $this->redirectToRoute('app_committee_show', [

@@ -85,7 +85,7 @@ class SecurityController extends Controller
                 $this->get('app.adherent_reset_password_handler')->handle($adherent);
             }
 
-            $this->addFlash('info', $this->get('translator')->trans('adherent.reset_password.email_sent'));
+            $this->addFlash('info', 'adherent.reset_password.email_sent');
 
             return $this->redirectToRoute('app_user_login');
         }
@@ -126,11 +126,11 @@ class SecurityController extends Controller
 
             try {
                 $this->get('app.adherent_reset_password_handler')->reset($adherent, $resetPasswordToken, $newPassword);
-                $this->addFlash('info', $this->get('translator')->trans('adherent.reset_password.success'));
+                $this->addFlash('info', 'adherent.reset_password.success');
 
                 return $this->redirectToRoute('app_user_profile');
             } catch (AdherentTokenExpiredException $e) {
-                $this->addFlash('info', $this->get('translator')->trans('adherent.reset_password.expired_key'));
+                $this->addFlash('info', 'adherent.reset_password.expired_key');
             }
         }
 

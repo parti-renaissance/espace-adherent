@@ -69,7 +69,7 @@ class EventController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.event.registration_handler')->handle($command);
-            $this->addFlash('info', $this->get('translator')->trans('committee.event.registration.success'));
+            $this->addFlash('info', 'committee.event.registration.success');
 
             return $this->redirectToRoute('app_event_attend_confirmation', [
                 'slug' => $event->getSlug(),

@@ -94,7 +94,7 @@ class BoardMemberController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.board_member.message_notifier')->sendMessage($message);
 
-            $this->addFlash('info', $this->get('translator')->trans('board_member.message.success'));
+            $this->addFlash('info', 'board_member.message.success');
 
             return $this->redirect($this->generateUrl('app_board_member_search'));
         }
@@ -121,7 +121,7 @@ class BoardMemberController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.board_member.message_notifier')->sendMessage($message);
 
-            $this->addFlash('info', $this->get('translator')->trans('board_member.message.success'));
+            $this->addFlash('info', 'board_member.message.success');
 
             return $this->redirect($this->generateUrl('app_board_member_message_saved_profile'));
         }
@@ -146,7 +146,7 @@ class BoardMemberController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.board_member.message_notifier')->sendMessage($message);
 
-            $this->addFlash('info', $this->get('translator')->trans('board_member.message.success'));
+            $this->addFlash('info', 'board_member.message.success');
 
             return $this->redirect($this->generateUrl('app_board_member_search'));
         }

@@ -36,7 +36,7 @@ class LegislativeCandidateController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.legislatives.contact_handler')->handle($form->getData());
-            $this->addFlash('info', $this->get('translator')->trans('legislatives.contact.success'));
+            $this->addFlash('info', 'legislatives.contact.success');
 
             return $this->redirectToRoute('app_legislative_candidates_platform_contact');
         }

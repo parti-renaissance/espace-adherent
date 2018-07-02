@@ -81,7 +81,7 @@ class ReferentController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get(ReferentMessageNotifier::class)->sendMessage($message);
-            $this->addFlash('info', $this->get('translator')->trans('referent.message.success'));
+            $this->addFlash('info', 'referent.message.success');
 
             return $this->redirect($this->generateUrl('app_referent_users').$filter);
         }
@@ -124,7 +124,7 @@ class ReferentController extends Controller
             $registrationCommand = new EventRegistrationCommand($event, $this->getUser());
             $this->get('app.event.registration_handler')->handle($registrationCommand);
 
-            $this->addFlash('info', $this->get('translator')->trans('referent.event.creation.success'));
+            $this->addFlash('info', 'referent.event.creation.success');
 
             return $this->redirectToRoute('app_event_show', [
                 'slug' => $event->getSlug(),

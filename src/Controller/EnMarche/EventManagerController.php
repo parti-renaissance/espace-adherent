@@ -52,7 +52,7 @@ class EventManagerController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.event.handler')->handleUpdate($event, $command);
-            $this->addFlash('info', $this->get('translator')->trans('committee.event.update.success'));
+            $this->addFlash('info', 'committee.event.update.success');
 
             return $this->redirectToRoute('app_event_show', [
                 'slug' => $event->getSlug(),
@@ -78,7 +78,7 @@ class EventManagerController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $eventCanceledHandler->handle($event);
-            $this->addFlash('info', $this->get('translator')->trans('committee.event.cancel.success'));
+            $this->addFlash('info', 'committee.event.cancel.success');
 
             return $this->redirectToRoute('app_event_show', [
                 'slug' => $event->getSlug(),
@@ -149,7 +149,7 @@ class EventManagerController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.event.contact_members_handler')->handle($command);
-            $this->addFlash('info', $this->get('translator')->trans('committee.event.contact.success'));
+            $this->addFlash('info', 'committee.event.contact.success');
 
             return $this->redirectToRoute('app_event_members', [
                 'slug' => $event->getSlug(),
@@ -203,7 +203,7 @@ class EventManagerController extends Controller
 
         if (!$uuids = json_decode($request->request->get(sprintf('%ss', $action)), true)) {
             if (self::ACTION_CONTACT === $action) {
-                $this->addFlash('info', $this->get('translator')->trans('committee.event.contact.none'));
+                $this->addFlash('info', 'committee.event.contact.none');
             }
 
             return [];
