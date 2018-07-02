@@ -50,7 +50,7 @@ class UserControllerTest extends WebTestCase
 
         $this->assertStatusCode(200, $this->client);
 
-        $this->seeFlashMessage($crawler, 'Un e-mail de confirmation a été envoyé à votre nouvelle adresse. Consultez-le pour valider le changement.');
+        $this->seeFlashMessage($crawler, 'Nous avons envoyé un e-mail à new.mail@test.com pour vérifier votre adresse e-mail. Cliquez sur le lien qui y est présent pour valider le changement.');
 
         $token = $this->getRepository(AdherentChangeEmailToken::class)->findLastUnusedByEmail('new.mail@test.com');
 
