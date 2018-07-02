@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
 {
@@ -17,15 +18,18 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
     private $tokenStorage;
     private $repository;
     private $session;
+    private $translator;
 
     public function __construct(
         TokenStorageInterface $tokenStorage,
         AdherentChangeEmailTokenRepository $repository,
-        Session $session
+        Session $session,
+        TranslatorInterface $translator
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->repository = $repository;
         $this->session = $session;
+        $this->translator = $translator;
     }
 
     public static function getSubscribedEvents()
@@ -39,8 +43,11 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($this->repository->findLastUnusedByAdherent($this->tokenStorage->getToken()->getUser())) {
-            $this->session->getFlashBag()->add('info', self::MESSAGE);
+        if ($token = $this->repository->findLastUnusedByAdherent($this->tokenStorage->getToken()->getUser())) {
+            $this->session->getFlashBag()->add('info', $this->translator->trans(
+                self::MESSAGE,
+                ['{{ email }}' => $token->getEmail()]
+            ));
         }
     }
 
