@@ -151,9 +151,13 @@ class RabbitMqContext implements Context
         $messages = [];
 
         /** @var AMQPMessage $message */
-        while ($message = $channel->basic_get($queue)) {
+        while ($message = $channel->basic_get($queue, true)) {
             $messages[] = $message;
-            $channel->basic_ack($message->get('delivery_tag'));
+        }
+
+        $producer = $this->getProducer($queue);
+        foreach ($messages as $message) {
+            $producer->publish($message->getBody());
         }
 
         return $messages;
