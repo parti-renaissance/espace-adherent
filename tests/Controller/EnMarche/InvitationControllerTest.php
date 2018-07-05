@@ -31,12 +31,25 @@ class InvitationControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
+        $crawler = $this->client->submit($crawler->filter('form[name=app_invitation]')->form([
+            'g-recaptcha-response' => 'dummy',
+            'app_invitation[lastName]' => 'Galopin',
+            'app_invitation[firstName]' => 'Titouan',
+            'app_invitation[email]' => 'titouan.galopin@en-marche.fr',
+            'app_invitation[message]' => 'Je t\'invite à rejoindre En Marche !',
+        ]));
+
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertCount(1, $errors = $crawler->filter('.form__errors'));
+        $this->assertSame('L\'acceptation des mentions d\'information est obligatoire pour donner suite à votre demande.', $errors->eq(0)->text());
+
         $this->client->submit($crawler->filter('form[name=app_invitation]')->form([
             'g-recaptcha-response' => 'dummy',
             'app_invitation[lastName]' => 'Galopin',
             'app_invitation[firstName]' => 'Titouan',
             'app_invitation[email]' => 'titouan.galopin@en-marche.fr',
             'app_invitation[message]' => 'Je t\'invite à rejoindre En Marche !',
+            'app_invitation[personalDataCollection]' => true,
         ]));
 
         // Subscription should have been saved
@@ -61,6 +74,7 @@ class InvitationControllerTest extends WebTestCase
             'app_invitation[firstName]' => 'Jean',
             'app_invitation[email]' => 'titouan.galopin@en-marche.fr',
             'app_invitation[message]' => 'Je t\'invite à rejoindre En Marche !',
+            'app_invitation[personalDataCollection]' => true,
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());

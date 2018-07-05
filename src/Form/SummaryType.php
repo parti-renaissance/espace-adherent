@@ -111,6 +111,7 @@ class SummaryType extends AbstractType
                     ->add('availabilities', JobDurationChoiceType::class)
                     ->add('job_locations', JobLocationChoiceType::class)
                     ->add('professional_synopsis', TextareaType::class, ['filter_emojis' => true])
+                    ->add('personal_data_collection', AcceptPersonalDataCollectType::class)
                 ;
 
                 break;
@@ -155,6 +156,7 @@ class SummaryType extends AbstractType
             case self::STEP_INTERESTS:
                 $builder
                     ->add('member_interests', MemberInterestsChoiceType::class)
+                    ->add('personal_data_collection', AcceptPersonalDataCollectType::class)
                 ;
 
                 break;
@@ -177,6 +179,7 @@ class SummaryType extends AbstractType
                     ->add('viadeo_url', UrlType::class, [
                         'required' => false,
                     ])
+                    ->add('personal_data_collection', AcceptPersonalDataCollectType::class)
                 ;
 
                 break;

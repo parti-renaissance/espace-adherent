@@ -24,6 +24,7 @@ class NewsletterSubscriptionType extends AbstractType
                 'required' => false,
                 'filter_emojis' => true,
             ])
+            ->add('personalDataCollection', AcceptPersonalDataCollectType::class)
         ;
     }
 

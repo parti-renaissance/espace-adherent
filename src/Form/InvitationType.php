@@ -28,6 +28,7 @@ class InvitationType extends AbstractType
             ->add('message', TextareaType::class, [
                 'filter_emojis' => true,
             ])
+            ->add('personalDataCollection', AcceptPersonalDataCollectType::class)
         ;
     }
 

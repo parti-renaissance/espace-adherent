@@ -83,6 +83,7 @@ class DonationRequestType extends AbstractType
                 'mapped' => false,
                 'constraints' => [new Assert\IsTrue()],
             ])
+            ->add('personalDataCollection', AcceptPersonalDataCollectType::class)
             ->add('submit', SubmitType::class, [
                 'label' => 'Continuer',
             ])

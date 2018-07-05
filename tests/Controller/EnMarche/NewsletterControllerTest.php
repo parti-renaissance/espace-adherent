@@ -41,9 +41,19 @@ class NewsletterControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
+        $crawler = $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
+            'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',
+            'app_newsletter_subscription[postalCode]' => '10000',
+        ]));
+
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertCount(1, $errors = $crawler->filter('.form__errors'));
+        $this->assertSame('L\'acceptation des mentions d\'information est obligatoire pour donner suite à votre demande.', $errors->eq(0)->text());
+
         $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
             'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',
             'app_newsletter_subscription[postalCode]' => '10000',
+            'app_newsletter_subscription[personalDataCollection]' => true,
         ]));
 
         // Subscription should have been saved
@@ -67,6 +77,7 @@ class NewsletterControllerTest extends WebTestCase
         $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
             'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',
             'app_newsletter_subscription[postalCode]' => '20000',
+            'app_newsletter_subscription[personalDataCollection]' => true,
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -87,6 +98,7 @@ class NewsletterControllerTest extends WebTestCase
         $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
             'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',
             'app_newsletter_subscription[postalCode]' => '10000',
+            'app_newsletter_subscription[personalDataCollection]' => true,
         ]));
 
         // Subscription should have been saved
@@ -180,6 +192,7 @@ class NewsletterControllerTest extends WebTestCase
         $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
             'app_newsletter_subscription[email]' => 'abc@en-marche-dev.fr',
             'app_newsletter_subscription[postalCode]' => '59000',
+            'app_newsletter_subscription[personalDataCollection]' => true,
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());

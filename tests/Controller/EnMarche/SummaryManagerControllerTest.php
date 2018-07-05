@@ -763,7 +763,7 @@ class SummaryManagerControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/synthesis');
 
-        $this->assertCount(10, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(11, $crawler->filter('form[name=summary] input'));
         $this->assertCount(1, $crawler->filter('form[name=summary] select'));
         $this->assertCount(1, $crawler->filter('form[name=summary] textarea'));
 
@@ -778,6 +778,7 @@ class SummaryManagerControllerTest extends WebTestCase
             'summary[job_locations][0]' => JobLocation::ON_SITE,
             'summary[job_locations][1]' => JobLocation::ON_REMOTE,
             'summary[professional_synopsis]' => $synopsis,
+            'summary[personal_data_collection]' => true,
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
@@ -810,7 +811,7 @@ class SummaryManagerControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/synthesis');
 
-        $this->assertCount(10, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(11, $crawler->filter('form[name=summary] input'));
         $this->assertCount(1, $crawler->filter('form[name=summary] select'));
         $this->assertCount(1, $crawler->filter('form[name=summary] textarea'));
 
@@ -824,6 +825,7 @@ class SummaryManagerControllerTest extends WebTestCase
             'summary[availabilities]' => [JobDuration::PART_TIME],
             'summary[job_locations][1]' => JobLocation::ON_REMOTE,
             'summary[professional_synopsis]' => $synopsis,
+            'summary[personal_data_collection]' => true,
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
@@ -1007,12 +1009,13 @@ class SummaryManagerControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/interests');
 
-        $this->assertCount(19, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(20, $crawler->filter('form[name=summary] input'));
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
         $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
 
         $this->client->submit($crawler->filter('form[name=summary]')->form([
             'summary[member_interests][0]' => 'agriculture',
+            'summary[personal_data_collection]' => true,
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
@@ -1041,13 +1044,14 @@ class SummaryManagerControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/interests');
 
-        $this->assertCount(19, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(20, $crawler->filter('form[name=summary] input'));
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
         $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
 
         $this->client->submit($crawler->filter('form[name=summary]')->form([
             'summary[member_interests][4]' => 'egalite',
             'summary[member_interests][10]' => 'jeunesse',
+            'summary[personal_data_collection]' => true,
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
@@ -1078,12 +1082,13 @@ class SummaryManagerControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/contact');
 
-        $this->assertCount(7, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(8, $crawler->filter('form[name=summary] input'));
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
         $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
 
         $this->client->submit($crawler->filter('form[name=summary]')->form([
             'summary[contact_email]' => 'toto@example.org',
+            'summary[personal_data_collection]' => true,
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
@@ -1112,7 +1117,7 @@ class SummaryManagerControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/contact');
 
-        $this->assertCount(7, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(8, $crawler->filter('form[name=summary] input'));
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
         $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
 
@@ -1123,6 +1128,7 @@ class SummaryManagerControllerTest extends WebTestCase
             'summary[facebook_url]' => 'https://facebook.com/lucieoliverafake',
             'summary[twitter_nickname]' => 'lucieoliverafake',
             'summary[viadeo_url]' => 'http://fr.viadeo.com/fr/profile/lucie.olivera.fake',
+            'summary[personal_data_collection]' => true,
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);

@@ -52,6 +52,8 @@ common.date_range.invalid_interval: La date de fin ne doit pas dépasser le {{ l
 
 common.repeated: Les valeurs ne correspondent pas.
 
+common.personal_data_collection.required: L'acceptation des mentions d'information est obligatoire pour donner suite à votre demande.
+
 #
 # Adherent
 #
