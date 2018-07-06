@@ -87,6 +87,9 @@ class EmailAdmin extends AbstractAdmin
             ->add('sender', null, [
                 'label' => 'Expéditeur',
             ])
+            ->add('recipientsAsString', null, [
+                'label' => 'Destinataires',
+            ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
                 'format' => 'Y-m-d H:i:s',
