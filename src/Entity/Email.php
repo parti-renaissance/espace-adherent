@@ -115,7 +115,7 @@ class Email
 
     public function getRecipientsAsString(): string
     {
-        return implode("\n", $this->recipients);
+        return implode(",\n", $this->recipients);
     }
 
     public function getRequestPayload(): ?array
