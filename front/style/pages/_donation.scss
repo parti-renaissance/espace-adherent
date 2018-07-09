@@ -220,7 +220,7 @@
 }
 
 .donation {
-    background-color: $blue;
+    background-color: $bg--gray;
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -442,14 +442,22 @@
         }
     }
 
-    &__informations__amount {
-        font-size: 14px;
-        font-family: $font-roboto;
-        margin-bottom: 32px;
+    &__informations {
+        form {
+            background: transparent;
+            width: auto;
+        }
 
-        h3 {
-            font-size: 30px;
-            font-weight: bold;
+        &__amount {
+            @include text--default;
+            font-family: $font-roboto;
+            padding-top: 40px;
+
+            div {
+                margin-top: 5px;
+                font-size: 30px;
+                font-weight: bold;
+            }
         }
     }
 
