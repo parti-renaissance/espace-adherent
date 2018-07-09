@@ -41,10 +41,11 @@
     }
 
     &__help {
+        font-family: $font-roboto;
         text-align: left;
         margin-top: 5px;
-        color: #7f7f7f;
-        font-size: 10px;
+        color: $black--half;
+        @include text--small;
     }
 
     &__button {
@@ -284,9 +285,8 @@
     }
 
     &__form {
-        width: 500px;
+        width: 550px;
         background: white;
-        padding: 40px 55px;
         margin: 0 72px 0 30px;
         text-align: center;
         box-sizing: border-box;
@@ -299,7 +299,8 @@
 
         form {
             font-family: $font-roboto;
-            font-size: 14px;
+            @include text--small;
+            padding: 40px;
         }
 
         h2 {
@@ -309,6 +310,12 @@
             font-style: italic;
             line-height: 0.86;
             letter-spacing: -0.7px;
+        }
+
+        h3 {
+            margin-top: 40px;
+            margin-bottom: 10px;
+            font-family: $font-gillsans;
         }
 
         .fluo {
@@ -323,7 +330,9 @@
         }
 
         .montant {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            text-align: left;
+            @include text--default;
         }
 
         &__amount {
@@ -364,6 +373,7 @@
 
     &__form-steps {
         @include steps;
+        display: none; /* Hiding the steps to see if it increases conversion */
     }
 
     &__frequency {
