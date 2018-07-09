@@ -4,7 +4,7 @@ import axios from 'axios';
 axios.interceptors.response.use(
     r => r,
     (error) => {
-        if ('Network Error' === error.message) {
+        if (error.response && 401 === error.response.status) {
             window.location = `${process.env.REACT_APP_API_URL}/connexion`;
         }
         return Promise.reject(error);
