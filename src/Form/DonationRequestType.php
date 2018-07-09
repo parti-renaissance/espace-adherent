@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Donation\DonationRequest;
 use AppBundle\Donation\DonationRequestUtils;
+use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Adherent;
 use AppBundle\Form\DataTransformer\FloatToStringTransformer;
 use AppBundle\Membership\MembershipRegistrationProcess;
@@ -11,6 +12,7 @@ use AppBundle\Repository\AdherentRepository;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -25,6 +27,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class DonationRequestType extends AbstractType
 {
+    public const CONFIRM_DONATION_TYPE_SUBSCRIPTION = 'confirm_subscription_donation';
+    public const CONFIRM_DONATION_TYPE_UNIQUE = 'confirm_unique_donation';
+
+    public const CONFIRM_DONATION_TYPE_CHOICES = [
+        self::CONFIRM_DONATION_TYPE_SUBSCRIPTION,
+        self::CONFIRM_DONATION_TYPE_UNIQUE,
+    ];
+
     private $donationRequestUtils;
     private $membershipRegistrationProcess;
     private $tokenStorage;
@@ -57,6 +67,40 @@ class DonationRequestType extends AbstractType
                     ->addViewTransformer(new FloatToStringTransformer())
             )
             ->add('duration', HiddenType::class)
+        ;
+
+        $request = $this->requestStack->getCurrentRequest();
+
+        if ($this->donationRequestUtils->hasAmountAlert(
+            $request->get('montant'), $request->query->getInt('abonnement'))
+        ) {
+            $builder
+                ->add('confirmDonationType', ChoiceType::class, [
+                    'expanded' => true,
+                    'data' => self::CONFIRM_DONATION_TYPE_UNIQUE,
+                    'choices' => self::CONFIRM_DONATION_TYPE_CHOICES,
+                ])
+                ->add('confirmSubscriptionAmount', TextType::class, [
+                    'data' => $this->donationRequestUtils->getDefaultConfirmSubscriptionAmount(
+                        $request->get('montant')
+                    ),
+                    'filter_emojis' => true,
+                    'attr' => ['size' => 2, 'maxlength' => 4],
+                ])
+                ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $formEvent) {
+                    $form = $formEvent->getForm();
+
+                    if (self::CONFIRM_DONATION_TYPE_SUBSCRIPTION === $form->get('confirmDonationType')->getData()
+                        && $donationRequest = $formEvent->getData()
+                    ) {
+                        $donationRequest->setAmount($form->get('confirmSubscriptionAmount')->getData());
+                        $donationRequest->setDuration(PayboxPaymentSubscription::UNLIMITED);
+                    }
+                })
+            ;
+        }
+
+        $builder
             ->add('gender', GenderType::class)
             ->add('firstName', TextType::class, [
                 'filter_emojis' => true,
@@ -106,7 +150,9 @@ class DonationRequestType extends AbstractType
                 $user = $this->adherentRepository->findByUuid($uuid);
             }
 
-            $formEvent->setData($this->donationRequestUtils->createFromRequest($this->requestStack->getCurrentRequest(), $user));
+            $formEvent->setData($this->donationRequestUtils->createFromRequest(
+                $this->requestStack->getCurrentRequest(), $user
+            ));
         }
     }
 

@@ -3,6 +3,7 @@
 namespace AppBundle\Donation;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Form\DonationRequestType;
 use AppBundle\Validator\MaxFiscalYearDonation;
 use AppBundle\Validator\PayboxSubscription as AssertPayboxSubscription;
 use AppBundle\Validator\UniqueDonationSubscription;
@@ -20,6 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class DonationRequest
 {
     public const DEFAULT_AMOUNT = 50.0;
+    public const ALERT_AMOUNT = 200;
 
     private $uuid;
 
@@ -108,6 +110,16 @@ class DonationRequest
      * @AssertPayboxSubscription
      */
     private $duration;
+
+    /**
+     * @Assert\Choice(DonationRequestType::CONFIRM_DONATION_TYPE_CHOICES)
+     */
+    private $confirmDonationType;
+
+    /**
+     * @Assert\Range(min=0, max=7500)
+     */
+    private $confirmSubscriptionAmount;
 
     public function __construct(
         UuidInterface $uuid,
@@ -319,6 +331,26 @@ class DonationRequest
         }
 
         return $retry;
+    }
+
+    public function getConfirmDonationType(): ?string
+    {
+        return $this->confirmDonationType;
+    }
+
+    public function setConfirmDonationType(?string $confirmDonationType): void
+    {
+        $this->confirmDonationType = $confirmDonationType;
+    }
+
+    public function getConfirmSubscriptionAmount(): ?string
+    {
+        return $this->confirmSubscriptionAmount;
+    }
+
+    public function setConfirmSubscriptionAmount(?string $confirmSubscriptionAmount): void
+    {
+        $this->confirmSubscriptionAmount = $confirmSubscriptionAmount;
     }
 
     private static function createPhoneNumber(int $countryCode = 33, string $number = null)
