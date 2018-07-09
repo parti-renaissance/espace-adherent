@@ -1,6 +1,9 @@
 {% extends 'donation/layout.html.twig' %}
 
 {% block javascripts %}
+    {% if google_maps_api_key %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
+    {% endif %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
             App.runDonationInformations('{{ form.vars.form_type_class|e('js') }}');
@@ -24,72 +27,81 @@
         {{ form_start(form, { attr: { class: 'form' } }) }}
         {{ form_errors(form, { error_raw: true }) }}
 
-        <div class="l__row l__row--h-stretch b__nudge--bottom-tiny form__radio-button">
-            {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
-            {{ form_errors(form.gender) }}
-        </div>
-
-        <div class="form__row">
-            {{ form_errors(form.lastName) }}
-            {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full', 'placeholder': 'Nom' } }) }}
-        </div>
-
-        <div class="form__row">
-            {{ form_errors(form.firstName) }}
-            {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full', 'placeholder': 'Prénom' } }) }}
-        </div>
-
-        <div class="form__row">
-            {{ form_errors(form.emailAddress) }}
-            {{ form_widget(form.emailAddress, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse email' } }) }}
-        </div>
-
-        {{ form_errors(form.address) }}
-
-        <div class="form__row">
-            {{ form_errors(form.country) }}
-            {{ form_widget(form.country, { 'attr': { 'class': 'form--full' } }) }}
-        </div>
-
-        <div class="form__row form__row--stretch">
-            <div class="form--mid">
-                {{ form_errors(form.postalCode) }}
-                {{ form_widget(form.postalCode, { 'attr': { 'class': 'form--full', 'placeholder': 'Code postal' } }) }}
+        <div>
+            <h3 class="text--left b__nudge--bottom-medium">Informations personnelles</h3>
+            <div class="l__row l__row--h-stretch b__nudge--bottom-tiny form__radio-button">
+                {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
+                {{ form_errors(form.gender) }}
             </div>
-            <div class="form--mid">
-                {{ form_errors(form.cityName) }}
-                {{ form_widget(form.cityName, { 'attr': { 'class': 'form--full', 'placeholder': 'Ville' } }) }}
+
+            <div class="form__row form__row--stretch">
+                <div class="form--mid">
+                    {{ form_errors(form.lastName) }}
+                    {{ form_widget(form.lastName, { attr: { class: 'form--full', placeholder: 'Nom' } }) }}
+                </div>
+                <div class="form--mid">
+                    {{ form_errors(form.firstName) }}
+                    {{ form_widget(form.firstName, { attr: { class: 'form--full', placeholder: 'Prénom' } }) }}
+                </div>
+            </div>
+
+            <div class="form__row">
+                {{ form_errors(form.firstName) }}
+                {{ form_widget(form.firstName, { attr: { class: 'form--full', placeholder: 'Prénom' } }) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_errors(form.emailAddress) }}
+                {{ form_widget(form.emailAddress, { attr: { class: 'form--full', placeholder: 'Adresse email' } }) }}
+            </div>
+
+            <div class="form__row form__row--stretch">
+                {{ form_errors(form.phone) }}
+                {{ form_widget(form.phone.country, { attr: { class: 'donation__form__phone, form--mid'} }) }}
+                {{ form_widget(form.phone.number, { attr: { class: 'form--mid', placeholder: 'Numéro de téléphone' } }) }}
             </div>
         </div>
 
-        <div class="form__row">
+        <div>
+            <h3 class="text--left b__nudge--top">Adresse</h3>
+            <p class="text--left text--smallest">La saisie de votre adresse fiscale exacte est obligatoire pour pouvoir faire un don.</p>
             {{ form_errors(form.address) }}
-            {{ form_widget(form.address, { 'attr': { 'class': 'form--full', 'placeholder': 'Adresse postale' } }) }}
-        </div>
 
-        <div class="form__row form__row--stretch">
-            {{ form_errors(form.phone) }}
-            {{ form_widget(form.phone.country, { 'attr': { 'class': 'donation__form__phone, form--mid'} }) }}
-            {{ form_widget(form.phone.number, { 'attr': { 'class': 'form--mid', 'placeholder': 'Numéro de téléphone' } }) }}
+            <div class="form__row address-autocomplete"></div>
+
+            <div class="address-block">
+                <div class="form__row">
+                    {{ form_errors(form.address) }}
+                    {{ form_widget(form.address, { attr: { class: 'form--full', placeholder: 'Adresse postale' } }) }}
+                </div>
+
+                <div class="form__row">
+                    {{ form_errors(form.country) }}
+                    {{ form_widget(form.country, { attr: { class: 'form--full' } }) }}
+                </div>
+
+                <div class="form__row form__row--stretch">
+                    <div class="form--mid">
+                        {{ form_errors(form.postalCode) }}
+                        {{ form_widget(form.postalCode, { attr: { class: 'form--full', placeholder: 'Code postal' } }) }}
+                    </div>
+                    <div class="form--mid">
+                        {{ form_errors(form.cityName) }}
+                        {{ form_widget(form.cityName, { attr: { class: 'form--full', placeholder: 'Ville' } }) }}
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="form__row form__checkbox form__checkbox--large">
-            <input type="checkbox" required="required" id="donation_check" />
-            <label for="donation_check" id="donation_check_label">
-                Je certifie sur l'honneur être une personne physique et que le règlement de mon don
-                provient de mon compte bancaire personnel ou de celui de mon conjoint, concubin,
-                ascendant ou descendant.
-            </label>
+            {{ form_row(form.isPhysicalPerson, { label: "Je certifie sur l'honneur être une personne physique et que le règlement de mon don provient de mon compte bancaire personnel ou de celui de mon conjoint, concubin, ascendant ou descendant.", label_attr: { id: 'donation_check_label' } }) }}
         </div>
 
         <div class="form__row form__checkbox form__checkbox--large">
-            <input type="checkbox" required="required" id="donation_check_nationality" />
-            <label for="donation_check_nationality" id="donation_check_nationality_label">
-                Je certifie être de nationalité française ou résider fiscalement en France.
-            </label>
+            {{ form_row(form.hasFrenchNationality, { label: 'Je certifie être de nationalité française ou résider fiscalement en France.', label_attr: { id: 'donation_check_nationality_label' } }) }}
         </div>
 
-        {{ form_widget(form.submit, { 'attr': { 'class': 'btn--large-and-medium btn--primary' } }) }}
+        {{ form_widget(form.submit, { attr: { class: 'btn--large-and-medium btn--primary' } }) }}
 
         <p class="text--summary text--smallest text--gray b__nudge--top-50 text--left">
             Ces dons sont versés à l’AFEMA (Association de financement de l’association La République En Marche agréée le 7 Mars 2016 sous le n°1158) au bénéfice du parti politique La République En Marche EMA (Numéro RNA W943004354).
