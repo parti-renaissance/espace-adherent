@@ -152,10 +152,11 @@ class CommitteeControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->seeMessageForContactHosts($crawler);
         $this->assertSeeHosts($crawler, [
             ['Francis B.', 'animateur'],
             ['Jacques P.', 'co-animateur'],
-        ]);
+        ], false);
         $this->assertCountTimelineMessages($crawler, 2);
         $this->assertSeeTimelineMessages($crawler, [
             ['Jacques P.', 'co-animateur', 'Connectez-vous'],
@@ -223,10 +224,10 @@ class CommitteeControllerTest extends WebTestCase
         $this->assertFalse($this->seeUnfollowLink($crawler), 'The guest should not see the "unfollow link"');
         $this->assertTrue($this->seeMembersCount($crawler, 4), 'The guest should see the members count');
         $this->assertTrue($this->seeHosts($crawler, 2), 'The guest should see the hosts');
-        $this->assertTrue($this->seeHostsContactLink($crawler, 2), 'The guest should see the hosts contact link');
         $this->assertFalse($this->seeHostNav($crawler), 'The guest should not see the host navigation');
         $this->assertSeeSocialLinks($crawler, $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID));
         $this->assertFalse($this->seeMessageForm($crawler));
+        $this->seeMessageForContactHosts($crawler);
     }
 
     public function testAuthenticatedAdherentCanShowCommitteePage()
@@ -416,19 +417,28 @@ class CommitteeControllerTest extends WebTestCase
         return $hostsCount === count($crawler->filter('.committee__card .committee-host'));
     }
 
-    private function assertSeeHosts(Crawler $crawler, array $hosts): void
+    private function assertSeeHosts(Crawler $crawler, array $hosts, bool $isConnected = true): void
     {
         $this->assertCount(count($hosts), $nodes = $crawler->filter('.committee-host'));
+        $contact = $isConnected ? '\s+(Contacter)' : '';
 
         foreach ($hosts as $position => $host) {
             list($name, $role) = $host;
-            $this->assertRegExp('/^'.preg_quote($name).'\s+'.$role.'\s+(Contacter)?$/', trim($nodes->eq($position)->text()));
+            $this->assertRegExp('/^'.preg_quote($name).'\s+'.$role.$contact.'?$/', trim($nodes->eq($position)->text()));
         }
     }
 
     private function seeHostsContactLink(Crawler $crawler, int $hostsCount): bool
     {
         return $hostsCount === count($crawler->filter('.committee__card .committee-host a'));
+    }
+
+    private function seeMessageForContactHosts(Crawler $crawler): void
+    {
+        $this->assertContains(
+            'Connectez-vous pour pouvoir contacter les responsables de comité.',
+            $crawler->filter('.committee__card > .text--small')->text()
+        );
     }
 
     private function seeSelfHostContactLink(Crawler $crawler, string $name, string $role): bool

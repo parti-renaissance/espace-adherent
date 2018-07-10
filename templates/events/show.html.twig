@@ -147,7 +147,7 @@
                 {% endif %}
                 {% if event.organizer %}
                 <li>
-                    {% if app.user %}
+                    {% if has_role_user %}
                         <a href="{{ path('app_adherent_contact', {'uuid': event.organizer.uuid, 'from': 'event', 'id': event.uuid.toString}) }}">
                             Contact
                         </a>

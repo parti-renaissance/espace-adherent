@@ -19,6 +19,9 @@
             {{ include('components/admin.html.twig') }}
             Administration
         </h5>
+        {% if not has_role_user %}
+            <span class="text--small">Connectez-vous pour pouvoir contacter les responsables de comité.</span>
+        {% endif %}
         <ul class="committee__hosts">
             {% for host in committee_hosts %}
                 <li class="committee-host text--body text--bold">
@@ -28,7 +31,7 @@
                     </div>
                     {% if is_host and app.user.equals(host) %}
                         (vous)
-                    {% else %}
+                    {% elseif has_role_user %}
                         <a href="{{ path('app_adherent_contact', {'uuid': host.uuid, 'from': 'committee', 'id': committee.uuid.toString}) }}"
                            class="link--no-decor text--blue text--normal">
                             Contacter
