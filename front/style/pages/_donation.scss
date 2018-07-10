@@ -220,7 +220,7 @@
 }
 
 .donation {
-    background-color: $bg--gray;
+    background-color: rgba(0, 0, 0, .5);
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -230,6 +230,8 @@
     flex-direction: column;
     justify-content: space-between;
     background-position: center;
+    position: relative;
+    width: 100%;
 
     @media (max-height: 1000px) {
         justify-content: flex-start;
@@ -240,6 +242,14 @@
         background-color: white;
         background-position: 0 0;
         background-size: 100%;
+    }
+
+    &__video {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        min-width: 100%;
+        min-height: 100%;
     }
 
     &__header {
