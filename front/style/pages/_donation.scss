@@ -313,8 +313,7 @@
         }
 
         h3 {
-            margin-top: 40px;
-            margin-bottom: 10px;
+            @include text--medium-small;
             font-family: $font-gillsans;
         }
 

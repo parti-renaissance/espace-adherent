@@ -28,7 +28,8 @@
         {{ form_errors(form, { error_raw: true }) }}
 
         <div>
-            <h3 class="text--left b__nudge--bottom-medium">Informations personnelles</h3>
+            <h3 class="text--left">Informations personnelles</h3>
+            <div class="text--left text--body b__nudge--bottom-medium">Toutes ces informations sont obligatoires pour faire un don.</div>
             <div class="l__row l__row--h-stretch b__nudge--bottom-tiny form__radio-button">
                 {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
                 {{ form_errors(form.gender) }}
@@ -63,8 +64,6 @@
         </div>
 
         <div>
-            <h3 class="text--left b__nudge--top">Adresse</h3>
-            <p class="text--left text--smallest">La saisie de votre adresse fiscale exacte est obligatoire pour pouvoir faire un don.</p>
             {{ form_errors(form.address) }}
 
             <div class="form__row address-autocomplete"></div>
