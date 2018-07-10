@@ -467,7 +467,7 @@
 
     &__result {
         min-height: 450px;
-        padding-top: 20px;
+        padding: 30px 40px;
 
         &--failure h3 {
             margin-bottom: 40px;
@@ -486,7 +486,7 @@
             }
 
             &__thankyou {
-                font-size: 30px;
+                @include text--medium-large;
                 font-weight: bold;
                 font-style: italic;
                 line-height: 0.97;
