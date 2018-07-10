@@ -1,5 +1,6 @@
 <?php
 
+use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Cake\Chronos\Chronos;
 use Webmozart\Assert\Assert;
@@ -61,6 +62,25 @@ class FeatureContext extends RawMinkContext
             throw new \Exception(
                 sprintf('Found %d occurences of "%s" when expecting %d', $count, $text, $times)
             );
+        }
+    }
+
+    /**
+     * @Then I should be on :url wait otherwise
+     */
+    public function assertPageAddressAfterAllRedirection(string $url, int $ttl = 3, int $try = 1): void
+    {
+        $sleep = 100000; // 0.1 second
+
+        try {
+            $this->assertSession()->addressEquals($this->locatePath($url));
+        } catch (ExpectationException $e) {
+            if ($ttl <= $try * $sleep / 1000000) {
+                throw $e;
+            }
+
+            usleep($sleep); // 0.1 second
+            $this->assertPageAddressAfterAllRedirection($url, $ttl, ++$try);
         }
     }
 }

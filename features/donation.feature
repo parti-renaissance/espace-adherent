@@ -53,7 +53,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I press "Je donne"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi"
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
 
     When I fill in the following:
@@ -62,7 +62,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I select "12" from "MOIS_VALIDITE"
     And I select "18" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi"
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I should see "Paiement accepté"
 
     When I click on the "1" "img" element
@@ -89,7 +89,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I press "Je donne"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi"
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
 
     When I fill in the following:
@@ -98,7 +98,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I select "12" from "MOIS_VALIDITE"
     And I select "18" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi"
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I should see "Paiement accepté"
 
     When I click on the "1" "img" element
@@ -147,7 +147,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     When I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I press "Je donne"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi"
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
 
     When I fill in the following:
@@ -156,7 +156,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I select "12" from "MOIS_VALIDITE"
     And I select "18" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi"
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I should see "Paiement accepté"
 
     When I click on the "1" "img" element
@@ -192,7 +192,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     When I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I press "Je donne"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi"
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
 
     When I fill in the following:
@@ -201,7 +201,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I select "12" from "MOIS_VALIDITE"
     And I select "18" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi"
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I should see "Paiement accepté"
 
     When I click on the "1" "img" element
@@ -232,7 +232,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     When I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I press "Je donne"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi"
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
 
     When I fill in the following:
@@ -241,7 +241,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I select "12" from "MOIS_VALIDITE"
     And I select "18" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi"
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I should see "Paiement accepté"
 
     When I click on the "1" "img" element
