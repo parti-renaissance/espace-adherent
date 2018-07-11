@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title 'Inviter des amis à un événement' %}
+{% block canonical_url url('app_event_invite', { slug: committee_event.slug }) %}
 
 {% block javascripts %}
     {{ parent() }}
