@@ -45,7 +45,6 @@ class DonationRequestTest extends TestCase
         $this->assertSame('69001-69381', $donationRequest->getCity());
         $this->assertSame('Lyon 1er', $donationRequest->getCityName());
         $this->assertSame('FR', $donationRequest->getCountry());
-        $this->assertEquals($phone, $donationRequest->getPhone());
         $this->assertSame(30.0, $donationRequest->getAmount());
         $this->assertSame(0, $donationRequest->getDuration());
         $this->assertSame('3.3.3.3', $donationRequest->getClientIp());

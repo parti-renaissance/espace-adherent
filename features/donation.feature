@@ -21,7 +21,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | /le-mouvement |
       | /evenements   |
       | /comites      |
-      | /formation       |
+      | /formation    |
       | /articles     |
 
   Scenario: A user can't donate more than 7500€ per year
@@ -42,14 +42,12 @@ Feature: The goal is to donate one time or multiple time with a subscription
     Then I should be on "/don/coordonnees?montant=50&abonnement=0"
 
     When I fill in the following:
-      | app_donation_gender | male                     |
-      | Nom                 | Jean                     |
-      | Prénom              | Dupont                   |
-      | Adresse email       | jean.dupont@en-marche.fr |
-      | Code postal         | 75001                    |
-      | Ville               | Paris                    |
-      | Adresse postale     | 1 allée vivaldie         |
-      | Numéro de téléphone | 0123456789               |
+      | Nom             | Jean                     |
+      | Prénom          | Dupont                   |
+      | Adresse email   | jean.dupont@en-marche.fr |
+      | Code postal     | 75001                    |
+      | Ville           | Paris                    |
+      | Adresse postale | 1 allée vivaldie         |
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
@@ -79,14 +77,12 @@ Feature: The goal is to donate one time or multiple time with a subscription
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 
     When I fill in the following:
-      | app_donation_gender | male                     |
-      | Nom                 | Jean                     |
-      | Prénom              | Dupont                   |
-      | Adresse email       | jean.dupont@en-marche.fr |
-      | Code postal         | 75001                    |
-      | Ville               | Paris                    |
-      | Adresse postale     | 1 allée vivaldie         |
-      | Numéro de téléphone | 0123456789               |
+      | Nom             | Jean                     |
+      | Prénom          | Dupont                   |
+      | Adresse email   | jean.dupont@en-marche.fr |
+      | Code postal     | 75001                    |
+      | Ville           | Paris                    |
+      | Adresse postale | 1 allée vivaldie         |
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
@@ -113,14 +109,12 @@ Feature: The goal is to donate one time or multiple time with a subscription
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 
     When I fill in the following:
-      | app_donation_gender | male                     |
-      | Nom                 | Jean                     |
-      | Prénom              | Dupont                   |
-      | Adresse email       | jean.dupont@en-marche.fr |
-      | Code postal         | 75001                    |
-      | Ville               | Paris                    |
-      | Adresse postale     | 1 allée vivaldie         |
-      | Numéro de téléphone | 0123456789               |
+      | Nom             | Jean                     |
+      | Prénom          | Dupont                   |
+      | Adresse email   | jean.dupont@en-marche.fr |
+      | Code postal     | 75001                    |
+      | Ville           | Paris                    |
+      | Adresse postale | 1 allée vivaldie         |
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
@@ -130,7 +124,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     When I follow "faire un nouveau don unique"
     Then I should be on "/don/coordonnees?montant=50"
-    And the "app_donation_gender" field should contain "male"
+    And the "app_donation[gender]" field should contain "female"
     And the "Nom" field should contain "Jean"
     And the "Prénom" field should contain "Dupont"
     And the "Adresse email" field should contain "jean.dupont@en-marche.fr"

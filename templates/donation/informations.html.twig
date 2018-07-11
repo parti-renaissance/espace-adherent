@@ -36,7 +36,7 @@
                 Toutes ces informations sont obligatoires pour que votre don soit validé par la commission des comptes.
             </div>
             <div class="l__row l__row--h-stretch b__nudge--bottom-tiny form__radio-button">
-                {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
+                {{ form_widget(form.gender, { attr: { class: 'register__form__gender b__nudge--bottom-small' } }) }}
                 {{ form_errors(form.gender) }}
             </div>
 
@@ -59,12 +59,6 @@
             <div class="form__row">
                 {{ form_errors(form.emailAddress) }}
                 {{ form_widget(form.emailAddress, { attr: { class: 'form--full', placeholder: 'Adresse email' } }) }}
-            </div>
-
-            <div class="form__row form__row--stretch">
-                {{ form_errors(form.phone) }}
-                {{ form_widget(form.phone.country, { attr: { class: 'donation__form__phone, form--mid'} }) }}
-                {{ form_widget(form.phone.number, { attr: { class: 'form--mid', placeholder: 'Numéro de téléphone' } }) }}
             </div>
         </div>
 

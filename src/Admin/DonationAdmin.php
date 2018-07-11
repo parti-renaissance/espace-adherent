@@ -53,9 +53,6 @@ class DonationAdmin extends AbstractAdmin
             ->add('address', null, [
                 'label' => 'Adresse postale',
             ])
-            ->add('phone', null, [
-                'label' => 'Téléphone',
-            ])
             ->add('clientIp', null, [
                 'label' => 'IP du client',
             ])

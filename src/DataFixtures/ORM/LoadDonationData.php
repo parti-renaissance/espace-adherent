@@ -81,7 +81,6 @@ class LoadDonationData extends Fixture
             $adherent->getLastName(),
             $adherent->getEmailAddress(),
             $adherent->getPostAddress(),
-            $adherent->getPhone(),
             '127.0.0.1',
             $duration
         );

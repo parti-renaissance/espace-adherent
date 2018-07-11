@@ -64,7 +64,6 @@ class DonationTest extends TestCase
             'dupont',
             'jp@j.p',
             $this->createMock(PostAddress::class),
-            null,
             '127.0.0.1',
             PayboxPaymentSubscription::UNLIMITED
         );
@@ -93,7 +92,6 @@ class DonationTest extends TestCase
                 'dupont',
                 'jp@j.p',
                 $this->createMock(PostAddress::class),
-                null,
                 '127.0.0.1',
                 PayboxPaymentSubscription::NONE
             ),
@@ -121,7 +119,6 @@ class DonationTest extends TestCase
                 'dupont',
                 'jp@j.p',
                 $this->createMock(PostAddress::class),
-                null,
                 '127.0.0.1',
                 PayboxPaymentSubscription::UNLIMITED
             ),

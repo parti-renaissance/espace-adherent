@@ -9,8 +9,6 @@ use AppBundle\Validator\PayboxSubscription as AssertPayboxSubscription;
 use AppBundle\Validator\UniqueDonationSubscription;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use AppBundle\ValueObject\Genders;
-use libphonenumber\PhoneNumber;
-use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -40,7 +38,7 @@ class DonationRequest
      *     strict=true
      * )
      */
-    public $gender;
+    public $gender = Genders::FEMALE;
 
     /**
      * @Assert\NotBlank(message="common.first_name.not_blank")
@@ -99,11 +97,6 @@ class DonationRequest
      */
     private $country;
 
-    /**
-     * @AssertPhoneNumber(defaultRegion="FR")
-     */
-    private $phone;
-
     private $clientIp;
 
     /**
@@ -114,7 +107,7 @@ class DonationRequest
     /**
      * @Assert\Choice(DonationRequestType::CONFIRM_DONATION_TYPE_CHOICES)
      */
-    private $confirmDonationType;
+    private $confirmDonationType = DonationRequestType::CONFIRM_DONATION_TYPE_UNIQUE;
 
     /**
      * @Assert\Range(min=0, max=7500)
@@ -132,7 +125,6 @@ class DonationRequest
         $this->emailAddress = '';
         $this->country = 'FR';
         $this->setAmount($amount);
-        $this->phone = static::createPhoneNumber();
         $this->duration = $duration;
     }
 
@@ -152,7 +144,6 @@ class DonationRequest
         $dto->city = $adherent->getCity();
         $dto->cityName = $adherent->getCityName();
         $dto->country = $adherent->getCountry();
-        $dto->phone = $adherent->getPhone();
 
         return $dto;
     }
@@ -262,16 +253,6 @@ class DonationRequest
         $this->country = $country;
     }
 
-    public function setPhone(?PhoneNumber $phone)
-    {
-        $this->phone = $phone;
-    }
-
-    public function getPhone(): ?PhoneNumber
-    {
-        return $this->phone;
-    }
-
     public function getClientIp(): string
     {
         return $this->clientIp;
@@ -323,13 +304,6 @@ class DonationRequest
             $retry->address = (string) $payload['ad'];
         }
 
-        // remove previous invalid state
-        $retry->phone = null;
-
-        if (isset($payload['phc']) && isset($payload['phn'])) {
-            $retry->phone = self::createPhoneNumber((string) $payload['phc'], (string) $payload['phn']);
-        }
-
         return $retry;
     }
 
@@ -351,18 +325,6 @@ class DonationRequest
     public function setConfirmSubscriptionAmount(?string $confirmSubscriptionAmount): void
     {
         $this->confirmSubscriptionAmount = $confirmSubscriptionAmount;
-    }
-
-    private static function createPhoneNumber(int $countryCode = 33, string $number = null)
-    {
-        $phone = new PhoneNumber();
-        $phone->setCountryCode($countryCode);
-
-        if ($number) {
-            $phone->setNationalNumber($number);
-        }
-
-        return $phone;
     }
 
     public function isSubscription(): bool
