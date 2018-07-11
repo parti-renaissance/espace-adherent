@@ -198,9 +198,8 @@ label {
                 min-height: 20px;
                 border-radius: 50px;
                 margin-right: 10px;
-                border: 7px solid $gray--light;
                 transition: all 0.2s;
-                background: #fff;
+                background: $gray--light;
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
@@ -288,9 +287,8 @@ label {
                 min-width: 20px;
                 min-height: 20px;
                 margin-right: 10px;
-                border: 1px solid $gray;
                 transition: all 0.2s;
-                background: #fff;
+                background: $gray--light;
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
@@ -307,7 +305,7 @@ label {
 
         &:hover {
             label:before {
-                background: $gray--lighter;
+                background: $gray;
             }
         }
 
