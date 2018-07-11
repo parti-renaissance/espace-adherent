@@ -18,12 +18,6 @@
         body {
             background-color: #1D5FD1;
         }
-
-        @media(max-width: 650px) {
-            body {
-                background-color: white;
-            }
-        }
     </style>
 {% endblock %}
 
@@ -33,11 +27,13 @@
 {% block content %}
 
     <video class="donation__video" src="https://storage.googleapis.com/en-marche-prod/static/videos/donation.mp4" autoplay loop></video>
+    <div class="donation__video--overlay">
+    </div>
     <div class="donation">
         <div>
             <section class="donation__header l__wrapper l__row l__row--h-stretch list__links--nav">
                 <h1><a href="{{ path('homepage') }}" class="link--no-decor">En Marche !</a></h1>
-                <div class="text--white text--uppercase"><i class="fa fa-lock text--medium-small"></i> Page Sécurisée</div>
+                <div class="text--uppercase"><i class="fa fa-lock text--medium-small"></i> Page Sécurisée</div>
             </section>
 
             <section class="donation__content l__wrapper l__row space--60-0">

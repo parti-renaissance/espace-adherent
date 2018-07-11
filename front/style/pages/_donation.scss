@@ -220,7 +220,6 @@
 }
 
 .donation {
-    background-color: rgba(0, 0, 0, .5);
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -250,10 +249,19 @@
         bottom: 0;
         min-width: 100%;
         min-height: 100%;
+
+        &--overlay {
+            background: rgba(0, 0, 0, .5);
+            height: 100vh;
+            width: 100%;
+            box-sizing: border-box;
+            position: fixed;
+        }
     }
 
     &__header {
         padding: 30px 0;
+        color: white;
 
         h1 a {
             @include text--logo;
@@ -261,26 +269,20 @@
 
             @media (max-width: $mobile) {
                 font-size: $text--size-medium;
+                color: black;
             }
         }
 
         @media (max-width: $mobile) {
-            height: 210px;
-            background-position: center top;
-            background-size: cover;
             width: 100%;
             box-sizing: border-box;
-            align-items: baseline;
-            padding: 30px 6%;
+            padding: 30px 6% 0;
             font-size: $text--size-smallest;
+            color: black;
 
             .fa {
                 font-size: $text--size-smallest;
             }
-        }
-
-        @media (max-width: $mobile - 200px) {
-            height: 130px;
         }
     }
 
@@ -297,14 +299,13 @@
     &__form {
         width: 550px;
         background: white;
-        margin: 0 72px 0 30px;
+        margin: 0 50px 0 auto;
         text-align: center;
         box-sizing: border-box;
 
         @media (max-width: $mobile) {
             width: 100%;
             margin: 0;
-            padding: 40px 6%;
         }
 
         form {
