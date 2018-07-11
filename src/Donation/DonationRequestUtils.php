@@ -101,6 +101,20 @@ class DonationRequestUtils
         return $request->query->getInt('abonnement', PayboxPaymentSubscription::NONE);
     }
 
+    public function hasAmountAlert(?string $amount, int $subscription): bool
+    {
+        if (null === $amount) {
+            return false;
+        }
+
+        return $amount > DonationRequest::ALERT_AMOUNT && PayboxPaymentSubscription::NONE === $subscription;
+    }
+
+    public function getDefaultConfirmSubscriptionAmount(string $amount): float
+    {
+        return round($amount / 5);
+    }
+
     public function startDonationRequest(DonationRequest $donationRequest): void
     {
         $this->getSession()->set(static::SESSION_KEY, $donationRequest);
@@ -140,6 +154,7 @@ class DonationRequestUtils
         return [
             self::RETRY_PAYLOAD => json_encode($payload),
             'montant' => $donation->getAmountInEuros(),
+            'abonnement' => $donation->getDuration(),
         ];
     }
 

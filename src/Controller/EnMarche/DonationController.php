@@ -40,7 +40,7 @@ class DonationController extends Controller
      * @Route(name="donation_index")
      * @Method("GET")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         if (!$amount = $request->query->get('montant')) {
             return $this->render('donation/index.html.twig', [
@@ -59,14 +59,18 @@ class DonationController extends Controller
      * @Route("/coordonnees", name="donation_informations")
      * @Method({"GET", "POST"})
      */
-    public function informationsAction(Request $request, DonationRequestUtils $donationRequestUtils, DonationRequestHandler $donationRequestHandler)
-    {
-        if (!$request->query->get('montant')) {
+    public function informationsAction(
+        Request $request,
+        DonationRequestUtils $donationRequestUtils,
+        DonationRequestHandler $donationRequestHandler
+    ): Response {
+        if (!$request->query->get('montant') || !is_numeric($request->query->get('montant'))) {
             return $this->redirectToRoute('donation_index');
         }
 
         try {
             $form = $this->createForm(DonationRequestType::class, null, ['locale' => $request->getLocale()]);
+
             /** @var DonationRequest $donationRequest */
             $donationRequest = $form->handleRequest($request)->getData();
         } catch (InvalidPayboxPaymentSubscriptionValueException $e) {
@@ -96,7 +100,7 @@ class DonationController extends Controller
      * @Route("/{uuid}/paiement", requirements={"uuid": "%pattern_uuid%"}, name="donation_pay")
      * @Method("GET")
      */
-    public function payboxAction(PayboxFormFactory $payboxFormFactory, Donation $donation)
+    public function payboxAction(PayboxFormFactory $payboxFormFactory, Donation $donation): Response
     {
         $paybox = $payboxFormFactory->createPayboxFormForDonation($donation);
 
@@ -110,8 +114,11 @@ class DonationController extends Controller
      * @Route("/callback/{_callback_token}", name="donation_callback")
      * @Method("GET")
      */
-    public function callbackAction(Request $request, TransactionCallbackHandler $transactionCallbackHandler, string $_callback_token)
-    {
+    public function callbackAction(
+        Request $request,
+        TransactionCallbackHandler $transactionCallbackHandler,
+        string $_callback_token
+    ): Response {
         $id = explode('_', $request->query->get('id'))[0];
 
         if (!$id || !Uuid::isValid($id)) {
@@ -137,7 +144,7 @@ class DonationController extends Controller
         NewsletterSubscriptionRepository $newsletterSubscriptionRepository,
         Donation $donation,
         string $status
-    ) {
+    ): Response {
         $retryUrl = null;
         if ($donation->hasError()) {
             $retryUrl = $this->generateUrl(
@@ -165,8 +172,12 @@ class DonationController extends Controller
      * @Route("/mensuel/annuler", name="donation_subscription_cancel")
      * @Method({"GET", "POST"})
      */
-    public function cancelSubscriptionAction(Request $request, DonationRepository $donationRepository, PayboxPaymentUnsubscription $payboxPaymentUnsubscription, LoggerInterface $logger): Response
-    {
+    public function cancelSubscriptionAction(
+        Request $request,
+        DonationRepository $donationRepository,
+        PayboxPaymentUnsubscription $payboxPaymentUnsubscription,
+        LoggerInterface $logger
+    ): Response {
         $donations = $donationRepository->findAllSubscribedDonationByEmail($this->getUser()->getEmailAddress());
 
         if (!$donations) {
