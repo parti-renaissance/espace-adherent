@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title 'Participer à un événement' %}
+{% block canonical_url url('app_event_attend', { slug: committee_event.slug }) %}
 
 {% block content %}
 
