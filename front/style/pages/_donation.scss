@@ -41,10 +41,11 @@
     }
 
     &__help {
+        font-family: $font-roboto;
         text-align: left;
         margin-top: 5px;
-        color: #7f7f7f;
-        font-size: 10px;
+        color: $black--half;
+        @include text--small;
     }
 
     &__button {
@@ -219,7 +220,6 @@
 }
 
 .donation {
-    background-color: $blue;
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -229,6 +229,8 @@
     flex-direction: column;
     justify-content: space-between;
     background-position: center;
+    position: relative;
+    width: 100%;
 
     @media (max-height: 1000px) {
         justify-content: flex-start;
@@ -241,8 +243,25 @@
         background-size: 100%;
     }
 
+    &__video {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        min-width: 100%;
+        min-height: 100%;
+
+        &--overlay {
+            background: rgba(0, 0, 0, .5);
+            height: 100vh;
+            width: 100%;
+            box-sizing: border-box;
+            position: fixed;
+        }
+    }
+
     &__header {
         padding: 30px 0;
+        color: white;
 
         h1 a {
             @include text--logo;
@@ -250,26 +269,20 @@
 
             @media (max-width: $mobile) {
                 font-size: $text--size-medium;
+                color: black;
             }
         }
 
         @media (max-width: $mobile) {
-            height: 210px;
-            background-position: center top;
-            background-size: cover;
             width: 100%;
             box-sizing: border-box;
-            align-items: baseline;
-            padding: 30px 6%;
+            padding: 30px 6% 0;
             font-size: $text--size-smallest;
+            color: black;
 
             .fa {
                 font-size: $text--size-smallest;
             }
-        }
-
-        @media (max-width: $mobile - 200px) {
-            height: 130px;
         }
     }
 
@@ -284,22 +297,21 @@
     }
 
     &__form {
-        width: 500px;
+        width: 550px;
         background: white;
-        padding: 40px 55px;
-        margin: 0 72px 0 30px;
+        margin: 0 50px 0 auto;
         text-align: center;
         box-sizing: border-box;
 
         @media (max-width: $mobile) {
             width: 100%;
             margin: 0;
-            padding: 40px 6%;
         }
 
         form {
             font-family: $font-roboto;
-            font-size: 14px;
+            @include text--small;
+            padding: 40px;
         }
 
         h2 {
@@ -309,6 +321,11 @@
             font-style: italic;
             line-height: 0.86;
             letter-spacing: -0.7px;
+        }
+
+        h3 {
+            @include text--medium-small;
+            font-family: $font-gillsans;
         }
 
         .fluo {
@@ -323,7 +340,9 @@
         }
 
         .montant {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            text-align: left;
+            @include text--default;
         }
 
         &__amount {
@@ -364,6 +383,7 @@
 
     &__form-steps {
         @include steps;
+        display: none; /* Hiding the steps to see if it increases conversion */
     }
 
     &__frequency {
@@ -432,14 +452,22 @@
         }
     }
 
-    &__informations__amount {
-        font-size: 14px;
-        font-family: $font-roboto;
-        margin-bottom: 32px;
+    &__informations {
+        form {
+            background: transparent;
+            width: auto;
+        }
 
-        h3 {
-            font-size: 30px;
-            font-weight: bold;
+        &__amount {
+            @include text--default;
+            font-family: $font-roboto;
+            padding-top: 40px;
+
+            div {
+                margin-top: 5px;
+                font-size: 30px;
+                font-weight: bold;
+            }
         }
     }
 
@@ -450,7 +478,7 @@
 
     &__result {
         min-height: 450px;
-        padding-top: 20px;
+        padding: 30px 40px;
 
         &--failure h3 {
             margin-bottom: 40px;
@@ -469,7 +497,7 @@
             }
 
             &__thankyou {
-                font-size: 30px;
+                @include text--medium-large;
                 font-weight: bold;
                 font-style: italic;
                 line-height: 0.97;

@@ -21,14 +21,17 @@
     <div class="donation__informations">
         <div class="donation__informations__amount">
             Je donne<br />
-            <h3>{{ donation.amount }}€{{ app.request.query.get('abonnement') == constant('AppBundle\\Donation\\PayboxPaymentSubscription::UNLIMITED') ? ' / mois' }}</h3>
+            <div>{{ donation.amount }}€{{ app.request.query.get('abonnement') == constant('AppBundle\\Donation\\PayboxPaymentSubscription::UNLIMITED') ? ' / mois' }}</div>
         </div>
 
-        {{ form_start(form, { attr: { class: 'form', autocomplete: 'off' }}) }}
+        {{ form_start(form, { attr: { class: 'form join__form', autocomplete: 'off' }}) }}
         {{ form_errors(form, { error_raw: true }) }}
 
         <div>
-            <h3 class="text--left b__nudge--bottom-medium">Informations personnelles</h3>
+            <h3 class="text--left">Informations personnelles</h3>
+            <div class="text--left text--body b__nudge--bottom-medium">
+                Toutes ces informations sont obligatoires pour que votre don soit validé par la commission des comptes.
+            </div>
             <div class="l__row l__row--h-stretch b__nudge--bottom-tiny form__radio-button">
                 {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
                 {{ form_errors(form.gender) }}
@@ -36,12 +39,12 @@
 
             <div class="form__row form__row--stretch">
                 <div class="form--mid">
-                    {{ form_errors(form.lastName) }}
-                    {{ form_widget(form.lastName, { attr: { class: 'form--full', placeholder: 'Nom' } }) }}
-                </div>
-                <div class="form--mid">
                     {{ form_errors(form.firstName) }}
                     {{ form_widget(form.firstName, { attr: { class: 'form--full', placeholder: 'Prénom' } }) }}
+                </div>
+                <div class="form--mid">
+                    {{ form_errors(form.lastName) }}
+                    {{ form_widget(form.lastName, { attr: { class: 'form--full', placeholder: 'Nom' } }) }}
                 </div>
             </div>
 
@@ -63,8 +66,6 @@
         </div>
 
         <div>
-            <h3 class="text--left b__nudge--top">Adresse</h3>
-            <p class="text--left text--smallest">La saisie de votre adresse fiscale exacte est obligatoire pour pouvoir faire un don.</p>
             {{ form_errors(form.address) }}
 
             <div class="form__row address-autocomplete"></div>
@@ -93,12 +94,14 @@
             </div>
         </div>
 
-        <div class="form__row form__checkbox form__checkbox--large">
-            {{ form_row(form.isPhysicalPerson, { label: "Je certifie sur l'honneur être une personne physique et que le règlement de mon don provient de mon compte bancaire personnel ou de celui de mon conjoint, concubin, ascendant ou descendant.", label_attr: { id: 'donation_check_label' } }) }}
-        </div>
+        <div class="b__nudge--top-large b__nudge--bottom-large">
+            <div class="form__row form__checkbox form__checkbox--large">
+                {{ form_row(form.isPhysicalPerson, { label: "Je certifie sur l'honneur être une personne physique et que le règlement de mon don provient de mon compte bancaire personnel ou de celui de mon conjoint, concubin, ascendant ou descendant.", label_attr: { id: 'donation_check_label' } }) }}
+            </div>
 
-        <div class="form__row form__checkbox form__checkbox--large">
-            {{ form_row(form.hasFrenchNationality, { label: 'Je certifie être de nationalité française ou résider fiscalement en France.', label_attr: { id: 'donation_check_nationality_label' } }) }}
+            <div class="form__row form__checkbox form__checkbox--large">
+                {{ form_row(form.hasFrenchNationality, { label: 'Je certifie être de nationalité française ou résider fiscalement en France.', label_attr: { id: 'donation_check_nationality_label' } }) }}
+            </div>
         </div>
 
         {{ form_widget(form.submit, { attr: { class: 'btn--large-and-medium btn--primary' } }) }}
