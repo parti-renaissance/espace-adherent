@@ -24,7 +24,7 @@
             <div>{{ donation.amount }}€{{ app.request.query.get('abonnement') == constant('AppBundle\\Donation\\PayboxPaymentSubscription::UNLIMITED') ? ' / mois' }}</div>
         </div>
 
-        {{ form_start(form, { attr: { class: 'form join__form', autocomplete: 'off' }}) }}
+        {{ form_start(form, { attr: { class: 'form join__form' } }) }}
         {{ form_errors(form, { error_raw: true }) }}
 
         <div>

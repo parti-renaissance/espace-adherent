@@ -16,9 +16,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
     }
 
     createAutocomplete() {
-        this._input = document.createElement('input');
-        this._input.className = this._inputClassNames;
-        this._input.placeholder = 'Adresse postale';
+        this.createInputElement();
         this._autocomplete = new google.maps.places.Autocomplete(this._input, {types: ['address']});
 
         this._autocomplete.setFields(['address_components']);
@@ -82,5 +80,29 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
             postal_code: null,
             country: null,
         };
+    }
+
+    createInputElement() {
+        this._input = document.createElement('input');
+        this._input.placeholder = 'Adresse postale';
+        this._input.className = this._inputClassNames;
+
+        /**
+         * Hack: replace HTML attribute `autocomplete="off"` added by Google API by `autocomplete="nope"`
+         * The value `nope` is one hack too, invalid value disable the behaviour,
+         * because `off` don't do it correctly in Chrome
+         *
+         * @link https://stackoverflow.com/a/49161445/6071674
+         * @link https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion
+         */
+        const observerHack = new MutationObserver(function(elements) {
+            observerHack.disconnect();
+            elements.shift().target.autocomplete = 'nope';
+        });
+
+        observerHack.observe(this._input, {
+            attributes: true,
+            attributeFilter: ['autocomplete']
+        });
     }
 }
