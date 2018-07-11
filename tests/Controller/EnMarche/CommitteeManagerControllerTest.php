@@ -311,7 +311,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertInstanceOf(Event::class, $event = $this->committeeEventRepository->findMostRecentEvent());
+        $this->assertInstanceOf(Event::class, $event = $this->committeeEventRepository->findOneBySlug('2022-03-02-debat-sur-lagriculture-ecologique'));
         $this->assertSame("Débat sur l'agriculture écologique", $event->getName());
         $this->assertSame('Cette journée sera consacrée à un grand débat sur la question de l\'agriculture écologique.', $event->getDescription());
         $this->assertFalse($event->isForLegislatives());
