@@ -29,7 +29,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | LoadDonationData |
     And I am logged as "jacques.picard@en-marche.fr"
     And I am on "/don/coordonnees?montant=7490&abonnement=0"
-    And I press "Je donne"
+    And I press "Continuer"
     Then I should see "Vous avez déjà donné 250 euros cette année."
     And I should see "Le don que vous vous apprêtez à faire est trop élevé, car vous avez déjà donné 250 euros cette année. Les dons étant limités à 7500 euros par an et par personne, vous pouvez encore donner 7250 euros."
 
@@ -52,7 +52,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | Numéro de téléphone | 0123456789               |
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
-    And I press "Je donne"
+    And I press "Continuer"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
 
@@ -66,7 +66,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should see "Paiement accepté"
 
     When I click on the "1" "img" element
-    Then I should see "Votre soutien compte beaucoup pour moi."
+    Then I should see "Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie politique et au rayonnement des idées progressistes."
 
   @javascript
   Scenario: The user can subscribe to donate each month successfully but can't have a second subscription
@@ -88,7 +88,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | Numéro de téléphone | 0123456789               |
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
-    And I press "Je donne"
+    And I press "Continuer"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
 
@@ -102,7 +102,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should see "Paiement accepté"
 
     When I click on the "1" "img" element
-    Then I should see "Votre soutien compte beaucoup pour moi."
+    Then I should see "Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie politique et au rayonnement des idées progressistes."
 
     Given I am on "/don"
     And wait 1 second until I see "Continuer"
@@ -121,7 +121,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | Numéro de téléphone | 0123456789               |
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
-    And I press "Je donne"
+    And I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
     And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez nous contacter pour l’annuler ou faire un nouveau don unique."
 
@@ -146,7 +146,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     When I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
-    And I press "Je donne"
+    And I press "Continuer"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
 
@@ -160,7 +160,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should see "Paiement accepté"
 
     When I click on the "1" "img" element
-    Then I should see "Votre soutien compte beaucoup pour moi."
+    Then I should see "Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie politique et au rayonnement des idées progressistes."
 
     # Check if I can't continue create a new subscription and then can cancel a subscription
     Given I am on "/don"
@@ -171,7 +171,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     When I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
-    And I press "Je donne"
+    And I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
     And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez vous rendre sur votre profil pour l’annuler ou faire un nouveau don unique."
 
@@ -191,7 +191,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     When I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
-    And I press "Je donne"
+    And I press "Continuer"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
 
@@ -205,7 +205,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should see "Paiement accepté"
 
     When I click on the "1" "img" element
-    Then I should see "Votre soutien compte beaucoup pour moi."
+    Then I should see "Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie politique et au rayonnement des idées progressistes."
 
   @javascript
   Scenario: The logged user can continue to donate punctually with a subscription currently running
@@ -221,7 +221,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     When I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
-    And I press "Je donne"
+    And I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
     And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez vous rendre sur votre profil pour l’annuler ou faire un nouveau don unique."
 
@@ -231,7 +231,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     When I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
-    And I press "Je donne"
+    And I press "Continuer"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
 
@@ -245,4 +245,4 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should see "Paiement accepté"
 
     When I click on the "1" "img" element
-    Then I should see "Votre soutien compte beaucoup pour moi."
+    Then I should see "Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie politique et au rayonnement des idées progressistes."

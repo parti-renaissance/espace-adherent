@@ -89,6 +89,13 @@ export default class AmountChooser extends React.Component {
                     </label>
                 </div>
 
+                <h3 className="b__nudge--top-large b__nudge--bottom-tiny">Don recurrent</h3>
+                <div className="text--left">
+                    En cochant la case ci-dessous, vous acceptez de mensualiser
+                    ce don. Votre carte bancaire sera débitée tous les mois. Vous
+                    pouvez annuler ce don mensuel à tout moment depuis votre
+                    espace adhérent ou en nous contactant.
+                </div>
                 <div className="amount-chooser__monthly form__checkbox form__checkbox--large">
                     <input type="checkbox" name="abonnement" id="donation-monthly"/>
                     <label htmlFor="donation-monthly" id="donation-monthly_label">
@@ -96,8 +103,7 @@ export default class AmountChooser extends React.Component {
                     </label>
                 </div>
                 <div className="amount-chooser__help">
-                    Vous aurez la possibilité d'annuler votre don mensuel à tout moment depuis votre espace adhérent
-                    ou en <a href="/contact">nous contactant directement</a>.
+
                 </div>
             </div>
         );

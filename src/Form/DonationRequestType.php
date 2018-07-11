@@ -84,7 +84,7 @@ class DonationRequestType extends AbstractType
                 'constraints' => [new Assert\IsTrue()],
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Je donne',
+                'label' => 'Continuer',
             ])
         ;
 
