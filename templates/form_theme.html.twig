@@ -74,6 +74,10 @@
     {{- parent() -}}
 {%- endblock form_label %}
 
+{% block accept_personal_data_collect_label %}
+    {{ form_label(form, "J'ai lu et j'accepte les mentions d'information relatives au recueil de mes données personnelles ci-dessous :", {label_attr: {id: 'field-personal-data-collection'}}) }}
+{% endblock %}
+
 {# Errors #}
 
 {% block form_errors -%}

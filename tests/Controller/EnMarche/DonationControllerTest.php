@@ -89,6 +89,7 @@ class DonationControllerTest extends WebTestCase
                 ],
                 'isPhysicalPerson' => true,
                 'hasFrenchNationality' => true,
+                'personalDataCollection' => true,
             ],
         ]));
 
@@ -239,6 +240,7 @@ class DonationControllerTest extends WebTestCase
                 ],
                 'isPhysicalPerson' => true,
                 'hasFrenchNationality' => true,
+                'personalDataCollection' => true,
             ],
         ]));
 
@@ -394,6 +396,7 @@ class DonationControllerTest extends WebTestCase
                 ],
                 'isPhysicalPerson' => true,
                 'hasFrenchNationality' => true,
+                'personalDataCollection' => true,
             ],
         ]));
 

@@ -34,6 +34,7 @@ class EventRegistrationType extends AbstractType
             ->add('acceptTerms', CheckboxType::class, [
                 'mapped' => false,
             ])
+            ->add('personalDataCollection', AcceptPersonalDataCollectType::class)
         ;
 
         $registration = $builder->getData();

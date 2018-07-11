@@ -43,6 +43,7 @@ class CitizenActionControllerTest extends WebTestCase
             'event_registration[lastName]' => 'Guest',
             'event_registration[emailAddress]' => 'anonymous.guest@exemple.org',
             'event_registration[acceptTerms]' => '1',
+            'event_registration[personalDataCollection]' => true,
         ]));
 
         $registrations = $this->getEventRegistrationRepository()->findAll();
@@ -72,7 +73,9 @@ class CitizenActionControllerTest extends WebTestCase
         // Adherent is already subscribed to mails
         $this->assertSame(0, $crawler->filter('#field-newsletter-subscriber')->count());
 
-        $this->client->submit($crawler->selectButton("Je m'inscris")->form());
+        $form = $crawler->selectButton("Je m'inscris")->form();
+        $form['event_registration[personalDataCollection]']->tick();
+        $this->client->submit($form);
 
         $this->assertInstanceOf(EventRegistration::class, $this->getEventRegistrationRepository()->findGuestRegistration(LoadCitizenActionData::CITIZEN_ACTION_3_UUID, 'benjyd@aol.com'));
         $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenActionRegistrationConfirmationMessage::class, 'benjyd@aol.com'));

@@ -43,6 +43,17 @@
                         {{ form_widget(form.message, { 'attr': { 'class': 'form--full form__field--textarea-120' } }) }}
                     </div>
 
+                    <div class="b__nudge--top text--small form__checkbox form__checkbox--large">
+                        {{ form_row(form.personalDataCollection) }}
+                    </div>
+
+                    <p class="text--summary text--gray">
+                        Les données recueillies sur ce formulaire sont traitées par LaREM afin de gérer les informations relatives aux invitations de contacts de l’utilisateur et de permettre à LaREM de vous envoyer des communications politiques.
+                        Les informations marquées d’un astérisque sont obligatoires. L’absence de réponse dans ces champs ne permettra pas à LaREM de traiter votre demande.
+                        Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
+                        Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse postale ou électronique suivante La République En Marche, 63 rue Sainte-Anne, 75002 Paris, France et <a href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>.
+                    </p>
+
                     <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
                     {% if recaptcha_public_key is not empty %}
                         <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>

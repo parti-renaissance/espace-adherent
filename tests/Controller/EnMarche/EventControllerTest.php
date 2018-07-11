@@ -59,10 +59,11 @@ class EventControllerTest extends WebTestCase
         $crawler = $this->client->submit($crawler->selectButton("Je m'inscris")->form());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(3, $crawler->filter('.form__errors')->count());
+        $this->assertSame(4, $crawler->filter('.form__errors')->count());
         $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-first-name .form__errors > li')->text());
         $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-last-name .form__errors > li')->text());
         $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-email-address .form__errors > li')->text());
+        $this->assertSame('L\'acceptation des mentions d\'information est obligatoire pour donner suite à votre demande.', $crawler->filter('#event_registration_personalDataCollection_errors li.form__error')->text());
 
         $this->client->submit($crawler->selectButton("Je m'inscris")->form([
             'event_registration' => [
@@ -71,6 +72,7 @@ class EventControllerTest extends WebTestCase
                 'lastName' => '75001',
                 'newsletterSubscriber' => true,
                 'acceptTerms' => true,
+                'personalDataCollection' => true,
             ],
         ]));
 
@@ -118,7 +120,9 @@ class EventControllerTest extends WebTestCase
         // Adherent is already subscribed to mails
         $this->assertSame(0, $crawler->filter('#field-newsletter-subscriber')->count());
 
-        $this->client->submit($crawler->selectButton("Je m'inscris")->form());
+        $form = $crawler->selectButton("Je m'inscris")->form();
+        $form['event_registration[personalDataCollection]']->tick();
+        $this->client->submit($form);
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'jacques.picard@en-marche.fr'));
         $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'jacques.picard@en-marche.fr'));

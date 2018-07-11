@@ -52,6 +52,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | Numéro de téléphone | 0123456789               |
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
+    And I click the "field-personal-data-collection" element
     And I press "Continuer"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
@@ -88,6 +89,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | Numéro de téléphone | 0123456789               |
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
+    And I click the "field-personal-data-collection" element
     And I press "Continuer"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
@@ -121,6 +123,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | Numéro de téléphone | 0123456789               |
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
+    And I click the "field-personal-data-collection" element
     And I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
     And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez nous contacter pour l’annuler ou faire un nouveau don unique."
@@ -146,6 +149,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     When I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
+    And I click the "field-personal-data-collection" element
     And I press "Continuer"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
@@ -171,6 +175,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     When I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
+    And I click the "field-personal-data-collection" element
     And I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
     And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez vous rendre sur votre profil pour l’annuler ou faire un nouveau don unique."
@@ -191,6 +196,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     When I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
+    And I click the "field-personal-data-collection" element
     And I press "Continuer"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
@@ -221,6 +227,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     When I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
+    And I click the "field-personal-data-collection" element
     And I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
     And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez vous rendre sur votre profil pour l’annuler ou faire un nouveau don unique."
@@ -231,6 +238,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     When I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
+    And I click the "field-personal-data-collection" element
     And I press "Continuer"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
