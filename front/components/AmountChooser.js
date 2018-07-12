@@ -89,7 +89,7 @@ export default class AmountChooser extends React.Component {
                     </label>
                 </div>
 
-                <h3 className="b__nudge--top-large b__nudge--bottom-tiny">Don recurrent</h3>
+                <h3 className="b__nudge--top-large b__nudge--bottom-tiny">Don récurrent</h3>
                 <div className="text--left">
                     En cochant la case ci-dessous, vous acceptez de mensualiser
                     ce don. Votre carte bancaire sera débitée tous les mois. Vous

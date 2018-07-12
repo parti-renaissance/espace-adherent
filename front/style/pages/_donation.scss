@@ -252,6 +252,7 @@
 
         &--overlay {
             background: rgba(0, 0, 0, .5);
+            top: 0;
             height: 100vh;
             width: 100%;
             box-sizing: border-box;
@@ -319,7 +320,7 @@
             font-size: 41px;
             font-weight: 700;
             font-style: italic;
-            line-height: 0.86;
+            line-height: 0.95;
             letter-spacing: -0.7px;
         }
 
@@ -450,12 +451,26 @@
                 padding: 0;
             }
         }
+
+        input[type="checkbox"]:checked + label:before {
+            background: $green--apple;
+            border-color: $green--apple;
+        }
     }
 
     &__informations {
         form {
             background: transparent;
             width: auto;
+        }
+
+        .register__form__gender label {
+            @include text--default;
+        }
+
+        input[type="radio"]:checked + label:before {
+            background: $green--apple;
+            border-color: $green--apple;
         }
 
         &__amount {
@@ -467,6 +482,17 @@
                 margin-top: 5px;
                 font-size: 30px;
                 font-weight: bold;
+            }
+
+            input[type="text"] {
+                width: 70px;
+                height: auto;
+                text-align: center;
+                margin: 0 10px;
+            }
+
+            label {
+                @include text--default;
             }
         }
     }
