@@ -3,19 +3,20 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\EventCategory;
+use AppBundle\Event\BaseEventCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BaseEventCommandType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $now = $this->createBeginDate($options['minutes']);
-
         $builder
             ->add('name', TextType::class, [
                 'filter_emojis' => true,
@@ -30,12 +31,10 @@ class BaseEventCommandType extends AbstractType
             ])
             ->add('address', AddressType::class)
             ->add('beginAt', DateTimeType::class, [
-                'data' => $now,
                 'years' => $options['years'],
                 'minutes' => $options['minutes'],
             ])
             ->add('finishAt', DateTimeType::class, [
-                'data' => (clone $now)->modify('+2 hours'),
                 'years' => $options['years'],
                 'minutes' => $options['minutes'],
             ])
@@ -43,6 +42,18 @@ class BaseEventCommandType extends AbstractType
                 'required' => false,
             ])
         ;
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            /** @var BaseEventCommand $command */
+            $command = $event->getData();
+
+            if (null === $command->getBeginAt() || null === $command->getFinishAt()) {
+                $beginDate = $this->createBeginDate($event->getForm()->getConfig()->getOption('minutes'));
+
+                $command->setBeginAt($beginDate);
+                $command->setFinishAt((clone $beginDate)->modify('+2 hours'));
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)
