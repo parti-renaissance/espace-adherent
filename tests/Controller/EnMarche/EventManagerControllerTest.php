@@ -128,7 +128,7 @@ class EventManagerControllerTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->seeFlashMessage($crawler, 'L\'événement a bien été modifié.');
         $this->assertSame('Écologie, débatons-en ! - Lyon 1er, 02/03/2022 | La République En Marche !', $crawler->filter('title')->text());
-        $this->assertSame('Écologie, débatons-en !', $crawler->filter('.committee-event-name')->text());
+        $this->assertSame('Écologie, débatons-en ! - Lyon 1er, 02/03/2022', $crawler->filter('.committee-event-name')->text());
         $this->assertSame('Organisé par Jacques Picard du comité En Marche Paris 8', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
         $this->assertSame('Mercredi 2 mars 2022, 9h30', $crawler->filter('.committee-event-date')->text());
         $this->assertSame('6 rue Neyret, 69001 Lyon 1er', $crawler->filter('.committee-event-address')->text());
