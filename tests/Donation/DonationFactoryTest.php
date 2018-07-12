@@ -34,7 +34,6 @@ class DonationFactoryTest extends TestCase
         $request->setPostalCode('69000');
         $request->setCityName('Lyon');
         $request->setAddress('2, Rue de la République');
-        $request->setPhone($phone);
         $request->setDuration(0);
 
         $factory = $this->createFactory();
@@ -48,7 +47,6 @@ class DonationFactoryTest extends TestCase
         $this->assertSame('2, Rue de la République', $donation->getAddress());
         $this->assertSame('Lyon', $donation->getCityName());
         $this->assertSame('69000', $donation->getPostalCode());
-        $this->assertEquals($request->getPhone(), $donation->getPhone());
         $this->assertSame(7000, $donation->getAmount());
         $this->assertSame(70.0, $donation->getAmountInEuros());
         $this->assertSame(0, $donation->getDuration());

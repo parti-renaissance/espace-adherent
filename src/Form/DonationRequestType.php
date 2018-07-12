@@ -9,7 +9,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Form\DataTransformer\FloatToStringTransformer;
 use AppBundle\Membership\MembershipRegistrationProcess;
 use AppBundle\Repository\AdherentRepository;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
+use AppBundle\ValueObject\Genders;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -77,7 +77,6 @@ class DonationRequestType extends AbstractType
             $builder
                 ->add('confirmDonationType', ChoiceType::class, [
                     'expanded' => true,
-                    'data' => self::CONFIRM_DONATION_TYPE_UNIQUE,
                     'choices' => self::CONFIRM_DONATION_TYPE_CHOICES,
                 ])
                 ->add('confirmSubscriptionAmount', TextType::class, [
@@ -101,7 +100,11 @@ class DonationRequestType extends AbstractType
         }
 
         $builder
-            ->add('gender', GenderType::class)
+            ->add('gender', ChoiceType::class, [
+                'choices' => Genders::CIVILITY_CHOICES,
+                'translation_domain' => 'messages',
+                'expanded' => true,
+            ])
             ->add('firstName', TextType::class, [
                 'filter_emojis' => true,
             ])
@@ -115,10 +118,6 @@ class DonationRequestType extends AbstractType
                 'required' => false,
             ])
             ->add('country', UnitedNationsCountryType::class)
-            ->add('phone', PhoneNumberType::class, [
-                'required' => false,
-                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-            ])
             ->add('isPhysicalPerson', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [new Assert\IsTrue()],

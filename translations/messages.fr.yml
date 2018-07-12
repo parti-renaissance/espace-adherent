@@ -3,6 +3,8 @@
 #
 common.gender.man: Homme
 common.gender.woman: Femme
+common.civility.mr: Monsieur
+common.civility.mrs: Madame
 common.email_address: Adresse email
 common.zip_code: Code postal
 common.show_more: Voir plus

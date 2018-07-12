@@ -35,7 +35,6 @@ class DonationFactory
                 $request->getCityName(),
                 $request->getAddress()
             ),
-            $request->getPhone(),
             $request->getClientIp(),
             $request->getDuration()
         );

@@ -56,6 +56,8 @@ class Donation implements GeoPointInterface
     private $emailAddress;
 
     /**
+     * We keep this property for legacy datas
+     *
      * @var PhoneNumber|null
      *
      * @ORM\Column(type="phone_number", nullable=true)
@@ -110,7 +112,6 @@ class Donation implements GeoPointInterface
         string $lastName,
         string $emailAddress,
         PostAddress $postAddress,
-        ?PhoneNumber $phone,
         string $clientIp,
         int $duration = PayboxPaymentSubscription::NONE
     ) {
@@ -121,7 +122,6 @@ class Donation implements GeoPointInterface
         $this->lastName = $lastName;
         $this->emailAddress = $emailAddress;
         $this->postAddress = $postAddress;
-        $this->phone = $phone;
         $this->clientIp = $clientIp;
         $this->createdAt = new \DateTimeImmutable();
         $this->duration = $duration;
@@ -191,11 +191,6 @@ class Donation implements GeoPointInterface
         return $this->emailAddress;
     }
 
-    public function getPhone(): ?PhoneNumber
-    {
-        return $this->phone;
-    }
-
     public function getClientIp(): ?string
     {
         return $this->clientIp;
@@ -218,11 +213,6 @@ class Donation implements GeoPointInterface
             'ci' => $this->getCityName(),
             'ad' => urlencode($this->getAddress()),
         ];
-
-        if ($this->phone) {
-            $payload['phc'] = $this->phone->getCountryCode();
-            $payload['phn'] = $this->phone->getNationalNumber();
-        }
 
         return $payload;
     }

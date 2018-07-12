@@ -17,6 +17,11 @@ final class Genders
         'common.gender.woman' => self::FEMALE,
     ];
 
+    const CIVILITY_CHOICES = [
+        'common.civility.mrs' => self::FEMALE,
+        'common.civility.mr' => self::MALE,
+    ];
+
     private function __construct()
     {
     }

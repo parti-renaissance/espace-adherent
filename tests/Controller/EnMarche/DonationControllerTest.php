@@ -83,10 +83,6 @@ class DonationControllerTest extends WebTestCase
                 'country' => 'FR',
                 'postalCode' => '06000',
                 'cityName' => 'Nice',
-                'phone' => [
-                    'country' => 'FR',
-                    'number' => '04 01 02 03 04',
-                ],
                 'isPhysicalPerson' => true,
                 'hasFrenchNationality' => true,
                 'personalDataCollection' => true,
@@ -108,8 +104,6 @@ class DonationControllerTest extends WebTestCase
         $this->assertSame('06000', $donation->getPostalCode());
         $this->assertSame('Nice', $donation->getCityName());
         $this->assertSame('9 rue du Lycée', $donation->getAddress());
-        $this->assertSame(33, $donation->getPhone()->getCountryCode());
-        $this->assertSame('401020304', $donation->getPhone()->getNationalNumber());
         $this->assertSame($duration, $donation->getDuration());
 
         // Email should not have been sent
@@ -234,10 +228,6 @@ class DonationControllerTest extends WebTestCase
                 'country' => 'FR',
                 'postalCode' => '06000',
                 'cityName' => 'Nice',
-                'phone' => [
-                    'country' => 'FR',
-                    'number' => '04 01 02 03 04',
-                ],
                 'isPhysicalPerson' => true,
                 'hasFrenchNationality' => true,
                 'personalDataCollection' => true,
@@ -258,8 +248,6 @@ class DonationControllerTest extends WebTestCase
         $this->assertSame('06000', $donation->getPostalCode());
         $this->assertSame('Nice', $donation->getCityName());
         $this->assertSame('9 rue du Lycée', $donation->getAddress());
-        $this->assertSame(33, $donation->getPhone()->getCountryCode());
-        $this->assertSame('401020304', $donation->getPhone()->getNationalNumber());
         $this->assertSame($duration, $donation->getDuration());
 
         // Email should not have been sent
@@ -390,10 +378,6 @@ class DonationControllerTest extends WebTestCase
                 'country' => 'FR',
                 'postalCode' => '06000',
                 'cityName' => 'Nice',
-                'phone' => [
-                    'country' => 'FR',
-                    'number' => '04 01 02 03 04',
-                ],
                 'isPhysicalPerson' => true,
                 'hasFrenchNationality' => true,
                 'personalDataCollection' => true,
