@@ -23,7 +23,7 @@
         {{ form_errors(form, { error_raw: true }) }}
         <div class="donation__informations__amount">
             Je donne<br />
-            <div>{{ app.request.query.get('montant')|localizedcurrency('EUR') }} {{ app.request.query.get('abonnement') == constant('AppBundle\\Donation\\PayboxPaymentSubscription::UNLIMITED') ? ' / mois' }}</div>
+            <div>{{ donation.amount|localizedcurrency('EUR')|replace({',00' : ''}) }} {{ donation.duration == constant('AppBundle\\Donation\\PayboxPaymentSubscription::UNLIMITED') ? ' / mois' }}</div>
             {% if form.confirmDonationType is defined %}
                 <p class="text--left">Vous vous apprêtez à faire un don important, soutenez durablement la transformation du pays en donnant mensuellement !</p>
                 {{ form_row(form.confirmDonationType) }}
