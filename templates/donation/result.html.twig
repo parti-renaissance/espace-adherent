@@ -22,7 +22,7 @@
         {% if successful %}
             <div class="donation__result--successful__amount">
                 Votre don de<br />
-                <h3>{{ (donation.amount/100)|localizedcurrency('EUR') }}</h3>
+                <h3>{{ (donation.amount/100)|localizedcurrency('EUR')|replace({',00' : ''}) }}</h3>
                 est validé !
             </div>
             {% if not campaign_expired %}
