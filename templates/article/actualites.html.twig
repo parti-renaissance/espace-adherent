@@ -21,7 +21,7 @@
         <section class="listing">
             <header class="l__wrapper--narrow space--100-0">
                 <h1 class="text--center text--large">
-                    {{ current.name }}
+                    {{ current.name }}{{ currentPage > 1 ? " (page #{currentPage})" : '' }}
                 </h1>
 
                 {% if current.slug == 'communiques' %}
