@@ -62,7 +62,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
 
         this._address.setCity(
             (this._state.locality && this._state.locality.long_name)
-            || (this._state.administrative_area_level_1 && this._state.administrative_area_level_1.long_name)
+            || (this._state.sublocality_level_1 && this._state.sublocality_level_1.long_name)
             || ''
         );
         this._address.setPostalCode(this._state.postal_code && this._state.postal_code.long_name || '');
@@ -76,7 +76,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
             street_number: null,
             route: null,
             locality: null,
-            administrative_area_level_1: null,
+            sublocality_level_1: null,
             postal_code: null,
             country: null,
         };
