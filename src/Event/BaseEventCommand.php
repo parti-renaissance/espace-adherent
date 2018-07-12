@@ -65,8 +65,8 @@ class BaseEventCommand
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->author = $author;
         $this->address = $address ?: new Address();
-        $this->beginAt = $beginAt ?: new \DateTimeImmutable(date('Y-m-d 00:00:00'));
-        $this->finishAt = $finishAt ?: new \DateTimeImmutable(date('Y-m-d 23:59:59'));
+        $this->beginAt = $beginAt;
+        $this->finishAt = $finishAt;
 
         if ($event) {
             $this->name = $event->getName();

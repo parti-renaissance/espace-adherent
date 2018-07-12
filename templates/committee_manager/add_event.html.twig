@@ -30,31 +30,31 @@
             <h2 class="text--large b__nudge--bottom-small">Créer mon événement</h2>
             <h3 class="text--body text--normal">Vous créez un événement au sein du comité <strong>{{ committee.name }}</strong>.</h3>
 
-            {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
+            {{ form_start(form, { attr: { class: 'b__nudge--top-40', autocomplete: 'off' } }) }}
             {{ form_errors(form) }}
 
             <div class="form__row" id="committee-event-name-field">
                 {{ form_errors(form.name) }}
                 {{ form_label(form.name, "Nom de l'événement") }}
-                {{ form_widget(form.name, { attr: { class: 'form--full committee_event__form__name', 'placeholder': "Entrez le nom de l'événement (Max 100 caractères)" } }) }}
+                {{ form_widget(form.name, { attr: { class: 'form--full committee_event__form__name', placeholder: "Entrez le nom de l'événement (Max 100 caractères)" } }) }}
             </div>
 
             <div class="form__row" id="committee-event-description-field">
                 {{ form_errors(form.category) }}
-                {{ form_label(form.category, "Type") }}
-                {{ form_widget(form.category, { attr: { class: 'form--full committee_event__form__category', 'placeholder': "Choisissez le type de l'événement" } }) }}
+                {{ form_label(form.category, 'Type') }}
+                {{ form_widget(form.category, { attr: { class: 'form--full committee_event__form__category', placeholder: "Choisissez le type de l'événement" } }) }}
             </div>
 
             <div class="form__row" id="committee-event-beginat-field">
                 {{ form_errors(form.beginAt) }}
                 {{ form_label(form.beginAt, 'Début') }}
-                {{ form_widget(form.beginAt, { attr: { class: 'event__begin_at' } }) }}
+                {{ form_widget(form.beginAt, { attr: { class: 'event__begin_at', autocomplete: 'off' } }) }}
             </div>
 
             <div class="form__row" id="committee-event-finishat-field">
                 {{ form_errors(form.finishAt) }}
                 {{ form_label(form.finishAt, 'Fin') }}
-                {{ form_widget(form.finishAt, { attr: { class: 'event__finish_at' } }) }}
+                {{ form_widget(form.finishAt, { attr: { class: 'event__finish_at', autocomplete: 'off' } }) }}
                 <div class="form__info">Votre événement ne peut pas durer plus de 3 jours.</div>
             </div>
 
@@ -63,27 +63,27 @@
 
                 <div class="form__row committee_event__form--trunc" id="committee-event-address-address-field">
                     {{ form_errors(form.address.address) }}
-                    {{ form_label(form.address.address, "Adresse") }}
+                    {{ form_label(form.address.address, 'Adresse') }}
                     {{ form_widget(form.address.address, { attr: { class: 'form--full', placeholder: "Entrez l'adresse de l'événement" } }) }}
                 </div>
 
                 <div class="event__address l__row l__row--h-stretch">
                     <div class="form__row committee_event__form__zip_code" id="committee-event-address-zipcode-field">
-                        {{ form_label(form.address.postalCode, "Code postal") }}
+                        {{ form_label(form.address.postalCode, 'Code postal') }}
                         {{ form_widget(form.address.postalCode, { attr: { class: 'form--full', placeholder: 'Entrez le code postal' } }) }}
                     </div>
 
                     <div class="form__row committee_event__form__city" id="committee-event-address-city-field">
                         {{ form_errors(form.address.city) }}
-                        {{ form_label(form.address.cityName, "Ville") }}
+                        {{ form_label(form.address.cityName, 'Ville') }}
                         {{ form_widget(form.address.city, { attr: { class: 'committee_event__form__city'}}) }}
-                        {{ form_widget(form.address.cityName, { 'attr': { 'class': 'form--full committee_event__form__city_name', 'placeholder': 'Ville' } }) }}
+                        {{ form_widget(form.address.cityName, { attr: { class: 'form--full committee_event__form__city_name', placeholder: 'Ville' } }) }}
                     </div>
 
                     <div class="form__row committee_event__form__country" id="committee-event-address-country-field">
                         {{ form_errors(form.address.country) }}
-                        {{ form_label(form.address.country, "Pays") }}
-                        {{ form_widget(form.address.country, { attr: { class: 'form--full', 'placeholder': 'Choisissez le pays' } }) }}
+                        {{ form_label(form.address.country, 'Pays') }}
+                        {{ form_widget(form.address.country, { attr: { class: 'form--full', placeholder: 'Choisissez le pays' } }) }}
                     </div>
                 </div>
             </div>
@@ -91,7 +91,7 @@
             <div class="form__row" id="committee-event-description-field">
                 {{ form_errors(form.description) }}
                 {{ form_label(form.description, 'À propos') }}
-                {{ form_widget(form.description, { attr: { class: 'event__description', 'placeholder': 'Entrez un paragraphe afin de décrire cet événement.', 'rows': '20', 'cols': '70' } }) }}
+                {{ form_widget(form.description, { attr: { class: 'event__description', placeholder: 'Entrez un paragraphe afin de décrire cet événement.', 'rows': '20', 'cols': '70' } }) }}
             </div>
 
             <div class="form__row" id="committee-event-capacity-field">
