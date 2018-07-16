@@ -57,7 +57,7 @@
     </script>
 {% endblock %}
 
-{% block meta_twitter_image article.media ? (homepage_url ~ (media_asset(article.media)|raw)) : default_sharer %}
+{% block open_graph_image (article.media ? (homepage_url ~ media_asset(article.media)) : default_sharer)|raw %}
 
 {% block content %}
     <div class="amp-warning">
