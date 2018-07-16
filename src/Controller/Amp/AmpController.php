@@ -24,8 +24,6 @@ class AmpController extends Controller
      */
     public function articleAction(Article $article): Response
     {
-        $this->disableProfiler();
-
         return $this->render('amp/article.html.twig', ['article' => $article]);
     }
 
@@ -37,7 +35,6 @@ class AmpController extends Controller
     public function proposalAction(Proposal $proposal): Response
     {
         $this->disableInProduction();
-        $this->disableProfiler();
 
         return $this->render('amp/proposal.html.twig', ['proposal' => $proposal]);
     }
@@ -49,8 +46,6 @@ class AmpController extends Controller
      */
     public function orderArticleAction(OrderArticle $article): Response
     {
-        $this->disableProfiler();
-
         return $this->render('amp/order_article.html.twig', ['article' => $article]);
     }
 
@@ -65,12 +60,5 @@ class AmpController extends Controller
             Response::HTTP_OK,
             ['Content-type' => 'text/xml']
         );
-    }
-
-    private function disableProfiler()
-    {
-        if ($this->container->has('profiler')) {
-            $this->container->get('profiler')->disable();
-        }
     }
 }
