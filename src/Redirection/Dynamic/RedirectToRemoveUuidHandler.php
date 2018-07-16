@@ -6,8 +6,6 @@ use AppBundle\Repository\EventRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 
 class RedirectToRemoveUuidHandler extends AbstractRedirectTo implements RedirectToInterface
@@ -43,7 +41,7 @@ class RedirectToRemoveUuidHandler extends AbstractRedirectTo implements Redirect
             // Handles the redirect status code
             try {
                 $routeParams = $this->router->match($requestUri);
-            } catch (ResourceNotFoundException | MethodNotAllowedException $e) {
+            } catch (\Throwable $e) {
                 $routeParams = false;
             }
 

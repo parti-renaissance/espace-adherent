@@ -306,6 +306,7 @@ security:
                 csrf_token_id: authenticate
                 csrf_token_generator: security.csrf.token_manager
 
+                success_handler: AppBundle\Security\Http\AnonymousFollowerAuthenticationSuccessHandler
                 failure_handler: AppBundle\Security\Http\AuthenticationFailureHandler
             logout:
                 path: logout
@@ -313,6 +314,7 @@ security:
 
     access_control:
         - { path: '^/parametres', roles: [ROLE_USER] }
+        - { path: '^/espace-adherent/creer-mon-projet-citoyen$', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: '^/espace-adherent', roles: [ROLE_ADHERENT] }
         - { path: '^/espace-coordinateur', roles: [ROLE_COORDINATOR] }
         - { path: '^/admin/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }

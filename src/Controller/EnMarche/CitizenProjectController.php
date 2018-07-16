@@ -19,6 +19,7 @@ use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Repository\CitizenProjectCommentRepository;
 use AppBundle\Repository\CitizenProjectRepository;
 use AppBundle\Search\SearchParametersFilter;
+use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -56,8 +57,14 @@ class CitizenProjectController extends Controller
      * @Method("GET")
      * @Security("is_granted('SHOW_CITIZEN_PROJECT', citizenProject)")
      */
-    public function showAction(CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
+    public function showAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
     {
+        if ($this->isGranted('IS_ANONYMOUS')
+            && $authenticate = $this->get(AnonymousFollowerSession::class)->start($request)
+        ) {
+            return $authenticate;
+        }
+
         return $this->render('citizen_project/show.html.twig', [
             'citizen_project' => $citizenProject,
             'citizen_actions' => $citizenProjectManager->getCitizenProjectNextActions($citizenProject),

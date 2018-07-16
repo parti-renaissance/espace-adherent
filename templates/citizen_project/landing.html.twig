@@ -119,6 +119,7 @@
                     {% else %}
                         <form id="start-creation-citizen-project" action="{{ path('app_adherent_create_citizen_project') }}" method="GET" class="b__nudge--top">
                             <input type="text" name="name" placeholder="Quel est le nom (court) de votre projet ?">
+                            <input type="hidden" name="{{ constant('AppBundle\\Security\\Http\\Session\\AnonymousFollowerSession::AUTHENTICATION_INTENTION') }}" value="{{ path('app_user_login') }}">
                             <button type="submit">
                                 Prochaine étape
                                 {{ include('components/arrow--right.html.twig') }}
