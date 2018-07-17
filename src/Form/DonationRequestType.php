@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Address\Address;
 use AppBundle\Donation\DonationRequest;
 use AppBundle\Donation\DonationRequestUtils;
 use AppBundle\Donation\PayboxPaymentSubscription;
@@ -117,7 +118,9 @@ class DonationRequestType extends AbstractType
             ->add('cityName', TextType::class, [
                 'required' => false,
             ])
-            ->add('country', UnitedNationsCountryType::class)
+            ->add('country', UnitedNationsCountryType::class, [
+                'preferred_choices' => [Address::FRANCE],
+            ])
             ->add('isPhysicalPerson', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [new Assert\IsTrue()],
