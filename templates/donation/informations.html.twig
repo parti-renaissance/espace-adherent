@@ -65,7 +65,12 @@
         <div>
             {{ form_errors(form.address) }}
 
-            <div class="form__row address-autocomplete"></div>
+            <div class="form__row">
+                <div class="address-autocomplete"></div>
+                <p class="text--smallest text--muted text--left visually-hidden" id="address-autocomplete-help-message">
+                    Nous n'avons pas reconnu votre adresse, veuillez cliquer <a href="#">ici</a> pour pouvoir la renseigner librement.
+                </p>
+            </div>
 
             <div class="address-block">
                 <div class="form__row">

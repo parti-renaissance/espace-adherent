@@ -6,6 +6,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
         this._wrapper = wrapper;
         this._address = address;
         this._inputClassNames = inputClassNames;
+        this._resultContainer = null;
 
         this.resetState();
     }
@@ -17,16 +18,24 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
 
     createAutocomplete() {
         this.createInputElement();
+
         this._autocomplete = new google.maps.places.Autocomplete(this._input, {types: ['address']});
-
         this._autocomplete.setFields(['address_components']);
-
-        this._wrapper.appendChild(this._input);
 
         // Avoid form submit action when `Enter` (13) key is pressed in autocomplete select
         google.maps.event.addDomListener(this._input, 'keydown', (event) => {
             if (event.keyCode === 13) {
                 event.preventDefault();
+            }
+
+            if (null === this._resultContainer && (this._resultContainer = find(document, '.pac-container'))) {
+                const resultContainerObserver = new MutationObserver(function() {
+                    if (false === this._resultContainer.hasChildNodes()) {
+                        this.emit('no_result');
+                    }
+                }.bind(this));
+
+                resultContainerObserver.observe(this._resultContainer, { childList: true });
             }
         });
     };
@@ -38,15 +47,18 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
     placeChangeHandle() {
         const place = this._autocomplete.getPlace();
 
-        if (place.address_components) {
+        if (place && place.address_components) {
             this.resetState();
             this.updateState(place.address_components);
-            this.updateFields();
+        } else {
+            this.updateStateWithInput();
         }
+
+        this.updateFields();
     }
 
     updateState(addressComponents) {
-        addressComponents.forEach(function (component) {
+        addressComponents.forEach((component) => {
             const type = component.types[0];
             if (type in this._state) {
                 this._state[type] = component;
@@ -87,6 +99,8 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
         this._input.placeholder = 'Adresse postale';
         this._input.className = this._inputClassNames;
 
+        this._wrapper.appendChild(this._input);
+
         /**
          * Hack: replace HTML attribute `autocomplete="off"` added by Google API by `autocomplete="nope"`
          * The value `nope` is one hack too, invalid value disable the behaviour,
@@ -95,7 +109,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
          * @link https://stackoverflow.com/a/49161445/6071674
          * @link https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion
          */
-        const observerHack = new MutationObserver(function(elements) {
+        const observerHack = new MutationObserver((elements) => {
             observerHack.disconnect();
             elements.shift().target.autocomplete = 'nope';
         });
@@ -104,5 +118,9 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
             attributes: true,
             attributeFilter: ['autocomplete']
         });
+    }
+
+    updateStateWithInput() {
+        this._state.route = { long_name: this._input.value };
     }
 }

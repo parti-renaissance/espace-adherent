@@ -36,9 +36,24 @@ export default (formType) => {
 
         hideAddress(address, addressBlock);
 
-        autocomplete.on('changed', () => {
+        autocomplete.once('changed', () => {
             showAddress(address, addressBlock);
             hide(autocompeleteWrapper);
+        });
+
+        const autocompleteHelpMessage = find(document, '#address-autocomplete-help-message');
+
+        autocomplete.once('no_result', () => show(autocompleteHelpMessage));
+
+        const removeAutocompleteLink = autocompleteHelpMessage.getElementsByTagName('a')[0];
+
+        on(removeAutocompleteLink, 'click', (event) => {
+            event.preventDefault();
+
+            hide(autocompleteHelpMessage);
+            off(removeAutocompleteLink, 'click');
+
+            autocomplete.placeChangeHandle();
         });
     }
 };
