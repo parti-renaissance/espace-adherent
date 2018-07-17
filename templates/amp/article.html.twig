@@ -1,6 +1,7 @@
 {% extends 'amp/_layout.html.twig' %}
 
 {% block title article.title %}
+{% block meta_description article.description %}
 {% block canonical_url url('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) %}
 
 {% block meta %}
@@ -55,6 +56,8 @@
     }
     </script>
 {% endblock %}
+
+{% block open_graph_image (article.media ? (homepage_url ~ media_asset(article.media)) : default_sharer)|raw %}
 
 {% block content %}
     <div class="amp-warning">

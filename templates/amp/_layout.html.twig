@@ -10,6 +10,7 @@
     <meta charset="utf-8">
 
     <title>{% block title 'La République En Marche !' %}</title>
+    <meta name="description" content="{% block meta_description %}Pour ceux qui sont convaincus que le pays est bloqué, qui ont le goût du travail, du progrès, du risque, qui vivent pour la liberté, l'égalité, et l'Europe.{% endblock %}" />
 
     <link rel="canonical" href="{% block canonical_url homepage_url %}" />
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1" />
@@ -17,6 +18,21 @@
 
     {% block meta '' %}
     {% block json_ld '' %}
+
+    <meta property="og:site_name" content="{% block open_graph_site_name 'La République En Marche !' %}" />
+    <meta property="og:url" content="{% block open_graph_url block('canonical_url') %}" />
+    <meta property="og:title" content="{% block open_graph_title block('title') %}" />
+    <meta property="og:description" content="{% block open_graph_description block('meta_description') %}" />
+    <meta property="og:image" content="{% block open_graph_image default_sharer %}" />
+    <meta property="og:image:width" content="{% block open_graph_image_width default_sharer_width %}" />
+    <meta property="og:image:height" content="{% block open_graph_image_height default_sharer_height %}" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ block('title') }}" />
+    <meta name="twitter:description" content="{% block meta_twitter_description block('meta_description') %}" />
+    <meta name="twitter:image" content="{% block meta_twitter_image block('open_graph_image') %}" />
+
+    <meta property="fb:pages" content="543099962534877" />
 
     <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
     <style amp-custom>
