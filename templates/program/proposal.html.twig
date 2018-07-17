@@ -5,7 +5,7 @@
 {% block meta_description proposal.description %}
 {% block meta_twitter_description proposal.twitterDescription ?: proposal.description %}
 
-{% block canonical_url url('program_proposal', {'slug': proposal.slug}) %}
+{% block canonical_url url('program_proposal', { slug : proposal.slug }) %}
 
 {% block open_graph_image (proposal.media ? (homepage_url ~ media_asset(proposal.media)) : default_sharer)|raw %}
 

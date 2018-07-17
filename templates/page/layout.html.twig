@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title page.title %}
-{% block canonical_url url('page_politique_cookies') %}
+{% block canonical_url url('app_static_page', { slug: page.slug }) %}
 
 {% block content %}
     <main>
