@@ -47,7 +47,6 @@ class EventHydrator extends AbstractHydrator
         }
 
         $uuidEvent = Uuid::fromString($row['event_uuid']);
-        $uuidOrganizer = Uuid::fromString($row['adherent_uuid']);
         $committee = null;
         if ($row['committee_uuid']) {
             $uuidCommittee = Uuid::fromString($row['committee_uuid']);
@@ -56,7 +55,20 @@ class EventHydrator extends AbstractHydrator
         }
 
         $password = $row['adherent_password'] ?? $row['adherent_old_password'];
-        $organizer = new Adherent($uuidOrganizer, $row['adherent_email_address'], $password, $row['adherent_gender'], $row['adherent_first_name'], $row['adherent_last_name'], new \DateTime($row['adherent_birthdate']), $row['adherent_position'], $addressAdherent);
+        $organizer = null;
+        if ($uuidOrganizer = $row['adherent_uuid'] ? Uuid::fromString($row['adherent_uuid']) : null) {
+            $organizer = new Adherent(
+                $uuidOrganizer,
+                $row['adherent_email_address'],
+                $password,
+                $row['adherent_gender'],
+                $row['adherent_first_name'],
+                $row['adherent_last_name'],
+                new \DateTime($row['adherent_birthdate']),
+                $row['adherent_position'],
+                $addressAdherent
+            );
+        }
 
         $event = new Event(
             $uuidEvent,

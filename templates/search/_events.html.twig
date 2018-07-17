@@ -39,6 +39,8 @@
                         <span class="text--bold">Référent En Marche</span> ({{ event.organizer.fullName }})
                     {% elseif event.organizer %}
                         <span class="text--bold">{{ event.organizer.fullName }}</span>
+                    {% else %}
+                        <span>un ancien adhérent</span>
                     {% endif %}
                     à {{ event.cityName }}
                 </div>
