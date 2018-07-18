@@ -555,7 +555,7 @@ class CitizenProjectControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame($adherent->getCityName(), trim($crawler->filter('#city-search-display')->text()));
         $this->assertSame($adherent->getCityName(), trim($crawler->filter('#city-search-input')->attr('value')));
-        $this->assertCount(0, $crawler->selectButton('Prochaine étape'), 'A referent cannot create projects.');
+        $this->assertCount(1, $crawler->selectButton('Prochaine étape'), 'A referent can create projects.');
     }
 
     private function assertSeeNextActions(): void
