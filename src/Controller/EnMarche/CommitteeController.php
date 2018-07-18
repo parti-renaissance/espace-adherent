@@ -11,6 +11,7 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Form\CommitteeFeedItemMessageType;
 use AppBundle\Form\CommitteeFeedMessageType;
+use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -34,6 +35,12 @@ class CommitteeController extends Controller
      */
     public function showAction(Request $request, Committee $committee): Response
     {
+        if ($this->isGranted('IS_ANONYMOUS')
+            && $authenticate = $this->get(AnonymousFollowerSession::class)->start($request)
+        ) {
+            return $authenticate;
+        }
+
         $form = null;
         if ($this->isGranted(CommitteePermissions::HOST, $committee)) {
             $message = new CommitteeMessage($this->getUser(), $committee);

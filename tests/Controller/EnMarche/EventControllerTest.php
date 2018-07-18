@@ -13,17 +13,13 @@ use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
 use AppBundle\Repository\EventRegistrationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  * @group controller
  */
-class EventControllerTest extends WebTestCase
+class EventControllerTest extends AbstractEventControllerTest
 {
-    use ControllerTestTrait;
-
     /** @var EventRegistrationRepository */
     private $repository;
 
@@ -344,9 +340,9 @@ class EventControllerTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
-    private function assertRedirectionEventNotPublishTest($url)
+    private function assertRedirectionEventNotPublishTest(string $url): void
     {
-        $this->client->request(Request::METHOD_GET, '/evenements/2017-04-29-rassemblement-des-soutiens-regionaux-a-la-candidature-de-macron/inscription');
+        $this->client->request(Request::METHOD_GET, $url);
 
         $this->assertClientIsRedirectedTo('/evenements', $this->client, false, true);
 
@@ -364,8 +360,10 @@ class EventControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
         $link = $crawler->filter('.list__links.list__links--row.list__links--default li a')->eq(0)->attr('href');
         $needle = 'text=Meeting%20%2311%20de%20Brooklyn';
+
         $this->assertContains($needle, $link);
     }
 
@@ -406,5 +404,10 @@ class EventControllerTest extends WebTestCase
         $this->repository = null;
 
         parent::tearDown();
+    }
+
+    protected function getEventUrl(): string
+    {
+        return '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne';
     }
 }

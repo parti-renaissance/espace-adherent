@@ -63,8 +63,12 @@
                                         Rejoindre ce projet
                                     </button>
 
-                                    <div class="text--white text--margin-right">
-                                        <a href="{{ path('app_user_login') }}" class="link--white">Connectez-vous</a>
+                                    <div class="committee-follow--anonymous__link text--white text--margin-right">
+                                        <a href="{{ login_path_for_anonymous_follower() }}" id="committee-login-link" class="link--white">Connectez-vous</a>
+                                        ou
+                                        <a href="{{ register_path_for_anonymous_follower() }}" id="committee-register-link" class="link--white">
+                                            adhérez
+                                        </a>
                                          pour rejoindre ce projet citoyen
                                     </div>
                                 {% elseif can_follow_citizen_project(citizen_project) %}

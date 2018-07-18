@@ -60,7 +60,6 @@
                 </div>
 
                 <div class="text--body l__row">
-                    {% set isFull = citizen_action.full %}
                     <div class="b__nudge--right">
                         {% if citizen_action.finished %}
                             Cette action citoyenne est terminée
@@ -68,8 +67,6 @@
                             L'action citoyenne a été annulée
                         {% elseif citizen_action.full %}
                             L'action citoyenne est complète
-                        {% elseif can_register_citizen_action(citizen_action) %}
-                            <a class="newbtn newbtn--orange" href="{{ path("app_citizen_action_attend", {slug: citizen_action.slug}) }}">S'inscrire</a>
                         {% elseif can_unregister_citizen_action(citizen_action) %}
                             <button type="button"
                                     id="citizen_action-unregistration"
@@ -77,6 +74,8 @@
                                     data-csrf-token="{{ csrf_token('citizen_action.unregistration') }}">
                                 Se désinscrire
                             </button>
+                        {% else %}
+                            <a class="newbtn newbtn--orange register-event" href="{{ path("app_citizen_action_attend", { slug: citizen_action.slug }) }}">S'inscrire</a>
                         {% endif %}
                     </div>
 

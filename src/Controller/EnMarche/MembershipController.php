@@ -22,6 +22,7 @@ use AppBundle\Membership\MembershipRegistrationProcess;
 use AppBundle\OAuth\CallbackManager;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CommitteeRepository;
+use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -114,11 +115,17 @@ class MembershipController extends Controller
 
     private function joinAdherent(Request $request): Response
     {
+        $followerSession = $this->get(AnonymousFollowerSession::class);
+
+        if ($followerSession->isStarted()) {
+            return $followerSession->follow($request->getPathInfo());
+        }
+
         /** @var Adherent $user */
         $user = $this->getUser();
 
-        if ($user->isAdherent()) {
-            throw $this->createNotFoundException();
+        if ($user instanceof Adherent && $user->isAdherent()) {
+            throw $this->createNotFoundException('An adherent cannot join.');
         }
 
         $membership = MembershipRequest::createFromAdherent($user);
@@ -195,6 +202,14 @@ class MembershipController extends Controller
                 $this->get(MembershipRequestHandler::class)->sendConfirmationJoinMessage($adherent);
 
                 $this->addFlash('info', 'adherent.activation.success');
+
+                // We need to handle anonymous session here because the user was logged through the handler above,
+                // bypassing the security success handler
+                $anonymousFollowerSession = $this->get(AnonymousFollowerSession::class);
+
+                if ($anonymousFollowerSession->isStarted()) {
+                    return $anonymousFollowerSession->terminate();
+                }
 
                 return $callbackManager->redirectToClientIfValid('app_adherent_home');
             }

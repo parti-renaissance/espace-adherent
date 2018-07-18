@@ -13,17 +13,13 @@ use AppBundle\Search\SearchParametersFilter;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  * @group citizenProject
  */
-class CitizenProjectControllerTest extends WebTestCase
+class CitizenProjectControllerTest extends AbstractGroupControllerTest
 {
-    use ControllerTestTrait;
-
     public function testAnonymousUserCanSeeAnApprovedCitizenProject(): void
     {
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
@@ -458,16 +454,19 @@ class CitizenProjectControllerTest extends WebTestCase
 
         $this->assertSame('/espace-adherent/creer-mon-projet-citoyen', $this->client->getRequest()->getPathInfo());
 
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
         $crawler = $this->client->followRedirect();
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_login_email' => 'carl999@example.fr',
+            '_login_email' => 'deputy-ch-li@en-marche-dev.fr',
             '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/espace-adherent/creer-mon-projet-citoyen?name='.rawurlencode($citizenProjectName), $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/creer-mon-projet-citoyen?name=Le+titre+de+mon+prochain+CP', $this->client);
+
         $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $this->assertSame($citizenProjectName, $crawler->filter('#citizen_project_name')->attr('value'));
     }
@@ -637,5 +636,10 @@ class CitizenProjectControllerTest extends WebTestCase
         $this->kill();
 
         parent::tearDown();
+    }
+
+    protected function getGroupUrl(): string
+    {
+        return '/projets-citoyens/le-projet-citoyen-a-paris-8';
     }
 }

@@ -11,17 +11,13 @@ use AppBundle\Entity\Committee;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional
  * @group committee
  */
-class CommitteeControllerTest extends WebTestCase
+class CommitteeControllerTest extends AbstractGroupControllerTest
 {
-    use ControllerTestTrait;
-
     private $committeeRepository;
 
     public function testRedirectionComiteFromOldUrl()
@@ -33,6 +29,18 @@ class CommitteeControllerTest extends WebTestCase
         $this->client->followRedirect();
 
         $this->isSuccessful($this->client->getResponse());
+    }
+
+    public function testAnonymousUserIsNotAllowedToFollowCommittee()
+    {
+        $committeeUrl = '/comites/en-marche-dammarie-les-lys';
+
+        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertFalse($this->seeFollowLink($crawler));
+        $this->assertFalse($this->seeUnfollowLink($crawler));
+        $this->assertTrue($this->seeRegisterLink($crawler));
     }
 
     public function testAuthenticatedCommitteeSupervisorCannotUnfollowCommittee()
@@ -218,7 +226,7 @@ class CommitteeControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertFalse($this->seeRegisterLink($crawler), 'The guest should not see the "register link"');
+        $this->assertTrue($this->seeRegisterLink($crawler), 'The guest should not see the "register link"');
         $this->assertTrue($this->seeLoginLink($crawler), 'The guest should see the "login link"');
         $this->assertFalse($this->seeFollowLink($crawler), 'The guest should not see the "follow link"');
         $this->assertFalse($this->seeUnfollowLink($crawler), 'The guest should not see the "unfollow link"');
@@ -550,6 +558,11 @@ class CommitteeControllerTest extends WebTestCase
         $this->committeeRepository = null;
 
         parent::tearDown();
+    }
+
+    protected function getGroupUrl(): string
+    {
+        return '/comites/en-marche-dammarie-les-lys';
     }
 
     private function assertEditDeleteButton(Crawler $crawler, int $nbExpected)

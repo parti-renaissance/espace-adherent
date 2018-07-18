@@ -124,7 +124,11 @@
                 </button>
 
                 <div class="committee-follow--anonymous__link text--white">
-                    <a href="{{ path('app_user_login') }}" id="committee-login-link" class="link--white">Connectez-vous</a>
+                    <a href="{{ login_path_for_anonymous_follower() }}" id="committee-login-link" class="link--white">Connectez-vous</a>
+                    ou
+                    <a href="{{ register_path_for_anonymous_follower() }}" id="committee-register-link" class="link--white">
+                        adhérez
+                    </a>
                     pour suivre ce comité
                 </div>
             </div>
