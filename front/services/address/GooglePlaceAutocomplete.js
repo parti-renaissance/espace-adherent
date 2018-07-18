@@ -32,7 +32,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
     };
 
     attachEvents() {
-        this._autocomplete.addListener('place_changed', this.placeChangeHandle.bind(this));
+        this._autocomplete.addListener('place_changed', () => this.placeChangeHandle);
 
         /*
          * if the user has stopped typing text (address)
@@ -43,9 +43,9 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
         let countOfCheck = 1;
         let intervalId;
 
-        on(this._input, 'keypress', function () {
+        on(this._input, 'keypress', () => {
             if (!intervalId) {
-                intervalId = setInterval(function () {
+                intervalId = setInterval(() => {
                     if (this._previousInputValue !== this._input.value) {
                         this._previousInputValue = this._input.value;
                         countOfCheck = 1;
@@ -73,9 +73,9 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
                     } else {
                         countOfCheck = 1;
                     }
-                }.bind(this), step);
+                }, step);
             }
-        }.bind(this));
+        });
     }
 
     placeChangeHandle() {
@@ -126,7 +126,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
             locality: null,
             sublocality_level_1: null,
             postal_code: null,
-            country: null,
+            country: { short_name: 'FR' },
         };
     }
 
