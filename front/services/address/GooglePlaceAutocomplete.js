@@ -6,7 +6,8 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
         this._wrapper = wrapper;
         this._address = address;
         this._inputClassNames = inputClassNames;
-        this._resultContainer = null;
+        this._placeChanged = false;
+        this._previousInputValue = null;
 
         this.resetState();
     }
@@ -27,24 +28,59 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
             if (event.keyCode === 13) {
                 event.preventDefault();
             }
-
-            if (null === this._resultContainer && (this._resultContainer = find(document, '.pac-container'))) {
-                const resultContainerObserver = new MutationObserver(function() {
-                    if (false === this._resultContainer.hasChildNodes()) {
-                        this.emit('no_result');
-                    }
-                }.bind(this));
-
-                resultContainerObserver.observe(this._resultContainer, { childList: true });
-            }
         });
     };
 
     attachEvents() {
         this._autocomplete.addListener('place_changed', this.placeChangeHandle.bind(this));
+
+        /*
+         * if the user has stopped typing text (address)
+         * and Google Api do not provide any result
+         * then emit `no_result` event
+         */
+        const step = 500; // 0.5 s
+        let countOfCheck = 1;
+        let intervalId;
+
+        on(this._input, 'keypress', function () {
+            if (!intervalId) {
+                intervalId = setInterval(function () {
+                    if (this._previousInputValue !== this._input.value) {
+                        this._previousInputValue = this._input.value;
+                        countOfCheck = 1;
+                        return;
+                    }
+
+                    if (++countOfCheck <= 2) {
+                        return;
+                    }
+
+                    /*
+                     * If user has chosen one of the proposed by Google,
+                     * then we stop the current check
+                     */
+                    if (this._placeChanged) {
+                        clearInterval(intervalId);
+                        return;
+                    }
+
+                    const container = find(document, '.pac-container');
+
+                    if (null === container || false === container.hasChildNodes()) {
+                        clearInterval(intervalId);
+                        this.emit('no_result');
+                    } else {
+                        countOfCheck = 1;
+                    }
+                }.bind(this), step);
+            }
+        }.bind(this));
     }
 
     placeChangeHandle() {
+        this._placeChanged = true;
+
         const place = this._autocomplete.getPlace();
 
         if (place && place.address_components) {
