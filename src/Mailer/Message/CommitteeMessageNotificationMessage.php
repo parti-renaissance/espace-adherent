@@ -11,11 +11,7 @@ class CommitteeMessageNotificationMessage extends Message
     /**
      * Creates a new message instance for a list of recipients.
      *
-     * @param Adherent[]        $recipients
-     * @param CommitteeFeedItem $feedItem
-     * @param string            $subject
-     *
-     * @return self
+     * @param Adherent[] $recipients
      */
     public static function create(array $recipients, CommitteeFeedItem $feedItem, string $subject): self
     {

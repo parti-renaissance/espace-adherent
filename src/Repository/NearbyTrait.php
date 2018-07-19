@@ -7,9 +7,6 @@ use Doctrine\ORM\QueryBuilder;
 
 trait NearbyTrait
 {
-    /**
-     * @return string
-     */
     public function getNearbyExpression(): string
     {
         return '(6371 * acos(cos(radians(:latitude)) * cos(radians(n.postAddress.latitude))
@@ -25,8 +22,6 @@ trait NearbyTrait
      * Setting the hidden flag to false allow you to get an array as result containing
      * the entity and the calculated distance.
      *
-     * @param Coordinates $coordinates
-     * @param bool        $hidden
      *
      * @return QueryBuilder
      */

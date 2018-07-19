@@ -25,8 +25,6 @@ class TransactionRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $emailAddress
-     *
      * @return Transaction[]
      */
     public function findAllSuccessfulTransactionByEmail(string $emailAddress): array

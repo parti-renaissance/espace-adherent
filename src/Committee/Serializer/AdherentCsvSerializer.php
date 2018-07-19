@@ -8,10 +8,6 @@ use AppBundle\Exception\AdherentCollectionException;
 class AdherentCsvSerializer
 {
     /**
-     * @param mixed $adherents
-     *
-     * @return string
-     *
      * @throws AdherentCollectionException
      */
     public static function serialize($adherents): string

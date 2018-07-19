@@ -66,10 +66,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     /**
      * Finds an Adherent instance by its email address.
-     *
-     * @param string $email
-     *
-     * @return Adherent|null
      */
     public function findOneByEmail(string $email): ?Adherent
     {
@@ -91,8 +87,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     /**
      * Finds an Adherent instance by its unique UUID.
-     *
-     * @param string $uuid
      *
      * @return Adherent|null
      */
@@ -160,8 +154,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     /**
      * Returns the total number of active Adherent accounts.
-     *
-     * @return int
      */
     public function countActiveAdherents(): int
     {
@@ -178,10 +170,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     /**
      * Finds the list of adherent matching the given list of UUIDs.
-     *
-     * @param array $uuids
-     *
-     * @return AdherentCollection
      */
     public function findList(array $uuids): AdherentCollection
     {
@@ -277,8 +265,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     /**
      * Finds the list of adherents managed by the given referent.
-     *
-     * @param Adherent $referent
      *
      * @return Adherent[]
      */
@@ -670,8 +656,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     /**
      * Finds enabled adherents in the deputy district.
-     *
-     * @param District $district
      *
      * @return Adherent[]
      */

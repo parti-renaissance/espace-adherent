@@ -17,8 +17,6 @@ class ReferentAreaTransformer implements DataTransformerInterface
 
     /**
      * ReferentAreaTransformer constructor.
-     *
-     * @param EntityManagerInterface $em
      */
     public function __construct(EntityManagerInterface $em)
     {

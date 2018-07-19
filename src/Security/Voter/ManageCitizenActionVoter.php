@@ -27,11 +27,7 @@ class ManageCitizenActionVoter extends AbstractAdherentVoter
     }
 
     /**
-     * @param string         $attribute
-     * @param Adherent       $adherent
      * @param CitizenProject $subject
-     *
-     * @return bool
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {

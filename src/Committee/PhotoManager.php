@@ -19,8 +19,6 @@ class PhotoManager
 
     /**
      * Uploads and saves the ID photo of committee creator.
-     *
-     * @param Committee $committee
      */
     public function addPhotoFromCommand(CommitteeCommand $command, Committee $committee): void
     {

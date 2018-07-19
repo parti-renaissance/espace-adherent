@@ -230,17 +230,11 @@ class Referent implements EntityMediaInterface
         return $this->twitterPageUrl || $this->facebookPageUrl;
     }
 
-    /**
-     * @return mixed
-     */
     public function getAreaLabel()
     {
         return $this->areaLabel;
     }
 
-    /**
-     * @param mixed $areaLabel
-     */
     public function setAreaLabel($areaLabel): void
     {
         $this->areaLabel = $areaLabel;

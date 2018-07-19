@@ -94,9 +94,6 @@ class NewsletterInvite
         return $this->email;
     }
 
-    /**
-     * @return string|null
-     */
     public function getClientIp(): ?string
     {
         return $this->clientIp;

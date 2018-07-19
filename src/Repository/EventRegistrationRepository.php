@@ -41,9 +41,6 @@ class EventRegistrationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param BaseEvent $event
-     * @param array     $uuids
-     *
      * @return EventRegistration[]
      */
     public function findByEventAndUuid(BaseEvent $event, array $uuids): array
@@ -83,8 +80,6 @@ class EventRegistrationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $adherentUuid
-     *
      * @return EventRegistration[]
      */
     public function findUpcomingAdherentRegistrations(string $adherentUuid): array
@@ -109,8 +104,6 @@ class EventRegistrationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $adherentUuid
-     *
      * @return EventRegistration[]
      */
     public function findPastAdherentRegistrations(string $adherentUuid): array

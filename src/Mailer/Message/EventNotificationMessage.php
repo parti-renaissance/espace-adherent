@@ -12,11 +12,6 @@ class EventNotificationMessage extends Message
      * Creates a new message instance for a list of recipients.
      *
      * @param Adherent[] $recipients
-     * @param Adherent   $host
-     * @param Event      $event
-     * @param string     $eventLink
-     * @param string     $eventOkLink
-     * @param \Closure   $recipientVarsGenerator
      *
      * @return EventNotificationMessage
      */

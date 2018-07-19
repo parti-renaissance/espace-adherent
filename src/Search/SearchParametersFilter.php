@@ -83,8 +83,6 @@ class SearchParametersFilter
     }
 
     /**
-     * @param Request $request
-     *
      * @return SearchParametersFilter
      */
     public function handleRequest(Request $request): self

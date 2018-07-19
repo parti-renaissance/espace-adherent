@@ -11,12 +11,8 @@ abstract class AbstractAdherentTokenRepository extends ServiceEntityRepository
 {
     /**
      * Returns the most recent token of an adherent.
-     *
-     * @param string $adherent
-     *
-     * @return AdherentExpirableTokenInterface|null
      */
-    public function findAdherentMostRecentKey(string $adherent)
+    public function findAdherentMostRecentKey(string $adherent): ?AdherentExpirableTokenInterface
     {
         $adherent = Uuid::fromString($adherent);
 
@@ -33,12 +29,8 @@ abstract class AbstractAdherentTokenRepository extends ServiceEntityRepository
 
     /**
      * Finds a AdherentToken instance by its token unique value.
-     *
-     * @param string $token
-     *
-     * @return AdherentExpirableTokenInterface|null
      */
-    public function findByToken(string $token)
+    public function findByToken(string $token): ?AdherentExpirableTokenInterface
     {
         $token = SHA1::fromString($token);
 

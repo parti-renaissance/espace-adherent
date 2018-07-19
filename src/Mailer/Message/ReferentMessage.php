@@ -9,7 +9,6 @@ use Ramsey\Uuid\Uuid;
 final class ReferentMessage extends Message
 {
     /**
-     * @param ReferentMessageModel  $model
      * @param ReferentManagedUser[] $recipients
      *
      * @return ReferentMessage

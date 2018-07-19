@@ -9,8 +9,6 @@ class TonMacronSerializer
 {
     /**
      * @param TonMacronChoice[] $choices
-     *
-     * @return string
      */
     public function serializeChoices(array $choices): string
     {
@@ -40,8 +38,6 @@ class TonMacronSerializer
 
     /**
      * @param TonMacronFriendInvitation[] $invitations
-     *
-     * @return string
      */
     public function serializeInvitations(array $invitations): string
     {

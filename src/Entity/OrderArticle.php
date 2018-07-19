@@ -131,17 +131,11 @@ class OrderArticle implements EntityContentInterface
         $this->published = $published;
     }
 
-    /**
-     * @return Media|null
-     */
     public function getMedia(): ?Media
     {
         return $this->media;
     }
 
-    /**
-     * @param Media|null $media
-     */
     public function setMedia(Media $media = null): void
     {
         $this->media = $media;

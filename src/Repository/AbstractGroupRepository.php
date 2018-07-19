@@ -17,10 +17,6 @@ abstract class AbstractGroupRepository extends ServiceEntityRepository
 
     /**
      * Finds a BaseGroup instance by its unique canonical name.
-     *
-     * @param string $name
-     *
-     * @return BaseGroup|null
      */
     public function findOneByName(string $name): ?BaseGroup
     {

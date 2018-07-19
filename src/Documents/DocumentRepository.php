@@ -21,8 +21,6 @@ class DocumentRepository
     }
 
     /**
-     * @param string $path
-     *
      * @return Document[]
      */
     public function listAdherentDirectory(string $path = '/'): array
@@ -31,8 +29,6 @@ class DocumentRepository
     }
 
     /**
-     * @param string $path
-     *
      * @return Document[]
      */
     public function listHostDirectory(string $path = '/'): array
@@ -41,8 +37,6 @@ class DocumentRepository
     }
 
     /**
-     * @param string $path
-     *
      * @return Document[]
      */
     public function listForeignHostDirectory(string $path = '/'): array
@@ -51,8 +45,6 @@ class DocumentRepository
     }
 
     /**
-     * @param string $path
-     *
      * @return Document[]
      */
     public function listReferentDirectory(string $path = '/'): array
@@ -61,8 +53,6 @@ class DocumentRepository
     }
 
     /**
-     * @param string $path
-     *
      * @return Document[]
      */
     public function listLegislativeCandidateDirectory(string $path = '/'): array
@@ -71,9 +61,6 @@ class DocumentRepository
     }
 
     /**
-     * @param string $type
-     * @param string $path
-     *
      * @return Document[]
      */
     public function listDirectory(string $type, string $path): array
@@ -84,9 +71,6 @@ class DocumentRepository
         );
     }
 
-    /**
-     * @return array
-     */
     public function readDocument(string $type, string $path): array
     {
         $path = self::DIRECTORY_ROOT.'/'.$type.'/'.$path;
@@ -98,8 +82,6 @@ class DocumentRepository
     }
 
     /**
-     * @param array $files
-     *
      * @return Document[]
      */
     private function map(string $pathPrefix, array $files): array

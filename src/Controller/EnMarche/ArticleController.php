@@ -98,13 +98,6 @@ class ArticleController extends Controller
         return new Response($cachedRenderedFeed->get(), Response::HTTP_OK, ['Content-Type' => 'application/rss+xml']);
     }
 
-    /**
-     * @param int $articlesCount
-     * @param int $requestedPageNumber
-     * @param int $itemsPerPage
-     *
-     * @return bool
-     */
     private function isPaginationValid(int $articlesCount, int $requestedPageNumber, int $itemsPerPage = self::PER_PAGE): bool
     {
         if (!$articlesCount) {

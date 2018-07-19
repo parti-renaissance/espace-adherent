@@ -58,10 +58,6 @@ class ArticleControllerTest extends WebTestCase
      * For this test, the pagination size is forced to ease understanding.
      *
      * @dataProvider dataProviderIsPaginationValid
-     *
-     * @param bool $expected
-     * @param int  $articlesCount
-     * @param int  $requestedPageNumber
      */
     public function testIsPaginationValid(bool $expected, int $articlesCount, int $requestedPageNumber)
     {

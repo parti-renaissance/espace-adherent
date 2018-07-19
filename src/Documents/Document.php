@@ -34,8 +34,6 @@ class Document
 
     /**
      * Return the Font Awesome icon.
-     *
-     * @return string
      */
     public function getIcon(): string
     {

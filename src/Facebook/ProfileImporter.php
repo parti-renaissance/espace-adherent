@@ -20,8 +20,6 @@ class ProfileImporter
 
     /**
      * @throws FacebookSDKException
-     *
-     * @return FacebookProfile
      */
     public function import(): FacebookProfile
     {

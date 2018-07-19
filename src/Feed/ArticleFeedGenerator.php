@@ -18,12 +18,6 @@ class ArticleFeedGenerator extends AbstractFeedGenerator
      */
     private $markdownParser;
 
-    /**
-     * @param string                $locale
-     * @param int                   $ttl
-     * @param UrlGeneratorInterface $urlGenerator
-     * @param CommonMarkConverter   $commonMarkConverter
-     */
     public function __construct(
         string $locale,
         int $ttl,
@@ -61,13 +55,6 @@ class ArticleFeedGenerator extends AbstractFeedGenerator
         return $feed;
     }
 
-    /**
-     * @param FeedInterface $feed
-     * @param string        $pubDate
-     * @param string        $lastBuildDate
-     *
-     * @return Channel
-     */
     private function appendChannel(FeedInterface $feed, string $pubDate, string $lastBuildDate): Channel
     {
         return (new Channel())
@@ -82,12 +69,6 @@ class ArticleFeedGenerator extends AbstractFeedGenerator
         ;
     }
 
-    /**
-     * @param Article $article
-     * @param Channel $channel
-     *
-     * @return Item
-     */
     private function appendArticleItem(Article $article, Channel $channel): Item
     {
         $articleUrl = $this->urlGenerator->generate(

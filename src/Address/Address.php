@@ -146,8 +146,6 @@ class Address implements AddressInterface, GeocodableInterface
 
     /**
      * Returns the french national INSEE code from the city code.
-     *
-     * @return string
      */
     private static function getInseeCode(string $cityCode): string
     {

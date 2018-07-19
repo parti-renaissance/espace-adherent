@@ -36,10 +36,6 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $category
-     * @param int    $page
-     * @param int    $perPage
-     *
      * @return Article[]
      */
     public function findByCategoryPaginated(string $category, int $page, int $perPage): array
@@ -135,8 +131,6 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Article $article
-     *
      * @return Article[]
      */
     public function findThreeLatestOtherThan(Article $article): array
@@ -157,8 +151,6 @@ class ArticleRepository extends ServiceEntityRepository
 
     /**
      * Get the query builder to find all articles.
-     *
-     * @return QueryBuilder
      */
     private function createFindAllQueryBuilder(): QueryBuilder
     {

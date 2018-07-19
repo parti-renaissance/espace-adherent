@@ -32,8 +32,6 @@ class AccessTokenRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Client $client
-     *
      * @return AccessToken[]
      */
     public function findAllAccessTokensByClient(Client $client): array

@@ -507,7 +507,6 @@ class CitizenProject extends BaseGroup
     /**
      * Marks this citizen project as approved.
      *
-     * @param string $timestamp
      *
      * @throws \AppBundle\Exception\CitizenProjectAlreadyApprovedException
      */

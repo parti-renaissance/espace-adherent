@@ -32,8 +32,6 @@ class RefreshTokenRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Client $client
-     *
      * @return RefreshToken[]
      */
     public function findAllRefreshTokensByClient(Client $client): array

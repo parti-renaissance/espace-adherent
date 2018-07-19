@@ -22,8 +22,6 @@ class CitizenProjectRepository extends AbstractGroupRepository
 
     /**
      * Returns the total number of approved citizen projects.
-     *
-     * @return int
      */
     public function countApprovedCitizenProjects(): int
     {
@@ -38,10 +36,6 @@ class CitizenProjectRepository extends AbstractGroupRepository
     }
 
     /**
-     * @param array $uuids
-     * @param int   $statusFilter
-     * @param int   $limit
-     *
      * @return CitizenProject[]
      */
     public function findCitizenProjects(array $uuids, int $statusFilter = self::ONLY_APPROVED, int $limit = 0): array
@@ -71,9 +65,6 @@ class CitizenProjectRepository extends AbstractGroupRepository
     }
 
     /**
-     * @param Adherent $adherent
-     * @param bool     $onlyAdministrated
-     *
      * @return CitizenProject[]
      */
     public function findAllRegisteredCitizenProjectsForAdherent(Adherent $adherent, bool $onlyAdministrated = false): array

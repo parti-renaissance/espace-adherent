@@ -208,8 +208,6 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
 
     /**
      * Marks this group as refused/rejected.
-     *
-     * @param string $timestamp
      */
     public function refused(string $timestamp = 'now')
     {
@@ -241,8 +239,6 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
 
     /**
      * Returns the approval date and time.
-     *
-     * @return \DateTime|null
      */
     public function getApprovedAt(): ?\DateTime
     {

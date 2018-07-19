@@ -3,13 +3,13 @@
 namespace AppBundle\Mailer\Message;
 
 use AppBundle\BoardMember\BoardMemberMessage as BoardMemberMessageModel;
+use AppBundle\Entity\Adherent;
 use Ramsey\Uuid\Uuid;
 
 final class BoardMemberMessage extends Message
 {
     /**
-     * @param BoardMemberMessageModel      $model
-     * @param \AppBundle\Entity\Adherent[] $recipients
+     * @param Adherent[] $recipients
      *
      * @return BoardMemberMessage
      */

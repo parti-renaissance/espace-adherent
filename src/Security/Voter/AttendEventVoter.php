@@ -46,11 +46,7 @@ class AttendEventVoter extends AbstractAdherentVoter
     }
 
     /**
-     * @param string    $attribute
-     * @param Adherent  $adherent
      * @param BaseEvent $subject
-     *
-     * @return bool
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {

@@ -8,8 +8,6 @@ class UnregistrationSerializer
 {
     /**
      * @param Unregistration[] $unregistrations
-     *
-     * @return string
      */
     public function serialize(array $unregistrations): string
     {

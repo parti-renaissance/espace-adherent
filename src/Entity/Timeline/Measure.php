@@ -124,11 +124,8 @@ class Measure implements AlgoliaIndexedEntityInterface
     private $savedThemes;
 
     /**
-     * @param string      $status
-     * @param Profile[]   $profiles
-     * @param Theme[]     $themes
-     * @param string|null $link
-     * @param bool|null   $isGlobal
+     * @param Profile[] $profiles
+     * @param Theme[]   $themes
      */
     public function __construct(
         string $status = null,
@@ -150,7 +147,7 @@ class Measure implements AlgoliaIndexedEntityInterface
     {
         /** @var MeasureTranslation $translation */
         if ($translation = $this->translate()) {
-            return $translation->getTitle();
+            return (string) $translation->getTitle();
         }
 
         return '';

@@ -77,8 +77,6 @@ class AdherentFactory
      * The format must be something like "33 0102030405"
      *
      * @param string $phoneNumber
-     *
-     * @return PhoneNumber
      */
     private function createPhone($phoneNumber): PhoneNumber
     {
@@ -93,8 +91,6 @@ class AdherentFactory
 
     /**
      * @param int|string|\DateTime $birthdate Valid date reprensentation
-     *
-     * @return \DateTime
      */
     private function createBirthdate($birthdate): \DateTime
     {

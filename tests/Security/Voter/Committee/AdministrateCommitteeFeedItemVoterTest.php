@@ -72,8 +72,6 @@ class AdministrateCommitteeFeedItemVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @param bool $isEqual
-     *
      * @return Adherent|PHPUnit_Framework_MockObject_MockObject
      */
     private function getAdherentMock(bool $isEqual = false): Adherent

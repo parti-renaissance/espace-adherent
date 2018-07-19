@@ -14,7 +14,6 @@ class MemberActivityCollection
     private $activities;
 
     /**
-     * @param Adherent            $adherent
      * @param EventRegistration[] $eventRegistrations
      * @param BaseEvent[]         $events
      */

@@ -67,8 +67,6 @@ class ShowGroupVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @param bool $getUuidIsCalled
-     *
      * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getAdherentMock(bool $getUuidIsCalled): Adherent
@@ -90,10 +88,6 @@ class ShowGroupVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @param string    $groupClass
-     * @param bool      $approved
-     * @param bool|null $withCreator
-     *
      * @return BaseGroup|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getGroupMock(string $groupClass, bool $approved, bool $withCreator = null): BaseGroup

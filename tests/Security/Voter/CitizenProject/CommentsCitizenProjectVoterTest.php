@@ -50,9 +50,6 @@ class CommentsCitizenProjectVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @param CitizenProject $project
-     * @param bool           $isMember
-     *
      * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
      */
     public function getAdherentMock(bool $membershipChecked, CitizenProject $project, bool $isMember): Adherent
@@ -75,8 +72,6 @@ class CommentsCitizenProjectVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @param bool $approved
-     *
      * @return CitizenProject|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getCitizenProjectMock(bool $approved, bool $doubleChecked = false): CitizenProject

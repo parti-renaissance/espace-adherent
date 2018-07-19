@@ -28,8 +28,6 @@ class LegislativeCandidateRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string|null $status
-     *
      * @return LegislativeCandidate[]
      */
     public function findAllForDirectory(string $status = null): array

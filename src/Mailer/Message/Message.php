@@ -56,8 +56,6 @@ class Message
 
     /**
      * Returns the common variables shared by all recipients.
-     *
-     * @return array
      */
     final public function getVars(): array
     {

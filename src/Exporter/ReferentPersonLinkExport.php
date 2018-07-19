@@ -11,8 +11,6 @@ class ReferentPersonLinkExport
 {
     /**
      * @param ReferentPersonLink[] $referentPersonLinks
-     *
-     * @return Spreadsheet
      */
     public function exportToXlsx(array $referentPersonLinks): Spreadsheet
     {

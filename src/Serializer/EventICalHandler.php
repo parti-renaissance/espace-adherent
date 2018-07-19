@@ -23,10 +23,6 @@ class EventICalHandler implements SubscribingHandlerInterface
         ];
     }
 
-    /**
-     * @param IcalSerializationVisitor $visitor
-     * @param Event                    $event
-     */
     public function serialize(IcalSerializationVisitor $visitor, Event $event): void
     {
         $eventData = [
@@ -52,11 +48,6 @@ class EventICalHandler implements SubscribingHandlerInterface
         $visitor->setRoot($eventData);
     }
 
-    /**
-     * @param \DateTime $date
-     *
-     * @return string
-     */
     private function formatDate(\DateTime $date): string
     {
         return $date->format('Ymd\THis');

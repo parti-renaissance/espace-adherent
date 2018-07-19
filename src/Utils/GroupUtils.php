@@ -11,8 +11,6 @@ class GroupUtils
     /**
      * Parse a Json string to find uuids.
      *
-     * @param string $json
-     *
      * @return Uuid[]
      */
     public static function getUuidsFromJson(string $json): array
@@ -39,7 +37,6 @@ class GroupUtils
      * also known from the Uuid collection.
      *
      * @param Uuid[]|string[] $uuids
-     * @param mixed           $adherents
      *
      * @return Adherent[]
      */
@@ -65,8 +62,6 @@ class GroupUtils
     }
 
     /**
-     * @param mixed $adherents
-     *
      * @return string[]
      */
     public static function getUuidsFromAdherents($adherents): array

@@ -9,8 +9,6 @@ class PurchasingPowerSerializer
 {
     /**
      * @param PurchasingPowerChoice[] $choices
-     *
-     * @return string
      */
     public function serializeChoices(array $choices): string
     {
@@ -40,8 +38,6 @@ class PurchasingPowerSerializer
 
     /**
      * @param PurchasingPowerInvitation[] $invitations
-     *
-     * @return string
      */
     public function serializeInvitations(array $invitations): string
     {

@@ -3,7 +3,6 @@
 namespace Migrations;
 
 use AppBundle\DataFixtures\ORM\LoadSkillData;
-use Cocur\Slugify\Slugify;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
