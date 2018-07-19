@@ -1,10 +1,10 @@
 <table class="committee__members__list" cellpadding="10">
     <thead>
-        {% if is_host %}
+        {% if is_cp_administrator %}
             <th class="no-print"><input type="checkbox" id="members-check-all" /></th>
         {% endif %}
         <th>Prénom</th>
-        {% if is_host %}
+        {% if is_cp_administrator %}
             <th>Nom</th>
             <th>Âge</th>
             <th>Ville</th>
@@ -13,11 +13,11 @@
     </thead>
     {% for participant in participants %}
         <tr>
-            {% if is_host %}
+            {% if is_cp_administrator %}
                 <td class="no-print"><input type="checkbox" name="members[]" value="{{ participant.uuid }}" /></td>
             {% endif %}
             <td class="member-first-name">{{ participant.firstName|capitalize }}</td>
-            {% if is_host %}
+            {% if is_cp_administrator %}
                 <td class="member-last-name">{{ participant.lastName|upper }}</td>
                 <td class="member-age">{{ participant.age }}</td>
                 <td class="member-city-name">{{ participant.cityName }}</td>

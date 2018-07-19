@@ -42,7 +42,7 @@
 {% block citizen_action_content %}
         <section class="b__nudge--top-40">
             <div id="members">
-                {% if is_administrator and citizen_action.active %}
+                {% if is_cp_administrator and citizen_action.active %}
                     <div class="b__nudge--bottom flex--center--mobile">
                         <a href="{{ path('app_citizen_action_manager_edit', { slug: citizen_action.slug, project_slug: citizen_action.citizenProject.slug }) }}" class="text--body link--blue link--padding link--no-decor">
                             Modifier cette action citoyenne
