@@ -29,10 +29,10 @@
                 {% for administrator in administrators %}
                     <li class="text--body">
                         <span
-                           title="{{ is_administrator and app.user.equals(administrator) ? 'Vous' : administrator }}">
+                           title="{{ is_cp_administrator and app.user.equals(administrator) ? 'Vous' : administrator }}">
                             {{ include('components/user.html.twig') }}
                         </span>
-                        {% if not is_administrator %}
+                        {% if not is_cp_administrator %}
                             <a href="{{ path('app_adherent_contact', {uuid: administrator.uuid, from: 'citizen_project', id: citizen_project.uuid.toString}) }}"
                                class="text--small link--newblue">
                                 Contacter
