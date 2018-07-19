@@ -32,7 +32,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
     };
 
     attachEvents() {
-        this._autocomplete.addListener('place_changed', () => this.placeChangeHandle);
+        this._autocomplete.addListener('place_changed', () => this.placeChangeHandle());
 
         /*
          * if the user has stopped typing text (address)
