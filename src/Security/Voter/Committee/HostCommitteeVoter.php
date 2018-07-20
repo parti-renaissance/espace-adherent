@@ -18,11 +18,7 @@ class HostCommitteeVoter extends AbstractAdherentVoter
     }
 
     /**
-     * @param string    $attribute
-     * @param Adherent  $adherent
      * @param Committee $committee
-     *
-     * @return bool
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $committee): bool
     {

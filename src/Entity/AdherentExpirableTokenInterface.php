@@ -20,15 +20,11 @@ interface AdherentExpirableTokenInterface
 
     /**
      * Returns the value of the token.
-     *
-     * @return SHA1
      */
     public function getValue(): SHA1;
 
     /**
      * Returns the adherent uuid tied to the token.
-     *
-     * @return UuidInterface
      */
     public function getAdherentUuid(): UuidInterface;
 
@@ -42,7 +38,6 @@ interface AdherentExpirableTokenInterface
     /**
      * Expires a token if it's not already.
      *
-     * @param Adherent $adherent
      *
      * @throws AdherentTokenAlreadyUsedException If the token has already been used
      * @throws AdherentTokenExpiredException     If the token is expired

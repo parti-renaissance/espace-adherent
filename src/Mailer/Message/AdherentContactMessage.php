@@ -8,8 +8,6 @@ use Ramsey\Uuid\Uuid;
 final class AdherentContactMessage extends Message
 {
     /**
-     * @param ContactMessage $contactMessage
-     *
      * @return AdherentContactMessage
      */
     public static function createFromModel(ContactMessage $contactMessage): self

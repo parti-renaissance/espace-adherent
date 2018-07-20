@@ -42,8 +42,6 @@ trait EntityIdentityTrait
 
     /**
      * Returns the internal unique UUID instance.
-     *
-     * @return UuidInterface
      */
     public function getUuid(): UuidInterface
     {

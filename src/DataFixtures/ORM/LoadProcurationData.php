@@ -440,8 +440,6 @@ class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
      * The format must be something like "33 0102030405"
      *
      * @param string $phoneNumber
-     *
-     * @return PhoneNumber
      */
     private function createPhone($phoneNumber): PhoneNumber
     {

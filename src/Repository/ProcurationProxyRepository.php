@@ -87,8 +87,6 @@ class ProcurationProxyRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param ProcurationRequest $procurationRequest
-     *
      * @return array
      */
     public function findMatchingProxies(ProcurationRequest $procurationRequest)

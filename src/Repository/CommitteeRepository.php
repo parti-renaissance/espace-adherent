@@ -50,10 +50,6 @@ class CommitteeRepository extends ServiceEntityRepository
 
     /**
      * Finds a Committee instance by its unique canonical name.
-     *
-     * @param string $name
-     *
-     * @return Committee|null
      */
     public function findOneByName(string $name): ?Committee
     {
@@ -82,8 +78,6 @@ class CommitteeRepository extends ServiceEntityRepository
 
     /**
      * Returns the most recent created Committee.
-     *
-     * @return Committee|null
      */
     public function findMostRecentCommittee(): ?Committee
     {
@@ -111,9 +105,6 @@ class CommitteeRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Coordinates $coordinates
-     * @param int         $count
-     *
      * @return Committee[]
      */
     public function findNearbyCommittees(Coordinates $coordinates, int $count = self::DEFAULT_MAX_RESULTS_LIST)
@@ -130,8 +121,6 @@ class CommitteeRepository extends ServiceEntityRepository
 
     /**
      * Returns the total number of approved committees.
-     *
-     * @return int
      */
     public function countApprovedCommittees(): int
     {
@@ -209,9 +198,6 @@ class CommitteeRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    /**
-     * @return int
-     */
     public function countSitemapCommittees(): int
     {
         return (int) $this->createSitemapQb()
@@ -221,12 +207,6 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
     }
 
-    /**
-     * @param int $page
-     * @param int $perPage
-     *
-     * @return array
-     */
     public function findSitemapCommittees(int $page, int $perPage): array
     {
         return $this->createSitemapQb()
@@ -239,9 +219,6 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
     }
 
-    /**
-     * @return QueryBuilder
-     */
     private function createSitemapQb(): QueryBuilder
     {
         return $this
@@ -413,7 +390,6 @@ class CommitteeRepository extends ServiceEntityRepository
     /**
      * Finds committees in the district.
      *
-     * @param District $district
      *
      * @return Committee[]
      */

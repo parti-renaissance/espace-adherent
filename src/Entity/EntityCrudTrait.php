@@ -23,8 +23,6 @@ trait EntityCrudTrait
      *
      * @param string $class  The fully qualified class name
      * @param string $method The method name to introspect in this class
-     *
-     * @return int
      */
     private static function countNumberOfRequiredArguments(string $class, string $method): int
     {
@@ -102,8 +100,6 @@ trait EntityCrudTrait
      *
      * @param string $property The name of the virtual property to read
      *
-     * @return mixed
-     *
      * @throws \InvalidArgumentException
      */
     public function __get($property)
@@ -135,8 +131,6 @@ trait EntityCrudTrait
      *
      * @param string $method    The magic invoked method name
      * @param array  $arguments The arguments to pass to the magic invoked method
-     *
-     * @return mixed
      *
      * @throws \BadMethodCallException
      */

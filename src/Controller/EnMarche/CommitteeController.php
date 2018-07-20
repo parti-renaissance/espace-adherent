@@ -200,8 +200,6 @@ class CommitteeController extends Controller
 
     /**
      * @param CommitteeFeedItem[]|iterable $feeds
-     *
-     * @return array
      */
     private function createTimelineDeleteForms(iterable $feeds): array
     {

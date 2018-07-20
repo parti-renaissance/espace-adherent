@@ -23,11 +23,6 @@ abstract class AbstractFeedGenerator implements FeedGeneratorInterface
      */
     protected $urlGenerator;
 
-    /**
-     * @param string                $locale
-     * @param int                   $ttl
-     * @param UrlGeneratorInterface $urlGenerator
-     */
     public function __construct(string $locale, int $ttl, UrlGeneratorInterface $urlGenerator)
     {
         $this->locale = $locale;

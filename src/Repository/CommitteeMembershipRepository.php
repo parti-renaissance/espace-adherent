@@ -160,8 +160,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
      *
      * @param Committee $committee    The committee
      * @param bool      $includeHosts Whether or not to include committee hosts as followers
-     *
-     * @return CommitteeMembershipCollection
      */
     public function findFollowerMemberships(Committee $committee, bool $includeHosts = true): CommitteeMembershipCollection
     {
@@ -178,8 +176,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
      *
      * @param Committee $committee    The committee UUID
      * @param bool      $includeHosts Whether or not to include committee hosts as followers
-     *
-     * @return AdherentCollection
      */
     public function findFollowers(Committee $committee, bool $includeHosts = true): AdherentCollection
     {
@@ -196,8 +192,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
      *
      * @param Committee $committee  The committee
      * @param array     $privileges An array of privilege constants (see {@link : CommitteeMembership}
-     *
-     * @return CommitteeMembershipCollection
      */
     private function findPrivilegedMemberships(Committee $committee, array $privileges): CommitteeMembershipCollection
     {
@@ -219,8 +213,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
      *
      * @param Committee $committee  The committee
      * @param array     $privileges An array of privilege constants (see {@link : CommitteeMembership}
-     *
-     * @return AdherentCollection
      */
     private function findPrivilegedMembers(Committee $committee, array $privileges): AdherentCollection
     {
@@ -267,8 +259,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
      *
      * @param Committee $committee The committee for which the memberships to fetch belong
      * @param string    $alias     The custom root alias for the query
-     *
-     * @return QueryBuilder
      */
     private function createCommitteeMembershipsQueryBuilder(Committee $committee, string $alias = 'cm'): QueryBuilder
     {
@@ -288,8 +278,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
      * The query must return a list of CommitteeMembership entities.
      *
      * @param Query $query The query to execute
-     *
-     * @return AdherentCollection
      */
     private function createAdherentCollection(Query $query): AdherentCollection
     {

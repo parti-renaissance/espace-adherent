@@ -35,17 +35,11 @@ trait CoordinatorAreaTrait
         $this->coordinatorComment = $coordinatorComment;
     }
 
-    /**
-     * @return Adherent|null
-     */
     public function getCreator(): ?Adherent
     {
         return $this->creator;
     }
 
-    /**
-     * @param Adherent|null $creator
-     */
     public function setCreator(?Adherent $creator): void
     {
         $this->creator = $creator;

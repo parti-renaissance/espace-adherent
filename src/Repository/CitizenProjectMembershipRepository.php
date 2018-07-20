@@ -112,8 +112,6 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
      *
      * @param CitizenProject $citizenProject The citizen project
      * @param array          $privileges     An array of privilege constants (see {@link : CitizenProjectMembership}
-     *
-     * @return AdherentCollection
      */
     public function findPrivilegedMembers(CitizenProject $citizenProject, array $privileges): AdherentCollection
     {
@@ -148,8 +146,6 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
      *
      * @param CitizenProject $citizenProject The citizen project
      * @param array          $privileges     An array of privilege constants (see {@link : CitizenProjectMembership}
-     *
-     * @return CitizenProjectMembershipCollection
      */
     public function findPrivilegedMemberships(CitizenProject $citizenProject, array $privileges): CitizenProjectMembershipCollection
     {
@@ -254,8 +250,6 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
      *
      * @param CitizenProject $citizenProject The citizen project for which the memberships to fetch belong
      * @param string         $alias          The custom root alias for the query
-     *
-     * @return QueryBuilder
      */
     private function createCitizenProjectMembershipsQueryBuilder(CitizenProject $citizenProject, string $alias = 'cpm'): QueryBuilder
     {
@@ -287,8 +281,6 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
      * The query must return a list of CitizenProjectMembership entities.
      *
      * @param Query $query The query to execute
-     *
-     * @return AdherentCollection
      */
     private function createAdherentCollection(Query $query): AdherentCollection
     {

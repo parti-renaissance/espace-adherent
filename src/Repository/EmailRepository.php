@@ -26,9 +26,6 @@ class EmailRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $messageClass
-     * @param string $recipient
-     *
      * @return Email[]
      */
     public function findRecipientMessages(string $messageClass, string $recipient): array
@@ -64,8 +61,6 @@ class EmailRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $messageClass
-     *
      * @return Email[]
      */
     public function findMessages(string $messageClass): array

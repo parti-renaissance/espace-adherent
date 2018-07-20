@@ -128,11 +128,6 @@ class ManageCitizenActionVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @param bool                $uuidChecked
-     * @param bool|null           $hasLoadedMemberships
-     * @param bool                $isAdministrator
-     * @param CitizenProject|null $project
-     *
      * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getAdherentMock(
@@ -177,9 +172,6 @@ class ManageCitizenActionVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @param bool $approved
-     * @param bool $fromCreator
-     *
      * @return CitizenProject|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getCitizenProjectMock(bool $approved, bool $fromCreator = false): CitizenProject

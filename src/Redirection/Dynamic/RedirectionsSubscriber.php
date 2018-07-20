@@ -42,8 +42,6 @@ class RedirectionsSubscriber implements EventSubscriberInterface
 
     /**
      * Adds a RedirectTo handler.
-     *
-     * @param RedirectToInterface $handler
      */
     public function addHandler(RedirectToInterface $handler): void
     {

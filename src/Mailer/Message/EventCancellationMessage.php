@@ -13,10 +13,6 @@ final class EventCancellationMessage extends Message
      * Creates a new message instance for a list of recipients.
      *
      * @param EventRegistration[] $recipients
-     * @param Adherent            $host
-     * @param BaseEvent           $event
-     * @param string              $eventsLink
-     * @param \Closure            $recipientVarsGenerator
      *
      * @return EventCancellationMessage
      */

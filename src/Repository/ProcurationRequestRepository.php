@@ -131,8 +131,6 @@ class ProcurationRequestRepository extends ServiceEntityRepository
 
     /**
      * @param ProcurationRequest[] $requests
-     *
-     * @return array
      */
     private function findRequests(array $requests): array
     {

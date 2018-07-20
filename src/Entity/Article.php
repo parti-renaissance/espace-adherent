@@ -83,8 +83,6 @@ class Article implements EntityMediaInterface, EntityContentInterface
     }
 
     /**
-     * @param ArticleCategory|null $category
-     *
      * @return Article
      */
     public function setCategory(ArticleCategory $category = null): self

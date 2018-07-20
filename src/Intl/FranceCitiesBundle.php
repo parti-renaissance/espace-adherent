@@ -6,8 +6,6 @@ class FranceCitiesBundle
 {
     /**
      * Returns the list of cities for a given french postal code.
-     *
-     * @return array
      */
     public static function getPostalCodeCities(string $postalCode): array
     {

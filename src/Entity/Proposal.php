@@ -137,8 +137,6 @@ class Proposal implements EntityContentInterface
     }
 
     /**
-     * @param Media|null $media
-     *
      * @return Proposal
      */
     public function setMedia(Media $media = null): self

@@ -118,11 +118,6 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
         $output->writeln('Referents load OK');
     }
 
-    /**
-     * @param string $filename
-     *
-     * @return array
-     */
     private function parseCSV(string $filename): array
     {
         $rows = [];
@@ -149,9 +144,6 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
         return $rows;
     }
 
-    /**
-     * @return array
-     */
     private function persistMedias(): array
     {
         $medias = [];
@@ -181,11 +173,6 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
         return $medias;
     }
 
-    /**
-     * @param array $rows
-     *
-     * @return array
-     */
     private function parseAreas(array $rows): array
     {
         $areas = [];
@@ -217,9 +204,6 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
         return $areas;
     }
 
-    /**
-     * @param array $areas
-     */
     private function createAndPersistReferentArea(array $areas): void
     {
         foreach ($areas as $areaCode => $area) {
@@ -237,10 +221,6 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
         $this->em->flush();
     }
 
-    /**
-     * @param array $rows
-     * @param array $medias
-     */
     private function createAndPersistReferent(array $rows, array $medias): void
     {
         foreach ($rows as $row) {

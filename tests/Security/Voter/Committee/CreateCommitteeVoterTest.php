@@ -75,7 +75,6 @@ class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
 
     /**
      * @param bool|null $isReferent
-     * @param bool      $isHost
      *
      * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
      */

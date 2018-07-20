@@ -10,9 +10,6 @@ final class EventContactMembersMessage extends Message
 {
     /**
      * @param EventRegistration[] $recipients
-     * @param Adherent            $organizer
-     * @param string              $subject
-     * @param string              $content
      *
      * @return EventContactMembersMessage
      */

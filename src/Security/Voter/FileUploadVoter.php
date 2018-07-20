@@ -17,11 +17,7 @@ class FileUploadVoter extends AbstractAdherentVoter
     }
 
     /**
-     * @param string   $attribute
-     * @param Adherent $adherent
-     * @param string   $type
-     *
-     * @return bool
+     * @param string $type
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $type): bool
     {

@@ -9,8 +9,7 @@ use Ramsey\Uuid\Uuid;
 final class DeputyMessage extends Message
 {
     /**
-     * @param DeputyMessageModel $model
-     * @param Adherent[]         $recipients
+     * @param Adherent[] $recipients
      *
      * @return DeputyMessage
      */

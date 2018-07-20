@@ -10,9 +10,7 @@ interface FeedGeneratorInterface
     /**
      * Build and populate the feed content from various data sources.
      *
-     * @param mixed $data
      *
-     * @return FeedInterface
      *
      * @throws FeedGeneratorException when any error occurs
      */

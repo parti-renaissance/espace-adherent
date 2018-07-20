@@ -11,10 +11,7 @@ class CitizenProjectCommentMessage extends Message
     /**
      * Creates a new message instance for a list of recipients.
      *
-     * @param Adherent[]            $recipients
-     * @param CitizenProjectComment $comment
-     *
-     * @return self
+     * @param Adherent[] $recipients
      */
     public static function create(array $recipients, CitizenProjectComment $comment): self
     {

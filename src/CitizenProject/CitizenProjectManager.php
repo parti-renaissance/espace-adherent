@@ -50,9 +50,6 @@ class CitizenProjectManager
     }
 
     /**
-     * @param Adherent             $coordinator
-     * @param CitizenProjectFilter $filter
-     *
      * @return CitizenProject[]
      */
     public function getCoordinatorCitizenProjects(Adherent $coordinator, CitizenProjectFilter $filter): array
@@ -65,9 +62,6 @@ class CitizenProjectManager
     }
 
     /**
-     * @param Coordinates $coordinates
-     * @param int         $limit
-     *
      * @return CitizenProject[]
      */
     public function getNearCitizenProjectByCoordinates(Coordinates $coordinates, int $limit = 3): array
@@ -91,9 +85,6 @@ class CitizenProjectManager
     }
 
     /**
-     * @param CitizenProject $citizenProject
-     * @param int            $maxResults
-     *
      * @return CitizenAction[]
      */
     public function getCitizenProjectNextActions(CitizenProject $citizenProject, int $maxResults = 5): array
@@ -163,10 +154,6 @@ class CitizenProjectManager
 
     /**
      * Promotes a member to be an administrator of a citizen project.
-     *
-     * @param Adherent       $adherent
-     * @param CitizenProject $citizenProject
-     * @param bool           $flush
      */
     public function promote(Adherent $adherent, CitizenProject $citizenProject, bool $flush = true): void
     {
@@ -180,10 +167,6 @@ class CitizenProjectManager
 
     /**
      * Makes an administrator to be a simple member of a citizen project.
-     *
-     * @param Adherent       $adherent
-     * @param CitizenProject $citizenProject
-     * @param bool           $flush
      */
     public function demote(Adherent $adherent, CitizenProject $citizenProject, bool $flush = true): void
     {
@@ -309,8 +292,6 @@ class CitizenProjectManager
 
     /**
      * Uploads and saves the citizen project image.
-     *
-     * @param CitizenProject $citizenProject
      */
     public function addImage(CitizenProject $citizenProject): void
     {
@@ -337,8 +318,6 @@ class CitizenProjectManager
 
     /**
      * Removes the citizen project image.
-     *
-     * @param CitizenProject $citizenProject
      */
     public function removeImage(CitizenProject $citizenProject): void
     {

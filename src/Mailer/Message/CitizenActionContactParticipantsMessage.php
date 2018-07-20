@@ -10,11 +10,6 @@ final class CitizenActionContactParticipantsMessage extends Message
 {
     /**
      * @param EventRegistration[] $recipients
-     * @param Adherent            $organizer
-     * @param string              $subject
-     * @param string              $content
-     *
-     * @return self
      */
     public static function create(array $recipients, Adherent $organizer, string $subject, string $content): self
     {

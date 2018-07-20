@@ -6,9 +6,6 @@ class SummaryItemDisplayOrderer
 {
     /**
      * @param SummaryItemPositionableInterface[]|iterable $collection
-     * @param SummaryItemPositionableInterface            $updatedItem
-     * @param int                                         $currentItemPosition
-     * @param int                                         $newItemPosition
      */
     public static function updateItem(iterable $collection, SummaryItemPositionableInterface $updatedItem, int $currentItemPosition, int $newItemPosition): void
     {
@@ -40,7 +37,6 @@ class SummaryItemDisplayOrderer
 
     /**
      * @param SummaryItemPositionableInterface[]|iterable $collection
-     * @param int                                         $newPosition
      */
     public static function insertItem(iterable $collection, int $newPosition): void
     {
@@ -56,7 +52,6 @@ class SummaryItemDisplayOrderer
 
     /**
      * @param SummaryItemPositionableInterface[]|iterable $collection
-     * @param SummaryItemPositionableInterface            $removedItem
      */
     public static function removeItem(iterable $collection, SummaryItemPositionableInterface $removedItem): void
     {

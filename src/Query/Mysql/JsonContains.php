@@ -29,10 +29,6 @@ class JsonContains extends FunctionNode
     public $jsonPathExpr;
 
     /**
-     * @param SqlWalker $sqlWalker
-     *
-     * @return string
-     *
      * @throws DBALException
      */
     public function getSql(SqlWalker $sqlWalker): string
@@ -51,8 +47,6 @@ class JsonContains extends FunctionNode
     }
 
     /**
-     * @param Parser $parser
-     *
      * @throws \Doctrine\ORM\Query\QueryException
      */
     public function parse(Parser $parser): void

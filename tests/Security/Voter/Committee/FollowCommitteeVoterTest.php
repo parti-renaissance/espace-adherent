@@ -126,11 +126,6 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @param Committee|null $committee
-     * @param bool|null      $isFollower
-     * @param bool|null      $isSupervisor
-     * @param bool           $isHost
-     *
      * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getAdherentMock(Committee $committee = null, bool $isFollower = null, bool $isSupervisor = null, bool $isHost = false): Adherent
@@ -153,10 +148,6 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @param bool|null $isFollower
-     * @param bool|null $isSupervisor
-     * @param bool      $isHost
-     *
      * @return CommitteeMembership|\PHPUnit_Framework_MockObject_MockObject|null
      */
     private function getMembershipMock(?bool $isFollower, ?bool $isSupervisor, bool $isHost = false): ?CommitteeMembership

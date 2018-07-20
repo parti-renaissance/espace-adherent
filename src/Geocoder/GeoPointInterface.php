@@ -7,8 +7,6 @@ interface GeoPointInterface extends GeocodableInterface
     /**
      * Updates the coordinates of the geocodable object thanks to the data
      * stored in the {@link Coordinates} value object.
-     *
-     * @param Coordinates $coordinates
      */
     public function updateCoordinates(Coordinates $coordinates);
 

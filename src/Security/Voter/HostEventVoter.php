@@ -17,11 +17,7 @@ class HostEventVoter extends AbstractAdherentVoter
     }
 
     /**
-     * @param string   $attribute
-     * @param Adherent $adherent
-     * @param Event    $event
-     *
-     * @return bool
+     * @param Event $event
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $event): bool
     {

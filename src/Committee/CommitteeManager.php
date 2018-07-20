@@ -186,8 +186,7 @@ class CommitteeManager
     /**
      * Returns the list of committees that are located near a point of origin.
      *
-     * @param Coordinates $coordinates
-     * @param int         $limit
+     * @param int $limit
      *
      * @return Committee[]
      */
@@ -229,10 +228,6 @@ class CommitteeManager
 
     /**
      * Promotes an adherent to be a host of a committee.
-     *
-     * @param Adherent  $adherent
-     * @param Committee $committee
-     * @param bool      $flush
      */
     public function promote(Adherent $adherent, Committee $committee, bool $flush = true): void
     {
@@ -246,10 +241,6 @@ class CommitteeManager
 
     /**
      * Promotes an adherent to be a host of a committee.
-     *
-     * @param Adherent  $adherent
-     * @param Committee $committee
-     * @param bool      $flush
      */
     public function demote(Adherent $adherent, Committee $committee, bool $flush = true): void
     {
@@ -263,9 +254,6 @@ class CommitteeManager
 
     /**
      * Approves one committee and transforms creator to supervisor.
-     *
-     * @param Committee $committee
-     * @param bool      $flush
      */
     public function approveCommittee(Committee $committee, bool $flush = true): void
     {
@@ -283,9 +271,6 @@ class CommitteeManager
 
     /**
      * Pre-approves one committee.
-     *
-     * @param Committee $committee
-     * @param bool      $flush
      */
     public function preApproveCommittee(Committee $committee, bool $flush = true): void
     {
@@ -300,9 +285,6 @@ class CommitteeManager
 
     /**
      * Refuses one committee and transforms supervisor and host to members.
-     *
-     * @param Committee $committee
-     * @param bool      $flush
      */
     public function refuseCommittee(Committee $committee, bool $flush = true): void
     {
@@ -325,9 +307,6 @@ class CommitteeManager
 
     /**
      * Pre-refuses one committee.
-     *
-     * @param Committee $committee
-     * @param bool      $flush
      */
     public function preRefuseCommittee(Committee $committee, bool $flush = true): void
     {

@@ -65,8 +65,6 @@ class FollowerCitizenProjectVoterTest extends AbstractAdherentVoterTest
 
     /**
      * @param CitizenProject|null $project
-     * @param bool|null           $isFollower
-     * @param bool|null           $isAdministrator
      *
      * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
      */
@@ -84,9 +82,6 @@ class FollowerCitizenProjectVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @param bool      $isFollower
-     * @param bool|null $isAdministrator
-     *
      * @return CitizenProjectMembership|\PHPUnit_Framework_MockObject_MockObject|null
      */
     private function getMembershipMock(bool $isFollower, ?bool $isAdministrator): ?CitizenProjectMembership

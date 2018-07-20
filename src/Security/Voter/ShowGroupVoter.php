@@ -23,9 +23,8 @@ class ShowGroupVoter extends AbstractAdherentVoter
     }
 
     /**
-     * @param string         $attribute
-     * @param BaseGroup      $group
-     * @param TokenInterface $token
+     * @param string    $attribute
+     * @param BaseGroup $group
      *
      * @return bool
      */
@@ -39,11 +38,7 @@ class ShowGroupVoter extends AbstractAdherentVoter
     }
 
     /**
-     * @param string    $attribute
-     * @param Adherent  $adherent
      * @param BaseGroup $group
-     *
-     * @return bool
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $group): bool
     {

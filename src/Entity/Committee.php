@@ -258,8 +258,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
 
     /**
      * Marks this committee as approved.
-     *
-     * @param string $timestamp
      */
     public function approved(string $timestamp = 'now'): void
     {

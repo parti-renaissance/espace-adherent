@@ -14,12 +14,6 @@ class PictureFilterer
         $this->imagine = $imagine;
     }
 
-    /**
-     * @param string $pictureData
-     * @param string $filterData
-     *
-     * @return string
-     */
     public function applyFilter(string $pictureData, string $filterData): string
     {
         $picture = $this->imagine->load($pictureData);

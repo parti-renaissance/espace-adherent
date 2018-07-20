@@ -9,9 +9,7 @@ interface GeocoderInterface
     /**
      * Geocodes an address.
      *
-     * @param string $address
      *
-     * @return Coordinates
      *
      * @throws GeocodingException
      */

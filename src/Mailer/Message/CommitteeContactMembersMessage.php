@@ -9,9 +9,6 @@ final class CommitteeContactMembersMessage extends Message
 {
     /**
      * @param Adherent[] $recipients
-     * @param Adherent   $host
-     * @param string     $subject
-     * @param string     $content
      *
      * @return CommitteeContactMembersMessage
      */

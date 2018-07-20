@@ -71,7 +71,6 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTest
      * @param bool                                                    $isSupervisor
      * @param Committee|\PHPUnit_Framework_MockObject_MockObject|null $committee
      * @param bool|null                                               $isCreator
-     * @param bool|null                                               $isHost
      *
      * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
      */
@@ -114,8 +113,6 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @param bool $approved
-     *
      * @return Committee|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getCommitteeMock(bool $approved): Committee

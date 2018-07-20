@@ -78,9 +78,6 @@ class FileUploadVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @param bool|null $isReferent
-     * @param bool|null $isHost
-     *
      * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getAdherentMock(bool $isReferent = null, bool $isHost = null): Adherent

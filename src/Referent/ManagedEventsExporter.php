@@ -16,8 +16,6 @@ class ManagedEventsExporter
 
     /**
      * @param Event[] $managedEvents
-     *
-     * @return string
      */
     public function exportAsJson(array $managedEvents): string
     {

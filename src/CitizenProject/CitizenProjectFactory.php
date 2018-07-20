@@ -57,10 +57,6 @@ class CitizenProjectFactory
 
     /**
      * Returns a new instance of CitizenProject from a CreateCitizenProjectCommand DTO.
-     *
-     * @param CitizenProjectCreationCommand $command
-     *
-     * @return CitizenProject
      */
     public function createFromCitizenProjectCreationCommand(CitizenProjectCreationCommand $command): CitizenProject
     {
@@ -91,8 +87,6 @@ class CitizenProjectFactory
      * The format must be something like "33 0102030405"
      *
      * @param string $phoneNumber
-     *
-     * @return PhoneNumber
      */
     private function createPhone($phoneNumber): PhoneNumber
     {

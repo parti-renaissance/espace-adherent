@@ -20,11 +20,7 @@ class FollowerCitizenProjectVoter extends AbstractAdherentVoter
     }
 
     /**
-     * @param string         $attribute
-     * @param Adherent|null  $adherent
      * @param CitizenProject $citizenProject
-     *
-     * @return bool
      */
     protected function doVoteOnAttribute(string $attribute, ?Adherent $adherent, $citizenProject): bool
     {

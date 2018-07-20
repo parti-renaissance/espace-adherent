@@ -10,8 +10,6 @@ trait UuidEntityRepositoryTrait
     /**
      * Finds an entity by its unique UUID.
      *
-     * @param string $uuid
-     *
      * @return object|null
      *
      * @throws InvalidUuidException

@@ -25,8 +25,6 @@ class CoordinatorManagedAreaListener implements EventSubscriberInterface
      *
      * If the adherent has any coordinator managed area, then need to
      * add an empty coordinator managed area for avoiding empty form.
-     *
-     * @param FormEvent $event
      */
     public function onPreSetData(FormEvent $event): void
     {
@@ -55,8 +53,6 @@ class CoordinatorManagedAreaListener implements EventSubscriberInterface
     /**
      * If an empty coordinator managed area has been submit, then
      * need to remove them from adherent object for avoiding its persistence in base.
-     *
-     * @param FormEvent $event
      */
     public function onPostSubmit(FormEvent $event): void
     {

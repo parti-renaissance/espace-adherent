@@ -16,8 +16,6 @@ class ManagedCommitteesExporter
 
     /**
      * @param Committee[] $managedCommittees
-     *
-     * @return string
      */
     public function exportAsJson(array $managedCommittees): string
     {

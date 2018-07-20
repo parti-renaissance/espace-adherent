@@ -57,10 +57,6 @@ class HostEventVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @param bool           $isOrganizer
-     * @param bool|null      $isHost
-     * @param Committee|null $committee
-     *
      * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getAdherentMock(bool $isOrganizer = false, bool $isHost = null, Committee $committee = null): Adherent
@@ -91,10 +87,6 @@ class HostEventVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @param Adherent|null  $organizer
-     * @param bool|null      $committeeEvent
-     * @param Committee|null $committee
-     *
      * @return Event|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getEventMock(?Adherent $organizer, bool $committeeEvent = null, Committee $committee = null): Event
@@ -121,8 +113,6 @@ class HostEventVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @param bool $uuidChecked
-     *
      * @return Committee|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getCommitteeMock(bool $uuidChecked = false): Committee

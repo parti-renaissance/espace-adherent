@@ -95,9 +95,6 @@ abstract class AbstractAdherentVoterTest extends TestCase
     }
 
     /**
-     * @param UserInterface|null $adherent
-     * @param bool               $adherentInstanceChecked
-     *
      * @return \PHPUnit_Framework_MockObject_MockObject|TokenInterface
      */
     protected function createTokenMock(?UserInterface $adherent, bool $adherentInstanceChecked): TokenInterface

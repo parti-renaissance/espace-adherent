@@ -17,8 +17,6 @@ class NewsletterSubscriptionRepository extends ServiceEntityRepository
     /**
      * Finds the list of newsletter subscribers managed by the given referent.
      *
-     * @param Adherent $referent
-     *
      * @return NewsletterSubscription[]
      */
     public function findAllManagedBy(Adherent $referent)

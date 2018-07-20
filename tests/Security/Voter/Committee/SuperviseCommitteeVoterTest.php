@@ -38,9 +38,6 @@ class SuperviseCommitteeVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @param bool      $isSupervisor
-     * @param Committee $committee
-     *
      * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getAdherentMock(bool $isSupervisor, Committee $committee): Adherent

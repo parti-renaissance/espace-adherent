@@ -44,8 +44,6 @@ class ProcurationProxyMessageFactory
 
     /**
      * @param ProcurationRequest[] $requests
-     *
-     * @return ProcurationProxyReminderMessage
      */
     public function createProxyReminderMessage(array $requests): ProcurationProxyReminderMessage
     {

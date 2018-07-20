@@ -66,10 +66,6 @@ class CommitteeFactory
 
     /**
      * Returns a new instance of Committee from a CreateCommitteeCommand DTO.
-     *
-     * @param CommitteeCreationCommand $command
-     *
-     * @return Committee
      */
     public function createFromCommitteeCreationCommand(CommitteeCreationCommand $command): Committee
     {
@@ -102,8 +98,6 @@ class CommitteeFactory
      * The format must be something like "33 0102030405"
      *
      * @param string $phoneNumber
-     *
-     * @return PhoneNumber
      */
     private function createPhone($phoneNumber): PhoneNumber
     {

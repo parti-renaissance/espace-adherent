@@ -65,8 +65,6 @@ class ManagedUsersFilter
     }
 
     /**
-     * @param Request $request
-     *
      * @return ManagedUsersFilter
      */
     public function handleRequest(Request $request): self

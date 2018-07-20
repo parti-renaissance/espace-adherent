@@ -23,7 +23,6 @@ class CommentsCitizenProjectVoter extends AbstractAdherentVoter
     /**
      * @param string         $attribute
      * @param CitizenProject $subject
-     * @param TokenInterface $token
      *
      * @return bool
      */
@@ -37,11 +36,7 @@ class CommentsCitizenProjectVoter extends AbstractAdherentVoter
     }
 
     /**
-     * @param string         $attribute
-     * @param Adherent       $adherent
      * @param CitizenProject $citizenProject
-     *
-     * @return bool
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $citizenProject): bool
     {

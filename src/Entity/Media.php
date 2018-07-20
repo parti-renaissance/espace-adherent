@@ -282,8 +282,6 @@ class Media
     }
 
     /**
-     * @param File|null $file
-     *
      * @return Media
      */
     public function setFile(File $file = null): self
