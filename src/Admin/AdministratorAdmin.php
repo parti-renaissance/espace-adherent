@@ -112,16 +112,16 @@ class AdministratorAdmin extends AbstractAdmin
                     'type' => PasswordType::class,
                     'required' => $isCreation,
                 ])
-                    ->addModelTransformer(new CallbackTransformer(
-                        function ($encoded) {
-                            return ''; // or ****
-                        },
-                        function ($plain) use ($admin) {
-                            return is_string($plain) && '' !== $plain
-                                ? $this->encoders->getEncoder($admin)->encodePassword($plain, null)
-                                : $admin->getPassword();
-                        }
-                    ))
+                ->addModelTransformer(new CallbackTransformer(
+                    function () {
+                        return '';
+                    },
+                    function ($plain) use ($admin) {
+                        return is_string($plain) && '' !== $plain
+                            ? $this->encoders->getEncoder($admin)->encodePassword($plain, null)
+                            : $admin->getPassword();
+                    }
+                ))
             )
         ;
 
