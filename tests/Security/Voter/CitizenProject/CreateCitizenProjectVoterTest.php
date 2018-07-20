@@ -52,14 +52,6 @@ class CreateCitizenProjectVoterTest extends AbstractAdherentVoterTest
         $this->assertGrantedForAdherent(false, true, $adherent, CitizenProjectPermissions::CREATE);
     }
 
-    public function testAdherentIsNotGrantedWhenReferent()
-    {
-        $adherent = $this->getAdherentMock(true, true);
-
-        $this->assertRepositoryBehavior(null);
-        $this->assertGrantedForAdherent(false, true, $adherent, CitizenProjectPermissions::CREATE);
-    }
-
     public function testAdherentIsNotGrantedWhenAlreadyProjectAdministrator()
     {
         $adherent = $this->getAdherentMock(true, false, true);
@@ -84,6 +76,14 @@ class CreateCitizenProjectVoterTest extends AbstractAdherentVoterTest
         $this->assertGrantedForAdherent(true, true, $adherent, CitizenProjectPermissions::CREATE);
     }
 
+    public function testReferentIsGranted()
+    {
+        $adherent = $this->getAdherentMock(true, true, true);
+
+        $this->assertRepositoryBehavior(null);
+        $this->assertGrantedForAdherent(false, true, $adherent, CitizenProjectPermissions::CREATE);
+    }
+
     /**
      * @param bool|null $isCitizenProjectAdministrator
      *
@@ -98,7 +98,7 @@ class CreateCitizenProjectVoterTest extends AbstractAdherentVoterTest
             ->willReturn($isAdherent)
         ;
 
-        $adherent->expects($isReferent ? $this->once() : $this->any())
+        $adherent->expects($this->never())
             ->method('isReferent')
             ->willReturn($isReferent)
         ;
