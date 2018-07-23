@@ -50,6 +50,7 @@ class EventInvitationType extends AbstractType
                 ],
                 'label' => false,
                 'required' => false,
+                'filter_emojis' => true,
             ])
             ->add('guests', CollectionType::class, [
                 'entry_type' => EmailType::class,
