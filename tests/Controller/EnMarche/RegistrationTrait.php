@@ -51,7 +51,7 @@ trait RegistrationTrait
                 ],
                 'password' => '#example!12345#',
                 'conditions' => true,
-                'comEmail' => true,
+                'allowNotifications' => true,
             ],
         ]));
 
