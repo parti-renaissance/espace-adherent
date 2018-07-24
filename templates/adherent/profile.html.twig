@@ -95,16 +95,6 @@
 
         <div class="space--10-0"></div>
 
-        <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-mobile">
-            {{ form_widget(form.comMobile) }}
-            <label class="form form__label" for="{{ form.comMobile.vars.id }}">
-                <span>
-                    J'accepte de recevoir par SMS et/ou MMS des informations ou sollicitations à des fins de communication politique
-                    <span class="text--gray text--italic">(optionnel)</span>
-                </span>
-            </label>
-        </div>
-
         <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
         {% if recaptcha_public_key is not empty %}
             {% for flashMessage in app.flashes("error_recaptcha") %}

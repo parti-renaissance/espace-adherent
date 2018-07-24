@@ -5,8 +5,8 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
 use AppBundle\Entity\Reporting\EmailSubscriptionHistoryAction;
-use AppBundle\Membership\AdherentEmailSubscription;
 use AppBundle\Repository\AdherentRepository;
+use AppBundle\Subscription\SubscriptionTypeEnum;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -32,7 +32,7 @@ class LoadEmailSubscriptionHistoryData extends AbstractFixture implements Depend
 
         // Create current subscription history
         foreach ($adherents as $adherent) {
-            foreach ($adherent->getEmailsSubscriptions() as $subscription) {
+            foreach ($adherent->getSubscriptionTypes() as $subscription) {
                 $manager->persist(new EmailSubscriptionHistory($adherent, $subscription, $adherent->getReferentTags()->toArray(), EmailSubscriptionHistoryAction::SUBSCRIBE()));
             }
         }
@@ -76,16 +76,11 @@ class LoadEmailSubscriptionHistoryData extends AbstractFixture implements Depend
         $manager->flush();
     }
 
-    private function createSubscribedUnsubscribedHistory(
-        Adherent $adherent,
-        array $tags,
-        string $subscribedAt,
-        string $unsubscribedAt = '-1 month',
-        string $subscriptionType = AdherentEmailSubscription::SUBSCRIBED_EMAILS_LOCAL_HOST
-    ): void {
+    private function createSubscribedUnsubscribedHistory(Adherent $adherent, array $tags, string $subscribedAt): void
+    {
         $this->manager->persist(new EmailSubscriptionHistory(
             $adherent,
-            $subscriptionType,
+            $this->getReference('st-'.SubscriptionTypeEnum::LOCAL_HOST_EMAIL),
             $tags,
             EmailSubscriptionHistoryAction::SUBSCRIBE(),
             new Chronos($subscribedAt)
@@ -93,10 +88,10 @@ class LoadEmailSubscriptionHistoryData extends AbstractFixture implements Depend
 
         $this->manager->persist(new EmailSubscriptionHistory(
             $adherent,
-            $subscriptionType,
+            $this->getReference('st-'.SubscriptionTypeEnum::LOCAL_HOST_EMAIL),
             $tags,
             EmailSubscriptionHistoryAction::UNSUBSCRIBE(),
-            new Chronos($unsubscribedAt)
+            new Chronos('-1 month')
         ));
     }
 

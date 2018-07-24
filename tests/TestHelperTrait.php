@@ -29,6 +29,7 @@ use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Entity\PurchasingPowerChoice;
 use AppBundle\Entity\PurchasingPowerInvitation;
 use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
+use AppBundle\Entity\SubscriptionType;
 use AppBundle\Entity\Summary;
 use AppBundle\Entity\TonMacronChoice;
 use AppBundle\Entity\TonMacronFriendInvitation;
@@ -57,6 +58,7 @@ use AppBundle\Repository\ProcurationProxyRepository;
 use AppBundle\Repository\ProcurationRequestRepository;
 use AppBundle\Repository\PurchasingPowerChoiceRepository;
 use AppBundle\Repository\PurchasingPowerInvitationRepository;
+use AppBundle\Repository\SubscriptionTypeRepository;
 use AppBundle\Repository\SummaryRepository;
 use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\Repository\TonMacronFriendInvitationRepository;
@@ -267,6 +269,11 @@ trait TestHelperTrait
     public function getEmailSubscriptionHistoryRepository(): EmailSubscriptionHistoryRepository
     {
         return $this->getRepository(EmailSubscriptionHistory::class);
+    }
+
+    public function getSubscriptionTypeRepository(): SubscriptionTypeRepository
+    {
+        return $this->getRepository(SubscriptionType::class);
     }
 
     public function getCommitteeFeedManager(): CommitteeFeedManager

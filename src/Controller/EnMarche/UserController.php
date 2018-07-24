@@ -15,7 +15,9 @@ use AppBundle\Membership\MembershipRequest;
 use AppBundle\Membership\MembershipRequestHandler;
 use AppBundle\Membership\UnregistrationCommand;
 use AppBundle\Repository\DonationRepository;
+use AppBundle\Repository\SubscriptionTypeRepository;
 use AppBundle\Repository\TransactionRepository;
+use AppBundle\Subscription\SubscriptionTypeEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -126,12 +128,15 @@ class UserController extends Controller
      * @Route("/preferences-des-emails", name="app_user_set_email_notifications")
      * @Method("GET|POST")
      */
-    public function setEmailNotificationsAction(Request $request, EmailSubscriptionHistoryHandler $historyManager): Response
-    {
+    public function setEmailNotificationsAction(
+        Request $request,
+        EmailSubscriptionHistoryHandler $historyManager,
+        SubscriptionTypeRepository $subscriptionTypeRepository
+    ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
-        $form = $this->createForm(AdherentEmailSubscriptionType::class, $adherent);
-        $oldEmailsSubscriptions = $adherent->getEmailsSubscriptions();
+        $form = $this->createForm(AdherentEmailSubscriptionType::class, $adherent, ['is_adherent' => $adherent->isAdherent()]);
+        $oldEmailsSubscriptions = $adherent->getSubscriptionTypes();
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
             $historyManager->handleSubscriptionsUpdate($adherent, $oldEmailsSubscriptions);
@@ -143,6 +148,7 @@ class UserController extends Controller
 
         return $this->render('user/set_email_notifications.html.twig', [
             'form' => $form->createView(),
+            'cpSubscriptionType' => $subscriptionTypeRepository->findOneByCode(SubscriptionTypeEnum::CITIZEN_PROJECT_CREATION_EMAIL),
         ]);
     }
 

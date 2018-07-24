@@ -11,8 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AdherentRegistrationType extends AbstractType
@@ -21,12 +19,11 @@ class AdherentRegistrationType extends AbstractType
     {
         $builder
             ->remove('position')
-            ->remove('comMobile')
             ->add('password', PasswordType::class)
             ->add('conditions', CheckboxType::class, [
                 'required' => false,
             ])
-            ->add('comEmail', CheckboxType::class, [
+            ->add('allowNotifications', CheckboxType::class, [
                 'required' => false,
             ])
             ->add('emailAddress', RepeatedType::class, [
@@ -48,14 +45,6 @@ class AdherentRegistrationType extends AbstractType
             $emailForm->getOption('first_name'),
             $emailForm->getOption('second_name'),
         ]));
-
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $formEvent) {
-            /** @var MembershipRequest $membershipRequest */
-            $membershipRequest = $formEvent->getData();
-            if ($membershipRequest) {
-                $membershipRequest->comMobile = $membershipRequest->comEmail;
-            }
-        });
     }
 
     public function configureOptions(OptionsResolver $resolver)

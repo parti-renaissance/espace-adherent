@@ -5,7 +5,6 @@ namespace AppBundle\Form;
 use AppBundle\Membership\MembershipRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -44,9 +43,6 @@ class AdherentType extends AbstractType
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                 'preferred_country_choices' => $countryCode ? [$countryCode] : [],
-            ])
-            ->add('comMobile', CheckboxType::class, [
-                'required' => false,
             ])
         ;
 

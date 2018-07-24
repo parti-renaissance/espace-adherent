@@ -1,6 +1,10 @@
 {% if committees|length < 1 %}
     <div>
-        <a class="link--blue--dark" href="{{ path('app_search_committees') }}">Découvrir des comités autour de chez moi</a>
+        {% if no_result_message %}
+            <p class="text--muted">{{ no_result_message }}</p>
+        {% else %}
+            <a class="link--blue--dark" href="{{ path('app_search_committees') }}">Découvrir des comités autour de chez moi</a>
+        {% endif %}
     </div>
 {% else %}
     <ul>

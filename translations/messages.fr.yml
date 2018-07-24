@@ -42,15 +42,6 @@ procuration_manager: responsable procuration
 user: utilisateur
 citizen_project_holder: porteur de projet
 
-subscribed_emails_movement_information: 'Recevoir les informations sur le mouvement'
-subscribed_emails_government_information: 'Recevoir les informations sur le gouvernement'
-subscribed_emails_weekly_letter: 'Recevoir la newsletter hebdomadaire LaREM'
-subscribed_emails_mooc: 'Recevoir les informations sur le MOOC'
-subscribed_emails_microlearning: 'Recevoir les informations sur le micro-learning'
-subscribed_emails_donator_information: 'Recevoir les informations destinées aux donateurs'
-subscribed_emails_referents: 'Recevoir les e-mails de votre référent départemental'
-subscribed_emails_citizen_project_creation: 'Être notifié(e) de la création de nouveaux projets citoyens'
-
 adherent.registration.success: |
     Vous venez de rejoindre En Marche, nous vous en remercions !
     Pour finaliser votre inscription et accéder à votre espace adhérent, vous devez
@@ -348,3 +339,8 @@ donation.status.error: Erreur
 # Deputy
 #
 deputy.message.success: Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer.
+
+subscription_type.group.communication_mobile: SMS/MMS de communication
+subscription_type.group.communication_emails: E-mails de communication
+subscription_type.group.territories_emails: E-mails Territoires
+subscription_type.group.citizen_project_emails: E-mails Projets Citoyens
