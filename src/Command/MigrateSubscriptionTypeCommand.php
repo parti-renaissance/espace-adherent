@@ -4,13 +4,11 @@ namespace AppBundle\Command;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProjectMembership;
-use AppBundle\Entity\District;
 use AppBundle\Entity\SubscriptionType;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -52,60 +50,47 @@ class MigrateSubscriptionTypeCommand extends Command
     {
         $this->io->title('Starting email subscription type migration.');
 
-        $progressBar = new ProgressBar($output, $this->getAdherentCount());
+        $militantActionSms = SubscriptionTypeEnum::MILITANT_ACTION_SMS;
+        $localHostEmail = SubscriptionTypeEnum::LOCAL_HOST_EMAIL;
+        $cpHostEmail = SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL;
+        $follower = CitizenProjectMembership::CITIZEN_PROJECT_FOLLOWER;
+
         $this->em->beginTransaction();
 
-        $subscriptionTypes = [];
-        foreach ($this->subscriptionTypeRepository->findAll() as $subscriptionType) {
-            $subscriptionTypes[$subscriptionType->getCode()] = $subscriptionType;
-        }
-
         try {
-            foreach ($this->getIterator() as $index => $adherent) {
-                /** @var Adherent $adherent */
-                $adherent = $adherent[0];
+            $sql = <<<SQL
+INSERT INTO `adherent_subscription_type` (`adherent_id`, `subscription_type_id`)
+SELECT `adherents`.`id`, `subscription_type`.`id`
+FROM `adherents`
+INNER JOIN `subscription_type` ON FIND_IN_SET(`subscription_type`.`code`, `adherents`.`emails_subscriptions`);
 
-                $adherentTypes = \array_filter($adherent->emailsSubscriptions, function (string $type) {
-                    return \in_array($type, SubscriptionTypeEnum::DEFAULT_EMAIL_TYPES, true);
-                });
+INSERT INTO `adherent_subscription_type` (`adherent_id`, `subscription_type_id`)
+SELECT `adherents`.`id`, `subscription_type`.`id`
+FROM `adherents`
+INNER JOIN `subscription_type` ON `subscription_type`.`code` = '{$militantActionSms}'
+WHERE `adherents`.`com_mobile` = 1;
 
-                if ($adherent->comMobile) {
-                    $adherentTypes[] = SubscriptionTypeEnum::MILITANT_ACTION_SMS;
-                }
+INSERT INTO `adherent_subscription_type` (`adherent_id`, `subscription_type_id`)
+SELECT `adherents`.`id`, `subscription_type`.`id`
+FROM `adherents`
+INNER JOIN `subscription_type` ON `subscription_type`.`code` = '{$localHostEmail}'
+WHERE `adherents`.`local_host_emails_subscription` = 1;
 
-                if ($adherent->localHostEmailsSubscription) {
-                    $adherentTypes[] = SubscriptionTypeEnum::LOCAL_HOST_EMAIL;
-                }
+INSERT INTO `adherent_subscription_type` (`adherent_id`, `subscription_type_id`)
+SELECT DISTINCT(`adherents`.`id`), `subscription_type`.`id`
+FROM `adherents`
+INNER JOIN `citizen_project_memberships` ON `citizen_project_memberships`.`adherent_id` = `adherents`.`id`
+INNER JOIN `subscription_type` ON `subscription_type`.`code` = '{$cpHostEmail}'
+WHERE `citizen_project_memberships`.`privilege` = '{$follower}';
+SQL;
 
-                if ($adherent->getCitizenProjectMemberships()->getCitizenProjectFollowerMemberships()->count()) {
-                    $adherentTypes[] = SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL;
-                }
-
-                if (array_diff($adherentTypes, $adherent->getEmailsSubscriptions())) {
-                    foreach ($adherentTypes as $type) {
-                        $adherent->addSubscriptionType($subscriptionTypes[$type]);
-                    }
-                }
-
-                if (0 === $index % 1000) {
-                    $this->manager->flush();
-                    $this->manager->clear(Adherent::class);
-                    $this->manager->clear(CitizenProjectMembership::class);
-                    $this->manager->clear(District::class);
-                    $progressBar->advance(500);
-                }
-
-                $this->manager->flush();
-            }
-
+            $this->em->getConnection()->exec($sql);
             $this->em->commit();
         } catch (\Exception $exception) {
             $this->em->rollback();
 
             throw $exception;
         }
-
-        $progressBar->finish();
 
         $this->io->newLine(2);
         $this->io->success('Email subscription type migration finished successfully!');
