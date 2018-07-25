@@ -13,6 +13,8 @@ common.sector: Secteur
 common.role: Rôle
 common.begin_at: Date de début
 common.finish_at: Date de fin
+common.ordinal_number_feminine: '1ère|%count%ème'
+common.ordinal_number_masculine: '1er|%count%ème'
 pending: En attente
 approved: Approuvé
 group: un groupe
