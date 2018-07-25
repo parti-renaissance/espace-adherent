@@ -1,7 +1,9 @@
 {% extends 'legislatives/layout.html.twig' %}
 
 {% block page_title referent.fullName %}
-{% block canonical_url url('our_referents_referent', {'slug': referent.slug}) %}
+{% block canonical_url url('our_referents_referent', { slug: referent.slug}) %}
+{% block meta_description "#{referent.fullName} est le ou la référent(e) du département #{referent.areaLabel}. Il ou elle répresente le mouvement de La République En Marche ! au sein de ce territoire et est en charge de la coordination avec les élus, les comités locaux et les représentants du mouvement au niveau national." %}
+
 {% block navMap %}{% endblock %}
 
 {% block content__inner %}
@@ -17,11 +19,11 @@
         <div class="legislatives__candidate__photo progressive-background link--no-decor"
              id="candidat-profile-picture"
                 {% if referent.profilePicture  %}
-                    data-sd="{{ media_asset(referent.profilePicture, {'w': 50, 'q': 20}) }}"
-                    data-hd="{{ media_asset(referent.profilePicture, {'w': 640, 'q': 70}) }}"
+                    data-sd="{{ media_asset(referent.profilePicture, { w: 50, q: 20 }) }}"
+                    data-hd="{{ media_asset(referent.profilePicture, { w: 640, q: 70 }) }}"
                 {% else  %}
-                    data-sd="{{ static_asset('legislatives/unknown-referent.jpg', {'w': 50, 'q': 20}) }}"
-                    data-hd="{{ static_asset('legislatives/unknown-referent.jpg', {'w': 640, 'q': 70}) }}"
+                    data-sd="{{ static_asset('legislatives/unknown-referent.jpg', { w: 50, q: 20 }) }}"
+                    data-hd="{{ static_asset('legislatives/unknown-referent.jpg', { w: 640, q: 70 }) }}"
                 {% endif %}
         >
         </div>
@@ -31,8 +33,8 @@
             {% if referent.hasWebPages %}
                 {% set website_url_class = 'btn--muted' %}
                 {{ include('referent/nomination/_referent_links.html.twig', {
-                    'show_name': true,
-                    'website_url_class': 'btn ' ~ website_url_class
+                    show_name: true,
+                    website_url_class: 'btn ' ~ website_url_class
                 }) }}
             {% endif %}
         </div>
