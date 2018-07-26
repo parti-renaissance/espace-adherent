@@ -230,6 +230,6 @@
 
         <!-- Subscription -->
         <service id="AppBundle\Subscription\SubscriptionListener" />
-        <service id="AppBundle\Subscription\SubscriptionHandler" />
+        <service id="AppBundle\Subscription\SubscriptionHandler" public="true" />
     </services>
 </container>
