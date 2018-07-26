@@ -61,6 +61,7 @@ parameters:
     env(APP_HOST): enmarche.code
     env(AMP_HOST): m.enmarche.code
     env(LEGISLATIVES_HOST): legislatives.enmarche.code
+    env(MOOC_BASE_URL): http://mooc.enmarche.code
 
     env(SSL_PRIVATE_KEY): 'file://%kernel.project_dir%/var/private.key'
     env(SSL_PUBLIC_KEY): 'file://%kernel.project_dir%/var/public.key'

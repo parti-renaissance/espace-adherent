@@ -7,6 +7,8 @@ use AppBundle\Entity\ArticleCategory;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Media;
+use AppBundle\Entity\Mooc\Chapter;
+use AppBundle\Entity\Mooc\Mooc;
 use AppBundle\Entity\OrderArticle;
 use AppBundle\Entity\Page;
 use AppBundle\Exception\SitemapException;
@@ -213,6 +215,58 @@ class SitemapFactory
         }
 
         return $images->get();
+    }
+
+    public function createMoocSitemap(string $moocBaseUrl): string
+    {
+        $moocItem = $this->cache->getItem('sitemap_mooc');
+
+        if (!$moocItem->isHit()) {
+            $sitemap = new Sitemap();
+            $allMooc = $this->manager->getRepository(Mooc::class)->findAll();
+
+            /** @var Mooc $mooc */
+            foreach ($allMooc as $mooc) {
+                $this->addMooc($sitemap, $mooc, $moocBaseUrl);
+            }
+
+            $moocItem->set((string) $sitemap);
+            $moocItem->expiresAfter(self::EXPIRATION_TIME);
+
+            $this->cache->save($moocItem);
+        }
+
+        return $moocItem->get();
+    }
+
+    private function addMooc(Sitemap $sitemap, Mooc $mooc, string $moocBaseUrl): void
+    {
+        $moocUrl = $moocBaseUrl.'/'.$mooc->getSlug();
+
+        $sitemap->add(
+            $moocUrl,
+            $mooc->getUpdatedAt()->format(\DATE_ATOM),
+            ChangeFrequency::MONTHLY,
+            0.1
+        );
+
+        foreach ($mooc->getChapters() as $chapter) {
+            if ($chapter->isPublished()) {
+                $this->addMoocElement($sitemap, $chapter, $moocUrl);
+            }
+        }
+    }
+
+    private function addMoocElement(Sitemap $sitemap, Chapter $chapter, string $moocUrl): void
+    {
+        foreach ($chapter->getElements() as $element) {
+            $sitemap->add(
+                $moocUrl.'/'.$element->getSlug(),
+                $element->getUpdatedAt()->format(\DATE_ATOM),
+                ChangeFrequency::MONTHLY,
+                0.1
+            );
+        }
     }
 
     private function addArticlesCategories(Sitemap $sitemap): void
