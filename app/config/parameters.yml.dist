@@ -59,6 +59,7 @@ parameters:
 
     env(APP_SCHEME): http
     env(APP_HOST): enmarche.code
+    env(APP_FRONT_HOST): app.enmarche.code
     env(AMP_HOST): m.enmarche.code
     env(LEGISLATIVES_HOST): legislatives.enmarche.code
 
