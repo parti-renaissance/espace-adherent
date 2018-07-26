@@ -11,8 +11,8 @@ class LoadSubscriptionTypeData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        foreach ($this->getSubscriptionTypes() as ['label' => $label, 'code' => $code]) {
-            $type = new SubscriptionType($label, $code);
+        foreach ($this->getSubscriptionTypes() as ['label' => $label, 'code' => $code, 'externalId' => $externalId]) {
+            $type = new SubscriptionType($label, $code, $externalId);
             $this->setReference('st-'.$code, $type);
             $manager->persist($type);
         }
@@ -26,30 +26,37 @@ class LoadSubscriptionTypeData extends Fixture
             [
                 'label' => 'Recevoir les actions militantes du mouvement par SMS ou MMS',
                 'code' => SubscriptionTypeEnum::MILITANT_ACTION_SMS,
+                'externalId' => null,
             ],
             [
                 'label' => 'Recevoir les informations sur le mouvement',
                 'code' => SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL,
+                'externalId' => '123abc',
             ],
             [
                 'label' => 'Recevoir la newsletter hebdomadaire LaREM',
                 'code' => SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL,
+                'externalId' => '456def',
             ],
             [
                 'label' => 'Recevoir les e-mails de votre animateur local',
                 'code' => SubscriptionTypeEnum::LOCAL_HOST_EMAIL,
+                'externalId' => null,
             ],
             [
-                'label' => 'Recevoir les e-mails de votre référent départemental',
+                'label' => 'Recevoir les e-mails de votre référent territorial',
                 'code' => SubscriptionTypeEnum::REFERENT_EMAIL,
+                'externalId' => null,
             ],
             [
                 'label' => 'Recevoir les e-mails de votre porteur de projet',
                 'code' => SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL,
+                'externalId' => null,
             ],
             [
                 'label' => 'Être notifié(e) de la création de nouveaux projets citoyens',
                 'code' => SubscriptionTypeEnum::CITIZEN_PROJECT_CREATION_EMAIL,
+                'externalId' => null,
             ],
         ];
     }

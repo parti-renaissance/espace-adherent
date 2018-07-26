@@ -21,8 +21,18 @@ Feature:
     Given the following fixtures are loaded:
       | LoadAdherentData |
     Given I clean the "api_sync" queue
-    When I dispatch the "user.deleted" user event with "michelle.dufour@example.ch"
+    When I dispatch the "user.deleted" user event with "michel.vasseur@example.ch"
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
       | routing_key  | body                                            |
-      | user.deleted | {"uuid":"313bd28f-efc8-57c9-8ab7-2106c8be9697"} |
+      | user.deleted | {"uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0"} |
+
+  Scenario: Publish message on user update subscriptions
+    Given the following fixtures are loaded:
+      | LoadAdherentData |
+    Given I clean the "api_sync" queue
+    When I dispatch the "user.update_subscriptions" user event with "jacques.picard@en-marche.fr" and email subscriptions
+    Then "api_sync" should have 1 message
+    And "api_sync" should have message below:
+      | routing_key               | body                                                                                                                            |
+      | user.update_subscriptions | {"uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda","subscriptions":["123abc"],"unsubscriptions":[]} |

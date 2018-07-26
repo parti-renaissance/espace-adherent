@@ -4,6 +4,7 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\WebHook\WebHook;
 use AppBundle\WebHook\Event;
+use AppBundle\WebHook\Service;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -39,6 +40,16 @@ class LoadWebHookData extends Fixture
             ]
         );
         $manager->persist($webHook3);
+
+        $webHook4 = new WebHook(
+            $this->getReference('web_hook_client_api'),
+            Event::USER_UPDATE_SUBSCRIPTIONS(),
+            [
+                'https://api.mailchimp.com/lists',
+            ],
+            Service::MAILCHIMP()
+        );
+        $manager->persist($webHook4);
 
         $manager->flush();
     }

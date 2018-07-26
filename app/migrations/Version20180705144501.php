@@ -37,7 +37,8 @@ final class Version20180705144501 extends AbstractMigration
             ('Recevoir les e-mails de votre animateur local','subscribed_emails_local_host'),
             ('Recevoir les informations sur le mouvement','subscribed_emails_movement_information'),
             ('Recevoir la newsletter hebdomadaire LaREM','subscribed_emails_weekly_letter'),
-            ('Recevoir les e-mails de votre référent départemental','subscribed_emails_referents'),
+            ('Recevoir les e-mails de votre référent territorial','subscribed_emails_referents'),
+            ('Recevoir les e-mails de votre porteur de projet','citizen_project_host_email'),
             ('Être notifié(e) de la création de nouveaux projets citoyens','subscribed_emails_citizen_project_creation')"
         );
 

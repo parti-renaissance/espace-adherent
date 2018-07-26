@@ -37,6 +37,19 @@ class UserSubscriber implements EventSubscriberInterface
         $this->producer->publish($body, UserEvents::USER_DELETED);
     }
 
+    public function publishUserUpdateSubscription(UserEvent $event): void
+    {
+        if ($event->getSubscriptions() || $event->getUnsubscriptions()) {
+            $body = json_encode([
+                'uuid' => $event->getUser()->getUuid()->toString(),
+                'subscriptions' => $event->getSubscriptions(),
+                'unsubscriptions' => $event->getUnsubscriptions(),
+            ]);
+
+            $this->producer->publish($body, UserEvents::USER_UPDATE_SUBSCRIPTIONS);
+        }
+    }
+
     public function serialize(UserEvent $event): string
     {
         return $this->serializer->serialize($event->getUser(), 'json', SerializationContext::create()->setGroups(['public']));
@@ -48,6 +61,7 @@ class UserSubscriber implements EventSubscriberInterface
             UserEvents::USER_CREATED => 'publishUserCreated',
             UserEvents::USER_UPDATED => 'publishUserUpdated',
             UserEvents::USER_DELETED => 'publishUserDeleted',
+            UserEvents::USER_UPDATE_SUBSCRIPTIONS => 'publishUserUpdateSubscription',
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\WebHook\WebHook;
 use AppBundle\WebHook\Event;
+use AppBundle\WebHook\Service;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -19,7 +20,7 @@ class WebHookType extends AbstractType
             ->add('event', ChoiceType::class, [
                 'placeholder' => '--',
                 'choices' => Event::toArray(),
-                'choice_label' => function ($value) {return $value; },
+                'choice_label' => function ($value) { return $value; },
             ])
             ->add('callbacks', CollectionType::class, [
                 'label' => 'Liste des callbacks',
@@ -28,6 +29,12 @@ class WebHookType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
                 'error_bubbling' => false,
+            ])
+            ->add('service', ChoiceType::class, [
+                'required' => false,
+                'placeholder' => '--',
+                'choices' => Service::toArray(),
+                'choice_label' => function ($value) { return $value; },
             ])
         ;
     }

@@ -7,7 +7,7 @@
         {{ form_errors(form) }}
 
         {% set help_messages = {
-            (constant('AppBundle\\Subscription\\SubscriptionTypeEnum::REFERENT_EMAIL')): 'Le référent départemental est le garant du bon fonctionnement du mouvement et du respect des statuts et de la charte des valeurs, assure l\'organisation du mouvement, et son ancrage territorial. Découvrez le vôtre <a href="' ~ path('our_referents_homepage') ~ '" target="_blank" rel="noopener noreferrer">ici</a>'
+            (constant('AppBundle\\Subscription\\SubscriptionTypeEnum::REFERENT_EMAIL')): 'Les référents territoriaux sont les porte-paroles du mouvement dans leurs départements. Ils sont en charge d’interagir avec les adhérents, les animateurs locaux des comités localisés sur son territoire géographique ainsi que tous les représentants du mouvement au niveau national et local. Découvrez le vôtre <a href="' ~ path('our_referents_homepage') ~ '" target="_blank" rel="noopener noreferrer">ici</a>'
         } %}
 
         {% for group_choices in form.subscriptionTypes.vars.choices %}

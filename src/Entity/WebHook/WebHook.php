@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\OAuth\Client;
 use AppBundle\WebHook\Event;
+use AppBundle\WebHook\Service;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -47,6 +48,13 @@ class WebHook
     private $client;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(length=64, nullable=true)
+     */
+    private $service;
+
+    /**
      * @var string[]
      *
      * @ORM\Column(type="json")
@@ -55,11 +63,12 @@ class WebHook
      */
     private $callbacks = [];
 
-    public function __construct(Client $client = null, Event $event = null, array $callbacks = [])
+    public function __construct(Client $client = null, Event $event = null, array $callbacks = [], Service $service = null)
     {
         $this->uuid = Uuid::uuid4();
         $this->client = $client;
         $this->event = $event ? $event->getValue() : null;
+        $this->service = $service ? $service->getValue() : null;
 
         foreach ($callbacks as $callback) {
             $this->addCallback($callback);
@@ -78,6 +87,20 @@ class WebHook
         }
 
         $this->event = $event;
+    }
+
+    public function getService(): ?string
+    {
+        return $this->service;
+    }
+
+    public function setService(?string $service): void
+    {
+        if ($service && !Service::isValid($service)) {
+            throw new \DomainException("$service is not valid");
+        }
+
+        $this->service = $service;
     }
 
     public function getClient(): ?Client
