@@ -83,6 +83,7 @@ twig:
         algolia_blacklist:      "%env(ALGOLIA_BLACKLIST)%"
         url_help_en_marche:     "https://aide.en-marche.fr"
         project_dir:            "%kernel.project_dir%"
+        app_front_host:          "%env(APP_FRONT_HOST)%"
     form_themes:
         - 'form_theme.html.twig'
         - 'SonataCoreBundle:Form:datepicker.html.twig'
