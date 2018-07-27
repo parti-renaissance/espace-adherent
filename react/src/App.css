@@ -752,32 +752,31 @@ table {
   margin: 0 auto; }
 
 button.btn--as-link {
-  background: none !important;
+  background: none;
   border: none;
-  padding: 0 !important;
+  padding: 0;
   border-bottom: 1px solid transparent; }
   button.btn--as-link:hover {
     border: none;
     border-bottom: 1px solid; }
 
 input[type="submit"] .btn--as-link, input[type="button"] .btn--as-link, input[type="reset"] .btn--as-link {
-  background: none !important;
+  background: none;
   border: none;
-  padding: 0 !important;
+  padding: 0;
   border-bottom: 1px solid transparent; }
   input[type="submit"] .btn--as-link:hover, input[type="button"] .btn--as-link:hover, input[type="reset"] .btn--as-link:hover {
     border: none;
     border-bottom: 1px solid; }
 
 .btn--as-link--error {
-  color: #FF4863 !important; }
+  color: #FF4863; }
   .btn--as-link--error:hover {
-    border-color: #FF4863 !important;
-    color: #FF4863 !important; }
+    border-color: #FF4863;
+    color: #FF4863; }
 
 button.btn {
-  display: inline-block;
-  padding: 10px 15px 9px; }
+  display: inline-block; }
 
 .btn {
   cursor: pointer;
@@ -1953,6 +1952,10 @@ button.btn {
 footer .list__links--col li {
   width: 190px; }
 
+footer .donate-mail {
+  font-family: "Roboto", Helvetica, sans-serif;
+  margin-bottom: 20px; }
+
 @media (max-width: 1000px) {
   footer .donate-mail {
     border-top: 1px solid #BCBCBC;
@@ -2209,6 +2212,10 @@ label {
       background: #1D5FD1;
       content: url("data:image/svg+xml;utf8,<svg width='14px' height='10px' viewBox='73 77 14 10' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><polygon id='check' stroke='none' fill='#ffffff' fill-rule='evenodd' points='73.1888049 82.5586077 74.5051607 80.8107776 80.0959758 85.0260906 78.77962 86.7739208'></polygon><polygon id='mark' stroke='none' fill='#ffffff' fill-rule='evenodd' points='77.2807085 85.3731308 85.0384399 77.0539824 86.6382761 78.5458538 78.8805447 86.8650022'></polygon></svg>"); }
 
+.form__info {
+  padding-top: 15px;
+  color: #7f7f7f; }
+
 @media (max-width: 1000px) {
   .newsletter form {
     width: 100%; }
@@ -2221,6 +2228,9 @@ label {
     margin-top: 5px; }
   .newsletter input {
     margin-right: 0; } }
+
+.newsletter .form__zipcode {
+  width: 150px; }
 
 .newsletter-page,
 .invitation-page {
@@ -2914,11 +2924,11 @@ input[type='date']::-webkit-inner-spin-button {
 
 .flex--left {
   display: flex;
-  justify-content: flex-start;
-  flex-direction: column; }
+  justify-content: start;
+  flex-direction: row; }
 
 .block {
-  display: block !important; }
+  display: block; }
 
 @keyframes bigSpin {
   0% { }
