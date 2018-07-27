@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\Mooc\Mooc;
 use AppBundle\Normalizer\MoocNormalizer;
+use AppBundle\Sitemap\SitemapFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
@@ -19,6 +20,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class MoocController extends Controller
 {
     /**
+     * @Route("/sitemap.xml", name="api_mooc_sitemap")
+     * @Method("GET")
+     */
+    public function sitemapAction(SitemapFactory $sitemapFactory): Response
+    {
+        return $this->createXmlResponse(
+            $sitemapFactory->createMoocSitemap($this->getParameter('mooc_base_url'))
+        );
+    }
+
+    /**
      * @Route("/{slug}", name="api_mooc")
      * @Method("GET")
      * @Entity("mooc", expr="repository.findOneBySlug(slug)")
@@ -33,5 +45,12 @@ class MoocController extends Controller
             [],
             true
         );
+    }
+
+    private function createXmlResponse(string $content): Response
+    {
+        return new Response($content, Response::HTTP_OK, [
+            'Content-Type' => 'text/xml',
+        ]);
     }
 }

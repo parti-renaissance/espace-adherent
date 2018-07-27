@@ -13,6 +13,17 @@ class MoocRepository extends ServiceEntityRepository
         parent::__construct($registry, Mooc::class);
     }
 
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('mooc')
+            ->addSelect('chapters', 'elements')
+            ->leftJoin('mooc.chapters', 'chapters')
+            ->leftJoin('chapters.elements', 'elements')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function findOneBySlug(string $slug): ?Mooc
     {
         return $this->createQueryBuilder('mooc')
