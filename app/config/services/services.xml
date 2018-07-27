@@ -149,7 +149,6 @@
 
         <!-- Report -->
         <service id="AppBundle\Report\ReportManager" />
-        <service id="AppBundle\Form\ReportCommandType"/>
         <service id="AppBundle\Report\ReportCreationCommandHandler"/>
 
         <!-- Repository -->

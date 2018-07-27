@@ -6,6 +6,7 @@ use AppBundle\Entity\Report\Report;
 use AppBundle\Report\ReportCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,7 +24,9 @@ class ReportCommandType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
             ])
-            ->add('comment')
+            ->add('comment', TextareaType::class, [
+                'filter_emojis' => true,
+            ])
         ;
     }
 
