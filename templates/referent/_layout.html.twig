@@ -18,28 +18,33 @@
             <div class="l__wrapper procuration-manager__content">
                 {% set pages = [
                     {
-                        'route': 'app_referent_users',
+                        'url': app_front_host ~ '/dashboard-referent',
+                        'label': 'Dashboard Référent'
+                    },
+                    {
+                        'url': path('app_referent_users'),
                         'label': 'Envoyer un message'
                     },
                     {
-                        'route': 'app_referent_events',
+                        'url': path('app_referent_events'),
                         'label': 'Événements'
                     },
                     {
-                        'route': 'app_referent_committees',
+                        'url': path('app_referent_commitees'),
                         'label': 'Comités'
                     },
                     {
-                        'route': 'app_referent_organizational_chart',
+                        'url': path('app_referent_organizational_chart'),
                         'label': 'Équipe départementale',
                         'role': 'IS_ROOT_REFERENT'
                     }
                 ] %}
 
                 <ul class="procuration-manager__tabs">
+
                     {% for page in pages if page.role is not defined or is_granted(page.role) %}
                         <li class="{{ app.request.attributes.get('_route') == page.route ? 'active' : '' }}">
-                            <a href="{{ path(page.route) }}">
+                            <a href="{{ page.url }}">
                                 {{ page.label }}
                             </a>
                         </li>
