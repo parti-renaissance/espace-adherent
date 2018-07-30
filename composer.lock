@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8b915e52c772016f3a0eafa62a571339",
+    "content-hash": "0787e96ada6c55cd376be7690b0c2c66",
     "packages": [
         {
             "name": "a2lix/i18n-doctrine-bundle",
@@ -2025,6 +2025,55 @@
             ],
             "abandoned": "php-http/httplug",
             "time": "2015-08-12T09:35:40+02:00"
+        },
+        {
+            "name": "enmarche/mailer-bundle",
+            "version": "dev-new",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EnMarche/mailer-bundle.git",
+                "reference": "e15ea4b258e2ba9b1e7edca684b929a85449f164"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EnMarche/mailer-bundle/zipball/e15ea4b258e2ba9b1e7edca684b929a85449f164",
+                "reference": "e15ea4b258e2ba9b1e7edca684b929a85449f164",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1",
+                "ramsey/uuid": "^3.0",
+                "symfony/dependency-injection": "~3.4 || ^4.0",
+                "symfony/http-kernel": "~3.4 || ^4.0"
+            },
+            "require-dev": {
+                "doctrine/doctrine-bundle": "^1.9.1",
+                "guzzlehttp/guzzle": "^6.3",
+                "php-amqplib/rabbitmq-bundle": "^1.14",
+                "phpunit/phpunit": "^7.2",
+                "ramsey/uuid-doctrine": "^1.4"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "EnMarche\\MailerBundle\\": "src",
+                    "EnMarche\\MailerBundle\\Behat\\Context\\": "behat/Context"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "EnMarche\\MailerBundle\\Tests\\": "tests"
+                }
+            },
+            "license": [
+                "GPL-3.0"
+            ],
+            "description": "Mailer bundle to ease proxying SAAS among private applications.",
+            "support": {
+                "source": "https://github.com/EnMarche/mailer-bundle/tree/new",
+                "issues": "https://github.com/EnMarche/mailer-bundle/issues"
+            },
+            "time": "2018-07-31T21:37:28+00:00"
         },
         {
             "name": "exercise/htmlpurifier-bundle",
@@ -12071,8 +12120,9 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
+        "enmarche/mailer-bundle": 20,
         "sensio/framework-extra-bundle": 20
     },
     "prefer-stable": false,

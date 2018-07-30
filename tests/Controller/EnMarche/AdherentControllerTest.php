@@ -20,7 +20,7 @@ use AppBundle\Entity\SubscriptionType;
 use AppBundle\Entity\TurnkeyProject;
 use AppBundle\Entity\Unregistration;
 use AppBundle\Mailer\Message\AdherentContactMessage;
-use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
+use AppBundle\Mail\AdherentTerminateMembershipMail;
 use AppBundle\Mailer\Message\CommitteeCreationConfirmationMessage;
 use AppBundle\Mailer\Message\CitizenProjectCreationConfirmationMessage;
 use AppBundle\Repository\CommitteeRepository;
@@ -1088,7 +1088,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame(0, $errors->count());
         $this->assertSame('Votre adhésion et votre compte En Marche ont bien été supprimés et vos données personnelles effacées de notre base.', trim($crawler->filter('#is_not_adherent h1')->eq(0)->text()));
 
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(AdherentTerminateMembershipMessage::class, $userEmail));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(AdherentTerminateMembershipMail::class, $userEmail));
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', 'en-marche-suisse'));
         --$nbFollowers;

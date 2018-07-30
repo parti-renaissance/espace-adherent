@@ -3,28 +3,22 @@
 namespace AppBundle\Mailer\Message;
 
 use AppBundle\Contact\ContactMessage;
-use Ramsey\Uuid\Uuid;
+use AppBundle\Mail\AdherentMailTrait;
+use EnMarche\MailerBundle\Mail\CampaignMail;
+use EnMarche\MailerBundle\Mail\RecipientInterface;
 
-final class AdherentContactMessage extends Message
+final class AdherentContactMessage extends CampaignMail
 {
-    /**
-     * @return AdherentContactMessage
-     */
-    public static function createFromModel(ContactMessage $contactMessage): self
+    use AdherentMailTrait;
+
+    public static function createRecipientFor(ContactMessage $contactMessage): RecipientInterface
     {
-        return new self(
-            Uuid::uuid4(),
-            '114629',
-            $contactMessage->getTo()->getEmailAddress(),
-            $contactMessage->getTo()->getFullName(),
-            $contactMessage->getFrom()->getFirstName().' vous a envoyé un message',
-            [],
-            [
-                'animator_firstname' => self::escape($contactMessage->getTo()->getFirstName()),
-                'member_firstname' => self::escape($contactMessage->getFrom()->getFirstName()),
-                'target_message' => nl2br(self::escape($contactMessage->getContent())),
-            ],
-            $contactMessage->getFrom()->getEmailAddress()
-        );
+        $recipient = $contactMessage->getTo();
+
+        return self::createRecipientFromAdherent($recipient, [
+            'recipient_first_name' => $recipient->getFirstName(),
+            'sender_first_name' => $contactMessage->getFrom()->getFirstName(),
+            'message' => \nl2br($contactMessage->getContent()),
+        ]);
     }
 }

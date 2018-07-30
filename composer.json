@@ -19,6 +19,12 @@
     "config": {
         "sort-packages": true
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/EnMarche/mailer-bundle.git"
+        }
+    ],
     "require": {
         "php": ">=7.1",
         "ext-pdo": "*",
@@ -38,6 +44,7 @@
         "doctrine/doctrine-fixtures-bundle": "^2.3",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "doctrine/orm": "^2.5",
+        "enmarche/mailer-bundle": "dev-new",
         "exercise/htmlpurifier-bundle": "^1.0",
         "facebook/graph-sdk": "^5.4",
         "fzaninotto/faker": "^1.6",
@@ -126,5 +133,6 @@
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }
