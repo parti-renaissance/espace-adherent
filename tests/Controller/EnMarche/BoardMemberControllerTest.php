@@ -4,7 +4,8 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadBoardMemberRoleData;
-use AppBundle\Mailer\Message\BoardMemberMessage;
+use AppBundle\Mail\Transactional\BoardMemberMail;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -16,7 +17,8 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
  */
 class BoardMemberControllerTest extends WebTestCase
 {
-    use ControllerTestTrait;
+    use ControllerTestTrait,
+        MailTestCaseTrait;
 
     public function testUnauthorizeToAccessOnBoardMemberArea()
     {
@@ -203,10 +205,8 @@ class BoardMemberControllerTest extends WebTestCase
         ]));
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
-        $this->assertCount(1, $this->getEmailRepository()->findMessages(BoardMemberMessage::class));
-        $this->assertCountMails(1, BoardMemberMessage::class, 'carl999@example.fr');
-        $this->assertCountMails(1, BoardMemberMessage::class, 'referent@en-marche-dev.fr');
-        $this->assertCountMails(1, BoardMemberMessage::class, 'jemarche@en-marche.fr');
+        $this->assertMailCountForClass(1, BoardMemberMail::class);
+        $this->assertMailSentForRecipients(['carl999@example.fr', 'referent@en-marche-dev.fr', 'jemarche@en-marche.fr'], BoardMemberMail::class);
     }
 
     public function testSendMessageToSavedMembers()
@@ -228,12 +228,8 @@ class BoardMemberControllerTest extends WebTestCase
         ]));
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
-        $this->assertCount(1, $this->getEmailRepository()->findMessages(BoardMemberMessage::class));
-        $this->assertCountMails(1, BoardMemberMessage::class, 'carl999@example.fr');
-        $this->assertCountMails(1, BoardMemberMessage::class, 'laura@deloche.com');
-        $this->assertCountMails(1, BoardMemberMessage::class, 'martine.lindt@gmail.com');
-        $this->assertCountMails(1, BoardMemberMessage::class, 'lolodie.dutemps@hotnix.tld');
-        $this->assertCountMails(1, BoardMemberMessage::class, 'jemarche@en-marche.fr');
+        $this->assertMailCountForClass(1, BoardMemberMail::class);
+        $this->assertMailSentForRecipients(['carl999@example.fr', 'lolodie.dutemps@hotnix.tld', 'martine.lindt@gmail.com', 'laura@deloche.com', 'jemarche@en-marche.fr'], BoardMemberMail::class);
     }
 
     public function testSendMessageToMember()
@@ -255,9 +251,8 @@ class BoardMemberControllerTest extends WebTestCase
         ]));
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
-        $this->assertCount(1, $this->getEmailRepository()->findMessages(BoardMemberMessage::class));
-        $this->assertCountMails(1, BoardMemberMessage::class, 'laura@deloche.com');
-        $this->assertCountMails(1, BoardMemberMessage::class, 'jemarche@en-marche.fr');
+        $this->assertMailCountForClass(1, BoardMemberMail::class);
+        $this->assertMailSentForRecipients(['laura@deloche.com', 'jemarche@en-marche.fr', 'jemarche@en-marche.fr'], BoardMemberMail::class);
     }
 
     private function authenticateAsBoardMember()
@@ -315,10 +310,12 @@ class BoardMemberControllerTest extends WebTestCase
             LoadAdherentData::class,
             LoadBoardMemberRoleData::class,
         ]);
+        $this->clearMails();
     }
 
     protected function tearDown()
     {
+        $this->clearMails();
         $this->kill();
 
         parent::tearDown();
