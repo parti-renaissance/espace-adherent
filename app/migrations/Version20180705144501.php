@@ -33,12 +33,12 @@ final class Version20180705144501 extends AbstractMigration
 
         $this->addSql(
             "INSERT INTO subscription_type (label, code) VALUES 
-            ('Recevoir les actions militantes du mouvement par SMS ou MMS','militant_action_sms'),
+            ('Recevoir les informations sur les actions militantes du mouvement par SMS ou MMS','militant_action_sms'),
             ('Recevoir les e-mails de votre animateur local','subscribed_emails_local_host'),
-            ('Recevoir les informations sur le mouvement','subscribed_emails_movement_information'),
-            ('Recevoir la newsletter hebdomadaire LaREM','subscribed_emails_weekly_letter'),
+            ('Recevoir les informations du mouvement','subscribed_emails_movement_information'),
+            ('Recevoir la newsletter hebdomadaire de LaREM','subscribed_emails_weekly_letter'),
             ('Recevoir les e-mails de votre référent territorial','subscribed_emails_referents'),
-            ('Recevoir les e-mails de votre porteur de projet','citizen_project_host_email'),
+            ('Recevoir les e-mails de votre porteuse ou porteur de projet','citizen_project_host_email'),
             ('Être notifié(e) de la création de nouveaux projets citoyens','subscribed_emails_citizen_project_creation')"
         );
 
