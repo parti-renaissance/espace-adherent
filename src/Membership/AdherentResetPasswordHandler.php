@@ -4,33 +4,33 @@ namespace AppBundle\Membership;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentResetPasswordToken;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\AdherentResetPasswordConfirmationMessage;
-use AppBundle\Mailer\Message\AdherentResetPasswordMessage;
+use AppBundle\Mail\Transactional\AdherentResetPasswordConfirmationMail;
+use AppBundle\Mail\Transactional\AdherentResetPasswordMail;
 use Doctrine\Common\Persistence\ObjectManager;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class AdherentResetPasswordHandler
 {
     private $urlGenerator;
-    private $mailer;
+    private $mailPost;
     private $manager;
     private $encoderFactory;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
-        MailerService $mailer,
+        MailPostInterface $mailPost,
         ObjectManager $manager,
         EncoderFactoryInterface $encoderFactory
     ) {
         $this->urlGenerator = $urlGenerator;
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
         $this->manager = $manager;
         $this->encoderFactory = $encoderFactory;
     }
 
-    public function handle(Adherent $adherent)
+    public function handle(Adherent $adherent): void
     {
         $resetPasswordToken = AdherentResetPasswordToken::generate($adherent);
 
@@ -38,7 +38,11 @@ class AdherentResetPasswordHandler
         $this->manager->flush();
 
         $resetPasswordUrl = $this->generateAdherentResetPasswordUrl($adherent, $resetPasswordToken);
-        $this->mailer->sendMessage(AdherentResetPasswordMessage::createFromAdherent($adherent, $resetPasswordUrl));
+
+        $this->mailPost->address(
+            AdherentResetPasswordMail::class,
+            AdherentResetPasswordMail::createRecipientFor($adherent, $resetPasswordUrl)
+        );
     }
 
     public function reset(Adherent $adherent, AdherentResetPasswordToken $token, string $newPassword)
@@ -53,7 +57,10 @@ class AdherentResetPasswordHandler
 
         $this->manager->flush();
 
-        $this->mailer->sendMessage(AdherentResetPasswordConfirmationMessage::createFromAdherent($adherent));
+        $this->mailPost->address(
+            AdherentResetPasswordConfirmationMail::class,
+            AdherentResetPasswordConfirmationMail::createRecipientFor($adherent)
+        );
     }
 
     private function generateAdherentResetPasswordUrl(Adherent $adherent, AdherentResetPasswordToken $token)

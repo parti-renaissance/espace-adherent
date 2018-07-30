@@ -18,6 +18,7 @@ default:
                     doctrine: "@doctrine"
                     dispatcher: "@event_dispatcher"
                 - EmailContext
+                - EnMarche\MailerBundle\Behat\Context\MailContext
                 - ReferentTagContext:
                     adherentRepository: "@AppBundle\\Repository\\AdherentRepository"
                 - SecurityContext

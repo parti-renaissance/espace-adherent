@@ -49,27 +49,9 @@ Feature:
     And "api_sync" should have message below:
       | routing_key  | body                                                                                                                            |
       | user.created | {"uuid":"@string@","subscriptionExternalIds":[],"country":"FR","zipCode":"94320","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
-    And I should have 1 email
-    And I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
-    """
-    {
-      "FromEmail": "contact@en-marche.fr",
-      "FromName": "En Marche !",
-      "Subject": "Confirmez votre compte En-Marche.fr",
-      "MJ-TemplateID": "292269",
-      "MJ-TemplateLanguage": true,
-      "Recipients": [
-        {
-          "Email": "jp@test.com",
-            "Name": "Jean-Pierre Durand",
-            "Vars": {
-              "first_name": "Jean-Pierre",
-              "activation_link": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
-            }
-        }
-      ]
-    }
-    """
+    And I should have 1 email "AppBundle\Mail\Transactional\AdherentAccountActivationMail" for "jp@test.com" with vars:
+      | first_name      | Jean-Pierre     |
+      | activation_link | @string@.startsWith('http://test.enmarche.code/inscription/finaliser/') |
 
     Given I am on "/deconnexion"
     And I am on "/connexion"
@@ -87,7 +69,7 @@ Feature:
     And I press "Connexion"
     Then I should see "Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau."
 
-    When I click on the email link "activation_link"
+    When I click on the link "activation_link" of the last email
     Then I should be on "/espace-adherent/accueil"
     And the response status code should be 200
 
@@ -114,27 +96,9 @@ Feature:
       | routing_key  | body                                                                                                                            |
       | user.created | {"uuid":"@string@","subscriptionExternalIds":[],"country":"CH","zipCode":"38000","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
     And I clean the "api_sync" queue
-    And I should have 1 email
-    And I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
-    """
-    {
-      "FromEmail": "contact@en-marche.fr",
-      "FromName": "En Marche !",
-      "Subject": "Confirmez votre compte En-Marche.fr",
-      "MJ-TemplateID": "292269",
-      "MJ-TemplateLanguage": true,
-      "Recipients": [
-        {
-      "Email": "jp@test.com",
-          "Name": "Jean-Pierre Durand",
-          "Vars": {
-            "first_name": "Jean-Pierre",
-            "activation_link": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
-          }
-        }
-      ]
-    }
-    """
+    And I should have 1 email "AppBundle\Mail\Transactional\AdherentAccountActivationMail" for "jp@test.com" with vars:
+      | first_name      | Jean-Pierre                                                       |
+      | activation_link | @string@.startsWith('http://test.enmarche.code/inscription/finaliser/') |
 
     Given I am on "/connexion"
     When I fill in the following:
@@ -143,7 +107,7 @@ Feature:
     And I press "Connexion"
     Then I should see "Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau."
 
-    When I click on the email link "activation_link"
+    When I click on the link "activation_link" of the last email
     Then I should be on "/adhesion"
     And the "become_adherent[phone][country]" field should contain "CH"
 
@@ -190,30 +154,10 @@ Feature:
     And "api_sync" should have message below:
       | routing_key  | body                                                                                                                                                         |
       | user.updated | {"uuid":"@string@","subscriptionExternalIds":[],"country":"FR","zipCode":"06000","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
-    And I should have 2 emails
     And the adherent "jp@test.com" should have the "06" referent tag
-    And I should have 1 email "AdherentAccountConfirmationMessage" for "jp@test.com" with payload:
-    """
-    {
-        "FromEmail":"contact@en-marche.fr",
-        "FromName":"En Marche !",
-        "Subject":"Et maintenant ?",
-        "MJ-TemplateID":"54673",
-        "MJ-TemplateLanguage":true,
-        "Recipients":[
-            {
-                "Email":"jp@test.com",
-                "Name":"Jean-Pierre Durand",
-                "Vars":{
-                    "adherents_count":1,
-                    "committees_count":0,
-                    "target_firstname":"Jean-Pierre",
-                    "target_lastname":"Durand"
-                }
-            }
-        ]
-    }
-    """
+    And I should have 1 email "AppBundle\Mail\Transactional\AdherentAccountConfirmationMail" for "jp@test.com" with vars:
+      | target_firstname | Jean-Pierre |
+
     And I clean the "api_sync" queue
 
     Given I am on "/parametres/mon-compte"
@@ -346,27 +290,9 @@ Feature:
 
     When I follow "cliquer ici"
     Then I should be on "/connexion"
-    And I should have 1 email
-    And I should have 1 email "AdherentAccountActivationMessage" for "simple-user-not-activated@example.ch" with payload:
-    """
-    {
-      "FromEmail": "contact@en-marche.fr",
-      "FromName": "En Marche !",
-      "Subject": "Confirmez votre compte En-Marche.fr",
-      "MJ-TemplateID": "292269",
-      "MJ-TemplateLanguage": true,
-      "Recipients": [
-        {
-      "Email": "simple-user-not-activated@example.ch",
-          "Name": "Simple User",
-          "Vars": {
-            "first_name": "Simple",
-            "activation_link": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
-          }
-        }
-      ]
-    }
-    """
+    And I should have 1 email "AppBundle\Mail\Transactional\AdherentAccountActivationMail" for "simple-user-not-activated@example.ch" with vars:
+      | first_name      | Simple                                                                  |
+      | activation_link | @string@.startsWith('http://test.enmarche.code/inscription/finaliser/') |
 
-    When I click on the email link "activation_link"
+    When I click on the link "activation_link" of the last email
     Then I should be on "/adhesion"
