@@ -16,10 +16,6 @@ parameters:
     search_max_results:                   30
     enable_canary:                        "%env(ENABLE_CANARY)%"
     procurations_reply_to_email:          'archiveprocurations@en-marche.fr'
-    transactional_sender_email:           'contact@en-marche.fr'
-    transactional_sender_name:            'En Marche !'
-    campaign_sender_email:                'jemarche@en-marche.fr'
-    campaign_sender_name:                 'En Marche !'
     feed_ttl:                             60 # in minutes
     legislatives_financial_hotline_email: 'comptes.legislatives@en-marche.fr'
     legislatives_standard_hotline_email:  'campagne.legislatives@en-marche.fr'
@@ -258,18 +254,15 @@ snc_redis:
     session:
         client: default
 
+en_marche_mailer:
+    mail_post:
+        app_name: 'en_marche'
+    amqp_connexion: { name: 'default' }
+
 old_sound_rabbit_mq:
     connections:
         default:
-            host: "%env(RABBITMQ_HOST)%"
-            port: "%env(RABBITMQ_PORT)%"
-            user: "%env(RABBITMQ_USER)%"
-            password: "%env(RABBITMQ_PASSWORD)%"
-            vhost: '/'
-            lazy: false
-            connection_timeout: 10
-            read_write_timeout: 10
-            heartbeat: 5
+            url: '%env(RABBITMQ_DSN)%'
 
     producers:
         mailer_campaign:
@@ -358,3 +351,7 @@ nelmio_cors:
             allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD']
             allow_headers: ['Content-Type']
             max_age: 3600
+
+monolog:
+    use_microseconds: false
+    channels: ['en_marche_mailer']

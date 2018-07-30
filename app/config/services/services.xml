@@ -104,9 +104,10 @@
         <service id="AppBundle\Command\RemindUnconfirmedMembershipCommand"/>
         <service id="AppBundle\Membership\MembershipRegistrationProcess"/>
         <service id="AppBundle\Membership\AdherentChangeEmailHandler">
-            <argument key="$mailer" type="service" id="app.mailer.transactional" />
+            <argument key="$mailPost" type="service" id="EnMarche\MailerBundle\MailPost\MailPostInterface" />
         </service>
         <service id="AppBundle\Membership\EventListener\ChangeEmailFlashMessageSubscriber" />
+        <service id="AppBundle\Membership\AdherentResetPasswordHandler" public="true" />
 
         <!-- Event -->
         <service id="AppBundle\Event\EventFactory" public="true" />
@@ -279,6 +280,13 @@
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
         </service>
 
+        <!-- Contact -->
+        <service id="AppBundle\Contact\ContactMessageHandler" public="true"/>
+
+        <!-- BoardMember -->
+        <service id="AppBundle\BoardMember\BoardMemberMessageNotifier" public="true" />
+
+        <!-- Statistics -->
         <service id="AppBundle\Statistics\Acquisition\Aggregator" />
 
         <!-- Statistics Calculators -->

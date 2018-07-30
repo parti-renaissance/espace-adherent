@@ -3,17 +3,17 @@
 namespace AppBundle\Membership;
 
 use AppBundle\Address\PostAddressFactory;
-use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
-use AppBundle\Mailer\Message\AdherentAccountConfirmationMessage;
-use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
+use AppBundle\Mail\Transactional\AdherentAccountConfirmationMail;
+use AppBundle\Mail\Transactional\AdherentTerminateMembershipMail;
+use AppBundle\Mail\Transactional\AdherentAccountActivationMail;
+use AppBundle\Mail\Transactional\AdherentAccountActivationReminderMail;
 use AppBundle\OAuth\CallbackManager;
 use AppBundle\Referent\ReferentTagManager;
 use Doctrine\Common\Persistence\ObjectManager;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -23,10 +23,8 @@ class MembershipRequestHandler
     private $adherentFactory;
     private $addressFactory;
     private $callbackManager;
-    private $mailer;
+    private $mailPost;
     private $manager;
-    private $adherentManager;
-    private $committeeManager;
     private $adherentRegistry;
     private $referentTagManager;
     private $membershipRegistrationProcess;
@@ -37,11 +35,9 @@ class MembershipRequestHandler
         AdherentFactory $adherentFactory,
         PostAddressFactory $addressFactory,
         CallbackManager $callbackManager,
-        MailerService $mailer,
+        MailPostInterface $mailPost,
         ObjectManager $manager,
         AdherentRegistry $adherentRegistry,
-        AdherentManager $adherentManager,
-        CommitteeManager $committeeManager,
         ReferentTagManager $referentTagManager,
         MembershipRegistrationProcess $membershipRegistrationProcess,
         EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler
@@ -50,11 +46,9 @@ class MembershipRequestHandler
         $this->addressFactory = $addressFactory;
         $this->dispatcher = $dispatcher;
         $this->callbackManager = $callbackManager;
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
         $this->manager = $manager;
         $this->adherentRegistry = $adherentRegistry;
-        $this->adherentManager = $adherentManager;
-        $this->committeeManager = $committeeManager;
         $this->referentTagManager = $referentTagManager;
         $this->membershipRegistrationProcess = $membershipRegistrationProcess;
         $this->emailSubscriptionHistoryHandler = $emailSubscriptionHistoryHandler;
@@ -91,11 +85,15 @@ class MembershipRequestHandler
 
         $activationUrl = $this->generateMembershipActivationUrl($adherent, $token);
 
-        if ($isReminder) {
-            return $this->mailer->sendMessage(AdherentAccountActivationMessage::createReminderFromAdherent($adherent, $activationUrl));
-        }
+        /** @var AdherentAccountActivationMail|AdherentAccountActivationReminderMail $mailClass */
+        $mailClass = $isReminder ? AdherentAccountActivationReminderMail::class : AdherentAccountActivationMail::class;
 
-        return $this->mailer->sendMessage(AdherentAccountActivationMessage::createFromAdherent($adherent, $activationUrl));
+        $this->mailPost->address(
+            $mailClass,
+            $mailClass::createRecipientFor($adherent, $activationUrl)
+        );
+
+        return true;
     }
 
     public function registerAsAdherent(MembershipRequest $membershipRequest): void
@@ -145,13 +143,12 @@ class MembershipRequestHandler
         $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($user));
     }
 
-    public function sendConfirmationJoinMessage(Adherent $user): void
+    public function sendConfirmationJoinMessage(Adherent $adherent): void
     {
-        $this->mailer->sendMessage(AdherentAccountConfirmationMessage::createFromAdherent(
-            $user,
-            $this->adherentManager->countActiveAdherents(),
-            $this->committeeManager->countApprovedCommittees()
-        ));
+        $this->mailPost->address(
+            AdherentAccountConfirmationMail::class,
+            AdherentAccountConfirmationMail::createRecipientFor($adherent)
+        );
     }
 
     public function update(Adherent $adherent, MembershipRequest $membershipRequest): void
@@ -195,8 +192,10 @@ class MembershipRequestHandler
 
         $this->adherentRegistry->unregister($adherent, $unregistration);
 
-        $message = AdherentTerminateMembershipMessage::createFromAdherent($adherent);
-        $this->mailer->sendMessage($message);
+        $this->mailPost->address(
+            AdherentTerminateMembershipMail::class,
+            AdherentTerminateMembershipMail::createRecipientFor($adherent)
+        );
 
         $this->dispatcher->dispatch(UserEvents::USER_DELETED, new UserEvent($adherent));
     }
