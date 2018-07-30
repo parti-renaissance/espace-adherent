@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Mailer\Message;
 
-use AppBundle\Mailer\Message\AdherentAccountConfirmationMessage;
+use AppBundle\Mail\AdherentAccountConfirmationMail;
 
 /**
  * @group message
@@ -11,14 +11,14 @@ class AdherentAccountConfirmationMessageTest extends MessageTestCase
 {
     public function testCreate(): void
     {
-        $message = AdherentAccountConfirmationMessage::create(
+        $message = AdherentAccountConfirmationMail::create(
             $this->createAdherent('jean@example.com', 'Jean', 'Doe'),
             8,
             15
         );
 
         self::assertMessage(
-            AdherentAccountConfirmationMessage::class,
+            AdherentAccountConfirmationMail::class,
             [
                 'adherents_count' => 8,
                 'first_name' => 'Jean',

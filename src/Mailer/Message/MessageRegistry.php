@@ -2,16 +2,19 @@
 
 namespace AppBundle\Mailer\Message;
 
+use AppBundle\Mail\AdherentAccountActivationMail;
+use AppBundle\Mail\AdherentAccountConfirmationMail;
+use AppBundle\Mail\AdherentTerminateMembershipMail;
 use AppBundle\Mailer\Exception\MessageNotFoundException;
 
 class MessageRegistry
 {
     private $transactional = [
-        AdherentAccountActivationMessage::class => 'adherent_account_activation_message',
-        AdherentAccountConfirmationMessage::class => 'adherent_account_confirmation_message',
+        AdherentAccountActivationMail::class => 'adherent_account_activation_message',
+        AdherentAccountConfirmationMail::class => 'adherent_account_confirmation_message',
         AdherentResetPasswordConfirmationMessage::class => 'adherent_reset_password_confirmation_message',
         AdherentResetPasswordMessage::class => 'adherent_reset_password_message',
-        AdherentTerminateMembershipMessage::class => 'adherent_terminate_membership_message',
+        AdherentTerminateMembershipMail::class => 'adherent_terminate_membership_message',
         BoardMemberMessage::class => 'board_member_message',
         CitizenActionCancellationMessage::class => 'citizen_action_cancellation_message',
         CitizenActionNotificationMessage::class => 'citizen_action_notification_message',

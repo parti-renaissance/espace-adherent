@@ -5,7 +5,7 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
+use AppBundle\Mail\AdherentAccountActivationMail;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\EmailRepository;
@@ -107,7 +107,7 @@ class MembershipControllerTest extends WebTestCase
         $this->assertSame('Jean-Paul', $adherent->getFirstName());
         $this->assertSame('Dupont', $adherent->getLastName());
         $this->assertInstanceOf(AdherentActivationToken::class, $activationToken = $this->activationTokenRepository->findAdherentMostRecentKey((string) $adherent->getUuid()));
-        $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentAccountActivationMessage::class, 'paul@dupont.tld'));
+        $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentAccountActivationMail::class, 'paul@dupont.tld'));
 
         // Activate the user account
         $activateAccountUrl = sprintf('/inscription/finaliser/%s/%s', $adherent->getUuid(), $activationToken->getValue());

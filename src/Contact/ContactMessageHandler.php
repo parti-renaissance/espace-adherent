@@ -2,20 +2,24 @@
 
 namespace AppBundle\Contact;
 
-use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\AdherentContactMessage;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 
 class ContactMessageHandler
 {
-    private $mailer;
+    private $mailPost;
 
-    public function __construct(MailerService $mailer)
+    public function __construct(MailPostInterface $mailPost)
     {
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
     }
 
     public function handle(ContactMessage $contactMessage)
     {
-        $this->mailer->sendMessage(AdherentContactMessage::create($contactMessage));
+        $this->mailPost->address(
+            AdherentContactMessage::class,
+            AdherentContactMessage::createRecipientFor($contactMessage),
+            AdherentContactMessage::createRecipientFromAdherent($contactMessage->getFrom())
+        );
     }
 }

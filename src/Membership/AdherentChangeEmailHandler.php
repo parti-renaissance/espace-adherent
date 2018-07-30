@@ -4,26 +4,26 @@ namespace AppBundle\Membership;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentChangeEmailToken;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\AdherentChangeEmailMessage;
+use AppBundle\Mail\AdherentChangeEmailMail;
 use AppBundle\Repository\AdherentChangeEmailTokenRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AdherentChangeEmailHandler
 {
-    private $mailer;
+    private $mailPost;
     private $manager;
     private $repository;
     private $urlGenerator;
 
     public function __construct(
-        MailerService $mailer,
+        MailPostInterface $mailPost,
         ObjectManager $manager,
         AdherentChangeEmailTokenRepository $repository,
         UrlGeneratorInterface $urlGenerator
     ) {
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
         $this->manager = $manager;
         $this->repository = $repository;
         $this->urlGenerator = $urlGenerator;
@@ -50,16 +50,19 @@ class AdherentChangeEmailHandler
 
     public function sendValidationEmail(Adherent $adherent, AdherentChangeEmailToken $token): void
     {
-        $this->mailer->sendMessage(AdherentChangeEmailMessage::createFromAdherent(
-            $adherent,
-            $this->urlGenerator->generate(
-                'user_validate_new_email',
-                [
-                    'adherent_uuid' => $adherent->getUuidAsString(),
-                    'change_email_token' => $token->getValue(),
-                ],
-                UrlGeneratorInterface::ABSOLUTE_URL
+        $this->mailPost->address(
+            AdherentChangeEmailMail::class,
+            AdherentChangeEmailMail::createRecipientFor(
+                $adherent,
+                $this->urlGenerator->generate(
+                    'user_validate_new_email',
+                    [
+                        'adherent_uuid' => $adherent->getUuidAsString(),
+                        'change_email_token' => $token->getValue(),
+                    ],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                )
             )
-        ));
+        );
     }
 }

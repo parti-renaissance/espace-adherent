@@ -252,18 +252,25 @@ snc_redis:
     session:
         client: default
 
+en_marche_mailer:
+    mail_post:
+        app_name: 'en_marche'
+    amqp_connexion: { name: 'default' }
+    database_connexion: { name: 'default' }
+    mail_aggregator: ~
+    mail_api_proxy:
+        http_clients:
+            campaign:
+                public_api_key: 'env(MAILJET_CAMPAIGN_PUBLIC_KEY)'
+                private_api_key: 'env(MAILJET_CAMPAIGN_PRIVATE_KEY)'
+            transactional:
+                public_api_key: 'env(MAILJET_TRANSACTIONAL_PUBLIC_KEY)'
+                private_api_key: 'env(MAILJET_TRANSACTIONAL_PRIVATE_KEY)'
+
 old_sound_rabbit_mq:
     connections:
         default:
-            host: "%env(RABBITMQ_HOST)%"
-            port: "%env(RABBITMQ_PORT)%"
-            user: "%env(RABBITMQ_USER)%"
-            password: "%env(RABBITMQ_PASSWORD)%"
-            vhost: '/'
-            lazy: false
-            connection_timeout: 10
-            read_write_timeout: 10
-            heartbeat: 5
+            url: '%env(RABBITMQ_DSN)%'
 
     producers:
         mailer_campaign:

@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Mailer\Message;
 
-use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
+use AppBundle\Mail\AdherentAccountActivationMail;
 
 /**
  * @group message
@@ -11,13 +11,13 @@ class AdherentAccountActivationMessageTest extends MessageTestCase
 {
     public function testCreate(): void
     {
-        $message = AdherentAccountActivationMessage::create(
+        $message = AdherentAccountActivationMail::create(
             $this->createAdherent('jean@example.com', 'Jean', 'Doe'),
             'https://enmarche.code/activation/foo-bar'
         );
 
         self::assertMessage(
-            AdherentAccountActivationMessage::class,
+            AdherentAccountActivationMail::class,
             [
                 'first_name' => 'Jean',
                 'activation_url' => 'https://enmarche.code/activation/foo-bar',

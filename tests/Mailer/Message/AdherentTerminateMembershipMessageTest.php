@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Mailer\Message;
 
-use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
+use AppBundle\Mail\AdherentTerminateMembershipMail;
 
 /**
  * @group message
@@ -11,12 +11,12 @@ class AdherentTerminateMembershipMessageTest extends MessageTestCase
 {
     public function testCreateFromAdherent(): void
     {
-        $message = AdherentTerminateMembershipMessage::create(
+        $message = \AppBundle\Mail\AdherentTerminateMembershipMail::create(
             $this->createAdherent('jean@example.com', 'Jean', 'Doe')
         );
 
         self::assertMessage(
-            AdherentTerminateMembershipMessage::class,
+            \AppBundle\Mail\AdherentTerminateMembershipMail::class,
             [
                 'first_name' => 'Jean',
             ],
