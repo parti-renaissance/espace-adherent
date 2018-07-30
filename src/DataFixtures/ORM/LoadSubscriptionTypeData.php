@@ -24,17 +24,17 @@ class LoadSubscriptionTypeData extends Fixture
     {
         return [
             [
-                'label' => 'Recevoir les actions militantes du mouvement par SMS ou MMS',
+                'label' => 'Recevoir les informations sur les actions militantes du mouvement par SMS ou MMS',
                 'code' => SubscriptionTypeEnum::MILITANT_ACTION_SMS,
                 'externalId' => null,
             ],
             [
-                'label' => 'Recevoir les informations sur le mouvement',
+                'label' => 'Recevoir les informations du mouvement',
                 'code' => SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL,
                 'externalId' => '123abc',
             ],
             [
-                'label' => 'Recevoir la newsletter hebdomadaire LaREM',
+                'label' => 'Recevoir la newsletter hebdomadaire de LaREM',
                 'code' => SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL,
                 'externalId' => '456def',
             ],
@@ -49,7 +49,7 @@ class LoadSubscriptionTypeData extends Fixture
                 'externalId' => null,
             ],
             [
-                'label' => 'Recevoir les e-mails de votre porteur de projet',
+                'label' => 'Recevoir les e-mails de votre porteuse ou porteur de projet',
                 'code' => SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL,
                 'externalId' => null,
             ],
