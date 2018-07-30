@@ -135,27 +135,10 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     Then I should be on "/presque-fini"
     And the response status code should be 200
 
-    Given I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
-    """
-    {
-      "FromEmail": "contact@en-marche.fr",
-      "FromName": "En Marche !",
-      "Subject": "Confirmez votre compte En-Marche.fr",
-      "MJ-TemplateID": "292269",
-      "MJ-TemplateLanguage": true,
-      "Recipients": [
-        {
-          "Email": "jp@test.com",
-          "Name": "Jean-Pierre d'Artagnan",
-          "Vars": {
-            "first_name": "Jean-Pierre",
-            "activation_link": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@?redirect_uri=https%3A\/\/en-marche.fr\/callback&client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19"
-          }
-        }
-      ]
-    }
-    """
-    When I click on the email link "activation_link"
+    Given I should have 1 email "AppBundle\Mail\Transactional\AdherentAccountActivationMail" for "jp@test.com" with vars:
+      | first_name      | Jean-Pierre                                                             |
+      | activation_link | @string@.startsWith('http://test.enmarche.code/inscription/finaliser/') |
+    When I click on the link "activation_link" of the last email
     Then I should be on "https://enmarche.fr/callback"
 
     # Already logged in user returning to register are redirected to the redirect_uri

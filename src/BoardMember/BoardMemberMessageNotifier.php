@@ -2,32 +2,27 @@
 
 namespace AppBundle\BoardMember;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\BoardMemberMessage as Message;
+use AppBundle\Mail\Transactional\BoardMemberMail;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 
 class BoardMemberMessageNotifier
 {
-    private $mailer;
+    private $mailPost;
 
-    public function __construct(MailerService $mailer)
+    public function __construct(MailPostInterface $mailPost)
     {
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
     }
 
     public function sendMessage(BoardMemberMessage $message): void
     {
-        $chunks = array_chunk(
-            $message->getRecipients(),
-            MailerService::PAYLOAD_MAXSIZE
+        $this->mailPost->address(
+            BoardMemberMail::class,
+            BoardMemberMail::createRecipientsFrom($message),
+            BoardMemberMail::createReplyToFrom($message),
+            BoardMemberMail::createTemplateVarsFrom($message),
+            $message->getSubject(),
+            BoardMemberMail::createSenderFrom($message)
         );
-
-        foreach ($chunks as $chunk) {
-            $this->mailer->sendMessage($this->createMessage($message, $chunk));
-        }
-    }
-
-    private function createMessage(BoardMemberMessage $message, array $recipients): Message
-    {
-        return Message::createFromModel($message, $recipients);
     }
 }
