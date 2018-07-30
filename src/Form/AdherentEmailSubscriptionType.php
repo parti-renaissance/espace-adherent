@@ -14,6 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AdherentEmailSubscriptionType extends AbstractType
@@ -86,5 +88,17 @@ class AdherentEmailSubscriptionType extends AbstractType
                 $event->setData($data);
             }
         });
+    }
+
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        $subscriptionTypes = $view->children['subscriptionTypes']->vars['choices'];
+
+        $view->children['subscriptionTypes']->vars['choices'] = \array_merge([
+            'subscription_type.group.communication_mobile' => null,
+            'subscription_type.group.communication_emails' => null,
+            'subscription_type.group.territories_emails' => null,
+            'subscription_type.group.citizen_project_emails' => null,
+        ], $subscriptionTypes);
     }
 }
