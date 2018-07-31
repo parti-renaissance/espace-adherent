@@ -31,6 +31,7 @@ parameters:
     router.request_context.scheme:        "%env(APP_SCHEME)%"
     router.request_context.host:          "%app_host%"
     image_max_length:                     450px
+    webhook.email_subscriptions_secret:   "%env(APP_EMAIL_SUBSCRIPTIONS_WEBHOOK_SECRET)%"
 
 framework:
     translator:      { fallbacks: ["%locale%"], paths: ["%kernel.project_dir%/translations"] }

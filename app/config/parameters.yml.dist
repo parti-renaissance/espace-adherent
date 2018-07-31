@@ -71,3 +71,5 @@ parameters:
     env(MAXMIND_USER_ID):     ''
 
     env(CORS_ALLOW_ORIGIN): '^https?://localhost:?[0-9]*$'
+
+    env(APP_EMAIL_SUBSCRIPTIONS_WEBHOOK_SECRET): 'mailchimp_secret'
