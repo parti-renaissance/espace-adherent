@@ -170,12 +170,12 @@ class MediaAdmin extends AbstractAdmin
         ;
     }
 
-    public function setStorage(Filesystem $storage)
+    public function setStorage(Filesystem $storage): void
     {
         $this->storage = $storage;
     }
 
-    public function setGlide(Server $glide)
+    public function setGlide(Server $glide): void
     {
         $this->glide = $glide;
     }

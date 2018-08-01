@@ -38,6 +38,7 @@ class LoadAdminData implements FixtureInterface, ContainerAwareInterface
             'ROLE_ADMIN_EVENTS',
             'ROLE_ADMIN_CITIZEN_ACTIONS',
             'ROLE_ADMIN_CITIZEN_PROJECTS',
+            'ROLE_ADMIN_TURNKEY_PROJECTS',
             'ROLE_ADMIN_REPORTS',
             'ROLE_ADMIN_PROCURATIONS',
             'ROLE_ADMIN_ELECTIONS',
@@ -51,6 +52,7 @@ class LoadAdminData implements FixtureInterface, ContainerAwareInterface
             'ROLE_ADMIN_CLIENTS',
             'ROLE_ADMIN_ORGANIGRAMM',
             'ROLE_ADMIN_MOOC',
+            'ROLE_ADMIN_EMAIL_SUBSCRIPTION_TYPES',
         ];
 
         $writerRoles = [

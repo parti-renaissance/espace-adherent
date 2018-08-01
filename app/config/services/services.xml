@@ -49,6 +49,13 @@
             <argument type="service" id="app.mailer.campaign" />
         </service>
 
+        <!-- TurnkeyProject -->
+        <service id="AppBundle\TurnkeyProject\TurnkeyProjectManager">
+            <call method="setGlide">
+                <argument type="service" id="app.glide" />
+            </call>
+        </service>
+
         <!-- Controller -->
         <prototype namespace="AppBundle\Controller\" resource="../../../src/Controller/">
             <tag name="controller.service_arguments" />
