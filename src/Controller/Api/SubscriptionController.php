@@ -19,7 +19,7 @@ class SubscriptionController extends Controller
 {
     /**
      * @Route("/change", name="app_change_email_subscriptions_webhook")
-     * @Method("POST")
+     * @Method({"GET", "POST"})
      */
     public function changeEmailSubscriptionsAction(Request $request): Response
     {
@@ -29,6 +29,11 @@ class SubscriptionController extends Controller
 
         if ($secret !== $this->container->getParameter('webhook.email_subscriptions_secret')) {
             throw new AccessDeniedHttpException('Wrong secret.');
+        }
+
+        // To allow Mailchimp or another external service to test the route accessibility with GET method
+        if ($request->isMethod('GET')) {
+            return new Response('OK');
         }
 
         $type = $request->request->get('type');
