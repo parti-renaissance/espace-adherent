@@ -6,8 +6,6 @@ import { Route, Switch } from 'react-router-dom';
 import Layout from './js/referent_dashboard/containers/Layout';
 
 import DashboardPage from './js/referent_dashboard/containers/DashboardPage';
-import CitizenProject from './js/citizen_project/containers/CitizenProject';
-
 import { history } from './js/store';
 import './App.css';
 
@@ -19,9 +17,6 @@ class App extends Component {
                     <Layout>
                         <Switch>
                             <Route exact path="/espace-referent/dashboard-referent" component={DashboardPage} />
-                        </Switch>
-                        <Switch>
-                            <Route exact path="/projet-citoyen" component={CitizenProject} />
                         </Switch>
                     </Layout>
                 </ConnectedRouter>

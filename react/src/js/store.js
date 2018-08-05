@@ -1,7 +1,7 @@
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
-import reducers from './reducers/index.js';
+import reducers from './referent_dashboard/reducers/index.js';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createHistory from 'history/createBrowserHistory';
 import { routerMiddleware } from 'react-router-redux';
