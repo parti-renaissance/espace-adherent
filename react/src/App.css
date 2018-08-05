@@ -2112,8 +2112,14 @@ label {
     min-height: 20px;
     border-radius: 50px;
     margin-right: 10px;
+<<<<<<< HEAD
     transition: all 0.2s;
     background: #E5E5E5;
+=======
+    border: 7px solid #E5E5E5;
+    transition: all 0.2s;
+    background: #fff;
+>>>>>>> 54d5cb154b8a6419dfd1a4f30d7e49b79a14cd6a
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -2184,8 +2190,14 @@ label {
       min-width: 20px;
       min-height: 20px;
       margin-right: 10px;
+<<<<<<< HEAD
       transition: all 0.2s;
       background: #E5E5E5;
+=======
+      border: 1px solid #BCBCBC;
+      transition: all 0.2s;
+      background: #fff;
+>>>>>>> 54d5cb154b8a6419dfd1a4f30d7e49b79a14cd6a
       display: inline-flex;
       align-items: center;
       justify-content: center; }
@@ -2200,7 +2212,11 @@ label {
     margin-right: 15px;
     border-width: 2px; }
   .form__checkbox:hover label:before {
+<<<<<<< HEAD
     background: #BCBCBC; }
+=======
+    background: #F6F6F6; }
+>>>>>>> 54d5cb154b8a6419dfd1a4f30d7e49b79a14cd6a
   .form__checkbox input[type='checkbox'] {
     position: absolute;
     z-index: -1;
@@ -2819,11 +2835,17 @@ input[type='date']::-webkit-inner-spin-button {
 .b__flex--1 {
   flex: 1; }
 
+<<<<<<< HEAD
 .b__border {
   border: 1px solid #E5E5E5; }
   .b__border--top-bot {
     border-top: 1px solid #E5E5E5;
     border-bottom: 1px solid #E5E5E5; }
+=======
+.b__border--top-bot {
+  border-top: 1px solid #E5E5E5;
+  border-bottom: 1px solid #E5E5E5; }
+>>>>>>> 54d5cb154b8a6419dfd1a4f30d7e49b79a14cd6a
 
 .b__nudge--top-50 {
   margin-top: 50px; }
@@ -3046,7 +3068,11 @@ input[type='date']::-webkit-inner-spin-button {
     display: none;
     position: absolute;
     background: white;
+<<<<<<< HEAD
     width: 715px;
+=======
+    width: 650px;
+>>>>>>> 54d5cb154b8a6419dfd1a4f30d7e49b79a14cd6a
     top: 55px;
     left: -580px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
@@ -3065,7 +3091,11 @@ input[type='date']::-webkit-inner-spin-button {
       .nav-dropdown__menu li a {
         border: 0;
         display: block;
+<<<<<<< HEAD
         width: 205px;
+=======
+        width: 180px;
+>>>>>>> 54d5cb154b8a6419dfd1a4f30d7e49b79a14cd6a
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis; }
