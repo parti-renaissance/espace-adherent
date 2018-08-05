@@ -1,4 +1,4 @@
-import callApi from '../utils/api';
+import callApi from './../../utils/api';
 
 // Action types
 export const GET_HEADER = 'GET_HEADER';
@@ -11,7 +11,7 @@ export function getHeaderFragment() {
     };
 }
 
-export function getFooterFragment() {
+export function getFooterFragment(value) {
     return {
         type: GET_FOOTER,
         payload: callApi('api/dom'),

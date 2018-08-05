@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import { withRouter } from 'react-router';
 import * as domFragmentActionCreators from './../../actions/domFragment';
 import { connect } from 'react-redux';
 
@@ -9,15 +10,24 @@ class HeaderFragment extends Component {
     }
 
     render() {
-        return <p>Header</p>;
+        const { headerFragment } = this.props;
+        return (
+            <div>
+                {' '}
+                {headerFragment}
+                {console.log(headerFragment)}
+            </div>
+        );
     }
 }
 
 const mapStateToProps = state => ({
-    // headerFragment: state.domFragment.headerFragment,
+    headerFragment: state.domFragment.headerFragment,
 });
 
-export default connect(
-    mapStateToProps,
-    domFragmentActionCreators
-)(HeaderFragment);
+export default withRouter(
+    connect(
+        mapStateToProps,
+        domFragmentActionCreators
+    )(HeaderFragment)
+);

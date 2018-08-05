@@ -1,36 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import Summary from './../../components/charts/Summary';
-import { getPercentage } from '../../utils/math';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-class AdherentContainer extends Component {
+class EventContainer extends Component {
     render() {
-        const { graphData, summaryTotal } = this.props;
-
-        const areaMale = getPercentage(summaryTotal.area.male, summaryTotal.area.total);
-        const areaFemale = getPercentage(summaryTotal.area.female, summaryTotal.area.total);
-        const totalMale = getPercentage(summaryTotal.total.male, summaryTotal.total.total);
-        const totalFemale = getPercentage(summaryTotal.total.female, summaryTotal.total.total);
+        const { summaryTotal, graphData } = this.props;
 
         return (
-            <div className="adherent__ctn">
-                <h2 className="ctn__title">Adhérents</h2>
-                <div className="adherent__ctn__summary">
-                    <Summary
-                        summaryTotal={summaryTotal.area.total}
-                        summaryDescription={'Adhérents dans ma zone'}
-                        womanPercentage={`${areaFemale}`}
-                        manPercentage={`${areaMale}`}
-                    />
-                    <Summary
-                        summaryTotal={summaryTotal.total.total}
-                        summaryDescription="Adhérents Total"
-                        womanPercentage={`${totalFemale}`}
-                        manPercentage={`${totalMale}`}
-                    />
+            <div className="event__ctn">
+                <h2 className="ctn__title">Evénements</h2>
+                <div className="event__ctn__summary">
+                    <Summary summaryTotal={summaryTotal.events} summaryDescription="Evénéments dans ma zone" />
+                    <Summary summaryTotal={summaryTotal.subscribed} summaryDescription="inscrits dans un événement" />
                 </div>
-                <div className="adherent__ctn__bars">
+                <div className="event__ctn__bars">
                     <ResponsiveContainer>
                         <BarChart
                             width={600}
@@ -50,16 +35,16 @@ class AdherentContainer extends Component {
                             />
                             <Legend height={50} align="left" verticalAlign="bottom" iconType="circle" />
                             <Bar
-                                name="Adhérent"
-                                dataKey="total"
+                                name="Evénement CL"
+                                dataKey="count"
                                 fill="#6BA0EE"
                                 barSize={10}
                                 animationEasing="ease-in-out"
                             />
                             <Bar
-                                name="Adhérent membre d'un comité"
-                                dataKey="count"
-                                fill="#F8BCBC"
+                                name="Evénement Ref"
+                                dataKey="referent"
+                                fill={'#ff4dc299'}
                                 barSize={10}
                                 animationEasing="ease-in-out"
                             />
@@ -84,14 +69,14 @@ class AdherentContainer extends Component {
                             />
                             <Legend height={50} align="left" verticalAlign="bottom" iconType="circle" />
                             <Bar
-                                name="Recevant des e-mails (référents)"
-                                dataKey="subscribed_emails_referents"
+                                name="Total inscrit à un événement"
+                                dataKey="participants"
                                 fill="#6BA0EE"
                                 barSize={10}
                             />
                             <Bar
-                                name="Recevant des e-mails de leur(s) comité(s)"
-                                dataKey="subscribed_emails_local_host"
+                                name="Adhérent inscrits à un événement"
+                                dataKey="adherentsParticipants"
                                 fill="#F8BCBC"
                                 barSize={10}
                             />
@@ -103,9 +88,11 @@ class AdherentContainer extends Component {
     }
 }
 
-export default AdherentContainer;
+export default EventContainer;
 
-AdherentContainer.propTypes = {
+EventContainer.propTypes = {
+    committees: PropTypes.array,
+    rankingTitle: PropTypes.string,
     summaryTotal: PropTypes.object,
     summaryDescription: PropTypes.string,
     womanPercentage: PropTypes.number,

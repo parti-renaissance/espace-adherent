@@ -2112,9 +2112,8 @@ label {
     min-height: 20px;
     border-radius: 50px;
     margin-right: 10px;
-    border: 7px solid #E5E5E5;
     transition: all 0.2s;
-    background: #fff;
+    background: #E5E5E5;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -2185,9 +2184,8 @@ label {
       min-width: 20px;
       min-height: 20px;
       margin-right: 10px;
-      border: 1px solid #BCBCBC;
       transition: all 0.2s;
-      background: #fff;
+      background: #E5E5E5;
       display: inline-flex;
       align-items: center;
       justify-content: center; }
@@ -2202,7 +2200,7 @@ label {
     margin-right: 15px;
     border-width: 2px; }
   .form__checkbox:hover label:before {
-    background: #F6F6F6; }
+    background: #BCBCBC; }
   .form__checkbox input[type='checkbox'] {
     position: absolute;
     z-index: -1;
@@ -2821,9 +2819,11 @@ input[type='date']::-webkit-inner-spin-button {
 .b__flex--1 {
   flex: 1; }
 
-.b__border--top-bot {
-  border-top: 1px solid #E5E5E5;
-  border-bottom: 1px solid #E5E5E5; }
+.b__border {
+  border: 1px solid #E5E5E5; }
+  .b__border--top-bot {
+    border-top: 1px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5; }
 
 .b__nudge--top-50 {
   margin-top: 50px; }
@@ -3046,7 +3046,7 @@ input[type='date']::-webkit-inner-spin-button {
     display: none;
     position: absolute;
     background: white;
-    width: 650px;
+    width: 715px;
     top: 55px;
     left: -580px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
@@ -3065,7 +3065,7 @@ input[type='date']::-webkit-inner-spin-button {
       .nav-dropdown__menu li a {
         border: 0;
         display: block;
-        width: 180px;
+        width: 205px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis; }

@@ -1,4 +1,4 @@
-import callApi from '../utils/api';
+import callApi from './../../utils/api';
 
 // Action types
 export const AUTOCOMPLETE_SEARCH = 'AUTOCOMPLETE_SEARCH';

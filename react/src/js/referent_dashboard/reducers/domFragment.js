@@ -1,7 +1,7 @@
 import { GET_HEADER, GET_FOOTER } from './../actions/domFragment';
 
 const defaultState = {
-    headerdpôxFragment: [],
+    headerFragment: [],
     footerFragment: [],
 };
 
@@ -10,12 +10,12 @@ export default (state = defaultState, action) => {
     case `${GET_HEADER}`:
         return {
             ...state,
-            headerFragment: action.payload.header,
+            headerFragment: action.payload,
         };
     case `${GET_FOOTER}`:
         return {
             ...state,
-            footerFragment: action.payload.footer,
+            headerFragment: action.payload,
         };
 
     default:

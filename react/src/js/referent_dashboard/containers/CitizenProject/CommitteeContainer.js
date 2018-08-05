@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Summary from './../../components/charts/Summary';
 import Ranking from './../../components/charts/Ranking';
 import SelectCustom from './../../components/modules/SelectCustom';
-import { getPercentage } from '../../utils/math';
+import { getPercentage } from './../../../utils/math';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 class CommitteeContainer extends Component {
@@ -70,8 +70,7 @@ class CommitteeContainer extends Component {
                                 right: 30,
                                 left: 20,
                                 bottom: 5,
-                            }}
-                        >
+                            }}>
                             <CartesianGrid stroke={'#FEF2F2'} vertical={false} />
                             <XAxis dataKey="date" stroke="" />
                             <YAxis stroke={'#FEF2F2'} />
@@ -105,8 +104,7 @@ class CommitteeContainer extends Component {
                                 right: 30,
                                 left: 20,
                                 bottom: 5,
-                            }}
-                        >
+                            }}>
                             <CartesianGrid stroke={'#FEF2F2'} vertical={false} />
                             <XAxis dataKey="date" stroke="" />
                             <YAxis stroke={'#FEF2F2'} />
