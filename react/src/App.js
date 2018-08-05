@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { ConnectedRouter } from 'react-router-redux';
 import { Route, Switch } from 'react-router-dom';
 
-import Layout from './js/referent_dashboard/containers/Layout';
+import ReferentDashboardLayout from './js/referent_dashboard/containers/ReferentDashboardLayout';
 
 import DashboardPage from './js/referent_dashboard/containers/DashboardPage';
 import { history } from './js/store';
@@ -14,11 +14,11 @@ class App extends Component {
         return (
             <div className="App">
                 <ConnectedRouter history={history}>
-                    <Layout>
-                        <Switch>
+                    <Switch>
+                        <ReferentDashboardLayout>
                             <Route exact path="/espace-referent/dashboard-referent" component={DashboardPage} />
-                        </Switch>
-                    </Layout>
+                        </ReferentDashboardLayout>
+                    </Switch>
                 </ConnectedRouter>
             </div>
         );
