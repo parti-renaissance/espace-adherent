@@ -4,7 +4,6 @@ import { ConnectedRouter } from 'react-router-redux';
 import { Route, Switch } from 'react-router-dom';
 
 import DashboardReferentLayout from './js/referent_dashboard/containers/DashboardReferentLayout';
-import CitizenProjectLayout from './js/citizen_project/containers/CitizenProjectLayout';
 
 import { history } from './js/store';
 import './App.css';
@@ -15,8 +14,7 @@ class App extends Component {
             <div className="App">
                 <ConnectedRouter history={history}>
                     <Switch>
-                        <Route exact path="/dashboard-referent" component={DashboardReferentLayout} />
-                        <Route exact path="/projet-citoyen" component={CitizenProjectLayout} />
+                        <Route exact path="/espace-referent/dashboard-referent" component={DashboardReferentLayout} />
                     </Switch>
                 </ConnectedRouter>
             </div>

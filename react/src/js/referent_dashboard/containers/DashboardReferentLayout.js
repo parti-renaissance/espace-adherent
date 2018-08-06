@@ -5,7 +5,6 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import * as actionCreators from './../actions/user';
 
-import HeaderFragment from './../components/en-marche-dom/HeaderFragment';
 import Header from './../components/Header';
 import DashboardPage from './DashboardPage';
 
@@ -15,7 +14,7 @@ class DashboardReferentLayout extends Component {
     }
 
     render() {
-        const { children, user } = this.props;
+        const { user } = this.props;
         return (
             <div>
                 <Header name={`${user.firstName} ${user.lastName}`} />
@@ -39,5 +38,4 @@ export default withRouter(
 
 DashboardReferentLayout.propTypes = {
     name: PropTypes.string,
-    children: PropTypes.element.isRequired,
 };
