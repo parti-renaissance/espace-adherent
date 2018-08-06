@@ -7,8 +7,9 @@ import * as actionCreators from './../actions/user';
 
 import HeaderFragment from './../components/en-marche-dom/HeaderFragment';
 import Header from './../components/Header';
+import DashboardPage from './DashboardPage';
 
-class Layout extends Component {
+class DashboardReferentLayout extends Component {
     componentDidMount() {
         this.props.getCurrentUser();
     }
@@ -17,10 +18,8 @@ class Layout extends Component {
         const { children, user } = this.props;
         return (
             <div>
-                <HeaderFragment />
                 <Header name={`${user.firstName} ${user.lastName}`} />
-
-                {children}
+                <DashboardPage />
             </div>
         );
     }
@@ -35,10 +34,10 @@ export default withRouter(
     connect(
         mapStateToProps,
         actionCreators
-    )(Layout)
+    )(DashboardReferentLayout)
 );
 
-Layout.propTypes = {
+DashboardReferentLayout.propTypes = {
     name: PropTypes.string,
     children: PropTypes.element.isRequired,
 };

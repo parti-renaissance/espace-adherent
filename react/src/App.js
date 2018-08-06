@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import { ConnectedRouter } from 'react-router-redux';
 import { Route, Switch } from 'react-router-dom';
 
-import ReferentDashboardLayout from './js/referent_dashboard/containers/ReferentDashboardLayout';
+import DashboardReferentLayout from './js/referent_dashboard/containers/DashboardReferentLayout';
+import CitizenProjectLayout from './js/citizen_project/containers/CitizenProjectLayout';
 
-import DashboardPage from './js/referent_dashboard/containers/DashboardPage';
 import { history } from './js/store';
 import './App.css';
 
@@ -15,9 +15,8 @@ class App extends Component {
             <div className="App">
                 <ConnectedRouter history={history}>
                     <Switch>
-                        <ReferentDashboardLayout>
-                            <Route exact path="/espace-referent/dashboard-referent" component={DashboardPage} />
-                        </ReferentDashboardLayout>
+                        <Route exact path="/dashboard-referent" component={DashboardReferentLayout} />
+                        <Route exact path="/projet-citoyen" component={CitizenProjectLayout} />
                     </Switch>
                 </ConnectedRouter>
             </div>

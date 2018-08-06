@@ -4088,6 +4088,27 @@ a {
       flex-direction: column;
       align-items: center; } }
 
+.citizen__main {
+  background-color: #fcfcfc; }
+
+.citizen__helplist {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px; }
+  .citizen__helplist .number {
+    font-size: 48px; }
+
+.turnkey__project__pinned {
+  padding: 50px;
+  border: 10px solid #ffd400;
+  margin-top: 30px; }
+
+.thematic__turnkey {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center; }
+
 .header__title {
   background-color: #F9FDFF;
   text-align: left;
@@ -4176,6 +4197,12 @@ a {
   float: left;
   position: relative;
   z-index: 2; }
+
+.citizen__sidebar {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around; }
 
 .summary__cpn {
   text-align: center;
