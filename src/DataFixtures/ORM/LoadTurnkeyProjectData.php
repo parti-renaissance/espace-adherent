@@ -80,7 +80,7 @@ class LoadTurnkeyProjectData extends AbstractFixture implements FixtureInterface
             'La santé pour tous !',
             'Sensibilisation à la santé dans les écoles',
             $this->getReference('cpc005'),
-            ' Les étudiants et professeurs d\'université rencontrent des difficultés dans sa mise en œuvre locale.',
+            'Les étudiants et professeurs d\'université rencontrent des difficultés dans sa mise en œuvre locale.',
             'Le Projet consiste à faciliter l\'organisation et la mise en œuvre du Service Sanitaire dans une ou plusieurs écoles',
             false,
             true,
