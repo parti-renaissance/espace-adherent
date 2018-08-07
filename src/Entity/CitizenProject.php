@@ -156,8 +156,6 @@ class CitizenProject extends BaseGroup
      */
     private $imageUploaded = false;
 
-    private $urlImage = '#';
-
     /**
      * @var UploadedFile|null
      */
@@ -346,7 +344,7 @@ class CitizenProject extends BaseGroup
         }
     }
 
-    public function setSubtitle(string $subtitle)
+    public function setSubtitle(string $subtitle): void
     {
         $this->subtitle = $subtitle;
     }
@@ -420,16 +418,6 @@ class CitizenProject extends BaseGroup
     public function getAssetImagePath(): string
     {
         return sprintf('%s/%s', 'assets', $this->getImagePath());
-    }
-
-    public function setUrlimage(string $url): void
-    {
-        $this->urlImage = $url;
-    }
-
-    public function getUrlImage(): string
-    {
-        return $this->urlImage;
     }
 
     public function getImage(): ?UploadedFile
