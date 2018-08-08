@@ -102,16 +102,6 @@ class TurnkeyProject
     private $proposedSolution;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=800)
-     */
-    private $requiredMeans;
-
-    /**
      * @var UploadedFile|null
      *
      * @Assert\Image(
@@ -152,6 +142,13 @@ class TurnkeyProject
     private $isFavorite = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $isApproved;
+
+    /**
      * @var int|null
      *
      * @ORM\Column(type="smallint", options={"default": 1})
@@ -168,9 +165,9 @@ class TurnkeyProject
         CitizenProjectCategory $category = null,
         string $problemDescription = '',
         string $proposedSolution = '',
-        string $requiredMeans = '',
         bool $isPinned = false,
         bool $isFavorite = false,
+        bool $isApproved = true,
         int $position = 1,
         string $youtubeId = null,
         string $slug = null
@@ -181,9 +178,9 @@ class TurnkeyProject
         $this->category = $category;
         $this->problemDescription = $problemDescription;
         $this->proposedSolution = $proposedSolution;
-        $this->requiredMeans = $requiredMeans;
         $this->isPinned = $isPinned;
         $this->isFavorite = $isFavorite;
+        $this->isApproved = $isApproved;
         $this->position = $position;
         $this->youtubeId = $youtubeId;
     }
@@ -254,16 +251,6 @@ class TurnkeyProject
         return $this->proposedSolution;
     }
 
-    public function setRequiredMeans(?string $requiredMeans): void
-    {
-        $this->requiredMeans = $requiredMeans;
-    }
-
-    public function getRequiredMeans(): string
-    {
-        return $this->requiredMeans;
-    }
-
     public function getImagePath(): string
     {
         return sprintf('images/turnkey_projects/%s', $this->getImageName());
@@ -329,6 +316,16 @@ class TurnkeyProject
         $this->isFavorite = $isFavorite;
     }
 
+    public function isApproved(): ?bool
+    {
+        return $this->isApproved;
+    }
+
+    public function setIsApproved(bool $isApproved): void
+    {
+        $this->isApproved = $isApproved;
+    }
+
     public function getPosition(): int
     {
         return $this->position;
@@ -345,9 +342,9 @@ class TurnkeyProject
         CitizenProjectCategory $category,
         string $problemDescription,
         string $proposedSolution,
-        string $requiredMeans,
         bool $isPinned,
         bool $isFavorite,
+        bool $isApproved,
         int $position,
         ?UploadedFile $image
     ): void {
@@ -356,9 +353,9 @@ class TurnkeyProject
         $this->setCategory($category);
         $this->setProblemDescription($problemDescription);
         $this->setProposedSolution($proposedSolution);
-        $this->setRequiredMeans($requiredMeans);
         $this->setIsPinned($isPinned);
         $this->setIsFavorite($isFavorite);
+        $this->setIsApproved($isApproved);
         $this->setPosition($position);
 
         if ($image) {

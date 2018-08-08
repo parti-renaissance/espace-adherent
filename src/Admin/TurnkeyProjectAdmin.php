@@ -73,9 +73,6 @@ class TurnkeyProjectAdmin extends AbstractAdmin
                 ->add('proposedSolution', PurifiedTextareaType::class, [
                     'label' => 'Solution du problème',
                 ])
-                ->add('requiredMeans', null, [
-                    'label' => 'Feuille de route',
-                ])
                 ->add('image', null, [
                     'label' => 'Image d\'illustration',
                     'template' => 'admin/turnkey_project/show_image.html.twig',
@@ -88,6 +85,9 @@ class TurnkeyProjectAdmin extends AbstractAdmin
                 ])
                 ->add('isFavorite', null, [
                     'label' => 'Mis en avant',
+                ])
+                ->add('isApproved', null, [
+                    'label' => 'Approuvé',
                 ])
                 ->add('position', null, [
                     'label' => 'Position',
@@ -122,11 +122,6 @@ class TurnkeyProjectAdmin extends AbstractAdmin
                     'purifier_type' => 'enrich_content',
                     'attr' => ['class' => 'ck-editor'],
                 ])
-                ->add('requiredMeans', null, [
-                    'required' => true,
-                    'label' => 'Feuille de route',
-                    'filter_emojis' => true,
-                ])
                 ->add('image', FileType::class, [
                     'required' => false,
                     'label' => 'Ajoutez une image d\'illustration',
@@ -142,6 +137,9 @@ class TurnkeyProjectAdmin extends AbstractAdmin
                 ])
                 ->add('isFavorite', null, [
                     'label' => 'Projet clé en main à mettre en avant',
+                ])
+                ->add('isApproved', null, [
+                    'label' => 'Est-il approuvé ?',
                 ])
                 ->add('position', null, [
                     'label' => 'Position',
@@ -173,6 +171,9 @@ class TurnkeyProjectAdmin extends AbstractAdmin
             ])
             ->add('isFavorite', null, [
                 'label' => 'Mis en avant',
+            ])
+            ->add('isApproved', null, [
+                'label' => 'Approuvé',
             ])
             ->add('position', null, [
                 'label' => 'Position',
@@ -208,6 +209,9 @@ class TurnkeyProjectAdmin extends AbstractAdmin
             ])
             ->add('isFavorite', null, [
                 'label' => 'Mis en avant',
+            ])
+            ->add('isApproved', null, [
+                'label' => 'Approuvé',
             ])
             ->add('position', null, [
                 'label' => 'Position',
@@ -260,10 +264,6 @@ class TurnkeyProjectAdmin extends AbstractAdmin
     public function preUpdate($turnkeyProject)
     {
         parent::preUpdate($turnkeyProject);
-
-        $em = $this->getModelManager()->getEntityManager($this->getClass());
-        /** @var TurnkeyProject $oldTrunkeyProject */
-        $oldTrunkeyProject = $em->getUnitOfWork()->getOriginalEntityData($turnkeyProject);
 
         if ($turnkeyProject->getImage()) {
             $this->turnkeyProjectManager->saveImage($turnkeyProject);
