@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -43,6 +44,9 @@ class TurnkeyProject
      *
      * @Assert\NotBlank
      * @Assert\Length(min=2, max=60)
+     *
+     * @JMS\SerializedName("title"),
+     * @JMS\Groups({"turnkey_project_read"})
      */
     private $name;
 
@@ -59,6 +63,8 @@ class TurnkeyProject
      * @ORM\Column
      *
      * @Gedmo\Slug(fields={"canonicalName"})
+     *
+     * @JMS\Groups({"turnkey_project_read"})
      */
     private $slug;
 
@@ -69,6 +75,8 @@ class TurnkeyProject
      *
      * @Assert\NotBlank
      * @Assert\Length(min=5, max=80)
+     *
+     * @JMS\Groups({"turnkey_project_read"})
      */
     private $subtitle;
 
@@ -88,6 +96,9 @@ class TurnkeyProject
      *
      * @Assert\NotBlank
      * @Assert\Length(max=500)
+     *
+     * @JMS\SerializedName("description"),
+     * @JMS\Groups({"turnkey_project_read"})
      */
     private $problemDescription;
 
@@ -128,6 +139,9 @@ class TurnkeyProject
      *
      * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="mooc.youtubeid_syntax")
      * @Assert\Length(min=2, max=11)
+     *
+     * @JMS\SerializedName("video_id"),
+     * @JMS\Groups({"turnkey_project_read"})
      */
     private $youtubeId;
 
@@ -138,6 +152,8 @@ class TurnkeyProject
 
     /**
      * @ORM\Column(type="boolean", options={"default": 0})
+     *
+     * @JMS\Groups({"turnkey_project_read"})
      */
     private $isFavorite = false;
 
@@ -219,6 +235,16 @@ class TurnkeyProject
     public function getCategory(): ?CitizenProjectCategory
     {
         return $this->category;
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("category")
+     * @JMS\Groups({"turnkey_project_read"})
+     */
+    public function getCategoryName(): string
+    {
+        return $this->category->getName();
     }
 
     public function setSubtitle(string $subtitle): void
