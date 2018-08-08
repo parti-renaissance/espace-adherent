@@ -1,0 +1,84 @@
+.citizen__select__content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 60px;
+
+    .Select {
+        width: 30%;
+        border: 1px solid $gray--lighter;
+
+        @media (max-width: $tablet) {
+            width: 100%;
+        }
+
+        &-placeholder {
+            color: $gray--dark;
+            text-align: left;
+        }
+
+        &-arrow {
+            border-color: $pink transparent transparent;
+        }
+    }
+}
+
+.citizen__project {
+    &__item {
+        width: 30%;
+        margin-top: 4%;
+        transition: all 0.5s;
+
+        &:hover {
+            transition: all 0.5s;
+            box-shadow: 10px 10px 47px 0px rgba(224, 224, 224, 1);
+            cursor: pointer;
+        }
+
+        @media (max-width: $tablet) {
+            width: 100%;
+        }
+
+        &__thumbnail {
+            width: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 150px;
+
+            @media (max-width: $tablet) {
+                height: 200px;
+            }
+
+            img {
+                width: 100%;
+            }
+        }
+
+        h2 {
+            @include text--medium-small;
+            margin-bottom: 0;
+        }
+
+        p {
+            font-size: $text--size-default;
+            margin: 0;
+        }
+
+        &__content {
+            background-color: white;
+            border: 1px solid $gray--lighter;
+            padding: 10px;
+        }
+
+        &__footer {
+            margin-top: 20px;
+            text-align: right;
+        }
+    }
+    &__grid {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+}

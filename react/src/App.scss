@@ -40,12 +40,17 @@
 @import "./style/vars/_colors";
 @import "./style/mixins/_text";
 
-@import "./style/containers/_dashboard__container";
-@import "./style/containers/_adherent__container";
-@import "./style/containers/_committee__container";
-@import "./style/containers/_event__container";
+@import './style/containers/_dashboard__container';
+@import './style/containers/_adherent__container';
+@import './style/containers/_committee__container';
+@import './style/containers/_event__container';
+@import './style/containers/citizen-project/_citizen-project';
+@import './style/containers/citizen-project/_citizen-project-search';
 
-@import "./style/components/_header";
-@import "./style/components/_nav";
-@import "./style/components/_summary";
-@import "./style/components/_select";
+@import './style/components/_header';
+@import './style/components/_nav';
+@import './style/components/_summary';
+@import './style/components/_select';
+@import './style/components/_barcharts';
+@import './style/components/_ranking';
+@import './style/components/_input';

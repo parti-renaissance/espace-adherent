@@ -1,0 +1,286 @@
+.citizen {
+    &__layout {
+        display: flex;
+        height: 100vh;
+
+        @media (max-width: $tablet) {
+            flex-direction: column;
+        }
+    }
+
+    &__main {
+        overflow: scroll;
+        background-color: $gray--white;
+        width: 100%;
+    }
+
+    &__sidebar {
+        width: 25%;
+
+        @media (max-width: $tablet) {
+            width: 100%;
+        }
+
+        ul {
+            font-family: $font-gillsans;
+            @include text--medium-small--bold;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-bottom: 1px solid $gray--white;
+
+            @media (max-width: $tablet) {
+                @include text--default;
+                font-weight: 600;
+                flex-direction: row;
+                height: auto;
+            }
+
+            a {
+                height: 33.8%;
+                @media (max-width: $tablet) {
+                    width: 100%;
+                }
+            }
+
+            li {
+                height: calc(100vh / 3.333333333333);
+                padding: 20px 60px 20px 30px;
+                display: flex;
+                align-items: center;
+                text-align: left;
+                // border: 1px solid $gray--lighter;
+                box-sizing: border-box;
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                @media (max-width: $tablet) {
+                    justify-content: center;
+                    flex-direction: row;
+                    height: auto;
+                    border: 0;
+                    padding: 10px;
+                    border-right: 1px solid $gray--lighter;
+                }
+            }
+            .is--active {
+                border: 10px solid $yellow--europe;
+
+                @media (max-width: $tablet) {
+                    border: 0;
+                    border-right: 1px solid $gray--lighter;
+                }
+            }
+        }
+    }
+
+    &__wrapper {
+        padding: 70px;
+
+        @media (max-width: $tablet) {
+            padding: 30px;
+        }
+
+        h2 {
+            text-align: left;
+            @include text--larger;
+            margin-bottom: 40px;
+        }
+        h3 {
+            @include text--medium-large;
+            margin: 70px 0;
+        }
+
+        p {
+            text-align: left;
+            font-family: $font-roboto;
+            color: $dark;
+            margin-bottom: 40px;
+        }
+
+        a {
+            color: $dark;
+            border-bottom: 3px solid $yellow--europe;
+            display: inline-block;
+            height: 35px;
+            transition: all 0.5s;
+
+            &:hover {
+                border-bottom: 3px solid $dark;
+                transition: all 0.5s;
+            }
+        }
+    }
+}
+
+.citizen {
+    &__helplist {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin: 90px 0 50px 0;
+        font-size: $font-gillsans;
+
+        @media (max-width: $tablet) {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        & > div {
+            width: 300px;
+
+            @media (max-width: $tablet) {
+                width: 90%;
+            }
+
+            p {
+                text-align: center;
+            }
+        }
+
+        .number {
+            font-weight: 500;
+            @include text--extra-large;
+        }
+    }
+}
+
+.turnkey__project {
+    &__pinned {
+        padding: 50px;
+        margin: 70px 10px 10px 10px;
+        background-color: white;
+
+        h2 {
+            @include text--large;
+            margin: 40px 0 0 0;
+            text-align: left;
+        }
+
+        h4 {
+            font-family: $font-gillsans;
+            @include text--medium-small;
+            font-weight: 200;
+            text-align: left;
+        }
+
+        p {
+            font-family: $font-roboto;
+            @include text--default;
+            margin-bottom: 85px;
+            text-align: left;
+        }
+
+        .turnkey {
+            &__video {
+                position: relative;
+                padding-bottom: 47.25%;
+                padding-top: 30px;
+                height: 0;
+                overflow: hidden;
+
+                & > iframe {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+            &__cta {
+                text-transform: uppercase;
+                color: $darker;
+                font-weight: 500;
+                font-family: $font-gillsans;
+                @include text--medium;
+
+                padding: 20px 40px;
+                background-color: white;
+                transition: all 0.5s;
+
+                &__yellow {
+                    border: 5px solid $yellow--europe;
+
+                    &:hover {
+                        background-color: $yellow--europe;
+                        cursor: pointer;
+                        transition: all 0.5s;
+                    }
+                }
+
+                &__green {
+                    border: 5px solid $green-citizen;
+
+                    &:hover {
+                        background-color: $green-citizen;
+                        cursor: pointer;
+                        transition: all 0.5s;
+                    }
+                }
+            }
+        }
+    }
+
+    &__yellow {
+        border: 10px solid $yellow--europe;
+    }
+
+    &__light {
+        border: 1px solid $gray--lighter;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: row;
+    }
+
+    &__detail {
+        width: 60%;
+    }
+
+    &__list {
+        width: 40%;
+        margin-top: 70px;
+        height: 805px;
+        overflow: scroll;
+
+        &--item {
+            text-align: left;
+            background-color: white;
+            border: 1px solid $gray--lighter;
+            padding: 20px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+
+            &:hover {
+                cursor: pointer;
+                border-radius: 3px;
+                border: 1px solid $green-citizen;
+            }
+
+            span {
+                @include text--medium-small;
+                color: $green-citizen;
+            }
+
+            h2 {
+                @include text--medium-small;
+                margin: 10px 0 0 0;
+            }
+
+            p {
+                margin: 0;
+            }
+        }
+    }
+}
+
+.thematic__turnkey {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
