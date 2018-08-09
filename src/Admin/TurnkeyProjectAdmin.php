@@ -211,7 +211,7 @@ class TurnkeyProjectAdmin extends AbstractAdmin
                 'label' => 'Mis en avant',
             ])
             ->add('isApproved', null, [
-                'label' => 'Approuvé',
+                'label' => 'Publié',
             ])
             ->add('position', null, [
                 'label' => 'Position',

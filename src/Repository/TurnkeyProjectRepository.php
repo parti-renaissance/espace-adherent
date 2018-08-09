@@ -36,7 +36,7 @@ class TurnkeyProjectRepository extends ServiceEntityRepository
         ;
     }
 
-    public function countApprouvedProjects(): int
+    public function countApproved(): int
     {
         return $this
             ->createQueryBuilder('projects')
@@ -48,11 +48,27 @@ class TurnkeyProjectRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @return TurnkeyProject[]
+     */
+    public function findApproved(): array
+    {
+        return $this
+            ->createQueryBuilder('projects')
+            ->where('projects.isApproved = :approved')
+            ->setParameter('approved', true)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function findPinned(int $excludedProjectId = null): ?TurnkeyProject
     {
         $qb = $this
             ->createQueryBuilder('project')
             ->where('project.isPinned = 1')
+            ->andWhere('project.isApproved = :approved')
+            ->setParameter('approved', true)
         ;
 
         if ($excludedProjectId) {
