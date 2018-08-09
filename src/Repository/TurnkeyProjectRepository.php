@@ -13,6 +13,19 @@ class TurnkeyProjectRepository extends ServiceEntityRepository
         parent::__construct($registry, TurnkeyProject::class);
     }
 
+    public function findOneApprovedBySlug(string $slug): ?TurnkeyProject
+    {
+        return $this
+            ->createQueryBuilder('project')
+            ->where('project.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->andWhere('project.isApproved = :approved')
+            ->setParameter('approved', true)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function countProjects(): int
     {
         return $this
@@ -38,12 +51,12 @@ class TurnkeyProjectRepository extends ServiceEntityRepository
     public function findPinned(int $excludedProjectId = null): ?TurnkeyProject
     {
         $qb = $this
-            ->createQueryBuilder('p')
-            ->where('p.isPinned = 1')
+            ->createQueryBuilder('project')
+            ->where('project.isPinned = 1')
         ;
 
         if ($excludedProjectId) {
-            $qb->andWhere('p.id != :id')
+            $qb->andWhere('project.id != :id')
                 ->setParameter('id', $excludedProjectId)
             ;
         }
