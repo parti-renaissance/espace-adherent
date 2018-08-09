@@ -13,8 +13,12 @@ class TurnkeyProjectRepository extends ServiceEntityRepository
         parent::__construct($registry, TurnkeyProject::class);
     }
 
-    public function findOneApprovedBySlug(string $slug): ?TurnkeyProject
+    public function findOneApprovedBySlug(?string $slug): ?TurnkeyProject
     {
+        if (!$slug) {
+            return null;
+        }
+
         return $this
             ->createQueryBuilder('project')
             ->where('project.slug = :slug')

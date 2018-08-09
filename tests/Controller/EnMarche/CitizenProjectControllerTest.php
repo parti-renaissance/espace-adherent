@@ -22,7 +22,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
 {
     public function testAnonymousUserCanSeeAnApprovedCitizenProject(): void
     {
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertFalse($this->seeCommentSection());
@@ -32,7 +32,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
 
     public function testAnonymousUserCannotSeeAPendingCitizenProject(): void
     {
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/13003-le-projet-citoyen-a-marseille');
 
         $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
     }
@@ -40,7 +40,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
     public function testAdherentCannotSeeUnapprovedCitizenProject(): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/13003-le-projet-citoyen-a-marseille');
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
@@ -68,7 +68,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
     public function testAdministratorCanSeeUnapprovedCitizenProject(): void
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/13003-le-projet-citoyen-a-marseille');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeCommentSection());
         $this->assertTrue($this->seeReportLink());
@@ -77,11 +77,11 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
     public function testAdministratorCanSeeACitizenProject(): void
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeReportLink());
 
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8/discussions');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8/discussions');
         $this->assertTrue($this->seeCommentSection());
         $this->assertSeeComments([
             ['Carl Mirabeau', 'Jean-Paul à Maurice : tout va bien ! Je répète ! Tout va bien !'],
@@ -92,11 +92,11 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
     public function testFollowerCanSeeACitizenProject(): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeReportLink());
 
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8/discussions');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8/discussions');
         $this->assertTrue($this->seeCommentSection());
         $this->assertSeeComments([
             ['Carl Mirabeau', 'Jean-Paul à Maurice : tout va bien ! Je répète ! Tout va bien !'],
@@ -111,7 +111,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
     public function testFollowerCanAddCommentToCitizenProject(): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8/discussions');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8/discussions');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->client->submit(
             $this->client->getCrawler()->selectButton('Publier')->form([
@@ -135,7 +135,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
     public function testFollowerCanNotSendCommentToCitizenProjectInMail(): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8/discussions');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8/discussions');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(0, $this->client->getCrawler()->filter('label:contains("Envoyer aussi par e-mail")'));
@@ -147,7 +147,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
     public function testAdministratorCanAddCommentToCitizenProjectWithSendingMail(): void
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8/discussions');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8/discussions');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(1, $this->client->getCrawler()->filter('label:contains("Envoyer aussi par e-mail")'));
@@ -349,7 +349,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
 
     public function testAnonymousUserIsAllowedToFollowCitizenProject()
     {
-        $committeeUrl = sprintf('/projets-citoyens/%s', 'le-projet-citoyen-a-paris-8');
+        $committeeUrl = sprintf('/projets-citoyens/%s', '75008-le-projet-citoyen-a-paris-8');
 
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
@@ -365,7 +365,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
 
         // Browse to the citizen project details page
-        $citizenProjectUrl = sprintf('/projets-citoyens/%s', 'le-projet-citoyen-a-paris-8');
+        $citizenProjectUrl = sprintf('/projets-citoyens/%s', '75008-le-projet-citoyen-a-paris-8');
 
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
@@ -416,7 +416,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
     {
         /** @var CitizenProject $citizenProject */
         $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
-        $citizenProjectUrl = '/projets-citoyens/le-projet-citoyen-a-paris-8';
+        $citizenProjectUrl = '/projets-citoyens/75008-le-projet-citoyen-a-paris-8';
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertFalse($citizenProject->isFeatured());
@@ -640,6 +640,6 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
 
     protected function getGroupUrl(): string
     {
-        return '/projets-citoyens/le-projet-citoyen-a-paris-8';
+        return '/projets-citoyens/75008-le-projet-citoyen-a-paris-8';
     }
 }

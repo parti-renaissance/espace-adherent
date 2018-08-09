@@ -96,8 +96,6 @@ committee.message.max_length: Le message ne doit pas contenir plus de {{ limit }
 #
 # CitizenProject
 #
-citizen_project.canonical_name.not_unique: Ce nom de projet citoyen est déjà utilisé.
-
 citizen_project.description.min_length: Votre texte de description est trop court. Il doit compter {{ limit }} caractères minimum.
 citizen_project.description.max_length: Votre texte de description est trop long. Il doit compter {{ limit }} caractères maximum.
 

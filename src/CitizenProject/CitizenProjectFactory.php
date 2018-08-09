@@ -26,7 +26,7 @@ class CitizenProjectFactory
 
         $uuid = isset($data['uuid'])
             ? Uuid::fromString($data['uuid'])
-            : CitizenProject::createUuid($data['name']);
+            : Uuid::uuid4();
 
         $phone = null;
         if (isset($data['phone'])) {

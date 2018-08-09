@@ -42,16 +42,16 @@ Feature:
     Then I should see "En raison du silence républicain, votre espace est momentanément désactivé. Vous pourrez de nouveau y accéder à la fin de celui-ci."
     Examples:
       | uri                                                      |
-      | /projets-citoyens/en-marche-projet-citoyen/discussions   |
-      | /projets-citoyens/en-marche-projet-citoyen/actions/creer |
+      | /projets-citoyens/13003-en-marche-projet-citoyen/discussions   |
+      | /projets-citoyens/13003-en-marche-projet-citoyen/actions/creer |
 
   @javascript
   Scenario: As CP host I cannot access to member contact page
     Given I am logged as "lolodie.dutemps@hotnix.tld"
-    And I am on "/projets-citoyens/en-marche-projet-citoyen/acteurs"
+    And I am on "/projets-citoyens/13003-en-marche-projet-citoyen/acteurs"
     And I check "members[]"
     When I click the "members-contact-button" element
-    Then I should be on "/projets-citoyens/en-marche-projet-citoyen/acteurs/contact"
+    Then I should be on "/projets-citoyens/13003-en-marche-projet-citoyen/acteurs/contact"
     And I should see "En raison du silence républicain, votre espace est momentanément désactivé. Vous pourrez de nouveau y accéder à la fin de celui-ci."
 
   Scenario: As deputy of FDE-06 (CH and LI) I cannot communicate with adherents from my deputy space.

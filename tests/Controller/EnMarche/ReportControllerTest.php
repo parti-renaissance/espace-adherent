@@ -53,7 +53,7 @@ class ReportControllerTest extends WebTestCase
         ];
         yield 'Citizen project' => [
             CitizenProjectReport::class,
-            '/projets-citoyens/le-projet-citoyen-a-paris-8',
+            '/projets-citoyens/75008-le-projet-citoyen-a-paris-8',
             LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID,
         ];
         yield 'Committee' => [

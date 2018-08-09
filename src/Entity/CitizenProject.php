@@ -9,7 +9,10 @@ use AppBundle\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 use libphonenumber\PhoneNumber;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -20,7 +23,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *     name="citizen_projects",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="citizen_project_uuid_unique", columns="uuid"),
- *         @ORM\UniqueConstraint(name="citizen_project_canonical_name_unique", columns="canonical_name"),
  *         @ORM\UniqueConstraint(name="citizen_project_slug_unique", columns="slug")
  *     },
  *     indexes={
@@ -43,6 +45,17 @@ class CitizenProject extends BaseGroup
         self::PRE_APPROVED,
         self::PRE_REFUSED,
     ];
+
+    /**
+     * @ORM\Column
+     *
+     * @Gedmo\Slug(fields={"postAddress.postalCode", "canonicalName"})
+     *
+     * @Algolia\Attribute
+     *
+     * @JMS\Groups({"public"})
+     */
+    protected $slug;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CitizenProjectCategory")
@@ -440,6 +453,16 @@ class CitizenProject extends BaseGroup
         ;
     }
 
+    public function setImageNameFromTurnkeyProject(TurnkeyProject $turnkeyProject): void
+    {
+        $imageName = $turnkeyProject->getImageName();
+        $this->imageName = sprintf('%s.%s',
+                md5(sprintf('%s@%s', $this->getUuid(), $imageName)),
+                substr(strrchr($imageName, '.'), 1)
+            )
+        ;
+    }
+
     public function getImageName(): ?string
     {
         return $this->imageName;
@@ -471,7 +494,7 @@ class CitizenProject extends BaseGroup
         string $createdAt = 'now'
     ): self {
         $citizenProject = new self(
-            self::createUuid($name),
+            Uuid::uuid4(),
             clone $adherent->getUuid(),
             $name,
             $subtitle,
