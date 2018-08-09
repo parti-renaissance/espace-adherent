@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\TurnkeyProject;
+use AppBundle\Repository\TurnkeyProjectRepository;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -24,6 +25,18 @@ class TurnkeyProjectController extends Controller
             JsonResponse::HTTP_OK,
             [],
             true
+        );
+    }
+
+    /**
+     * @Route("/turnkey-projects/count", name="api_count_approved_turnkey_projects")
+     * @Method("GET")
+     */
+    public function countApprovedTurnkeyProjectAction(TurnkeyProjectRepository $turnkeyProjectRepository): Response
+    {
+        return new JsonResponse(
+            ['total' => $turnkeyProjectRepository->countApprouvedProjects()],
+            JsonResponse::HTTP_OK
         );
     }
 }

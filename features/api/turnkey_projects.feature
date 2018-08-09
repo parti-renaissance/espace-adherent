@@ -7,6 +7,17 @@ Feature:
     Given the following fixtures are loaded:
       | LoadTurnkeyProjectData  |
 
+  Scenario: As a non logged-in user I can get approved turnkey projects count
+    When I send a "GET" request to "/api/turnkey-projects/count"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "total":4
+    }
+    """
+
   Scenario: As a non logged-in user I can get a turnkey project
     When I send a "GET" request to "/api/turnkey-project/la-sante-pour-tous"
     Then the response status code should be 200
