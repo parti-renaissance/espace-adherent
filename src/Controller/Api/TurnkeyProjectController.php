@@ -19,9 +19,9 @@ class TurnkeyProjectController extends Controller
      * @Route("/turnkey-project/is-pinned", name="api_pinned_turnkey_project")
      * @Method("GET")
      */
-    public function getPinnedTurnkeyProjectAction(TurnkeyProjectRepository $turnkeyProjectRepository, Serializer $serializer): Response
+    public function getPinnedTurnkeyProjectAction(TurnkeyProjectRepository $repository, Serializer $serializer): Response
     {
-        $turnkeyProject = $turnkeyProjectRepository->findPinned();
+        $turnkeyProject = $repository->findPinned();
 
         return new JsonResponse(
             $serializer->serialize($turnkeyProject, 'json', SerializationContext::create()->setGroups(['turnkey_project_read'])),
@@ -50,11 +50,25 @@ class TurnkeyProjectController extends Controller
      * @Route("/turnkey-projects/count", name="api_count_approved_turnkey_projects")
      * @Method("GET")
      */
-    public function countApprovedTurnkeyProjectAction(TurnkeyProjectRepository $turnkeyProjectRepository): Response
+    public function countApprovedTurnkeyProjectAction(TurnkeyProjectRepository $repository): Response
     {
         return new JsonResponse(
-            ['total' => $turnkeyProjectRepository->countApprouvedProjects()],
+            ['total' => $repository->countApproved()],
             JsonResponse::HTTP_OK
+        );
+    }
+
+    /**
+     * @Route("/turnkey-projects", name="api_approved_turnkey_projects")
+     * @Method("GET")
+     */
+    public function getApprovedTurnkeyProjectAction(TurnkeyProjectRepository $repository, Serializer $serializer): Response
+    {
+        return new JsonResponse(
+            $serializer->serialize($repository->findApproved(), 'json', SerializationContext::create()->setGroups(['turnkey_project_list'])),
+            JsonResponse::HTTP_OK,
+            [],
+            true
         );
     }
 }

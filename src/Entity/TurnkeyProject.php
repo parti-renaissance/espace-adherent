@@ -46,7 +46,7 @@ class TurnkeyProject
      * @Assert\Length(min=2, max=60)
      *
      * @JMS\SerializedName("title"),
-     * @JMS\Groups({"turnkey_project_read"})
+     * @JMS\Groups({"turnkey_project_read", "turnkey_project_list"})
      */
     private $name;
 
@@ -64,7 +64,7 @@ class TurnkeyProject
      *
      * @Gedmo\Slug(fields={"canonicalName"})
      *
-     * @JMS\Groups({"turnkey_project_read"})
+     * @JMS\Groups({"turnkey_project_read", "turnkey_project_list"})
      */
     private $slug;
 
@@ -76,7 +76,7 @@ class TurnkeyProject
      * @Assert\NotBlank
      * @Assert\Length(min=5, max=80)
      *
-     * @JMS\Groups({"turnkey_project_read"})
+     * @JMS\Groups({"turnkey_project_read", "turnkey_project_list"})
      */
     private $subtitle;
 
@@ -240,7 +240,7 @@ class TurnkeyProject
     /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("category")
-     * @JMS\Groups({"turnkey_project_read"})
+     * @JMS\Groups({"turnkey_project_read", "turnkey_project_list"})
      */
     public function getCategoryName(): string
     {
