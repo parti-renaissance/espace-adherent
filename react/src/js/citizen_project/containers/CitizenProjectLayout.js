@@ -1,6 +1,6 @@
 import React from 'react';
 import { ConnectedRouter } from 'react-router-redux';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import CitizenProject from './../containers/CitizenProject';
 import CitizenProjectTurnKey from './../containers/CitizenProjectTurnKey';
 import CitizenProjectSearch from './../containers/CitizenProjectSearch';
@@ -18,7 +18,7 @@ const routes = [
         path: '/projet-citoyen/decouvrir-les-projets-citoyens',
         exact: true,
         main: () => <CitizenProjectTurnKey />,
-        item_label: 'Découvrir les projets clés en main',
+        item_label: 'Découvrir les projets faciles à lancer',
         // borderColor: { border: '10px solid #7ed321' },
     },
     {

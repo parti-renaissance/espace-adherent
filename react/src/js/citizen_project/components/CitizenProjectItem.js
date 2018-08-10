@@ -1,7 +1,7 @@
 import React from 'react';
 
 const CitizenProjectItem = (props) => {
-    const { thumbnail, title, subtitle, category, author, localisation } = props;
+    const { thumbnail, title, subtitle, author, localisation } = props;
 
     return (
         <div className="citizen__project__item">

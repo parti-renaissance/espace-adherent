@@ -10,7 +10,8 @@ class CitizenProject extends Component {
                     Les projets citoyens sont des actions locales qui visent à améliorer concrètement le quotidien{' '}
                     <br />
                     des habitants dans son quartier, son village, en réunissant la force et les compétences <br />
-                    de tous ceux qui veulent agir.
+                    de tous ceux qui veulent agir. <br />
+                    Vous avez donc la possibilité d'en lancer ou d'en rejoindre un !
                 </p>
                 <h3>Un projet citoyen c'est quoi ?</h3>
                 <div className="citizen__helplist">
@@ -35,7 +36,7 @@ class CitizenProject extends Component {
                     </div>
                 </div>
                 <p />
-                <a href="#" className="simple--link">
+                <a href="www.google.fr" className="simple--link">
                     En savoir plus sur la Charte des Projets Citoyens
                 </a>
 
@@ -47,7 +48,7 @@ class CitizenProject extends Component {
                     title="Des métiers pour demain"
                     subtitle="Inspirer nos jeunes pour les aider à s’orienter"
                     description="Aider les collégiens à mieux appréhender les métiers, en organisant des “speed-datings” ludiques avec des professionnels pour casser les idées reçues et en leur permettant de trouver un stage de découverte hors de leur réseau familial."
-                    cta_content="Voir tous les projets prêts à lancer"
+                    cta_content="Voir tous les projets faciles à lancer"
                     cta_border="yellow"
                 />
             </div>

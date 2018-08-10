@@ -6,6 +6,7 @@ const TurnkeyProjectDetail = (props) => {
         <div className={`turnkey__project__pinned turnkey__project__${border}`}>
             <div className="turnkey__video">
                 <iframe
+                    title="Turnkey_video"
                     width="560"
                     height="315"
                     src={`https://www.youtube.com/embed/${video_id}?rel=0&amp;controls=0&amp;showinfo=0`}
