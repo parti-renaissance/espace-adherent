@@ -288,7 +288,7 @@ security:
 
                 failure_handler: AppBundle\Security\Http\AuthenticationFailureHandler
             logout:
-                path: app_admin_logout
+                path: logout
                 target: homepage
 
         main:

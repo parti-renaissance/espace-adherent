@@ -32,7 +32,7 @@ class InactiveAdminDisconnectionTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/admin/dashboard');
 
         // should be redirected to logout
-        $this->assertClientIsRedirectedTo('/admin/logout', $this->client);
+        $this->assertClientIsRedirectedTo('/deconnexion', $this->client);
     }
 
     public function testNoLogoutInactiveAdherent()
