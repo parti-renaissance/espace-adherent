@@ -51,14 +51,6 @@ class AdminSecurityController extends Controller
     }
 
     /**
-     * @Route("/logout", name="app_admin_logout")
-     * @Method("GET")
-     */
-    public function logoutAction()
-    {
-    }
-
-    /**
      * QR-code generator to be used with Google Authenticator.
      *
      * @Route("/qr-code/{id}", name="app_admin_qr_code")

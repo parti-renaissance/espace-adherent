@@ -14,7 +14,7 @@
 
                     <form class="form" action="" method="post">
                         {% for flashMessage in app.flashes("two_factor") %}
-                            <p class="error">{{ flashMessage|trans }}</p>
+                            <p class="text--error">{{ flashMessage|trans }}</p>
                         {% endfor %}
 
                         <div class="form__row">
@@ -28,9 +28,7 @@
 
                         {# The logout link gives the user a way out if they can't complete the second step #}
                         <p>
-                            <a href="{{ path('app_admin_logout') }}">
-                                Annuler
-                            </a>
+                            <a href="{{ path('logout') }}">Annuler</a>
                         </p>
                     </form>
                 </div>
