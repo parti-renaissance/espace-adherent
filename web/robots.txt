@@ -1,7 +1,7 @@
-# www.robotstxt.org/
-# www.google.com/support/webmasters/bin/answer.py?hl=en&answer=156449
-User-agent: *
-Disallow: */ical
-
 Sitemap: https://en-marche.fr/sitemap.xml
 Sitemap: https://m.en-marche.fr/sitemap.xml
+
+User-agent: *
+Disallow: */ical
+Disallow: /*anonymous_authentication_intention=/connexion
+Disallow: /*anonymous_authentication_intention=/adhesion
