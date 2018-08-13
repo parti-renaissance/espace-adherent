@@ -1,23 +1,21 @@
-{% extends 'base.html.twig' %}
+{% extends 'events/_layout.html.twig' %}
 
-{% block page_title 'Inviter des amis à un événement' %}
+{% block page_title "Invitation pour #{committee_event.name} - #{committee_event.cityName}, #{committee_event.beginAt|date('d/m/Y')}" %}
 {% block canonical_url url('app_event_invite', { slug: committee_event.slug }) %}
+{% block meta_description "Envoyer une invitation pour #{committee_event.name} qui est un événement local du mouvement La République En Marche ! organisé par #{committee_event.organizer} le #{committee_event.beginAt|date('d/m/Y')} à #{committee_event.beginAt|date('G\\hi')}, dans la ville de #{committee_event.cityName}." %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="https://www.google.com/recaptcha/api.js"></script>
 {% endblock %}
 
-{% block content %}
-    <section class="l__wrapper">
-        <a href="{{ path("app_#{committee_event.type}_show", {'uuid': committee_event.uuid, 'slug': committee_event.slug}) }}"
-           class="previous-link icon--with-text text--summary">
-            {{ include('components/caret--left.html.twig') }}
-            Retour à la page de l'événement
-        </a>
-        {{ include('events/_event_header.html.twig') }}
-        <hr/>
-    </section>
+{% block event_name %}
+    <h1 class="committee-event-name text--large b__nudge--bottom">
+        Invitation pour {{ committee_event.name }} - {{ committee_event.cityName }}, {{ committee_event.beginAt|date('d/m/Y') }}
+    </h1>
+{% endblock %}
+
+{% block event_content %}
     <section class="l__wrapper--500 space--30-0 b__nudge--bottom-huge">
         <div class="committee-event-registration">
             <h2 class="b__nudge--bottom text--normal">Inviter des amis à l'événement</h2>
