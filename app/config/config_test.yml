@@ -107,6 +107,8 @@ old_sound_rabbit_mq:
                     - user.*
                     - event.*
                     - committee.*
+                    - citizen_action.*
+                    - citizen_project.*
             callback: Tests\AppBundle\Consumer\DummyConsumer
 
 lexik_paybox:
