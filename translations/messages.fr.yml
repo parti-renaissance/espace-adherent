@@ -346,3 +346,14 @@ subscription_type.group.communication_mobile: SMS/MMS de communication
 subscription_type.group.communication_emails: E-mails de communication
 subscription_type.group.territories_emails: E-mails Territoires
 subscription_type.group.citizen_project_emails: E-mails Projets Citoyens
+
+#
+# Actualités
+#
+actualites.label.tout: actualités
+actualites.label.actualites: actualités
+actualites.label.videos: vidéos
+actualites.label.discours: discours
+actualites.label.medias: médias
+actualites.label.communiques: communiqués
+actualites.label.opinions: opinions
