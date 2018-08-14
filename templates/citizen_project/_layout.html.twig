@@ -49,9 +49,9 @@
                             {% endif %}
                         </ul>
                         <h1 class="text--larger text--shadow" id="citizen-project-name">
-                            {% block citizen_project_title %}
+                            {%- block citizen_project_title -%}
                                 {{ citizen_project.name }}
-                            {% endblock %}
+                            {%- endblock -%}
                         </h1>
                         <div class="text--body b__nudge--top-5 text--shadow">{{ citizen_project.subtitle }}</div>
                     </div>
