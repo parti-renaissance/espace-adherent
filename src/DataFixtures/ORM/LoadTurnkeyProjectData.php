@@ -51,7 +51,7 @@ class LoadTurnkeyProjectData extends AbstractFixture implements FixtureInterface
             'Ateliers de rencontre autour de l\'art',
             $this->getReference('cpc003'),
             'Les lieux et espaces de culture sont rarement accessibles à tous et donnent peu l\'occasion de tisser du lien social.',
-            'Nous proposons d\'organiser des ateliers d\'art participatif associant des artistes aux citoyens ',
+            'Nous proposons d\'organiser des ateliers d\'art participatif associant des artistes aux citoyens',
             false,
             true,
             true,

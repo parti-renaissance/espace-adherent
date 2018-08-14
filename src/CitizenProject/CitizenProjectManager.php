@@ -9,6 +9,7 @@ use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCommitteeSupport;
+use AppBundle\Entity\TurnkeyProject;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Entity\CitizenProjectMembership;
@@ -314,6 +315,24 @@ class CitizenProjectManager
         $this->glide->deleteCache($path);
 
         $citizenProject->setImageUploaded(true);
+    }
+
+    /**
+     * Copies turnkey project image to the citizen project.
+     */
+    public function copyImageFromTurnkeyProject(CitizenProject $citizenProject, TurnkeyProject $turnkeyProject): void
+    {
+        if ($turnkeyProject->getImageName()) {
+            $citizenProject->setImageNameFromTurnkeyProject($turnkeyProject);
+            $path = $citizenProject->getImagePath();
+
+            $this->storage->put($path, $this->storage->read($turnkeyProject->getImagePath()));
+
+            // Clears the cache file
+            $this->glide->deleteCache($path);
+
+            $citizenProject->setImageUploaded(true);
+        }
     }
 
     /**

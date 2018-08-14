@@ -25,7 +25,7 @@ class CitizenProjectCommandTest extends TestCase
     {
         $name = 'Projet citoyen à Lyon 1er';
         $subtitle = 'Le projet citoyen à Lyon 1er';
-        $uuid = CitizenProject::createUuid($name);
+        $uuid = Uuid::uuid4();
         $citizenProjectCategory = $this->createMock(CitizenProjectCategory::class);
         $committee = $this->createMock(Committee::class);
         $assistanceNeeded = false;

@@ -2,6 +2,7 @@
 
 namespace AppBundle\CitizenProject;
 
+use AppBundle\Entity\TurnkeyProject;
 use AppBundle\Events;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -28,7 +29,7 @@ class CitizenProjectCreationCommandHandler
         $this->citizenProjectManager = $citizenProjectManager;
     }
 
-    public function handle(CitizenProjectCreationCommand $command): void
+    public function handle(CitizenProjectCreationCommand $command, TurnkeyProject $turnkeyProject = null): void
     {
         $adherent = $command->getAdherent();
         $citizenProject = $this->factory->createFromCitizenProjectCreationCommand($command);
@@ -36,6 +37,8 @@ class CitizenProjectCreationCommandHandler
         // Uploads an image
         if (null !== $command->getImage()) {
             $this->citizenProjectManager->addImage($citizenProject);
+        } elseif ($turnkeyProject) {
+            $this->citizenProjectManager->copyImageFromTurnkeyProject($citizenProject, $turnkeyProject);
         }
 
         $command->setCitizenProject($citizenProject);

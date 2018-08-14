@@ -93,6 +93,14 @@ class DummyGeocoder implements GeocoderInterface
             'lat' => 48.5182194,
             'lon' => 2.624205,
         ],
+        '73100 mouxy, fr' => [
+            'lat' => 45.570898,
+            'lon' => 5.927206,
+        ],
+        '77000 melun, fr' => [
+            'lat' => 48.5278939,
+            'lon' => 2.6484923,
+        ],
     ];
 
     public function geocode(string $address): Coordinates

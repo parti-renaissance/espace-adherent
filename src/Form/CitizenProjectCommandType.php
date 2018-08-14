@@ -45,17 +45,19 @@ class CitizenProjectCommandType extends AbstractType
                 'format_title_case' => true,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 30],
-                'disabled' => $command->isCitizenProjectApproved(),
+                'disabled' => $command->isCitizenProjectApproved() || $options['from_turnkey_project'],
             ])
             ->add('subtitle', TextType::class, [
                 'filter_emojis' => true,
                 'format_title_case' => true,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 80],
+                'disabled' => $options['from_turnkey_project'],
             ])
             ->add('category', EventCategoryType::class, [
                 'placeholder' => 'Choisir un thème',
                 'class' => CitizenProjectCategory::class,
+                'disabled' => $options['from_turnkey_project'],
             ])
             ->add('image', FileType::class, [
                 'required' => false,
@@ -65,6 +67,7 @@ class CitizenProjectCommandType extends AbstractType
                 'filter_emojis' => true,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 500],
+                'disabled' => $options['from_turnkey_project'],
             ])
             ->add('proposed_solution', PurifiedTextareaType::class, [
                 'property_path' => 'proposedSolution',
@@ -72,6 +75,7 @@ class CitizenProjectCommandType extends AbstractType
                 'purifier_type' => 'enrich_content',
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 800],
+                'disabled' => $options['from_turnkey_project'],
             ])
             ->add('required_means', TextareaType::class, [
                 'property_path' => 'requiredMeans',
@@ -150,6 +154,7 @@ class CitizenProjectCommandType extends AbstractType
         $resolver
             ->setDefaults([
                 'data_class' => CitizenProjectCommand::class,
+                'from_turnkey_project' => false,
             ])
         ;
     }

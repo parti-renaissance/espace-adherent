@@ -29,33 +29,33 @@ class CitizenActionManagerControllerTest extends WebTestCase
     public function testCreateCitizenActionIsForbiddenIfUserIsNotProjectOrganizer()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8/actions/creer');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8/actions/creer');
 
         static::assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
+        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8');
         $this->assertSame(0, $crawler->selectLink('Créer une action citoyenne')->count());
     }
 
     public function testCreateCitizenActionIsForbiddenIfProjectIsNotApproved()
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-marseille/actions/creer');
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/13003-le-projet-citoyen-a-marseille/actions/creer');
 
         static::assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
-        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
+        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8');
         $this->assertSame(0, $crawler->selectLink('Créer une action citoyenne')->count());
     }
 
     public function testCreateCitizenActionFailed()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
+        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8');
         $this->assertSame(1, $crawler->selectLink('Créer une action citoyenne')->count());
 
         $this->client->click($crawler->selectLink('Créer une action citoyenne')->link());
 
-        $this->assertSame('/projets-citoyens/le-projet-citoyen-a-paris-8/actions/creer', $this->client->getRequest()->getPathInfo());
+        $this->assertSame('/projets-citoyens/75008-le-projet-citoyen-a-paris-8/actions/creer', $this->client->getRequest()->getPathInfo());
 
         $this->client->submit($this->client->getCrawler()->selectButton('Je crée mon action citoyenne')->form());
 
@@ -103,14 +103,14 @@ class CitizenActionManagerControllerTest extends WebTestCase
     public function testCreateCitizenActionSuccessful()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8');
+        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8');
         $this->assertSame(1, $crawler->selectLink('Créer une action citoyenne')->count());
 
         $this->client->click($crawler->selectLink('Créer une action citoyenne')->link());
 
-        $this->assertSame('/projets-citoyens/le-projet-citoyen-a-paris-8/actions/creer', $this->client->getRequest()->getPathInfo());
+        $this->assertSame('/projets-citoyens/75008-le-projet-citoyen-a-paris-8/actions/creer', $this->client->getRequest()->getPathInfo());
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/le-projet-citoyen-a-paris-8/actions/creer');
+        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8/actions/creer');
 
         $data['citizen_action']['name'] = 'mon Action Citoyenne';
         $data['citizen_action']['description'] = 'Ma première action citoyenne';
@@ -183,7 +183,7 @@ class CitizenActionManagerControllerTest extends WebTestCase
 
         /** @var CitizenAction $citizenAction */
         $citizenAction = $this->getCitizenActionRepository()->findOneBy(['uuid' => LoadCitizenActionData::CITIZEN_ACTION_4_UUID]);
-        $exportUrl = sprintf('/projets-citoyens/le-projet-citoyen-a-paris-8/actions/%s/participants/exporter', $citizenAction->getSlug());
+        $exportUrl = sprintf('/projets-citoyens/75008-le-projet-citoyen-a-paris-8/actions/%s/participants/exporter', $citizenAction->getSlug());
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s/participants', $citizenAction->getSlug()));
 
@@ -206,7 +206,7 @@ class CitizenActionManagerControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s/participants', $citizenAction->getSlug()));
         $token = $crawler->filter('#members-export-token')->attr('value');
         $uuids = (array) $crawler->filter('input[name="members[]"]')->attr('value');
-        $exportUrl = sprintf('/projets-citoyens/le-projet-citoyen-a-paris-8/actions/%s/participants/exporter', $citizenAction->getSlug());
+        $exportUrl = sprintf('/projets-citoyens/75008-le-projet-citoyen-a-paris-8/actions/%s/participants/exporter', $citizenAction->getSlug());
 
         $this->client->request(Request::METHOD_POST, $exportUrl, [
             'token' => $token,
@@ -244,7 +244,7 @@ class CitizenActionManagerControllerTest extends WebTestCase
         $citizenAction = $this->getCitizenActionRepository()->findOneBy(['uuid' => LoadCitizenActionData::CITIZEN_ACTION_4_UUID]);
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s/participants', $citizenAction->getSlug()));
 
-        $printUrl = sprintf('/projets-citoyens/le-projet-citoyen-a-paris-8/actions/%s/participants/imprimer', $citizenAction->getSlug());
+        $printUrl = sprintf('/projets-citoyens/75008-le-projet-citoyen-a-paris-8/actions/%s/participants/imprimer', $citizenAction->getSlug());
 
         $this->client->request(Request::METHOD_POST, $printUrl, [
             'token' => $crawler->filter('#members-print-token')->attr('value'),
@@ -261,7 +261,7 @@ class CitizenActionManagerControllerTest extends WebTestCase
         /** @var CitizenAction $citizenAction */
         $citizenAction = $this->getCitizenActionRepository()->findOneBy(['uuid' => LoadCitizenActionData::CITIZEN_ACTION_4_UUID]);
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s/participants', $citizenAction->getSlug()));
-        $printUrl = sprintf('/projets-citoyens/le-projet-citoyen-a-paris-8/actions/%s/participants/imprimer', $citizenAction->getSlug());
+        $printUrl = sprintf('/projets-citoyens/75008-le-projet-citoyen-a-paris-8/actions/%s/participants/imprimer', $citizenAction->getSlug());
         $token = $crawler->filter('#members-print-token')->attr('value');
         $uuids = (array) $crawler->filter('input[name="members[]"]')->attr('value');
 
@@ -286,7 +286,7 @@ class CitizenActionManagerControllerTest extends WebTestCase
         /** @var CitizenAction $citizenAction */
         $citizenAction = $this->getCitizenActionRepository()->findOneBy(['uuid' => LoadCitizenActionData::CITIZEN_ACTION_4_UUID]);
         $participantsUrl = sprintf('/action-citoyenne/%s/participants', $citizenAction->getSlug());
-        $contactUrl = sprintf('/projets-citoyens/le-projet-citoyen-a-paris-8/actions/%s/participants/contacter', $citizenAction->getSlug());
+        $contactUrl = sprintf('/projets-citoyens/75008-le-projet-citoyen-a-paris-8/actions/%s/participants/contacter', $citizenAction->getSlug());
         $crawler = $this->client->request(Request::METHOD_GET, $participantsUrl);
         $token = $crawler->filter('#members-contact-token')->attr('value');
         $uuids = (array) $crawler->filter('input[name="members[]"]')->attr('value');

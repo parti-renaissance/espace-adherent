@@ -10,6 +10,7 @@ use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
+use AppBundle\DataFixtures\ORM\LoadTurnkeyProjectData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CitizenProject;
@@ -704,6 +705,83 @@ class AdherentControllerTest extends WebTestCase
         $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'carl999@example.fr'));
     }
 
+    public function testAdherentCanCreateNewCitizenProjectEventTurnkeyProjectDoesNotExist(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
+
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen/wrong-turn-key');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+    }
+
+    public function testCreateTwoCitizenProjectFromTheSameTurnkeyProjectSuccessful(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen/art-s-connection');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $this->assertSame('Art\'s connection', $crawler->filter('#citizen_project_name')->attr('value'));
+        $this->assertSame('Ateliers de rencontre autour de l\'art', $crawler->filter('#citizen_project_subtitle')->attr('value'));
+        $this->assertSame('Culture', $crawler->filter('#citizen_project_category option:selected')->text());
+        $this->assertSame('Les lieux et espaces de culture sont rarement accessibles à tous et donnent peu l\'occasion de tisser du lien social.', $crawler->filter('#citizen_project_problem_description')->text());
+        $this->assertSame('Nous proposons d\'organiser des ateliers d\'art participatif associant des artistes aux citoyens', $crawler->filter('#citizen_project_proposed_solution')->text());
+
+        $form = $this->client->getCrawler()->selectButton('Proposer mon projet')->form();
+        $form->setValues([
+            'citizen_project[required_means]' => 'Mes actions.',
+            'citizen_project[phone][number]' => '6 55 66 77 66',
+            'citizen_project[phone][country]' => 'FR',
+        ]);
+
+        $this->client->submit($form);
+
+        /** @var CitizenProject $citizenProject */
+        $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['slug' => '73100-arts-connection']);
+
+        $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertInstanceOf(CitizenProject::class, $citizenProject);
+        $this->assertSame('Art\'s connection', $citizenProject->getName());
+        $this->assertSame('Ateliers de rencontre autour de l\'art', $citizenProject->getSubtitle());
+        $this->assertSame('Culture', $citizenProject->getCategory()->getName());
+        $this->assertSame('Les lieux et espaces de culture sont rarement accessibles à tous et donnent peu l\'occasion de tisser du lien social.', $citizenProject->getProblemDescription());
+        $this->assertSame('Nous proposons d\'organiser des ateliers d\'art participatif associant des artistes aux citoyens', $citizenProject->getProposedSolution());
+        $this->assertSame('Mes actions.', $citizenProject->getRequiredMeans());
+
+        $this->logout($this->client);
+
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen/art-s-connection');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $this->assertSame('Art\'s connection', $crawler->filter('#citizen_project_name')->attr('value'));
+        $this->assertSame('Ateliers de rencontre autour de l\'art', $crawler->filter('#citizen_project_subtitle')->attr('value'));
+        $this->assertSame('Culture', $crawler->filter('#citizen_project_category option:selected')->text());
+        $this->assertSame('Les lieux et espaces de culture sont rarement accessibles à tous et donnent peu l\'occasion de tisser du lien social.', $crawler->filter('#citizen_project_problem_description')->text());
+        $this->assertSame('Nous proposons d\'organiser des ateliers d\'art participatif associant des artistes aux citoyens', $crawler->filter('#citizen_project_proposed_solution')->text());
+
+        $form = $crawler->selectButton('Proposer mon projet')->form();
+        $form->setValues([
+            'citizen_project[required_means]' => 'Mes actions aussi.',
+            'citizen_project[phone][number]' => '6 22 33 44 55',
+            'citizen_project[phone][country]' => 'FR',
+        ]);
+
+        $this->client->submit($form);
+
+        /** @var CitizenProject $citizenProject */
+        $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['slug' => '77000-arts-connection']);
+
+        $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertInstanceOf(CitizenProject::class, $citizenProject);
+        $this->assertSame('Art\'s connection', $citizenProject->getName());
+        $this->assertSame('Ateliers de rencontre autour de l\'art', $citizenProject->getSubtitle());
+        $this->assertSame('Culture', $citizenProject->getCategory()->getName());
+        $this->assertSame('Les lieux et espaces de culture sont rarement accessibles à tous et donnent peu l\'occasion de tisser du lien social.', $citizenProject->getProblemDescription());
+        $this->assertSame('Nous proposons d\'organiser des ateliers d\'art participatif associant des artistes aux citoyens', $citizenProject->getProposedSolution());
+        $this->assertSame('Mes actions aussi.', $citizenProject->getRequiredMeans());
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'referent@en-marche-dev.fr'));
+    }
+
     /**
      * @dataProvider provideCommitteesHostsAdherentsCredentials
      */
@@ -1029,6 +1107,7 @@ class AdherentControllerTest extends WebTestCase
             LoadCitizenProjectData::class,
             LoadCitizenProjectCommentData::class,
             LoadEmailSubscriptionHistoryData::class,
+            LoadTurnkeyProjectData::class,
         ]);
 
         $this->committeeRepository = $this->getCommitteeRepository();

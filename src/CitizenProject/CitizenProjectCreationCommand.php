@@ -4,11 +4,8 @@ namespace AppBundle\CitizenProject;
 
 use AppBundle\Address\NullableAddress;
 use AppBundle\Entity\Adherent;
-use AppBundle\Validator\UniqueCitizenProject as AssertUniqueCitizenProject;
+use AppBundle\Entity\TurnkeyProject;
 
-/**
- * @AssertUniqueCitizenProject
- */
 class CitizenProjectCreationCommand extends CitizenProjectCommand
 {
     /** @var Adherent */
@@ -24,6 +21,19 @@ class CitizenProjectCreationCommand extends CitizenProjectCommand
             $dto->address = NullableAddress::createFromAddress($adherent->getPostAddress());
             $dto->address->setAddress(null);
         }
+
+        return $dto;
+    }
+
+    public static function createFromAdherentAndTurnkeyProject(Adherent $adherent, TurnkeyProject $turnkeyProject): self
+    {
+        $dto = static::createFromAdherent($adherent);
+        $dto->name = $turnkeyProject->getName();
+        $dto->subtitle = $turnkeyProject->getSubtitle();
+        $dto->category = $turnkeyProject->getCategory();
+        $dto->problemDescription = $turnkeyProject->getProblemDescription();
+        $dto->proposedSolution = $turnkeyProject->getProposedSolution();
+        $dto->setImage($turnkeyProject->getImage());
 
         return $dto;
     }

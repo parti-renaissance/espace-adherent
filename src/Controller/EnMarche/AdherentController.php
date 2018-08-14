@@ -9,6 +9,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\TurnkeyProject;
 use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\EventRegistrationException;
 use AppBundle\Exception\InvalidUuidException;
@@ -24,6 +25,7 @@ use AppBundle\Search\SearchParametersFilter;
 use AppBundle\Search\SearchResultsProvidersManager;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use GuzzleHttp\Exception\ConnectException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -121,10 +123,11 @@ class AdherentController extends Controller
     /**
      * This action enables an adherent to create a citizen project.
      *
-     * @Route("/creer-mon-projet-citoyen", name="app_adherent_create_citizen_project")
+     * @Route("/creer-mon-projet-citoyen/{slug}", defaults={"slug": null}, name="app_adherent_create_citizen_project")
+     * @Entity("turnkeyProject", expr="repository.findOneApprovedBySlug(slug)")
      * @Method("GET|POST")
      */
-    public function createCitizenProjectAction(Request $request): Response
+    public function createCitizenProjectAction(Request $request, TurnkeyProject $turnkeyProject = null): Response
     {
         if ($this->isGranted('IS_ANONYMOUS')
             && $authentication = $this->get(AnonymousFollowerSession::class)->start($request)
@@ -134,15 +137,19 @@ class AdherentController extends Controller
 
         $this->denyAccessUnlessGranted(CitizenProjectPermissions::CREATE);
 
-        $command = CitizenProjectCreationCommand::createFromAdherent($user = $this->getUser());
+        if ($turnkeyProject) {
+            $command = CitizenProjectCreationCommand::createFromAdherentAndTurnkeyProject($user = $this->getUser(), $turnkeyProject);
+        } else {
+            $command = CitizenProjectCreationCommand::createFromAdherent($user = $this->getUser());
+        }
         if ($name = $request->query->get('name', false)) {
             $command->name = $name;
         }
-        $form = $this->createForm(CitizenProjectCommandType::class, $command);
+        $form = $this->createForm(CitizenProjectCommandType::class, $command, ['from_turnkey_project' => $turnkeyProject ? true : false]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.citizen_project.creation_handler')->handle($command);
+            $this->get('app.citizen_project.creation_handler')->handle($command, $turnkeyProject);
             $this->addFlash('info', 'citizen_project.creation.success');
 
             return $this->redirect($this->generateUrl('app_citizen_project_show', ['slug' => $command->getCitizenProject()->getSlug()]));

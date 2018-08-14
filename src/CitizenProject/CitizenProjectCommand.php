@@ -7,7 +7,6 @@ use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use AppBundle\Entity\CitizenProjectSkill;
 use AppBundle\Entity\Committee;
-use AppBundle\Validator\UniqueCitizenProject as AssertUniqueCitizenProject;
 use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,9 +16,6 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @AssertUniqueCitizenProject
- */
 class CitizenProjectCommand
 {
     /** @var CitizenProject */
