@@ -68,6 +68,8 @@ class CitizenProject extends BaseGroup
      * @ORM\Column
      *
      * @Algolia\Attribute
+     *
+     * @JMS\Groups({"public", "citizen_project_read"})
      */
     protected $subtitle;
 
