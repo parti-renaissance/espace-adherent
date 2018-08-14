@@ -80,7 +80,11 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface
      * @var string|null
      *
      * @ORM\Column(length=130)
-     * @Gedmo\Slug(fields={"beginAt", "canonicalName"}, dateFormat="Y-m-d")
+     * @Gedmo\Slug(
+     *     fields={"beginAt", "canonicalName"},
+     *     dateFormat="Y-m-d",
+     *     handlers={@Gedmo\SlugHandler(class="AppBundle\Event\UniqueEventNameHandler")}
+     * )
      *
      * @Algolia\Attribute
      *
@@ -244,7 +248,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface
         }
     }
 
-    protected function setName(string $name): void
+    public function setName(string $name): void
     {
         $this->name = ucfirst($name);
         $this->canonicalName = static::canonicalize($name);
