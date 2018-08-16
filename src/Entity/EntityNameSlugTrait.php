@@ -16,7 +16,7 @@ trait EntityNameSlugTrait
      *
      * @Algolia\Attribute
      *
-     * @JMS\Groups({"public", "committee_read"})
+     * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
      */
     protected $name;
 
@@ -38,7 +38,7 @@ trait EntityNameSlugTrait
      *
      * @Algolia\Attribute
      *
-     * @JMS\Groups({"public", "committee_read"})
+     * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
      */
     protected $slug;
 

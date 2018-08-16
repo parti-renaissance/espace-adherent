@@ -44,8 +44,8 @@ Feature:
     When I dispatch the "<event>" committee event with "En Marche Paris 8"
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
-      | routing_key   | body                                                                                                                                                                                                                                                                                                                 |
-      | <routing_key> | {"uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818","name":"En Marche Paris 8","slug":"en-marche-paris-8","status":"APPROVED","membersCount":4,"tags":["75008","75"],"longitude":"2.313243","latitude":"48.870506","country":"FR","address":"60 avenue des Champs-\u00c9lys\u00e9es","zipCode":"75008","city":"Paris 8e"} |
+      | routing_key   | body                                                                                                                                                                                                                                                                                                        |
+      | <routing_key> | {"uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818","name":"En Marche Paris 8","slug":"en-marche-paris-8","status":"APPROVED","membersCount":4,"tags":["75008","75"],"longitude":"2.313243","latitude":"48.870506","country":"FR","address":"60 avenue des Champs-Élysées","zipCode":"75008","city":"Paris 8e"}  |
     Examples:
       | event             | routing_key       |
       | committee.created | committee.created |
@@ -70,8 +70,8 @@ Feature:
     When I dispatch the "<event>" event event with "Réunion de réflexion parisienne"
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
-      | routing_key   | body                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-      | <routing_key> | {"uuid":"1fc69fd0-2b34-4bd4-a0cc-834480480934","country":"FR","address":"60 avenue des Champs-\u00c9lys\u00e9es","zipCode":"75008","city":"Paris 8e","latitude":"48.870506","longitude":"2.313243","name":"R\u00e9union de r\u00e9flexion parisienne","slug":"@string@.endsWith('-reunion-de-reflexion-parisienne')","beginAt":"@string@.isDateTime()","finishAt":"@string@.isDateTime()","participantsCount":1,"status":"SCHEDULED","capacity":50,"committeeUuid":"515a56c0-bde8-56ef-b90c-4745b1c93818","categoryName":"Atelier du programme","tags":["75008","75"],"organizerUuid":"a046adbe-9c7b-56a9-a676-6151a6785dda"} |
+      | routing_key   | body                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+      | <routing_key> | {"uuid":"1fc69fd0-2b34-4bd4-a0cc-834480480934","country":"FR","address":"60 avenue des Champs-Élysées","zipCode":"75008","city":"Paris 8e","latitude":"48.870506","longitude":"2.313243","name":"Réunion de réflexion parisienne","slug":"@string@.endsWith('-reunion-de-reflexion-parisienne')","beginAt":"@string@.isDateTime()","finishAt":"@string@.isDateTime()","participantsCount":1,"status":"SCHEDULED","capacity":50,"committeeUuid":"515a56c0-bde8-56ef-b90c-4745b1c93818","categoryName":"Atelier du programme","tags":["75008","75"],"organizerUuid":"a046adbe-9c7b-56a9-a676-6151a6785dda"} |
     Examples:
       | event         | routing_key   |
       | event.created | event.created |
@@ -97,8 +97,8 @@ Feature:
     When I dispatch the "<event>" citizen project event with "Le projet citoyen à Paris 8"
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
-      | routing_key   | body                                                                                                                                                                                                                                                                                                                                                  |
-      | <routing_key> | {"uuid":"aa364092-3999-4102-930c-f711ef971195","status":"APPROVED","membersCount":4,"slug":"75008-le-projet-citoyen-a-paris-8","category":"Nature et Environnement","country":"FR","address":"60 avenue des Champs-\u00c9lys\u00e9es","zipCode":"75008","city":"Paris 8e","author":"Jacques P.","thumbnail":null} |
+      | routing_key   | body                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+      | <routing_key> | {"uuid":"aa364092-3999-4102-930c-f711ef971195","status":"APPROVED","membersCount":4,"name":"Le projet citoyen à Paris 8","slug":"75008-le-projet-citoyen-a-paris-8","category":"Nature et Environnement","country":"FR","address":"60 avenue des Champs-Élysées","zipCode":"75008","city":"Paris 8e","subtitle":"Le projet citoyen des habitants du 8ème arrondissement de Paris.","author":"Jacques P.","thumbnail":null}  |
     Examples:
       | event                   | routing_key             |
       | citizen_project.created | citizen_project.created |
@@ -125,8 +125,8 @@ Feature:
     When I dispatch the "<event>" citizen action event with "Projet citoyen de Zürich"
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
-      | routing_key   | body                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-      | <routing_key> | {"uuid":"3f46976e-e76a-476e-86d7-575c6d3bc15f","country":"CH","address":"30 Zeppelinstrasse","zipCode":"8057","city":"Z\u00fcrich","latitude":"47.395004","longitude":"8.538380","name":"Projet citoyen de Z\u00fcrich","slug":"@string@.endsWith('-projet-citoyen-de-zurich')","beginAt":"@string@.isDateTime()","finishAt":"@string@.isDateTime()","participantsCount":1,"status":"SCHEDULED","citizenProjectUuid":"942201fe-bffa-4fed-a551-71c3e49cea43"} |
+      | routing_key   | body                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+      | <routing_key> | {"uuid":"3f46976e-e76a-476e-86d7-575c6d3bc15f","country":"CH","address":"30 Zeppelinstrasse","zipCode":"8057","city":"Zürich","latitude":"47.395004","longitude":"8.538380","name":"Projet citoyen de Zürich","slug":"@string@.endsWith('-projet-citoyen-de-zurich')","beginAt":"2018-08-17T09:30:00+02:00","finishAt":"2018-08-17T19:00:00+02:00","participantsCount":1,"status":"SCHEDULED","citizenProjectUuid":"942201fe-bffa-4fed-a551-71c3e49cea43"}  |
     Examples:
       | event                  | routing_key            |
       | citizen_action.created | citizen_action.created |
