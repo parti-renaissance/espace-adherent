@@ -55,12 +55,13 @@ class TurnkeyProjectRepository extends ServiceEntityRepository
     /**
      * @return TurnkeyProject[]
      */
-    public function findApproved(): array
+    public function findApprovedOrdered(): array
     {
         return $this
             ->createQueryBuilder('projects')
             ->where('projects.isApproved = :approved')
             ->setParameter('approved', true)
+            ->orderBy('projects.position', 'ASC')
             ->getQuery()
             ->getResult()
         ;

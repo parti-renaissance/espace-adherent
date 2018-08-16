@@ -126,7 +126,7 @@ Feature:
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
       | routing_key   | body                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-      | <routing_key> | {"uuid":"3f46976e-e76a-476e-86d7-575c6d3bc15f","country":"CH","address":"30 Zeppelinstrasse","zipCode":"8057","city":"Zürich","latitude":"47.395004","longitude":"8.538380","name":"Projet citoyen de Zürich","slug":"@string@.endsWith('-projet-citoyen-de-zurich')","beginAt":"2018-08-17T09:30:00+02:00","finishAt":"2018-08-17T19:00:00+02:00","participantsCount":1,"status":"SCHEDULED","citizenProjectUuid":"942201fe-bffa-4fed-a551-71c3e49cea43"}  |
+      | <routing_key> | {"uuid":"3f46976e-e76a-476e-86d7-575c6d3bc15f","country":"CH","address":"30 Zeppelinstrasse","zipCode":"8057","city":"Zürich","latitude":"47.395004","longitude":"8.538380","name":"Projet citoyen de Zürich","slug":"@string@.endsWith('-projet-citoyen-de-zurich')","beginAt":"@string@.isDateTime()","finishAt":"@string@.isDateTime()","participantsCount":1,"status":"SCHEDULED","citizenProjectUuid":"942201fe-bffa-4fed-a551-71c3e49cea43"}  |
     Examples:
       | event                  | routing_key            |
       | citizen_action.created | citizen_action.created |

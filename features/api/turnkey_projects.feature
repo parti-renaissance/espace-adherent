@@ -51,7 +51,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can get a turnkey project
-    When I send a "GET" request to "/api/turnkey-project/la-sante-pour-tous"
+    When I send a "GET" request to "/api/turnkey-projects/la-sante-pour-tous"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -68,7 +68,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can get a pinned turnkey project
-    When I send a "GET" request to "/api/turnkey-project/is-pinned"
+    When I send a "GET" request to "/api/turnkey-projects/pinned"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:

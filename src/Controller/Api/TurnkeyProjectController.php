@@ -13,18 +13,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @Route("/turnkey-projects")
+ */
 class TurnkeyProjectController extends Controller
 {
     /**
-     * @Route("/turnkey-project/is-pinned", name="api_pinned_turnkey_project")
+     * @Route(name="api_approved_turnkey_projects")
      * @Method("GET")
      */
-    public function getPinnedTurnkeyProjectAction(TurnkeyProjectRepository $repository, Serializer $serializer): Response
+    public function getApprovedTurnkeyProjectAction(TurnkeyProjectRepository $repository, Serializer $serializer): Response
     {
-        $turnkeyProject = $repository->findPinned();
-
         return new JsonResponse(
-            $serializer->serialize($turnkeyProject, 'json', SerializationContext::create()->setGroups(['turnkey_project_read'])),
+            $serializer->serialize($repository->findApprovedOrdered(), 'json', SerializationContext::create()->setGroups(['turnkey_project_list'])),
             JsonResponse::HTTP_OK,
             [],
             true
@@ -32,22 +33,7 @@ class TurnkeyProjectController extends Controller
     }
 
     /**
-     * @Route("/turnkey-project/{slug}", name="api_turnkey_project")
-     * @Entity("turnkeyProject", expr="repository.findOneApprovedBySlug(slug)")
-     * @Method("GET")
-     */
-    public function getTurnkeyProjectAction(TurnkeyProject $turnkeyProject, Serializer $serializer): Response
-    {
-        return new JsonResponse(
-            $serializer->serialize($turnkeyProject, 'json', SerializationContext::create()->setGroups(['turnkey_project_read'])),
-            JsonResponse::HTTP_OK,
-            [],
-            true
-        );
-    }
-
-    /**
-     * @Route("/turnkey-projects/count", name="api_count_approved_turnkey_projects")
+     * @Route("/count", name="api_count_approved_turnkey_projects")
      * @Method("GET")
      */
     public function countApprovedTurnkeyProjectAction(TurnkeyProjectRepository $repository): Response
@@ -59,13 +45,28 @@ class TurnkeyProjectController extends Controller
     }
 
     /**
-     * @Route("/turnkey-projects", name="api_approved_turnkey_projects")
+     * @Route("/pinned", name="api_pinned_turnkey_project")
      * @Method("GET")
      */
-    public function getApprovedTurnkeyProjectAction(TurnkeyProjectRepository $repository, Serializer $serializer): Response
+    public function getPinnedTurnkeyProjectAction(TurnkeyProjectRepository $repository, Serializer $serializer): Response
     {
         return new JsonResponse(
-            $serializer->serialize($repository->findApproved(), 'json', SerializationContext::create()->setGroups(['turnkey_project_list'])),
+            $serializer->serialize($repository->findPinned(), 'json', SerializationContext::create()->setGroups(['turnkey_project_read'])),
+            JsonResponse::HTTP_OK,
+            [],
+            true
+        );
+    }
+
+    /**
+     * @Route("/{slug}", name="api_turnkey_project")
+     * @Entity("turnkeyProject", expr="repository.findOneApprovedBySlug(slug)")
+     * @Method("GET")
+     */
+    public function getTurnkeyProjectAction(TurnkeyProject $turnkeyProject, Serializer $serializer): Response
+    {
+        return new JsonResponse(
+            $serializer->serialize($turnkeyProject, 'json', SerializationContext::create()->setGroups(['turnkey_project_read'])),
             JsonResponse::HTTP_OK,
             [],
             true
