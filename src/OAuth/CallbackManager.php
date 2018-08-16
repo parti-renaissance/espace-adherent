@@ -63,7 +63,10 @@ class CallbackManager
 
     private function validateRedirectUriAndClient(): array
     {
-        $request = $this->requestStack->getMasterRequest();
+        if (!$request = $this->requestStack->getMasterRequest()) {
+            return [];
+        }
+
         $redirectUri = $request->query->get('redirect_uri');
         $clientId = $request->query->get('client_id');
 

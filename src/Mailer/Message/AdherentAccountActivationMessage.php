@@ -9,12 +9,26 @@ final class AdherentAccountActivationMessage extends Message
 {
     public static function createFromAdherent(Adherent $adherent, string $confirmationLink): self
     {
+        return static::create($adherent, '292269', $confirmationLink);
+    }
+
+    public static function createReminderFromAdherent(Adherent $adherent, string $confirmationLink): self
+    {
+        return static::create($adherent, '501948', $confirmationLink);
+    }
+
+    private static function create(
+        Adherent $adherent,
+        string $templateId,
+        string $confirmationLink,
+        string $subject = 'Confirmez votre compte En-Marche.fr'
+    ): self {
         return new self(
             Uuid::uuid4(),
-            '292269',
+            $templateId,
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Confirmez votre compte En-Marche.fr',
+            $subject,
             static::getTemplateVars(),
             static::getRecipientVars($adherent->getFirstName(), $confirmationLink)
         );

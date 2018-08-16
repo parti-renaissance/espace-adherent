@@ -94,6 +94,7 @@
         <service id="AppBundle\Donation\PayboxFormFactory" />
 
         <!-- Membership -->
+        <service id="AppBundle\Command\RemindUnconfirmedMembershipCommand"/>
         <service id="AppBundle\Membership\MembershipRegistrationProcess"/>
         <service id="AppBundle\Membership\AdherentChangeEmailHandler">
             <argument key="$mailer" type="service" id="app.mailer.transactional" />
@@ -192,7 +193,7 @@
             <argument key="$webDirectory">%kernel.root_dir%/../web</argument>
         </service>
 
-        <!--Command-->
+        <!-- Command -->
         <service id="AppBundle\Command\ApiScheduleCommitteeCreationCommand" />
         <service id="AppBundle\Command\ApiScheduleEventCreationCommand" />
         <service id="AppBundle\Command\InitializeEmailSubscriptionHistoryCommand"/>
