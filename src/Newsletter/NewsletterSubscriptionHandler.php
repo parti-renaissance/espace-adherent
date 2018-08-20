@@ -6,19 +6,16 @@ use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\NewsletterSubscriptionMessage;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class NewsletterSubscriptionHandler
 {
     private $manager;
     private $mailer;
-    private $requestStack;
 
-    public function __construct(EntityManager $manager, MailerService $mailer, RequestStack $requestStack)
+    public function __construct(EntityManager $manager, MailerService $mailer)
     {
         $this->manager = $manager;
         $this->mailer = $mailer;
-        $this->requestStack = $requestStack;
     }
 
     public function subscribe(NewsletterSubscription $subscription)
@@ -28,10 +25,7 @@ class NewsletterSubscriptionHandler
         $this->manager->persist($subscription);
         $this->manager->flush();
 
-        $campaignExpired = (bool) $this->requestStack->getCurrentRequest()->attributes->get('_campaign_expired', false);
-        if (!$campaignExpired) {
-            $this->mailer->sendMessage(NewsletterSubscriptionMessage::createFromSubscription($subscription));
-        }
+        $this->mailer->sendMessage(NewsletterSubscriptionMessage::createFromSubscription($subscription));
     }
 
     public function unsubscribe(?string $email)

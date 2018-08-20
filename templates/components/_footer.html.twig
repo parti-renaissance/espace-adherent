@@ -1,5 +1,3 @@
-{% set campaign_expired = app.request.attributes.get('_campaign_expired') %}
-
 {% set has_role_user = is_granted('ROLE_USER') %}
 {% set has_role_adherent = is_granted('ROLE_ADHERENT') %}
 {% set has_role_admin = is_granted('ROLE_ADMIN_DASHBOARD') %}
@@ -47,17 +45,15 @@
                         Nos sites départementaux
                     </a>
                 </li>
-                {% if not campaign_expired %}
-                    <li>
-                        <a href="{{ path('app_search_all_committees') }}">Tous les comités</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_search_all_events') }}">Tous les événements</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a>
-                    </li>
-                {% endif %}
+                <li>
+                    <a href="{{ path('app_search_all_committees') }}">Tous les comités</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_search_all_events') }}">Tous les événements</a>
+                </li>
+                <li>
+                    <a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a>
+                </li>
             </ul>
             <ul class="list__links list__links--col list__links--no-decor">
                 <li>
@@ -93,25 +89,19 @@
                 <li><a href="{{ path('articles_list', { category: 'opinions' }) }}">Opinions</a></li>
             </ul>
             <ul class="list__links list__links--col list__links--no-decor">
-                {% if not campaign_expired %}
-                    <li><h4><a href="{{ path('page_le_mouvement_devenez_benevole') }}" class="text--bold text--medium-small">S'engager</a></h4></li>
-                    <li><a href="{{ path('app_membership_join') }}">Adhérer en ligne</a></li>
-                    <li><a href="https://storage.googleapis.com/en-marche-fr/bulletin-d-adhesion-EMa.pdf">Adhérer par courrier</a></li>
-                {% else %}
-                    <li><h4><a href="#" class="text--bold text--medium-small">S'engager</a></h4></li>
-                {% endif %}
-                    <li><a href="{{ path('donation_index') }}">Donner en ligne</a></li>
-                    <li><a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf">Donner par chèque</a></li>
-                {% if not campaign_expired %}
-                    <li><a href="{{ path('app_search_committees') }}">Rejoindre un comité</a></li>
-                    <li><a href="{{ path('app_search_events') }}">S'inscrire à un événement</a></li>
-                    <li><a href="{{ path('invitation_form') }}">Inviter une connaissance</a></li>
-                    <li>
-                        <a href="{{ has_role_adherent ? path('app_user_profile') : path('app_user_login') }}">
-                            Connexion
-                        </a>
-                    </li>
-                {% endif %}
+                <li><h4><a href="{{ path('page_le_mouvement_devenez_benevole') }}" class="text--bold text--medium-small">S'engager</a></h4></li>
+                <li><a href="{{ path('app_membership_join') }}">Adhérer en ligne</a></li>
+                <li><a href="https://storage.googleapis.com/en-marche-fr/bulletin-d-adhesion-EMa.pdf">Adhérer par courrier</a></li>
+                <li><a href="{{ path('donation_index') }}">Donner en ligne</a></li>
+                <li><a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf">Donner par chèque</a></li>
+                <li><a href="{{ path('app_search_committees') }}">Rejoindre un comité</a></li>
+                <li><a href="{{ path('app_search_events') }}">S'inscrire à un événement</a></li>
+                <li><a href="{{ path('invitation_form') }}">Inviter une connaissance</a></li>
+                <li>
+                    <a href="{{ has_role_adherent ? path('app_user_profile') : path('app_user_login') }}">
+                        Connexion
+                    </a>
+                </li>
             </ul>
             <ul class="list__links list__links--col list__links--no-decor">
                 <li><h4><a href="https://twitter.com/hashtag/TousEnMarche" class="text--bold text--medium-small" target="_blank" rel="noopener noreferrer">#TousEnMarche</a></h4></li>

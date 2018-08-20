@@ -15,23 +15,21 @@
                 <h3>{{ (donation.amount/100)|localizedcurrency('EUR')|replace({',00' : ''}) }}</h3>
                 est validé !
             </div>
-            {% if not campaign_expired %}
-                <div class="donation__result--successful__thankyou">
-                    {% if is_registration %}
-                        <span>Nous sommes heureux de vous compter parmi nous.</span>
-                        <span>
-                            Nous venons de vous envoyer un email pour confirmer votre adhésion.<br/>
-                            Rendez-vous sur votre boîte email.
-                        </span>
-                    {% else %}
-                        Les dons sont la première source de revenu de La République En Marche&nbsp;!
-                    {% endif %}
-                </div>
+            <div class="donation__result--successful__thankyou">
+                {% if is_registration %}
+                    <span>Nous sommes heureux de vous compter parmi nous.</span>
+                    <span>
+                        Nous venons de vous envoyer un email pour confirmer votre adhésion.<br/>
+                        Rendez-vous sur votre boîte email.
+                    </span>
+                {% else %}
+                    Les dons sont la première source de revenu de La République En Marche&nbsp;!
+                {% endif %}
+            </div>
 
-                <div class="text--body text--left">
-                    Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie politique et au rayonnement des idées progressistes.
-                </div>
-            {% endif %}
+            <div class="text--body text--left">
+                Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie politique et au rayonnement des idées progressistes.
+            </div>
 
             {% if not is_adherent %}
                 <div class="text--body b__nudge--top">
