@@ -10,6 +10,7 @@ use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Donation\PayboxPaymentUnsubscription;
 use AppBundle\Donation\TransactionCallbackHandler;
 use AppBundle\Entity\Donation;
+use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Exception\PayboxPaymentUnsubscriptionException;
 use AppBundle\Exception\InvalidPayboxPaymentSubscriptionValueException;
 use AppBundle\Form\DonationRequestType;
@@ -164,7 +165,12 @@ class DonationController extends Controller
             'is_registration' => $request->query->get('is_registration'),
             'is_adherent' => $adherentRepository->isAdherent($donation->getEmailAddress()),
             'is_newsletter_subscribed' => $newsletterSubscriptionRepository->isSubscribed($donation->getEmailAddress()),
-            'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class)->createView(),
+            'newsletter_form' => $this
+                ->createForm(
+                    NewsletterSubscriptionType::class,
+                    new NewsletterSubscription($donation->getEmailAddress(), $donation->getPostalCode(), $donation->getCountry())
+                )
+                ->createView(),
         ]);
     }
 
