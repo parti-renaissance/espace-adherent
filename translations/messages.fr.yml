@@ -350,7 +350,7 @@ subscription_type.group.citizen_project_emails: E-mails Projets Citoyens
 #
 # Actualités
 #
-actualites.label.tout: actualités
+actualites.label.tout: articles
 actualites.label.actualites: actualités
 actualites.label.videos: vidéos
 actualites.label.discours: discours
