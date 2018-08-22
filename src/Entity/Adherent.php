@@ -236,6 +236,13 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      */
     public $comMobile;
 
+    /**
+     * Activation token was already sent after 48h of registration
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $remindSent = false;
+
     public function __construct(
         UuidInterface $uuid,
         string $emailAddress,
@@ -1157,5 +1164,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function unserialize($serialized)
     {
         list($this->id, $this->emailAddress, $this->password) = unserialize($serialized);
+    }
+
+    public function setRemindSent(bool $remindSent): void
+    {
+        $this->remindSent = $remindSent;
     }
 }
