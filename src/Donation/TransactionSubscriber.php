@@ -9,19 +9,16 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Lexik\Bundle\PayboxBundle\Event\PayboxEvents;
 use Lexik\Bundle\PayboxBundle\Event\PayboxResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class TransactionSubscriber implements EventSubscriberInterface
 {
     private $manager;
     private $mailer;
-    private $requestStack;
 
-    public function __construct(ObjectManager $manager, MailerService $mailer, RequestStack $requestStack)
+    public function __construct(ObjectManager $manager, MailerService $mailer)
     {
         $this->manager = $manager;
         $this->mailer = $mailer;
-        $this->requestStack = $requestStack;
     }
 
     public static function getSubscribedEvents()
@@ -57,8 +54,7 @@ class TransactionSubscriber implements EventSubscriberInterface
         $this->manager->persist($transaction = $donation->processPayload($payboxPayload));
         $this->manager->flush();
 
-        $campaignExpired = (bool) $this->requestStack->getCurrentRequest()->attributes->get('_campaign_expired', false);
-        if (!$campaignExpired && $transaction->isSuccessful()) {
+        if ($transaction->isSuccessful()) {
             $this->mailer->sendMessage(DonationMessage::createFromTransaction($transaction));
         }
     }

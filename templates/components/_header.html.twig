@@ -1,5 +1,3 @@
-{% set campaign_expired = app.request.attributes.get('_campaign_expired') %}
-
 {% set has_role_user = is_granted('ROLE_USER') %}
 {% set has_role_adherent = is_granted('ROLE_ADHERENT') %}
 {% set has_role_admin = is_granted('ROLE_ADMIN_DASHBOARD') %}
