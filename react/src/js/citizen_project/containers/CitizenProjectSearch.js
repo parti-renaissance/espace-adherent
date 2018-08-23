@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Select from 'react-select';
 
+import { getCitizenProjects } from '../actions/citizen-projects';
 import CitizenProjectItem from './../components/CitizenProjectItem';
 
 const options = [
@@ -17,8 +19,15 @@ class CitizenProjectSearch extends Component {
         this.setState({ selectedOption });
         console.log('Option selected:', selectedOption);
     };
+
+    componentDidMount() {
+        if (!this.props.projects.length) {
+            this.props.dispatch(getCitizenProjects());
+        }
+    }
     render() {
         const { selectedOption } = this.state;
+        const { projects } = this.props;
         return (
             <div className="citizen__wrapper">
                 <h2 className="">Explorer tous les projets</h2>
@@ -47,94 +56,23 @@ class CitizenProjectSearch extends Component {
                     />
                 </div>
                 <div className="citizen__project__grid">
-                    <CitizenProjectItem
-                        thumbnail="https://boygeniusreport.files.wordpress.com/2017/05/water.jpg"
-                        title="Le coin du numérique"
-                        subtitle="Rendre le numérique accessible à tous"
-                        author="Guillaume D."
-                        localisation="Paris 16"
+                    {projects.map((project, i) => <CitizenProjectItem
+                        key={i}
+                        thumbnail={project.thumbnail}
+                        title={project.title}
+                        subtitle={project.subtitle}
+                        author={project.author}
+                        localisation={project.city}
                     />
-                    <CitizenProjectItem
-                        thumbnail="https://boygeniusreport.files.wordpress.com/2017/05/water.jpg"
-                        title="Le coin du numérique"
-                        subtitle="Rendre le numérique accessible à tous"
-                        author="Guillaume D."
-                        localisation="Paris 16"
-                    />
-                    <CitizenProjectItem
-                        thumbnail="https://boygeniusreport.files.wordpress.com/2017/05/water.jpg"
-                        title="Le coin du numérique"
-                        subtitle="Rendre le numérique accessible à tous"
-                        author="Guillaume D."
-                        localisation="Paris 16"
-                    />
-                    <CitizenProjectItem
-                        thumbnail="https://boygeniusreport.files.wordpress.com/2017/05/water.jpg"
-                        title="Le coin du numérique"
-                        subtitle="Rendre le numérique accessible à tous"
-                        author="Guillaume D."
-                        localisation="Paris 16"
-                    />
-                    <CitizenProjectItem
-                        thumbnail="https://boygeniusreport.files.wordpress.com/2017/05/water.jpg"
-                        title="Le coin du numérique"
-                        subtitle="Rendre le numérique accessible à tous"
-                        author="Guillaume D."
-                        localisation="Paris 16"
-                    />
-                    <CitizenProjectItem
-                        thumbnail="https://boygeniusreport.files.wordpress.com/2017/05/water.jpg"
-                        title="Le coin du numérique"
-                        subtitle="Rendre le numérique accessible à tous"
-                        author="Guillaume D."
-                        localisation="Paris 16"
-                    />
-                    <CitizenProjectItem
-                        thumbnail="https://boygeniusreport.files.wordpress.com/2017/05/water.jpg"
-                        title="Le coin du numérique"
-                        subtitle="Rendre le numérique accessible à tous"
-                        author="Guillaume D."
-                        localisation="Paris 16"
-                    />
-                    <CitizenProjectItem
-                        thumbnail="https://boygeniusreport.files.wordpress.com/2017/05/water.jpg"
-                        title="Le coin du numérique"
-                        subtitle="Rendre le numérique accessible à tous"
-                        author="Guillaume D."
-                        localisation="Paris 16"
-                    />
-                    <CitizenProjectItem
-                        thumbnail="https://boygeniusreport.files.wordpress.com/2017/05/water.jpg"
-                        title="Le coin du numérique"
-                        subtitle="Rendre le numérique accessible à tous"
-                        author="Guillaume D."
-                        localisation="Paris 16"
-                    />
-                    <CitizenProjectItem
-                        thumbnail="https://boygeniusreport.files.wordpress.com/2017/05/water.jpg"
-                        title="Le coin du numérique"
-                        subtitle="Rendre le numérique accessible à tous"
-                        author="Guillaume D."
-                        localisation="Paris 16"
-                    />
-                    <CitizenProjectItem
-                        thumbnail="https://boygeniusreport.files.wordpress.com/2017/05/water.jpg"
-                        title="Le coin du numérique"
-                        subtitle="Rendre le numérique accessible à tous"
-                        author="Guillaume D."
-                        localisation="Paris 16"
-                    />
-                    <CitizenProjectItem
-                        thumbnail="https://boygeniusreport.files.wordpress.com/2017/05/water.jpg"
-                        title="Le coin du numérique"
-                        subtitle="Rendre le numérique accessible à tous"
-                        author="Guillaume D."
-                        localisation="Paris 16"
-                    />
+                    )}
                 </div>
             </div>
         );
     }
 }
 
-export default CitizenProjectSearch;
+const mapStateToProps = state => ({
+    projects: state.citizen_project.citizen.projects,
+});
+
+export default connect(mapStateToProps)(CitizenProjectSearch);

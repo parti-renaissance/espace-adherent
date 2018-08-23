@@ -1,11 +1,21 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { getCitizenProjects } from '../actions/citizen-projects';
+import { getPinned } from '../actions/turnkey-projects';
 import TurnkeyProjectDetail from './../components/TurnkeyProjectDetail';
 
 class CitizenProject extends Component {
+    componentDidMount() {
+        this.props.dispatch(getCitizenProjects());
+        this.props.dispatch(getPinned());
+    }
+
     render() {
+        const { count, pinned: { /* loading, */ project } } = this.props;
         return (
             <div className="citizen__wrapper">
-                <h2 className="">Déjà 500 projets citoyens lancés !</h2>
+                <h2 className="">Déjà {count} projets citoyens lancés !</h2>
                 <p>
                     Les projets citoyens sont des actions locales qui visent à améliorer concrètement le quotidien{' '}
                     <br />
@@ -42,18 +52,25 @@ class CitizenProject extends Component {
 
                 <h3>Découvrez quelques projets prêts à lancer !</h3>
 
+                {project &&
                 <TurnkeyProjectDetail
                     border="yellow"
-                    video_id="DvZaHp0IfNo"
-                    title="Des métiers pour demain"
-                    subtitle="Inspirer nos jeunes pour les aider à s’orienter"
-                    description="Aider les collégiens à mieux appréhender les métiers, en organisant des “speed-datings” ludiques avec des professionnels pour casser les idées reçues et en leur permettant de trouver un stage de découverte hors de leur réseau familial."
+                    video_id={project.video_id}
+                    title={project.title}
+                    subtitle={project.subtitle}
+                    description={project.description}
                     cta_content="Voir tous les projets faciles à lancer"
                     cta_border="yellow"
                 />
+                }
             </div>
         );
     }
 }
 
-export default CitizenProject;
+const mapStateToProps = state => ({
+    count: state.citizen_project.citizen.count,
+    pinned: state.citizen_project.turnkey.pinned,
+});
+
+export default connect(mapStateToProps)(CitizenProject);

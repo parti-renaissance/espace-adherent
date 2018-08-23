@@ -1,10 +1,28 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
+import { getTurnkeyDetail, getTurnkeyProjects } from '../actions/turnkey-projects';
 import TurnkeyProjectDetail from './../components/TurnkeyProjectDetail';
 import TurnkeyProjectListItem from './../components/TurnkeyProjectListItem';
 
 class CitizenProjectTurnKey extends Component {
+    componentDidMount() {
+        this.props.dispatch(getTurnkeyProjects());
+    }
+
+    componentDidUpdate(prevProps) {
+        const { projects: prevAll } = prevProps.all;
+        const { projects: nowAll } = this.props.all;
+        if (prevAll.length !== nowAll.length) {
+            const [{ slug }] = this.props.all.projects;
+            this.props.dispatch(getTurnkeyDetail(slug));
+        }
+    }
+
     render() {
+        const {
+            detail: { project /* , loading: detailLoading */ },
+            all: { projects /* , loading: allLoading */ } } = this.props;
         return (
             <div className="citizen__wrapper">
                 <h2>Les projets citoyens faciles à lancer</h2>
@@ -15,67 +33,25 @@ class CitizenProjectTurnKey extends Component {
 
                 <div className="turnkey__project__content">
                     <div className="turnkey__project__detail">
-                        <TurnkeyProjectDetail
-                            border="light"
-                            video_id="DvZaHp0IfNo"
-                            title="Des métiers pour demain"
-                            subtitle="Inspirer nos jeunes pour les aider à s’orienter"
-                            description="Aider les collégiens à mieux appréhender les métiers, en organisant des “speed-datings” ludiques avec des professionnels pour casser les idées reçues et en leur permettant de trouver un stage de découverte hors de leur réseau familial."
-                            cta_content="Je soumets une demande de création"
-                            cta_border="green"
-                        />
+                        {project ?
+                            <TurnkeyProjectDetail
+                                border="light"
+                                video_id={project.video_id}
+                                title={project.title}
+                                subtitle={project.subtitle}
+                                description={project.description}
+                                cta_content="Je soumets une demande de création"
+                                cta_border="green"
+                            />
+                            : null}
                     </div>
                     <div className="turnkey__project__list">
-                        <TurnkeyProjectListItem
-                            category="Emploi"
-                            title="Des métiers pour demain"
-                            subtitle="Inspirer nos jeunes pour les aider à s'orienter"
-                        />
-                        <TurnkeyProjectListItem
-                            category="Emploi"
-                            title="Des métiers pour demain"
-                            subtitle="Inspirer nos jeunes pour les aider à s'orienter"
-                        />
-                        <TurnkeyProjectListItem
-                            category="Emploi"
-                            title="Des métiers pour demain"
-                            subtitle="Inspirer nos jeunes pour les aider à s'orienter"
-                        />
-                        <TurnkeyProjectListItem
-                            category="Emploi"
-                            title="Des métiers pour demain"
-                            subtitle="Inspirer nos jeunes pour les aider à s'orienter"
-                        />
-                        <TurnkeyProjectListItem
-                            category="Emploi"
-                            title="Des métiers pour demain"
-                            subtitle="Inspirer nos jeunes pour les aider à s'orienter"
-                        />
-                        <TurnkeyProjectListItem
-                            category="Emploi"
-                            title="Des métiers pour demain"
-                            subtitle="Inspirer nos jeunes pour les aider à s'orienter"
-                        />
-                        <TurnkeyProjectListItem
-                            category="Emploi"
-                            title="Des métiers pour demain"
-                            subtitle="Inspirer nos jeunes pour les aider à s'orienter"
-                        />
-                        <TurnkeyProjectListItem
-                            category="Emploi"
-                            title="Des métiers pour demain"
-                            subtitle="Inspirer nos jeunes pour les aider à s'orienter"
-                        />
-                        <TurnkeyProjectListItem
-                            category="Emploi"
-                            title="Des métiers pour demain"
-                            subtitle="Inspirer nos jeunes pour les aider à s'orienter"
-                        />
-                        <TurnkeyProjectListItem
-                            category="Emploi"
-                            title="Des métiers pour demain"
-                            subtitle="Inspirer nos jeunes pour les aider à s'orienter"
-                        />
+                        {projects.map((p, i) => <TurnkeyProjectListItem
+                            key={i}
+                            category={p.category}
+                            title={p.title}
+                            subtitle={p.subtitle}
+                        />)}
                     </div>
                 </div>
             </div>
@@ -83,4 +59,9 @@ class CitizenProjectTurnKey extends Component {
     }
 }
 
-export default CitizenProjectTurnKey;
+const mapStateToProps = state => ({
+    all: state.citizen_project.turnkey.all,
+    detail: state.citizen_project.turnkey.detail,
+});
+
+export default connect(mapStateToProps)(CitizenProjectTurnKey);
