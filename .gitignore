@@ -22,3 +22,5 @@
 /.php_cs
 /.docker-dev.md5
 /behat.yml
+.*~
+.*sw*
