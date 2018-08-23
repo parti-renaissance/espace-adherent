@@ -24,6 +24,9 @@ class NewsletterSubscriptionType extends AbstractType
                 'required' => false,
                 'filter_emojis' => true,
             ])
+            ->add('country', UnitedNationsCountryType::class, [
+                'required' => false,
+            ])
             ->add('personalDataCollection', AcceptPersonalDataCollectType::class)
         ;
     }

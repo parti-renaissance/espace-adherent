@@ -28,13 +28,19 @@
                     <div class="form__row">
                         {{ form_label(form.email, 'Votre adresse e-mail') }}
                         {{ form_errors(form.email) }}
-                        {{ form_widget(form.email, { 'attr': { 'class': 'form--full' } }) }}
+                        {{ form_widget(form.email, { attr: { class: 'form--full' } }) }}
                     </div>
 
                     <div class="form__row">
                         {{ form_label(form.postalCode, 'Votre code postal') }}
                         {{ form_errors(form.postalCode) }}
-                        {{ form_widget(form.postalCode, { 'attr': { 'class': 'form--full' } }) }}
+                        {{ form_widget(form.postalCode, { attr: { class: 'form--full' } }) }}
+                    </div>
+
+                    <div class="form__row">
+                        {{ form_label(form.country, 'Votre pays') }}
+                        {{ form_errors(form.country) }}
+                        {{ form_widget(form.country, { attr: { class: 'form--full' } }) }}
                     </div>
 
                     <div class="b__nudge--top text--small form__checkbox form__checkbox--large">

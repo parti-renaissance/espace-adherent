@@ -49,31 +49,34 @@
                         Tenez-vous au courant des actualités du mouvement et du gouvernement en vous abonnant à notre newsletter hebdomadaire !
                     </div>
                     {{ form_start(newsletter_form, { action: path('newsletter_subscription'), attr: { class: 'l__row l__row--wrap'} }) }}
-                        <div>
+                        <div class="form__row">
                             {{ form_widget(newsletter_form.email, {
                                 attr: {
                                     title: 'common.email_address',
                                     placeholder: 'common.email_address',
-                                    class: 'form__email'
+                                    class: 'form--full'
                                 }
                             }) }}
                         </div>
-                        <div class="b__nudge--top-5">
+                        <div class="form__row">
                             {{ form_widget(newsletter_form.postalCode, {
                                 attr: {
                                     title: 'common.zip_code',
                                     placeholder: 'common.zip_code',
-                                    class: 'form__zipcode'
+                                    class: 'form--mid'
                                 }
                             }) }}
-                            <button title="Je m'inscris à la newsletter" type="submit" class="form btn btn--primary">Je m'inscris</button>
+                            {{ form_widget(newsletter_form.country, { placeholder: 'common.country', attr: { class: 'form--mid' } }) }}
                         </div>
                         <div>
+                            <button title="Je m'inscris à la newsletter" type="submit" class="form btn btn--primary">Je m'inscris</button>
+                        </div>
+                        <div class="b__nudge--top-15">
                             {{ form_row(newsletter_form.personalDataCollection) }}
                         </div>
                     {{ form_end(newsletter_form) }}
                 </div>
-                <p class="text--gray text--small text--left b__nudge--top-5">
+                <p class="text--gray text--small text--left">
                     Les données recueillies sur ce formulaire sont traitées par LaREM afin de vous envoyer la newsletter du mouvement et de permettre à LaREM de vous envoyer des communications politiques.
                     Les informations marquées d’un astérisque sont obligatoires. L’absence de réponse dans ces champs ne permettra pas à LaREM de traiter votre demande.
                     Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
