@@ -722,7 +722,7 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertSame('Art\'s connection', $crawler->filter('#citizen_project_name')->attr('value'));
         $this->assertSame('Ateliers de rencontre autour de l\'art', $crawler->filter('#citizen_project_subtitle')->attr('value'));
-        $this->assertSame('Culture', $crawler->filter('#citizen_project_category option:selected')->text());
+        $this->assertSame('Culture', $crawler->filter('#citizen_project_category')->attr('value'));
         $this->assertSame('Les lieux et espaces de culture sont rarement accessibles à tous et donnent peu l\'occasion de tisser du lien social.', $crawler->filter('#citizen_project_problem_description')->text());
         $this->assertSame('Nous proposons d\'organiser des ateliers d\'art participatif associant des artistes aux citoyens', $crawler->filter('#citizen_project_proposed_solution')->text());
 
@@ -755,7 +755,7 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertSame('Art\'s connection', $crawler->filter('#citizen_project_name')->attr('value'));
         $this->assertSame('Ateliers de rencontre autour de l\'art', $crawler->filter('#citizen_project_subtitle')->attr('value'));
-        $this->assertSame('Culture', $crawler->filter('#citizen_project_category option:selected')->text());
+        $this->assertSame('Culture', $crawler->filter('#citizen_project_category')->attr('value'));
         $this->assertSame('Les lieux et espaces de culture sont rarement accessibles à tous et donnent peu l\'occasion de tisser du lien social.', $crawler->filter('#citizen_project_problem_description')->text());
         $this->assertSame('Nous proposons d\'organiser des ateliers d\'art participatif associant des artistes aux citoyens', $crawler->filter('#citizen_project_proposed_solution')->text());
 

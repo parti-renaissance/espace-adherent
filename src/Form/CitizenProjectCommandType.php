@@ -54,11 +54,6 @@ class CitizenProjectCommandType extends AbstractType
                 'attr' => ['maxlength' => 80],
                 'disabled' => $options['from_turnkey_project'],
             ])
-            ->add('category', EventCategoryType::class, [
-                'placeholder' => 'Choisir un thème',
-                'class' => CitizenProjectCategory::class,
-                'disabled' => $options['from_turnkey_project'],
-            ])
             ->add('image', FileType::class, [
                 'required' => false,
             ])
@@ -74,7 +69,7 @@ class CitizenProjectCommandType extends AbstractType
                 'filter_emojis' => true,
                 'purifier_type' => 'enrich_content',
                 'with_character_count' => true,
-                'attr' => ['maxlength' => 800],
+                'attr' => ['maxlength' => 800, 'from_turnkey_project' => $options['from_turnkey_project']],
                 'disabled' => $options['from_turnkey_project'],
             ])
             ->add('required_means', TextareaType::class, [
@@ -136,6 +131,21 @@ class CitizenProjectCommandType extends AbstractType
                 'mapped' => false,
             ])
         ;
+
+        if ($options['from_turnkey_project']) {
+            $builder
+                ->add('category', TextType::class, [
+                    'disabled' => true,
+                ])
+            ;
+        } else {
+            $builder
+                ->add('category', EventCategoryType::class, [
+                    'placeholder' => 'Choisir un thème',
+                    'class' => CitizenProjectCategory::class,
+                ])
+            ;
+        }
 
         $builder->get('skills')->addModelTransformer($this->citizenProjectSkillTransformer);
         $builder->get('committees')->addModelTransformer($this->committeeTransformer);

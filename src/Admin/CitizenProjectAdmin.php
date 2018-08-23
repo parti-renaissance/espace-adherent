@@ -176,9 +176,6 @@ class CitizenProjectAdmin extends AbstractAdmin
                 ->add('featured', null, [
                     'label' => 'Coup de coeur',
                 ])
-                ->add('assistanceNeeded', null, [
-                    'label' => 'Demande d\'accompagnement',
-                ])
                 ->add('assistanceContent', null, [
                     'label' => 'Description de l\'accompagnement',
                 ])
@@ -402,15 +399,9 @@ class CitizenProjectAdmin extends AbstractAdmin
             ->add('skills', null, [
                 'label' => 'Compétences recherchées',
             ])
-            ->add('matchedSkills', null, [
-                'label' => 'Comp. matchées',
-            ])
             ->add('nextAction', null, [
                 'label' => 'Prochaine action',
                 'template' => 'admin/citizen_project/list_next_citizen_action.html.twig',
-            ])
-            ->add('assistanceNeeded', null, [
-                'label' => 'Demande d\'accomp.',
             ])
             ->add('status', TextType::class, [
                 'label' => 'Statut',
