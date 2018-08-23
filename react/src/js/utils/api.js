@@ -11,7 +11,7 @@ axios.interceptors.response.use(
     }
 );
 
-export default (endpoint, method = 'get', data) => {
+export default (host, endpoint = '', method = 'get', data) => {
     const headers =
         'get' === method
             ? {}
@@ -20,7 +20,7 @@ export default (endpoint, method = 'get', data) => {
             };
 
     return axios({
-        url: `${process.env.REACT_APP_API_URL}${endpoint}`,
+        url: `${host}${endpoint}`,
         headers,
         method,
         withCredentials: true,
