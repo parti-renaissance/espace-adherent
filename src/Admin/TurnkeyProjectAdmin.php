@@ -61,6 +61,9 @@ class TurnkeyProjectAdmin extends AbstractAdmin
                 ->add('name', null, [
                     'label' => 'Nom',
                 ])
+                ->add('slug', null, [
+                    'label' => 'Slug',
+                ])
                 ->add('subtitle', null, [
                     'label' => 'Sous-titre',
                 ])
@@ -189,9 +192,12 @@ class TurnkeyProjectAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('name', TextType::class, [
+            ->add('name', null, [
                 'label' => 'Nom',
                 'template' => 'admin/turnkey_project/list_name.html.twig',
+            ])
+            ->add('slug', null, [
+                'label' => 'Slug',
             ])
             ->add('category', null, [
                 'label' => 'Catégorie',
