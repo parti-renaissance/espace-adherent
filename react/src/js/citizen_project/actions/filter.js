@@ -4,10 +4,12 @@ import callApi from './../../utils/api';
 export const AUTOCOMPLETE_SEARCH = 'AUTOCOMPLETE_SEARCH';
 export const FILTERED_ITEM = 'FILTERED_ITEM';
 
+const API = process.env.REACT_APP_API_URL;
+
 export function autocompleteSearch(type, value) {
     return {
         type: AUTOCOMPLETE_SEARCH,
-        payload: callApi(`/api/referent/search/autocomplete?type=${type}&value=${value}`),
+        payload: callApi(API, `/api/referent/search/autocomplete?type=${type}&value=${value}`),
     };
 }
 
