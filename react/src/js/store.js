@@ -1,13 +1,14 @@
 import thunk from 'redux-thunk';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
-import reducers from './reducers/index.js';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createHistory from 'history/createBrowserHistory';
 import { routerMiddleware } from 'react-router-redux';
 import promise from 'redux-promise-middleware';
 import localForage from 'localforage';
 import logger from 'redux-logger';
+
+import projectReducers from './citizen_project/reducers/index.js';
 
 const persistConfig = {
     key: 'root',
@@ -22,7 +23,7 @@ if ('development' === process.env.NODE_ENV) {
 }
 
 export const store = createStore(
-    persistReducer(persistConfig, reducers),
+    persistReducer(persistConfig, projectReducers),
     composeWithDevTools(applyMiddleware(...middleware))
 );
 
