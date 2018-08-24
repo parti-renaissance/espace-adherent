@@ -61,6 +61,6 @@
         </service>
 
         <service id="AppBundle\Twig\MoocElementExtension" />
-
+        <service id="AppBundle\Twig\PaymentExtension" />
     </services>
 </container>

@@ -87,9 +87,7 @@
                 </a>
             </p>
         {% else %}
-            <h3>
-                Votre don n'a pas été effectué, soit car vous l'avez annulé soit car une erreur s'est produite.
-            </h3>
+            <h3>{{ get_payment_message_by_code(result_code)|trans|raw }}</h3>
 
             <p>
                 <a href="{{ retry_url }}" class="btn btn--medium btn--primary">

@@ -31,9 +31,14 @@ services:
 
     Tests\AppBundle\Consumer\DummyConsumer: ~
 
+    Tests\AppBundle\Test\Payment\PayboxProvider:
+        arguments:
+            - '%env(SSL_PRIVATE_KEY)%'
+
 parameters:
     env(DATABASE_NAME): "enmarche_test"
     env(RECAPTCHA_PUBLIC_KEY): 'TEST_RECAPTCHA_PUBLIC_KEY'
+    env(GMAPS_API_KEY):
     app_host: "test.%env(APP_HOST)%"
     amp_host: "test.%env(AMP_HOST)%"
     legislatives_host: "test.legislatives.%app_host%"

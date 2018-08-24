@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\AppBundle\Test\Payment\PayboxProvider;
 
 /**
  * @group functional
@@ -31,6 +32,8 @@ class DonationControllerTest extends WebTestCase
     private $donationRepository;
     /* @var TransactionRepository */
     private $transactionRepository;
+    /* @var PayboxProvider */
+    private $payboxProvider;
 
     public function getDonationSubscriptions(): iterable
     {
@@ -171,7 +174,7 @@ class DonationControllerTest extends WebTestCase
 
         $statusUrl = $appClient->getResponse()->headers->get('location');
         $statusUrlRegExp = '/don/(.+)'; // uuid
-        $statusUrlRegExp .= '/effectue\?code=donation_paybox_success&is_registration=0&_status_token=(.+)';
+        $statusUrlRegExp .= '/effectue\?code=donation_paybox_success&result=00000&is_registration=0&_status_token=(.+)';
 
         $this->assertRegExp('#'.$statusUrlRegExp.'#', $statusUrl);
 
@@ -179,16 +182,16 @@ class DonationControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $appClient->getResponse());
 
+        self::assertSame('OK', $this->simulateIpnCall($donation, '00000'));
+
         // Donation should have been completed
         $this->getEntityManager(Donation::class)->refresh($donation);
-
         $this->assertFalse($donation->hasError());
         if ($donation->hasSubscription()) {
             $this->assertTrue($donation->isSubscriptionInProgress());
             $donation->nextDonationAt();
         } else {
             $this->assertTrue($donation->isFinished());
-
             $this->expectException(\LogicException::class);
             $this->expectExceptionMessage('Donation without subscription can\'t have next donation date.');
             $donation->nextDonationAt();
@@ -197,9 +200,8 @@ class DonationControllerTest extends WebTestCase
         $transactions = $this->transactionRepository->findBy(['donation' => $donation]);
         $this->assertCount(1, $transactions);
         $transaction = $transactions[0];
-        $this->assertSame('00000', $transaction->getPayboxResultCode());
-        $this->assertSame('XXXXXX', $transaction->getPayboxAuthorizationCode());
-
+        self::assertSame('00000', $transaction->getPayboxResultCode());
+        self::assertSame('XXXXXX', $transaction->getPayboxAuthorizationCode());
         // Email should have been sent
         $this->assertCount(1, $this->getEmailRepository()->findMessages(DonationMessage::class));
     }
@@ -301,7 +303,7 @@ class DonationControllerTest extends WebTestCase
 
         $statusUrl = $appClient->getResponse()->headers->get('location');
         $statusUrlRegExp = '/don/(.+)'; // uuid
-        $statusUrlRegExp .= '/erreur\?code=paybox&is_registration=0&_status_token=(.+)';
+        $statusUrlRegExp .= '/erreur\?code=paybox&result=00001&is_registration=0&_status_token=(.+)';
 
         $this->assertRegExp('#'.$statusUrlRegExp.'#', $statusUrl);
 
@@ -309,19 +311,18 @@ class DonationControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $appClient->getResponse());
 
+        self::assertSame('OK', $this->simulateIpnCall($donation, '00001'));
+
         // Donation should have been aborted
         $this->getEntityManager(Donation::class)->refresh($donation);
-
         $this->assertTrue($donation->hasError());
-
         /** @var Transaction[] $transactions */
         $transactions = $this->transactionRepository->findBy(['donation' => $donation]);
         $this->assertCount(1, $transactions);
         $transaction = $transactions[0];
-        $this->assertSame('00001', $transaction->getPayboxResultCode());
-        $this->assertNull($transaction->getPayboxAuthorizationCode());
+        self::assertSame('00001', $transaction->getPayboxResultCode());
+        self::assertSame('XXXXXX', $transaction->getPayboxAuthorizationCode());
         $this->assertNull($transaction->getPayboxTransactionId());
-
         // Email should not have been sent
         $this->assertCount(0, $this->getEmailRepository()->findMessages(DonationMessage::class));
 
@@ -406,6 +407,7 @@ class DonationControllerTest extends WebTestCase
         $this->payboxClient = new PayboxClient();
         $this->donationRepository = $this->getDonationRepository();
         $this->transactionRepository = $this->getTransactionRepository();
+        $this->payboxProvider = $this->get(PayboxProvider::class);
     }
 
     protected function tearDown()
@@ -417,5 +419,17 @@ class DonationControllerTest extends WebTestCase
         $this->donationRepository = null;
 
         parent::tearDown();
+    }
+
+    private function simulateIpnCall(Donation $donation, string $status): string
+    {
+        return $this->client
+            ->request(
+                'POST',
+                $this->payboxProvider->getIpnUri(),
+                $this->payboxProvider->prepareCallbackParameters($donation->getUuid()->toString(), $status)
+            )
+            ->text()
+        ;
     }
 }

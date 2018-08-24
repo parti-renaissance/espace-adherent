@@ -100,6 +100,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should see "Paiement accepté"
 
     When I click on the "1" "img" element
+    And I simulate IPN call with "00000" code for the last donation of "jean.dupont@en-marche.fr"
     Then I should see "Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie politique et au rayonnement des idées progressistes."
 
     Given I am on "/don"
@@ -158,6 +159,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should see "Paiement accepté"
 
     When I click on the "1" "img" element
+    And I simulate IPN call with "00000" code for the last donation of "jacques.picard@en-marche.fr"
     Then I should see "Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie politique et au rayonnement des idées progressistes."
 
     # Check if I can't continue create a new subscription and then can cancel a subscription

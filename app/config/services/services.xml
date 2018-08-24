@@ -76,9 +76,7 @@
         <service id="AppBundle\Donation\TransactionSubscriber">
             <argument type="service" key="$mailer" id="app.mailer.transactional" />
         </service>
-        <service id="AppBundle\Donation\TransactionCallbackHandler">
-            <argument type="service" key="$mailer" id="app.mailer.transactional" />
-        </service>
+        <service id="AppBundle\Donation\TransactionCallbackHandler"/>
         <service id="AppBundle\Donation\DonationRequestHandler"/>
         <service id="AppBundle\Donation\DonationRequestUtils" />
 

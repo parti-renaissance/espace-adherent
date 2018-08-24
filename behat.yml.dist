@@ -20,6 +20,7 @@ default:
                     adherentRepository: "@AppBundle\\Repository\\AdherentRepository"
                 - SecurityContext
                 - FeatureContext
+                - DonationContext
     extensions:
         Behat\Symfony2Extension:
             kernel:

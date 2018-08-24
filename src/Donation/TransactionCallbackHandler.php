@@ -2,11 +2,7 @@
 
 namespace AppBundle\Donation;
 
-use AppBundle\Entity\Donation;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\DonationMessage;
-use AppBundle\Repository\TransactionRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use AppBundle\Repository\DonationRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,49 +11,32 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class TransactionCallbackHandler
 {
     private $router;
-    private $entityManager;
-    private $mailer;
+    private $donationRepository;
     private $donationRequestUtils;
-    private $transactionRepository;
 
     public function __construct(
         UrlGeneratorInterface $router,
-        ObjectManager $entityManager,
-        MailerService $mailer,
-        DonationRequestUtils $donationRequestUtils,
-        TransactionRepository $transactionRepository
+        DonationRepository $donationRepository,
+        DonationRequestUtils $donationRequestUtils
     ) {
         $this->router = $router;
-        $this->entityManager = $entityManager;
-        $this->mailer = $mailer;
+        $this->donationRepository = $donationRepository;
         $this->donationRequestUtils = $donationRequestUtils;
-        $this->transactionRepository = $transactionRepository;
     }
 
-    public function handle(string $uuid, Request $request, string $callbackToken): Response
+    public function handle(string $donationUuid, Request $request, string $callbackToken): Response
     {
-        $donation = $this->entityManager->getRepository(Donation::class)->findOneByUuid($uuid);
+        $donation = $this->donationRepository->findOneByUuid($donationUuid);
 
         if (!$donation) {
             return new RedirectResponse($this->router->generate('donation_index'));
         }
 
         $payload = $this->donationRequestUtils->extractPayboxResultFromCallback($request, $callbackToken);
-        $transactionId = $payload['transaction'];
-
-        if (!$transactionId || !$transaction = $this->transactionRepository->findByPayboxTransactionId($transactionId)) {
-            $this->entityManager->persist($transaction = $donation->processPayload($payload));
-
-            $this->entityManager->flush();
-
-            if ($transaction->isSuccessful()) {
-                $this->mailer->sendMessage(DonationMessage::createFromTransaction($transaction));
-            }
-        }
 
         return new RedirectResponse($this->router->generate(
             'donation_result',
-            $this->donationRequestUtils->createCallbackStatus($transaction)
+            $this->donationRequestUtils->createCallbackStatus($payload['result'], $donationUuid)
         ));
     }
 }

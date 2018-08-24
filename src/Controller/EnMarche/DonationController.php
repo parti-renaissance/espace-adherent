@@ -146,7 +146,9 @@ class DonationController extends Controller
         string $status
     ): Response {
         $retryUrl = null;
-        if ($donation->hasError()) {
+        $successful = self::RESULT_STATUS_EFFECTUE === $status;
+
+        if (!$successful) {
             $retryUrl = $this->generateUrl(
                 'donation_informations',
                 $this->get(DonationRequestUtils::class)->createRetryPayload($donation, $request)
@@ -156,9 +158,9 @@ class DonationController extends Controller
         $membershipRegistrationProcess->terminate();
 
         return $this->render('donation/result.html.twig', [
-            'successful' => self::RESULT_STATUS_EFFECTUE === $status,
+            'successful' => $successful,
             'nb_adherent' => $adherentRepository->countAdherents(),
-            'error_code' => $request->query->get('code'),
+            'result_code' => $request->query->get('result'),
             'donation' => $donation,
             'retry_url' => $retryUrl,
             'is_registration' => $request->query->get('is_registration'),
