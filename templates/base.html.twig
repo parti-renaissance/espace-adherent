@@ -77,16 +77,17 @@
         <script type="application/ld+json">
             {
                 "@context": "http://schema.org",
-                "@type": "WebSite",
+                "@type": "Organization",
+                "sameAs" : ["http://www.facebook.com/EnMarche","http://www.twitter.com/enmarchefr","https://www.instagram.com/enmarchefr","https://www.youtube.com/channel/UCJw8np695wqWOaKVhFjkRyg","https://www.linkedin.com/company/en-marche/","https://soundcloud.com/enmarchefr"],
                 "url": "{{ block('open_graph_url') }}",
                 "name": "{{ block('title') }}",
-                "image": "{{ block('open_graph_image')|raw }}",
+                "logo": "{{ block('open_graph_image')|raw }}",
                 "description": "{{ block('meta_description') }}",
-                "funder": {
-                    "@type": "Person",
-                    "givenName": "Emmanuel",
-                    "familyName": "Macron",
-                    "jobTitle": "President of France"
+                "subOrganization": {
+                    "@type": "Organization",
+                    "url": "https://lesjam.fr/",
+                    "name": "Les Jeunes avec Macron",
+                    "logo": "https://lesjam.fr/assets/images/logo-jam-1.png",
                 }
             }
         </script>
