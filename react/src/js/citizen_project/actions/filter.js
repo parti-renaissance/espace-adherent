@@ -1,21 +1,30 @@
 import callApi from './../../utils/api';
 
 // Action types
-export const AUTOCOMPLETE_SEARCH = 'AUTOCOMPLETE_SEARCH';
+export const PROJECT_FILTER = 'PROJECT_FILTER';
 export const FILTERED_ITEM = 'FILTERED_ITEM';
+export const SET_COUNTRY = 'SET_COUNTRY';
 
-const API = process.env.REACT_APP_API_URL;
+const API = process.env.REACT_APP_CITIZEN_API;
 
-export function autocompleteSearch(type, value) {
+export function filterCitizenProjects({ keyword, category, city }) {
+    const path = `?status=APPROVED&name=${keyword}&category=${category}&city=${city}`;
     return {
-        type: AUTOCOMPLETE_SEARCH,
-        payload: callApi(API, `/api/referent/search/autocomplete?type=${type}&value=${value}`),
+        type: PROJECT_FILTER,
+        payload: callApi(API, path, {withCredentials: false, headers: {Accept: 'application/json'}}),
     };
 }
 
 export function setFilteredItem(value) {
     return {
         type: FILTERED_ITEM,
+        payload: value,
+    };
+}
+
+export function setCountry(value) {
+    return {
+        type: SET_COUNTRY,
         payload: value,
     };
 }
