@@ -7,23 +7,30 @@ export const FILTER_PROJECTS = 'FILTER_PROJECTS';
 
 const API = process.env.REACT_APP_CITIZEN_API;
 
+const options = {
+    withCredentials: false,
+    headers: {
+        Accept: 'application/json',
+    },
+};
+
 export function getCitizenProjects() {
     return {
         type: CITIZEN_PROJECTS,
-        payload: callApi(API, '?status=APPROVED'),
+        payload: callApi(API, '?status=APPROVED', options),
     };
 }
 
 export function getCategories() {
     return {
         type: CATEGORIES,
-        payload: callApi(API, '/categories'),
+        payload: callApi(API, '/categories', options),
     };
 }
 
 export function getCitiesAndCountries() {
     return {
         type: CITIES_AND_COUNTIES,
-        payload: callApi(API, '/localizations'),
+        payload: callApi(API, '/localizations', options),
     };
 }
