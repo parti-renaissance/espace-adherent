@@ -1,5 +1,12 @@
 import axios from 'axios';
 
+const DEFAULT_OPS = {
+    method: 'get',
+    withCredentials: true,
+    headers: {},
+    maxRedirects: 0,
+};
+
 // Add a response interceptor
 axios.interceptors.response.use(
     r => r,
@@ -11,20 +18,14 @@ axios.interceptors.response.use(
     }
 );
 
-export default (host, endpoint = '', method = 'get', data) => {
-    const headers =
-        'get' === method
-            ? {}
-            : {
-                'Content-Type': 'application/json',
-            };
-
-    return axios({
+export default (host, endpoint = '', options) => {
+    options = {
         url: `${host}${endpoint}`,
-        headers,
-        method,
-        withCredentials: true,
-        maxRedirects: 0,
-        data,
-    }).then(r => r.data);
+        ...DEFAULT_OPS,
+        ...options,
+    };
+    if ('get' !== options.method) {
+        options.headers['Content-Type'] = 'application/json';
+    }
+    return axios(options).then(r => r.data);
 };
