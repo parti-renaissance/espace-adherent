@@ -1,13 +1,11 @@
-import { AUTOCOMPLETE_SEARCH, FILTERED_ITEM } from './../actions/filter';
+import { PROJECT_FILTER, FILTERED_ITEM } from './../actions/filter';
 
 const defaultState = {
-    autocomplete: {
-        committees: [],
-        cities: [],
-        countries: [],
-    },
-    filteredItem: '',
-    autocompletePending: false,
+    keyword: '',
+    category: null,
+    city: null,
+    country: 'FR',
+    filterPending: false,
 };
 
 export default (state = defaultState, action) => {
@@ -15,21 +13,17 @@ export default (state = defaultState, action) => {
     case `${FILTERED_ITEM}`:
         return {
             ...state,
-            filteredItem: action.payload,
+            ...action.payload,
         };
-    case `${AUTOCOMPLETE_SEARCH}_PENDING`:
+    case `${PROJECT_FILTER}_PENDING`:
         return {
             ...state,
-            autocompletePending: true,
+            filterPending: true,
         };
-    case `${AUTOCOMPLETE_SEARCH}_FULFILLED`:
+    case `${PROJECT_FILTER}_FULFILLED`:
         return {
             ...state,
-            autocompletePending: false,
-            autocomplete: {
-                ...state.autocomplete,
-                ...action.payload,
-            },
+            filterPending: false,
         };
     default:
         return {
