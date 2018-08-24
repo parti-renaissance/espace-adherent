@@ -49,6 +49,8 @@
     "max-len": ["error", 120],
     "no-param-reassign": ["off"],
     "no-unused-vars": ["off"],
-    "class-methods-use-this": ["off"]
+    "class-methods-use-this": ["off"],
+    "no-case-declarations": ["off"],
+    "object-curly-spacing": ["off"],
   }
 }
