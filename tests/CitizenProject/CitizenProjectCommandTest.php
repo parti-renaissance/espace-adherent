@@ -28,8 +28,6 @@ class CitizenProjectCommandTest extends TestCase
         $uuid = Uuid::uuid4();
         $citizenProjectCategory = $this->createMock(CitizenProjectCategory::class);
         $committee = $this->createMock(Committee::class);
-        $assistanceNeeded = false;
-        $assistanceContent = null;
         $problemDescription = 'Problem description';
         $proposedSolution = 'Proposed solution';
         $requiredMeans = 'Required means';
@@ -42,8 +40,6 @@ class CitizenProjectCommandTest extends TestCase
             $subtitle,
             $citizenProjectCategory,
             [$committee],
-            $assistanceNeeded,
-            $assistanceContent,
             $problemDescription,
             $proposedSolution,
             $requiredMeans,
@@ -61,8 +57,6 @@ class CitizenProjectCommandTest extends TestCase
         $this->assertSame($name, $citizenProjectUpdateCommand->name);
         $this->assertSame($citizenProjectCategory, $citizenProjectUpdateCommand->getCategory());
         $this->assertCount(1, $citizenProjectUpdateCommand->getCommitteeSupports()->toArray());
-        $this->assertSame($assistanceNeeded, $citizenProjectUpdateCommand->isAssistanceNeeded());
-        $this->assertSame($assistanceContent, $citizenProjectUpdateCommand->getAssistanceContent());
         $this->assertSame($problemDescription, $citizenProjectUpdateCommand->getProblemDescription());
         $this->assertSame($proposedSolution, $citizenProjectUpdateCommand->getProposedSolution());
         $this->assertSame($requiredMeans, $citizenProjectUpdateCommand->getRequiredMeans());

@@ -176,9 +176,6 @@ class CitizenProjectAdmin extends AbstractAdmin
                 ->add('featured', null, [
                     'label' => 'Coup de coeur',
                 ])
-                ->add('assistanceContent', null, [
-                    'label' => 'Description de l\'accompagnement',
-                ])
             ->end()
             ->with('Localisation', ['class' => 'col-md-5'])
                 ->add('postAddress.latitude', null, [
@@ -331,9 +328,6 @@ class CitizenProjectAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('assistanceNeeded', null, [
-                'label' => 'Demande d\'accompagnement',
-            ])
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',
                 'show_filter' => true,
@@ -435,7 +429,6 @@ class CitizenProjectAdmin extends AbstractAdmin
             'Ville' => 'postAddress.cityName',
             'Compétences recherchées' => 'exportSkills',
             'Compétences matchées' => 'matchedSkills',
-            'Demande d\'accomp.' => 'assistanceNeeded',
             'Statut' => 'status',
             'Comités en soutien' => 'exportCommitteeSupports',
             'Coup de coeur' => 'featured',

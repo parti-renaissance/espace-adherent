@@ -40,8 +40,6 @@ class CitizenProjectUpdateCommandHandler
             $command->name,
             $command->subtitle,
             $command->category,
-            $command->assistanceNeeded,
-            $command->assistanceContent,
             $command->problemDescription,
             $command->proposedSolution,
             $command->requiredMeans,

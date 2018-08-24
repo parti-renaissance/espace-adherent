@@ -10,7 +10,6 @@
             <th>Réponse au problème</th>
             <th>Feuille de route</th>
             <th>Compétences matchées</th>
-            <th>Contenu accompagnement</th>
             <th>Commentaire</th>
             <th>Statut</th>
         </tr>
@@ -70,13 +69,6 @@
                 </td>
                 <td>
                     {% if project.matchedSkills %}Oui{% else %}Non{% endif %}
-                </td>
-                <td>
-                    {% if project.assistanceContent %}
-                        {{ project.assistanceContent|read_more(50, 'assistance-content', 'common.show_more'|trans, 'common.show_less'|trans) }}
-                    {% else %}
-                        ~
-                    {% endif %}
                 </td>
                 <td>
                     {% if not project.isApproved %}

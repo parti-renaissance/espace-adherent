@@ -57,8 +57,6 @@ class CitizenProjectCommand
 
     public $committeeSupports;
 
-    public $assistanceNeeded = false;
-
     public $removeImage = false;
 
     /**
@@ -78,13 +76,6 @@ class CitizenProjectCommand
      * @Assert\Length(max=800)
      */
     public $requiredMeans;
-
-    /**
-     * @var string
-     *
-     * @Assert\Length(max=300)
-     */
-    public $assistanceContent;
 
     public $skills;
 
@@ -167,16 +158,6 @@ class CitizenProjectCommand
     public function getSubtitle(): ?string
     {
         return $this->subtitle;
-    }
-
-    public function isAssistanceNeeded(): bool
-    {
-        return $this->assistanceNeeded;
-    }
-
-    public function getAssistanceContent(): ?string
-    {
-        return $this->assistanceContent;
     }
 
     public function getProblemDescription(): ?string

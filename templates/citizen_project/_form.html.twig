@@ -178,23 +178,3 @@
     </div>
 
 </div>
-
-<div class="form__checkbox form__checkbox--large" id="field-assistance-needed">
-    <div>
-        {{ form_errors(form.assistance_needed) }}
-        {{ form_widget(form.assistance_needed) }}
-        <label for="{{ form.assistance_needed.vars.id }}">
-            Je sollicite un accompagnement personnalisé de l'équipe Projet citoyens de La République En Marche <span class="text--gray text--italic"> (Optionnel)</span>
-        </label>
-    </div>
-</div>
-<hr>
-<div class="form__new">
-    {{ form_label(form.assistance_content, 'En quoi l\'équipe d\'accompagnement peut-elle vous aider ?', {'label_attr': { class: 'label__header--small' }}) }}
-    {{ form_errors(form.assistance_content) }}
-    {{ form_widget(form.assistance_content, {
-        'attr': {
-            'class': 'form--full form__field--textarea-120'
-        }
-    }) }}
-</div>

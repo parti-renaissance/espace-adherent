@@ -26,8 +26,6 @@ class CitizenProjectFactoryTest extends TestCase
         $name = 'Projet citoyen à Lyon 1er Lyon 1er';
         $subtitle = 'le projet citoyen à Lyon 1er';
         $address = NullableAddress::createFromAddress(NullablePostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'));
-        $assistanceNeeded = false;
-        $assistanceContent = null;
         $problemDescription = 'Problem description';
         $proposedSolution = 'Proposed solution';
         $requiredMeans = 'Required means';
@@ -51,8 +49,6 @@ class CitizenProjectFactoryTest extends TestCase
         $command->name = $name;
         $command->subtitle = $subtitle;
         $command->category = $this->createMock(CitizenProjectCategory::class);
-        $command->assistanceNeeded = $assistanceNeeded;
-        $command->assistanceContent = $assistanceContent;
         $command->problemDescription = $problemDescription;
         $command->proposedSolution = $proposedSolution;
         $command->requiredMeans = $requiredMeans;
@@ -66,8 +62,6 @@ class CitizenProjectFactoryTest extends TestCase
         $this->assertSame($name, $citizenProject->getName());
         $this->assertSame($subtitle, $citizenProject->getSubtitle());
         $this->assertSame($adherent->getUuid()->toString(), $citizenProject->getCreatedBy());
-        $this->assertSame($assistanceNeeded, $citizenProject->isAssistanceNeeded());
-        $this->assertSame($assistanceContent, $citizenProject->getAssistanceContent());
         $this->assertSame($problemDescription, $citizenProject->getProblemDescription());
         $this->assertSame($proposedSolution, $citizenProject->getProposedSolution());
         $this->assertSame($requiredMeans, $citizenProject->getRequiredMeans());
