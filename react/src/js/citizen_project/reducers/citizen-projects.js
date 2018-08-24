@@ -21,7 +21,7 @@ export default function citizenProjectReducer(state = INTITIAL_STATE, action) {
         return {
             ...state,
             projects: action.payload.items,
-            count: action.metadata.total_items,
+            count: action.payload.metadata.total_items,
             loading: false,
             error: false,
         };
