@@ -691,7 +691,6 @@ class AdherentControllerTest extends WebTestCase
         $data['citizen_project']['address']['country'] = 'CH';
         $data['citizen_project']['phone']['country'] = 'CH';
         $data['citizen_project']['phone']['number'] = '31 359 21 11';
-        $data['citizen_project']['assistance_needed'] = 1;
 
         $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
 

@@ -12,7 +12,6 @@
         Kernel.onLoad(function() {
             {{ js.address(form.address) }}
             {{ js.ckeditor('citizen_project_proposed_solution') }}
-            {{ js.toggleDisplayingElement('#citizen_project_assistance_needed', '#citizen_project_assistance_content') }}
             {{ js.citizenProjectSkills('#citizen_project_skills', '#citizen_project_skills_search', path('app_citizen_project_skills_autocomplete'), '#citizen_project_skills_search') }}
             {{ js.committee('#citizen_project_committees', '#citizen_project_committees_search', path('app_citizen_project_committee_autocomplete'), '#citizen_project_committees_search') }}
         });

@@ -79,18 +79,8 @@ class CitizenProjectCommandType extends AbstractType
                 'attr' => ['maxlength' => 500],
             ])
             ->add('address', NullableAddressType::class)
-            ->add('assistance_needed', CheckboxType::class, [
-                'property_path' => 'assistanceNeeded',
-                'required' => false,
-            ])
             ->add('phone', PhoneNumberType::class, [
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-            ])
-            ->add('assistance_content', TextareaType::class, [
-                'required' => false,
-                'property_path' => 'assistanceContent',
-                'filter_emojis' => true,
-                'attr' => ['maxlength' => 300],
             ])
             ->add('skills', CollectionType::class, [
                 'required' => false,

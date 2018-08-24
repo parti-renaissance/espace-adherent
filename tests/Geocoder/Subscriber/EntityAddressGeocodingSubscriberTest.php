@@ -195,8 +195,6 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
             'Le projet citoyen à Lyon village',
             $this->createMock(CitizenProjectCategory::class),
             [$committee],
-            false,
-            null,
             'Problem description',
             'Proposed solution',
             'Required means',

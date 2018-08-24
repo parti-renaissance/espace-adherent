@@ -95,18 +95,6 @@ class CitizenProject extends BaseGroup
     private $requiredMeans;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": 0})
-     */
-    private $assistanceNeeded = false;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $assistanceContent;
-
-    /**
      * @var CitizenProjectCommitteeSupport[]|Collection
      *
      * @ORM\OneToMany(
@@ -195,8 +183,6 @@ class CitizenProject extends BaseGroup
         string $subtitle,
         CitizenProjectCategory $category,
         array $committees = [],
-        bool $assistanceNeeded = false,
-        string $assistanceContent = null,
         string $problemDescription = '',
         string $proposedSolution = '',
         string $requiredMeans = '',
@@ -224,8 +210,6 @@ class CitizenProject extends BaseGroup
         $this->subtitle = $subtitle;
         $this->postAddress = $address;
         $this->phone = $phone;
-        $this->assistanceNeeded = $assistanceNeeded;
-        $this->assistanceContent = $assistanceContent;
         $this->status = $status;
         $this->membersCounts = $membersCount;
         $this->approvedAt = $approvedAt;
@@ -379,32 +363,6 @@ class CitizenProject extends BaseGroup
         return $this->subtitle;
     }
 
-    public function isAssistanceNeeded(): bool
-    {
-        return $this->assistanceNeeded;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAssistanceContent(): ?string
-    {
-        return $this->assistanceContent;
-    }
-
-    /**
-     * @param string $assistanceContent
-     */
-    public function setAssistanceContent(?string $assistanceContent): void
-    {
-        $this->assistanceContent = $assistanceContent;
-    }
-
-    public function setAssistanceNeeded(bool $assistanceNeeded): void
-    {
-        $this->assistanceNeeded = $assistanceNeeded;
-    }
-
     public function setProblemDescription(?string $problemDescription): void
     {
         $this->problemDescription = $problemDescription;
@@ -496,8 +454,6 @@ class CitizenProject extends BaseGroup
         string $subtitle,
         CitizenProjectCategory $category,
         PhoneNumber $phone,
-        bool $assistanceNeeded,
-        ?string $assistanceContent,
         string $problemDescription,
         string $proposedSolution,
         string $requiredMeans,
@@ -512,8 +468,6 @@ class CitizenProject extends BaseGroup
             $subtitle,
             $category,
             $committees,
-            $assistanceNeeded,
-            $assistanceContent,
             $problemDescription,
             $proposedSolution,
             $requiredMeans,
@@ -548,8 +502,6 @@ class CitizenProject extends BaseGroup
         string $name,
         string $subtitle,
         CitizenProjectCategory $category,
-        bool $assistanceNeeded,
-        ?string $assistanceContent,
         string $problemDescription,
         string $proposedSolution,
         string $requiredMeans,
@@ -562,8 +514,6 @@ class CitizenProject extends BaseGroup
         $this->setName($name);
         $this->setSubtitle($subtitle);
         $this->setCategory($category);
-        $this->setAssistanceNeeded($assistanceNeeded);
-        $this->setAssistanceContent($assistanceContent);
         $this->setProblemDescription($problemDescription);
         $this->setProposedSolution($proposedSolution);
         $this->setRequiredMeans($requiredMeans);
