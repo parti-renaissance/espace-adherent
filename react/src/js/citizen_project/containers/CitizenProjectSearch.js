@@ -53,6 +53,7 @@ class CitizenProjectSearch extends Component {
                 </p>
                 <div className="citizen__select__content">
                     <input
+                        className="citizen__keyword-filter"
                         type="text"
                         value={filter.keyword}
                         onChange={this.filterByKeyword}
