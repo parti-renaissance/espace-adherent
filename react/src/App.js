@@ -14,7 +14,8 @@ class App extends Component {
             <div className="App">
                 <ConnectedRouter history={history}>
                     <Switch>
-                        <Route path="/projet-citoyen" component={CitizenProjectLayout} />
+                        <Route path="/projets-citoyens" component={CitizenProjectLayout} />
+                        <Route path="/recherche/projets-citoyens" component={CitizenProjectLayout} />
                     </Switch>
                 </ConnectedRouter>
             </div>

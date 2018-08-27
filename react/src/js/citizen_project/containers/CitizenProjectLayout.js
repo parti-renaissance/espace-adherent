@@ -8,21 +8,21 @@ import { history } from './../../store';
 
 const routes = [
     {
-        path: '/projet-citoyen',
+        path: '/projets-citoyens',
         exact: true,
         main: () => <CitizenProject />,
         item_label: 'A propos des projets citoyens',
         // borderColor: { border: '10px solid #ffd400' },
     },
     {
-        path: '/projet-citoyen/decouvrir-les-projets-citoyens',
+        path: '/projets-citoyens/decouvrir-les-projets-citoyens',
         exact: true,
         main: () => <CitizenProjectTurnKey />,
         item_label: 'Découvrir les projets faciles à lancer',
         // borderColor: { border: '10px solid #7ed321' },
     },
     {
-        path: '/projet-citoyen/explorer-tous-les-projets-citoyens',
+        path: '/recherche/projets-citoyens',
         exact: true,
         main: () => <CitizenProjectSearch />,
         item_label: 'Explorer tous les projets',
