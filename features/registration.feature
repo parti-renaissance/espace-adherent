@@ -48,7 +48,7 @@ Feature:
     And "api_sync" should have 1 message
     And "api_sync" should have message below:
       | routing_key  | body                                                                                                                            |
-      | user.created | {"uuid":"@string@","country":"FR","zipCode":"94320","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
+      | user.created | {"uuid":"@string@","subscriptionExternalIds":[],"country":"FR","zipCode":"94320","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
     And I should have 1 email
     And I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
     """
@@ -112,7 +112,7 @@ Feature:
     And "api_sync" should have 1 message
     And "api_sync" should have message below:
       | routing_key  | body                                                                                                                            |
-      | user.created | {"uuid":"@string@","country":"CH","zipCode":"38000","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
+      | user.created | {"uuid":"@string@","subscriptionExternalIds":[],"country":"CH","zipCode":"38000","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
     And I clean the "api_sync" queue
     And I should have 1 email
     And I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
@@ -189,7 +189,7 @@ Feature:
     And "api_sync" should have 1 message
     And "api_sync" should have message below:
       | routing_key  | body                                                                                                                            |
-      | user.updated | {"uuid":"@string@","country":"FR","zipCode":"06000","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
+      | user.updated | {"uuid":"@string@","subscriptionExternalIds":[],"country":"FR","zipCode":"06000","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
     And I should have 2 emails
     And the adherent "jp@test.com" should have the "06" referent tag
     And I should have 1 email "AdherentAccountConfirmationMessage" for "jp@test.com" with payload:
@@ -236,7 +236,7 @@ Feature:
     And the "Recevoir la newsletter hebdomadaire de LaREM" checkbox should be unchecked
     And I should not see an "Recevoir les e-mails de votre animateur local" element
     And I should not see an "Recevoir les e-mails de votre référent territorial" element
-    And I should not see an "Recevoir les e-mails de votre porteuse ou porteur de projet" element
+    And I should not see an "Recevoir les e-mails de votre porteur de projet" element
     And I should not see an "Être notifié\(e\) de la création de nouveaux projets citoyens" element
 
     When I check "Recevoir les informations du mouvement"

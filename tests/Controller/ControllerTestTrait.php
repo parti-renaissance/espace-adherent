@@ -7,6 +7,7 @@ use AppBundle\Entity\EventCategory;
 use AppBundle\Entity\ReferentTag;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpAmqpLib\Message\AMQPMessage;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DomCrawler\Crawler;
@@ -130,6 +131,30 @@ trait ControllerTestTrait
         $this->assertContains($author, $message->filter('h3')->text());
         $this->assertSame($role, $message->filter('h3 span')->text());
         $this->assertContains($text, $message->filter('div')->first()->text());
+    }
+
+    protected function assertHavePublishedMessage(string $queue, string $msgBody): void
+    {
+        $messages = array_filter(
+            $this->getMessages($queue),
+            function ($message) use ($msgBody) { return $msgBody === $message->getBody(); }
+        );
+
+        self::assertEquals(1, count($messages), 'Expected message not found.');
+    }
+
+    private function getMessages(string $queue): array
+    {
+        $channel = $this->container->get('old_sound_rabbit_mq.connection.default')->channel();
+        $messages = [];
+
+        /** @var AMQPMessage $message */
+        while ($message = $channel->basic_get($queue)) {
+            $messages[] = $message;
+            $channel->basic_ack($message->get('delivery_tag'));
+        }
+
+        return $messages;
     }
 
     private function authenticate(Client $client, UserInterface $user): void
