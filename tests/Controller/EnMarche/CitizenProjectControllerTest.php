@@ -27,7 +27,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertFalse($this->seeCommentSection());
         $this->assertFalse($this->seeReportLink());
-        $this->assertSeeNextActions();
+        $this->assertSeeCitizenActions();
     }
 
     public function testAnonymousUserCannotSeeAPendingCitizenProject(): void
@@ -565,11 +565,11 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->assertCount(1, $crawler->selectButton('Prochaine étape'), 'A referent can create projects.');
     }
 
-    private function assertSeeNextActions(): void
+    private function assertSeeCitizenActions(): void
     {
-        $this->assertCount(2, $actions = $this->client->getCrawler()->filter('.citizen-project-next-actions ul'), 'There should be 2 next actions');
-        $this->assertRegExp('~Projet citoyen #3\n.+1 inscrit\(s\)~', $actions->first()->filter('li')->eq(1)->text());
-        $this->assertRegExp('~Projet citoyen Paris-18\n.+2 inscrit\(s\)~', $actions->last()->filter('li')->eq(1)->text());
+        $this->assertCount(2, $actions = $this->client->getCrawler()->filter('.citizen-project-actions ul'), 'There should be 2 next actions');
+        $this->assertRegExp('~Projet citoyen Paris-18\n.+2 inscrit\(s\)~', $actions->first()->filter('li')->eq(1)->text());
+        $this->assertRegExp('~Projet citoyen #3\n.+1 inscrit\(s\)~', $actions->last()->filter('li')->eq(1)->text());
     }
 
     private function assertSeeComments(array $comments): void
