@@ -190,6 +190,14 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
             'name' => 'En Marche Paris 8',
         ]]), $this->client->getResponse()->getContent());
 
+        // Search of a pending committee
+        $this->client->request(Request::METHOD_GET, '/projets-citoyens/comite/autocompletion?term=marseille', [], [], [
+            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+        ]);
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertSame('[]', $this->client->getResponse()->getContent());
+
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/comite/autocompletion', [], [], [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ]);
