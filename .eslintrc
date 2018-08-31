@@ -52,5 +52,7 @@
     "class-methods-use-this": ["off"],
     "no-case-declarations": ["off"],
     "object-curly-spacing": ["off"],
+    "import/no-unresolved": ["off"],
+    "import/no-extraneous-dependencies": ["off"],
   }
 }
