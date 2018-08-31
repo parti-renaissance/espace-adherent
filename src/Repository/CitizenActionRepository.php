@@ -34,6 +34,20 @@ class CitizenActionRepository extends EventRepository
         ;
     }
 
+    public function findCitizenActionsByCitizenProject(CitizenProject $citizenProject): array
+    {
+        return $this
+            ->createQueryBuilder('action')
+            ->where('action.citizenProject = :citizenProject')
+            ->andWhere('action.status = :status')
+            ->setParameter('citizenProject', $citizenProject)
+            ->setParameter('status', CitizenAction::STATUS_SCHEDULED)
+            ->orderBy('action.beginAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     protected function createNextActionsQueryBuilder(CitizenProject $citizenProject): QueryBuilder
     {
         return $this

@@ -94,6 +94,14 @@ class CitizenProjectManager
     }
 
     /**
+     * @return CitizenAction[]
+     */
+    public function getCitizenProjectActions(CitizenProject $citizenProject): array
+    {
+        return $this->getCitizenActionRepository()->findCitizenActionsByCitizenProject($citizenProject);
+    }
+
+    /**
      * @param CitizenProject[] $citizenProjects
      */
     public function injectCitizenProjectCreator(array $citizenProjects): void
