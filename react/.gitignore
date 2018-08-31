@@ -22,3 +22,5 @@ yarn-error.log*
 
 .env
 .*~
+
+App.css
