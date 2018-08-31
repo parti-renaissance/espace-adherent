@@ -18,11 +18,7 @@
             <div class="l__wrapper procuration-manager__content">
                 {% set pages = [
                     {
-                        'url': app_front_host ~ '/dashboard-referent',
-                        'label': 'Dashboard Référent'
-                    },
-                    {
-                        'url': path('app_referent_users'),
+                        'route': 'app_referent_users',
                         'label': 'Envoyer un message'
                     },
                     {
