@@ -158,13 +158,14 @@ class DonationRequestUtils
         ];
     }
 
-    public function createCallbackStatus(Transaction $transaction): array
+    public function createCallbackStatus(string $resultCode, string $donationUuid): array
     {
-        $code = self::PAYBOX_STATUSES[$transaction->getPayboxResultCode()] ?? self::PAYBOX_STATUSES[self::PAYBOX_UNKNOWN];
+        $code = self::PAYBOX_STATUSES[$resultCode] ?? self::PAYBOX_STATUSES[self::PAYBOX_UNKNOWN];
 
         return [
             'code' => $code,
-            'uuid' => $transaction->getDonation()->getUuid()->toString(),
+            'result' => $resultCode,
+            'uuid' => $donationUuid,
             'is_registration' => $this->membershipRegistrationProcess->isStarted(),
             'status' => self::PAYBOX_SUCCESS === $code ? DonationController::RESULT_STATUS_EFFECTUE : DonationController::RESULT_STATUS_ERREUR,
             '_status_token' => (string) $this->getTokenManager()->getToken(self::STATUS_TOKEN),

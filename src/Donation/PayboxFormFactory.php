@@ -24,7 +24,11 @@ class PayboxFormFactory
 
     public function createPayboxFormForDonation(Donation $donation): LexikRequestHandler
     {
-        $callbackParameters = $this->donationRequestUtils->buildCallbackParameters();
+        $callbackUrl = $this->router->generate(
+            'donation_callback',
+            $this->donationRequestUtils->buildCallbackParameters(),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
 
         $parameters = [
             'PBX_CMD' => $donation->getPayboxOrderRefWithSuffix(),
@@ -35,9 +39,9 @@ class PayboxFormFactory
             'PBX_TYPEPAIEMENT' => 'CARTE',
             'PBX_TYPECARTE' => 'CB',
             'PBX_RUF1' => 'POST',
-            'PBX_EFFECTUE' => $this->router->generate('donation_callback', $callbackParameters, UrlGeneratorInterface::ABSOLUTE_URL),
-            'PBX_REFUSE' => $this->router->generate('donation_callback', $callbackParameters, UrlGeneratorInterface::ABSOLUTE_URL),
-            'PBX_ANNULE' => $this->router->generate('donation_callback', $callbackParameters, UrlGeneratorInterface::ABSOLUTE_URL),
+            'PBX_EFFECTUE' => $callbackUrl,
+            'PBX_REFUSE' => $callbackUrl,
+            'PBX_ANNULE' => $callbackUrl,
             'PBX_REPONDRE_A' => $this->router->generate('lexik_paybox_ipn', ['time' => time()], UrlGeneratorInterface::ABSOLUTE_URL),
         ];
 
