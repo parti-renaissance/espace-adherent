@@ -60,8 +60,8 @@ class CitizenProjectTurnKey extends Component {
 }
 
 const mapStateToProps = state => ({
-    all: state.citizen_project.turnkey.all,
-    detail: state.citizen_project.turnkey.detail,
+    all: state.turnkey.all,
+    detail: state.turnkey.detail,
 });
 
 export default connect(mapStateToProps)(CitizenProjectTurnKey);

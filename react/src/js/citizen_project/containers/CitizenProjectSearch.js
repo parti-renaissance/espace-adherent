@@ -91,10 +91,10 @@ class CitizenProjectSearch extends Component {
 }
 
 const mapStateToProps = state => ({
-    projects: state.citizen_project.citizen.projects,
-    filter: state.citizen_project.filter,
-    locales: state.citizen_project.locales,
-    categories: state.citizen_project.categories.categories,
+    projects: state.citizen.projects,
+    filter: state.filter,
+    locales: state.locales,
+    categories: state.categories.categories,
 });
 
 export default connect(mapStateToProps)(CitizenProjectSearch);

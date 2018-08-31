@@ -69,8 +69,8 @@ class CitizenProject extends Component {
 }
 
 const mapStateToProps = state => ({
-    count: state.citizen_project.citizen.count,
-    pinned: state.citizen_project.turnkey.pinned,
+    count: state.citizen.count,
+    pinned: state.turnkey.pinned,
 });
 
 export default connect(mapStateToProps)(CitizenProject);
