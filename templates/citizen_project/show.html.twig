@@ -28,13 +28,13 @@
         {% endfor %}
 
         {% if citizen_actions|length > 5 %}
-            <span id="show_more_citizen_actions" class="text--body text--blue--dark">Voir plus</span>
+            <span id="show_more_citizen_actions" class="text--body text--blue--dark cursor--pointer">Voir plus</span>
             <div id="other_citizen_actions" class="visually-hidden">
                 {% for action in citizen_actions|slice(5) %}
                     {{ include('citizen_project/_citizen_action.html.twig', {action: action}) }}
                 {% endfor %}
             </div>
-            <span id="show_less_citizen_actions" class="text--body text--blue--dark visually-hidden">Voir moins</span>
+            <span id="show_less_citizen_actions" class="text--body text--blue--dark visually-hidden cursor--pointer">Voir moins</span>
         {% endif %}
     </div>
 {% endblock %}
