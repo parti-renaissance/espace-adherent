@@ -1,5 +1,5 @@
 {
-    "name": "my-app",
+    "name": "citizen-projects",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
@@ -38,6 +38,7 @@
         "eject": "react-scripts eject"
     },
     "devDependencies": {
+        "babel-eslint": "8",
         "redux-devtools": "^3.4.1"
     }
 }
