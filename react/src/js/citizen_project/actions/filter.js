@@ -5,7 +5,7 @@ export const PROJECT_FILTER = 'PROJECT_FILTER';
 export const FILTERED_ITEM = 'FILTERED_ITEM';
 export const SET_COUNTRY = 'SET_COUNTRY';
 
-const API = process.env.REACT_APP_CITIZEN_API;
+const API = `${process.env.REACT_APP_API_URL}/citizen_projects`;
 
 export function filterCitizenProjects({ keyword, category, city }) {
     const path = `?status=APPROVED&name=${keyword}&category=${category}&city=${city}`;

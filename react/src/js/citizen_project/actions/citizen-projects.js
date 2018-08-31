@@ -5,7 +5,7 @@ export const CATEGORIES = 'CATEGORIES';
 export const CITIES_AND_COUNTIES = 'CITIES_AND_COUNTIES';
 export const FILTER_PROJECTS = 'FILTER_PROJECTS';
 
-const API = process.env.REACT_APP_CITIZEN_API;
+const API = `${process.env.REACT_APP_API_URL}/citizen_projects`;
 
 const options = {
     withCredentials: false,
