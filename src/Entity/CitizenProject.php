@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Exception\CitizenProjectAlreadyApprovedException;
 use AppBundle\Report\ReportType;
@@ -431,6 +432,11 @@ class CitizenProject extends BaseGroup
                 substr(strrchr($imageName, '.'), 1)
             )
         ;
+    }
+
+    public function setDefaultImageName(): void
+    {
+        $this->imageName = CitizenProjectManager::CITIZEN_PROJECT_DEFAULT_IMAGE_NAME;
     }
 
     public function getImageName(): ?string

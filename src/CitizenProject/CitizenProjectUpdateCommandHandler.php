@@ -68,6 +68,7 @@ class CitizenProjectUpdateCommandHandler
         // Removes an image
         if ($command->isRemoveImage() && $citizenProject->hasImageUploaded()) {
             $this->citizenProjectManager->removeImage($citizenProject);
+            $this->citizenProjectManager->setDefaultImage($citizenProject);
         }
     }
 }

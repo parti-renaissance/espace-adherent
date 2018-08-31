@@ -31,12 +31,12 @@
 {% block content %}
     <main class="citizen-project">
         <header class="background--purple">
-            {% if citizen_project.hasImageUploaded %}
+            {% if citizen_project.imageName %}
                 <div class="citizen-project--bkg"
                      style="background-image:url('{{ asset(citizen_project.getAssetImagePath) }}')">
-             {% else %}
+            {% else %}
                 <div class="l__wrapper l__row space--60-0">
-             {% endif %}
+            {% endif %}
                 <div class="l__wrapper space--60-0 text--white l__row--h-start">
                     <div class="b__nudge--bottom-larger">
                         <ul class="text--small b__nudge--bottom-tiny list__links list__links--vertical-align list__links--margin-right">
@@ -71,7 +71,7 @@
                                         <a href="{{ register_path_for_anonymous_follower() }}" id="committee-register-link" class="link--white">
                                             adhérez
                                         </a>
-                                         pour rejoindre ce projet citoyen
+                                        pour rejoindre ce projet citoyen
                                     </div>
                                 {% elseif can_follow_citizen_project(citizen_project) %}
                                     <button type="button"

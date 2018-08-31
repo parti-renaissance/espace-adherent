@@ -29,6 +29,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CitizenProjectManager
 {
+    public const CITIZEN_PROJECT_DEFAULT_IMAGE_NAME = 'default.png';
+
     private $registry;
     private $storage;
     private $projectAuthority;
@@ -309,7 +311,7 @@ class CitizenProjectManager
         }
 
         // Clears the old image if needed
-        if (null !== $citizenProject->getImageName() && $oldImagePath = $citizenProject->getImagePath()) {
+        if ($citizenProject->hasImageUploaded() && null !== $citizenProject->getImageName() && $oldImagePath = $citizenProject->getImagePath()) {
             $this->storage->delete($oldImagePath);
         }
 
@@ -344,24 +346,39 @@ class CitizenProjectManager
     }
 
     /**
-     * Removes the citizen project image.
+     * Adds default image to the citizen project.
      */
-    public function removeImage(CitizenProject $citizenProject): void
+    public function setDefaultImage(CitizenProject $citizenProject): void
     {
-        if (null === $citizenProject->getImageName()) {
-            throw new \RuntimeException('This Citizen Project does not contain an image.');
-        }
-
+        $citizenProject->setDefaultImageName();
         $path = $citizenProject->getImagePath();
 
-        // Deletes the file
-        $this->storage->delete($path);
+        $this->storage->put($path, $this->storage->read(sprintf('images/citizen_projects/%s', self::CITIZEN_PROJECT_DEFAULT_IMAGE_NAME)));
 
         // Clears the cache file
         $this->glide->deleteCache($path);
 
-        $citizenProject->setImageName(null);
         $citizenProject->setImageUploaded(false);
+    }
+
+    /**
+     * Removes the citizen project image.
+     */
+    public function removeImage(CitizenProject $citizenProject): void
+    {
+        // Default image should not be removed
+        if (self::CITIZEN_PROJECT_DEFAULT_IMAGE_NAME !== $citizenProject->getImageName()) {
+            $path = $citizenProject->getImagePath();
+
+            // Deletes the file
+            $this->storage->delete($path);
+
+            // Clears the cache file
+            $this->glide->deleteCache($path);
+
+            $citizenProject->setImageName(null);
+            $citizenProject->setImageUploaded(false);
+        }
     }
 
     private function getManager(): ObjectManager

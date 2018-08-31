@@ -78,15 +78,15 @@ trait ControllerTestTrait
         $this->authenticate($client, $user);
     }
 
-    private function authenticate(Client $client, UserInterface $user): void
+    protected function seeDefaultCitizenProjectImage(): bool
     {
-        $session = $client->getContainer()->get('session');
+        try {
+            $styleText = $this->client->getCrawler()->filter('.citizen-project--bkg')->attr('style');
 
-        $token = new UsernamePasswordToken($user, null, 'main_context', $user->getRoles());
-        $session->set('_security_main_context', serialize($token));
-        $session->save();
-
-        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+            return "background-image:url('/assets/images/citizen_projects/default.png')" === $styleText;
+        } catch (\InvalidArgumentException $e) {
+            return false;
+        }
     }
 
     protected function getFirstPrefixForm(Form $form): ?string
@@ -130,6 +130,17 @@ trait ControllerTestTrait
         $this->assertContains($author, $message->filter('h3')->text());
         $this->assertSame($role, $message->filter('h3 span')->text());
         $this->assertContains($text, $message->filter('div')->first()->text());
+    }
+
+    private function authenticate(Client $client, UserInterface $user): void
+    {
+        $session = $client->getContainer()->get('session');
+
+        $token = new UsernamePasswordToken($user, null, 'main_context', $user->getRoles());
+        $session->set('_security_main_context', serialize($token));
+        $session->save();
+
+        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
     }
 
     private function getEventCategoryIdForName(string $categoryName): int
