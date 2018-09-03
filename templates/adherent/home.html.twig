@@ -149,7 +149,7 @@
                 <div class="home__flex">
                     {% for citizen_project in citizen_projects %}
                     <div class="search__citizen_project__box">
-                        {% if citizen_project.hasImageUploaded %}
+                        {% if citizen_project.imageName %}
                              <div class="search__citizen_project__image">
                                 <img src="{{ asset(citizen_project.getAssetImagePath) }}" />
                             </div>

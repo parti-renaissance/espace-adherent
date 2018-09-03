@@ -55,6 +55,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
 
         $this->isSuccessful($this->client->getResponse());
         $this->assertTrue($this->seeReportLink());
+        $this->assertTrue($this->seeDefaultCitizenProjectImage());
         $this->assertFalse($this->seeCommentSection());
 
         $this->assertContains('Le problème', $crawler->filter('#citizen-project-problem-description > p:nth-child(1)')->text());

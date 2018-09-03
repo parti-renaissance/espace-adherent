@@ -1,6 +1,6 @@
 {% for citizen_project in results %}
     <div class="search__citizen_project__box">
-        {% if citizen_project.hasImageUploaded %}
+        {% if citizen_project.imageName %}
             <div class="search__citizen_project__image">
                 <img src="{{ asset(citizen_project.getAssetImagePath) }}" />
             </div>

@@ -39,6 +39,8 @@ class CitizenProjectCreationCommandHandler
             $this->citizenProjectManager->addImage($citizenProject);
         } elseif ($turnkeyProject) {
             $this->citizenProjectManager->copyImageFromTurnkeyProject($citizenProject, $turnkeyProject);
+        } else {
+            $this->citizenProjectManager->setDefaultImage($citizenProject);
         }
 
         $command->setCitizenProject($citizenProject);

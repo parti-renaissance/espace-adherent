@@ -41,9 +41,9 @@ Feature:
     When I go to "<uri>"
     Then I should see "En raison du silence républicain, votre espace est momentanément désactivé. Vous pourrez de nouveau y accéder à la fin de celui-ci."
     Examples:
-      | uri                                                      |
-      | /projets-citoyens/13003-en-marche-projet-citoyen/discussions   |
-      | /projets-citoyens/13003-en-marche-projet-citoyen/actions/creer |
+      | uri                                                             |
+      | /projets-citoyens/13003-en-marche-projet-citoyen/discussions    |
+      | /projets-citoyens/13003-en-marche-projet-citoyen/actions/creer  |
 
   @javascript
   Scenario: As CP host I cannot access to member contact page

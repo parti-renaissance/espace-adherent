@@ -27,6 +27,10 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
 
     public function load(ObjectManager $manager)
     {
+        // Add CitizenProject default image
+        $storage = $this->container->get('app.storage');
+        $storage->put('images/citizen_projects/default.png', file_get_contents(__DIR__.'/../citizen-projects/default.png'));
+
         // Create some default citizen projects and make people join them
         $citizenProjectFactory = $this->getCitizenProjectFactory();
 
@@ -45,7 +49,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
 
         $citizenProject1->addSkill($this->getReference('cps001'));
         $citizenProject1->addSkill($this->getReference('cps003'));
-
+        $citizenProject1->setImageName('default.png');
         $citizenProject1->approved('2017-10-12 15:54:18');
         $this->addReference('citizen-project-1', $citizenProject1);
 
@@ -62,6 +66,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'address' => NullablePostAddress::createFrenchAddress('26 Boulevard Louis Guichoux', '13003-13203', 43.325543, 5.376076),
             'phone' => '33 673643424',
         ]);
+        $citizenProject2->setImageName('default.png');
         $citizenProject2->preApproved();
         $this->addReference('citizen-project-2', $citizenProject2);
 
@@ -77,6 +82,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'created_at' => '2017-10-26 16:08:24',
             'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
         ]);
+        $citizenProject3->setImageName('default.png');
         $citizenProject3->approved('2017-10-27 10:18:33');
         $this->addReference('citizen-project-3', $citizenProject3);
 
@@ -92,6 +98,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'name' => 'Massive Open Online Course',
             'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
         ]);
+        $citizenProject4->setImageName('default.png');
         $citizenProject4->approved();
         $this->addReference('citizen-project-4', $citizenProject4);
 
@@ -108,6 +115,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'address' => NullablePostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', 48.6241569, 2.4265995),
             'phone' => '33 673654349',
         ]);
+        $citizenProject5->setImageName('default.png');
         $citizenProject5->approved();
         $this->addReference('citizen-project-5', $citizenProject5);
 
@@ -124,6 +132,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'address' => NullablePostAddress::createFrenchAddress('28 Boulevard Louis Guichoux', '13003-13203', 43.32560, 5.376207),
             'phone' => '33 234823644',
         ]);
+        $citizenProject6->setImageName('default.png');
         $citizenProject6->approved('2017-10-19 09:17:24');
         $this->addReference('citizen-project-6', $citizenProject6);
 
@@ -139,6 +148,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'created_at' => '2017-09-18 09:14:45',
             'address' => NullablePostAddress::createFrenchAddress('34 Boulevard Louis Guichoux', '13003-13203', 43.325524, 5.376792),
         ]);
+        $citizenProject7->setImageName('default.png');
         $this->addReference('citizen-project-7', $citizenProject7);
 
         $citizenProject8 = $citizenProjectFactory->createFromArray([
@@ -153,6 +163,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'created_at' => '2017-10-10 17:34:18',
             'address' => NullablePostAddress::createFrenchAddress('32 Boulevard Louis Guichoux', '13003-13203', 43.325534, 5.376733),
         ]);
+        $citizenProject8->setImageName('default.png');
         $citizenProject8->approved('2017-10-10 18:23:18');
         $this->addReference('citizen-project-8', $citizenProject8);
 
@@ -169,6 +180,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'address' => NullablePostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
             'phone' => '1 2123150100',
         ]);
+        $citizenProject9->setImageName('default.png');
         $citizenProject9->approved('2017-10-09 13:27:42');
         $this->addReference('citizen-project-9', $citizenProject9);
 

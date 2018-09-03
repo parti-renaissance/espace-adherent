@@ -694,6 +694,10 @@ class AdherentControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
 
+        $this->client->followRedirect();
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertTrue($this->seeDefaultCitizenProjectImage());
+
         /** @var CitizenProject $citizenProject */
         $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['name' => 'Mon Projet Citoyen']);
 
