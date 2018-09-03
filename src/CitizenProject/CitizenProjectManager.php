@@ -315,7 +315,7 @@ class CitizenProjectManager
             $this->storage->delete($oldImagePath);
         }
 
-        $citizenProject->setImageName($citizenProject->getImage());
+        $citizenProject->setImageNameFromUploadedFile($citizenProject->getImage());
         $path = $citizenProject->getImagePath();
 
         // Uploads the file : creates or updates if exists
@@ -350,14 +350,7 @@ class CitizenProjectManager
      */
     public function setDefaultImage(CitizenProject $citizenProject): void
     {
-        $citizenProject->setDefaultImageName();
-        $path = $citizenProject->getImagePath();
-
-        $this->storage->put($path, $this->storage->read(sprintf('images/citizen_projects/%s', self::CITIZEN_PROJECT_DEFAULT_IMAGE_NAME)));
-
-        // Clears the cache file
-        $this->glide->deleteCache($path);
-
+        $citizenProject->setImageName(CitizenProjectManager::CITIZEN_PROJECT_DEFAULT_IMAGE_NAME);
         $citizenProject->setImageUploaded(false);
     }
 
@@ -376,7 +369,7 @@ class CitizenProjectManager
             // Clears the cache file
             $this->glide->deleteCache($path);
 
-            $citizenProject->setImageName(null);
+            $citizenProject->setImageName(self::CITIZEN_PROJECT_DEFAULT_IMAGE_NAME);
             $citizenProject->setImageUploaded(false);
         }
     }

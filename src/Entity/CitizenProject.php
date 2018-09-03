@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Exception\CitizenProjectAlreadyApprovedException;
 use AppBundle\Report\ReportType;
@@ -414,7 +413,12 @@ class CitizenProject extends BaseGroup
         $this->image = $image;
     }
 
-    public function setImageName(?UploadedFile $image): void
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function setImageNameFromUploadedFile(?UploadedFile $image): void
     {
         $this->imageName = null === $image ? null :
             sprintf('%s.%s',
@@ -432,11 +436,6 @@ class CitizenProject extends BaseGroup
                 substr(strrchr($imageName, '.'), 1)
             )
         ;
-    }
-
-    public function setDefaultImageName(): void
-    {
-        $this->imageName = CitizenProjectManager::CITIZEN_PROJECT_DEFAULT_IMAGE_NAME;
     }
 
     public function getImageName(): ?string
