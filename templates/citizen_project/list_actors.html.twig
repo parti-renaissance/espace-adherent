@@ -50,7 +50,9 @@
                         <th>Age</th>
                         <th>CP</th>
                         <th>Ville</th>
+                    {% endif %}
                         <th>Rôle</th>
+                    {% if is_cp_administrator %}
                         <th>Adhésion</th>
                     {% endif %}
                 </tr>
@@ -69,6 +71,7 @@
                             <td class="member-age">{{ member.age }}</td>
                             <td class="member-postal-code">{{ member.postalCode }}</td>
                             <td class="member-city-name">{{ member.cityName }}</td>
+                        {% endif %}
                             <td>
                                 {% if not is_promotable_host %}
                                     Porteur du projet
@@ -76,6 +79,7 @@
                                     Membre
                                 {% endif %}
                             </td>
+                        {% if is_cp_administrator %}
                             <td class="member-subscription-date">
                                 {{- actor.subscriptionDate|date('d/m/Y') -}}
                             </td>

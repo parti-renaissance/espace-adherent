@@ -256,7 +256,8 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
         return $this->createQueryBuilder($alias)
             ->leftJoin($alias.'.adherent', 'a')
             ->where($alias.'.citizenProject = :citizenProject')
-            ->orderBy('a.firstName', 'ASC')
+            ->orderBy($alias.'.privilege', 'DESC')
+            ->addOrderBy('a.firstName', 'ASC')
             ->setParameter('citizenProject', $citizenProject)
         ;
     }

@@ -30,7 +30,7 @@ class CitizenProjectManagerTest extends WebTestCase
         );
 
         // Approved citizen projects
-        $this->assertCount(2, $administrators);
+        $this->assertCount(1, $administrators);
         $this->assertCount(2, $this->citizenProjectManager->getCitizenProjectAdministrators($this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_3_UUID)));
         $this->assertCount(1, $this->citizenProjectManager->getCitizenProjectAdministrators($this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_4_UUID)));
         $this->assertCount(1, $this->citizenProjectManager->getCitizenProjectAdministrators($this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_5_UUID)));
@@ -47,7 +47,7 @@ class CitizenProjectManagerTest extends WebTestCase
         );
 
         // Approved citizen projects
-        $this->assertCount(2, $followers);
+        $this->assertCount(3, $followers);
         $this->assertCount(0, $this->citizenProjectManager->getCitizenProjectFollowers($this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_3_UUID)));
         $this->assertCount(1, $this->citizenProjectManager->getCitizenProjectFollowers($this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_4_UUID)));
         $this->assertCount(2, $this->citizenProjectManager->getCitizenProjectFollowers($this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_5_UUID)));

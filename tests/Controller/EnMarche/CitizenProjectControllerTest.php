@@ -72,7 +72,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/13003-le-projet-citoyen-a-marseille');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeCommentSection());
-        $this->assertTrue($this->seeReportLink());
+        $this->assertCount(0, $this->client->getCrawler()->selectLink('Signaler un abus'));
     }
 
     public function testAdministratorCanSeeACitizenProject(): void
@@ -80,7 +80,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertTrue($this->seeReportLink());
+        $this->assertCount(0, $this->client->getCrawler()->selectLink('Signaler un abus'));
 
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8/discussions');
         $this->assertTrue($this->seeCommentSection());
@@ -219,7 +219,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
 
         $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
         $committee = $this->getCommittee(LoadAdherentData::COMMITTEE_1_UUID);
-        $this->assertCount(0, $citizenProject->getCommitteeSupports());
+        $this->assertCount(1, $citizenProject->getCommitteeSupports());
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/projets-citoyens/mon-comite-soutien/%s', $citizenProject->getSlug()));
         $this->client->submit($crawler->selectButton('Confirmer le soutien de notre comité pour ce projet')->form());
@@ -256,10 +256,12 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->manager->clear();
 
         $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
-        $this->assertCount(0, $citizenProject->getCommitteeSupports()->toArray());
+        $this->assertCount(1, $citizenProject->getCommitteeSupports()->toArray());
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/projets-citoyens/%s', $citizenProject->getSlug()));
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('newbtn--small btn--blue b__nudge--top', $crawler->filter('button#committee-confirm-support')->attr('class'));
+
         $this->client->submit($crawler->selectButton('Soutenir ce projet avec mon comité')->form());
         $crawler = $this->client->followRedirect();
         $this->seeFlashMessage($crawler, sprintf('Votre comité %s soutient maintenant le projet citoyen %s',
@@ -273,6 +275,8 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
 
         $this->client->request(Request::METHOD_GET, sprintf('/projets-citoyens/%s', $citizenProject->getSlug()));
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame('btn--as-link text--body text--blue--dark b__nudge--top', $crawler->filter('button#committee-confirm-support')->attr('class'));
+
         $this->client->submit($crawler->selectButton('Retirer mon soutien à ce projet')->form());
         $crawler = $this->client->followRedirect();
         $this->seeFlashMessage($crawler, sprintf('Votre comité %s ne soutient plus le projet citoyen %s',
@@ -379,7 +383,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('2 participants', $crawler->filter('#followers .citizen-project__card__title')->text());
+        $this->assertContains('3 membres', $crawler->filter('#followers .citizen-project__card__title')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -398,7 +402,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('3 participants', $crawler->filter('#followers .citizen-project__card__title')->text());
+        $this->assertContains('4 membres', $crawler->filter('#followers .citizen-project__card__title')->text());
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertTrue($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -414,7 +418,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('2 participants', $crawler->filter('#followers .citizen-project__card__title')->text());
+        $this->assertContains('3 membres', $crawler->filter('#followers .citizen-project__card__title')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
