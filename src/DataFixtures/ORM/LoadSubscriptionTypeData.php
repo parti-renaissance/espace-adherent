@@ -49,7 +49,7 @@ class LoadSubscriptionTypeData extends Fixture
                 'externalId' => null,
             ],
             [
-                'label' => 'Recevoir les e-mails de votre porteuse ou porteur de projet',
+                'label' => 'Recevoir les e-mails de votre porteur de projet',
                 'code' => SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL,
                 'externalId' => null,
             ],

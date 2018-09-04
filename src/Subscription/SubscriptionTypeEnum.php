@@ -23,6 +23,7 @@ final class SubscriptionTypeEnum extends Enum
         self::WEEKLY_LETTER_EMAIL,
         self::REFERENT_EMAIL,
         self::CITIZEN_PROJECT_CREATION_EMAIL,
+        self::CITIZEN_PROJECT_HOST_EMAIL,
     ];
 
     public const USER_TYPES = [

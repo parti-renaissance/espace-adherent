@@ -36,8 +36,9 @@ class LoadWebHookData extends Fixture
             $this->getReference('web_hook_client_2'),
             Event::USER_MODIFICATION(),
             [
-                'http://client5.com/web_hook',
-            ]
+                'https://api.mailchimp.com/lists',
+            ],
+            Service::MAILCHIMP()
         );
         $manager->persist($webHook3);
 

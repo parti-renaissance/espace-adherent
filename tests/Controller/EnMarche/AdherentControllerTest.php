@@ -165,7 +165,7 @@ class AdherentControllerTest extends WebTestCase
         $histories73Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '73');
         $histories73Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '73');
 
-        $this->assertCount(4, $histories73Subscriptions);
+        $this->assertCount(5, $histories73Subscriptions);
         $this->assertCount(0, $histories73Unsubscriptions);
         $this->assertCount(0, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
@@ -309,9 +309,9 @@ class AdherentControllerTest extends WebTestCase
         $histories73Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '73');
         $histories73Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '73');
 
-        $this->assertCount(4, $histories73Subscriptions);
-        $this->assertCount(4, $histories73Unsubscriptions);
-        $this->assertCount(4, $histories06Subscriptions);
+        $this->assertCount(5, $histories73Subscriptions);
+        $this->assertCount(5, $histories73Unsubscriptions);
+        $this->assertCount(5, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
     }
 
@@ -466,15 +466,19 @@ class AdherentControllerTest extends WebTestCase
         $historiesHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
         $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::REFERENT_EMAIL);
         $historiesCitizenProjectCreation = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::CITIZEN_PROJECT_CREATION_EMAIL);
+        $historiesCitizenProjectHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL);
 
-        $this->assertCount(6, $histories);
+        $this->assertCount(8, $histories);
         $this->assertCount(1, $historiesHost);
         $this->assertCount(1, $historiesReferents);
         $this->assertCount(2, $historiesCitizenProjectCreation);
+        $this->assertCount(2, $historiesCitizenProjectHost);
         $this->assertSame('subscribe', $historiesHost[0]->getAction());
         $this->assertSame('subscribe', $historiesReferents[0]->getAction());
         $this->assertSame('unsubscribe', $historiesCitizenProjectCreation[0]->getAction());
         $this->assertSame('subscribe', $historiesCitizenProjectCreation[1]->getAction());
+        $this->assertSame('unsubscribe', $historiesCitizenProjectHost[0]->getAction());
+        $this->assertSame('subscribe', $historiesCitizenProjectHost[1]->getAction());
         $this->assertTrue($adherent->hasSubscribedLocalHostEmails());
         $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL));
         $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL));
@@ -500,7 +504,7 @@ class AdherentControllerTest extends WebTestCase
         $historiesHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
         $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::REFERENT_EMAIL);
 
-        $this->assertCount(8, $histories);
+        $this->assertCount(10, $histories);
         $this->assertCount(2, $historiesHost);
         $this->assertCount(2, $historiesReferents);
         $this->assertSame('unsubscribe', $historiesHost[0]->getAction());
@@ -527,7 +531,7 @@ class AdherentControllerTest extends WebTestCase
         $historiesHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
         $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::REFERENT_EMAIL);
 
-        $this->assertCount(10, $histories);
+        $this->assertCount(12, $histories);
         $this->assertCount(3, $historiesHost);
         $this->assertCount(3, $historiesReferents);
         $this->assertSame('subscribe', $historiesHost[0]->getAction());
