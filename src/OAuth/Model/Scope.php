@@ -19,6 +19,7 @@ final class Scope extends Enum implements ScopeEntityInterface
     public const READ_USERS = 'read:users';
     public const READ_UNSUBCRIPTIONS = 'read:unsubscriptions';
     public const READ_TYPEFORMS = 'read:typeforms';
+    public const READ_STATS = 'read:stats';
 
     public function __toString()
     {

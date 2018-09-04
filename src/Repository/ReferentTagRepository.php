@@ -22,4 +22,16 @@ class ReferentTagRepository extends ServiceEntityRepository
     {
         return $this->findBy(['code' => $codes]);
     }
+
+    public function findByPartialName(string $name, int $limit, int $offset): array
+    {
+        return $this->createQueryBuilder('tag')
+            ->where('tag.name LIKE :name')
+            ->setParameter('name', $name.'%')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

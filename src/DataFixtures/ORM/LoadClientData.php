@@ -91,6 +91,7 @@ class LoadClientData extends AbstractFixture implements FixtureInterface
             [GrantTypeEnum::CLIENT_CREDENTIALS]
         );
         $client6->addSupportedScope(Scope::READ_TYPEFORMS);
+        $client6->addSupportedScope(Scope::READ_STATS);
         $manager->persist($client6);
 
         $manager->flush();

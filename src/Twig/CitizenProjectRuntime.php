@@ -2,9 +2,7 @@
 
 namespace AppBundle\Twig;
 
-use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\CitizenProject\CitizenProjectPermissions;
-use AppBundle\CitizenProject\CitizenProjectAuthority;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -15,15 +13,10 @@ class CitizenProjectRuntime
     private const COLOR_STATUS_ADMINISTRATOR = 'bullet--own';
 
     private $authorizationChecker;
-    private $projectAuthority;
 
-    public function __construct(
-        AuthorizationCheckerInterface $authorizationChecker,
-        CitizenProjectManager $citizenProjectManager,
-        CitizenProjectAuthority $projectAuthority
-    ) {
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
+    {
         $this->authorizationChecker = $authorizationChecker;
-        $this->projectAuthority = $projectAuthority;
     }
 
     public function isAdministratorOf(CitizenProject $citizenProject): bool
