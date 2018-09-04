@@ -12,18 +12,76 @@
 
 {% block javascripts %}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}"></script>
-    <script>
-        Kernel.onLoad(function() {
-            App.runOrganisation();
-        });
-    </script>
 {% endblock %}
 
-{% block page_title 'Le mouvement - Notre organisation' %}
-{% block canonical_url url('page_le_mouvement_notre_organisation') %}
-{% block meta_description page.description %}
-{% block meta_twitter_description page.twitterDescription ?: page.description %}
+{% block page_title 'Le Bureau exécutif | La République En Marche !' %}
+{% block canonical_url url('app_our_organization') %}
+{% block meta_description 'Le Bureau exécutif de La République En Marche ! tient le rôle de conseil d\'administration du mouvement. Élu par le Conseil de LaREM, il est composé d\'un Délégue Général ainsi que d\'une trentaine de membres issus du monde politique et de la société civile.' %}
+{% block open_graph_title 'Le Bureau exécutif | La République En Marche !' %}
+
+{% block json_ld %}
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "url": "https://en-marche.fr/le-mouvement/notre-organisation",
+        "name": "Le Bureau exécutif de La République En Marche !",
+        "logo": "https://en-marche.fr/assets/static/pages-sharers/adherents-en-marche.jpg?q=70&cache=4f169c3d5750f73807b8&fm=pjpg&s=270adc4552e19b20795bd2e0fb26d31f",
+        "description": "Le Bureau exécutif de La République En Marche ! tient le rôle de conseil d'administration du mouvement. Élu par le Conseil de LaREM, il est composé d'un Délégue Général ainsi que d'une trentaine de membres issus du monde politique et de la société civile.",
+        "funder": {
+            "@type": "Person",
+            "givenName": "Emmanuel",
+            "familyName": "Macron"
+        }
+    }
+</script>
+{% endblock %}
 
 {% block mouvement_content %}
-    {{ page.content|markdown }}
+    {% if (executiveOfficer) %}
+        <div id="executive-officer">
+            <h2 class="text--center">Notre Délégué Général</h2>
+            <ul class="team">
+                <li>
+                    <div class="image" style="background-image: url('{{ executiveOfficer.getAssetImagePath }}')"></div>
+                    <div class="team__meta">
+                        <div class="b__nudge--bottom-small">
+                            <div class="text--bold">{{ executiveOfficer.firstName }} {{ executiveOfficer.lastName|upper }}</div>
+                            <span>{{ executiveOfficer.job }}</span>
+                        </div>
+                        {{ include('social_share/profile_share.html.twig', { object: executiveOfficer }) }}
+                    </div>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if (executiveOfficeMembers) %}
+        <div id="executive-office-members">
+            <h2 class="text--center">Le Bureau Exécutif</h2>
+            <ul class="team">
+                {% for member in executiveOfficeMembers %}
+                    <li>
+                        <div class="profile-pic"> <img src="{{ member.getAssetImagePath }}"></div>
+                        <div class="team__meta">
+                            <div class="b__nudge--bottom-small">
+                                <div class="text--bold">{{ member.lastName|upper }} {{ member.firstName }}</div>
+                                <div>{{ member.job }}</div>
+                                <div class="bio">{{ member.description }}</div>
+                            </div>
+                            {{ include('social_share/profile_share.html.twig', { object: member }) }}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <h2>Nos référents</h2>
+
+    <p class="b__nudge--bottom-larger">
+        Ils sont les représentants du mouvement au niveau départemental. Chaque référent(e) coordonne notamment les actions des comités locaux de son département.
+    </p>
+
+    <a href="{{ path('our_referents_homepage') }}" class="btn btn--blue">Nos Referents</a>
 {% endblock %}

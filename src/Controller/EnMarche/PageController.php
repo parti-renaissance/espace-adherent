@@ -79,16 +79,6 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/le-mouvement/notre-organisation", name="page_le_mouvement_notre_organisation")
-     * @Method("GET")
-     * @Entity("page", expr="repository.findOneBySlug('le-mouvement/notre-organisation')")
-     */
-    public function mouvementOrganisationAction(Page $page)
-    {
-        return $this->render('page/le-mouvement/notre-organisation.html.twig', ['page' => $page]);
-    }
-
-    /**
      * @Route("/le-mouvement/legislatives", name="page_le_mouvement_legislatives")
      * @Method("GET")
      */

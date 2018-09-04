@@ -55,7 +55,6 @@ class PageControllerTest extends WebTestCase
         yield ['/emmanuel-macron/revolution'];
         yield ['/emmanuel-macron/videos'];
         yield ['/le-mouvement'];
-        yield ['/le-mouvement/notre-organisation'];
         yield ['/le-mouvement/les-comites'];
         yield ['/le-mouvement/devenez-benevole'];
         yield ['/okcandidatlegislatives'];

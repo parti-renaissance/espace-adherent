@@ -610,6 +610,19 @@
 
         <!--
         ######################################################
+        # Biography
+        ######################################################
+        -->
+        <service id="app.admin.biography_executive_office_member" class="AppBundle\Admin\ExecutiveOfficeMemberAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Membres BurEx" group="Biographies" />
+
+            <argument />
+            <argument>AppBundle\Entity\Biography\ExecutiveOfficeMember</argument>
+            <argument />
+        </service>
+
+        <!--
+        ######################################################
         # OAuth
         ######################################################
          -->
