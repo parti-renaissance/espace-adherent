@@ -2,10 +2,17 @@
 
 namespace AppBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use AppBundle\Entity\Unregistration;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class UnregistrationRepositry extends EntityRepository
+class UnregistrationRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Unregistration::class);
+    }
+
     public function countForExport(): int
     {
         return (int) $this->createQueryBuilder('i')
