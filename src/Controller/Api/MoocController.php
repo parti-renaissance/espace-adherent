@@ -4,7 +4,10 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\Mooc\Mooc;
 use AppBundle\Normalizer\MoocNormalizer;
+use AppBundle\Repository\MoocRepository;
 use AppBundle\Sitemap\SitemapFactory;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\Serializer as JMSSerializer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
@@ -19,6 +22,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class MoocController extends Controller
 {
+    /**
+     * @Route("", name="api_mooc_landing")
+     * @Method("GET")
+     */
+    public function moocLandingPageAction(MoocRepository $moocRepository, JMSSerializer $serializer): Response
+    {
+        return new JsonResponse(
+            $serializer->serialize(
+                $moocRepository->findAllOrdered(),
+                'json',
+                SerializationContext::create()->setGroups('mooc_list')
+            ),
+            JsonResponse::HTTP_OK,
+            [],
+            true
+        );
+    }
+
     /**
      * @Route("/sitemap.xml", name="api_mooc_sitemap")
      * @Method("GET")

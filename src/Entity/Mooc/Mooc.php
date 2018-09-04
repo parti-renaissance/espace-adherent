@@ -11,6 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MoocRepository")
@@ -40,6 +41,8 @@ class Mooc
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
+     *
+     * @JMS\Groups({"mooc_list"})
      */
     private $title;
 
@@ -47,12 +50,16 @@ class Mooc
      * @ORM\Column(type="text", nullable=true)
      *
      * @Assert\Length(min=2, max=400)
+     *
+     * @JMS\Groups({"mooc_list"})
      */
     private $description;
 
     /**
      * @ORM\Column
      * @Gedmo\Slug(fields={"title"}, unique=true)
+     *
+     * @JMS\Groups({"mooc_list"})
      */
     private $slug;
 
@@ -228,6 +235,11 @@ class Mooc
         return null !== $this->youtubeId;
     }
 
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("image"),
+     * @JMS\Groups({"mooc_list"})
+     */
     public function getYoutubeThumbnail(): ?string
     {
         return sprintf('https://img.youtube.com/vi/%s/0.jpg', $this->youtubeId);

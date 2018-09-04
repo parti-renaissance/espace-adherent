@@ -24,6 +24,11 @@ class MoocRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findAllOrdered(): array
+    {
+        return $this->findBy([], ['createdAt' => 'ASC']);
+    }
+
     public function findOneBySlug(string $slug): ?Mooc
     {
         return $this->createQueryBuilder('mooc')
