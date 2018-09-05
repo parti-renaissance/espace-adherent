@@ -1,7 +1,7 @@
 <aside class="text--body text--dark b__nudge--top-40 citizen_action__aside l__wrapper--aside">
 
     <div class="citizen_action__card b__nudge--bottom">
-        {% if is_granted('REPORT') %}
+        {% if is_granted('REPORT') and not is_cp_administrator %}
             <a href="{{ report_path(citizen_action, app.request.pathInfo) }}" class="text--body link--newblue b__nudge--bottom">Signaler un abus</a>
         {% endif %}
     </div>

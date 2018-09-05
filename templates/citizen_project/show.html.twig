@@ -1,23 +1,5 @@
 {% extends 'citizen_project/show_base.html.twig' %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-    <script type="text/javascript">
-        Kernel.onLoad(function(di) {
-            let toggleDisplay = function(elementSelector) {
-                $(elementSelector).click(function(){
-                    $('#show_more_citizen_actions').toggleClass('visually-hidden');
-                    $('#show_less_citizen_actions').toggleClass('visually-hidden');
-                    $('#other_citizen_actions').toggleClass('visually-hidden');
-                });
-            };
-            toggleDisplay('#show_more_citizen_actions');
-            toggleDisplay('#show_less_citizen_actions');
-        });
-    </script>
-{% endblock %}
-
 {% block citizen_project_show_content %}
     {{ parent() }}
     <div class="citizen-project-actions">
@@ -28,13 +10,13 @@
         {% endfor %}
 
         {% if citizen_actions|length > 5 %}
-            <span id="show_more_citizen_actions" class="text--body text--blue--dark cursor--pointer">Voir plus</span>
-            <div id="other_citizen_actions" class="visually-hidden">
+            <span id="show-more-citizen-actions" class="text--body text--blue--dark cursor--pointer">Voir plus</span>
+            <div id="other-citizen-actions" class="visually-hidden">
                 {% for action in citizen_actions|slice(5) %}
                     {{ include('citizen_project/_citizen_action.html.twig', {action: action}) }}
                 {% endfor %}
             </div>
-            <span id="show_less_citizen_actions" class="text--body text--blue--dark visually-hidden cursor--pointer">Voir moins</span>
+            <span id="show-less-citizen-actions" class="text--body text--blue--dark visually-hidden cursor--pointer">Voir moins</span>
         {% endif %}
     </div>
 {% endblock %}

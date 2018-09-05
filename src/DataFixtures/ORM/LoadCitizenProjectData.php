@@ -51,6 +51,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
         $citizenProject1->addSkill($this->getReference('cps003'));
         $citizenProject1->setImageName('default.png');
         $citizenProject1->approved('2017-10-12 15:54:18');
+        $citizenProject1->addCommitteeOnSupport($this->getReference('committee-10'));
         $this->addReference('citizen-project-1', $citizenProject1);
 
         $citizenProject2 = $citizenProjectFactory->createFromArray([
@@ -201,7 +202,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
         $manager->persist($this->getReference('adherent-7')->administrateCitizenProject($citizenProject5));
         $manager->persist($this->getReference('adherent-2')->followCitizenProject($citizenProject1));
         $manager->persist($this->getReference('adherent-4')->followCitizenProject($citizenProject1));
-        $manager->persist($this->getReference('adherent-5')->administrateCitizenProject($citizenProject1));
+        $manager->persist($this->getReference('adherent-5')->followCitizenProject($citizenProject1));
         $manager->persist($this->getReference('adherent-6')->followCitizenProject($citizenProject2));
         $manager->persist($this->getReference('adherent-3')->followCitizenProject($citizenProject4));
         $manager->persist($this->getReference('adherent-3')->followCitizenProject($citizenProject5));
