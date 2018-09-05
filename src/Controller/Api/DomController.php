@@ -18,6 +18,7 @@ class DomController extends Controller
         return new JsonResponse([
             'header' => $this->renderView('components/_header.html.twig'),
             'footer' => $this->renderView('components/_footer.html.twig'),
+            'css' => $this->renderView('components/_css.html.twig'),
         ]);
     }
 }
