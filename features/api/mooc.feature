@@ -10,6 +10,22 @@ Feature:
       | LoadMoocVideoData   |
       | LoadMoocQuizData    |
 
+  Scenario: As a non logged-in user I can get the MOOC landing page configuration
+    When I am on "/api/mooc"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+      {
+          "image": "https://img.youtube.com/vi/ktHEfEDhscU/0.jpg",
+          "title": "Faire de sa fourchette un acte politique",
+          "description": "Description du MOOC, faire de sa fourchette un acte politique",
+          "slug": "faire-de-sa-fourchette-un-acte-politique"
+      }
+    ]
+    """
+
   Scenario: As a non logged-in user I can get MOOC configuration
     When I am on "/api/mooc/faire-de-sa-fourchette-un-acte-politique"
     Then the response status code should be 200
