@@ -425,7 +425,7 @@ SQL;
         if (SearchParametersFilter::TYPE_CITIZEN_ACTIONS === $search->getType()) {
             $type = 'AND events.type = :type';
         } else {
-            $type = 'AND events.type != :type';
+            $type = '';
         }
 
         $sql = preg_replace(
@@ -450,7 +450,9 @@ SQL;
             $query->setParameter('category', $category);
         }
 
-        $query->setParameter('type', CitizenAction::CITIZEN_ACTION_TYPE);
+        if (SearchParametersFilter::TYPE_CITIZEN_ACTIONS === $search->getType()) {
+            $query->setParameter('type', CitizenAction::CITIZEN_ACTION_TYPE);
+        }
         $query->setParameter('latitude', $search->getCityCoordinates()->getLatitude());
         $query->setParameter('longitude', $search->getCityCoordinates()->getLongitude());
         $query->setParameter('published', 1, \PDO::PARAM_INT);

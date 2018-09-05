@@ -101,6 +101,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $this->createQueryBuilder('a')
             ->where('a.emailAddress IN (:emails)')
             ->setParameter('emails', $emails)
+            ->orderBy('a.firstName', 'ASC')
             ->getQuery()
             ->getResult()
         ;

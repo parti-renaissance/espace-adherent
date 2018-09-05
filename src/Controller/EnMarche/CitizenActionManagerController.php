@@ -20,6 +20,7 @@ use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\CitizenActionCommandType;
 use AppBundle\Form\ContactMembersType;
+use AppBundle\Repository\CitizenProjectMembershipRepository;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -144,8 +145,13 @@ class CitizenActionManagerController extends Controller
      * @Method("POST")
      * @Security("is_granted('EDIT_CITIZEN_ACTION', project)")
      */
-    public function exportParticipantsAction(Request $request, CitizenAction $citizenAction, CitizenProject $project, CitizenActionManager $citizenActionManager): Response
-    {
+    public function exportParticipantsAction(
+        Request $request,
+        CitizenAction $citizenAction,
+        CitizenProject $project,
+        CitizenActionManager $citizenActionManager,
+        CitizenProjectMembershipRepository $citizenProjectMembershipRepository
+    ): Response {
         $registrations = $this->getRegistrations($request, $citizenAction, self::ACTION_EXPORT);
 
         if (0 == $registrations->count()) {
@@ -156,7 +162,10 @@ class CitizenActionManagerController extends Controller
             ]);
         }
 
-        $participants = $citizenActionManager->populateRegistrationWithAdherentsInformations($registrations);
+        $participants = $citizenActionManager->populateRegistrationWithAdherentsInformations(
+            $registrations,
+            $citizenProjectMembershipRepository->findAdministrators($project)
+        );
         $exported = $this->get(CitizenActionParticipantsExporter::class)->export($participants);
 
         return new SnappyResponse($exported, 'inscrits-a-l-action-citoyenne.csv', 'text/csv');
@@ -212,8 +221,13 @@ class CitizenActionManagerController extends Controller
      * @Method("POST")
      * @Security("is_granted('EDIT_CITIZEN_ACTION', project)")
      */
-    public function printParticipantsAction(Request $request, CitizenAction $citizenAction, CitizenProject $project, CitizenActionManager $citizenActionManager): Response
-    {
+    public function printParticipantsAction(
+        Request $request,
+        CitizenAction $citizenAction,
+        CitizenProject $project,
+        CitizenActionManager $citizenActionManager,
+        CitizenProjectMembershipRepository $citizenProjectMembershipRepository
+    ): Response {
         $registrations = $this->getRegistrations($request, $citizenAction, self::ACTION_PRINT);
 
         if (0 == $registrations->count()) {
@@ -225,7 +239,10 @@ class CitizenActionManagerController extends Controller
         return $this->getPdfResponse(
             'citizen_action_manager/print_participants.html.twig',
             [
-                'participants' => $citizenActionManager->populateRegistrationWithAdherentsInformations($registrations),
+                'participants' => $citizenActionManager->populateRegistrationWithAdherentsInformations(
+                    $registrations,
+                    $citizenProjectMembershipRepository->findAdministrators($project)
+                ),
             ],
             'Liste des participants.pdf'
         );

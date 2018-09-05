@@ -10,6 +10,7 @@ use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\EventRegistrationType;
+use AppBundle\Repository\CitizenProjectMembershipRepository;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use Doctrine\ORM\EntityNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -155,9 +156,15 @@ class CitizenActionController extends Controller
      * @Method("GET")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
-    public function listParticipantsAction(CitizenAction $citizenAction, CitizenActionManager $citizenActionManager): Response
-    {
-        $participants = $citizenActionManager->populateRegistrationWithAdherentsInformations($citizenActionManager->getRegistrations($citizenAction));
+    public function listParticipantsAction(
+        CitizenAction $citizenAction,
+        CitizenActionManager $citizenActionManager,
+        CitizenProjectMembershipRepository $citizenProjectMembershipRepository
+    ): Response {
+        $participants = $citizenActionManager->populateRegistrationWithAdherentsInformations(
+            $citizenActionManager->getRegistrations($citizenAction),
+            $citizenProjectMembershipRepository->findAdministrators($citizenAction->getCitizenProject())
+        );
 
         return $this->render('citizen_action/list_participants.html.twig', [
             'citizen_action' => $citizenAction,

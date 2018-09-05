@@ -182,12 +182,23 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne3, $this->getReference('adherent-3'))));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne4, $this->getReference('adherent-3'))));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne4, $this->getReference('adherent-5'))));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne4, $this->getReference('adherent-4'))));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne5, $this->getReference('adherent-13'))));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne6, $this->getReference('adherent-13'))));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne7, $this->getReference('adherent-13'))));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne8, $this->getReference('adherent-13'))));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne9, $this->getReference('adherent-13'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne9, $this->getReference('adherent-13'))));
+        // Registrations of not connected users
+        $eventRegistration1 = new EventRegistrationCommand($actionCitoyenne4);
+        $eventRegistration1->setFirstName('Marie');
+        $eventRegistration1->setLastName('CLAIRE');
+        $eventRegistration1->setEmailAddress('marie.claire@test.com');
+        $eventRegistration2 = new EventRegistrationCommand($actionCitoyenne4);
+        $eventRegistration2->setFirstName('Pierre');
+        $eventRegistration2->setLastName('FRANCE');
+        $eventRegistration2->setEmailAddress('pierre.france@test.com');
+        $manager->persist($registrationFactory->createFromCommand($eventRegistration1));
+        $manager->persist($registrationFactory->createFromCommand($eventRegistration2));
 
         $manager->flush();
     }

@@ -17,24 +17,15 @@ use Ramsey\Uuid\UuidInterface;
  */
 class EventRegistration
 {
-    use EntityIdentityTrait;
     use EntityCrudTrait;
+    use EntityIdentityTrait;
+    use EntityPersonNameTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BaseEvent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $event;
-
-    /**
-     * @ORM\Column(length=50)
-     */
-    private $firstName;
-
-    /**
-     * @ORM\Column(length=50)
-     */
-    private $lastName;
 
     /**
      * @ORM\Column
@@ -84,16 +75,6 @@ class EventRegistration
     public function getEvent(): BaseEvent
     {
         return $this->event;
-    }
-
-    public function getFirstName(): string
-    {
-        return $this->firstName;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
     }
 
     public function getEmailAddress(): string

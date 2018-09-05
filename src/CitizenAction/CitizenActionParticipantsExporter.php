@@ -14,7 +14,7 @@ class CitizenActionParticipantsExporter
 
         foreach ($participants as $participant) {
             $resolver = new OptionsResolver();
-            $resolver->setDefined(['lastNameInitial', 'postalCode']);
+            $resolver->setDefined(['lastNameInitial', 'postalCode', 'administrator']);
             $resolver->setRequired(['uuid', 'firstName', 'lastName', 'age', 'cityName', 'createdAt']);
             $resolver->setAllowedTypes('createdAt', \DateTime::class);
             $resolver->resolve($participant);

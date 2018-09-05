@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadCitizenActionData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
@@ -81,7 +82,7 @@ class SearchControllerTest extends WebTestCase
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
 
-        $this->assertSame(4, $crawler->filter('div.search__results__row')->count());
+        $this->assertSame(6, $crawler->filter('div.search__results__row')->count());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements/categorie/conference-debat');
 
@@ -118,6 +119,7 @@ class SearchControllerTest extends WebTestCase
 
         $this->init([
             LoadEventData::class,
+            LoadCitizenActionData::class,
             LoadAdherentData::class,
         ]);
     }

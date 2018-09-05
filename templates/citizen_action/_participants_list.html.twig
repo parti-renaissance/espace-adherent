@@ -11,8 +11,9 @@
             <th>Inscription</th>
         {% endif %}
     </thead>
+    <tbody>
     {% for participant in participants %}
-        <tr>
+        <tr{{ participant.administrator ? ' class="committee__members__list__host"' : '' }}>
             {% if is_cp_administrator %}
                 <td class="no-print"><input type="checkbox" name="members[]" value="{{ participant.uuid }}" /></td>
             {% endif %}
@@ -27,4 +28,5 @@
             {% endif %}
         </tr>
     {% endfor %}
+    </tbody>
 </table>
