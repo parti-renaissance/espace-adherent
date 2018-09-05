@@ -302,9 +302,9 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      */
     public function getSubscriptionExternalIds(): array
     {
-        return array_filter(array_map(function (SubscriptionType $subscription) {
+        return array_values(array_filter(array_map(function (SubscriptionType $subscription) {
             return $subscription->getExternalId();
-        }, $this->getSubscriptionTypes()));
+        }, $this->getSubscriptionTypes())));
     }
 
     public function getRoles()
