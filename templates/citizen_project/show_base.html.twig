@@ -39,6 +39,20 @@
     </script>
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {% import 'javascript.js.twig' as js %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function(di) {
+            {{ js.toggleDisplayOnClick('#show-more-citizen-actions', ['#show-more-citizen-actions', '#show-less-citizen-actions', '#other-citizen-actions']) }}
+            {{ js.toggleDisplayOnClick('#show-less-citizen-actions', ['#show-more-citizen-actions', '#show-less-citizen-actions', '#other-citizen-actions']) }}
+            {{ js.toggleDisplayOnClick('#show-more-citizen-project-info', ['#show-more-citizen-project-info', '#show-less-citizen-project-info', '#citizen-project-info']) }}
+            {{ js.toggleDisplayOnClick('#show-less-citizen-project-info', ['#show-more-citizen-project-info', '#show-less-citizen-project-info', '#citizen-project-info']) }}
+        });
+    </script>
+{% endblock %}
+
 {%- block meta_description -%}
     {{ citizen_project.name }} est une action créée dans le cadre des projets citoyens de La République En Marche ! Ce projet, situé à {{ citizen_project.postAddress.cityName }}, a le soutien de {{ 'citizen_project.followers_count'|transchoice(citizen_project.membersCounts) }}. Rejoignez-le et participez à améliorer le quotidien de votre quartier ou de votre village !
 {%- endblock -%}
@@ -83,20 +97,24 @@
             <p>{{ citizen_project.problemDescription|nl2br }}</p>
         </div>
         <hr>
-        <div class="text--body text--dark" id="citizen-project-proposed-solution">
-            <p class="text--bold">Notre projet</p>
-            <p>{{ citizen_project.proposedSolution|raw }}</p>
+        <span id="show-more-citizen-project-info" class="text--body text--blue--dark cursor--pointer">Voir plus</span>
+        <div id="citizen-project-info" class="visually-hidden">
+            <div class="text--body text--dark" id="citizen-project-proposed-solution">
+                <p class="text--bold">Notre projet</p>
+                <p>{{ citizen_project.proposedSolution|raw }}</p>
+            </div>
+            <hr>
+            <div class="text--body text--dark" id="citizen-project-required-means">
+                <p class="text--bold">Les actions à lancer</p>
+                <p>{{ citizen_project.requiredMeans|nl2br }}</p>
+            </div>
+            <hr>
         </div>
-        <hr>
-        <div class="text--body text--dark" id="citizen-project-required-means">
-            <p class="text--bold">Les actions à lancer</p>
-            <p>{{ citizen_project.requiredMeans|nl2br }}</p>
-        </div>
-        <hr>
+        <span id="show-less-citizen-project-info" class="text--body text--blue--dark visually-hidden cursor--pointer">Voir moins</span>
         <ul id="citizen-project-menu" class="citizen-project__menu list__links list__links--left list__links--row">
             {% set currentRoute = app.request.attributes.get('_route') %}
             <li>
-                <a class="{{ currentRoute == 'app_citizen_project_show' ? 'active' }}" href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}">Actions terrain à venir</a>
+                <a class="{{ currentRoute == 'app_citizen_project_show' ? 'active' }}" href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}">Nos actions terrain</a>
             </li>
             <hr>
             {% if can_see_comment_citizen_project(citizen_project) %}

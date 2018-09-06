@@ -31,21 +31,18 @@
 {% block content %}
     <main class="citizen-project">
         <header class="background--purple">
-            {% if citizen_project.hasImageUploaded %}
+            {% if citizen_project.imageName %}
                 <div class="citizen-project--bkg"
                      style="background-image:url('{{ asset(citizen_project.getAssetImagePath) }}')">
-             {% else %}
+            {% else %}
                 <div class="l__wrapper l__row space--60-0">
-             {% endif %}
+            {% endif %}
                 <div class="l__wrapper space--60-0 text--white l__row--h-start">
                     <div class="b__nudge--bottom-larger">
                         <ul class="text--small b__nudge--bottom-tiny list__links list__links--vertical-align list__links--margin-right">
                             <li class="text--body text--small text--uppercase text--shadow">Projet citoyen</li>
                             {% if citizen_project.isFeatured %}
                                 <li class="citizen_project_featured newbtn--orange newbtn--smaller">Nos coups de cœur</li>
-                            {% endif %}
-                            {% if citizen_project.approvedCommitteeSupports|length > 0 %}
-                                <li class="newbtn--orange newbtn--smaller">{{ 'citizen_project.committees_count'|transchoice(citizen_project.approvedCommitteeSupports|length) }}</li>
                             {% endif %}
                         </ul>
                         <h1 class="text--larger text--shadow" id="citizen-project-name">
@@ -71,7 +68,7 @@
                                         <a href="{{ register_path_for_anonymous_follower() }}" id="committee-register-link" class="link--white">
                                             adhérez
                                         </a>
-                                         pour rejoindre ce projet citoyen
+                                        pour rejoindre ce projet citoyen
                                     </div>
                                 {% elseif can_follow_citizen_project(citizen_project) %}
                                     <button type="button"
@@ -81,31 +78,7 @@
                                             data-csrf-token="{{ csrf_token('citizen_project.follow') }}">
                                         Rejoindre ce projet
                                     </button>
-                                {% elseif can_unfollow_citizen_project(citizen_project) %}
-                                    <button type="button"
-                                            id="citizen_project-toggle-membership"
-                                            class="newbtn newbtn--orange citizen-project-unfollow b__nudge--right-large"
-                                            data-action="quitter"
-                                            data-csrf-token="{{ csrf_token('citizen_project.unfollow') }}">
-                                        Quitter ce projet citoyen
-                                    </button>
                                 {% endif %}
-
-                                <ul class="list__links list__links--default list__links--row list__links--svgs list__links--svgs--small">
-                                    <li>Partager</li>
-                                    <li role="button" aria-label="Partagez sur Facebook"
-                                        onclick="App.share('facebook', window.location.href, 'Rejoignez ce projet citoyen !')">
-                                        <i class="fa fa-facebook-square"></i>
-                                    </li>
-                                    <li role="button" aria-label="Partagez via Twitter"
-                                        onclick="App.share('twitter', window.location.href, 'Rejoignez ce projet citoyen !')">
-                                        <i class="fa fa-twitter"></i>
-                                    </li>
-                                    <li role="button" aria-label="Partagez via email"
-                                        onclick="App.share('email', window.location.href, 'Rejoins le projet citoyen : {{ citizen_project.name|e('js') }} de La République En Marche !')">
-                                        <i class="fa fa-envelope-o"></i>
-                                    </li>
-                                </ul>
 
                             </div>
                         {% endif %}

@@ -1,9 +1,39 @@
 <aside class="l__wrapper--aside citizen-project__aside text--body">
 
+    {% if can_unfollow_citizen_project(citizen_project) %}
+        <div class="citizen-project__card b__nudge--top-40">
+            <button type="button"
+                    id="citizen_project-toggle-membership"
+                    class="citizen-project-unfollow btn--as-link text--body text--blue--dark"
+                    data-action="quitter"
+                    data-csrf-token="{{ csrf_token('citizen_project.unfollow') }}">
+                Quitter ce projet citoyen
+            </button>
+        </div>
+    {% endif %}
+
     <div class="citizen-project__card b__nudge--top-40">
-        {% if is_granted('REPORT') %}
+        {% if is_granted('REPORT') and not is_cp_administrator %}
             <a href="{{ report_path(citizen_project, app.request.pathInfo) }}" class="text--body link--newblue">Signaler un abus</a>
         {% endif %}
+    </div>
+
+    <div class="citizen-project__card">
+        <ul class="list__links list__links--default list__links--svgs list__links--svgs--small">
+            <li>Partager</li>
+            <li role="button" aria-label="Partagez sur Facebook"
+                onclick="App.share('facebook', window.location.href, 'Rejoignez ce projet citoyen !')">
+                <i class="fa fa-facebook-square"></i>
+            </li>
+            <li role="button" aria-label="Partagez via Twitter"
+                onclick="App.share('twitter', window.location.href, 'Rejoignez ce projet citoyen !')">
+                <i class="fa fa-twitter"></i>
+            </li>
+            <li role="button" aria-label="Partagez via email"
+                onclick="App.share('email', window.location.href, 'Rejoins le projet citoyen : {{ citizen_project.name|e('js') }} de La République En Marche !')">
+                <i class="fa fa-envelope-o"></i>
+            </li>
+        </ul>
     </div>
 
     <div class="citizen-project__card">
@@ -28,10 +58,6 @@
             <ul class="l__row l__row--wrap">
                 {% for administrator in administrators %}
                     <li class="text--body">
-                        <span
-                           title="{{ is_cp_administrator and app.user.equals(administrator) ? 'Vous' : administrator }}">
-                            {{ include('components/user.html.twig') }}
-                        </span>
                         {% if not is_cp_administrator %}
                             <a href="{{ path('app_adherent_contact', {uuid: administrator.uuid, from: 'citizen_project', id: citizen_project.uuid.toString}) }}"
                                class="text--small link--newblue">
@@ -49,15 +75,6 @@
             <span class="citizen-project__card__title">{{ 'citizen_project.followers_count'|transchoice(followers|length) }}</span>
             <span class="text--small text--normal">(<a  class="link--newblue" href="{{ path('app_citizen_project_list_actors', {slug: citizen_project.slug}) }}">Voir</a>)</span>
         </h3>
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <ul class="l__row l__row--wrap">
-                {% for follower in followers|slice(0, 11) %}
-                    <li>
-                        <span title="{{ not has_role_admin and app.user and app.user.equals(follower) ? 'Vous' : follower }}">{{ include('components/user.html.twig') }}</span>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
     </div>
 
     <div class="citizen-project__card">
@@ -87,8 +104,9 @@
             <form method="post" id="committee-confirm-support-form" class="form citizen-project-form" action="{{ path('app_citizen_project_committee_support', {slug: citizen_project.slug}) }}">
                 {{ form_widget(form_committee_support) }}
                 <div>
-                    <button type="submit" id="committee-confirm-support" class="newbtn--small btn--blue b__nudge--top">
-                        {% if citizen_project.isSupportedByCommitteeUuid(app.user.memberships.committeeSupervisorMemberships.last.committeeUuid.toString) %}
+                    {% set has_support = citizen_project.isSupportedByCommitteeUuid(app.user.memberships.committeeSupervisorMemberships.last.committeeUuid.toString) %}
+                    <button type="submit" id="committee-confirm-support" class="{{ has_support ? 'btn--as-link text--body text--blue--dark' : 'newbtn--small btn--blue' }} b__nudge--top">
+                        {% if has_support %}
                             Retirer mon soutien à ce projet
                         {% else %}
                             Soutenir ce projet avec mon comité

@@ -29,6 +29,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CitizenProjectManager
 {
+    public const CITIZEN_PROJECT_DEFAULT_IMAGE_NAME = 'default.png';
+
     private $registry;
     private $storage;
     private $projectAuthority;
@@ -91,6 +93,14 @@ class CitizenProjectManager
     public function getCitizenProjectNextActions(CitizenProject $citizenProject, int $maxResults = 5): array
     {
         return $this->getCitizenActionRepository()->findNextCitizenActionsForCitizenProject($citizenProject, $maxResults);
+    }
+
+    /**
+     * @return CitizenAction[]
+     */
+    public function getCitizenProjectActions(CitizenProject $citizenProject): array
+    {
+        return $this->getCitizenActionRepository()->findCitizenActionsByCitizenProject($citizenProject);
     }
 
     /**
@@ -301,11 +311,11 @@ class CitizenProjectManager
         }
 
         // Clears the old image if needed
-        if (null !== $citizenProject->getImageName() && $oldImagePath = $citizenProject->getImagePath()) {
+        if ($citizenProject->hasImageUploaded() && null !== $citizenProject->getImageName() && $oldImagePath = $citizenProject->getImagePath()) {
             $this->storage->delete($oldImagePath);
         }
 
-        $citizenProject->setImageName($citizenProject->getImage());
+        $citizenProject->setImageNameFromUploadedFile($citizenProject->getImage());
         $path = $citizenProject->getImagePath();
 
         // Uploads the file : creates or updates if exists
@@ -336,24 +346,32 @@ class CitizenProjectManager
     }
 
     /**
+     * Adds default image to the citizen project.
+     */
+    public function setDefaultImage(CitizenProject $citizenProject): void
+    {
+        $citizenProject->setImageName(CitizenProjectManager::CITIZEN_PROJECT_DEFAULT_IMAGE_NAME);
+        $citizenProject->setImageUploaded(false);
+    }
+
+    /**
      * Removes the citizen project image.
      */
     public function removeImage(CitizenProject $citizenProject): void
     {
-        if (null === $citizenProject->getImageName()) {
-            throw new \RuntimeException('This Citizen Project does not contain an image.');
+        // Default image should not be removed
+        if (self::CITIZEN_PROJECT_DEFAULT_IMAGE_NAME !== $citizenProject->getImageName()) {
+            $path = $citizenProject->getImagePath();
+
+            // Deletes the file
+            $this->storage->delete($path);
+
+            // Clears the cache file
+            $this->glide->deleteCache($path);
+
+            $citizenProject->setImageName(self::CITIZEN_PROJECT_DEFAULT_IMAGE_NAME);
+            $citizenProject->setImageUploaded(false);
         }
-
-        $path = $citizenProject->getImagePath();
-
-        // Deletes the file
-        $this->storage->delete($path);
-
-        // Clears the cache file
-        $this->glide->deleteCache($path);
-
-        $citizenProject->setImageName(null);
-        $citizenProject->setImageUploaded(false);
     }
 
     private function getManager(): ObjectManager

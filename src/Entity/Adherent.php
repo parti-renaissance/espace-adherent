@@ -295,6 +295,18 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->getUuid()->toString();
     }
 
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("subscriptionExternalIds"),
+     * @JMS\Groups({"public"})
+     */
+    public function getSubscriptionExternalIds(): array
+    {
+        return array_filter(array_map(function (SubscriptionType $subscription) {
+            return $subscription->getExternalId();
+        }, $this->getSubscriptionTypes()));
+    }
+
     public function getRoles()
     {
         $roles = ['ROLE_USER'];

@@ -68,20 +68,21 @@
                             }) }}
                             {{ form_widget(newsletter_form.country, { placeholder: 'common.country', attr: { class: 'form--mid' } }) }}
                         </div>
-                        <div>
+                        <div class="form__row">
+                            {{ form_row(newsletter_form.personalDataCollection, { label: "J'ai lu et j'accepte les mentions d'information relatives au recueil de mes données personnelles ci-dessous", label_attr: { class: 'text--gray text--smallest' }}) }}
+                        </div>
+                        <div class="form--full">
                             <button title="Je m'inscris à la newsletter" type="submit" class="form btn btn--primary">Je m'inscris</button>
                         </div>
-                        <div class="b__nudge--top-15">
-                            {{ form_row(newsletter_form.personalDataCollection) }}
-                        </div>
                     {{ form_end(newsletter_form) }}
+                    <div class="text--gray text--small text--left">
+                        Les données recueillies sur ce formulaire sont traitées par LaREM afin de vous envoyer la newsletter du mouvement et de permettre à LaREM de vous envoyer des communications politiques.
+                        Les informations marquées d’un astérisque sont obligatoires. L’absence de réponse dans ces champs ne permettra pas à LaREM de traiter votre demande.
+                        Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
+                        Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse postale ou électronique suivante : La République En Marche, 63 rue Sainte-Anne, 75002 Paris ou <a href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>.
+                    </div>
                 </div>
-                <p class="text--gray text--small text--left">
-                    Les données recueillies sur ce formulaire sont traitées par LaREM afin de vous envoyer la newsletter du mouvement et de permettre à LaREM de vous envoyer des communications politiques.
-                    Les informations marquées d’un astérisque sont obligatoires. L’absence de réponse dans ces champs ne permettra pas à LaREM de traiter votre demande.
-                    Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
-                    Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse postale ou électronique suivante : La République En Marche, 63 rue Sainte-Anne, 75002 Paris ou <a href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>.
-                </p>
+
             {% endif %}
 
             <p>
@@ -90,9 +91,7 @@
                 </a>
             </p>
         {% else %}
-            <h3>
-                Votre don n'a pas été effectué, soit car vous l'avez annulé soit car une erreur s'est produite.
-            </h3>
+            <h3>{{ get_payment_message_by_code(result_code)|trans|raw }}</h3>
 
             <p>
                 <a href="{{ retry_url }}" class="btn btn--medium btn--primary">

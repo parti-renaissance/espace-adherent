@@ -291,9 +291,11 @@ class CommitteeRepository extends ServiceEntityRepository
 
     public function findByPartialName(string $search, int $limit = 10): array
     {
-        return $this->createQueryBuilder('c')
-            ->where('c.canonicalName LIKE :search')
+        return $this->createQueryBuilder('committee')
+            ->where('committee.canonicalName LIKE :search')
+            ->andWhere('committee.status = :status')
             ->setParameter('search', '%'.strtolower($search).'%')
+            ->setParameter('status', Committee::APPROVED)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()

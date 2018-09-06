@@ -11,7 +11,7 @@ Feature:
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
       | routing_key   | body                                                                                                                                                                   |
-      | <routing_key> | {"uuid":"313bd28f-efc8-57c9-8ab7-2106c8be9697","country":"CH","zipCode":"8057","emailAddress":"michelle.dufour@example.ch","firstName":"Michelle","lastName":"Dufour"} |
+      | <routing_key> | {"uuid":"313bd28f-efc8-57c9-8ab7-2106c8be9697","subscriptionExternalIds":["123abc","456def"],"country":"CH","zipCode":"8057","emailAddress":"michelle.dufour@example.ch","firstName":"Michelle","lastName":"Dufour"} |
     Examples:
       | event        | routing_key  |
       | user.created | user.created |
@@ -97,8 +97,8 @@ Feature:
     When I dispatch the "<event>" citizen project event with "Le projet citoyen à Paris 8"
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
-      | routing_key   | body                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-      | <routing_key> | {"uuid":"aa364092-3999-4102-930c-f711ef971195","status":"APPROVED","membersCount":4,"name":"Le projet citoyen à Paris 8","slug":"75008-le-projet-citoyen-a-paris-8","category":"Nature et Environnement","country":"FR","address":"60 avenue des Champs-Élysées","zipCode":"75008","city":"Paris 8e","subtitle":"Le projet citoyen des habitants du 8ème arrondissement de Paris.","author":"Jacques P.","thumbnail":null}  |
+      | routing_key   | body                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+      | <routing_key> | {"uuid":"aa364092-3999-4102-930c-f711ef971195","status":"APPROVED","membersCount":4,"name":"Le projet citoyen à Paris 8","slug":"75008-le-projet-citoyen-a-paris-8","category":"Nature et Environnement","country":"FR","address":"60 avenue des Champs-Élysées","zipCode":"75008","city":"Paris 8e","subtitle":"Le projet citoyen des habitants du 8ème arrondissement de Paris.","author":"Jacques P.","thumbnail":"http://test.enmarche.code/assets/images/citizen_projects/default.png"}  |
     Examples:
       | event                   | routing_key             |
       | citizen_project.created | citizen_project.created |
@@ -125,7 +125,7 @@ Feature:
     When I dispatch the "<event>" citizen action event with "Projet citoyen de Zürich"
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
-      | routing_key   | body                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+      | routing_key   | body                                                                                                                                                                                                                                                                                                                                                                                                                                                |
       | <routing_key> | {"uuid":"3f46976e-e76a-476e-86d7-575c6d3bc15f","country":"CH","address":"30 Zeppelinstrasse","zipCode":"8057","city":"Zürich","latitude":"47.395004","longitude":"8.538380","name":"Projet citoyen de Zürich","slug":"@string@.endsWith('-projet-citoyen-de-zurich')","beginAt":"@string@.isDateTime()","finishAt":"@string@.isDateTime()","participantsCount":1,"status":"SCHEDULED","citizenProjectUuid":"942201fe-bffa-4fed-a551-71c3e49cea43"}  |
     Examples:
       | event                  | routing_key            |

@@ -414,3 +414,11 @@ $(document).ready(function() {
         checkbox.dispatchEvent(new Event('change'));
     }
 {% endmacro %}
+
+{% macro toggleDisplayOnClick(elementSelector, listElementSelectors) %}
+    $('{{ elementSelector|raw }}').click(function(){
+        {% for element in listElementSelectors %}
+            $('{{ element|raw }}').toggleClass('visually-hidden');
+        {% endfor %}
+    });
+{% endmacro %}

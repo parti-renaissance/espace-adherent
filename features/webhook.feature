@@ -64,7 +64,13 @@ Feature: Allow some worker to get the list of configured web hooks
     """
     {
       "event":"user.updated",
-      "callbacks":{"http://test.com/awesome":[], "https://www.en-marche.fr/webhook/endpoint":[], "http://client5.com/web_hook":[]}
+      "callbacks":{
+        "http://test.com/awesome":[],
+        "https://www.en-marche.fr/webhook/endpoint":[],
+        "https://api.mailchimp.com/lists":{
+          "services":"mailchimp"
+        }
+      }
     }
     """
 

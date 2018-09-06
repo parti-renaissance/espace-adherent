@@ -413,7 +413,12 @@ class CitizenProject extends BaseGroup
         $this->image = $image;
     }
 
-    public function setImageName(?UploadedFile $image): void
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function setImageNameFromUploadedFile(?UploadedFile $image): void
     {
         $this->imageName = null === $image ? null :
             sprintf('%s.%s',

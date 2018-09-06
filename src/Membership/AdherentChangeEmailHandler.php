@@ -8,6 +8,7 @@ use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\AdherentChangeEmailMessage;
 use AppBundle\Repository\AdherentChangeEmailTokenRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AdherentChangeEmailHandler
@@ -16,17 +17,20 @@ class AdherentChangeEmailHandler
     private $manager;
     private $repository;
     private $urlGenerator;
+    private $dispatcher;
 
     public function __construct(
         MailerService $mailer,
         ObjectManager $manager,
         AdherentChangeEmailTokenRepository $repository,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        EventDispatcherInterface $dispatcher
     ) {
         $this->mailer = $mailer;
         $this->manager = $manager;
         $this->repository = $repository;
         $this->urlGenerator = $urlGenerator;
+        $this->dispatcher = $dispatcher;
     }
 
     public function handleRequest(Adherent $adherent, string $newEmailAddress): void
@@ -46,6 +50,7 @@ class AdherentChangeEmailHandler
     {
         $adherent->changeEmail($token);
         $this->manager->flush();
+        $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($adherent));
     }
 
     public function sendValidationEmail(Adherent $adherent, AdherentChangeEmailToken $token): void
