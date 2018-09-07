@@ -492,6 +492,7 @@ class AdherentAdmin extends AbstractAdmin
         // No need to handle referent tags update as they are not update-able from admin
         $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object, $this->oldEmailsSubscriptions);
 
+        $this->dispatcher->dispatch(UserEvents::USER_UPDATE_SUBSCRIPTIONS, new UserEvent($object, null, null, $this->oldEmailsSubscriptions));
         $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($object));
     }
 
