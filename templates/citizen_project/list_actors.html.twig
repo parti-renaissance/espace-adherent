@@ -1,9 +1,10 @@
 {% extends 'citizen_project/_layout.html.twig' %}
 
 {% block page_title "Acteurs du projet citoyen #{citizen_project.name}" %}
-{% block meta_description "Découvrez les #{followers|length} acteurs de #{citizen_project.name}, une action créée dans le cadre des projets citoyens de La République En Marche ! et portée à #{citizen_project.cityName}." %}
+{% block meta_description "Découvrez les #{citizen_project.membersCounts|length} acteurs de #{citizen_project.name}, une action créée dans le cadre des projets citoyens de La République En Marche ! et portée à #{citizen_project.cityName}." %}
 
 {% block javascripts %}
+    {{ parent() }}
     {% if is_cp_administrator %}
         <script type="text/javascript">
             Kernel.onLoad(function() {
@@ -24,7 +25,7 @@
                 Retour au projet citoyen
             </a>
             <header class="space--30-0">
-                <h2 class="b__nudge--bottom-small text--medium">Liste des participants</h2>
+                <h2 class="b__nudge--bottom-small text--medium">Liste des membres</h2>
             </header>
 
             {% if is_cp_administrator %}

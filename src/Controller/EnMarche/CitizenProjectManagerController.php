@@ -48,7 +48,6 @@ class CitizenProjectManagerController extends Controller
             'form' => $form->createView(),
             'citizen_project' => $citizenProject,
             'administrators' => $manager->getCitizenProjectAdministrators($citizenProject),
-            'followers' => $manager->getCitizenProjectFollowers($citizenProject),
             'form_committee_support' => $this->createForm(FormType::class)->createView(),
         ]);
     }
@@ -93,7 +92,6 @@ class CitizenProjectManagerController extends Controller
         return $this->render('citizen_project/contact.html.twig', [
             'citizen_project' => $citizenProject,
             'administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),
-            'followers' => $citizenProjectManager->getCitizenProjectFollowers($citizenProject),
             'contacts' => GroupUtils::getUuidsFromAdherents($adherents),
             'form_committee_support' => $this->createForm(FormType::class)->createView(),
             'form' => $form->createView(),

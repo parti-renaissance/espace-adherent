@@ -48,7 +48,10 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
         ]);
 
         $citizenProject1->addSkill($this->getReference('cps001'));
+        $citizenProject1->addSkill($this->getReference('cps002'));
         $citizenProject1->addSkill($this->getReference('cps003'));
+        $citizenProject1->addSkill($this->getReference('cps004'));
+        $citizenProject1->addSkill($this->getReference('cps005'));
         $citizenProject1->setImageName('default.png');
         $citizenProject1->approved('2017-10-12 15:54:18');
         $citizenProject1->addCommitteeOnSupport($this->getReference('committee-10'));
@@ -83,6 +86,9 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'created_at' => '2017-10-26 16:08:24',
             'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
         ]);
+        $citizenProject3->addSkill($this->getReference('cps007'));
+        $citizenProject3->addSkill($this->getReference('cps008'));
+        $citizenProject3->addSkill($this->getReference('cps009'));
         $citizenProject3->setImageName('default.png');
         $citizenProject3->approved('2017-10-27 10:18:33');
         $this->addReference('citizen-project-3', $citizenProject3);

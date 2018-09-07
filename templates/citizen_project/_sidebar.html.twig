@@ -39,14 +39,21 @@
     <div class="citizen-project__card">
         <h3>Aidez-nous en :</h3>
         <ul class="citizen-project__skills">
-            {% if citizen_project.skills|length > 0 %}
-                {% for skill in citizen_project.skills %}
-                    <li>{{ skill }}</li>
-                {% endfor %}
+            {% for skill in citizen_project.skills|slice(0, 3) %}
+                <li>{{ skill }}</li>
             {% else %}
                 Aucune compétence recherchée pour l'instant.
-            {% endif %}
+            {% endfor %}
         </ul>
+        {% if citizen_project.skills|length > 3 %}
+            <div id="show-more-skills" class="text--small text--blue--dark cursor--pointer">Voir plus</div>
+            <ul id="other-skills" class="visually-hidden citizen-project--margin-top-0 citizen-project__skills">
+                {% for skill in citizen_project.skills|slice(3) %}
+                    <li>{{ skill }}</li>
+                {% endfor %}
+            </ul>
+            <div id="show-less-skills" class="text--small text--blue--dark visually-hidden cursor--pointer">Voir moins</div>
+        {% endif %}
     </div>
 
     <div class="citizen-project__card">
@@ -70,11 +77,13 @@
         {% endif %}
     </div>
 
-    <div class="citizen-project__card" id="followers">
+    <div class="citizen-project__card" id="members">
         <h3>
-            <span class="citizen-project__card__title">{{ 'citizen_project.followers_count'|transchoice(followers|length) }}</span>
-            <span class="text--small text--normal">(<a  class="link--newblue" href="{{ path('app_citizen_project_list_actors', {slug: citizen_project.slug}) }}">Voir</a>)</span>
+            <span class="citizen-project__card__title">{{ 'citizen_project.members_count'|transchoice(citizen_project.membersCounts) }}</span>
         </h3>
+        <span class="l__row l__row--wrap text--small text--normal">
+            <a  class="link--newblue" href="{{ path('app_citizen_project_list_actors', {slug: citizen_project.slug}) }}">Voir</a>
+        </span>
     </div>
 
     <div class="citizen-project__card">

@@ -383,7 +383,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('3 membres', $crawler->filter('#followers .citizen-project__card__title')->text());
+        $this->assertContains('4 membres', $crawler->filter('#members .citizen-project__card__title')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -402,7 +402,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('4 membres', $crawler->filter('#followers .citizen-project__card__title')->text());
+        $this->assertContains('5 membres', $crawler->filter('#members .citizen-project__card__title')->text());
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertTrue($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -418,7 +418,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('3 membres', $crawler->filter('#followers .citizen-project__card__title')->text());
+        $this->assertContains('4 membres', $crawler->filter('#members .citizen-project__card__title')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
