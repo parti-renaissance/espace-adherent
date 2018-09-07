@@ -1,0 +1,13 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {%- if value is empty -%}
+        &nbsp;
+    {%- else -%}
+        {% set format = field_description.options.pattern|default(null) %}
+        {% set locale = field_description.options.locale|default(null) %}
+        {% set timezone = field_description.options.timezone|default('Europe/Paris') %}
+
+        {{ value|localizeddate('medium', 'short', locale, timezone, format) }}
+    {%- endif -%}
+{% endblock %}

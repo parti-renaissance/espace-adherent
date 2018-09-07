@@ -91,7 +91,7 @@ class SearchParametersFilter
         $this->setType($request->query->get(self::PARAMETER_TYPE, ''));
         $this->setRadius($request->query->getInt(self::PARAMETER_RADIUS, self::DEFAULT_RADIUS));
         $this->setOffset($request->query->getInt(self::PARAMETER_OFFSET));
-        $this->setEventCategory($request->query->getAlnum(self::PARAMETER_EVENT_CATEGORY, null));
+        $this->setEventCategory($request->query->get(self::PARAMETER_EVENT_CATEGORY, null));
 
         if (null !== $city = $request->query->get(self::PARAMETER_CITY)) {
             $this->setCity((string) $city);

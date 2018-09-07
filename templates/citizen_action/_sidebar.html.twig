@@ -6,11 +6,30 @@
         {% endif %}
     </div>
 
+    <div class="citizen_action__card b__nudge--bottom">
+        {% set event_url = url('app_citizen_action_show', { slug: citizen_action.slug }) %}
+        <ul class="list__links list__links--default list__links--svgs list__links--svgs--small">
+            <li class="text--body">Partager</li>
+            <li role="button" aria-label="Partager sur Facebook"
+                onclick="App.share('facebook', '{{ event_url|url_encode }}', 'En Marche ! à {{ citizen_action.cityName }} le {{ citizen_action.beginAt|date('d/m') }}')">
+                <i class="fa fa-facebook-square"></i>
+            </li>
+            <li role="button" aria-label="Partager via Twitter"
+                onclick="App.share('twitter', '{{ event_url|url_encode }}', 'En Marche ! à {{ citizen_action.cityName }} le {{ citizen_action.beginAt|date('d/m') }} :')">
+                <i class="fa fa-twitter"></i>
+            </li>
+            <li role="button" aria-label="Partager via email"
+                onclick="App.share('email', '{{ event_url|url_encode }}', 'En Marche ! à {{ citizen_action.cityName }} le {{ citizen_action.beginAt|date('d/m') }}: ')">
+                <i class="fa fa-envelope-o"></i>
+            </li>
+        </ul>
+    </div>
+
     <div class="citizen_action__card">
         <h3>Quand</h3>
         <div>{{ citizen_action.beginAt|localizeddate('full', 'none')|capitalize }}</div>
         <div>De {{ citizen_action.beginAt|date('G\\hi') }} à {{ citizen_action.finishAt|date('G\\hi') }}</div>
-        <a href="{{ path('app_citizen_action_export_ical', {slug: citizen_action.slug}) }}" class="link--no-decor text--blue text--normal text--summary">Ajouter au calendrier</a>
+        <a href="{{ path('app_citizen_action_export_ical', {slug: citizen_action.slug}) }}" class="link--no-decor text--blue--dark text--normal text--summary">Ajouter au calendrier</a>
     </div>
 
     <div class="citizen_action__card b__nudge--top-large">
@@ -19,7 +38,7 @@
         <div>{{ citizen_action.address }}</div>
         <div>{{ citizen_action.cityName }}, {{ citizen_action.postalCode }}</div>
 
-        <a href="https://www.google.fr/maps/place/'{{ citizen_action.address }},+{{ citizen_action.postalCode }}+{{ citizen_action.cityName }}'" class="link--no-decor text--blue text--normal text--summary">Itinéraire</a>
+        <a href="https://www.google.fr/maps/place/'{{ citizen_action.address }},+{{ citizen_action.postalCode }}+{{ citizen_action.cityName }}'" class="link--no-decor text--blue--dark text--normal text--summary">Itinéraire</a>
     </div>
 
     <div class="citizen_action__card b__nudge--bottom-large b__nudge--top-large">
@@ -28,7 +47,7 @@
             <div class="citizen-action-organizer text--body b__nudge--bottom">
                 <span class="text--bold flex--center">{{ is_granted('IS_AUTHENTICATED_FULLY') ? citizen_action.organizer.fullName : citizen_action.organizer.partialName }}</span>
                 <a href="{{ path('app_adherent_contact', {uuid: citizen_action.organizer.uuid, from: 'citizen_project', id: citizen_action.uuid.toString}) }}"
-                   class="link--no-decor text--blue text--normal text--summary ">
+                   class="link--no-decor text--blue--dark text--normal text--summary ">
                     Contacter
                 </a>
             </div>

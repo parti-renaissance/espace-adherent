@@ -179,6 +179,53 @@ CONTENT;
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
+    public function testCitizenProjectAdministratorCanSeeParticipants()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+
+        $uuid = LoadCitizenActionData::CITIZEN_ACTION_4_UUID;
+        /** @var CitizenAction $citizenAction */
+        $citizenAction = $this->getCitizenActionRepository()->findOneBy(['uuid' => $uuid]);
+
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s/participants', $citizenAction->getSlug()));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertCount(6, $crawler->filter('table.committee__members__list thead th'));
+        $this->assertCount(5, $crawler->filter('table.committee__members__list tbody tr'));
+        $this->assertCount(1, $crawler->filter('table.committee__members__list tbody tr.committee__members__list__host td.member-first-name:contains("Jacques")'));
+        $this->assertCount(1, $crawler->filter('table.committee__members__list tbody tr.committee__members__list__host td.member-last-name:contains("PICARD")'));
+        $this->assertCount(1, $crawler->filter('table.committee__members__list td.member-first-name:contains("Gisele")'));
+        $this->assertCount(1, $crawler->filter('table.committee__members__list td.member-last-name:contains("BERTHOUX")'));
+        $this->assertCount(1, $crawler->filter('table.committee__members__list td.member-first-name:contains("Lucie")'));
+        $this->assertCount(1, $crawler->filter('table.committee__members__list td.member-last-name:contains("OLIVERA")'));
+        $this->assertCount(1, $crawler->filter('table.committee__members__list td.member-first-name:contains("Marie")'));
+        $this->assertCount(1, $crawler->filter('table.committee__members__list td.member-last-name:contains("CLAIRE")'));
+        $this->assertCount(1, $crawler->filter('table.committee__members__list td.member-first-name:contains("Pierre")'));
+        $this->assertCount(1, $crawler->filter('table.committee__members__list td.member-last-name:contains("FRANCE")'));
+    }
+
+    public function testAdherentCanSeeParticipants()
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
+
+        $uuid = LoadCitizenActionData::CITIZEN_ACTION_4_UUID;
+        /** @var CitizenAction $citizenAction */
+        $citizenAction = $this->getCitizenActionRepository()->findOneBy(['uuid' => $uuid]);
+
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s/participants', $citizenAction->getSlug()));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertCount(1, $crawler->filter('table.committee__members__list thead th'));
+        $this->assertCount(5, $crawler->filter('table.committee__members__list tbody tr'));
+        $this->assertCount(1, $crawler->filter('table.committee__members__list tbody tr.committee__members__list__host td.member-first-name:contains("Jacques")'));
+        $this->assertCount(1, $crawler->filter('table.committee__members__list td.member-first-name:contains("Gisele")'));
+        $this->assertCount(1, $crawler->filter('table.committee__members__list td.member-first-name:contains("Lucie")'));
+        $this->assertCount(1, $crawler->filter('table.committee__members__list td.member-first-name:contains("Marie")'));
+        $this->assertCount(1, $crawler->filter('table.committee__members__list td.member-first-name:contains("Pierre")'));
+    }
+
     protected function setUp()
     {
         parent::setUp();

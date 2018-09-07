@@ -60,14 +60,6 @@
                 {% else %}
                     <h3 class="text--medium event-attendees">{{ 'citizen_action.participants_count'|transchoice(participants|length) }}</h3>
                 {% endif %}
-
-                <ul>
-                    {% for participant in participants|slice(0, 11) %}
-                        <li class="text--body">
-                            <span title="{{ app.user and app.user.uuid == participant.uuid ? 'Vous' : 'participant' }}">{{ include('components/user.html.twig') }}</span>
-                        </li>
-                    {% endfor %}
-                </ul>
             </div>
 
         </section>

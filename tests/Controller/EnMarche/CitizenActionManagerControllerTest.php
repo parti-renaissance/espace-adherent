@@ -163,7 +163,7 @@ class CitizenActionManagerControllerTest extends WebTestCase
         $message = array_shift($messages);
 
         // Two mails have been sent
-        $this->assertCount(2, $message->getRecipients());
+        $this->assertCount(5, $message->getRecipients());
     }
 
     public function testOrganizerCanSeeParticipants()
@@ -172,9 +172,9 @@ class CitizenActionManagerControllerTest extends WebTestCase
         /** @var CitizenAction $citizenAction */
         $citizenAction = $this->getCitizenActionRepository()->findOneBy(['uuid' => LoadCitizenActionData::CITIZEN_ACTION_4_UUID]);
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s', $citizenAction->getSlug()));
-        $crawler = $this->client->click($crawler->selectLink('2 inscrits')->link());
+        $crawler = $this->client->click($crawler->selectLink('5 inscrits')->link());
 
-        $this->assertTrue($this->seeParticipantsList($crawler, 2), 'There should be 2 participants in the list.');
+        $this->assertTrue($this->seeParticipantsList($crawler, 5), 'There should be 5 participants in the list.');
     }
 
     public function testOrganizerCanExportParticipantsWithWrongUuids()
@@ -356,7 +356,7 @@ class CitizenActionManagerControllerTest extends WebTestCase
 
     private function seeParticipantsList(Crawler $crawler, int $count): bool
     {
-        return $count === count($crawler->filter('table > tr'));
+        return $count === count($crawler->filter('table tbody tr'));
     }
 
     protected function setUp()

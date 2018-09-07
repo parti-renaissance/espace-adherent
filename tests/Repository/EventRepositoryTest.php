@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Repository;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadCitizenActionData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Repository\EventRepository;
@@ -49,7 +50,7 @@ class EventRepositoryTest extends WebTestCase
         $request = new Request($query);
         $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
 
-        $this->assertSame(5, count($this->repository->searchAllEvents($search)));
+        $this->assertSame(7, count($this->repository->searchAllEvents($search)));
 
         $query = [
             'q' => '',
@@ -63,6 +64,19 @@ class EventRepositoryTest extends WebTestCase
         $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
 
         $this->assertSame(1, count($this->repository->searchAllEvents($search)));
+
+        $query = [
+            'q' => '',
+            'r' => '150',
+            'c' => 'paris',
+            't' => 'citizen_actions',
+            'offset' => '0',
+            'ec' => 'citizen_actions',
+        ];
+        $request = new Request($query);
+        $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
+
+        $this->assertSame(2, count($this->repository->searchAllEvents($search)));
     }
 
     protected function setUp()
@@ -71,6 +85,7 @@ class EventRepositoryTest extends WebTestCase
 
         $this->init([
             LoadAdherentData::class,
+            LoadCitizenActionData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,
         ]);

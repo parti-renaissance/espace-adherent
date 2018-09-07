@@ -10,6 +10,7 @@ use AppBundle\Event\EventRegistrationManager;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Repository\EventRegistrationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityNotFoundException;
 
 class CitizenActionManager
@@ -36,10 +37,11 @@ class CitizenActionManager
         return $this->eventRegistrationRepository->findByEvent($citizenAction);
     }
 
-    public function populateRegistrationWithAdherentsInformations(EventRegistrationCollection $registrations): array
+    public function populateRegistrationWithAdherentsInformations(EventRegistrationCollection $registrations, ArrayCollection $citizenProjectAdministrators): array
     {
         $adherentsEmails = [];
         $eventsRegistrationHydrated = [];
+        $administrators = [];
 
         /** @var EventRegistration $registration */
         foreach ($registrations as $registration) {
@@ -66,10 +68,15 @@ class CitizenActionManager
 
             if (!$adherentFind instanceof Adherent) {
                 $eventsRegistrationHydrated[] = [
+                    'uuid' => $registration->getUuid(),
                     'age' => '',
-                    'lastNameInitial' => '',
-                    'lastName' => '',
+                    'lastNameInitial' => $registration->getLastNameInitial(),
+                    'lastName' => $registration->getLastName(),
+                    'firstName' => $registration->getFirstName(),
+                    'postalCode' => $registration->getPostalCode(),
                     'cityName' => '',
+                    'createdAt' => $registration->getCreatedAt(),
+                    'administrator' => false,
                 ];
 
                 continue;
@@ -84,8 +91,13 @@ class CitizenActionManager
                 'postalCode' => $adherentFind->getPostalCode(),
                 'cityName' => $adherentFind->getCityName(),
                 'createdAt' => $registration->getCreatedAt(),
+                'administrator' => $citizenProjectAdministrators->contains($adherent),
             ];
         }
+
+        usort($eventsRegistrationHydrated, function ($a, $b) {
+            return $b['administrator'] <=> $a['administrator'];
+        });
 
         return $eventsRegistrationHydrated;
     }
