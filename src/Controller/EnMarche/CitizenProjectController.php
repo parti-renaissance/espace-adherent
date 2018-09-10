@@ -69,7 +69,6 @@ class CitizenProjectController extends Controller
             'citizen_project' => $citizenProject,
             'citizen_actions' => $citizenProjectManager->getCitizenProjectActions($citizenProject),
             'administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),
-            'followers' => $citizenProjectManager->getCitizenProjectFollowers($citizenProject),
             'form_committee_support' => $this->createForm(FormType::class)->createView(),
         ]);
     }
@@ -107,7 +106,6 @@ class CitizenProjectController extends Controller
             'citizen_actions' => $actionRepository->findNextCitizenActionsForCitizenProject($citizenProject),
             'form_committee_support' => $this->createForm(FormType::class)->createView(),
             'administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),
-            'followers' => $citizenProjectManager->getCitizenProjectFollowers($citizenProject),
             'comments' => $projectCommentRepository->findForProject($citizenProject),
             'form' => $form ? $form->createView() : null,
         ]);
@@ -233,7 +231,6 @@ class CitizenProjectController extends Controller
         return $this->render('citizen_project/list_actors.html.twig', [
             'citizen_project' => $citizenProject,
             'administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),
-            'followers' => $citizenProjectManager->getCitizenProjectFollowers($citizenProject),
             'form_committee_support' => $this->createForm(FormType::class)->createView(),
             'actors' => $citizenProjectManager->getCitizenProjectMemberships($citizenProject),
         ]);

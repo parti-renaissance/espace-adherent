@@ -39,22 +39,8 @@
     </script>
 {% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    {% import 'javascript.js.twig' as js %}
-    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-    <script type="text/javascript">
-        Kernel.onLoad(function(di) {
-            {{ js.toggleDisplayOnClick('#show-more-citizen-actions', ['#show-more-citizen-actions', '#show-less-citizen-actions', '#other-citizen-actions']) }}
-            {{ js.toggleDisplayOnClick('#show-less-citizen-actions', ['#show-more-citizen-actions', '#show-less-citizen-actions', '#other-citizen-actions']) }}
-            {{ js.toggleDisplayOnClick('#show-more-citizen-project-info', ['#show-more-citizen-project-info', '#show-less-citizen-project-info', '#citizen-project-info']) }}
-            {{ js.toggleDisplayOnClick('#show-less-citizen-project-info', ['#show-more-citizen-project-info', '#show-less-citizen-project-info', '#citizen-project-info']) }}
-        });
-    </script>
-{% endblock %}
-
 {%- block meta_description -%}
-    {{ citizen_project.name }} est une action créée dans le cadre des projets citoyens de La République En Marche ! Ce projet, situé à {{ citizen_project.postAddress.cityName }}, a le soutien de {{ 'citizen_project.followers_count'|transchoice(citizen_project.membersCounts) }}. Rejoignez-le et participez à améliorer le quotidien de votre quartier ou de votre village !
+    {{ citizen_project.name }} est une action créée dans le cadre des projets citoyens de La République En Marche ! Ce projet, situé à {{ citizen_project.postAddress.cityName }}, a le soutien de {{ 'citizen_project.members_count'|transchoice(citizen_project.membersCounts) }}. Rejoignez-le et participez à améliorer le quotidien de votre quartier ou de votre village !
 {%- endblock -%}
 
 {% block citizen_project_content %}
