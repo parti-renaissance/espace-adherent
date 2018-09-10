@@ -598,9 +598,12 @@ class AdherentControllerTest extends WebTestCase
         $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
     }
 
-    public function testAdherentCanCreateNewCitizenProject(): void
+    /**
+     * @dataProvider provideAdherentsAllowedToCreateCitizenProject
+     */
+    public function testAdherentThatCanCreateNewCitizenProject(string $emailAddress): void
     {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
+        $this->authenticateAsAdherent($this->client, $emailAddress);
 
         $crawler = $this->client->request(Request::METHOD_GET, '/');
         $this->assertSame(3, $crawler->selectLink('Lancer mon projet')->count());
@@ -609,9 +612,13 @@ class AdherentControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
-    public function testCitizenProjectAdministratorCannotCreateAnotherCitizenProject(): void
+    /**
+     * @dataProvider provideAdherentsNotAllowedToCreateCitizenProject
+     */
+    public function testAdherentThatCanNotCreateNewCitizenProject(string $emailAddress): void
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $this->authenticateAsAdherent($this->client, $emailAddress);
+
         $crawler = $this->client->request(Request::METHOD_GET, '/');
         $this->assertSame(0, $crawler->selectLink('Lancer mon projet')->count());
 
@@ -809,11 +816,9 @@ class AdherentControllerTest extends WebTestCase
         return [
             'Jacques Picard is already the owner of an existing committee' => [
                 'jacques.picard@en-marche.fr',
-                'changeme1337',
             ],
             'Gisèle Berthoux was promoted the host privilege of an existing committee' => [
                 'gisele-berthoux@caramail.com',
-                'ILoveYouManu',
             ],
         ];
     }
@@ -1099,6 +1104,33 @@ class AdherentControllerTest extends WebTestCase
         return [
             'adherent 1' => ['michel.vasseur@example.ch', LoadAdherentData::ADHERENT_13_UUID, 2, 'en-marche-suisse', 3],
             'adherent 2' => ['luciole1989@spambox.fr', LoadAdherentData::ADHERENT_4_UUID, 1, 'en-marche-paris-8', 4],
+        ];
+    }
+
+    public function provideAdherentsAllowedToCreateCitizenProject(): array
+    {
+        return [
+            'Adherent without citizen project' => [
+                'carl999@example.fr',
+            ],
+            'Citizen project admin with an approved and a refused committee' => [
+                'jacques.picard@en-marche.fr',
+            ],
+            'Citizen project admin with 3 approved committees' => [
+                'francis.brioul@yahoo.com',
+            ],
+        ];
+    }
+
+    public function provideAdherentsNotAllowedToCreateCitizenProject(): array
+    {
+        return [
+            'Adherent with a pending citizen project' => [
+                'benjyd@aol.com',
+            ],
+            'Adherent with a pre-approved citizen project' => [
+                'kiroule.p@blabla.tld',
+            ],
         ];
     }
 
