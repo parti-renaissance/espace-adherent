@@ -9,6 +9,7 @@ use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\EventInvitationType;
 use AppBundle\Form\EventRegistrationType;
+use AppBundle\Repository\EventRepository;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -28,10 +29,11 @@ class EventController extends Controller
      * @Route(name="app_event_show")
      * @Method("GET")
      */
-    public function showAction(Event $event): Response
+    public function showAction(Event $event, EventRepository $eventRepository): Response
     {
         return $this->render('events/show.html.twig', [
             'event' => $event,
+            'eventsNearby' => $eventRepository->findNearbyOf($event),
             'committee' => $event->getCommittee(),
         ]);
     }

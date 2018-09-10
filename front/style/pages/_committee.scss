@@ -351,6 +351,42 @@
                 }
             }
         }
+
+        &-nearby {
+            .card {
+                &:hover {
+                    h2 {
+                        color: $black;
+                    }
+                }
+                .box-header {
+                    &:hover {
+                       h2 {
+                           color: $black--half;
+                       }
+                    }
+                    h2 {
+                        margin-bottom: 15px;
+                    }
+                    .search-map {
+                        max-height: 240px;
+                    }
+                    .fa {
+                        margin-right: 5px;
+                    }
+                }
+                .box-bottom {
+                    h4 {
+                        float: left;
+                    }
+                    .share {
+                        float: right;
+                        margin-right: 22px;
+                    }
+                }
+            }
+        }
+
     }
 
     @media (max-width: $mobile) {

@@ -9,6 +9,7 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\District;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\ReferentTag;
+use AppBundle\Geocoder\Coordinates;
 use AppBundle\Search\SearchParametersFilter;
 use AppBundle\Statistics\StatisticsParametersFilter;
 use AppBundle\Utils\RepositoryUtils;
@@ -645,5 +646,27 @@ SQL;
         } catch (NoResultException $e) {
             return 0;
         }
+    }
+
+    /**
+     * @return Event[]
+     */
+    public function findNearbyOf(Event $event, int $radius = SearchParametersFilter::RADIUS_10, int $max = 3): array
+    {
+        return $this
+            ->createNearbyQueryBuilder(new Coordinates($event->getLatitude(), $event->getLongitude()))
+            ->andWhere($this->getNearbyExpression().' < :distance_max')
+            ->andWhere('n.beginAt > :date')
+            ->andWhere('n.status = :status')
+            ->andwhere('n.published = :published')
+            ->setParameter('distance_max', $radius)
+            ->setParameter('date', $event->getBeginAt())
+            ->setParameter('status', BaseEvent::STATUS_SCHEDULED)
+            ->setParameter('published', true)
+            ->addOrderBy('n.beginAt', 'ASC')
+            ->setMaxResults($max)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

@@ -211,6 +211,27 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertContains(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
     }
 
+    /**
+     * @dataProvider dataProviderNearbyEvents
+     */
+    public function testAnonymousCanSeeThreeNearbyEvents(string $name, string $cityName)
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements/2017-02-20-grand-meeting-de-paris');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertContains('Les événements à proximité', $crawler->filter('.committee-event-nearby')->text());
+        $this->assertSame(3, $crawler->filter('.committee-event-nearby ul li')->count());
+        $this->assertContains($name, $crawler->filter('.committee-event-nearby ul')->text());
+        $this->assertContains($cityName, $crawler->filter('.committee-event-nearby ul')->text());
+    }
+
+    public function dataProviderNearbyEvents(): iterable
+    {
+        yield ['Marche Parisienne', 'Paris 8e'];
+        yield ['Événement à Paris 2', 'Paris 8e'];
+        yield ['Événement à Paris 1', 'Paris 8e'];
+    }
+
     public function testAnonymousCanInviteToEvent()
     {
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
