@@ -45,7 +45,6 @@ class SearchControllerTest extends WebTestCase
     public function providerPathSearchPage()
     {
         return [
-            ['/recherche/projets-citoyens'],
             ['/evenements'],
             ['/comites'],
             ['/recherche'],
