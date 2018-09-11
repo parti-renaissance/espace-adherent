@@ -2,12 +2,13 @@
 
 namespace AppBundle\Form\Admin;
 
-use AppBundle\Coordinator\CoordinatorAreaSectors;
 use AppBundle\Entity\CoordinatorManagedArea;
+use AppBundle\Form\DataTransformer\StringToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CoordinatorManagedAreaType extends AbstractType
@@ -15,21 +16,35 @@ class CoordinatorManagedAreaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('sector', ChoiceType::class, [
-                'label' => 'common.sector',
-                'placeholder' => 'coordinator.placeholder.sector',
-                'choices' => CoordinatorAreaSectors::getAll(),
+            ->add('codes', TextType::class, [
+                'label' => false,
             ])
-            ->add('codesAsString', TextType::class, [
-                'label' => 'coordinator.label.codes',
-            ])
+        ;
+
+        $builder
+            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+                $data = $event->getData();
+
+                if ($data instanceof CoordinatorManagedArea) {
+                    if ([] === array_filter($data->getCodes())) {
+                        $event->setData(null);
+                    } else {
+                        $data->setSector($event->getForm()->getConfig()->getOption('sector'));
+                    }
+                }
+            })
+            ->get('codes')->addModelTransformer(new StringToArrayTransformer())
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => CoordinatorManagedArea::class,
-        ]);
+        $resolver
+            ->setRequired('sector')
+            ->setDefaults([
+                'required' => false,
+                'data_class' => CoordinatorManagedArea::class,
+            ])
+        ;
     }
 }

@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Adherent\AdherentRoleEnum;
+use AppBundle\Coordinator\CoordinatorAreaSectors;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProjectMembership;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
@@ -13,7 +14,6 @@ use AppBundle\Form\ActivityPositionType;
 use AppBundle\Form\Admin\CoordinatorManagedAreaType;
 use AppBundle\Form\Admin\ReferentManagedAreaType;
 use AppBundle\Form\EventListener\BoardMemberListener;
-use AppBundle\Form\EventListener\CoordinatorManagedAreaListener;
 use AppBundle\Form\EventListener\ReferentManagedAreaListener;
 use AppBundle\Form\GenderType;
 use AppBundle\Intl\UnitedNationsBundle;
@@ -26,7 +26,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\DateRangePickerType;
@@ -133,8 +132,11 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('isCoordinator', 'boolean', [
                     'label' => 'Est coordinateur ?',
                 ])
-                ->add('coordinatorManagedAreaCodesAsString', null, [
-                    'label' => 'coordinator.label.codes',
+                ->add('coordinatorCitizenProjectArea', null, [
+                    'label' => 'coordinator.label.codes.cp',
+                ])
+                ->add('coordinatorCommitteeArea', null, [
+                    'label' => 'coordinator.label.codes.committee',
                 ])
             ->end()
             ->with('Responsable procuration', ['class' => 'col-md-3'])
@@ -266,16 +268,17 @@ class AdherentAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
-            ->with('Coordinateur', ['class' => 'col-md-6'])
-                ->add('coordinatorManagedAreas', CollectionType::class, [
-                    'label' => false,
-                    'required' => false,
-                    'help' => 'Laisser vide si l\'adhérent n\'est pas coordinateur. '.
-                        'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
-                    'entry_type' => CoordinatorManagedAreaType::class,
-                    'allow_add' => false,
-                    'allow_delete' => false,
-                    'by_reference' => false,
+            ->with('Coordinateur', [
+                'class' => 'col-md-6',
+                'description' => 'Laisser vide si l\'adhérent n\'est pas coordinateur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
+            ])
+                ->add('coordinatorCitizenProjectArea', CoordinatorManagedAreaType::class, [
+                    'label' => 'coordinator.label.codes.cp',
+                    'sector' => CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR,
+                ])
+                ->add('coordinatorCommitteeArea', CoordinatorManagedAreaType::class, [
+                    'label' => 'coordinator.label.codes.committee',
+                    'sector' => CoordinatorAreaSectors::COMMITTEE_SECTOR,
                 ])
             ->end()
             ->with('Responsable procuration', ['class' => 'col-md-6'])
@@ -290,7 +293,6 @@ class AdherentAdmin extends AbstractAdmin
 
         $formMapper->getFormBuilder()
             ->addEventSubscriber(new BoardMemberListener())
-            ->addEventSubscriber(new CoordinatorManagedAreaListener())
             ->addEventSubscriber(new ReferentManagedAreaListener())
         ;
     }
@@ -443,8 +445,11 @@ class AdherentAdmin extends AbstractAdmin
 
                     // Coordinator
                     if (\in_array(AdherentRoleEnum::COORDINATOR, $value['value'], true)) {
-                        $qb->leftJoin(sprintf('%s.coordinatorManagedAreas', $alias), 'coordinatorManagedArea');
-                        $where->add('coordinatorManagedArea IS NOT NULL');
+                        $qb
+                            ->leftJoin(sprintf('%s.coordinatorCitizenProjectArea', $alias), 'coordinatorCitizenProjectArea')
+                            ->leftJoin(sprintf('%s.coordinatorCommitteeArea', $alias), 'coordinatorCommitteeArea')
+                        ;
+                        $where->add('(coordinatorCitizenProjectArea IS NOT NULL OR coordinatorCommitteeArea IS NOT NULL)');
                     }
 
                     // Procuration Manager

@@ -303,6 +303,8 @@ recaptcha.error: Une erreur s'est produite, pouvez-vous réessayer ?
 coordinator.sector.committee: Secteur - Comités
 coordinator.sector.citizen_project: Secteur - Projets citoyens
 coordinator.label.codes: Codes des zones gérées
+coordinator.label.codes.cp: Codes des zones gérées dans le secteur "Projet Citoyen"
+coordinator.label.codes.committee: Codes des zones gérées dans le secteur "Comité"
 coordinator.placeholder.sector: Veuillez choisir un secteur
 
 #
