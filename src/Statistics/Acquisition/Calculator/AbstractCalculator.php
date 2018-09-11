@@ -19,7 +19,11 @@ abstract class AbstractCalculator implements CalculatorInterface
 
     protected function fillEmptyCase(array $data, array $keys, int $value = 0): array
     {
-        $result = array_map('intval', array_column($data, 'total', 'date') + array_fill_keys($keys, $value));
+        if (array_key_exists(0, $data)) {
+            $data = array_column($data, 'total', 'date');
+        }
+
+        $result = array_map('intval', $data) + array_fill_keys($keys, $value);
         ksort($result);
 
         return $result;
