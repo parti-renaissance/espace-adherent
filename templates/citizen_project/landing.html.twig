@@ -1,139 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block banner '' %}
-{% block page_title 'Agissez près de chez vous !' %}
+{% block page_title 'Projets citoyens' %}
 {% block canonical_url url('app_citizen_project_landing') %}
 
-{%- block meta_description -%}
-    Les projets citoyens initiés par La République En Marche ! sont des actions locales qui permettent d'améliorer concrètement le quotidien des habitants d'un quartier, d'un village, en réunissant la force et les compétences de tous ceux qui veulent agir.
-{%- endblock -%}
-
-{% block javascripts %}
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places"></script>
-    <script type="text/javascript">
-        Kernel.onLoad(function(di) {
-            var cityInput = dom('#city-search-input'),
-                cityDisplay = dom('#city-search-display'),
-                btnChangeCity = dom('#change-city'),
-                btnSaveCity = dom('#save-city'),
-                waitQueue;
-
-            on(btnChangeCity, 'click', toogleCityInput);
-            on(btnSaveCity, 'click', toogleCityInput);
-
-            function toogleCityInput() {
-                if (!!( cityDisplay.offsetWidth || cityDisplay.offsetHeight || cityDisplay.getClientRects().length )) {
-                    cityDisplay.style.display = 'none';
-                    cityInput.style.display = 'inline';
-                    btnChangeCity.style.display = 'none';
-                    btnSaveCity.style.display = 'inline-block';
-                } else {
-                    cityDisplay.innerHTML = cityInput.value;
-                    cityDisplay.style.display = 'inline';
-                    cityInput.style.display = 'none';
-                    btnChangeCity.style.display = 'inline-block';
-                    btnSaveCity.style.display = 'none';
-                }
-            }
-
-            function fetchResults() {
-                // setTimeout avoids sending all HTTP request while the user is typing
-                clearTimeout(waitQueue);
-                waitQueue = setTimeout(function() {
-                    di.get('api').getCitizenProjectLandingPage(cityInput.value, function (response) {
-                        if (response instanceof XMLHttpRequest) {
-                            var errorText = 'Aucun résultat pour ces critères de recherche.';
-                            if (JSON.parse(response.responseText).hasOwnProperty('error')) {
-                                errorText = JSON.parse(response.responseText).error;
-                            }
-
-                            dom('#search-results').innerHTML = '<div class="text--body text--center l__wrapper">'+errorText+'</div>';
-
-                            return;
-                        }
-
-                        dom('#search-results').innerHTML = response;
-                    });
-                }, 200);
-            }
-            autocomplete = new google.maps.places.Autocomplete(cityInput, {
-                types: ['(cities)'],
-            });
-
-            google.maps.event.addListener(autocomplete, 'place_changed', toogleCityInput);
-            google.maps.event.addListener(autocomplete, 'place_changed', fetchResults);
-
-            fetchResults();
-        });
-    </script>
+{% block base_stylesheets %}
+    <link href="{{ asset('css/projets-citoyens.min.css') }}" rel="stylesheet">
 {% endblock %}
 
-{% block content %}
-<section class="citizen-projects__landing">
-    <header class="space--100-0">
-        <div class="l__wrapper l__col text--white">
-            <h1 class="text--extra-large">Agissez près de chez vous !</h1>
-            <h2>Participez à la transformation de la France</h2>
-        </div>
-    </header>
-
-    <div class="l__wrapper space--60-0 citizen-projects__landing__nearby">
-        <div class="text--large text--bold">
-            Rejoignez ces projets citoyens autour de <span id="city-search-display">{{ city }}</span>
-            <input style="display: none;" type="text" value="{{ city }}" id="city-search-input">
-            <span id="change-city" class="btn b__nudge--left">Changer lieu</span>
-            <span id="save-city" class="text--default btn btn--functional" style="display: none">Sauvegarder</span>
-        </div>
-        <div id="search-results" class="citizen-projects__landing__grid">
-            <div class="spinner">
-                <div class="double-bounce1"></div>
-                <div class="double-bounce2"></div>
-            </div>
-        </div>
-        <div class="text--center">
-            <a class="btn btn--blue " href="{{ path('app_search_citizen_projects') }}">Tous les projets</a>
-        </div>
-    </div>
-
-
-    <hr>
-
-    <div class="l__wrapper--narrow space--60-0 text--center">
-        <p class="text--medium-large text--bold">
-            Les projets citoyens sont des actions locales qui permettent d'améliorer concrètement le quotidien des habitants dans son quartier, son village, en réunissant la force et les compétences de tous ceux qui veulent agir.
-        </p>
-    </div>
-
-    {% if not app.user or is_granted('CREATE_CITIZEN_PROJECT') %}
-        <div class="background--pink--light space--100-0 citizen-projects__landing__create">
-            <div class="l__wrapper--slim">
-                <div class="l__row">
-                    {{ include('components/projets-citoyens.html.twig') }}
-                    <div class="b__nudge--left text--large text--bold text--blue--dark">
-                        Envie d'agir près de chez vous ?<br />
-                        {{ citizen_project ? 'Faites grandir votre projet !' : 'Lancez votre projet citoyen !' }}
-                    </div>
-                </div>
-                <div class="text--center">
-                    {% if citizen_project %}
-                        <a href="{{ path('app_citizen_project_show', { slug: citizen_project.slug }) }}">Voir mon projet {{ include('components/arrow--right.html.twig') }}</a>
-                    {% else %}
-                        <form id="start-creation-citizen-project" action="{{ path('app_adherent_create_citizen_project') }}" method="GET" class="b__nudge--top">
-                            <input type="text" name="name" placeholder="Quel est le nom (court) de votre projet ?">
-                            <input type="hidden" name="{{ constant('AppBundle\\Security\\Http\\Session\\AnonymousFollowerSession::AUTHENTICATION_INTENTION') }}" value="{{ path('app_user_login') }}">
-                            <button type="submit">
-                                Prochaine étape
-                                {{ include('components/arrow--right.html.twig') }}
-                            </button>
-                        </form>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    {% endif %}
-
-    <div class="citizen-projects__landing__video text--center space--100-0">
-        <iframe width="720" height="405" src="https://www.youtube.com/embed/XFOp8jqBTnE?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    </div>
-</section>
+{% block body %}
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script type="text/javascript" src="{{ asset('js/projets-citoyens.min.js') }}"></script>
 {% endblock %}

@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SearchController extends Controller
 {
@@ -89,27 +90,9 @@ class SearchController extends Controller
      * @Route("/recherche/projets-citoyens", name="app_search_citizen_projects")
      * @Method("GET")
      */
-    public function searchCitizenProjectsAction(Request $request)
+    public function searchCitizenProjectsAction()
     {
-        $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_CITIZEN_PROJECTS);
-
-        $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
-        $user = $this->getUser();
-        if ($user && in_array(EntityPostAddressTrait::class, class_uses($user))) {
-            $search->setCity(sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
-        }
-
-        try {
-            $results = $this->get(SearchResultsProvidersManager::class)->find($search);
-        } catch (GeocodingException $exception) {
-            $errors[] = $this->get('translator')->trans('search.geocoding.exception');
-        }
-
-        return $this->render('search/search_citizen_projects.html.twig', [
-            'search' => $search,
-            'results' => $results ?? [],
-            'errors' => $errors ?? [],
-        ]);
+        return $this->redirectToRoute('app_citizen_project_search', [], Response::HTTP_MOVED_PERMANENTLY);
     }
 
     /**

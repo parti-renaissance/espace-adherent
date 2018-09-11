@@ -93,15 +93,18 @@
         </script>
         {% endblock %}
 
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}" />
-        <link rel="stylesheet" type="text/css" href="{{ webpack_asset('app.css') }}" />
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/cookieconsent.min.css') }}" />
+        {% block base_stylesheets %}
+            <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}" />
+            <link rel="stylesheet" type="text/css" href="{{ webpack_asset('app.css') }}" />
+            <link rel="stylesheet" type="text/css" href="{{ asset('css/cookieconsent.min.css') }}" />
+        {% endblock %}
 
         {% block stylesheets '' %}
         {% block final_stylesheets '' %}
         {% block head_javascripts '' %}
     </head>
     <body>
+    {% block body %}
         {% if app.environment == 'prod' %}
             <!-- Google Tag Manager (noscript) -->
             <noscript>
@@ -163,5 +166,6 @@
         {{ include('non.li.html.twig') }}
 
         {% block final_javascripts '' %}
+    {% endblock %}
     </body>
 </html>
