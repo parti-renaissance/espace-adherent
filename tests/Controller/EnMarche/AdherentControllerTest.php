@@ -23,6 +23,7 @@ use AppBundle\Mailer\Message\CommitteeCreationConfirmationMessage;
 use AppBundle\Mailer\Message\CitizenProjectCreationConfirmationMessage;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EmailRepository;
+use AppBundle\Repository\UnregistrationRepository;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 use Cake\Chronos\Chronos;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -1078,7 +1079,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertNull($adherent);
 
         /** @var Unregistration $unregistration */
-        $unregistration = $this->getRepository(Unregistration::class)->findOneByUuid($uuid);
+        $unregistration = $this->get(UnregistrationRepository::class)->findOneByUuid($uuid);
         $mailHistorySubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherentBeforeUnregistration, 'subscribe');
         $mailHistoryUnsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherentBeforeUnregistration, 'unsubscribe');
 

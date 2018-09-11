@@ -114,7 +114,6 @@
         <!-- Dynamic redirections "to admin panel" handler -->
         <service id="app.dynamic_redirect_to_admin_panel_handler" class="AppBundle\Redirection\Dynamic\RedirectToAdminPanelHandler">
             <argument type="service" id="AppBundle\Redirection\Dynamic\RedirectionManager" />
-            <argument type="service" id="AppBundle\Repository\RedirectionRepository" />
         </service>
         <service id="AppBundle\Redirection\Dynamic\RedirectionManager" class="AppBundle\Redirection\Dynamic\RedirectionManager">
             <argument type="service" id="app.cache.redirection" />

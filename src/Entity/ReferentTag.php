@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -38,6 +39,8 @@ class ReferentTag
      *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
+     *
+     * @Serializer\Groups("public")
      */
     private $name;
 
@@ -49,6 +52,8 @@ class ReferentTag
      * @Assert\NotBlank
      * @Assert\Length(max=100)
      * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="referent_tag.code.invalid")
+     *
+     * @Serializer\Groups("public")
      */
     private $code;
 

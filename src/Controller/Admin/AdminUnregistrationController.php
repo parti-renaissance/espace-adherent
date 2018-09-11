@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Entity\Unregistration;
+use AppBundle\Repository\UnregistrationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -23,10 +23,10 @@ class AdminUnregistrationController extends Controller
      * @Method("GET")
      * @Security("has_role('ROLE_ADMIN_UNREGISTRATIONS')")
      */
-    public function exportUnregistrationsAction(): Response
+    public function exportUnregistrationsAction(UnregistrationRepository $repository): Response
     {
         return $this->render('admin/adherent/unregistration_export.html.twig', [
-            'total_count' => $this->getDoctrine()->getRepository(Unregistration::class)->countForExport(),
+            'total_count' => $repository->countForExport(),
             'csv_header' => implode(',', [
                 'uuid',
                 'postalCode',
@@ -43,12 +43,9 @@ class AdminUnregistrationController extends Controller
      * @Method("GET")
      * @Security("has_role('ROLE_ADMIN_UNREGISTRATIONS')")
      */
-    public function exportUnregistrationsPartialAction(Request $request): Response
+    public function exportUnregistrationsPartialAction(Request $request, UnregistrationRepository $repository): Response
     {
-        $page = $request->query->get('page', 1);
-
-        $manager = $this->getDoctrine()->getManager();
-        $unregistrations = $manager->getRepository(Unregistration::class)->findPaginatedForExport($page, self::PER_PAGE);
+        $unregistrations = $repository->findPaginatedForExport($request->query->getInt('page', 1), self::PER_PAGE);
 
         return new JsonResponse([
             'count' => count($unregistrations),

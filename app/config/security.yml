@@ -255,7 +255,7 @@ security:
             security: false
 
         api_oauth:
-            pattern: ^/api/(me|webhooks/)
+            pattern: ^/api/(me|webhooks|statistics/)
             stateless: true
             guard:
                 authenticators:
