@@ -13,37 +13,53 @@
 
 <div class="form__new" id="field-name">
     {{ form_label(form.name, 'Donnez un nom à votre projet :', {label_attr: {class: 'label__header--large'}}) }}
-    {{ form_errors(form.name) }}
-    {{ form_widget(form.name, {
-        attr: {
-            'class': 'form--full',
-            'placeholder': 'Un nom court et clair',
-        }
-    }) }}
-    <small>Ex: "Un stage pour tous"</small>
+    {% if form.name.vars.disabled %}
+        <div id="citizen_project_name_text">{{ form.vars.data.name }}</div>
+        <div class="visually-hidden">{{ form_widget(form.name) }}</div>
+    {% else %}
+        {{ form_label(form.name, 'Donnez un nom à votre projet :', {label_attr: {class: 'label__header--large'}}) }}
+        {{ form_errors(form.name) }}
+        {{ form_widget(form.name, {
+            attr: {
+                'class': 'form--full',
+                'placeholder': 'Un nom court et clair',
+            }
+        }) }}
+        <small>Ex: "Un stage pour tous"</small>
+    {% endif %}
 </div>
 
 <div class="form__new" id="field-subtitle">
     {{ form_label(form.subtitle, 'Et un sous-titre :', {label_attr: {class: 'label__header--large'}}) }}
-    {{ form_errors(form.subtitle) }}
-    {{ form_widget(form.subtitle, {
-        'attr': {
-            'class': 'form--full',
-            'placeholder': 'Un sous-titre explicatif',
-        }
-    }) }}
-    <small>Ex: "Aider les élèves de 3e à trouver un stage en entreprise"</small>
+    {% if form.subtitle.vars.disabled %}
+        <div id="citizen_project_subtitle_text">{{ form.vars.data.subtitle }}</div>
+        <div class="visually-hidden">{{ form_widget(form.subtitle) }}</div>
+    {% else %}
+        {{ form_errors(form.subtitle) }}
+        {{ form_widget(form.subtitle, {
+            attr: {
+                class: 'form--full',
+                placeholder: 'Un sous-titre explicatif',
+            }
+        }) }}
+        <small>Ex: "Aider les élèves de 3e à trouver un stage en entreprise"</small>
+    {% endif %}
 </div>
 
 <div class="form__new" id="field-category">
     {{ form_label(form.category, 'Choisissez le thème de votre projet :', {label_attr: {class: 'label__header--large'}}) }}
-    {{ form_errors(form.category) }}
-    {{ form_widget(form.category, {
-        attr: {
-            class: 'form--full',
-            placeholder: 'Sélectionnez un thème',
-        }
-    }) }}
+    {% if form.category.vars.disabled %}
+        <div id="citizen_project_category_text">{{ form.vars.data.category }}</div>
+        <div class="visually-hidden">{{ form_widget(form.category) }}</div>
+    {% else %}
+        {{ form_errors(form.category) }}
+        {{ form_widget(form.category, {
+            attr: {
+                class: 'form--full',
+                placeholder: 'Sélectionnez un thème',
+            }
+        }) }}
+    {% endif %}
 </div>
 
 <div class="form__new" id="field-image">
@@ -69,42 +85,52 @@
 
 <div class="form__new" id="field-problem-description">
     {{ form_label(form.problem_description, 'À quelle problématique locale répond votre projet ?', {label_attr: {class: 'label__header--large'}}) }}
-    {{ form_errors(form.problem_description) }}
-    {{ form_widget(form.problem_description, {
-        'attr': {
-            'class': 'form--full form__field--textarea-120',
-            'placeholder': 'Décrivez en 1 ou 2 phrases le problème local auquel vous proposez de répondre.',
-        }
-    }) }}
-    <small>
-        Ex: "Les collégiens doivent effectuer un stage d'observation en classe de 3e ou de 4e
-        pour les aider à déterminer leur orientation professionnelle mais
-        ils ont parfois du mal à le trouver en dehors de leur réseau famillial."
-    </small>
+    {% if form.problem_description.vars.disabled %}
+        <div id="citizen_project_problem_description_text">{{ form.vars.data.problemDescription }}</div>
+        <div class="visually-hidden">{{ form_widget(form.problem_description) }}</div>
+    {% else %}
+        {{ form_errors(form.problem_description) }}
+        {{ form_widget(form.problem_description, {
+            attr: {
+                class: 'form--full form__field--textarea-120',
+                placeholder: 'Décrivez en 1 ou 2 phrases le problème local auquel vous proposez de répondre.',
+            }
+        }) }}
+        <small>
+            Ex: "Les collégiens doivent effectuer un stage d'observation en classe de 3e ou de 4e
+            pour les aider à déterminer leur orientation professionnelle mais
+            ils ont parfois du mal à le trouver en dehors de leur réseau famillial."
+        </small>
+    {% endif %}
 </div>
 
 <div class="form__new" id="field-proposed-solution">
     {{ form_label(form.proposed_solution, 'Comment votre projet tend à répondre à ce problème ?', {label_attr: {class:'label__header--large'}}) }}
-    {{ form_errors(form.proposed_solution) }}
-    {{ form_widget(form.proposed_solution, {
-        'attr': {
-            'class': 'form--full form__field--textarea-120',
-            'placeholder': 'Un court paragraphe sur la ou les solutions que vous proposez',
-        }
-    }) }}
-    <small>
-        Ex: Le projet a pour objectif de mettre en relation ces élèves avec un réseau de professionnels
-        (entreprises, commerçants, artisans, etc.) volontaires pour les accueillir.
-    </small>
+    {% if form.proposed_solution.vars.disabled %}
+        <div id="citizen_project_proposed_solution_text">{{ form.vars.data.proposedSolution|raw }}</div>
+        <div class="visually-hidden">{{ form_widget(form.proposed_solution) }}</div>
+    {% else %}
+        {{ form_errors(form.proposed_solution) }}
+        {{ form_widget(form.proposed_solution, {
+            attr: {
+                class: 'form--full form__field--textarea-120',
+                placeholder: 'Un court paragraphe sur la ou les solutions que vous proposez',
+            }
+        }) }}
+        <small>
+            Ex: Le projet a pour objectif de mettre en relation ces élèves avec un réseau de professionnels
+            (entreprises, commerçants, artisans, etc.) volontaires pour les accueillir.
+        </small>
+    {% endif %}
 </div>
 
 <div class="form__new" id="field-required-means">
     {{ form_label(form.required_means, 'Quel est votre plan d\'action ?', {label_attr: {class: 'label__header--large'}}) }}
     {{ form_errors(form.required_means) }}
     {{ form_widget(form.required_means, {
-        'attr': {
-            'class': 'form--full form__field--textarea-120',
-            'placeholder': 'Votre calendrier prévisionnel et les principales étapes de votre projet',
+        attr: {
+            class: 'form--full form__field--textarea-120',
+            placeholder: 'Votre calendrier prévisionnel et les principales étapes de votre projet',
         }
     }) }}
     <small>
