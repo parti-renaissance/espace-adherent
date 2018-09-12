@@ -22,8 +22,7 @@ class HomeController extends Controller
      */
     public function indexAction(Request $request, GeoCoder $geoCoder): Response
     {
-        /** @var Adherent $user */
-        if ($user = $this->getUser()) {
+        if (($user = $this->getUser()) instanceof Adherent) {
             $newsletterSubscription = new NewsletterSubscription(
                 $user->getEmailAddress(),
                 $user->getPostalCode(),
