@@ -2,6 +2,7 @@
 
 namespace AppBundle\Donation;
 
+use AppBundle\Address\GeoCoder;
 use AppBundle\Controller\EnMarche\DonationController;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Donation;
@@ -53,12 +54,18 @@ class DonationRequestUtils
     private $locator;
     private $slugify;
     private $membershipRegistrationProcess;
+    private $geocoder;
 
-    public function __construct(ServiceLocator $donationRequestUtilsLocator, Slugify $slugify, MembershipRegistrationProcess $membershipRegistrationProcess)
-    {
+    public function __construct(
+        ServiceLocator $donationRequestUtilsLocator,
+        Slugify $slugify,
+        MembershipRegistrationProcess $membershipRegistrationProcess,
+        Geocoder $geocoder
+    ) {
         $this->locator = $donationRequestUtilsLocator;
         $this->slugify = $slugify;
         $this->membershipRegistrationProcess = $membershipRegistrationProcess;
+        $this->geocoder = $geocoder;
     }
 
     /**
@@ -87,6 +94,7 @@ class DonationRequestUtils
             $donation = DonationRequest::createFromAdherent($currentUser, $clientIp, $amount, $duration);
         } else {
             $donation = new DonationRequest(Uuid::uuid4(), $clientIp, $amount, $duration);
+            $donation->setCountry($this->geocoder->getCountryCodeFromIp($clientIp));
         }
 
         if ($request->query->has(self::RETRY_PAYLOAD)) {

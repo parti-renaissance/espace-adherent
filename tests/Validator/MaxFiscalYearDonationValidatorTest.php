@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Validator;
 
+use AppBundle\Address\GeoCoder;
 use AppBundle\Donation\DonationRequest;
 use AppBundle\Donation\DonationRequestUtils;
 use AppBundle\Donation\PayboxPaymentSubscription;
@@ -187,7 +188,8 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
         $this->donationRequestUtils = new DonationRequestUtils(
             $this->createMock(ServiceLocator::class),
             $this->createMock(Slugify::class),
-            $this->createMock(MembershipRegistrationProcess::class)
+            $this->createMock(MembershipRegistrationProcess::class),
+            $this->createMock(GeoCoder::class)
         );
     }
 }

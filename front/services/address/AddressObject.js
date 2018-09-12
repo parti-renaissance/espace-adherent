@@ -34,6 +34,10 @@ export default class AddressObject {
         this._country.value = country;
     }
 
+    getCountry() {
+       return this._country.value;
+    }
+
     isFilled() {
         return this._address.value && this._postalCode.value && this._city.value && this._country.value;
     }

@@ -6,6 +6,7 @@ use AppBundle\Address\PostAddressFactory;
 use AppBundle\Donation\DonationFactory;
 use AppBundle\Donation\DonationRequest;
 use AppBundle\Donation\DonationRequestUtils;
+use AppBundle\Address\GeoCoder;
 use AppBundle\Membership\MembershipRegistrationProcess;
 use Cocur\Slugify\Slugify;
 use libphonenumber\PhoneNumber;
@@ -61,7 +62,8 @@ class DonationFactoryTest extends TestCase
             new DonationRequestUtils(
                 $this->createMock(ServiceLocator::class),
                 Slugify::create(),
-                $this->createMock(MembershipRegistrationProcess::class)
+                $this->createMock(MembershipRegistrationProcess::class),
+                $this->createMock(GeoCoder::class)
             )
         );
     }
