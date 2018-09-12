@@ -19,7 +19,7 @@ class NewAdherentCalculator extends AbstractCalculator
 
     public function getLabel(): string
     {
-        return 'Nouveaux adhérents (nouveaux)';
+        return 'Adhérents (nouveaux)';
     }
 
     protected function processing(StatisticsRequest $request, array $keys): array

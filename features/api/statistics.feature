@@ -30,7 +30,7 @@ Feature:
             }
         },
         {
-            "title": "Nouveaux adhérents (nouveaux)",
+            "title": "Adhérents (nouveaux)",
             "category": "Adhésion",
             "items": {
                 "201801": "@integer@",
