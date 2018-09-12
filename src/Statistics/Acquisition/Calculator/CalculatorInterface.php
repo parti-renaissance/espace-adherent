@@ -8,5 +8,7 @@ interface CalculatorInterface
 {
     public function getLabel(): string;
 
+    public function getCategory(): string;
+
     public function calculate(StatisticsRequest $request, array $keys): array;
 }

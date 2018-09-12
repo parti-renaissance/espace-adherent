@@ -3,10 +3,13 @@
 namespace AppBundle\Statistics\Acquisition\Calculator;
 
 use AppBundle\Repository\AdherentRepository;
+use AppBundle\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
 use AppBundle\Statistics\Acquisition\StatisticsRequest;
 
 class AdherentCalculator extends AbstractCalculator
 {
+    use AdhesionCategoryTrait;
+
     private $repository;
     private $newAdherentCalculator;
 

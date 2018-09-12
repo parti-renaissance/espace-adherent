@@ -3,10 +3,13 @@
 namespace AppBundle\Statistics\Acquisition\Calculator;
 
 use AppBundle\Repository\AdherentRepository;
+use AppBundle\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
 use AppBundle\Statistics\Acquisition\StatisticsRequest;
 
 class NewAdherentCalculator extends AbstractCalculator
 {
+    use AdhesionCategoryTrait;
+
     private $repository;
 
     public function __construct(AdherentRepository $repository)
@@ -16,7 +19,7 @@ class NewAdherentCalculator extends AbstractCalculator
 
     public function getLabel(): string
     {
-        return 'Nouveaux adhérents (new)';
+        return 'Nouveaux adhérents (nouveaux)';
     }
 
     protected function processing(StatisticsRequest $request, array $keys): array

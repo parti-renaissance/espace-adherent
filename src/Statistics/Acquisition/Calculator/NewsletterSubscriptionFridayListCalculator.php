@@ -3,10 +3,13 @@
 namespace AppBundle\Statistics\Acquisition\Calculator;
 
 use AppBundle\Repository\NewsletterSubscriptionRepository;
+use AppBundle\Statistics\Acquisition\Calculator\Category\NewsletterSubscriptionCategoryTrait;
 use AppBundle\Statistics\Acquisition\StatisticsRequest;
 
 class NewsletterSubscriptionFridayListCalculator extends AbstractCalculator
 {
+    use NewsletterSubscriptionCategoryTrait;
+
     private $adherentCalculator;
     private $newsletterSubscriptionRepository;
 

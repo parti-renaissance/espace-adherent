@@ -4,11 +4,14 @@ namespace AppBundle\Statistics\Acquisition\Calculator;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Repository\DonationRepository;
+use AppBundle\Statistics\Acquisition\Calculator\Category\DonationCategoryTrait;
 use AppBundle\Statistics\Acquisition\StatisticsRequest;
 use Doctrine\ORM\Query\Expr\Join;
 
 abstract class AbstractDonationCalculator extends AbstractCalculator
 {
+    use DonationCategoryTrait;
+
     private $repository;
 
     public function __construct(DonationRepository $repository)

@@ -21,147 +21,189 @@ Feature:
     """
     [
         {
-            "Adhérents (total)": {
+            "title": "Adhérents (total)",
+            "category": "Adhésion",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Nouveaux adhérents (new)": {
+            "title": "Nouveaux adhérents (nouveaux)",
+            "category": "Adhésion",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Desadhésions (new)": {
+            "title": "Desadhésions (nouveaux)",
+            "category": "Adhésion",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Comités (new)": {
+            "title": "Comités (nouveaux)",
+            "category": "Adhésion",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Comités en attente (new)": {
+            "title": "Comités en attente (nouveaux)",
+            "category": "Adhésion",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Adhérents membres de comités (total)": {
+            "title": "Adhérents membres de comités (total)",
+            "category": "Adhésion",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Ratio membre de comité par nbr adhérents (total)": {
+            "title": "Ratio membre de comité par nbr adhérents (total)",
+            "category": "Adhésion",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Événements (new)": {
+            "title": "Événements (nouveaux)",
+            "category": "Adhésion",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Inscrits à des événements (total)": {
+            "title": "Inscrits à des événements (total)",
+            "category": "Adhésion",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Adhérents inscrits à des événements (total)": {
+            "title": "Adhérents inscrits à des événements (total)",
+            "category": "Adhésion",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Non-adhérents inscrits à des événements (total)": {
+            "title": "Non-adhérents inscrits à des événements (total)",
+            "category": "Adhésion",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Inscrits à la liste globale (total)": {
+            "title": "Inscrits à la liste globale (total)",
+            "category": "Inscriptions e-mails",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Inscrits à la lettre du vendredi (total)": {
+            "title": "Inscrits à la lettre du vendredi (total)",
+            "category": "Inscriptions e-mails",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Adhérents inscrits à la lettre du vendredi (total)": {
+            "title": "Adhérents inscrits à la lettre du vendredi (total)",
+            "category": "Inscriptions e-mails",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Adhérents inscrits aux mails de leur référent (total)": {
+            "title": "Adhérents inscrits aux mails de leur référent (total)",
+            "category": "Inscriptions e-mails",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Dons ponctuels (total)": {
+            "title": "Dons ponctuels (total)",
+            "category": "Dons",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Dons ponctuels par des adhérents (total)": {
+            "title": "Dons ponctuels par des adhérents (total)",
+            "category": "Dons",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Montant dons ponctuels (total)": {
+            "title": "Montant dons ponctuels (total)",
+            "category": "Dons",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Dons mensuels (total)": {
+            "title": "Dons mensuels (total)",
+            "category": "Dons",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Dons mensuels par des adhérents (total)": {
+            "title": "Dons mensuels par des adhérents (total)",
+            "category": "Dons",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"
             }
         },
         {
-            "Montant dons mensuels (total)": {
+            "title": "Montant dons mensuels (total)",
+            "category": "Dons",
+            "items": {
                 "201801": "@integer@",
                 "201802": "@integer@",
                 "201803": "@integer@"

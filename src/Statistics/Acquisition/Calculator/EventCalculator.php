@@ -4,10 +4,13 @@ namespace AppBundle\Statistics\Acquisition\Calculator;
 
 use AppBundle\Entity\Event;
 use AppBundle\Repository\EventRepository;
+use AppBundle\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
 use AppBundle\Statistics\Acquisition\StatisticsRequest;
 
 class EventCalculator extends AbstractCalculator
 {
+    use AdhesionCategoryTrait;
+
     private $repository;
 
     public function __construct(EventRepository $repository)
@@ -17,7 +20,7 @@ class EventCalculator extends AbstractCalculator
 
     public function getLabel(): string
     {
-        return 'Événements (new)';
+        return 'Événements (nouveaux)';
     }
 
     protected function processing(StatisticsRequest $request, array $keys): array
