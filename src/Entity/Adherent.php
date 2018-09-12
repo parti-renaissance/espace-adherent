@@ -115,7 +115,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $lastLoggedAt;
 
     /**
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="simple_array", nullable=true)
      */
     private $interests = [];
 
