@@ -40,7 +40,7 @@
     <main class="citizen-project">
         <header class="background--purple">
             {% if citizen_project.imageName %}
-                <div class="citizen-project--bkg"
+                <div class="{{ citizen_project.hasImageUploaded ? 'citizen-project--bkg--gradient' : 'citizen-project--bkg' }}"
                      style="background-image:url('{{ asset(citizen_project.getAssetImagePath) }}')">
             {% else %}
                 <div class="l__wrapper l__row space--60-0">
