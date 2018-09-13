@@ -104,7 +104,6 @@
         {% block head_javascripts '' %}
     </head>
     <body>
-    {% block body %}
         {% if app.environment == 'prod' %}
             <!-- Google Tag Manager (noscript) -->
             <noscript>
@@ -166,6 +165,5 @@
         {{ include('non.li.html.twig') }}
 
         {% block final_javascripts '' %}
-    {% endblock %}
     </body>
 </html>
