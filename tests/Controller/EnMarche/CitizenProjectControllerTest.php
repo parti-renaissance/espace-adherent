@@ -9,7 +9,6 @@ use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Mailer\Message\CitizenProjectCommentMessage;
 use AppBundle\Mailer\Message\CitizenProjectNewFollowerMessage;
-use AppBundle\Search\SearchParametersFilter;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -447,127 +446,6 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->assertTrue($citizenProject->isFeatured());
         $this->assertSame(1, $crawler->filter('.citizen_project_featured')->count());
         $this->assertSame('Nos coups de cœur', trim($crawler->filter('.citizen_project_featured')->text()));
-    }
-
-    public function testCitizenProjectLandingPageAsAnonymous()
-    {
-        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(SearchParametersFilter::DEFAULT_CITY, trim($crawler->filter('#city-search-display')->text()));
-        $this->assertSame(SearchParametersFilter::DEFAULT_CITY, trim($crawler->filter('#city-search-input')->attr('value')));
-
-        $citizenProjectName = 'Le titre de mon prochain CP';
-
-        $this->client->submit(
-            $this->client->getCrawler()->selectButton('Prochaine étape')->form([
-                'name' => $citizenProjectName,
-            ])
-        );
-
-        $this->assertSame('/espace-adherent/creer-mon-projet-citoyen', $this->client->getRequest()->getPathInfo());
-
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-        $crawler = $this->client->followRedirect();
-
-        $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_login_email' => 'deputy-ch-li@en-marche-dev.fr',
-            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
-        ]));
-
-        $this->assertClientIsRedirectedTo('/espace-adherent/creer-mon-projet-citoyen?name=Le+titre+de+mon+prochain+CP', $this->client);
-
-        $crawler = $this->client->followRedirect();
-
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-
-        $this->assertSame($citizenProjectName, $crawler->filter('#citizen_project_name')->attr('value'));
-    }
-
-    public function testCitizenProjectLandingPageResultAsAnonymous()
-    {
-        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/landing/results?city=paris', [], [], [
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
-        ]);
-
-        $this->assertSame(3, $crawler->filter('.search__citizen_project__box')->count());
-
-        $thumb1 = $crawler->filter('.search__citizen_project__box')->first();
-
-        $this->assertSame('Le projet citoyen à Paris 8', trim($thumb1->filter('h3')->text()));
-        $this->assertContains('Jacques P.', trim($thumb1->filter('.citizen-projects__landing__card__creator')->text()));
-
-        $thumb2 = $crawler->filter('.search__citizen_project__box')->eq(1);
-
-        $this->assertSame('Formation en ligne ouverte à tous à Évry', trim($thumb2->filter('h3')->text()));
-        $this->assertContains('Francis B.', trim($thumb2->filter('.citizen-projects__landing__card__creator')->text()));
-
-        $thumb3 = $crawler->filter('.search__citizen_project__box')->eq(2);
-
-        $this->assertSame('Le projet citoyen à Dammarie-les-Lys', trim($thumb3->filter('h3')->text()));
-        $this->assertContains('Francis B.', trim($thumb3->filter('.citizen-projects__landing__card__creator')->text()));
-    }
-
-    public function testCitizenProjectLandingPageResultAsAuthenticatedUser()
-    {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/landing/results?city=evry', [], [], [
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
-        ]);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(3, $crawler->filter('.search__citizen_project__box')->count());
-
-        $thumb1 = $crawler->filter('.search__citizen_project__box')->first();
-
-        $this->assertSame('Formation en ligne ouverte à tous à Évry', trim($thumb1->filter('h3')->text()));
-        $this->assertContains('Francis Brioul', trim($thumb1->filter('.citizen-projects__landing__card__creator')->text()));
-
-        $thumb2 = $crawler->filter('.search__citizen_project__box')->eq(1);
-
-        $this->assertSame('Le projet citoyen à Paris 8', trim($thumb2->filter('h3')->text()));
-        $this->assertContains('Jacques Picard', trim($thumb2->filter('.citizen-projects__landing__card__creator')->text()));
-
-        $thumb3 = $crawler->filter('.search__citizen_project__box')->eq(2);
-
-        $this->assertSame('Le projet citoyen à Dammarie-les-Lys', trim($thumb3->filter('h3')->text()));
-        $this->assertContains('Francis Brioul', trim($thumb3->filter('.citizen-projects__landing__card__creator')->text()));
-    }
-
-    public function testCitizenProjectLandingPageAsAuthenticatedUser()
-    {
-        $this->authenticateAsAdherent($this->client, 'damien.schmidt@example.ch');
-        $adherent = $this->getAdherentRepository()->findOneByEmail('damien.schmidt@example.ch');
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame($adherent->getCityName(), trim($crawler->filter('#city-search-display')->text()));
-        $this->assertSame($adherent->getCityName(), trim($crawler->filter('#city-search-input')->attr('value')));
-
-        $citizenProjectName = 'Mon super CP !';
-
-        $crawler = $this->client->submit(
-            $this->client->getCrawler()->selectButton('Prochaine étape')->form([
-                'name' => $citizenProjectName,
-            ])
-        );
-
-        $this->assertSame('/espace-adherent/creer-mon-projet-citoyen', $this->client->getRequest()->getPathInfo());
-        $this->assertSame($citizenProjectName, $crawler->filter('#citizen_project_name')->attr('value'));
-    }
-
-    public function testCitizenProjectLandingPageAsReferent()
-    {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
-        $adherent = $this->getAdherentRepository()->findOneByEmail('referent@en-marche-dev.fr');
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame($adherent->getCityName(), trim($crawler->filter('#city-search-display')->text()));
-        $this->assertSame($adherent->getCityName(), trim($crawler->filter('#city-search-input')->attr('value')));
-        $this->assertCount(1, $crawler->selectButton('Prochaine étape'), 'A referent can create projects.');
     }
 
     private function assertSeeCitizenActions(): void
