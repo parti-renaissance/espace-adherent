@@ -226,8 +226,7 @@ class DonationRequestUtils
 
     private function validateRetryPayload(DonationRequest $retry, string $token): bool
     {
-        if ($this->getTokenManager()->isTokenValid(new CsrfToken(self::RETRY_TOKEN, $token))
-        ) {
+        if ($this->getTokenManager()->isTokenValid(new CsrfToken(self::RETRY_TOKEN, $token))) {
             return 0 === \count($this->getValidator()->validate($retry));
         }
 

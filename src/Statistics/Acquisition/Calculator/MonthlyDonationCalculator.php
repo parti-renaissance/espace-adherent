@@ -5,7 +5,7 @@ namespace AppBundle\Statistics\Acquisition\Calculator;
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
 
-class MonthlyDonationCalculator extends AbstractDonationCalculator
+class MonthlyDonationCalculator extends AbstractDonationCountCalculator
 {
     public function getLabel(): string
     {

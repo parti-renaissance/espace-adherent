@@ -2,95 +2,38 @@
 
 namespace AppBundle\Statistics\Acquisition\Calculator;
 
-use AppBundle\Entity\Adherent;
 use AppBundle\Repository\DonationRepository;
 use AppBundle\Statistics\Acquisition\Calculator\Category\DonationCategoryTrait;
-use AppBundle\Statistics\Acquisition\StatisticsRequest;
-use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Expr\Orx;
+use Doctrine\ORM\QueryBuilder;
 
 abstract class AbstractDonationCalculator extends AbstractCalculator
 {
     use DonationCategoryTrait;
 
-    private $repository;
+    protected $repository;
 
     public function __construct(DonationRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    protected function processing(StatisticsRequest $request, array $keys): array
+    protected function addTagFilter(QueryBuilder $qb, array $tags): void
     {
-        $total = $this->getTotalInitial($request);
+        $orParts = ['donation.postAddress.country IN (:tags)'];
+        $params = ['tags' => $tags];
 
-        return array_map(
-            function (int $totalByMonth) use (&$total) {
-                return $total += $totalByMonth;
-            },
-            $this->fillEmptyCase($this->getNewCounters($request), $keys)
-        );
-    }
+        array_walk($tags, function ($tag, $key) use (&$params, &$orParts) {
+            $key = 'tag'.$key;
+            $orParts[] = 'donation.postAddress.postalCode LIKE :'.$key;
+            $params[$key] = $tag.'%';
+        });
 
-    private function getTotalInitial(StatisticsRequest $request): int
-    {
-        $qb = $this->repository
-            ->createQueryBuilder('donation')
-            ->select('COUNT(1) AS total')
-            ->where('donation.createdAt < :date')
-            ->andWhere('donation.status = :status')
-            ->andWhere('donation.duration = :duration')
-            ->andWhere('(donation.postAddress.country IN (:tags) OR donation.postAddress.postalCode IN (:tags))')
-            ->setParameters([
-                'date' => $request->getStartDateAsString(),
-                'status' => $this->getDonationStatus(),
-                'duration' => $this->getDonationDuration(),
-                'tags' => $request->getTags(),
-            ])
-        ;
+        $qb->andWhere((new Orx())->addMultiple($orParts));
 
-        if ($this->isAdherentOnly()) {
-            $qb
-                ->innerJoin(Adherent::class, 'adherent', Join::WITH, 'adherent.emailAddress = donation.emailAddress')
-                ->andWhere('adherent.adherent = true')
-            ;
-        }
-
-        return (int) $qb->getQuery()->getSingleScalarResult();
-    }
-
-    private function getNewCounters(StatisticsRequest $request): array
-    {
-        $qb = $this->repository
-            ->createQueryBuilder('donation')
-            ->select('COUNT(1) AS total')
-            ->addSelect('YEAR_MONTH(donation.createdAt) AS date')
-            ->where('donation.createdAt >= :start_date AND donation.createdAt <= :end_date')
-            ->andWhere('donation.status = :status')
-            ->andWhere('donation.duration = :duration')
-            ->andWhere('(donation.postAddress.country IN (:tags) OR donation.postAddress.postalCode IN (:tags))')
-            ->setParameters([
-                'start_date' => $request->getStartDateAsString(),
-                'end_date' => $request->getEndDateAsString(),
-                'status' => $this->getDonationStatus(),
-                'duration' => $this->getDonationDuration(),
-                'tags' => $request->getTags(),
-            ])
-            ->groupBy('date')
-        ;
-
-        if ($this->isAdherentOnly()) {
-            $qb
-                ->innerJoin(Adherent::class, 'adherent', Join::WITH, 'adherent.emailAddress = donation.emailAddress')
-                ->andWhere('adherent.adherent = true')
-            ;
-        }
-
-        return $qb->getQuery()->getArrayResult();
-    }
-
-    protected function isAdherentOnly(): bool
-    {
-        return false;
+        array_walk($params, function ($value, $key) use ($qb) {
+            $qb->setParameter($key, $value);
+        });
     }
 
     abstract protected function getDonationStatus(): string;
