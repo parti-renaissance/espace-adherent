@@ -3,8 +3,9 @@
 namespace AppBundle\Subscription;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\SubscriptionTypeRepository;
+use AppBundle\Entity\NewsletterSubscription;
+use AppBundle\Entity\SubscriptionType;
+use Doctrine\ORM\EntityManagerInterface;
 
 class SubscriptionHandler
 {
@@ -15,13 +16,17 @@ class SubscriptionHandler
       self::ACTION_TYPE_UNSUBSCRIBE,
     ];
 
+    private $em;
     private $adherentRepository;
     private $subscriptionTypeRepository;
+    private $newsletterSubscriptionRepository;
 
-    public function __construct(AdherentRepository $adherentRepository, SubscriptionTypeRepository $subscriptionTypeRepository)
+    public function __construct(EntityManagerInterface $em)
     {
-        $this->adherentRepository = $adherentRepository;
-        $this->subscriptionTypeRepository = $subscriptionTypeRepository;
+        $this->em = $em;
+        $this->adherentRepository = $this->em->getRepository(Adherent::class);
+        $this->subscriptionTypeRepository = $this->em->getRepository(SubscriptionType::class);
+        $this->newsletterSubscriptionRepository = $this->em->getRepository(NewsletterSubscription::class);
     }
 
     public function changeSubscription(string $type, string $email, string $listId): void
@@ -31,21 +36,25 @@ class SubscriptionHandler
         }
 
         $adherent = $this->adherentRepository->findOneByEmail($email);
-        if (!$adherent) {
-            throw new \RuntimeException(sprintf('There is no adherent with email address "%s".', $email));
+        if ($adherent) {
+            $subscriptionType = $this->subscriptionTypeRepository->findOneByExternalId($listId);
+            if (!$subscriptionType) {
+                throw new \RuntimeException(sprintf('There is no subscription type with external service id "%s".', $listId));
+            }
+
+            $hasSubscription = $adherent->hasSubscriptionType($subscriptionType->getCode());
+            if (self::ACTION_TYPE_SUBSCRIBE === $type && !$hasSubscription) {
+                $adherent->addSubscriptionType($subscriptionType);
+            } elseif (self::ACTION_TYPE_UNSUBSCRIBE === $type && $hasSubscription) {
+                $adherent->removeSubscriptionType($subscriptionType);
+            }
+        } elseif (($newsletterSubscription = $this->newsletterSubscriptionRepository->findOneByEmail($email))
+            && self::ACTION_TYPE_UNSUBSCRIBE === $type) {
+            // Newsletter subscription will remain in the table but with filled `deleted_at`field
+            $this->em->remove($newsletterSubscription);
         }
 
-        $subscriptionType = $this->subscriptionTypeRepository->findOneByExternalId($listId);
-        if (!$subscriptionType) {
-            throw new \RuntimeException(sprintf('There is no subscription type with external service id "%s".', $listId));
-        }
-
-        $hasSubscription = $adherent->hasSubscriptionType($subscriptionType->getCode());
-        if (self::ACTION_TYPE_SUBSCRIBE === $type && !$hasSubscription) {
-            $adherent->addSubscriptionType($subscriptionType);
-        } elseif (self::ACTION_TYPE_UNSUBSCRIBE === $type && $hasSubscription) {
-            $adherent->removeSubscriptionType($subscriptionType);
-        }
+        $this->em->flush();
     }
 
     public function addDefaultTypesToAdherent(

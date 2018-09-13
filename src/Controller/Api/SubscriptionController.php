@@ -44,7 +44,6 @@ class SubscriptionController extends Controller
         }
 
         $this->get(SubscriptionHandler::class)->changeSubscription($type, $data['email'], $data['list_id']);
-        $this->getDoctrine()->getManager()->flush();
 
         return new Response('OK');
     }
