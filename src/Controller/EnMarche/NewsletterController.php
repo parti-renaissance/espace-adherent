@@ -38,8 +38,10 @@ class NewsletterController extends Controller
             $subscription = new NewsletterSubscription(null, null, $geoCoder->getCountryCodeFromIp($request->getClientIp()));
         }
 
-        $form = $this->createForm(NewsletterSubscriptionType::class, $subscription);
-        $form->handleRequest($request);
+        $form = $this
+            ->createForm(NewsletterSubscriptionType::class, $subscription)
+            ->handleRequest($request)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.newsletter_subscription.handler')->subscribe($subscription);
