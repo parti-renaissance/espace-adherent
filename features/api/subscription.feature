@@ -18,6 +18,14 @@ Feature:
     Then the response status code should be 200
     And the response should contain "OK"
 
+    When I send a "POST" request to "/api/email-subscriptions/change?secret=mailchimp_secret" with parameters:
+      | key           | value                       |
+      | type          | unsubscribe                 |
+      | data[email]   | foobar@en-marche-dev.fr     |
+      | data[list_id] | 123abc                      |
+    Then the response status code should be 200
+    And the response should contain "OK"
+
     When I am logged as "jacques.picard@en-marche.fr"
     And I am on "/parametres/mon-compte/preferences-des-emails"
     Then the "Recevoir les informations du mouvement" checkbox should be unchecked

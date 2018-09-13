@@ -71,4 +71,9 @@ class NewsletterSubscriptionRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
     }
+
+    public function findOneByEmail(string $email): ?NewsletterSubscription
+    {
+        return $this->findOneBy(['email' => $email]);
+    }
 }
