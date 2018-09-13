@@ -33,7 +33,7 @@ class EventController extends Controller
     {
         return $this->render('events/show.html.twig', [
             'event' => $event,
-            'eventsNearby' => $eventRepository->findNearbyOf($event),
+            'eventsNearby' => $event->isGeocoded() ? $eventRepository->findNearbyOf($event) : null,
             'committee' => $event->getCommittee(),
         ]);
     }
