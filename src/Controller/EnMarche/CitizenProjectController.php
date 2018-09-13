@@ -6,7 +6,6 @@ use AppBundle\CitizenProject\CitizenProjectCommentCommand;
 use AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler;
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\CitizenProject\CitizenProjectPermissions;
-use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use AppBundle\Entity\CitizenProjectCategorySkill;
@@ -14,11 +13,8 @@ use AppBundle\Entity\Committee;
 use AppBundle\Exception\CitizenProjectCommitteeSupportAlreadySupportException;
 use AppBundle\Exception\CitizenProjectNotApprovedException;
 use AppBundle\Form\CitizenProjectCommentCommandType;
-use AppBundle\Geocoder\Exception\GeocodingException;
 use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Repository\CitizenProjectCommentRepository;
-use AppBundle\Repository\CitizenProjectRepository;
-use AppBundle\Search\SearchParametersFilter;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -34,6 +30,17 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CitizenProjectController extends Controller
 {
+    /**
+     * @Route("", name="app_citizen_project_landing")
+     * @Route("/decouvrir", name="app_citizen_project_discover")
+     * @Route("/recherche", name="app_citizen_project_search")
+     * @Method("GET")
+     */
+    public function reactAction(): Response
+    {
+        return $this->render('citizen_project/landing.html.twig');
+    }
+
     /**
      * @Route("/aide", name="app_citizen_project_help")
      * @Method("GET|POST")
@@ -278,46 +285,5 @@ class CitizenProjectController extends Controller
                 'csrf_token' => (string) $this->get('security.csrf.token_manager')->getToken('citizen_project.follow'),
             ],
         ]);
-    }
-
-    /**
-     * @Route("", name="app_citizen_project_landing")
-     * @Method("GET")
-     */
-    public function landingAction(CitizenProjectRepository $citizenProjectRepository): Response
-    {
-        $user = $this->getUser();
-        $citizenProjects = $user instanceof Adherent
-            ? $citizenProjectRepository->findAllRegisteredCitizenProjectsForAdherent($user)
-            : []
-        ;
-
-        return $this->render('citizen_project/landing.html.twig', [
-            'citizen_project' => $citizenProjects[0] ?? null,
-            'city' => $user instanceof Adherent ? $user->getCityName() : SearchParametersFilter::DEFAULT_CITY,
-        ]);
-    }
-
-    /**
-     * @Route("/landing/results", name="app_citizen_project_landing_result", condition="request.isXmlHttpRequest() and request.query.get('city')")
-     * @Method("GET")
-     */
-    public function landingPageResultAction(Request $request, CitizenProjectManager $citizenProjectManager): Response
-    {
-        $search = $this->get(SearchParametersFilter::class);
-        $search->setCity($request->query->get('city'));
-
-        try {
-            $results = $citizenProjectManager->getNearCitizenProjectByCoordinates($search->getCityCoordinates());
-            $citizenProjectManager->injectCitizenProjectCreator($results);
-
-            $response = $this->render('citizen_project/_landing_results.html.twig', [
-                'results' => $results,
-            ]);
-        } catch (GeocodingException $exception) {
-            $response = new JsonResponse(['error' => $this->get('translator')->trans('search.geocoding.exception')], Response::HTTP_NOT_FOUND);
-        }
-
-        return $response;
     }
 }
