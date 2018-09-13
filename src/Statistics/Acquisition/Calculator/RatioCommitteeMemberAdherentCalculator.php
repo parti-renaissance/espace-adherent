@@ -2,10 +2,13 @@
 
 namespace AppBundle\Statistics\Acquisition\Calculator;
 
+use AppBundle\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
 use AppBundle\Statistics\Acquisition\StatisticsRequest;
 
 class RatioCommitteeMemberAdherentCalculator extends AbstractCalculator
 {
+    use AdhesionCategoryTrait;
+
     private $adherentCalculator;
     private $committeeMemberCalculator;
 

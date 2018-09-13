@@ -3,10 +3,13 @@
 namespace AppBundle\Statistics\Acquisition\Calculator;
 
 use AppBundle\Repository\DonationRepository;
+use AppBundle\Statistics\Acquisition\Calculator\Category\DonationCategoryTrait;
 use AppBundle\Statistics\Acquisition\StatisticsRequest;
 
 abstract class AbstractAmountDonationCalculator extends AbstractCalculator
 {
+    use DonationCategoryTrait;
+
     private $repository;
 
     public function __construct(DonationRepository $repository)

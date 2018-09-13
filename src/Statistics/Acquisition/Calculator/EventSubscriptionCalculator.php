@@ -2,10 +2,13 @@
 
 namespace AppBundle\Statistics\Acquisition\Calculator;
 
+use AppBundle\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
 use AppBundle\Statistics\Acquisition\StatisticsRequest;
 
 class EventSubscriptionCalculator extends AbstractCalculator
 {
+    use AdhesionCategoryTrait;
+
     private $adherentSubscriptionCalculator;
     private $userSubscriptionCalculator;
 

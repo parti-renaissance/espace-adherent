@@ -4,10 +4,13 @@ namespace AppBundle\Statistics\Acquisition\Calculator;
 
 use AppBundle\Entity\Reporting\EmailSubscriptionHistoryAction;
 use AppBundle\Repository\EmailSubscriptionHistoryRepository;
+use AppBundle\Statistics\Acquisition\Calculator\Category\NewsletterSubscriptionCategoryTrait;
 use AppBundle\Statistics\Acquisition\StatisticsRequest;
 
 abstract class AbstractNewsletterSubscriptionCalculator extends AbstractCalculator
 {
+    use NewsletterSubscriptionCategoryTrait;
+
     private $subscriptionHistoryRepository;
 
     public function __construct(EmailSubscriptionHistoryRepository $subscriptionHistoryRepository)

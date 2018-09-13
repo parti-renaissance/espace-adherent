@@ -18,10 +18,14 @@ class Aggregator
         $result = [];
         foreach ($this->getCalculators() as $calculators) {
             foreach ($calculators as $calculator) {
-                $result[] = [$calculator->getLabel() => $calculator->calculate(
-                    $request,
-                    $this->generateDateKeys($request->getStartDate(), $request->getEndDate())
-                )];
+                $result[] = [
+                    'title' => $calculator->getLabel(),
+                    'category' => $calculator->getCategory(),
+                    'items' => $calculator->calculate(
+                        $request,
+                        $this->generateDateKeys($request->getStartDate(), $request->getEndDate())
+                    ),
+                ];
             }
         }
 

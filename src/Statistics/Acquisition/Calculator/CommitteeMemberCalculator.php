@@ -4,10 +4,13 @@ namespace AppBundle\Statistics\Acquisition\Calculator;
 
 use AppBundle\Entity\Reporting\CommitteeMembershipAction;
 use AppBundle\Repository\CommitteeMembershipHistoryRepository;
+use AppBundle\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
 use AppBundle\Statistics\Acquisition\StatisticsRequest;
 
 class CommitteeMemberCalculator extends AbstractCalculator
 {
+    use AdhesionCategoryTrait;
+
     private $repository;
 
     public function __construct(CommitteeMembershipHistoryRepository $repository)

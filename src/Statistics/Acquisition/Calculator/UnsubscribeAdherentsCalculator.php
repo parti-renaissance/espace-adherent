@@ -3,10 +3,13 @@
 namespace AppBundle\Statistics\Acquisition\Calculator;
 
 use AppBundle\Repository\UnregistrationRepository;
+use AppBundle\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
 use AppBundle\Statistics\Acquisition\StatisticsRequest;
 
 class UnsubscribeAdherentsCalculator extends AbstractCalculator
 {
+    use AdhesionCategoryTrait;
+
     private $repository;
 
     public function __construct(UnregistrationRepository $repository)
@@ -16,7 +19,7 @@ class UnsubscribeAdherentsCalculator extends AbstractCalculator
 
     public function getLabel(): string
     {
-        return 'Desadhésions (new)';
+        return 'Desadhésions (nouveaux)';
     }
 
     protected function processing(StatisticsRequest $request, array $keys): array
