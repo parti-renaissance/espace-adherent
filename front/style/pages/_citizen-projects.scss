@@ -146,6 +146,34 @@
         }
     }
 
+    &--bkg--gradient {
+        position: relative;
+        background-position: right center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        @media (max-width: $tablet) {
+            background: $purple;
+        }
+
+        .text--shadow {
+            position:relative;
+            z-index: 1;
+        }
+
+        &:before {
+            content: '';
+            display: block;
+            position: absolute;
+            z-index: 0;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-image: linear-gradient(to top,rgba(0,0,0,.0),rgba(0,0,0,.3) 60%,rgba(0,0,0,.6));
+        }
+    }
+
     &-comments {
         label {
             font-family: inherit;
