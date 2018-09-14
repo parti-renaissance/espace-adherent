@@ -114,7 +114,12 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
             || ''
         );
         this._address.setPostalCode(this._state.postal_code && this._state.postal_code.long_name || '');
-        this._address.setCountry(this._state.country && this._state.country.short_name || '');
+
+        if (this._state.country && this._state.country.short_name) {
+            this._address.setCountry(this._state.country.short_name);
+        } else if (!this._address.getCountry()) {
+            this._address.setCountry('FR');
+        }
 
         this.emit('changed');
     }
@@ -126,7 +131,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
             locality: null,
             sublocality_level_1: null,
             postal_code: null,
-            country: { short_name: 'FR' },
+            country: null,
         };
     }
 
