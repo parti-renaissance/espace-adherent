@@ -33,7 +33,6 @@ class CitizenProjectCreationCommand extends CitizenProjectCommand
         $dto->category = $turnkeyProject->getCategory();
         $dto->problemDescription = $turnkeyProject->getProblemDescription();
         $dto->proposedSolution = $turnkeyProject->getProposedSolution();
-        $dto->setImage($turnkeyProject->getImage());
 
         return $dto;
     }

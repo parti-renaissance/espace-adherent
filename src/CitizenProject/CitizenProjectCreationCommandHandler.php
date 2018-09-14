@@ -37,7 +37,7 @@ class CitizenProjectCreationCommandHandler
         // Uploads an image
         if (null !== $command->getImage()) {
             $this->citizenProjectManager->addImage($citizenProject);
-        } elseif ($turnkeyProject) {
+        } elseif ($turnkeyProject && $turnkeyProject->getImageName()) {
             $this->citizenProjectManager->copyImageFromTurnkeyProject($citizenProject, $turnkeyProject);
         } else {
             $this->citizenProjectManager->setDefaultImage($citizenProject);
