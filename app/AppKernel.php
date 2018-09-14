@@ -46,6 +46,7 @@ class AppKernel extends Kernel
 
             new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),
+            new Limenius\ReactBundle\LimeniusReactBundle(),
 
             new AppBundle\AppBundle(),
         ];
