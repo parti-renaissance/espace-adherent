@@ -194,6 +194,7 @@
         <!-- Command -->
         <service id="AppBundle\Command\ApiScheduleCommitteeCreationCommand" />
         <service id="AppBundle\Command\ApiScheduleEventCreationCommand" />
+        <service id="AppBundle\Command\DonationCancelCommand" />
         <service id="AppBundle\Command\InitializeEmailSubscriptionHistoryCommand"/>
         <service id="AppBundle\Command\ImportDistrictsCommand"/>
         <service id="AppBundle\Command\BindDeputiesToDistrictsCommand"/>
