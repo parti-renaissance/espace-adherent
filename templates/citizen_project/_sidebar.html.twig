@@ -47,7 +47,7 @@
         </ul>
         {% if citizen_project.skills|length > 3 %}
             <div id="show-more-skills" class="text--small text--blue--dark cursor--pointer">Voir plus</div>
-            <ul id="other-skills" class="visually-hidden citizen-project--margin-top-0 citizen-project__skills">
+            <ul id="other-skills" class="visually-hidden b__nudge--top-0 citizen-project__skills">
                 {% for skill in citizen_project.skills|slice(3) %}
                     <li>{{ skill }}</li>
                 {% endfor %}

@@ -22,6 +22,8 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
     const CITIZEN_PROJECT_7_UUID = 'fc83efde-17e5-4e87-b9e9-71b165aecd10';
     const CITIZEN_PROJECT_8_UUID = '55bc9c81-612b-4108-b5ae-d065a69456d1';
     const CITIZEN_PROJECT_9_UUID = 'eacefe0b-ace6-4ed5-a747-61f874f165f6';
+    const CITIZEN_PROJECT_10_UUID = 'ac98b08c-4e2d-4894-aa61-140b5be89645';
+    const CITIZEN_PROJECT_11_UUID = '695af719-ccfb-4754-813b-6685c757a855';
 
     use ContainerAwareTrait;
 
@@ -191,6 +193,38 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
         $citizenProject9->approved('2017-10-09 13:27:42');
         $this->addReference('citizen-project-9', $citizenProject9);
 
+        $citizenProject10 = $citizenProjectFactory->createFromArray([
+            'uuid' => self::CITIZEN_PROJECT_10_UUID,
+            'name' => 'Projet citoyen refusé à Paris 8',
+            'subtitle' => 'Le projet citoyen refusé',
+            'category' => $this->getReference('cpc001'),
+            'problem_description' => 'Problème refusé',
+            'proposed_solution' => 'Solution refusée',
+            'required_means' => 'Les moyens refusés',
+            'created_by' => LoadAdherentData::ADHERENT_3_UUID,
+            'created_at' => '2018-09-01 10:22:13',
+            'address' => NullablePostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.8705073, 2.3032432),
+        ]);
+        $citizenProject10->refused('2018-09-09 10:10:10');
+        $citizenProject10->setImageName('default.png');
+        $this->addReference('citizen-project-10', $citizenProject10);
+
+        $citizenProject11 = $citizenProjectFactory->createFromArray([
+            'uuid' => self::CITIZEN_PROJECT_11_UUID,
+            'name' => '[En attente] Projet citoyen à New York City',
+            'subtitle' => '[En attente] Projet citoyen à New York City.',
+            'category' => $this->getReference('cpc003'),
+            'problem_description' => 'Problème en attente',
+            'proposed_solution' => 'Solution en attente',
+            'required_means' => 'Les moyens en attente',
+            'created_by' => LoadAdherentData::ADHERENT_12_UUID,
+            'created_at' => '2018-09-09 12:12:12',
+            'address' => NullablePostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
+            'phone' => '1 2123150100',
+        ]);
+        $citizenProject11->setImageName('default.png');
+        $this->addReference('citizen-project-11', $citizenProject11);
+
         $manager->persist($citizenProject1);
         $manager->persist($citizenProject2);
         $manager->persist($citizenProject3);
@@ -200,30 +234,44 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
         $manager->persist($citizenProject7);
         $manager->persist($citizenProject8);
         $manager->persist($citizenProject9);
+        $manager->persist($citizenProject10);
+        $manager->persist($citizenProject11);
 
         // Make adherents join citizen projects
         $manager->persist($this->getReference('adherent-3')->administrateCitizenProject($citizenProject1, '2017-10-12 17:25:54'));
-        $manager->persist($this->getReference('adherent-7')->administrateCitizenProject($citizenProject3, '2017-10-26 17:08:24'));
-        $manager->persist($this->getReference('adherent-7')->administrateCitizenProject($citizenProject4));
-        $manager->persist($this->getReference('adherent-7')->administrateCitizenProject($citizenProject5));
         $manager->persist($this->getReference('adherent-2')->followCitizenProject($citizenProject1));
         $manager->persist($this->getReference('adherent-4')->followCitizenProject($citizenProject1));
         $manager->persist($this->getReference('adherent-5')->followCitizenProject($citizenProject1));
+
         $manager->persist($this->getReference('adherent-6')->followCitizenProject($citizenProject2));
+
+        $manager->persist($this->getReference('adherent-7')->administrateCitizenProject($citizenProject3, '2017-10-26 17:08:24'));
+        $manager->persist($this->getReference('adherent-3')->administrateCitizenProject($citizenProject3));
+
+        $manager->persist($this->getReference('adherent-7')->administrateCitizenProject($citizenProject4));
         $manager->persist($this->getReference('adherent-3')->followCitizenProject($citizenProject4));
+
+        $manager->persist($this->getReference('adherent-7')->administrateCitizenProject($citizenProject5));
         $manager->persist($this->getReference('adherent-3')->followCitizenProject($citizenProject5));
+        $manager->persist($this->getReference('adherent-9')->followCitizenProject($citizenProject5));
+
         $manager->persist($this->getReference('adherent-9')->administrateCitizenProject($citizenProject6));
         $manager->persist($this->getReference('adherent-3')->followCitizenProject($citizenProject6));
+
         $manager->persist($this->getReference('adherent-10')->administrateCitizenProject($citizenProject7));
         $manager->persist($this->getReference('adherent-3')->followCitizenProject($citizenProject7));
-        $manager->persist($this->getReference('adherent-3')->administrateCitizenProject($citizenProject3));
-        $manager->persist($this->getReference('adherent-9')->followCitizenProject($citizenProject5));
+
         $manager->persist($this->getReference('adherent-11')->administrateCitizenProject($citizenProject8));
         $manager->persist($this->getReference('adherent-3')->followCitizenProject($citizenProject8));
+
         $manager->persist($this->getReference('adherent-12')->administrateCitizenProject($citizenProject9));
         $manager->persist($this->getReference('adherent-3')->followCitizenProject($citizenProject9));
         $manager->persist($this->getReference('adherent-11')->followCitizenProject($citizenProject9));
         $manager->persist($this->getReference('adherent-13')->followCitizenProject($citizenProject9));
+
+        $manager->persist($this->getReference('adherent-3')->followCitizenProject($citizenProject10));
+
+        $manager->persist($this->getReference('adherent-12')->followCitizenProject($citizenProject11));
 
         $manager->flush();
     }
