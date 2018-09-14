@@ -161,6 +161,10 @@
             z-index: 1;
         }
 
+        button {
+            z-index: 5;
+        }
+
         &:before {
             content: '';
             display: block;
