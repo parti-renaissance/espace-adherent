@@ -59,7 +59,7 @@ class GoogleStaticMapProvider implements StaticMapProviderInterface
         try {
             return $this->client->request('GET', self::MAPS_API_ENDPOINT.'?'.$parameters)->getBody()->getContents();
         } catch (\Exception $e) {
-            $this->logger->error('Unable to retrieve the map', ['exception' => $e]);
+            $this->logger->warning('Unable to retrieve the map', ['exception' => $e]);
         }
 
         return false;

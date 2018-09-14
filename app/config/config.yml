@@ -197,7 +197,7 @@ csa_guzzle:
         google_maps_static_api:
             config:
                 base_uri: 'https://maps.googleapis.com'
-                timeout: 5.0
+                timeout: 2.0
 
         facebook_graph_api:
             config:
