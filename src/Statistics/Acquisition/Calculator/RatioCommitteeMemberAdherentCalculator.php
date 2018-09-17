@@ -23,6 +23,12 @@ class RatioCommitteeMemberAdherentCalculator extends AbstractCalculator
         return 'Ratio membre de comité par nbr adhérents (total)';
     }
 
+    protected function formatEachValue(array $data): array
+    {
+        // don't need to format these values, they already are in float
+        return $data;
+    }
+
     protected function processing(StatisticsRequest $request, array $keys): array
     {
         return $this->mergeResults(

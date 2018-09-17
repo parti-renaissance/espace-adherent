@@ -23,15 +23,20 @@ abstract class AbstractCalculator implements CalculatorInterface
             $data = array_column($data, 'total', 'date');
         }
 
-        $result = array_map('intval', $data) + array_fill_keys($keys, $value);
+        $result = $this->formatEachValue($data) + array_fill_keys($keys, $value);
         ksort($result);
 
         return $result;
     }
 
-    protected function mergeResults(callable $callback, array $keys, ...$datas): array
+    protected function mergeResults(callable $callback, array $keys, ...$data): array
     {
-        return array_combine($keys, array_map($callback, ...$datas));
+        return array_combine($keys, array_map($callback, ...$data));
+    }
+
+    protected function formatEachValue(array $data): array
+    {
+        return array_map('intval', $data);
     }
 
     abstract protected function processing(StatisticsRequest $request, array $keys): array;
