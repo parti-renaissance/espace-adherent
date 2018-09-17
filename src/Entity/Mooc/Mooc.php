@@ -196,6 +196,16 @@ class Mooc
         return $this->chapters;
     }
 
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("chapter_count"),
+     * @JMS\Groups({"mooc_list"})
+     */
+    public function countChapters(): int
+    {
+        return count($this->chapters);
+    }
+
     public function addChapter(Chapter $chapter): void
     {
         if (!$this->chapters->contains($chapter)) {

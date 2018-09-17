@@ -18,6 +18,7 @@ Feature:
     """
     [
       {
+          "chapter_count": 2,
           "image": "https://img.youtube.com/vi/ktHEfEDhscU/0.jpg",
           "title": "Faire de sa fourchette un acte politique",
           "description": "Description du MOOC, faire de sa fourchette un acte politique",
