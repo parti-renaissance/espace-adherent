@@ -43,7 +43,11 @@ class ImportDistrictsCommand extends Command
     {
         $this->io->text('Start importing districts');
 
-        $this->loader->load(realpath($file), realpath($districtsFile), realpath($countriesFile));
+        $this->loader->load(
+            $input->getArgument('file'),
+            $input->getArgument('districtsFile'),
+            $input->getArgument('countriesFile')
+        );
 
         $this->io->success('Done');
     }
