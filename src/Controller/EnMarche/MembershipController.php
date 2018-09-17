@@ -283,7 +283,11 @@ class MembershipController extends Controller
         $coordinates = $coordinatesFactory->createFromPostAddress($adherent->getPostAddress());
         $committees = null === $coordinates ?
             $committeeManager->getLastApprovedCommitteesAndMembers() :
-            $committeeManager->getCommitteesAndMembersByCoordinates($coordinates)
+            $committeeManager->getCommitteesByCoordinatesAndCountry(
+                $coordinates,
+                $adherent->getCountry(),
+                $adherent->getPostalCode()
+            )
         ;
 
         $form = $this

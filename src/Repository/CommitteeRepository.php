@@ -119,6 +119,34 @@ class CommitteeRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findNearbyCommitteesFilteredByCountry(
+        Coordinates $coordinates,
+        string $country,
+        string $postalCodePrefix = null,
+        int $count = self::DEFAULT_MAX_RESULTS_LIST
+    ): array {
+        $qb = $this
+            ->createNearbyQueryBuilder($coordinates)
+            ->andWhere('n.status = :status')
+            ->andWhere('n.postAddress.country = :country')
+            ->setParameter('status', Committee::APPROVED)
+            ->setParameter('country', $country)
+        ;
+
+        if ($postalCodePrefix) {
+            $qb
+                ->andWhere('n.postAddress.postalCode LIKE :postalCode')
+                ->setParameter('postalCode', $postalCodePrefix.'%')
+            ;
+        }
+
+        return $qb
+            ->setMaxResults($count)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     /**
      * Returns the total number of approved committees.
      */

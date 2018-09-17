@@ -7,6 +7,7 @@ use AppBundle\Committee\CommitteeManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadCommitteeMembershipHistoryData;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\ReferentTag;
 use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
@@ -101,6 +102,34 @@ class CommitteeManagerTest extends WebTestCase
             LoadAdherentData::COMMITTEE_5_UUID,
             LoadAdherentData::COMMITTEE_3_UUID,
         ], array_keys($this->committeeManager->getNearbyCommittees($coordinates)));
+    }
+
+    /**
+     * @dataProvider provideAdherentUuidsAndCommitteesCount
+     */
+    public function testGetCommitteesByCoordinatesAndCountry($adherentUuid, $expectedCount)
+    {
+        $adherent = $this->getAdherent($adherentUuid);
+        $coordinates = new Coordinates($adherent->getLatitude(), $adherent->getLongitude());
+
+        $committees = $this->committeeManager->getCommitteesByCoordinatesAndCountry(
+            $coordinates,
+            $adherent->getCountry(),
+            $adherent->getPostalCode()
+        );
+
+        $this->assertCount($expectedCount, $committees);
+
+        /** @var Committee $committee */
+        foreach ($committees as $committee) {
+            $this->assertSame($adherent->getCountry(), $committee->getCountry());
+        }
+    }
+
+    public function provideAdherentUuidsAndCommitteesCount(): iterable
+    {
+        yield [LoadAdherentData::ADHERENT_1_UUID, 1]; // CH
+        yield [LoadAdherentData::ADHERENT_3_UUID, 3]; // FR
     }
 
     public function testFollowCommittees(): void
