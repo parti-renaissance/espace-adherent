@@ -55,6 +55,13 @@ class SubscriptionType
      */
     private $externalId;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
+     */
+    private $position = 0;
+
     public function __construct(string $label = null, string $code = null, string $externalId = null)
     {
         $this->label = $label;
@@ -95,6 +102,11 @@ class SubscriptionType
     public function setExternalId(?string $externalId): void
     {
         $this->externalId = $externalId;
+    }
+
+    public function getPosition(): int
+    {
+        return $this->position;
     }
 
     public function __toString(): string

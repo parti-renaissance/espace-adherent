@@ -40,12 +40,20 @@ class AdherentEmailSubscriptionType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'error_bubbling' => true,
-                'query_builder' => $options['is_adherent'] ? null : function (EntityRepository $er) {
-                    return $er
+                'query_builder' => function (EntityRepository $er) use ($options) {
+                    $eq = $er
                         ->createQueryBuilder('st')
-                        ->where('st.code IN (:codes)')
-                        ->setParameter('codes', SubscriptionTypeEnum::USER_TYPES)
+                        ->orderBy('st.position')
                     ;
+
+                    if (!$options['is_adherent']) {
+                        $eq
+                            ->where('st.code IN (:codes)')
+                            ->setParameter('codes', SubscriptionTypeEnum::USER_TYPES)
+                        ;
+                    }
+
+                    return $eq;
                 },
                 'group_by' => function (SubscriptionType $type) {
                     switch ($type->getCode()) {
@@ -54,6 +62,7 @@ class AdherentEmailSubscriptionType extends AbstractType
                         case SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL:
                         case SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL:
                             return 'subscription_type.group.communication_emails';
+                        case SubscriptionTypeEnum::DEPUTY_EMAIL:
                         case SubscriptionTypeEnum::REFERENT_EMAIL:
                         case SubscriptionTypeEnum::LOCAL_HOST_EMAIL:
                             return 'subscription_type.group.territories_emails';

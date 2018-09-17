@@ -39,6 +39,11 @@ class LoadSubscriptionTypeData extends Fixture
                 'externalId' => '456def',
             ],
             [
+                'label' => 'Recevoir les e-mails de votre député(e)',
+                'code' => SubscriptionTypeEnum::DEPUTY_EMAIL,
+                'externalId' => null,
+            ],
+            [
                 'label' => 'Recevoir les e-mails de votre animateur local',
                 'code' => SubscriptionTypeEnum::LOCAL_HOST_EMAIL,
                 'externalId' => null,
