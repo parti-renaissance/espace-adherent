@@ -112,6 +112,10 @@
                         Gérer les participants
                     </a>
                 {% endif %}
+
+                {% if is_granted('REPORT') %}
+                    <a href="{{ report_path(event, app.request.pathInfo) }}" class="text--body link--newblue pull-right">{{ 'event.report'|trans }}</a>
+                {% endif %}
             </div>
 
             <div class="committee__event__schedule text--summary">

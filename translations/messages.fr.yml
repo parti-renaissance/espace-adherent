@@ -250,6 +250,7 @@ event.invitation.form.guest: E-mail d'un ami
 event.invitation.form.invite: Envoyer
 event.invitation.form.invite_sent: Merci ! Votre invitation a bien été envoyée ! | Merci ! Vos %count% invitations ont bien été envoyées !
 event.next_events_nearby: 'one: Événement à proximité|some: Les événements à proximité'
+event.report: Signaler cet évènement
 
 #
 # Board Member
