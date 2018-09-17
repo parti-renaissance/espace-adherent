@@ -44,6 +44,13 @@ class CitizenProjectCommand
     public $address;
 
     /**
+     * @var string
+     *
+     * @Assert\Length(max=50)
+     */
+    public $district;
+
+    /**
      * @Assert\NotBlank(message="common.phone_number.required")
      * @AssertPhoneNumber(defaultRegion="FR")
      */
@@ -103,6 +110,16 @@ class CitizenProjectCommand
     public function getCityName(): string
     {
         return $this->address->getCityName();
+    }
+
+    public function getDistrict(): ?string
+    {
+        return $this->district;
+    }
+
+    public function setDistrict(?string $district): void
+    {
+        $this->district = $district;
     }
 
     public function setPhone(PhoneNumber $phone = null): void

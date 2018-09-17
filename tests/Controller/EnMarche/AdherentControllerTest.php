@@ -690,6 +690,7 @@ class AdherentControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
 
         $categoryValue = $crawler->filter('#citizen_project_category option:contains("Culture")')->attr('value');
+        $this->assertSame(0, $crawler->filter('#citizen_project_district')->count());
 
         $data = [];
         $data['citizen_project']['name'] = 'mon Projet Citoyen';
@@ -740,6 +741,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame('Culture', $crawler->filter('#citizen_project_category_text')->text());
         $this->assertSame('Les lieux et espaces de culture sont rarement accessibles à tous et donnent peu l\'occasion de tisser du lien social.', $crawler->filter('#citizen_project_problem_description_text')->text());
         $this->assertSame('Nous proposons d\'organiser des ateliers d\'art participatif associant des artistes aux citoyens', $crawler->filter('#citizen_project_proposed_solution_text')->text());
+        $this->assertSame(1, $crawler->filter('#citizen_project_district')->count());
 
         $form = $this->client->getCrawler()->selectButton('Proposer mon projet')->form();
         $form->setValues([
@@ -773,12 +775,14 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame('Culture', $crawler->filter('#citizen_project_category_text')->text());
         $this->assertSame('Les lieux et espaces de culture sont rarement accessibles à tous et donnent peu l\'occasion de tisser du lien social.', $crawler->filter('#citizen_project_problem_description_text')->text());
         $this->assertSame('Nous proposons d\'organiser des ateliers d\'art participatif associant des artistes aux citoyens', $crawler->filter('#citizen_project_proposed_solution_text')->text());
+        $this->assertSame('Mouxy', $citizenProject->getDistrict());
 
         $form = $crawler->selectButton('Proposer mon projet')->form();
         $form->setValues([
             'citizen_project[required_means]' => 'Mes actions aussi.',
             'citizen_project[phone][number]' => '6 22 33 44 55',
             'citizen_project[phone][country]' => 'FR',
+            'citizen_project[district]' => 'Mon quartier',
         ]);
 
         $this->client->submit($form);
@@ -794,6 +798,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame('Les lieux et espaces de culture sont rarement accessibles à tous et donnent peu l\'occasion de tisser du lien social.', $citizenProject->getProblemDescription());
         $this->assertSame('Nous proposons d\'organiser des ateliers d\'art participatif associant des artistes aux citoyens', $citizenProject->getProposedSolution());
         $this->assertSame('Mes actions aussi.', $citizenProject->getRequiredMeans());
+        $this->assertSame('Mon quartier', $citizenProject->getDistrict());
         $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'referent@en-marche-dev.fr'));
     }
 

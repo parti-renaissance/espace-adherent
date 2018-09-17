@@ -127,6 +127,12 @@ class CitizenProjectCommandType extends AbstractType
                 ->add('category', TextType::class, [
                     'disabled' => true,
                 ])
+                ->add('district', TextType::class, [
+                    'required' => false,
+                    'filter_emojis' => true,
+                    'with_character_count' => true,
+                    'attr' => ['maxlength' => 50],
+                ])
             ;
         } else {
             $builder

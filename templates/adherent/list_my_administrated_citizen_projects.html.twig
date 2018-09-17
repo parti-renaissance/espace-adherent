@@ -6,8 +6,8 @@
             {% for citizen_project in citizen_projects|slice(0, 1) if app.user.isAdministratorOf(citizen_project) %}
                 <li>
                     <a href="{{ path('app_citizen_project_show', { slug: citizen_project.slug }) }}"
-                       title="{{ citizen_project.name }}">
-                        {{- citizen_project.name -}}
+                       title="{{ citizen_project.nameWithDistrict }}">
+                        {{- citizen_project.nameWithDistrict -}}
                     </a>
                 </li>
             {% endfor %}
@@ -17,8 +17,8 @@
                 {% for citizen_project in citizen_projects|slice(1) if app.user.isAdministratorOf(citizen_project) %}
                     <li>
                         <a href="{{ path('app_citizen_project_show', { slug: citizen_project.slug }) }}"
-                           title="{{ citizen_project.name }}">
-                            {{- citizen_project.name -}}
+                           title="{{ citizen_project.nameWithDistrict }}">
+                            {{- citizen_project.nameWithDistrict -}}
                         </a>
                     </li>
                 {% endfor %}
@@ -31,8 +31,8 @@
             {% if app.user.isAdministratorOf(citizen_project) %}
                 <li>
                     <a href="{{ path('app_citizen_project_show', { slug: citizen_project.slug }) }}"
-                       title="{{ citizen_project.name }}">
-                        {{- citizen_project.name -}}
+                       title="{{ citizen_project.nameWithDistrict }}">
+                        {{- citizen_project.nameWithDistrict -}}
                     </a>
                 </li>
             {% endif %}

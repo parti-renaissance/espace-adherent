@@ -45,6 +45,7 @@ class CitizenProjectFactory
             $data['required_means'],
             $phone,
             $data['address'],
+            $data['district'] ?? null,
             $data['slug'] ?? null,
             $data['status'] ?? CitizenProject::PENDING,
             $data['skills'] ?? null
@@ -68,7 +69,8 @@ class CitizenProjectFactory
             $command->proposedSolution,
             $command->requiredMeans,
             $command->getCommittees()->toArray(),
-            $command->getAddress() ? $this->addressFactory->createFromNullableAddress($command->getAddress()) : null
+            $command->getAddress() ? $this->addressFactory->createFromNullableAddress($command->getAddress()) : null,
+            $command->getDistrict()
         );
 
         $citizenProject->setSkills($command->getSkills());

@@ -146,6 +146,13 @@ class CitizenProject extends BaseGroup
     private $adminComment;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(length=50, nullable=true)
+     */
+    private $district;
+
+    /**
      * A cached list of the administrators (for admin).
      *
      * @var AdherentCollection|null
@@ -193,6 +200,7 @@ class CitizenProject extends BaseGroup
         string $requiredMeans = '',
         PhoneNumber $phone = null,
         NullablePostAddress $address = null,
+        string $district = null,
         string $slug = null,
         string $status = self::PENDING,
         string $approvedAt = null,
@@ -214,6 +222,7 @@ class CitizenProject extends BaseGroup
         $this->category = $category;
         $this->subtitle = $subtitle;
         $this->postAddress = $address;
+        $this->district = $district;
         $this->phone = $phone;
         $this->status = $status;
         $this->membersCounts = $membersCount;
@@ -469,6 +478,7 @@ class CitizenProject extends BaseGroup
         string $requiredMeans,
         array $committees = [],
         NullablePostAddress $address = null,
+        string $district = null,
         string $createdAt = 'now'
     ): self {
         $citizenProject = new self(
@@ -482,7 +492,8 @@ class CitizenProject extends BaseGroup
             $proposedSolution,
             $requiredMeans,
             $phone,
-            $address
+            $address,
+            $district
         );
 
         $citizenProject->createdAt = new \DateTime($createdAt);
@@ -651,6 +662,16 @@ class CitizenProject extends BaseGroup
         $this->adminComment = $adminComment;
     }
 
+    public function getDistrict(): ?string
+    {
+        return $this->district;
+    }
+
+    public function setDistrict(?string $district): void
+    {
+        $this->district = $district;
+    }
+
     public function getNextAction(): ?CitizenAction
     {
         return $this->nextAction;
@@ -676,6 +697,11 @@ class CitizenProject extends BaseGroup
     public function exportSkills(): string
     {
         return \implode(', ', $this->skills->toArray());
+    }
+
+    public function getNameWithDistrict(): string
+    {
+        return $this->district ? sprintf('%s - %s', $this->name, $this->district) : $this->name;
     }
 
     public function isNotFinalStatus(): bool
