@@ -889,10 +889,14 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return null;
     }
 
-    public function getCitizenProjectMemberships(): CitizenProjectMembershipCollection
+    public function getCitizenProjectMemberships($withoutRefused = false): CitizenProjectMembershipCollection
     {
         if (!$this->citizenProjectMemberships instanceof CitizenProjectMembershipCollection) {
             $this->citizenProjectMemberships = new CitizenProjectMembershipCollection($this->citizenProjectMemberships->toArray());
+        }
+
+        if ($withoutRefused) {
+            return $this->citizenProjectMemberships->filterRefusedProjects();
         }
 
         return $this->citizenProjectMemberships;

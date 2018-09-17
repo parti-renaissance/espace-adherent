@@ -58,4 +58,11 @@ class CitizenProjectMembershipCollection extends ArrayCollection
             }
         }
     }
+
+    public function filterRefusedProjects(): self
+    {
+        return $this->filter(function (CitizenProjectMembership $membership) {
+            return !$membership->getCitizenProject()->isRefused();
+        });
+    }
 }

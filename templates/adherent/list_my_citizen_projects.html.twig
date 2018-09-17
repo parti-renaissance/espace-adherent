@@ -9,9 +9,10 @@
 {% else %}
     <ul>
         {% for citizen_project in citizen_projects %}
-            <li class="bullet {{ citizen_project_color_status(app.user, citizen_project) }}">
+            <li>
                 {% set citizen_project_path = citizen_project.isApproved ? 'app_citizen_project_show' : 'app_citizen_project_manager_edit' %}
                 <a href="{{ path(citizen_project_path, {slug: citizen_project.slug}) }}"
+                   class="{{ citizen_project_color_status(app.user, citizen_project) }}"
                    title="{{ citizen_project.name }}">
                     {{- citizen_project.name -}}
                 </a>

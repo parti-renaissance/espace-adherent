@@ -69,13 +69,34 @@ class CitizenProjectRepository extends AbstractGroupRepository
      */
     public function findAllRegisteredCitizenProjectsForAdherent(Adherent $adherent, bool $onlyAdministrated = false): array
     {
-        $memberships = $adherent->getCitizenProjectMemberships();
+        $memberships = $adherent->getCitizenProjectMemberships(true);
 
         if ($onlyAdministrated) {
             $memberships = $memberships->getCitizenProjectAdministratorMemberships();
         }
 
-        return $this->findCitizenProjects($memberships->getCitizenProjectUuids(), self::INCLUDE_UNAPPROVED);
+        return $this->sortCitizenProjects(
+            $this->findCitizenProjects($memberships->getCitizenProjectUuids(), self::INCLUDE_UNAPPROVED),
+            $adherent
+        );
+    }
+
+    /**
+     * Sorts Citizen Projects: administrated - with status approved - with status pending/pre-approved/pre-refused
+     */
+    public function sortCitizenProjects(array $citizenProjects, Adherent $adherent): array
+    {
+        uasort($citizenProjects, function (CitizenProject $a, CitizenProject $b) use ($adherent) {
+            if ($adherent->isAdministratorOf($a)) {
+                return -1;
+            } elseif ($adherent->isAdministratorOf($b)) {
+                return 1;
+            } else {
+                return $b->isApproved() <=> $a->isApproved();
+            }
+        });
+
+        return $citizenProjects;
     }
 
     public function findOneApprovedBySlug(string $slug): ?CitizenProject

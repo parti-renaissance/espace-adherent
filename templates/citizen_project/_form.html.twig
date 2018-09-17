@@ -17,7 +17,6 @@
         <div id="citizen_project_name_text">{{ form.vars.data.name }}</div>
         <div class="visually-hidden">{{ form_widget(form.name) }}</div>
     {% else %}
-        {{ form_label(form.name, 'Donnez un nom à votre projet :', {label_attr: {class: 'label__header--large'}}) }}
         {{ form_errors(form.name) }}
         {{ form_widget(form.name, {
             attr: {
