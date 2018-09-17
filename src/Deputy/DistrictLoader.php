@@ -32,9 +32,23 @@ class DistrictLoader
 
     public function load(string $file, string $districtsFile, string $countriesFile): void
     {
-        $districts = $this->decoder->decode(file_get_contents($file), 'csv', [CsvEncoder::DELIMITER_KEY => ';']);
-        $this->geoDistricts = $this->decoder->decode(file_get_contents($districtsFile), 'json');
-        $this->geoCountries = $this->decoder->decode(file_get_contents($countriesFile), 'json')['features'];
+        if (false !== $fileContent = file_get_contents($file)) {
+            $districts = $this->decoder->decode($fileContent, 'csv', [CsvEncoder::DELIMITER_KEY => ';']);
+        } else {
+            throw new \Exception("\"$file\" is not a file.");
+        }
+
+        if (false !== $fileContent = file_get_contents($districtsFile)) {
+            $this->geoDistricts = $this->decoder->decode($fileContent, 'json');
+        } else {
+            throw new \Exception("\"$districtsFile\" is not a file.");
+        }
+
+        if (false !== $fileContent = file_get_contents($countriesFile)) {
+            $this->geoCountries = $this->decoder->decode($fileContent, 'json')['features'];
+        } else {
+            throw new \Exception("\"$countriesFile\" is not a file.");
+        }
 
         $this->batchInsertOrUpdateDistricts($districts);
     }

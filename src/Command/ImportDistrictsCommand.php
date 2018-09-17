@@ -41,22 +41,6 @@ class ImportDistrictsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!is_readable($file = $input->getArgument('file'))) {
-            $this->io->error("$file is not a file");
-
-            return 1;
-        }
-        if (!is_readable($districtsFile = $input->getArgument('districtsFile'))) {
-            $this->io->error("$districtsFile is not a file");
-
-            return 1;
-        }
-        if (!is_readable($countriesFile = $input->getArgument('countriesFile'))) {
-            $this->io->error("$countriesFile is not a file");
-
-            return 1;
-        }
-
         $this->io->text('Start importing districts');
 
         $this->loader->load(realpath($file), realpath($districtsFile), realpath($countriesFile));
