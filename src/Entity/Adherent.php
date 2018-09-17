@@ -6,7 +6,6 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\OAuth\Model\User as InMemoryOAuthUser;
 use AppBundle\Collection\CitizenProjectMembershipCollection;
 use AppBundle\Collection\CommitteeMembershipCollection;
-use AppBundle\Coordinator\CoordinatorAreaSectors;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentException;
@@ -144,11 +143,18 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $managedArea;
 
     /**
-     * @var CoordinatorManagedArea[]|Collection
+     * @var CoordinatorManagedArea|null
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CoordinatorManagedArea", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CoordinatorManagedArea", cascade={"all"}, orphanRemoval=true)
      */
-    private $coordinatorManagedAreas;
+    private $coordinatorCitizenProjectArea;
+
+    /**
+     * @var CoordinatorManagedArea|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CoordinatorManagedArea", cascade={"all"}, orphanRemoval=true)
+     */
+    private $coordinatorCommitteeArea;
 
     /**
      * @var ProcurationManagedArea|null
@@ -276,7 +282,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->citizenProjectMemberships = new ArrayCollection();
         $this->tags = new ArrayCollection($tags);
         $this->referentTags = new ArrayCollection($referentTags);
-        $this->coordinatorManagedAreas = new ArrayCollection();
         $this->subscriptionTypes = new ArrayCollection();
     }
 
@@ -846,21 +851,17 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function isCoordinator(): bool
     {
-        return $this->coordinatorManagedAreas->count() && !empty($this->coordinatorManagedAreas->first()->getCodes());
+        return $this->isCoordinatorCommitteeSector() || $this->isCoordinatorCitizenProjectSector();
     }
 
     public function isCoordinatorCitizenProjectSector(): bool
     {
-        return $this->isCoordinator() && $this->coordinatorManagedAreas->filter(function (CoordinatorManagedArea $area) {
-            return CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR === $area->getSector();
-        })->count();
+        return $this->coordinatorCitizenProjectArea && $this->coordinatorCitizenProjectArea->getCodes();
     }
 
     public function isCoordinatorCommitteeSector(): bool
     {
-        return $this->isCoordinator() && $this->coordinatorManagedAreas->filter(function (CoordinatorManagedArea $area) {
-            return CoordinatorAreaSectors::COMMITTEE_SECTOR === $area->getSector();
-        })->count();
+        return $this->coordinatorCommitteeArea && $this->coordinatorCommitteeArea->getCodes();
     }
 
     public function getMemberships(): CommitteeMembershipCollection
@@ -1077,41 +1078,24 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         return $this->hasSubscriptionType(SubscriptionTypeEnum::CITIZEN_PROJECT_CREATION_EMAIL);
     }
 
-    /**
-     * @return CoordinatorManagedArea[]|Collection
-     */
-    public function getCoordinatorManagedAreas(): Collection
+    public function getCoordinatorCitizenProjectArea(): ?CoordinatorManagedArea
     {
-        return $this->coordinatorManagedAreas;
+        return $this->coordinatorCitizenProjectArea;
     }
 
-    public function addCoordinatorManagedArea(CoordinatorManagedArea $area): void
+    public function setCoordinatorCitizenProjectArea(?CoordinatorManagedArea $coordinatorCitizenProjectArea): void
     {
-        if (!$this->coordinatorManagedAreas->contains($area)) {
-            $area->setAdherent($this);
-            $this->coordinatorManagedAreas->add($area);
-        }
+        $this->coordinatorCitizenProjectArea = $coordinatorCitizenProjectArea;
     }
 
-    public function removeCoordinatorManagedArea(CoordinatorManagedArea $area): void
+    public function getCoordinatorCommitteeArea(): ?CoordinatorManagedArea
     {
-        $this->coordinatorManagedAreas->removeElement($area);
+        return $this->coordinatorCommitteeArea;
     }
 
-    public function getCoordinatorManagedAreaCodesAsString(): string
+    public function setCoordinatorCommitteeArea(?CoordinatorManagedArea $coordinatorCommitteeArea): void
     {
-        return implode(', ', array_map(function (CoordinatorManagedArea $area) {
-            return $area->getCodesAsString();
-        }, $this->coordinatorManagedAreas->toArray()));
-    }
-
-    public function removeEmptyCoordinatorManagedAreas(): void
-    {
-        foreach ($this->getCoordinatorManagedAreas() as $area) {
-            if (empty($area->getCodes()) || empty($area->getSector())) {
-                $this->removeCoordinatorManagedArea($area);
-            }
-        }
+        $this->coordinatorCommitteeArea = $coordinatorCommitteeArea;
     }
 
     public function getManagedDistrict(): ?District

@@ -199,7 +199,8 @@
             <li>
                 <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}">Espace Responsable Engagement Citoyen</a>
             </li>
-        {% elseif app.user.isCoordinatorCommitteeSector %}
+        {% endif %}
+        {% if app.user.isCoordinatorCommitteeSector %}
             <li>
                 <a href="{{ path('app_coordinator_committees', { s: constant('AppBundle\\Entity\\Committee::PENDING')}) }}">Espace coordinateur régional</a>
             </li>

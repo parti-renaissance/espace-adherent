@@ -2,9 +2,7 @@
 
 namespace AppBundle\Coordinator\Filter;
 
-use AppBundle\Coordinator\CoordinatorAreaSectors;
 use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CoordinatorManagedArea;
 
 class CitizenProjectFilter extends AbstractCoordinatorAreaFilter
 {
@@ -20,8 +18,10 @@ class CitizenProjectFilter extends AbstractCoordinatorAreaFilter
 
     protected function getCoordinatorAreaCodes(): array
     {
-        return $this->coordinator->getCoordinatorManagedAreas()->filter(function (CoordinatorManagedArea $area) {
-            return CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR === $area->getSector();
-        })->first()->getCodes();
+        if ($this->coordinator->isCoordinatorCitizenProjectSector()) {
+            return $this->coordinator->getCoordinatorCitizenProjectArea()->getCodes();
+        }
+
+        return [];
     }
 }

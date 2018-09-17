@@ -6,7 +6,11 @@
             <span class="label label-primary" style="padding: 2px;">Référent</span><br/>
         {% endif %}
 
-        {% if object.isCoordinator %}
+        {% if object.isCoordinatorCitizenProjectSector %}
+            <span class="label label-primary" style="padding: 2px;">REC</span><br/>
+        {% endif %}
+
+        {% if object.isCoordinatorCommitteeSector %}
             <span class="label label-primary" style="padding: 2px;">Coordinateur</span><br/>
         {% endif %}
 

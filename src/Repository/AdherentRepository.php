@@ -112,14 +112,16 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $query = $this
             ->createQueryBuilder('a')
             ->addSelect('pma')
-            ->addSelect('cma')
+            ->addSelect('ccpa')
+            ->addSelect('cca')
             ->addSelect('cm')
             ->addSelect('c')
             ->addSelect('cpm')
             ->addSelect('cp')
             ->addSelect('bm')
             ->leftJoin('a.procurationManagedArea', 'pma')
-            ->leftJoin('a.coordinatorManagedAreas', 'cma')
+            ->leftJoin('a.coordinatorCitizenProjectArea', 'ccpa')
+            ->leftJoin('a.coordinatorCommitteeArea', 'cca')
             ->leftJoin('a.memberships', 'cm')
             ->leftJoin('cm.committee', 'c')
             ->leftJoin('a.citizenProjectMemberships', 'cpm')
@@ -243,22 +245,15 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return new AdherentCollection($qb->getQuery()->getResult());
     }
 
-    private function createCoordinatorQueryBuilder(): QueryBuilder
-    {
-        return $this
-            ->createQueryBuilder('a')
-            ->leftJoin('a.coordinatorManagedAreas', 'cma')
-            ->where('cma.codes IS NOT NULL')
-            ->andWhere('LENGTH(cma.codes) > 0')
-            ->orderBy('LOWER(cma.codes)', 'ASC')
-        ;
-    }
-
     public function findCoordinatorsByCitizenProject(CitizenProject $citizenProject): AdherentCollection
     {
         $qb = $this
-            ->createCoordinatorQueryBuilder()
-            ->andWhere('FIND_IN_SET(:code, cma.codes) > 0')
+            ->createQueryBuilder('a')
+            ->innerJoin('a.coordinatorCitizenProjectArea', 'ccpa')
+            ->where('ccpa.codes IS NOT NULL')
+            ->andWhere('FIND_IN_SET(:code, ccpa.codes) > 0')
+            ->andWhere('LENGTH(ccpa.codes) > 0')
+            ->orderBy('LOWER(ccpa.codes)', 'ASC')
             ->setParameter('code', CoordinatorManagedAreaUtils::getCodeFromCitizenProject($citizenProject))
         ;
 
@@ -362,12 +357,14 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->createQueryBuilder('a')
             ->addSelect('bm')
             ->addSelect('ap')
-            ->addSelect('ac')
+            ->addSelect('ccpa')
+            ->addSelect('cca')
             ->addSelect('cm')
             ->addSelect('bmr')
             ->innerJoin('a.boardMember', 'bm')
             ->leftJoin('a.procurationManagedArea', 'ap')
-            ->leftJoin('a.coordinatorManagedAreas', 'ac')
+            ->leftJoin('a.coordinatorCitizenProjectArea', 'ccpa')
+            ->leftJoin('a.coordinatorCommitteeArea', 'cca')
             ->leftJoin('a.memberships', 'cm')
             ->innerJoin('bm.roles', 'bmr')
         ;

@@ -21,24 +21,18 @@ class CoordinatorManagedArea
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent", inversedBy="coordinatorManagedAreas")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
-    private $adherent;
-
-    /**
      * The codes of the managed zones.
      *
      * @var array
      *
-     * @ORM\Column(type="simple_array", nullable=true)
+     * @ORM\Column(type="simple_array")
      */
-    private $codes = [];
+    private $codes;
 
     /**
      * @var string
      *
-     * @ORM\Column(nullable=true)
+     * @ORM\Column
      */
     private $sector;
 
@@ -53,16 +47,6 @@ class CoordinatorManagedArea
         return $this->id;
     }
 
-    public function getAdherent(): ?Adherent
-    {
-        return $this->adherent;
-    }
-
-    public function setAdherent(?Adherent $adherent): void
-    {
-        $this->adherent = $adherent;
-    }
-
     public function getCodes(): array
     {
         return $this->codes;
@@ -73,16 +57,6 @@ class CoordinatorManagedArea
         $this->codes = $codes;
     }
 
-    public function getCodesAsString(): string
-    {
-        return implode(', ', $this->codes);
-    }
-
-    public function setCodesAsString(?string $codes): void
-    {
-        $this->codes = $codes ? array_map('trim', explode(',', $codes)) : [];
-    }
-
     public function getSector(): ?string
     {
         return $this->sector;
@@ -91,5 +65,10 @@ class CoordinatorManagedArea
     public function setSector(?string $sector): void
     {
         $this->sector = $sector;
+    }
+
+    public function __toString(): string
+    {
+        return implode(', ', $this->codes);
     }
 }

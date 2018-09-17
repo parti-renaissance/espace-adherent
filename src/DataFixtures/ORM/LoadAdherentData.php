@@ -420,7 +420,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2017-09-20 15:31:21',
         ]);
         $coordinator->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $coordinator->addCoordinatorManagedArea(new CoordinatorManagedArea(['FR'], CoordinatorAreaSectors::COMMITTEE_SECTOR));
+        $coordinator->setCoordinatorCommitteeArea(new CoordinatorManagedArea(['FR'], CoordinatorAreaSectors::COMMITTEE_SECTOR));
         $coordinator->addReferentTag($this->getReference('referent_tag_94'));
 
         $coordinatorCP = $adherentFactory->createFromArray([
@@ -437,7 +437,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2017-09-20 15:31:21',
         ]);
         $coordinatorCP->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $coordinatorCP->addCoordinatorManagedArea(new CoordinatorManagedArea(['US', '59290', '77'], CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR));
+        $coordinatorCP->setCoordinatorCitizenProjectArea(new CoordinatorManagedArea(['US', '59290', '77'], CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR));
         $coordinatorCP->addReferentTag($this->getReference('referent_tag_75'));
         $coordinatorCP->addReferentTag($this->getReference('referent_tag_75008'));
         $this->addReference('adherent-17', $coordinatorCP);

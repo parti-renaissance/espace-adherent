@@ -29,9 +29,7 @@ abstract class AbstractCoordinatorAreaFilter
 
     final public function apply(QueryBuilder $qb, string $alias): void
     {
-        if ($this->coordinator->getCoordinatorManagedAreas()->count()) {
-            $this->applyGeoFilter($qb, $alias);
-        }
+        $this->applyGeoFilter($qb, $alias);
 
         $qb
             ->andWhere(sprintf('%s.status = :status', $alias))
@@ -170,7 +168,9 @@ abstract class AbstractCoordinatorAreaFilter
             }
         }
 
-        $qb->andWhere($codesFilter);
+        if ($codesFilter->count()) {
+            $qb->andWhere($codesFilter);
+        }
     }
 
     private function updateCount(QueryBuilder $qb, string $alias): void
