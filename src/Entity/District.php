@@ -2,9 +2,6 @@
 
 namespace AppBundle\Entity;
 
-use CrEOF\Spatial\PHP\Types\Geometry\GeometryInterface;
-use CrEOF\Spatial\PHP\Types\Geometry\MultiPolygon;
-use CrEOF\Spatial\PHP\Types\Geometry\Polygon;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,9 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="district_code_unique", columns="code"),
  *         @ORM\UniqueConstraint(name="district_department_code_number", columns={"department_code", "number"})
- *     },
- *     indexes={
- *         @ORM\Index(name="district_geo_shape_idx", columns={"geo_shape"}, flags={"spatial"})
  *     }
  * )
  */
@@ -75,40 +69,32 @@ class District
     private $departmentCode;
 
     /**
-     * @var Polygon|MultiPolygon
+     * @var GeoData
      *
-     * @ORM\Column(type="geometry")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\GeoData", cascade={"all"})
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $geoShape;
+    private $geoData;
 
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Adherent", inversedBy="managedDistrict")
      */
     private $adherent;
 
-    /**
-     * @throws \InvalidArgumentException if $geoShape is invalid
-     */
     public function __construct(
         array $countries,
         string $name,
         string $code,
         int $number,
         string $departmentCode,
-        GeometryInterface $geoShape
+        GeoData $geoData
     ) {
-        if (!$geoShape instanceof Polygon && !$geoShape instanceof MultiPolygon) {
-            throw new \InvalidArgumentException(
-                sprintf('$geoShape must be an instance of %s or %s, %s given', Polygon::class, MultiPolygon::class, get_class($geoShape))
-            );
-        }
-
         $this->countries = $countries;
         $this->code = $code;
         $this->name = $name;
         $this->number = $number;
         $this->departmentCode = $departmentCode;
-        $this->geoShape = $geoShape;
+        $this->geoData = $geoData;
     }
 
     public function getId(): ?int
@@ -161,21 +147,9 @@ class District
         return $this->departmentCode;
     }
 
-    /**
-     * @return MultiPolygon|Polygon
-     */
-    public function getGeoShape(): GeometryInterface
+    public function getGeoData(): GeoData
     {
-        return $this->geoShape;
-    }
-
-    public function getPolygons(): array
-    {
-        if (GeometryInterface::MULTIPOLYGON === $this->geoShape->getType()) {
-            return array_merge(...$this->geoShape->toArray());
-        }
-
-        return $this->geoShape->toArray();
+        return $this->geoData;
     }
 
     public function getAdherent(): ?Adherent
@@ -188,11 +162,11 @@ class District
         $this->adherent = $adherent;
     }
 
-    public function update(array $countries, string $name, GeometryInterface $geoShape): self
+    public function update(array $countries, string $name, GeoData $geoData): self
     {
         $this->countries = $countries;
         $this->name = $name;
-        $this->geoShape = $geoShape;
+        $this->geoData = $geoData;
 
         return $this;
     }
