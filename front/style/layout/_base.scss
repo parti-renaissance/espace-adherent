@@ -127,6 +127,12 @@ input[type="email"] {
 
 table {
     border-collapse: collapse;
+
+    .no-text-transform {
+        th {
+            text-transform: none;
+        }
+    }
 }
 
 .cursor--pointer {

@@ -1,17 +1,16 @@
 <table class="datagrid__table" style="border-spacing: 0 1em;">
-    <thead>
+    <thead class="no-text-transform">
         <tr>
-            <th>Titre</th>
-            <th>Organisateur</th>
-            <th>Membres</th>
-            <th>Comités en soutien</th>
-            <th>Lieu</th>
-            <th>Problème local adressé</th>
-            <th>Réponse au problème</th>
-            <th>Feuille de route</th>
-            <th>Compétences matchées</th>
-            <th>Commentaire</th>
-            <th>Statut</th>
+            <th>{{ 'citizen_project.list.title'|trans }}</th>
+            <th>{{ 'citizen_project.list.organisator'|trans }}</th>
+            <th>{{ 'citizen_project.list.members'|trans }}</th>
+            <th>{{ 'citizen_project.list.support_committees'|trans }}</th>
+            <th>{{ 'citizen_project.list.place'|trans }}</th>
+            <th>{{ 'citizen_project.list.local_problem'|trans }}</th>
+            <th>{{ 'citizen_project.list.problem_answer'|trans }}</th>
+            <th>{{ 'citizen_project.list.roadmap'|trans }}</th>
+            <th>{{ 'citizen_project.list.comment'|trans }}</th>
+            <th>{{ 'citizen_project.list.status'|trans }}</th>
         </tr>
     </thead>
     <tbody id="citizen-projects-list">
@@ -28,13 +27,13 @@
                     <br/>
                     {{ project.subTitle }}
                     <br />
-                    Créé le {{ project.createdAt|date('d/m/Y H:i') }}
+                    {{ 'citizen_project.created_at'|trans({'%date%': project.createdAt|date('d/m/Y'), '%time%':project.createdAt|date('H:i')}) }}
                 </td>
                 <td>
                     {% if project.creator %}
+                        <a href="mailto:{{ project.creator.emailAddress }}" class="link--no-decor" title="{{ project.creator.emailAddress }}"><i class="fa fa-envelope" aria-hidden="true"></i></a>
                         {{ project.creator }}
                         <br/>
-                        <a href="email:{{ project.creator.emailAddress }}">{{ project.creator.emailAddress }}</a>
                         {% if project.phone %}
                             <br/>
                             {{ project.phone|phone_number_format }}
@@ -47,7 +46,7 @@
                 <td>
                     {% for committeeSupport in project.committeeSupports %}
                         <a href="{{ path('app_committee_show', {slug: committeeSupport.committee.slug}) }}">
-                            {{ committeeSupport.committee.name }} ({{ committeeSupport.pending ? 'En attente' : 'Approuvé' }})
+                            {{ committeeSupport.committee.name }} ({{ (committeeSupport.pending ? 'pending' : 'approved')|trans }})
                         </a>
                     {% else %}
                         ~
@@ -66,9 +65,6 @@
                 </td>
                 <td>
                     {{ project.requiredMeans|read_more(50, 'required-means' ~ project.id, 'common.show_more'|trans, 'common.show_less'|trans) }}
-                </td>
-                <td>
-                    {% if project.matchedSkills %}Oui{% else %}Non{% endif %}
                 </td>
                 <td>
                     {% if not project.isApproved %}
