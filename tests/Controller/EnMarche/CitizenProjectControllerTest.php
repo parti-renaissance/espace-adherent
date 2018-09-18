@@ -74,11 +74,8 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->assertFalse($this->seeCommentSection());
         $this->assertCount(0, $this->client->getCrawler()->selectLink('Signaler un abus'));
         $this->assertSame(
-            "Votre projet citoyen est en attente de validation par les équipes d'En Marche !
-                Vous serez alerté(e) par e-mail quand il sera validé.
-                
-                Une fois que votre projet citoyen sera validé, vous pourrez contacter les adhérents suivants votre projet citoyen
-                sur cette page.",
+            "Votre projet citoyen est en attente de validation par les équipes d'En Marche !\n"
+                .'Vous serez alerté(e) par e-mail quand il sera validé.',
             trim($crawler->filter('.citizen-project__waiting-for-approval')->text())
         );
     }
@@ -92,9 +89,9 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->assertFalse($this->seeCommentSection());
         $this->assertCount(0, $this->client->getCrawler()->selectLink('Signaler un abus'));
         $this->assertSame(
-            "En l'état, votre projet citoyen n'a pas été validé par nos équipes.
-                Vous pouvez à tout moment modifier ce projet ou en proposer un nouveau.
-                Pour plus d'informations, reportez-vous à la Charte des Projets Citoyens.",
+            "En l'état, votre projet citoyen n'a pas été validé par nos équipes.\n"
+                ."Vous pouvez à tout moment modifier ce projet ou en proposer un nouveau.\n"
+                ."Pour plus d'informations, reportez-vous à la Charte des Projets Citoyens.",
             trim($crawler->filter('.citizen-project__waiting-for-approval')->text())
         );
     }
