@@ -9,6 +9,7 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -238,6 +239,47 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     public function findMembers(Committee $committee): AdherentCollection
     {
         return $this->createAdherentCollection($this->createCommitteeMembershipsQueryBuilder($committee)->getQuery());
+    }
+
+    /**
+     * Returns the list of all members of $sourceCommittee
+     * that does not already belongs to list of all members of $destinationCommittee
+     *
+     * NOTE: this returns poorly hydrated instances of Adherent, but is optimized for merging of committees
+     */
+    public function findMembersToMerge(Committee $sourceCommittee, Committee $destinationCommittee): AdherentCollection
+    {
+        $rsm = new ResultSetMapping();
+        $rsm
+            ->addEntityResult(Adherent::class, 'a')
+            ->addFieldResult('a', 'id', 'id')
+            ->addFieldResult('a', 'uuid', 'uuid')
+        ;
+
+        $sql = <<<'SQL'
+            SELECT
+                a.id,
+                a.uuid
+            FROM committees_memberships cm
+            INNER JOIN adherents a
+                ON a.id = cm.adherent_id
+            WHERE cm.committee_id = :source_committee
+            AND NOT EXISTS (
+                SELECT 1
+                FROM committees_memberships cm2
+                WHERE cm2.adherent_id = a.id
+                AND cm2.committee_id = :destination_committee
+            )
+SQL
+        ;
+
+        return new AdherentCollection(
+            $this->_em
+                ->createNativeQuery($sql, $rsm)
+                ->setParameter('source_committee', $sourceCommittee)
+                ->setParameter('destination_committee', $destinationCommittee)
+                ->getResult()
+        );
     }
 
     /**

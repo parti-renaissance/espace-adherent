@@ -4,6 +4,7 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Committee\CommitteeFactory;
 use AppBundle\Coordinator\CoordinatorAreaSectors;
+use AppBundle\DataFixtures\AutoIncrementResetter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
@@ -61,6 +62,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
 
     public function load(ObjectManager $manager)
     {
+        AutoIncrementResetter::resetAutoIncrement($manager, 'committees');
+
         $adherentFactory = $this->getAdherentFactory();
 
         // Create adherent users list

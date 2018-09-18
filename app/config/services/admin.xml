@@ -697,5 +697,14 @@
             <tag name="sonata.admin.extension" target="app.admin.adherent" />
         </service>
 
+        <!--
+        ######################################################
+        # Menu
+        ######################################################
+         -->
+
+        <service id="app.admin.committee_merge" class="AppBundle\Admin\EventListener\AdminCommitteeMergeMenuListener">
+            <tag name="kernel.event_listener" event="sonata.admin.event.configure.menu.sidebar" method="addMenuItems" />
+        </service>
     </services>
 </container>

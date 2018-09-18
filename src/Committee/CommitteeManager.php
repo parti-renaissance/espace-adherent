@@ -33,7 +33,7 @@ class CommitteeManager
     private const COMMITTEE_PROPOSALS_COUNT = 3;
 
     private $registry;
-    private $disaptcher;
+    private $dispatcher;
 
     public function __construct(RegistryInterface $registry, EventDispatcherInterface $dispatcher)
     {
