@@ -28,6 +28,20 @@
     {% endif %}
 </div>
 
+{% if form.district is defined %}
+    <div class="form__new" id="field-district">
+        {{ form_label(form.district, "Ajoutez ici le nom de votre quartier pour qu'il apparaisse dans le titre du projet :", {label_attr: {class: 'label__header--large'}}) }}
+        {{ form_errors(form.district) }}
+        {{ form_widget(form.district, {
+            attr: {
+                'class': 'form--full',
+                'placeholder': 'Le nom de votre quartier',
+            }
+        }) }}
+        <small>Laissez vide pour afficher la ville.</small>
+    </div>
+{% endif %}
+
 <div class="form__new" id="field-subtitle">
     {{ form_label(form.subtitle, 'Et un sous-titre :', {label_attr: {class: 'label__header--large'}}) }}
     {% if form.subtitle.vars.disabled %}

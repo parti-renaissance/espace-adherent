@@ -89,6 +89,9 @@ class CitizenProjectAdmin extends AbstractAdmin
                 ->add('name', null, [
                     'label' => 'Nom',
                 ])
+                ->add('district', null, [
+                    'label' => 'Ville/Quartier',
+                ])
                 ->add('slug', null, [
                     'label' => 'Slug',
                 ])
@@ -140,6 +143,10 @@ class CitizenProjectAdmin extends AbstractAdmin
             ->with('Projet citoyen', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
+                    'format_title_case' => true,
+                ])
+                ->add('district', null, [
+                    'label' => 'Ville/Quartier',
                     'format_title_case' => true,
                 ])
                 ->add('slug', null, [
@@ -365,9 +372,12 @@ class CitizenProjectAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('name', TextType::class, [
+            ->add('name', null, [
                 'label' => 'Nom',
                 'template' => 'admin/citizen_project/list_name.html.twig',
+            ])
+            ->add('district', null, [
+                'label' => 'Ville/Quartier',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',

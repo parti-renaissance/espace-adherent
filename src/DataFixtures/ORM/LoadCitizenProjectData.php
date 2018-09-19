@@ -47,6 +47,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'created_by' => LoadAdherentData::ADHERENT_3_UUID,
             'created_at' => '2017-10-12 12:25:54',
             'address' => NullablePostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.8705073, 2.3032432),
+            'district' => 'Paris 8e',
         ]);
 
         $citizenProject1->addSkill($this->getReference('cps001'));
@@ -187,6 +188,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'created_by' => LoadAdherentData::ADHERENT_12_UUID,
             'created_at' => '2017-10-09 12:16:22',
             'address' => NullablePostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
+            'district' => 'Brooklyn',
             'phone' => '1 2123150100',
         ]);
         $citizenProject9->setImageName('default.png');

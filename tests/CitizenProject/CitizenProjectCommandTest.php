@@ -45,6 +45,7 @@ class CitizenProjectCommandTest extends TestCase
             $requiredMeans,
             (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
             NullablePostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'),
+            null,
             '69001-en-marche-lyon'
         );
         $citizenProject->setSkills([$skill]);
