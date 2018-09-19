@@ -135,6 +135,16 @@
     }
 }
 
+#citizen-projects {
+    &-list {
+        tr {
+            td {
+                padding: 0 5px;
+            }
+        }
+    }
+}
+
 .citizen-project {
     &--bkg {
         background-position: right center;
