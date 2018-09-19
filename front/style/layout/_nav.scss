@@ -188,5 +188,52 @@
         .nav-dropdown__caret {
             display: block;
         }
+
+        .fa-caret-down {
+            display: none;
+        }
+
+        .fa-caret-up {
+            display: inline;
+        }
+    }
+
+    .fa {
+        color: $white;
+        float: left;
+        padding-top: 5px;
+        padding-right: 5px;
+    }
+
+    .fa-caret-down {
+        display: inline;
+    }
+
+    .fa-caret-up {
+        display: none;
+    }
+
+    &__citizen-projects {
+        position: absolute;
+        top: 34px;
+        left: 0;
+        width: auto;
+        margin: -10px -10px 0;
+        padding: 15px 10px 5px;
+        line-height: 24px;
+        background-color: #222;
+
+        ul {
+            padding-left: 5px;
+            display: block;
+
+            li {
+                padding-left: 10px;
+
+                a {
+                    width: auto;
+                }
+            }
+        }
     }
 }

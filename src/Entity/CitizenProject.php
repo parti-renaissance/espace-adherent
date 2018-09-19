@@ -45,6 +45,12 @@ class CitizenProject extends BaseGroup
         self::PRE_REFUSED,
     ];
 
+    public const NOT_FINAL_STATUSES = [
+        self::PENDING,
+        self::PRE_APPROVED,
+        self::PRE_REFUSED,
+    ];
+
     /**
      * @ORM\Column
      *
@@ -670,5 +676,10 @@ class CitizenProject extends BaseGroup
     public function exportSkills(): string
     {
         return \implode(', ', $this->skills->toArray());
+    }
+
+    public function isNotFinalStatus(): bool
+    {
+        return in_array($this->status, self::NOT_FINAL_STATUSES, true);
     }
 }

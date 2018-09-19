@@ -9,8 +9,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CitizenProjectRuntime
 {
-    private const COLOR_STATUS_PENDING = 'bullet--pending';
-    private const COLOR_STATUS_ADMINISTRATOR = 'bullet--own';
+    private const COLOR_STATUS_NOT_FINAL = 'text--gray';
+    private const COLOR_STATUS_ADMINISTRATOR = 'text--bold text--blue--dark';
 
     private $authorizationChecker;
 
@@ -51,8 +51,8 @@ class CitizenProjectRuntime
 
     public function getCitizenProjectColorStatus(Adherent $adherent, CitizenProject $citizenProject): string
     {
-        if ($citizenProject->isPending()) {
-            return self::COLOR_STATUS_PENDING;
+        if ($citizenProject->isNotFinalStatus()) {
+            return self::COLOR_STATUS_NOT_FINAL;
         }
 
         if ($adherent->isAdministratorOf($citizenProject)) {
