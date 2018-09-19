@@ -15,6 +15,7 @@ use AppBundle\Events;
 use AppBundle\Exception\CommitteeMembershipException;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Coordinator\Filter\CommitteeFilter;
+use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
@@ -489,11 +490,23 @@ class CommitteeManager
         return $this->getMembershipRepository()->findSupervisor($committee);
     }
 
-    public function getCommitteesAndMembersByCoordinates(
+    public function getCommitteesByCoordinatesAndCountry(
         Coordinates $coordinates,
+        string $country,
+        string $postalCode,
         int $count = self::COMMITTEE_PROPOSALS_COUNT
     ): array {
-        return $this->getCommitteeRepository()->findNearbyCommittees($coordinates, $count);
+        $postalCodePrefix = array_key_exists(substr($postalCode, 0, 3), FranceCitiesBundle::DOMTOM_INSEE_CODE)
+            ? substr($postalCode, 0, 3)
+            : null
+        ;
+
+        return $this->getCommitteeRepository()->findNearbyCommitteesFilteredByCountry(
+            $coordinates,
+            $country,
+            $postalCodePrefix,
+            $count
+        );
     }
 
     public function getLastApprovedCommitteesAndMembers(int $count = self::COMMITTEE_PROPOSALS_COUNT): array

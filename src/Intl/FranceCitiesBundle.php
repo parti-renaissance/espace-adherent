@@ -4,6 +4,20 @@ namespace AppBundle\Intl;
 
 class FranceCitiesBundle
 {
+    public const DOMTOM_INSEE_CODE = [
+        '971' => 'Guadeloupe',
+        '972' => 'Martinique',
+        '973' => 'Guyane',
+        '974' => 'La Rénuion',
+        '975' => 'Saint-Pierre-et-Miquelon',
+        '976' => 'Mayotte',
+        '977' => 'Saint-Barthélémy',
+        '978' => 'Saint-Martin',
+        '986' => 'Wallis-et-Futuna',
+        '987' => 'Polynésie française',
+        '988' => 'Nouvelle-Calédonie',
+    ];
+
     /**
      * Returns the list of cities for a given french postal code.
      */
