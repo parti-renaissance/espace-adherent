@@ -703,7 +703,7 @@
         ######################################################
          -->
 
-        <service id="app.admin.committee_merge" class="AppBundle\Admin\EventListener\AdminCommitteeMergeMenuListener">
+        <service id="AppBundle\Admin\EventListener\AdminCommitteeMergeMenuListener">
             <tag name="kernel.event_listener" event="sonata.admin.event.configure.menu.sidebar" method="addMenuItems" />
         </service>
     </services>

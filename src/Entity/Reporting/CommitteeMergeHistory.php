@@ -35,7 +35,7 @@ class CommitteeMergeHistory
      * @var Committee
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
-     * @ORM\JoinColumn(name="source_committee_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $sourceCommittee;
 
@@ -43,7 +43,7 @@ class CommitteeMergeHistory
      * @var Committee
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
-     * @ORM\JoinColumn(name="destination_committee_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $destinationCommittee;
 

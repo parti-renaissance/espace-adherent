@@ -260,16 +260,14 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             SELECT
                 a.id,
                 a.uuid
-            FROM committees_memberships cm
-            INNER JOIN adherents a
-                ON a.id = cm.adherent_id
-            WHERE cm.committee_id = :source_committee
-            AND NOT EXISTS (
-                SELECT 1
-                FROM committees_memberships cm2
-                WHERE cm2.adherent_id = a.id
-                AND cm2.committee_id = :destination_committee
-            )
+            FROM adherents AS a
+            INNER JOIN committees_memberships AS cm_src
+                ON cm_src.committee_id = :source_committee
+                AND cm_src.adherent_id = a.id
+            LEFT JOIN committees_memberships AS cm_dest
+                ON cm_dest.committee_id = :destination_committee
+                AND cm_dest.adherent_id = a.id
+            WHERE cm_dest.id IS NULL
 SQL
         ;
 
