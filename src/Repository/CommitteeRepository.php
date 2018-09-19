@@ -420,14 +420,14 @@ class CommitteeRepository extends ServiceEntityRepository
     /**
      * Finds committees in the district.
      *
-     *
      * @return Committee[]
      */
     public function findAllInDistrict(District $district): array
     {
         return $this->createQueryBuilder('c')
             ->innerJoin(District::class, 'd', Join::WITH, 'd.id = :district_id')
-            ->where("ST_Within(ST_GeomFromText(CONCAT('POINT(',c.postAddress.longitude,' ',c.postAddress.latitude,')')), d.geoShape) = 1")
+            ->innerJoin('d.geoData', 'gd')
+            ->where("ST_Within(ST_GeomFromText(CONCAT('POINT(',c.postAddress.longitude,' ',c.postAddress.latitude,')')), gd.geoShape) = 1")
             ->andWhere('c.status = :status')
             ->setParameter('district_id', $district->getId())
             ->setParameter('status', Committee::APPROVED)

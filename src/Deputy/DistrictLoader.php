@@ -2,6 +2,7 @@
 
 namespace AppBundle\Deputy;
 
+use AppBundle\Entity\GeoData;
 use AppBundle\Entity\District;
 use AppBundle\Geo\GeometryFactory;
 use Doctrine\Bundle\DoctrineBundle\Registry;
@@ -87,7 +88,7 @@ class DistrictLoader
             unset($this->geoDistricts[$key]);
             $geoDistrict = array_shift($geoDistricts);
 
-            $geoShape = $this->geometryFactory->createGeometryFromGeoJson($geoDistrict['fields']['geo_shape']);
+            $geoData = new GeoData($this->geometryFactory->createGeometryFromGeoJson($geoDistrict['fields']['geo_shape']));
             $countries = [District::FRANCE];
         } else {
             $countries = explode(',', str_replace(' ', '', $district['code_pays']));
@@ -98,14 +99,16 @@ class DistrictLoader
             if (0 === count($geoCountries)) {
                 throw new \RuntimeException("Countries GeoJSON file doesn't contain countries with codes '$countries'");
             }
-            $geoShape = $this->geometryFactory->mergeGeoJsonGeometries($geoCountries);
+            $geoData = new GeoData($this->geometryFactory->mergeGeoJsonGeometries($geoCountries));
         }
 
         if ($existingDistrict = $this->em->getRepository(District::class)->findOneBy(['code' => $district['circo_ID']])) {
+            $this->em->remove($existingDistrict->getGeoData());
+
             return $existingDistrict->update(
                 $countries,
                 $district['nom_circo'],
-                $geoShape
+                $geoData
             );
         }
 
@@ -115,7 +118,7 @@ class DistrictLoader
             $district['circo_ID'],
             (int) $district['num_circo'],
             $district['code_dpt'],
-            $geoShape
+            $geoData
         );
     }
 }

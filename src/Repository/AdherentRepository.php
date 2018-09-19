@@ -668,7 +668,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     {
         return $this->createQueryBuilder('a')
             ->innerJoin(District::class, 'd', Join::WITH, 'd.id = :district_id')
-            ->where("ST_Within(ST_GeomFromText(CONCAT('POINT(',a.postAddress.longitude,' ',a.postAddress.latitude,')')), d.geoShape) = 1")
+            ->innerJoin('d.geoData', 'gd')
+            ->where("ST_Within(ST_GeomFromText(CONCAT('POINT(',a.postAddress.longitude,' ',a.postAddress.latitude,')')), gd.geoShape) = 1")
             ->andWhere('a.status = :status')
             ->setParameter('district_id', $district->getId())
             ->setParameter('status', Adherent::ENABLED)
