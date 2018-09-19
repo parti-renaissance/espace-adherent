@@ -251,6 +251,10 @@ event.invitation.form.invite: Envoyer
 event.invitation.form.invite_sent: Merci ! Votre invitation a bien été envoyée ! | Merci ! Vos %count% invitations ont bien été envoyées !
 event.next_events_nearby: 'one: Événement à proximité|some: Les événements à proximité'
 event.report: Signaler cet évènement
+event.edit: Modifier l'événement
+event.cancel: Annuler l'événement
+event.manage_participants: Gérer les participants
+event.back_to_list: Retour à la liste des événements
 
 #
 # Board Member

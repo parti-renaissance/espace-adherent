@@ -91,7 +91,7 @@
         <section class="committee__event l__wrapper">
             <a href="{{ path('app_search_events') }}" class="back-to-list icon--with-text text--summary">
                 {{ include('components/caret--left.html.twig') }}
-                Retour à la liste des événements
+                {{ 'event.back_to_list'|trans }}
             </a>
 
             {{ include('events/_header.html.twig') }}
@@ -99,21 +99,19 @@
             <div class="b__nudge--top-10 text--body text--small">
                 {% if is_granted('HOST_EVENT', event) %}
                     {% if event.active %}
-                        <a class="b__nudge--right-small"
+                        <a class="b__nudge--right-small link--newblue"
                            href="{{ path("app_#{event.type}_edit", {'slug': event.slug}) }}">
-                            Modifier l'événement
+                            {{ 'event.edit'|trans }}
                         </a>
-                        <a class="b__nudge--right-small"
+                        <a class="b__nudge--right-small link--newblue"
                            href="{{ path("app_#{event.type}_cancel", {'slug': event.slug}) }}">
-                            Annuler l'événement
+                            {{ 'event.cancel'|trans }}
                         </a>
                     {% endif %}
-                    <a href="{{ path("app_#{event.type}_members", {'slug': event.slug}) }}">
-                        Gérer les participants
+                    <a href="{{ path("app_#{event.type}_members", {'slug': event.slug}) }}" class="link--newblue">
+                        {{ 'event.manage_participants'|trans }}
                     </a>
-                {% endif %}
-
-                {% if is_granted('REPORT') %}
+                {% elseif is_granted('REPORT') %}
                     <a href="{{ report_path(event, app.request.pathInfo) }}" class="text--body link--newblue pull-right">{{ 'event.report'|trans }}</a>
                 {% endif %}
             </div>
