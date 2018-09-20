@@ -123,14 +123,12 @@ Feature:
       | LoadCitizenActionData         |
     And I clean the "api_sync" queue
     When I dispatch the "<event>" citizen action event with "Projet citoyen de Zürich"
-    Then "api_sync" should have 1 message
-    And "api_sync" should have message below:
-      | routing_key   | body                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-      | <routing_key> | {"uuid":"3f46976e-e76a-476e-86d7-575c6d3bc15f","country":"CH","address":"30 Zeppelinstrasse","zipCode":"8057","city":"Zürich","latitude":"47.395004","longitude":"8.538380","name":"Projet citoyen de Zürich","slug":"@string@.endsWith('-projet-citoyen-de-zurich')","beginAt":"@string@.isDateTime()","finishAt":"@string@.isDateTime()","participantsCount":1,"status":"SCHEDULED","citizenProjectUuid":"942201fe-bffa-4fed-a551-71c3e49cea43"}  |
+    Then "api_sync" should have 0 message
+
     Examples:
-      | event                  | routing_key            |
-      | citizen_action.created | citizen_action.created |
-      | citizen_action.updated | citizen_action.updated |
+      | event                  |
+      | citizen_action.created |
+      | citizen_action.updated |
 
   Scenario: Publish message on citizen action deleted
     Given the following fixtures are loaded:
@@ -140,7 +138,4 @@ Feature:
       | LoadCitizenActionData         |
     And I clean the "api_sync" queue
     When I dispatch the "citizen_action.deleted" citizen action event with "Projet citoyen de Zürich"
-    Then "api_sync" should have 1 message
-    And "api_sync" should have message below:
-      | routing_key            | body                                            |
-      | citizen_action.deleted | {"uuid":"3f46976e-e76a-476e-86d7-575c6d3bc15f"} |
+    Then "api_sync" should have 0 message
