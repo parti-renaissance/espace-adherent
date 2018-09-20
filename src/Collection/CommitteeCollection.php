@@ -24,10 +24,16 @@ final class CommitteeCollection extends ArrayCollection
             return in_array((string) $committee->getUuid(), $uuids);
         });
 
+        $uuids = $memberships->getCommitteeUnapprovedMemberships()->getCommitteeUuids();
+        $unapprovedCommittees = $this->filter(function (Committee $committee) use ($uuids) {
+            return in_array((string) $committee->getUuid(), $uuids);
+        });
+
         return new static(array_merge(
             $supervisedCommittees->toArray(),
             $hostedCommittees->toArray(),
-            $followedCommittees->toArray()
+            $followedCommittees->toArray(),
+            $unapprovedCommittees->toArray()
         ));
     }
 }

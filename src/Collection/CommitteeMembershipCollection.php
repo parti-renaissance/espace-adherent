@@ -66,7 +66,7 @@ class CommitteeMembershipCollection extends ArrayCollection
     public function getCommitteeFollowerMemberships(): self
     {
         return $this->filter(function (CommitteeMembership $membership) {
-            return $membership->isFollower();
+            return $membership->isFollower() && !$membership->getCommittee()->isPending();
         });
     }
 
@@ -74,6 +74,13 @@ class CommitteeMembershipCollection extends ArrayCollection
     {
         return $this->filter(function (CommitteeMembership $membership) {
             return $membership->isSupervisor();
+        });
+    }
+
+    public function getCommitteeUnapprovedMemberships(): self
+    {
+        return $this->filter(function (CommitteeMembership $membership) {
+            return $membership->getCommittee()->isPending();
         });
     }
 

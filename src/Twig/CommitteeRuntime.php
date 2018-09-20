@@ -10,6 +10,9 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CommitteeRuntime
 {
+    private const COLOR_STATUS_NOT_FINAL = 'text--gray';
+    private const COLOR_STATUS_ADMINISTRATOR = 'text--bold text--blue--dark';
+
     private $authorizationChecker;
     private $committeeManager;
 
@@ -67,5 +70,18 @@ class CommitteeRuntime
     public function canSee(Committee $committee): bool
     {
         return $this->authorizationChecker->isGranted(CommitteePermissions::SHOW, $committee);
+    }
+
+    public function getCommitteeColorStatus(Adherent $adherent, Committee $committee): string
+    {
+        if ($adherent->isHostOf($committee)) {
+            return self::COLOR_STATUS_ADMINISTRATOR;
+        }
+
+        if ($committee->isPending()) {
+            return self::COLOR_STATUS_NOT_FINAL;
+        }
+
+        return '';
     }
 }
