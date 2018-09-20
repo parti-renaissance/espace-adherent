@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadDistrictData;
 use AppBundle\DataFixtures\ORM\LoadEmailSubscriptionHistoryData;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectCommentData;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
@@ -189,8 +190,9 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame('8', $crawler->filter(sprintf($optionPattern, 'birthdate][day'))->attr('value'));
         $this->assertSame('7', $crawler->filter(sprintf($optionPattern, 'birthdate][month'))->attr('value'));
         $this->assertSame('1950', $crawler->filter(sprintf($optionPattern, 'birthdate][year'))->attr('value'));
-        self::assertCount(1, $adherent->getReferentTags());
+        self::assertCount(2, $adherent->getReferentTags());
         self::assertAdherentHasReferentTag($adherent, '73');
+        self::assertAdherentHasReferentTag($adherent, 'CIRCO_73004');
 
         // Submit the profile form with invalid data
         $crawler = $this->client->submit($crawler->selectButton('adherent[submit]')->form([
@@ -303,8 +305,9 @@ class AdherentControllerTest extends WebTestCase
         $this->assertNotNull($newLongitude = $adherent->getLongitude());
         $this->assertNotSame($oldLatitude, $newLatitude);
         $this->assertNotSame($oldLongitude, $newLongitude);
-        self::assertCount(1, $adherent->getReferentTags());
+        self::assertCount(2, $adherent->getReferentTags());
         self::assertAdherentHasReferentTag($adherent, '06');
+        self::assertAdherentHasReferentTag($adherent, 'CIRCO_06001');
 
         $histories06Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '06');
         $histories06Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '06');
@@ -1156,6 +1159,7 @@ class AdherentControllerTest extends WebTestCase
             LoadHomeBlockData::class,
             LoadLiveLinkData::class,
             LoadAdherentData::class,
+            LoadDistrictData::class,
             LoadEventCategoryData::class,
             LoadEventData::class,
             LoadCitizenProjectData::class,

@@ -37,6 +37,9 @@ class DistrictAdmin extends AbstractAdmin
             ->add('countries', null, [
                 'label' => 'Pays',
             ])
+            ->add('referentTag', null, [
+                'label' => 'Tag référent',
+            ])
         ;
     }
 }

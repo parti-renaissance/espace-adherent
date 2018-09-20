@@ -40,7 +40,7 @@ final class CitizenActionContactParticipantsMessage extends Message
 
             $message->addRecipient(
                 $recipient->getEmailAddress(),
-                $recipient->getFullname()
+                $recipient->getFullName()
             );
         }
 

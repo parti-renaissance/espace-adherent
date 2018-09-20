@@ -666,12 +666,12 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
      */
     public function findAllInDistrict(District $district): array
     {
-        return $this->createQueryBuilder('a')
-            ->innerJoin(District::class, 'd', Join::WITH, 'd.id = :district_id')
-            ->innerJoin('d.geoData', 'gd')
-            ->where("ST_Within(ST_GeomFromText(CONCAT('POINT(',a.postAddress.longitude,' ',a.postAddress.latitude,')')), gd.geoShape) = 1")
-            ->andWhere('a.status = :status')
-            ->setParameter('district_id', $district->getId())
+        return $this->createQueryBuilder('adherent')
+            ->innerJoin('adherent.referentTags', 'tag')
+            ->innerJoin(District::class, 'district', Join::WITH, 'district.referentTag = tag')
+            ->where('district.id = :district')
+            ->andWhere('adherent.status = :status')
+            ->setParameter('district', $district)
             ->setParameter('status', Adherent::ENABLED)
             ->getQuery()
             ->getResult()

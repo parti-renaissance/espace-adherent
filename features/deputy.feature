@@ -4,8 +4,10 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadAdherentData  |
-      | LoadDistrictData  |
+      | LoadAdherentData      |
+      | LoadDistrictData      |
+      | LoadEventCategoryData |
+      | LoadEventData         |
 
   Scenario Outline: As anonymous I can not access deputy space pages.
     Given I go to "<uri>"
@@ -42,6 +44,7 @@ Feature:
     When I am on "/espace-depute/utilisateurs/message"
     Then the "recipient" field should contain "5 marcheurs(s)"
     And the "sender" field should contain "Député PARIS I"
+    And I should have 43 emails
 
     # Try to send an empty form
     When I press "Envoyer le message"
@@ -57,7 +60,7 @@ Feature:
     Then I should be on "/espace-depute/utilisateurs/message"
     And I should see 0 ".form__errors" elements
     And I should see "Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer."
-    And I should have 1 emails
+    And I should have 44 emails
     And I should have 1 email "DeputyMessage" for "jacques.picard@en-marche.fr" with payload:
     """
     {
@@ -72,7 +75,7 @@ Feature:
           "Name": "Jacques Picard",
           "Vars": {
               "deputy_fullname": "D\u00e9put\u00e9 PARIS I",
-              "circonscription_name": "Paris, 1\u00e8me circonscription (75-01)",
+              "circonscription_name": "Paris, 1\u00e8re circonscription (75-01)",
               "target_message": "Content of a deputy message",
               "target_firstname": "Jacques"
           }
@@ -82,7 +85,7 @@ Feature:
           "Name": "Lucie Olivera",
           "Vars": {
               "deputy_fullname": "D\u00e9put\u00e9 PARIS I",
-              "circonscription_name": "Paris, 1\u00e8me circonscription (75-01)",
+              "circonscription_name": "Paris, 1\u00e8re circonscription (75-01)",
               "target_message": "Content of a deputy message",
               "target_firstname": "Lucie"
           }
@@ -92,7 +95,7 @@ Feature:
           "Name": "Coordinatrice CITIZEN PROJECT",
           "Vars": {
               "deputy_fullname": "D\u00e9put\u00e9 PARIS I",
-              "circonscription_name": "Paris, 1\u00e8me circonscription (75-01)",
+              "circonscription_name": "Paris, 1\u00e8re circonscription (75-01)",
               "target_message": "Content of a deputy message",
               "target_firstname": "Coordinatrice"
           }
@@ -102,7 +105,7 @@ Feature:
           "Name": "D\u00e9put\u00e9 PARIS I",
           "Vars": {
               "deputy_fullname": "D\u00e9put\u00e9 PARIS I",
-              "circonscription_name": "Paris, 1\u00e8me circonscription (75-01)",
+              "circonscription_name": "Paris, 1\u00e8re circonscription (75-01)",
               "target_message": "Content of a deputy message",
               "target_firstname": "D\u00e9put\u00e9"
           }
@@ -112,7 +115,7 @@ Feature:
         "Name": "D\u00e9put\u00e9 CHLI FDESIX",
         "Vars": {
           "deputy_fullname": "D\u00e9put\u00e9 PARIS I",
-          "circonscription_name": "Paris, 1\u00e8me circonscription (75-01)",
+          "circonscription_name": "Paris, 1\u00e8re circonscription (75-01)",
           "target_message": "Content of a deputy message",
           "target_firstname": "D\u00e9put\u00e9"
         }
@@ -122,3 +125,24 @@ Feature:
       }
     }
     """
+
+  @javascript
+  Scenario: As deputy of 1st Paris district I can see committees.
+    Given I am logged as "deputy@en-marche-dev.fr"
+    When I am on "/espace-depute/comites"
+    Then I should see 1 "table.managed__list__table tbody tr" elements
+    And I should see "En Marche Paris 8"
+
+  @javascript
+  Scenario: As deputy of 1st Paris district I can see committees.
+    Given I am logged as "deputy@en-marche-dev.fr"
+    When I am on "/espace-depute/evenements"
+    Then I should see 8 "table.managed__list__table tbody tr" elements
+    And I should see "Réunion de réflexion parisienne annulé"
+    And I should see "Réunion de réflexion parisienne"
+    And I should see "Référent event"
+    And I should see "Grand débat parisien"
+    And I should see "Événement à Paris 1"
+    And I should see "Événement à Paris 2"
+    And I should see "Marche Parisienne"
+    And I should see "Grand Meeting de Paris"
