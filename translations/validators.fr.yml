@@ -76,6 +76,9 @@ adherent.unregistration.reasons: Afin de confirmer la suppression de votre compt
 #
 # Committee
 #
+committee.merge.same_committees: Veuillez spécifier des comités différents.
+committee.merge.not_approved: Le comité "{{ committee_name }}" ({{ committee_id }}) doit être approuvé pour être fusionné.
+committee.unknown_id: Il n'existe aucun comité correspondant à cet ID.
 committee.canonical_name.not_unique: Ce nom de comité est déjà utilisé.
 
 committee.must_accept_confidentiality_terms: Vous devez accepter les règles de confidentialité.
