@@ -46,10 +46,16 @@ class CitizenProjectFactory
             $phone,
             $data['address'],
             $data['district'] ?? null,
+            $data['turnkey_project'] ?? null,
             $data['slug'] ?? null,
             $data['status'] ?? CitizenProject::PENDING,
-            $data['skills'] ?? null
+            $data['approved_at'] ?? null,
+            $data['created_at'] ?? 'now'
         );
+
+        if (isset($data['skills'])) {
+            $citizenProject->setSkills($data['skills']);
+        }
 
         return $citizenProject;
     }
@@ -70,7 +76,8 @@ class CitizenProjectFactory
             $command->requiredMeans,
             $command->getCommittees()->toArray(),
             $command->getAddress() ? $this->addressFactory->createFromNullableAddress($command->getAddress()) : null,
-            $command->getDistrict()
+            $command->getDistrict(),
+            $command->getTurnkeyProject()
         );
 
         $citizenProject->setSkills($command->getSkills());

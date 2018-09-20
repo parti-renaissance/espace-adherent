@@ -94,6 +94,22 @@
             <hr>
         </div>
         <span id="show-less-citizen-project-info" class="text--body text--blue--dark visually-hidden cursor--pointer">{{ 'citizen_project.show_less'|trans }}</span>
+
+        {% if citizen_project.isFromTurnkeyProject and is_cp_administrator %}
+            <h2 class="space--20-0 b__nudge--top">{{ 'citizen_project.my_kit'|trans }}</h2>
+            <div class="text--body text--dark" id="citizen-project-files">
+                <ul>
+                    {% for file in citizen_project.turnkeyProject.files %}
+                        <li>
+                            <a href="{{ path('app_citizen_project_kit_file', { slug: file.slug, extension: file.extension }) }}" class="link--newblue">
+                                {{ file.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
         <ul id="citizen-project-menu" class="citizen-project__menu list__links list__links--left list__links--row">
             {% set currentRoute = app.request.attributes.get('_route') %}
             <li>

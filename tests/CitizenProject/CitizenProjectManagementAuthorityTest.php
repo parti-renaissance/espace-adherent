@@ -4,6 +4,7 @@ namespace Tests\AppBundle\CitizenProject;
 
 use AppBundle\CitizenProject\CitizenProjectFollowerAddedEvent;
 use AppBundle\CitizenProject\CitizenProjectWasApprovedEvent;
+use AppBundle\CitizenProject\CitizenProjectWasUpdatedEvent;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\CitizenProject\CitizenProjectManagementAuthority;
 use AppBundle\CitizenProject\CitizenProjectManager;
@@ -13,6 +14,7 @@ use AppBundle\Entity\CitizenProject;
 use AppBundle\Events;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -27,7 +29,14 @@ class CitizenProjectManagementAuthorityTest extends TestCase
 
         $manager = $this->createManager($administrator);
         $eventDispatcher = $this->createMock(EventDispatcher::class);
-        $eventDispatcher->expects($this->once())->method('dispatch')->with(Events::CITIZEN_PROJECT_APPROVED, new CitizenProjectWasApprovedEvent($citizenProject));
+        $eventDispatcher
+            ->expects($this->exactly(2))
+            ->method('dispatch')
+            ->will($this->returnValueMap([
+                [Events::CITIZEN_PROJECT_APPROVED, new CitizenProjectWasApprovedEvent($citizenProject), Event::class],
+                [Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($citizenProject), Event::class],
+            ]))
+        ;
 
         // ensure citizen project is approved
         $manager->expects($this->once())->method('approveCitizenProject')->with($citizenProject);
@@ -62,7 +71,14 @@ class CitizenProjectManagementAuthorityTest extends TestCase
 
         $manager->expects($this->once())->method('followCitizenProject')->with($adherent, $citizenProject);
 
-        $eventDispatcher->expects($this->once())->method('dispatch')->with(Events::CITIZEN_PROJECT_FOLLOWER_ADDED, new CitizenProjectFollowerAddedEvent($citizenProject, $adherent));
+        $eventDispatcher
+            ->expects($this->exactly(2))
+            ->method('dispatch')
+            ->will($this->returnValueMap([
+                [Events::CITIZEN_PROJECT_FOLLOWER_ADDED, new CitizenProjectFollowerAddedEvent($citizenProject, $adherent), Event::class],
+                [Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($citizenProject), Event::class],
+            ]))
+        ;
 
         $citizenProjectManagementAuthority = new CitizenProjectManagementAuthority($manager, $eventDispatcher);
         $citizenProjectManagementAuthority->followCitizenProject($adherent, $citizenProject);
@@ -79,7 +95,10 @@ class CitizenProjectManagementAuthorityTest extends TestCase
 
         $manager->expects($this->once())->method('followCitizenProject')->with($adherent, $citizenProject);
 
-        $eventDispatcher->expects($this->once())->method('dispatch');
+        $eventDispatcher
+            ->expects($this->exactly(2))
+            ->method('dispatch')
+        ;
 
         $citizenProjectManagementAuthority = new CitizenProjectManagementAuthority($manager, $eventDispatcher);
         $citizenProjectManagementAuthority->followCitizenProject($adherent, $citizenProject);

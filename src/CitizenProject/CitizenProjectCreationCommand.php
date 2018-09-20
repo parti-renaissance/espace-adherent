@@ -11,6 +11,9 @@ class CitizenProjectCreationCommand extends CitizenProjectCommand
     /** @var Adherent */
     private $adherent;
 
+    /** @var TurnkeyProject|null */
+    private $turnkeyProject;
+
     public static function createFromAdherent(Adherent $adherent): self
     {
         $dto = new self();
@@ -33,6 +36,7 @@ class CitizenProjectCreationCommand extends CitizenProjectCommand
         $dto->category = $turnkeyProject->getCategory();
         $dto->problemDescription = $turnkeyProject->getProblemDescription();
         $dto->proposedSolution = $turnkeyProject->getProposedSolution();
+        $dto->turnkeyProject = $turnkeyProject;
 
         return $dto;
     }
@@ -40,5 +44,10 @@ class CitizenProjectCreationCommand extends CitizenProjectCommand
     public function getAdherent(): Adherent
     {
         return $this->adherent;
+    }
+
+    public function getTurnkeyProject(): ?TurnkeyProject
+    {
+        return $this->turnkeyProject;
     }
 }

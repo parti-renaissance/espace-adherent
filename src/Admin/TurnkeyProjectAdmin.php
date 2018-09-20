@@ -3,6 +3,8 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\TurnkeyProject;
+use AppBundle\Entity\TurnkeyProjectFile;
+use AppBundle\Form\Admin\BaseFileType;
 use AppBundle\Form\PurifiedTextareaType;
 use AppBundle\Repository\TurnkeyProjectRepository;
 use AppBundle\TurnkeyProject\TurnkeyProjectManager;
@@ -12,6 +14,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Validator\ErrorElement;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -146,6 +149,17 @@ class TurnkeyProjectAdmin extends AbstractAdmin
                 ])
                 ->add('position', null, [
                     'label' => 'Position',
+                ])
+                ->add('files', CollectionType::class, [
+                    'label' => 'Fichiers',
+                    'entry_type' => BaseFileType::class,
+                    'entry_options' => [
+                        'data_class' => TurnkeyProjectFile::class,
+                    ],
+                    'required' => true,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
                 ])
             ->end()
         ;

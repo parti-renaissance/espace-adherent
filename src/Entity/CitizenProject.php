@@ -184,6 +184,14 @@ class CitizenProject extends BaseGroup
     private $imageName;
 
     /**
+     * @var TurnkeyProject|null
+     *
+     * @ORM\ManyToOne(targetEntity="TurnkeyProject")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $turnkeyProject;
+
+    /**
      * @var CitizenAction|null
      */
     private $nextAction;
@@ -201,6 +209,7 @@ class CitizenProject extends BaseGroup
         PhoneNumber $phone = null,
         NullablePostAddress $address = null,
         string $district = null,
+        TurnkeyProject $turnkeyProject = null,
         string $slug = null,
         string $status = self::PENDING,
         string $approvedAt = null,
@@ -223,6 +232,7 @@ class CitizenProject extends BaseGroup
         $this->subtitle = $subtitle;
         $this->postAddress = $address;
         $this->district = $district;
+        $this->turnkeyProject = $turnkeyProject;
         $this->phone = $phone;
         $this->status = $status;
         $this->membersCounts = $membersCount;
@@ -479,6 +489,7 @@ class CitizenProject extends BaseGroup
         array $committees = [],
         NullablePostAddress $address = null,
         string $district = null,
+        TurnkeyProject $turnkeyProject = null,
         string $createdAt = 'now'
     ): self {
         $citizenProject = new self(
@@ -493,7 +504,8 @@ class CitizenProject extends BaseGroup
             $requiredMeans,
             $phone,
             $address,
-            $district
+            $district,
+            $turnkeyProject
         );
 
         $citizenProject->createdAt = new \DateTime($createdAt);
@@ -670,6 +682,21 @@ class CitizenProject extends BaseGroup
     public function setDistrict(?string $district): void
     {
         $this->district = $district;
+    }
+
+    public function getTurnkeyProject(): ?TurnkeyProject
+    {
+        return $this->turnkeyProject;
+    }
+
+    public function setTurnkeyProject(TurnkeyProject $turnkeyProject): void
+    {
+        $this->turnkeyProject = $turnkeyProject;
+    }
+
+    public function isFromTurnkeyProject(): bool
+    {
+        return $this->turnkeyProject instanceof TurnkeyProject;
     }
 
     public function getNextAction(): ?CitizenAction

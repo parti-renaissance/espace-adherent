@@ -2,9 +2,10 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Entity\Mooc\AttachmentFile;
 use AppBundle\Entity\Mooc\Quiz;
 use AppBundle\Entity\Mooc\Video;
-use AppBundle\Form\AttachmentFileType;
+use AppBundle\Form\Admin\BaseFileType;
 use AppBundle\Form\AttachmentLinkType;
 use AppBundle\Form\PurifiedTextareaType;
 use Doctrine\ORM\QueryBuilder;
@@ -119,7 +120,10 @@ class MoocElementAdmin extends AbstractAdmin
             ->with('Fichiers attachés', ['class' => 'col-md-6'])
                 ->add('files', CollectionType::class, [
                     'label' => false,
-                    'entry_type' => AttachmentFileType::class,
+                    'entry_type' => BaseFileType::class,
+                    'entry_options' => [
+                        'data_class' => AttachmentFile::class,
+                    ],
                     'required' => false,
                     'allow_add' => true,
                     'allow_delete' => true,
