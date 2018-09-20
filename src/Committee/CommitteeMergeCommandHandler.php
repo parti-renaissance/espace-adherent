@@ -45,6 +45,8 @@ class CommitteeMergeCommandHandler
         $sourceCommittee = $committeeMergeCommand->getSourceCommittee();
         $destinationCommittee = $committeeMergeCommand->getDestinationCommittee();
 
+        $sourceHostsMemberships = $this->committeeMembershipRepository->findHostMemberships($sourceCommittee);
+        $sourceSupervisorMembership = $this->committeeMembershipRepository->findSupervisorMembership($sourceCommittee);
         $newFollowers = $this->committeeMembershipRepository->findMembersToMerge($sourceCommittee, $destinationCommittee);
 
         $this->em->beginTransaction();
@@ -55,6 +57,12 @@ class CommitteeMergeCommandHandler
 
                 $this->em->persist($this->createCommitteeMembershipHistory($membership));
             }
+
+            foreach ($sourceHostsMemberships as $sourceHostMembership) {
+                $sourceHostMembership->setPrivilege(CommitteeMembership::COMMITTEE_FOLLOWER);
+            }
+
+            $sourceSupervisorMembership->setPrivilege(CommitteeMembership::COMMITTEE_FOLLOWER);
 
             $sourceCommittee->refused();
 

@@ -143,6 +143,11 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         return $this->findPrivilegedMemberships($committee, [CommitteeMembership::COMMITTEE_HOST]);
     }
 
+    public function findSupervisorMembership(Committee $committee): CommitteeMembership
+    {
+        return $this->findPrivilegedMemberships($committee, [CommitteeMembership::COMMITTEE_SUPERVISOR])->get(0);
+    }
+
     public function findSupervisor(Committee $committee): ?Adherent
     {
         return $this->findPrivilegedMembers($committee, [CommitteeMembership::COMMITTEE_SUPERVISOR])->get(0);
