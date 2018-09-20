@@ -4,7 +4,7 @@ namespace AppBundle\Membership;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentChangeEmailToken;
-use AppBundle\Mail\AdherentChangeEmailMail;
+use AppBundle\Mail\Transactional\AdherentChangeEmailMail;
 use AppBundle\Repository\AdherentChangeEmailTokenRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use EnMarche\MailerBundle\MailPost\MailPostInterface;

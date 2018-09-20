@@ -12,7 +12,7 @@ parameters:
     env(RABBITMQ_PORT):         5672
     env(RABBITMQ_USER):         guest
     env(RABBITMQ_PASSWORD):     guest
-    env(RABBITMQ_DSN):          "amqp://guest:guest@rabbitmq:5672/%2f?lazy=0&connection_timeout=10&heartbeat=5"
+    env(RABBITMQ_DSN):          "amqp://guest:guest@rabbitmq:5672/%2f?lazy=0&connection_timeout=10&read_write_timeout=10&heartbeat=5"
 
     env(SENTRY_DSN):            ~
     env(SENTRY_PUBLIC_DSN):     ~
@@ -34,10 +34,14 @@ parameters:
     env(RECAPTCHA_PUBLIC_KEY):  ''
     env(RECAPTCHA_PRIVATE_KEY): ''
 
-    env(MAILJET_TRANSACTIONAL_PUBLIC_KEY):     ''
-    env(MAILJET_TRANSACTIONAL_PRIVATE_KEY):    ''
-    env(MAILJET_CAMPAIGN_PUBLIC_KEY):          ''
-    env(MAILJET_CAMPAIGN_PRIVATE_KEY):         ''
+    env(MAILJET_TRANSACTIONAL_PUBLIC_KEY):  ''
+    env(MAILJET_TRANSACTIONAL_PRIVATE_KEY): ''
+    env(MAILJET_CAMPAIGN_PUBLIC_KEY):       ''
+    env(MAILJET_CAMPAIGN_PRIVATE_KEY):      ''
+    env(TRANSACTIONAL_SENDER_EMAIL):        'contact@en-marche.fr'
+    env(TRANSACTIONAL_SENDER_NAME):         'En Marche !'
+    env(CAMPAIGN_SENDER_EMAIL):             'jemarche@en-marche.fr'
+    env(CAMPAIGN_SENDER_NAME):              'En Marche !'
 
     env(GMAPS_API_KEY):         ''
 

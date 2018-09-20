@@ -15,10 +15,6 @@ parameters:
     search_max_results:                   30
     enable_canary:                        "%env(ENABLE_CANARY)%"
     procurations_reply_to_email:          'archiveprocurations@en-marche.fr'
-    transactional_sender_email:           'contact@en-marche.fr'
-    transactional_sender_name:            'En Marche !'
-    campaign_sender_email:                'jemarche@en-marche.fr'
-    campaign_sender_name:                 'En Marche !'
     feed_ttl:                             60 # in minutes
     legislatives_financial_hotline_email: 'comptes.legislatives@en-marche.fr'
     legislatives_standard_hotline_email:  'campagne.legislatives@en-marche.fr'
@@ -262,11 +258,18 @@ en_marche_mailer:
     mail_api_proxy:
         http_clients:
             campaign:
-                public_api_key: 'env(MAILJET_CAMPAIGN_PUBLIC_KEY)'
-                private_api_key: 'env(MAILJET_CAMPAIGN_PRIVATE_KEY)'
+                api_type: mailjet
+                public_api_key: '%env(MAILJET_CAMPAIGN_PUBLIC_KEY)%'
+                private_api_key: '%env(MAILJET_CAMPAIGN_PRIVATE_KEY)%'
+                sender:
+                    email: '%env(CAMPAIGN_SENDER_EMAIL)%'
+                    name: '%env(CAMPAIGN_SENDER_NAME)%'
             transactional:
-                public_api_key: 'env(MAILJET_TRANSACTIONAL_PUBLIC_KEY)'
-                private_api_key: 'env(MAILJET_TRANSACTIONAL_PRIVATE_KEY)'
+                public_api_key: '%env(MAILJET_TRANSACTIONAL_PUBLIC_KEY)%'
+                private_api_key: '%env(MAILJET_TRANSACTIONAL_PRIVATE_KEY)%'
+                sender:
+                    email: '%env(TRANSACTIONAL_SENDER_EMAIL)%'
+                    name: '%env(TRANSACTIONAL_SENDER_NAME)%'
 
 old_sound_rabbit_mq:
     connections:
@@ -360,3 +363,7 @@ nelmio_cors:
             allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD']
             allow_headers: ['Content-Type']
             max_age: 3600
+
+monolog:
+    use_microseconds: false
+    channels: ['en_marche_mailer']

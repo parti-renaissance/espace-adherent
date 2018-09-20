@@ -5,6 +5,7 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\CitizenProject\CitizenProjectPermissions;
 use AppBundle\Committee\CommitteeCreationCommand;
 use AppBundle\Contact\ContactMessage;
+use AppBundle\Contact\ContactMessageHandler;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
@@ -211,7 +212,7 @@ class AdherentController extends Controller
         try {
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                $this->get('app.adherent.contact_message_handler')->handle($message);
+                $this->get(ContactMessageHandler::class)->handle($message);
                 $this->addFlash('info', 'adherent.contact.success');
 
                 if ($from instanceof Committee) {

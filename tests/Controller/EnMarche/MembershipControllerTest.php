@@ -5,11 +5,12 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\Mail\AdherentAccountActivationMail;
+use AppBundle\Mail\Transactional\AdherentAccountActivationMail;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\EmailRepository;
 use AppBundle\Subscription\SubscriptionTypeEnum;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -21,7 +22,8 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
  */
 class MembershipControllerTest extends WebTestCase
 {
-    use ControllerTestTrait;
+    use ControllerTestTrait,
+        MailTestCaseTrait;
 
     /**
      * @var AdherentRepository
@@ -107,7 +109,8 @@ class MembershipControllerTest extends WebTestCase
         $this->assertSame('Jean-Paul', $adherent->getFirstName());
         $this->assertSame('Dupont', $adherent->getLastName());
         $this->assertInstanceOf(AdherentActivationToken::class, $activationToken = $this->activationTokenRepository->findAdherentMostRecentKey((string) $adherent->getUuid()));
-        $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentAccountActivationMail::class, 'paul@dupont.tld'));
+        $this->assertMailCountForClass(1, AdherentAccountActivationMail::class);
+        $this->assertMailSentForRecipient('jean-paul@dupont.tld', AdherentAccountActivationMail::class);
 
         // Activate the user account
         $activateAccountUrl = sprintf('/inscription/finaliser/%s/%s', $adherent->getUuid(), $activationToken->getValue());
@@ -218,6 +221,7 @@ class MembershipControllerTest extends WebTestCase
         $this->adherentRepository = $this->getAdherentRepository();
         $this->activationTokenRepository = $this->getActivationTokenRepository();
         $this->emailRepository = $this->getEmailRepository();
+        $this->clearMails();
     }
 
     protected function tearDown()
@@ -227,6 +231,7 @@ class MembershipControllerTest extends WebTestCase
         $this->emailRepository = null;
         $this->activationTokenRepository = null;
         $this->adherentRepository = null;
+        $this->clearMails();
 
         parent::tearDown();
     }

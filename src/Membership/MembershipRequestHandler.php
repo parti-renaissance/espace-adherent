@@ -3,13 +3,13 @@
 namespace AppBundle\Membership;
 
 use AppBundle\Address\PostAddressFactory;
-use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
-use AppBundle\Mail\AdherentAccountActivationMail;
-use AppBundle\Mail\AdherentAccountConfirmationMail;
-use AppBundle\Mail\AdherentTerminateMembershipMail;
+use AppBundle\Mail\Transactional\AdherentAccountConfirmationMail;
+use AppBundle\Mail\Transactional\AdherentTerminateMembershipMail;
+use AppBundle\Mail\Transactional\AdherentAccountActivationMail;
+use AppBundle\Mail\Transactional\AdherentAccountActivationReminderMail;
 use AppBundle\OAuth\CallbackManager;
 use AppBundle\Referent\ReferentTagManager;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -25,8 +25,6 @@ class MembershipRequestHandler
     private $callbackManager;
     private $mailPost;
     private $manager;
-    private $adherentManager;
-    private $committeeManager;
     private $adherentRegistry;
     private $referentTagManager;
     private $membershipRegistrationProcess;
@@ -40,8 +38,6 @@ class MembershipRequestHandler
         MailPostInterface $mailPost,
         ObjectManager $manager,
         AdherentRegistry $adherentRegistry,
-        AdherentManager $adherentManager,
-        CommitteeManager $committeeManager,
         ReferentTagManager $referentTagManager,
         MembershipRegistrationProcess $membershipRegistrationProcess,
         EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler
@@ -53,8 +49,6 @@ class MembershipRequestHandler
         $this->mailPost = $mailPost;
         $this->manager = $manager;
         $this->adherentRegistry = $adherentRegistry;
-        $this->adherentManager = $adherentManager;
-        $this->committeeManager = $committeeManager;
         $this->referentTagManager = $referentTagManager;
         $this->membershipRegistrationProcess = $membershipRegistrationProcess;
         $this->emailSubscriptionHistoryHandler = $emailSubscriptionHistoryHandler;
@@ -91,16 +85,12 @@ class MembershipRequestHandler
 
         $activationUrl = $this->generateMembershipActivationUrl($adherent, $token);
 
-        if ($isReminder) {
-            $this->mailPost->address(
-                AdherentAccountActivationMail::class,
-                AdherentAccountActivationMail::createRecipientFor($adherent, $activationUrl)
-            );
-        }
+        /** @var AdherentAccountActivationMail|AdherentAccountActivationReminderMail $mailClass */
+        $mailClass = $isReminder ? AdherentAccountActivationReminderMail::class : AdherentAccountActivationMail::class;
 
         $this->mailPost->address(
-            AdherentAccountActivationMail::class,
-            AdherentAccountActivationMail::createRecipientFor($adherent, $activationUrl)
+            $mailClass,
+            $mailClass::createRecipientFor($adherent, $activationUrl)
         );
 
         return true;
@@ -151,10 +141,7 @@ class MembershipRequestHandler
     {
         $this->mailPost->address(
             AdherentAccountConfirmationMail::class,
-            AdherentAccountConfirmationMail::createRecipientFor(
-                $adherent,
-                $this->adherentManager->countActiveAdherents()
-            )
+            AdherentAccountConfirmationMail::createRecipientFor($adherent)
         );
     }
 

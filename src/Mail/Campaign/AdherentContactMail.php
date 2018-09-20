@@ -1,13 +1,14 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace AppBundle\Mail\Campaign;
 
 use AppBundle\Contact\ContactMessage;
 use AppBundle\Mail\AdherentMailTrait;
+use AppBundle\Utils\StringCleaner;
 use EnMarche\MailerBundle\Mail\CampaignMail;
 use EnMarche\MailerBundle\Mail\RecipientInterface;
 
-final class AdherentContactMessage extends CampaignMail
+final class AdherentContactMail extends CampaignMail
 {
     use AdherentMailTrait;
 
@@ -16,9 +17,8 @@ final class AdherentContactMessage extends CampaignMail
         $recipient = $contactMessage->getTo();
 
         return self::createRecipientFromAdherent($recipient, [
-            'recipient_first_name' => $recipient->getFirstName(),
-            'sender_first_name' => $contactMessage->getFrom()->getFirstName(),
-            'message' => \nl2br($contactMessage->getContent()),
+            'member_firstname' => StringCleaner::htmlspecialchars($contactMessage->getFrom()->getFirstName()),
+            'target_message' => \nl2br(StringCleaner::htmlspecialchars($contactMessage->getContent())),
         ]);
     }
 }

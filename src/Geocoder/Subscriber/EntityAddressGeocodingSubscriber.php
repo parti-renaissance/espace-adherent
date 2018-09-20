@@ -28,7 +28,7 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
     {
         $adherent = $event->getAdherent();
 
-        if (!$adherent->getLatitude()) {
+        if (!$adherent->isGeocoded()) {
             $this->updateGeocodableEntity($adherent);
         }
     }

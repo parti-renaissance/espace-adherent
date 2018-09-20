@@ -68,8 +68,6 @@
             <argument type="service" id="EnMarche\MailerBundle\MailPost\MailPostInterface"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="AppBundle\Membership\AdherentRegistry"/>
-            <argument type="service" id="AppBundle\Membership\AdherentManager"/>
-            <argument type="service" id="app.committee.manager"/>
             <argument type="service" id="AppBundle\Referent\ReferentTagManager"/>
             <argument type="service" id="AppBundle\Membership\MembershipRegistrationProcess"/>
             <argument type="service" id="AppBundle\History\EmailSubscriptionHistoryHandler"/>
@@ -78,13 +76,6 @@
         <service id="app.adherent_change_password_handler" class="AppBundle\Membership\AdherentChangePasswordHandler">
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="security.password_encoder"/>
-        </service>
-
-        <service id="app.adherent_reset_password_handler" class="AppBundle\Membership\AdherentResetPasswordHandler">
-            <argument type="service" id="router"/>
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="security.encoder_factory"/>
         </service>
 
         <service id="app.adherent_account_activation_handler" class="AppBundle\Membership\AdherentAccountActivationHandler">
@@ -107,10 +98,6 @@
         <service id="AppBundle\Form\MemberInterestsChoiceType">
             <argument type="string">%adherent_interests%</argument>
             <tag name="form.type" />
-        </service>
-
-        <service id="app.adherent.contact_message_handler" class="AppBundle\Contact\ContactMessageHandler">
-            <argument type="service" id="app.mailer.campaign" />
         </service>
 
         <service id="AppBundle\Membership\MemberActivityTracker">
@@ -289,10 +276,6 @@
         <service id="app.board_member.manager" class="AppBundle\BoardMember\BoardMemberManager">
             <argument type="service" id="AppBundle\Repository\AdherentRepository" />
             <argument type="service" id="AppBundle\Repository\BoardMember\RoleRepository" />
-        </service>
-
-        <service id="app.board_member.message_notifier" class="AppBundle\BoardMember\BoardMemberMessageNotifier">
-            <argument type="service" id="app.mailer.transactional"/>
         </service>
 
         <!-- Routing -->

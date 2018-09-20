@@ -2,7 +2,7 @@
 
 namespace AppBundle\Contact;
 
-use AppBundle\Mailer\Message\AdherentContactMessage;
+use AppBundle\Mail\Campaign\AdherentContactMail;
 use EnMarche\MailerBundle\MailPost\MailPostInterface;
 
 class ContactMessageHandler
@@ -14,12 +14,12 @@ class ContactMessageHandler
         $this->mailPost = $mailPost;
     }
 
-    public function handle(ContactMessage $contactMessage)
+    public function handle(ContactMessage $contactMessage): void
     {
         $this->mailPost->address(
-            AdherentContactMessage::class,
-            AdherentContactMessage::createRecipientFor($contactMessage),
-            AdherentContactMessage::createRecipientFromAdherent($contactMessage->getFrom())
+            AdherentContactMail::class,
+            AdherentContactMail::createRecipientFor($contactMessage),
+            AdherentContactMail::createRecipientFromAdherent($contactMessage->getFrom())
         );
     }
 }
