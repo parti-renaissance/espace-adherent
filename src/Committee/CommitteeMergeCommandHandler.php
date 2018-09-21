@@ -47,27 +47,31 @@ class CommitteeMergeCommandHandler
 
         $newFollowers = $this->committeeMembershipRepository->findMembersToMerge($sourceCommittee, $destinationCommittee);
 
-        $this->em->beginTransaction();
+        foreach ($newFollowers as $newFollower) {
+            $this->em->persist($membership = $newFollower->followCommittee($destinationCommittee));
 
-        try {
-            foreach ($newFollowers as $newFollower) {
-                $this->em->persist($membership = $newFollower->followCommittee($destinationCommittee));
-
-                $this->em->persist($this->createCommitteeMembershipHistory($membership));
-            }
-
-            $sourceCommittee->refused();
-
-            $this->em->persist($this->createCommitteeMergeHistory($sourceCommittee, $destinationCommittee));
-
-            $this->em->flush();
-
-            $this->em->commit();
-        } catch (\Exception $exception) {
-            $this->em->rollback();
-
-            throw $exception;
+            $this->em->persist($this->createCommitteeMembershipHistory($membership));
         }
+
+        $this
+            ->committeeMembershipRepository
+            ->findHostMemberships($sourceCommittee)
+            ->map(function (CommitteeMembership $membership) {
+                $membership->setPrivilege(CommitteeMembership::COMMITTEE_FOLLOWER);
+            })
+        ;
+
+        $this
+            ->committeeMembershipRepository
+            ->findSupervisorMembership($sourceCommittee)
+            ->setPrivilege(CommitteeMembership::COMMITTEE_FOLLOWER)
+        ;
+
+        $sourceCommittee->refused();
+
+        $this->em->persist($this->createCommitteeMergeHistory($sourceCommittee, $destinationCommittee));
+
+        $this->em->flush();
 
         $this->dispatchCommitteeUpdate($sourceCommittee);
         $this->dispatchCommitteeUpdate($destinationCommittee);
