@@ -6,8 +6,6 @@ use AppBundle\Entity\TurnkeyProject;
 use AppBundle\Form\PurifiedTextareaType;
 use AppBundle\Repository\TurnkeyProjectRepository;
 use AppBundle\TurnkeyProject\TurnkeyProjectManager;
-use League\Flysystem\Filesystem;
-use League\Glide\Server;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -20,14 +18,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class TurnkeyProjectAdmin extends AbstractAdmin
 {
     /**
-     * @var Filesystem
+     * @var TurnkeyProjectRepository
      */
-    private $storage;
-
-    /**
-     * @var Server
-     */
-    private $glide;
+    private $turnkeyProjectRepository;
 
     /**
      * @var TurnkeyProjectManager
@@ -38,12 +31,12 @@ class TurnkeyProjectAdmin extends AbstractAdmin
         string $code,
         string $class,
         string $baseControllerName,
-        TurnkeyProjectRepository $turnkeyProjecRepository,
+        TurnkeyProjectRepository $turnkeyProjectRepository,
         TurnkeyProjectManager $turnkeyProjectManager
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
-        $this->turnkeyProjecRepository = $turnkeyProjecRepository;
+        $this->turnkeyProjectRepository = $turnkeyProjectRepository;
         $this->turnkeyProjectManager = $turnkeyProjectManager;
     }
 
@@ -276,10 +269,13 @@ class TurnkeyProjectAdmin extends AbstractAdmin
         }
     }
 
+    /**
+     * @param TurnkeyProject $object
+     */
     public function validate(ErrorElement $errorElement, $object)
     {
         if ($object->isPinned()) {
-            $pinnedProject = $this->turnkeyProjecRepository->findPinned($object->getId());
+            $pinnedProject = $this->turnkeyProjectRepository->findPinned($object->getId());
 
             if ($pinnedProject) {
                 $errorElement
@@ -289,15 +285,5 @@ class TurnkeyProjectAdmin extends AbstractAdmin
                 ;
             }
         }
-    }
-
-    public function setStorage(Filesystem $storage): void
-    {
-        $this->storage = $storage;
-    }
-
-    public function setGlide(Server $glide): void
-    {
-        $this->glide = $glide;
     }
 }
