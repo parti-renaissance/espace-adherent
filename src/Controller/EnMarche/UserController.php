@@ -139,10 +139,14 @@ class UserController extends Controller
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
-        $form = $this->createForm(AdherentEmailSubscriptionType::class, $adherent, ['is_adherent' => $adherent->isAdherent()]);
         $oldEmailsSubscriptions = $adherent->getSubscriptionTypes();
 
-        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+        $form = $this
+            ->createForm(AdherentEmailSubscriptionType::class, $adherent, ['is_adherent' => $adherent->isAdherent()])
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $historyManager->handleSubscriptionsUpdate($adherent, $oldEmailsSubscriptions);
             $dispatcher->dispatch(UserEvents::USER_UPDATE_SUBSCRIPTIONS, new UserEvent($adherent, null, null, $oldEmailsSubscriptions));
 
