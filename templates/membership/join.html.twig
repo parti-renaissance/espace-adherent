@@ -161,9 +161,9 @@
                             <div class="visually-hidden form__captcha">
                                 <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
                                 {% if recaptcha_public_key is not empty %}
-                                {% for flashMessage in app.flashes("error_recaptcha") %}
-                                    <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
-                                {% endfor %}
+                                    {% for flashMessage in app.flashes("error_recaptcha") %}
+                                        <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
+                                    {% endfor %}
                                 <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 30px auto 10px auto;"></div>
                                 {% elseif app.debug %}
                                     <input type="hidden" name="g-recaptcha-response" value="fake" />
