@@ -14,6 +14,10 @@ interface EntityFileInterface
 
     public function getPath(): ?string;
 
+    public function getSlug(): ?string;
+
+    public function getExtension(): ?string;
+
     public function setExtension(?string $extension): void;
 
     public function getPrefixPath(): string;

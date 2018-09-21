@@ -34,6 +34,7 @@ use AppBundle\Entity\Summary;
 use AppBundle\Entity\TonMacronChoice;
 use AppBundle\Entity\TonMacronFriendInvitation;
 use AppBundle\Entity\Transaction;
+use AppBundle\Entity\TurnkeyProject;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Repository\AdherentActivationTokenRepository;
 use AppBundle\Repository\AdherentRepository;
@@ -63,6 +64,7 @@ use AppBundle\Repository\SummaryRepository;
 use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\Repository\TonMacronFriendInvitationRepository;
 use AppBundle\Repository\TransactionRepository;
+use AppBundle\Repository\TurnkeyProjectRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
@@ -159,6 +161,11 @@ trait TestHelperTrait
     public function getCitizenProjectRepository(): CitizenProjectRepository
     {
         return $this->getRepository(CitizenProject::class);
+    }
+
+    public function getTurnkeyProjectRepository(): TurnkeyProjectRepository
+    {
+        return $this->getRepository(TurnkeyProject::class);
     }
 
     public function getCitizenProjectCommentRepository(): CitizenProjectCommentRepository

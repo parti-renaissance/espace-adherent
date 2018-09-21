@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -175,6 +177,16 @@ class TurnkeyProject
      */
     private $position = 1;
 
+    /**
+     * @var Collection|TurnkeyProjectFile[]
+     *
+     * @ORM\ManyToMany(targetEntity="TurnkeyProjectFile", cascade={"persist"}, orphanRemoval=true)
+     *
+     * @Assert\Valid
+     * @Assert\Count(min=1, minMessage="turnkey_project.files.min_count")
+     */
+    protected $files;
+
     public function __construct(
         string $name = '',
         string $subtitle = '',
@@ -199,6 +211,7 @@ class TurnkeyProject
         $this->isApproved = $isApproved;
         $this->position = $position;
         $this->youtubeId = $youtubeId;
+        $this->files = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -360,6 +373,26 @@ class TurnkeyProject
     public function setPosition(int $position): void
     {
         $this->position = $position;
+    }
+
+    /**
+     * @return Collection|TurnkeyProjectFile[]
+     */
+    public function getFiles(): Collection
+    {
+        return $this->files;
+    }
+
+    public function addFile(TurnkeyProjectFile $file): void
+    {
+        if (!$this->files->contains($file)) {
+            $this->files->add($file);
+        }
+    }
+
+    public function removeFile(TurnkeyProjectFile $file): void
+    {
+        $this->files->removeElement($file);
     }
 
     public function update(

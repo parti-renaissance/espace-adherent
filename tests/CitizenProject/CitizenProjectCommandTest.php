@@ -46,6 +46,7 @@ class CitizenProjectCommandTest extends TestCase
             (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
             NullablePostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'),
             null,
+            null,
             '69001-en-marche-lyon'
         );
         $citizenProject->setSkills([$skill]);
@@ -64,5 +65,7 @@ class CitizenProjectCommandTest extends TestCase
         $this->assertInstanceOf(Collection::class, $citizenProject->getSkills());
         $this->assertCount(1, $citizenProjectUpdateCommand->getSkills());
         $this->assertInstanceOf(NullableAddress::class, $citizenProjectUpdateCommand->getAddress());
+        $this->assertNull($citizenProject->getDistrict());
+        $this->assertNull($citizenProject->getTurnkeyProject());
     }
 }

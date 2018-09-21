@@ -29,10 +29,12 @@ class CitizenProjectCreationCommandHandler
         $this->citizenProjectManager = $citizenProjectManager;
     }
 
-    public function handle(CitizenProjectCreationCommand $command, TurnkeyProject $turnkeyProject = null): void
+    public function handle(CitizenProjectCreationCommand $command): void
     {
         $adherent = $command->getAdherent();
         $citizenProject = $this->factory->createFromCitizenProjectCreationCommand($command);
+        $turnkeyProject = $citizenProject->getTurnkeyProject();
+
         /* District is not required but if CitizenProject is created from TurnkeyProject
         and if the district is not set, it should be equal to the city name. */
         if ($turnkeyProject && !$citizenProject->getDistrict() && $citizenProject->getCityName()) {

@@ -15,6 +15,7 @@ use AppBundle\Mailer\Message\CitizenProjectCreationCoordinatorNotificationMessag
 use AppBundle\Mailer\Message\CitizenProjectCreationNotificationMessage;
 use AppBundle\Mailer\Message\CitizenProjectNewFollowerMessage;
 use AppBundle\Mailer\Message\CitizenProjectRequestCommitteeSupportMessage;
+use AppBundle\Mailer\Message\TurnkeyProjectApprovalConfirmationMessage;
 use AppBundle\Repository\AdherentRepository;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -94,7 +95,20 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
     private function sendCreatorApprove(CitizenProject $citizenProject): void
     {
         $this->manager->injectCitizenProjectCreator([$citizenProject]);
-        $this->mailer->sendMessage(CitizenProjectApprovalConfirmationMessage::create($citizenProject));
+
+        if ($citizenProject->isFromTurnkeyProject()) {
+            $message = TurnkeyProjectApprovalConfirmationMessage::create(
+                $citizenProject,
+                $this->generateUrl('app_citizen_project_show', [
+                    'slug' => $citizenProject->getSlug(),
+                    '_fragment' => 'citizen-project-files',
+                ])
+            );
+        } else {
+            $message = CitizenProjectApprovalConfirmationMessage::create($citizenProject);
+        }
+
+        $this->mailer->sendMessage($message);
     }
 
     private function sendCreatorCreationConfirmation(Adherent $creator, CitizenProject $citizenProject): void

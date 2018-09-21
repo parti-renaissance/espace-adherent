@@ -10,12 +10,15 @@ use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use AppBundle\Entity\CitizenProjectCategorySkill;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\TurnkeyProjectFile;
 use AppBundle\Exception\CitizenProjectCommitteeSupportAlreadySupportException;
 use AppBundle\Exception\CitizenProjectNotApprovedException;
 use AppBundle\Form\CitizenProjectCommentCommandType;
 use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Repository\CitizenProjectCommentRepository;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
+use AppBundle\Storage\FileRequestHandler;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -285,5 +288,15 @@ class CitizenProjectController extends Controller
                 'csrf_token' => (string) $this->get('security.csrf.token_manager')->getToken('citizen_project.follow'),
             ],
         ]);
+    }
+
+    /**
+     * @Route("/kits/{slug}.{extension}", name="app_citizen_project_kit_file")
+     * @Method("GET")
+     * @Cache(maxage=900, smaxage=900)
+     */
+    public function getKitFile(FileRequestHandler $fileRequestHandler, TurnkeyProjectFile $file): Response
+    {
+        return $fileRequestHandler->createResponse($file);
     }
 }

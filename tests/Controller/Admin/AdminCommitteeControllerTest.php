@@ -37,8 +37,8 @@ class AdminCommitteeControllerTest extends WebTestCase
         $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
 
         $this->assertTrue($committee->isApproved());
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CommitteeApprovalConfirmationMessage::class, 'benjyd@aol.com'));
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CommitteeApprovalReferentMessage::class, 'referent@en-marche-dev.fr'));
+        $this->assertCountMails(1, CommitteeApprovalConfirmationMessage::class, 'benjyd@aol.com');
+        $this->assertCountMails(1, CommitteeApprovalReferentMessage::class, 'referent@en-marche-dev.fr');
     }
 
     protected function setUp()

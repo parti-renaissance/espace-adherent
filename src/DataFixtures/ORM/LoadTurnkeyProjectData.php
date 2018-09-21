@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\TurnkeyProject;
+use AppBundle\Entity\TurnkeyProjectFile;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -44,6 +45,12 @@ class LoadTurnkeyProjectData extends AbstractFixture implements FixtureInterface
             null,
             'un-stage-pour-tous'
         );
+        $turnkeyProject2->addFile(new TurnkeyProjectFile(
+            'Documentation pour le créateur du projet',
+            'document-referent-a',
+            'pdf',
+            'documents/referents/document-referent-a.pdf'
+        ));
         $this->addReference('turnkey-project-education', $turnkeyProject2);
 
         $turnkeyProject3 = new TurnkeyProject(
