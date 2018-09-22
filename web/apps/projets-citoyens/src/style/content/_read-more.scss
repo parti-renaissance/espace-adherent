@@ -1,0 +1,43 @@
+.read-more-state {
+    display: none;
+
+    & ~ .read-more-trigger:before {
+        content: attr(data-show-more);
+    }
+
+    &:checked {
+        & ~ .read-more-trigger:before {
+            content: attr(data-show-less);
+        }
+
+        & ~ .read-more-wrap {
+            & .read-more-ellipsis {
+                display: none;
+            }
+
+            & .read-more-target {
+                opacity: 1;
+                font-size: inherit;
+                max-height: 999em;
+            }
+        }
+    }
+}
+
+.read-more-wrap {
+    margin: 0;
+}
+
+.read-more-trigger {
+    cursor: pointer;
+    color: #666;
+    font-size: .9em;
+    line-height: 2;
+}
+
+.read-more-target {
+    opacity: 0;
+    max-height: 0;
+    font-size: 0;
+    transition: .25s ease;
+}

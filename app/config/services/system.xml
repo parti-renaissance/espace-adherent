@@ -144,6 +144,9 @@
             <argument type="service" id="app.dynamic_redirections_provider" />
         </service>
 
+        <!-- Dynamic redirections "to path" handler -->
+        <service id="app.react_routing_loader" class="AppBundle\React\ReactAppRegistry" />
+
         <!-- Security -->
         <service id="app.security.adherent_login_timestamp_recorder" class="AppBundle\Security\AdherentLoginTimestampRecorder">
             <argument type="service" id="doctrine.orm.entity_manager"/>

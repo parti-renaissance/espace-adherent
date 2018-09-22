@@ -1,0 +1,10 @@
+.citizen__header {
+  text-align: left;
+
+  .text--logo {
+
+    @media (max-width: $tablet) {
+      font-size: 20px;
+    }
+  }
+}
