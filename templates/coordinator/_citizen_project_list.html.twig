@@ -6,9 +6,7 @@
             <th>{{ 'citizen_project.list.members'|trans }}</th>
             <th>{{ 'citizen_project.list.support_committees'|trans }}</th>
             <th>{{ 'citizen_project.list.place'|trans }}</th>
-            <th>{{ 'citizen_project.list.local_problem'|trans }}</th>
-            <th>{{ 'citizen_project.list.problem_answer'|trans }}</th>
-            <th>{{ 'citizen_project.list.roadmap'|trans }}</th>
+            <th>{{ 'citizen_project.about'|trans }}</th>
             <th>{{ 'citizen_project.list.comment'|trans }}</th>
             <th>{{ 'citizen_project.list.status'|trans }}</th>
         </tr>
@@ -58,13 +56,14 @@
                     {{ project.country }}
                 </td>
                 <td>
-                    {{ project.problemDescription|read_more(50, 'problem-description' ~ project.id, 'common.show_more'|trans, 'common.show_less'|trans) }}
-                </td>
-                <td>
-                    {{ project.proposedSolution|read_more(50, 'solution' ~ project.id, 'common.show_more'|trans, 'common.show_less'|trans) }}
-                </td>
-                <td>
-                    {{ project.requiredMeans|read_more(50, 'required-means' ~ project.id, 'common.show_more'|trans, 'common.show_less'|trans) }}
+                    <u>{{ 'citizen_project.list.local_problem'|trans }}</u><br>
+                    {{ project.problemDescription|read_more(50, 'problem-description' ~ project.id, 'common.show_more'|trans, 'common.show_less'|trans) }}<br>
+                    <hr>
+                    <u>{{ 'citizen_project.list.problem_answer'|trans }}</u><br>
+                    {{ project.proposedSolution|read_more(50, 'solution' ~ project.id, 'common.show_more'|trans, 'common.show_less'|trans) }}<br>
+                    <hr>
+                    <u>{{ 'citizen_project.list.roadmap'|trans }}</u><br>
+                    {{ project.requiredMeans|read_more(50, 'required-means' ~ project.id, 'common.show_more'|trans, 'common.show_less'|trans) }}<br>
                 </td>
                 <td>
                     {% if not project.isApproved %}
