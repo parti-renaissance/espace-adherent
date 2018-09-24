@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Validator\UniqueTurnkeyProjectPinned;
 use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,6 +24,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TurnkeyProjectRepository")
+ *
+ * @UniqueTurnkeyProjectPinned
  *
  * @Algolia\Index(autoIndex=false)
  */
