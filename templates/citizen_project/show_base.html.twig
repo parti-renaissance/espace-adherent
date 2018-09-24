@@ -96,8 +96,8 @@
         <span id="show-less-citizen-project-info" class="text--body text--blue--dark visually-hidden cursor--pointer">{{ 'citizen_project.show_less'|trans }}</span>
 
         {% if citizen_project.isFromTurnkeyProject and is_cp_administrator %}
-            <h2 class="space--20-0 b__nudge--top">{{ 'citizen_project.my_kit'|trans }}</h2>
-            <div class="text--body text--dark" id="citizen-project-files">
+            <h2 id="citizen-project-files" class="space--20-0 b__nudge--top">{{ 'citizen_project.my_kit'|trans }}</h2>
+            <div class="text--body text--dark">
                 <ul>
                     {% for file in citizen_project.turnkeyProject.files %}
                         <li>
