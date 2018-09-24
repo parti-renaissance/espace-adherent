@@ -42,7 +42,7 @@ class CitizenProjectManagementAuthority
     public function preApprove(CitizenProject $project): void
     {
         $this->manager->preApproveCitizenProject($project);
-        $this->dispatchUpdate($citizenProject);
+        $this->dispatchUpdate($project);
     }
 
     public function followCitizenProject(Adherent $adherent, CitizenProject $citizenProject): void
