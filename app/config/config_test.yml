@@ -35,6 +35,10 @@ services:
         arguments:
             - '%env(SSL_PRIVATE_KEY)%'
 
+    app.committee.manager:
+        alias: 'AppBundle\Committee\CommitteeManager'
+        public: true
+
 parameters:
     env(DATABASE_NAME): "enmarche_test"
     env(RECAPTCHA_PUBLIC_KEY): 'TEST_RECAPTCHA_PUBLIC_KEY'

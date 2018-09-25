@@ -598,7 +598,7 @@ class CommitteeManagerControllerTest extends WebTestCase
     public function testAllowToCreateCommmitee()
     {
         /** @var CommitteeManager $manager */
-        $manager = $this->get(CommitteeManager::class);
+        $manager = $this->get('app.committee.manager');
 
         $this->authenticateAsAdherent($this->client, 'martine.lindt@gmail.com');
         $adherent = $this->getAdherentRepository()->findOneByEmail('martine.lindt@gmail.com');
