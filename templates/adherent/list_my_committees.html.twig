@@ -9,10 +9,10 @@
 {% else %}
     <ul>
         {% for committee in committees %}
-            {# using the Adherent::isHostOf() method instead of a voter below prevents unneeded SQL queries #}
-            <li class="bullet {{ app.user.hostOf(committee) ? 'bullet--own' : '' }}">
+            <li>
                 <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}"
-                   title="{{ committee.name }}">
+                   title="{{ committee.name }}"
+                   class="{{ committee_color_status(app.user, committee) }}">
                     {{- committee.name -}}
                 </a>
             </li>

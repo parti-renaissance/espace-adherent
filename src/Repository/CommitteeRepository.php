@@ -163,28 +163,20 @@ class CommitteeRepository extends ServiceEntityRepository
         return $query->getSingleScalarResult();
     }
 
-    public function findCommittees(array $uuids, int $statusFilter = self::ONLY_APPROVED, int $limit = 0): CommitteeCollection
+    public function findCommittees(array $uuids): CommitteeCollection
     {
         if (!$uuids) {
             return new CommitteeCollection();
-        }
-
-        $statuses[] = Committee::APPROVED;
-        if (self::INCLUDE_UNAPPROVED === $statusFilter) {
-            $statuses[] = Committee::PENDING;
         }
 
         $qb = $this->createQueryBuilder('c');
 
         $qb
             ->where($qb->expr()->in('c.uuid', $uuids))
-            ->andWhere($qb->expr()->in('c.status', $statuses))
+            ->andWhere($qb->expr()->neq('c.status', ':status'))
+            ->setParameter('status', Committee::REFUSED)
             ->orderBy('c.membersCounts', 'DESC')
         ;
-
-        if ($limit >= 1) {
-            $qb->setMaxResults($limit);
-        }
 
         return new CommitteeCollection($qb->getQuery()->getResult());
     }

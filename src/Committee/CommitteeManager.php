@@ -95,42 +95,15 @@ class CommitteeManager
 
     public function getAdherentCommittees(Adherent $adherent): array
     {
-        return $this->doGetAdherentCommittees($adherent);
-    }
-
-    public function getAdherentCommitteesSupervisor(Adherent $adherent): array
-    {
-        return $this->doGetAdherentCommittees($adherent, true);
-    }
-
-    private function doGetAdherentCommittees(Adherent $adherent, $onlySupervisor = false): array
-    {
         // Prevent SQL query if the adherent doesn't follow any committees yet.
         if (0 === count($memberships = $adherent->getMemberships())) {
             return [];
         }
 
-        if (true === $onlySupervisor) {
-            $memberships = $memberships->getCommitteeSupervisorMemberships();
-        }
-
         $committees = $this
             ->getCommitteeRepository()
-            ->findCommittees($memberships->getCommitteeUuids(), CommitteeRepository::INCLUDE_UNAPPROVED)
+            ->findCommittees($memberships->getCommitteeUuids())
             ->getOrderedCommittees($adherent->getMemberships())
-            ->filter(function (Committee $committee) use ($adherent) {
-                // Any approved committee is kept.
-                if ($committee->isApproved()) {
-                    return true;
-                }
-
-                // However, an unapproved committee is kept only if it was created by the adherent.
-                if ($committee->isCreatedBy($adherent->getUuid())) {
-                    return true;
-                }
-
-                return false; // discard
-            })
         ;
 
         return $committees->toArray();
