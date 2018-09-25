@@ -61,6 +61,7 @@ Feature:
       "title":"La santé pour tous !",
       "subtitle": "Sensibilisation à la santé dans les écoles",
       "description": "Les étudiants et professeurs d'université rencontrent des difficultés dans sa mise en œuvre locale.",
+      "solution": "Le Projet consiste à faciliter l'organisation et la mise en œuvre du Service Sanitaire dans une ou plusieurs écoles",
       "video_id": "7-aBc9deF_",
       "category": "Santé",
       "is_favorite": true
@@ -78,6 +79,7 @@ Feature:
       "title":"Stop mégots !",
       "subtitle": "Campagnes de sensibilisation et de revalorisation des mégots jetés",
       "description": "Les mégots sont jetés en abondance dans la rue.",
+      "solution": "S'inscrivant dans la dynamique du Plan Climat, notre Projet vise à sensibiliser les consommateurs à jeter les mégots dans les contenants prévus à cet effet.",
       "category": "Nature et Environnement",
       "is_favorite": false
     }
