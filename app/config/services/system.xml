@@ -198,6 +198,9 @@
                     <argument>%env(SENTRY_DSN)%</argument>
                 </service>
             </argument>
+            <call method="setRelease">
+                <argument>%env(APP_VERSION)%</argument>
+            </call>
         </service>
 
         <service id="app.logging.activation_strategy" class="AppBundle\Logging\ActivationStrategy" public="false">
