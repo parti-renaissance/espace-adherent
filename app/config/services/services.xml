@@ -61,6 +61,10 @@
         </service>
         <service id="AppBundle\Validator\UniqueTurnkeyProjectPinnedValidator" />
 
+        <!-- Biography -->
+        <service id="AppBundle\Biography\BiographyManager" />
+        <service id="AppBundle\Validator\UniqueExecutiveOfficerValidator" />
+
         <!-- Controller -->
         <prototype namespace="AppBundle\Controller\" resource="../../../src/Controller/">
             <tag name="controller.service_arguments" />
@@ -341,5 +345,8 @@
         <service id="AppBundle\Statistics\Acquisition\Calculator\AmountMonthlyDonationCalculator">
             <tag name="app.acquisition_statistics.calculator" priority="21"/>
         </service>
+
+        <!-- Storage -->
+        <service id="AppBundle\Storage\ImageStorage" />
     </services>
 </container>

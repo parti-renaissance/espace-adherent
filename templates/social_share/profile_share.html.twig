@@ -1,0 +1,14 @@
+<div class="share">
+    {% if object.facebookProfile %}
+        <a href="{{ object.facebookProfile }}" target="_blank"><i class="fa fa-facebook"></i></a>
+    {% endif %}
+    {% if object.twitterProfile %}
+        <a href="{{ object.twitterProfile }}" target="_blank"><i class="fa fa-twitter"></i></a>
+    {% endif %}
+    {% if object.instagramProfile %}
+        <a href="{{ object.instagramProfile }}" target="_blank"><i class="fa fa-instagram"></i></a>
+    {% endif %}
+    {% if object.linkedInProfile %}
+        <a href="{{ object.linkedInProfile }}" target="_blank"><i class="fa fa-linkedin"></i></a>
+    {% endif %}
+</div>

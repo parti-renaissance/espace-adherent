@@ -258,3 +258,8 @@ mooc.youtubeid_syntax: La syntaxe est incorrecte, l'ID de la vidéo Youtube ne p
 message.not_blank: Le contenu du message ne doit pas être vide.
 message.min_length: Le message doit contenir au moins {{ limit }} caractères.
 message.max_length: Le message doit contenir moins de {{ limit }} caractères.
+
+#
+# Biography
+#
+executive_office_member.executive_officer.unique: Le membre {{ fullName }} est déjà délégué général.
