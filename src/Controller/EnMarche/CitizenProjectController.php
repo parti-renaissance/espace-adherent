@@ -121,7 +121,7 @@ class CitizenProjectController extends Controller
     /**
      * @Route("/skills/autocompletion",
      *     name="app_citizen_project_skills_autocomplete",
-     *     condition="request.isXmlHttpRequest() and request.query.get('category') and request.query.get('term')"
+     *     condition="request.isXmlHttpRequest() and request.query.get('category')"
      * )
      * @Method("GET")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
@@ -135,7 +135,7 @@ class CitizenProjectController extends Controller
         $citizenProjectCategorySkills = $this
             ->getDoctrine()
             ->getRepository(CitizenProjectCategorySkill::class)
-            ->findByCitizenProjectCategoryAndTerm($category, $request->query->get('term', ''))
+            ->findByCitizenProjectCategory($category)
         ;
 
         /** @var CitizenProjectCategorySkill[] $citizenProjectCategorySkills */

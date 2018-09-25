@@ -289,6 +289,19 @@
         background-color: $yellow--light;
         padding: 10px;
     }
+
+    &-form {
+        #field-skills {
+            .form_checkbox_multi_column {
+                #citizen_project_skills {
+                    .form__checkbox {
+                        width: 50%;
+                        float: left;
+                    }
+                }
+            }
+        }
+    }
 }
 
 .skill-remove,

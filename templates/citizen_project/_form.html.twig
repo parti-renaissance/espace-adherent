@@ -157,9 +157,9 @@
 <div class="form__new" id="field-skills">
     {{ form_errors(form.skills) }}
     <label class="label__header--large">Ce projet a besoin de : <span>(Optionnel)</span></label>
-    <div>
-        {{ form_widget(form.skills_search, {attr: {class: 'form--full'} }) }}
-        {{ form_widget(form.skills, {attr: {class: 'citizen-project__skills'} }) }}
+    <div class="form_checkbox_multi_column">
+        {{ form_label(form.skills) }}
+        {{ form_widget(form.skills) }}
     </div>
 </div>
 
@@ -215,5 +215,4 @@
         <div class="b__nudge--right-small">{{ app.user.emailAddress }}</div>
         <a href="{{ path('app_user_profile') }}" class="link--blue link--no-decor" target="_blank"><i class="fa fa-pencil"></i></a>
     </div>
-
 </div>

@@ -118,6 +118,7 @@ $(document).ready(function() {
             $(this).parent().parent().parent().remove();
         });
     };
+
     var addSkill = function (elem) {
         var skill = $(elem).val().trim();
         if (skill.length > 0) {
@@ -185,115 +186,45 @@ $(document).ready(function() {
 });
 {% endmacro %}
 
-{% macro citizenProjectSkills(idSkillsListField, idSkillSearchField ,urlSearch, disabledCitizenProjectIdsEnter) %}
+{% macro citizenProjectSkills(idCategoryListField, idSkillsListField, urlSearch) %}
 $(document).ready(function() {
-    var skillList = $('{{ idSkillsListField|e('js') }}');
-    var removeSkill = function () {
-        var btn = $('.skill-remove');
+    var categoryListField = $('{{ idCategoryListField|e('js') }}');
+    var checkboxes = $('{{ idSkillsListField|e('js') }}');
+    var checkboxesCheckedIds = $.map($("input[name='citizen_project[skills][]']:checked"), function(c){return parseInt(c.value); });
 
-        btn.unbind('click');
-        btn.click(function () {
-            $(this).parent().remove();
-        });
-    };
+    var updateSkillsField = function () {
+        checkboxes.empty();
+        if (checkboxes.prev('label').is(":visible")) {
+            checkboxes.prev('label').hide();
+        }
 
-    var addSkill = function (item) {
-        var skill = item.value,
-            label = item.label;
+        $.ajax({
+            url: "{{ urlSearch|e('js') }}?category="+categoryListField.val()
+        }).then(function(results) {
+            results.map(function(result) {
+                var $input = $('<input id="citizen_project_skills_'+result['id']+'" name="citizen_project[skills][]" value='+result['id']+' type="checkbox" '+($.inArray(result['id'], checkboxesCheckedIds) >= 0 ? 'checked=checked' : '')+'>');
+                var $label = $('<label class="form form__label" for="citizen_project_skills_'+result['id']+'">'+result['name']+'</label>');
+                var $checkbox = $('<div class="form__checkbox">')
+                    .append($input)
+                    .append($label);
 
-        if (skill) {
-            var skillCount = 0;
-            $('.summary-skill > input[type=hidden]').each(function () {
-                skillCount = Math.max(this.id.replace(/[^0-9]/g, ''), skillCount);
+                checkboxes.append($checkbox);
             });
-            skillCount++;
+        });
+    }
 
-            var newSkillWidget = skillList.attr('data-prototype'),
-                skillWidgetId = '#'+skillList.attr('id')+'_'+skillCount;
-            newSkillWidget = newSkillWidget.replace(/__name__/g, skillCount);
-
-            $(newSkillWidget).appendTo(skillList);
-            $(skillWidgetId).val(skill);
-            $(skillWidgetId).parent().find('.skill-value').text(' ' + label);
-
-            $('{{ idSkillSearchField|e('js') }}').val('');
-            removeSkill();
-        }
-    };
-
-    var input = $('{{ idSkillSearchField|e('js') }}');
-
-    // Add skill autocomplete
-    input.autocomplete({
-        source: function(request, response) {
-            var term = request.term.trim(),
-                categoryId = $('#citizen_project_category').val();
-            if (term.length > 0 && categoryId) {
-                var waitQueue;
-                function fetchResults() {
-                    // setTimeout avoids sending all HTTP request while the user is typing
-                    clearTimeout(waitQueue);
-                    waitQueue = setTimeout(function() {
-                        $.get("{{ urlSearch|e('js') }}?term=" + term+'&category='+categoryId, function(data) {
-                            var array = $.map(data, function(m) {
-                                return {
-                                    label: m.name,
-                                    value: m.id
-                                };
-                            });
-                            response(array);
-                        });
-                    }, 200);
-                }
-
-                fetchResults();
-
-            } else {
-                response([]);
-            }
-        },
-        minLength: 1,
-        messages: {
-            noResults: '',
-            results: function () {
-            },
-        },
-        select: function (e, ui) {
-            addSkill(ui.item);
-
-            return false;
-        },
-        change: function (ev, ui) {
-            if (!ui.item) {
-                input.val('');
-            }
-
-            return false;
-        }
-    });
-
-    // Add skill by pressing Enter
-    input.keyup(function (e) {
-        if (e.which == 13 || e.keyCode == 13) {
-            e.preventDefault();
-            addSkill($(this));
-        }
-    });
-
-    // Prevent submitting form by pressing enter
-    var disabledElementsEnter = $('{{ disabledCitizenProjectIdsEnter|e('js') }}');
-    disabledElementsEnter.keydown(function (event) {
-        if (event.keyCode == 13) {
-            event.preventDefault();
-            return false;
-        }
-    });
-
-    removeSkill();
+    categoryListField
+        .ready(function () {
+           updateSkillsField();
+        })
+        .change(function() {
+            updateSkillsField();
+        })
+    ;
 });
 {% endmacro %}
 
-{% macro committee(idCommitteesListField, idCommitteeSearchField ,urlSearch, disabledCommitteeEnterIds) %}
+{% macro committee(idCommitteesListField, idCommitteeSearchField, urlSearch, disabledCommitteeEnterIds) %}
 $(document).ready(function() {
     var committeeList = $('{{ idCommitteesListField|raw }}');
     var removeCommittee = function () {
