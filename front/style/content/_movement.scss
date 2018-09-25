@@ -166,14 +166,30 @@
     width: 100%;
 }
 
-#executive-officer .team {
-    justify-content: center !important;
+#biography {
+    .executive-officer {
+        .team {
+            justify-content: center !important;
 
-    li {
-        width: 60% !important;
+            li {
+                width: 60% !important;
 
-        .image {
-            height: 250px !important;
+                .image {
+                    height: 250px !important;
+                }
+            }
         }
+    }
+
+    .profile-header {
+        .social-networks a {
+            font-size: 24px;
+            margin-right: 5px;
+        }
+    }
+
+    .description {
+        @include text--small;
+        color: $dark;
     }
 }

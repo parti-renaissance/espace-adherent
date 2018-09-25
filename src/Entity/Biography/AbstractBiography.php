@@ -53,37 +53,35 @@ abstract class AbstractBiography
     protected $description;
 
     /**
-     * @ORM\Column(length=800, nullable=true)
-     *
-     * @Assert\Length(min=5, max=800)
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $content;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(max=255)
+     * @Assert\Url
      */
     protected $facebookProfile;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(max=255)
+     * @Assert\Url
      */
     protected $twitterProfile;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(max=255)
+     * @Assert\Url
      */
     protected $instagramProfile;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(max=255)
+     * @Assert\Url
      */
     protected $linkedInProfile;
 
@@ -93,8 +91,8 @@ abstract class AbstractBiography
      * @Assert\Image(
      *     mimeTypes={"image/jpeg", "image/png"},
      *     maxSize="1M",
-     *     maxWidth="1024",
-     *     maxHeight="1024",
+     *     maxWidth="1200",
+     *     maxHeight="1200",
      *     minWidth="300",
      *     allowLandscape=false,
      * )

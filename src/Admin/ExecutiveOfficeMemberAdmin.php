@@ -58,11 +58,9 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
                     'label' => 'Délégué général',
                     'required' => false,
                 ])
-                ->add('description', PurifiedTextareaType::class, [
+                ->add('description', TextType::class, [
                     'label' => 'Description',
                     'required' => false,
-                    'attr' => ['class' => 'ck-editor'],
-                    'purifier_type' => 'enrich_content',
                     'filter_emojis' => true,
                     'help' => 'La description de la biographie sera présente dans la liste des membres. (255 caractères maximum).',
                 ])
@@ -72,7 +70,7 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
                     'attr' => ['class' => 'ck-editor'],
                     'purifier_type' => 'enrich_content',
                     'filter_emojis' => true,
-                    'help' => 'Le contenu de la biographie sera présent dans la fiche du membre. (800 caractères maximum).',
+                    'help' => 'Le contenu de la biographie sera présent dans la fiche du membre.',
                 ])
                 ->add('published', null, [
                     'label' => 'Publié',
@@ -167,7 +165,11 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
                 'label' => 'Dernière mise à jour',
             ])
             ->add('_action', null, [
+                'virtual_field' => true,
                 'actions' => [
+                    'link' => [
+                        'template' => 'admin/biography/executive_office_member/link.html.twig',
+                    ],
                     'edit' => [],
                     'delete' => [],
                 ],
