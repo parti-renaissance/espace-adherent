@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche\Coordinator;
 
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Committee;
 use AppBundle\Exception\BaseGroupException;
 use AppBundle\Coordinator\Filter\CommitteeFilter;
@@ -24,7 +25,7 @@ class CoordinatorCommitteeController extends Controller
      * @Route("/list", name="app_coordinator_committees")
      * @Method("GET")
      */
-    public function committeesAction(Request $request): Response
+    public function committeesAction(Request $request, CommitteeManager $committeeManager): Response
     {
         try {
             $filter = CommitteeFilter::fromQueryString($request);
@@ -32,7 +33,7 @@ class CoordinatorCommitteeController extends Controller
             throw new BadRequestHttpException('Unexpected committee request status in the query string.', $e);
         }
 
-        $committees = $this->get('app.committee.manager')->getCoordinatorCommittees($this->getUser(), $filter);
+        $committees = $committeeManager->getCoordinatorCommittees($this->getUser(), $filter);
 
         $forms = [];
         foreach ($committees as $committee) {

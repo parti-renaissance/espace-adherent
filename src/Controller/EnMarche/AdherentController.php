@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\CitizenProject\CitizenProjectPermissions;
 use AppBundle\Committee\CommitteeCreationCommand;
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Contact\ContactMessage;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
@@ -246,20 +247,16 @@ class AdherentController extends Controller
         ]);
     }
 
-    public function listMyCommitteesAction(string $noResultMessage = null): Response
+    public function listMyCommitteesAction(CommitteeManager $manager, string $noResultMessage = null): Response
     {
-        $manager = $this->get('app.committee.manager');
-
         return $this->render('adherent/list_my_committees.html.twig', [
             'committees' => $manager->getAdherentCommittees($this->getUser()),
             'no_result_message' => $noResultMessage,
         ]);
     }
 
-    public function listCommitteesAlAction(): Response
+    public function listCommitteesAlAction(CommitteeManager $manager): Response
     {
-        $manager = $this->get('app.committee.manager');
-
         return $this->render('adherent/list_my_committees_al.html.twig', [
             'committees' => $manager->getAdherentCommittees($this->getUser()),
         ]);

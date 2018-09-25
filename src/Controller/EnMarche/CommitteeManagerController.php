@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Committee\CommitteeCommand;
 use AppBundle\Committee\CommitteeContactMembersCommand;
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Event\EventCommand;
 use AppBundle\Committee\Serializer\AdherentCsvSerializer;
@@ -33,7 +34,7 @@ class CommitteeManagerController extends Controller
      * @Route("/editer", name="app_committee_manager_edit")
      * @Method("GET|POST")
      */
-    public function editAction(Request $request, Committee $committee): Response
+    public function editAction(Request $request, CommitteeManager $committeeManager, Committee $committee): Response
     {
         $command = CommitteeCommand::createFromCommittee($committee);
         $form = $this->createForm(CommitteeCommandType::class, $command);
@@ -51,7 +52,7 @@ class CommitteeManagerController extends Controller
         return $this->render('committee_manager/edit.html.twig', [
             'form' => $form->createView(),
             'committee' => $committee,
-            'committee_hosts' => $this->get('app.committee.manager')->getCommitteeHosts($committee),
+            'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
         ]);
     }
 
@@ -59,7 +60,7 @@ class CommitteeManagerController extends Controller
      * @Route("/evenements/ajouter", name="app_committee_manager_add_event")
      * @Method("GET|POST")
      */
-    public function addEventAction(Request $request, Committee $committee): Response
+    public function addEventAction(Request $request, CommitteeManager $committeeManager, Committee $committee): Response
     {
         $command = new EventCommand($this->getUser(), $committee);
         $form = $this->createForm(EventCommandType::class, $command);
@@ -80,7 +81,7 @@ class CommitteeManagerController extends Controller
 
         return $this->render('committee_manager/add_event.html.twig', [
             'committee' => $committee,
-            'committee_hosts' => $this->get('app.committee.manager')->getCommitteeHosts($committee),
+            'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
             'form' => $form->createView(),
         ]);
     }
@@ -89,10 +90,8 @@ class CommitteeManagerController extends Controller
      * @Route("/membres", name="app_committee_manager_list_members")
      * @Method("GET")
      */
-    public function listMembersAction(Committee $committee): Response
+    public function listMembersAction(CommitteeManager $committeeManager, Committee $committee): Response
     {
-        $committeeManager = $this->get('app.committee.manager');
-
         return $this->render('committee_manager/list_members.html.twig', [
             'committee' => $committee,
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
@@ -104,13 +103,14 @@ class CommitteeManagerController extends Controller
      * @Route("/membres/export", name="app_committee_manager_export_members")
      * @Method("POST")
      */
-    public function exportMembersAction(Request $request, Committee $committee): Response
-    {
+    public function exportMembersAction(
+        Request $request,
+        CommitteeManager $committeeManager,
+        Committee $committee
+    ): Response {
         if (!$this->isCsrfTokenValid('committee.export_members', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to export members.');
         }
-
-        $committeeManager = $this->get('app.committee.manager');
 
         $uuids = GroupUtils::getUuidsFromJson($request->request->get('exports', ''));
         $adherents = GroupUtils::removeUnknownAdherents($uuids, $committeeManager->getCommitteeMembers($committee));
@@ -125,13 +125,14 @@ class CommitteeManagerController extends Controller
      * @Route("/membres/contact", name="app_committee_contact_members")
      * @Method("POST")
      */
-    public function contactMembersAction(Request $request, Committee $committee): Response
-    {
+    public function contactMembersAction(
+        Request $request,
+        CommitteeManager $committeeManager,
+        Committee $committee
+    ): Response {
         if (!$this->isCsrfTokenValid('committee.contact_members', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to contact members.');
         }
-
-        $committeeManager = $this->get('app.committee.manager');
 
         $uuids = GroupUtils::getUuidsFromJson($request->request->get('contacts', ''));
         $adherents = GroupUtils::removeUnknownAdherents($uuids, $committeeManager->getCommitteeMembers($committee));
@@ -175,9 +176,12 @@ class CommitteeManagerController extends Controller
      * @Security("is_granted('SUPERVISE_COMMITTEE', committee)")
      * @Entity("member", expr="repository.findByUuid(member_uuid)")
      */
-    public function promoteHostAction(Request $request, Committee $committee, Adherent $member): Response
-    {
-        $committeeManager = $this->get('app.committee.manager');
+    public function promoteHostAction(
+        Request $request,
+        CommitteeManager $committeeManager,
+        Committee $committee,
+        Adherent $member
+    ): Response {
         if (!$committeeManager->isPromotableHost($member, $committee)) {
             throw $this->createNotFoundException(sprintf(
                 'Member "%s" of committee "%s" can not be promoted as a host privileged person.',
@@ -212,9 +216,12 @@ class CommitteeManagerController extends Controller
      * @Security("is_granted('SUPERVISE_COMMITTEE', committee)")
      * @Entity("member", expr="repository.findByUuid(member_uuid)")
      */
-    public function demoteHostAction(Request $request, Committee $committee, Adherent $member): Response
-    {
-        $committeeManager = $this->get('app.committee.manager');
+    public function demoteHostAction(
+        Request $request,
+        CommitteeManager $committeeManager,
+        Committee $committee,
+        Adherent $member
+    ): Response {
         if (!$committeeManager->isDemotableHost($member, $committee)) {
             throw $this->createNotFoundException(sprintf(
                 'Member "%s" of committee "%s" can not be demoted as a simple follower.',

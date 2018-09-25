@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteeMergeCommand;
 use AppBundle\Committee\CommitteeMergeCommandHandler;
 use AppBundle\Committee\MultipleReferentsFoundException;
@@ -79,10 +80,8 @@ class AdminCommitteeController extends Controller
      * @Method("GET")
      * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
-    public function membersAction(Committee $committee): Response
+    public function membersAction(CommitteeManager $manager, Committee $committee): Response
     {
-        $manager = $this->get('app.committee.manager');
-
         return $this->render('admin/committee/members.html.twig', [
             'committee' => $committee,
             'memberships' => $memberships = $manager->getCommitteeMemberships($committee),
@@ -95,8 +94,13 @@ class AdminCommitteeController extends Controller
      * @Method("GET")
      * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
-    public function changePrivilegeAction(Request $request, Committee $committee, Adherent $adherent, string $privilege): Response
-    {
+    public function changePrivilegeAction(
+        Request $request,
+        CommitteeManager $manager,
+        Committee $committee,
+        Adherent $adherent,
+        string $privilege
+    ): Response {
         if (!$committee->isApproved()) {
             throw new BadRequestHttpException('Committee must be approved to change member privileges.');
         }
@@ -106,7 +110,7 @@ class AdminCommitteeController extends Controller
         }
 
         try {
-            $this->get('app.committee.manager')->changePrivilege($adherent, $committee, $privilege);
+            $manager->changePrivilege($adherent, $committee, $privilege);
         } catch (CommitteeMembershipException $e) {
             $this->addFlash('error', $e->getMessage());
         }
