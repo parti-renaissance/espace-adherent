@@ -23,7 +23,14 @@ class TurnkeyProjectFile extends BaseFile
      *
      * @Assert\File(
      *     maxSize="5M",
-     *     mimeTypes={"application/pdf", "application/x-pdf"},
+     *     mimeTypes={
+     *         "application/pdf",
+     *         "application/x-pdf",
+     *         "application/vnd.ms-powerpoint",
+     *         "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+     *         "application/msword",
+     *         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+     *     },
      *     mimeTypesMessage="turnkey_project_file.valid_mimetypes"
      * )
      */
