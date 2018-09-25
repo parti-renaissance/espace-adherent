@@ -69,7 +69,7 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="AppBundle\Membership\AdherentRegistry"/>
             <argument type="service" id="AppBundle\Membership\AdherentManager"/>
-            <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="AppBundle\Committee\CommitteeManager"/>
             <argument type="service" id="AppBundle\Referent\ReferentTagManager"/>
             <argument type="service" id="AppBundle\Membership\MembershipRegistrationProcess"/>
             <argument type="service" id="AppBundle\History\EmailSubscriptionHistoryHandler"/>
@@ -121,16 +121,8 @@
         <service id="app.unregistration.serializer" class="AppBundle\Membership\UnregistrationSerializer" />
 
         <!-- Committees -->
-        <service id="app.committee.manager" alias="AppBundle\Committee\CommitteeManager">
-            <deprecated>The "app.committee.manager" is deprecated in favor of the AppBundle\Committee\CommitteeManager FQCN.</deprecated>
-        </service>
-        <service id="AppBundle\Committee\CommitteeManager">
-            <argument type="service" id="doctrine"/>
-            <argument type="service" id="event_dispatcher"/>
-        </service>
-
         <service id="app.committee.authority" class="AppBundle\Committee\CommitteeManagementAuthority">
-            <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="AppBundle\Committee\CommitteeManager"/>
             <argument type="service" id="router"/>
             <argument type="service" id="app.mailer.transactional"/>
         </service>
@@ -163,7 +155,7 @@
 
         <service id="app.committee.feed_manager" class="AppBundle\Committee\Feed\CommitteeFeedManager">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="AppBundle\Committee\CommitteeManager"/>
             <argument type="service" id="app.mailer.campaign"/>
             <argument type="service" id="router"/>
             <argument type="service" id="AppBundle\Repository\CommitteeFeedItemRepository"/>
@@ -208,7 +200,7 @@
             <argument type="service" id="old_sound_rabbit_mq.project_citizen_creation_notification_producer"/>
             <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
             <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="AppBundle\Committee\CommitteeManager"/>
             <argument type="service" id="router"/>
             <tag name="kernel.event_subscriber"/>
         </service>
@@ -252,7 +244,7 @@
 
         <service id="app.event.message_notifier" class="AppBundle\Event\EventMessageNotifier">
             <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="AppBundle\Committee\CommitteeManager"/>
             <argument type="service" id="AppBundle\Repository\EventRegistrationRepository"/>
             <argument type="service" id="router"/>
             <tag name="kernel.event_subscriber"/>

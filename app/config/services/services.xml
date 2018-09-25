@@ -50,6 +50,7 @@
         </service>
 
         <!-- Committee -->
+        <service id="AppBundle\Committee\CommitteeManager" />
         <service id="AppBundle\Committee\CommitteeMergeCommandHandler" public="true" />
         <service id="AppBundle\Form\Admin\CommitteeIdType"/>
 

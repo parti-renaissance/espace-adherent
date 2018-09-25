@@ -29,7 +29,7 @@
 
         <service id="AppBundle\Twig\CommitteeRuntime">
             <argument type="service" id="security.authorization_checker"/>
-            <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="AppBundle\Committee\CommitteeManager"/>
             <tag name="twig.runtime" />
         </service>
 
