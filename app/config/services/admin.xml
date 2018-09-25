@@ -502,7 +502,6 @@
             <argument />
             <argument>AppBundle\Entity\TurnkeyProject</argument>
             <argument />
-            <argument type="service" id="AppBundle\Repository\TurnkeyProjectRepository" />
             <argument type="service" id="AppBundle\TurnkeyProject\TurnkeyProjectManager" />
         </service>
 

@@ -59,6 +59,7 @@
                 <argument type="service" id="app.glide" />
             </call>
         </service>
+        <service id="AppBundle\Validator\UniqueTurnkeyProjectPinnedValidator" />
 
         <!-- Controller -->
         <prototype namespace="AppBundle\Controller\" resource="../../../src/Controller/">

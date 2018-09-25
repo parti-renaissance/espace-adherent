@@ -6,7 +6,6 @@ use AppBundle\Entity\TurnkeyProject;
 use AppBundle\Entity\TurnkeyProjectFile;
 use AppBundle\Form\Admin\BaseFileType;
 use AppBundle\Form\PurifiedTextareaType;
-use AppBundle\Repository\TurnkeyProjectRepository;
 use AppBundle\TurnkeyProject\TurnkeyProjectManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -14,17 +13,11 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\CoreBundle\Validator\ErrorElement;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TurnkeyProjectAdmin extends AbstractAdmin
 {
-    /**
-     * @var TurnkeyProjectRepository
-     */
-    private $turnkeyProjectRepository;
-
     /**
      * @var TurnkeyProjectManager
      */
@@ -34,12 +27,10 @@ class TurnkeyProjectAdmin extends AbstractAdmin
         string $code,
         string $class,
         string $baseControllerName,
-        TurnkeyProjectRepository $turnkeyProjectRepository,
         TurnkeyProjectManager $turnkeyProjectManager
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
-        $this->turnkeyProjectRepository = $turnkeyProjectRepository;
         $this->turnkeyProjectManager = $turnkeyProjectManager;
     }
 
@@ -280,24 +271,6 @@ class TurnkeyProjectAdmin extends AbstractAdmin
 
         if ($turnkeyProject->getImage()) {
             $this->turnkeyProjectManager->saveImage($turnkeyProject);
-        }
-    }
-
-    /**
-     * @param TurnkeyProject $object
-     */
-    public function validate(ErrorElement $errorElement, $object)
-    {
-        if ($object->isPinned()) {
-            $pinnedProject = $this->turnkeyProjectRepository->findPinned($object->getId());
-
-            if ($pinnedProject) {
-                $errorElement
-                    ->with('isPinned')
-                    ->addViolation(sprintf('Le projet clé en main "%s" est deja épinglé', $pinnedProject->getName()))
-                    ->end()
-                ;
-            }
         }
     }
 }
