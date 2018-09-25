@@ -78,7 +78,7 @@ class CommitteeRuntime
             return self::COLOR_STATUS_ADMINISTRATOR;
         }
 
-        if ($committee->isPending()) {
+        if ($committee->isWaitingForApproval()) {
             return self::COLOR_STATUS_NOT_FINAL;
         }
 

@@ -63,10 +63,10 @@ class CommitteeMembershipCollection extends ArrayCollection
         return $committees;
     }
 
-    public function getCommitteeFollowerMemberships(): self
+    public function getCommitteeFollowerMembershipsNotWaitingForApproval(): self
     {
         return $this->filter(function (CommitteeMembership $membership) {
-            return $membership->isFollower() && !$membership->getCommittee()->isPending();
+            return $membership->isFollower() && !$membership->getCommittee()->isWaitingForApproval();
         });
     }
 
@@ -77,10 +77,10 @@ class CommitteeMembershipCollection extends ArrayCollection
         });
     }
 
-    public function getCommitteeUnapprovedMemberships(): self
+    public function getCommitteeMembershipsInWaitingForApproval(): self
     {
         return $this->filter(function (CommitteeMembership $membership) {
-            return $membership->getCommittee()->isPending();
+            return $membership->getCommittee()->isWaitingForApproval() && !$membership->isHostMember();
         });
     }
 

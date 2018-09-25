@@ -19,13 +19,13 @@ final class CommitteeCollection extends ArrayCollection
             return in_array((string) $committee->getUuid(), $uuids);
         });
 
-        $uuids = $memberships->getCommitteeFollowerMemberships()->getCommitteeUuids();
+        $uuids = $memberships->getCommitteeFollowerMembershipsNotWaitingForApproval()->getCommitteeUuids();
         $followedCommittees = $this->filter(function (Committee $committee) use ($uuids) {
             return in_array((string) $committee->getUuid(), $uuids);
         });
 
-        $uuids = $memberships->getCommitteeUnapprovedMemberships()->getCommitteeUuids();
-        $unapprovedCommittees = $this->filter(function (Committee $committee) use ($uuids) {
+        $uuids = $memberships->getCommitteeMembershipsInWaitingForApproval()->getCommitteeUuids();
+        $waitingForApprovalCommittees = $this->filter(function (Committee $committee) use ($uuids) {
             return in_array((string) $committee->getUuid(), $uuids);
         });
 
@@ -33,7 +33,7 @@ final class CommitteeCollection extends ArrayCollection
             $supervisedCommittees->toArray(),
             $hostedCommittees->toArray(),
             $followedCommittees->toArray(),
-            $unapprovedCommittees->toArray()
+            $waitingForApprovalCommittees->toArray()
         ));
     }
 }
