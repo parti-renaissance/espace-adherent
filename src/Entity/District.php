@@ -9,12 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
  *  - France: https://public.opendatasoft.com/explore/dataset/circonscriptions-legislatives-2017/export (JSON format)
  *  - Other countries: https://gist.github.com/angelodlfrtr/cf39d7db97c335f87d22
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\DistrictRepository")
  * @ORM\Table(
  *     name="districts",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="district_code_unique", columns="code"),
- *         @ORM\UniqueConstraint(name="district_department_code_number", columns={"department_code", "number"})
+ *         @ORM\UniqueConstraint(name="district_department_code_number", columns={"department_code", "number"}),
+ *         @ORM\UniqueConstraint(name="district_referent_tag_unique", columns="referent_tag_id")
  *     }
  * )
  */
@@ -81,13 +82,21 @@ class District
      */
     private $adherent;
 
+    /**
+     * @var ReferentTag|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ReferentTag")
+     */
+    private $referentTag;
+
     public function __construct(
         array $countries,
         string $name,
         string $code,
         int $number,
         string $departmentCode,
-        GeoData $geoData
+        GeoData $geoData,
+        ReferentTag $referentTag = null
     ) {
         $this->countries = $countries;
         $this->code = $code;
@@ -95,6 +104,7 @@ class District
         $this->number = $number;
         $this->departmentCode = $departmentCode;
         $this->geoData = $geoData;
+        $this->referentTag = $referentTag;
     }
 
     public function getId(): ?int
@@ -162,6 +172,16 @@ class District
         $this->adherent = $adherent;
     }
 
+    public function getReferentTag(): ?ReferentTag
+    {
+        return $this->referentTag;
+    }
+
+    public function setReferentTag(ReferentTag $referentTag): void
+    {
+        $this->referentTag = $referentTag;
+    }
+
     public function update(array $countries, string $name, GeoData $geoData): self
     {
         $this->countries = $countries;
@@ -171,8 +191,19 @@ class District
         return $this;
     }
 
+    public function getFullName(): string
+    {
+        return sprintf(
+            '%s, %s%s circonscription (%s)',
+            $this->name,
+            $this->number,
+            1 === $this->number ? 'ère' : 'ème',
+            substr_replace($this->code, '-', -3, 1)
+        );
+    }
+
     public function __toString(): string
     {
-        return sprintf('%s, %sème circonscription (%s)', $this->name, $this->number, substr_replace($this->code, '-', -3, 1));
+        return $this->getFullName();
     }
 }

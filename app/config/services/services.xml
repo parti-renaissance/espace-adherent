@@ -237,6 +237,9 @@
         </service>
 
         <!-- Deputy -->
+        <service id="AppBundle\Command\CreateReferentTagsForDistrictsCommand" />
+        <service id="AppBundle\Command\InitializeReferentTagsForDistrictsOnAdherentsCommand" />
+        <service id="AppBundle\Deputy\Subscriber\ChangeAddressSubscriber" />
         <service id="AppBundle\Deputy\DistrictLoader" public="true" />
         <service id="AppBundle\Deputy\LightFileDistrictLoader" public="true" />
         <service id="AppBundle\Deputy\DeputyMessageNotifier" public="true">

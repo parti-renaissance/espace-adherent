@@ -39,7 +39,7 @@ class EmailRepository extends ServiceEntityRepository
             ->setParameter('recipient', '%'.$recipient.'%')
             ->getQuery()
             ->getResult()
-            ;
+        ;
     }
 
     public function findMostRecentMessage(string $messageClass = null): ?Email
@@ -72,7 +72,7 @@ class EmailRepository extends ServiceEntityRepository
             ->setParameter('class', str_replace('AppBundle\\Mailer\\Message\\', '', $messageClass))
             ->getQuery()
             ->getResult()
-            ;
+        ;
     }
 
     public function setDelivered(Email $email, string $response): void
