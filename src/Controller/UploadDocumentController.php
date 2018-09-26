@@ -52,10 +52,10 @@ class UploadDocumentController extends Controller
      * @Route("/documents-partages/{uuid}/{filename}", requirements={"uuid": "%pattern_uuid%"}, name="app_download_user_document")
      * @Method("GET")
      */
-    public function downloadDocumentAction(UserDocument $document, string $filename, Request $request)
+    public function downloadDocumentAction(UserDocument $document, string $filename)
     {
         if ($filename !== $document->getOriginalName()) {
-            throw $this->createNotFoundException('Document not found', "The requested file with name '$filename' doesn't match the identifier.");
+            throw $this->createNotFoundException('Document not found');
         }
 
         try {
