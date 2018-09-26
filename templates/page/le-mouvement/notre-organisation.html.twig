@@ -38,50 +38,62 @@
 {% endblock %}
 
 {% block mouvement_content %}
-    {% if (executiveOfficer) %}
-        <div id="executive-officer">
-            <h2 class="text--center">Notre Délégué Général</h2>
-            <ul class="team">
-                <li>
-                    <div class="image" style="background-image: url('{{ executiveOfficer.getAssetImagePath }}')"></div>
-                    <div class="team__meta">
-                        <div class="b__nudge--bottom-small">
-                            <div class="text--bold">{{ executiveOfficer.firstName }} {{ executiveOfficer.lastName|upper }}</div>
-                            <span>{{ executiveOfficer.job }}</span>
-                        </div>
-                        {{ include('social_share/profile_share.html.twig', { object: executiveOfficer }) }}
-                    </div>
-                </li>
-            </ul>
-        </div>
-    {% endif %}
-
-    {% if (executiveOfficeMembers) %}
-        <div id="executive-office-members">
-            <h2 class="text--center">Le Bureau Exécutif</h2>
-            <ul class="team">
-                {% for member in executiveOfficeMembers %}
+    <div id="biography">
+        {% if executiveOfficer %}
+            <div class="executive-officer">
+                <h2 class="text--center">Notre Délégué Général</h2>
+                <ul class="team">
                     <li>
-                        <div class="profile-pic"> <img src="{{ member.getAssetImagePath }}"></div>
-                        <div class="team__meta">
-                            <div class="b__nudge--bottom-small">
-                                <div class="text--bold">{{ member.lastName|upper }} {{ member.firstName }}</div>
-                                <div>{{ member.job }}</div>
-                                <div class="bio">{{ member.description }}</div>
+                        <a class="link--no-decor" href="{{ path('app_our_organization_show', { slug: executiveOfficer.slug }) }}">
+                            <div class="image" style="background-image: url('{{ path('asset_url', { path: executiveOfficer.getImagePath }) }}')">
                             </div>
-                            {{ include('social_share/profile_share.html.twig', { object: member }) }}
-                        </div>
+                            <div class="team__meta">
+                                <div class="b__nudge--bottom-small">
+                                    <div class="text--bold">{{ executiveOfficer.firstName }} {{ executiveOfficer.lastName|upper }}</div>
+                                    <div class="b__nudge--bottom-small">{{ executiveOfficer.job }}</div>
+                                    <div class="description">{{ executiveOfficer.description }}</div>
+                                </div>
+                                <div class="share">
+                                    {{ include('social_share/social_networks.html.twig', { object: executiveOfficer }) }}
+                                </div>
+                            </div>
+                        </a>
                     </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
 
-    <h2>Nos référents</h2>
+        {% if executiveOfficeMembers %}
+            <div class="executive-office-members">
+                <h2 class="text--center">Le Bureau Exécutif</h2>
+                <ul class="team">
+                    {% for member in executiveOfficeMembers %}
+                        <li>
+                            <a class="link--no-decor" href="{{ path('app_our_organization_show', { slug: member.slug }) }}">
+                                <div class="profile-pic"> <img src="{{ member.getAssetImagePath }}"></div>
+                                <div class="team__meta">
+                                    <div class="b__nudge--bottom-small">
+                                        <div class="text--bold">{{ member.lastName|upper }} {{ member.firstName }}</div>
+                                        <div class=" b__nudge--bottom-small">{{ member.job }}</div>
+                                        <div class="description">{{ member.description }}</div>
+                                    </div>
+                                    <div class="share">
+                                        {{ include('social_share/social_networks.html.twig', { object: member }) }}
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
 
-    <p class="b__nudge--bottom-larger">
-        Ils sont les représentants du mouvement au niveau départemental. Chaque référent(e) coordonne notamment les actions des comités locaux de son département.
-    </p>
+        <h2>Nos référents</h2>
 
-    <a href="{{ path('our_referents_homepage') }}" class="btn btn--blue">Nos Referents</a>
+        <p class="b__nudge--bottom-larger">
+            Ils sont les représentants du mouvement au niveau départemental. Chaque référent(e) coordonne notamment les actions des comités locaux de son département.
+        </p>
+
+        <a href="{{ path('our_referents_homepage') }}" class="btn btn--blue">Nos Referents</a>
+    </div>
 {% endblock %}
