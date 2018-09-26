@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: adherent.yml }
+    - { resource: app_version.yml }
     - { resource: services/ }
 
 parameters:
