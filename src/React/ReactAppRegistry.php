@@ -2,35 +2,37 @@
 
 namespace AppBundle\React;
 
-use Symfony\Component\Routing\Route;
+use AppBundle\React\App\CitizenProjectApp;
 use Symfony\Component\Routing\RouteCollection;
 
 class ReactAppRegistry
 {
     /**
-     * @var Route[][]
+     * List of the apps in the project, in the form name => ReactAppInterface.
+     * The name of the app will be used to create the routes names.
+     *
+     * @var ReactAppInterface[]
      */
     private $apps;
 
     public function __construct()
     {
         $this->apps = [
-            'projets-citoyens' => [
-                'home' => new Route('/projets-citoyens'),
-                'discover' => new Route('/projets-citoyens/decouvrir'),
-                'search' => new Route('/projets-citoyens/recherche'),
-            ],
+            'citizen_projects' => new CitizenProjectApp(),
         ];
     }
 
-    public function readManifest(string $app): ?array
+    public function getApp(string $appName): ?ReactAppInterface
     {
-        if (!isset($this->apps[$app])) {
-            return null;
-        }
+        return $this->apps[$appName] ?? null;
+    }
+
+    public function readManifest(ReactAppInterface $app): ?array
+    {
+        $filename = __DIR__.'/../../web/apps/'.$app->getDirectory().'/build/asset-manifest.json';
 
         try {
-            $data = \GuzzleHttp\json_decode(file_get_contents(__DIR__.'/../../web/apps/'.$app.'/build/asset-manifest.json'), true);
+            $data = \GuzzleHttp\json_decode(file_get_contents($filename), true);
         } catch (\Exception $e) {
             return null;
         }
@@ -39,9 +41,9 @@ class ReactAppRegistry
 
         foreach ($data as $file) {
             if ('.css' === substr($file, -4)) {
-                $manifest['css'][] = 'apps/'.$app.'/build/'.$file;
+                $manifest['css'][] = 'apps/'.$app->getDirectory().'/build/'.$file;
             } elseif ('.js' === substr($file, -3)) {
-                $manifest['js'][] = 'apps/'.$app.'/build/'.$file;
+                $manifest['js'][] = 'apps/'.$app->getDirectory().'/build/'.$file;
             }
         }
 
@@ -52,12 +54,12 @@ class ReactAppRegistry
     {
         $collection = new RouteCollection();
 
-        foreach ($this->apps as $app => $routes) {
-            foreach ($routes as $name => $route) {
-                $route->setDefault('_react_app', $app);
+        foreach ($this->apps as $appName => $app) {
+            foreach ($app->getRoutes() as $routeName => $route) {
+                $route->setDefault('_react_app', $appName);
                 $route->setDefault('_controller', 'AppBundle:React:app');
 
-                $collection->add('react_app_'.$app.'_'.$name, $route);
+                $collection->add('react_app_'.$appName.'_'.$routeName, $route);
             }
         }
 
