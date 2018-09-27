@@ -167,29 +167,43 @@
 }
 
 #biography {
-    .executive-officer {
-        .team {
-            justify-content: center !important;
-
-            li {
-                width: 60% !important;
-
-                .image {
-                    height: 250px !important;
-                }
+    .team {
+        .team__meta {
+            @media (max-width: $mobile) {
+                height: auto;
             }
         }
     }
 
-    .profile-header {
-        .social-networks a {
-            font-size: 24px;
-            margin-right: 5px;
+    .social-networks a {
+        font-size: 24px;
+        margin-right: 5px;
+
+        @media (max-width: $mobile) {
+            font-size: 18px;
         }
     }
 
     .description {
         @include text--small;
         color: $dark;
+    }
+
+    .executive-officer {
+        .team {
+            justify-content: center;
+
+            li {
+                width: 60%;
+
+                @media (max-width: $mobile) {
+                    width: 100%;
+                }
+
+                .image {
+                    height: 250px;
+                }
+            }
+        }
     }
 }

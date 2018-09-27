@@ -137,10 +137,10 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
     {
         $listMapper
             ->addIdentifier('firstName', null, [
-                'label' => 'Nom',
+                'label' => 'Prénom',
             ])
             ->addIdentifier('lastName', null, [
-                'label' => 'Prénom',
+                'label' => 'Nom',
             ])
             ->add('job', null, [
                 'label' => 'Poste',
