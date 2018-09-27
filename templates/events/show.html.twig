@@ -49,12 +49,15 @@
             "url": "{{ url('homepage') }}"
         },
         "location": {
-            "@type": "PostalAddress",
+            "@type": "Place",
             "name": "{{ event.inlineFormattedAddress }}",
-            "streetAddress": "{{ event.address }}",
-            "addressLocality": "{{ event.cityName }}",
-            "postalCode": "{{ event.postalCode }}",
-            "addressCountry": "{{ event.country }}"
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "{{ event.address }}",
+                "addressLocality": "{{ event.cityName }}",
+                "postalCode": "{{ event.postalCode }}",
+                "addressCountry": "{{ event.country }}"
+            }
         }
     }
     </script>
