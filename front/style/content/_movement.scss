@@ -173,14 +173,30 @@
                 height: auto;
             }
         }
-    }
 
-    .social-networks a {
-        font-size: 24px;
-        margin-right: 5px;
+        li {
+            position: relative;
+            padding-bottom: 20px;
 
-        @media (max-width: $mobile) {
-            font-size: 18px;
+            @media (max-width: $mobile) {
+                padding-bottom: 10px;
+            }
+
+            .social-networks {
+                position: absolute;
+                bottom: 0;
+                padding-left: 20px;
+                margin-bottom: 10px;
+
+                a {
+                    font-size: 24px;
+                    margin-right: 5px;
+
+                    @media (max-width: $mobile) {
+                        font-size: 18px;
+                    }
+                }
+            }
         }
     }
 
