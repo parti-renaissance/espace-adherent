@@ -16,8 +16,6 @@ final class BoardMemberMail extends CampaignMail
 {
     use AdherentMailTrait;
 
-    private const SENDER_EMAIL = 'jemarche@en-marche.fr';
-
     public static function createTemplateVarsFrom(BoardMemberMessage $message): array
     {
         return [
@@ -50,6 +48,6 @@ final class BoardMemberMail extends CampaignMail
 
     public static function createSenderFrom(BoardMemberMessage $message): SenderInterface
     {
-        return new Sender(self::SENDER_EMAIL, $message->getFrom()->getFullName());
+        return new Sender(null, $message->getFrom()->getFullName());
     }
 }

@@ -39,15 +39,9 @@
         </service>
 
         <!-- CitizenActions -->
-        <service id="AppBundle\CitizenAction\CitizenActionMessageNotifier">
-            <argument key="$mailer" type="service" id="app.mailer.transactional" />
-        </service>
-
+        <service id="AppBundle\CitizenAction\CitizenActionMessageNotifier" />
         <service id="AppBundle\CitizenAction\CitizenActionParticipantsExporter" public="true" />
-
-        <service id="AppBundle\CitizenAction\CitizenActionContactParticipantsCommandHandler" public="true">
-            <argument type="service" id="app.mailer.campaign" />
-        </service>
+        <service id="AppBundle\CitizenAction\CitizenActionContactParticipantsCommandHandler" public="true" />
 
         <!-- Committee -->
         <service id="AppBundle\Committee\CommitteeMergeCommandHandler" public="true" />

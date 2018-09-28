@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "47c5901b5bbb012351fb6bd5981b59ce",
+    "content-hash": "c2da360db4df8a8e9c4a5b82e85579a9",
     "packages": [
         {
             "name": "a2lix/i18n-doctrine-bundle",
@@ -188,6 +188,7 @@
                 }
             ],
             "description": "Seamless integration of Algolia Search into your Symfony project.",
+            "abandoned": "algolia/search-bundle",
             "time": "2017-03-27T16:32:15+02:00"
         },
         {
@@ -2028,31 +2029,31 @@
         },
         {
             "name": "enmarche/mailer-bundle",
-            "version": "dev-fix-test",
+            "version": "dev-improve-mailer-v2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EnMarche/mailer-bundle.git",
-                "reference": "101689be77ec172a3f3eee858d26558d09a48683"
+                "reference": "b15c4bb21c2b424395f0f8e089b386eb968aa8e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EnMarche/mailer-bundle/zipball/101689be77ec172a3f3eee858d26558d09a48683",
-                "reference": "101689be77ec172a3f3eee858d26558d09a48683",
+                "url": "https://api.github.com/repos/EnMarche/mailer-bundle/zipball/b15c4bb21c2b424395f0f8e089b386eb968aa8e9",
+                "reference": "b15c4bb21c2b424395f0f8e089b386eb968aa8e9",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/guzzle": "^6.3",
                 "php": ">=7.1",
-                "php-amqplib/rabbitmq-bundle": "^1.14",
                 "ramsey/uuid": "^3.0",
-                "ramsey/uuid-doctrine": "^1.5",
                 "symfony/dependency-injection": "~3.4 || ^4.0",
                 "symfony/http-kernel": "~3.4 || ^4.0"
             },
             "require-dev": {
                 "coduo/php-matcher": "^3.1",
                 "doctrine/doctrine-bundle": "^1.9",
-                "phpunit/phpunit": "^7.2"
+                "guzzlehttp/guzzle": "^6.3",
+                "php-amqplib/rabbitmq-bundle": "^1.14",
+                "phpunit/phpunit": "^7.2",
+                "ramsey/uuid-doctrine": "^1.5"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -2071,10 +2072,10 @@
             ],
             "description": "Mailer bundle to ease proxying SAAS among private applications.",
             "support": {
-                "source": "https://github.com/EnMarche/mailer-bundle/tree/fix-test",
+                "source": "https://github.com/EnMarche/mailer-bundle/tree/improve-mailer-v2",
                 "issues": "https://github.com/EnMarche/mailer-bundle/issues"
             },
-            "time": "2018-09-25T17:50:49+00:00"
+            "time": "2018-09-28T15:14:43+00:00"
         },
         {
             "name": "exercise/htmlpurifier-bundle",

@@ -2,29 +2,27 @@
 
 namespace AppBundle\CitizenAction;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CitizenActionContactParticipantsMessage;
+use AppBundle\Mail\Campaign\CitizenActionContactParticipantsMail;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 
 class CitizenActionContactParticipantsCommandHandler
 {
-    private $mailer;
+    private $mailPost;
 
-    public function __construct(MailerService $mailer)
+    public function __construct(MailPostInterface $mailPost)
     {
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
     }
 
     public function handle(CitizenActionContactParticipantsCommand $command): void
     {
-        $chunks = array_chunk($command->getRecipients(), MailerService::PAYLOAD_MAXSIZE);
-
-        foreach ($chunks as $chunk) {
-            $this->mailer->sendMessage(CitizenActionContactParticipantsMessage::create(
-                $chunk,
-                $command->getSender(),
-                $command->getSubject(),
-                $command->getMessage()
-            ));
-        }
+        $this->mailPost->address(
+            CitizenActionContactParticipantsMail::class,
+            CitizenActionContactParticipantsMail::createRecipientsFrom($command->getRecipients()),
+            CitizenActionContactParticipantsMail::createRecipientFromAdherent($command->getSender()),
+            CitizenActionContactParticipantsMail::createTemplateVarsFrom($command),
+            '[Action citoyenne] '.$command->getSubject(),
+            CitizenActionContactParticipantsMail::createSenderFrom($command->getSender())
+        );
     }
 }
