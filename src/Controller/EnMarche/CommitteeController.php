@@ -33,7 +33,7 @@ class CommitteeController extends Controller
      * @Method("GET|POST")
      * @Security("is_granted('SHOW_COMMITTEE', committee)")
      */
-    public function showAction(Request $request, Committee $committee): Response
+    public function showAction(Request $request, CommitteeManager $committeeManager, Committee $committee): Response
     {
         if ($this->isGranted('IS_ANONYMOUS')
             && $authenticate = $this->get(AnonymousFollowerSession::class)->start($request)
@@ -60,8 +60,6 @@ class CommitteeController extends Controller
             }
         }
 
-        $committeeManager = $this->getCommitteeManager();
-
         $feeds = $committeeManager->getTimeline($committee, $this->getParameter('timeline_max_messages'));
 
         return $this->render('committee/show.html.twig', [
@@ -81,8 +79,12 @@ class CommitteeController extends Controller
      * @Method("GET|POST")
      * @Security("is_granted('ADMIN_FEED_COMMITTEE', committeeFeedItem)")
      */
-    public function timelineEditAction(Request $request, Committee $committee, CommitteeFeedItem $committeeFeedItem): Response
-    {
+    public function timelineEditAction(
+        Request $request,
+        CommitteeManager $committeeManager,
+        Committee $committee,
+        CommitteeFeedItem $committeeFeedItem
+    ): Response {
         $form = $this
             ->createForm(CommitteeFeedItemMessageType::class, $committeeFeedItem)
             ->handleRequest($request)
@@ -95,7 +97,6 @@ class CommitteeController extends Controller
             return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
         }
 
-        $committeeManager = $this->getCommitteeManager();
         $feeds = $committeeManager->getTimeline($committee, $this->getParameter('timeline_max_messages'));
 
         return $this->render('committee/show.html.twig', [
@@ -137,9 +138,9 @@ class CommitteeController extends Controller
      * @Method("GET")
      * @Security("is_granted('SHOW_COMMITTEE', committee)")
      */
-    public function timelineAction(Request $request, Committee $committee): Response
+    public function timelineAction(Request $request, CommitteeManager $committeeManager, Committee $committee): Response
     {
-        $timeline = $this->getCommitteeManager()->getTimeline(
+        $timeline = $committeeManager->getTimeline(
             $committee,
             $this->getParameter('timeline_max_messages'),
             $request->query->getInt('offset', 0)
@@ -181,13 +182,13 @@ class CommitteeController extends Controller
      * @Method("POST")
      * @Security("is_granted('UNFOLLOW_COMMITTEE', committee)")
      */
-    public function unfollowAction(Request $request, Committee $committee): Response
+    public function unfollowAction(Request $request, CommitteeManager $committeeManager, Committee $committee): Response
     {
         if (!$this->isCsrfTokenValid('committee.unfollow', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to unfollow committee.');
         }
 
-        $this->getCommitteeManager()->unfollowCommittee($this->getUser(), $committee);
+        $committeeManager->unfollowCommittee($this->getUser(), $committee);
 
         return new JsonResponse([
             'button' => [
@@ -219,10 +220,5 @@ class CommitteeController extends Controller
         }
 
         return $forms;
-    }
-
-    private function getCommitteeManager(): CommitteeManager
-    {
-        return $this->get(CommitteeManager::class);
     }
 }
