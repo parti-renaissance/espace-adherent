@@ -7,10 +7,11 @@ use AppBundle\DataFixtures\ORM\LoadCitizenActionCategoryData;
 use AppBundle\DataFixtures\ORM\LoadCitizenActionData;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\Entity\CitizenAction;
-use AppBundle\Mailer\Message\CitizenActionCancellationMessage;
-use AppBundle\Mailer\Message\CitizenActionContactParticipantsMessage;
-use AppBundle\Mailer\Message\CitizenActionNotificationMessage;
+use AppBundle\Mail\Campaign\CitizenActionContactParticipantsMail;
+use AppBundle\Mail\Transactional\CitizenActionCancellationMail;
+use AppBundle\Mail\Transactional\CitizenActionNotificationMail;
 use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +25,8 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
  */
 class CitizenActionManagerControllerTest extends WebTestCase
 {
-    use ControllerTestTrait;
+    use ControllerTestTrait,
+        MailTestCaseTrait;
 
     public function testCreateCitizenActionIsForbiddenIfUserIsNotProjectOrganizer()
     {
@@ -126,10 +128,7 @@ class CitizenActionManagerControllerTest extends WebTestCase
         $this->assertInstanceOf(CitizenAction::class, $citizenAction = $this->getCitizenActionRepository()->findOneBy(['slug' => (new \DateTime())->format('Y-m-d').'-mon-action-citoyenne']));
         $this->assertSame('Mon Action Citoyenne', $citizenAction->getName());
         $this->assertCountMails(0, EventRegistrationConfirmationMessage::class, 'jacques.picard@en-marche.fr');
-        $this->assertCountMails(1, CitizenActionNotificationMessage::class, 'jacques.picard@en-marche.fr');
-        $this->assertCountMails(1, CitizenActionNotificationMessage::class, 'gisele-berthoux@caramail.com');
-        $this->assertCountMails(1, CitizenActionNotificationMessage::class, 'luciole1989@spambox.fr');
-        $this->assertCountMails(0, CitizenActionNotificationMessage::class, 'benoit-da-m@stah.fr');
+        $this->assertMailSentForRecipients(['jacques.picard@en-marche.fr', 'gisele-berthoux@caramail.com', 'luciole1989@spambox.fr'], CitizenActionNotificationMail::class);
     }
 
     public function testOrganizerCanCancelCitizenAction()
@@ -158,12 +157,7 @@ class CitizenActionManagerControllerTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->seeFlashMessage($crawler, 'L\'action citoyenne a bien été annulée.');
 
-        $messages = $this->getEmailRepository()->findMessages(CitizenActionCancellationMessage::class);
-        /** @var CitizenActionCancellationMessage $message */
-        $message = array_shift($messages);
-
-        // Two mails have been sent
-        $this->assertCount(5, $message->getRecipients());
+        $this->assertMailCountForClass(1, CitizenActionCancellationMail::class);
     }
 
     public function testOrganizerCanSeeParticipants()
@@ -330,7 +324,7 @@ class CitizenActionManagerControllerTest extends WebTestCase
         $this->seeFlashMessage($crawler, 'Félicitations, votre message a bien été envoyé aux inscrits sélectionnés.');
 
         // Email should have been sent
-        $this->assertCount(1, $this->getEmailRepository()->findMessages(CitizenActionContactParticipantsMessage::class));
+        $this->assertMailCountForClass(1, CitizenActionContactParticipantsMail::class);
 
         // Try to illegally contact an adherent
         $uuids[] = Uuid::uuid4();
