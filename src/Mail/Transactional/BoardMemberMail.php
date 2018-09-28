@@ -17,6 +17,7 @@ final class BoardMemberMail extends CampaignMail
     use AdherentMailTrait;
 
     private const SENDER_EMAIL = 'jemarche@en-marche.fr';
+    private const SENDER_NAME = 'Je Marche';
 
     public static function createTemplateVarsFrom(BoardMemberMessage $message): array
     {
@@ -33,7 +34,7 @@ final class BoardMemberMail extends CampaignMail
     public static function createRecipientsFrom(BoardMemberMessage $message): array
     {
         return array_merge(
-            [new Recipient('jemarche@en-marche.fr', 'Je Marche')],
+            [new Recipient(self::SENDER_EMAIL, self::SENDER_NAME)],
             array_map(
                 function (Adherent $adherent) {
                     return self::createRecipientFromAdherent($adherent, []);
