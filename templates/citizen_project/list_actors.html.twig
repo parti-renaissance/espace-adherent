@@ -1,7 +1,7 @@
 {% extends 'citizen_project/_layout.html.twig' %}
 
 {% block page_title "Acteurs du projet citoyen #{citizen_project.name}" %}
-{% block meta_description "Découvrez les #{citizen_project.membersCounts|length} acteurs de #{citizen_project.name}, une action créée dans le cadre des projets citoyens de La République En Marche ! et portée à #{citizen_project.cityName}." %}
+{% block meta_description "Découvrez les #{citizen_project.membersCount} acteurs de #{citizen_project.name}, une action créée dans le cadre des projets citoyens de La République En Marche ! et portée à #{citizen_project.cityName}." %}
 
 {% block javascripts %}
     {{ parent() }}
