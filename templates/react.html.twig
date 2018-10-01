@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title reactApp.title %}
+
+{% block stylesheets %}
+    <style>
+        .react-app-loader {
+            text-align: center;
+            padding: 120px 0 200px 0;
+        }
+    </style>
+
+    {% for css in manifest.css %}
+        <link rel="stylesheet" type="text/css" href="{{ asset(css) }}" />
+    {% endfor %}
+{% endblock %}
+
+{% block final_javascripts %}
+    <script type="text/javascript">
+        var config = {
+            env: '{{ app.environment }}',
+            staging: {{ enable_canary ? 'true' : 'false' }},
+        };
+    </script>
+
+    {% for js in manifest.js %}
+        <script type="text/javascript" src="{{ asset(js) }}"></script>
+    {% endfor %}
+{% endblock %}
+
+{% block content %}
+    <noscript>Vous devez activer Javascript pour voir cette page.</noscript>
+
+    <div id="root">
+        <div class="react-app-loader">
+            <img src="{{ asset('images/loader-sm.gif') }}" />
+            <br />
+            Chargement ...
+        </div>
+    </div>
+{% endblock %}

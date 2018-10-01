@@ -34,17 +34,6 @@ use Symfony\Component\HttpFoundation\Response;
 class CitizenProjectController extends Controller
 {
     /**
-     * @Route("", name="app_citizen_project_landing")
-     * @Route("/decouvrir", name="app_citizen_project_discover")
-     * @Route("/recherche", name="app_citizen_project_search")
-     * @Method("GET")
-     */
-    public function reactAction(): Response
-    {
-        return $this->render('citizen_project/landing.html.twig');
-    }
-
-    /**
      * @Route("/aide", name="app_citizen_project_help")
      * @Method("GET|POST")
      */

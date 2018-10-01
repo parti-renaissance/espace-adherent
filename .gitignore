@@ -6,7 +6,6 @@
 /app/data/dumped_referents_users
 /templates/amp/style.css.twig
 /build/
-/node_modules/
 /var/
 /vendor/
 /web/bundles/
@@ -22,3 +21,4 @@
 /.php_cs
 /.docker-dev.md5
 /behat.yml
+node_modules

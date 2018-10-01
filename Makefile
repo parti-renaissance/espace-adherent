@@ -106,6 +106,9 @@ assets-prod: node_modules                                                       
 assets-amp: node_modules                                                                               ## Build the production version of the AMP CSS
 	$(EXEC) yarn build-amp
 
+assets-apps: node_modules                                                                              ## Build the production version of the React apps
+	$(EXEC) yarn build-apps
+
 
 ##
 ## Tests
@@ -124,7 +127,7 @@ tu: vendor app/config/assets_version.yml                                        
 
 tf: tfp test-behat test-phpunit-functional                                                             ## Run the PHP functional tests
 
-tfp: assets-amp assets-prod vendor perm tfp-rabbitmq tfp-db                                            ## Prepare the PHP functional tests
+tfp: assets-amp assets-prod assets-apps vendor perm tfp-rabbitmq tfp-db                                ## Prepare the PHP functional tests
 
 tfp-rabbitmq: wait-for-rabbitmq                                                                        ## Init RabbitMQ setup for tests
 	$(DOCKER_COMPOSE) exec rabbitmq rabbitmqctl add_vhost /test || true
