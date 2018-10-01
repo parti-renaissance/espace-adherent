@@ -235,7 +235,7 @@ class CitizenProject extends BaseGroup
         $this->turnkeyProject = $turnkeyProject;
         $this->phone = $phone;
         $this->status = $status;
-        $this->membersCounts = $membersCount;
+        $this->membersCount = $membersCount;
         $this->approvedAt = $approvedAt;
         $this->createdAt = $createdAt;
         $this->updatedAt = $createdAt;

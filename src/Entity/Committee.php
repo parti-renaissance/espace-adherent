@@ -149,7 +149,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         $this->postAddress = $address;
         $this->phone = $phone;
         $this->status = $status;
-        $this->membersCounts = $membersCount;
+        $this->membersCount = $membersCount;
         $this->approvedAt = $approvedAt;
         $this->createdAt = $createdAt;
         $this->updatedAt = $createdAt;
