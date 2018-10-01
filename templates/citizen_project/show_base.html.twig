@@ -53,6 +53,13 @@
                         {{ 'citizen_project.edit_project'|trans }}
                     </a>
                 </li>
+                {% if not citizen_project.isApproved %}
+                    <li>
+                        <a href="{{ path('app_citizen_project_image_generator') }}" class="text--body link--newblue">
+                            {{ 'citizen_project.create_image'|trans }}
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </nav>
     {% endif %}

@@ -5,9 +5,10 @@ namespace AppBundle\Form;
 use AppBundle\CitizenProject\CitizenProjectCommand;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
+use AppBundle\Entity\CitizenProjectSkill;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
-use AppBundle\Form\DataTransformer\CitizenProjectSkillTransformer;
 use AppBundle\Form\DataTransformer\CommitteeTransformer;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -20,12 +21,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CitizenProjectCommandType extends AbstractType
 {
-    private $citizenProjectSkillTransformer;
     private $committeeTransformer;
 
-    public function __construct(CitizenProjectSkillTransformer $citizenProjectSkillTransformer, CommitteeTransformer $committeeTransformer)
+    public function __construct(CommitteeTransformer $committeeTransformer)
     {
-        $this->citizenProjectSkillTransformer = $citizenProjectSkillTransformer;
         $this->committeeTransformer = $committeeTransformer;
     }
 
@@ -82,21 +81,12 @@ class CitizenProjectCommandType extends AbstractType
             ->add('phone', PhoneNumberType::class, [
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
             ])
-            ->add('skills', CollectionType::class, [
+            ->add('skills', EntityType::class, [
+                'label' => 'Choisissez le thème de projet pour faire apparaître les compétences associées',
+                'class' => CitizenProjectSkill::class,
                 'required' => false,
-                'entry_type' => TextType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-            ])
-            ->add('skills_search', TextType::class, [
-                'mapped' => false,
-                'required' => false,
-                'filter_emojis' => true,
-                'attr' => [
-                    'placeholder' => 'Ajouter des compétences',
-                ],
+                'expanded' => true,
+                'multiple' => true,
             ])
             ->add('committees', CollectionType::class, [
                 'required' => false,
@@ -143,7 +133,6 @@ class CitizenProjectCommandType extends AbstractType
             ;
         }
 
-        $builder->get('skills')->addModelTransformer($this->citizenProjectSkillTransformer);
         $builder->get('committees')->addModelTransformer($this->committeeTransformer);
         $builder->get('address')->remove('address');
 
