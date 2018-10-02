@@ -16,9 +16,9 @@ final class CitizenActionNotificationMail extends TransactionalMail implements C
 
     public const SUBJECT = '[Projets citoyens] Une nouvelle action citoyenne au sein de votre projet citoyen !';
 
-    public static function createRecipientsFrom(array $followers): array
+    public static function createRecipients(array $followers): array
     {
-        return \array_map(function (Adherent $adherent) {
+        return array_map(function (Adherent $adherent) {
             return self::createRecipientFromAdherent(
                 $adherent,
                 ['first_name' => StringCleaner::htmlspecialchars($adherent->getFirstName())]
@@ -26,7 +26,7 @@ final class CitizenActionNotificationMail extends TransactionalMail implements C
         }, $followers);
     }
 
-    public static function createTemplateVarsFrom(CitizenAction $action, string $link): array
+    public static function createTemplateVars(CitizenAction $action, string $link): array
     {
         return [
             'host_first_name' => StringCleaner::htmlspecialchars($action->getOrganizerName()),

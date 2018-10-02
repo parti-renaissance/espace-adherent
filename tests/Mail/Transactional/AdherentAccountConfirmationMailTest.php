@@ -12,15 +12,11 @@ class AdherentAccountConfirmationMailTest extends MailTestCase
 {
     public function testCreate(): void
     {
-        $recipient = AdherentAccountConfirmationMail::createRecipientFor(
-            $this->createAdherent('jean@example.com')
-        );
-
         self::assertMessageRecipient(
             'jean@example.com',
             'John Smith',
             ['target_firstname' => 'John'],
-            $recipient
+            AdherentAccountConfirmationMail::createRecipient($this->createAdherent('jean@example.com'))
         );
     }
 }

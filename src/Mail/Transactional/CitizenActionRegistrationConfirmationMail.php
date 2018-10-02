@@ -11,7 +11,7 @@ use EnMarche\MailerBundle\Mail\TransactionalMail;
 
 final class CitizenActionRegistrationConfirmationMail extends TransactionalMail
 {
-    public static function createRecipientFrom(EventRegistration $registration): RecipientInterface
+    public static function createRecipient(EventRegistration $registration): RecipientInterface
     {
         return new Recipient(
             $registration->getEmailAddress(),
@@ -20,7 +20,7 @@ final class CitizenActionRegistrationConfirmationMail extends TransactionalMail
         );
     }
 
-    public static function createTemplateVarsFrom(CitizenAction $action, string $link): array
+    public static function createTemplateVars(CitizenAction $action, string $link): array
     {
         return [
             'citizen_action_name' => StringCleaner::htmlspecialchars($action->getName()),

@@ -12,7 +12,7 @@ class AdherentAccountActivationMailTest extends MailTestCase
 {
     public function testCreate(): void
     {
-        $recipient = AdherentAccountActivationMail::createRecipientFor(
+        $recipient = AdherentAccountActivationMail::createRecipient(
             $this->createAdherent('jean@example.com'),
             'https://enmarche.code/activation/foo-bar'
         );

@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Committee\CommitteeManagementAuthority;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
+use AppBundle\Committee\Feed\CommitteeFeedManager;
 use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\Controller\EntityControllerTrait;
 use AppBundle\Entity\Adherent;
@@ -49,7 +51,7 @@ class CommitteeController extends Controller
             ;
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $this->get('app.committee.feed_manager')->createMessage($message);
+                $this->get(CommitteeFeedManager::class)->createMessage($message);
                 if ($message->isPublished()) {
                     $this->addFlash('info', 'committee.message_published');
                 } else {
@@ -159,13 +161,13 @@ class CommitteeController extends Controller
      * @Method("POST")
      * @Security("is_granted('FOLLOW_COMMITTEE', committee)")
      */
-    public function followAction(Request $request, Committee $committee): Response
+    public function followAction(Request $request, Committee $committee, CommitteeManagementAuthority $managementAuthority): Response
     {
         if (!$this->isCsrfTokenValid('committee.follow', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to follow committee.');
         }
 
-        $this->get('app.committee.authority')->followCommittee($this->getUser(), $committee);
+        $managementAuthority->followCommittee($this->getUser(), $committee);
 
         return new JsonResponse([
             'button' => [
