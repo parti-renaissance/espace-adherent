@@ -4,7 +4,7 @@ export const PINNED = 'PINNED';
 export const TURNKEY_PROJECTS = 'TURNKEY_PROJECTS';
 export const TURNKEY_DETAIL = 'TURNKEY_DETAIL';
 
-const API = `${process.env.REACT_APP_EM_API}/turnkey-projects`;
+const API = '/api/turnkey-projects';
 
 export function getPinned() {
     return {

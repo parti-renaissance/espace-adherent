@@ -20,6 +20,7 @@
         var config = {
             env: '{{ app.environment }}',
             staging: {{ enable_canary ? 'true' : 'false' }},
+            em_api_host: '{{ em_api_host }}',
         };
     </script>
 
