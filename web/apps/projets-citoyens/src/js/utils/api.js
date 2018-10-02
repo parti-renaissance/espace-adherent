@@ -12,7 +12,7 @@ axios.interceptors.response.use(
     r => r,
     (error) => {
         if (error.response && 401 === error.response.status) {
-            window.location = `${process.env.REACT_APP_API_URL}/connexion`;
+            window.location = `${window.config.em_api_host}/connexion`;
         }
         return Promise.reject(error);
     }

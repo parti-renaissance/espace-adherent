@@ -1,5 +1,6 @@
 {
     "name": "citizen-projects",
+    "homepage": "/apps/projets-citoyens/build",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
