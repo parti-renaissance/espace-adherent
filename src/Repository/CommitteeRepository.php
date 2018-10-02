@@ -175,7 +175,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->where($qb->expr()->in('c.uuid', $uuids))
             ->andWhere($qb->expr()->neq('c.status', ':status'))
             ->setParameter('status', Committee::REFUSED)
-            ->orderBy('c.membersCounts', 'DESC')
+            ->orderBy('c.membersCount', 'DESC')
         ;
 
         return new CommitteeCollection($qb->getQuery()->getResult());
@@ -326,7 +326,7 @@ class CommitteeRepository extends ServiceEntityRepository
     {
         $this->createQueryBuilder('c')
             ->update()
-            ->set('c.membersCounts', 'c.membersCounts - 1')
+            ->set('c.membersCount', 'c.membersCount - 1')
             ->where('c.uuid IN (:uuids)')
             ->setParameter('uuids', $adherent->getMemberships()->getCommitteeUuids())
             ->getQuery()

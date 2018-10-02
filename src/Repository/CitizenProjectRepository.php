@@ -47,7 +47,7 @@ class CitizenProjectRepository extends AbstractGroupRepository
         $qb = $this->createQueryBuilder('c')
             ->where('c.uuid IN (:uuids)')
             ->setParameter('uuids', $uuids)
-            ->orderBy('c.membersCounts', 'DESC')
+            ->orderBy('c.membersCount', 'DESC')
         ;
 
         if (self::ONLY_APPROVED === $statusFilter) {
@@ -210,7 +210,7 @@ class CitizenProjectRepository extends AbstractGroupRepository
     {
         $this->createQueryBuilder('p')
              ->update()
-             ->set('p.membersCounts', 'p.membersCounts - 1')
+             ->set('p.membersCount', 'p.membersCount - 1')
              ->where('p.uuid IN (:uuids)')
              ->setParameter('uuids', $adherent->getCitizenProjectMemberships()->getCitizenProjectUuids())
              ->getQuery()

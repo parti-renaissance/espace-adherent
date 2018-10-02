@@ -380,7 +380,7 @@ class CommitteeAdmin extends AbstractAdmin
                 'label' => 'Téléphone',
                 'template' => 'admin/adherent/list_phone.html.twig',
             ])
-            ->add('membersCounts', null, [
+            ->add('membersCount', null, [
                 'label' => 'Membres',
             ])
             ->add('createdAt', null, [

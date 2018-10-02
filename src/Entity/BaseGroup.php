@@ -72,7 +72,7 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
      * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
      * @JMS\SerializedName("membersCount")
      */
-    protected $membersCounts;
+    protected $membersCount;
 
     public function __construct(
         UuidInterface $uuid,
@@ -99,7 +99,7 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
         $this->slug = $slug;
         $this->phone = $phone;
         $this->status = $status;
-        $this->membersCounts = $membersCount;
+        $this->membersCount = $membersCount;
         $this->approvedAt = $approvedAt;
         $this->createdAt = $createdAt;
         $this->updatedAt = $createdAt;
@@ -150,17 +150,17 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
 
     public function getMembersCount(): int
     {
-        return $this->membersCounts;
+        return $this->membersCount;
     }
 
     public function incrementMembersCount(int $increment = 1): void
     {
-        $this->membersCounts += $increment;
+        $this->membersCount += $increment;
     }
 
     public function decrementMembersCount(int $increment = 1): void
     {
-        $this->membersCounts -= $increment;
+        $this->membersCount -= $increment;
     }
 
     /**

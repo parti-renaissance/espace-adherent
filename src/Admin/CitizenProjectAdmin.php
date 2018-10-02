@@ -393,7 +393,7 @@ class CitizenProjectAdmin extends AbstractAdmin
                 'label' => 'Organisateur(s)',
                 'template' => 'admin/citizen_project/list_administrators.html.twig',
             ])
-            ->add('membersCounts', null, [
+            ->add('membersCount', null, [
                 'label' => 'Membres',
             ])
             ->add('postAddress.cityName', null, [
@@ -435,7 +435,7 @@ class CitizenProjectAdmin extends AbstractAdmin
             'Date de création' => 'createdAt',
             'Catégorie' => 'category',
             'Créateur' => 'createdBy',
-            'Membres' => 'membersCounts',
+            'Membres' => 'membersCount',
             'Ville' => 'postAddress.cityName',
             'Compétences recherchées' => 'exportSkills',
             'Compétences matchées' => 'matchedSkills',
