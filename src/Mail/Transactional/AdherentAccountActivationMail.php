@@ -12,11 +12,7 @@ class AdherentAccountActivationMail extends TransactionalMail
 {
     use AdherentMailTrait;
 
-    /*
-     * Not inheriting or overriding or implementing anything here. This is just about transforming model to an instance
-     * of RecipientInterface.
-     */
-    public static function createRecipientFor(Adherent $adherent, string $activationUrl): RecipientInterface
+    public static function createRecipient(Adherent $adherent, string $activationUrl): RecipientInterface
     {
         return self::createRecipientFromAdherent($adherent, [
             'first_name' => StringCleaner::htmlspecialchars($adherent->getFirstName()),

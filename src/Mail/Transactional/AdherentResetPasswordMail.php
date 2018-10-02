@@ -12,7 +12,7 @@ final class AdherentResetPasswordMail extends TransactionalMail
 {
     use AdherentMailTrait;
 
-    public static function createRecipientFor(Adherent $adherent, string $resetPasswordLink): RecipientInterface
+    public static function createRecipient(Adherent $adherent, string $resetPasswordLink): RecipientInterface
     {
         return self::createRecipientFromAdherent($adherent, [
             'first_name' => StringCleaner::htmlspecialchars($adherent->getFirstName()),

@@ -19,7 +19,7 @@ final class BoardMemberMail extends CampaignMail
     private const SENDER_EMAIL = 'jemarche@en-marche.fr';
     private const SENDER_NAME = 'Je Marche';
 
-    public static function createTemplateVarsFrom(BoardMemberMessage $message): array
+    public static function createTemplateVars(BoardMemberMessage $message): array
     {
         return [
             'member_firstname' => StringCleaner::htmlspecialchars($message->getFrom()->getFirstName()),
@@ -31,25 +31,25 @@ final class BoardMemberMail extends CampaignMail
     /**
      * @return RecipientInterface[]
      */
-    public static function createRecipientsFrom(BoardMemberMessage $message): array
+    public static function createRecipients(BoardMemberMessage $message): array
     {
         return array_merge(
             [new Recipient(self::SENDER_EMAIL, self::SENDER_NAME)],
             array_map(
                 function (Adherent $adherent) {
-                    return self::createRecipientFromAdherent($adherent, []);
+                    return self::createRecipientFromAdherent($adherent);
                 },
                 $message->getRecipients()
             )
         );
     }
 
-    public static function createReplyToFrom(BoardMemberMessage $message): RecipientInterface
+    public static function createReplyTo(BoardMemberMessage $message): RecipientInterface
     {
         return new Recipient($message->getFrom()->getEmailAddress(), $message->getFrom()->getFullName());
     }
 
-    public static function createSenderFrom(BoardMemberMessage $message): SenderInterface
+    public static function createSender(BoardMemberMessage $message): SenderInterface
     {
         return new Sender(self::SENDER_EMAIL, $message->getFrom()->getFullName());
     }

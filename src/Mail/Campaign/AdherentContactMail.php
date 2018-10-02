@@ -12,13 +12,11 @@ final class AdherentContactMail extends CampaignMail
 {
     use AdherentMailTrait;
 
-    public static function createRecipientFor(ContactMessage $contactMessage): RecipientInterface
+    public static function createRecipient(ContactMessage $contactMessage): RecipientInterface
     {
-        $recipient = $contactMessage->getTo();
-
-        return self::createRecipientFromAdherent($recipient, [
+        return self::createRecipientFromAdherent($contactMessage->getTo(), [
             'member_firstname' => StringCleaner::htmlspecialchars($contactMessage->getFrom()->getFirstName()),
-            'target_message' => \nl2br(StringCleaner::htmlspecialchars($contactMessage->getContent())),
+            'target_message' => nl2br(StringCleaner::htmlspecialchars($contactMessage->getContent())),
         ]);
     }
 }

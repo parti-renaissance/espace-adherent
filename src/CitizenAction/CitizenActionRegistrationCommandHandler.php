@@ -45,9 +45,9 @@ class CitizenActionRegistrationCommandHandler
 
         $this->mailPost->address(
             CitizenActionRegistrationConfirmationMail::class,
-            CitizenActionRegistrationConfirmationMail::createRecipientFrom($registration),
+            CitizenActionRegistrationConfirmationMail::createRecipient($registration),
             null,
-            CitizenActionRegistrationConfirmationMail::createTemplateVarsFrom(
+            CitizenActionRegistrationConfirmationMail::createTemplateVars(
                 $registration->getEvent(),
                 $this->generateUrl('app_citizen_action_export_ical', [
                     'slug' => $command->getEvent()->getSlug(),

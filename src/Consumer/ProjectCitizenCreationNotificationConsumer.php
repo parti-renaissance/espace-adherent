@@ -4,7 +4,6 @@ namespace AppBundle\Consumer;
 
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
-use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Repository\CitizenProjectRepository;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
@@ -75,12 +74,13 @@ class ProjectCitizenCreationNotificationConsumer extends AbstractConsumer
 
         try {
             do {
-                $adherents = $this->citizenProjectManager->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject, $offset)->getIterator();
+                $adherents = $this->citizenProjectManager->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject, $offset);
 
-                /** @var Adherent $adherent */
-                foreach ($adherents as $adherent) {
-                    $this->citizenProjectMessageNotifier->sendAdherentNotificationCreation($adherent, $citizenProject, $creator);
-                }
+                $this->citizenProjectMessageNotifier->sendAdherentNotificationCreation(
+                    iterator_to_array($adherents->getIterator()),
+                    $citizenProject,
+                    $creator
+                );
 
                 $offset += CitizenProjectMessageNotifier::NOTIFICATION_PER_PAGE;
             } while ($offset <= $totalAdherent);

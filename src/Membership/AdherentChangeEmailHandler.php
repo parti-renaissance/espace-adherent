@@ -57,7 +57,7 @@ class AdherentChangeEmailHandler
     {
         $this->mailPost->address(
             AdherentChangeEmailMail::class,
-            AdherentChangeEmailMail::createRecipientFor(
+            AdherentChangeEmailMail::createRecipient(
                 $adherent,
                 $this->urlGenerator->generate(
                     'user_validate_new_email',

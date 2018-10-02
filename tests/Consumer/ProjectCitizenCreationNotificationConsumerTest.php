@@ -150,7 +150,7 @@ class ProjectCitizenCreationNotificationConsumerTest extends TestCase
         $citizenProjectManager->expects($this->exactly(3))->method('findAdherentNearCitizenProjectOrAcceptAllNotification')->willReturn($paginator);
         $citizenProjectManager->expects($this->once())->method('getCitizenProjectCreator')->with($citizenProject)->willReturn($this->createMock(Adherent::class));
         $citizenProjectMessageNotifier = $this->createMock(CitizenProjectMessageNotifier::class);
-        $citizenProjectMessageNotifier->expects($this->exactly(CitizenProjectMessageNotifier::NOTIFICATION_PER_PAGE + 1))->method('sendAdherentNotificationCreation');
+        $citizenProjectMessageNotifier->expects($this->exactly(2))->method('sendAdherentNotificationCreation');
 
         $projectCitizenCreationNotificationConsumer = new ProjectCitizenCreationNotificationConsumer($this->validator, $this->entityManager);
 

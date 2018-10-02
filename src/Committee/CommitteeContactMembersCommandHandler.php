@@ -2,32 +2,29 @@
 
 namespace AppBundle\Committee;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CommitteeContactMembersMessage;
+use AppBundle\Mail\Campaign\CommitteeContactMembersMail;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 
 class CommitteeContactMembersCommandHandler
 {
-    private $mailer;
+    private $mailPost;
 
-    public function __construct(MailerService $mailer)
+    public function __construct(MailPostInterface $mailPost)
     {
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
     }
 
     public function handle(CommitteeContactMembersCommand $command): void
     {
-        $chunks = array_chunk(
-            array_merge([$command->getSender()], $command->getRecipients()),
-            MailerService::PAYLOAD_MAXSIZE
-        );
+        $author = $command->getSender();
 
-        foreach ($chunks as $chunk) {
-            $this->mailer->sendMessage(CommitteeContactMembersMessage::create(
-                $chunk,
-                $command->getSender(),
-                $command->getSubject(),
-                $command->getMessage()
-            ));
-        }
+        $this->mailPost->address(
+            CommitteeContactMembersMail::class,
+            CommitteeContactMembersMail::createRecipients(array_merge([$author], $command->getRecipients())),
+            CommitteeContactMembersMail::createRecipientFromAdherent($author),
+            CommitteeContactMembersMail::createTemplateVars($author, $command->getMessage()),
+            CommitteeContactMembersMail::createSubject($command->getSubject()),
+            CommitteeContactMembersMail::createSender($author)
+        );
     }
 }

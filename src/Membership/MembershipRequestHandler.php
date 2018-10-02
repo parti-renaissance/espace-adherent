@@ -90,7 +90,7 @@ class MembershipRequestHandler
 
         $this->mailPost->address(
             $mailClass,
-            $mailClass::createRecipientFor($adherent, $activationUrl)
+            $mailClass::createRecipient($adherent, $activationUrl)
         );
 
         return true;
@@ -141,7 +141,7 @@ class MembershipRequestHandler
     {
         $this->mailPost->address(
             AdherentAccountConfirmationMail::class,
-            AdherentAccountConfirmationMail::createRecipientFor($adherent)
+            AdherentAccountConfirmationMail::createRecipient($adherent)
         );
     }
 
@@ -188,7 +188,7 @@ class MembershipRequestHandler
 
         $this->mailPost->address(
             AdherentTerminateMembershipMail::class,
-            AdherentTerminateMembershipMail::createRecipientFor($adherent)
+            AdherentTerminateMembershipMail::createRecipient($adherent)
         );
 
         $this->dispatcher->dispatch(UserEvents::USER_DELETED, new UserEvent($adherent));
