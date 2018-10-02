@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\CitizenProject\CitizenProjectPermissions;
 use AppBundle\Committee\CommitteeCreationCommand;
+use AppBundle\Committee\CommitteeCreationCommandHandler;
 use AppBundle\Contact\ContactMessage;
 use AppBundle\Contact\ContactMessageHandler;
 use AppBundle\Entity\Adherent;
@@ -102,14 +103,14 @@ class AdherentController extends Controller
      * @Method("GET|POST")
      * @Security("is_granted('CREATE_COMMITTEE')")
      */
-    public function createCommitteeAction(Request $request): Response
+    public function createCommitteeAction(Request $request, CommitteeCreationCommandHandler $commandHandler): Response
     {
         $command = CommitteeCreationCommand::createFromAdherent($user = $this->getUser());
         $form = $this->createForm(CreateCommitteeCommandType::class, $command);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.committee.creation_handler')->handle($command);
+            $commandHandler->handle($command);
             $this->addFlash('info', 'committee.creation.success');
 
             return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $command->getCommittee()->getSlug()]));

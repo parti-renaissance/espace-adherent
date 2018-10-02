@@ -3,9 +3,9 @@
 namespace AppBundle\Committee;
 
 use AppBundle\Events;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CommitteeCreationConfirmationMessage;
+use AppBundle\Mail\Transactional\CommitteeCreationConfirmationMail;
 use AppBundle\Referent\ReferentTagManager;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeCreationCommandHandler
@@ -13,7 +13,7 @@ class CommitteeCreationCommandHandler
     private $dispatcher;
     private $factory;
     private $manager;
-    private $mailer;
+    private $mailPost;
     private $photoManager;
     private $referentTagManager;
 
@@ -21,14 +21,14 @@ class CommitteeCreationCommandHandler
         EventDispatcherInterface $dispatcher,
         CommitteeFactory $factory,
         CommitteeManager $manager,
-        MailerService $mailer,
+        MailPostInterface $mailPost,
         PhotoManager $photoManager,
         ReferentTagManager $referentTagManager
     ) {
         $this->dispatcher = $dispatcher;
         $this->factory = $factory;
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
         $this->photoManager = $photoManager;
         $this->referentTagManager = $referentTagManager;
     }
@@ -48,7 +48,12 @@ class CommitteeCreationCommandHandler
 
         $this->dispatcher->dispatch(Events::COMMITTEE_CREATED, new CommitteeEvent($committee));
 
-        $message = CommitteeCreationConfirmationMessage::create($adherent, $committee->getCityName());
-        $this->mailer->sendMessage($message);
+        $this->mailPost->address(
+            CommitteeCreationConfirmationMail::class,
+            CommitteeCreationConfirmationMail::createRecipientFromAdherent($adherent),
+            null,
+            CommitteeCreationConfirmationMail::createTemplateVars($adherent, $committee),
+            CommitteeCreationConfirmationMail::SUBJECT
+        );
     }
 }

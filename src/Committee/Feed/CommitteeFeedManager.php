@@ -5,24 +5,21 @@ namespace AppBundle\Committee\Feed;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CommitteeMessageNotificationMessage;
+use AppBundle\Mail\Campaign\CommitteeMessageNotificationMail;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 
 class CommitteeFeedManager
 {
     private $manager;
     private $committeeManager;
-    private $mailer;
-    private $urlGenerator;
+    private $mailPost;
 
-    public function __construct(ObjectManager $manager, CommitteeManager $committeeManager, MailerService $mailer, UrlGeneratorInterface $urlGenerator)
+    public function __construct(ObjectManager $manager, CommitteeManager $committeeManager, MailPostInterface $mailPost)
     {
         $this->manager = $manager;
         $this->committeeManager = $committeeManager;
-        $this->mailer = $mailer;
-        $this->urlGenerator = $urlGenerator;
+        $this->mailPost = $mailPost;
     }
 
     public function createEvent(CommitteeEvent $event): CommitteeFeedItem
@@ -62,21 +59,15 @@ class CommitteeFeedManager
 
     private function sendMessageToFollowers(CommitteeFeedItem $message, Committee $committee, string $subject): void
     {
-        foreach ($this->getOptinCommitteeFollowersChunks($committee) as $chunk) {
-            $this->mailer->sendMessage(CommitteeMessageNotificationMessage::create($chunk, $message, $subject));
-        }
-    }
-
-    private function getOptinCommitteeFollowersChunks(Committee $committee)
-    {
-        return array_chunk(
-            $this->committeeManager->getOptinCommitteeFollowers($committee)->toArray(),
-            MailerService::PAYLOAD_MAXSIZE
+        $this->mailPost->address(
+            CommitteeMessageNotificationMail::class,
+            CommitteeMessageNotificationMail::createRecipientsFrom(
+                $this->committeeManager->getOptinCommitteeFollowers($committee)->toArray()
+            ),
+            CommitteeMessageNotificationMail::createRecipientFromAdherent($message->getAuthor()),
+            CommitteeMessageNotificationMail::createTemplateVars($message),
+            CommitteeMessageNotificationMail::createSubject($subject),
+            CommitteeMessageNotificationMail::createSender($message->getAuthor())
         );
-    }
-
-    private function generateUrl(string $route, array $params = []): string
-    {
-        return $this->urlGenerator->generate($route, $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 }

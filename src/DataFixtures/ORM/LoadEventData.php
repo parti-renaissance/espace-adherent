@@ -504,7 +504,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
 
     private function getCommitteeFeedManager(): CommitteeFeedManager
     {
-        return $this->container->get('app.committee.feed_manager');
+        return $this->container->get(CommitteeFeedManager::class);
     }
 
     private function getEventFactory(): EventFactory

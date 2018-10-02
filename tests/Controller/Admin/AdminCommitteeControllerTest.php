@@ -4,8 +4,9 @@ namespace Tests\AppBundle\Controller\Admin;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadAdminData;
-use AppBundle\Mailer\Message\CommitteeApprovalConfirmationMessage;
-use AppBundle\Mailer\Message\CommitteeApprovalReferentMessage;
+use AppBundle\Mail\Transactional\CommitteeApprovalConfirmationMail;
+use AppBundle\Mail\Transactional\CommitteeApprovalReferentMail;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -17,7 +18,8 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
  */
 class AdminCommitteeControllerTest extends WebTestCase
 {
-    use ControllerTestTrait;
+    use ControllerTestTrait,
+        MailTestCaseTrait;
 
     private $committeeRepository;
 
@@ -37,8 +39,8 @@ class AdminCommitteeControllerTest extends WebTestCase
         $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
 
         $this->assertTrue($committee->isApproved());
-        $this->assertCountMails(1, CommitteeApprovalConfirmationMessage::class, 'benjyd@aol.com');
-        $this->assertCountMails(1, CommitteeApprovalReferentMessage::class, 'referent@en-marche-dev.fr');
+        $this->assertMailSentForRecipient('benjyd@aol.com', CommitteeApprovalConfirmationMail::class);
+        $this->assertMailSentForRecipient('referent@en-marche-dev.fr', CommitteeApprovalReferentMail::class);
     }
 
     protected function setUp()

@@ -7,8 +7,9 @@ use AppBundle\DataFixtures\ORM\LoadCitizenProjectCommentData;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\Entity\CitizenProject;
-use AppBundle\Mailer\Message\CitizenProjectCommentMessage;
-use AppBundle\Mailer\Message\CitizenProjectNewFollowerMessage;
+use AppBundle\Mail\Transactional\CitizenProjectCommentMail;
+use AppBundle\Mail\Transactional\CitizenProjectNewFollowerMail;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +20,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CitizenProjectControllerTest extends AbstractGroupControllerTest
 {
+    use MailTestCaseTrait;
+
     public function testAnonymousUserCanSeeAnApprovedCitizenProject(): void
     {
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8');
@@ -190,7 +193,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
             ['Carl Mirabeau', 'Jean-Paul à Maurice : tout va bien ! Je répète ! Tout va bien !'],
             ['Lucie Olivera', 'Maurice à Jean-Paul : tout va bien aussi !'],
         ]);
-        $this->assertCountMails(1, CitizenProjectCommentMessage::class, 'jacques.picard@en-marche.fr');
+        $this->assertMailSentForRecipient('jacques.picard@en-marche.fr', CitizenProjectCommentMail::class);
     }
 
     public function testAjaxSearchCommittee()
@@ -415,7 +418,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->client->request(Request::METHOD_POST, $citizenProjectUrl.'/rejoindre', ['token' => $token]);
 
         // Email sent to the host
-        $this->assertCountMails(1, CitizenProjectNewFollowerMessage::class, 'jacques.picard@en-marche.fr');
+        $this->assertMailSentForRecipient('jacques.picard@en-marche.fr', CitizenProjectNewFollowerMail::class);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -542,10 +545,12 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
             LoadCitizenProjectCommentData::class,
             LoadCitizenActionData::class,
         ]);
+        $this->clearMails();
     }
 
     protected function tearDown()
     {
+        $this->clearMails();
         $this->kill();
 
         parent::tearDown();

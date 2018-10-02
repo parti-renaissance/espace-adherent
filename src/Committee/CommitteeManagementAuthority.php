@@ -4,37 +4,46 @@ namespace AppBundle\Committee;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CommitteeApprovalConfirmationMessage;
-use AppBundle\Mailer\Message\CommitteeApprovalReferentMessage;
+use AppBundle\Mail\Transactional\CommitteeApprovalConfirmationMail;
+use AppBundle\Mail\Transactional\CommitteeApprovalReferentMail;
 use AppBundle\Mailer\Message\CommitteeNewFollowerMessage;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CommitteeManagementAuthority
 {
     private $manager;
-    private $mailer;
+    private $mailPost;
     private $urlGenerator;
 
     public function __construct(
         CommitteeManager $manager,
         UrlGeneratorInterface $urlGenerator,
-        MailerService $mailer
+        MailPostInterface $mailPost
     ) {
         $this->manager = $manager;
-        $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
+        $this->mailPost = $mailPost;
     }
 
     public function approve(Committee $committee): void
     {
         $this->manager->approveCommittee($committee);
 
-        $this->mailer->sendMessage(CommitteeApprovalConfirmationMessage::create(
-            $this->manager->getCommitteeCreator($committee),
-            $committee->getCityName(),
-            $this->urlGenerator->generate('app_committee_show', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
-        ));
+        $this->mailPost->address(
+            CommitteeApprovalConfirmationMail::class,
+            CommitteeApprovalConfirmationMail::createRecipientFrom($this->manager->getCommitteeCreator($committee)),
+            null,
+            CommitteeApprovalConfirmationMail::createTemplateVars(
+                $committee,
+                $this->urlGenerator->generate(
+                    'app_committee_show',
+                    ['slug' => $committee->getSlug()],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                )
+            ),
+            CommitteeApprovalConfirmationMail::SUBJECT
+        );
     }
 
     public function notifyReferentsForApproval(Committee $committee): void
@@ -45,6 +54,10 @@ class CommitteeManagementAuthority
             throw new MultipleReferentsFoundException($referents);
         }
 
+        if (0 === $referents->count()) {
+            return;
+        }
+
         $animator = $this->manager->getCommitteeCreator($committee);
         $animatorLink = $this->urlGenerator->generate('app_adherent_contact', [
             'uuid' => (string) $animator->getUuid(),
@@ -52,14 +65,13 @@ class CommitteeManagementAuthority
             'id' => (string) $committee->getUuid(),
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        foreach ($referents as $referent) {
-            $this->mailer->sendMessage(CommitteeApprovalReferentMessage::create(
-                $referent,
-                $animator,
-                $committee,
-                $animatorLink
-            ));
-        }
+        $this->mailPost->address(
+            CommitteeApprovalReferentMail::class,
+            CommitteeApprovalReferentMail::createRecipientFrom($referents->first()),
+            null,
+            CommitteeApprovalReferentMail::createTemplateVars($committee, $animator, $animatorLink),
+            CommitteeApprovalReferentMail::SUBJECT
+        );
     }
 
     public function preApprove(Committee $committee): void

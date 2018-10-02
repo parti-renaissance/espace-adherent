@@ -2,32 +2,29 @@
 
 namespace AppBundle\CitizenProject;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CitizenProjectContactActorsMessage;
+use AppBundle\Mail\Campaign\CitizenProjectContactActorsMail;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 
 class CitizenProjectContactActorsCommandHandler
 {
-    private $mailer;
+    private $mailPost;
 
-    public function __construct(MailerService $mailer)
+    public function __construct(MailPostInterface $mailPost)
     {
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
     }
 
     public function handle(CitizenProjectContactActorsCommand $command): void
     {
-        $chunks = array_chunk(
-            array_merge([$command->getSender()], $command->getRecipients()),
-            MailerService::PAYLOAD_MAXSIZE
-        );
+        $author = $command->getSender();
 
-        foreach ($chunks as $chunk) {
-            $this->mailer->sendMessage(CitizenProjectContactActorsMessage::create(
-                $chunk,
-                $command->getSender(),
-                $command->getSubject(),
-                $command->getMessage()
-            ));
-        }
+        $this->mailPost->address(
+            CitizenProjectContactActorsMail::class,
+            CitizenProjectContactActorsMail::createRecipientsFrom(array_merge([$author], $command->getRecipients())),
+            CitizenProjectContactActorsMail::createRecipientFromAdherent($author),
+            CitizenProjectContactActorsMail::createTemplateVars($author, $command->getMessage()),
+            CitizenProjectContactActorsMail::createSubject($command->getSubject()),
+            CitizenProjectContactActorsMail::createSender($author)
+        );
     }
 }

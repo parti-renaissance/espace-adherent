@@ -8,7 +8,7 @@ use AppBundle\Utils\StringCleaner;
 use EnMarche\MailerBundle\Mail\RecipientInterface;
 use EnMarche\MailerBundle\Mail\TransactionalMail;
 
-class AdherentResetPasswordConfirmationMail extends TransactionalMail
+final class AdherentResetPasswordConfirmationMail extends TransactionalMail
 {
     use AdherentMailTrait;
 

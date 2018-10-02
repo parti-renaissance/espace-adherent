@@ -19,27 +19,9 @@ Feature: Manage citizen projects from admin pannel
     And "api_sync" should have message below:
       | routing_key             | body                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
       | citizen_project.updated | {"uuid":"552934ed-2ac6-4a3a-a490-ddc8bf959444","status":"APPROVED","membersCount":1,"name":"Le projet citoyen \u00e0 Marseille","slug":"13003-le-projet-citoyen-a-marseille","category":"Education, culture et citoyennet\u00e9","country":"FR","address":"26 Boulevard Louis Guichoux","zipCode":"13003","city":"Marseille 3e","subtitle":"Le projet citoyen \u00e0 Marseille !","author":"Benjamin D.","thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/citizen_projects\/default.png"} |
-    And I should have 1 email
-    And I should have 1 email "CitizenProjectApprovalConfirmationMessage" for "benjyd@aol.com" with payload:
-    """
-    {
-      "FromEmail": "projetscitoyens@en-marche.fr",
-      "FromName": "En Marche !",
-      "Subject": "Votre projet citoyen a \u00e9t\u00e9 publi\u00e9. \u00c0 vous de jouer !",
-      "MJ-TemplateID": "244444",
-      "MJ-TemplateLanguage": true,
-      "Recipients": [
-        {
-          "Email": "benjyd@aol.com",
-            "Name": "Benjamin Duroc",
-            "Vars": {
-              "citizen_project_name":"Le projet citoyen à Marseille",
-              "target_firstname":"Benjamin"
-            }
-        }
-      ]
-    }
-    """
+    And I should have 1 email "AppBundle\Mail\Transactional\CitizenProjectApprovalConfirmationMail" for "benjyd@aol.com" with vars:
+      | citizen_project_name | Le projet citoyen à Marseille |
+      | target_firstname     | Benjamin                      |
 
     When I am on "/projets-citoyens/13003-le-projet-citoyen-a-marseille"
     And the response status code should be 200
