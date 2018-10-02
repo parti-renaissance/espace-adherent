@@ -12,7 +12,7 @@ final class AdherentAccountConfirmationMail extends TransactionalMail
 {
     use AdherentMailTrait;
 
-    public static function createRecipientFor(Adherent $adherent): RecipientInterface
+    public static function createRecipient(Adherent $adherent): RecipientInterface
     {
         return self::createRecipientFromAdherent($adherent, [
             'target_firstname' => StringCleaner::htmlspecialchars($adherent->getFirstName()),

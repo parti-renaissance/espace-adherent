@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Committee\CommitteeCommand;
 use AppBundle\Committee\CommitteeContactMembersCommand;
+use AppBundle\Committee\CommitteeContactMembersCommandHandler;
 use AppBundle\Entity\Adherent;
 use AppBundle\Event\EventCommand;
 use AppBundle\Committee\Serializer\AdherentCsvSerializer;
@@ -153,7 +154,7 @@ class CommitteeManagerController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.committee.contact_members_handler')->handle($command);
+            $this->get(CommitteeContactMembersCommandHandler::class)->handle($command);
             $this->addFlash('info', 'committee.contact_members.success');
 
             return $this->redirectToRoute('app_committee_manager_list_members', [

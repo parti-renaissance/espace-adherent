@@ -6,8 +6,9 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Mailer\Message\CommitteeNewFollowerMessage;
 use AppBundle\Entity\Committee;
+use AppBundle\Mail\Transactional\CommitteeNewFollowerMail;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CommitteeControllerTest extends AbstractGroupControllerTest
 {
+    use MailTestCaseTrait;
+
     private $committeeRepository;
 
     public function testRedirectionComiteFromOldUrl()
@@ -123,7 +126,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $this->client->request(Request::METHOD_POST, $committeeUrl.'/rejoindre', ['token' => $token]);
 
         // Email sent to the host
-        $this->assertCountMails(1, CommitteeNewFollowerMessage::class, 'francis.brioul@yahoo.com');
+        $this->assertMailSentForRecipient('francis.brioul@yahoo.com', CommitteeNewFollowerMail::class);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -547,7 +550,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
             LoadEventCategoryData::class,
             LoadEventData::class,
         ]);
-
+        $this->clearMails();
         $this->committeeRepository = $this->getCommitteeRepository();
     }
 

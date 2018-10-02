@@ -17,7 +17,7 @@ final class CitizenActionCancellationMail extends TransactionalMail implements C
 
     public const SUBJECT = '[Action citoyenne] Une action citoyenne à laquelle vous participez vient d\'être annulée.';
 
-    public static function createRecipientsFrom(EventRegistrationCollection $subscriptions): array
+    public static function createRecipients(EventRegistrationCollection $subscriptions): array
     {
         return $subscriptions
             ->map(function (EventRegistration $registration) {
@@ -31,7 +31,7 @@ final class CitizenActionCancellationMail extends TransactionalMail implements C
         ;
     }
 
-    public static function createTemplateVarsFrom(CitizenAction $action, string $eventLink): array
+    public static function createTemplateVars(CitizenAction $action, string $eventLink): array
     {
         return [
             'citizen_action_name' => StringCleaner::htmlspecialchars($action->getName()),

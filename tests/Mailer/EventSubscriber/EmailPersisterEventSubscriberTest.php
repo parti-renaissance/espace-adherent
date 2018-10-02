@@ -7,7 +7,6 @@ use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\Email;
 use AppBundle\Mailer\Event\MailerEvent;
 use AppBundle\Mailer\EventSubscriber\EmailPersisterEventSubscriber;
-use AppBundle\Mailer\Message\CommitteeMessageNotificationMessage;
 use AppBundle\Repository\EmailRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
@@ -31,10 +30,8 @@ class EmailPersisterEventSubscriberTest extends TestCase
         $adherents[] = $this->createAdherentMock('john@smith.tld', 'John', 'Smith');
         $adherents[] = $this->createAdherentMock('johana156@gmail.com', 'Johana', 'Durand');
 
-        $item = $this->createCommitteeFeedItemMock('25c5762d-5a50-4c68-8f6c-106bcbff862e', 'Aurélien', 'Un message !');
-
         $this->subscriber->onMailerDeliveryMessage(new MailerEvent(
-            $message = CommitteeMessageNotificationMessage::create($adherents, $item, 'Foo subject'),
+            $message = DummyMessage::create(),
             DummyEmailTemplate::createWithMessage($message, 'noreply@en-marche.fr')
         ));
     }

@@ -44,7 +44,6 @@ Feature:
     When I am on "/espace-depute/utilisateurs/message"
     Then the "recipient" field should contain "5 marcheurs(s)"
     And the "sender" field should contain "Député PARIS I"
-    And I should have 43 emails
 
     # Try to send an empty form
     When I press "Envoyer le message"
@@ -60,7 +59,6 @@ Feature:
     Then I should be on "/espace-depute/utilisateurs/message"
     And I should see 0 ".form__errors" elements
     And I should see "Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer."
-    And I should have 44 emails
     And I should have 1 email "DeputyMessage" for "jacques.picard@en-marche.fr" with payload:
     """
     {

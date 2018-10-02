@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\CitizenProject\CitizenProjectPermissions;
 use AppBundle\Committee\CommitteeCreationCommand;
+use AppBundle\Committee\CommitteeCreationCommandHandler;
 use AppBundle\Contact\ContactMessage;
 use AppBundle\Contact\ContactMessageHandler;
 use AppBundle\Entity\Adherent;
@@ -109,7 +110,7 @@ class AdherentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.committee.creation_handler')->handle($command);
+            $this->get(CommitteeCreationCommandHandler::class)->handle($command);
             $this->addFlash('info', 'committee.creation.success');
 
             return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $command->getCommittee()->getSlug()]));

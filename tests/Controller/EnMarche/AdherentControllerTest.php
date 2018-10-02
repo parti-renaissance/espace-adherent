@@ -21,8 +21,8 @@ use AppBundle\Entity\TurnkeyProject;
 use AppBundle\Entity\Unregistration;
 use AppBundle\Mail\Campaign\AdherentContactMail;
 use AppBundle\Mail\Transactional\AdherentTerminateMembershipMail;
-use AppBundle\Mailer\Message\CommitteeCreationConfirmationMessage;
-use AppBundle\Mailer\Message\CitizenProjectCreationConfirmationMessage;
+use AppBundle\Mail\Transactional\CitizenProjectCreationConfirmationMail;
+use AppBundle\Mail\Transactional\CommitteeCreationConfirmationMail;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\UnregistrationRepository;
@@ -727,7 +727,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertInstanceOf(CitizenProject::class, $citizenProject);
         $this->assertSame('Mon Projet Citoyen', $citizenProject->getName());
         $this->assertSame('Mon premier projet citoyen', $citizenProject->getSubtitle());
-        $this->assertCountMails(1, CitizenProjectCreationConfirmationMessage::class, 'carl999@example.fr');
+        $this->assertMailSentForRecipient('carl999@example.fr', CitizenProjectCreationConfirmationMail::class);
     }
 
     public function testAdherentCanCreateNewCitizenProjectEventTurnkeyProjectDoesNotExist(): void
@@ -813,7 +813,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame('Mes actions aussi.', $citizenProject->getRequiredMeans());
         $this->assertSame('Mon quartier', $citizenProject->getDistrict());
         $this->assertSame($turnkeyProject, $citizenProject->getTurnkeyProject());
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'referent@en-marche-dev.fr'));
+        $this->assertMailSentForRecipient('referent@en-marche-dev.fr', CitizenProjectCreationConfirmationMail::class);
     }
 
     /**
@@ -911,7 +911,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertInstanceOf(Committee::class, $committee = $this->committeeRepository->findMostRecentCommittee());
         $this->assertSame('Lyon est En Marche !', $committee->getName());
         $this->assertTrue($committee->isWaitingForApproval());
-        $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeCreationConfirmationMessage::class, $emaiLAddress));
+        $this->assertMailSentForRecipient($emaiLAddress, CommitteeCreationConfirmationMail::class);
 
         // Follow the redirect and check the adherent can see the committee page
         $crawler = $this->client->followRedirect();

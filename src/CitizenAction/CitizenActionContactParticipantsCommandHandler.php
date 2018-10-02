@@ -18,11 +18,11 @@ class CitizenActionContactParticipantsCommandHandler
     {
         $this->mailPost->address(
             CitizenActionContactParticipantsMail::class,
-            CitizenActionContactParticipantsMail::createRecipientsFrom($command->getRecipients()),
+            CitizenActionContactParticipantsMail::createRecipients($command->getRecipients()),
             CitizenActionContactParticipantsMail::createRecipientFromAdherent($command->getSender()),
-            CitizenActionContactParticipantsMail::createTemplateVarsFrom($command),
+            CitizenActionContactParticipantsMail::createTemplateVars($command),
             CitizenActionContactParticipantsMail::createSubject($command),
-            CitizenActionContactParticipantsMail::createSenderFrom($command->getSender())
+            CitizenActionContactParticipantsMail::createSender($command->getSender())
         );
     }
 }

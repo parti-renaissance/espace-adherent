@@ -6,10 +6,11 @@ use AppBundle\Committee\Feed\CommitteeFeedManager;
 use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Mailer\Message\CommitteeMessageNotificationMessage;
+use AppBundle\Mail\Campaign\CommitteeMessageNotificationMail;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EmailRepository;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 
@@ -19,6 +20,7 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
 class CommitteeFeedManagerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use MailTestCaseTrait;
 
     /* @var CommitteeFeedManager */
     private $committeeFeedManager;
@@ -43,10 +45,7 @@ class CommitteeFeedManagerTest extends WebTestCase
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame($messageContent, $message->getContent());
 
-        $this->assertCountMails(1, CommitteeMessageNotificationMessage::class, 'jacques.picard@en-marche.fr');
-        $this->assertCountMails(1, CommitteeMessageNotificationMessage::class, 'luciole1989@spambox.fr');
-        $this->assertCountMails(1, CommitteeMessageNotificationMessage::class, 'gisele-berthoux@caramail.com');
-        $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'carl999@example.fr');
+        $this->assertMailSentForRecipients(['jacques.picard@en-marche.fr', 'luciole1989@spambox.fr', 'gisele-berthoux@caramail.com'], CommitteeMessageNotificationMail::class);
     }
 
     public function testCreateNoNotificationMessage()
@@ -60,29 +59,27 @@ class CommitteeFeedManagerTest extends WebTestCase
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame($messageContent, $message->getContent());
 
-        $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'jacques.picard@en-marche.fr');
-        $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'luciole1989@spambox.fr');
-        $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'gisele-berthoux@caramail.com');
-        $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'carl999@example.fr');
+        $this->assertMailCountForClass(0, CommitteeMessageNotificationMail::class);
     }
 
-    public function setUp()
+    protected function setUp()
     {
-        $this->loadFixtures([
+        parent::setUp();
+
+        $this->init([
             LoadAdherentData::class,
         ]);
 
-        $this->container = $this->getContainer();
-        $this->committeeFeedManager = $this->get('app.committee.feed_manager');
+        $this->committeeFeedManager = $this->get(CommitteeFeedManager::class);
         $this->committeeRepository = $this->getCommitteeRepository();
         $this->committeeMembershipRepository = $this->getCommitteeMembershipRepository();
         $this->emailRepository = $this->getEmailRepository();
-
-        parent::setUp();
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
+        $this->clearMails();
+
         $this->kill();
 
         $this->committeeFeedManager = null;
