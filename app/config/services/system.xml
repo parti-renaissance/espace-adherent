@@ -92,7 +92,7 @@
                 <argument type="service" id="AppBundle\Repository\CitizenProjectRepository"/>
             </call>
             <call method="setCitizenProjectMessageNotifier">
-                <argument type="service" id="app.citizen_project.citizen_project_message_notifier"/>
+                <argument type="service" id="AppBundle\CitizenProject\CitizenProjectMessageNotifier"/>
             </call>
             <call method="setProducer">
                 <argument type="service" id="old_sound_rabbit_mq.project_citizen_creation_notification_producer"/>

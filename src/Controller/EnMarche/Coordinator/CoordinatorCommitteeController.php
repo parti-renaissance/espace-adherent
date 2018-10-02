@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche\Coordinator;
 
+use AppBundle\Committee\CommitteeManagementAuthority;
 use AppBundle\Entity\Committee;
 use AppBundle\Exception\BaseGroupException;
 use AppBundle\Coordinator\Filter\CommitteeFilter;
@@ -59,7 +60,7 @@ class CoordinatorCommitteeController extends Controller
      * @Route("/{uuid}/{slug}/pre-valider-comite", name="app_coordinator_committee_validate")
      * @Method("POST")
      */
-    public function validateAction(Request $request, Committee $committee): Response
+    public function validateAction(Request $request, Committee $committee, CommitteeManagementAuthority $managementAuthority): Response
     {
         $form = $this->createForm(CoordinatorAreaType::class, $committee, [
             'data_class' => Committee::class,
@@ -69,10 +70,10 @@ class CoordinatorCommitteeController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 if ($form->get('refuse')->isClicked()) {
-                    $this->get('app.committee.authority')->preRefuse($committee);
+                    $managementAuthority->preRefuse($committee);
                     $this->addFlash('info', 'Merci. Votre appréciation a été transmise à nos équipes.');
                 } elseif ($form->get('accept')->isClicked()) {
-                    $this->get('app.committee.authority')->preApprove($committee);
+                    $managementAuthority->preApprove($committee);
                     $this->addFlash('info', 'Merci. Votre appréciation a été transmise à nos équipes.');
                 }
             } catch (BaseGroupException $exception) {

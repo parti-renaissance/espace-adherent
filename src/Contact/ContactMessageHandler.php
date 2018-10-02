@@ -18,7 +18,7 @@ class ContactMessageHandler
     {
         $this->mailPost->address(
             AdherentContactMail::class,
-            AdherentContactMail::createRecipientFor($contactMessage),
+            AdherentContactMail::createRecipient($contactMessage),
             AdherentContactMail::createRecipientFromAdherent($contactMessage->getFrom())
         );
     }

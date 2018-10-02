@@ -16,14 +16,14 @@ final class CitizenActionContactParticipantsMail extends CampaignMail
 {
     use AdherentMailTrait;
 
-    public static function createRecipientsFrom(array $subscriptions): array
+    public static function createRecipients(array $subscriptions): array
     {
-        return \array_map(function (EventRegistration $registration) {
+        return array_map(function (EventRegistration $registration) {
             return new Recipient($registration->getEmailAddress(), $registration->getFullName());
         }, $subscriptions);
     }
 
-    public static function createTemplateVarsFrom(CitizenActionContactParticipantsCommand $command): array
+    public static function createTemplateVars(CitizenActionContactParticipantsCommand $command): array
     {
         return [
             'citizen_project_host_message' => $command->getMessage(),
@@ -31,7 +31,7 @@ final class CitizenActionContactParticipantsMail extends CampaignMail
         ];
     }
 
-    public static function createSenderFrom(Adherent $adherent): SenderInterface
+    public static function createSender(Adherent $adherent): SenderInterface
     {
         return new Sender(null, $adherent->getFullName());
     }

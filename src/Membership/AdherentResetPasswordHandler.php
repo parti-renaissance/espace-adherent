@@ -41,7 +41,7 @@ class AdherentResetPasswordHandler
 
         $this->mailPost->address(
             AdherentResetPasswordMail::class,
-            AdherentResetPasswordMail::createRecipientFor($adherent, $resetPasswordUrl)
+            AdherentResetPasswordMail::createRecipient($adherent, $resetPasswordUrl)
         );
     }
 
@@ -59,7 +59,7 @@ class AdherentResetPasswordHandler
 
         $this->mailPost->address(
             AdherentResetPasswordConfirmationMail::class,
-            AdherentResetPasswordConfirmationMail::createRecipientFor($adherent)
+            AdherentResetPasswordConfirmationMail::createRecipient($adherent)
         );
     }
 

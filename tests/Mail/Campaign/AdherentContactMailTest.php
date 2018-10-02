@@ -13,7 +13,7 @@ class AdherentContactMailTest extends MailTestCase
 {
     public function testCreate(): void
     {
-        $recipient = AdherentContactMail::createRecipientFor(
+        $recipient = AdherentContactMail::createRecipient(
             new ContactMessage(
                 $this->createAdherent('jean@example.com'),
                 $this->createAdherent('vl@dimir.org'),

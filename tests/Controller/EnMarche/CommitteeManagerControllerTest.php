@@ -6,17 +6,19 @@ use AppBundle\Committee\CommitteeManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\PostAddress;
+use AppBundle\Mail\Campaign\CommitteeMessageNotificationMail;
 use AppBundle\Mailer\Message\EventNotificationMessage;
-use AppBundle\Mailer\Message\CommitteeMessageNotificationMessage;
 use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +32,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 class CommitteeManagerControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use MailTestCaseTrait;
 
     /* @var EventRepository */
     private $committeeEventRepository;
@@ -376,12 +379,9 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame('Bienvenue !', $message->getContent());
 
-        $mail = $this->getEmailRepository()->findMostRecentMessage(CommitteeMessageNotificationMessage::class);
-        $this->assertMailCountRecipients(
-            $this->getCommitteeSubscribersCount(
-                $this->getCommittee(LoadAdherentData::COMMITTEE_1_UUID)
-            ),
-            $mail
+        $this->assertMailSentForRecipients(
+            $this->getCommitteeSubscribersEmails($this->getCommittee(LoadAdherentData::COMMITTEE_1_UUID)),
+            CommitteeMessageNotificationMail::class
         );
 
         $this->client->submit($crawler->selectButton('committee_feed_message[send]')->form([
@@ -668,13 +668,16 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    private function getCommitteeSubscribersCount(Committee $committee): int
+    private function getCommitteeSubscribersEmails(Committee $committee): array
     {
         return $this
             ->committeeMembershipRepository
             ->findFollowers($committee)
             ->getCommitteesNotificationsSubscribers()
-            ->count()
+            ->map(function (Adherent $adherent) {
+                return $adherent->getEmailAddress();
+            })
+            ->toArray()
         ;
     }
 
@@ -716,6 +719,7 @@ class CommitteeManagerControllerTest extends WebTestCase
             LoadEventData::class,
         ]);
 
+        $this->clearMails();
         $this->committeeEventRepository = $this->getEventRepository();
         $this->committeeFeedItemRepository = $this->getCommitteeFeedItemRepository();
         $this->committeeMembershipRepository = $this->getCommitteeMembershipRepository();
@@ -728,6 +732,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->committeeMembershipRepository = null;
         $this->committeeFeedItemRepository = null;
         $this->committeeEventRepository = null;
+        $this->clearMails();
 
         parent::tearDown();
     }
