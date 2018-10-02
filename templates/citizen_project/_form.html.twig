@@ -159,7 +159,7 @@
     <label class="label__header--large">Ce projet a besoin de : <span>(Optionnel)</span></label>
     <div class="form_checkbox_multi_column">
         {{ form_label(form.skills) }}
-        {{ form_widget(form.skills) }}
+        {{ form_widget(form.skills, {attr: {class: 'hidden'}}) }}
     </div>
 </div>
 

@@ -194,8 +194,11 @@ $(document).ready(function() {
 
     var updateSkillsField = function () {
         checkboxes.empty();
-        if (checkboxes.prev('label').is(":visible")) {
+        if (checkboxes.prev('label').is(":visible") && categoryListField.val()) {
             checkboxes.prev('label').hide();
+            checkboxes.removeClass("hidden");
+        } else {
+            checkboxes.prev('label').show();
         }
 
         $.ajax({
