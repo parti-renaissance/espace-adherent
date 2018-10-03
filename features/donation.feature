@@ -1,3 +1,4 @@
+@donation
 Feature: The goal is to donate one time or multiple time with a subscription
   In order to donate
   As an anonymous user or connected user

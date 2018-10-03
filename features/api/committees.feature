@@ -1,3 +1,4 @@
+@api
 Feature:
   In order to get committees' information
   As a referent

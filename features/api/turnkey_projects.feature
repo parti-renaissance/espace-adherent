@@ -1,3 +1,4 @@
+@api
 Feature:
   In order to get a turnkey projects
   As a non logged-in user
