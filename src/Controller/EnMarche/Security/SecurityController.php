@@ -9,6 +9,7 @@ use AppBundle\Exception\AdherentTokenExpiredException;
 use AppBundle\Form\AdherentResetPasswordType;
 use AppBundle\Form\LoginType;
 use AppBundle\Membership\AdherentChangeEmailHandler;
+use AppBundle\Membership\AdherentResetPasswordHandler;
 use AppBundle\Membership\MembershipRequestHandler;
 use AppBundle\Repository\AdherentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -82,7 +83,7 @@ class SecurityController extends Controller
             $email = $form->get('email')->getData();
 
             if ($adherent = $this->getDoctrine()->getRepository(Adherent::class)->findOneByEmail($email)) {
-                $this->get('app.adherent_reset_password_handler')->handle($adherent);
+                $this->get(AdherentResetPasswordHandler::class)->handle($adherent);
             }
 
             $this->addFlash('info', 'adherent.reset_password.email_sent');
@@ -119,13 +120,16 @@ class SecurityController extends Controller
             throw $this->createNotFoundException('No available reset password token.');
         }
 
-        $form = $this->createForm(AdherentResetPasswordType::class);
+        $form = $this
+            ->createForm(AdherentResetPasswordType::class)
+            ->handleRequest($request)
+        ;
 
-        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $newPassword = $form->get('password')->getData();
 
             try {
-                $this->get('app.adherent_reset_password_handler')->reset($adherent, $resetPasswordToken, $newPassword);
+                $this->get(AdherentResetPasswordHandler::class)->reset($adherent, $resetPasswordToken, $newPassword);
                 $this->addFlash('info', 'adherent.reset_password.success');
 
                 return $this->redirectToRoute('app_user_profile');

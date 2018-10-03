@@ -120,9 +120,11 @@ class CitizenActionManagerController extends Controller
         CitizenProject $project,
         EventCanceledHandler $eventCanceledHandler
     ): Response {
-        $form = $this->createForm(FormType::class)
-            ->handleRequest($request)
-        ;
+        if ($action->isCancelled()) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->createForm(FormType::class)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $eventCanceledHandler->handle($action);

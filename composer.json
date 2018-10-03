@@ -19,11 +19,17 @@
     "config": {
         "sort-packages": true
     },
+    "repositories": [
+        {
+            "type": "github",
+            "url": "git@github.com:EnMarche/mailer-bundle.git"
+        }
+    ],
     "require": {
         "php": ">=7.1",
-        "ext-pdo": "*",
-        "ext-openssl": "*",
         "ext-json": "*",
+        "ext-openssl": "*",
+        "ext-pdo": "*",
         "a2lix/i18n-doctrine-bundle": "^0.1.0",
         "a2lix/translation-form-bundle": "^2.1",
         "algolia/algolia-search-bundle": "^2.2",
@@ -38,6 +44,7 @@
         "doctrine/doctrine-fixtures-bundle": "^2.3",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "doctrine/orm": "^2.5",
+        "enmarche/mailer-bundle": "dev-improve-mailer-v2",
         "exercise/htmlpurifier-bundle": "^1.0",
         "facebook/graph-sdk": "^5.4",
         "fzaninotto/faker": "^1.6",
