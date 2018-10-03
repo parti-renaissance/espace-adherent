@@ -110,7 +110,7 @@
             {% endfor %}
         </ul>
         {% if is_granted('ROLE_SUPERVISOR') %}
-            <form method="post" id="committee-confirm-support-form" class="form citizen-project-form" action="{{ path('app_citizen_project_committee_support', {slug: citizen_project.slug}) }}">
+            <form method="post" id="committee-confirm-support-form" class="form" action="{{ path('app_citizen_project_committee_support', {slug: citizen_project.slug}) }}">
                 {{ form_widget(form_committee_support) }}
                 <div>
                     {% set has_support = citizen_project.isSupportedByCommitteeUuid(app.user.memberships.committeeSupervisorMemberships.last.committeeUuid.toString) %}
