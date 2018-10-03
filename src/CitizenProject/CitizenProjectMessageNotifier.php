@@ -14,8 +14,8 @@ use AppBundle\Mail\Transactional\CitizenProjectCreationCoordinatorNotificationMa
 use AppBundle\Mail\Transactional\CitizenProjectCreationNotificationMail;
 use AppBundle\Mail\Transactional\CitizenProjectNewFollowerMail;
 use AppBundle\Mail\Transactional\CitizenProjectRequestCommitteeSupportMail;
+use AppBundle\Mail\Transactional\TurnkeyProjectApprovalConfirmationMail;
 use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\TurnkeyProjectApprovalConfirmationMessage;
 use AppBundle\Repository\AdherentRepository;
 use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -116,12 +116,17 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         }
 
         if ($citizenProject->isFromTurnkeyProject()) {
-            $message = TurnkeyProjectApprovalConfirmationMessage::create(
-                $citizenProject,
-                $this->generateUrl('app_citizen_project_show', [
-                    'slug' => $citizenProject->getSlug(),
-                    '_fragment' => 'citizen-project-files',
-                ])
+            $this->mailPost->address(
+                TurnkeyProjectApprovalConfirmationMail::class,
+                TurnkeyProjectApprovalConfirmationMail::createRecipientFromAdherent($citizenProject->getCreator()),
+                TurnkeyProjectApprovalConfirmationMail::createTemplateVarsFrom(
+                    $citizenProject,
+                    $this->generateUrl('app_citizen_project_show', [
+                        'slug' => $citizenProject->getSlug(),
+                        '_fragment' => 'citizen-project-files',
+                    ])
+                ),
+                TurnkeyProjectApprovalConfirmationMail::SUBJECT
             );
         } else {
             $this->mailPost->address(

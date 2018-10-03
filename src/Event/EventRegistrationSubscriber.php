@@ -3,19 +3,19 @@
 namespace AppBundle\Event;
 
 use AppBundle\Events;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
+use AppBundle\Mail\Transactional\EventRegistrationConfirmationMail;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EventRegistrationSubscriber implements EventSubscriberInterface
 {
-    private $mailer;
+    private $mailPost;
     private $urlGenerator;
 
-    public function __construct(MailerService $mailer, UrlGeneratorInterface $urlGenerator)
+    public function __construct(MailPostInterface $mailPost, UrlGeneratorInterface $urlGenerator)
     {
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -30,12 +30,19 @@ class EventRegistrationSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->mailer->sendMessage(EventRegistrationConfirmationMessage::createFromRegistration(
-            $event->getRegistration(),
-            $this->generateUrl('app_event_show', [
-                'slug' => $event->getSlug(),
-            ])
-        ));
+        $registration = $event->getRegistration();
+
+        $eventUrl = $this->generateUrl('app_event_show', [
+            'slug' => $event->getSlug(),
+        ]);
+
+        $this->mailPost->address(
+            EventRegistrationConfirmationMail::class,
+            EventRegistrationConfirmationMail::createRecipientFor($registration),
+            null,
+            EventRegistrationConfirmationMail::createTemplateVarsFrom($registration->getEvent(), $eventUrl),
+            EventRegistrationConfirmationMail::SUBJECT
+        );
     }
 
     private function generateUrl(string $route, array $params = []): string

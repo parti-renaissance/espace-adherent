@@ -3,19 +3,19 @@
 namespace AppBundle\Newsletter;
 
 use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\NewsletterSubscriptionMessage;
+use AppBundle\Mail\Transactional\NewsletterSubscriptionMail;
 use Doctrine\ORM\EntityManager;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 
 class NewsletterSubscriptionHandler
 {
     private $manager;
-    private $mailer;
+    private $mailPost;
 
-    public function __construct(EntityManager $manager, MailerService $mailer)
+    public function __construct(EntityManager $manager, MailPostInterface $mailPost)
     {
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
     }
 
     public function subscribe(NewsletterSubscription $subscription)
@@ -25,7 +25,10 @@ class NewsletterSubscriptionHandler
         $this->manager->persist($subscription);
         $this->manager->flush();
 
-        $this->mailer->sendMessage(NewsletterSubscriptionMessage::createFromSubscription($subscription));
+        $this->mailPost->address(
+            NewsletterSubscriptionMail::class,
+            NewsletterSubscriptionMail::createRecipientFor($subscription)
+        );
     }
 
     public function unsubscribe(?string $email)
