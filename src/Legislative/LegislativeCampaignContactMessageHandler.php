@@ -2,27 +2,34 @@
 
 namespace AppBundle\Legislative;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\LegislativeCampaignContactMessage as MailerLegislativeCampaignContactMessage;
+use AppBundle\Mail\Transactional\LegislativeCampaignContactMail;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 
 class LegislativeCampaignContactMessageHandler
 {
-    private $mailer;
+    private $mailPost;
     private $financialHotlineEmailAddress;
     private $standardHotlineEmailAddress;
 
-    public function __construct(MailerService $mailer, string $financialHotlineEmailAddress, string $standardHotlineEmailAddress)
+    public function __construct(MailPostInterface $mailPost, string $financialHotlineEmailAddress, string $standardHotlineEmailAddress)
     {
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
         $this->financialHotlineEmailAddress = $financialHotlineEmailAddress;
         $this->standardHotlineEmailAddress = $standardHotlineEmailAddress;
     }
 
     public function handle(LegislativeCampaignContactMessage $message): void
     {
-        $this->mailer->sendMessage(MailerLegislativeCampaignContactMessage::createFromCampaignContactMessage(
-            $message,
-            $message->isAddressedToFinancialHotline() ? $this->financialHotlineEmailAddress : $this->standardHotlineEmailAddress
-        ));
+        $this->mailPost->address(
+            LegislativeCampaignContactMail::class,
+            LegislativeCampaignContactMail::createRecipientFor(
+                $message->isAddressedToFinancialHotline()
+                    ? $this->financialHotlineEmailAddress
+                    : $this->standardHotlineEmailAddress
+            ),
+            null,
+            LegislativeCampaignContactMail::createTemplateVarsFrom($message),
+            LegislativeCampaignContactMail::SUBJECT
+        );
     }
 }

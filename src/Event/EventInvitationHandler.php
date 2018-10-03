@@ -4,21 +4,21 @@ namespace AppBundle\Event;
 
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventInvite;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\EventInvitationMessage;
+use AppBundle\Mail\Transactional\EventInvitationMail;
 use AppBundle\Routing\RemoteUrlGenerator;
 use Doctrine\Common\Persistence\ObjectManager;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 
 class EventInvitationHandler
 {
     private $manager;
-    private $mailer;
+    private $mailPost;
     private $urlGenerator;
 
-    public function __construct(ObjectManager $manager, MailerService $mailer, RemoteUrlGenerator $urlGenerator)
+    public function __construct(ObjectManager $manager, MailPostInterface $mailPost, RemoteUrlGenerator $urlGenerator)
     {
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -30,7 +30,13 @@ class EventInvitationHandler
             'slug' => $event->getSlug(),
         ]);
 
-        $this->mailer->sendMessage(EventInvitationMessage::createFromInvite($invite, $event, $url));
+        $this->mailPost->address(
+            EventInvitationMail::class,
+            EventInvitationMail::createRecipientFor($invite),
+            null,
+            EventInvitationMail::createTemplateVarsFrom($invite, $event, $url),
+            EventInvitationMail::createSubjectFor($invite)
+        );
 
         $this->manager->persist($invite);
         $this->manager->flush();

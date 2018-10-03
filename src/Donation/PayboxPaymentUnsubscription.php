@@ -5,18 +5,19 @@ namespace AppBundle\Donation;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Donation;
 use AppBundle\Exception\PayboxPaymentUnsubscriptionException;
-use AppBundle\Mailer\MailerService;
+use AppBundle\Mail\Transactional\PayboxPaymentUnsubscriptionConfirmationMail;
 use AppBundle\Mailer\Message\PayboxPaymentUnsubscriptionConfirmationMessage;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Lexik\Bundle\PayboxBundle\Paybox\System\Cancellation\Request as LexikRequest;
 
 class PayboxPaymentUnsubscription
 {
     private $request;
-    private $mailer;
+    private $mailPost;
 
-    public function __construct(MailerService $mailer, LexikRequest $request)
+    public function __construct(MailPostInterface $mailPost, LexikRequest $request)
     {
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
         $this->request = $request;
     }
 
@@ -37,6 +38,9 @@ class PayboxPaymentUnsubscription
 
     public function sendConfirmationMessage(Donation $donation, Adherent $adherent): void
     {
-        $this->mailer->sendMessage(PayboxPaymentUnsubscriptionConfirmationMessage::create($adherent, $donation));
+        $this->mailPost->address(
+            PayboxPaymentUnsubscriptionConfirmationMail::class,
+            PayboxPaymentUnsubscriptionConfirmationMail::createRecipientFor($adherent)
+        );
     }
 }

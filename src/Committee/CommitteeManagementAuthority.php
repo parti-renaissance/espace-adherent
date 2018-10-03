@@ -4,25 +4,30 @@ namespace AppBundle\Committee;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Mail\Transactional\CommitteeNewFollowerMail;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\CommitteeApprovalConfirmationMessage;
 use AppBundle\Mailer\Message\CommitteeApprovalReferentMessage;
 use AppBundle\Mailer\Message\CommitteeNewFollowerMessage;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CommitteeManagementAuthority
 {
     private $manager;
     private $mailer;
+    private $mailPost;
     private $urlGenerator;
 
     public function __construct(
         CommitteeManager $manager,
         UrlGeneratorInterface $urlGenerator,
-        MailerService $mailer
+        MailerService $mailer,
+        MailPostInterface $mailPost
     ) {
         $this->manager = $manager;
         $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -81,17 +86,22 @@ class CommitteeManagementAuthority
     {
         $this->manager->followCommittee($adherent, $committee);
 
-        if (!$hosts = $this->manager->getCommitteeHosts($committee)->toArray()) {
+        $hosts = $this->manager->getCommitteeHosts($committee);
+
+        if ($hosts->isEmpty()) {
             return;
         }
 
-        $this->mailer->sendMessage(CommitteeNewFollowerMessage::create(
-            $committee,
-            $hosts,
-            $adherent,
-            $this->urlGenerator->generate('app_committee_manager_list_members', [
-                'slug' => $committee->getSlug(),
-            ], UrlGeneratorInterface::ABSOLUTE_URL)
-        ));
+        $url = $this->urlGenerator->generate('app_committee_manager_list_members', [
+            'slug' => $committee->getSlug(),
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        $this->mailPost->address(
+            CommitteeNewFollowerMail::class,
+            CommitteeNewFollowerMail::createRecipientsFrom($hosts),
+            null,
+            CommitteeNewFollowerMail::createTemplateVarsFrom($committee, $adherent, $url),
+            CommitteeNewFollowerMail::SUBJECT
+        );
     }
 }

@@ -3,21 +3,24 @@
 namespace AppBundle\Newsletter;
 
 use AppBundle\Entity\NewsletterInvite;
+use AppBundle\Mail\Transactional\NewsletterInvitationMail;
+use AppBundle\Mail\Transactional\NewsletterSubscriptionMail;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\NewsletterInvitationMessage;
 use Doctrine\Common\Persistence\ObjectManager;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class NewsletterInvitationHandler
 {
     private $manager;
-    private $mailer;
+    private $mailPost;
     private $urlGenerator;
 
-    public function __construct(ObjectManager $manager, MailerService $mailer, UrlGeneratorInterface $urlGenerator)
+    public function __construct(ObjectManager $manager, MailPostInterface $mailPost, UrlGeneratorInterface $urlGenerator)
     {
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -27,11 +30,20 @@ class NewsletterInvitationHandler
             $invite = NewsletterInvite::create($invitation->firstName, $invitation->lastName, $guest, $ip);
 
             $this->manager->persist($invite);
-            $this->mailer->sendMessage(NewsletterInvitationMessage::createFromInvite($invite, $this->urlGenerator->generate(
+
+            $inviteUrl = $this->urlGenerator->generate(
                 'newsletter_subscription',
                 ['mail' => $guest],
                 UrlGeneratorInterface::ABSOLUTE_URL
-            )));
+            );
+
+            $this->mailPost->address(
+                NewsletterInvitationMail::class,
+                NewsletterInvitationMail::createRecipientFor($invite),
+                null,
+                NewsletterInvitationMail::createTemplateVarsFrom($invite, $inviteUrl),
+                NewsletterInvitationMail::createSubjectFor($invite)
+            );
         }
 
         $this->manager->flush();

@@ -7,6 +7,7 @@ use AppBundle\Coordinator\Filter\CitizenProjectFilter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Events;
+use AppBundle\Mail\Transactional\TurnkeyProjectApprovalConfirmationMail;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\CitizenProjectApprovalConfirmationMessage;
 use AppBundle\Mailer\Message\CitizenProjectCommentMessage;
@@ -17,6 +18,7 @@ use AppBundle\Mailer\Message\CitizenProjectNewFollowerMessage;
 use AppBundle\Mailer\Message\CitizenProjectRequestCommitteeSupportMessage;
 use AppBundle\Mailer\Message\TurnkeyProjectApprovalConfirmationMessage;
 use AppBundle\Repository\AdherentRepository;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -30,6 +32,7 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
     private $creationNotificationProducer;
     private $manager;
     private $mailer;
+    private $mailPost;
     private $committeeManager;
     private $router;
     private $adherentRepository;
@@ -39,6 +42,7 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         ProducerInterface $creationNotificationProducer,
         CitizenProjectManager $manager,
         MailerService $mailer,
+        MailPostInterface $mailPost,
         CommitteeManager $committeeManager,
         RouterInterface $router
     ) {
@@ -46,6 +50,7 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         $this->creationNotificationProducer = $creationNotificationProducer;
         $this->manager = $manager;
         $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
         $this->committeeManager = $committeeManager;
         $this->router = $router;
     }
@@ -97,18 +102,21 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         $this->manager->injectCitizenProjectCreator([$citizenProject]);
 
         if ($citizenProject->isFromTurnkeyProject()) {
-            $message = TurnkeyProjectApprovalConfirmationMessage::create(
-                $citizenProject,
-                $this->generateUrl('app_citizen_project_show', [
-                    'slug' => $citizenProject->getSlug(),
-                    '_fragment' => 'citizen-project-files',
-                ])
+            $this->mailPost->address(
+                TurnkeyProjectApprovalConfirmationMail::class,
+                TurnkeyProjectApprovalConfirmationMail::createRecipientFromAdherent($citizenProject->getCreator()),
+                TurnkeyProjectApprovalConfirmationMail::createTemplateVarsFrom(
+                    $citizenProject,
+                    $this->generateUrl('app_citizen_project_show', [
+                        'slug' => $citizenProject->getSlug(),
+                        '_fragment' => 'citizen-project-files',
+                    ])
+                ),
+                TurnkeyProjectApprovalConfirmationMail::SUBJECT
             );
         } else {
-            $message = CitizenProjectApprovalConfirmationMessage::create($citizenProject);
+            $this->mailer->sendMessage(CitizenProjectApprovalConfirmationMessage::create($citizenProject));
         }
-
-        $this->mailer->sendMessage($message);
     }
 
     private function sendCreatorCreationConfirmation(Adherent $creator, CitizenProject $citizenProject): void
