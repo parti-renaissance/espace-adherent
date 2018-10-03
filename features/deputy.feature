@@ -59,70 +59,11 @@ Feature:
     Then I should be on "/espace-depute/utilisateurs/message"
     And I should see 0 ".form__errors" elements
     And I should see "Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer."
-    And I should have 1 email "DeputyMessage" for "jacques.picard@en-marche.fr" with payload:
-    """
-    {
-      "FromEmail": "jemarche@en-marche.fr",
-      "FromName": "Député PARIS I [Député]",
-      "Subject": "Message from your deputy",
-      "MJ-TemplateID": "552765",
-      "MJ-TemplateLanguage": true,
-      "Recipients": [
-      {
-          "Email": "jacques.picard@en-marche.fr",
-          "Name": "Jacques Picard",
-          "Vars": {
-              "deputy_fullname": "D\u00e9put\u00e9 PARIS I",
-              "circonscription_name": "Paris, 1\u00e8re circonscription (75-01)",
-              "target_message": "Content of a deputy message",
-              "target_firstname": "Jacques"
-          }
-      },
-      {
-          "Email": "luciole1989@spambox.fr",
-          "Name": "Lucie Olivera",
-          "Vars": {
-              "deputy_fullname": "D\u00e9put\u00e9 PARIS I",
-              "circonscription_name": "Paris, 1\u00e8re circonscription (75-01)",
-              "target_message": "Content of a deputy message",
-              "target_firstname": "Lucie"
-          }
-      },
-      {
-          "Email": "coordinatrice-cp@en-marche-dev.fr",
-          "Name": "Coordinatrice CITIZEN PROJECT",
-          "Vars": {
-              "deputy_fullname": "D\u00e9put\u00e9 PARIS I",
-              "circonscription_name": "Paris, 1\u00e8re circonscription (75-01)",
-              "target_message": "Content of a deputy message",
-              "target_firstname": "Coordinatrice"
-          }
-      },
-      {
-          "Email": "deputy@en-marche-dev.fr",
-          "Name": "D\u00e9put\u00e9 PARIS I",
-          "Vars": {
-              "deputy_fullname": "D\u00e9put\u00e9 PARIS I",
-              "circonscription_name": "Paris, 1\u00e8re circonscription (75-01)",
-              "target_message": "Content of a deputy message",
-              "target_firstname": "D\u00e9put\u00e9"
-          }
-      },
-      {
-        "Email": "deputy-ch-li@en-marche-dev.fr",
-        "Name": "D\u00e9put\u00e9 CHLI FDESIX",
-        "Vars": {
-          "deputy_fullname": "D\u00e9put\u00e9 PARIS I",
-          "circonscription_name": "Paris, 1\u00e8re circonscription (75-01)",
-          "target_message": "Content of a deputy message",
-          "target_firstname": "D\u00e9put\u00e9"
-        }
-      }],
-      "Headers": {
-        "Reply-To": "deputy@en-marche-dev.fr"
-      }
-    }
-    """
+    And I should have 1 email "AppBundle\Mail\Transactional\DeputyMail" for "jacques.picard@en-marche.fr" with vars:
+      | deputy_fullname      | Député PARIS I                      |
+      | circonscription_name | Paris, 1ère circonscription (75-01) |
+      | target_message       | Content of a deputy message         |
+      | target_firstname     | Jacques                             |
 
   @javascript
   Scenario: As deputy of 1st Paris district I can see committees.

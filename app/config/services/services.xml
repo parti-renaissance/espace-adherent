@@ -23,9 +23,7 @@
 
         <!-- CitizenProject -->
         <service id="AppBundle\CitizenProject\CitizenProjectAuthority" />
-        <service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true">
-            <argument key="$mailer" type="service" id="app.mailer.transactional"/>
-        </service>
+        <service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true" />
         <service id="AppBundle\CitizenProject\CitizenProjectManager">
             <call method="setGlide">
                 <argument type="service" id="app.glide" />
@@ -80,12 +78,8 @@
         <service id="AppBundle\Validator\UniqueDonationSubscriptionValidator" />
         <service id="AppBundle\Validator\MaxFiscalYearDonationValidator" />
         <service id="AppBundle\Donation\DonationFactory" />
-        <service id="AppBundle\Donation\PayboxPaymentUnsubscription">
-            <argument type="service" key="$mailer" id="app.mailer.transactional" />
-        </service>
-        <service id="AppBundle\Donation\TransactionSubscriber">
-            <argument type="service" key="$mailer" id="app.mailer.transactional" />
-        </service>
+        <service id="AppBundle\Donation\PayboxPaymentUnsubscription" />
+        <service id="AppBundle\Donation\TransactionSubscriber" />
         <service id="AppBundle\Donation\TransactionCallbackHandler"/>
         <service id="AppBundle\Donation\DonationRequestHandler"/>
         <service id="AppBundle\Donation\DonationRequestUtils" />
@@ -113,15 +107,12 @@
         <!-- Event -->
         <service id="AppBundle\Event\EventFactory" public="true" />
         <service id="AppBundle\Event\EventCanceledHandler" />
-
-        <service id="AppBundle\Event\EventRegistrationSubscriber">
-            <argument type="service" id="app.mailer.transactional" />
-        </service>
+        <service id="AppBundle\Event\EventRegistrationSubscriber" />
+        <service id="AppBundle\Event\EventContactMembersCommandHandler" public="true" />
+        <service id="AppBundle\Event\EventMessageNotifier" />
+        <service id="AppBundle\Event\EventInvitationHandler" public="true" />
 
         <!-- EventListener -->
-        <service id="AppBundle\EventListener\ProcurationMailerSubscriber">
-            <argument key="$mailer" type="service" id="app.mailer.transactional" />
-        </service>
         <prototype namespace="AppBundle\EntityListener\" resource="../../../src/EntityListener/">
             <tag name="doctrine.orm.entity_listener" />
         </prototype>
@@ -156,6 +147,12 @@
         <service id="AppBundle\Procuration\ProcurationManager" public="true" />
         <service id="AppBundle\Procuration\ProcurationRequestSerializer" />
         <service id="AppBundle\Procuration\ProcurationSession" />
+        <service id="AppBundle\Procuration\ProcurationReminderHandler" public="true">
+            <argument key="$replyToEmailAddress" type="string">%procurations_reply_to_email%</argument>
+        </service>
+        <service id="AppBundle\EventListener\ProcurationMailerSubscriber">
+            <argument key="$replyToEmailAddress" type="string">%procurations_reply_to_email%</argument>
+        </service>
 
         <!-- Referent -->
         <service id="AppBundle\Command\ReferentTagImportCommand"/>
@@ -182,6 +179,12 @@
         </service>
         <service id="app.security.admin_provider" class="AppBundle\Security\UserProvider">
             <argument key="$classOrAlias" type="string">AppBundle\Entity\Administrator</argument>
+        </service>
+
+        <!-- Legislatives -->
+        <service id="AppBundle\Legislative\LegislativeCampaignContactMessageHandler" public="true">
+            <argument key="$financialHotlineEmailAddress">%legislatives_financial_hotline_email%</argument>
+            <argument key="$standardHotlineEmailAddress">%legislatives_standard_hotline_email%</argument>
         </service>
 
         <!-- Serializer -->
@@ -245,15 +248,33 @@
             </argument>
         </service>
 
+        <!-- Newsletter -->
+        <service id="AppBundle\Newsletter\NewsletterSubscriptionHandler" public="true" />
+        <service id="AppBundle\Newsletter\NewsletterInvitationHandler" public="true" />
+
+        <!-- Invitation -->
+        <service id="AppBundle\Invitation\InvitationRequestHandler" public="true" />
+
+        <!-- Je Marche -->
+        <service id="AppBundle\JeMarche\JeMarcheReportHandler" public="true" />
+
+        <!-- Ton Macron -->
+        <service id="AppBundle\TonMacron\InvitationProcessorHandler" public="true">
+            <argument key="$stateMachine" type="service" id="state_machine.ton_macron_invitation" />
+        </service>
+
+        <!-- Interactives -->
+        <service id="AppBundle\Interactive\PurchasingPowerProcessorHandler" public="true">
+            <argument key="$stateMachine" type="service" id="state_machine.purchasing_power" />
+        </service>
+
         <!-- Deputy -->
         <service id="AppBundle\Command\CreateReferentTagsForDistrictsCommand" />
         <service id="AppBundle\Command\InitializeReferentTagsForDistrictsOnAdherentsCommand" />
         <service id="AppBundle\Deputy\Subscriber\ChangeAddressSubscriber" />
         <service id="AppBundle\Deputy\DistrictLoader" public="true" />
         <service id="AppBundle\Deputy\LightFileDistrictLoader" public="true" />
-        <service id="AppBundle\Deputy\DeputyMessageNotifier" public="true">
-            <argument type="service" id="app.mailer.campaign"/>
-        </service>
+        <service id="AppBundle\Deputy\DeputyMessageNotifier" public="true" />
 
         <service id="AppBundle\Security\ApiAuthenticationEntryPoint"/>
 

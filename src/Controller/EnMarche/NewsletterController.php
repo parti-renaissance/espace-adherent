@@ -8,6 +8,8 @@ use AppBundle\Form\NewsletterInvitationType;
 use AppBundle\Form\NewsletterSubscriptionType;
 use AppBundle\Form\NewsletterUnsubscribeType;
 use AppBundle\Newsletter\Invitation;
+use AppBundle\Newsletter\NewsletterInvitationHandler;
+use AppBundle\Newsletter\NewsletterSubscriptionHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -44,7 +46,7 @@ class NewsletterController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.newsletter_subscription.handler')->subscribe($subscription);
+            $this->get(NewsletterSubscriptionHandler::class)->subscribe($subscription);
 
             return $this->redirectToRoute('newsletter_subscription_subscribed');
         }
@@ -73,7 +75,7 @@ class NewsletterController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.newsletter_subscription.handler')->unsubscribe((string) $form->getData()['email']);
+            $this->get(NewsletterSubscriptionHandler::class)->unsubscribe((string) $form->getData()['email']);
 
             return $this->redirectToRoute('newsletter_unsubscribe_unsubscribed');
         }
@@ -105,7 +107,7 @@ class NewsletterController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Invitation $invitation */
             $invitation = $form->getData();
-            $this->get('app.newsletter_invitation.handler')->handle($invitation, $request->getClientIp());
+            $this->get(NewsletterInvitationHandler::class)->handle($invitation, $request->getClientIp());
             $request->getSession()->set('newsletter_invitations_count', \count($invitation->guests));
 
             return $this->redirectToRoute('newsletter_invitation_sent');

@@ -3,6 +3,7 @@
 namespace AppBundle\Command;
 
 use AppBundle\Entity\ProcurationRequest;
+use AppBundle\Procuration\ProcurationReminderHandler;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,7 +37,7 @@ class ProcurationSendReminderCommand extends ContainerAwareCommand
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->manager = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $this->reminder = $this->getContainer()->get('app.procuration.reminder_handler');
+        $this->reminder = $this->getContainer()->get(ProcurationReminderHandler::class);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\PurchasingPowerInvitation;
 use AppBundle\Form\PurchasingPowerType;
+use AppBundle\Interactive\PurchasingPowerProcessorHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,10 +17,9 @@ class InteractiveController extends Controller
      * @Route("/ton-pouvoir-achat", name="app_purchasing_power")
      * @Method("GET|POST")
      */
-    public function purchasingPowerAction(Request $request): Response
+    public function purchasingPowerAction(Request $request, PurchasingPowerProcessorHandler $handler): Response
     {
         $session = $request->getSession();
-        $handler = $this->get('app.interactive.purchasing_power_processor_handler');
         $purchasingPower = $handler->start($session);
         $transition = $handler->getCurrentTransition($purchasingPower);
 
@@ -27,7 +27,7 @@ class InteractiveController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($purchasingPowerLog = $this->get('app.interactive.purchasing_power_processor_handler')->process($session, $purchasingPower)) {
+            if ($purchasingPowerLog = $handler->process($session, $purchasingPower)) {
                 return $this->redirectToRoute('app_purchasing_power_mail_sent', [
                     'uuid' => $purchasingPowerLog->getUuid()->toString(),
                 ]);
@@ -47,9 +47,9 @@ class InteractiveController extends Controller
      * @Route("/ton-pouvoir-achat/recommencer", name="app_purchasing_power_restart")
      * @Method("GET")
      */
-    public function restartPurchasingPowerAction(Request $request): Response
+    public function restartPurchasingPowerAction(Request $request, PurchasingPowerProcessorHandler $handler): Response
     {
-        $this->get('app.interactive.purchasing_power_processor_handler')->terminate($request->getSession());
+        $handler->terminate($request->getSession());
 
         return $this->redirectToRoute('app_purchasing_power');
     }

@@ -4,12 +4,13 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
 use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Mailer\Message\NewsletterInvitationMessage;
-use AppBundle\Mailer\Message\NewsletterSubscriptionMessage;
+use AppBundle\Mail\Transactional\NewsletterInvitationMail;
+use AppBundle\Mail\Transactional\NewsletterSubscriptionMail;
 use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\NewsletterInviteRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -22,6 +23,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 class NewsletterControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use MailTestCaseTrait;
 
     /** @var NewsletterSubscriptionRepository */
     private $subscriptionsRepository;
@@ -67,7 +69,7 @@ class NewsletterControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
         // Email should have been sent
-        $this->assertCount(1, $this->emailRepository->findMessages(NewsletterSubscriptionMessage::class));
+        $this->assertMailCountForClass(1, NewsletterSubscriptionMail::class);
 
         // Try another time with the same email (should fail)
         $crawler = $this->client->request(Request::METHOD_GET, '/newsletter');
@@ -105,7 +107,7 @@ class NewsletterControllerTest extends WebTestCase
         $this->assertCount(6, $this->subscriptionsRepository->findAll());
 
         // Email should have been sent
-        $this->assertCount(1, $this->emailRepository->findMessages(NewsletterSubscriptionMessage::class));
+        $this->assertMailCountForClass(1, NewsletterSubscriptionMail::class);
     }
 
     public function testInvitationAndRetry()
@@ -145,12 +147,22 @@ class NewsletterControllerTest extends WebTestCase
         $this->assertSame('Titouan Galopin', $invite2->getSenderFullName());
 
         // Email should have been sent
-        $this->assertCount(2, $messages = $this->emailRepository->findMessages(NewsletterInvitationMessage::class));
-        $this->assertCount(1, $messages = $this->emailRepository->findRecipientMessages(NewsletterInvitationMessage::class, $invite1->getEmail()));
-        $this->assertContains('/newsletter?mail=hugo.hamon%40clichy-beach.com', $messages[0]->getRequestPayloadJson());
-
-        $this->assertCount(1, $messages = $this->emailRepository->findRecipientMessages(NewsletterInvitationMessage::class, $invite2->getEmail()));
-        $this->assertContains('/newsletter?mail=jules.pietri%40clichy-beach.com', $messages[0]->getRequestPayloadJson());
+        $this->assertMailSentForRecipientContainsVars(
+            $invite1->getEmail(),
+            [
+                'sender_firstname' => 'Titouan',
+                'subscribe_link' => 'http://test.enmarche.code/newsletter?mail=hugo.hamon%40clichy-beach.com',
+            ],
+            NewsletterInvitationMail::class
+        );
+        $this->assertMailSentForRecipientContainsVars(
+            $invite2->getEmail(),
+            [
+                'sender_firstname' => 'Titouan',
+                'subscribe_link' => 'http://test.enmarche.code/newsletter?mail=jules.pietri%40clichy-beach.com',
+            ],
+            NewsletterInvitationMail::class
+        );
     }
 
     public function testInvitationSentWithoutRedirection()
@@ -216,6 +228,7 @@ class NewsletterControllerTest extends WebTestCase
             LoadNewsletterSubscriptionData::class,
         ]);
 
+        $this->clearMails();
         $this->subscriptionsRepository = $this->getNewsletterSubscriptionRepository();
         $this->newsletterInviteRepository = $this->getNewsletterInvitationRepository();
         $this->emailRepository = $this->getEmailRepository();
@@ -228,6 +241,8 @@ class NewsletterControllerTest extends WebTestCase
         $this->subscriptionsRepository = null;
         $this->newsletterInviteRepository = null;
         $this->emailRepository = null;
+
+        $this->clearMails();
 
         parent::tearDown();
     }

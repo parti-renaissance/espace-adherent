@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\JeMarcheReport;
 use AppBundle\Form\JeMarcheReportType;
+use AppBundle\JeMarche\JeMarcheReportHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -33,7 +34,7 @@ class JeMarcheController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.je_marche_report_handler')->handle($jeMarcheReport);
+            $this->get(JeMarcheReportHandler::class)->handle($jeMarcheReport);
 
             return $this->redirectToRoute('app_je_marche_thanks');
         }

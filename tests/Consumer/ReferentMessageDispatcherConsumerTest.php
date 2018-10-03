@@ -12,6 +12,7 @@ use AppBundle\Repository\ReferentManagedUsersMessageRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\TestCase;
@@ -127,8 +128,8 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
         $uuid = 'aze-aze';
         $messageContent = ['uuid' => $uuid];
 
-        $mailer = $this->createMock(MailerService::class);
-        $mailer->expects($this->any())->method('sendMessage')->willReturn(true);
+        $mailPost = $this->createMock(MailPostInterface::class);
+        $mailPost->expects($this->any())->method('address');
 
         $adherent = $this->createMock(Adherent::class);
         $adherent->expects($this->any())->method('getEmailAddress')->willReturn('hello@world.com');
@@ -167,7 +168,7 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
                 'getReferentMessageRepository',
                 'getReferentManagedUserRepository',
                 'getManager',
-                'getMailer',
+                'getMailPost',
             ])
             ->getMock()
         ;
@@ -178,7 +179,7 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
 
         $referentMessageDispatcherConsumer->setLogger($logger);
-        $referentMessageDispatcherConsumer->expects($this->any())->method('getMailer')->willReturn($mailer);
+        $referentMessageDispatcherConsumer->expects($this->any())->method('getMailPost')->willReturn($mailPost);
         $referentMessageDispatcherConsumer->expects($this->any())->method('getReferentManagedUserRepository')->willReturn($referentManagedUserRepository);
         $referentMessageDispatcherConsumer->expects($this->any())->method('getReferentMessageRepository')->willReturn($referentMessageRepository);
         $referentMessageDispatcherConsumer->expects($this->any())->method('getManager')->willReturn($this->entityManager);

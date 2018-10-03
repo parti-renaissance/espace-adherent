@@ -8,6 +8,7 @@ use AppBundle\Event\EventCanceledHandler;
 use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventContactMembersCommand;
 use AppBundle\Entity\Event;
+use AppBundle\Event\EventContactMembersCommandHandler;
 use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\ContactMembersType;
@@ -148,7 +149,7 @@ class EventManagerController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.event.contact_members_handler')->handle($command);
+            $this->get(EventContactMembersCommandHandler::class)->handle($command);
             $this->addFlash('info', 'committee.event.contact.success');
 
             return $this->redirectToRoute('app_event_members', [
