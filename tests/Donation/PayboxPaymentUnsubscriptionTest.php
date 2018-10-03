@@ -6,7 +6,7 @@ use AppBundle\Donation\DonationRequestUtils;
 use AppBundle\Donation\PayboxPaymentUnsubscription;
 use AppBundle\Entity\Donation;
 use AppBundle\Exception\PayboxPaymentUnsubscriptionException;
-use AppBundle\Mailer\MailerService;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Lexik\Bundle\PayboxBundle\Paybox\System\Cancellation\Request;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
@@ -42,7 +42,7 @@ class PayboxPaymentUnsubscriptionTest extends WebTestCase
         $this->createConfiguredMock(Request::class, []);
 
         return new PayboxPaymentUnsubscription(
-            $this->createConfiguredMock(MailerService::class, []),
+            $this->createConfiguredMock(MailPostInterface::class, []),
             $this->createConfiguredMock(Request::class, [
                 'cancel' => 'ACQ=NO&ERREUR=9&IDENTIFIANT=2&REFERENCE=refcmd1',
             ]),
@@ -55,7 +55,7 @@ class PayboxPaymentUnsubscriptionTest extends WebTestCase
         $this->createConfiguredMock(Request::class, []);
 
         return new PayboxPaymentUnsubscription(
-            $this->createConfiguredMock(MailerService::class, []),
+            $this->createConfiguredMock(MailPostInterface::class, []),
             $this->createConfiguredMock(Request::class, [
                 'cancel' => 'ACQ=OK&IDENTIFIANT=2&REFERENCE=refcmd1',
             ]),

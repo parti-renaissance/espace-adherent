@@ -13,8 +13,8 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Mail\Campaign\CommitteeMessageNotificationMail;
-use AppBundle\Mailer\Message\EventNotificationMessage;
-use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
+use AppBundle\Mail\Transactional\EventNotificationMail;
+use AppBundle\Mail\Transactional\EventRegistrationConfirmationMail;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
@@ -318,10 +318,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertSame("Débat sur l'agriculture écologique", $event->getName());
         $this->assertSame('Cette journée sera consacrée à un grand débat sur la question de l\'agriculture écologique.', $event->getDescription());
         $this->assertFalse($event->isForLegislatives());
-        $this->assertCountMails(1, EventNotificationMessage::class, 'jacques.picard@en-marche.fr');
-        $this->assertCountMails(1, EventNotificationMessage::class, 'gisele-berthoux@caramail.com');
-        $this->assertCountMails(1, EventNotificationMessage::class, 'luciole1989@spambox.fr');
-        $this->assertCountMails(0, EventNotificationMessage::class, 'carl999@example.fr');
+        $this->assertMailSentForRecipients(['jacques.picard@en-marche.fr', 'gisele-berthoux@caramail.com', 'luciole1989@spambox.fr'], EventNotificationMail::class);
 
         $eventItem = $this->committeeFeedItemRepository->findMostRecentFeedEvent(LoadAdherentData::COMMITTEE_1_UUID);
         $this->assertInstanceOf(CommitteeFeedItem::class, $eventItem);
@@ -338,7 +335,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertSame('6 rue Neyret, 69001 Lyon 1er', $crawler->filter('.committee-event-address')->text());
         $this->assertSame('Cette journée sera consacrée à un grand débat sur la question de l\'agriculture écologique.', $crawler->filter('.committee-event-description')->text());
 
-        $this->assertCountMails(1, EventRegistrationConfirmationMessage::class, 'gisele-berthoux@caramail.com');
+        $this->assertMailSentForRecipient('gisele-berthoux@caramail.com', EventRegistrationConfirmationMail::class);
     }
 
     public function testAuthenticatedCommitteeHostCanPostMessages()

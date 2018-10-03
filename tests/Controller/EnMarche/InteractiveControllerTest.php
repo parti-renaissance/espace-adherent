@@ -110,7 +110,7 @@ class InteractiveControllerTest extends WebTestCase
 
     private function getPurchasingPowerInvitationHandler(): PurchasingPowerProcessorHandler
     {
-        return $this->container->get('app.interactive.purchasing_power_processor_handler');
+        return $this->container->get(PurchasingPowerProcessorHandler::class);
     }
 
     private function getCurrentPurchasingPower(): PurchasingPowerProcessor

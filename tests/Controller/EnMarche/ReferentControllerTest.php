@@ -8,8 +8,9 @@ use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
 use AppBundle\DataFixtures\ORM\LoadReferentManagedUserData;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\ReferentManagedUsersMessage;
-use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
+use AppBundle\Mail\Transactional\EventRegistrationConfirmationMail;
 use AppBundle\Repository\ReferentManagedUsersMessageRepository;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -22,6 +23,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 class ReferentControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use MailTestCaseTrait;
 
     /**
      * @var ReferentManagedUsersMessageRepository
@@ -122,7 +124,7 @@ class ReferentControllerTest extends WebTestCase
         $this->assertSame('Premier événement en Suisse', $this->client->getCrawler()->filter('div.committee-event-description')->text());
         $this->assertContains('1 inscrit', $this->client->getCrawler()->filter('div.committee-event-attendees')->html());
 
-        $this->assertCountMails(1, EventRegistrationConfirmationMessage::class, 'referent@en-marche-dev.fr');
+        $this->assertMailSentForRecipient('referent@en-marche-dev.fr', EventRegistrationConfirmationMail::class);
     }
 
     public function testSearchUserToSendMail()
@@ -454,7 +456,7 @@ class ReferentControllerTest extends WebTestCase
             LoadNewsletterSubscriptionData::class,
             LoadReferentManagedUserData::class,
         ]);
-
+        $this->clearMails();
         $this->referentMessageRepository = $this->manager->getRepository(ReferentManagedUsersMessage::class);
     }
 
@@ -463,6 +465,7 @@ class ReferentControllerTest extends WebTestCase
         $this->kill();
 
         $this->referentMessageRepository = null;
+        $this->clearMails();
 
         parent::tearDown();
     }

@@ -3,12 +3,13 @@
 namespace AppBundle\Consumer;
 
 use AppBundle\Entity\ReferentManagedUsersMessage;
+use AppBundle\Mail\Campaign\ReferentMail;
 use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\ReferentMessage as Message;
 use AppBundle\Referent\ReferentMessage;
 use AppBundle\Repository\Projection\ReferentManagedUserRepository;
 use AppBundle\Repository\ReferentManagedUsersMessageRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -17,9 +18,9 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
     protected const BATCH_SIZE = 50;
 
     /**
-     * @var MailerService
+     * @var MailPostInterface
      */
-    private $mailer;
+    private $mailPost;
     /**
      * @var ReferentManagedUsersMessageRepository
      */
@@ -82,28 +83,37 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
         }
     }
 
-    public function sendMessage(ReferentManagedUsersMessage $savedMessage, ReferentMessage $message, array $recipients, int $count)
-    {
-        $delivered = $this->getMailer()->sendMessage(Message::createFromModel($message, $recipients));
+    public function sendMessage(
+        ReferentManagedUsersMessage $savedMessage,
+        ReferentMessage $message,
+        array $recipients,
+        int $count
+    ): void {
+        $this->getMailPost()->address(
+            ReferentMail::class,
+            ReferentMail::createRecipients($recipients),
+            ReferentMail::createRecipientFromAdherent($message->getFrom()),
+            ReferentMail::createTemplateVars($message),
+            $message->getSubject(),
+            ReferentMail::createSender($message->getFrom())
+        );
 
-        if ($delivered) {
-            $this->writeln(
-                $savedMessage->getUuid()->toString(),
-                'Message from '.$message->getFrom()->getEmailAddress().' dispatched ('.$count.')'
-            );
+        $this->writeln(
+            $savedMessage->getUuid()->toString(),
+            'Message from '.$message->getFrom()->getEmailAddress().' dispatched ('.$count.')'
+        );
 
-            $this->getReferentMessageRepository()->incrementOffset($savedMessage, \count($recipients));
-        }
+        $this->getReferentMessageRepository()->incrementOffset($savedMessage, \count($recipients));
     }
 
-    public function setMailer(MailerService $mailer): void
+    public function setMailPost(MailPostInterface $mailPost): void
     {
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
     }
 
-    public function getMailer(): MailerService
+    public function getMailPost(): MailPostInterface
     {
-        return $this->mailer;
+        return $this->mailPost;
     }
 
     public function setReferentManagedUserRepository(ReferentManagedUserRepository $referentManagedUserRepository): void

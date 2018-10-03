@@ -4,13 +4,6 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
-        <!-- Legislatives -->
-        <service id="app.legislatives.contact_handler" class="AppBundle\Legislative\LegislativeCampaignContactMessageHandler">
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument>%legislatives_financial_hotline_email%</argument>
-            <argument>%legislatives_standard_hotline_email%</argument>
-        </service>
-
         <!-- Api -->
         <service id="app.api.committee_provider" class="AppBundle\Api\CommitteeProvider">
             <argument type="service" id="AppBundle\Repository\CommitteeRepository"/>
@@ -144,11 +137,6 @@
             <argument type="service" id="app.address.post_address_factory"/>
         </service>
 
-        <service id="app.validator.unique_citizen_project" class="AppBundle\Validator\UniqueCitizenProjectValidator">
-            <argument type="service" id="AppBundle\Repository\CitizenProjectRepository"/>
-            <tag name="validator.constraint_validator" alias="app.validator.unique_citizen_project"/>
-        </service>
-
         <service id="app.citizen_project.creation_handler" class="AppBundle\CitizenProject\CitizenProjectCreationCommandHandler">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.citizen_project.factory"/>
@@ -177,12 +165,6 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>
 
-        <service id="app.event.invitation_handler" class="AppBundle\Event\EventInvitationHandler">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="app.routing.remote_url_generator"/>
-        </service>
-
         <service id="app.event.registration_handler" class="AppBundle\Event\EventRegistrationCommandHandler">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.event.registration_factory"/>
@@ -190,24 +172,12 @@
         </service>
         <service alias="app.event.registration_handler" id="AppBundle\Event\EventRegistrationCommandHandler" />
 
-        <service id="app.event.message_notifier" class="AppBundle\Event\EventMessageNotifier">
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="app.committee.manager"/>
-            <argument type="service" id="AppBundle\Repository\EventRegistrationRepository"/>
-            <argument type="service" id="router"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
         <service id="app.event.registration_manager" class="AppBundle\Event\EventRegistrationManager">
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="AppBundle\Repository\EventRegistrationRepository"/>
         </service>
 
         <service id="app.event.registration_exporter" class="AppBundle\Event\EventRegistrationExporter" />
-
-        <service id="app.event.contact_members_handler" class="AppBundle\Event\EventContactMembersCommandHandler">
-            <argument type="service" id="app.mailer.campaign" />
-        </service>
 
         <!-- CitizenActions -->
         <service autowire="true" id="AppBundle\CitizenAction\CitizenActionManager"/>

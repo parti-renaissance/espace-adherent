@@ -5,8 +5,9 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
-use AppBundle\Mailer\Message\EventCancellationMessage;
-use AppBundle\Mailer\Message\EventContactMembersMessage;
+use AppBundle\Mail\Campaign\EventContactMembersMail;
+use AppBundle\Mail\Transactional\EventCancellationMail;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +21,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 class EventManagerControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use MailTestCaseTrait;
 
     /**
      * @dataProvider provideHostProtectedPages
@@ -152,12 +154,7 @@ class EventManagerControllerTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->seeFlashMessage($crawler, 'L\'événement a bien été annulé.');
 
-        $messages = $this->getEmailRepository()->findMessages(EventCancellationMessage::class);
-        /** @var EventCancellationMessage $message */
-        $message = array_shift($messages);
-
-        // Two mails have been sent
-        $this->assertCount(2, $message->getRecipients());
+        $this->assertMailSentForRecipients(['francis.brioul@yahoo.com', 'jacques.picard@en-marche.fr'], EventCancellationMail::class);
     }
 
     public function testCommitteeHostCanEditEvent()
@@ -329,7 +326,7 @@ class EventManagerControllerTest extends WebTestCase
         $this->seeFlashMessage($crawler, 'Félicitations, votre message a bien été envoyé aux inscrits sélectionnés.');
 
         // Email should have been sent
-        $this->assertCount(1, $this->getEmailRepository()->findMessages(EventContactMembersMessage::class));
+        $this->assertMailCountForClass(1, EventContactMembersMail::class);
 
         // Try to illegally contact an adherent
         $uuids[] = Uuid::uuid4();
@@ -380,11 +377,13 @@ class EventManagerControllerTest extends WebTestCase
             LoadEventCategoryData::class,
             LoadEventData::class,
         ]);
+        $this->clearMails();
     }
 
     protected function tearDown()
     {
         $this->kill();
+        $this->clearMails();
 
         parent::tearDown();
     }

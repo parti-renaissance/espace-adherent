@@ -8,6 +8,6 @@ use Tests\AppBundle\TestHelperTrait;
 
 abstract class MailTestCase extends TestCase
 {
-    use MailTestCaseTrait,
-        TestHelperTrait;
+    use MailTestCaseTrait;
+    use TestHelperTrait;
 }

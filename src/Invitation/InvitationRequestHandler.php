@@ -3,20 +3,20 @@
 namespace AppBundle\Invitation;
 
 use AppBundle\Entity\Invite;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\InvitationMessage;
-use Doctrine\ORM\EntityManager;
+use AppBundle\Mail\Transactional\InvitationMail;
+use Doctrine\ORM\EntityManagerInterface;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class InvitationRequestHandler
 {
     private $entityManager;
-    private $mailer;
+    private $mailPost;
 
-    public function __construct(EntityManager $entityManager, MailerService $mailer)
+    public function __construct(EntityManagerInterface $entityManager, MailPostInterface $mailPost)
     {
         $this->entityManager = $entityManager;
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
     }
 
     public function handle(Invite $invite, Request $request)
@@ -26,6 +26,12 @@ class InvitationRequestHandler
         $this->entityManager->persist($invite);
         $this->entityManager->flush();
 
-        $this->mailer->sendMessage(InvitationMessage::createFromInvite($invite));
+        $this->mailPost->address(
+            InvitationMail::class,
+            InvitationMail::createRecipient($invite),
+            null,
+            InvitationMail::createTemplateVars($invite),
+            InvitationMail::createSubject($invite)
+        );
     }
 }
