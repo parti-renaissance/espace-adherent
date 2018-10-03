@@ -44,7 +44,7 @@
                     Modifier mon projet citoyen
                 </h1>
             </header>
-            {{ form_start(form, {attr: {id: 'edit-citizen-project-form', class: 'form citizen-project-form b__nudge--bottom-huge'}}) }}
+            {{ form_start(form, {attr: {id: 'edit-citizen-project-form', class: 'form b__nudge--bottom-huge'}}) }}
                 {{ include('citizen_project/_form.html.twig', {citizen_project: citizen_project}) }}
                 {% if form.cgu is defined %}
                     <div class="form__checkbox form__checkbox--large">

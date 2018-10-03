@@ -290,10 +290,12 @@
         padding: 10px;
     }
 
-    &-form {
+    &__form {
         #field-skills {
             .form_checkbox_multi_column {
                 #citizen_project_skills {
+                    overflow: hidden;
+
                     .form__checkbox {
                         width: 50%;
                         float: left;
