@@ -8,9 +8,10 @@ use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Entity\EventInvite;
 use AppBundle\Entity\EventRegistration;
-use AppBundle\Mailer\Message\EventInvitationMessage;
-use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
+use AppBundle\Mail\Transactional\EventInvitationMail;
+use AppBundle\Mail\Transactional\EventRegistrationConfirmationMail;
 use AppBundle\Repository\EventRegistrationRepository;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,6 +21,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class EventControllerTest extends AbstractEventControllerTest
 {
+    use MailTestCaseTrait;
+
     /** @var EventRegistrationRepository */
     private $repository;
 
@@ -73,7 +76,7 @@ class EventControllerTest extends AbstractEventControllerTest
         ]));
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'paupau75@example.org'));
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'paupau75@example.org'));
+        $this->assertMailSentForRecipient('paupau75@example.org', EventRegistrationConfirmationMail::class);
 
         $crawler = $this->client->followRedirect();
 
@@ -121,7 +124,7 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->client->submit($form);
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'jacques.picard@en-marche.fr'));
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'jacques.picard@en-marche.fr'));
+        $this->assertMailSentForRecipient('jacques.picard@en-marche.fr', EventRegistrationConfirmationMail::class);
 
         $crawler = $this->client->followRedirect();
 
@@ -207,8 +210,7 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertSame('jules.pietri@clichy-beach.com', $invite->getGuests()[1]);
 
         // Email should have been sent
-        $this->assertCount(1, $messages = $this->getEmailRepository()->findMessages(EventInvitationMessage::class));
-        $this->assertContains(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
+        $this->assertMailCountForClass(1, EventInvitationMail::class);
     }
 
     /**
@@ -275,8 +277,7 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertSame('jules.pietri@clichy-beach.com', $invite->getGuests()[1]);
 
         // Email should have been sent
-        $this->assertCount(1, $messages = $this->getEmailRepository()->findMessages(EventInvitationMessage::class));
-        $this->assertContains(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
+        $this->assertMailCountForClass(1, EventInvitationMail::class);
     }
 
     public function testInvitationSentWithoutRedirection()
@@ -415,6 +416,7 @@ class EventControllerTest extends AbstractEventControllerTest
             LoadHomeBlockData::class,
         ]);
 
+        $this->clearMails();
         $this->repository = $this->getEventRegistrationRepository();
     }
 
@@ -423,6 +425,7 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->kill();
 
         $this->repository = null;
+        $this->clearMails();
 
         parent::tearDown();
     }

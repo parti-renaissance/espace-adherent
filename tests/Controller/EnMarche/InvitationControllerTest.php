@@ -3,7 +3,8 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\Invite;
-use AppBundle\Mailer\Message\InvitationMessage;
+use AppBundle\Mail\Transactional\InvitationMail;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Repository\InvitationRepository;
@@ -17,6 +18,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 class InvitationControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use MailTestCaseTrait;
 
     /** @var InvitationRepository */
     private $invitationRepository;
@@ -62,7 +64,7 @@ class InvitationControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         // Email should have been sent
-        $this->assertCount(1, $this->getEmailRepository()->findMessages(InvitationMessage::class));
+        $this->assertMailCountForClass(1, InvitationMail::class);
 
         // Try another time with the same email (should fail)
         $crawler = $this->client->request(Request::METHOD_GET, '/invitation');
@@ -89,6 +91,7 @@ class InvitationControllerTest extends WebTestCase
 
         $this->init();
 
+        $this->clearMails();
         $this->invitationRepository = $this->getInvitationRepository();
     }
 
@@ -97,6 +100,7 @@ class InvitationControllerTest extends WebTestCase
         $this->kill();
 
         $this->invitationRepository = null;
+        $this->clearMails();
 
         parent::tearDown();
     }

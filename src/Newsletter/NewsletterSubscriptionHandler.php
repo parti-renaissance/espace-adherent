@@ -3,32 +3,38 @@
 namespace AppBundle\Newsletter;
 
 use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\NewsletterSubscriptionMessage;
-use Doctrine\ORM\EntityManager;
+use AppBundle\Mail\Transactional\NewsletterSubscriptionMail;
+use Doctrine\ORM\EntityManagerInterface;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 
 class NewsletterSubscriptionHandler
 {
     private $manager;
-    private $mailer;
+    private $mailPost;
 
-    public function __construct(EntityManager $manager, MailerService $mailer)
+    public function __construct(EntityManagerInterface $manager, MailPostInterface $mailPost)
     {
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
     }
 
-    public function subscribe(NewsletterSubscription $subscription)
+    public function subscribe(NewsletterSubscription $subscription): void
     {
         $subscription = $this->recoverSoftDeletedSubscription($subscription);
 
         $this->manager->persist($subscription);
         $this->manager->flush();
 
-        $this->mailer->sendMessage(NewsletterSubscriptionMessage::createFromSubscription($subscription));
+        $this->mailPost->address(
+            NewsletterSubscriptionMail::class,
+            NewsletterSubscriptionMail::createRecipient($subscription),
+            null,
+            [],
+            NewsletterSubscriptionMail::SUBJECT
+        );
     }
 
-    public function unsubscribe(?string $email)
+    public function unsubscribe(?string $email): void
     {
         $subscription = $this->findSubscriptionByEmail($email);
 

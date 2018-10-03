@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Event\EventInvitation;
+use AppBundle\Event\EventInvitationHandler;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Entity\Event;
 use AppBundle\Exception\BadUuidRequestException;
@@ -142,7 +143,7 @@ class EventController extends Controller
             /** @var EventInvitation $invitation */
             $invitation = $form->getData();
 
-            $this->get('app.event.invitation_handler')->handle($invitation, $event);
+            $this->get(EventInvitationHandler::class)->handle($invitation, $event);
             $request->getSession()->set('event_invitations_count', count($invitation->guests));
 
             return $this->redirectToRoute('app_event_invitation_sent', [

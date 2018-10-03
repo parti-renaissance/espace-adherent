@@ -3,19 +3,19 @@
 namespace AppBundle\JeMarche;
 
 use AppBundle\Entity\JeMarcheReport;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\JeMarcheReportMessage;
+use AppBundle\Mail\Transactional\JeMarcheReportMail;
 use Doctrine\Common\Persistence\ObjectManager;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 
 class JeMarcheReportHandler
 {
     private $entityManager;
-    private $mailer;
+    private $mailPost;
 
-    public function __construct(ObjectManager $entityManager, MailerService $mailer)
+    public function __construct(ObjectManager $entityManager, MailPostInterface $mailPost)
     {
         $this->entityManager = $entityManager;
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
     }
 
     public function handle(JeMarcheReport $jeMarcheReport)
@@ -23,6 +23,12 @@ class JeMarcheReportHandler
         $this->entityManager->persist($jeMarcheReport);
         $this->entityManager->flush();
 
-        $this->mailer->sendMessage(JeMarcheReportMessage::createFromJeMarcheReport($jeMarcheReport));
+        $this->mailPost->address(
+            JeMarcheReportMail::class,
+            JeMarcheReportMail::createRecipient($jeMarcheReport),
+            null,
+            JeMarcheReportMail::createTemplateVars($jeMarcheReport),
+            JeMarcheReportMail::SUBJECT
+        );
     }
 }

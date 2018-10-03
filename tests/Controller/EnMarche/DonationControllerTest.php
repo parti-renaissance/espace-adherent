@@ -5,9 +5,10 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\Transaction;
-use AppBundle\Mailer\Message\DonationMessage;
+use AppBundle\Mail\Transactional\DonationMail;
 use AppBundle\Repository\DonationRepository;
 use AppBundle\Repository\TransactionRepository;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Goutte\Client as PayboxClient;
 use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +24,7 @@ use Tests\AppBundle\Test\Payment\PayboxProvider;
 class DonationControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use MailTestCaseTrait;
 
     private const PAYBOX_PREPROD_URL = 'https://preprod-tpeweb.paybox.com/cgi/MYchoix_pagepaiement.cgi';
 
@@ -110,7 +112,7 @@ class DonationControllerTest extends WebTestCase
         $this->assertSame($duration, $donation->getDuration());
 
         // Email should not have been sent
-        $this->assertCount(0, $this->getEmailRepository()->findMessages(DonationMessage::class));
+        $this->assertMailCountForClass(0, DonationMail::class);
 
         // We should be redirected to payment
         $this->assertClientIsRedirectedTo(sprintf('/don/%s/paiement', $donation->getUuid()->toString()), $appClient);
@@ -138,9 +140,7 @@ class DonationControllerTest extends WebTestCase
             $this->markTestSkipped(sprintf('Paybox preproduction server has responded with %d.', $status));
         }
 
-        /*
-         * Paybox redirection and payment form
-         */
+        // Paybox redirection and payment form
         $crawler = $this->payboxClient->submit($crawler->filter('form[name=PAYBOX]')->form());
 
         // Pay using a testing account
@@ -203,7 +203,7 @@ class DonationControllerTest extends WebTestCase
         self::assertSame('00000', $transaction->getPayboxResultCode());
         self::assertSame('XXXXXX', $transaction->getPayboxAuthorizationCode());
         // Email should have been sent
-        $this->assertCount(1, $this->getEmailRepository()->findMessages(DonationMessage::class));
+        $this->assertMailCountForClass(1, DonationMail::class);
     }
 
     /**
@@ -253,7 +253,7 @@ class DonationControllerTest extends WebTestCase
         $this->assertSame($duration, $donation->getDuration());
 
         // Email should not have been sent
-        $this->assertCount(0, $this->getEmailRepository()->findMessages(DonationMessage::class));
+        $this->assertMailCountForClass(0, DonationMail::class);
 
         // We should be redirected to payment
         $this->assertClientIsRedirectedTo(sprintf('/don/%s/paiement', $donation->getUuid()->toString()), $appClient);
@@ -324,7 +324,7 @@ class DonationControllerTest extends WebTestCase
         self::assertSame('XXXXXX', $transaction->getPayboxAuthorizationCode());
         $this->assertNull($transaction->getPayboxTransactionId());
         // Email should not have been sent
-        $this->assertCount(0, $this->getEmailRepository()->findMessages(DonationMessage::class));
+        $this->assertMailCountForClass(0, DonationMail::class);
 
         $retryUrl = $crawler->selectLink('Je souhaite réessayer')->attr('href');
         $retryUrlRegExp = '/don/coordonnees\?donation_retry_payload=(.*)&montant=30';
@@ -404,6 +404,7 @@ class DonationControllerTest extends WebTestCase
         $this->init();
         $this->loadFixtures([]);
 
+        $this->clearMails();
         $this->payboxClient = new PayboxClient();
         $this->donationRepository = $this->getDonationRepository();
         $this->transactionRepository = $this->getTransactionRepository();
@@ -417,6 +418,7 @@ class DonationControllerTest extends WebTestCase
         $this->transactionRepository = null;
         $this->payboxClient = null;
         $this->donationRepository = null;
+        $this->clearMails();
 
         parent::tearDown();
     }
