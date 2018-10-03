@@ -1,3 +1,4 @@
+@api
 Feature:
   In order to change email subscription modification via Webhook
   As a platform

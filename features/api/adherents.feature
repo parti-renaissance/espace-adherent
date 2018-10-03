@@ -1,3 +1,4 @@
+@api
 Feature:
   In order to get adherents' information
   As a referent

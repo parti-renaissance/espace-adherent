@@ -1,3 +1,4 @@
+@admin
 Feature: Manage citizen projects from admin pannel
 
   Background:

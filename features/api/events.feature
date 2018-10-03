@@ -1,3 +1,4 @@
+@api
 Feature:
   In order to get events count in the
   As a referent

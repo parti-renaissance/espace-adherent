@@ -1,3 +1,4 @@
+@api
 Feature:
   In order to get the acquisition statistics data
   I should be able to request them via the API

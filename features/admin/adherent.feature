@@ -1,3 +1,4 @@
+@admin
 Feature: Manage adherent from admin panel
 
   Background:
