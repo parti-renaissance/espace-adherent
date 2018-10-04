@@ -64,10 +64,10 @@ Feature:
     And I should have 1 email "DeputyMessage" for "jacques.picard@en-marche.fr" with payload:
     """
     {
-      "FromEmail": "contact@en-marche.fr",
-      "FromName": "Votre d\u00e9put\u00e9 En Marche !",
+      "FromEmail": "jemarche@en-marche.fr",
+      "FromName": "Député PARIS I [Député]",
       "Subject": "Message from your deputy",
-      "MJ-TemplateID": "455851",
+      "MJ-TemplateID": "552765",
       "MJ-TemplateLanguage": true,
       "Recipients": [
       {

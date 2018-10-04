@@ -38,7 +38,8 @@ final class ReferentMessage extends Message
             $referent->getEmailAddress()
         );
 
-        $message->setSenderName(sprintf('Votre référent%s En Marche !', $referent->isFemale() ? 'e' : ''));
+        $message->setSenderEmail('jemarche@en-marche.fr');
+        $message->setSenderName($referent->getFullName().' [Référent]');
 
         foreach ($recipients as $recipient) {
             $message->addRecipient(
