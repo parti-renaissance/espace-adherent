@@ -3,11 +3,11 @@
 namespace AppBundle\Donation;
 
 use AppBundle\Entity\Donation;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\DonationMessage;
+use AppBundle\Mail\Transactional\DonationMail;
 use AppBundle\Repository\DonationRepository;
 use AppBundle\Repository\TransactionRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Lexik\Bundle\PayboxBundle\Event\PayboxEvents;
 use Lexik\Bundle\PayboxBundle\Event\PayboxResponseEvent;
 use Psr\Log\LoggerInterface;
@@ -16,20 +16,20 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class TransactionSubscriber implements EventSubscriberInterface
 {
-    private $mailer;
+    private $mailPost;
     private $manager;
     private $transactionRepository;
     private $donationRepository;
     private $logger;
 
     public function __construct(
-        MailerService $mailer,
+        MailPostInterface $mailPost,
         ObjectManager $manager,
         TransactionRepository $transactionRepository,
         DonationRepository $donationRepository,
         LoggerInterface $logger
     ) {
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
         $this->manager = $manager;
         $this->transactionRepository = $transactionRepository;
         $this->donationRepository = $donationRepository;
@@ -70,7 +70,13 @@ class TransactionSubscriber implements EventSubscriberInterface
         $this->manager->flush();
 
         if ($transaction->isSuccessful()) {
-            $this->mailer->sendMessage(DonationMessage::createFromTransaction($transaction));
+            $this->mailPost->address(
+                DonationMail::class,
+                DonationMail::createRecipientFor($transaction->getDonation()),
+                null,
+                DonationMail::createTemplateVarsFrom($transaction),
+                DonationMail::SUBJECT
+            );
         }
     }
 
