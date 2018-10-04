@@ -16,33 +16,6 @@
             </header>
 
             <div class="l__wrapper procuration-manager__content">
-                {% set pages = [
-                    {
-                        'route': 'app_deputy_users_message',
-                        'label': 'Envoyer un message'
-                    },
-                    {
-                        'route': 'app_deputy_events',
-                        'label': 'Événements'
-                    },
-                    {
-                        'route': 'app_deputy_committees',
-                        'label': 'Comités'
-                    }
-                ] %}
-
-                <ul class="procuration-manager__tabs">
-                    {% for page in pages %}
-                        <li class="{{ app.request.attributes.get('_route') == page.route ? 'active' : '' }}">
-                            <a href="{{ path(page.route) }}">
-                                {{ page.label }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-
-                <hr />
-
                 {% block deputy_content %}{% endblock %}
             </div>
         </section>

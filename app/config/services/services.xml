@@ -247,7 +247,7 @@
         <service id="AppBundle\Deputy\DistrictLoader" public="true" />
         <service id="AppBundle\Deputy\LightFileDistrictLoader" public="true" />
         <service id="AppBundle\Deputy\DeputyMessageNotifier" public="true">
-            <argument type="service" id="app.mailer.transactional"/>
+            <argument type="service" id="app.mailer.campaign"/>
         </service>
 
         <service id="AppBundle\Security\ApiAuthenticationEntryPoint"/>

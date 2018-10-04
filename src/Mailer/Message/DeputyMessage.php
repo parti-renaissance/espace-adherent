@@ -24,7 +24,7 @@ final class DeputyMessage extends Message
 
         $message = new self(
             Uuid::uuid4(),
-            '455851',
+            '552765',
             $first->getEmailAddress(),
             $first->getFullName() ?: '',
             $model->getSubject(),
@@ -39,7 +39,8 @@ final class DeputyMessage extends Message
             $deputy->getEmailAddress()
         );
 
-        $message->setSenderName(sprintf('Votre député%s En Marche !', $deputy->isFemale() ? 'e' : ''));
+        $message->setSenderEmail('jemarche@en-marche.fr');
+        $message->setSenderName($deputy->getFullName().' [Député]');
 
         foreach ($recipients as $recipient) {
             $message->addRecipient(
