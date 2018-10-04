@@ -19,8 +19,8 @@ use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
 use AppBundle\Entity\SubscriptionType;
 use AppBundle\Entity\TurnkeyProject;
 use AppBundle\Entity\Unregistration;
-use AppBundle\Mailer\Message\AdherentContactMessage;
-use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
+use AppBundle\Mail\Campaign\AdherentContactMail;
+use AppBundle\Mail\Transactional\AdherentTerminateMembershipMail;
 use AppBundle\Mailer\Message\CommitteeCreationConfirmationMessage;
 use AppBundle\Mailer\Message\CitizenProjectCreationConfirmationMessage;
 use AppBundle\Repository\CommitteeRepository;
@@ -28,6 +28,7 @@ use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\UnregistrationRepository;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 use Cake\Chronos\Chronos;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,6 +42,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 class AdherentControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use MailTestCaseTrait;
 
     /* @var CommitteeRepository */
     private $committeeRepository;
@@ -979,7 +981,7 @@ class AdherentControllerTest extends WebTestCase
         $this->seeFlashMessage($crawler, 'Votre message a bien été envoyé.');
 
         // Email should have been sent
-        $this->assertCount(1, $this->getEmailRepository()->findMessages(AdherentContactMessage::class));
+        $this->assertMailCountForClass(1, AdherentContactMail::class);
     }
 
     public function testContactActionWithInvalidUuid(): void
@@ -1088,7 +1090,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame(0, $errors->count());
         $this->assertSame('Votre adhésion et votre compte En Marche ont bien été supprimés et vos données personnelles effacées de notre base.', trim($crawler->filter('#is_not_adherent h1')->eq(0)->text()));
 
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(AdherentTerminateMembershipMessage::class, $userEmail));
+        $this->assertMailCountForClass(1, AdherentTerminateMembershipMail::class);
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', 'en-marche-suisse'));
         --$nbFollowers;
@@ -1170,6 +1172,7 @@ class AdherentControllerTest extends WebTestCase
 
         $this->committeeRepository = $this->getCommitteeRepository();
         $this->emailRepository = $this->getEmailRepository();
+        $this->clearMails();
     }
 
     protected function tearDown()
@@ -1178,6 +1181,7 @@ class AdherentControllerTest extends WebTestCase
 
         $this->emailRepository = null;
         $this->committeeRepository = null;
+        $this->clearMails();
 
         parent::tearDown();
     }

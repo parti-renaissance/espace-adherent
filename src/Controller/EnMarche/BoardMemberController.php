@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\BoardMember\BoardMemberFilter;
 use AppBundle\BoardMember\BoardMemberMessage;
+use AppBundle\BoardMember\BoardMemberMessageNotifier;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Form\BoardMemberMessageType;
@@ -92,7 +93,7 @@ class BoardMemberController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.board_member.message_notifier')->sendMessage($message);
+            $this->get(BoardMemberMessageNotifier::class)->sendMessage($message);
 
             $this->addFlash('info', 'board_member.message.success');
 
@@ -119,7 +120,7 @@ class BoardMemberController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.board_member.message_notifier')->sendMessage($message);
+            $this->get(BoardMemberMessageNotifier::class)->sendMessage($message);
 
             $this->addFlash('info', 'board_member.message.success');
 
@@ -144,7 +145,7 @@ class BoardMemberController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.board_member.message_notifier')->sendMessage($message);
+            $this->get(BoardMemberMessageNotifier::class)->sendMessage($message);
 
             $this->addFlash('info', 'board_member.message.success');
 
