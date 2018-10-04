@@ -119,6 +119,7 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
             $this->mailPost->address(
                 TurnkeyProjectApprovalConfirmationMail::class,
                 TurnkeyProjectApprovalConfirmationMail::createRecipientFromAdherent($citizenProject->getCreator()),
+                null,
                 TurnkeyProjectApprovalConfirmationMail::createTemplateVarsFrom(
                     $citizenProject,
                     $this->generateUrl('app_citizen_project_show', [
@@ -126,7 +127,8 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
                         '_fragment' => 'citizen-project-files',
                     ])
                 ),
-                TurnkeyProjectApprovalConfirmationMail::SUBJECT
+                TurnkeyProjectApprovalConfirmationMail::SUBJECT,
+                TurnkeyProjectApprovalConfirmationMail::createSender()
             );
         } else {
             $this->mailPost->address(

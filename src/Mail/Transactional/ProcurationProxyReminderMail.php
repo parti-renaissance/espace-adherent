@@ -11,11 +11,14 @@ use EnMarche\MailerBundle\Mail\TransactionalMail;
 
 class ProcurationProxyReminderMail extends TransactionalMail
 {
-    const SUBJECT = 'RAPPEL : votre procuration';
+    public const SUBJECT = 'RAPPEL : votre procuration';
 
-    public static function createRecipientFor(ProcurationRequest $request): RecipientInterface
+    public static function createRecipientsFor(ProcurationRequest $request): array
     {
-        return new Recipient($request->getEmailAddress());
+        return [
+            new Recipient($request->getEmailAddress()),
+            new Recipient($request->getFoundProxy()->getEmailAddress()),
+        ];
     }
 
     public static function createTemplateVarsFrom(ProcurationRequest $request, string $infoUrl): array

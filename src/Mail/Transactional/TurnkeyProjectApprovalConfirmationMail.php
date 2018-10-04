@@ -4,16 +4,12 @@ namespace AppBundle\Mail\Transactional;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
-use AppBundle\Mail\AdherentMailTrait;
 use AppBundle\Utils\StringCleaner;
 use EnMarche\MailerBundle\Mail\RecipientInterface;
-use EnMarche\MailerBundle\Mail\TransactionalMail;
 
-class TurnkeyProjectApprovalConfirmationMail extends TransactionalMail
+class TurnkeyProjectApprovalConfirmationMail extends AbstractCitizenProjectMail
 {
-    use AdherentMailTrait;
-
-    const SUBJECT = 'Votre projet citoyen a été publié. À vous de jouer !';
+    public const SUBJECT = 'Votre projet citoyen a été publié. À vous de jouer !';
 
     public static function createRecipientFor(Adherent $adherent): RecipientInterface
     {

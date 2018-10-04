@@ -6,6 +6,8 @@ use AppBundle\Legislative\LegislativeCampaignContactMessage as CampaignContactMe
 use AppBundle\Utils\StringCleaner;
 use EnMarche\MailerBundle\Mail\Recipient;
 use EnMarche\MailerBundle\Mail\RecipientInterface;
+use EnMarche\MailerBundle\Mail\Sender;
+use EnMarche\MailerBundle\Mail\SenderInterface;
 use EnMarche\MailerBundle\Mail\TransactionalMail;
 
 class LegislativeCampaignContactMail extends TransactionalMail
@@ -29,5 +31,10 @@ class LegislativeCampaignContactMail extends TransactionalMail
             'subject' => StringCleaner::htmlspecialchars($contact->getSubject()),
             'message' => nl2br(StringCleaner::htmlspecialchars($contact->getMessage())),
         ];
+    }
+
+    public static function createSenderFrom(CampaignContactMessage $contact): SenderInterface
+    {
+        return new Sender(null, $contact->getFullName());
     }
 }

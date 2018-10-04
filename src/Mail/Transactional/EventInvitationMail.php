@@ -32,4 +32,9 @@ class EventInvitationMail extends TransactionalMail
     {
         return sprintf(self::SUBJECT, $invite->getFullName());
     }
+
+    public static function createReplyToFrom(EventInvite $invite): RecipientInterface
+    {
+        return new Recipient($invite->getEmail());
+    }
 }

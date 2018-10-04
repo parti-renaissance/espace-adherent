@@ -66,10 +66,12 @@ final class PurchasingPowerProcessorHandler
             $this->mailPost->address(
                 PurchasingPowerMail::class,
                 PurchasingPowerMail::createRecipientFor($purchasingPower),
-                null, //todo
+                PurchasingPowerMail::createReplyToFrom($purchasingPower),
                 PurchasingPowerMail::createTemplateVarsFrom($purchasingPower),
-                $purchasingPower->getMailSubject()
+                PurchasingPowerMail::createSubjectFrom($purchasingPower),
+                PurchasingPowerMail::createSenderFrom($purchasingPower)
             );
+
             $this->terminate($session);
             $this->stateMachine->apply($processor, PurchasingPowerProcessor::TRANSITION_SEND);
 

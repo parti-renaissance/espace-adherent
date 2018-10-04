@@ -68,10 +68,12 @@ final class InvitationProcessorHandler
             $this->mailPost->address(
                 TonMacronFriendMail::class,
                 TonMacronFriendMail::createRecipientFor($invitation),
-                null, //todo
+                TonMacronFriendMail::createReplyToFrom($invitation),
                 TonMacronFriendMail::createTemplateVarsFrom($invitation),
-                $invitation->getMailSubject()
+                TonMacronFriendMail::createSubjectFrom($invitation),
+                TonMacronFriendMail::createSenderFrom($invitation)
             );
+
             $this->terminate($session);
             $this->stateMachine->apply($processor, InvitationProcessor::TRANSITION_SEND);
 

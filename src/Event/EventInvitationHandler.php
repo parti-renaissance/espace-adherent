@@ -33,7 +33,7 @@ class EventInvitationHandler
         $this->mailPost->address(
             EventInvitationMail::class,
             EventInvitationMail::createRecipientFor($invite),
-            null,
+            EventInvitationMail::createReplyToFrom($invite),
             EventInvitationMail::createTemplateVarsFrom($invite, $event, $url),
             EventInvitationMail::createSubjectFor($invite)
         );
