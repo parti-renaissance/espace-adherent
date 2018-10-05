@@ -188,7 +188,7 @@ Feature:
     And I should see "Votre compte adhérent est maintenant actif."
     And "api_sync" should have 1 message
     And "api_sync" should have message below:
-      | routing_key  | body                                                                                                                            |
+      | routing_key  | body                                                                                                                                                         |
       | user.updated | {"uuid":"@string@","subscriptionExternalIds":[],"country":"FR","zipCode":"06000","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
     And I should have 2 emails
     And the adherent "jp@test.com" should have the "06" referent tag
@@ -250,7 +250,7 @@ Feature:
     And "api_sync" should have message below:
       | routing_key               | body                                                                         |
       | user.update_subscriptions | {"uuid":"@string@","subscriptions":["123abc","456def"],"unsubscriptions":[]} |
-
+    And I clean the "api_sync" queue
 
   @javascript
   Scenario: I can become adherent with a foreign country
@@ -269,6 +269,7 @@ Feature:
       | become_adherent[birthdate][month]    | 1                  |
       | become_adherent[birthdate][year]     | 1980               |
     And I click the "field-conditions" element
+    And I click the "field-com-email" element
     When I press "Je rejoins La République En Marche"
     Then I should see "Veuillez renseigner une ville."
 
@@ -278,6 +279,11 @@ Feature:
     Then I should be on "/espace-adherent/accueil"
     And the adherent "simple-user@example.ch" should have the "CH" referent tag
     And I should see "Votre compte adhérent est maintenant actif."
+    And "api_sync" should have 1 message
+    And "api_sync" should have message below:
+      | routing_key  | body                                                                                                                                                                             |
+      | user.updated | {"uuid":"@string@","subscriptionExternalIds":["123abc","456def"],"country":"CH","zipCode":"8057","emailAddress":"simple-user@example.ch","firstName":"Simple","lastName":"User"} |
+    And I clean the "api_sync" queue
 
   @javascript
   Scenario: I can become adherent with a french address

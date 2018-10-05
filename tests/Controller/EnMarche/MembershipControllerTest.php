@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadUserData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
@@ -186,6 +187,54 @@ class MembershipControllerTest extends WebTestCase
         self::assertCount(8, $adherent->getSubscriptionTypes());
     }
 
+    public function testAdherentSubscriptionTypesArePersistedCorrectlyWhenAdhesionFromUser(): void
+    {
+        $adherent = $this->getAdherentRepository()->findOneByEmail('simple-user@example.ch');
+
+        self::assertCount(0, $adherent->getSubscriptionTypes());
+
+        $this->authenticateAsAdherent($this->client, 'simple-user@example.ch');
+        $this->client->request(Request::METHOD_GET, '/adhesion');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit(
+            $this->client->getCrawler()->selectButton('Je rejoins La République En Marche')->form(),
+            [
+                'become_adherent' => [
+                    'address' => [
+                        'address' => '32 Zeppelinstrasse',
+                        'cityName' => 'Zürich',
+                        'postalCode' => '8057',
+                        'country' => 'CH',
+                    ],
+                    'phone' => [
+                        'number' => '06 12 34 56 78',
+                    ],
+                    'birthdate' => [
+                        'day' => 1,
+                        'month' => 1,
+                        'year' => 1989,
+                    ],
+                    'gender' => 'male',
+                    'conditions' => true,
+                    'allowNotifications' => true,
+                ],
+            ]
+        );
+
+        $this->assertClientIsRedirectedTo('/espace-adherent/accueil', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertSame('Votre compte adhérent est maintenant actif.', $crawler->filter('.flash__inner')->text());
+
+        $this->manager->refresh($adherent);
+
+        self::assertCount(8, $adherent->getSubscriptionTypes());
+    }
+
     private static function createFormData(): array
     {
         return [
@@ -213,6 +262,7 @@ class MembershipControllerTest extends WebTestCase
 
         $this->init([
             LoadAdherentData::class,
+            LoadUserData::class,
         ]);
 
         $this->adherentRepository = $this->getAdherentRepository();

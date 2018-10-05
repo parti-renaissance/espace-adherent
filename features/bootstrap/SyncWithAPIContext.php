@@ -35,7 +35,7 @@ class SyncWithAPIContext implements Context
     {
         $adherent = $this->doctrine->getRepository(Adherent::class)->findOneBy(['emailAddress' => $email]);
 
-        $this->dispatcher->dispatch($event, new UserEvent($adherent));
+        $this->dispatcher->dispatch($event, new UserEvent($adherent, true, true));
     }
 
     /**
