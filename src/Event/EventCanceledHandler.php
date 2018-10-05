@@ -29,7 +29,7 @@ class EventCanceledHandler
 
     public function handle(BaseEvent $event): BaseEvent
     {
-        $className = get_class($event);
+        $className = \get_class($event);
 
         if (!array_key_exists($className, self::EVENTS_MAPPING)) {
             throw new \InvalidArgumentException(sprintf('[%s] Invalid Event type [%s]', self::class, $className));

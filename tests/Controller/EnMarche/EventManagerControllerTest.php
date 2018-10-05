@@ -363,7 +363,7 @@ class EventManagerControllerTest extends WebTestCase
 
     private function seeMembersList(Crawler $crawler, int $count): bool
     {
-        return $count === count($crawler->filter('table > tr'));
+        return $count === \count($crawler->filter('table > tr'));
     }
 
     private function redirectionEventNotPublishTest($url)

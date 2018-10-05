@@ -54,7 +54,7 @@ class GoogleStaticMapProvider implements StaticMapProviderInterface
             'size' => $size,
             'key' => $this->key,
             'markers' => $coordinates->getLatitude().','.$coordinates->getLongitude(),
-        ], null, '&', PHP_QUERY_RFC3986);
+        ], null, '&', \PHP_QUERY_RFC3986);
 
         try {
             return $this->client->request('GET', self::MAPS_API_ENDPOINT.'?'.$parameters)->getBody()->getContents();

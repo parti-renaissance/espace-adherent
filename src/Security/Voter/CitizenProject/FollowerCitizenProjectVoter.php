@@ -15,7 +15,7 @@ class FollowerCitizenProjectVoter extends AbstractAdherentVoter
     protected function supports($attribute, $subject)
     {
         return $subject instanceof CitizenProject
-            && in_array($attribute, CitizenProjectPermissions::FOLLOWER, true)
+            && \in_array($attribute, CitizenProjectPermissions::FOLLOWER, true)
         ;
     }
 

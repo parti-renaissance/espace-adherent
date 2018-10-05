@@ -39,7 +39,7 @@ class AddressValidator extends ConstraintValidator
         }
 
         // Invalid postal code
-        if (!is_scalar($address->getPostalCode()) || 0 === count(FranceCitiesBundle::getPostalCodeCities($address->getPostalCode()))) {
+        if (!is_scalar($address->getPostalCode()) || 0 === \count(FranceCitiesBundle::getPostalCodeCities($address->getPostalCode()))) {
             $this->context->addViolation($constraint->frenchPostalCodeMessage);
 
             return;
@@ -47,7 +47,7 @@ class AddressValidator extends ConstraintValidator
 
         // Invalid city
         $parts = explode('-', $address->getCity());
-        if (2 !== count($parts) || !FranceCitiesBundle::getCity($parts[0], $parts[1])) {
+        if (2 !== \count($parts) || !FranceCitiesBundle::getCity($parts[0], $parts[1])) {
             $this->context->addViolation($constraint->frenchCityMessage);
 
             return;

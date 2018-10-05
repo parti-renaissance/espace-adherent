@@ -21,7 +21,7 @@ class ManageCitizenActionVoter extends AbstractAdherentVoter
      */
     protected function supports($attribute, $subject)
     {
-        return in_array($attribute, CitizenActionPermissions::MANAGE, true)
+        return \in_array($attribute, CitizenActionPermissions::MANAGE, true)
             && $subject instanceof CitizenProject
         ;
     }

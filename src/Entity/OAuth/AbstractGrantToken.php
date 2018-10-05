@@ -75,7 +75,7 @@ abstract class AbstractGrantToken extends AbstractToken
 
     public function hasScope(string $scope): bool
     {
-        return in_array($scope, $this->scopes, true);
+        return \in_array($scope, $this->scopes, true);
     }
 
     /**

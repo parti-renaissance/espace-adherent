@@ -103,7 +103,7 @@ class SummaryManagerControllerTest extends WebTestCase
      */
     public function testCreateExperience()
     {
-        $summariesCount = count($this->getSummaryRepository()->findAll());
+        $summariesCount = \count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
@@ -290,7 +290,7 @@ class SummaryManagerControllerTest extends WebTestCase
      */
     public function testCreateTraining()
     {
-        $summariesCount = count($this->getSummaryRepository()->findAll());
+        $summariesCount = \count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
@@ -470,7 +470,7 @@ class SummaryManagerControllerTest extends WebTestCase
      */
     public function testCreateLanguageWithoutSummary()
     {
-        $summariesCount = count($this->getSummaryRepository()->findAll());
+        $summariesCount = \count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
@@ -619,7 +619,7 @@ class SummaryManagerControllerTest extends WebTestCase
 
         $this->assertNotEmpty(\GuzzleHttp\json_decode($content, true));
         $skills = \GuzzleHttp\json_decode($content, true);
-        $this->assertSame(1, count($skills));
+        $this->assertSame(1, \count($skills));
         foreach ($skills as $skill) {
             $this->assertSame('Outils médias', $skill);
         }
@@ -648,7 +648,7 @@ class SummaryManagerControllerTest extends WebTestCase
      */
     public function testAddSkillWithoutSummary()
     {
-        $summariesCount = count($this->getSummaryRepository()->findAll());
+        $summariesCount = \count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
@@ -756,7 +756,7 @@ class SummaryManagerControllerTest extends WebTestCase
      */
     public function testStepSynthesisWithoutSummary()
     {
-        $summariesCount = count($this->getSummaryRepository()->findAll());
+        $summariesCount = \count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
@@ -851,7 +851,7 @@ class SummaryManagerControllerTest extends WebTestCase
      */
     public function testStepMissionsWithoutSummary()
     {
-        $summariesCount = count($this->getSummaryRepository()->findAll());
+        $summariesCount = \count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
@@ -929,7 +929,7 @@ class SummaryManagerControllerTest extends WebTestCase
      */
     public function testStepMotivationWithoutSummary()
     {
-        $summariesCount = count($this->getSummaryRepository()->findAll());
+        $summariesCount = \count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
@@ -1002,7 +1002,7 @@ class SummaryManagerControllerTest extends WebTestCase
      */
     public function testStepInterestsWithoutSummary()
     {
-        $summariesCount = count($this->getSummaryRepository()->findAll());
+        $summariesCount = \count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
@@ -1075,7 +1075,7 @@ class SummaryManagerControllerTest extends WebTestCase
      */
     public function testStepContactWithoutSummary()
     {
-        $summariesCount = count($this->getSummaryRepository()->findAll());
+        $summariesCount = \count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
@@ -1150,7 +1150,7 @@ class SummaryManagerControllerTest extends WebTestCase
 
     public function testPublishActionWithoutSummary()
     {
-        $summariesCount = count($this->getSummaryRepository()->findAll());
+        $summariesCount = \count($this->getSummaryRepository()->findAll());
 
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
@@ -1202,7 +1202,7 @@ class SummaryManagerControllerTest extends WebTestCase
 
         $files = array(
             'summary' => array(
-                'error' => array('profile_picture' => UPLOAD_ERR_OK),
+                'error' => array('profile_picture' => \UPLOAD_ERR_OK),
                 'name' => array('profile_picture' => 'image.jpg'),
                 'size' => array('profile_picture' => 631),
                 'tmp_name' => array('profile_picture' => __DIR__.'/../../Fixtures/image.jpg'),
@@ -1233,7 +1233,7 @@ class SummaryManagerControllerTest extends WebTestCase
 
         $files = array(
             'summary' => array(
-                'error' => array('profile_picture' => UPLOAD_ERR_OK),
+                'error' => array('profile_picture' => \UPLOAD_ERR_OK),
                 'name' => array('profile_picture' => 'image.jpg'),
                 'size' => array('profile_picture' => 631),
                 'tmp_name' => array('profile_picture' => __DIR__.'/../../Fixtures/image.jpg'),

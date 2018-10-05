@@ -48,7 +48,7 @@ class DeputyController extends Controller
         }
 
         return $this->render('deputy/users_message.html.twig', [
-            'results_count' => count($recipients),
+            'results_count' => \count($recipients),
             'message' => $message,
             'form' => $form->createView(),
         ]);

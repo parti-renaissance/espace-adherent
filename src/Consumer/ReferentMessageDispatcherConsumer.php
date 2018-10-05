@@ -92,7 +92,7 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
                 'Message from '.$message->getFrom()->getEmailAddress().' dispatched ('.$count.')'
             );
 
-            $this->getReferentMessageRepository()->incrementOffset($savedMessage, count($recipients));
+            $this->getReferentMessageRepository()->incrementOffset($savedMessage, \count($recipients));
         }
     }
 

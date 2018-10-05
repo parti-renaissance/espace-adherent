@@ -37,7 +37,7 @@ class CitizenProjectControllerSubscriber implements EventSubscriberInterface
          * This is not usual in Symfony but it may happen.
          * If it is a class, it comes in array format
          */
-        if (!is_array($controller)) {
+        if (!\is_array($controller)) {
             return;
         }
 
@@ -71,7 +71,7 @@ class CitizenProjectControllerSubscriber implements EventSubscriberInterface
 
         $postalCode = $user->getPostalCode();
 
-        return !in_array(substr($postalCode, 0, 3), self::UNAUTHORIZED_DEPARTMENT_CODES, true);
+        return !\in_array(substr($postalCode, 0, 3), self::UNAUTHORIZED_DEPARTMENT_CODES, true);
     }
 
     public static function getSubscribedEvents()

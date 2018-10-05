@@ -44,7 +44,7 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
             throw new \RuntimeException(sprintf('File "%s" does not exists.', $csvPath));
         }
 
-        if (1 !== strlen($input->getOption('csv-delimiter'))) {
+        if (1 !== \strlen($input->getOption('csv-delimiter'))) {
             throw new \RuntimeException('CSV delimiter must be one character only.');
         }
 
@@ -59,7 +59,7 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
 
         $handle = fopen($input->getArgument('csv-file'), 'rb');
         while (false !== ($data = fgetcsv($handle, 1000, $input->getOption('csv-delimiter')))) {
-            if (5 !== count($data)) {
+            if (5 !== \count($data)) {
                 continue;
             }
 

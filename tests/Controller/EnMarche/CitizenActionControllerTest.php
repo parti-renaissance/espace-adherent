@@ -24,7 +24,7 @@ class CitizenActionControllerTest extends AbstractEventControllerTest
     public function testAnonymousUserCanRegisterToCitizenAction()
     {
         $registrations = $this->getEventRegistrationRepository()->findAll();
-        $initialCount = count($registrations);
+        $initialCount = \count($registrations);
 
         $eventUrl = '/action-citoyenne/'.date('Y-m-d', strtotime('tomorrow')).'-projet-citoyen-3';
         $crawler = $this->client->request('GET', $eventUrl);

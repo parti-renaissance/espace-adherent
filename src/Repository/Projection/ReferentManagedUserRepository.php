@@ -102,7 +102,7 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
                     $qb->setParameter('postalCode_'.$key, $areaCode.'%');
                 }
 
-                if (is_string($areaCode)) {
+                if (\is_string($areaCode)) {
                     $areaCodeExpression->add('u.country LIKE :countryCode_'.$key);
                     $qb->setParameter('countryCode_'.$key, $areaCode.'%');
                 }

@@ -137,7 +137,7 @@ class Client
 
     public function addRedirectUri(string $redirectUri): void
     {
-        if (!in_array($redirectUri, $this->redirectUris, true)) {
+        if (!\in_array($redirectUri, $this->redirectUris, true)) {
             $this->redirectUris[] = $redirectUri;
         }
     }
@@ -156,7 +156,7 @@ class Client
 
     public function hasRedirectUri(string $uri): bool
     {
-        return in_array($uri, $this->redirectUris, true);
+        return \in_array($uri, $this->redirectUris, true);
     }
 
     public function getSecret(): string
@@ -184,12 +184,12 @@ class Client
 
     public function isAllowedGrantType(string $grantType): bool
     {
-        return in_array($grantType, $this->allowedGrantTypes, true);
+        return \in_array($grantType, $this->allowedGrantTypes, true);
     }
 
     public function addSupportedScope(string $scope): void
     {
-        if (in_array($scope, $this->supportedScopes, true)) {
+        if (\in_array($scope, $this->supportedScopes, true)) {
             throw new \LogicException("$scope is already supported");
         }
 
@@ -211,7 +211,7 @@ class Client
 
     public function supportsScope(string $scope): bool
     {
-        return in_array($scope, $this->supportedScopes, true);
+        return \in_array($scope, $this->supportedScopes, true);
     }
 
     public function getSupportedScopes(): array

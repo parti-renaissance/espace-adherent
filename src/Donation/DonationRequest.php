@@ -272,7 +272,7 @@ class DonationRequest
     {
         $retry = clone $this;
 
-        if (isset($payload['ge']) && in_array($payload['ge'], Genders::ALL, true)) {
+        if (isset($payload['ge']) && \in_array($payload['ge'], Genders::ALL, true)) {
             $retry->gender = $payload['ge'];
         }
 

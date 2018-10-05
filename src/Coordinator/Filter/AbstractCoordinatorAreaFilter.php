@@ -64,7 +64,7 @@ abstract class AbstractCoordinatorAreaFilter
     {
         $status = trim($status);
 
-        if ($status && !in_array($status, $this->getAvailableStatus(), true)) {
+        if ($status && !\in_array($status, $this->getAvailableStatus(), true)) {
             throw new \UnexpectedValueException(sprintf('Unexpected committee request status "%s".', $status));
         }
 

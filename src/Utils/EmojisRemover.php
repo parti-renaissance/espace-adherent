@@ -6,7 +6,7 @@ class EmojisRemover
 {
     public static function remove($text)
     {
-        if (!$text || !is_string($text)) {
+        if (!$text || !\is_string($text)) {
             return null;
         }
 

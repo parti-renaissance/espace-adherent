@@ -291,7 +291,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface
 
     public function setStatus(string $status): void
     {
-        if (!in_array($status, self::STATUSES, true)) {
+        if (!\in_array($status, self::STATUSES, true)) {
             throw new \InvalidArgumentException('Invalid status "%" given.', $status);
         }
 
@@ -310,7 +310,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface
 
     public function isActive(): bool
     {
-        return in_array($this->status, self::ACTIVE_STATUSES, true);
+        return \in_array($this->status, self::ACTIVE_STATUSES, true);
     }
 
     public function isCancelled(): bool

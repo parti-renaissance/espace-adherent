@@ -578,13 +578,13 @@ class CitizenProject extends BaseGroup
         $committeeIdsToBeAssociate = array_diff($committeeIdsSubmit, $committeeIdsAlreadySupport);
 
         foreach ($this->getCommitteeSupports() as $committeeSupport) {
-            if (in_array($committeeSupport->getCommittee()->getId(), $committeeIdsToBeDissociate)) {
+            if (\in_array($committeeSupport->getCommittee()->getId(), $committeeIdsToBeDissociate)) {
                 $this->removeCommitteeSupport($committeeSupport->getCommittee());
             }
         }
 
         foreach ($committees as $committee) {
-            if (in_array($committee->getId(), $committeeIdsToBeAssociate)) {
+            if (\in_array($committee->getId(), $committeeIdsToBeAssociate)) {
                 $this->addCommitteeOnSupport($committee);
             }
         }
@@ -733,6 +733,6 @@ class CitizenProject extends BaseGroup
 
     public function isNotFinalStatus(): bool
     {
-        return in_array($this->status, self::NOT_FINAL_STATUSES, true);
+        return \in_array($this->status, self::NOT_FINAL_STATUSES, true);
     }
 }

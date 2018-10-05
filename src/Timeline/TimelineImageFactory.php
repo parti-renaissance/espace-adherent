@@ -84,7 +84,7 @@ class TimelineImageFactory
                 $textColor,
                 $regularFont,
                 self::TEXT_SIZE_REGULAR,
-                self::TEXTS_COORDINATES[$status]['x'] + 20 + strlen($count) * 45,
+                self::TEXTS_COORDINATES[$status]['x'] + 20 + \strlen($count) * 45,
                 self::TEXTS_COORDINATES[$status]['y'] - 5
             );
         }
@@ -156,6 +156,6 @@ class TimelineImageFactory
 
     private static function drawArc($image, int $x, int $y, int $radius, int $start, int $end, int $color): void
     {
-        imagefilledarc($image, $x, $y, $radius, $radius, $start, $end, $color, IMG_ARC_PIE);
+        imagefilledarc($image, $x, $y, $radius, $radius, $start, $end, $color, \IMG_ARC_PIE);
     }
 }

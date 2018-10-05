@@ -58,7 +58,7 @@ class BindDeputiesToDistrictsCommand extends Command
         }
 
         $deputies = $this->decoder->decode(file_get_contents($file), 'csv', [CsvEncoder::DELIMITER_KEY => ';']);
-        $this->io->title(sprintf('Starting bind deputies to districts: %s deputies are about to be binded.', count($deputies)));
+        $this->io->title(sprintf('Starting bind deputies to districts: %s deputies are about to be binded.', \count($deputies)));
 
         $this->em->beginTransaction();
 

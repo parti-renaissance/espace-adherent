@@ -159,7 +159,7 @@ class Unregistration
 
     public function getReasonsAsJson(): string
     {
-        return \GuzzleHttp\json_encode($this->reasons, JSON_PRETTY_PRINT);
+        return \GuzzleHttp\json_encode($this->reasons, \JSON_PRETTY_PRINT);
     }
 
     public function setReasons(array $reasons): void

@@ -86,8 +86,8 @@ class EventFactory
             $command->getCategory(),
             $command->getDescription(),
             $this->createPostAddress($command->getAddress()),
-            $command->getBeginAt()->format(DATE_ATOM),
-            $command->getFinishAt()->format(DATE_ATOM),
+            $command->getBeginAt()->format(\DATE_ATOM),
+            $command->getFinishAt()->format(\DATE_ATOM),
             $command->getCapacity(),
             $command->isForLegislatives()
         );
@@ -104,8 +104,8 @@ class EventFactory
             $command->getCategory(),
             $command->getDescription(),
             $this->createPostAddress($command->getAddress()),
-            $command->getBeginAt()->format(DATE_ATOM),
-            $command->getFinishAt()->format(DATE_ATOM),
+            $command->getBeginAt()->format(\DATE_ATOM),
+            $command->getFinishAt()->format(\DATE_ATOM),
             $command->getCapacity(),
             $command->isForLegislatives()
         );

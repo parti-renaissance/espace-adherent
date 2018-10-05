@@ -143,7 +143,7 @@ class EventController extends Controller
             $invitation = $form->getData();
 
             $this->get('app.event.invitation_handler')->handle($invitation, $event);
-            $request->getSession()->set('event_invitations_count', count($invitation->guests));
+            $request->getSession()->set('event_invitations_count', \count($invitation->guests));
 
             return $this->redirectToRoute('app_event_invitation_sent', [
                 'slug' => $event->getSlug(),

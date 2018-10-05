@@ -51,7 +51,7 @@ class AssetsControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $response);
 
-        $weight = strlen($response->getContent());
+        $weight = \strlen($response->getContent());
 
         $this->assertGreaterThan(1024, $weight, 'We are assuming that an image map should be greater than 1 KB');
         $this->assertLessThan(1024 * 1024, $weight, 'We are assuming that an image map should be less than 1 MB');

@@ -92,7 +92,7 @@ class GroupUtilsTest extends WebTestCase
         $adherents = $this->getAdherents();
         $uuids = GroupUtils::getUuidsFromAdherents($adherents);
 
-        $this->assertCount(count($adherents), $uuids);
+        $this->assertCount(\count($adherents), $uuids);
 
         foreach ($uuids as $uuid) {
             $this->assertInternalType('string', $uuid);

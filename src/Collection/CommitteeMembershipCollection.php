@@ -32,7 +32,7 @@ class CommitteeMembershipCollection extends ArrayCollection
 
     public function countCommitteeHostMemberships(): int
     {
-        return count($this->filter(function (CommitteeMembership $membership) {
+        return \count($this->filter(function (CommitteeMembership $membership) {
             return $membership->canHostCommittee();
         }));
     }

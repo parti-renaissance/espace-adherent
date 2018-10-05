@@ -11,22 +11,22 @@ final class CommitteeCollection extends ArrayCollection
     {
         $uuids = $memberships->getCommitteeSupervisorMemberships()->getCommitteeUuids();
         $supervisedCommittees = $this->filter(function (Committee $committee) use ($uuids) {
-            return in_array((string) $committee->getUuid(), $uuids);
+            return \in_array((string) $committee->getUuid(), $uuids);
         });
 
         $uuids = $memberships->getCommitteeHostMemberships(CommitteeMembershipCollection::EXCLUDE_SUPERVISORS)->getCommitteeUuids();
         $hostedCommittees = $this->filter(function (Committee $committee) use ($uuids) {
-            return in_array((string) $committee->getUuid(), $uuids);
+            return \in_array((string) $committee->getUuid(), $uuids);
         });
 
         $uuids = $memberships->getCommitteeFollowerMembershipsNotWaitingForApproval()->getCommitteeUuids();
         $followedCommittees = $this->filter(function (Committee $committee) use ($uuids) {
-            return in_array((string) $committee->getUuid(), $uuids);
+            return \in_array((string) $committee->getUuid(), $uuids);
         });
 
         $uuids = $memberships->getCommitteeMembershipsInWaitingForApproval()->getCommitteeUuids();
         $waitingForApprovalCommittees = $this->filter(function (Committee $committee) use ($uuids) {
-            return in_array((string) $committee->getUuid(), $uuids);
+            return \in_array((string) $committee->getUuid(), $uuids);
         });
 
         return new static(array_merge(

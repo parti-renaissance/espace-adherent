@@ -69,7 +69,7 @@ class AdminPurchasingPowerController extends Controller
         $invitations = $manager->getRepository(PurchasingPowerInvitation::class)->findPaginatedForExport($page, self::PER_PAGE);
 
         return new JsonResponse([
-            'count' => count($invitations),
+            'count' => \count($invitations),
             'lines' => $this->get('app.purchasing_power.serializer')->serializeInvitations($invitations),
         ]);
     }

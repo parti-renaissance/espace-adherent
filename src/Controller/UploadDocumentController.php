@@ -24,7 +24,7 @@ class UploadDocumentController extends Controller
      */
     public function filebrowserUploadAction(string $type, Request $request)
     {
-        if (!in_array($type, UserDocument::ALL_TYPES)) {
+        if (!\in_array($type, UserDocument::ALL_TYPES)) {
             throw new NotFoundHttpException("File upload is not defined for type '$type'.");
         }
 

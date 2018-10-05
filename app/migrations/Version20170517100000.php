@@ -35,7 +35,7 @@ class Version20170517100000 extends AbstractMigration
         foreach ($this->connection->fetchAll('SELECT id, name FROM events_categories') as $category) {
             if (isset($this->events[$category['name']])) {
                 $this->connection->executeUpdate(
-                    sprintf('UPDATE events SET category_id = ? WHERE id IN (%s)', implode(', ', array_fill(0, count($this->events[$category['name']]), '?'))),
+                    sprintf('UPDATE events SET category_id = ? WHERE id IN (%s)', implode(', ', array_fill(0, \count($this->events[$category['name']]), '?'))),
                     array_merge([$category['id']], $this->events[$category['name']])
                 );
             }
@@ -62,7 +62,7 @@ class Version20170517100000 extends AbstractMigration
     {
         foreach ($this->events as $categoryId => $events) {
             $this->connection->executeUpdate(
-                sprintf('UPDATE events SET category = ? WHERE id IN (%s)', implode(', ', array_fill(0, count($events), '?'))),
+                sprintf('UPDATE events SET category = ? WHERE id IN (%s)', implode(', ', array_fill(0, \count($events), '?'))),
                 array_merge([$categoryId], $events)
             );
         }

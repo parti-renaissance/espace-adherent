@@ -137,7 +137,7 @@ class LegislativeDistrictZone
 
     public function setAreaType(string $type): void
     {
-        if (!in_array($type = strtolower($type), $types = [self::TYPE_DEPARTMENT, self::TYPE_REGION])) {
+        if (!\in_array($type = strtolower($type), $types = [self::TYPE_DEPARTMENT, self::TYPE_REGION])) {
             throw new \InvalidArgumentException(sprintf('Invalid district zone type "%s". It must be one of %s.', $type, implode(', ', $types)));
         }
 

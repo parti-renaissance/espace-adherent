@@ -82,7 +82,7 @@ class Administrator implements UserInterface, TwoFactorInterface
 
     public function addRole(string $role)
     {
-        if (!in_array($role, $this->roles, true)) {
+        if (!\in_array($role, $this->roles, true)) {
             $this->roles[] = $role;
         }
     }

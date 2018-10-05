@@ -28,7 +28,7 @@ class CommitteesControllerTest extends WebTestCase
         $this->assertJson($content);
 
         // Check the payload
-        $this->assertGreaterThanOrEqual(8, count(\GuzzleHttp\json_decode($content, true)));
+        $this->assertGreaterThanOrEqual(8, \count(\GuzzleHttp\json_decode($content, true)));
         $this->assertEachJsonItemContainsKey('uuid', $content);
         $this->assertEachJsonItemContainsKey('slug', $content);
         $this->assertEachJsonItemContainsKey('name', $content);

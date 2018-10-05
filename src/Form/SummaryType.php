@@ -206,6 +206,6 @@ class SummaryType extends AbstractType
 
     public static function stepExists(string $step): bool
     {
-        return in_array($step, self::STEPS, true);
+        return \in_array($step, self::STEPS, true);
     }
 }

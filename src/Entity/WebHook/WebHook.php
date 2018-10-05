@@ -115,7 +115,7 @@ class WebHook
 
     public function addCallback(string $callback): void
     {
-        if (!in_array($callback, $this->callbacks, true)) {
+        if (!\in_array($callback, $this->callbacks, true)) {
             $this->callbacks[] = $callback;
         }
     }

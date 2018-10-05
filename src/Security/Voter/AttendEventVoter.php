@@ -25,8 +25,8 @@ class AttendEventVoter extends AbstractAdherentVoter
      */
     protected function supports($attribute, $subject)
     {
-        return $subject instanceof Event && in_array($attribute, EventPermissions::ATTEND, true)
-            || $subject instanceof CitizenAction && in_array($attribute, CitizenActionPermissions::ATTEND, true)
+        return $subject instanceof Event && \in_array($attribute, EventPermissions::ATTEND, true)
+            || $subject instanceof CitizenAction && \in_array($attribute, CitizenActionPermissions::ATTEND, true)
         ;
     }
 

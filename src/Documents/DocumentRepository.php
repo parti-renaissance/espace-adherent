@@ -86,7 +86,7 @@ class DocumentRepository
      */
     private function map(string $pathPrefix, array $files): array
     {
-        $pathPrefixLength = strlen($pathPrefix);
+        $pathPrefixLength = \strlen($pathPrefix);
         $directory = [];
 
         foreach ($files as $file) {

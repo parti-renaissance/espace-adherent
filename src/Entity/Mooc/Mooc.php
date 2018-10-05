@@ -203,7 +203,7 @@ class Mooc
      */
     public function countChapters(): int
     {
-        return count($this->chapters);
+        return \count($this->chapters);
     }
 
     public function addChapter(Chapter $chapter): void

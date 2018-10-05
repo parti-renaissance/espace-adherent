@@ -155,7 +155,7 @@ class MoocNormalizer implements NormalizerInterface
         }
 
         throw new NotNormalizableValueException(
-            sprintf('%s is not an authorized BaseMoocElement.', get_class($element))
+            sprintf('%s is not an authorized BaseMoocElement.', \get_class($element))
         );
     }
 }

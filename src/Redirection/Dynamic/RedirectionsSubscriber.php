@@ -45,7 +45,7 @@ class RedirectionsSubscriber implements EventSubscriberInterface
      */
     public function addHandler(RedirectToInterface $handler): void
     {
-        if (!in_array($handler, $this->handlers)) {
+        if (!\in_array($handler, $this->handlers)) {
             $this->handlers[] = $handler;
         }
     }

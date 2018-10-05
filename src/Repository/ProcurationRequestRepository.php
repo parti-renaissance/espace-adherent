@@ -134,7 +134,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
      */
     private function findRequests(array $requests): array
     {
-        if (!count($requests)) {
+        if (!\count($requests)) {
             return [];
         }
 

@@ -33,9 +33,9 @@ class ActivationStrategy extends ErrorLevelActivationStrategy
                 $exception = $exception->getPrevious();
             }
 
-            if ($exception instanceof HttpExceptionInterface && in_array($exception->getStatusCode(), $this->ignoredStatusCodes)) {
+            if ($exception instanceof HttpExceptionInterface && \in_array($exception->getStatusCode(), $this->ignoredStatusCodes)) {
                 return false;
-            } elseif ($exception instanceof AccessDeniedException && in_array($exception->getCode(), $this->ignoredStatusCodes)) {
+            } elseif ($exception instanceof AccessDeniedException && \in_array($exception->getCode(), $this->ignoredStatusCodes)) {
                 return false;
             }
         }

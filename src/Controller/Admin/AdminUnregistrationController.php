@@ -48,7 +48,7 @@ class AdminUnregistrationController extends Controller
         $unregistrations = $repository->findPaginatedForExport($request->query->getInt('page', 1), self::PER_PAGE);
 
         return new JsonResponse([
-            'count' => count($unregistrations),
+            'count' => \count($unregistrations),
             'lines' => $this->get('app.unregistration.serializer')->serialize($unregistrations),
         ]);
     }

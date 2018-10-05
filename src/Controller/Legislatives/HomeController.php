@@ -23,7 +23,7 @@ class HomeController extends Controller
         $districtZonesRepository = $doctrine->getRepository(LegislativeDistrictZone::class);
 
         $status = $request->query->get('status');
-        if (!in_array($status, LegislativeCandidate::getStatuses(), true)) {
+        if (!\in_array($status, LegislativeCandidate::getStatuses(), true)) {
             $status = null;
         }
 

@@ -13,7 +13,7 @@ class LoadReferentTagData extends Fixture
     {
         // French department tags
         foreach (\range(1, 98) as $department) {
-            $department = \str_pad($department, 2, '0', STR_PAD_LEFT);
+            $department = \str_pad($department, 2, '0', \STR_PAD_LEFT);
 
             switch ($department) {
                 // 2 separate tags for Corsica + 1 tag for whole Corsica
@@ -26,7 +26,7 @@ class LoadReferentTagData extends Fixture
                 // 1 tag for each Paris district + 1 tag for Paris
                 case '75':
                     foreach (\range(1, 20) as $district) {
-                        $district = \str_pad($district, 2, '0', STR_PAD_LEFT);
+                        $district = \str_pad($district, 2, '0', \STR_PAD_LEFT);
 
                         $this->createReferentTag($manager, "750$district", "750$district");
                     }

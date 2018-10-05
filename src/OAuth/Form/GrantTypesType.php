@@ -31,7 +31,7 @@ class GrantTypesType extends AbstractType implements DataTransformerInterface
         $data = [];
 
         foreach (GrantTypeEnum::GRANT_TYPES_ENABLED as $grantType) {
-            $data[$grantType] = in_array($grantType, $value, true);
+            $data[$grantType] = \in_array($grantType, $value, true);
         }
 
         return $data;

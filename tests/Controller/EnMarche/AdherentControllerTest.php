@@ -902,7 +902,7 @@ class AdherentControllerTest extends WebTestCase
             'create_committee[googlePlusPageUrl]' => 'https://plus.google.com/+EnMarcheavecEmmanuelMacron?hl=fr',
             'create_committee[acceptConfidentialityTerms]' => true,
             'create_committee[acceptContactingTerms]' => true,
-            'create_committee[photo]' => new UploadedFile(__DIR__.'/../../Fixtures/image.jpg', 'image.jpg', 'image/jpeg', 631, UPLOAD_ERR_OK, true),
+            'create_committee[photo]' => new UploadedFile(__DIR__.'/../../Fixtures/image.jpg', 'image.jpg', 'image/jpeg', 631, \UPLOAD_ERR_OK, true),
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
@@ -1105,7 +1105,7 @@ class AdherentControllerTest extends WebTestCase
         $mailHistorySubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherentBeforeUnregistration, 'subscribe');
         $mailHistoryUnsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherentBeforeUnregistration, 'unsubscribe');
 
-        $this->assertSame(count($mailHistorySubscriptions), count($mailHistoryUnsubscriptions));
+        $this->assertSame(\count($mailHistorySubscriptions), \count($mailHistoryUnsubscriptions));
         $this->assertSame(array_values($chosenReasons), $unregistration->getReasons());
         $this->assertSame('Je me désinscris', $unregistration->getComment());
         $this->assertSame($adherentBeforeUnregistration->getRegisteredAt()->format('Y-m-d H:i:s'), $unregistration->getRegisteredAt()->format('Y-m-d H:i:s'));

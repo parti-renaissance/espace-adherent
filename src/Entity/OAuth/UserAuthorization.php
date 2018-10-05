@@ -77,7 +77,7 @@ class UserAuthorization
                 throw new \DomainException(sprintf('Instance of %s must be provided', Scope::class));
             }
 
-            if (!in_array($scope->getIdentifier(), $this->scopes)) {
+            if (!\in_array($scope->getIdentifier(), $this->scopes)) {
                 return false;
             }
         }

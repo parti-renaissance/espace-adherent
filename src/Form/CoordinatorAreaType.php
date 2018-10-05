@@ -32,11 +32,11 @@ class CoordinatorAreaType extends AbstractType
             ])
         ;
 
-        if (in_array($options['status'], [CoordinatorAreaInterface::PRE_APPROVED, BaseGroup::PENDING], true)) {
+        if (\in_array($options['status'], [CoordinatorAreaInterface::PRE_APPROVED, BaseGroup::PENDING], true)) {
             $builder->add('refuse', SubmitType::class);
         }
 
-        if (in_array($options['status'], [CoordinatorAreaInterface::PRE_REFUSED, BaseGroup::PENDING], true)) {
+        if (\in_array($options['status'], [CoordinatorAreaInterface::PRE_REFUSED, BaseGroup::PENDING], true)) {
             $builder->add('accept', SubmitType::class);
         }
     }

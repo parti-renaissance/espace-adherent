@@ -359,7 +359,7 @@ trait TestHelperTrait
 
         $services = $property->getValue($container) ?: [];
         foreach ($services as $id => $service) {
-            if (in_array($id, $exclude, true)) {
+            if (\in_array($id, $exclude, true)) {
                 continue;
             }
 

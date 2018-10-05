@@ -34,6 +34,6 @@ final class ActivityPositions
 
     public static function exists(string $position): bool
     {
-        return in_array($position, self::ALL, true);
+        return \in_array($position, self::ALL, true);
     }
 }

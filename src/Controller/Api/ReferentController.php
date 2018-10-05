@@ -39,7 +39,7 @@ class ReferentController extends Controller
             throw new BadRequestHttpException('The parameters "type" and "value" are required.');
         }
 
-        if (!in_array($type, self::AUTOCOMPLETE_TYPES, true)) {
+        if (!\in_array($type, self::AUTOCOMPLETE_TYPES, true)) {
             throw new BadRequestHttpException(sprintf('Invalid parameter "type" "%" given.', $type));
         }
         $referent = $this->getUser();
@@ -49,7 +49,7 @@ class ReferentController extends Controller
                 return new JsonResponse(['cities' => array_unique(array_merge(
                     $committeeRepository->findCitiesForReferentAutocomplete($referent, $value),
                     $eventRepository->findCitiesForReferentAutocomplete($referent, $value)),
-                    SORT_REGULAR
+                    \SORT_REGULAR
                 )]);
             case self::AUTOCOMPLETE_TYPE_COMMITTEE:
                 return new JsonResponse(['committees' => $committeeRepository->findApprovedForReferentAutocomplete($referent, $value)]);

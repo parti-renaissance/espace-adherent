@@ -128,7 +128,7 @@ class CommitteeMembership
 
     public static function checkPrivilege(string $privilege): void
     {
-        if (!in_array($privilege, self::PRIVILEGES, true)) {
+        if (!\in_array($privilege, self::PRIVILEGES, true)) {
             throw new \InvalidArgumentException(sprintf('Invalid privilege %s', $privilege));
         }
     }
@@ -168,7 +168,7 @@ class CommitteeMembership
      */
     public function canHostCommittee(): bool
     {
-        return in_array($this->privilege, self::getHostPrivileges(), true);
+        return \in_array($this->privilege, self::getHostPrivileges(), true);
     }
 
     public function getAdherent(): ?Adherent
@@ -226,7 +226,7 @@ class CommitteeMembership
 
     public function getSubscriptionDate(): \DateTimeImmutable
     {
-        return new \DateTimeImmutable($this->joinedAt->format(DATE_RFC822), $this->joinedAt->getTimezone());
+        return new \DateTimeImmutable($this->joinedAt->format(\DATE_RFC822), $this->joinedAt->getTimezone());
     }
 
     public function matches(Adherent $adherent, Committee $committee): bool

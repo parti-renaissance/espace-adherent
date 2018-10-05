@@ -59,7 +59,7 @@ class SentryHandler extends RavenHandler
 
                 if ($record['context']) {
                     foreach ($record['context'] as $key => $value) {
-                        $breadcrumb['data'][$key] = is_scalar($value) ? $value : json_encode($value, JSON_UNESCAPED_SLASHES);
+                        $breadcrumb['data'][$key] = is_scalar($value) ? $value : json_encode($value, \JSON_UNESCAPED_SLASHES);
                     }
                 }
             }

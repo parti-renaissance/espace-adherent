@@ -96,7 +96,7 @@ class CommitteeManager
     public function getAdherentCommittees(Adherent $adherent): array
     {
         // Prevent SQL query if the adherent doesn't follow any committees yet.
-        if (0 === count($memberships = $adherent->getMemberships())) {
+        if (0 === \count($memberships = $adherent->getMemberships())) {
             return [];
         }
 

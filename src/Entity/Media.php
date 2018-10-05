@@ -292,7 +292,7 @@ class Media
 
         $infos = getimagesize($file->getPathname());
 
-        if (!count($infos)) {
+        if (!\count($infos)) {
             return $this;
         }
 

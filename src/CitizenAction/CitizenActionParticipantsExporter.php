@@ -9,7 +9,7 @@ class CitizenActionParticipantsExporter
     public function export(array $participants): string
     {
         $handle = fopen('php://memory', 'r+');
-        fputs($handle, chr(0xEF).chr(0xBB).chr(0xBF)); // add BOM to fix UTF-8 in Excel
+        fputs($handle, \chr(0xEF).\chr(0xBB).\chr(0xBF)); // add BOM to fix UTF-8 in Excel
         fputcsv($handle, ['N° d\'enregistrement', 'Prénom', 'Nom', 'Âge', 'Ville', 'Date d\'inscription']);
 
         foreach ($participants as $participant) {

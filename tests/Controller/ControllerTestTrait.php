@@ -110,7 +110,7 @@ trait ControllerTestTrait
             $this->assertSame($message, trim($flash->text()));
         }
 
-        return 1 === count($flash);
+        return 1 === \count($flash);
     }
 
     protected function appendCollectionFormPrototype(\DOMElement $collection, string $newIndex = '0', string $prototypeName = '__name__'): void
@@ -140,7 +140,7 @@ trait ControllerTestTrait
             function ($message) use ($msgBody) { return $msgBody === $message->getBody(); }
         );
 
-        self::assertEquals(1, count($messages), 'Expected message not found.');
+        self::assertEquals(1, \count($messages), 'Expected message not found.');
     }
 
     private function getMessages(string $queue): array

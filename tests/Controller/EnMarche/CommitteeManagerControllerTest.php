@@ -681,7 +681,7 @@ class CommitteeManagerControllerTest extends WebTestCase
     private function seeMembersList(Crawler $crawler, int $count): bool
     {
         // Header row is part of the count
-        return $count === count($crawler->filter('table > tr'));
+        return $count === \count($crawler->filter('table > tr'));
     }
 
     private function seeMessageForm(Crawler $crawler, array $errorMessages = []): bool
@@ -689,7 +689,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         if ($errorMessages) {
             $errors = $crawler->filter('form[name="committee_feed_message"] .form__error');
 
-            $this->assertCount(count($errorMessages), $errors);
+            $this->assertCount(\count($errorMessages), $errors);
 
             foreach ($errorMessages as $i => $errorMessage) {
                 $this->assertSame($errorMessage, trim($errors->eq($i)->text()));
@@ -698,7 +698,7 @@ class CommitteeManagerControllerTest extends WebTestCase
             $this->assertCount(0, $crawler->filter('form[name="committee_feed_message"] .form__errors'));
         }
 
-        return 1 === count($crawler->filter('form[name="committee_feed_message"]'));
+        return 1 === \count($crawler->filter('form[name="committee_feed_message"]'));
     }
 
     private function assertCountTimelineMessages(Crawler $crawler, int $nb, string $message = '')

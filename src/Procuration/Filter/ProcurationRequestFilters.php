@@ -23,7 +23,7 @@ class ProcurationRequestFilters extends ProcurationFilters
     {
         $status = mb_strtolower(trim($status));
 
-        if ($status && !in_array($status, [self::PROCESSED, self::UNPROCESSED], true)) {
+        if ($status && !\in_array($status, [self::PROCESSED, self::UNPROCESSED], true)) {
             throw new ProcurationException(sprintf('Unexpected procuration request status "%s".', $status));
         }
 

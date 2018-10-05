@@ -56,7 +56,7 @@ class CitizenActionMessageNotifier implements EventSubscriberInterface
 
         $subscriptions = $this->registrationRepository->findByEvent($citizenAction);
 
-        if (count($subscriptions) > 0) {
+        if (\count($subscriptions) > 0) {
             $registrationChunks = array_chunk($subscriptions->toArray(), MailerService::PAYLOAD_MAXSIZE);
 
             foreach ($registrationChunks as $chunk) {

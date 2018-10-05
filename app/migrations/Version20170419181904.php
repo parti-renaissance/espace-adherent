@@ -34,7 +34,7 @@ class Version20170419181904 extends AbstractMigration
 
     public function postUp(Schema $schema)
     {
-        if (count($this->adherents)) {
+        if (\count($this->adherents)) {
             $this->connection->executeUpdate('UPDATE adherents SET legislative_candidate = 1 WHERE id IN(?)', [implode(',', $this->adherents)]);
         }
 

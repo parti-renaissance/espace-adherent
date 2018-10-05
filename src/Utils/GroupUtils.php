@@ -17,7 +17,7 @@ class GroupUtils
     {
         $json = json_decode($json, true);
 
-        if (!is_array($json)) {
+        if (!\is_array($json)) {
             return [];
         }
 
