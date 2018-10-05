@@ -259,12 +259,6 @@
         <!-- CitizenActions -->
         <service autowire="true" id="AppBundle\CitizenAction\CitizenActionManager"/>
         <service autowire="true" id="AppBundle\CitizenAction\CitizenActionCommandHandler" />
-        <service id="AppBundle\CitizenAction\CitizenActionRegistrationCommandHandler">
-            <argument type="service" id="app.event.registration_factory"/>
-            <argument type="service" id="app.event.registration_manager"/>
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="app.routing.remote_url_generator"/>
-        </service>
 
         <!-- Referents -->
         <service id="AppBundle\Referent\ReferentMessageNotifier">

@@ -5,26 +5,26 @@ namespace AppBundle\CitizenAction;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Event\EventRegistrationFactory;
 use AppBundle\Event\EventRegistrationManager;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CitizenActionRegistrationConfirmationMessage;
+use AppBundle\Mail\Transactional\CitizenActionRegistrationConfirmationMail;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CitizenActionRegistrationCommandHandler
 {
     private $factory;
     private $manager;
-    private $mailer;
+    private $mailPost;
     private $urlGenerator;
 
     public function __construct(
         EventRegistrationFactory $factory,
         EventRegistrationManager $manager,
-        MailerService $mailer,
+        MailPostInterface $mailPost,
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->factory = $factory;
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -43,11 +43,17 @@ class CitizenActionRegistrationCommandHandler
 
         $this->manager->create($registration = $this->factory->createFromCommand($command));
 
-        $citizenActionCalendarLink = $this->generateUrl('app_citizen_action_export_ical', [
-            'slug' => $command->getEvent()->getSlug(),
-        ]);
-
-        $this->mailer->sendMessage(CitizenActionRegistrationConfirmationMessage::createFromRegistration($registration, $citizenActionCalendarLink));
+        $this->mailPost->address(
+            CitizenActionRegistrationConfirmationMail::class,
+            CitizenActionRegistrationConfirmationMail::createRecipientFrom($registration),
+            null,
+            CitizenActionRegistrationConfirmationMail::createTemplateVarsFrom(
+                $registration->getEvent(),
+                $this->generateUrl('app_citizen_action_export_ical', [
+                    'slug' => $command->getEvent()->getSlug(),
+                ])
+            )
+        );
     }
 
     private function generateUrl(string $route, array $params = []): string

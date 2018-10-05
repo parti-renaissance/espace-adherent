@@ -3,31 +3,28 @@
 namespace AppBundle\CitizenAction;
 
 use AppBundle\CitizenProject\CitizenProjectManager;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\EventRegistration;
 use AppBundle\Events;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CitizenActionCancellationMessage;
-use AppBundle\Mailer\Message\CitizenActionNotificationMessage;
+use AppBundle\Mail\Transactional\CitizenActionCancellationMail;
+use AppBundle\Mail\Transactional\CitizenActionNotificationMail;
 use AppBundle\Repository\EventRegistrationRepository;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CitizenActionMessageNotifier implements EventSubscriberInterface
 {
-    private $mailer;
+    private $mailPost;
     private $urlGenerator;
     private $citizenProjectManager;
     private $registrationRepository;
 
     public function __construct(
-        MailerService $mailer,
+        MailPostInterface $mailPost,
         UrlGeneratorInterface $urlGenerator,
         CitizenProjectManager $citizenProjectManager,
         EventRegistrationRepository $registrationRepository
     ) {
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
         $this->urlGenerator = $urlGenerator;
         $this->citizenProjectManager = $citizenProjectManager;
         $this->registrationRepository = $registrationRepository;
@@ -37,14 +34,18 @@ class CitizenActionMessageNotifier implements EventSubscriberInterface
     {
         $citizenAction = $citizenActionEvent->getCitizenAction();
 
-        $chunks = array_chunk(
-            $this->citizenProjectManager->getOptinCitizenProjectFollowers($citizenAction->getCitizenProject())->toArray(),
-            MailerService::PAYLOAD_MAXSIZE
-        );
+        $followers = $this->citizenProjectManager->getOptinCitizenProjectFollowers($citizenAction->getCitizenProject())->toArray();
 
-        foreach ($chunks as $chunk) {
-            $this->mailer->sendMessage($this->createMessage($chunk, $citizenAction, $citizenAction->getOrganizer()));
-        }
+        $this->mailPost->address(
+            CitizenActionNotificationMail::class,
+            CitizenActionNotificationMail::createRecipientsFrom($followers),
+            CitizenActionNotificationMail::createRecipientFromAdherent($citizenAction->getOrganizer()),
+            CitizenActionNotificationMail::createTemplateVarsFrom(
+                $citizenAction,
+                $this->generateUrl('app_citizen_action_attend', ['slug' => $citizenAction->getSlug()])
+            ),
+            CitizenActionNotificationMail::SUBJECT
+        );
     }
 
     public function sendCancellationEmail(CitizenActionEvent $citizenActionEvent): void
@@ -56,16 +57,17 @@ class CitizenActionMessageNotifier implements EventSubscriberInterface
 
         $subscriptions = $this->registrationRepository->findByEvent($citizenAction);
 
-        if (count($subscriptions) > 0) {
-            $registrationChunks = array_chunk($subscriptions->toArray(), MailerService::PAYLOAD_MAXSIZE);
-
-            foreach ($registrationChunks as $chunk) {
-                $this->mailer->sendMessage($this->createCancelMessage(
-                    $chunk,
+        if (\count($subscriptions) > 0) {
+            $this->mailPost->address(
+                CitizenActionCancellationMail::class,
+                CitizenActionCancellationMail::createRecipientsFrom($subscriptions),
+                CitizenActionCancellationMail::createRecipientFromAdherent($citizenActionEvent->getAuthor()),
+                CitizenActionCancellationMail::createTemplateVarsFrom(
                     $citizenAction,
-                    $citizenActionEvent->getAuthor()
-                ));
-            }
+                    $this->generateUrl('app_search_events')
+                ),
+                CitizenActionCancellationMail::SUBJECT
+            );
         }
     }
 
@@ -75,31 +77,6 @@ class CitizenActionMessageNotifier implements EventSubscriberInterface
             Events::CITIZEN_ACTION_CREATED => ['sendCreationEmail'],
             Events::CITIZEN_ACTION_CANCELLED => ['sendCancellationEmail'],
         ];
-    }
-
-    private function createMessage(array $followers, CitizenAction $citizenAction, Adherent $host): CitizenActionNotificationMessage
-    {
-        return CitizenActionNotificationMessage::create(
-            $followers,
-            $host,
-            $citizenAction,
-            $this->generateUrl('app_citizen_action_attend', [
-                'slug' => $citizenAction->getSlug(),
-            ])
-        );
-    }
-
-    private function createCancelMessage(array $registered, CitizenAction $citizenAction, Adherent $host): CitizenActionCancellationMessage
-    {
-        return CitizenActionCancellationMessage::create(
-            $registered,
-            $host,
-            $citizenAction,
-            $this->generateUrl('app_search_events'),
-            function (EventRegistration $registration) {
-                return CitizenActionCancellationMessage::getRecipientVars($registration->getFirstName());
-            }
-        );
     }
 
     private function generateUrl(string $route, array $params = []): string
