@@ -4,9 +4,9 @@ namespace AppBundle\Committee;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Mail\Transactional\CommitteeNewFollowerMail;
 use AppBundle\Mail\Transactional\CommitteeApprovalConfirmationMail;
 use AppBundle\Mail\Transactional\CommitteeApprovalReferentMail;
-use AppBundle\Mailer\Message\CommitteeNewFollowerMessage;
 use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -93,17 +93,22 @@ class CommitteeManagementAuthority
     {
         $this->manager->followCommittee($adherent, $committee);
 
-        if (!$hosts = $this->manager->getCommitteeHosts($committee)->toArray()) {
+        $hosts = $this->manager->getCommitteeHosts($committee);
+
+        if ($hosts->isEmpty()) {
             return;
         }
 
-        $this->mailer->sendMessage(CommitteeNewFollowerMessage::create(
-            $committee,
-            $hosts,
-            $adherent,
-            $this->urlGenerator->generate('app_committee_manager_list_members', [
-                'slug' => $committee->getSlug(),
-            ], UrlGeneratorInterface::ABSOLUTE_URL)
-        ));
+        $url = $this->urlGenerator->generate('app_committee_manager_list_members', [
+            'slug' => $committee->getSlug(),
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        $this->mailPost->address(
+            CommitteeNewFollowerMail::class,
+            CommitteeNewFollowerMail::createRecipientsFrom($hosts),
+            null,
+            CommitteeNewFollowerMail::createTemplateVarsFrom($committee, $adherent, $url),
+            CommitteeNewFollowerMail::SUBJECT
+        );
     }
 }
