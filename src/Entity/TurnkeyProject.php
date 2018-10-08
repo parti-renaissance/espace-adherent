@@ -116,7 +116,7 @@ class TurnkeyProject
      * @AssertWysiwygLength(max=800)
      *
      * @JMS\SerializedName("solution"),
-     * @JMS\Groups({"turnkey_project_read"})
+     * @JMS\Groups({"turnkey_project_read", "turnkey_project_list"})
      */
     private $proposedSolution;
 
