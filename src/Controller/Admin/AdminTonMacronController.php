@@ -71,7 +71,7 @@ class AdminTonMacronController extends Controller
         $invitations = $manager->getRepository(TonMacronFriendInvitation::class)->findPaginatedForExport($page, self::PER_PAGE);
 
         return new JsonResponse([
-            'count' => count($invitations),
+            'count' => \count($invitations),
             'lines' => $this->get('app.ton_macron.serializer')->serializeInvitations($invitations),
         ]);
     }

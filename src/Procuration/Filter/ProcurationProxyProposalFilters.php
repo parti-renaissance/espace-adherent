@@ -24,7 +24,7 @@ class ProcurationProxyProposalFilters extends ProcurationFilters
     {
         $status = mb_strtolower(trim($status));
 
-        if (!in_array($status, [self::ASSOCIATED, self::UNASSOCIATED, self::DISABLED])) {
+        if (!\in_array($status, [self::ASSOCIATED, self::UNASSOCIATED, self::DISABLED])) {
             throw new ProcurationException(sprintf('Unexpected procuration proxy proposal status "%s".', $status));
         }
 

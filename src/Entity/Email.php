@@ -67,12 +67,12 @@ class Email
 
     public function __toString(): string
     {
-        return $this->messageClass.' de '.$this->sender.' à '.count($this->recipients).' destinataires';
+        return $this->messageClass.' de '.$this->sender.' à '.\count($this->recipients).' destinataires';
     }
 
     public function getEnglishLog(): string
     {
-        return $this->messageClass.' from '.$this->sender.' to '.count($this->recipients).' recipients';
+        return $this->messageClass.' from '.$this->sender.' to '.\count($this->recipients).' recipients';
     }
 
     public static function createFromMessage(Message $message, $requestPayload): self
@@ -85,7 +85,7 @@ class Email
 
         return new static(
             $message->getUuid(),
-            str_replace('AppBundle\\Mailer\\Message\\', '', get_class($message)),
+            str_replace('AppBundle\\Mailer\\Message\\', '', \get_class($message)),
             $message->getReplyTo() ?? 'EnMarche',
             $recipients,
             $requestPayload

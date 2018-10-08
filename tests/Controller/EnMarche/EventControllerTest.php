@@ -400,8 +400,8 @@ class EventControllerTest extends AbstractEventControllerTest
             /* @var \DOMElement $element */
             $labels[] = $element->textContent;
         }
-        $this->assertFalse(in_array('Catégorie masquée', $labels));
-        $this->assertSame(count(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES) + 2, $options->count());
+        $this->assertFalse(\in_array('Catégorie masquée', $labels));
+        $this->assertSame(\count(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES) + 2, $options->count());
     }
 
     protected function setUp()

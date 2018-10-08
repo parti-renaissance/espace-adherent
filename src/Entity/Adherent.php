@@ -605,7 +605,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function getInterestsAsJson(): string
     {
-        return \GuzzleHttp\json_encode($this->interests, JSON_PRETTY_PRINT);
+        return \GuzzleHttp\json_encode($this->interests, \JSON_PRETTY_PRINT);
     }
 
     public function setInterests(array $interests): void

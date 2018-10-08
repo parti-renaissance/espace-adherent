@@ -71,7 +71,7 @@ class UnregisterAdherentsCommand extends ContainerAwareCommand
 
         $this->em->commit();
 
-        $output->writeln(PHP_EOL.'Unregistration finished.');
+        $output->writeln(\PHP_EOL.'Unregistration finished.');
 
         if ($this->notFoundEmails) {
             $output->writeln('The following email addresses were not found in DB :');
@@ -122,7 +122,7 @@ class UnregisterAdherentsCommand extends ContainerAwareCommand
     {
         $batchSize = 20;
         $i = 1;
-        $progress = new ProgressBar($output, count($emails));
+        $progress = new ProgressBar($output, \count($emails));
         $progress->start();
 
         foreach ($emails as $email) {
@@ -148,7 +148,7 @@ class UnregisterAdherentsCommand extends ContainerAwareCommand
                 $unregistration = Unregistration::createFromAdherent($adherent);
                 $this->adherentRegistry->unregister($adherent, $unregistration);
             } catch (\Exception $ex) {
-                throw new \RuntimeException(PHP_EOL.sprintf('An error occured while unregistering an adherent with email "%s".', $email), 0, $ex);
+                throw new \RuntimeException(\PHP_EOL.sprintf('An error occured while unregistering an adherent with email "%s".', $email), 0, $ex);
             }
 
             if (0 === ($i % $batchSize)) {

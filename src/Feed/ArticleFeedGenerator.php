@@ -34,13 +34,13 @@ class ArticleFeedGenerator extends AbstractFeedGenerator
      */
     public function buildFeed($data): FeedInterface
     {
-        if (!is_array($data) && !$data instanceof \Traversable) {
+        if (!\is_array($data) && !$data instanceof \Traversable) {
             throw new FeedGeneratorException('Data must be an instance of \Traversable');
         }
 
         $feed = new Feed();
 
-        if (!count($data)) {
+        if (!\count($data)) {
             return $feed;
         }
 

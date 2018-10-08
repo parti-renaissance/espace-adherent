@@ -63,6 +63,6 @@ class CommitteeMembershipHistoryRepository extends ServiceEntityRepository
             }
         }
 
-        return count(array_filter($countByAdherent));
+        return \count(array_filter($countByAdherent));
     }
 }

@@ -13,7 +13,7 @@ class FloatToStringTransformer implements DataTransformerInterface
             return '';
         }
 
-        if (!is_float($value)) {
+        if (!\is_float($value)) {
             throw new TransformationFailedException('Expected a float.');
         }
 
@@ -26,10 +26,10 @@ class FloatToStringTransformer implements DataTransformerInterface
             return 0;
         }
 
-        if (!is_string($value)) {
+        if (!\is_string($value)) {
             throw new TransformationFailedException('Expected a string.');
         }
 
-        return floatval($value);
+        return \floatval($value);
     }
 }

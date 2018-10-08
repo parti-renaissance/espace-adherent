@@ -22,7 +22,7 @@ class Geocoder implements GeocoderInterface
             throw GeocodingException::create($address, $exception);
         }
 
-        if (!count($addresses)) {
+        if (!\count($addresses)) {
             throw GeocodingException::create($address);
         }
 

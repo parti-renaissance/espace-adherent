@@ -75,7 +75,7 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
         $referentMessageDispatcherConsumer->setLogger($logger);
         $referentMessageDispatcherConsumer->setReferentMessageRepository($referentMessageRepository);
 
-        $this->expectOutputString($uuid.' | Referent message not found, rejecting'.PHP_EOL);
+        $this->expectOutputString($uuid.' | Referent message not found, rejecting'.\PHP_EOL);
         $this->assertSame(ConsumerInterface::MSG_ACK, $referentMessageDispatcherConsumer->execute($message));
     }
 
@@ -118,7 +118,7 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
         $referentMessageDispatcherConsumer->setLogger($logger);
         $referentMessageDispatcherConsumer->expects($this->once())->method('getReferentManagedUserRepository')->willReturn($referentManagedUserRepository);
         $referentMessageDispatcherConsumer->expects($this->once())->method('getReferentMessageRepository')->willReturn($referentMessageRepository);
-        $this->expectOutputString($uuid.' | Dispatching message from hello@world.com'.PHP_EOL);
+        $this->expectOutputString($uuid.' | Dispatching message from hello@world.com'.\PHP_EOL);
         $this->assertSame(ConsumerInterface::MSG_ACK, $referentMessageDispatcherConsumer->execute($message));
     }
 
@@ -184,9 +184,9 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
         $referentMessageDispatcherConsumer->expects($this->any())->method('getManager')->willReturn($this->entityManager);
 
         $this->expectOutputString(
-            $uuid.' | Dispatching message from hello@world.com'.PHP_EOL
-            .$uuid.' | Message from hello@world.com dispatched (50)'.PHP_EOL
-            .$uuid.' | Message from hello@world.com dispatched (60)'.PHP_EOL
+            $uuid.' | Dispatching message from hello@world.com'.\PHP_EOL
+            .$uuid.' | Message from hello@world.com dispatched (50)'.\PHP_EOL
+            .$uuid.' | Message from hello@world.com dispatched (60)'.\PHP_EOL
         );
         $this->assertSame(ConsumerInterface::MSG_ACK, $referentMessageDispatcherConsumer->execute($message));
     }
@@ -263,7 +263,7 @@ class ReferentMessageDispatcherConsumerTest extends TestCase
             ->will(
                 $this->returnCallback(
                     function () use ($iteratorData) {
-                        return count($iteratorData->array);
+                        return \count($iteratorData->array);
                     }
                 )
             )

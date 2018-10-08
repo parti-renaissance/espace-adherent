@@ -132,7 +132,7 @@ class ReportAdmin extends AbstractAdmin
                     }
 
                     /* @var ProxyQuery|QueryBuilder $qb */
-                    if (!in_array('author', $qb->getAllAliases(), true)) {
+                    if (!\in_array('author', $qb->getAllAliases(), true)) {
                         $qb->join("$alias.author", 'author');
                     }
 
@@ -154,7 +154,7 @@ class ReportAdmin extends AbstractAdmin
                     }
 
                     /* @var ProxyQuery|QueryBuilder $qb */
-                    if (!in_array('author', $qb->getAllAliases(), true)) {
+                    if (!\in_array('author', $qb->getAllAliases(), true)) {
                         $qb->join("$alias.author", 'author');
                     }
 

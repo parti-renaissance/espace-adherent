@@ -23,6 +23,6 @@ class CitizenProjectCoverGeneratorTest extends TestCase
         $this->assertInstanceOf(MediaContent::class, $mediaContent);
         $this->assertSame('binary content', $mediaContent->getContent());
         $this->assertSame('image/png', $mediaContent->getMimeType());
-        $this->assertSame(strlen('binary content'), $mediaContent->getSize());
+        $this->assertSame(\strlen('binary content'), $mediaContent->getSize());
     }
 }

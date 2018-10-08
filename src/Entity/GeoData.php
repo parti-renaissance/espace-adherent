@@ -41,7 +41,7 @@ class GeoData
     {
         if (!$geoShape instanceof Polygon && !$geoShape instanceof MultiPolygon) {
             throw new \InvalidArgumentException(
-                sprintf('$geoShape must be an instance of %s or %s, %s given', Polygon::class, MultiPolygon::class, get_class($geoShape))
+                sprintf('$geoShape must be an instance of %s or %s, %s given', Polygon::class, MultiPolygon::class, \get_class($geoShape))
             );
         }
 

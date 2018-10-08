@@ -250,7 +250,7 @@ class CitizenActionManagerController extends Controller
 
     private function getRegistrations(Request $request, CitizenAction $citizenAction, string $action): EventRegistrationCollection
     {
-        if (!in_array($action, self::ACTIONS)) {
+        if (!\in_array($action, self::ACTIONS)) {
             throw new \InvalidArgumentException("Action '$action' is not allowed.");
         }
 

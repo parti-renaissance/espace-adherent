@@ -29,7 +29,7 @@ class UserDocumentManager
 
         $errors = $this->validator->validate($document);
 
-        if (count($errors) > 0) {
+        if (\count($errors) > 0) {
             $errMsg = '';
             foreach ($errors as $error) {
                 $errMsg .= $error->getMessage().' ';

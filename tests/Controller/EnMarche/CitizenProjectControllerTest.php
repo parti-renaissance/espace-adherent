@@ -494,7 +494,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
 
     private function seeCommentSection(): bool
     {
-        return 1 === count($this->client->getCrawler()->filter('.citizen-project-comments'));
+        return 1 === \count($this->client->getCrawler()->filter('.citizen-project-comments'));
     }
 
     private function seeFollowLink(Crawler $crawler): bool
@@ -506,14 +506,14 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
 
     private function seeUnfollowLink(Crawler $crawler): bool
     {
-        return 1 === count($crawler->filter('.citizen-project-unfollow'));
+        return 1 === \count($crawler->filter('.citizen-project-unfollow'));
     }
 
     private function seeRegisterLink(Crawler $crawler, $nb = 1): bool
     {
         $this->assertCount($nb, $crawler->filter('.citizen-project-follow--disabled'));
 
-        return 1 === count($crawler->filter('#citizen-project-register-link'));
+        return 1 === \count($crawler->filter('#citizen-project-register-link'));
     }
 
     private function seeLoginLink(Crawler $crawler): bool

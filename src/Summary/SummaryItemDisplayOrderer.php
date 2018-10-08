@@ -9,10 +9,10 @@ class SummaryItemDisplayOrderer
      */
     public static function updateItem(iterable $collection, SummaryItemPositionableInterface $updatedItem, int $currentItemPosition, int $newItemPosition): void
     {
-        if (1 < count($collection) && $currentItemPosition !== $newItemPosition) {
+        if (1 < \count($collection) && $currentItemPosition !== $newItemPosition) {
             foreach ($collection as $item) {
                 if (!$item instanceof SummaryItemPositionableInterface) {
-                    throw new \InvalidArgumentException(sprintf('Expected instance of "%s", got "%s".', SummaryItemPositionableInterface::class, is_object($item) ? get_class($item) : gettype($item)));
+                    throw new \InvalidArgumentException(sprintf('Expected instance of "%s", got "%s".', SummaryItemPositionableInterface::class, \is_object($item) ? \get_class($item) : \gettype($item)));
                 }
                 if ($updatedItem === $item) {
                     continue;
@@ -42,7 +42,7 @@ class SummaryItemDisplayOrderer
     {
         foreach ($collection as $item) {
             if (!$item instanceof SummaryItemPositionableInterface) {
-                throw new \InvalidArgumentException(sprintf('Expected instance of "%s", got "%s".', SummaryItemPositionableInterface::class, is_object($item) ? get_class($item) : gettype($item)));
+                throw new \InvalidArgumentException(sprintf('Expected instance of "%s", got "%s".', SummaryItemPositionableInterface::class, \is_object($item) ? \get_class($item) : \gettype($item)));
             }
             if ($newPosition <= ($order = $item->getDisplayOrder())) {
                 $item->setDisplayOrder(++$order);
@@ -58,7 +58,7 @@ class SummaryItemDisplayOrderer
         $position = $removedItem->getDisplayOrder();
         foreach ($collection as $item) {
             if (!$item instanceof SummaryItemPositionableInterface) {
-                throw new \InvalidArgumentException(sprintf('Expected instance of "%s", got "%s".', SummaryItemPositionableInterface::class, is_object($item) ? get_class($item) : gettype($item)));
+                throw new \InvalidArgumentException(sprintf('Expected instance of "%s", got "%s".', SummaryItemPositionableInterface::class, \is_object($item) ? \get_class($item) : \gettype($item)));
             }
             if ($removedItem === $item) {
                 continue;

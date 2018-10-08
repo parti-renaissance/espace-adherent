@@ -78,7 +78,7 @@ class NullableAddress implements AddressInterface, GeocodableInterface
     {
         if ($city) {
             $parts = explode('-', $city);
-            if (2 !== count($parts)) {
+            if (2 !== \count($parts)) {
                 throw new \InvalidArgumentException(sprintf('Invalid french city format: %s.', $city));
             }
 

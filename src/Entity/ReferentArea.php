@@ -120,7 +120,7 @@ class ReferentArea
 
     public function setAreaType(string $type): void
     {
-        if (!in_array($type = strtolower($type), $types = [self::TYPE_DEPARTMENT, self::TYPE_REGION, self::TYPE_DISTRICT])) {
+        if (!\in_array($type = strtolower($type), $types = [self::TYPE_DEPARTMENT, self::TYPE_REGION, self::TYPE_DISTRICT])) {
             throw new \InvalidArgumentException(sprintf('Invalid referent area type "%s". It must be one of %s.', $type, implode(', ', $types)));
         }
 
@@ -166,7 +166,7 @@ class ReferentArea
 
         $areaCode = (int) $this->areaCode;
 
-        if (5 === strlen($areaCode) && substr($areaCode, 0, 2) <= 95) {
+        if (5 === \strlen($areaCode) && substr($areaCode, 0, 2) <= 95) {
             return self::ZONE_ARRONDISSEMENT;
         }
 

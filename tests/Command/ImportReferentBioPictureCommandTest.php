@@ -99,8 +99,8 @@ class ImportReferentBioPictureCommandTest extends WebTestCase
         $csvContent = '';
         foreach ($csvData as $row) {
             $csvContent .= implode(';', array_map(function ($row) {
-                return is_int($row) ? $row : sprintf('"%s"', $row);
-            }, $row)).PHP_EOL;
+                return \is_int($row) ? $row : sprintf('"%s"', $row);
+            }, $row)).\PHP_EOL;
         }
         $archive->addFromString(ImportReferentBioPictureCommand::CSV_FILENAME, $csvContent);
 
@@ -131,8 +131,8 @@ class ImportReferentBioPictureCommandTest extends WebTestCase
         $csvContent = '';
         foreach ($csvData as $row) {
             $csvContent .= implode(';', array_map(function ($row) {
-                return is_int($row) ? $row : sprintf('"%s"', $row);
-            }, $row)).PHP_EOL;
+                return \is_int($row) ? $row : sprintf('"%s"', $row);
+            }, $row)).\PHP_EOL;
         }
         $archive->addFromString(ImportReferentBioPictureCommand::CSV_FILENAME, $csvContent);
 
@@ -154,8 +154,8 @@ class ImportReferentBioPictureCommandTest extends WebTestCase
         $csvContent = '';
         foreach ($csvData as $row) {
             $csvContent .= implode(';', array_map(function ($row) {
-                return is_int($row) ? $row : sprintf('"%s"', $row);
-            }, $row)).PHP_EOL;
+                return \is_int($row) ? $row : sprintf('"%s"', $row);
+            }, $row)).\PHP_EOL;
         }
         $archive->addFromString(ImportReferentBioPictureCommand::CSV_FILENAME, $csvContent);
 

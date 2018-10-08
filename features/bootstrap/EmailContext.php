@@ -50,8 +50,8 @@ class EmailContext extends RawMinkContext
         $emailRepository = $this->getEmailRepository();
         $emails = $emailRepository->findRecipientMessages($emailType, $emailRecipient);
 
-        if (1 !== count($emails)) {
-            throw new \RuntimeException(sprintf('I found %s email(s) instead of 1', count($emails)));
+        if (1 !== \count($emails)) {
+            throw new \RuntimeException(sprintf('I found %s email(s) instead of 1', \count($emails)));
         }
 
         $emailPayloadJson = $emails[0]->getRequestPayloadJson();

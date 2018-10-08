@@ -23,7 +23,7 @@ class MailerPublishCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $client = $input->getArgument('client');
-        if (!in_array($client, ['campaign', 'transactional'], true)) {
+        if (!\in_array($client, ['campaign', 'transactional'], true)) {
             throw new \InvalidArgumentException('Invalid client type');
         }
 

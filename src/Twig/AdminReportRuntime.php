@@ -26,7 +26,7 @@ class AdminReportRuntime
         $routeName = 'show';
         $subject = $report->getSubject();
         $fieldDescription = $this->reportAdmin->getModelManager()->getNewFieldDescriptionInstance(
-            get_class($report), 'subject', ['route' => ['name' => $routeName]]
+            \get_class($report), 'subject', ['route' => ['name' => $routeName]]
         );
 
         $this->builder->fixFieldDescription($this->reportAdmin, $fieldDescription);

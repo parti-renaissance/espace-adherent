@@ -66,7 +66,7 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
             return false;
         }
 
-        if (!in_array('text/html', $event->getRequest()->getAcceptableContentTypes())) {
+        if (!\in_array('text/html', $event->getRequest()->getAcceptableContentTypes())) {
             return false;
         }
 
@@ -78,7 +78,7 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
             return false;
         }
 
-        if (in_array(self::MESSAGE, $this->session->getFlashBag()->peek('info'), true)) {
+        if (\in_array(self::MESSAGE, $this->session->getFlashBag()->peek('info'), true)) {
             return false;
         }
 

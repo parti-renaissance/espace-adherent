@@ -36,7 +36,7 @@ class UnitedNationsBundle
      */
     public static function isCountryCode(string $code): bool
     {
-        return in_array($code, self::$unitedNationsCodes, true);
+        return \in_array($code, self::$unitedNationsCodes, true);
     }
 
     private static $unitedNationsCodes = [

@@ -23,6 +23,6 @@ class CitizenProjectTractGeneratorTest extends TestCase
         $this->assertInstanceOf(MediaContent::class, $mediaContent);
         $this->assertSame('binary content', $mediaContent->getContent());
         $this->assertSame('application/pdf', $mediaContent->getMimeType());
-        $this->assertSame(strlen('binary content'), $mediaContent->getSize());
+        $this->assertSame(\strlen('binary content'), $mediaContent->getSize());
     }
 }

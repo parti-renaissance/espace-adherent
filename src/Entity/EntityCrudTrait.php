@@ -55,7 +55,7 @@ trait EntityCrudTrait
      */
     public function __set($property, $value)
     {
-        $class = get_class($this);
+        $class = \get_class($this);
         $ucProperty = ucfirst($property);
 
         // This prevents Algolia to try modifying for example "postAddress.latitude" or ”organizer_id”
@@ -67,7 +67,7 @@ trait EntityCrudTrait
         foreach (['update', 'change', 'set'] as $mutatorPrefix) {
             $method = sprintf('%s%s', $mutatorPrefix, $ucProperty);
             if (method_exists($this, $method) && 1 === self::countNumberOfRequiredArguments($class, $method)) {
-                call_user_func_array([$this, $method], [$value]);
+                \call_user_func_array([$this, $method], [$value]);
 
                 return;
             }
@@ -104,12 +104,12 @@ trait EntityCrudTrait
      */
     public function __get($property)
     {
-        $class = get_class($this);
+        $class = \get_class($this);
         $ucProperty = ucfirst($property);
         foreach (['get', '', 'is', 'has'] as $accessorPrefix) {
             $method = lcfirst(sprintf('%s%s', $accessorPrefix, $ucProperty));
             if (method_exists($this, $method) && !self::countNumberOfRequiredArguments($class, $method)) {
-                return call_user_func([$this, $method]);
+                return \call_user_func([$this, $method]);
             }
         }
 
@@ -140,6 +140,6 @@ trait EntityCrudTrait
             return $this->{$method};
         }
 
-        throw new \BadMethodCallException(sprintf('Trying to call an unsupported method %s() on an object of type %s.', $method, get_class($this)));
+        throw new \BadMethodCallException(sprintf('Trying to call an unsupported method %s() on an object of type %s.', $method, \get_class($this)));
     }
 }

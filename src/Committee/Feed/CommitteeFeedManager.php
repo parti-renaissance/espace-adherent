@@ -31,7 +31,7 @@ class CommitteeFeedManager
             $event->getEvent(),
             $event->getAuthor(),
             true,
-            $event->getCreatedAt()->format(DATE_RFC2822)
+            $event->getCreatedAt()->format(\DATE_RFC2822)
         );
 
         $this->manager->persist($item);
@@ -47,7 +47,7 @@ class CommitteeFeedManager
             $message->getAuthor(),
             $message->getContent(),
             $message->isPublished(),
-            $message->getCreatedAt()->format(DATE_RFC2822)
+            $message->getCreatedAt()->format(\DATE_RFC2822)
         );
 
         $this->manager->persist($item);

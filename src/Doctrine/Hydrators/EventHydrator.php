@@ -24,7 +24,7 @@ class EventHydrator extends AbstractHydrator
 
     protected function hydrateRowData(array $row, array &$result)
     {
-        if (!count($row)) {
+        if (!\count($row)) {
             return false;
         }
 

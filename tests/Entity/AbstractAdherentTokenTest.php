@@ -71,7 +71,7 @@ abstract class AbstractAdherentTokenTest extends TestCase
 
     private function generateToken($adherent, string $lifetime = '+1 day')
     {
-        return call_user_func([$this->tokenClass, 'generate'], $adherent, $lifetime);
+        return \call_user_func([$this->tokenClass, 'generate'], $adherent, $lifetime);
     }
 
     protected function tearDown()

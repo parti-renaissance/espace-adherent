@@ -16,7 +16,7 @@ class CommentsCitizenProjectVoter extends AbstractAdherentVoter
     protected function supports($attribute, $citizenProject)
     {
         return $citizenProject instanceof CitizenProject
-            && in_array($attribute, CitizenProjectPermissions::COMMENTS, true)
+            && \in_array($attribute, CitizenProjectPermissions::COMMENTS, true)
         ;
     }
 

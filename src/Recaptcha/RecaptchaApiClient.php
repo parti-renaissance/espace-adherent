@@ -34,7 +34,7 @@ class RecaptchaApiClient extends Client
         }
 
         $data = json_decode((string) $response->getBody(), true);
-        if (null === $data || !isset($data['success']) || !is_bool($data['success'])) {
+        if (null === $data || !isset($data['success']) || !\is_bool($data['success'])) {
             throw new \RuntimeException('Unexpected JSON response.');
         }
 

@@ -121,7 +121,7 @@ class AdministratorAdmin extends AbstractAdmin
                         return '';
                     },
                     function ($plain) use ($admin) {
-                        return is_string($plain) && '' !== $plain
+                        return \is_string($plain) && '' !== $plain
                             ? $this->encoders->getEncoder($admin)->encodePassword($plain, null)
                             : $admin->getPassword();
                     }

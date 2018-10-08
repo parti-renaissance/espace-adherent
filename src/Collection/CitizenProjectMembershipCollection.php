@@ -29,7 +29,7 @@ class CitizenProjectMembershipCollection extends ArrayCollection
 
     public function countCitizenProjectAdministratorMemberships(): int
     {
-        return count($this->filter(function (CitizenProjectMembership $membership) {
+        return \count($this->filter(function (CitizenProjectMembership $membership) {
             return $membership->canAdministrateCitizenProject();
         }));
     }

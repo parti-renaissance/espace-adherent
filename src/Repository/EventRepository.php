@@ -484,7 +484,7 @@ SQL;
             ->setParameter('organizer', $organizer)
         ;
 
-        if (in_array($type, [self::TYPE_UPCOMING, self::TYPE_PAST], true)) {
+        if (\in_array($type, [self::TYPE_UPCOMING, self::TYPE_PAST], true)) {
             if (self::TYPE_PAST === $type) {
                 $qb->andWhere('e.beginAt <= :date');
             } else {

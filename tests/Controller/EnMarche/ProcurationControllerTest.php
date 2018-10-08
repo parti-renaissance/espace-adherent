@@ -695,7 +695,7 @@ class ProcurationControllerTest extends WebTestCase
 
     private function setElectionContext(string $action = ElectionContext::ACTION_REQUEST): void
     {
-        if (!in_array($action, [ElectionContext::ACTION_REQUEST, ElectionContext::ACTION_PROPOSAL])) {
+        if (!\in_array($action, [ElectionContext::ACTION_REQUEST, ElectionContext::ACTION_PROPOSAL])) {
             throw new \InvalidArgumentException(sprintf('$action must be "%s" or "%s"', ElectionContext::ACTION_REQUEST, ElectionContext::ACTION_PROPOSAL));
         }
 

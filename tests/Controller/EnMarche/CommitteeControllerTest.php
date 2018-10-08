@@ -395,24 +395,24 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
     private function seeLoginLink(Crawler $crawler): bool
     {
-        return 1 === count($crawler->filter('#committee-login-link'));
+        return 1 === \count($crawler->filter('#committee-login-link'));
     }
 
     private function seeRegisterLink(Crawler $crawler, $nb = 1): bool
     {
         $this->assertCount($nb, $crawler->filter('.committee-follow--disabled'));
 
-        return 1 === count($crawler->filter('#committee-register-link'));
+        return 1 === \count($crawler->filter('#committee-register-link'));
     }
 
     private function seeFollowLink(Crawler $crawler): bool
     {
-        return 1 === count($crawler->filter('.committee-follow'));
+        return 1 === \count($crawler->filter('.committee-follow'));
     }
 
     private function seeUnfollowLink(Crawler $crawler): bool
     {
-        return 1 === count($crawler->filter('.committee-unfollow'));
+        return 1 === \count($crawler->filter('.committee-unfollow'));
     }
 
     private function seeMembersCount(Crawler $crawler, string $membersCount): bool
@@ -422,12 +422,12 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
     private function seeHosts(Crawler $crawler, int $hostsCount): bool
     {
-        return $hostsCount === count($crawler->filter('.committee__card .committee-host'));
+        return $hostsCount === \count($crawler->filter('.committee__card .committee-host'));
     }
 
     private function assertSeeHosts(Crawler $crawler, array $hosts, bool $isConnected = true): void
     {
-        $this->assertCount(count($hosts), $nodes = $crawler->filter('.committee-host'));
+        $this->assertCount(\count($hosts), $nodes = $crawler->filter('.committee-host'));
         $contact = $isConnected ? '\s+(Contacter)' : '';
 
         foreach ($hosts as $position => $host) {
@@ -438,7 +438,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
     private function seeHostsContactLink(Crawler $crawler, int $hostsCount): bool
     {
-        return $hostsCount === count($crawler->filter('.committee__card .committee-host a'));
+        return $hostsCount === \count($crawler->filter('.committee__card .committee-host a'));
     }
 
     private function seeMessageForContactHosts(Crawler $crawler): void
@@ -465,7 +465,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
     private function seeHostNav(Crawler $crawler): bool
     {
-        return 1 === count($crawler->filter('#committee-host-nav'));
+        return 1 === \count($crawler->filter('#committee-host-nav'));
     }
 
     private function seeMessageForm(Crawler $crawler, array $errorMessages = []): bool
@@ -473,7 +473,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         if ($errorMessages) {
             $errors = $crawler->filter('form[name="committee_feed_message"] .form__error');
 
-            $this->assertCount(count($errorMessages), $errors);
+            $this->assertCount(\count($errorMessages), $errors);
 
             foreach ($errorMessages as $i => $errorMessage) {
                 $this->assertSame($errorMessage, trim($errors->eq($i)->text()));
@@ -482,7 +482,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
             $this->assertCount(0, $crawler->filter('form[name="committee_feed_message"] .form__errors'));
         }
 
-        return 1 === count($crawler->filter('form[name="committee_feed_message"]'));
+        return 1 === \count($crawler->filter('form[name="committee_feed_message"]'));
     }
 
     private function assertCountTimelineMessages(Crawler $crawler, int $nb, string $message = '')

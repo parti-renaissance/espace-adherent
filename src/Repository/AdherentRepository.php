@@ -137,7 +137,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     public function refreshUser(UserInterface $user)
     {
-        $class = get_class($user);
+        $class = \get_class($user);
         $username = $user->getUsername();
 
         if (!$this->supportsClass($class)) {
@@ -421,7 +421,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             $qb->andWhere($postalCodeExpression);
         }
 
-        if (count($queryAreas = $filter->getQueryAreas())) {
+        if (\count($queryAreas = $filter->getQueryAreas())) {
             $areasExpression = $qb->expr()->orX();
 
             foreach ($queryAreas as $key => $area) {
@@ -432,7 +432,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             $qb->andWhere($areasExpression);
         }
 
-        if (count($queryRoles = $filter->getQueryRoles())) {
+        if (\count($queryRoles = $filter->getQueryRoles())) {
             $rolesExpression = $qb->expr()->orX();
 
             foreach ($queryRoles as $key => $role) {

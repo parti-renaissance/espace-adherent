@@ -35,7 +35,7 @@ class UniqueMembershipValidator extends ConstraintValidator
 
         if ($member instanceof MembershipInterface) {
             $email = $member->getEmailAddress();
-        } elseif (is_string($member)) {
+        } elseif (\is_string($member)) {
             $email = $member;
         } else {
             throw new UnexpectedTypeException($member, MembershipInterface::class);

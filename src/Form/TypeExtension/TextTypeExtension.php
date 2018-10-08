@@ -101,6 +101,6 @@ class TextTypeExtension extends AbstractTypeExtension
             '/(?:^|[\s-])(d\')(\p{L})/ui' => function (array $matches) {
                 return \mb_strtolower($matches[1]).\ucfirst($matches[2]);
             },
-        ], \mb_convert_case($string, MB_CASE_TITLE, 'UTF-8'));
+        ], \mb_convert_case($string, \MB_CASE_TITLE, 'UTF-8'));
     }
 }

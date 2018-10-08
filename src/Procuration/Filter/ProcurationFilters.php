@@ -81,7 +81,7 @@ abstract class ProcurationFilters
             return;
         }
 
-        if (!in_array($country, array_keys($this->getCountries()), true)) {
+        if (!\in_array($country, array_keys($this->getCountries()), true)) {
             throw new ProcurationException(sprintf('Invalid country filter value given ("%s").', $country));
         }
 

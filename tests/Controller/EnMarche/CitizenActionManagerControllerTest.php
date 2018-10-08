@@ -356,7 +356,7 @@ class CitizenActionManagerControllerTest extends WebTestCase
 
     private function seeParticipantsList(Crawler $crawler, int $count): bool
     {
-        return $count === count($crawler->filter('table tbody tr'));
+        return $count === \count($crawler->filter('table tbody tr'));
     }
 
     protected function setUp()

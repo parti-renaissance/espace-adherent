@@ -169,7 +169,7 @@ class AssetsController extends Controller
      */
     private function createWhiteImage(): string
     {
-        $imagePath = $this->container->get('kernel')->getCacheDir().DIRECTORY_SEPARATOR.'white_image.png';
+        $imagePath = $this->container->get('kernel')->getCacheDir().\DIRECTORY_SEPARATOR.'white_image.png';
 
         $image = imagecreatetruecolor(1, 1);
         imagesavealpha($image, true);

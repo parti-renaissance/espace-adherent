@@ -63,7 +63,7 @@ abstract class AbstractConsumer implements ConsumerInterface
 
     public function writeln($name, $message): void
     {
-        echo $name.' | '.$message.PHP_EOL;
+        echo $name.' | '.$message.\PHP_EOL;
     }
 
     public function getLogger(): LoggerInterface

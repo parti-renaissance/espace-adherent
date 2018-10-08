@@ -74,7 +74,7 @@ class ProjectCitizenCreationNotificationConsumerTest extends TestCase
         $projectCitizenCreationNotificationConsumer->setLogger($logger);
         $projectCitizenCreationNotificationConsumer->setCitizenProjectRepository($citizenProjectRepository);
 
-        $this->expectOutputString('citizen project not found | citizen project with '.$uuid.' uuid not found'.PHP_EOL);
+        $this->expectOutputString('citizen project not found | citizen project with '.$uuid.' uuid not found'.\PHP_EOL);
         $this->assertSame(ConsumerInterface::MSG_ACK, $projectCitizenCreationNotificationConsumer->execute($message));
     }
 
@@ -108,7 +108,7 @@ class ProjectCitizenCreationNotificationConsumerTest extends TestCase
         $projectCitizenCreationNotificationConsumer->setCitizenProjectRepository($citizenProjectRepository);
         $projectCitizenCreationNotificationConsumer->setCitizeProjectManager($citizenProjectManager);
 
-        $this->expectOutputString('info | No adherent to notify found for '.$uuid.' citizen project'.PHP_EOL);
+        $this->expectOutputString('info | No adherent to notify found for '.$uuid.' citizen project'.\PHP_EOL);
         $this->assertSame(ConsumerInterface::MSG_ACK, $projectCitizenCreationNotificationConsumer->execute($message));
     }
 
@@ -160,7 +160,7 @@ class ProjectCitizenCreationNotificationConsumerTest extends TestCase
         $projectCitizenCreationNotificationConsumer->setCitizenProjectRepository($citizenProjectRepository);
         $projectCitizenCreationNotificationConsumer->setCitizeProjectManager($citizenProjectManager);
         $projectCitizenCreationNotificationConsumer->setCitizenProjectMessageNotifier($citizenProjectMessageNotifier);
-        $this->expectOutputString('info | Start sending. offset : 0 | totalAdherent : '.(CitizenProjectMessageNotifier::NOTIFICATION_PER_PAGE + 1).' | citizenProjectUuid '.$uuid.PHP_EOL.'success | Message correctly send from offset '.$messageContent['offset'].' to the end'.PHP_EOL);
+        $this->expectOutputString('info | Start sending. offset : 0 | totalAdherent : '.(CitizenProjectMessageNotifier::NOTIFICATION_PER_PAGE + 1).' | citizenProjectUuid '.$uuid.\PHP_EOL.'success | Message correctly send from offset '.$messageContent['offset'].' to the end'.\PHP_EOL);
         $this->assertSame(ConsumerInterface::MSG_ACK, $projectCitizenCreationNotificationConsumer->execute($message));
     }
 }

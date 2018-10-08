@@ -47,7 +47,7 @@ class LightFileDistrictLoader
 
     public function batchInsertOrUpdateDistricts(array $districts): void
     {
-        $this->logger->notice(sprintf('%s districts are about to be loaded', count($districts)));
+        $this->logger->notice(sprintf('%s districts are about to be loaded', \count($districts)));
 
         $i = 0;
 
@@ -56,7 +56,7 @@ class LightFileDistrictLoader
             $this->em->persist($this->createOrUpdateDistrict($district));
             $this->em->flush();
 
-            if (0 === ++$i % 1000 || $i === count($districts)) {
+            if (0 === ++$i % 1000 || $i === \count($districts)) {
                 $this->em->clear();
                 $this->logger->notice("$i districts processed");
             }
@@ -74,7 +74,7 @@ class LightFileDistrictLoader
                 return $geoDistrict['properties']['ID'] === $code;
             });
 
-            if (0 === count($geoDistricts)) {
+            if (0 === \count($geoDistricts)) {
                 throw new \RuntimeException("Districts GeoJSON file doesn't contain district with code '$code'");
             }
             $geoDistrict = array_shift($geoDistricts);
@@ -84,10 +84,10 @@ class LightFileDistrictLoader
         } else {
             $countries = explode(',', str_replace(' ', '', $district['code_pays']));
             $geoCountries = array_filter($this->geoCountries, function ($country) use ($countries) {
-                return in_array($country['properties']['code'], $countries);
+                return \in_array($country['properties']['code'], $countries);
             });
 
-            if (0 === count($geoCountries)) {
+            if (0 === \count($geoCountries)) {
                 throw new \RuntimeException("Countries GeoJSON file doesn't contain countries with codes '$countries'");
             }
             $geoData = new GeoData($this->geometryFactory->mergeGeoJsonGeometries($geoCountries));

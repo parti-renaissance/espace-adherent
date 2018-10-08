@@ -23,7 +23,7 @@ class FollowerCommitteeVoter extends AbstractAdherentVoter
     protected function supports($attribute, $subject)
     {
         return $subject instanceof Committee
-            && in_array($attribute, CommitteePermissions::FOLLOWER, true)
+            && \in_array($attribute, CommitteePermissions::FOLLOWER, true)
         ;
     }
 

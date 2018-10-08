@@ -57,7 +57,7 @@ class ReferentAreaTransformer implements DataTransformerInterface
                 ->findOneBy(array('areaCode' => $value))
             ;
 
-            if (!is_null($item)) {
+            if (!\is_null($item)) {
                 $newArray[$key] = $item;
             }
         }

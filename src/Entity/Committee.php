@@ -253,7 +253,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
 
     public function isWaitingForApproval(): bool
     {
-        return in_array($this->status, self::WAITING_STATUSES, true) && !$this->approvedAt;
+        return \in_array($this->status, self::WAITING_STATUSES, true) && !$this->approvedAt;
     }
 
     /**

@@ -19,7 +19,10 @@ return PhpCsFixer\Config::create()
         'concat_space' => ['spacing' => 'none'],
         'multiline_whitespace_before_semicolons' => ['strategy' => 'new_line_for_chained_calls'],
         'phpdoc_to_comment' => false,
+        'native_constant_invocation' => true,
+        'native_function_invocation' => ['include' => ['@compiler_optimized']]
     ])
+    ->setRiskyAllowed(true)
     ->setFinder($finder)
     ->setCacheFile(__DIR__.'/var/.php_cs.cache')
 ;

@@ -650,16 +650,16 @@ class Summary
         if ($this->contributionWish) {
             ++$complete;
         }
-        if (0 < count($this->availabilities)) {
+        if (0 < \count($this->availabilities)) {
             ++$complete;
         }
-        if (0 < count($this->jobLocations)) {
+        if (0 < \count($this->jobLocations)) {
             ++$complete;
         }
         if ($this->professionalSynopsis) {
             ++$complete;
         }
-        if (0 < count($this->missionTypeWishes)) {
+        if (0 < \count($this->missionTypeWishes)) {
             ++$complete;
         }
         if ($this->motivation) {
@@ -677,7 +677,7 @@ class Summary
         if (0 < $this->trainings->count()) {
             ++$complete;
         }
-        if (0 < count($this->member->getInterests())) {
+        if (0 < \count($this->member->getInterests())) {
             ++$complete;
         }
         if ($this->contactEmail) {

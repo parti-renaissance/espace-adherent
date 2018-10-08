@@ -37,7 +37,7 @@ class ScopesType extends AbstractType
                 $data = [];
 
                 foreach (Scope::toArray() as $scope) {
-                    $data[$scope] = in_array($scope, $value, true);
+                    $data[$scope] = \in_array($scope, $value, true);
                 }
 
                 return $data;

@@ -193,7 +193,7 @@ class EventManagerController extends Controller
 
     private function getRegistrations(Request $request, Event $event, string $action): array
     {
-        if (!in_array($action, self::ACTIONS)) {
+        if (!\in_array($action, self::ACTIONS)) {
             throw new \InvalidArgumentException("Action '$action' is not allowed.");
         }
 

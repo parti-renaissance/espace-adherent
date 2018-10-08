@@ -95,7 +95,7 @@ class AbstractConsumerTest extends TestCase
             ->getMockForAbstractClass()
         ;
 
-        $this->expectOutputString(sprintf('%s | %s', 'Mon message', 'mon output').PHP_EOL);
+        $this->expectOutputString(sprintf('%s | %s', 'Mon message', 'mon output').\PHP_EOL);
         $abstractConsumer->writeln('Mon message', 'mon output');
     }
 }

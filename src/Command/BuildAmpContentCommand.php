@@ -62,7 +62,7 @@ class BuildAmpContentCommand extends ContainerAwareCommand
         /** @var EntityContentInterface[] $items */
         $items = $this->manager->getRepository($className)->findAll();
 
-        $progressbar = new ProgressBar($output, ceil(count($items) / 10));
+        $progressbar = new ProgressBar($output, ceil(\count($items) / 10));
 
         foreach ($items as $k => $item) {
             $html = $this->markdown->convertToHtml($item->getContent());

@@ -52,7 +52,7 @@ class RabbitMqContext implements Context
     {
         $messages = $this->getMessages($queue);
 
-        if (!count($messages)) {
+        if (!\count($messages)) {
             echo 'No message';
 
             return;

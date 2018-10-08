@@ -70,7 +70,7 @@ class PersistentTokenFactory
         $redirectUri = $token->getRedirectUri();
         if (!$redirectUri) {
             // If token has no redirect Uri, it means the client does not provide one because he has only one
-            if (1 < count($client->getRedirectUris())) {
+            if (1 < \count($client->getRedirectUris())) {
                 throw new \LogicException(
                     'Cannot determined which redirect URI to use. '.
                     '$token redirect_uri is empty and it falls back to client redirect_uri if and only if he has no more than one.'

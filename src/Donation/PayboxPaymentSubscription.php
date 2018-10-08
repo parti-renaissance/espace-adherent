@@ -16,7 +16,7 @@ final class PayboxPaymentSubscription
     {
         if (self::UNLIMITED === $duration) {
             return sprintf('PBX_2MONT%sPBX_NBPAIE%sPBX_FREQ01PBX_QUAND00',
-                str_pad($amount, 10, '0', STR_PAD_LEFT),
+                str_pad($amount, 10, '0', \STR_PAD_LEFT),
                 '00'
             );
         }

@@ -14,7 +14,7 @@ final class EmailTemplate extends AbstractEmailTemplate
             $recipient['Name'] = $this->fixMailjetParsing($name);
         }
 
-        if (count($vars)) {
+        if (\count($vars)) {
             $recipient['Vars'] = $vars;
         }
 
@@ -23,7 +23,7 @@ final class EmailTemplate extends AbstractEmailTemplate
 
     public function getBody(): array
     {
-        if (!count($this->recipients)) {
+        if (!\count($this->recipients)) {
             throw new \InvalidArgumentException('The Mailjet email requires at least one recipient.');
         }
 

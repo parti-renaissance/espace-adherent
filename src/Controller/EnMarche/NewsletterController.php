@@ -106,7 +106,7 @@ class NewsletterController extends Controller
             /** @var Invitation $invitation */
             $invitation = $form->getData();
             $this->get('app.newsletter_invitation.handler')->handle($invitation, $request->getClientIp());
-            $request->getSession()->set('newsletter_invitations_count', count($invitation->guests));
+            $request->getSession()->set('newsletter_invitations_count', \count($invitation->guests));
 
             return $this->redirectToRoute('newsletter_invitation_sent');
         }

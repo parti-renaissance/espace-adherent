@@ -208,7 +208,7 @@ class JeMarcheReport
 
     public function countConvinced(): int
     {
-        return count($this->convinced);
+        return \count($this->convinced);
     }
 
     public function setConvinced(array $convinced): void
@@ -233,7 +233,7 @@ class JeMarcheReport
 
     public function countAlmostConvinced(): int
     {
-        return count($this->almostConvinced);
+        return \count($this->almostConvinced);
     }
 
     public function setAlmostConvinced(array $almostConvinced): void

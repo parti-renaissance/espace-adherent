@@ -103,7 +103,7 @@ abstract class Report
      */
     final public function __construct(ReportableInterface $subject, Adherent $author, array $reasons, ?string $comment)
     {
-        if (!count($reasons)) {
+        if (!\count($reasons)) {
             throw new \InvalidArgumentException('At least one reason must be provided');
         }
 
@@ -113,7 +113,7 @@ abstract class Report
             );
         }
 
-        $isOtherReasonChecked = in_array(self::REASON_OTHER, $reasons, true);
+        $isOtherReasonChecked = \in_array(self::REASON_OTHER, $reasons, true);
 
         if ($comment && !$isOtherReasonChecked) {
             throw new \InvalidArgumentException(

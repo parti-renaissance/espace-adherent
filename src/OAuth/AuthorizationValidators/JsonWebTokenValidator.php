@@ -78,7 +78,7 @@ class JsonWebTokenValidator implements AuthorizationValidatorInterface
     private function readAccessToken(ServerRequestInterface $request): string
     {
         // Read access token from Authorization request header
-        if (1 === count($header = $request->getHeader('authorization'))) {
+        if (1 === \count($header = $request->getHeader('authorization'))) {
             return trim(preg_replace('/^(?:\s+)?Bearer\s/', '', $header[0]));
         }
 

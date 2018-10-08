@@ -101,7 +101,7 @@ class ImportReferentBioPictureCommand extends ContainerAwareCommand
         $output->writeln('Import OK');
         $output->writeln('');
 
-        if (count($this->referentNotFound)) {
+        if (\count($this->referentNotFound)) {
             $output->writeln('The following referents are not found in database');
             foreach ($this->referentNotFound as $referentName) {
                 $output->writeln($referentName);
@@ -109,7 +109,7 @@ class ImportReferentBioPictureCommand extends ContainerAwareCommand
             $output->writeln('');
         }
 
-        if (count($this->imageError)) {
+        if (\count($this->imageError)) {
             $output->writeln('The image name are not found in zip archive OR can\'t upload it on storage');
             foreach ($this->imageError as $imageName) {
                 $output->writeln($imageName);
@@ -247,7 +247,7 @@ class ImportReferentBioPictureCommand extends ContainerAwareCommand
 
     public function __destruct()
     {
-        if (!count($this->imageAddedOnStorage)) {
+        if (!\count($this->imageAddedOnStorage)) {
             return;
         }
 
