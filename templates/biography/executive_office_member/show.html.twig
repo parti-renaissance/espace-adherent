@@ -12,7 +12,8 @@
         "@type": "Person",
         "givenName": "{{ executiveOfficeMember.firstName }}",
         "familyName": "{{ executiveOfficeMember.lastName }}",
-        "jobTitle": "{{ executiveOfficeMember.facebookProfile }}","{{ executiveOfficeMember.twitterProfile }}","{{ executiveOfficeMember.instagramProfile }}","{{ executiveOfficeMember.linkedInProfile }}"]
+        "jobTitle": "{{ executiveOfficeMember.job }}",
+        "sameAs": ["{{ executiveOfficeMember.facebookProfile }}","{{ executiveOfficeMember.twitterProfile }}","{{ executiveOfficeMember.instagramProfile }}","{{ executiveOfficeMember.linkedInProfile }}"]
     }
     </script>
 {% endblock %}
