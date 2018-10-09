@@ -4,7 +4,10 @@ EXEC?=$(DOCKER_COMPOSE) exec app
 COMPOSER=$(EXEC) composer
 CONSOLE=bin/console
 PHPCSFIXER?=$(EXEC) php -d memory_limit=1024m vendor/bin/php-cs-fixer
+BEHAT=$(EXEC) vendor/bin/behat
 BEHAT_ARGS?=-vvv
+PHPUNIT=$(EXEC) vendor/bin/phpunit
+PHPUNIT_ARGS?=-v
 
 .DEFAULT_GOAL := help
 .PHONY: help start stop reset db db-diff db-diff-dump db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt
@@ -117,13 +120,16 @@ assets-apps: node_modules                                                       
 test: tu tf tj                                                                                         ## Run the PHP and the Javascript tests
 
 test-behat:                                                                                            ## Run behat tests
-	$(EXEC) vendor/bin/behat $(BEHAT_ARGS)
+	$(BEHAT) $(BEHAT_ARGS)
 
+test-phpunit:                                                                                          ## Run phpunit tests
+	$(PHPUNIT) $(PHPUNIT_ARGS)
+    
 test-phpunit-functional:                                                                               ## Run phpunit fonctional tests
-	$(EXEC) vendor/bin/phpunit --group functional
+	$(PHPUNIT) --group functional
 
 tu: vendor app/config/assets_version.yml                                                               ## Run the PHP unit tests
-	$(EXEC) vendor/bin/phpunit --exclude-group functional
+	$(PHPUNIT) --exclude-group functional
 
 tf: tfp test-behat test-phpunit-functional                                                             ## Run the PHP functional tests
 
