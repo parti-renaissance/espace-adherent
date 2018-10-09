@@ -17,6 +17,7 @@ const TurnkeyProjectDetail = props => {
         title,
         subtitle,
         description,
+        solution,
         border,
         is_favorite,
         renderCTA,
@@ -45,7 +46,11 @@ const TurnkeyProjectDetail = props => {
                 )}
             </div>
             {!swap && <Title title={title} subtitle={subtitle} />}
-            <p style={{ width: `${props.textSize}` }}>{description}</p>
+            <p style={{ width: `${props.textSize}` }}>
+                {description}
+                <br/><br/>
+                {solution}
+            </p>
 
             {renderCTA && renderCTA()}
 
