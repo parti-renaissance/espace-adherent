@@ -18,13 +18,20 @@ Feature:
     And the JSON should be equal to:
     """
     [
-      {
-          "chapter_count": 2,
-          "image": "https://img.youtube.com/vi/ktHEfEDhscU/0.jpg",
-          "title": "Faire de sa fourchette un acte politique",
-          "description": "Description du MOOC, faire de sa fourchette un acte politique",
-          "slug": "faire-de-sa-fourchette-un-acte-politique"
-      }
+        {
+            "chapter_count": 2,
+            "title": "Faire de sa fourchette un acte politique",
+            "description": "Description du MOOC, faire de sa fourchette un acte politique",
+            "slug": "faire-de-sa-fourchette-un-acte-politique",
+            "image": "https://img.youtube.com/vi/ktHEfEDhscU/0.jpg"
+        },
+        {
+            "chapter_count": 0,
+            "title": "La Rentrée des Territoires",
+            "description": "Description du MOOC, la Rentrée des Territoires",
+            "slug": "la-rentree-des-territoires",
+            "image": "http://test.enmarche.code/assets/images/mooc/41a496d8ef383c1e9248f2994285593c.png"
+        }
     ]
     """
 
@@ -118,10 +125,11 @@ Feature:
     When I am on "/api/mooc/sitemap.xml"
     Then the response status code should be 200
     And the response should be in XML
-    And the XML element "//urlset" should have 4 element
-    And the XML element "//url[1]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique"
+    And the XML element "//urlset" should have 5 element
+    And the XML element "//url[1]/loc" should be equal to "http://mooc.enmarche.code/la-rentree-des-territoires"
     And the XML element "//url[1]/changefreq" should be equal to "monthly"
     And the XML element "//url[1]/priority" should be equal to "0.1"
-    And the XML element "//url[2]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique/les-produits-transformes-dans-une-premiere-video"
-    And the XML element "//url[3]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique/les-produits-transformes-dans-une-deuxieme-video"
-    And the XML element "//url[4]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique/le-test-de-votre-vie"
+    And the XML element "//url[2]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique"
+    And the XML element "//url[3]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique/les-produits-transformes-dans-une-premiere-video"
+    And the XML element "//url[4]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique/les-produits-transformes-dans-une-deuxieme-video"
+    And the XML element "//url[5]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique/le-test-de-votre-vie"

@@ -1,0 +1,14 @@
+{% extends '@SonataAdmin/Form/form_admin_fields.html.twig' %}
+
+{% block app_admin_mooc_mooc_image_file_image_row -%}
+    {{ block('admin_image_with_url_row') }}
+{% endblock %}
+
+{% block admin_image_with_url_row %}
+    {{ block('form_row') }}
+
+    {% set object = form.parent.vars.value %}
+    {% if object.imageName is defined and object.imageName is not empty %}
+        <img src="{{ path('asset_url', { path: object.getImagePath }) }}">
+    {% endif %}
+{% endblock %}

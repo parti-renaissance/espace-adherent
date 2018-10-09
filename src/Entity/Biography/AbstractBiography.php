@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Biography;
 
+use AppBundle\Entity\ImageTrait;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
@@ -18,6 +19,7 @@ abstract class AbstractBiography
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
+    use ImageTrait;
 
     /**
      * @ORM\Column(length=50)
@@ -98,13 +100,6 @@ abstract class AbstractBiography
      * )
      */
     protected $image;
-
-    /**
-     * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
-     */
-    protected $imageName;
 
     public function __construct(
         UuidInterface $uuid = null,
@@ -220,41 +215,6 @@ abstract class AbstractBiography
     public function setLinkedInProfile(string $linkedInProfile): void
     {
         $this->linkedInProfile = $linkedInProfile;
-    }
-
-    public function setImageName(?UploadedFile $image): void
-    {
-        $this->imageName = null === $image ? null :
-            sprintf('%s.%s',
-                md5(sprintf('%s@%s', $this->getUuid()->toString(), $image->getClientOriginalName())),
-                $image->getClientOriginalExtension()
-            )
-        ;
-    }
-
-    public function getImageName(): ?string
-    {
-        return $this->imageName;
-    }
-
-    public function hasImageName(): bool
-    {
-        return null !== $this->imageName;
-    }
-
-    public function getImage(): ?UploadedFile
-    {
-        return $this->image;
-    }
-
-    public function setImage(?UploadedFile $image): void
-    {
-        $this->image = $image;
-    }
-
-    public function getAssetImagePath(): string
-    {
-        return sprintf('/assets/%s', $this->getImagePath());
     }
 
     abstract public function getImagePath(): string;
