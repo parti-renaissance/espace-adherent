@@ -18,11 +18,11 @@ class BoardMemberMessageNotifier
     {
         $this->mailPost->address(
             BoardMemberMail::class,
-            BoardMemberMail::createRecipientsFrom($message),
-            BoardMemberMail::createReplyToFrom($message),
-            BoardMemberMail::createTemplateVarsFrom($message),
+            BoardMemberMail::createRecipients($message),
+            BoardMemberMail::createReplyTo($message),
+            BoardMemberMail::createTemplateVars($message),
             $message->getSubject(),
-            BoardMemberMail::createSenderFrom($message)
+            BoardMemberMail::createSender($message)
         );
     }
 }

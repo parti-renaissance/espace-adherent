@@ -8,9 +8,9 @@ use AppBundle\Committee\CommitteeManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CommitteeApprovalConfirmationMessage;
-use AppBundle\Mailer\Message\CommitteeApprovalReferentMessage;
+use AppBundle\Mail\Transactional\CommitteeApprovalConfirmationMail;
+use AppBundle\Mail\Transactional\CommitteeApprovalReferentMail;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -29,19 +29,19 @@ class CommitteeManagementAuthorityTest extends TestCase
         // ensure committee is approved
         $manager->expects($this->once())->method('approveCommittee')->with($committee);
 
-        $mailer = $this->createMock(MailerService::class);
-        $mailer->expects($this->at(0))
-            ->method('sendMessage')
-            ->with($this->isInstanceOf(CommitteeApprovalConfirmationMessage::class))
+        $mailPost = $this->createMock(MailPostInterface::class);
+        $mailPost->expects($this->at(0))
+            ->method('address')
+            ->with(CommitteeApprovalConfirmationMail::class)
         ;
 
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $urlGenerator->expects($this->at(0))->method('generate')->willReturn(sprintf(
-            '/comites/%s',
-            'comite-lille-beach'
-        ));
+        $urlGenerator->expects($this->at(0))
+            ->method('generate')
+            ->willReturn(sprintf('/comites/%s', 'comite-lille-beach'))
+        ;
 
-        $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailer);
+        $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailPost);
         $committeeManagementAuthority->approve($committee);
     }
 
@@ -54,10 +54,10 @@ class CommitteeManagementAuthorityTest extends TestCase
         $referents = new AdherentCollection([$referent]);
         $manager = $this->createManager($committee, $animator, $referents);
 
-        $mailer = $this->createMock(MailerService::class);
-        $mailer->expects($this->at(0))
-            ->method('sendMessage')
-            ->with($this->isInstanceOf(CommitteeApprovalReferentMessage::class))
+        $mailPost = $this->createMock(MailPostInterface::class);
+        $mailPost->expects($this->at(0))
+            ->method('address')
+            ->with(CommitteeApprovalReferentMail::class)
         ;
 
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
@@ -68,7 +68,7 @@ class CommitteeManagementAuthorityTest extends TestCase
             LoadAdherentData::COMMITTEE_1_UUID
         ));
 
-        $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailer);
+        $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailPost);
         $committeeManagementAuthority->notifyReferentsForApproval($committee);
     }
 
@@ -85,14 +85,14 @@ class CommitteeManagementAuthorityTest extends TestCase
 
         $manager = $this->createManager($committee, $animator, $referents);
 
-        $mailer = $this->createMock(MailerService::class);
+        $mailPost = $this->createMock(MailPostInterface::class);
         // ensure no mail is sent
-        $mailer->expects($this->never())->method('sendMessage')->with($this->anything());
+        $mailPost->expects($this->never())->method('address')->with($this->anything());
 
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
         $urlGenerator->expects($this->never())->method('generate')->with($this->anything());
 
-        $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailer);
+        $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailPost);
         $committeeManagementAuthority->notifyReferentsForApproval($committee);
     }
 

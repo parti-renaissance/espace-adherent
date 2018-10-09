@@ -37,6 +37,8 @@
         <service id="AppBundle\MediaGenerator\Image\CitizenProjectCoverGenerator" public="true">
             <argument type="service" id="knp_snappy.image"/>
         </service>
+        <service id="AppBundle\CitizenProject\CitizenProjectMessageNotifier" />
+        <service id="AppBundle\CitizenProject\CitizenProjectContactActorsCommandHandler" public="true"/>
 
         <!-- CitizenActions -->
         <service id="AppBundle\CitizenAction\CitizenActionMessageNotifier" />
@@ -47,6 +49,10 @@
         <!-- Committee -->
         <service id="AppBundle\Committee\CommitteeMergeCommandHandler" public="true" />
         <service id="AppBundle\Form\Admin\CommitteeIdType"/>
+        <service id="AppBundle\Committee\CommitteeManagementAuthority" />
+        <service id="AppBundle\Committee\CommitteeContactMembersCommandHandler" public="true"/>
+        <service id="AppBundle\Committee\CommitteeCreationCommandHandler" public="true" />
+        <service id="AppBundle\Committee\Feed\CommitteeFeedManager" public="true" />
 
         <!-- TurnkeyProject -->
         <service id="AppBundle\TurnkeyProject\TurnkeyProjectManager">

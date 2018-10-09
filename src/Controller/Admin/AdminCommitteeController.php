@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Committee\CommitteeManagementAuthority;
 use AppBundle\Committee\CommitteeMergeCommand;
 use AppBundle\Committee\CommitteeMergeCommandHandler;
 use AppBundle\Committee\MultipleReferentsFoundException;
@@ -30,17 +31,17 @@ class AdminCommitteeController extends Controller
      * @Method("GET")
      * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
-    public function approveAction(Committee $committee): Response
+    public function approveAction(Committee $committee, CommitteeManagementAuthority $managementAuthority): Response
     {
         try {
-            $this->get('app.committee.authority')->approve($committee);
+            $managementAuthority->approve($committee);
             $this->addFlash('sonata_flash_success', sprintf('Le comité « %s » a été approuvé avec succès.', $committee->getName()));
         } catch (BaseGroupException $exception) {
             throw $this->createNotFoundException(sprintf('Committee %u must be pending in order to be approved.', $committee->getId()), $exception);
         }
 
         try {
-            $this->get('app.committee.authority')->notifyReferentsForApproval($committee);
+            $managementAuthority->notifyReferentsForApproval($committee);
         } catch (MultipleReferentsFoundException $exception) {
             $this->addFlash('warning', sprintf(
                 'Attention, plusieurs référents (%s) ont été trouvés dans le département de ce nouveau comité. 
@@ -62,10 +63,10 @@ class AdminCommitteeController extends Controller
      * @Method("GET")
      * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
-    public function refuseAction(Committee $committee): Response
+    public function refuseAction(Committee $committee, CommitteeManagementAuthority $managementAuthority): Response
     {
         try {
-            $this->get('app.committee.authority')->refuse($committee);
+            $managementAuthority->refuse($committee);
             $this->addFlash('sonata_flash_success', sprintf('Le comité « %s » a été refusé avec succès.', $committee->getName()));
         } catch (BaseGroupException $exception) {
             throw $this->createNotFoundException(sprintf('Committee %u must be pending in order to be refused.', $committee->getId()), $exception);

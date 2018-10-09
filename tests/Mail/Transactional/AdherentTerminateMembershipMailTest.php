@@ -12,15 +12,11 @@ class AdherentTerminateMembershipMailTest extends MailTestCase
 {
     public function testCreateFromAdherent(): void
     {
-        $recipient = AdherentTerminateMembershipMail::createRecipientFor(
-            $this->createAdherent('jean@example.com')
-        );
-
         self::assertMessageRecipient(
             'jean@example.com',
             'John Smith',
             ['target_firstname' => 'John'],
-            $recipient
+            AdherentTerminateMembershipMail::createRecipient($this->createAdherent('jean@example.com'))
         );
     }
 }

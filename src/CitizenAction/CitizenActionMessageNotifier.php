@@ -38,9 +38,9 @@ class CitizenActionMessageNotifier implements EventSubscriberInterface
 
         $this->mailPost->address(
             CitizenActionNotificationMail::class,
-            CitizenActionNotificationMail::createRecipientsFrom($followers),
+            CitizenActionNotificationMail::createRecipients($followers),
             CitizenActionNotificationMail::createRecipientFromAdherent($citizenAction->getOrganizer()),
-            CitizenActionNotificationMail::createTemplateVarsFrom(
+            CitizenActionNotificationMail::createTemplateVars(
                 $citizenAction,
                 $this->generateUrl('app_citizen_action_attend', ['slug' => $citizenAction->getSlug()])
             ),
@@ -60,9 +60,9 @@ class CitizenActionMessageNotifier implements EventSubscriberInterface
         if (\count($subscriptions) > 0) {
             $this->mailPost->address(
                 CitizenActionCancellationMail::class,
-                CitizenActionCancellationMail::createRecipientsFrom($subscriptions),
+                CitizenActionCancellationMail::createRecipients($subscriptions),
                 CitizenActionCancellationMail::createRecipientFromAdherent($citizenActionEvent->getAuthor()),
-                CitizenActionCancellationMail::createTemplateVarsFrom(
+                CitizenActionCancellationMail::createTemplateVars(
                     $citizenAction,
                     $this->generateUrl('app_search_events')
                 ),
