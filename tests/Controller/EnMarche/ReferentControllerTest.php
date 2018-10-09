@@ -180,6 +180,37 @@ class ReferentControllerTest extends WebTestCase
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
         $this->assertSame(0, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+
+        // Gender
+        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
+        $data = [
+            'g' => 'male',
+        ];
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->assertSame(3, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+
+        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
+        $data = [
+            'g' => 'female',
+        ];
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+
+        // Firstname
+        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
+        $data = [
+            'f' => 'Mich',
+        ];
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+
+        // Lastname
+        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
+        $data = [
+            'l' => 'ou',
+        ];
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->assertSame(3, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
     }
 
     public function testCancelSendMail()
@@ -355,7 +386,6 @@ class ReferentControllerTest extends WebTestCase
         $this->assertContains('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertContains('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertContains('Michelle', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(2)->text());
-        $this->assertContains('D.', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(2)->text());
 
         // filter adherents in committees
         $data = [
@@ -371,7 +401,6 @@ class ReferentControllerTest extends WebTestCase
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
         $this->assertContains('Michel', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
-        $this->assertContains('V.', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
     }
 
     public function providePages()

@@ -173,6 +173,13 @@ class ReferentManagedUser
      */
     private $createdAt;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=6, nullable=true)
+     */
+    private $gender;
+
     public function __construct(
         int $status,
         string $type,
@@ -192,7 +199,8 @@ class ReferentManagedUser
         int $isCommitteeSupervisor = 0,
         int $isMailSubscriber = 0,
         string $subscribedTags = null,
-        \DateTime $createdAt = null
+        \DateTime $createdAt = null,
+        string $gender = null
     ) {
         $this->status = $status;
         $this->type = $type;
@@ -213,6 +221,7 @@ class ReferentManagedUser
         $this->isMailSubscriber = $isMailSubscriber;
         $this->subscribedTags = $subscribedTags;
         $this->createdAt = $createdAt;
+        $this->gender = $gender;
     }
 
     public function getId(): int
@@ -327,5 +336,15 @@ class ReferentManagedUser
     public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?string $gender): void
+    {
+        $this->gender = $gender;
     }
 }

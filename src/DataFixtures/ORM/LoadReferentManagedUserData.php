@@ -36,6 +36,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'is_mail_subscriber' => 1,
             'subscribedTags' => 'ch',
             'created_at' => '2017-06-01 09:22:45',
+            'gender' => 'male',
         ]);
 
         $managedUser2 = $referentManagedUserFactory->createFromArray([
@@ -56,6 +57,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'is_mail_subscriber' => 1,
             'subscribedTags' => 'ch',
             'created_at' => '2017-06-02 15:34:12',
+            'gender' => 'male',
         ]);
 
         $managedUser3 = $referentManagedUserFactory->createFromArray([
@@ -76,6 +78,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'is_mail_subscriber' => 1,
             'subscribedTags' => '92',
             'created_at' => '2017-06-02 15:34:12',
+            'gender' => 'female',
         ]);
 
         $managedUser4 = $referentManagedUserFactory->createFromArray([
@@ -97,6 +100,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'is_mail_subscriber' => 1,
             'subscribedTags' => '77',
             'created_at' => '2017-08-12 16:12:13',
+            'gender' => 'male',
         ]);
 
         $manager->persist($managedUser1);

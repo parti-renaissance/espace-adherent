@@ -56,37 +56,96 @@
                     Et filtrer par ...
                 </div>
 
-                <div class="b__nudge--bottom">
-                    <label class="form form__label">
-                        Code postal, numéro de département ou code pays (laisser vide pour ne pas filtrer)<br />
-                        <input type="text"
-                               name="{{ constant('PARAMETER_QUERY_AREA_CODE', filter) }}"
-                               value="{{ filter.queryAreaCode }}"
-                               placeholder="Saisissez un ou plusieurs départements/code postaux, séparés par des virgules (exemple : &quot;35420, 12, 75&quot;)"
-                               class="form form__field form--full" />
-                    </label>
-                </div>
+                <div class="referent__filters__search l__row l__row--v-stretch l__tablet--col">
+                    <div class="referent__filters__search__col">
+                        <legend class="label__header">Sexe</legend>
+                        <div class="l__row">
+                            <div class="form__radio-button--tab">
+                                <input type="radio" value="" id="parameter_gender_all"
+                                       name="{{ constant('PARAMETER_GENDER', filter) }}"
+                                        {{ 0 == filter.queryGender ? 'checked="checked"' : '' }} />
+                                <label for="parameter_gender_all">
+                                    Tous
+                                </label>
+                            </div>
+                            <div class="form__radio-button--tab">
+                                <input type="radio" value="female" id="parameter_gender_female"
+                                       name="{{ constant('PARAMETER_GENDER', filter) }}"
+                                        {{ filter.queryGender is same as('female') ? 'checked="checked"' : '' }} />
+                                <label for="parameter_gender_female">
+                                    Femme
+                                </label>
+                            </div>
+                            <div class="form__radio-button--tab">
+                                <input type="radio" value="male" id="parameter_gender_male"
+                                       name="{{ constant('PARAMETER_GENDER', filter) }}"
+                                        {{ filter.queryGender is same as ('male') ? 'checked="checked"' : '' }} />
+                                <label for="parameter_gender_male">
+                                    Homme
+                                </label>
+                            </div>
+                        </div>
 
-                <div class="b__nudge--bottom">
-                    <label class="form form__label">
-                        Nom de la ville (laisser vide pour ne pas filtrer)<br />
-                        <input type="text"
-                               name="{{ constant('PARAMETER_QUERY_CITY', filter) }}"
-                               value="{{ filter.queryCity }}"
-                               placeholder="Saisissez une ou plusieurs villes, séparées par des virgules (exemple : &quot;Lyon, Paris 8e&quot;)"
-                               class="form form__field form--full" />
-                    </label>
-                </div>
+                        <legend class="label__header">Age</legend>
+                        <div class="l__row l__row--h-stretch">
+                            <label style="width: 45%">
+                                <input type="number"
+                                       name="{{ constant('PARAMETER_AGE_MIN', filter) }}"
+                                       value="{{ filter.queryAgeMinimum is same as(0) ? "" : filter.queryAgeMinimum }}"
+                                       class="form form__field form--full"
+                                       placeholder="18"/>
+                            </label>
+                            à
+                            <label style="width: 45%">
+                                <input type="number"
+                                       name="{{ constant('PARAMETER_AGE_MAX', filter) }}"
+                                       value="{{ filter.queryAgeMaximum is same as(0) ? "" : filter.queryAgeMaximum }}"
+                                       class="form form__field form--full"
+                                       placeholder="99"/>
+                            </label>
+                        </div>
 
-                <div class="b__nudge--bottom">
-                    <label class="form form__label">
-                        Identifiant de marcheur (laisser vide pour ne pas filtrer)<br />
-                        <input type="text"
-                               name="{{ constant('PARAMETER_QUERY_ID', filter) }}"
-                               value="{{ filter.queryId }}"
-                               placeholder="Saisissez un ou plusieurs identifiants de marcheur, séparés par des virgules (exemple : &quot;365002, 130249&quot;)"
-                               class="form form__field form--full" />
-                    </label>
+                        <legend class="label__header">Nom</legend>
+                        <div class="l__row">
+                            <input type="text"
+                                   name="{{ constant('PARAMETER_LAST_NAME', filter) }}"
+                                   value="{{ filter.queryLastName }}"
+                                   class="form form__field form--full"
+                                   placeholder="Saisissez un nom"/>
+                        </div>
+
+                        <legend class="label__header">Prénom</legend>
+                        <div class="l__row">
+                            <input type="text"
+                                   name="{{ constant('PARAMETER_FIRST_NAME', filter) }}"
+                                   value="{{ filter.queryFirstName }}"
+                                   class="form form__field form--full"
+                                   placeholder="Saisissez un prénom"/>
+                        </div>
+                    </div>
+
+                    <div class="referent__filters__search__col">
+                        <legend class="label__header">Ville</legend>
+                        <div class="l__row">
+                            <input type="text"
+                                   name="{{ constant('PARAMETER_QUERY_CITY', filter) }}"
+                                   value="{{ filter.queryCity }}"
+                                   class="form form__field form--full"
+                                   placeholder="Saisissez une ville"/>
+                        </div>
+
+                        <legend class="label__header">Code postal, département ou pays</legend>
+                        <div class="l__row referent__filters__search__col__area-code">
+                            <input type="text"
+                                   name="{{ constant('PARAMETER_QUERY_AREA_CODE', filter) }}"
+                                   value="{{ filter.queryAreaCode }}"
+                                   class="form form__field form--full"
+                                   placeholder="Saisissez-en un ou plusieurs"/><br/>
+                        </div>
+                        <legend class="text--gray text--small">
+                            Exemple: "33450, 12, 8, 75002"
+                        </legend>
+                    </div>
                 </div>
 
                 <div class="referent__filters__buttons">
@@ -150,28 +209,36 @@
             <table class="datagrid__table">
                 <thead>
                 <tr>
-                    <th style="width: 85px;">ID</th>
+                    <th style="width: 100px;">Prénom</th>
+                    <th style="width: 100px;">Nom</th>
+                    <th style="width: 100px;">Age</th>
                     <th style="width: 100px;">Code postal</th>
                     <th style="width: 120px;">Code postal du comité géré</th>
                     <th class="datagrid__table__col--left">Informations</th>
-                    <th style="width: 300px;" class="datagrid__table__col--left datagrid__table__col--hide-mobile">Comités</th>
-                    <th style="width: 150px;" class="datagrid__table__col--hide-mobile">Inscription</th>
+                    <th style="width: 220px;" class="datagrid__table__col--left datagrid__table__col--hide-mobile">Comités</th>
+                    <th style="width: 150px;" class="datagrid__table__col--hide-mobile">Adhésion</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for user in results %}
                     <tr class="referent__item referent__item--{{ user.styleType }}">
-                        <td>{{ user.id }}</td>
+                        <td>{{ user.firstName }}</td>
+                        <td>{{ user.lastName }}</td>
+                        <td>{{ user.age ?: '~'}}</td>
                         <td>{{ user.postalCode }}</td>
-                        <td>{{ user.committeePostalCode }}</td>
+                        <td>{{ user.committeePostalCode ?: '~' }}</td>
                         <td class="datagrid__table__col--left">
-                            <strong>
-                                {{ user.firstName|capitalize }}
-                                {{ user.isCommitteeHost or user.isCommitteeSupervisor ? user.lastName : (user.lastName|slice(0, 1)|upper)~'.' }}
-                            </strong>
                             <small class="referent__item__metadata">
-                                {{ user.age }} ans, {{ user.city }}, {{ user.country }},
-                                {{ user.isMailSubscriber ? 'abonné(e) aux mails' : 'non abonné(e) aux mails' }}
+                                {{ user.phone ? user.phone.nationalNumber : '~' }}, {{ user.city }}, {{ user.country }},
+                                {% if user.gender %}
+                                    {% if 'male' == user.gender %}
+                                        {{ 'common.gender.man' | trans }}
+                                    {% else %}
+                                        {{ 'common.gender.woman' | trans }}
+                                    {% endif %}
+                                {% else %}
+                                    ~
+                                {% endif %}
                             </small>
                             <br />
                             <small>
@@ -184,7 +251,11 @@
                             </small>
                         </td>
                         <td class="datagrid__table__col--left datagrid__table__col--hide-mobile">
-                            {{ user.committees|e|join('<br />')|raw }}
+                            {% if user.committees %}
+                                {{ user.committees|e|join('<br />')|raw }}
+                            {% else %}
+                                ~
+                            {% endif %}
                         </td>
                         <td class="datagrid__table__col--hide-mobile">
                             {{ user.createdAt|date('d/m/Y H:i') }}
