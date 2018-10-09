@@ -351,5 +351,12 @@
 
         <!-- Storage -->
         <service id="AppBundle\Storage\ImageStorage" />
+
+        <!-- ParamConverter -->
+        <service id="AppBundle\ParamConverter\DoctrineQueryStringParamConverter">
+            <tag name="request.param_converter" converter="querystring" priority="false" />
+            <argument type="service" id="doctrine" on-invalid="ignore" />
+            <argument type="service" id="sensio_framework_extra.converter.doctrine.orm.expression_language" on-invalid="null" />
+        </service>
     </services>
 </container>
