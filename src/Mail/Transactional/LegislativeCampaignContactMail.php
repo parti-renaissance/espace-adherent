@@ -37,4 +37,9 @@ final class LegislativeCampaignContactMail extends TransactionalMail
     {
         return new Sender(null, $contact->getFullName());
     }
+
+    public static function createCcRecipients(CampaignContactMessage $contact): array
+    {
+        return [new Recipient($contact->getEmailAddress())];
+    }
 }

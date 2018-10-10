@@ -35,7 +35,9 @@ class EventInvitationHandler
             EventInvitationMail::createRecipient($invite),
             EventInvitationMail::createReplyTo($invite),
             EventInvitationMail::createTemplateVars($invite, $event, $url),
-            EventInvitationMail::createSubject($invite)
+            EventInvitationMail::createSubject($invite),
+            null,
+            EventInvitationMail::createCcRecipients($invite->getGuests())
         );
 
         $this->manager->persist($invite);

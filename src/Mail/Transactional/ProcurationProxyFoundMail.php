@@ -2,6 +2,7 @@
 
 namespace AppBundle\Mail\Transactional;
 
+use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Utils\PhoneNumberFormatter;
 use AppBundle\Utils\StringCleaner;
@@ -45,5 +46,10 @@ final class ProcurationProxyFoundMail extends TransactionalMail
     public static function createSender(): SenderInterface
     {
         return new Sender(null, 'Procuration En Marche !');
+    }
+
+    public static function createCcRecipients(ProcurationProxy $proxy): array
+    {
+        return [new Recipient($proxy->getEmailAddress())];
     }
 }
