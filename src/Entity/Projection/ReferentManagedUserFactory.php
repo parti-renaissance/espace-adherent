@@ -25,7 +25,8 @@ class ReferentManagedUserFactory
             $data['is_committee_supervisor'],
             $data['is_mail_subscriber'],
             $data['subscribedTags'],
-            $data['created_at'] instanceof \DateTime ?: new \DateTime($data['created_at'])
+            $data['created_at'] instanceof \DateTime ?: new \DateTime($data['created_at']),
+            $data['gender'] ?? null
         );
     }
 

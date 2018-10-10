@@ -37,6 +37,21 @@
                 margin: 0 5px;
             }
         }
+
+        &__search {
+            &__col {
+                flex: 1;
+                margin: 0 100px 0 0;
+
+                .l__row {
+                    margin: 0 0 20px 0;
+                }
+
+                &__area-code {
+                    margin: 0 0 10px 0 !important;
+                }
+            }
+        }
     }
 
     &__btn-create-event {
@@ -55,7 +70,6 @@
         }
 
         &__metadata {
-            margin-left: 10px;
             color: $gray--muted;
         }
 

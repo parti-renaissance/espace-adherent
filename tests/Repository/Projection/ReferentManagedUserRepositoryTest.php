@@ -15,6 +15,7 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group functional
+ * @group referent
  */
 class ReferentManagedUserRepositoryTest extends WebTestCase
 {

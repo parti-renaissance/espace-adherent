@@ -6,6 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Referent\ManagedUsersFilter;
 use AppBundle\Repository\ReferentTrait;
+use AppBundle\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;
@@ -109,6 +110,41 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
             }
 
             $qb->andWhere($areaCodeExpression);
+        }
+
+        if (\in_array($filter->getQueryGender(), Genders::ALL)) {
+            $qb
+                ->andWhere('u.gender = :gender')
+                ->setParameter('gender', $filter->getQueryGender())
+            ;
+        }
+
+        if ($queryLastName = $filter->getQueryLastName()) {
+            $qb
+                ->andWhere('u.lastName LIKE :lastname')
+                ->setParameter('lastname', '%'.$queryLastName.'%')
+            ;
+        }
+
+        if ($queryFirstName = $filter->getQueryFirstName()) {
+            $qb
+                ->andWhere('u.firstName LIKE :firstName')
+                ->setParameter('firstName', '%'.$queryFirstName.'%')
+            ;
+        }
+
+        if ($queryAgeMinimum = $filter->getQueryAgeMinimum()) {
+            $qb
+                ->andWhere('u.age >= :ageMinimum')
+                ->setParameter('ageMinimum', $queryAgeMinimum)
+            ;
+        }
+
+        if ($queryAgeMaximum = $filter->getQueryAgeMaximum()) {
+            $qb
+                ->andWhere('u.age <= :ageMaximum')
+                ->setParameter('ageMaximum', $queryAgeMaximum)
+            ;
         }
 
         if ($queryCity = $filter->getQueryCity()) {

@@ -22,6 +22,11 @@ class ManagedUsersFilter
     const PARAMETER_QUERY_ID = 'id';
     const PARAMETER_OFFSET = 'o';
     const PARAMETER_TOKEN = 't';
+    const PARAMETER_GENDER = 'g';
+    const PARAMETER_LAST_NAME = 'l';
+    const PARAMETER_FIRST_NAME = 'f';
+    const PARAMETER_AGE_MIN = 'amin';
+    const PARAMETER_AGE_MAX = 'amax';
 
     private $includeAdherentsNoCommittee = true;
     private $includeAdherentsInCommittee = true;
@@ -48,6 +53,11 @@ class ManagedUsersFilter
      */
     private $offset = 0;
     private $token = '';
+    private $queryGender = '';
+    private $queryLastName = '';
+    private $queryFirstName = '';
+    private $queryAgeMinimum = 0;
+    private $queryAgeMaximum = 0;
 
     public static function createFromMessage(ReferentManagedUsersMessage $message): self
     {
@@ -83,6 +93,11 @@ class ManagedUsersFilter
         $this->queryId = trim($query->get(self::PARAMETER_QUERY_ID, ''));
         $this->offset = $query->getInt(self::PARAMETER_OFFSET);
         $this->token = $query->get(self::PARAMETER_TOKEN, '');
+        $this->queryGender = $query->get(self::PARAMETER_GENDER, '');
+        $this->queryLastName = $query->get(self::PARAMETER_LAST_NAME, '');
+        $this->queryFirstName = $query->get(self::PARAMETER_FIRST_NAME, '');
+        $this->queryAgeMinimum = $query->getInt(self::PARAMETER_AGE_MIN);
+        $this->queryAgeMaximum = $query->getInt(self::PARAMETER_AGE_MAX);
 
         return $this;
     }
@@ -104,6 +119,11 @@ class ManagedUsersFilter
             self::PARAMETER_QUERY_ID => $this->queryId ?: '',
             self::PARAMETER_OFFSET => $offset,
             self::PARAMETER_TOKEN => $this->token,
+            self::PARAMETER_GENDER => $this->queryGender,
+            self::PARAMETER_LAST_NAME => $this->queryLastName,
+            self::PARAMETER_FIRST_NAME => $this->queryFirstName,
+            self::PARAMETER_AGE_MIN => $this->queryAgeMinimum,
+            self::PARAMETER_AGE_MAX => $this->queryAgeMaximum,
         ]);
     }
 
@@ -172,5 +192,55 @@ class ManagedUsersFilter
     public function setToken(string $token): void
     {
         $this->token = $token;
+    }
+
+    public function getQueryGender(): ?string
+    {
+        return $this->queryGender;
+    }
+
+    public function setQueryGender(?string $queryGender): void
+    {
+        $this->queryGender = $queryGender;
+    }
+
+    public function getQueryLastName(): ?string
+    {
+        return $this->queryLastName;
+    }
+
+    public function setQueryLastName(?string $queryLastName): void
+    {
+        $this->queryLastName = $queryLastName;
+    }
+
+    public function getQueryFirstName(): ?string
+    {
+        return $this->queryFirstName;
+    }
+
+    public function setQueryFirstName(?string $queryFirstName): void
+    {
+        $this->queryFirstName = $queryFirstName;
+    }
+
+    public function getQueryAgeMinimum(): int
+    {
+        return $this->queryAgeMinimum;
+    }
+
+    public function setQueryAgeMinimum(int $queryAgeMinimum): void
+    {
+        $this->queryAgeMinimum = $queryAgeMinimum;
+    }
+
+    public function getQueryAgeMaximum(): int
+    {
+        return $this->queryAgeMaximum;
+    }
+
+    public function setQueryAgeMaximum(int $queryAgeMaximum): void
+    {
+        $this->queryAgeMaximum = $queryAgeMaximum;
     }
 }
