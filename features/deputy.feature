@@ -134,9 +134,10 @@ Feature:
     And I should see "En Marche Paris 8"
 
   @javascript
-  Scenario: As deputy of 1st Paris district I can see committees.
+  Scenario: As deputy of 1st Paris district I can see events.
     Given I am logged as "deputy@en-marche-dev.fr"
     When I am on "/espace-depute/evenements"
+    And wait 1 second until I see "Réunion de réflexion parisienne"
     Then I should see 8 "table.managed__list__table tbody tr" elements
     And I should see "Réunion de réflexion parisienne annulé"
     And I should see "Réunion de réflexion parisienne"
