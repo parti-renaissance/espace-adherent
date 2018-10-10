@@ -41,4 +41,9 @@ final class TonMacronFriendMail extends TransactionalMail
             sprintf('%s %s', $invitation->getAuthorFirstName(), $invitation->getAuthorLastName())
         );
     }
+
+    public static function createCcRecipients(TonMacronFriendInvitation $invitation): array
+    {
+        return [new Recipient($invitation->getAuthorEmailAddress())];
+    }
 }

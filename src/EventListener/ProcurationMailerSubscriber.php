@@ -51,7 +51,8 @@ class ProcurationMailerSubscriber implements EventSubscriberInterface
                     ], UrlGeneratorInterface::ABSOLUTE_URL)
                 ),
                 ProcurationProxyFoundMail::SUBJECT,
-                ProcurationProxyFoundMail::createSender()
+                ProcurationProxyFoundMail::createSender(),
+                ProcurationProxyFoundMail::createCcRecipients($request->getFoundProxy())
             );
         }
     }
@@ -67,7 +68,8 @@ class ProcurationMailerSubscriber implements EventSubscriberInterface
                 ProcurationProxyCancelledMail::createReplyToFromEmail($this->replyToEmailAddress),
                 ProcurationProxyCancelledMail::createTemplateVars($request),
                 ProcurationProxyCancelledMail::SUBJECT,
-                ProcurationProxyCancelledMail::createSender()
+                ProcurationProxyCancelledMail::createSender(),
+                ProcurationProxyCancelledMail::createCcRecipients($request->getFoundProxy())
             );
         }
     }

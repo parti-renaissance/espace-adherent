@@ -30,7 +30,8 @@ class LegislativeCampaignContactMessageHandler
             null,
             LegislativeCampaignContactMail::createTemplateVars($message),
             LegislativeCampaignContactMail::SUBJECT,
-            LegislativeCampaignContactMail::createSender($message)
+            LegislativeCampaignContactMail::createSender($message),
+            LegislativeCampaignContactMail::createCcRecipients($message)
         );
     }
 }

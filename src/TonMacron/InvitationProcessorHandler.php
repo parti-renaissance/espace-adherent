@@ -69,7 +69,8 @@ final class InvitationProcessorHandler
                 TonMacronFriendMail::createReplyTo($invitation),
                 TonMacronFriendMail::createTemplateVars($invitation),
                 TonMacronFriendMail::createSubject($invitation),
-                TonMacronFriendMail::createSender($invitation)
+                TonMacronFriendMail::createSender($invitation),
+                TonMacronFriendMail::createCcRecipients($invitation)
             );
 
             $this->terminate($session);

@@ -37,4 +37,11 @@ final class EventInvitationMail extends TransactionalMail
     {
         return new Recipient($invite->getEmail());
     }
+
+    public static function createCcRecipients(array $emails): array
+    {
+        return array_map(function (string $email) {
+            return new Recipient($email);
+        }, $emails);
+    }
 }

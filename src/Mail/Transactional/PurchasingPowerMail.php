@@ -41,4 +41,9 @@ final class PurchasingPowerMail extends TransactionalMail
             sprintf('%s %s', $invitation->getAuthorFirstName(), $invitation->getAuthorLastName())
         );
     }
+
+    public static function createCcRecipients(PurchasingPowerInvitation $invitation): array
+    {
+        return [new Recipient($invitation->getAuthorEmailAddress())];
+    }
 }

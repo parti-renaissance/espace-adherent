@@ -69,7 +69,8 @@ final class PurchasingPowerProcessorHandler
                 PurchasingPowerMail::createReplyTo($purchasingPower),
                 PurchasingPowerMail::createTemplateVars($purchasingPower),
                 PurchasingPowerMail::createSubject($purchasingPower),
-                PurchasingPowerMail::createSender($purchasingPower)
+                PurchasingPowerMail::createSender($purchasingPower),
+                PurchasingPowerMail::createCcRecipients($purchasingPower)
             );
 
             $this->terminate($session);

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Mail\Transactional;
 
+use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Utils\StringCleaner;
 use EnMarche\MailerBundle\Mail\Recipient;
@@ -38,5 +39,10 @@ final class ProcurationProxyCancelledMail extends TransactionalMail
     public static function createSender(): SenderInterface
     {
         return new Sender(null, 'Procuration En Marche !');
+    }
+
+    public static function createCcRecipients(ProcurationProxy $proxy): array
+    {
+        return [new Recipient($proxy->getEmailAddress())];
     }
 }
