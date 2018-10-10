@@ -147,17 +147,17 @@
                             {{ form_errors(form.conditions) }}
                         </div>
 
-                        {% if not has_role_user %}
-                            <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-email">
-                                {{ form_widget(form.allowNotifications) }}
-                                <label class="form form__label" for="{{ form.allowNotifications.vars.id }}">
-                                    <span class="text__checkbox">
-                                        Je souhaite être informé(e) de l'actualité de La République En Marche
-                                        <span class="text--gray text--italic">(optionnel)</span>
-                                    </span>
-                                </label>
-                            </div>
+                        <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-email">
+                            {{ form_widget(form.allowNotifications) }}
+                            <label class="form form__label" for="{{ form.allowNotifications.vars.id }}">
+                                <span class="text__checkbox">
+                                    Je souhaite être informé(e) de l'actualité de La République En Marche
+                                    <span class="text--gray text--italic">(optionnel)</span>
+                                </span>
+                            </label>
+                        </div>
 
+                        {% if not has_role_user %}
                             <div class="visually-hidden form__captcha">
                                 <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
                                 {% if recaptcha_public_key is not empty %}

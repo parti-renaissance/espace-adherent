@@ -1008,6 +1008,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
 
     public function setSubscriptionTypes(array $subscriptionTypes)
     {
+        $this->subscriptionTypes = new ArrayCollection();
         foreach ($subscriptionTypes as $type) {
             $this->addSubscriptionType($type);
         }

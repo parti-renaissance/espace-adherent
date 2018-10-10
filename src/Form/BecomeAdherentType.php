@@ -23,6 +23,9 @@ class BecomeAdherentType extends AbstractType
                 'label' => false,
                 'child_error_bubbling' => false,
             ])
+            ->add('allowNotifications', CheckboxType::class, [
+                'required' => false,
+            ])
         ;
     }
 

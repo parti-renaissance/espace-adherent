@@ -129,6 +129,12 @@ class MembershipRequestHandler
         $user->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
         $user->join();
 
+        $this->dispatcher->dispatch(UserEvents::USER_SWITCH_TO_ADHERENT, new UserEvent(
+            $user,
+            $membershipRequest->getAllowNotifications(),
+            $membershipRequest->getAllowNotifications()
+        ));
+        $this->emailSubscriptionHistoryHandler->handleSubscriptions($user);
         $this->updateReferentTagsAndSubscriptionHistoryIfNeeded($user);
 
         $this->manager->flush();
