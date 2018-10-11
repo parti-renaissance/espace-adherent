@@ -3,18 +3,37 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Mooc\Chapter;
+use AppBundle\Entity\Mooc\Mooc;
 use AppBundle\Form\PurifiedTextareaType;
+use AppBundle\Mooc\MoocManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 class MoocAdmin extends AbstractAdmin
 {
+    /**
+     * @var MoocManager
+     */
+    private $moocManager;
+
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        MoocManager $moocManager
+    ) {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->moocManager = $moocManager;
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -23,6 +42,11 @@ class MoocAdmin extends AbstractAdmin
                     ->add('title', TextType::class, [
                         'label' => 'Titre',
                         'filter_emojis' => true,
+                    ])
+                    ->add('image', FileType::class, [
+                        'required' => false,
+                        'label' => 'Ajoutez une photo',
+                        'help' => 'La photo ne doit pas dépasser 1 Mo et ne doit pas faire plus de 480x360px.',
                     ])
                     ->add('description', TextType::class, [
                         'label' => 'Description',
@@ -131,5 +155,39 @@ class MoocAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('show');
+    }
+
+    /**
+     * @param Mooc $mooc
+     */
+    public function postRemove($mooc)
+    {
+        parent::postRemove($mooc);
+
+        $this->moocManager->removeImage($mooc);
+    }
+
+    /**
+     * @param Mooc $mooc
+     */
+    public function prePersist($mooc)
+    {
+        parent::prePersist($mooc);
+
+        if ($mooc->getImage()) {
+            $this->moocManager->saveImage($mooc);
+        }
+    }
+
+    /**
+     * @param Mooc $mooc
+     */
+    public function preUpdate($mooc)
+    {
+        parent::preUpdate($mooc);
+
+        if ($mooc->getImage()) {
+            $this->moocManager->saveImage($mooc);
+        }
     }
 }

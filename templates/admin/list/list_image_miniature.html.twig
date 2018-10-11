@@ -3,7 +3,7 @@
 {% block field %}
     <div style="text-align: center;">
         {% if object.imageName is defined and object.imageName is not null %}
-            <img src="{{ asset(object.getAssetImagePath) }}" style="max-height: 70px; max-width: 100px;" />
+            <img src="{{ path('asset_url', { path: object.getImagePath }) }}" style="max-height: 70px; max-width: 100px;" />
         {% endif %}
     </div>
 {% endblock %}

@@ -4,11 +4,13 @@ namespace AppBundle\Entity\Mooc;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\EntityTimestampableTrait;
+use AppBundle\Entity\ImageTrait;
 use Cake\Chronos\MutableDate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMS;
@@ -28,6 +30,7 @@ use JMS\Serializer\Annotation as JMS;
 class Mooc
 {
     use EntityTimestampableTrait;
+    use ImageTrait;
 
     /**
      * @ORM\Id
@@ -124,6 +127,19 @@ class Mooc
      * @Assert\Length(min=5, max=500)
      */
     protected $shareEmailBody;
+
+    /**
+     * @var UploadedFile|null
+     *
+     * @Assert\Image(
+     *     mimeTypes={"image/jpeg", "image/png"},
+     *     maxSize="1M",
+     *     maxWidth="480",
+     *     maxHeight="360",
+     *     minWidth="211"
+     * )
+     */
+    protected $image;
 
     public function __construct(
         string $title = null,
@@ -245,12 +261,7 @@ class Mooc
         return null !== $this->youtubeId;
     }
 
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("image"),
-     * @JMS\Groups({"mooc_list"})
-     */
-    public function getYoutubeThumbnail(): ?string
+    public function getYoutubeThumbnail(): string
     {
         return sprintf('https://img.youtube.com/vi/%s/0.jpg', $this->youtubeId);
     }
@@ -303,5 +314,10 @@ class Mooc
     public function setShareEmailBody(string $shareEmailBody): void
     {
         $this->shareEmailBody = $shareEmailBody;
+    }
+
+    public function getImagePath(): string
+    {
+        return sprintf('images/mooc/%s', $this->getImageName());
     }
 }

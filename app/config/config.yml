@@ -229,6 +229,8 @@ sonata_admin:
 
 sonata_doctrine_orm_admin:
     templates:
+        form:
+            - 'form_theme_admin.html.twig'
         types:
             list:
                 array: admin/CRUD/list_array.html.twig
