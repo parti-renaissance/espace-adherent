@@ -167,7 +167,7 @@
 
     {% if has_filter %}
         <div class="referent__filters__count">
-            <div class="text--body text--medium-small">{{ results_count }} contact(s) trouvés</div>
+            <div class="text--body text--medium-small">{{ results_count }} contact(s) trouvé(s)</div>
 
             <a href="{{ path('app_referent_users_message') ~ filter }}" class="btn btn--primary b__nudge--top-10">
                 Leur envoyer un message
@@ -211,11 +211,11 @@
                 <tr>
                     <th style="width: 100px;">Prénom</th>
                     <th style="width: 100px;">Nom</th>
-                    <th style="width: 100px;">Age</th>
-                    <th style="width: 100px;">Code postal</th>
+                    <th style="width: 100px;">Téléphone</th>
+                    <th style="width: 100px;">Ville</th>
                     <th style="width: 120px;">Code postal du comité géré</th>
-                    <th class="datagrid__table__col--left">Informations</th>
-                    <th style="width: 220px;" class="datagrid__table__col--left datagrid__table__col--hide-mobile">Comités</th>
+                    <th style="width: 100px;" class="datagrid__table__col--left">Informations</th>
+                    <th style="width: 120px;" class="datagrid__table__col--left datagrid__table__col--hide-mobile">Comités</th>
                     <th style="width: 150px;" class="datagrid__table__col--hide-mobile">Adhésion</th>
                 </tr>
                 </thead>
@@ -224,12 +224,12 @@
                     <tr class="referent__item referent__item--{{ user.styleType }}">
                         <td>{{ user.firstName }}</td>
                         <td>{{ user.lastName }}</td>
-                        <td>{{ user.age ?: '~'}}</td>
-                        <td>{{ user.postalCode }}</td>
+                        <td>{{ user.phone ? user.phone | phone_number_format : '~' }}</td>
+                        <td>{{ user.postalCode }} <br/> {{ user.city }}, {{ user.country }}</td>
                         <td>{{ user.committeePostalCode ?: '~' }}</td>
                         <td class="datagrid__table__col--left">
                             <small class="referent__item__metadata">
-                                {{ user.phone ? user.phone.nationalNumber : '~' }}, {{ user.city }}, {{ user.country }},
+                                {{ user.age ? user.age ~ ' ans' : '~'}},
                                 {% if user.gender %}
                                     {% if 'male' == user.gender %}
                                         {{ 'common.gender.man' | trans }}
