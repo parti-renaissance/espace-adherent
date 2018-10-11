@@ -330,7 +330,7 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
 
-        $this->assertContains('1 contact(s) trouvés', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+        $this->assertContains('1 contact(s) trouvé(s)', $this->client->getCrawler()->filter('.referent__filters__count')->text());
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
         $this->assertContains('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
@@ -346,7 +346,7 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
 
-        $this->assertContains('1 contact(s) trouvés', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+        $this->assertContains('1 contact(s) trouvé(s)', $this->client->getCrawler()->filter('.referent__filters__count')->text());
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
         $this->assertContains('Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
@@ -362,7 +362,7 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
 
-        $this->assertContains('4 contact(s) trouvés', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+        $this->assertContains('4 contact(s) trouvé(s)', $this->client->getCrawler()->filter('.referent__filters__count')->text());
         $this->assertCount(4, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertContains('77000', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
         $this->assertContains('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
@@ -377,7 +377,7 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
 
-        $this->assertContains('3 contact(s) trouvés', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+        $this->assertContains('3 contact(s) trouvé(s)', $this->client->getCrawler()->filter('.referent__filters__count')->text());
         $this->assertCount(3, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
@@ -397,7 +397,7 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
 
-        $this->assertContains('1 contact(s) trouvés', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+        $this->assertContains('1 contact(s) trouvé(s)', $this->client->getCrawler()->filter('.referent__filters__count')->text());
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
         $this->assertContains('Michel', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
