@@ -139,6 +139,7 @@ class MoocAdmin extends AbstractAdmin
             ])
             ->add('youtubeId', null, [
                 'label' => 'Youtube ID',
+                'template' => 'admin/list/list_youtube_id.html.twig',
             ])
             ->add('_thumbnail', 'thumbnail', [
                 'label' => 'Miniature',

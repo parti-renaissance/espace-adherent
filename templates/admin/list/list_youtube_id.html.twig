@@ -1,0 +1,9 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{% block field %}
+    <div class="text-center">
+        {% if object.youtubeId is defined and object.youtubeId is not empty %}
+            <a href="https://www.youtube.com/watch?v={{ object.youtubeId }}" target="_blank">{{ object.youtubeId }}</a>
+        {% endif %}
+    </div>
+{% endblock %}
