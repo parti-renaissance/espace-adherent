@@ -3,35 +3,44 @@
 namespace AppBundle\Newsletter;
 
 use AppBundle\Entity\NewsletterInvite;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\NewsletterInvitationMessage;
+use AppBundle\Mail\Transactional\NewsletterInvitationMail;
 use Doctrine\Common\Persistence\ObjectManager;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class NewsletterInvitationHandler
 {
     private $manager;
-    private $mailer;
+    private $mailPost;
     private $urlGenerator;
 
-    public function __construct(ObjectManager $manager, MailerService $mailer, UrlGeneratorInterface $urlGenerator)
+    public function __construct(ObjectManager $manager, MailPostInterface $mailPost, UrlGeneratorInterface $urlGenerator)
     {
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function handle(Invitation $invitation, ?string $ip)
+    public function handle(Invitation $invitation, ?string $ip): void
     {
         foreach ($invitation->guests as $guest) {
             $invite = NewsletterInvite::create($invitation->firstName, $invitation->lastName, $guest, $ip);
 
             $this->manager->persist($invite);
-            $this->mailer->sendMessage(NewsletterInvitationMessage::createFromInvite($invite, $this->urlGenerator->generate(
+
+            $inviteUrl = $this->urlGenerator->generate(
                 'newsletter_subscription',
                 ['mail' => $guest],
                 UrlGeneratorInterface::ABSOLUTE_URL
-            )));
+            );
+
+            $this->mailPost->address(
+                NewsletterInvitationMail::class,
+                NewsletterInvitationMail::createRecipient($invite),
+                null,
+                NewsletterInvitationMail::createTemplateVars($invite, $inviteUrl),
+                NewsletterInvitationMail::createSubject($invite)
+            );
         }
 
         $this->manager->flush();

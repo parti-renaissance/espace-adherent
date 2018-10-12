@@ -4,20 +4,17 @@ namespace AppBundle\CitizenProject;
 
 use AppBundle\Entity\CitizenProjectComment;
 use AppBundle\Events;
-use AppBundle\Mailer\MailerService;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CitizenProjectCommentCreationCommandHandler
 {
     private $manager;
-    private $mailer;
     private $eventDispatcher;
 
-    public function __construct(ObjectManager $manager, MailerService $mailer, EventDispatcherInterface $eventDispatcher)
+    public function __construct(ObjectManager $manager, EventDispatcherInterface $eventDispatcher)
     {
         $this->manager = $manager;
-        $this->mailer = $mailer;
         $this->eventDispatcher = $eventDispatcher;
     }
 

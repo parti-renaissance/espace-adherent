@@ -93,13 +93,15 @@ class CommitteeManagementAuthority
     {
         $this->manager->followCommittee($adherent, $committee);
 
-        if (!$hosts = $this->manager->getCommitteeHosts($committee)->toArray()) {
+        $hosts = $this->manager->getCommitteeHosts($committee);
+
+        if ($hosts->isEmpty()) {
             return;
         }
 
         $this->mailPost->address(
             CommitteeNewFollowerMail::class,
-            CommitteeNewFollowerMail::createRecipients($hosts),
+            CommitteeNewFollowerMail::createRecipients($hosts->toArray()),
             CommitteeNewFollowerMail::createRecipientFromAdherent($adherent),
             CommitteeNewFollowerMail::createTemplateVars(
                 $committee,

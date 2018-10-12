@@ -3,15 +3,16 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadTonMacronData;
-use AppBundle\Entity\Email;
 use AppBundle\Entity\TonMacronChoice;
 use AppBundle\Entity\TonMacronFriendInvitation;
+use AppBundle\Mail\Transactional\TonMacronFriendMail;
 use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\Repository\TonMacronFriendInvitationRepository;
 use AppBundle\TonMacron\InvitationProcessor;
 use AppBundle\TonMacron\InvitationProcessorHandler;
 use Doctrine\Common\Collections\ArrayCollection;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -24,6 +25,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 class TonMacronControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use MailTestCaseTrait;
 
     const INVITATION_PATH = '/pourquoivoterenmarche';
     const INVITATION_RESTART_PATH = '/pourquoivoterenmarche/recommencer';
@@ -135,13 +137,8 @@ class TonMacronControllerTest extends WebTestCase
         ]));
 
         $this->assertNull($this->client->getRequest()->getSession()->get(InvitationProcessorHandler::SESSION_KEY));
-        $this->assertCount(1, $mails = $this->emailRepository->findAll());
+        $this->assertMailSentForRecipient('beatrice@example.org', TonMacronFriendMail::class);
 
-        /** @var Email $mail */
-        $mail = $mails[0];
-
-        $this->assertSame('TonMacronFriendMessage', $mail->getMessageClass());
-        $this->assertContains('beatrice@example.org', $mail->getRecipientsAsString());
         $this->assertCount(1, $invitations = $this->tonMacronInvitationRepository->findAll());
 
         /** @var TonMacronFriendInvitation $invitationLog */
@@ -191,6 +188,7 @@ class TonMacronControllerTest extends WebTestCase
             LoadTonMacronData::class,
         ]);
 
+        $this->clearMails();
         $this->tonMacronChoiceRepository = $this->getTonMacronChoiceRepository();
         $this->tonMacronInvitationRepository = $this->getTonMacronInvitationRepository();
         $this->emailRepository = $this->getEmailRepository();
@@ -203,13 +201,14 @@ class TonMacronControllerTest extends WebTestCase
         $this->emailRepository = null;
         $this->tonMacronInvitationRepository = null;
         $this->tonMacronChoiceRepository = null;
+        $this->clearMails();
 
         parent::tearDown();
     }
 
     private function getTonMacronInvitationHandler(): InvitationProcessorHandler
     {
-        return $this->container->get('app.ton_macron.invitation_processor_handler');
+        return $this->container->get(InvitationProcessorHandler::class);
     }
 
     private function getCurrentInvitation(): InvitationProcessor

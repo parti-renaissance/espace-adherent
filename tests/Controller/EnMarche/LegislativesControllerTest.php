@@ -3,8 +3,9 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Mailer\Message\LegislativeCampaignContactMessage;
+use AppBundle\Mail\Transactional\LegislativeCampaignContactMail;
 use AppBundle\Repository\EmailRepository;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -17,6 +18,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 class LegislativesControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use MailTestCaseTrait;
 
     /**
      * @var EmailRepository
@@ -64,7 +66,7 @@ class LegislativesControllerTest extends WebTestCase
         $this->assertSame(1, $crawler->filter('#legislatives_campaign_contact_form')->count());
         $this->assertSame(0, $crawler->filter('.notice-flashes')->count());
         $this->assertSame(7, $crawler->filter('#legislatives_campaign_contact_form .form__error')->count());
-        $this->assertCount(0, $this->emailRepository->findMessages(LegislativeCampaignContactMessage::class));
+        $this->assertMailCountForClass(0, LegislativeCampaignContactMail::class);
 
         $this->client->click($crawler->selectButton("J'envoie ma demande")->form([
             'legislative_campaign_contact_message' => [
@@ -82,15 +84,14 @@ class LegislativesControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
-        $emails = $this->emailRepository->findRecipientMessages(LegislativeCampaignContactMessage::class, $expectedRecipient);
-        $this->assertCount(1, $emails);
+        $this->assertMailCountForClass(1, LegislativeCampaignContactMail::class);
 
-        $payload = $emails[0]->getRequestPayload();
+        $email = $this->getMails(LegislativeCampaignContactMail::class)[0];
 
-        $this->assertSame('Marc Dupont', $payload['FromName']);
-        $this->assertSame('Élections Législatives - Nouvelle demande de contact', $payload['Subject']);
-        $this->assertSame('143247', $payload['MJ-TemplateID']);
-        $this->assertSame(
+        self::assertSame('Marc Dupont', $email->getSender()->getName());
+        self::assertSame('Élections Législatives - Nouvelle demande de contact', $email->getSubject());
+        self::assertSame('en_marche_legislative_campaign_contact', $email->getTemplateName());
+        self::assertSame(
             [
                 'email' => 'marc1337@gmail.tld',
                 'first_name' => 'Marc',
@@ -101,7 +102,7 @@ class LegislativesControllerTest extends WebTestCase
                 'subject' => 'Avez-vous pensez aux réseaux sociaux ?',
                 'message' => 'Puis-je avoir accès aux comptes Twitter  et Facebook  svp ?',
             ],
-            $payload['Vars']
+            $email->getTemplateVars()
         );
 
         $crawler = $this->client->followRedirect();
@@ -110,7 +111,7 @@ class LegislativesControllerTest extends WebTestCase
         $this->assertSame(1, $crawler->filter('#legislatives_campaign_contact_form')->count());
         $this->seeFlashMessage($crawler, "Votre demande d'information a été envoyée avec succès. Elle sera traitée dans les plus brefs délais par le service concerné.");
         $this->assertSame(0, $crawler->filter('#legislatives_campaign_contact_form .form__error')->count());
-        $this->assertCount(1, $this->emailRepository->findMessages(LegislativeCampaignContactMessage::class));
+        $this->assertMailCountForClass(1, LegislativeCampaignContactMail::class);
     }
 
     public static function provideLegislativeCandidatesContacts(): array
@@ -128,7 +129,7 @@ class LegislativesControllerTest extends WebTestCase
         $this->init([
             LoadAdherentData::class,
         ]);
-
+        $this->clearMails();
         $this->emailRepository = $this->getEmailRepository();
     }
 
@@ -137,6 +138,7 @@ class LegislativesControllerTest extends WebTestCase
         $this->kill();
 
         $this->emailRepository = null;
+        $this->clearMails();
 
         parent::tearDown();
     }

@@ -3,8 +3,9 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\JeMarcheReport;
-use AppBundle\Mailer\Message\JeMarcheReportMessage;
+use AppBundle\Mail\Transactional\JeMarcheReportMail;
 use AppBundle\Repository\JeMarcheReportRepository;
+use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -17,6 +18,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 class JeMarcheControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use MailTestCaseTrait;
 
     /** @var JeMarcheReportRepository */
     private $jeMarcheReportRepostitory;
@@ -56,7 +58,7 @@ class JeMarcheControllerTest extends WebTestCase
         $this->assertSame(['xyz@en-marche.fr', 'tuv@en-marche.fr'], $report->getAlmostConvinced());
         $this->assertSame('Réaction des gens', $report->getReaction());
 
-        $this->assertCount(1, $this->getEmailRepository()->findMessages(JeMarcheReportMessage::class));
+        $this->assertMailCountForClass(1, JeMarcheReportMail::class);
     }
 
     public function testReportJeMarchePartial()
@@ -101,6 +103,7 @@ class JeMarcheControllerTest extends WebTestCase
 
         $this->init([]);
 
+        $this->clearMails();
         $this->jeMarcheReportRepostitory = $this->getJeMarcheReportRepository();
     }
 
@@ -109,6 +112,7 @@ class JeMarcheControllerTest extends WebTestCase
         $this->kill();
 
         $this->jeMarcheReportRepostitory = null;
+        $this->clearMails();
 
         parent::tearDown();
     }

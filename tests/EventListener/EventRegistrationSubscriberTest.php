@@ -8,7 +8,7 @@ use AppBundle\Entity\EventRegistration;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Event\EventRegistrationEvent;
 use AppBundle\Event\EventRegistrationSubscriber;
-use AppBundle\Mailer\MailerService;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -19,8 +19,8 @@ class EventRegistrationSubscriberTest extends TestCase
     private const EVENT_UUID = 'a103e823-1bd1-406d-81ec-d1f764437d1b';
     private const EVENT_SLUG = '/foobar-slug';
 
-    /** @var MailerService */
-    private $mailer;
+    /** @var MailPostInterface */
+    private $mailPost;
 
     private $urlGenerator;
 
@@ -29,7 +29,7 @@ class EventRegistrationSubscriberTest extends TestCase
      */
     public function testSendRegistrationEmail(?EventRegistration $registration, bool $sendMail)
     {
-        $eventSubscriber = new EventRegistrationSubscriber($this->mailer, $this->urlGenerator);
+        $eventSubscriber = new EventRegistrationSubscriber($this->mailPost, $this->urlGenerator);
 
         $eventRegistrationEvent = new EventRegistrationEvent(
             $registration,
@@ -37,9 +37,9 @@ class EventRegistrationSubscriberTest extends TestCase
             $sendMail
         );
 
-        $this->mailer
+        $this->mailPost
             ->expects($sendMail ? $this->once() : $this->never())
-            ->method('sendMessage')
+            ->method('address')
         ;
 
         $this->urlGenerator
@@ -89,13 +89,13 @@ class EventRegistrationSubscriberTest extends TestCase
     {
         parent::setUp();
 
-        $this->mailer = $this->createMock(MailerService::class);
+        $this->mailPost = $this->createMock(MailPostInterface::class);
         $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
     }
 
     protected function tearDown()
     {
-        $this->mailer = null;
+        $this->mailPost = null;
         $this->urlGenerator = null;
 
         parent::tearDown();

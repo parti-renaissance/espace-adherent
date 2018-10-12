@@ -2,29 +2,26 @@
 
 namespace AppBundle\Event;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\EventContactMembersMessage;
+use AppBundle\Mail\Campaign\EventContactMembersMail;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 
 class EventContactMembersCommandHandler
 {
-    private $mailer;
+    private $mailPost;
 
-    public function __construct(MailerService $mailer)
+    public function __construct(MailPostInterface $mailPost)
     {
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
     }
 
     public function handle(EventContactMembersCommand $command): void
     {
-        $chunks = array_chunk($command->getRecipients(), MailerService::PAYLOAD_MAXSIZE);
-
-        foreach ($chunks as $chunk) {
-            $this->mailer->sendMessage(EventContactMembersMessage::create(
-                $chunk,
-                $command->getSender(),
-                $command->getSubject(),
-                $command->getMessage()
-            ));
-        }
+        $this->mailPost->address(
+            EventContactMembersMail::class,
+            EventContactMembersMail::createRecipientsFrom($command->getRecipients()),
+            EventContactMembersMail::createReplyToFrom($command->getSender()),
+            EventContactMembersMail::createTemplateVars($command->getSender(), $command->getMessage()),
+            EventContactMembersMail::createSubject($command->getSubject())
+        );
     }
 }

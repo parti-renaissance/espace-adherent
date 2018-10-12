@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\Invite;
 use AppBundle\Form\InvitationType;
+use AppBundle\Invitation\InvitationRequestHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,7 +26,7 @@ class InvitationController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.invitation_request_handler')->handle($invite, $request);
+            $this->get(InvitationRequestHandler::class)->handle($invite, $request);
 
             return $this->render('invitation/sent.html.twig', [
                 'invite' => $invite,

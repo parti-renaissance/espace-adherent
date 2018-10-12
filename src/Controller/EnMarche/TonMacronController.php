@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\TonMacronFriendInvitation;
 use AppBundle\Form\TonMacronInvitationType;
+use AppBundle\TonMacron\InvitationProcessorHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -34,10 +35,9 @@ class TonMacronController extends Controller
      * @Route("/pourquoivoterenmarche", name="app_ton_macron_invite")
      * @Method("GET|POST")
      */
-    public function inviteAction(Request $request): Response
+    public function inviteAction(Request $request, InvitationProcessorHandler $handler): Response
     {
         $session = $request->getSession();
-        $handler = $this->get('app.ton_macron.invitation_processor_handler');
         $invitation = $handler->start($session);
         $transition = $handler->getCurrentTransition($invitation);
 
@@ -45,7 +45,7 @@ class TonMacronController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($invitationLog = $this->get('app.ton_macron.invitation_processor_handler')->process($session, $invitation)) {
+            if ($invitationLog = $handler->process($session, $invitation)) {
                 return $this->redirectToRoute('app_ton_macron_invite_sent', [
                     'uuid' => $invitationLog->getUuid()->toString(),
                 ]);
@@ -65,9 +65,9 @@ class TonMacronController extends Controller
      * @Route("/pourquoivoterenmarche/recommencer", name="app_ton_macron_invite_restart")
      * @Method("GET")
      */
-    public function restartInviteAction(Request $request): Response
+    public function restartInviteAction(Request $request, InvitationProcessorHandler $handler): Response
     {
-        $this->get('app.ton_macron.invitation_processor_handler')->terminate($request->getSession());
+        $handler->terminate($request->getSession());
 
         return $this->redirectToRoute('app_ton_macron_invite');
     }

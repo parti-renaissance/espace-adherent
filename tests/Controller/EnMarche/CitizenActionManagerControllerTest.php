@@ -10,7 +10,7 @@ use AppBundle\Entity\CitizenAction;
 use AppBundle\Mail\Campaign\CitizenActionContactParticipantsMail;
 use AppBundle\Mail\Transactional\CitizenActionCancellationMail;
 use AppBundle\Mail\Transactional\CitizenActionNotificationMail;
-use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
+use AppBundle\Mail\Transactional\EventRegistrationConfirmationMail;
 use EnMarche\MailerBundle\Test\MailTestCaseTrait;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DomCrawler\Crawler;
@@ -127,7 +127,7 @@ class CitizenActionManagerControllerTest extends WebTestCase
         /** @var CitizenAction $citizenAction */
         $this->assertInstanceOf(CitizenAction::class, $citizenAction = $this->getCitizenActionRepository()->findOneBy(['slug' => (new \DateTime())->format('Y-m-d').'-mon-action-citoyenne']));
         $this->assertSame('Mon Action Citoyenne', $citizenAction->getName());
-        $this->assertCountMails(0, EventRegistrationConfirmationMessage::class, 'jacques.picard@en-marche.fr');
+        $this->assertMailCountForClass(0, EventRegistrationConfirmationMail::class);
         $this->assertMailSentForRecipients(['jacques.picard@en-marche.fr', 'gisele-berthoux@caramail.com', 'luciole1989@spambox.fr'], CitizenActionNotificationMail::class);
     }
 

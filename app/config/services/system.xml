@@ -50,8 +50,8 @@
 
         <service id="AppBundle\Consumer\ReferentMessageDispatcherConsumer" parent="app_abstract_consumer">
             <argument type="service" id="app.consumer.service_locator" />
-            <call method="setMailer">
-                <argument type="service" id="app.mailer.campaign"/>
+            <call method="setMailPost">
+                <argument type="service" id="EnMarche\MailerBundle\MailPost\MailPostInterface"/>
             </call>
             <call method="setReferentManagedUserRepository">
                 <argument type="service" id="AppBundle\Repository\Projection\ReferentManagedUserRepository"/>

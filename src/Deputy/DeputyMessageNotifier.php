@@ -2,32 +2,29 @@
 
 namespace AppBundle\Deputy;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\DeputyMessage as Message;
+use AppBundle\Mail\Transactional\DeputyMail;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 
 class DeputyMessageNotifier
 {
-    private $mailer;
+    private $mailPost;
 
-    public function __construct(MailerService $mailer)
+    public function __construct(MailPostInterface $mailPost)
     {
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
     }
 
     public function sendMessage(DeputyMessage $message): void
     {
-        $chunks = array_chunk(
-            $message->getRecipients(),
-            MailerService::PAYLOAD_MAXSIZE
+        $message->getRecipients();
+
+        $this->mailPost->address(
+            DeputyMail::class,
+            DeputyMail::createRecipients($message->getRecipients()),
+            DeputyMail::createRecipientFromAdherent($message->getFrom()),
+            DeputyMail::createTemplateVars($message),
+            $message->getSubject(),
+            DeputyMail::createSender($message->getFrom())
         );
-
-        foreach ($chunks as $chunk) {
-            $this->mailer->sendMessage($this->createMessage($message, $chunk));
-        }
-    }
-
-    private function createMessage(DeputyMessage $message, array $recipients): Message
-    {
-        return Message::create($message, $recipients);
     }
 }

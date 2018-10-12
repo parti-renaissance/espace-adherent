@@ -3,30 +3,30 @@
 namespace AppBundle\Interactive;
 
 use AppBundle\Entity\PurchasingPowerInvitation;
-use AppBundle\Mailer\Message\PurchasingPowerMessage;
-use AppBundle\Mailer\MailerService;
+use AppBundle\Mail\Transactional\PurchasingPowerMail;
 use Doctrine\Common\Persistence\ObjectManager;
+use EnMarche\MailerBundle\MailPost\MailPostInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Workflow\StateMachine;
 
 final class PurchasingPowerProcessorHandler
 {
-    const SESSION_KEY = 'purchasing_power';
+    public const SESSION_KEY = 'purchasing_power';
 
     private $builder;
     private $manager;
-    private $mailer;
+    private $mailPost;
     private $stateMachine;
 
     public function __construct(
         PurchasingPowerMessageBodyBuilder $builder,
         ObjectManager $manager,
-        MailerService $mailer,
+        MailPostInterface $mailPost,
         StateMachine $stateMachine
     ) {
         $this->builder = $builder;
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->mailPost = $mailPost;
         $this->stateMachine = $stateMachine;
     }
 
@@ -63,7 +63,15 @@ final class PurchasingPowerProcessorHandler
             $this->manager->persist($purchasingPower);
             $this->manager->flush();
 
-            $this->mailer->sendMessage(PurchasingPowerMessage::createFromInvitation($purchasingPower));
+            $this->mailPost->address(
+                PurchasingPowerMail::class,
+                PurchasingPowerMail::createRecipient($purchasingPower),
+                PurchasingPowerMail::createReplyTo($purchasingPower),
+                PurchasingPowerMail::createTemplateVars($purchasingPower),
+                PurchasingPowerMail::createSubject($purchasingPower),
+                PurchasingPowerMail::createSender($purchasingPower)
+            );
+
             $this->terminate($session);
             $this->stateMachine->apply($processor, PurchasingPowerProcessor::TRANSITION_SEND);
 
