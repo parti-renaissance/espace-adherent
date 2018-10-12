@@ -361,7 +361,7 @@ h3.citizen__helplist-header {
             font-family: $font-roboto;
             @include text--default;
             font-weight: 200;
-            margin: 0 0 45px;
+            margin: 0;
             text-align: left;
             width: 60%;
 
@@ -373,6 +373,14 @@ h3.citizen__helplist-header {
             @media (max-width: $mobile) {
                 padding: 0 40px;
                 width: 100%;
+            }
+        }
+
+        div.solution {
+            margin: 20px 0 45px;
+
+            p {
+                display: inline-block;
             }
         }
 

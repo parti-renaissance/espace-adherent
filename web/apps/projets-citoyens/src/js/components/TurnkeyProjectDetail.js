@@ -46,11 +46,10 @@ const TurnkeyProjectDetail = props => {
                 )}
             </div>
             {!swap && <Title title={title} subtitle={subtitle} />}
-            <p style={{ width: `${props.textSize}` }}>
-                {description}
-                <br/><br/>
-                {solution}
-            </p>
+
+            <p style={{ width: `${props.textSize}` }}>{description}</p>
+
+            <div className="solution" style={{ width: `${props.textSize}` }} dangerouslySetInnerHTML={{__html: solution}} />
 
             {renderCTA && renderCTA()}
 
