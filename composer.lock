@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e907383aae078e6fb4e381aa5af99b20",
+    "content-hash": "8af964f0fc30a2b49aff9b90e0f5f3b8",
     "packages": [
         {
             "name": "a2lix/i18n-doctrine-bundle",
@@ -2029,16 +2029,16 @@
         },
         {
             "name": "enmarche/mailer-bundle",
-            "version": "dev-master",
+            "version": "v2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EnMarche/mailer-bundle.git",
-                "reference": "57fe71fa0d9fe2bda1efaf5f3b66159b172d86a0"
+                "reference": "f94bb8ffce497e49085b60f25d6a229060980d2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EnMarche/mailer-bundle/zipball/57fe71fa0d9fe2bda1efaf5f3b66159b172d86a0",
-                "reference": "57fe71fa0d9fe2bda1efaf5f3b66159b172d86a0",
+                "url": "https://api.github.com/repos/EnMarche/mailer-bundle/zipball/f94bb8ffce497e49085b60f25d6a229060980d2d",
+                "reference": "f94bb8ffce497e49085b60f25d6a229060980d2d",
                 "shasum": ""
             },
             "require": {
@@ -2075,7 +2075,7 @@
                 "source": "https://github.com/EnMarche/mailer-bundle/tree/master",
                 "issues": "https://github.com/EnMarche/mailer-bundle/issues"
             },
-            "time": "2018-10-10T08:51:05+00:00"
+            "time": "2018-10-10T09:57:27+00:00"
         },
         {
             "name": "exercise/htmlpurifier-bundle",
@@ -12125,7 +12125,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "enmarche/mailer-bundle": 20,
         "sensio/framework-extra-bundle": 20
     },
     "prefer-stable": false,
