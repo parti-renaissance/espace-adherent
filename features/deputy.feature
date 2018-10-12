@@ -59,7 +59,7 @@ Feature:
     Then I should be on "/espace-depute/utilisateurs/message"
     And I should see 0 ".form__errors" elements
     And I should see "Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer."
-    And I should have 1 email "AppBundle\Mail\Transactional\DeputyMail" for "jacques.picard@en-marche.fr" with vars:
+    And I should have 1 email "AppBundle\Mail\Campaign\DeputyMail" for "jacques.picard@en-marche.fr" with vars:
       | deputy_fullname      | Député PARIS I                      |
       | circonscription_name | Paris, 1ère circonscription (75-01) |
       | target_message       | Content of a deputy message         |

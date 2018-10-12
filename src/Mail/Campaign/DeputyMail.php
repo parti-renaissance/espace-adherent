@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Mail\Transactional;
+namespace AppBundle\Mail\Campaign;
 
 use AppBundle\Deputy\DeputyMessage;
 use AppBundle\Entity\Adherent;
 use AppBundle\Mail\AdherentMailTrait;
 use AppBundle\Utils\StringCleaner;
+use EnMarche\MailerBundle\Mail\CampaignMail;
 use EnMarche\MailerBundle\Mail\Sender;
 use EnMarche\MailerBundle\Mail\SenderInterface;
-use EnMarche\MailerBundle\Mail\TransactionalMail;
 
-final class DeputyMail extends TransactionalMail
+final class DeputyMail extends CampaignMail
 {
     use AdherentMailTrait;
 
@@ -37,6 +37,6 @@ final class DeputyMail extends TransactionalMail
 
     public static function createSender(Adherent $deputy): SenderInterface
     {
-        return new Sender(null, sprintf('Votre député%s En Marche !', $deputy->isFemale() ? 'e' : ''));
+        return new Sender(null, $deputy->getFullName().' [Député]');
     }
 }

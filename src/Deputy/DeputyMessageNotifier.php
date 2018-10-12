@@ -2,7 +2,7 @@
 
 namespace AppBundle\Deputy;
 
-use AppBundle\Mail\Transactional\DeputyMail;
+use AppBundle\Mail\Campaign\DeputyMail;
 use EnMarche\MailerBundle\MailPost\MailPostInterface;
 
 class DeputyMessageNotifier
