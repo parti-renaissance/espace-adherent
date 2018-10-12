@@ -104,6 +104,7 @@
 
         {% if citizen_project.isFromTurnkeyProject and is_cp_administrator %}
             <h2 id="citizen-project-files" class="space--20-0 b__nudge--top">{{ 'citizen_project.my_kit'|trans }}</h2>
+            Cliquez sur les liens pour télécharger les docs
             <div class="text--body text--dark">
                 <ul>
                     {% for file in citizen_project.turnkeyProject.files %}

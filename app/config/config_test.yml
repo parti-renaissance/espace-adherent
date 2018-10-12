@@ -24,11 +24,6 @@ services:
     old_sound_rabbit_mq.referent_message_dispatcher_producer:
         class: 'Tests\AppBundle\Test\Producer\ReferentMessageNullProducer'
 
-    # used for ignore check of departement for the period of testing CP only in 30 departments
-    app.citizen_project.controller_subscriber:
-        class: 'AppBundle\CitizenProject\CitizenProjectControllerSubscriber'
-        public: false
-
     Tests\AppBundle\Consumer\DummyConsumer: ~
 
     Tests\AppBundle\Test\Payment\PayboxProvider:

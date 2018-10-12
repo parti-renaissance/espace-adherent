@@ -51,6 +51,14 @@ class CitizenProject extends BaseGroup
         self::PRE_REFUSED,
     ];
 
+    public const SIMPLE_TYPE = 'simple';
+    public const TURNKEY_TYPE = 'turnkey';
+
+    public const TYPES = [
+        self::SIMPLE_TYPE => 'Projet simple',
+        self::TURNKEY_TYPE => 'Projet relié à un projet CEM',
+    ];
+
     /**
      * @ORM\Column
      *
@@ -734,5 +742,14 @@ class CitizenProject extends BaseGroup
     public function isNotFinalStatus(): bool
     {
         return \in_array($this->status, self::NOT_FINAL_STATUSES, true);
+    }
+
+    public function getProjectType(): string
+    {
+        if ($this->isFromTurnkeyProject()) {
+            return self::TYPES[self::TURNKEY_TYPE];
+        }
+
+        return self::TYPES[self::SIMPLE_TYPE];
     }
 }

@@ -56,6 +56,9 @@
                         <h1 class="text--larger text--shadow" id="citizen-project-name">
                             {%- block citizen_project_title -%}
                                 {{ citizen_project.name }}
+                                {% if citizen_project.isFromTurnkeyProject %}
+                                    - {{ citizen_project.district ?: citizen_project.cityName }}
+                                {% endif %}
                             {%- endblock -%}
                         </h1>
                         <div class="text--body b__nudge--top-5 text--shadow">{{ citizen_project.subtitle }}</div>

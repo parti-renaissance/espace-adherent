@@ -32,7 +32,10 @@ class CitizenProjectManagerController extends Controller
     public function editAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $manager): Response
     {
         $command = CitizenProjectUpdateCommand::createFromCitizenProject($citizenProject);
-        $form = $this->createForm(CitizenProjectCommandType::class, $command);
+        $form = $this->createForm(CitizenProjectCommandType::class, $command, [
+            'from_turnkey_project' => $citizenProject->isFromTurnkeyProject(),
+        ]);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

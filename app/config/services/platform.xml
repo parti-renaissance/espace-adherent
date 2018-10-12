@@ -217,12 +217,6 @@
             <argument type="service" id="app.mailer.campaign" />
         </service>
 
-        <service id="app.citizen_project.controller_subscriber" class="AppBundle\CitizenProject\CitizenProjectControllerSubscriber">
-            <argument type="service" id="router" />
-            <argument type="service" id="security.token_storage" />
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
         <service id="app.committee.photo.manager" class="AppBundle\Committee\PhotoManager">
             <argument type="service" id="app.storage"/>
             <argument type="service" id="app.glide"/>
