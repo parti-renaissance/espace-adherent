@@ -37,6 +37,6 @@ final class ReferentMail extends CampaignMail
 
     public static function createSender(Adherent $referent): SenderInterface
     {
-        return new Sender(null, sprintf('Votre référent%s En Marche !', $referent->isFemale() ? 'e' : ''));
+        return new Sender(null, $referent->getFullName().' [Référent]');
     }
 }
