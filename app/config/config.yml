@@ -262,7 +262,15 @@ en_marche_mailer:
 old_sound_rabbit_mq:
     connections:
         default:
-            url: '%env(RABBITMQ_DSN)%'
+            host: "%env(RABBITMQ_HOST)%"
+            port: "%env(RABBITMQ_PORT)%"
+            user: "%env(RABBITMQ_USER)%"
+            password: "%env(RABBITMQ_PASSWORD)%"
+            vhost: '/'
+            lazy: false
+            connection_timeout: 10
+            read_write_timeout: 10
+            heartbeat: 5
 
     producers:
         mailer_campaign:
