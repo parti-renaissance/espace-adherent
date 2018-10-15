@@ -8,11 +8,12 @@ BEHAT=$(EXEC) vendor/bin/behat
 BEHAT_ARGS?=-vvv
 PHPUNIT=$(EXEC) vendor/bin/phpunit
 PHPUNIT_ARGS?=-v
+DOCKER_FILES=$(shell find ./docker/dev/ -type f -name '*')
 
 .DEFAULT_GOAL := help
 .PHONY: help start stop reset db db-diff db-diff-dump db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt
 .PHONY: lj build up perm deps cc phpcs phpcsfix tty tfp tfp-rabbitmq tfp-db test-behat test-phpunit-functional
-.PHONY: wait-for-rabbitmq wait-for-db security-check
+.PHONY: wait-for-rabbitmq wait-for-db security-check rm-docker-dev.lock
 
 help:
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
@@ -27,9 +28,9 @@ stop:                                                                           
 	$(DOCKER_COMPOSE) kill
 	$(DOCKER_COMPOSE) rm -v --force
 
-reset: stop start
+reset: stop rm-docker-dev.lock start
 
-clear: perm                                                                                            ## Remove all the cache, the logs, the sessions and the built assets
+clear: perm rm-docker-dev.lock                                                                                             ## Remove all the cache, the logs, the sessions and the built assets
 	-$(EXEC) rm -rf var/cache/*
 	-$(EXEC) rm -rf var/sessions/*
 	-$(EXEC) rm -rf supervisord.log supervisord.pid npm-debug.log .tmp
@@ -124,7 +125,7 @@ test-behat:                                                                     
 
 test-phpunit:                                                                                          ## Run phpunit tests
 	$(PHPUNIT) $(PHPUNIT_ARGS)
-    
+
 test-phpunit-functional:                                                                               ## Run phpunit fonctional tests
 	$(PHPUNIT) --group functional
 
@@ -188,9 +189,15 @@ deps: vendor web/built                                                          
 
 # Internal rules
 
-build:
-	$(DOCKER_COMPOSE) pull --parallel --ignore-pull-failures
+build: docker-dev.lock
+
+docker-dev.lock: $(DOCKER_FILES)
+	$(DOCKER_COMPOSE) pull --ignore-pull-failures
 	$(DOCKER_COMPOSE) build --force-rm --pull
+	touch docker-dev.lock
+
+rm-docker-dev.lock:
+	rm -f docker-dev.lock
 
 up:
 	$(DOCKER_COMPOSE) up -d --remove-orphans
