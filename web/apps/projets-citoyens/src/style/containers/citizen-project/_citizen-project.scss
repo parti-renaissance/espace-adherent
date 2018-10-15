@@ -378,9 +378,10 @@ h3.citizen__helplist-header {
 
         div.solution {
             margin: 20px 0 45px;
+            display: inline-flex;
 
             p {
-                display: inline-block;
+                width: inherit;
             }
         }
 
