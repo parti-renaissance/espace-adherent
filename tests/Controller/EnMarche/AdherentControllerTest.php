@@ -612,9 +612,6 @@ class AdherentControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, $emailAddress);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/');
-        $this->assertSame(3, $crawler->selectLink('Lancer mon projet')->count());
-
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
@@ -625,9 +622,6 @@ class AdherentControllerTest extends WebTestCase
     public function testAdherentThatCanNotCreateNewCitizenProject(string $emailAddress): void
     {
         $this->authenticateAsAdherent($this->client, $emailAddress);
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/');
-        $this->assertSame(0, $crawler->selectLink('Lancer mon projet')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());

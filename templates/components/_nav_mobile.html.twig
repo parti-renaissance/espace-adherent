@@ -46,13 +46,6 @@
                         </li>
                     </ul>
                 {% endif %}
-                {% if is_granted('CREATE_CITIZEN_PROJECT') %}
-                    <ul>
-                        <li>
-                            <a href="{{ path('app_adherent_create_citizen_project') }}">Lancer mon projet</a>
-                        </li>
-                    </ul>
-                {% endif %}
                 <ul>
                 {% if has_role_adherent and is_granted('CREATE_COMMITTEE') %}
                     <ul>

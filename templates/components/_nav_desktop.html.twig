@@ -34,11 +34,6 @@
         </li>
     </ul>
     <div class="l__row">
-        {% if is_granted('CREATE_CITIZEN_PROJECT') %}
-            <a class="btn btn--blue" href="{{ path('app_adherent_create_citizen_project') }}">
-                Lancer mon projet
-            </a>
-        {% endif %}
         <div class="nav-dropdown">
             {% if is_granted('ROLE_ADMIN_DASHBOARD') %}
                 <div class="space--20-0">
@@ -89,14 +84,6 @@
                                     </ul>
 
                                     <div class="nav-dropdown__separator"></div>
-                                    {% if is_granted('CREATE_CITIZEN_PROJECT') %}
-                                        <ul class="nav-dropdown__section">
-                                            <li>
-                                                <a href="{{ path('app_adherent_create_citizen_project') }}">Lancer mon projet</a>
-                                            </li>
-                                        </ul>
-                                        <div class="nav-dropdown__separator"></div>
-                                    {% endif %}
                                     {% if has_role_adherent and is_granted('CREATE_COMMITTEE') %}
                                         <ul class="nav-dropdown__section">
                                             <li>
