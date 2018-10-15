@@ -22,6 +22,7 @@ class CitizenProjectUpdateCommand extends CitizenProjectCommand
         $dto->requiredMeans = $citizenProject->getRequiredMeans();
         $dto->citizenProject = $citizenProject;
         $dto->skills = $citizenProject->getSkills();
+        $dto->district = $citizenProject->getDistrict();
 
         if ($citizenProject->getPostAddress()) {
             $dto->address->setAddress(null); // Fix the Citizen Project nullable address
