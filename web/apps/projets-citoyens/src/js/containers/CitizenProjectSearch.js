@@ -7,7 +7,7 @@ import {
     getCategories,
     getCitiesAndCountries,
     setFilteredItem,
-    loadMore
+    loadMore,
 } from '../actions/citizen-projects';
 
 import CitizenProjectItem from './../components/CitizenProjectItem';
@@ -30,24 +30,19 @@ const NoProjects = () => (
 );
 
 class CitizenProjectSearch extends Component {
-    filterCategory = selectedOption => {
-        this.props.dispatch(
-            setFilteredItem({ category: selectedOption, page: 1 })
-        );
+    filterCategory = (selectedOption) => {
+        this.props.dispatch(setFilteredItem({ category: selectedOption, page: 1 }));
     };
 
-    filterCity = selectedOption => {
+    filterCity = (selectedOption) => {
         this.props.dispatch(setFilteredItem({ city: selectedOption, page: 1 }));
     };
 
-    filterByKeyword = e => {
+    filterByKeyword = (e) => {
         this.props.dispatch(setFilteredItem({ name: e.target.value, page: 1 }));
     };
 
-    loadMore = () =>
-        this.props.dispatch(
-            loadMore({ ...this.props.filter, page: this.props.filter.page + 1 })
-        );
+    loadMore = () => this.props.dispatch(loadMore({ ...this.props.filter, page: this.props.filter.page + 1 }));
 
     componentDidMount() {
         window.scrollTo(0, 0);
@@ -60,12 +55,12 @@ class CitizenProjectSearch extends Component {
 
     componentDidUpdate({ filter: prevFilter }) {
         const {
-            props: { filter: nextFilter }
+            props: { filter: nextFilter },
         } = this;
 
-        let hasDiffs = Object.keys(nextFilter)
-            .filter(key => key !== 'filterPending')
-            .filter(key => key !== 'page')
+        const hasDiffs = Object.keys(nextFilter)
+            .filter(key => 'filterPending' !== key)
+            .filter(key => 'page' !== key)
             .reduce((vals, key) => {
                 vals.push([prevFilter[key], nextFilter[key]]);
                 return vals;
@@ -78,14 +73,7 @@ class CitizenProjectSearch extends Component {
     }
 
     render() {
-        const {
-            projects,
-            filter,
-            locales,
-            categories,
-            moreItems,
-            loadingMore
-        } = this.props;
+        const { projects, filter, locales, categories, moreItems, loadingMore } = this.props;
         return (
             <div className="citizen__wrapper citizen__search">
                 <h2 className="">Explorer tous les projets</h2>
@@ -106,7 +94,7 @@ class CitizenProjectSearch extends Component {
                         onChange={this.filterCategory}
                         options={categories.map(cat => ({
                             label: cat,
-                            value: cat
+                            value: cat,
                         }))}
                         placeholder="Filtrer par thème de projet"
                         simpleValue
@@ -117,17 +105,14 @@ class CitizenProjectSearch extends Component {
                         onChange={this.filterCity}
                         options={locales.cities.map(city => ({
                             label: city,
-                            value: city
+                            value: city,
                         }))}
                         placeholder="Entrer le nom d'une ville"
                         simpleValue
                         noResultsText="🙈 Il n'y a pas de projet dans cette ville"
                     />
                 </div>
-                <div
-                    className={`citizen__project__grid${
-                        projects.length === 0 ? '--empty' : ''
-                    }`}>
+                <div className={`citizen__project__grid${0 === projects.length ? '--empty' : ''}`}>
                     {projects.length ? (
                         projects.map((project, i) => (
                             <CitizenProjectItem
@@ -146,19 +131,13 @@ class CitizenProjectSearch extends Component {
                 </div>
 
                 {moreItems && (
-                    <button
-                        className="citizen__project__grid--more"
-                        disabled={loadingMore}
-                        onClick={this.loadMore}>
+                    <button className="citizen__project__grid--more" disabled={loadingMore} onClick={this.loadMore}>
                         {loadingMore ? 'Chargement...' : 'Afficher plus'}
                     </button>
                 )}
 
                 <div className="citizen__wrapper__footer">
-                    <a
-                        href=" https://en-marche.fr/espace-adherent/creer-mon-projet-citoyen"
-                        target="_blank"
-                        rel="nofollow noopener">
+                    <a href="/espace-adherent/creer-mon-projet-citoyen" target="_blank" rel="nofollow noopener">
                         <span role="img" aria-label="emoji">
                             🚀
                         </span>{' '}
@@ -176,7 +155,7 @@ const mapStateToProps = state => ({
     loadingMore: state.citizen.loadingMore,
     filter: state.citizen.filter,
     locales: state.locales,
-    categories: state.categories.categories
+    categories: state.categories.categories,
 });
 
 export default connect(mapStateToProps)(CitizenProjectSearch);

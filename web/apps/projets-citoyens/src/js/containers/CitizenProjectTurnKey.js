@@ -1,29 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import {
-    getTurnkeyDetail,
-    getTurnkeyProjects
-} from '../actions/turnkey-projects';
+import { getTurnkeyDetail, getTurnkeyProjects } from '../actions/turnkey-projects';
 import TurnkeyProjectDetail from './../components/TurnkeyProjectDetail';
 import TurnkeyProjectListItem from './../components/TurnkeyProjectListItem';
 
 const formDetail = (slug, project) => (
     <div className="turnkey__project__footer">
         <a
-            href={`https://en-marche.fr/espace-adherent/creer-mon-projet-citoyen/${slug}`}
+            href={`/espace-adherent/creer-mon-projet-citoyen/${slug}`}
             className="turnkey__cta turnkey__cta__green"
             target="_blank"
-            rel="noopener noreferrer">
+            rel="noopener noreferrer"
+        >
             Je lance ce projet
         </a>
 
         <span>ou</span>
 
-        <a
-            href="https://en-marche.fr/espace-adherent/creer-mon-projet-citoyen"
-            target="_blank"
-            rel="noopener noreferrer">
+        <a href="/espace-adherent/creer-mon-projet-citoyen" target="_blank" rel="noopener noreferrer">
             Je propose un autre projet
         </a>
     </div>
@@ -48,16 +43,14 @@ class CitizenProjectTurnKey extends Component {
         const {
             dispatch,
             detail: { project /* , loading: detailLoading */ },
-            all: { projects /* , loading: allLoading */ }
+            all: { projects /* , loading: allLoading */ },
         } = this.props;
         return (
             <div className="citizen__wrapper">
                 <h2>Les projets citoyens clés en main</h2>
                 <p className="citizen__blurb">
-                    Vous avez envie de vous engager mais vous ne savez pas
-                    comment vous y prendre ? <br />Avec les projets clés en
-                    mains c'est facile : nous vous donnons un mode d'emploi et
-                    des outils pour agir.
+                    Vous avez envie de vous engager mais vous ne savez pas comment vous y prendre ? <br />Avec les
+                    projets clés en mains c'est facile : nous vous donnons un mode d'emploi et des outils pour agir.
                 </p>
 
                 <div className="turnkey__project__content">
@@ -76,9 +69,7 @@ class CitizenProjectTurnKey extends Component {
                     <div className="turnkey__project__list">
                         {projects.map((p, i) => (
                             <TurnkeyProjectListItem
-                                onClick={() =>
-                                    dispatch(getTurnkeyDetail(p.slug))
-                                }
+                                onClick={() => dispatch(getTurnkeyDetail(p.slug))}
                                 key={i}
                                 isActive={project && p.slug === project.slug}
                                 {...p}
@@ -93,7 +84,7 @@ class CitizenProjectTurnKey extends Component {
 
 const mapStateToProps = state => ({
     all: state.turnkey.all,
-    detail: state.turnkey.detail
+    detail: state.turnkey.detail,
 });
 
 export default connect(mapStateToProps)(CitizenProjectTurnKey);
