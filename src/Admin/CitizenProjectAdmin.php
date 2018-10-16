@@ -387,6 +387,7 @@ class CitizenProjectAdmin extends AbstractAdmin
         $listMapper
             ->add('projectType', null, [
                 'label' => 'Type de projet',
+                'header_style' => 'width: 10%;',
             ])
             ->add('name', null, [
                 'label' => 'Nom',
@@ -448,19 +449,19 @@ class CitizenProjectAdmin extends AbstractAdmin
     {
         return [
             'Nom' => 'name',
+            'Sous-titre' => 'subtitle',
+            'Type de projet' => 'getProjectType',
             'Date de création' => 'createdAt',
             'Catégorie' => 'category',
             'Créateur' => 'createdBy',
             'Membres' => 'membersCount',
             'Ville' => 'postAddress.cityName',
+            'Code postal' => 'postAddress.postalCode',
             'Compétences recherchées' => 'exportSkills',
             'Compétences matchées' => 'matchedSkills',
             'Statut' => 'status',
             'Comités en soutien' => 'exportCommitteeSupports',
             'Coup de coeur' => 'featured',
-            'Code postal' => 'postAddress.postalCode',
-            'Type de projet' => 'getProjectType',
-            'Sous-titre' => 'subtitle',
         ];
     }
 }
