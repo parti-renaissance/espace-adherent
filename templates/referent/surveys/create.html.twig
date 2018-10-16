@@ -1,0 +1,42 @@
+{% extends 'referent/_layout.html.twig' %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+    {{ parent() }}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script src="{{ asset('js/jquery.collection.js') }}"></script>
+
+    <script type="text/javascript">
+        $('.survey-questions-collection').collection({
+            init_with_n_elements: 1,
+            add: '<a href="#" class="question-add btn btn-default"><i class="fa fa-plus-circle"></i><span style="padding-left: 5px">Ajouter une question</span></a>',
+            prefix: 'question',
+            children: [{
+                init_with_n_elements: 0,
+                add: '<a href="#" class="btn btn-default"><i class="fa fa-plus-circle"></i><span style="padding-left: 5px">Ajouter un choix</span></a>',
+                selector: '.survey-questions-choices-collection',
+                prefix: 'choice',
+            }]
+        });
+    </script>
+{% endblock %}
+
+{% block referent_content %}
+
+    {% form_theme form with ['jquery.collection.html.twig','referent/_form_theme.html.twig'] %}
+
+    <a href="{{ path('app_referent_surveys') }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
+        {{ include('components/caret--left.html.twig') }}
+        Retour à la liste
+    </a>
+
+    <h3>Créer un questionnaire</h3>
+
+    <hr />
+
+    <div class="jecoute-survey l__wrapper--slim">
+        {{ form_start(form, { attr: { class: 'b__nudge--top-40' } }) }}
+        {{ include('referent/surveys/_form.html.twig') }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

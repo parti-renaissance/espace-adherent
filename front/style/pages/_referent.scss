@@ -68,3 +68,48 @@
         }
     }
 }
+
+.jecoute-survey {
+    .form {
+        &__radio-button {
+            input[type='radio'] {
+                &:checked + label:before {
+                    border-color: $blue--dark;
+                    background: $blue--dark;
+                }
+            }
+        }
+    }
+
+    .survey-question {
+        &__widget {
+            overflow: hidden;
+
+            .question-header {
+                overflow: hidden;
+                margin-top: 15px;
+
+                &__label {
+                    float: left;
+                }
+
+                &__management {
+                    float: right;
+                }
+            }
+        }
+
+        &__choice_widget {
+            overflow: hidden;
+
+            .choice-item {
+                float:left;
+                width: 70%;
+            }
+
+            .choice-management {
+                float: right;
+            }
+        }
+    }
+}

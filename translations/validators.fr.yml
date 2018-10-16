@@ -149,6 +149,12 @@ referent.message.min_length: Le message doit contenir au moins {{ limit }} carac
 referent.message.max_length: Le message doit contenir moins de {{ limit }} caractères.
 
 #
+# J'écoute
+#
+survey.question.choice.invalid: Le type de cette question est incorrecte, un champ à choix multiples ou unique doit contenir plusieurs choix.
+survey.question.simple_field.invalid: Le type de cette question est incorrecte, un champ libre ne doit pas contenir de choix.
+
+#
 # Je Marche
 #
 jemarche.email.invalid: L'e-mail {{ value }} n'est pas valide.

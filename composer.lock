@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8b915e52c772016f3a0eafa62a571339",
+    "content-hash": "82e6d0507704bc56ef1c1aa31846be2b",
     "packages": [
         {
             "name": "a2lix/i18n-doctrine-bundle",
@@ -188,6 +188,7 @@
                 }
             ],
             "description": "Seamless integration of Algolia Search into your Symfony project.",
+            "abandoned": "algolia/search-bundle",
             "time": "2017-03-27T16:32:15+02:00"
         },
         {
@@ -2584,12 +2585,12 @@
             "version": "v0.11.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/google/google-auth-library-php.git",
+                "url": "https://github.com/googleapis/google-auth-library-php.git",
                 "reference": "a240674b08a09949fd5597f7590b3ed83663a12d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-auth-library-php/zipball/a240674b08a09949fd5597f7590b3ed83663a12d",
+                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/a240674b08a09949fd5597f7590b3ed83663a12d",
                 "reference": "a240674b08a09949fd5597f7590b3ed83663a12d",
                 "shasum": ""
             },
@@ -2632,12 +2633,12 @@
             "version": "v0.13.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/GoogleCloudPlatform/google-cloud-php.git",
+                "url": "https://github.com/googleapis/google-cloud-php.git",
                 "reference": "d260ab913f5d3e1a7320ad7f71ddb5731e22f00e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GoogleCloudPlatform/google-cloud-php/zipball/d260ab913f5d3e1a7320ad7f71ddb5731e22f00e",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php/zipball/d260ab913f5d3e1a7320ad7f71ddb5731e22f00e",
                 "reference": "d260ab913f5d3e1a7320ad7f71ddb5731e22f00e",
                 "shasum": ""
             },
@@ -5050,6 +5051,39 @@
                 "crossdomain"
             ],
             "time": "2017-12-11T18:41:54+00:00"
+        },
+        {
+            "name": "ninsuo/symfony-collection",
+            "version": "2.1.30",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ninsuo/symfony-collection.git",
+                "reference": "88db2caea7bba13cd7a7beb938fa706a340b38e9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ninsuo/symfony-collection/zipball/88db2caea7bba13cd7a7beb938fa706a340b38e9",
+                "reference": "88db2caea7bba13cd7a7beb938fa706a340b38e9",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "ScriptHandler.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alain Tiemblo",
+                    "email": "ninsuo@gmail.com"
+                }
+            ],
+            "description": "A jQuery plugin that manages adding, deleting and moving elements from a Symfony collection",
+            "time": "2018-07-01T15:06:12+00:00"
         },
         {
             "name": "nyholm/psr7",
@@ -12079,6 +12113,8 @@
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.1",
+        "ext-json": "*",
+        "ext-openssl": "*",
         "ext-pdo": "*"
     },
     "platform-dev": []
