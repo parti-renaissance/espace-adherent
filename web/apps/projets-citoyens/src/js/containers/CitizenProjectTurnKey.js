@@ -18,7 +18,10 @@ const formDetail = (slug, project) => (
 
         <span>ou</span>
 
-        <a href="/espace-adherent/creer-mon-projet-citoyen" target="_blank" rel="noopener noreferrer">
+        <a href="/espace-adherent/creer-mon-projet-citoyen"
+           target="_blank"
+           className="link link--green"
+           rel="noopener noreferrer">
             Je propose un autre projet
         </a>
     </div>

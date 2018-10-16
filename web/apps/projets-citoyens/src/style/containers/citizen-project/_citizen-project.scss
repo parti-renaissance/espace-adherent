@@ -254,10 +254,7 @@
 }
 
 .citizen {
-    &__helplist {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+    &__help {
         margin-bottom: 50px;
         font-family: $font-gillsans;
         padding: 36px;
@@ -269,39 +266,71 @@
             padding: 24px;
         }
 
-        & > div {
-            flex: 1;
-            padding: 0 14px;
-            font-family: $font-gillsans;
+        &__video {
+            position: relative;
+            padding-bottom: 39.25%;
+            height: 0;
+            z-index: 1;
+            width: 70%;
+            margin: 50px auto;
 
-            @media (max-width: $tablet) {
-                flex-basis: 100%;
+            @media (max-width: $mobile) {
+                width: 100%;
+                padding-bottom: 56.25%;
+                margin: 0 0 15px 0;
             }
 
-            p {
-                font-size: 20px;
-                font-family: 'Roboto', Helvetica, sans-serif;
-                color: $dark;
-                text-align: center;
-                line-height: 1.25;
-                margin: 10px 0 0 0;
+            & > iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        &__list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 40px;
+
+            & > div {
+                flex: 1;
+                padding: 0 14px;
+                font-family: $font-gillsans;
 
                 @media (max-width: $tablet) {
+                    flex-basis: 100%;
+                }
+
+                p {
                     font-size: 20px;
-                    margin-bottom: 36px;
+                    font-family: 'Roboto', Helvetica, sans-serif;
+                    color: $dark;
+                    text-align: center;
+                    line-height: 1.25;
+                    margin: 10px 0 0 0;
+
+                    @media (max-width: $tablet) {
+                        font-size: 20px;
+                        margin-bottom: 36px;
+                    }
+                }
+
+                &:last-child p {
+                    margin-bottom: 0;
                 }
             }
 
-            &:last-child p {
-                margin-bottom: 0;
+            .number {
+                @include text--extra-large;
+                font-weight: 500;
+                color: $yellow--europe;
             }
+
         }
 
-        .number {
-            @include text--extra-large;
-            font-weight: 500;
-            color: $yellow--europe;
-        }
     }
 }
 
@@ -317,6 +346,27 @@ h3.citizen__helplist-header {
     @media (max-width: $tablet) {
         font-size: 20px;
         margin-bottom: 16px;
+    }
+}
+
+.turnkey__home {
+    padding: 36px !important;
+    background-color: white;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    margin-bottom: 50px;
+
+    @media (max-width: $tablet) {
+        padding: 24px;
+    }
+
+    &__header h3 {
+        text-align: center;
+        margin: 0 0 64px;
+
+        @media (max-width: $tablet) {
+            font-size: 20px;
+        }
     }
 }
 
@@ -382,140 +432,6 @@ h3.citizen__helplist-header {
 
             p {
                 width: inherit;
-            }
-        }
-
-        .turnkey {
-            &__video {
-                &--yellow {
-                    position: relative;
-                    padding-bottom: 39.25%;
-                    height: 0;
-                    z-index: 1;
-                    width: 70%;
-                    margin: 50px auto;
-
-                    @media (max-width: $mobile) {
-                        width: 100%;
-                        padding-bottom: 56.25%;
-                        margin: 0 0 15px 0;
-                    }
-
-                    & > iframe {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                    }
-
-                    &:before {
-                        content: '';
-                        position: absolute;
-                        width: 90%;
-                        height: 95%;
-                        right: -10px;
-                        bottom: -10px;
-                        z-index: 0;
-                        background-color: $yellow--europe;
-
-                        @media (max-width: $tablet) {
-                            display: none;
-                        }
-                    }
-                }
-                &--green {
-                    position: relative;
-                    padding-bottom: 39.25%;
-                    height: 0;
-                    z-index: 1;
-                    width: 70%;
-                    margin: 50px auto;
-
-                    @media (max-width: $mobile) {
-                        width: 100%;
-                        padding-bottom: 56.25%;
-                        margin: 0 0 15px 0;
-                    }
-
-                    & > iframe {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                    }
-
-                    &:before {
-                        content: '';
-                        position: absolute;
-                        width: 90%;
-                        height: 95%;
-                        right: -10px;
-                        bottom: -10px;
-                        z-index: 0;
-                        background-color: $green-citizen;
-
-                        @media (max-width: $tablet) {
-                            display: none;
-                        }
-                    }
-                }
-            }
-            &__cta {
-                display: block;
-                color: $darker;
-                font-weight: 500;
-                font-family: $font-gillsans;
-                @include text--medium;
-                padding: 20px 40px;
-                background-color: white;
-                transition: all 0.5s;
-
-                @media (max-width: $tablet) {
-                    padding: 10px;
-                    font-size: 14px;
-                    line-height: 1.4;
-                }
-
-                &__yellow {
-                    border: 2px solid $yellow--europe;
-                    font-size: 28px;
-                    display: inline-block;
-                    margin-bottom: 50px;
-
-                    @media (max-width: $tablet) {
-                        font-size: 18px;
-                    }
-
-                    &:hover {
-                        background-color: $yellow--europe;
-                        cursor: pointer;
-                        transition: all 0.5s;
-                    }
-                }
-
-                &__green {
-                    padding: 16px 8px;
-                    border: 2px solid $green-citizen;
-                    font-size: 28px;
-                    letter-spacing: 0.4px;
-                    width: 80%;
-                    margin: 0 auto;
-
-                    @media (max-width: $mobile) {
-                        font-size: 18px;
-                        width: 80%;
-                        margin: 0 auto;
-                    }
-
-                    &:hover {
-                        color: white;
-                        background-color: $green-citizen;
-                        cursor: pointer;
-                        transition: all 0.5s;
-                    }
-                }
             }
         }
 
@@ -604,6 +520,53 @@ h3.citizen__helplist-header {
             flex: auto;
             margin-right: 0;
             margin-bottom: 16px;
+        }
+    }
+
+    &__footer {
+        text-align: center;
+
+        span {
+            @include text--medium-small;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        a {
+            @include text--medium;
+            display: inline-block;
+            letter-spacing: 0.4px;
+            font-family: $font-gillsans;
+            transition: color 125ms ease, border-color 125ms ease;
+
+            @media (max-width: $mobile) {
+                margin-bottom: 50px;
+                font-size: 18px;
+            }
+
+            &.link {
+                color: black;
+                font-size: 18px;
+                border-bottom: $green-citizen 1px solid;
+                padding-bottom: 3px;
+
+                &:hover {
+                    color: $green-citizen;
+                }
+
+                &--yellow {
+                    border-color: $yellow--europe;
+                    color: black;
+
+                    &:hover {
+                        color: $yellow--europe;
+                    }
+                }
+            }
+        }
+
+        .turnkey__cta {
+            margin-bottom: 24px;
         }
     }
 
@@ -697,42 +660,145 @@ h3.citizen__helplist-header {
             }
         }
     }
+}
 
-    &__footer {
-        text-align: center;
+.turnkey__video {
+    &--yellow {
+        position: relative;
+        padding-bottom: 39.25%;
+        height: 0;
+        z-index: 1;
+        width: 70%;
+        margin: 50px auto;
 
-        span {
-            @include text--medium-small;
-            display: block;
-            margin-bottom: 16px;
+        @media (max-width: $mobile) {
+            width: 100%;
+            padding-bottom: 56.25%;
+            margin: 0 0 15px 0;
         }
 
-        a {
-            @include text--medium;
-            display: inline-block;
-            letter-spacing: 0.4px;
-            font-size: 18px;
-            color: $green-citizen;
-            border-bottom: currentColor 1px solid;
-            padding-bottom: 3px;
-            font-family: $font-gillsans;
-            transition: color 125ms ease, border-color 125ms ease;
-
-            @media (max-width: $mobile) {
-                margin-bottom: 50px;
-                font-size: 18px;
-            }
-
-            &:hover {
-                color: black;
-            }
+        & > iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
-        .turnkey__cta {
-            margin-bottom: 24px;
+        &:before {
+            content: '';
+            position: absolute;
+            width: 90%;
+            height: 95%;
+            right: -10px;
+            bottom: -10px;
+            z-index: 0;
+            background-color: $yellow--europe;
+
+            @media (max-width: $tablet) {
+                display: none;
+            }
+        }
+    }
+    &--green {
+        position: relative;
+        padding-bottom: 39.25%;
+        height: 0;
+        z-index: 1;
+        width: 70%;
+        margin: 50px auto;
+
+        @media (max-width: $mobile) {
+            width: 100%;
+            padding-bottom: 56.25%;
+            margin: 0 0 15px 0;
+        }
+
+        & > iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            width: 90%;
+            height: 95%;
+            right: -10px;
+            bottom: -10px;
+            z-index: 0;
+            background-color: $green-citizen;
+
+            @media (max-width: $tablet) {
+                display: none;
+            }
         }
     }
 }
+
+.turnkey__cta {
+    display: block;
+    color: $darker;
+    font-weight: 500;
+    font-family: $font-gillsans;
+    @include text--medium;
+    padding: 20px 40px;
+    background-color: white;
+    transition: all 0.5s;
+
+    @media (max-width: $tablet) {
+        padding: 10px;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    &__yellow {
+        border: 2px solid $yellow--europe;
+        font-size: 28px;
+        color: black;
+        display: inline-block;
+        margin-bottom: 50px;
+
+        @media (max-width: $tablet) {
+            font-size: 18px;
+        }
+
+        &:hover {
+            background-color: $yellow--europe;
+            cursor: pointer;
+            color: black;
+            border-color: $yellow--europe;
+            transition: all 0.5s;
+        }
+    }
+
+    &__green {
+        padding: 16px 8px;
+        border: 2px solid $green-citizen;
+        font-size: 28px;
+        letter-spacing: 0.4px;
+        width: 80%;
+        margin: 0 auto;
+
+        @media (max-width: $mobile) {
+            font-size: 18px;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        &:hover {
+            color: white;
+            background-color: $green-citizen;
+            border-color: $green-citizen;
+            cursor: pointer;
+            transition: all 0.5s;
+        }
+    }
+}
+
 
 .turnkey__default {
     width: 100%;
