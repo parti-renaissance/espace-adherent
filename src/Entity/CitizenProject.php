@@ -550,7 +550,8 @@ class CitizenProject extends BaseGroup
         PhoneNumber $phone,
         iterable $skills,
         iterable $committees,
-        ?UploadedFile $image
+        ?UploadedFile $image,
+        ?string $district
     ): void {
         $this->setName($name);
         $this->setSubtitle($subtitle);
@@ -559,6 +560,7 @@ class CitizenProject extends BaseGroup
         $this->setProposedSolution($proposedSolution);
         $this->setRequiredMeans($requiredMeans);
         $this->setSkills($skills);
+        $this->setDistrict($district);
 
         if ($image instanceof UploadedFile) {
             $this->setImage($image);

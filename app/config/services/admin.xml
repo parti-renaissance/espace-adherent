@@ -497,7 +497,7 @@
         </service>
 
         <service id="app.admin.turnkey_project" class="AppBundle\Admin\TurnkeyProjectAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Projets clés en main" group="Projets citoyens" />
+            <tag name="sonata.admin" manager-type="orm" label="Projets clé en main" group="Projets citoyens" />
 
             <argument />
             <argument>AppBundle\Entity\TurnkeyProject</argument>

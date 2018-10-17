@@ -47,7 +47,8 @@ class CitizenProjectUpdateCommandHandler
             $command->phone,
             $command->getSkills(),
             $command->getCommittees(),
-            $command->getImage()
+            $command->getImage(),
+            $command->getDistrict()
         );
 
         $this->doUpdateImage($command, $citizenProject);
