@@ -14,7 +14,7 @@ class CitizenProject extends Component {
     render() {
         return (
             <div className="citizen__wrapper">
-                <h2 className="">Déjà 500 projets citoyens lancés !</h2>
+                <h2 className="">Plus de 500 projets citoyens déjà lancés !</h2>
                 <p className="citizen__blurb">
                     Parce que transformer la France demande l'engagement de tous, des citoyens partout dans le pays se
                     regroupent pour agir dans leurs territoires. Ils l'ont fait : pourquoi pas vous ?
