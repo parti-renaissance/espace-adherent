@@ -85,6 +85,24 @@
             });
         }
         initMap();
+
+        Kernel.onLoad(function(di) {
+            var unregistrationButton = dom('.unregister-event');
+
+            unregistrationButton && on(unregistrationButton, 'click', function () {
+                di.get('api').unregisterEvent(
+                    '{{ event.slug }}',
+                    unregistrationButton.getAttribute('data-csrf-token'),
+                    function(data) {
+                        if (data.hasOwnProperty('error')) {
+                            dom('#unregistration_error').textContent = data.error;
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                );
+            });
+        });
     </script>
 {% endblock %}
 

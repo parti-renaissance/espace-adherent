@@ -89,7 +89,7 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testRegisteredAdherentUserCanRegisterToEvent()
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $this->authenticateAsAdherent($this->client, 'deputy@en-marche-dev.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/');
 
         $crawler = $this->client->click($crawler->selectLink('Rejoindre un comité')->link());
@@ -109,9 +109,9 @@ class EventControllerTest extends AbstractEventControllerTest
         $crawler = $this->client->click($crawler->selectLink('Je veux participer')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('Jacques', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
-        $this->assertSame('Picard', $crawler->filter('#field-last-name > input[type="text"]')->attr('value'));
-        $this->assertSame('jacques.picard@en-marche.fr', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
+        $this->assertSame('Député', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
+        $this->assertSame('PARIS I', $crawler->filter('#field-last-name > input[type="text"]')->attr('value'));
+        $this->assertSame('deputy@en-marche-dev.fr', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
         $this->assertSame(1, $crawler->filter('#field-accept-terms')->count());
         // Adherent is already subscribed to mails
         $this->assertSame(0, $crawler->filter('#field-newsletter-subscriber')->count());
@@ -120,8 +120,8 @@ class EventControllerTest extends AbstractEventControllerTest
         $form['event_registration[personalDataCollection]']->tick();
         $this->client->submit($form);
 
-        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'jacques.picard@en-marche.fr'));
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'jacques.picard@en-marche.fr'));
+        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'deputy@en-marche-dev.fr'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'deputy@en-marche-dev.fr'));
 
         $crawler = $this->client->followRedirect();
 
@@ -132,7 +132,7 @@ class EventControllerTest extends AbstractEventControllerTest
         $crawler = $this->client->click($crawler->selectLink('Retour')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('1 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
+        $this->assertSame('2 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
 
         $this->client->click($crawler->selectLink('Mes activités')->link());
 
@@ -402,6 +402,31 @@ class EventControllerTest extends AbstractEventControllerTest
         }
         $this->assertFalse(\in_array('Catégorie masquée', $labels));
         $this->assertSame(\count(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES) + 2, $options->count());
+    }
+
+    public function testAdherentCanUnregisterToEvent()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+
+        $eventUrl = $this->getEventUrl();
+
+        $crawler = $this->client->request(Request::METHOD_GET, $eventUrl);
+
+        $this->assertSame('1 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
+        $this->assertSame('Je ne veux plus participer', trim($crawler->filter('.unregister-event')->text()));
+
+        $unregistrationButton = $this->client->getCrawler()->filter('.unregister-event');
+
+        $this->client->request(Request::METHOD_POST, sprintf('%s/desinscription', $this->getEventUrl()), [
+            'token' => $unregistrationButton->attr('data-csrf-token'),
+        ], [], ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->request(Request::METHOD_GET, $eventUrl);
+
+        $this->assertSame('0 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
+        $this->assertSame('Je veux participer', trim($crawler->filter('.register-event')->text()));
     }
 
     protected function setUp()
