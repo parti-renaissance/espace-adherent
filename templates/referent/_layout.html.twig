@@ -6,16 +6,20 @@
 {% block content %}
     <main>
         <section class="referent procuration-manager b__nudge--bottom-huge">
-            <header class="l__wrapper--slim b__nudge--bottom-large">
+            <header class="l__wrapper--slim b__nudge--bottom-large b__nudge--top">
                 <h1 class="text--center text--large">
                     {{ block('page_title') }}
                 </h1>
-                <p class="text--center">
-                    Vous gérez : {{ app.user.managedArea.tags|join(', ') }}
+                <p class="text--center text--body">
+                    <strong>Vous gérez :</strong> {{ app.user.managedArea.tags|join(', ') }}
+                    <br>
+                    <a href="https://en-marche.helprace.com/" target="_blank" class="text--body text--blue--dark text--small link--no-decor">
+                        🐛 Bug ? Nouveau besoin ? Faites-le nous savoir.
+                    </a>
                 </p>
             </header>
 
-            <div class="l__wrapper procuration-manager__content">
+            <div class="l__wrapper procuration-manager__content text--body">
                 {% set pages = [
                     {
                         'route': 'app_referent_users',
@@ -44,11 +48,6 @@
                             </a>
                         </li>
                     {% endfor %}
-                    <li>
-                        <a href="https://en-marche.helprace.com/" target="_blank">
-                            Vos retours <i class="fa fa-external-link" aria-hidden="true"></i>
-                        </a>
-                    </li>
                 </ul>
 
                 <hr />
