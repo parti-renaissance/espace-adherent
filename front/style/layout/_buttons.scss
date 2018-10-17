@@ -191,6 +191,17 @@
     }
 }
 
+@mixin btn--blue--soft {
+    color: white;
+    background: $blue--soft;
+    border-color: $blue--soft;
+
+    &:hover {
+        background-color: $pink;
+        border-color: $pink;
+    }
+}
+
 @mixin btn--error {
     color: white;
     background: $error;
@@ -321,6 +332,10 @@ button.btn {
 
     &--blue {
         @include btn--blue;
+    }
+
+    &--blue--soft {
+        @include btn--blue--soft;
     }
 
     &--pink {

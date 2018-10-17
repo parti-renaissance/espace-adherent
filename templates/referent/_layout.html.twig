@@ -3,6 +3,8 @@
 {% block page_title 'Espace référent' %}
 {% block canonical_url url('app_referent_users') %}
 
+{% block banner '' %}
+
 {% block content %}
     <main>
         <section class="referent procuration-manager b__nudge--bottom-huge">
@@ -22,10 +24,6 @@
             <div class="l__wrapper procuration-manager__content text--body">
                 {% set pages = [
                     {
-                        'route': 'app_referent_users',
-                        'label': 'Envoyer un message'
-                    },
-                    {
                         'route': 'app_referent_events',
                         'label': 'Événements'
                     },
@@ -34,8 +32,16 @@
                         'label': 'Comités'
                     },
                     {
+                        'route': 'app_referent_events_create',
+                        'label': 'Créer un événement'
+                    },
+                    {
+                        'route': 'app_referent_users',
+                        'label': 'Envoyer un message'
+                    },
+                    {
                         'route': 'app_referent_organizational_chart',
-                        'label': 'Équipe départementale',
+                        'label': 'Votre équipe départementale',
                         'role': 'IS_ROOT_REFERENT'
                     }
                 ] %}
@@ -49,8 +55,6 @@
                         </li>
                     {% endfor %}
                 </ul>
-
-                <hr />
 
                 {% block referent_content %}{% endblock %}
             </div>
