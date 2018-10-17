@@ -11,19 +11,27 @@ Feature:
       | LoadAdherentData                   |
       | LoadEmailSubscriptionHistoryData   |
       | LoadCommitteeMembershipHistoryData |
+      | LoadClientData                     |
 
   Scenario: As a non logged-in user I can not access the adherents count information
-    When I am on "/api/adherents/count"
+    When I am on "/api/statistics/adherents/count"
     Then the response status code should be 401
 
   Scenario: As an adherent I can not access the adherents count information
     When I am logged as "jacques.picard@en-marche.fr"
-    And I am on "/api/adherents/count"
-    Then the response status code should be 403
+    And I am on "/api/statistics/adherents/count"
+    Then the response status code should be 401
 
   Scenario: As a referent I can access the adherents count information
-    Given I am logged as "referent@en-marche-dev.fr"
-    When I am on "/api/adherents/count"
+    Given I add "Accept" header equal to "application/json"
+    And I send a "POST" request to "/oauth/v2/token" with parameters:
+      | key           | value                                        |
+      | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
+      | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
+      | grant_type    | client_credentials                           |
+      | scope         | read:stats                                   |
+    And I add the access token to the Authorization header
+    When I send a "GET" request to "/api/statistics/adherents/count?referent=referent@en-marche-dev.fr"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -34,17 +42,24 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not access the managed by referent adherents count information
-    When I am on "/api/adherents/count-by-referent-area"
+    When I am on "/api/statistics/adherents/count-by-referent-area"
     Then the response status code should be 401
 
   Scenario: As an adherent I can not access the managed by referent adherents count information
     When I am logged as "jacques.picard@en-marche.fr"
-    And I am on "/api/adherents/count-by-referent-area"
-    Then the response status code should be 403
+    And I am on "/api/statistics/adherents/count-by-referent-area"
+    Then the response status code should be 401
 
   Scenario: As a referent I can access the managed by referent adherents count information
-    When I am logged as "referent-75-77@en-marche-dev.fr"
-    And I am on "/api/adherents/count-by-referent-area"
+    Given I add "Accept" header equal to "application/json"
+    And I send a "POST" request to "/oauth/v2/token" with parameters:
+      | key           | value                                        |
+      | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
+      | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
+      | grant_type    | client_credentials                           |
+      | scope         | read:stats                                   |
+    And I add the access token to the Authorization header
+    When I send a "GET" request to "/api/statistics/adherents/count-by-referent-area?referent=referent-75-77@en-marche-dev.fr"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
