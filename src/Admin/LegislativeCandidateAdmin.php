@@ -141,11 +141,9 @@ class LegislativeCandidateAdmin extends AbstractAdmin
                 ])
                 ->add('districtZone', null, [
                     'label' => 'Zone géographique',
-                    'disabled' => true,
                 ])
                 ->add('districtNumber', null, [
                     'label' => 'Numéro de la circonscription',
-                    'disabled' => true,
                 ])
                 ->add('districtName', null, [
                     'label' => 'Nom de la circonscription',
