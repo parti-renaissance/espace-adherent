@@ -52,8 +52,10 @@ class CitizenProjectTurnKey extends Component {
             <div className="citizen__wrapper">
                 <h2>Les projets citoyens clés en main</h2>
                 <p className="citizen__blurb">
-                    Vous avez envie de vous engager mais vous ne savez pas comment vous y prendre ? <br />Avec les
-                    projets clés en mains c'est facile : nous vous donnons un mode d'emploi et des outils pour agir.
+                    Vous avez envie de vous engager mais vous ne savez pas
+                    comment vous y prendre ? <br />
+                    Avec les projets clés en main c'est facile : nous vous
+                    donnons un mode d'emploi et des outils pour agir.
                 </p>
 
                 <div className="turnkey__project__content">
