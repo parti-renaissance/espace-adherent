@@ -21,18 +21,18 @@ Feature:
             {
               "content":"Ceci est-il un champ libre ?",
               "type":"simple_field",
-              "choices":[
-
-              ]
+              "choices":[]
             },
             {
               "content":"Est-ce une question à choix multiple ?",
               "type":"multiple_choice",
               "choices":[
                 {
+                  "id":1,
                   "content":"Réponse A"
                 },
                 {
+                  "id":2,
                   "content":"Réponse B"
                 }
               ]
@@ -42,9 +42,11 @@ Feature:
               "type":"unique_choice",
               "choices":[
                 {
+                  "id":3,
                   "content":"Réponse unique 1"
                 },
                 {
+                  "id":4,
                   "content":"Réponse unique 2"
                 }
               ]
@@ -58,9 +60,7 @@ Feature:
             {
               "content":"Ceci est-il un champ libre ?",
               "type":"simple_field",
-              "choices":[
-
-              ]
+              "choices":[]
             }
           ],
           "name":"Un deuxième questionnaire"

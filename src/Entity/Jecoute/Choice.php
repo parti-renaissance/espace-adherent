@@ -20,6 +20,8 @@ class Choice
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @JMS\Groups({"survey_list"})
      */
     private $id;
 
