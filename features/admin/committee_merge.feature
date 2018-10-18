@@ -57,8 +57,7 @@ Feature: Merge committees from admin panel
     And "api_sync" should have 0 message
     Then I press "Confirmer la fusion"
     And the response status code should be 200
-    And I should be on "/admin/committee/1/members"
-    And I should see "francis.brioul@yahoo.com"
+    And I should be on "/admin/app/reporting-committeemergehistory/list"
     And "api_sync" should have 2 messages
     And "api_sync" should have messages below:
       | routing_key       | body                                                                                                                                                                                                                                                                                                                 |
@@ -67,3 +66,5 @@ Feature: Merge committees from admin panel
     Then I am on "/admin/app/committee/3/members"
     And I should not see "Animateur principal"
     And I should not see "Co-animateur"
+    Then I am on "/admin/committee/1/members"
+    And I should see "francis.brioul@yahoo.com"

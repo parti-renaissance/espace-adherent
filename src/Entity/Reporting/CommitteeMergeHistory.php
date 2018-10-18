@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Reporting;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\Administrator;
 use AppBundle\Entity\Committee;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\Mapping as ORM;
@@ -48,6 +49,13 @@ class CommitteeMergeHistory
     private $destinationCommittee;
 
     /**
+     * @var string
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Administrator")
+     */
+    private $mergedBy;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime_immutable")
@@ -57,10 +65,12 @@ class CommitteeMergeHistory
     public function __construct(
         Committee $sourceCommittee,
         Committee $destinationCommittee,
+        Administrator $admin,
         \DateTimeImmutable $date = null
     ) {
         $this->sourceCommittee = $sourceCommittee;
         $this->destinationCommittee = $destinationCommittee;
+        $this->mergedBy = $admin;
         $this->date = $date ?: new Chronos();
     }
 
@@ -82,5 +92,10 @@ class CommitteeMergeHistory
     public function getDate(): \DateTimeImmutable
     {
         return $this->date;
+    }
+
+    public function getMergedBy(): Administrator
+    {
+        return $this->mergedBy;
     }
 }

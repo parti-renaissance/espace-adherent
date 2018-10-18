@@ -2,6 +2,7 @@
 
 namespace AppBundle\Committee;
 
+use AppBundle\Entity\Administrator;
 use AppBundle\Entity\Committee;
 use AppBundle\Validator\MergeableCommittees;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -25,6 +26,16 @@ class CommitteeMergeCommand
      */
     private $destinationCommittee;
 
+    /**
+     * @var Administrator
+     */
+    private $mergedBy;
+
+    public function __construct(Administrator $administrator)
+    {
+        $this->mergedBy = $administrator;
+    }
+
     public function getSourceCommittee(): ?Committee
     {
         return $this->sourceCommittee;
@@ -43,5 +54,10 @@ class CommitteeMergeCommand
     public function setDestinationCommittee(Committee $destinationCommittee): void
     {
         $this->destinationCommittee = $destinationCommittee;
+    }
+
+    public function getMergedBy(): Administrator
+    {
+        return $this->mergedBy;
     }
 }
