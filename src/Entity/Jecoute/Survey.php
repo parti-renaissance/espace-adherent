@@ -113,7 +113,7 @@ class Survey
 
     public function questionsCount(): int
     {
-        return count($this->questions);
+        return \count($this->questions);
     }
 
     /**
