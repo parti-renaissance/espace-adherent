@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Entity\Jecoute\Survey;
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
 use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
@@ -10,16 +11,20 @@ use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\ReferentMessageType;
 use AppBundle\Form\ReferentPersonLinkType;
+use AppBundle\Form\Jecoute\SurveyFormType;
 use AppBundle\Referent\ManagedCommitteesExporter;
 use AppBundle\Referent\ManagedEventsExporter;
 use AppBundle\Referent\ManagedUsersFilter;
 use AppBundle\Referent\ReferentMessage;
 use AppBundle\Referent\ReferentMessageNotifier;
+use AppBundle\Referent\SurveyExporter;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use AppBundle\Repository\ReferentRepository;
+use AppBundle\Repository\SurveyRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -144,6 +149,72 @@ class ReferentController extends Controller
     {
         return $this->render('referent/committees_list.html.twig', [
             'managedCommitteesJson' => $committeesExporter->exportAsJson($committeeRepository->findManagedBy($this->getUser())),
+        ]);
+    }
+
+    /**
+     * @Route("/questionnaires", name="app_referent_surveys")
+     * @Method("GET")
+     */
+    public function jecouteSurveysListAction(
+        SurveyRepository $surveyRepository,
+        SurveyExporter $surveyExporter
+    ): Response {
+        return $this->render('referent/surveys/list.html.twig', [
+            'surveysListJson' => $surveyExporter->exportAsJson(
+                $surveyRepository->findAllPublishedByCreator($this->getUser())
+            ),
+        ]);
+    }
+
+    /**
+     * @Route("/questionnaire/creer", name="app_referent_survey_create")
+     * @Method("GET|POST")
+     */
+    public function jecouteSurveyCreateAction(Request $request, ObjectManager $manager): Response
+    {
+        $form = $this
+            ->createForm(SurveyFormType::class, new Survey($this->getUser()))
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($form->getData());
+            $manager->flush();
+
+            $this->addFlash('info', 'survey.create.success');
+        }
+
+        return $this->render('referent/surveys/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     path="/questionnaire/{uuid}/editer",
+     *     name="app_referent_survey_edit",
+     *     requirements={
+     *         "uuid": "%pattern_uuid%",
+     *     }
+     * )
+     * @Method("GET|POST")
+     */
+    public function jecouteSurveyEditAction(Request $request, Survey $survey, ObjectManager $manager): Response
+    {
+        $form = $this
+            ->createForm(SurveyFormType::class, $survey)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->flush();
+
+            $this->addFlash('info', 'survey.edit.success');
+        }
+
+        return $this->render('referent/surveys/create.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 

@@ -21,9 +21,9 @@
     },
     "require": {
         "php": ">=7.1",
-        "ext-pdo": "*",
-        "ext-openssl": "*",
         "ext-json": "*",
+        "ext-openssl": "*",
+        "ext-pdo": "*",
         "a2lix/i18n-doctrine-bundle": "^0.1.0",
         "a2lix/translation-form-bundle": "^2.1",
         "algolia/algolia-search-bundle": "^2.2",
@@ -60,6 +60,7 @@
         "misd/phone-number-bundle": "^1.2",
         "myclabs/php-enum": "^1.5",
         "nelmio/cors-bundle": "^1.5",
+        "ninsuo/symfony-collection": "^2.1",
         "php-amqplib/rabbitmq-bundle": "^1.12",
         "phpoffice/phpspreadsheet": "^1.2",
         "pixassociates/sortable-behavior-bundle": "^1.5",
@@ -110,9 +111,11 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
         ],
         "post-install-cmd": [
+            "Fuz\\Symfony\\Collection\\ScriptHandler::postInstall",
             "@symfony-scripts"
         ],
         "post-update-cmd": [
+            "Fuz\\Symfony\\Collection\\ScriptHandler::postUpdate",
             "@symfony-scripts"
         ]
     },

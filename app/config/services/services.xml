@@ -162,6 +162,9 @@
         <service id="AppBundle\Referent\ManagedCommitteesExporter" />
         <service id="AppBundle\Referent\ManagedEventsExporter" />
 
+        <!-- J'écoute -->
+        <service id="AppBundle\Validator\SurveyQuestionTypeChoiceValidator" />
+
         <!-- Report -->
         <service id="AppBundle\Report\ReportManager" />
         <service id="AppBundle\Report\ReportCreationCommandHandler"/>

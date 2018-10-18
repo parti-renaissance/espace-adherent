@@ -183,6 +183,12 @@ referent.event.creation.success: Le nouvel événement a bien été créé.
 referent.label.tags: Tags référent
 
 #
+# J'écoute
+#
+survey.create.success: Le questionnaire a bien été enregistré.
+survey.edit.success: Le questionnaire a bien été mis à jour.
+
+#
 # Procuration
 #
 procuration_manager.process.success: La demande de procuration a bien été marquée comme "Traitée".

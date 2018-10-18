@@ -1,0 +1,49 @@
+{% block survey_question_form_widget %}
+    <div class="form__row b__nudge--bottom-large survey-question__widget">
+        <div class="question-header">
+            <div class="question-header__label l__row--h-stretch b__nudge--bottom-tiny">
+                {{ form_label(form.question, 'Question', { label_attr: { class: 'label__header--large' } }) }}
+            </div>
+
+            <div class="question-header__management">
+                <a href="#" class="question-up btn btn-default"><i class="fa fa-arrow-up"></i></a>
+                <a href="#" class="question-down btn btn-default"><i class="fa fa-arrow-down"></i></a>
+                <a href="#" class="question-remove btn btn-default"><i class="fa fa-trash"></i></a>
+                <a href="#" class="question-add btn btn-default"><i class="fa fa-plus-circle"></i></a>
+            </div>
+        </div>
+
+        <div class="form__row">
+            {{ form_widget(form.question.content,  { attr: { class: 'form--full b__nudge--bottom-medium', placeholder: 'Ecrivez votre question' } }) }}
+        </div>
+
+        <div class="form__row">
+            <div class="l__row--h-stretch b__nudge--bottom-medium form__radio-button">
+                {{ form_widget(form.question.type, { attr: { class: 'register__form__gender b__nudge--bottom-small' } }) }}
+            </div>
+            <div class="l__row--h-stretch">
+                {{ form_errors(form.question.type) }}
+            </div>
+
+            {{ form_label(form.question.choices, 'Choix possible', { label_attr: { class: 'label__header--large' } }) }}
+            {{ form_widget(form.question.choices) }}
+        </div>
+    </div>
+
+    <hr/>
+{% endblock %}
+
+{% block choice_form_widget %}
+    <div class="form__row survey-question__choice_widget">
+        <div class="l__row--h-stretch form__radio-button choice-item">
+            {{ form_widget(form.content,  { attr: { class: 'form--full', placeholder: 'Saisissez un choix' } }) }}
+        </div>
+
+        <div class="choice-management">
+            <a href="#" class="choice-up btn btn-default"><i class="fa fa-arrow-up"></i></a>
+            <a href="#" class="choice-down btn btn-default"><i class="fa fa-arrow-down"></i></a>
+            <a href="#" class="choice-remove btn btn-default"><i class="fa fa-trash"></i></a>
+            <a href="#" class="choice-add btn btn-default"><i class="fa fa-plus-circle"></i></a>
+        </div>
+    </div>
+{% endblock %}

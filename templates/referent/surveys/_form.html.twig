@@ -1,0 +1,21 @@
+<div class="form__row form__new">
+    {{ form_errors(form.name) }}
+    {{ form_label(form.name, 'Nom du questionnaire', { label_attr: { class: 'label__header--large' } }) }}
+    {{ form_widget(form.name, { attr: { class: 'form--full committee_event__form__name', placeholder: "Entrez le nom du questionnaire" } }) }}
+</div>
+
+<div class="form__row form__new">
+    {{ form_errors(form.questions) }}
+    {{ form_errors(form.questions) }}
+    {{ form_widget(form.questions) }}
+</div>
+
+<div class="form__row form__new form__checkbox">
+    {{ form_errors(form.published) }}
+    {{ form_widget(form.published, { attr: { class: 'form--full committee_event__form__name' } }) }}
+    {{ form_label(form.published, 'Publier le questionnaire') }}
+</div>
+
+<div class="form__row text--center b__nudge--top">
+    <button type="submit" class="btn btn--blue btn--medium b__nudge--bottom-huge">Enregistrer le questionnaire</button>
+</div>
