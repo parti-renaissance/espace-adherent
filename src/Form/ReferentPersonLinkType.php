@@ -22,7 +22,7 @@ class ReferentPersonLinkType extends AbstractType
                 'form_full' => true,
             ])
             ->add('email', TextType::class, [
-                'label' => 'Mail',
+                'label' => 'E-mail',
                 'form_full' => true,
             ])
             ->add('phone', TextType::class, [

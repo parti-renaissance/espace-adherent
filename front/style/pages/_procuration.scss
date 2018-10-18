@@ -179,7 +179,9 @@
 
 .procuration-manager {
     &__tabs {
-        text-align: center;
+        border-bottom: 1px solid $blue--soft;
+        display: inline-block;
+        margin: 0 auto 30px;
 
         li {
             display: inline-block;
@@ -188,23 +190,35 @@
         a {
             border: 0;
             display: block;
-            padding: 5px 10px;
-            color: $darker;
-            
+            padding: 5px 0 7px;
+            margin: 0 10px;
+            color: $blue--soft;
+            border-bottom: 1px solid transparent;
+
             &:hover {
-                background: #e5e5e5;
-                color: $darker;
+                color: $pink;
             }
         }
 
+        li:first-child a {
+            margin-left: 0;
+        }
+
+        li:last-child a {
+            margin-right: 0;
+        }
+
         li.active a {
-            background: $blue;
-            color: white;
+            color: $blue--soft;
+            font-weight: bold;
+            border-bottom: 2px solid $blue--soft;
         }
     }
 
     &__content {
         min-height: 300px;
+        display: flex;
+        flex-direction: column;
     }
 
     &__request {

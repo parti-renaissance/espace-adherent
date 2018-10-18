@@ -1,0 +1,92 @@
+/* Lots of important tags to overide the library we are using... Not ideal 😇 */
+
+ol.organizational-chart ol:before, ol.organizational-chart ol:after, ol.organizational-chart li:before, ol.organizational-chart li:after, ol.organizational-chart > li > div:before, ol.organizational-chart > li > div:after {
+    /* Hiding the gray connectors */
+    display: none;
+}
+
+ol.organizational-chart {
+    margin: 0 !important;
+
+    h1, h2 {
+        @include text--medium-small;
+    }
+}
+
+.organizational-chart > li > div {
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+.organizational-chart > li:first-child {
+    margin-top: 30px !important;
+}
+
+ol.organizational-chart > li > ol > li {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-bottom: 15px !important;
+}
+
+ol.organizational-chart > li > ol > li > ol > li > div {
+    background: white !important;
+    border: 1px solid $gray--light;
+
+    &:hover {
+        background: $bg--gray !important;
+    }
+}
+
+ol.organizational-chart > li > div {
+    background: black !important;
+}
+
+ol.organizational-chart > li > ol > li > div {
+    background: $dark !important;
+}
+
+ol.organizational-chart > li > ol.organizational-chart > li > ol > li {
+    flex: 1;
+    padding-right: 15px !important;
+    padding-top: 0 !important;
+
+    @media (max-width: $mobile) {
+        padding-right: 0 !important;
+    }
+}
+
+ol.organizational-chart > li > ol.organizational-chart > li > ol > li:last-child {
+    padding-right: 0 !important;
+}
+
+.organizational-chart > li > ol.organizational-chart {
+    flex-direction: column !important;
+}
+
+.organizational-chart h3 {
+    font-weight: normal;
+
+    a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 0;
+        color: black;
+
+        .function {
+            border: 0;
+            font-weight: bold;
+
+            &--empty {
+                font-style: italic;
+                color: $gray;
+                @include text--small;
+            }
+        }
+
+        span {
+            color: black;
+        }
+    }
+}
