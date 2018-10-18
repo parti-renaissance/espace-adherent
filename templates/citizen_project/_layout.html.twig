@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block open_graph_image 'https://storage.googleapis.com/en-marche-staging/images/cp_sharing.png' %}
+{% block open_graph_image_width 2501 %}
+{% block open_graph_image_height 1313 %}
+
 {% block banner '' %}
 
 {% set is_cp_administrator = is_citizen_project_administrator(citizen_project) %}
