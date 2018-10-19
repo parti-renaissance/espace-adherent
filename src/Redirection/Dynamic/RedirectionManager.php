@@ -59,13 +59,9 @@ class RedirectionManager
         return $redirection;
     }
 
-    public function removeRedirection(string $source): void
+    public function removeRedirectionFromCache(string $source): void
     {
-        if ($redirection = $this->entityManager->getRepository(Redirection::class)->findOneByOriginUri($source)) {
-            $this->entityManager->remove($redirection);
-            $this->entityManager->flush();
-            $this->cache->deleteItem(md5($source));
-        }
+        $this->cache->deleteItem(md5($source));
     }
 
     public function getRedirection(string $source): ?Redirection
