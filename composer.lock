@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8af964f0fc30a2b49aff9b90e0f5f3b8",
+    "content-hash": "5adfe9f3fb52fe3105d62f7c1af9e065",
     "packages": [
         {
             "name": "a2lix/i18n-doctrine-bundle",

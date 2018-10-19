@@ -124,7 +124,7 @@ test-behat:                                                                     
 
 test-phpunit:                                                                                          ## Run phpunit tests
 	$(PHPUNIT) $(PHPUNIT_ARGS)
-    
+
 test-phpunit-functional:                                                                               ## Run phpunit fonctional tests
 	$(PHPUNIT) --group functional
 
@@ -189,8 +189,7 @@ deps: vendor web/built                                                          
 # Internal rules
 
 build:
-	$(DOCKER_COMPOSE) pull --parallel --ignore-pull-failures
-	$(DOCKER_COMPOSE) build --force-rm --pull
+	$(DOCKER_COMPOSE) build --force-rm
 
 up:
 	$(DOCKER_COMPOSE) up -d --remove-orphans

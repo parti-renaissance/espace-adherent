@@ -22,4 +22,8 @@ class AdherentRoleEnum extends Enum
     public const PROCURATION_MANAGER = 'procuration_manager';
 
     public const USER = 'user';
+
+    public const TYPES = [
+        self::BOARD_MEMBER,
+    ];
 }

@@ -53,8 +53,8 @@
         <service id="AppBundle\Mailjet\EmailTemplateClient.transactional" parent="AppBundle\Mailjet\EmailTemplateClient" public="false">
             <argument>%env(MAILJET_TRANSACTIONAL_PUBLIC_KEY)%</argument>
             <argument>%env(MAILJET_TRANSACTIONAL_PRIVATE_KEY)%</argument>
-            <argument>%transactional_sender_email%</argument>
-            <argument>%transactional_sender_name%</argument>
+            <argument>%env(TRANSACTIONAL_SENDER_EMAIL)%</argument>
+            <argument>%env(TRANSACTIONAL_SENDER_NAME)%</argument>
             <argument>transactional</argument>
         </service>
 
@@ -92,8 +92,8 @@
         <service id="AppBundle\Mailjet\EmailTemplateClient.campaign" parent="AppBundle\Mailjet\EmailTemplateClient" public="false">
             <argument>%env(MAILJET_CAMPAIGN_PUBLIC_KEY)%</argument>
             <argument>%env(MAILJET_CAMPAIGN_PRIVATE_KEY)%</argument>
-            <argument>%campaign_sender_email%</argument>
-            <argument>%campaign_sender_name%</argument>
+            <argument>%env(CAMPAIGN_SENDER_EMAIL)%</argument>
+            <argument>%env(CAMPAIGN_SENDER_NAME)%</argument>
             <argument>marketing</argument>
         </service>
 

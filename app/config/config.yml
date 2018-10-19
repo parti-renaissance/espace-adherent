@@ -258,6 +258,11 @@ en_marche_mailer:
     mail_post:
         app_name: 'en_marche'
     amqp_connexion: { name: 'default' }
+    mail_templates:
+        mail_class_paths:
+            - '%kernel.project_dir%/src/Mail'
+        template_paths:
+            - '%kernel.project_dir%/templates'
 
 old_sound_rabbit_mq:
     connections:
