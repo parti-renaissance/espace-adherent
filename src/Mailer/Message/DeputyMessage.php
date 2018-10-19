@@ -42,6 +42,8 @@ final class DeputyMessage extends Message
         $message->setSenderEmail('jemarche@en-marche.fr');
         $message->setSenderName($deputy->getFullName().' [Député]');
 
+        $message->addRecipient('territoires@en-marche.fr', '', ['target_firstname' => 'Pôle Territoire']);
+
         foreach ($recipients as $recipient) {
             $message->addRecipient(
                 $recipient->getEmailAddress(),

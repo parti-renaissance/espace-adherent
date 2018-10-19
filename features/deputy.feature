@@ -81,6 +81,15 @@ Feature:
           }
       },
       {
+          "Email": "territoires@en-marche.fr",
+          "Vars": {
+              "deputy_fullname": "D\u00e9put\u00e9 PARIS I",
+              "circonscription_name": "Paris, 1\u00e8re circonscription (75-01)",
+              "target_message": "Content of a deputy message",
+              "target_firstname": "Pôle Territoire"
+          }
+      },
+      {
           "Email": "luciole1989@spambox.fr",
           "Name": "Lucie Olivera",
           "Vars": {
