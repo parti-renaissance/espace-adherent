@@ -50,6 +50,23 @@
                 &__area-code {
                     margin: 0 0 10px 0 !important;
                 }
+
+                .label__header__interest {
+                    margin-top: 20px;
+                }
+
+                &__interest {
+                    padding: 10px;
+                    margin-bottom: 40px;
+                }
+
+                .form__checkbox {
+                    width: 50%;
+
+                    label:before {
+                        background: $white;
+                    }
+                }
             }
         }
     }

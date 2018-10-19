@@ -43,7 +43,9 @@ class ManagedUsersFilterTest extends TestCase
                     false,
                     '06330',
                     '',
-                    '1234'
+                    '1234',
+                    'male',
+                    ['sport']
                 ),
                 [
                     'includeAdherentsNoCommittee' => true,
@@ -55,6 +57,8 @@ class ManagedUsersFilterTest extends TestCase
                     'queryId' => '1234',
                     'offset' => 0,
                     'token' => '',
+                    'interests' => ['sport'],
+                    'male',
                 ],
             ],
         ];

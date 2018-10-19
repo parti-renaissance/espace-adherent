@@ -76,6 +76,18 @@ class ReferentManagedUsersMessage
      */
     private $offset;
 
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $interests = [];
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=6, nullable=true)
+     */
+    private $gender;
+
     public function __construct(
         UuidInterface $uuid,
         Adherent $from,
@@ -88,6 +100,8 @@ class ReferentManagedUsersMessage
         string $queryAreaCode,
         string $queryCity,
         string $queryId,
+        string $gender,
+        array $interests = [],
         int $offset = 0
     ) {
         $this->uuid = $uuid;
@@ -102,6 +116,8 @@ class ReferentManagedUsersMessage
         $this->queryCity = $queryCity;
         $this->queryId = $queryId;
         $this->offset = $offset;
+        $this->interests = $interests;
+        $this->gender = $gender;
     }
 
     public static function createFromMessage(ReferentMessage $message): self
@@ -117,7 +133,9 @@ class ReferentManagedUsersMessage
             $message->getFilter()->includeSupervisors(),
             $message->getFilter()->getQueryAreaCode(),
             $message->getFilter()->getQueryCity(),
-            $message->getFilter()->getQueryId()
+            $message->getFilter()->getQueryId(),
+            $message->getFilter()->getQueryGender(),
+            $message->getFilter()->getQueryInterests()
         );
     }
 
@@ -179,5 +197,25 @@ class ReferentManagedUsersMessage
     public function getOffset(): int
     {
         return $this->offset;
+    }
+
+    public function getInterests(): array
+    {
+        return $this->interests;
+    }
+
+    public function setInterests(array $interests): void
+    {
+        $this->interests = $interests;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?string $gender): void
+    {
+        $this->gender = $gender;
     }
 }

@@ -27,6 +27,7 @@ class ManagedUsersFilter
     const PARAMETER_FIRST_NAME = 'f';
     const PARAMETER_AGE_MIN = 'amin';
     const PARAMETER_AGE_MAX = 'amax';
+    const PARAMETER_INTEREST = 'i';
 
     private $includeAdherentsNoCommittee = true;
     private $includeAdherentsInCommittee = true;
@@ -58,6 +59,7 @@ class ManagedUsersFilter
     private $queryFirstName = '';
     private $queryAgeMinimum = 0;
     private $queryAgeMaximum = 0;
+    private $queryInterests = [];
 
     public static function createFromMessage(ReferentManagedUsersMessage $message): self
     {
@@ -70,6 +72,8 @@ class ManagedUsersFilter
         $filter->queryCity = $message->getQueryCity();
         $filter->queryId = $message->getQueryId();
         $filter->offset = $message->getOffset();
+        $filter->queryInterests = $message->getInterests();
+        $filter->queryGender = $message->getGender();
 
         return $filter;
     }
@@ -98,6 +102,7 @@ class ManagedUsersFilter
         $this->queryFirstName = $query->get(self::PARAMETER_FIRST_NAME, '');
         $this->queryAgeMinimum = $query->getInt(self::PARAMETER_AGE_MIN);
         $this->queryAgeMaximum = $query->getInt(self::PARAMETER_AGE_MAX);
+        $this->queryInterests = (array) $query->get(self::PARAMETER_INTEREST, []);
 
         return $this;
     }
@@ -124,6 +129,7 @@ class ManagedUsersFilter
             self::PARAMETER_FIRST_NAME => $this->queryFirstName,
             self::PARAMETER_AGE_MIN => $this->queryAgeMinimum,
             self::PARAMETER_AGE_MAX => $this->queryAgeMaximum,
+            self::PARAMETER_INTEREST => $this->queryInterests,
         ]);
     }
 
@@ -242,5 +248,15 @@ class ManagedUsersFilter
     public function setQueryAgeMaximum(int $queryAgeMaximum): void
     {
         $this->queryAgeMaximum = $queryAgeMaximum;
+    }
+
+    public function getQueryInterests(): array
+    {
+        return $this->queryInterests;
+    }
+
+    public function setQueryInterests(array $queryInterests): void
+    {
+        $this->queryInterests = $queryInterests;
     }
 }
