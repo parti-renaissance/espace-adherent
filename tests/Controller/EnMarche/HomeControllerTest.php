@@ -2,9 +2,11 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
+use AppBundle\DataFixtures\ORM\LoadArticleData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
+use AppBundle\DataFixtures\ORM\LoadPageData;
 use AppBundle\DataFixtures\ORM\LoadRedirectionData;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -82,13 +84,44 @@ class HomeControllerTest extends WebTestCase
 
     public function testDynamicRedirections(): void
     {
-        $this->client->request(Request::METHOD_GET, '/dynamic-redirection-301');
+        $this->client->request(Request::METHOD_GET, '/dynamic-redirection-301/');
 
-        $this->assertClientIsRedirectedTo('/dynamic-redirection-301-target', $this->client, false, true);
+        $this->assertClientIsRedirectedTo('/evenements', $this->client, false, true);
 
         $this->client->request(Request::METHOD_GET, '/dynamic-redirection-302');
 
-        $this->assertClientIsRedirectedTo('/dynamic-redirection-302-target', $this->client);
+        $this->assertClientIsRedirectedTo('/comites', $this->client);
+
+        $this->client->request(Request::METHOD_GET, '/dynamic-redirection/');
+
+        $this->assertClientIsRedirectedTo('/articles', $this->client, false, true);
+
+        $this->client->request(Request::METHOD_GET, '/dynamic-redirection');
+
+        $this->assertClientIsRedirectedTo('/articles', $this->client, false, true);
+    }
+
+    /**
+     * @dataProvider provideUrlsAndRedirections
+     */
+    public function testRemoveTrailingSlashAction(string $uri, string $redirectUri)
+    {
+        $this->client->request(Request::METHOD_GET, $uri);
+
+        $this->assertClientIsRedirectedTo($redirectUri, $this->client, false, true);
+
+        $this->client->followRedirect();
+
+        $this->isSuccessful($this->client->getResponse());
+    }
+
+    public function provideUrlsAndRedirections()
+    {
+        yield 'Emmanuel Macron' => ['/emmanuel-macron/', '/emmanuel-macron'];
+        yield 'Le mouvement' => ['/le-mouvement/', '/le-mouvement'];
+        yield 'Actualités' => ['/articles/actualites/', '/articles/actualites'];
+        yield 'Inscription' => ['/adhesion/', '/adhesion'];
+        yield 'Inscription with parameters' => ['/adhesion/?param1=value1&param2=value2', '/adhesion?param1=value1&param2=value2'];
     }
 
     protected function setUp()
@@ -100,6 +133,8 @@ class HomeControllerTest extends WebTestCase
             LoadLiveLinkData::class,
             LoadRedirectionData::class,
             LoadEventData::class,
+            LoadPageData::class,
+            LoadArticleData::class,
         ]);
     }
 

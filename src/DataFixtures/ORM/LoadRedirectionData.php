@@ -12,15 +12,21 @@ class LoadRedirectionData implements FixtureInterface
     public function load(ObjectManager $manager)
     {
         $manager->persist($this->createRedirection(
-            '/dynamic-redirection-301',
-            '/dynamic-redirection-301-target',
+            '/dynamic-redirection-301/',
+            '/evenements',
             Response::HTTP_MOVED_PERMANENTLY
         ));
 
         $manager->persist($this->createRedirection(
             '/dynamic-redirection-302',
-            '/dynamic-redirection-302-target',
+            '/comites',
             Response::HTTP_FOUND
+        ));
+
+        $manager->persist($this->createRedirection(
+            '/dynamic-redirection',
+            '/articles',
+            Response::HTTP_MOVED_PERMANENTLY
         ));
 
         $manager->flush();
