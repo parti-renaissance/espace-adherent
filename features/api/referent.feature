@@ -9,19 +9,27 @@ Feature:
       | LoadUserData      |
       | LoadAdherentData  |
       | LoadEventData     |
+      | LoadClientData    |
 
   Scenario: As a non logged-in user I can not get the committee, cities and countries managed by referent for autocomplete
-    When I am on "/api/referent/search/autocomplete?type=committee&value=en"
+    When I am on "/api/statistics/search/autocomplete?type=committee&value=en"
     Then the response status code should be 401
 
   Scenario: As an adherent I can not get the committee, cities and countries managed by referent for autocomplete
     When I am logged as "jacques.picard@en-marche.fr"
-    And I am on "/api/referent/search/autocomplete?type=committee&value=en"
-    Then the response status code should be 403
+    And I am on "/api/statistics/search/autocomplete?type=committee&value=en"
+    Then the response status code should be 401
 
   Scenario: As a referent I can get the committee, cities and countries managed by referent for autocomplete
-    When I am logged as "referent@en-marche-dev.fr"
-    And I am on "/api/referent/search/autocomplete?type=committee&value=en"
+    Given I add "Accept" header equal to "application/json"
+    And I send a "POST" request to "/oauth/v2/token" with parameters:
+      | key           | value                                        |
+      | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
+      | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
+      | grant_type    | client_credentials                           |
+      | scope         | read:stats                                   |
+    And I add the access token to the Authorization header
+    When I send a "GET" request to "/api/statistics/search/autocomplete?referent=referent@en-marche-dev.fr&type=committee&value=en"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -35,7 +43,15 @@ Feature:
     }
     """
 
-    When I am on "/api/referent/search/autocomplete?type=country&value=s"
+    Given I add "Accept" header equal to "application/json"
+    And I send a "POST" request to "/oauth/v2/token" with parameters:
+      | key           | value                                        |
+      | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
+      | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
+      | grant_type    | client_credentials                           |
+      | scope         | read:stats                                   |
+    And I add the access token to the Authorization header
+    When I send a "GET" request to "/api/statistics/search/autocomplete?referent=referent@en-marche-dev.fr&type=country&value=s"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -46,7 +62,15 @@ Feature:
     """
 
     # Test that search is case insensitive
-    When I am on "/api/referent/search/autocomplete?type=city&value=FON"
+    Given I add "Accept" header equal to "application/json"
+    And I send a "POST" request to "/oauth/v2/token" with parameters:
+      | key           | value                                        |
+      | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
+      | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
+      | grant_type    | client_credentials                           |
+      | scope         | read:stats                                   |
+    And I add the access token to the Authorization header
+    When I send a "GET" request to "/api/statistics/search/autocomplete?referent=referent@en-marche-dev.fr&type=city&value=FON"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
