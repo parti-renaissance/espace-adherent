@@ -159,6 +159,13 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
             $qb->andWhere($cityExpression);
         }
 
+        foreach (array_values($filter->getQueryInterests()) as $key => $interest) {
+            $qb
+                ->andWhere(sprintf('FIND_IN_SET(:interest_%s, u.interests) > 0', $key))
+                ->setParameter('interest_'.$key, $interest)
+            ;
+        }
+
         $typeExpression = $qb->expr()->orX();
 
         if ($filter->includeAdherentsNoCommittee()) {

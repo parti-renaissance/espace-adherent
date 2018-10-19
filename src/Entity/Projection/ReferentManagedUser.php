@@ -180,6 +180,11 @@ class ReferentManagedUser
      */
     private $gender;
 
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $interests = [];
+
     public function __construct(
         int $status,
         string $type,
@@ -346,5 +351,15 @@ class ReferentManagedUser
     public function setGender(?string $gender): void
     {
         $this->gender = $gender;
+    }
+
+    public function getInterests(): array
+    {
+        return $this->interests;
+    }
+
+    public function setInterests(array $interests): void
+    {
+        $this->interests = $interests;
     }
 }

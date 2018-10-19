@@ -85,6 +85,7 @@ twig:
         url_help_en_marche:     "https://aide.en-marche.fr"
         project_dir:            "%kernel.project_dir%"
         em_api_host:            "%env(EM_API_HOST)%"
+        adherent_interests:     "%adherent_interests%"
 
     form_themes:
         - 'form_theme.html.twig'

@@ -143,8 +143,23 @@
                                    placeholder="Saisissez-en un ou plusieurs"/><br/>
                         </div>
                         <legend class="text--gray text--small">
-                            Exemple: "33450, 12, 8, 75002"
+                            Exemple: "59400, 18, CH"
                         </legend>
+
+                        <legend class="label__header label__header__interest">Centres d'intêret</legend>
+                        <div class="referent__filters__search__col__interest">
+                            <div class="form l__row l__row--wrap">
+                                {% for key, value in adherent_interests %}
+                                    <div class="form__checkbox form__checkbox--col">
+                                        <input type="checkbox" id="referent_pin_interests_{{ loop.index0 }}" name="{{ constant('PARAMETER_INTEREST', filter) }}[]" value="{{ key }}" {{ key in filter.queryInterests ? 'checked' }}>
+                                        <label class="form form__label" for="referent_pin_interests_{{ loop.index0 }}">{{ value }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <legend class="text--gray text--small">
+                                Exemple : Si vous cochez 2 intérêts, vous ciblerez les adhérents qui suivent exactement ces 2 intérêts
+                            </legend>
+                        </div>
                     </div>
                 </div>
 
