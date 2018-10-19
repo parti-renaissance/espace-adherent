@@ -62,5 +62,9 @@
 
         <service id="AppBundle\Twig\MoocElementExtension" />
         <service id="AppBundle\Twig\PaymentExtension" />
+
+        <service id="AppBundle\Twig\EventRuntime">
+            <tag name="twig.runtime"/>
+        </service>
     </services>
 </container>

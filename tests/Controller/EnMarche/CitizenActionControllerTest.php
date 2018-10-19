@@ -170,7 +170,7 @@ CONTENT;
         $this->assertSame('S\'inscrire', $crawler->filter('a.newbtn--orange')->text());
         $this->assertNull($this->getEventRegistrationRepository()->findAdherentRegistration($uuid, LoadAdherentData::ADHERENT_2_UUID));
 
-        $csrfToken = $this->getContainer()->get('security.csrf.token_manager')->getToken('citizen_action.unregistration');
+        $csrfToken = $this->getContainer()->get('security.csrf.token_manager')->getToken('event.unregistration');
 
         $this->client->request(Request::METHOD_POST, sprintf('/action-citoyenne/%s/desinscription', $citizenAction->getSlug()), [
             'token' => $csrfToken,

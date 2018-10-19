@@ -238,7 +238,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface
 
     public function decrementParticipantsCount(int $increment = 1): void
     {
-        $this->participantsCount -= $increment;
+        $this->participantsCount = max($this->participantsCount - $increment, 0);
     }
 
     public function updatePostAddress(PostAddress $postAddress): void
