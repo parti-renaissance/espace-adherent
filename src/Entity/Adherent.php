@@ -980,11 +980,6 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->legislativeCandidate = $candidate;
     }
 
-    public function allowNotification(): ?bool
-    {
-        return $this->allowNotification;
-    }
-
     public function addSubscriptionType(SubscriptionType $type): void
     {
         if (!$this->subscriptionTypes->contains($type)) {

@@ -19,7 +19,7 @@ use AppBundle\Subscription\SubscriptionTypeEnum;
 use AppBundle\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ramsey\Uuid\Uuid;
@@ -662,19 +662,21 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     /**
      * Finds enabled adherents in the deputy district.
      *
-     * @return Adherent[]
+     * @return Adherent[]|Paginator
      */
-    public function findAllInDistrict(District $district): array
+    public function findAllInDistrict(District $district): Paginator
     {
-        return $this->createQueryBuilder('adherent')
+        $query = $this->createQueryBuilder('adherent')
+            ->select('partial adherent.{id, firstName, lastName, emailAddress}')
             ->innerJoin('adherent.referentTags', 'tag')
-            ->innerJoin(District::class, 'district', Join::WITH, 'district.referentTag = tag')
-            ->where('district.id = :district')
+            ->where('tag = :tag')
             ->andWhere('adherent.status = :status')
-            ->setParameter('district', $district)
+            ->setParameter('tag', $district->getReferentTag())
             ->setParameter('status', Adherent::ENABLED)
             ->getQuery()
-            ->getResult()
+            ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
         ;
+
+        return new Paginator($query, false);
     }
 }

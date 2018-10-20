@@ -8,6 +8,8 @@ class ReferentTagExtractor implements ReferentTagExtractorInterface
 {
     public function extractTags(Adherent $adherent, ?string $slug): array
     {
-        return $adherent->getManagedArea()->getReferentTagCodes();
+        $area = $adherent->getManagedArea();
+
+        return $area ? $area->getReferentTagCodes() : [];
     }
 }

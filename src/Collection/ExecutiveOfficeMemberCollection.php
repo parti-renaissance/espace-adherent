@@ -14,10 +14,12 @@ class ExecutiveOfficeMemberCollection extends ArrayCollection
         });
     }
 
-    public function getExecutiveOfficer(): ExecutiveOfficeMember
+    public function getExecutiveOfficer(): ?ExecutiveOfficeMember
     {
-        return $this->filter(function (ExecutiveOfficeMember $executiveOfficeMember) {
+        $collection = $this->filter(function (ExecutiveOfficeMember $executiveOfficeMember) {
             return $executiveOfficeMember->isExecutiveOfficer();
-        })->first();
+        });
+
+        return !$collection->isEmpty() ? $collection->first() : null;
     }
 }
