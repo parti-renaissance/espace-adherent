@@ -11,6 +11,7 @@ use MyCLabs\Enum\Enum;
  * @method static READ_USERS()
  * @method static READ_UNSUBCRIPTIONS()
  * @method static READ_TYPEFORMS()
+ * @method static JECOUTE_SURVEY()
  */
 final class Scope extends Enum implements ScopeEntityInterface
 {
@@ -20,6 +21,7 @@ final class Scope extends Enum implements ScopeEntityInterface
     public const READ_UNSUBCRIPTIONS = 'read:unsubscriptions';
     public const READ_TYPEFORMS = 'read:typeforms';
     public const READ_STATS = 'read:stats';
+    public const JECOUTE_SURVEYS = 'jecoute_surveys';
 
     public function __toString()
     {

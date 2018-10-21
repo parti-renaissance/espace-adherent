@@ -118,12 +118,12 @@ class Survey
 
     /**
      * @JMS\VirtualProperty
-     * @JMS\SerializedName("uuid"),
+     * @JMS\SerializedName("id"),
      * @JMS\Groups({"survey_list"})
      */
-    public function getUuidAsString(): string
+    public function getExposedId(): int
     {
-        return $this->getUuid()->toString();
+        return $this->id;
     }
 
     /**
@@ -133,8 +133,15 @@ class Survey
      */
     public function getQuestionsAsArray(): array
     {
-        return array_map(function (SurveyQuestion $question) {
-            return $question->getQuestion();
+        return array_map(function (SurveyQuestion $surveyQuestion) {
+            $question = $surveyQuestion->getQuestion();
+
+            return [
+                'id' => $surveyQuestion->getId(),
+                'type' => $question->getType(),
+                'content' => $question->getContent(),
+                'choices' => $question->getChoices(),
+            ];
         }, $this->questions->toArray());
     }
 }
