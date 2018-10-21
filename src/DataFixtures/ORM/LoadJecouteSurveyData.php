@@ -19,8 +19,11 @@ class LoadJecouteSurveyData extends Fixture
 
         /** @var Adherent $referent1 */
         $referent1 = $this->getReference('adherent-8');
+        /** @var Adherent $referent2 */
+        $referent2 = $this->getReference('adherent-19');
+
         $survey1 = new Survey($referent1, 'Questionnaire numéro 1', true);
-        $survey2 = new Survey($referent1, 'Un deuxième questionnaire', true);
+        $survey2 = new Survey($referent2, 'Un deuxième questionnaire', true);
 
         /** @var Question $question1 */
         $question1 = $this->getReference('question-1');

@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="jecoute_data_survey")
  * @ORM\Entity
-
+ *
  * @Algolia\Index(autoIndex=false)
  */
 class DataSurvey
