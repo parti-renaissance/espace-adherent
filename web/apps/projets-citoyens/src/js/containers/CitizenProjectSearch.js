@@ -102,14 +102,18 @@ class CitizenProjectSearch extends Component {
                     />
                     <Select
                         value={filter.city}
+                        inputValue={filter.city}
                         onChange={this.filterCity}
+                        onInputChange={this.filterCity}
                         options={locales.cities.map(city => ({
                             label: city,
                             value: city,
                         }))}
                         placeholder="Entrer le nom d'une ville"
+                        onBlurResetsInput={false}
+                        onCloseResetsInput={false}
+                        onSelectResetsInput={false}
                         simpleValue
-                        noResultsText="🙈 Il n'y a pas de projet dans cette ville"
                     />
                 </div>
                 <div className={`citizen__project__grid${0 === projects.length ? '--empty' : ''}`}>
