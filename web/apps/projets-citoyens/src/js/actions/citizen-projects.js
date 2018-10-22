@@ -9,7 +9,8 @@ export const FILTERED_ITEM = 'FILTERED_ITEM';
 export const SET_COUNTRY = 'SET_COUNTRY';
 export const LOAD_MORE = 'LOAD_MORE';
 
-const API = `${window.config.em_api_host}/citizen_projects`;
+const HOST = 'undefined' === typeof window.config ? process.env.REACT_APP_EM_API_HOST : window.config.em_api_host;
+const API = `${HOST}/citizen_projects`;
 
 const options = {
     withCredentials: false,
