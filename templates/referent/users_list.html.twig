@@ -157,7 +157,7 @@
                                 {% endfor %}
                             </div>
                             <legend class="text--gray text--small">
-                                Exemple : Si vous cochez 2 intérêts, vous ciblerez les adhérents qui suivent exactement ces 2 intérêts
+                                Exemple : Si vous cochez 2 intérêts, vous filtrerez les adhérents qui suivent au moins ces 2 intérêts
                             </legend>
                         </div>
                     </div>
@@ -165,9 +165,9 @@
 
                 <div class="referent__filters__buttons">
                     {% if has_filter %}
-                    <a href="{{ path('app_referent_users') }}" class="btn btn--no-border">
-                        Réinitialiser le filtre
-                    </a>
+                        <a href="{{ path('app_referent_users') }}" class="btn btn--no-border">
+                            Réinitialiser le filtre
+                        </a>
                     {% endif %}
                     <button type="submit" class="btn btn--blue b__nudge--bottom-tiny">
                         Filtrer pour envoyer un message
@@ -239,7 +239,7 @@
                     <tr class="referent__item referent__item--{{ user.styleType }}">
                         <td>{{ user.firstName }}</td>
                         <td>{{ user.lastName }}</td>
-                        <td>{{ user.phone ? user.phone | phone_number_format : '~' }}</td>
+                        <td>{{ user.phone ? user.phone|phone_number_format : '~' }}</td>
                         <td>{{ user.postalCode }} <br/> {{ user.city }}, {{ user.country }}</td>
                         <td>{{ user.committeePostalCode ?: '~' }}</td>
                         <td class="datagrid__table__col--left">
@@ -247,9 +247,9 @@
                                 {{ user.age ? user.age ~ ' ans' : '~'}},
                                 {% if user.gender %}
                                     {% if 'male' == user.gender %}
-                                        {{ 'common.gender.man' | trans }}
+                                        {{ 'common.gender.man'|trans }}
                                     {% else %}
-                                        {{ 'common.gender.woman' | trans }}
+                                        {{ 'common.gender.woman'|trans }}
                                     {% endif %}
                                 {% else %}
                                     ~
@@ -259,10 +259,16 @@
                             <small>
                                 {% set is_host = user.isCommitteeHost %}
                                 {%- if user.isCommitteeSupervisor -%}
-                                    Animateur local
-                                    {{- is_host ? ' / ' -}}
-                                {%- endif -%}
-                                {{- is_host ? 'Co-animateur local' -}}
+                                    Animateur local {{- is_host ? ' / ' -}}
+                                {%- elseif is_host -%}
+                                    Co-animateur local
+                                {%- else -%}
+                                    Adhérent
+                                {% endif %}
+                            </small>
+                            <br />
+                            <small class="text--italic">
+                                {{ user.interests|join(', ') }}
                             </small>
                         </td>
                         <td class="datagrid__table__col--left datagrid__table__col--hide-mobile">
