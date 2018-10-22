@@ -83,7 +83,8 @@ class ReferentManagedArea
     public function getOnlyManagedCountryCodes($value): array
     {
         return array_values(array_filter(array_map(function (ReferentTag $tag) use ($value) {
-            if (ctype_alpha($tag->getCode()) && 0 === stripos($tag->getName(), $value)) {
+            if (ctype_alpha($tag->getCode())
+                && (!$value || ($value && 0 === stripos($tag->getName(), $value)))) {
                 return [$tag->getCode() => $tag->getName()];
             }
         }, $this->tags->toArray())));

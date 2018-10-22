@@ -518,13 +518,18 @@ SQL;
             ->join('event.referentTags', 'tag')
             ->where('event.status = :status')
             ->andWhere('event.committee IS NOT NULL')
-            ->andWhere('event.postAddress.cityName LIKE :searchedCityName')
             ->andWhere('tag.id IN (:tags)')
-            ->setParameter('searchedCityName', $value.'%')
             ->setParameter('status', BaseEvent::STATUS_SCHEDULED)
             ->setParameter('tags', $referent->getManagedArea()->getTags())
             ->orderBy('city')
         ;
+
+        if ($value) {
+            $qb
+                ->andWhere('event.postAddress.cityName LIKE :searchedCityName')
+                ->setParameter('searchedCityName', $value.'%')
+            ;
+        }
 
         return array_column($qb->getQuery()->getArrayResult(), 'city');
     }
