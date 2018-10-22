@@ -22,18 +22,14 @@ class RedirectionListener
 
     public function preUpdate(Redirection $redirection, PreUpdateEventArgs $preUpdateEventArgs): void
     {
-        if (!$preUpdateEventArgs->hasChangedField('to')
-            || !$preUpdateEventArgs->hasChangedField('from')
-        ) {
-            return;
+        if ($preUpdateEventArgs->hasChangedField('to') || $preUpdateEventArgs->hasChangedField('from')) {
+            $this->redirectionsUpdated[] = $redirection->getId();
         }
-
-        $this->redirectionsUpdated[] = $redirection->getId();
     }
 
     public function postRemove(Redirection $redirection): void
     {
-        $this->redirectionManager->removeRedirection($redirection->getFrom());
+        $this->redirectionManager->removeRedirectionFromCache($redirection->getFrom());
     }
 
     public function postUpdate(Redirection $redirection): void
