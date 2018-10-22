@@ -43,12 +43,17 @@
                         'route': 'app_referent_organizational_chart',
                         'label': 'Votre équipe départementale',
                         'role': 'IS_ROOT_REFERENT'
-                    },
-                    {
-                        'route': 'app_referent_surveys',
-                        'label': 'J\'écoute'
-                    },
+                    }
                 ] %}
+
+                {% if enable_canary %}
+                    {% set pages = pages|merge([
+                        {
+                            'route': 'app_referent_surveys',
+                            'label': 'J\'écoute'
+                        }
+                    ]) %}
+                {% endif %}
 
                 <ul class="procuration-manager__tabs">
                     {% for page in pages if page.role is not defined or is_granted(page.role) %}
