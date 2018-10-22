@@ -8,7 +8,6 @@ use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Mailer\Message\EventCancellationMessage;
 use AppBundle\Mailer\Message\EventContactMembersMessage;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -177,7 +176,7 @@ class EventManagerControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
-        $this->assertTrue($this->seeMembersList($crawler, 1), 'There should be 2 members in the list.');
+        $this->assertEquals(2, \count($crawler->filter('tbody > tr')), 'There should be 2 members in the list.');
     }
 
     public function testOrganizerCanExportRegistrationsWithWrongUuids()
@@ -359,11 +358,6 @@ class EventManagerControllerTest extends WebTestCase
         $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/ical');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-    }
-
-    private function seeMembersList(Crawler $crawler, int $count): bool
-    {
-        return $count === \count($crawler->filter('table > tr'));
     }
 
     private function redirectionEventNotPublishTest($url)

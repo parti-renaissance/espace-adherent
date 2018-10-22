@@ -406,6 +406,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event20, $author7)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event20, $adherent4)));
         $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event20, $coordinator)));
+        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event1, $adherent4)));
         // Registrations of not connected users
         $eventRegistration1 = new EventRegistrationCommand($event10);
         $eventRegistration1->setFirstName('Marie');
