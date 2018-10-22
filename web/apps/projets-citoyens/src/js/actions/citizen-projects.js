@@ -12,7 +12,7 @@ export const LOAD_MORE = 'LOAD_MORE';
 const HOST = 'undefined' === typeof window.config ? process.env.REACT_APP_EM_API_HOST : window.config.em_api_host;
 const API = `${HOST}/citizen_projects`;
 
-const options = {
+const API_OPTIONS = {
     withCredentials: false,
     headers: {
         Accept: 'application/json',
@@ -50,14 +50,14 @@ export function loadMore(options) {
 export function getCategories() {
     return {
         type: CATEGORIES,
-        payload: callApi(API, '/categories', options),
+        payload: callApi(API, '/categories', API_OPTIONS),
     };
 }
 
 export function getCitiesAndCountries() {
     return {
         type: CITIES_AND_COUNTIES,
-        payload: callApi(API, '/localizations', options),
+        payload: callApi(API, '/localizations', API_OPTIONS),
     };
 }
 
