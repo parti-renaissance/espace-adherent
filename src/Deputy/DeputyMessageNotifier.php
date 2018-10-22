@@ -14,10 +14,10 @@ class DeputyMessageNotifier
         $this->mailer = $mailer;
     }
 
-    public function sendMessage(DeputyMessage $message): void
+    public function sendMessage(DeputyMessage $message, array $recipients): void
     {
         $chunks = array_chunk(
-            $message->getRecipients(),
+            $recipients,
             MailerService::PAYLOAD_MAXSIZE
         );
 

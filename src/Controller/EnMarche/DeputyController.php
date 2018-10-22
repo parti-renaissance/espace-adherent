@@ -34,22 +34,26 @@ class DeputyController extends Controller
     {
         $this->disableInProduction();
 
-        $recipients = $adherentRepository->findAllInDistrict($this->getUser()->getManagedDistrict());
-        $message = $this->createMessage($recipients);
+        $currentUser = $this->getUser();
 
-        $form = $this->createForm(DeputyMessageType::class, $message);
-        $form->handleRequest($request);
+        $recipients = $adherentRepository->findAllInDistrict($currentUser->getManagedDistrict());
+
+        $message = new DeputyMessage($currentUser);
+
+        $form = $this
+            ->createForm(DeputyMessageType::class, $message)
+            ->handleRequest($request)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get(DeputyMessageNotifier::class)->sendMessage($message);
+            $this->get(DeputyMessageNotifier::class)->sendMessage($message, iterator_to_array($recipients));
             $this->addFlash('info', 'deputy.message.success');
 
             return $this->redirectToRoute('app_deputy_users_message');
         }
 
         return $this->render('deputy/users_message.html.twig', [
-            'results_count' => \count($recipients),
-            'message' => $message,
+            'results_count' => $recipients->count(),
             'form' => $form->createView(),
         ]);
     }
@@ -80,10 +84,5 @@ class DeputyController extends Controller
                 $committeeRepository->findAllInDistrict($this->getUser()->getManagedDistrict())
             ),
         ]);
-    }
-
-    private function createMessage(array $recipients): DeputyMessage
-    {
-        return new DeputyMessage($this->getUser(), $recipients);
     }
 }

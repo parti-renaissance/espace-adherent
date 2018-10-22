@@ -13,11 +13,6 @@ class DeputyMessage
     private $from;
 
     /**
-     * @var Adherent[]
-     */
-    private $recipients;
-
-    /**
      * @var string|null
      *
      * @Assert\NotBlank
@@ -37,10 +32,9 @@ class DeputyMessage
      */
     private $content;
 
-    public function __construct(Adherent $from, array $recipients)
+    public function __construct(Adherent $from)
     {
         $this->from = $from;
-        $this->recipients = $recipients;
     }
 
     public function setSubject(string $subject): void
@@ -56,11 +50,6 @@ class DeputyMessage
     public function getFrom(): Adherent
     {
         return $this->from;
-    }
-
-    public function getRecipients(): array
-    {
-        return $this->recipients;
     }
 
     public function getSubject(): ?string
