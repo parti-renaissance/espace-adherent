@@ -113,6 +113,7 @@ class CitizenProjectSearch extends Component {
                         onBlurResetsInput={false}
                         onCloseResetsInput={false}
                         onSelectResetsInput={false}
+                        noResultsText={false}
                         simpleValue
                     />
                 </div>
