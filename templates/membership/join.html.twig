@@ -75,7 +75,7 @@
                                      {{ form_errors(form.emailAddress.first) }}
                                 </div>
                                  <div class="l__row--h-stretch register__form--full visually-hidden">
-                                     {{ form_widget(form.emailAddress.second, { attr: { placeholder: 'Re-saisir l\'e-mail' } }) }}
+                                     {{ form_widget(form.emailAddress.second, { attr: { placeholder: 'Re-saisir l\'e-mail', 'data-validated-with': form.emailAddress.first.vars.id } }) }}
                                      {{ form_errors(form.emailAddress.second) }}
                                      {{ form_errors(form.emailAddress) }}
                                 </div>
