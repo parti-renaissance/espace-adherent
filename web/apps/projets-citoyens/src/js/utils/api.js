@@ -7,12 +7,14 @@ const DEFAULT_OPS = {
     maxRedirects: 0,
 };
 
+const HOST = 'undefined' === typeof window.config ? process.env.REACT_APP_EM_API_HOST : window.config.em_api_host;
+
 // Add a response interceptor
 axios.interceptors.response.use(
     r => r,
     (error) => {
         if (error.response && 401 === error.response.status) {
-            window.location = `${window.config.em_api_host}/connexion`;
+            window.location = `${HOST}/connexion`;
         }
         return Promise.reject(error);
     }

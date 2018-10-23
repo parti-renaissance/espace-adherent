@@ -43,6 +43,11 @@
             height: auto;
         }
 
+        @media (max-width: $mobile) {
+            min-height: 36px;
+            background-color: $gray--white;
+        }
+
         ul {
             font-family: $font-gillsans;
             @include text--medium-small--bold;
