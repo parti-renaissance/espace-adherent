@@ -367,13 +367,19 @@ class CommitteeRepository extends ServiceEntityRepository
             ->select('committee.uuid, committee.name')
             ->join('committee.referentTags', 'tag')
             ->where('committee.status = :status')
-            ->andWhere('committee.name LIKE :searchedName')
             ->andWhere('tag.id IN (:tags)')
-            ->setParameter('searchedName', $value.'%')
             ->setParameter('status', Committee::APPROVED)
             ->setParameter('tags', $referent->getManagedArea()->getTags())
             ->orderBy('committee.name')
         ;
+
+        if ($value) {
+            $qb
+                ->andWhere('committee.name LIKE :searchedName')
+                ->setParameter('searchedName', $value.'%')
+                ->setMaxResults(70)
+            ;
+        }
 
         return array_map(function (array $committee) {
             return [$committee['uuid'] => $committee['name']];
@@ -388,13 +394,18 @@ class CommitteeRepository extends ServiceEntityRepository
             ->select('DISTINCT committee.postAddress.cityName as city')
             ->join('committee.referentTags', 'tag')
             ->where('committee.status = :status')
-            ->andWhere('committee.postAddress.cityName LIKE :searchedCityName')
             ->andWhere('tag.id IN (:tags)')
-            ->setParameter('searchedCityName', $value.'%')
             ->setParameter('status', Committee::APPROVED)
             ->setParameter('tags', $referent->getManagedArea()->getTags())
             ->orderBy('city')
         ;
+
+        if ($value) {
+            $qb
+                ->andWhere('committee.postAddress.cityName LIKE :searchedCityName')
+                ->setParameter('searchedCityName', $value.'%')
+            ;
+        }
 
         return array_column($qb->getQuery()->getArrayResult(), 'city');
     }

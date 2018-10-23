@@ -39,7 +39,8 @@ class ReferentController extends Controller
      */
     public function searchAutocompleteAction(Adherent $referent, Request $request, CommitteeRepository $committeeRepository, EventRepository $eventRepository): Response
     {
-        if (!($type = $request->query->get('type')) || !($value = $request->query->get('value'))) {
+        // parameter `type` should have a value different from an empty string, but parameter `value` can be an empty string
+        if (!($type = $request->query->get('type')) || !$request->query->has('value')) {
             throw new BadRequestHttpException('The parameters "type" and "value" are required.');
         }
 
@@ -47,13 +48,14 @@ class ReferentController extends Controller
             throw new BadRequestHttpException(sprintf('Invalid parameter "type" "%" given.', $type));
         }
 
+        $value = $request->query->get('value');
         switch ($type) {
             case self::AUTOCOMPLETE_TYPE_CITY:
-                return new JsonResponse(['cities' => array_unique(array_merge(
+                return new JsonResponse(['cities' => array_values(array_unique(array_merge(
                     $committeeRepository->findCitiesForReferentAutocomplete($referent, $value),
                     $eventRepository->findCitiesForReferentAutocomplete($referent, $value)),
                     \SORT_REGULAR
-                )]);
+                ))]);
             case self::AUTOCOMPLETE_TYPE_COMMITTEE:
                 return new JsonResponse(['committees' => $committeeRepository->findApprovedForReferentAutocomplete($referent, $value)]);
             case self::AUTOCOMPLETE_TYPE_COUNTRY:
