@@ -1,19 +1,21 @@
+@api
 Feature:
   In order to get all surveys
   As a non logged-in user
   I should be able to access to the surveys configuration and be able to answer to it
+
+  Background:
+    Given the following fixtures are loaded:
+      | LoadJecouteSurveyData |
+      | LoadClientData        |
+      | LoadOAuthTokenData    |
 
   Scenario: As a non logged-in user I cannot get the surveys
     When I send a "GET" request to "/api/jecoute/survey"
     Then the response status code should be 401
 
   Scenario: As a logged-in user I can get the surveys and answer it
-    Given the following fixtures are loaded:
-      | LoadJecouteSurveyData |
-      | LoadClientData        |
-      | LoadOAuthTokenData    |
-    Given I am logged as "michelle.dufour@example.ch"
-    And I add the access token "1c33b1711015b5e3d930f65b5dc87c398bfb3b29401028ee119c882bdf87cf9dcbf9a562629535e6" to the Authorization headers
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
     When I send a "GET" request to "/api/jecoute/survey"
     Then the response status code should be 200
     And the response should be in JSON
@@ -77,8 +79,8 @@ Feature:
     ]
     """
 
-    ## As a logged-in user I can reply to a survey
-    Given I add the access token "1c33b1711015b5e3d930f65b5dc87c398bfb3b29401028ee119c882bdf87cf9dcbf9a562629535e6" to the Authorization headers
+  Scenario: As a logged-in user I can reply to a survey
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
     And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
@@ -112,7 +114,6 @@ Feature:
       ]
     }
     """
-    Then print last JSON response
     Then the response status code should be 201
     And the response should be in JSON
     And the JSON should be equal to:
@@ -122,8 +123,8 @@ Feature:
     }
     """
 
-    ## As a logged-in user I cannot reply to a survey with errors
-    Given I add the access token "1c33b1711015b5e3d930f65b5dc87c398bfb3b29401028ee119c882bdf87cf9dcbf9a562629535e6" to the Authorization headers
+  Scenario: As a logged-in user I cannot reply to a survey with errors
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
     And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:

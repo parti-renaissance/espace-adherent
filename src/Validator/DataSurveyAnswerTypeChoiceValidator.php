@@ -53,7 +53,7 @@ class DataSurveyAnswerTypeChoiceValidator extends ConstraintValidator
 
                 break;
             case SurveyQuestionTypeEnum::MULTIPLE_CHOICE_TYPE:
-                if ($answer->getSelectedChoices()->count() <= 1) {
+                if ($answer->getSelectedChoices()->isEmpty()) {
                     $this->processViolation($constraint->multipleChoiceAnswerMessage, $surveyQuestion->getId());
                 }
 

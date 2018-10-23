@@ -116,11 +116,6 @@ class DataSurvey
         return $this->postedAt;
     }
 
-    public function setPostedAt(\DateTime $postedAt): void
-    {
-        $this->postedAt = $postedAt;
-    }
-
     public function getFirstName(): ?string
     {
         return $this->firstName;
@@ -189,7 +184,7 @@ class DataSurvey
         }
     }
 
-    public function removeAnswer(DataAnswer $answer)
+    public function removeAnswer(DataAnswer $answer): void
     {
         $this->answers->removeElement($answer);
     }
@@ -199,7 +194,7 @@ class DataSurvey
         return $this->answers;
     }
 
-    public function getSurvey(): ? Survey
+    public function getSurvey(): ?Survey
     {
         return $this->survey;
     }

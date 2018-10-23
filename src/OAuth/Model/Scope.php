@@ -11,7 +11,7 @@ use MyCLabs\Enum\Enum;
  * @method static READ_USERS()
  * @method static READ_UNSUBCRIPTIONS()
  * @method static READ_TYPEFORMS()
- * @method static JECOUTE_SURVEY()
+ * @method static JECOUTE_SURVEYS()
  */
 final class Scope extends Enum implements ScopeEntityInterface
 {

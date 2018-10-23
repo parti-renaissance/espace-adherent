@@ -45,9 +45,6 @@ class DataSurveyFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class', DataSurvey::class,
-            'csrf_protection' => false,
-        ]);
+        $resolver->setDefault('data_class', DataSurvey::class);
     }
 }

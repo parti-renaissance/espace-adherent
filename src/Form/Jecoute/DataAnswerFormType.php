@@ -31,9 +31,6 @@ class DataAnswerFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => DataAnswer::class,
-            'csrf_protection' => false,
-        ]);
+        $resolver->setDefault('data_class', DataAnswer::class);
     }
 }

@@ -7,7 +7,6 @@ use AppBundle\Entity\OAuth\AuthorizationCode;
 use AppBundle\Entity\OAuth\Client;
 use AppBundle\Entity\OAuth\RefreshToken;
 use AppBundle\Entity\Adherent;
-use AppBundle\OAuth\Model\Scope;
 use AppBundle\Repository\OAuth\ClientRepository;
 use AppBundle\Repository\AdherentRepository;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -69,14 +68,6 @@ class LoadOAuthTokenData extends AbstractFixture implements DependentFixtureInte
         );
         $accessToken2->revoke();
 
-        $accessToken3 = $this->createAccessToken(
-            '1c33b1711015b5e3d930f65b5dc87c398bfb3b29401028ee119c882bdf87cf9dcbf9a562629535e6',
-            LoadADherentData::ADHERENT_1_UUID,
-            LoadClientData::CLIENT_08_UUID,
-            '+10 minutes'
-        );
-        $accessToken3->addScope(Scope::JECOUTE_SURVEYS);
-
         $refreshToken1 = $this->createRefreshToken(
             $accessToken1,
             'd03c024d9f413ecf96bc70acbdcb79e8ae0598a15793641904c843038f3d1ba017e6c835420efeef',
@@ -95,7 +86,6 @@ class LoadOAuthTokenData extends AbstractFixture implements DependentFixtureInte
         $manager->persist($authCode3);
         $manager->persist($accessToken1);
         $manager->persist($accessToken2);
-        $manager->persist($accessToken3);
         $manager->persist($refreshToken1);
         $manager->persist($refreshToken2);
         $manager->flush();

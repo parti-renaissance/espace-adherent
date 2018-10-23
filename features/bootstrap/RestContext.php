@@ -1,31 +1,72 @@
 <?php
 
-use AppBundle\OAuth\Model\Client;
+use AppBundle\Entity\Adherent;
+use AppBundle\Entity\OAuth\AccessToken;
+use AppBundle\Entity\OAuth\Client;
+use AppBundle\OAuth\Model\AccessToken as AccessTokenModel;
+use AppBundle\OAuth\Model\Client as ClientModel;
 use AppBundle\OAuth\Model\Scope;
-use AppBundle\Repository\OAuth\AccessTokenRepository;
+use AppBundle\Repository\AdherentRepository;
+use AppBundle\Repository\OAuth\ClientRepository;
+use Behat\Gherkin\Node\PyStringNode;
+use Behat\Gherkin\Node\TableNode;
 use Behatch\Context\RestContext as BehatchRestContext;
 use Behatch\HttpCall\HttpCallResultPool;
 use Behatch\HttpCall\Request;
+use Doctrine\ORM\EntityManagerInterface;
 use League\OAuth2\Server\CryptKey;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Ramsey\Uuid\Uuid;
 
 class RestContext extends BehatchRestContext
 {
     private $httpCallResultPool;
-    private $accessTokentRepository;
+    private $entityManager;
     private $privateCryptKey;
+
+    /**
+     * @var string|null
+     */
+    private $accessToken;
 
     public function __construct(
         Request $request,
         HttpCallResultPool $httpCallResultPool,
-        AccessTokenRepository $accessTokenRepository,
-        ContainerInterface $container
+        EntityManagerInterface $entityManager,
+        string $sslPrivateKey
     ) {
         parent::__construct($request);
 
         $this->httpCallResultPool = $httpCallResultPool;
-        $this->accessTokentRepository = $accessTokenRepository;
-        $this->privateCryptKey = new CryptKey($container->getParameter('env(SSL_PRIVATE_KEY)'));
+        $this->entityManager = $entityManager;
+        $this->privateCryptKey = new CryptKey($sslPrivateKey);
+    }
+
+    /**
+     * @Given I am logged with :email via OAuth client :clientName with scope :scope
+     */
+    public function iAmLoggedViaOAuthWithClientAndScope(string $email, string $clientName, string $scope): void
+    {
+        $identifier = uniqid();
+
+        /** @var AdherentRepository $adherentRepository */
+        $adherentRepository = $this->entityManager->getRepository(Adherent::class);
+        /** @var ClientRepository $clientRepository */
+        $clientRepository = $this->entityManager->getRepository(Client::class);
+
+        $accessToken = new AccessToken(
+            Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),
+            $adherentRepository->findOneByEmail($email),
+            $identifier,
+            new \DateTime('+10 minutes'),
+            $clientRepository->findOneBy(['name' => $clientName])
+        );
+
+        $accessToken->addScope($scope);
+
+        $this->entityManager->persist($accessToken);
+        $this->entityManager->flush();
+
+        $this->accessToken = $this->getJwtFromAccessToken($accessToken);
     }
 
     /**
@@ -36,14 +77,6 @@ class RestContext extends BehatchRestContext
         $accessToken = $this->getAccessTokenFromLastResponse();
 
         $this->iSendARequestTo($method, $url.'?'.http_build_query(['access_token' => $accessToken]));
-    }
-
-    /**
-     * @Given I add the access token :identifier to the Authorization headers
-     */
-    public function iAddTheSpecificAccessTokenToTheAuthorizationHeader(string $identifier): void
-    {
-        $this->iAddHeaderEqualTo('Authorization', 'Bearer '.$this->getJwtAccessTokenByIdentifier($identifier));
     }
 
     /**
@@ -68,19 +101,43 @@ class RestContext extends BehatchRestContext
         return $json['access_token'];
     }
 
-    private function getJwtAccessTokenByIdentifier($identifier): string
+    public function iSendARequestToWithParameters($method, $url, TableNode $data)
     {
-        /** @var \AppBundle\Entity\OAuth\AccessToken $accessToken */
-        $accessToken = $this
-            ->accessTokentRepository
-            ->findAccessTokenByIdentifier($identifier)
-        ;
+        $this->addAccessTokenToTheAuthorizationHeader();
 
-        $client = new Client($accessToken->getClient()->getUuid()->toString(), []);
+        return parent::iSendARequestToWithParameters($method, $url, $data);
+    }
 
-        $token = new \AppBundle\OAuth\Model\AccessToken();
+    public function iSendARequestTo($method, $url, PyStringNode $body = null, $files = [])
+    {
+        $this->addAccessTokenToTheAuthorizationHeader();
+
+        parent::iSendARequestTo($method, $url, $body, $files);
+    }
+
+    public function iSendARequestToWithBody($method, $url, PyStringNode $body)
+    {
+        $this->addAccessTokenToTheAuthorizationHeader();
+
+        return parent::iSendARequestToWithBody($method, $url, $body);
+    }
+
+    private function addAccessTokenToTheAuthorizationHeader(): void
+    {
+        if (!$this->accessToken) {
+            return;
+        }
+
+        $this->iAddHeaderEqualTo('Authorization', 'Bearer '.$this->accessToken);
+    }
+
+    private function getJwtFromAccessToken(AccessToken $accessToken): string
+    {
+        $client = new ClientModel($accessToken->getClient()->getUuid()->toString(), []);
+
+        $token = new AccessTokenModel();
         $token->setClient($client);
-        $token->setIdentifier($identifier);
+        $token->setIdentifier($accessToken->getIdentifier());
         $token->setExpiryDateTime(\DateTime::createFromFormat('U', $accessToken->getExpiryDateTime()->getTimestamp()));
         $token->setUserIdentifier($accessToken->getUserIdentifier());
 

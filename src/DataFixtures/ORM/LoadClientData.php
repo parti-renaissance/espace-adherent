@@ -109,8 +109,8 @@ class LoadClientData extends AbstractFixture implements FixtureInterface
 
         $client8 = new Client(
             Uuid::fromString(self::CLIENT_08_UUID),
-            'En-Marche !',
-            'J\écoute',
+            'J\'écoute',
+            'J\'écoute',
             '4THZGbOfHJvRHk8bHdtZP3BTrMWFod6bOZb2mY3wLE=',
             [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
             ['http://client-oauth.docker:8000/client/receive_authcode']

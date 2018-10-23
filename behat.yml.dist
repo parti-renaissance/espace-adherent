@@ -9,8 +9,8 @@ default:
                 - FixtureContext:
                     manager: "@doctrine.orm.default_entity_manager"
                 - RestContext:
-                    container: "@service_container"
-                    accessTokenRepository: "@AppBundle\\Repository\\OAuth\\AccessTokenRepository"
+                    sslPrivateKey: "%%env(SSL_PRIVATE_KEY)%%"
+                    entityManager: "@doctrine.orm.default_entity_manager"
                 - JsonContext
                 - RabbitMqContext:
                     container: "@service_container"

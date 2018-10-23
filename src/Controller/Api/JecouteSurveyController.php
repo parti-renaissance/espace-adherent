@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Controller\CanaryControllerTrait;
-use AppBundle\Entity\Jecoute\DataSurvey;
 use AppBundle\Form\Jecoute\DataSurveyFormType;
 use AppBundle\Repository\SurveyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -52,7 +51,9 @@ class JecouteSurveyController extends Controller
      */
     public function surveyReplyAction(Request $request, ObjectManager $manager): JsonResponse
     {
-        $form = $this->createForm(DataSurveyFormType::class, new DataSurvey());
+        $form = $this->createForm(DataSurveyFormType::class, null, [
+            'csrf_protection' => false,
+        ]);
 
         $form->submit(json_decode($request->getContent(), true));
 
@@ -66,7 +67,6 @@ class JecouteSurveyController extends Controller
             );
         }
 
-        /** @var DataSurvey $dataSurvey */
         $dataSurvey = $form->getData();
         $dataSurvey->setAuthor($this->getUser());
 
