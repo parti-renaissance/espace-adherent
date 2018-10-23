@@ -16,13 +16,22 @@ class DeputyMessageNotifier
 
     public function sendMessage(DeputyMessage $message, array $recipients): void
     {
+        if (empty($recipients)) {
+            return;
+        }
+
+        array_unshift(
+            $recipients,
+            new DeputyRecipient('territoires@en-marche.fr', 'Pôle Territoire')
+        );
+
         $chunks = array_chunk(
             $recipients,
             MailerService::PAYLOAD_MAXSIZE
         );
 
         foreach ($chunks as $chunk) {
-            $this->mailer->sendMessage($this->createMessage($message, $chunk));
+            $this->mailer->sendMessage($this->createMessage($message, $chunk), false);
         }
     }
 

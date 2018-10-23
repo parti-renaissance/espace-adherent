@@ -27,18 +27,26 @@ class MailerService
         $this->factory = $factory;
     }
 
-    public function sendMessage(Message $message): bool
+    public function sendMessage(Message $message, bool $enableTrace = true): bool
     {
         $delivered = true;
         $email = $this->factory->createFromMessage($message);
 
         try {
-            $this->dispatcher->dispatch(MailerEvents::DELIVERY_MESSAGE, new MailerEvent($message, $email));
+            if ($enableTrace) {
+                $this->dispatcher->dispatch(MailerEvents::DELIVERY_MESSAGE, new MailerEvent($message, $email));
+            }
+
             $this->transport->sendTemplateEmail($email);
-            $this->dispatcher->dispatch(MailerEvents::DELIVERY_SUCCESS, new MailerEvent($message, $email));
+
+            if ($enableTrace) {
+                $this->dispatcher->dispatch(MailerEvents::DELIVERY_SUCCESS, new MailerEvent($message, $email));
+            }
         } catch (MailerException $exception) {
             $delivered = false;
-            $this->dispatcher->dispatch(MailerEvents::DELIVERY_ERROR, new MailerEvent($message, $email, $exception));
+            if ($enableTrace) {
+                $this->dispatcher->dispatch(MailerEvents::DELIVERY_ERROR, new MailerEvent($message, $email, $exception));
+            }
         }
 
         return $delivered;
