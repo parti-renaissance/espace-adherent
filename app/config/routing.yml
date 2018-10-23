@@ -122,11 +122,6 @@ app_desintox:
 #
 # Redirections
 #
-app_redirecting:
-    host:     "%app_host%"
-    resource: "@AppBundle/Controller/RedirectingController.php"
-    type:     "annotation"
-
 app_redirect_login:
     host: "%app_host%"
     path: /login
