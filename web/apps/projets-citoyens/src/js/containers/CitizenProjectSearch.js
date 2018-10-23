@@ -76,7 +76,7 @@ class CitizenProjectSearch extends Component {
         const { projects, filter, locales, categories, moreItems, loadingMore } = this.props;
         return (
             <div className="citizen__wrapper citizen__search">
-                <h2 className="">Explorer tous les projets</h2>
+                <h1 className="">Explorer tous les projets</h1>
                 <p className="citizen__blurb">
                     Découvrez tous les projets citoyens déjà lancés !
                     <br />Rejoignez-en un près de chez vous ou créez le vôtre !
