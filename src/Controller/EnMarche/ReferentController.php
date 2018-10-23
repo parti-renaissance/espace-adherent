@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Jecoute\Survey;
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
@@ -39,6 +40,8 @@ use Symfony\Component\HttpFoundation\Response;
 class ReferentController extends Controller
 {
     public const TOKEN_ID = 'referent_managed_users';
+
+    use CanaryControllerTrait;
 
     /**
      * @Route("/utilisateurs", name="app_referent_users")
@@ -160,6 +163,8 @@ class ReferentController extends Controller
         SurveyRepository $surveyRepository,
         SurveyExporter $surveyExporter
     ): Response {
+        $this->disableInProduction();
+
         return $this->render('referent/surveys/list.html.twig', [
             'surveysListJson' => $surveyExporter->exportAsJson(
                 $surveyRepository->findAllPublishedByCreator($this->getUser())
@@ -173,6 +178,8 @@ class ReferentController extends Controller
      */
     public function jecouteSurveyCreateAction(Request $request, ObjectManager $manager): Response
     {
+        $this->disableInProduction();
+
         $form = $this
             ->createForm(SurveyFormType::class, new Survey($this->getUser()))
             ->handleRequest($request)
@@ -202,6 +209,8 @@ class ReferentController extends Controller
      */
     public function jecouteSurveyEditAction(Request $request, Survey $survey, ObjectManager $manager): Response
     {
+        $this->disableInProduction();
+
         $form = $this
             ->createForm(SurveyFormType::class, $survey)
             ->handleRequest($request)
