@@ -1,9 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import MediaQuery from 'react-responsive';
+import Select from 'react-select';
 
 import { getTurnkeyDetail, getTurnkeyProjects } from '../actions/turnkey-projects';
 import TurnkeyProjectDetail from './../components/TurnkeyProjectDetail';
 import TurnkeyProjectListItem from './../components/TurnkeyProjectListItem';
+
+const TurnkeyProjectDropdown = ({ projects, active, dispatch }) =>
+    <div className="turnkey__project__dropdown">
+        <Select
+            simpleValue
+            searchable={false}
+            clearable={false}
+            onChange={slug => dispatch(getTurnkeyDetail(slug))}
+            value={{ label: active.title, value: active.slug }}
+            options={projects.map(p => ({
+                label: p.title,
+                value: p.slug,
+            }))}
+        />
+    </div>;
 
 const formDetail = (slug, project) => (
     <div className="turnkey__project__footer">
@@ -72,14 +89,23 @@ class CitizenProjectTurnKey extends Component {
                         ) : null}
                     </div>
                     <div className="turnkey__project__list">
-                        {projects.map((p, i) => (
-                            <TurnkeyProjectListItem
-                                onClick={() => dispatch(getTurnkeyDetail(p.slug))}
-                                key={i}
-                                isActive={project && p.slug === project.slug}
-                                {...p}
+                        <MediaQuery maxWidth={650}>
+                            <TurnkeyProjectDropdown
+                                projects={projects}
+                                active={project}
+                                dispatch={dispatch}
                             />
-                        ))}
+                        </MediaQuery>
+                        <MediaQuery minWidth={651}>
+                            {projects.map((p, i) => (
+                                <TurnkeyProjectListItem
+                                    onClick={() => dispatch(getTurnkeyDetail(p.slug))}
+                                    key={i}
+                                    isActive={project && p.slug === project.slug}
+                                    {...p}
+                                />
+                            ))}
+                        </MediaQuery>
                     </div>
                 </div>
             </div>
