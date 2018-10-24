@@ -22,6 +22,7 @@ class LoadClientData extends AbstractFixture implements FixtureInterface
     public const CLIENT_05_UUID = '4222f4ce-f994-45f7-9ff5-f9f09ab3992e';
     public const CLIENT_06_UUID = '4f3394d4-7137-424a-8c73-27e0ad641fc9';
     public const CLIENT_07_UUID = 'e7c07c65-bba1-4a05-8d9b-76de6e5145c6';
+    public const CLIENT_08_UUID = '4222f4ce-f994-45f7-9ff5-f9f09ab3992b';
 
     public function load(ObjectManager $manager)
     {
@@ -105,6 +106,19 @@ class LoadClientData extends AbstractFixture implements FixtureInterface
         );
         $manager->persist($client7);
         $this->setReference('web_hook_client_api', $client7);
+
+        $client8 = new Client(
+            Uuid::fromString(self::CLIENT_08_UUID),
+            'J\'écoute',
+            'J\'écoute',
+            '4THZGbOfHJvRHk8bHdtZP3BTrMWFod6bOZb2mY3wLE=',
+            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
+            ['http://client-oauth.docker:8000/client/receive_authcode']
+        );
+        $client8->setAskUserForAuthorization(false);
+        $client8->addSupportedScope(Scope::JECOUTE_SURVEYS);
+
+        $manager->persist($client8);
 
         $manager->flush();
     }

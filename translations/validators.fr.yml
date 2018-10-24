@@ -152,8 +152,16 @@ referent.message.max_length: Le message doit contenir moins de {{ limit }} carac
 # J'écoute
 #
 survey.question.choice.invalid: Le type de cette question est incorrecte, un champ à choix multiples ou unique doit contenir plusieurs choix.
-survey.question.simple_field.invalid: Le type de cette question est incorrecte, un champ libre ne doit pas contenir de choix.
+survey.question.simple_field.invalid: Le type de cette question est incorrecte, un champ libre ne doit pas contenir de choixo.
 
+survey.answer.simple_field.invalid: La question {{ surveyQuestionId }} est un champ libre et ne doit pas contenir de choix.
+survey.answer.simple_field.without_text_field.invalid: La question {{ surveyQuestionId }} est un champ libre et doit contenir un champ texte.
+
+survey.answer.unique_choice.invalid: La question {{ surveyQuestionId }} est une question à choix unique et doit contenir un seul choix sélectionné.
+survey.answer.unique_choice.with_text_field.invalid: La question {{ surveyQuestionId }} est une question à choix unique et ne doit pas contenir de champ texte.
+
+survey.answer.multiple_choice.invalid: La question {{ surveyQuestionId }} est une question à choix multiples et doit contenir un ou plusieurs choix sélectionnés.
+survey.answer.multiple_choice.with_text_field.invalid: La question {{ surveyQuestionId }} est une question à choix multiples et ne doit pas contenir de champ texte.
 #
 # Je Marche
 #

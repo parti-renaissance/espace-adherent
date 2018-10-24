@@ -1,18 +1,72 @@
 <?php
 
+use AppBundle\Entity\Adherent;
+use AppBundle\Entity\OAuth\AccessToken;
+use AppBundle\Entity\OAuth\Client;
+use AppBundle\OAuth\Model\AccessToken as AccessTokenModel;
+use AppBundle\OAuth\Model\Client as ClientModel;
+use AppBundle\OAuth\Model\Scope;
+use AppBundle\Repository\AdherentRepository;
+use AppBundle\Repository\OAuth\ClientRepository;
+use Behat\Gherkin\Node\PyStringNode;
+use Behat\Gherkin\Node\TableNode;
 use Behatch\Context\RestContext as BehatchRestContext;
 use Behatch\HttpCall\HttpCallResultPool;
 use Behatch\HttpCall\Request;
+use Doctrine\ORM\EntityManagerInterface;
+use League\OAuth2\Server\CryptKey;
+use Ramsey\Uuid\Uuid;
 
 class RestContext extends BehatchRestContext
 {
     private $httpCallResultPool;
+    private $entityManager;
+    private $privateCryptKey;
 
-    public function __construct(Request $request, HttpCallResultPool $httpCallResultPool)
-    {
+    /**
+     * @var string|null
+     */
+    private $accessToken;
+
+    public function __construct(
+        Request $request,
+        HttpCallResultPool $httpCallResultPool,
+        EntityManagerInterface $entityManager,
+        string $sslPrivateKey
+    ) {
         parent::__construct($request);
 
         $this->httpCallResultPool = $httpCallResultPool;
+        $this->entityManager = $entityManager;
+        $this->privateCryptKey = new CryptKey($sslPrivateKey);
+    }
+
+    /**
+     * @Given I am logged with :email via OAuth client :clientName with scope :scope
+     */
+    public function iAmLoggedViaOAuthWithClientAndScope(string $email, string $clientName, string $scope): void
+    {
+        $identifier = uniqid();
+
+        /** @var AdherentRepository $adherentRepository */
+        $adherentRepository = $this->entityManager->getRepository(Adherent::class);
+        /** @var ClientRepository $clientRepository */
+        $clientRepository = $this->entityManager->getRepository(Client::class);
+
+        $accessToken = new AccessToken(
+            Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),
+            $adherentRepository->findOneByEmail($email),
+            $identifier,
+            new \DateTime('+10 minutes'),
+            $clientRepository->findOneBy(['name' => $clientName])
+        );
+
+        $accessToken->addScope($scope);
+
+        $this->entityManager->persist($accessToken);
+        $this->entityManager->flush();
+
+        $this->accessToken = $this->getJwtFromAccessToken($accessToken);
     }
 
     /**
@@ -45,5 +99,52 @@ class RestContext extends BehatchRestContext
         }
 
         return $json['access_token'];
+    }
+
+    public function iSendARequestToWithParameters($method, $url, TableNode $data)
+    {
+        $this->addAccessTokenToTheAuthorizationHeader();
+
+        return parent::iSendARequestToWithParameters($method, $url, $data);
+    }
+
+    public function iSendARequestTo($method, $url, PyStringNode $body = null, $files = [])
+    {
+        $this->addAccessTokenToTheAuthorizationHeader();
+
+        parent::iSendARequestTo($method, $url, $body, $files);
+    }
+
+    public function iSendARequestToWithBody($method, $url, PyStringNode $body)
+    {
+        $this->addAccessTokenToTheAuthorizationHeader();
+
+        return parent::iSendARequestToWithBody($method, $url, $body);
+    }
+
+    private function addAccessTokenToTheAuthorizationHeader(): void
+    {
+        if (!$this->accessToken) {
+            return;
+        }
+
+        $this->iAddHeaderEqualTo('Authorization', 'Bearer '.$this->accessToken);
+    }
+
+    private function getJwtFromAccessToken(AccessToken $accessToken): string
+    {
+        $client = new ClientModel($accessToken->getClient()->getUuid()->toString(), []);
+
+        $token = new AccessTokenModel();
+        $token->setClient($client);
+        $token->setIdentifier($accessToken->getIdentifier());
+        $token->setExpiryDateTime(\DateTime::createFromFormat('U', $accessToken->getExpiryDateTime()->getTimestamp()));
+        $token->setUserIdentifier($accessToken->getUserIdentifier());
+
+        foreach ($accessToken->getScopes() as $scope) {
+            $token->addScope(new Scope($scope));
+        }
+
+        return $token->convertToJWT($this->privateCryptKey);
     }
 }

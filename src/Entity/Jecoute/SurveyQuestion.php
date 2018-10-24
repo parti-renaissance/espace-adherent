@@ -25,7 +25,7 @@ class SurveyQuestion
     /**
      * @var Survey
      *
-     * @ORM\ManyToOne(targetEntity="Survey", inversedBy="questions", cascade={"persist", "remove"}))
+     * @ORM\ManyToOne(targetEntity="Survey", inversedBy="questions", cascade={"persist", "remove"})
      * @ORM\JoinColumn(onDelete="CASCADE")
      * @Gedmo\SortableGroup
      */
@@ -34,7 +34,7 @@ class SurveyQuestion
     /**
      * @var Question
      *
-     * @ORM\ManyToOne(targetEntity="Question", inversedBy="surveys", cascade={"persist", "remove"}))
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="surveys", cascade={"persist", "remove"})
      * @ORM\JoinColumn(onDelete="CASCADE")
      *
      * @Assert\Valid

@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\DataFixtures\AutoIncrementResetter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Jecoute\Question;
 use AppBundle\Entity\Jecoute\Survey;
@@ -13,6 +14,9 @@ class LoadJecouteSurveyData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+        AutoIncrementResetter::resetAutoIncrement($manager, 'jecoute_survey');
+        AutoIncrementResetter::resetAutoIncrement($manager, 'jecoute_survey_question');
+
         /** @var Adherent $referent1 */
         $referent1 = $this->getReference('adherent-8');
         $survey1 = new Survey($referent1, 'Questionnaire numéro 1', true);

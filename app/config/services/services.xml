@@ -164,6 +164,7 @@
 
         <!-- J'écoute -->
         <service id="AppBundle\Validator\SurveyQuestionTypeChoiceValidator" />
+        <service id="AppBundle\Validator\DataSurveyAnswerTypeChoiceValidator" />
 
         <!-- Report -->
         <service id="AppBundle\Report\ReportManager" />

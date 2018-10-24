@@ -260,7 +260,7 @@ security:
             security: false
 
         api_oauth:
-            pattern: ^/api/(me|webhooks|statistics/)
+            pattern: ^/api/(me|webhooks|statistics/|jecoute/)
             stateless: true
             guard:
                 authenticators:
