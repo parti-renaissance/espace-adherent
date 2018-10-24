@@ -149,19 +149,19 @@ class ReferentControllerTest extends WebTestCase
             'aic' => 1,
             'h' => 1,
             's' => 1,
-            'city' => 'Zürich, Kilchberg',
+            'city' => 'Melun',
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
-        $this->assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $data = [
             'anc' => 1,
             'aic' => 1,
             'h' => 1,
-            'ac' => 'CH',
+            'ac' => 'FR',
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
-        $this->assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $data = [
             'anc' => 1,
@@ -176,7 +176,7 @@ class ReferentControllerTest extends WebTestCase
             'anc' => 1,
             'aic' => 1,
             'h' => 1,
-            'ac' => 91,
+            'ac' => 59,
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
         $this->assertSame(0, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
@@ -193,23 +193,38 @@ class ReferentControllerTest extends WebTestCase
         $data = [
             'g' => 'female',
         ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+
+        $form = $this->client->getCrawler()->selectButton('Filtrer')->form();
+        $form['s']->untick();
+
+        $this->client->submit($form, $data);
         $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         // Firstname
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         $data = [
+            'g' => 'male',
             'f' => 'Mich',
         ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+
+        $form = $this->client->getCrawler()->selectButton('Filtrer')->form();
+        $form['s']->untick();
+
+        $this->client->submit($form, $data);
         $this->assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         // Lastname
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         $data = [
             'l' => 'ou',
+            'g' => '',
+            'f' => '',
         ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+
+        $form = $this->client->getCrawler()->selectButton('Filtrer')->form();
+        $form['s']->untick();
+
+        $this->client->submit($form, $data);
         $this->assertSame(3, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
     }
 

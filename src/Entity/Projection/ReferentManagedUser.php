@@ -185,6 +185,11 @@ class ReferentManagedUser
      */
     private $interests = [];
 
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $supervisorTags = [];
+
     public function __construct(
         int $status,
         string $type,
@@ -205,7 +210,8 @@ class ReferentManagedUser
         int $isMailSubscriber = 0,
         string $subscribedTags = null,
         \DateTime $createdAt = null,
-        string $gender = null
+        string $gender = null,
+        array $supervisorTags = []
     ) {
         $this->status = $status;
         $this->type = $type;
@@ -227,6 +233,7 @@ class ReferentManagedUser
         $this->subscribedTags = $subscribedTags;
         $this->createdAt = $createdAt;
         $this->gender = $gender;
+        $this->supervisorTags = $supervisorTags;
     }
 
     public function getId(): int
@@ -361,5 +368,15 @@ class ReferentManagedUser
     public function setInterests(array $interests): void
     {
         $this->interests = $interests;
+    }
+
+    public function getSupervisorTags(): array
+    {
+        return $this->supervisorTags;
+    }
+
+    public function setSupervisorTags(array $supervisorTags): void
+    {
+        $this->supervisorTags = $supervisorTags;
     }
 }

@@ -101,6 +101,9 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'subscribedTags' => '77',
             'created_at' => '2017-08-12 16:12:13',
             'gender' => 'male',
+            'supervisor_tags' => [
+                '77',
+            ],
         ]);
 
         $manager->persist($managedUser1);
