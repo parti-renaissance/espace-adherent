@@ -31,6 +31,9 @@ class SurveyRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @param Adherent|UserInterface $adherent
+     */
     public function createSurveysForAdherentQueryBuilder(Adherent $adherent): QueryBuilder
     {
         return $this

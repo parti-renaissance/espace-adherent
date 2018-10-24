@@ -8,12 +8,22 @@ use AppBundle\Validator\SurveyQuestionTypeChoice;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\DiscriminatorColumn;
+use Doctrine\ORM\Mapping\DiscriminatorMap;
+use Doctrine\ORM\Mapping\InheritanceType;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Table(name="jecoute_question")
  * @ORM\Entity
+ *
+ * @InheritanceType("JOINED")
+ * @DiscriminatorColumn(name="discr", type="string")
+ * @DiscriminatorMap({
+ *     "question": "Question",
+ *     "suggested_question": "SuggestedQuestion"
+ * })
  *
  * @SurveyQuestionTypeChoice
  *
