@@ -38,7 +38,9 @@ adherent.activity_position.unemployed: En recherche d'emploi
 referent: référent
 deputy: député
 committee_supervisor: animateur
+supervisor: animateur
 committee_host: co-animateur
+host: co-animateur
 board_member: membre du conseil
 coordinator: coordinateur
 procuration_manager: responsable procuration
@@ -72,6 +74,56 @@ adherent.change_email.success: Votre demande de changement a bien été prise en
 adherent.change_email.expired_key: Votre demande de changement d'email est expirée ! Veuillez faire une nouvelle demande.
 
 adherent.contact.success: Votre message a bien été envoyé.
+
+#
+# Dashboard
+#
+dashboard.welcome: Bienvenue, %firstname% !
+dashboard.adherent_since: adhérent depuis %date%
+dashboard.members_stats: |
+    {0} <span class="newblue">Aucun adhérent</span> dans ce département|
+    {1} <span class="newblue">%nb_members% adhérent</span> dans ce département|
+    ]1,Inf[ <span class="newblue">%nb_members% adhérents</span> dans ce département
+dashboard.subscriber_stats: |
+    {0}, aucun accepte de recevoir des e-mails.|
+    {1}, %nb_subscribers% accepte de recevoir des e-mails.|
+    ]1,Inf[, %nb_subscribers% acceptent de recevoir des e-mails.
+dashboard.send_email: Envoyer un e-mail
+dashboard.create_event: Créer un événement
+dashboard.show_members: Voir tous les adhérents
+dashboard.show_committees: Voir tous les comités
+dashboard.my_emails_sended: Les e-mails que j'ai envoyés
+dashboard.show_emails: Voir tous les emails
+dashboard.my_events: Les événements que j'ai créés
+dashboard.show_events: Voir tous les événements
+dashboard.my_internets: Les thématiques qui m'intéressent
+dashboard.shortcut.label: Raccourcis
+dashboard.shortcut.stats_space: Espace statistiques
+dashboard.shortcut.leaflets_posters: 🎨Tracts et posters
+dashboard.shortcut.my_documents: 📄Mes documents
+dashboard.shortcut.contact: 🐛 Bug ? Nouveau besoin ? Faites-le nous savoir.
+dashboard.shortcut.procuration_manager_space: 🐼Espace responsable procuration
+dashboard.shortcut.committee_coordinator_space: 🐸Espace coordinateur de comité
+dashboard.shortcut.citizen_project_coordinator_space_space: 🐨Espace coordinateur de projet citoyen
+dashboard.my_skills: Mes compétences
+dashboard.my_committes: Les comités dont je fais partie
+dashboard.my_citizen_projects: Mes projets citoyens
+dashboard.recent_activity: Activité récente
+dashboard.events.participantsCount: |
+    {0} inscrit|
+    {1} inscrit|
+    ]1,Inf[ inscrits
+dashboard.edit: Modifier
+dashboard.emails.recipent: |
+    {0} destinataire|
+    {1} destinataire|
+    ]1,Inf[ destinataires
+dashboard.skills.empty: Aucune compétence pour l'instant, renseignez-en <a href="%url%">ici</a>
+dashboard.citizen_project.empty: Aucun projet citoyen pour l'instant, renseignez-en <a href="%url%">ici</a>
+dashboard.activity.empty: Aucune activitée pour l'instant
+dashboard.interests.empty: Aucun intérèt pour l'instant, renseignez-en <a href="%url%">ici</a>
+dashboard.committies.empty: Aucun comité pour l'instant, ajoutez-en <a href="%url%">ici</a>
+dashboard.picture.update: Modifier ma photo
 
 #
 # Committee

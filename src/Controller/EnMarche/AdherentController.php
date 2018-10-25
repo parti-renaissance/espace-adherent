@@ -19,8 +19,12 @@ use AppBundle\Form\CreateCommitteeCommandType;
 use AppBundle\Form\CitizenProjectCommandType;
 use AppBundle\CitizenProject\CitizenProjectCreationCommand;
 use AppBundle\Geocoder\Exception\GeocodingException;
+use AppBundle\Membership\MemberActivityTracker;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CitizenProjectRepository;
+use AppBundle\Repository\EmailRepository;
+use AppBundle\Repository\EventRepository;
+use AppBundle\Repository\SummaryRepository;
 use AppBundle\Search\SearchParametersFilter;
 use AppBundle\Search\SearchResultsProvidersManager;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
@@ -68,6 +72,31 @@ class AdherentController extends Controller
             'nb_adherent' => $adherentRepository->countAdherents(),
             'from_activation' => $request->query->getBoolean('from_activation'),
         ], $params));
+    }
+
+    /**
+     * @Route("/tableau-de-bord", name="app_user_dashboard")
+     * @Method("GET")
+     */
+    public function dashboardAction(
+        AdherentRepository $adherentRepository,
+        EventRepository $eventRepository,
+        EmailRepository $emailRepository,
+        SummaryRepository $summaryRepository,
+        MemberActivityTracker $memberActivityTracker
+    ): Response {
+        return $this->render('adherent/dashboard.html.twig', [
+            'events' => $eventRepository->findEventsByOrganizer($this->getUser()),
+            'emails' => $emailRepository->findBy(['sender' => $this->getUser()->getEmailAddress()]),
+            'summary' => $summaryRepository->findOneForAdherent($this->getUser()),
+            'activities' => $memberActivityTracker->getRecentActivitiesForAdherent($this->getUser()),
+            'area_stats' => $this->getUser()->getManagedArea()
+                ? [
+                        'total' => $adherentRepository->countInManagedArea($this->getUser()->getManagedArea()),
+                        'subscriber' => $adherentRepository->countSubscriberInManagedArea($this->getUser()->getManagedArea()),
+                ]
+                : null,
+        ]);
     }
 
     /**

@@ -12,6 +12,7 @@ use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\District;
+use AppBundle\Entity\ReferentManagedArea;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Membership\CitizenProjectNotificationDistance;
 use AppBundle\Statistics\StatisticsParametersFilter;
@@ -678,5 +679,55 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
 
         return new Paginator($query, false);
+    }
+
+    /**
+     * Finds enabled adherents in the deputy district.
+     *
+     * @return Adherent[]|Paginator
+     */
+    public function findAllInArea(District $district): Paginator
+    {
+        $query = $this->createQueryBuilder('adherent')
+            ->select('partial adherent.{id, firstName, lastName, emailAddress}')
+            ->innerJoin('adherent.referentTags', 'tag')
+            ->where('tag = :tag')
+            ->andWhere('adherent.status = :status')
+            ->setParameter('tag', $district->getReferentTag())
+            ->setParameter('status', Adherent::ENABLED)
+            ->getQuery()
+            ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
+        ;
+
+        return new Paginator($query, false);
+    }
+
+    public function countInManagedArea(ReferentManagedArea $managedArea): int
+    {
+        return $this->createQueryBuilder('adherent')
+            ->select('COUNT(adherent)')
+            ->innerJoin('adherent.referentTags', 'tag')
+            ->where('tag IN (:tags)')
+            ->andWhere('adherent.status = :status')
+            ->setParameter('tags', $managedArea->getTags())
+            ->setParameter('status', Adherent::ENABLED)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function countSubscriberInManagedArea(ReferentManagedArea $managedArea): int
+    {
+        return $this->createQueryBuilder('adherent')
+            ->select('COUNT(DISTINCT(adherent))')
+            ->innerJoin('adherent.referentTags', 'tag')
+            ->innerJoin('adherent.subscriptionTypes', 'subscriptiontypes')
+            ->where('tag IN (:tags)')
+            ->andWhere('adherent.status = :status')
+            ->setParameter('tags', $managedArea->getTags())
+            ->setParameter('status', Adherent::ENABLED)
+            ->getQuery()
+            ->getSingleScalarResult()
+            ;
     }
 }

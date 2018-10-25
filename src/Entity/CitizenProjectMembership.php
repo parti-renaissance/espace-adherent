@@ -177,6 +177,11 @@ class CitizenProjectMembership
         $this->privilege = $privilege;
     }
 
+    public function getPrivilege(): string
+    {
+        return $this->privilege;
+    }
+
     public function isPromotableAdministrator(): bool
     {
         return $this->isFollower();
