@@ -13,6 +13,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class RedirectionsSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var RedirectToInterface[]
+     */
     private $handlers = [];
 
     /**
@@ -44,9 +47,15 @@ class RedirectionsSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $handled = false;
+
         // Do the same handling for the same URL but without trailing slash
         $url = str_replace($pathInfo, rtrim($pathInfo, ' /'), $requestUri);
-        /* @var RedirectToInterface $handler */
+
+        if (empty($url)) {
+            return;
+        }
+
         foreach ($this->handlers as $handler) {
             if ($handled = $handler->handle($event, $url, Response::HTTP_MOVED_PERMANENTLY)) {
                 break;
