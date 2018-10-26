@@ -2,32 +2,26 @@
 
 namespace AppBundle\Deputy;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\DeputyMessage as Message;
+use AppBundle\Entity\DeputyManagedUsersMessage;
+use AppBundle\Producer\DeputyMessageDispatcherProducerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class DeputyMessageNotifier
 {
-    private $mailer;
+    private $manager;
+    private $producer;
 
-    public function __construct(MailerService $mailer)
+    public function __construct(ObjectManager $manager, DeputyMessageDispatcherProducerInterface $producer)
     {
-        $this->mailer = $mailer;
+        $this->manager = $manager;
+        $this->producer = $producer;
     }
 
-    public function sendMessage(DeputyMessage $message, array $recipients): void
+    public function sendMessage(DeputyMessage $message): void
     {
-        $chunks = array_chunk(
-            $recipients,
-            MailerService::PAYLOAD_MAXSIZE
-        );
+        $this->manager->persist(DeputyManagedUsersMessage::createFromMessage($message));
+        $this->manager->flush();
 
-        foreach ($chunks as $chunk) {
-            $this->mailer->sendMessage($this->createMessage($message, $chunk));
-        }
-    }
-
-    private function createMessage(DeputyMessage $message, array $recipients): Message
-    {
-        return Message::create($message, $recipients);
+        $this->producer->scheduleDispatch($message);
     }
 }

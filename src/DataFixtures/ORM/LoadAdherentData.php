@@ -137,8 +137,9 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent4->setPosition(ActivityPositions::UNEMPLOYED);
         $adherent4->setInterests(['jeunesse']);
         $adherent4->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent4->removeSubscriptionTypeByCode(SubscriptionTypeEnum::DEPUTY_EMAIL);
         $adherent4->setProcurationManagedAreaCodesAsString('75, 44, GB, 92130, 91300');
-        $adherent3->addReferentTag($this->getReference('referent_tag_75'));
+        $adherent4->addReferentTag($this->getReference('referent_tag_75'));
         $adherent4->addReferentTag($this->getReference('referent_tag_75009'));
         $this->addReference('adherent-4', $adherent4);
 

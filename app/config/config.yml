@@ -288,6 +288,11 @@ old_sound_rabbit_mq:
             exchange_options: { name: 'referent-message-dispatcher', type: direct }
             class:            AppBundle\Producer\ReferentMessageDispatcherProducer
 
+        deputy_message_dispatcher:
+            connection:       default
+            exchange_options: { name: 'deputy-message-dispatcher', type: direct }
+            class:            AppBundle\Producer\DeputyMessageDispatcherProducer
+
         project_citizen_creation_notification:
             connection: default
             exchange_options: { name: 'project_citizen_creation_notification', type: direct }
@@ -316,6 +321,13 @@ old_sound_rabbit_mq:
             exchange_options:  { name: 'referent-message-dispatcher', type: direct }
             queue_options:     { name: 'referent-message-dispatcher', durable: false }
             callback:          AppBundle\Consumer\ReferentMessageDispatcherConsumer
+            qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
+
+        deputy_message_dispatcher:
+            connection:        default
+            exchange_options:  { name: 'deputy-message-dispatcher', type: direct }
+            queue_options:     { name: 'deputy-message-dispatcher', durable: false }
+            callback:          AppBundle\Consumer\DeputyMessageDispatcherConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
 
         project_citizen_creation_notification:

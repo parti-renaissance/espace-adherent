@@ -13,29 +13,8 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class ReferentManagedUsersMessage
+class ReferentManagedUsersMessage extends ManagedUsersMessage
 {
-    use EntityIdentityTrait;
-    use EntityTimestampableTrait;
-
-    /**
-     * @var Adherent
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
-     * @ORM\JoinColumn(name="adherent_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    private $from;
-
-    /**
-     * @ORM\Column
-     */
-    private $subject;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $content;
-
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
@@ -70,11 +49,6 @@ class ReferentManagedUsersMessage
      * @ORM\Column(type="text")
      */
     private $queryId;
-
-    /**
-     * @ORM\Column(type="bigint")
-     */
-    private $offset;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
@@ -139,11 +113,6 @@ class ReferentManagedUsersMessage
         );
     }
 
-    public function incrementOffset(int $offset): void
-    {
-        $this->offset += $offset;
-    }
-
     public function getFrom(): Adherent
     {
         return $this->from;
@@ -192,11 +161,6 @@ class ReferentManagedUsersMessage
     public function getQueryId(): string
     {
         return $this->queryId;
-    }
-
-    public function getOffset(): int
-    {
-        return $this->offset;
     }
 
     public function getInterests(): array

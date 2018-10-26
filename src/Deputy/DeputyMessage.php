@@ -3,10 +3,19 @@
 namespace AppBundle\Deputy;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\DeputyManagedUsersMessage;
+use AppBundle\Entity\District;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class DeputyMessage
 {
+    /**
+     * @var UuidInterface
+     */
+    private $uuid;
+
     /**
      * @var Adherent
      */
@@ -32,9 +41,45 @@ class DeputyMessage
      */
     private $content;
 
-    public function __construct(Adherent $from)
+    /**
+     * @var District
+     *
+     * @Assert\Valid
+     */
+    private $district;
+
+    /**
+     * @var int
+     *
+     * @Assert\Valid
+     */
+    private $offset;
+
+    public function __construct(UuidInterface $uuid, Adherent $deputy)
     {
-        $this->from = $from;
+        $this->uuid = $uuid;
+        $this->from = $deputy;
+        $this->district = $deputy->getManagedDistrict();
+    }
+
+    public static function create(Adherent $deputy): self
+    {
+        return new self(Uuid::uuid4(), $deputy);
+    }
+
+    public static function createFromMessage(DeputyManagedUsersMessage $savedMessage): self
+    {
+        $message = new self($savedMessage->getUuid(), $savedMessage->getFrom());
+        $message->setSubject($savedMessage->getSubject());
+        $message->setContent($savedMessage->getContent());
+        $message->setOffset($savedMessage->getOffset());
+
+        return $message;
+    }
+
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     public function setSubject(string $subject): void
@@ -60,5 +105,20 @@ class DeputyMessage
     public function getContent(): ?string
     {
         return $this->content;
+    }
+
+    public function getDistrict(): District
+    {
+        return $this->district;
+    }
+
+    public function getOffset(): ?int
+    {
+        return $this->offset;
+    }
+
+    public function setOffset(int $offset = null): void
+    {
+        $this->offset = $offset;
     }
 }

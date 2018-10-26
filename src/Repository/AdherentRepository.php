@@ -19,6 +19,7 @@ use AppBundle\Subscription\SubscriptionTypeEnum;
 use AppBundle\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -662,23 +663,44 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     }
 
     /**
-     * Finds enabled adherents in the deputy district.
-     *
-     * @return Adherent[]|Paginator
+     * Finds enabled adherents in the deputy district that subscribed to deputy emails.
      */
-    public function findAllInDistrict(District $district): Paginator
+    public function createQueryBuilderForDistrict(District $district): QueryBuilder
     {
-        $query = $this->createQueryBuilder('adherent')
-            ->select('partial adherent.{id, firstName, lastName, emailAddress}')
-            ->innerJoin('adherent.referentTags', 'tag')
+        return $this->createQueryBuilder('adherent')
+            ->join('adherent.referentTags', 'tag')
+            ->join('adherent.subscriptionTypes', 'subscriptionType')
             ->where('tag = :tag')
             ->andWhere('adherent.status = :status')
+            ->andWhere('subscriptionType.code = :citizen_project_subscription_type')
             ->setParameter('tag', $district->getReferentTag())
             ->setParameter('status', Adherent::ENABLED)
+            ->setParameter('citizen_project_subscription_type', SubscriptionTypeEnum::DEPUTY_EMAIL)
+        ;
+    }
+
+    /**
+     * Count enabled adherents in the deputy district.
+     */
+    public function countAllInDistrict(District $district): int
+    {
+        return $this->createQueryBuilderForDistrict($district)
+            ->select('COUNT(adherent)')
             ->getQuery()
-            ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function createDispatcherIteratorForDistrict(Adherent $deputy, District $district, $offset = null): IterableResult
+    {
+        $qb = $this->createQueryBuilderForDistrict($district)
+            ->select('partial adherent.{id, firstName, lastName, emailAddress}')
         ;
 
-        return new Paginator($query, false);
+        if ($offset) {
+            $qb->setFirstResult($offset);
+        }
+
+        return $qb->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->iterate();
     }
 }

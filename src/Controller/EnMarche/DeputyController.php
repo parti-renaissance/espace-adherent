@@ -36,9 +36,7 @@ class DeputyController extends Controller
 
         $currentUser = $this->getUser();
 
-        $recipients = $adherentRepository->findAllInDistrict($currentUser->getManagedDistrict());
-
-        $message = new DeputyMessage($currentUser);
+        $message = DeputyMessage::create($this->getUser());
 
         $form = $this
             ->createForm(DeputyMessageType::class, $message)
@@ -46,14 +44,14 @@ class DeputyController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get(DeputyMessageNotifier::class)->sendMessage($message, iterator_to_array($recipients));
+            $this->get(DeputyMessageNotifier::class)->sendMessage($message);
             $this->addFlash('info', 'deputy.message.success');
 
             return $this->redirectToRoute('app_deputy_users_message');
         }
 
         return $this->render('deputy/users_message.html.twig', [
-            'results_count' => $recipients->count(),
+            'results_count' => $adherentRepository->countAllInDistrict($currentUser->getManagedDistrict()),
             'form' => $form->createView(),
         ]);
     }
