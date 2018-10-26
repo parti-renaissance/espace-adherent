@@ -162,6 +162,7 @@ survey.answer.unique_choice.with_text_field.invalid: La question {{ surveyQuesti
 
 survey.answer.multiple_choice.invalid: La question {{ surveyQuestionId }} est une question à choix multiples et doit contenir un ou plusieurs choix sélectionnés.
 survey.answer.multiple_choice.with_text_field.invalid: La question {{ surveyQuestionId }} est une question à choix multiples et ne doit pas contenir de champ texte.
+
 #
 # Je Marche
 #

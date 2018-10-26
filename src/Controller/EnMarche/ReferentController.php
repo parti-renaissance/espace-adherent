@@ -32,6 +32,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/espace-referent")
@@ -161,13 +162,14 @@ class ReferentController extends Controller
      */
     public function jecouteSurveysListAction(
         SurveyRepository $surveyRepository,
-        SurveyExporter $surveyExporter
+        SurveyExporter $surveyExporter,
+        UserInterface $user
     ): Response {
         $this->disableInProduction();
 
         return $this->render('referent/surveys/list.html.twig', [
             'surveysListJson' => $surveyExporter->exportAsJson(
-                $surveyRepository->findAllPublishedByCreator($this->getUser())
+                $surveyRepository->findAllPublishedByCreator($user)
             ),
         ]);
     }
@@ -176,12 +178,15 @@ class ReferentController extends Controller
      * @Route("/questionnaire/creer", name="app_referent_survey_create")
      * @Method("GET|POST")
      */
-    public function jecouteSurveyCreateAction(Request $request, ObjectManager $manager): Response
-    {
+    public function jecouteSurveyCreateAction(
+        Request $request,
+        ObjectManager $manager,
+        UserInterface $user
+    ): Response {
         $this->disableInProduction();
 
         $form = $this
-            ->createForm(SurveyFormType::class, new Survey($this->getUser()))
+            ->createForm(SurveyFormType::class, new Survey($user))
             ->handleRequest($request)
         ;
 

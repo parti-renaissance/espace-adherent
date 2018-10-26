@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/jecoute")
@@ -29,13 +30,16 @@ class JecouteSurveyController extends Controller
      * @Route("/survey", name="api_surveys_list")
      * @Method("GET")
      */
-    public function surveyListAction(SurveyRepository $surveyRepository, Serializer $serializer): Response
-    {
+    public function surveyListAction(
+        SurveyRepository $surveyRepository,
+        Serializer $serializer,
+        UserInterface $user
+    ): Response {
         $this->disableInProduction();
 
         return new JsonResponse(
             $serializer->serialize(
-                $surveyRepository->findAllPublished(),
+                $surveyRepository->findAllFor($user),
                 'json',
                 SerializationContext::create()->setGroups('survey_list')
             ),

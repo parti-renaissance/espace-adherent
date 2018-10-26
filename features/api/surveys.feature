@@ -14,7 +14,7 @@ Feature:
     When I send a "GET" request to "/api/jecoute/survey"
     Then the response status code should be 401
 
-  Scenario: As a logged-in user I can get the surveys and answer it
+  Scenario: As a logged-in user I can get the surveys of my referent(s)
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
     When I send a "GET" request to "/api/jecoute/survey"
     Then the response status code should be 200
@@ -23,58 +23,46 @@ Feature:
     """
     [
       {
-        "id":@integer@,
+        "id":1,
         "questions":[
           {
-            "id":@integer@,
+            "id":1,
             "type":"simple_field",
             "content":"Ceci est-il un champ libre ?",
             "choices":[]
           },
           {
-            "id":@integer@,
+            "id":2,
             "type":"multiple_choice",
             "content":"Est-ce une question à choix multiple ?",
             "choices":[
               {
-                "id":@integer@,
+                "id":1,
                 "content":"Réponse A"
               },
               {
-                "id":@integer@,
+                "id":2,
                 "content":"Réponse B"
               }
             ]
           },
           {
-            "id":@integer@,
+            "id":3,
             "type":"unique_choice",
             "content":"Est-ce une question à choix unique ?",
             "choices":[
               {
-                "id":@integer@,
+                "id":3,
                 "content":"Réponse unique 1"
               },
               {
-                "id":@integer@,
+                "id":4,
                 "content":"Réponse unique 2"
               }
             ]
           }
         ],
         "name":"Questionnaire numéro 1"
-      },
-      {
-        "id":@integer@,
-        "questions":[
-          {
-            "id":@integer@,
-            "type":"simple_field",
-            "content":"Ceci est-il un champ libre ?",
-            "choices":[]
-          }
-        ],
-        "name":"Un deuxième questionnaire"
       }
     ]
     """
@@ -120,6 +108,42 @@ Feature:
     """
     {
       "status": "ok"
+    }
+    """
+
+  Scenario: As a logged-in user I can not reply to a survey that was no created by my referent(s)
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+    And I add "Content-Type" header equal to "application/json"
+    And I add "Accept" header equal to "application/json"
+    When I send a "POST" request to "/api/jecoute/survey/reply" with body:
+    """
+    {
+      "survey":2,
+      "lastName":"Bonsoirini",
+      "firstName":"Ernestino",
+      "phone":"+33320202020",
+      "emailAddress":"ernestino@bonsoirini.fr",
+      "agreedToStayInContact":1,
+      "agreedToJoinParisOperation":1,
+      "answers":[
+        {
+          "surveyQuestion":4,
+          "textField":"Réponse libre"
+        }
+      ]
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "status":"error",
+      "errors":{
+        "survey":[
+          "Cette valeur n'est pas valide."
+        ]
+      }
     }
     """
 
