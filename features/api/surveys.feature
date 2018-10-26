@@ -77,10 +77,8 @@ Feature:
       "survey":1,
       "lastName":"Bonsoirini",
       "firstName":"Ernestino",
-      "phone":"+33320202020",
       "emailAddress":"ernestino@bonsoirini.fr",
       "agreedToStayInContact":1,
-      "agreedToJoinParisOperation":1,
       "answers":[
         {
           "surveyQuestion":1,
@@ -121,10 +119,8 @@ Feature:
       "survey":2,
       "lastName":"Bonsoirini",
       "firstName":"Ernestino",
-      "phone":"+33320202020",
       "emailAddress":"ernestino@bonsoirini.fr",
       "agreedToStayInContact":1,
-      "agreedToJoinParisOperation":1,
       "answers":[
         {
           "surveyQuestion":4,
@@ -157,10 +153,8 @@ Feature:
       "survey":1,
       "lastName":"Bonsoirini",
       "firstName":"Ernestino",
-      "phone":"+33320202020",
       "emailAddress":"bonsoirini.fr",
       "agreedToStayInContact":1,
-      "agreedToJoinParisOperation":1,
       "answers":[
         {
           "surveyQuestion":1
