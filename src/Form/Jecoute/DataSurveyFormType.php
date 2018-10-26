@@ -39,9 +39,6 @@ class DataSurveyFormType extends AbstractType
             ->add('firstName', TextType::class, [
                 'required' => false,
             ])
-            ->add('phone', TextType::class, [
-                'required' => false,
-            ])
             ->add('emailAddress', EmailType::class, [
                 'required' => false,
             ])
@@ -51,7 +48,6 @@ class DataSurveyFormType extends AbstractType
                 'by_reference' => false,
             ])
             ->add('agreedToStayInContact', CheckboxType::class)
-            ->add('agreedToJoinParisOperation', CheckboxType::class)
         ;
     }
 

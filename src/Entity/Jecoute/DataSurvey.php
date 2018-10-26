@@ -52,11 +52,6 @@ class DataSurvey
 
     /**
      * @ORM\Column(nullable=true)
-     */
-    private $phone;
-
-    /**
-     * @ORM\Column(nullable=true)
      *
      * @Assert\Email
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
@@ -67,11 +62,6 @@ class DataSurvey
      * @ORM\Column(type="boolean")
      */
     private $agreedToStayInContact = false;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $agreedToJoinParisOperation = false;
 
     /**
      * @var DataAnswer[]|Collection
@@ -136,16 +126,6 @@ class DataSurvey
         $this->lastName = $lastName;
     }
 
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(string $phone): void
-    {
-        $this->phone = $phone;
-    }
-
     public function getEmailAddress(): ?string
     {
         return $this->emailAddress;
@@ -164,16 +144,6 @@ class DataSurvey
     public function setAgreedToStayInContact(bool $agreedToStayInContact): void
     {
         $this->agreedToStayInContact = $agreedToStayInContact;
-    }
-
-    public function getAgreedToJoinParisOperation(): bool
-    {
-        return $this->agreedToJoinParisOperation;
-    }
-
-    public function setAgreedToJoinParisOperation(bool $agreedToJoinParisOperation): void
-    {
-        $this->agreedToJoinParisOperation = $agreedToJoinParisOperation;
     }
 
     public function addAnswer(DataAnswer $answer): void
