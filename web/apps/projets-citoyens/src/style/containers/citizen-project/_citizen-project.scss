@@ -668,9 +668,19 @@ h3.citizen__helplist-header {
     }
 
     &__dropdown {
+        .Select-control {
+          border-radius: 0;
+          border-color: $green-citizen;
+          border-width: 2px;
+        }
+
         .Select-value {
-          line-height: 36px !important;
+          line-height: 63px !important;
           cursor: pointer;
+        }
+
+        .Select-input {
+          height: 63px !important;
         }
     }
 }
