@@ -406,14 +406,14 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testAdherentCanUnregisterToEvent()
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $eventUrl = $this->getEventUrl();
 
         $crawler = $this->client->request(Request::METHOD_GET, $eventUrl);
 
         $this->assertSame('1 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
-        $this->assertSame('Je ne veux plus participer', trim($crawler->filter('.unregister-event')->text()));
+        $this->assertSame('Je ne peux plus participer', trim($crawler->filter('.unregister-event')->text()));
 
         $unregistrationButton = $this->client->getCrawler()->filter('.unregister-event');
 
