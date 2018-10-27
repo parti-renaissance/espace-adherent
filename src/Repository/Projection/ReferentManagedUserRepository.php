@@ -9,6 +9,7 @@ use AppBundle\Repository\ReferentTrait;
 use AppBundle\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
+use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -184,8 +185,18 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         }
 
         if ($filter->includeSupervisors()) {
-            $typeExpression->add('u.type = :type_s AND u.isCommitteeSupervisor = 1');
+            $and = new Andx();
+            $and->add('u.type = :type_s AND u.isCommitteeSupervisor = 1');
             $qb->setParameter('type_s', ReferentManagedUser::TYPE_ADHERENT);
+
+            $supervisorExpression = $qb->expr()->orX();
+            foreach ($referent->getManagedAreaTagCodes() as $key => $code) {
+                $supervisorExpression->add(sprintf('FIND_IN_SET(:code_%s, u.supervisorTags) > 0', $key));
+                $qb->setParameter('code_'.$key, $code);
+            }
+
+            $and->add($supervisorExpression);
+            $typeExpression->add($and);
         }
 
         $qb->andWhere($typeExpression);

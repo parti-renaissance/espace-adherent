@@ -146,7 +146,7 @@
                             Exemple: "59400, 18, CH"
                         </legend>
 
-                        <legend class="label__header label__header__interest">Centres d'intêret</legend>
+                        <legend class="label__header label__header__interest">Centres d'intérêt</legend>
                         <div class="referent__filters__search__col__interest">
                             <div class="form l__row l__row--wrap">
                                 {% for key, value in adherent_interests %}
@@ -228,7 +228,6 @@
                     <th style="width: 100px;">Nom</th>
                     <th style="width: 100px;">Téléphone</th>
                     <th style="width: 100px;">Ville</th>
-                    <th style="width: 120px;">Code postal du comité géré</th>
                     <th style="width: 100px;" class="datagrid__table__col--left">Informations</th>
                     <th style="width: 120px;" class="datagrid__table__col--left datagrid__table__col--hide-mobile">Comités</th>
                     <th style="width: 150px;" class="datagrid__table__col--hide-mobile">Adhésion</th>
@@ -241,7 +240,6 @@
                         <td>{{ user.lastName }}</td>
                         <td>{{ user.phone ? user.phone|phone_number_format : '~' }}</td>
                         <td>{{ user.postalCode }} <br/> {{ user.city }}, {{ user.country }}</td>
-                        <td>{{ user.committeePostalCode ?: '~' }}</td>
                         <td class="datagrid__table__col--left">
                             <small class="referent__item__metadata">
                                 {{ user.age ? user.age ~ ' ans' : '~'}},
@@ -268,7 +266,13 @@
                             </small>
                             <br />
                             <small class="text--italic">
-                                {{ user.interests|join(', ') }}
+                                {% set interets = [] %}
+
+                                {% for interest in user.interests if adherent_interests[interest] is defined %}
+                                    {% set interets = interets|merge([adherent_interests[interest]]) %}
+                                {% endfor %}
+
+                                {{ interets|join(', ') }}
                             </small>
                         </td>
                         <td class="datagrid__table__col--left datagrid__table__col--hide-mobile">

@@ -26,7 +26,8 @@ class ReferentManagedUserFactory
             $data['is_mail_subscriber'],
             $data['subscribedTags'],
             $data['created_at'] instanceof \DateTime ?: new \DateTime($data['created_at']),
-            $data['gender'] ?? null
+            $data['gender'] ?? null,
+            $data['supervisor_tags'] ?? []
         );
     }
 
