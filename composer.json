@@ -82,6 +82,7 @@
         "symfony/psr-http-message-bridge": "^1.0",
         "symfony/symfony": "3.4.*",
         "symfony/thanks": "^1.0",
+        "syslogic/doctrine-json-functions": "^2.1",
         "tackk/cartographer": "^1.1",
         "twig/twig": "^1.0||^2.0",
         "webmozart/assert": "^1.3",

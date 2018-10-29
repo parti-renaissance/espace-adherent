@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "82e6d0507704bc56ef1c1aa31846be2b",
+    "content-hash": "6c521a96cd91ef1488054c5b7022aee2",
     "packages": [
         {
             "name": "a2lix/i18n-doctrine-bundle",
@@ -8860,6 +8860,61 @@
             ],
             "description": "Give thanks (in the form of a GitHub ⭐) to your fellow PHP package maintainers (not limited to Symfony components)!",
             "time": "2018-03-14T21:51:39+00:00"
+        },
+        {
+            "name": "syslogic/doctrine-json-functions",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ScientaNL/DoctrineJsonFunctions.git",
+                "reference": "3c9973d6a43ca762366bc8c0c490052fe3cf7ff6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ScientaNL/DoctrineJsonFunctions/zipball/3c9973d6a43ca762366bc8c0c490052fe3cf7ff6",
+                "reference": "3c9973d6a43ca762366bc8c0c490052fe3cf7ff6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "doctrine/orm": "~2.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Syslogic\\DoctrineJsonFunctions\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Doctrine Json Functions Contributors",
+                    "homepage": "https://github.com/SyslogicNL/DoctrineJsonFunctions/contributors"
+                }
+            ],
+            "description": "A set of extensions to Doctrine 2 that add support for json query functions.",
+            "keywords": [
+                "database",
+                "doctrine",
+                "dql",
+                "json",
+                "mariadb",
+                "mysql",
+                "orm",
+                "postgres",
+                "postgresql"
+            ],
+            "time": "2018-01-31T09:12:42+00:00"
         },
         {
             "name": "tackk/cartographer",

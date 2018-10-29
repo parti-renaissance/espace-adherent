@@ -27,7 +27,9 @@ class ReferentManagedUserFactory
             $data['subscribedTags'],
             $data['created_at'] instanceof \DateTime ?: new \DateTime($data['created_at']),
             $data['gender'] ?? null,
-            $data['supervisor_tags'] ?? []
+            $data['supervisor_tags'] ?? [],
+            $data['citizenProjects'] ?? null,
+            $data['citizenProjectsOrganizer'] ?? null
         );
     }
 

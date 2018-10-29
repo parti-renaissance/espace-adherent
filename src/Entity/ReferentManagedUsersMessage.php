@@ -80,6 +80,11 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
      */
     private $ageMaximum = 0;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $includeCP = false;
+
     public function __construct(
         UuidInterface $uuid,
         Adherent $from,
@@ -97,6 +102,7 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         string $gender,
         int $ageMinimum,
         int $ageMaximum,
+        bool $includeCP,
         array $interests = [],
         int $offset = 0
     ) {
@@ -118,6 +124,7 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         $this->lastName = $lastName;
         $this->ageMinimum = $ageMinimum;
         $this->ageMaximum = $ageMaximum;
+        $this->includeCP = $includeCP;
     }
 
     public static function createFromMessage(ReferentMessage $message): self
@@ -139,6 +146,7 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
             $message->getFilter()->getQueryGender(),
             $message->getFilter()->getQueryAgeMinimum(),
             $message->getFilter()->getQueryAgeMaximum(),
+            $message->getFilter()->getIncludeCitizenProject(),
             $message->getFilter()->getQueryInterests()
         );
     }
@@ -251,5 +259,10 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
     public function setAgeMaximum(?int $ageMaximum): void
     {
         $this->ageMaximum = $ageMaximum;
+    }
+
+    public function getIncludeCitizenProject(): bool
+    {
+        return $this->includeCP;
     }
 }
