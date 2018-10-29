@@ -55,6 +55,8 @@ class JecouteSurveyController extends Controller
      */
     public function surveyReplyAction(Request $request, ObjectManager $manager): JsonResponse
     {
+        $this->disableInProduction();
+
         $form = $this->createForm(DataSurveyFormType::class, null, [
             'csrf_protection' => false,
         ]);
