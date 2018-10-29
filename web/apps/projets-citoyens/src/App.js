@@ -30,7 +30,7 @@ const routes = [
         path: '/projets-citoyens/decouvrir',
         exact: true,
         main: () => <CitizenProjectTurnKey />,
-        item_label: 'Découvrir les projets clés en main',
+        item_label: 'Découvrir les projets clé en main',
         className: 'decouvrir-citizen-projects'
     },
     {
