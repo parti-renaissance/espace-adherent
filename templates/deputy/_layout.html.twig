@@ -3,6 +3,12 @@
 {% block page_title 'Espace député' %}
 {% block canonical_url url('app_deputy_users_message') %}
 
+{% block stylesheets %}
+    {% if not app.user.isChartAccepted %}
+        <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     <main>
         <section class="deputy procuration-manager b__nudge--bottom-huge">
@@ -19,5 +25,29 @@
                 {% block deputy_content %}{% endblock %}
             </div>
         </section>
+
+        {% if not app.user.isChartAccepted %}
+            {% include 'chart_dialog.html.twig' with {
+                'title': 'deputy.popup.title'|trans,
+                'subtitle': 'deputy.popup.subtitle'|trans,
+                'fileUrl': 'deputy.popup.file_url'|trans
+            } %}
+        {% endif %}
     </main>
+{% endblock %}
+
+{% block final_javascripts %}
+    {% if not app.user.isChartAccepted %}
+        {% if js is not defined %}
+            {% import 'javascript.js.twig' as js %}
+        {% endif %}
+
+        <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+        <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+        <script type="text/javascript">
+            Kernel.onLoad(function() {
+                {{ js.chart_acceptation('#chart_dialog') }}
+            } );
+        </script>
+    {% endif %}
 {% endblock %}

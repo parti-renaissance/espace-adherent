@@ -356,3 +356,31 @@ $(document).ready(function() {
         {% endfor %}
     });
 {% endmacro %}
+
+{% macro chart_acceptation(selector) %}
+$(document).ready(function() {
+    var element = $("{{ selector }}");
+
+    element.css("visibility", "visible");
+    element.dialog({
+        height: "auto",
+        width: "90%",
+        modal: true,
+        minHeight: 500,
+        position: { my: "center", at: "top" },
+        buttons: {
+            "{{ 'referent.button.accept'|trans }}": function () {
+                $.ajax({
+                    url: "{{ path('app_user_set_accept_chart')|e('js') }}",
+                    type: 'PUT'
+                });
+
+                $(this).dialog("destroy");
+            }
+        },
+        beforeClose: function (event, ui) {
+            window.location.replace("{{ path('homepage') }}");
+        }
+    });
+});
+{% endmacro %}

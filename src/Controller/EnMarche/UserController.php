@@ -20,12 +20,14 @@ use AppBundle\Repository\DonationRepository;
 use AppBundle\Repository\SubscriptionTypeRepository;
 use AppBundle\Repository\TransactionRepository;
 use AppBundle\Subscription\SubscriptionTypeEnum;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -195,5 +197,24 @@ class UserController extends Controller
             'unregistered' => false,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/chart",
+     *     name="app_user_set_accept_chart",
+     *     condition="request.isXmlHttpRequest()"
+     * )
+     * @Method("PUT")
+     */
+    public function chartAcceptationAction(ObjectManager $manager): JsonResponse
+    {
+        $this->getUser()->setChartAccepted(true);
+
+        $manager->flush();
+
+        return new JsonResponse(
+            $this->getUser()->isChartAccepted(),
+            Response::HTTP_OK
+        );
     }
 }
