@@ -249,6 +249,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      */
     private $remindSent = false;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $chartAccepted = false;
+
     public function __construct(
         UuidInterface $uuid,
         string $emailAddress,
@@ -1165,5 +1170,15 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function setRemindSent(bool $remindSent): void
     {
         $this->remindSent = $remindSent;
+    }
+
+    public function isChartAccepted(): bool
+    {
+        return $this->chartAccepted;
+    }
+
+    public function setChartAccepted(bool $chartAccepted): void
+    {
+        $this->chartAccepted = $chartAccepted;
     }
 }

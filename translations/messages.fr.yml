@@ -181,6 +181,10 @@ search.geocoding.exception: Nous ne sommes pas parvenus à reconnaître la ville
 referent.message.success: Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer.
 referent.event.creation.success: Le nouvel événement a bien été créé.
 referent.label.tags: Tags référent
+referent.button.accept: J'accepte
+referent.popup.title: Charte de bonne utilisation des outils numériques
+referent.popup.subtitle: à l’usage des référents
+referent.popup.file_url: https://storage.googleapis.com/en-marche-prod/documents/referents/2-kit-administratif/charte_referents.pdf
 
 #
 # J'écoute
@@ -386,6 +390,9 @@ donation.status.error: Erreur
 # Deputy
 #
 deputy.message.success: Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer.
+deputy.popup.title: Charte de bonne utilisation des outils numériques
+deputy.popup.subtitle: à l’usage des députés
+deputy.popup.file_url: https://storage.googleapis.com/en-marche-prod/documents/deputes/charte_deputes.pdf
 
 subscription_type.group.communication_mobile: SMS/MMS de communication
 subscription_type.group.communication_emails: E-mails de communication

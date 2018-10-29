@@ -357,6 +357,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $referent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $referent->addReferentTag($this->getReference('referent_tag_77'));
+        $referent->setChartAccepted(true);
         $this->addReference('adherent-8', $referent);
 
         $referent75and77 = $adherentFactory->createFromArray([
