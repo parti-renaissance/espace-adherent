@@ -64,32 +64,10 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}"></script>
-    <script type="text/javascript">
-        var map = null;
-        function initMap() {
-            var point = {
-                lat: {{ event.latitude }},
-                lng: {{ event.longitude }}
-            };
-
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: point,
-                zoom: 15
-            });
-
-            var marker = new google.maps.Marker({
-                position: point,
-                map: map,
-                title: '{{ event.name|e('js') }}'
-            });
-        }
-        initMap();
-
-        Kernel.onLoad(function(di) {
+    <script type="text/javascript">	
+         Kernel.onLoad(function(di) {
             var unregistrationButton = dom('.unregister-event');
-
-            unregistrationButton && on(unregistrationButton, 'click', function () {
+             unregistrationButton && on(unregistrationButton, 'click', function () {
                 di.get('api').unregisterEvent(
                     '{{ event.slug }}',
                     unregistrationButton.getAttribute('data-csrf-token'),
@@ -149,6 +127,7 @@
                         <i class="fa fa-map-marker" aria-hidden="true"></i>
                         <span class="committee-event-address">
                             {{- event.inlineFormattedAddress -}}
+                            &nbsp;(<a href="https://www.google.com/maps/search/{{- event.inlineFormattedAddress -}}" target="_blank">voir carte</a>)
                         </span>
                     </li>
                 </ul>
@@ -189,9 +168,6 @@
                     {%- endif -%}
                 {%- endblock -%}
             </div>
-        </section>
-        <section class="l__wrapper">
-            <div class="committee__event__map" id="map"></div>
         </section>
 
         {% if eventsNearby %}
