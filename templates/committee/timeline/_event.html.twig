@@ -1,15 +1,6 @@
 <div class="text--body text--with-bullet">{{ item.content|raw }}</div>
 
 <div class="committee-event">
-    {% if item.event.latitude and item.event.longitude %}
-    <div class="committee-event-map">
-        <img src="{{ path('map_url', {'latitude': item.event.latitude, 'longitude': item.event.longitude}) }}"
-             title="Carte d'accès à l'événement {{ item.event.name }}"
-             alt="{{ item.event.inlineFormattedAddress }}"
-             width="200"
-             height="200" />
-    </div>
-    {% endif %}
     <div class="committee-event-details">
         <div>
             <h4 class="text--medium text--normal b__nudge--bottom-tiny">
