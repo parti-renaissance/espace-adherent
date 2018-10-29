@@ -67,11 +67,11 @@ class CitizenProjectTurnKey extends Component {
         } = this.props;
         return (
             <div className="citizen__wrapper">
-                <h1>Les projets citoyens clés en main</h1>
+                <h1>Les projets citoyens clé en main</h1>
                 <p className="citizen__blurb">
                     Vous avez envie de vous engager mais vous ne savez pas
                     comment vous y prendre ? <br />
-                    Avec les projets clés en main c'est facile : nous vous
+                    Avec les projets clé en main c'est facile : nous vous
                     donnons un mode d'emploi et des outils pour agir.
                 </p>
 
