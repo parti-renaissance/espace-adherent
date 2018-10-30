@@ -8,6 +8,7 @@ use AppBundle\Entity\ReferentTag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class SurveyRepository extends ServiceEntityRepository
 {
@@ -48,9 +49,11 @@ class SurveyRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param Adherent|UserInterface $creator
+     *
      * @return Survey[]
      */
-    public function findAllPublishedByCreator(Adherent $creator): array
+    public function findAllByCreator(Adherent $creator): array
     {
         $this->checkReferent($creator);
 
@@ -58,7 +61,6 @@ class SurveyRepository extends ServiceEntityRepository
             ->createQueryBuilder('survey')
             ->addSelect('questions')
             ->innerJoin('survey.questions', 'questions')
-            ->andWhere('survey.published = true')
             ->andWhere('survey.creator = :creator')
             ->setParameter('creator', $creator)
             ->getQuery()

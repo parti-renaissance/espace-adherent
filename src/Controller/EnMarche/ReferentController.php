@@ -169,7 +169,7 @@ class ReferentController extends Controller
 
         return $this->render('referent/surveys/list.html.twig', [
             'surveysListJson' => $surveyExporter->exportAsJson(
-                $surveyRepository->findAllPublishedByCreator($user)
+                $surveyRepository->findAllByCreator($user)
             ),
         ]);
     }

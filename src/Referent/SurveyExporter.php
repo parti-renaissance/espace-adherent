@@ -28,7 +28,8 @@ class SurveyExporter
                 'name' => $survey->getName(),
                 'questionsCount' => $survey->questionsCount(),
                 'createdAt' => $survey->getCreatedAt()->format('d/m/Y'),
-                'creator' => $survey->getCreator()->getPartialName(),
+                'creator' => $survey->getCreator()->getFullName(),
+                'publish' => $this->getPublishAction($survey->isPublished()),
                 'edit' => [
                     'label' => "<span id='survey-edit-$i' class='btn btn--default'><i class='fa fa-edit'></i></span>",
                     'url' => $this->urlGenerator->generate(
@@ -41,5 +42,14 @@ class SurveyExporter
         }
 
         return \GuzzleHttp\json_encode($data);
+    }
+
+    private function getPublishAction(bool $isPublished): string
+    {
+        if ($isPublished) {
+            return "<i class='fa fa-check-square text--medium text--blue--soft'></i>";
+        }
+
+        return "<i class='fa fa-square text--medium text--light-gray'></i>";
     }
 }
