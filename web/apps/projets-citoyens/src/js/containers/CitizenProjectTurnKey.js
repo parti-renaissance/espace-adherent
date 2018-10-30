@@ -90,11 +90,13 @@ class CitizenProjectTurnKey extends Component {
                     </div>
                     <div className="turnkey__project__list">
                         <MediaQuery maxWidth={650}>
-                            <TurnkeyProjectDropdown
-                                projects={projects}
-                                active={project}
-                                dispatch={dispatch}
-                            />
+                            {(project && projects.length) ?
+                                <TurnkeyProjectDropdown
+                                    projects={projects}
+                                    active={project}
+                                    dispatch={dispatch}
+                                />
+                                : null}
                         </MediaQuery>
                         <MediaQuery minWidth={651}>
                             {projects.map((p, i) => (
