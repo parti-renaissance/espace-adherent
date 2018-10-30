@@ -467,6 +467,21 @@
 .ui-dialog {
     top: 2% !important;
     height: 90% !important;
+    border: 0 !important;
+
+    @media (max-width: $mobile) {
+        width: 97% !important;
+        left: 0 !important;
+    }
+
+    .ui-widget-content {
+        border: 0;
+    }
+
+    .ui-dialog-titlebar {
+        background: $white;
+        border: 0;
+    }
 
     &-content {
         object {
@@ -475,12 +490,16 @@
         }
     }
 
-    &-buttonpane .ui-dialog-buttonset button{
+    &-buttonpane {
+        margin-top: -4px;
+        .ui-dialog-buttonset button {
             font-size: 1.2em;
+            @include btn;
+            @include btn--pink;
+        }
     }
 
     #chart_dialog {
-        height: 85% !important;
+        height: 75% !important;
     }
 }
-

@@ -26,7 +26,7 @@ Feature:
     Given I am logged as "deputy@en-marche-dev.fr"
     And I am on "espace-depute/utilisateurs/message"
     And I should see "Charte de bonne utilisation des outils numériques - à l’usage des députés"
-    When I press "J'accepte"
+    When I press "J'ai lu et j'accepte"
     Then I should be on "espace-depute/utilisateurs/message"
 
   Scenario: As referent, I should see a popup when I'm in the referent space
@@ -47,5 +47,5 @@ Feature:
     Given I am logged as "referent-75-77@en-marche-dev.fr"
     And I am on "espace-referent/evenements"
     And I should see "Charte de bonne utilisation des outils numériques - à l’usage des référents"
-    When I press "J'accepte"
+    When I press "J'ai lu et j'accepte"
     Then I should be on "espace-referent/evenements"
