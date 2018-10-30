@@ -78,7 +78,11 @@ Feature:
       "lastName":"Bonsoirini",
       "firstName":"Ernestino",
       "emailAddress":"ernestino@bonsoirini.fr",
-      "agreedToStayInContact":1,
+      "agreedToStayInContact":true,
+      "agreedToJoin":true,
+      "postalCode":"59000",
+      "ageRange": "between_30_39",
+      "gender": "male",
       "answers":[
         {
           "surveyQuestion":1,
@@ -120,7 +124,7 @@ Feature:
       "lastName":"Bonsoirini",
       "firstName":"Ernestino",
       "emailAddress":"ernestino@bonsoirini.fr",
-      "agreedToStayInContact":1,
+      "agreedToStayInContact":true,
       "answers":[
         {
           "surveyQuestion":4,
@@ -154,7 +158,8 @@ Feature:
       "lastName":"Bonsoirini",
       "firstName":"Ernestino",
       "emailAddress":"bonsoirini.fr",
-      "agreedToStayInContact":1,
+      "agreedToStayInContact":true,
+      "postalCode":"59",
       "answers":[
         {
           "surveyQuestion":1
@@ -199,7 +204,67 @@ Feature:
               "La question 3 est une question à choix unique et ne doit pas contenir de champ texte."
             ]
           }
+        },
+        "postalCode": [
+          "Vous devez saisir exactement 5 caractères."
+        ]
+      }
+    }
+    """
+
+  Scenario: As a logged-in user I cannot reply to a survey with custom validations errors
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+    And I add "Content-Type" header equal to "application/json"
+    And I add "Accept" header equal to "application/json"
+    When I send a "POST" request to "/api/jecoute/survey/reply" with body:
+    """
+    {
+      "survey":1,
+      "lastName":"Bonsoirini",
+      "firstName":"Ernestino",
+      "emailAddress":"ernestino@bonsoirini.fr",
+      "agreedToStayInContact":false,
+      "agreedToJoin":true,
+      "postalCode": "59000",
+      "ageRange" : "foobar",
+      "gender" : "other",
+      "answers":[
+        {
+          "surveyQuestion":1,
+          "textField":"Réponse libre"
+        },
+        {
+          "surveyQuestion":2,
+          "selectedChoices":[
+            "1",
+            "2"
+          ]
+        },
+        {
+          "surveyQuestion":3,
+          "selectedChoices":[
+            "1"
+          ]
         }
+      ]
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "status": "error",
+      "errors": {
+        "ageRange": [
+          "Cette valeur n'est pas valide."
+        ],
+        "genderOther": [
+          "Vous avez sélectionné un autre choix, ce champ est donc obligatoire."
+        ],
+        "agreedToStayInContact": [
+          "Si vous acceptez d'adhérer, vous devez accepter que l'on vous contacte."
+        ]
       }
     }
     """

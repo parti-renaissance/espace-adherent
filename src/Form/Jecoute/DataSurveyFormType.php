@@ -4,10 +4,13 @@ namespace AppBundle\Form\Jecoute;
 
 use AppBundle\Entity\Jecoute\DataSurvey;
 use AppBundle\Entity\Jecoute\Survey;
+use AppBundle\Jecoute\AgeRangeEnum;
+use AppBundle\Jecoute\GenderEnum;
 use AppBundle\Repository\SurveyRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -47,7 +50,16 @@ class DataSurveyFormType extends AbstractType
                 'allow_add' => true,
                 'by_reference' => false,
             ])
+            ->add('postalCode', TextType::class)
+            ->add('ageRange', ChoiceType::class, [
+                'choices' => AgeRangeEnum::all(),
+            ])
+            ->add('gender', ChoiceType::class, [
+                'choices' => GenderEnum::all(),
+            ])
+            ->add('genderOther', TextType::class)
             ->add('agreedToStayInContact', CheckboxType::class)
+            ->add('agreedToJoin', CheckboxType::class)
         ;
     }
 

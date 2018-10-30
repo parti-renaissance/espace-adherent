@@ -163,6 +163,12 @@ survey.answer.unique_choice.with_text_field.invalid: La question {{ surveyQuesti
 survey.answer.multiple_choice.invalid: La question {{ surveyQuestionId }} est une question à choix multiples et doit contenir un ou plusieurs choix sélectionnés.
 survey.answer.multiple_choice.with_text_field.invalid: La question {{ surveyQuestionId }} est une question à choix multiples et ne doit pas contenir de champ texte.
 
+data.survey.gender_choice_other.not_selected: Vous devez sélectionner le choix Autre ou ne pas saisir d'autre genre.
+data.survey.gender_other.empty: Vous avez sélectionné un autre choix, ce champ est donc obligatoire.
+
+data.survey.email_address.required: Si vous acceptez que l'on vous contacte, l'adresse email est obligatoire.
+data.survey.agreed_to_stay_in_contact.required: Si vous acceptez d'adhérer, vous devez accepter que l'on vous contacte.
+
 #
 # Je Marche
 #
