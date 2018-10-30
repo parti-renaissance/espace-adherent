@@ -3,7 +3,6 @@
 use Webmozart\Assert\Assert;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
-use Behat\Mink\Driver\Selenium2Driver;
 use AppBundle\Entity\Adherent;
 
 class DoctrineContext extends RawMinkContext
