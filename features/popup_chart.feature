@@ -29,6 +29,13 @@ Feature:
     When I press "J'accepte"
     Then I should be on "espace-depute/utilisateurs/message"
 
+  Scenario: As deputy, I have hasAccepted field updated when I accept chart conditions
+    Given I am logged as "deputy@en-marche-dev.fr"
+    And I am on "espace-depute/utilisateurs/message"
+    And I should see "Charte de bonne utilisation des outils numériques - à l’usage des députés"
+    When I press "J'accepte"
+    Then I should have "chartAccepted" field equal to "true"
+
   Scenario: As referent, I should see a popup when I'm in the referent space
     Given I am logged as "referent-75-77@en-marche-dev.fr"
     And I am on "parametres/mon-compte"
@@ -49,3 +56,10 @@ Feature:
     And I should see "Charte de bonne utilisation des outils numériques - à l’usage des référents"
     When I press "J'accepte"
     Then I should be on "espace-referent/evenements"
+
+  Scenario: As referent, I have hasAccepted field updated when I accept chart conditions
+    Given I am logged as "referent-75-77@en-marche-dev.fr"
+    And I am on "espace-referent/evenements"
+    And I should see "Charte de bonne utilisation des outils numériques - à l’usage des référents"
+    When I press "J'accepte"
+    Then I should have "chartAccepted" field equal to "true"

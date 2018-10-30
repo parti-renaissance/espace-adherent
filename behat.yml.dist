@@ -23,6 +23,7 @@ default:
                 - SecurityContext
                 - FeatureContext
                 - DonationContext
+                - DoctrineContext
     extensions:
         Behat\Symfony2Extension:
             kernel:

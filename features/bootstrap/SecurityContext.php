@@ -45,6 +45,10 @@ class SecurityContext extends RawMinkContext
         $driver = $this->getSession()->getDriver();
         $session = $this->getContainer()->get('session');
 
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $session->set('_security_main_context', serialize($token));
+        $session->save();
+
         if ($driver instanceof Selenium2Driver) {
             $page = $this->getSession()->getPage();
 
@@ -55,10 +59,6 @@ class SecurityContext extends RawMinkContext
 
             return;
         }
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $session->set('_security_main_context', serialize($token));
-        $session->save();
 
         $client = $driver->getClient();
         $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
