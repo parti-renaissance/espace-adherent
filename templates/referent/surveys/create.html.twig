@@ -7,16 +7,36 @@
     <script src="{{ asset('js/jquery.collection.js') }}"></script>
 
     <script type="text/javascript">
-        $('.survey-questions-collection').collection({
-            init_with_n_elements: 1,
-            add: '<a href="#" class="question-add btn btn-default"><i class="fa fa-plus-circle"></i><span style="padding-left: 5px">Ajouter une question</span></a>',
-            prefix: 'question',
-            children: [{
-                init_with_n_elements: 0,
-                add: '<a href="#" class="btn btn-default"><i class="fa fa-plus-circle"></i><span style="padding-left: 5px">Ajouter un choix</span></a>',
-                selector: '.survey-questions-choices-collection',
-                prefix: 'choice',
-            }]
+        Kernel.onLoad(function() {
+            $('.survey-questions-collection').collection({
+                init_with_n_elements: 1,
+                add: '<a href="#" class="question-add btn btn-default"><i class="fa fa-plus-circle"></i>&nbsp;Ajouter une question</a>',
+                prefix: 'question',
+                add_at_the_end: true,
+                children: [{
+                    init_with_n_elements: 0,
+                    add: '<a href="#" class="btn btn-default"><i class="fa fa-plus-circle"></i>&nbsp;Ajouter un choix</a>',
+                    selector: '.survey-questions-choices-collection',
+                    prefix: 'choice',
+                    add_at_the_end: true,
+                }]
+            });
+
+            const displayChoices = function(questionType) {
+                if ('{{ constant('AppBundle\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') }}' === $(questionType).val()) {
+                    $(questionType).parents('.survey-question-type').nextAll('.question-choices').hide();
+                } else {
+                    $(questionType).parents('.survey-question-type').nextAll('.question-choices').show();
+                }
+            };
+
+            $('.survey-question-type input:checked').each(function(){
+                displayChoices($(this));
+            });
+
+            $('.survey-question-type input').click(function(){
+                displayChoices($(this));
+            });
         });
     </script>
 {% endblock %}

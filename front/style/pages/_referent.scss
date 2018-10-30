@@ -112,6 +112,14 @@
         }
     }
 
+    .question-choices {
+        margin-left: 30px;
+
+        label {
+            font-size: 18px;
+        }
+    }
+
     .survey-question {
         &__widget {
             overflow: hidden;
