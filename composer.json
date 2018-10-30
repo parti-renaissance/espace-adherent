@@ -44,7 +44,7 @@
         "doctrine/doctrine-fixtures-bundle": "^2.3",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "doctrine/orm": "^2.5",
-        "enmarche/mailer-bundle": "^2.0",
+        "enmarche/mailer-bundle": "dev-sync-template",
         "exercise/htmlpurifier-bundle": "^1.0",
         "facebook/graph-sdk": "^5.4",
         "fzaninotto/faker": "^1.6",

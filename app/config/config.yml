@@ -1,5 +1,6 @@
 imports:
     - { resource: parameters.yml }
+    - { resource: mailer.yml }
     - { resource: security.yml }
     - { resource: adherent.yml }
     - { resource: app_version.yml }
@@ -119,6 +120,13 @@ doctrine:
                 dir: 'Entity'
                 alias: 'AppBundle'
                 prefix: 'AppBundle\Entity'
+                is_bundle: true
+            EnMarcheMailerBundle:
+                mapping: true
+                type: annotation
+                dir: 'Entity'
+                alias: 'EnMarcheMailerBundle'
+                prefix: 'EnMarche\MailerBundle\Entity'
                 is_bundle: true
 
         filters:
@@ -254,20 +262,12 @@ snc_redis:
     session:
         client: default
 
-en_marche_mailer:
-    mail_post:
-        app_name: 'en_marche'
-    amqp_connexion: { name: 'default' }
-    mail_templates:
-        mail_class_paths:
-            - '%kernel.project_dir%/src/Mail'
-        template_paths:
-            - '%kernel.project_dir%/templates'
-
 old_sound_rabbit_mq:
     connections:
         default:
             url: '%env(RABBITMQ_DSN)%'
+        mailer:
+            url: 'amqp://guest:guest@rabbitmq_mailer:5672/%2f?lazy=0&connection_timeout=10&read_write_timeout=10&heartbeat=5'
 
     producers:
         mailer_campaign:

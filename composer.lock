@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5adfe9f3fb52fe3105d62f7c1af9e065",
+    "content-hash": "362a27c99112087c6b47f12f023a0b8f",
     "packages": [
         {
             "name": "a2lix/i18n-doctrine-bundle",
@@ -2029,19 +2029,20 @@
         },
         {
             "name": "enmarche/mailer-bundle",
-            "version": "v2.0",
+            "version": "dev-sync-template",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EnMarche/mailer-bundle.git",
-                "reference": "f94bb8ffce497e49085b60f25d6a229060980d2d"
+                "reference": "61c70a51d5ad12f242bc38d4f60f8ab796b928cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EnMarche/mailer-bundle/zipball/f94bb8ffce497e49085b60f25d6a229060980d2d",
-                "reference": "f94bb8ffce497e49085b60f25d6a229060980d2d",
+                "url": "https://api.github.com/repos/EnMarche/mailer-bundle/zipball/61c70a51d5ad12f242bc38d4f60f8ab796b928cc",
+                "reference": "61c70a51d5ad12f242bc38d4f60f8ab796b928cc",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
                 "php": ">=7.1",
                 "ramsey/uuid": "^3.0",
                 "symfony/dependency-injection": "~3.4 || ^4.0",
@@ -2053,7 +2054,8 @@
                 "guzzlehttp/guzzle": "^6.3",
                 "php-amqplib/rabbitmq-bundle": "^1.14",
                 "phpunit/phpunit": "^7.2",
-                "ramsey/uuid-doctrine": "^1.5"
+                "ramsey/uuid-doctrine": "^1.5",
+                "symfony/finder": "^4.1"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -2072,10 +2074,10 @@
             ],
             "description": "Mailer bundle to ease proxying SAAS among private applications.",
             "support": {
-                "source": "https://github.com/EnMarche/mailer-bundle/tree/master",
+                "source": "https://github.com/EnMarche/mailer-bundle/tree/sync-template",
                 "issues": "https://github.com/EnMarche/mailer-bundle/issues"
             },
-            "time": "2018-10-10T09:57:27+00:00"
+            "time": "2018-10-30T09:12:54+00:00"
         },
         {
             "name": "exercise/htmlpurifier-bundle",
@@ -12125,6 +12127,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "enmarche/mailer-bundle": 20,
         "sensio/framework-extra-bundle": 20
     },
     "prefer-stable": false,

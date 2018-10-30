@@ -1,0 +1,53 @@
+en_marche_mailer:
+    mail_post:
+        app_name: en_marche
+    amqp_connexion: { name: default }
+    database_connexion: { name: default }
+
+    mail_aggregator: ~
+    mail_templates_sync: ~
+    mail_templates:
+        mail_class_paths:
+            - '%kernel.project_dir%/src/Mail'
+        template_paths:
+            - '%kernel.project_dir%/templates'
+
+    mail_api:
+        http_clients:
+            mailjet:
+                api_type: mailjet
+                abstract: true
+                options:
+                    base_uri: https://api.mailjet.com/v3/
+                    headers:
+                        "Content-type": "application/json"
+            mailjet_campaign:
+                abstract: true
+                from: mailjet
+                public_api_key: '%env(MAILJET_CAMPAIGN_PUBLIC_KEY)%'
+                private_api_key: '%env(MAILJET_CAMPAIGN_PRIVATE_KEY)%'
+            mailjet_transactional:
+                abstract: true
+                from: mailjet
+                public_api_key: '%env(MAILJET_TRANSACTIONAL_PUBLIC_KEY)%'
+                private_api_key: '%env(MAILJET_TRANSACTIONAL_PRIVATE_KEY)%'
+
+#        templates_sync: ~
+#            http_clients:
+#                campaign:
+#                    from: mailjet_campaign
+#                transactional:
+#                    from: mailjet_transactional
+
+        proxy:
+            http_clients:
+                campaign:
+                    from: mailjet_campaign
+                    sender:
+                        email: '%env(CAMPAIGN_SENDER_EMAIL)%'
+                        name: '%env(CAMPAIGN_SENDER_NAME)%'
+                transactional:
+                    from: mailjet_transactional
+                    sender:
+                        email: '%env(TRANSACTIONAL_SENDER_EMAIL)%'
+                        name: '%env(TRANSACTIONAL_SENDER_NAME)%'
