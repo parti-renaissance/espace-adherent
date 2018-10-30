@@ -255,7 +255,8 @@
         <service id="AppBundle\Deputy\DistrictLoader" public="true" />
         <service id="AppBundle\Deputy\LightFileDistrictLoader" public="true" />
         <service id="AppBundle\Deputy\DeputyMessageNotifier" public="true">
-            <argument type="service" id="app.mailer.campaign"/>
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="old_sound_rabbit_mq.deputy_message_dispatcher_producer" />
         </service>
 
         <service id="AppBundle\Security\ApiAuthenticationEntryPoint"/>
