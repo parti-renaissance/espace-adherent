@@ -4,6 +4,7 @@ namespace AppBundle\Entity\Jecoute;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\Adherent;
+use AppBundle\Validator\DataSurveyConstraint;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,6 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="jecoute_data_survey")
  * @ORM\Entity
+ *
+ * @DataSurveyConstraint
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -62,6 +65,37 @@ class DataSurvey
      * @ORM\Column(type="boolean")
      */
     private $agreedToStayInContact = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $agreedToJoin = false;
+
+    /**
+     * @ORM\Column(length=5, nullable=true)
+     *
+     * @Assert\Length(min=5, max=5)
+     */
+    private $postalCode;
+
+    /**
+     * @ORM\Column(length=15, nullable=true)
+     *
+     * @Assert\Choice(callback={"AppBundle\Jecoute\AgeRangeEnum", "all"})
+     */
+    private $ageRange;
+
+    /**
+     * @ORM\Column(length=15, nullable=true)
+     *
+     * @Assert\Choice(callback={"AppBundle\Jecoute\GenderEnum", "all"})
+     */
+    private $gender;
+
+    /**
+     * @ORM\Column(length=50, nullable=true)
+     */
+    private $genderOther;
 
     /**
      * @var DataAnswer[]|Collection
@@ -144,6 +178,56 @@ class DataSurvey
     public function setAgreedToStayInContact(bool $agreedToStayInContact): void
     {
         $this->agreedToStayInContact = $agreedToStayInContact;
+    }
+
+    public function getAgreedToJoin(): bool
+    {
+        return $this->agreedToJoin;
+    }
+
+    public function setAgreedToJoin(bool $agreedToJoin): void
+    {
+        $this->agreedToJoin = $agreedToJoin;
+    }
+
+    public function getPostalCode(): ?string
+    {
+        return $this->postalCode;
+    }
+
+    public function setPostalCode(string $postalCode): void
+    {
+        $this->postalCode = $postalCode;
+    }
+
+    public function getAgeRange(): ?string
+    {
+        return $this->ageRange;
+    }
+
+    public function setAgeRange(string $ageRange): void
+    {
+        $this->ageRange = $ageRange;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): void
+    {
+        $this->gender = $gender;
+    }
+
+    public function getGenderOther(): ?string
+    {
+        return $this->genderOther;
+    }
+
+    public function setGenderOther(string $genderOther): void
+    {
+        $this->genderOther = $genderOther;
     }
 
     public function addAnswer(DataAnswer $answer): void
