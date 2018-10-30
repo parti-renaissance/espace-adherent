@@ -92,7 +92,7 @@ class SearchController extends Controller
      */
     public function searchCitizenProjectsAction()
     {
-        return $this->redirectToRoute('app_citizen_project_search', [], Response::HTTP_MOVED_PERMANENTLY);
+        return $this->redirectToRoute('react_app_citizen_projects_search', [], Response::HTTP_MOVED_PERMANENTLY);
     }
 
     /**
