@@ -154,7 +154,7 @@ Feature:
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
     {
-      "survey":1,
+      "survey":null,
       "lastName":"Bonsoirini",
       "firstName":"Ernestino",
       "emailAddress":"bonsoirini.fr",
@@ -189,6 +189,9 @@ Feature:
     {
       "status":"error",
       "errors":{
+        "survey":[
+          "Cette valeur ne doit pas être vide."
+        ],
         "emailAddress":[
           "Cette valeur n'est pas une adresse email valide."
         ],
