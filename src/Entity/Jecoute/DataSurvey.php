@@ -109,6 +109,8 @@ class DataSurvey
     /**
      * @ORM\ManyToOne(targetEntity="Survey")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
+     *
+     * @Assert\NotBlank
      */
     private $survey;
 
