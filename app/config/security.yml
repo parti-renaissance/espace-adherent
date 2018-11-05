@@ -204,6 +204,9 @@ security:
         ROLE_ADMIN_BIOGRAPHY:
             - ROLE_APP_ADMIN_BIOGRAPHY_EXECUTIVE_OFFICE_MEMBER_ALL
 
+        ROLE_ADMIN_JECOUTE:
+            - ROLE_APP_ADMIN_JECOUTE_SUGGESTED_QUESTION_ALL
+
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN_DASHBOARD
             - ROLE_ADMIN_MEDIAS
@@ -244,6 +247,7 @@ security:
             - ROLE_ADMIN_ORGANIGRAMM
             - ROLE_ADMIN_EMAIL_SUBSCRIPTION_TYPES
             - ROLE_ADMIN_BIOGRAPHY
+            - ROLE_ADMIN_JECOUTE
 
     access_decision_manager:
         strategy: unanimous
