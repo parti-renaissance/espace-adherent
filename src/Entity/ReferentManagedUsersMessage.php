@@ -56,11 +56,29 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
     private $interests = [];
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(length=6, nullable=true)
      */
     private $gender;
+
+    /**
+     * @ORM\Column(length=50, nullable=true)
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(length=50, nullable=true)
+     */
+    private $lastName;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $ageMinimum = 0;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $ageMaximum = 0;
 
     public function __construct(
         UuidInterface $uuid,
@@ -71,10 +89,14 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         bool $includeAdherentsInCommittee,
         bool $includeHosts,
         bool $includeSupevisors,
+        string $firstName,
+        string $lastName,
         string $queryAreaCode,
         string $queryCity,
         string $queryId,
         string $gender,
+        int $ageMinimum,
+        int $ageMaximum,
         array $interests = [],
         int $offset = 0
     ) {
@@ -92,6 +114,10 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         $this->offset = $offset;
         $this->interests = $interests;
         $this->gender = $gender;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->ageMinimum = $ageMinimum;
+        $this->ageMaximum = $ageMaximum;
     }
 
     public static function createFromMessage(ReferentMessage $message): self
@@ -105,10 +131,14 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
             $message->getFilter()->includeAdherentsInCommittee(),
             $message->getFilter()->includeHosts(),
             $message->getFilter()->includeSupervisors(),
+            $message->getFilter()->getQueryFirstName(),
+            $message->getFilter()->getQueryLastName(),
             $message->getFilter()->getQueryAreaCode(),
             $message->getFilter()->getQueryCity(),
             $message->getFilter()->getQueryId(),
             $message->getFilter()->getQueryGender(),
+            $message->getFilter()->getQueryAgeMinimum(),
+            $message->getFilter()->getQueryAgeMaximum(),
             $message->getFilter()->getQueryInterests()
         );
     }
@@ -181,5 +211,45 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
     public function setGender(?string $gender): void
     {
         $this->gender = $gender;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): void
+    {
+        $this->firstName = $firstName;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
+    public function getAgeMinimum(): ?int
+    {
+        return $this->ageMinimum;
+    }
+
+    public function setAgeMinimum(?int $ageMinimum): void
+    {
+        $this->ageMinimum = $ageMinimum;
+    }
+
+    public function getAgeMaximum(): ?int
+    {
+        return $this->ageMaximum;
+    }
+
+    public function setAgeMaximum(?int $ageMaximum): void
+    {
+        $this->ageMaximum = $ageMaximum;
     }
 }
