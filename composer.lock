@@ -2033,12 +2033,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/EnMarche/mailer-bundle.git",
-                "reference": "61c70a51d5ad12f242bc38d4f60f8ab796b928cc"
+                "reference": "d09dc5fbe924b961ebe49f9ac005b0d2a912b480"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EnMarche/mailer-bundle/zipball/61c70a51d5ad12f242bc38d4f60f8ab796b928cc",
-                "reference": "61c70a51d5ad12f242bc38d4f60f8ab796b928cc",
+                "url": "https://api.github.com/repos/EnMarche/mailer-bundle/zipball/d09dc5fbe924b961ebe49f9ac005b0d2a912b480",
+                "reference": "d09dc5fbe924b961ebe49f9ac005b0d2a912b480",
                 "shasum": ""
             },
             "require": {
@@ -2077,7 +2077,7 @@
                 "source": "https://github.com/EnMarche/mailer-bundle/tree/sync-template",
                 "issues": "https://github.com/EnMarche/mailer-bundle/issues"
             },
-            "time": "2018-10-30T09:12:54+00:00"
+            "time": "2018-11-05T14:47:16+00:00"
         },
         {
             "name": "exercise/htmlpurifier-bundle",
