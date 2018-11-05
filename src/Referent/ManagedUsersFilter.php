@@ -74,6 +74,10 @@ class ManagedUsersFilter
         $filter->offset = $message->getOffset();
         $filter->queryInterests = $message->getInterests();
         $filter->queryGender = $message->getGender();
+        $filter->queryFirstName = $message->getFirstName();
+        $filter->queryLastName = $message->getLastName();
+        $filter->queryAgeMinimum = $message->getAgeMinimum();
+        $filter->queryAgeMaximum = $message->getAgeMaximum();
 
         return $filter;
     }
