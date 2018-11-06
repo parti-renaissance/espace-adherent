@@ -81,3 +81,13 @@ Feature: Manage citizen projects from admin pannel
 
     When I am on "/projets-citoyens/13003-un-stage-pour-tous-1"
     And the response status code should be 200
+
+  Scenario: As an administrator I can modify a CP and it will be synchronised with API
+    Given I am on "/admin/app/citizenproject/list"
+    When I follow "Un stage pour tous"
+    Then I should see "Mettre à jour"
+    When I fill in "Nom" with "Un autre titre"
+    And I press "Mettre à jour"
+    Then "api_sync" should have message below:
+      | routing_key             | body                                         |
+      | citizen_project.updated | @string@.contains('"name":"Un autre titre"') |

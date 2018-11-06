@@ -3,8 +3,10 @@
 namespace AppBundle\Admin;
 
 use AppBundle\CitizenProject\CitizenProjectManager;
+use AppBundle\CitizenProject\CitizenProjectWasUpdatedEvent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectSkill;
+use AppBundle\Events;
 use AppBundle\Form\PurifiedTextareaType;
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Intl\UnitedNationsBundle;
@@ -22,6 +24,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -41,6 +44,8 @@ class CitizenProjectAdmin extends AbstractAdmin
     private $citizenProjectMembershipRepository;
     private $citizenProjectRepository;
     private $cachedDatagrid;
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
 
     public function __construct($code, $class, $baseControllerName, CitizenProjectManager $manager, CitizenProjectRepository $repository, CitizenProjectMembershipRepository $membershipRepository, AdherentRepository $adherentRepository)
     {
@@ -80,6 +85,11 @@ class CitizenProjectAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('create');
+    }
+
+    public function postUpdate($object)
+    {
+        $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($object));
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
@@ -463,5 +473,13 @@ class CitizenProjectAdmin extends AbstractAdmin
             'Comités en soutien' => 'exportCommitteeSupports',
             'Coup de coeur' => 'featured',
         ];
+    }
+
+    /**
+     * @required
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 }
