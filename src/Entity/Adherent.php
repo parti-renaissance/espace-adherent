@@ -254,6 +254,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      */
     private $chartAccepted = false;
 
+    /**
+     * @ORM\Column(type="string", length=22, nullable=true)
+     */
+    private $mandate;
+
     public function __construct(
         UuidInterface $uuid,
         string $emailAddress,
@@ -268,7 +273,8 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         string $status = self::DISABLED,
         string $registeredAt = 'now',
         ?array $tags = [],
-        ?array $referentTags = []
+        ?array $referentTags = [],
+        ?string $mandate = null
     ) {
         $this->uuid = $uuid;
         $this->password = $password;
@@ -288,6 +294,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->tags = new ArrayCollection($tags);
         $this->referentTags = new ArrayCollection($referentTags);
         $this->subscriptionTypes = new ArrayCollection();
+        $this->mandate = $mandate;
     }
 
     public static function createUuid(string $email): UuidInterface
@@ -627,6 +634,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->position = $membership->position;
         $this->phone = $membership->getPhone();
         $this->emailAddress = $membership->getEmailAddress();
+        $this->mandate = $membership->getMandate();
 
         if (!$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;
@@ -1180,5 +1188,10 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function setChartAccepted(bool $chartAccepted): void
     {
         $this->chartAccepted = $chartAccepted;
+    }
+
+    public function getMandate(): ?string
+    {
+        return $this->mandate;
     }
 }

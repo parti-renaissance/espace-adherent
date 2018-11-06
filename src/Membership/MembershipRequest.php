@@ -124,6 +124,21 @@ class MembershipRequest implements MembershipInterface
      */
     private $birthdate;
 
+    /**
+     * @var bool
+     */
+    private $elected = false;
+
+    /**
+     * @var string|null
+     *
+     * @Assert\Choice(
+     *     callback={"AppBundle\Membership\Mandates", "all"},
+     *     strict=true
+     * )
+     */
+    private $mandate;
+
     public function __construct()
     {
         $this->address = new Address();
@@ -152,6 +167,8 @@ class MembershipRequest implements MembershipInterface
         $dto->address = Address::createFromAddress($adherent->getPostAddress());
         $dto->phone = $adherent->getPhone();
         $dto->emailAddress = $adherent->getEmailAddress();
+        $dto->mandate = $adherent->getMandate();
+        $dto->elected = !\is_null($adherent->getMandate());
 
         return $dto;
     }
@@ -204,5 +221,25 @@ class MembershipRequest implements MembershipInterface
     public function setAllowNotifications(bool $allowNotifications): void
     {
         $this->allowNotifications = $allowNotifications;
+    }
+
+    public function isElected(): bool
+    {
+        return $this->elected;
+    }
+
+    public function setElected(bool $elected): void
+    {
+        $this->elected = $elected;
+    }
+
+    public function getMandate(): ?string
+    {
+        return $this->mandate;
+    }
+
+    public function setMandate(?string $mandate): void
+    {
+        $this->mandate = $mandate;
     }
 }

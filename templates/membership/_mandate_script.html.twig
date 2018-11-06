@@ -1,0 +1,22 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        var formMandate = $('#form__mandate');
+        var formElected = $('#{{ form.elected.vars.id }}');
+        var selectMandate = $('#{{ form.mandate.vars.id }}');
+
+        if (formElected.is(':checked')) {
+            formMandate.show();
+        } else {
+            formMandate.hide();
+        }
+
+        formElected.click(function() {
+            if ($(this).is(':checked')) {
+                formMandate.show();
+            } else {
+                formMandate.hide();
+                selectMandate.val("");
+            }
+        });
+    });
+</script>
