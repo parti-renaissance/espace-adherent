@@ -6,24 +6,24 @@ use MyCLabs\Enum\Enum;
 
 class AgeRangeEnum extends Enum
 {
-    public const LESS_THAN_18 = 'less_than_18';
-    public const BETWEEN_19_29 = 'between_19_29';
-    public const BETWEEN_30_39 = 'between_30_39';
-    public const BETWEEN_40_49 = 'between_40_49';
-    public const BETWEEN_50_59 = 'between_50_59';
-    public const BETWEEN_60_69 = 'between_60_69';
-    public const GREATER_THAN_70 = 'greater_than_70';
+    public const LESS_THAN_20 = 'less_than_20';
+    public const BETWEEN_20_24 = 'between_20_24';
+    public const BETWEEN_25_39 = 'between_25_39';
+    public const BETWEEN_40_54 = 'between_40_54';
+    public const BETWEEN_55_64 = 'between_55_64';
+    public const BETWEEN_65_80 = 'between_65_80';
+    public const GREATER_THAN_80 = 'greater_than_80';
 
     public static function all(): array
     {
         return [
-            self::LESS_THAN_18,
-            self::BETWEEN_19_29,
-            self::BETWEEN_30_39,
-            self::BETWEEN_40_49,
-            self::BETWEEN_50_59,
-            self::BETWEEN_60_69,
-            self::GREATER_THAN_70,
+            self::LESS_THAN_20,
+            self::BETWEEN_20_24,
+            self::BETWEEN_25_39,
+            self::BETWEEN_40_54,
+            self::BETWEEN_55_64,
+            self::BETWEEN_65_80,
+            self::GREATER_THAN_80,
         ];
     }
 }

@@ -79,9 +79,11 @@ Feature:
       "firstName":"Ernestino",
       "emailAddress":"ernestino@bonsoirini.fr",
       "agreedToStayInContact":true,
-      "agreedToJoin":true,
+      "agreedToContactForJoin":true,
+      "agreedToTreatPersonalData":true,
       "postalCode":"59000",
-      "ageRange": "between_30_39",
+      "profession":"employees",
+      "ageRange": "between_25_39",
       "gender": "male",
       "answers":[
         {
@@ -160,6 +162,8 @@ Feature:
       "emailAddress":"bonsoirini.fr",
       "agreedToStayInContact":true,
       "postalCode":"59",
+      "profession":"bonsoir",
+      "ageRange": "between_00_00",
       "answers":[
         {
           "surveyQuestion":1
@@ -195,6 +199,12 @@ Feature:
         "emailAddress":[
           "Cette valeur n'est pas une adresse email valide."
         ],
+        "profession":[
+          "Cette valeur n'est pas valide."
+        ],
+        "ageRange":[
+          "Cette valeur n'est pas valide."
+        ],
         "answers":{
           "0":{
             "surveyQuestion":[
@@ -227,7 +237,7 @@ Feature:
       "firstName":"Ernestino",
       "emailAddress":"ernestino@bonsoirini.fr",
       "agreedToStayInContact":false,
-      "agreedToJoin":true,
+      "agreedToContactForJoin":true,
       "postalCode": "59000",
       "ageRange" : "foobar",
       "gender" : "other",

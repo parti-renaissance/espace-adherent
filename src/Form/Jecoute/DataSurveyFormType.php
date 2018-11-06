@@ -6,6 +6,7 @@ use AppBundle\Entity\Jecoute\DataSurvey;
 use AppBundle\Entity\Jecoute\Survey;
 use AppBundle\Jecoute\AgeRangeEnum;
 use AppBundle\Jecoute\GenderEnum;
+use AppBundle\Jecoute\ProfessionEnum;
 use AppBundle\Repository\SurveyRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -51,6 +52,9 @@ class DataSurveyFormType extends AbstractType
                 'by_reference' => false,
             ])
             ->add('postalCode', TextType::class)
+            ->add('profession', ChoiceType::class, [
+                'choices' => ProfessionEnum::all(),
+            ])
             ->add('ageRange', ChoiceType::class, [
                 'choices' => AgeRangeEnum::all(),
             ])
@@ -59,7 +63,8 @@ class DataSurveyFormType extends AbstractType
             ])
             ->add('genderOther', TextType::class)
             ->add('agreedToStayInContact', CheckboxType::class)
-            ->add('agreedToJoin', CheckboxType::class)
+            ->add('agreedToContactForJoin', CheckboxType::class)
+            ->add('agreedToTreatPersonalData', CheckboxType::class)
         ;
     }
 
