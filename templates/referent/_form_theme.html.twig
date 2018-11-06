@@ -9,7 +9,6 @@
                 <a href="#" class="question-up btn btn-default"><i class="fa fa-arrow-up"></i></a>
                 <a href="#" class="question-down btn btn-default"><i class="fa fa-arrow-down"></i></a>
                 <a href="#" class="question-remove btn btn-default"><i class="fa fa-trash"></i></a>
-                <a href="#" class="question-add btn btn-default"><i class="fa fa-plus-circle"></i></a>
             </div>
         </div>
 
@@ -18,15 +17,16 @@
         </div>
 
         <div class="form__row">
-            <div class="l__row--h-stretch b__nudge--bottom-medium form__radio-button">
+            <div class="survey-question-type l__row--h-stretch b__nudge--bottom-medium form__radio-button">
                 {{ form_widget(form.question.type, { attr: { class: 'register__form__gender b__nudge--bottom-small' } }) }}
             </div>
             <div class="l__row--h-stretch">
                 {{ form_errors(form.question.type) }}
             </div>
-
-            {{ form_label(form.question.choices, 'Choix possible', { label_attr: { class: 'label__header--large' } }) }}
-            {{ form_widget(form.question.choices) }}
+            <div class="question-choices">
+                {{ form_label(form.question.choices, 'Choix possibles', { label_attr: { class: 'label__header--large' } }) }}
+                {{ form_widget(form.question.choices) }}
+            </div>
         </div>
     </div>
 
@@ -35,7 +35,7 @@
 
 {% block choice_form_widget %}
     <div class="form__row survey-question__choice_widget">
-        <div class="l__row--h-stretch form__radio-button choice-item">
+        <div class="survey-question-type l__row--h-stretch form__radio-button choice-item">
             {{ form_widget(form.content,  { attr: { class: 'form--full', placeholder: 'Saisissez un choix' } }) }}
         </div>
 
@@ -43,7 +43,6 @@
             <a href="#" class="choice-up btn btn-default"><i class="fa fa-arrow-up"></i></a>
             <a href="#" class="choice-down btn btn-default"><i class="fa fa-arrow-down"></i></a>
             <a href="#" class="choice-remove btn btn-default"><i class="fa fa-trash"></i></a>
-            <a href="#" class="choice-add btn btn-default"><i class="fa fa-plus-circle"></i></a>
         </div>
     </div>
 {% endblock %}

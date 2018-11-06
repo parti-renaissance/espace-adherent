@@ -225,6 +225,8 @@ class ReferentController extends Controller
             $manager->flush();
 
             $this->addFlash('info', 'survey.edit.success');
+
+            return $this->redirectToRoute('app_referent_surveys');
         }
 
         return $this->render('referent/surveys/create.html.twig', [

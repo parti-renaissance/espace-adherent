@@ -70,7 +70,7 @@ class Question
     /**
      * @var Choice[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="Choice", mappedBy="question", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Choice", mappedBy="question", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"position": "ASC"})
      *
      * @Assert\Valid

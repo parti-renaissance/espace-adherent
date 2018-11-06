@@ -3,10 +3,13 @@
 namespace AppBundle\Form\Jecoute;
 
 use AppBundle\Entity\Jecoute\Question;
+use AppBundle\Jecoute\SurveyQuestionTypeEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class QuestionType extends AbstractType
@@ -33,6 +36,14 @@ class QuestionType extends AbstractType
                 'prototype_name' => '__children_name__',
             ])
         ;
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $data = $event->getData();
+            if (SurveyQuestionTypeEnum::SIMPLE_FIELD === $data['type']) {
+                unset($data['choices']);
+                $event->setData($data);
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)
