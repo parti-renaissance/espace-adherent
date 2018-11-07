@@ -84,7 +84,7 @@ class DataSurvey
     private $postalCode;
 
     /**
-     * @ORM\Column(length=15, nullable=true)
+     * @ORM\Column(length=30, nullable=true)
      *
      * @Assert\Choice(callback={"AppBundle\Jecoute\ProfessionEnum", "all"})
      */
