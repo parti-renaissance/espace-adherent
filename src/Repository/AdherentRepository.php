@@ -685,7 +685,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     {
         return $this->createQueryBuilder('adherent')
             ->select('COUNT(adherent)')
-            ->where('adherent.referentTags IN (:tags)')
+            ->innerJoin('adherent.referentTags', 'tag')
+            ->where('tag IN (:tags)')
             ->andWhere('adherent.status = :status')
             ->setParameter('tags', $managedArea->getTags())
             ->setParameter('status', Adherent::ENABLED)
@@ -698,8 +699,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     {
         return $this->createQueryBuilder('adherent')
             ->select('COUNT(DISTINCT(adherent))')
+            ->innerJoin('adherent.referentTags', 'tag')
             ->innerJoin('adherent.subscriptionTypes', 'subscriptiontypes')
-            ->where('adherent.referentTags IN (:tags)')
+            ->where('tag IN (:tags)')
             ->andWhere('adherent.status = :status')
             ->setParameter('tags', $managedArea->getTags())
             ->setParameter('status', Adherent::ENABLED)
