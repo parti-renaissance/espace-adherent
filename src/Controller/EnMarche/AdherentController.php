@@ -38,6 +38,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/espace-adherent")
@@ -83,17 +84,18 @@ class AdherentController extends Controller
         EventRepository $eventRepository,
         EmailRepository $emailRepository,
         SummaryRepository $summaryRepository,
-        MemberActivityTracker $memberActivityTracker
+        MemberActivityTracker $memberActivityTracker,
+        UserInterface $user
     ): Response {
         return $this->render('adherent/dashboard.html.twig', [
-            'events' => $eventRepository->findEventsByOrganizer($this->getUser()),
-            'emails' => $emailRepository->findBy(['sender' => $this->getUser()->getEmailAddress()]),
-            'summary' => $summaryRepository->findOneForAdherent($this->getUser()),
-            'activities' => $memberActivityTracker->getRecentActivitiesForAdherent($this->getUser()),
-            'area_stats' => $this->getUser()->getManagedArea()
+            'events' => $eventRepository->findEventsByOrganizer($user),
+            'emails' => $emailRepository->findBy(['sender' => $user->getEmailAddress()]),
+            'summary' => $summaryRepository->findOneForAdherent($user),
+            'activities' => $memberActivityTracker->getRecentActivitiesForAdherent($user),
+            'area_stats' => $user->isReferent()
                 ? [
-                        'total' => $adherentRepository->countInManagedArea($this->getUser()->getManagedArea()),
-                        'subscriber' => $adherentRepository->countSubscriberInManagedArea($this->getUser()->getManagedArea()),
+                        'total' => $adherentRepository->countInManagedArea($user->getManagedArea()),
+                        'subscriber' => $adherentRepository->countSubscriberInManagedArea($user->getManagedArea()),
                 ]
                 : null,
         ]);

@@ -100,7 +100,7 @@
                     {% if app.user.interests|length > 0 %}
                         <ul>
                             {% for interest in app.user.interests %}
-                                <li class="dashboard_tag">{{ interest|capitalize }}</li>
+                                <li class="dashboard-tag">{{ interest|capitalize }}</li>
                             {% endfor %}
                         </ul>
                         <br>
@@ -145,7 +145,7 @@
                 {% if summary is not null and summary.skills|length > 0 %}
                     <ul>
                         {% for skill in summary.skills|slice(0,5) %}
-                            <li class="dashboard_tag">{{ skill }}</li>
+                            <li class="dashboard-tag">{{ skill }}</li>
                         {% endfor %}
                     </ul>
 
@@ -166,7 +166,7 @@
                         <li>
                             {{ membership.committee }}
                             {% if membership.privilege is not empty %}
-                                <span class="dashboard_tag">{{ membership.privilege|lower|trans|capitalize }}</span>
+                                <span class="dashboard-tag">{{ membership.privilege|lower|trans|capitalize }}</span>
                             {% endif %}
                         </li>
                     {% endfor %}
@@ -185,7 +185,7 @@
                             <li>
                                 {{  membership.citizenProject }}
                                 {% if membership.privilege is not empty %}
-                                    <span class="dashboard_tag">{{ membership.privilege|lower|trans|capitalize }}</span>
+                                    <span class="dashboard-tag">{{ membership.privilege|lower|trans|capitalize }}</span>
                                 {% endif %}
                             </li>
                         {% endfor %}

@@ -18,40 +18,28 @@ Feature:
     And I should see "adhérent depuis"
     And I should see an "img" element
 
-  Scenario: As an adherent, I should have an interests section
-    Given I am logged as "damien.schmidt@example.ch"
-    When I am on "/espace-adherent/tableau-de-bord"
+    # As an adherent, I should have an interests section
     Then I should see "Les thématiques qui m'intéressent"
     And I should see "Aucun intérèt pour l'instant, renseignez-en ici"
 
-  Scenario: As an adherent, I should have 1 shortcut
-    Given I am logged as "damien.schmidt@example.ch"
-    When I am on "/espace-adherent/tableau-de-bord"
+    # As an adherent, I should have 1 shortcut
     Then I should see "Raccourcis"
     And I should see 1 ".shortcuts ul li" elements
     And I should see "Mes documents"
 
-  Scenario: As an adherent, I should have a skills section
-    Given I am logged as "damien.schmidt@example.ch"
-    When I am on "/espace-adherent/tableau-de-bord"
+    #As an adherent, I should have a skills section
     Then I should see "Mes compétences"
     And I should see "Aucune compétence pour l'instant, renseignez-en ici"
 
-  Scenario: As an adherent, I should have a committee section
-    Given I am logged as "damien.schmidt@example.ch"
-    When I am on "/espace-adherent/tableau-de-bord"
+    # As an adherent, I should have a committee section
     Then I should see "Les comités dont je fais partie"
     And I should see "En Marche - Suisse"
 
-  Scenario: As an adherent, I should have a citizen project section
-    Given I am logged as "damien.schmidt@example.ch"
-    When I am on "/espace-adherent/tableau-de-bord"
+    # As an adherent, I should have a citizen project section
     Then I should see "Mes projets citoyens"
     And I should see "Aucun projet citoyen pour l'instant, renseignez-en ici"
 
-  Scenario: As an adherent, I should have an activity section
-    Given I am logged as "damien.schmidt@example.ch"
-    When I am on "/espace-adherent/tableau-de-bord"
+    # As an adherent, I should have an activity section
     Then I should see "Activité récente"
     And I should see "A rejoint le mouvement En Marche"
 
@@ -63,9 +51,7 @@ Feature:
     And I should see "adhérent depuis janvier 2017"
     And I should see an "img" element
 
-  Scenario: As a referent,I can see information about my departement
-    Given I am logged as "referent@en-marche-dev.fr"
-    And I am on "/espace-adherent/tableau-de-bord"
+    # As a referent,I can see information about my departement
     Then I should see "Département 13, Département 76, Département 77, Département 92, Suisse"
     And I should see "10 adhérents dans ce département, 10 acceptent de recevoir des e-mails."
     And I should see "Envoyer un e-mail"
@@ -75,26 +61,18 @@ Feature:
     And I should see "Voir tous les événements"
     And I should see "Voir tous les comités"
 
-  Scenario: As a referent, I should have an email section
-    Given I am logged as "referent@en-marche-dev.fr"
-    When I am on "/espace-adherent/tableau-de-bord"
+    # As a referent, I should have an email section
     Then I should see "Les e-mails que j'ai envoyés"
 
-  Scenario: As a referent, I should have an event section
-    Given I am logged as "referent@en-marche-dev.fr"
-    When I am on "/espace-adherent/tableau-de-bord"
+    # As a referent, I should have an event section
     Then I should see "Les événements que j'ai créés"
     And I should see "Voir tous les événements"
 
-  Scenario: As a referent, I should have an interest section
-    Given I am logged as "referent@en-marche-dev.fr"
-    When I am on "/espace-adherent/tableau-de-bord"
+    # As a referent, I should have an interest section
     Then I should see "Les thématiques qui m'intéressent"
     And I should see "Aucun intérèt pour l'instant, renseignez-en ici"
 
-  Scenario: As a referent, I can see 2 shortcuts
-    Given I am logged as "referent@en-marche-dev.fr"
-    When I am on "/espace-adherent/tableau-de-bord"
+    # As a referent, I can see 2 shortcuts
     Then I should see 2 ".shortcuts ul li" elements
     And I should see "Mes documents"
     And I should see "Bug ? Nouveau besoin ? Faites-le nous savoir."
@@ -107,59 +85,43 @@ Feature:
     And I should see "Animateur 🏅, adhérent depuis janvier 2017 "
     And I should see an "img" element
 
-  Scenario: As an animator, I should have an e-mail section
-    Given I am logged as "jacques.picard@en-marche.fr"
-    When I am on "/espace-adherent/tableau-de-bord"
+    # As an animator, I should have an e-mail section
     Then I should see "Les e-mails que j'ai envoyés"
     And I should see 2 ".emails ul li" elements
     And I should see "[Comité local] [Comité local] Nouveau message"
     And I should see "destinataires"
 
-  Scenario: As an animator, I should have an events section
-    Given I am logged as "jacques.picard@en-marche.fr"
-    When I am on "/espace-adherent/tableau-de-bord"
+    # As an animator, I should have an events section
     Then I should see "Les événements que j'ai créés"
     And I should see 2 ".events ul li" elements
     And I should see "Réunion de réflexion parisienne"
     And I should see "Réunion de réflexion parisienne annulé"
 
-  Scenario: As an animator, I should have an interests section
-    Given I am logged as "jacques.picard@en-marche.fr"
-    When I am on "/espace-adherent/tableau-de-bord"
+    # As an animator, I should have an interests section
     Then I should see "Les thématiques qui m'intéressent"
     And I should see "Aucun intérèt pour l'instant, renseignez-en ici"
 
-  Scenario: As an animator, I should have 2 shortcuts
-    Given I am logged as "jacques.picard@en-marche.fr"
-    When I am on "/espace-adherent/tableau-de-bord"
+    # As an animator, I should have 2 shortcuts
     Then I should see "Raccourcis"
     And I should see 2 ".shortcuts ul li" elements
     And I should see "Tracts et posters"
     And I should see "Mes documents"
 
-  Scenario: As an animator, I should have a skills section
-    Given I am logged as "jacques.picard@en-marche.fr"
-    When I am on "/espace-adherent/tableau-de-bord"
+    # As an animator, I should have a skills section
     Then I should see "Mes compétences"
     And I should see "Aucune compétence pour l'instant, renseignez-en ici"
 
-  Scenario: As an animator, I should have a committee section
-    Given I am logged as "jacques.picard@en-marche.fr"
-    When I am on "/espace-adherent/tableau-de-bord"
+    # As an animator, I should have a committee section
     Then I should see "Les comités dont je fais partie"
     And I should see "En Marche - Comité de Singapour"
     And I should see "En Marche - Comité de New York City"
 
-  Scenario: As an animator, I should have a citizen project section
-    Given I am logged as "jacques.picard@en-marche.fr"
-    When I am on "/espace-adherent/tableau-de-bord"
+    # As an animator, I should have a citizen project section
     Then I should see "Mes projets citoyens"
     And I should see "En Marche - Projet citoyen"
     And I should see "Projet citoyen à New York City"
 
-  Scenario: As an animator, I should have an activity section
-    Given I am logged as "jacques.picard@en-marche.fr"
-    When I am on "/espace-adherent/tableau-de-bord"
+    # As an animator, I should have an activity section
     Then I should see "Activité récente"
     And I should see "A participé à l'événement \"Meeting de Singapour\""
     And I should see "A créé l'événement \"Réunion de réflexion parisienne\""

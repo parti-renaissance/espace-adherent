@@ -11,17 +11,17 @@
     .button {
         width: 199px;
         height: 47px;
-        border: solid 1px #000000;
-        background-color: #ffffff;
+        border: solid 1px $black;
+        background-color: $white;
         padding: 10px;
         margin: 10px 0;
         text-transform: uppercase;
     }
 
-    .dashboard_tag {
+    .&-tag {
         height: 24px;
         border-radius: 12px;
-        background-color: #ebebeb;
+        background-color: $gray--light;
         padding: 3px;
 
     }
@@ -42,7 +42,7 @@
         &-subtitle {
             height: 16px;
             font-size: 14px;
-            color: #999999;
+            color: $gray--muted;
         }
     }
 
@@ -73,7 +73,7 @@
 
         .localization {
             padding: 20px;
-            background-color: #eeeeee;
+            background-color: $gray--light;
         }
 
         .interests {
