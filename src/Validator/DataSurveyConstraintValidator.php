@@ -32,7 +32,7 @@ class DataSurveyConstraintValidator extends ConstraintValidator
             ;
         }
 
-        if (!$dataSurvey->getAgreedToStayInContact() && $dataSurvey->getAgreedToJoin()) {
+        if (!$dataSurvey->getAgreedToStayInContact() && $dataSurvey->getAgreedToContactForJoin()) {
             $this
                 ->context
                 ->buildViolation($constraint->agreedToStayInContactRequired)

@@ -69,7 +69,12 @@ class DataSurvey
     /**
      * @ORM\Column(type="boolean")
      */
-    private $agreedToJoin = false;
+    private $agreedToContactForJoin = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $agreedToTreatPersonalData = false;
 
     /**
      * @ORM\Column(length=5, nullable=true)
@@ -77,6 +82,13 @@ class DataSurvey
      * @Assert\Length(min=5, max=5)
      */
     private $postalCode;
+
+    /**
+     * @ORM\Column(length=15, nullable=true)
+     *
+     * @Assert\Choice(callback={"AppBundle\Jecoute\ProfessionEnum", "all"})
+     */
+    private $profession;
 
     /**
      * @ORM\Column(length=15, nullable=true)
@@ -182,14 +194,24 @@ class DataSurvey
         $this->agreedToStayInContact = $agreedToStayInContact;
     }
 
-    public function getAgreedToJoin(): bool
+    public function getAgreedToContactForJoin(): bool
     {
-        return $this->agreedToJoin;
+        return $this->agreedToContactForJoin;
     }
 
-    public function setAgreedToJoin(bool $agreedToJoin): void
+    public function setAgreedToContactForJoin(bool $agreedToContactForJoin): void
     {
-        $this->agreedToJoin = $agreedToJoin;
+        $this->agreedToContactForJoin = $agreedToContactForJoin;
+    }
+
+    public function getAgreedToTreatPersonalData(): bool
+    {
+        return $this->agreedToTreatPersonalData;
+    }
+
+    public function setAgreedToTreatPersonalData(bool $agreedToTreatPersonalData): void
+    {
+        $this->agreedToTreatPersonalData = $agreedToTreatPersonalData;
     }
 
     public function getPostalCode(): ?string
@@ -200,6 +222,16 @@ class DataSurvey
     public function setPostalCode(string $postalCode): void
     {
         $this->postalCode = $postalCode;
+    }
+
+    public function getProfession(): ?string
+    {
+        return $this->profession;
+    }
+
+    public function setProfession(string $profession): void
+    {
+        $this->profession = $profession;
     }
 
     public function getAgeRange(): ?string
