@@ -50,9 +50,9 @@ class CommitteeSubscriber implements EventSubscriberInterface
     {
         return [
             // Api Synchronization should be done after all others subscribers so we put the lowest priority
-            Events::COMMITTEE_CREATED => [['publishCommitteeCreated', -255]],
-            Events::COMMITTEE_UPDATED => [['publishCommitteeUpdated', -255]],
-            Events::COMMITTEE_DELETED => [['publishCommitteeDeleted', -255]],
+            Events::COMMITTEE_CREATED => [['publishCommitteeCreated', -512]],
+            Events::COMMITTEE_UPDATED => [['publishCommitteeUpdated', -512]],
+            Events::COMMITTEE_DELETED => [['publishCommitteeDeleted', -512]],
         ];
     }
 }

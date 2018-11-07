@@ -50,10 +50,10 @@ class EventSubscriber implements EventSubscriberInterface
     {
         return [
             // Api Synchronization should be done after all others subscribers so we put the lowest priority
-            Events::EVENT_CREATED => [['publishEventCreated', -255]],
-            Events::EVENT_UPDATED => [['publishEventUpdated', -255]],
-            Events::EVENT_CANCELLED => [['publishEventUpdated', -255]],
-            Events::EVENT_DELETED => [['publishEventDeleted', -255]],
+            Events::EVENT_CREATED => [['publishEventCreated', -512]],
+            Events::EVENT_UPDATED => [['publishEventUpdated', -512]],
+            Events::EVENT_CANCELLED => [['publishEventUpdated', -512]],
+            Events::EVENT_DELETED => [['publishEventDeleted', -512]],
         ];
     }
 }
