@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="jecoute_suggested_question")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SuggestedQuestionRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

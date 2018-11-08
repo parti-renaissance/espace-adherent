@@ -10,6 +10,12 @@
     {{ form_widget(form.questions) }}
 </div>
 
+<div class="form__row form__new">
+    <span id="suggested-questions-open-popin" class="btn btn-default"><i class="fa fa-plus-circle"></i>&nbsp;Voir les questions panier</span>
+</div>
+
+<br/>
+
 <div class="form__row form__new form__checkbox">
     {{ form_errors(form.published) }}
     {{ form_widget(form.published, { attr: { class: 'form--full committee_event__form__name' } }) }}

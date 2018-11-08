@@ -1,0 +1,35 @@
+<div class="referent" id="suggested_questions_dialog" title="Choisir une question suggérée">
+    <div class="datagrid">
+        <div class="b__nudge--bottom-larger">
+            {% if suggestedQuestions %}
+                <table class="datagrid__table">
+                    <thead>
+                        <tr class="label__header--large form form__label">
+                            <th>Question</th>
+                            <th>Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for question in suggestedQuestions %}
+                            <tr>
+                                <td>{{ question.content }}</td>
+                                <td>{{ question.getTypeLabel }}</td>
+                                <td>
+                                    <span
+                                        data-type="{{ question.type }}"
+                                        data-content="{{ question.content }}"
+                                        data-choices="{{ question.getChoicesAsJson }}"
+                                        class="add-current-suggested-question cursor--pointer">Ajouter cette question
+                                    </span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text--small text--center">Aucune question suggérée n'est disponible.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>

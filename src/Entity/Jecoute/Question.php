@@ -41,7 +41,7 @@ class Question
     /**
      * @var SurveyQuestion[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="question", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="question", cascade={"persist", "remove"}, orphanRemoval=true)
      *
      * @Assert\Valid
      */
@@ -131,6 +131,18 @@ class Question
     public function setType(?string $type): void
     {
         $this->type = $type;
+    }
+
+    public function getTypeLabel(): string
+    {
+        return array_flip(SurveyQuestionTypeEnum::all())[$this->type];
+    }
+
+    public function getChoicesAsJson(): string
+    {
+        return json_encode(array_map(function (Choice $choice) {
+            return $choice->getContent();
+        }, $this->choices->toArray()));
     }
 
     public function addChoice(Choice $choice): void
