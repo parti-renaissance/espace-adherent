@@ -83,7 +83,7 @@ map_events:
     defaults: { _controller: 'AppBundle:EnMarche/Map:events' }
 
 react_citizen_projects:
-    host:    "%app_host%"
+    host:     "%app_host%"
     resource: "app.react_routing_loader:loadRoutes"
     type:     "service"
 
