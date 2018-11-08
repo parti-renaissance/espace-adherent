@@ -103,7 +103,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
             'name' => 'Réunion de réflexion dammarienne',
             'category' => $eventCategory1,
             'description' => 'Nous allons échanger autour de différents sujets',
-            'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', 48.518219, 2.622016),
+            'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', 48.5182194, 2.624205),
             'begin_at' => (new Chronos('+10 days'))->format('Y-m-d').' 09:30:00',
             'finish_at' => (new Chronos('+10 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 50,

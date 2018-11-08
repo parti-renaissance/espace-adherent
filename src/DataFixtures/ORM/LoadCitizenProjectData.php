@@ -4,7 +4,6 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\CitizenProject\CitizenProjectFactory;
 use AppBundle\DataFixtures\AutoIncrementResetter;
-use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\NullablePostAddress;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

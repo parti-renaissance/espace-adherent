@@ -89,7 +89,7 @@ trait EntityPostAddressTrait
      * @JMS\VirtualProperty
      * @JMS\SerializedName("latitude")
      */
-    public function getLatitude()
+    public function getLatitude(): ?float
     {
         return $this->postAddress->getLatitude();
     }
@@ -99,7 +99,7 @@ trait EntityPostAddressTrait
      * @JMS\VirtualProperty
      * @JMS\SerializedName("longitude")
      */
-    public function getLongitude()
+    public function getLongitude(): ?float
     {
         return $this->postAddress->getLongitude();
     }
@@ -117,7 +117,7 @@ trait EntityPostAddressTrait
         return $this->postAddress->getGeocodableAddress();
     }
 
-    public function updateCoordinates(Coordinates $coordinates)
+    public function updateCoordinates(Coordinates $coordinates): void
     {
         $this->postAddress->updateCoordinates($coordinates);
     }

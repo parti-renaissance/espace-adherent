@@ -156,12 +156,12 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         return $this->postalCode;
     }
 
-    public function getLatitude()
+    public function getLatitude(): ?float
     {
         return $this->latitude;
     }
 
-    public function getLongitude()
+    public function getLongitude(): ?float
     {
         return $this->longitude;
     }
@@ -191,7 +191,7 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         return $inseeCode;
     }
 
-    public function updateCoordinates(Coordinates $coordinates)
+    public function updateCoordinates(Coordinates $coordinates): void
     {
         $this->latitude = $coordinates->getLatitude();
         $this->longitude = $coordinates->getLongitude();

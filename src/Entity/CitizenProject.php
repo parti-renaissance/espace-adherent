@@ -157,6 +157,8 @@ class CitizenProject extends BaseGroup
      * @var string
      *
      * @ORM\Column(length=50, nullable=true)
+     *
+     * @JMS\Groups({"public", "citizen_project_read"})
      */
     private $district;
 
@@ -260,21 +262,6 @@ class CitizenProject extends BaseGroup
         return $this->postAddress;
     }
 
-    public function getLatitude()
-    {
-        return $this->postAddress ? $this->postAddress->getLatitude() : null;
-    }
-
-    public function getLongitude()
-    {
-        return $this->postAddress ? $this->postAddress->getLongitude() : null;
-    }
-
-    public function getGeocodableAddress(): string
-    {
-        return $this->postAddress ? $this->postAddress->getGeocodableAddress() : '';
-    }
-
     public function setCategory(CitizenProjectCategory $category): void
     {
         $this->category = $category;
@@ -293,16 +280,6 @@ class CitizenProject extends BaseGroup
     public function getCategoryName(): string
     {
         return $this->category->getName();
-    }
-
-    public function setPhone(PhoneNumber $phone = null): void
-    {
-        $this->phone = $phone;
-    }
-
-    public function getPhone(): ?PhoneNumber
-    {
-        return $this->phone;
     }
 
     public function isSupportedByCommitteeUuid(string $committeeUuid): bool
@@ -524,7 +501,6 @@ class CitizenProject extends BaseGroup
 
     /**
      * Marks this citizen project as approved.
-     *
      *
      * @throws \AppBundle\Exception\CitizenProjectAlreadyApprovedException
      */

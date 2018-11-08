@@ -91,7 +91,7 @@ trait EntityNullablePostAddressTrait
      * @JMS\VirtualProperty
      * @JMS\SerializedName("latitude")
      */
-    public function getLatitude()
+    public function getLatitude(): ?float
     {
         return $this->postAddress ? $this->postAddress->getLatitude() : null;
     }
@@ -101,7 +101,7 @@ trait EntityNullablePostAddressTrait
      * @JMS\VirtualProperty
      * @JMS\SerializedName("longitude")
      */
-    public function getLongitude()
+    public function getLongitude(): ?float
     {
         return $this->postAddress ? $this->postAddress->getLongitude() : null;
     }
@@ -114,12 +114,12 @@ trait EntityNullablePostAddressTrait
         return $this->getLatitude() && $this->getLongitude();
     }
 
-    public function getGeocodableAddress(): ?string
+    public function getGeocodableAddress(): string
     {
-        return $this->postAddress ? $this->postAddress->getGeocodableAddress() : null;
+        return $this->postAddress ? $this->postAddress->getGeocodableAddress() : '';
     }
 
-    public function updateCoordinates(Coordinates $coordinates)
+    public function updateCoordinates(Coordinates $coordinates): void
     {
         $this->postAddress ? $this->postAddress->updateCoordinates($coordinates) : new NullableAddress();
     }

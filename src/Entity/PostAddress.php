@@ -88,7 +88,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      */
     private $longitude;
 
-    private function __construct(?string $country, string $postalCode, ?string $cityName, string $street, float $latitude = null, $longitude = null)
+    private function __construct(?string $country, string $postalCode, ?string $cityName, string $street, float $latitude = null, float $longitude = null)
     {
         $this->country = $country;
         $this->address = $street;
@@ -156,12 +156,12 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         return $this->postalCode;
     }
 
-    public function getLatitude()
+    public function getLatitude(): ?float
     {
         return $this->latitude;
     }
 
-    public function getLongitude()
+    public function getLongitude(): ?float
     {
         return $this->longitude;
     }
@@ -216,7 +216,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         return $inseeCode;
     }
 
-    public function updateCoordinates(Coordinates $coordinates)
+    public function updateCoordinates(Coordinates $coordinates): void
     {
         $this->latitude = $coordinates->getLatitude();
         $this->longitude = $coordinates->getLongitude();

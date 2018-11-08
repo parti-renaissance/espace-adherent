@@ -8,19 +8,19 @@ interface GeoPointInterface extends GeocodableInterface
      * Updates the coordinates of the geocodable object thanks to the data
      * stored in the {@link Coordinates} value object.
      */
-    public function updateCoordinates(Coordinates $coordinates);
+    public function updateCoordinates(Coordinates $coordinates): void;
 
     /**
      * Returns the longitude.
      *
      * @return float
      */
-    public function getLongitude();
+    public function getLongitude(): ?float;
 
     /**
      * Returns the latitude.
      *
      * @return float
      */
-    public function getLatitude();
+    public function getLatitude(): ?float;
 }
