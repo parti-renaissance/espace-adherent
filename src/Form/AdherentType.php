@@ -2,9 +2,12 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Membership\Mandates;
 use AppBundle\Membership\MembershipRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -44,6 +47,13 @@ class AdherentType extends AbstractType
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                 'preferred_country_choices' => $countryCode ? [$countryCode] : [],
             ])
+            ->add('mandate', ChoiceType::class, [
+                'choices' => Mandates::CHOICES,
+                'required' => false,
+            ])
+            ->add('elected', CheckboxType::class, [
+                'required' => false,
+            ])
         ;
 
         // Use address country for phone by default
@@ -54,6 +64,14 @@ class AdherentType extends AbstractType
                 }
             })
         ;
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $data = $event->getData();
+            if (array_key_exists('elected', $data) && false === $data['elected']) {
+                unset($data['mandate']);
+                $event->setData($data);
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)

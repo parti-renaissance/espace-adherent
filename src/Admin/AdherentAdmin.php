@@ -17,6 +17,7 @@ use AppBundle\Form\EventListener\BoardMemberListener;
 use AppBundle\Form\EventListener\ReferentManagedAreaListener;
 use AppBundle\Form\GenderType;
 use AppBundle\Intl\UnitedNationsBundle;
+use AppBundle\Membership\Mandates;
 use AppBundle\Membership\UserEvent;
 use AppBundle\Membership\UserEvents;
 use Doctrine\ORM\Query\Expr;
@@ -112,6 +113,10 @@ class AdherentAdmin extends AbstractAdmin
                 ])
                 ->add('position', null, [
                     'label' => 'Statut',
+                ])
+                ->add('mandate', null, [
+                    'label' => 'adherent.mandate.label',
+                    'template' => 'admin/adherent/show_mandate.html.twig',
                 ])
             ->end()
             ->with('Référent', ['class' => 'col-md-3'])
@@ -213,6 +218,11 @@ class AdherentAdmin extends AbstractAdmin
                 ])
                 ->add('position', ActivityPositionType::class, [
                     'label' => 'Statut',
+                ])
+                ->add('mandate', ChoiceType::class, [
+                    'label' => 'adherent.mandate.label',
+                    'choices' => Mandates::CHOICES,
+                    'required' => false,
                 ])
             ->end()
             ->with('Compte', ['class' => 'col-md-6'])
@@ -475,6 +485,15 @@ class AdherentAdmin extends AbstractAdmin
                     return true;
                 },
             ])
+            ->add('mandate', null, [
+                    'label' => 'adherent.mandate.label',
+                    'field_type' => ChoiceType::class,
+                    'field_options' => [
+                        'choices' => Mandates::CHOICES,
+                    ],
+                    'show_filter' => true,
+                ]
+            )
         ;
     }
 
@@ -546,6 +565,10 @@ class AdherentAdmin extends AbstractAdmin
                 'label' => 'Tags gérés',
                 'virtual_field' => true,
                 'template' => 'admin/adherent/list_managed_area_tags.html.twig',
+            ])
+            ->add('mandate', null, [
+                'label' => 'adherent.mandate.label',
+                'template' => 'admin/adherent/list_mandate.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
