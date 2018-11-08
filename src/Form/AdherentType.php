@@ -48,8 +48,10 @@ class AdherentType extends AbstractType
                 'preferred_country_choices' => $countryCode ? [$countryCode] : [],
             ])
             ->add('mandate', ChoiceType::class, [
+                'label' => 'adherent.mandate.label',
                 'choices' => Mandates::CHOICES,
                 'required' => false,
+                'placeholder' => 'adherent.form.mandate.placeholder',
             ])
             ->add('elected', CheckboxType::class, [
                 'required' => false,

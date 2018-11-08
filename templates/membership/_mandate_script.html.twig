@@ -4,19 +4,16 @@
         var formElected = $('#{{ form.elected.vars.id }}');
         var selectMandate = $('#{{ form.mandate.vars.id }}');
 
-        if (formElected.is(':checked')) {
-            formMandate.show();
-        } else {
-            formMandate.hide();
-        }
-
         formElected.click(function() {
-            if ($(this).is(':checked')) {
-                formMandate.show();
-            } else {
-                formMandate.hide();
+            const isChecked = $(this).is(':checked');
+
+            formMandate.toggle(isChecked);
+            selectMandate.attr('required', isChecked);
+
+            if (isChecked) {
                 selectMandate.val("");
             }
         });
+        formElected.triggerHandler('click');
     });
 </script>
