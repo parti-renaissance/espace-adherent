@@ -188,15 +188,17 @@ class MembershipRequestHandler
         return $this->callbackManager->generateUrl('app_membership_activate', $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
-    public function terminateMembership(UnregistrationCommand $command, Adherent $adherent): void
+    public function terminateMembership(UnregistrationCommand $command, Adherent $adherent, bool $sendMail = true): void
     {
         $unregistrationFactory = new UnregistrationFactory();
         $unregistration = $unregistrationFactory->createFromUnregistrationCommandAndAdherent($command, $adherent);
 
         $this->adherentRegistry->unregister($adherent, $unregistration);
 
-        $message = AdherentTerminateMembershipMessage::createFromAdherent($adherent);
-        $this->mailer->sendMessage($message);
+        if ($sendMail) {
+            $message = AdherentTerminateMembershipMessage::createFromAdherent($adherent);
+            $this->mailer->sendMessage($message);
+        }
 
         $this->dispatcher->dispatch(UserEvents::USER_DELETED, new UserEvent($adherent));
     }

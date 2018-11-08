@@ -107,6 +107,9 @@
             <argument key="$mailer" type="service" id="app.mailer.transactional" />
         </service>
         <service id="AppBundle\Membership\EventListener\ChangeEmailFlashMessageSubscriber" />
+        <service id="AppBundle\Validator\BannedAdherentValidator">
+            <argument type="service" id="AppBundle\Repository\BannedAdherentRepository" />
+        </service>
 
         <!-- Event -->
         <service id="AppBundle\Event\EventFactory" public="true" />

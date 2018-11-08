@@ -4,6 +4,7 @@ namespace AppBundle\Membership;
 
 use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
+use AppBundle\Validator\BannedAdherent;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use AppBundle\Validator\UniqueMembership as AssertUniqueMembership;
 use libphonenumber\PhoneNumber;
@@ -106,6 +107,7 @@ class MembershipRequest implements MembershipInterface
      * @Assert\NotBlank(message="common.email.not_blank", groups={"Registration", "Update"})
      * @Assert\Email(message="common.email.invalid", groups={"Registration", "Update"})
      * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Registration", "Update"})
+     * @BannedAdherent(groups={"Registration"})
      */
     private $emailAddress;
 
