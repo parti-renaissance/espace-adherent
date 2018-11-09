@@ -43,7 +43,7 @@ class Survey
     /**
      * @var SurveyQuestion[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="survey", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="survey", cascade={"persist", "remove"}, orphanRemoval=true))
      *
      * @Assert\Valid
      */
@@ -96,8 +96,9 @@ class Survey
         return $this->questions;
     }
 
-    public function removeQuestion(Question $question): void
+    public function removeQuestion(SurveyQuestion $question): void
     {
+        $question->setSurvey(null);
         $this->questions->removeElement($question);
     }
 

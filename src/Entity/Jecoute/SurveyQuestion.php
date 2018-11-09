@@ -75,7 +75,7 @@ class SurveyQuestion
         return $this->survey;
     }
 
-    public function setSurvey(Survey $survey): void
+    public function setSurvey(?Survey $survey): void
     {
         $this->survey = $survey;
     }

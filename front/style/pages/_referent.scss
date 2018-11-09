@@ -152,3 +152,17 @@
         }
     }
 }
+
+.ui-dialog {
+    &__middle {
+        height: auto !important;
+
+        .add-current-suggested-question {
+            text-decoration: underline;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+}

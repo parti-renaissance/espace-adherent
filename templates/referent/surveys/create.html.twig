@@ -1,9 +1,14 @@
 {% extends 'referent/_layout.html.twig' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
+{% endblock %}
+
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
     {{ parent() }}
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
     <script src="{{ asset('js/jquery.collection.js') }}"></script>
 
     <script type="text/javascript">
@@ -37,6 +42,52 @@
             $('.survey-question-type input').click(function(){
                 displayChoices($(this));
             });
+
+            const suggestedQuestionsDialog = $("#suggested_questions_dialog");
+
+            suggestedQuestionsDialog.dialog({
+                modal: true,
+                autoOpen: false,
+                height: "auto",
+                width: "50%",
+                minHeight: 500,
+                resizable: false,
+                draggable: false,
+                position: { my: 'center', at: 'center' },
+                dialogClass: 'ui-dialog__middle',
+                open: function() {
+                    $(this).siblings('.ui-dialog-titlebar')
+                        .find('button').blur()
+                    ;
+                }
+            });
+
+            $("#suggested-questions-open-popin").click(function() {
+                suggestedQuestionsDialog.dialog( "open" );
+            });
+
+            $(".add-current-suggested-question").click(function() {
+                $('.question-add').trigger('click');
+
+                // Sets the content of the current suggested question
+                $("input[name$='[question][content]']").last().val($(this).data('content'));
+
+                // Checks the type of the current suggested question
+                const currentChoiceType = $("input[name$='[question][type]']").last().attr('name');
+                $(`input[name='${currentChoiceType}'][value='${$(this).data('type')}']`).attr('checked', true);
+
+                // Adds the choices of the current suggested question
+                const choices = $(this).data('choices');
+
+                if ($.isArray(choices) && choices.length > 0 ) {
+                    $.each(choices, function(key, choice) {
+                        $('a[class$=question_choices-choice-rescue-add]').last().trigger('click');
+                        $('.survey-question__choice_widget').last().find('input').val(choice);
+                    });
+                }
+
+                suggestedQuestionsDialog.dialog('close');
+            });
         });
     </script>
 {% endblock %}
@@ -59,4 +110,9 @@
         {{ include('referent/surveys/_form.html.twig') }}
         {{ form_end(form) }}
     </div>
+
+    {% include ('referent/surveys/suggested_questions_dialog.html.twig') with {
+        'suggestedQuestions': suggestedQuestions
+    } %}
+
 {% endblock %}

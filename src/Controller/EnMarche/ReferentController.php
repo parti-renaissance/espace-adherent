@@ -24,6 +24,7 @@ use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use AppBundle\Repository\ReferentRepository;
+use AppBundle\Repository\SuggestedQuestionRepository;
 use AppBundle\Repository\SurveyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -181,6 +182,7 @@ class ReferentController extends Controller
     public function jecouteSurveyCreateAction(
         Request $request,
         ObjectManager $manager,
+        SuggestedQuestionRepository $suggestedQuestionRepository,
         UserInterface $user
     ): Response {
         $this->disableInProduction();
@@ -195,10 +197,13 @@ class ReferentController extends Controller
             $manager->flush();
 
             $this->addFlash('info', 'survey.create.success');
+
+            return $this->redirectToRoute('app_referent_surveys');
         }
 
         return $this->render('referent/surveys/create.html.twig', [
             'form' => $form->createView(),
+            'suggestedQuestions' => $suggestedQuestionRepository->findAllPublished(),
         ]);
     }
 
@@ -212,8 +217,12 @@ class ReferentController extends Controller
      * )
      * @Method("GET|POST")
      */
-    public function jecouteSurveyEditAction(Request $request, Survey $survey, ObjectManager $manager): Response
-    {
+    public function jecouteSurveyEditAction(
+        Request $request,
+        Survey $survey,
+        ObjectManager $manager,
+        SuggestedQuestionRepository $suggestedQuestionRepository
+    ): Response {
         $this->disableInProduction();
 
         $form = $this
@@ -231,6 +240,7 @@ class ReferentController extends Controller
 
         return $this->render('referent/surveys/create.html.twig', [
             'form' => $form->createView(),
+            'suggestedQuestions' => $suggestedQuestionRepository->findAllPublished(),
         ]);
     }
 
