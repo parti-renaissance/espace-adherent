@@ -27,7 +27,7 @@ Feature:
     And I should see 1 ".shortcuts ul li" elements
     And I should see "Mes documents"
 
-    #As an adherent, I should have a skills section
+    # As an adherent, I should have a skills section
     Then I should see "Mes compétences"
     And I should see "Aucune compétence pour l'instant, renseignez-en ici"
 

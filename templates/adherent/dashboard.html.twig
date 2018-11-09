@@ -181,7 +181,7 @@
                     <ul>
                         {% for membership in app.user.citizenProjectMemberships|slice(0, 2) %}
                             <li>
-                                {{  membership.citizenProject }}
+                                {{ membership.citizenProject }}
                                 {% if membership.privilege is not empty %}
                                     <span class="adherent-dashboard-tag">{{ membership.privilege|lower|trans|capitalize }}</span>
                                 {% endif %}
