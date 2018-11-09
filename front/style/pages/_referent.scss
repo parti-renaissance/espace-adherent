@@ -101,6 +101,9 @@
 }
 
 .jecoute-survey {
+
+    counter-reset: section;
+
     .form {
         &__radio-button {
             input[type='radio'] {
@@ -130,6 +133,11 @@
 
                 &__label {
                     float: left;
+
+                    label::after {
+                        counter-increment: section;
+                        content: " " counter(section);
+                    }
                 }
 
                 &__management {
