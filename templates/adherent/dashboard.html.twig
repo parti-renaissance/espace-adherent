@@ -1,18 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    <section class="dashboard l__wrapper">
-        <div class="dashboard__welcome">
-            {% set imagePath = summary is not null ? path('asset_url', { path: summary.picturePath }) : '/images/user.png' %}
-
+    <section class="adherent-dashboard l__wrapper">
+        <div class="adherent-dashboard__welcome">
             <p>
-            {% if summary is not null %}
-                <img src="{{ path('asset_url', { path: summary.picturePath }) }}" title="{{ 'dashboard.picture.update'|trans }}">
-            {% else %}
-                <a href="{{ path('app_summary_manager_step', {'step': 'photo'}) }}">
-                    <img src="/images/user.png" alt="{{ 'dashboard.picture.update'|trans }}" title="{{ 'dashboard.picture.update'|trans }}">
-                </a>
-            {% endif %}
+                {% if summary is not null %}
+                    <img src="{{ path('asset_url', { path: summary.picturePath }) }}" title="{{ 'dashboard.picture.update'|trans }}">
+                {% else %}
+                    <a href="{{ path('app_summary_manager_step', {step: 'photo'}) }}">
+                        <img src="/images/user.png" alt="{{ 'dashboard.picture.update'|trans }}" title="{{ 'dashboard.picture.update'|trans }}">
+                    </a>
+                {% endif %}
             </p>
 
             <p>
@@ -25,72 +23,72 @@
             </p>
         </div>
 
-        <div class="dashboard__column-left">
-                {% if area_stats is not null %}
-                    <div class="localization">
-                        <h2>{{ app.user.managedArea.tags|join(', ') }}</h2>
-                        <p>
-                            {{ 'dashboard.members_stats'|transchoice(area_stats.total, {'%nb_members%': area_stats.total})|raw }}{{ 'dashboard.subscriber_stats'|transchoice(area_stats.subscriber, {'%nb_subscribers%': area_stats.subscriber}) }}
-                        </p>
-
-                        <ul class="horizontal">
-                            <li><a href="{{ path('app_referent_users') }}" class="button">{{ 'dashboard.send_email'|trans }}</a></li>
-                            <li><a href="{{ path('app_referent_events_create') }}" class="button">{{ 'dashboard.create_event'|trans }}</a></li>
-                        </ul>
-                        <br>
-                        <hr>
-                        <ul class="horizontal">
-                            <li><a href="{{ path('app_referent_users') }}" class="link--no-decor link--newblue">{{ 'dashboard.show_members'|trans }}</a></li>
-                            <li><a href="{{ path('app_referent_events') }}" class="link--no-decor link--newblue">{{ 'dashboard.show_events'|trans }}</a></li>
-                            <li><a href="{{ path('app_referent_committees') }}" class="link--no-decor link--newblue">{{ 'dashboard.show_committees'|trans }}</a></li>
-                        </ul>
-                    </div>
-                {% endif %}
-                <div class="emails">
-                    <b>{{ 'dashboard.my_emails_sended'|trans }}</b>
-                    <hr>
-                    {% if emails|length > 0 %}
-                        <ul>
-                            {% for email in emails|slice(0,2) %}
-                                <li>
-                                    <div class="list-title">
-                                        {{ email.requestPayload.Subject }}
-                                        <span class="pull-right">{{ email.Recipients|length }}</span>
-                                    </div>
-                                    <div class="list-subtitle">
-                                        {{ email.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }}
-                                        <span class="pull-right">{{ 'dashboard.emails.recipent'|transchoice(email.Recipients|length) }}</span>
-                                    </div>
-                                    <hr>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </div>
-                <div class="events">
-                    <b>{{ 'dashboard.my_events'|trans }}</b>
-                    <hr>
-                    {% if events|length > 0 %}
-                        <ul>
-                            {% for event in events|slice(0,2) %}
-                                <li>
-                                    <div class="list-title">
-                                        {{ event.name }}
-                                        <span class="pull-right">{{ event.participantsCount }}</span>
-                                    </div>
-                                    <div class="list-subtitle">
-                                        À {{ event.postAddress.city }}, le {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y à HH:mm") }}
-                                        <span class="pull-right">{{ 'dashboard.events.participantsCount'|transchoice(event.participantsCount) }}</span>
-                                    </div>
-                                    <hr>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                    <p style="text-align: center;">
-                        <a href="{{ path('app_referent_events') }}" class="button">{{ 'dashboard.show_events'|trans }}</a>
+        <div class="adherent-dashboard__column-left">
+            {% if area_stats is not null %}
+                <div class="localization">
+                    <h2>{{ app.user.managedArea.tags|join(', ') }}</h2>
+                    <p>
+                        {{ 'dashboard.members_stats'|transchoice(area_stats.total, {'%nb_members%': area_stats.total})|raw }}{{ 'dashboard.subscriber_stats'|transchoice(area_stats.subscriber, {'%nb_subscribers%': area_stats.subscriber}) }}
                     </p>
+
+                    <ul class="horizontal">
+                        <li><a href="{{ path('app_referent_users') }}" class="button">{{ 'dashboard.send_email'|trans }}</a></li>
+                        <li><a href="{{ path('app_referent_events_create') }}" class="button">{{ 'dashboard.create_event'|trans }}</a></li>
+                    </ul>
+                    <br>
+                    <hr>
+                    <ul class="horizontal">
+                        <li><a href="{{ path('app_referent_users') }}" class="link--no-decor link--newblue">{{ 'dashboard.show_members'|trans }}</a></li>
+                        <li><a href="{{ path('app_referent_events') }}" class="link--no-decor link--newblue">{{ 'dashboard.show_events'|trans }}</a></li>
+                        <li><a href="{{ path('app_referent_committees') }}" class="link--no-decor link--newblue">{{ 'dashboard.show_committees'|trans }}</a></li>
+                    </ul>
                 </div>
+            {% endif %}
+            <div class="emails">
+                <b>{{ 'dashboard.my_emails_sended'|trans }}</b>
+                <hr>
+                {% if emails|length > 0 %}
+                    <ul>
+                        {% for email in emails|slice(0, 2) %}
+                            <li>
+                                <div class="list-title">
+                                    {{ email.requestPayload.Subject }}
+                                    <span class="pull-right">{{ email.Recipients|length }}</span>
+                                </div>
+                                <div class="list-subtitle">
+                                    {{ email.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }}
+                                    <span class="pull-right">{{ 'dashboard.emails.recipent'|transchoice(email.Recipients|length) }}</span>
+                                </div>
+                                <hr>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div class="events">
+                <b>{{ 'dashboard.my_events'|trans }}</b>
+                <hr>
+                {% if events|length > 0 %}
+                    <ul>
+                        {% for event in events|slice(0, 2) %}
+                            <li>
+                                <div class="list-title">
+                                    {{ event.name }}
+                                    <span class="pull-right">{{ event.participantsCount }}</span>
+                                </div>
+                                <div class="list-subtitle">
+                                    À {{ event.postAddress.city }}, le {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y à HH:mm") }}
+                                    <span class="pull-right">{{ 'dashboard.events.participantsCount'|transchoice(event.participantsCount) }}</span>
+                                </div>
+                                <hr>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <p style="text-align: center;">
+                    <a href="{{ path('app_referent_events') }}" class="button">{{ 'dashboard.show_events'|trans }}</a>
+                </p>
+            </div>
 
             <div class="interests">
                 <b>{{ 'dashboard.my_internets'|trans }}</b>
@@ -100,7 +98,7 @@
                     {% if app.user.interests|length > 0 %}
                         <ul>
                             {% for interest in app.user.interests %}
-                                <li class="dashboard-tag">{{ interest|capitalize }}</li>
+                                <li class="adherent-dashboard-tag">{{ interest|capitalize }}</li>
                             {% endfor %}
                         </ul>
                         <br>
@@ -114,7 +112,7 @@
             </div>
         </div>
 
-        <div class="dashboard__column-right">
+        <div class="adherent-dashboard__column-right">
             <div class="shortcuts">
                 <b>{{ 'dashboard.shortcut.label'|trans }}</b>
                 <hr>
@@ -144,8 +142,8 @@
                 <hr>
                 {% if summary is not null and summary.skills|length > 0 %}
                     <ul>
-                        {% for skill in summary.skills|slice(0,5) %}
-                            <li class="dashboard-tag">{{ skill }}</li>
+                        {% for skill in summary.skills|slice(0, 5) %}
+                            <li class="adherent-dashboard-tag">{{ skill }}</li>
                         {% endfor %}
                     </ul>
 
@@ -166,7 +164,7 @@
                         <li>
                             {{ membership.committee }}
                             {% if membership.privilege is not empty %}
-                                <span class="dashboard-tag">{{ membership.privilege|lower|trans|capitalize }}</span>
+                                <span class="adherent-dashboard-tag">{{ membership.privilege|lower|trans|capitalize }}</span>
                             {% endif %}
                         </li>
                     {% endfor %}
@@ -185,7 +183,7 @@
                             <li>
                                 {{  membership.citizenProject }}
                                 {% if membership.privilege is not empty %}
-                                    <span class="dashboard-tag">{{ membership.privilege|lower|trans|capitalize }}</span>
+                                    <span class="adherent-dashboard-tag">{{ membership.privilege|lower|trans|capitalize }}</span>
                                 {% endif %}
                             </li>
                         {% endfor %}
