@@ -1,0 +1,97 @@
+.adherent-dashboard {
+    margin-bottom: 25px;
+    a {
+        text-decoration: none;
+    }
+
+    .newblue {
+        color: $blue--dark;
+    }
+
+    .button {
+        width: 199px;
+        height: 47px;
+        border: solid 1px $black;
+        background-color: $white;
+        padding: 10px;
+        margin: 10px 0;
+        text-transform: uppercase;
+    }
+
+    &-tag {
+        height: 24px;
+        border-radius: 12px;
+        background-color: $gray--light;
+        padding: 3px;
+
+    }
+
+    ul.horizontal {
+        li {
+            display: inline;
+            margin-right: 10px;
+        }
+    }
+
+    div.list {
+        &-title {
+            height: 24px;
+            font-size: 20px;
+        }
+
+        &-subtitle {
+            height: 16px;
+            font-size: 14px;
+            color: $gray--muted;
+        }
+    }
+
+    &__welcome {
+        margin: 50px 0;
+        overflow: hidden;
+        display: flex;
+
+        img {
+            max-height: 50px;
+            margin: 0 0;
+            border-radius: 50%;
+        }
+
+        p {
+            margin: 0 10px;
+        }
+    }
+    
+    &__column-left {
+        float: left;
+        width: 800px;
+        margin-bottom: 50px;
+
+        .localization, .emails, .events, .interests {
+            margin-bottom: 30px;
+        }
+
+        .localization {
+            padding: 20px;
+            background-color: $gray--light;
+        }
+
+        .interests {
+            ul {
+                li {
+                    display: inline;
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+
+    &__column-right {
+        float: right;
+        width: 350px;
+
+        .shortcuts, .skills, .committees, .citizen-projects {
+            margin-bottom: 30px;
+        }
+    }
+}

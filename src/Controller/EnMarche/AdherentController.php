@@ -19,8 +19,12 @@ use AppBundle\Form\CreateCommitteeCommandType;
 use AppBundle\Form\CitizenProjectCommandType;
 use AppBundle\CitizenProject\CitizenProjectCreationCommand;
 use AppBundle\Geocoder\Exception\GeocodingException;
+use AppBundle\Membership\MemberActivityTracker;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CitizenProjectRepository;
+use AppBundle\Repository\EmailRepository;
+use AppBundle\Repository\EventRepository;
+use AppBundle\Repository\SummaryRepository;
 use AppBundle\Search\SearchParametersFilter;
 use AppBundle\Search\SearchResultsProvidersManager;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
@@ -34,6 +38,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/espace-adherent")
@@ -68,6 +73,32 @@ class AdherentController extends Controller
             'nb_adherent' => $adherentRepository->countAdherents(),
             'from_activation' => $request->query->getBoolean('from_activation'),
         ], $params));
+    }
+
+    /**
+     * @Route("/tableau-de-bord", name="app_user_dashboard")
+     * @Method("GET")
+     */
+    public function dashboardAction(
+        AdherentRepository $adherentRepository,
+        EventRepository $eventRepository,
+        EmailRepository $emailRepository,
+        SummaryRepository $summaryRepository,
+        MemberActivityTracker $memberActivityTracker,
+        UserInterface $user
+    ): Response {
+        return $this->render('adherent/dashboard.html.twig', [
+            'events' => $eventRepository->findEventsByOrganizer($user),
+            'emails' => $emailRepository->findBy(['sender' => $user->getEmailAddress()]),
+            'summary' => $summaryRepository->findOneForAdherent($user),
+            'activities' => $memberActivityTracker->getRecentActivitiesForAdherent($user),
+            'area_stats' => $user->isReferent()
+                ? [
+                        'total' => $adherentRepository->countInManagedArea($user->getManagedArea()),
+                        'subscriber' => $adherentRepository->countSubscriberInManagedArea($user->getManagedArea()),
+                ]
+                : null,
+        ]);
     }
 
     /**

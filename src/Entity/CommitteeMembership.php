@@ -62,7 +62,7 @@ class CommitteeMembership
     /**
      * The privilege given to the member in the committee.
      *
-     * Privilege is either HOST or FOLLOWER.
+     * Privilege is either HOST, FOLLOWER or SUPERVISOR
      *
      * @var string
      *
