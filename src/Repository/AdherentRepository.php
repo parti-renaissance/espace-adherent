@@ -707,6 +707,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->setParameter('status', Adherent::ENABLED)
             ->getQuery()
             ->getSingleScalarResult()
-            ;
+        ;
     }
 }
