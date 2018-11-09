@@ -160,7 +160,7 @@
                 <hr>
                 {% if app.user.memberships|length > 0 %}
                     <ul>
-                    {% for membership in app.user.memberships|slice(0,2) %}
+                    {% for membership in app.user.memberships|slice(0, 2) %}
                         <li>
                             {{ membership.committee }}
                             {% if membership.privilege is not empty %}
@@ -179,7 +179,7 @@
                 <hr>
                 {% if app.user.citizenProjectMemberships|length > 0 %}
                     <ul>
-                        {% for membership in app.user.citizenProjectMemberships|slice(0,2) %}
+                        {% for membership in app.user.citizenProjectMemberships|slice(0, 2) %}
                             <li>
                                 {{  membership.citizenProject }}
                                 {% if membership.privilege is not empty %}
@@ -198,7 +198,7 @@
                 <hr>
                 {% if activities|length > 0 %}
                     <ul>
-                    {% for activity in activities.logs|slice(0,2) %}
+                    {% for activity in activities.logs|slice(0, 2) %}
                         <li>{{ activity }}</li>
                     {% endfor %}
                     </ul>
