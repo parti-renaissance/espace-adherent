@@ -31,7 +31,7 @@ class CitizenProjectFactoryTest extends TestCase
         $requiredMeans = 'Required means';
         $skill = $this->createMock(CitizenProjectSkill::class);
 
-        $adherent = new Adherent(
+        $adherent = Adherent::create(
             $uuid,
             $email,
             'password',

@@ -19,7 +19,7 @@ class DonationRequestTest extends TestCase
         $phone->setCountryCode('FR');
         $phone->setNationalNumber('0123456789');
 
-        $adherent = new Adherent(
+        $adherent = Adherent::create(
             $uuid,
             $email,
             'password',

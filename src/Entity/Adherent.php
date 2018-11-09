@@ -259,7 +259,14 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
      */
     private $mandate;
 
-    public function __construct(
+    public function __construct()
+    {
+        $this->memberships = new ArrayCollection();
+        $this->citizenProjectMemberships = new ArrayCollection();
+        $this->subscriptionTypes = new ArrayCollection();
+    }
+
+    public static function create(
         UuidInterface $uuid,
         string $emailAddress,
         string $password,
@@ -276,25 +283,26 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         ?array $referentTags = [],
         ?string $mandate = null
     ) {
-        $this->uuid = $uuid;
-        $this->password = $password;
-        $this->gender = $gender;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->emailAddress = $emailAddress;
-        $this->birthdate = $birthDate;
-        $this->position = $position;
-        $this->postAddress = $postAddress;
-        $this->phone = $phone;
-        $this->status = $status;
-        $this->legislativeCandidate = false;
-        $this->registeredAt = new \DateTime($registeredAt);
-        $this->memberships = new ArrayCollection();
-        $this->citizenProjectMemberships = new ArrayCollection();
-        $this->tags = new ArrayCollection($tags);
-        $this->referentTags = new ArrayCollection($referentTags);
-        $this->subscriptionTypes = new ArrayCollection();
-        $this->mandate = $mandate;
+        $adherent = new self();
+
+        $adherent->uuid = $uuid;
+        $adherent->password = $password;
+        $adherent->gender = $gender;
+        $adherent->firstName = $firstName;
+        $adherent->lastName = $lastName;
+        $adherent->emailAddress = $emailAddress;
+        $adherent->birthdate = $birthDate;
+        $adherent->position = $position;
+        $adherent->postAddress = $postAddress;
+        $adherent->phone = $phone;
+        $adherent->status = $status;
+        $adherent->legislativeCandidate = false;
+        $adherent->registeredAt = new \DateTime($registeredAt);
+        $adherent->tags = new ArrayCollection($tags);
+        $adherent->referentTags = new ArrayCollection($referentTags);
+        $adherent->mandate = $mandate;
+
+        return $adherent;
     }
 
     public static function createUuid(string $email): UuidInterface

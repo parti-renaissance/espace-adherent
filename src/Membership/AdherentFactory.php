@@ -23,7 +23,7 @@ class AdherentFactory
 
     public function createFromMembershipRequest(MembershipRequest $request): Adherent
     {
-        return new Adherent(
+        return Adherent::create(
             Adherent::createUuid($request->getEmailAddress()),
             $request->getEmailAddress(),
             $this->encodePassword($request->password),
@@ -49,7 +49,7 @@ class AdherentFactory
             $phone = $this->createPhone($data['phone']);
         }
 
-        $adherent = new Adherent(
+        $adherent = Adherent::create(
             isset($data['uuid']) ? Uuid::fromString($data['uuid']) : Adherent::createUuid($data['email']),
             $data['email'],
             $this->encodePassword($data['password']),

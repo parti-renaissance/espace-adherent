@@ -136,7 +136,7 @@ class CommitteeMembershipTest extends TestCase
 
     private function createAdherent(): Adherent
     {
-        return new Adherent(
+        return Adherent::create(
             Uuid::fromString(self::ADHERENT_UUID),
             'foo@bar.com',
             'password',

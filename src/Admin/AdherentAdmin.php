@@ -3,8 +3,10 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Adherent\AdherentRoleEnum;
+use AppBundle\Admin\Filter\ReferentTagAutocompleteFilter;
 use AppBundle\Coordinator\CoordinatorAreaSectors;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\AdherentTag;
 use AppBundle\Entity\CitizenProjectMembership;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
 use AppBundle\Entity\BoardMember\BoardMember;
@@ -20,6 +22,7 @@ use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\Mandates;
 use AppBundle\Membership\UserEvent;
 use AppBundle\Membership\UserEvents;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
@@ -33,6 +36,8 @@ use Sonata\CoreBundle\Form\Type\DateRangePickerType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -360,45 +365,41 @@ class AdherentAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('tags', CallbackFilter::class, [
+            ->add('tags', ModelFilter::class, [
                 'label' => 'Tags adhérent',
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
-                    }
-
-                    $value = array_map('trim', explode(',', mb_strtolower($value['value'])));
-                    $qb->leftJoin(sprintf('%s.tags', $alias), 't');
-                    $qb->andWhere($qb->expr()->in('LOWER(t.name)', $value));
-
-                    return true;
-                },
+                'field_options' => [
+                    'class' => AdherentTag::class,
+                    'multiple' => true,
+                ],
+                'mapping_type' => ClassMetadata::MANY_TO_MANY,
             ])
-            ->add('referentTags', CallbackFilter::class, [
+            ->add('referentTags', ModelAutocompleteFilter::class, [
                 'label' => 'Tags référent souscrits',
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return false;
-                    }
-
-                    $value = array_map('trim', explode(',', mb_strtolower($value['value'])));
-                    $qb->leftJoin("$alias.referentTags", 'referent_tag');
-                    $qb->andWhere($qb->expr()->in('LOWER(referent_tag.name)', $value));
-
-                    return true;
-                },
+                'field_options' => [
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'multiple' => true,
+                    'property' => 'name',
+                ],
             ])
-            ->add('managedAreaTags', CallbackFilter::class, [
+            ->add('managedArea', ReferentTagAutocompleteFilter::class, [
                 'label' => 'Tags référent gérés',
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'admin_code' => $this->getCode(),
+                ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return false;
                     }
 
-                    $value = array_map('trim', explode(',', mb_strtolower($value['value'])));
-                    $qb->leftJoin("$alias.managedArea", 'managed_area');
-                    $qb->leftJoin('managed_area.tags', 'managed_area_tag');
-                    $qb->andWhere($qb->expr()->in('LOWER(managed_area_tag.name)', $value));
+                    /** @var QueryBuilder $qb */
+                    $qb
+                        ->leftJoin("$alias.$field", 'managed_area')
+                        ->leftJoin('managed_area.tags', 'tags')
+                        ->andWhere('tags IN (:tags)')
+                        ->setParameter('tags', $value['value'])
+                    ;
 
                     return true;
                 },
@@ -455,11 +456,14 @@ class AdherentAdmin extends AbstractAdmin
 
                     // Coordinator
                     if (\in_array(AdherentRoleEnum::COORDINATOR, $value['value'], true)) {
-                        $qb
-                            ->leftJoin(sprintf('%s.coordinatorCitizenProjectArea', $alias), 'coordinatorCitizenProjectArea')
-                            ->leftJoin(sprintf('%s.coordinatorCommitteeArea', $alias), 'coordinatorCommitteeArea')
-                        ;
-                        $where->add('(coordinatorCitizenProjectArea IS NOT NULL OR coordinatorCommitteeArea IS NOT NULL)');
+                        $qb->leftJoin(sprintf('%s.coordinatorCommitteeArea', $alias), 'coordinatorCommitteeArea');
+                        $where->add('coordinatorCommitteeArea IS NOT NULL');
+                    }
+
+                    // REC
+                    if (\in_array(AdherentRoleEnum::REC, $value['value'], true)) {
+                        $qb->leftJoin(sprintf('%s.coordinatorCitizenProjectArea', $alias), 'coordinatorCitizenProjectArea');
+                        $where->add('coordinatorCitizenProjectArea IS NOT NULL');
                     }
 
                     // Procuration Manager
