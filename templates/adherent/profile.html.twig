@@ -104,8 +104,12 @@
                      <span class="b__nudge--bottom-tiny text--gray">{{ 'adherent.form.elected'|trans }}</span>
                      <span class="text--gray text--italic">({{ 'common.optional'|trans }})</span>
                  </div>
-                {{ form_widget(form.elected) }}
-                {{ form_errors(form.elected) }}
+
+                 <div class="form__checkbox">
+                     {{ form_widget(form.elected) }}
+                     {{ form_errors(form.elected) }}
+                     <label class="form form__label" for="adherent_elected"></label>
+                 </div>
             </div>
             <div class="register__form--mid" id="form__mandate">
                 {{ form_label(form.mandate, 'adherent.mandate.label'|trans, { 'label_attr': {'class': 'text--gray'} }) }}

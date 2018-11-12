@@ -485,15 +485,24 @@ class AdherentAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('mandate', null, [
-                    'label' => 'adherent.mandate.label',
-                    'field_type' => ChoiceType::class,
-                    'field_options' => [
-                        'choices' => Mandates::CHOICES,
-                    ],
-                    'show_filter' => true,
-                ]
-            )
+            ->add('mandate', CallbackFilter::class, [
+                'label' => 'adherent.mandate.label',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => Mandates::CHOICES,
+                    'multiple' => true,
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb->andWhere($qb->expr()->in("$alias.mandate", $value['value']));
+
+                    return true;
+                },
+            ])
         ;
     }
 

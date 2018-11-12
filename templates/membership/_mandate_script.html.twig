@@ -10,7 +10,7 @@
             formMandate.toggle(isChecked);
             selectMandate.attr('required', isChecked);
 
-            if (isChecked) {
+            if (!isChecked) {
                 selectMandate.val("");
             }
         });
