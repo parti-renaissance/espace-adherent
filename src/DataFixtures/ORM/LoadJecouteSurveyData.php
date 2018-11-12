@@ -34,13 +34,19 @@ class LoadJecouteSurveyData extends Fixture
         /** @var Question $question3 */
         $question3 = $this->getReference('question-3');
 
+        /** @var Question $question4 */
+        $question4 = $this->getReference(('suggested-question-1'));
+
         $surveyQuestion1 = new SurveyQuestion($survey1, $question1);
         $surveyQuestion2 = new SurveyQuestion($survey1, $question2);
         $surveyQuestion3 = new SurveyQuestion($survey1, $question3);
+        $surveyQuestion4 = new SurveyQuestion($survey1, $question4);
+        $surveyQuestion4->setFromSuggestedQuestion(true);
 
         $survey1->addQuestion($surveyQuestion1);
         $survey1->addQuestion($surveyQuestion2);
         $survey1->addQuestion($surveyQuestion3);
+        $survey1->addQuestion($surveyQuestion4);
 
         $survey2Question1 = new SurveyQuestion($survey2, $question1);
 
@@ -57,6 +63,7 @@ class LoadJecouteSurveyData extends Fixture
         return [
             LoadAdherentData::class,
             LoadJecouteQuestionData::class,
+            LoadJecouteSuggestedQuestionData::class,
         ];
     }
 }

@@ -49,6 +49,11 @@ class SurveyQuestion
      */
     private $position;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $fromSuggestedQuestion = false;
+
     public function __construct(Survey $survey = null, Question $question = null)
     {
         $this->survey = $survey;
@@ -88,5 +93,15 @@ class SurveyQuestion
     public function setQuestion(Question $question): void
     {
         $this->question = $question;
+    }
+
+    public function setFromSuggestedQuestion(?bool $fromSuggestedQuestion): void
+    {
+        $this->fromSuggestedQuestion = (bool) $fromSuggestedQuestion;
+    }
+
+    public function getFromSuggestedQuestion(): bool
+    {
+        return $this->fromSuggestedQuestion;
     }
 }

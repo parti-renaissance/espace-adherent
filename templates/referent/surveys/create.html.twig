@@ -15,9 +15,10 @@
         Kernel.onLoad(function() {
             $('.survey-questions-collection').collection({
                 init_with_n_elements: 1,
-                add: '<a href="#" class="question-add btn btn-default"><i class="fa fa-plus-circle"></i>&nbsp;Ajouter une question</a>',
+                add: '<a href="#" class="question-add btn btn-default"><i class="fa fa-plus-circle"></i>&nbsp;Créer une nouvelle question</a>',
                 prefix: 'question',
                 add_at_the_end: true,
+                drag_drop: false,
                 children: [{
                     init_with_n_elements: 0,
                     add: '<a href="#" class="btn btn-default"><i class="fa fa-plus-circle"></i>&nbsp;Ajouter un choix</a>',
@@ -25,6 +26,17 @@
                     prefix: 'choice',
                     add_at_the_end: true,
                 }]
+            });
+
+            const lockQuestion = function (question) {
+                question.find('input').attr('readonly', true);
+                question.find('.choice-management').hide();
+                question.find('a[class$=question_choices-choice-rescue-add]').hide();
+                question.find('.form__radio-button').click(false);
+            };
+
+            $('.question-box.read-only').each(function() {
+                lockQuestion($(this));
             });
 
             const displayChoices = function(questionType) {
@@ -35,11 +47,12 @@
                 }
             };
 
-            $('.survey-question-type input:checked').each(function(){
+            $('.survey-question-type input:checked').each(function() {
                 displayChoices($(this));
             });
 
-            $('.survey-question-type input').click(function(){
+
+            $('.jecoute-survey').on('click', '.survey-question-type input', function() {
                 displayChoices($(this));
             });
 
@@ -85,6 +98,12 @@
                         $('.survey-question__choice_widget').last().find('input').val(choice);
                     });
                 }
+
+                // Sets the suggested question flag
+                $("input[name$='[fromSuggestedQuestion]']").last().val('1');
+
+                // Locks the current added suggested question
+                lockQuestion($('.question-box').last());
 
                 suggestedQuestionsDialog.dialog('close');
             });

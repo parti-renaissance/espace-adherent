@@ -4,6 +4,7 @@ namespace AppBundle\Form\Jecoute;
 
 use AppBundle\Entity\Jecoute\SurveyQuestion;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,6 +14,7 @@ class SurveyQuestionFormType extends AbstractType
     {
         $builder
             ->add('question', QuestionType::class)
+            ->add('fromSuggestedQuestion', HiddenType::class)
         ;
     }
 
