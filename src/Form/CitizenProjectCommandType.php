@@ -114,8 +114,9 @@ class CitizenProjectCommandType extends AbstractType
 
         if ($options['from_turnkey_project']) {
             $builder
-                ->add('category', TextType::class, [
+                ->add('category', EventCategoryType::class, [
                     'disabled' => true,
+                    'class' => CitizenProjectCategory::class,
                 ])
                 ->add('district', TextType::class, [
                     'required' => false,
