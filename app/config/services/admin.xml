@@ -636,10 +636,6 @@
             <argument />
             <argument>AppBundle\Entity\Jecoute\SuggestedQuestion</argument>
             <argument />
-
-            <call method="setEnableCanary">
-                <argument>%env(ENABLE_CANARY)%</argument>
-            </call>
         </service>
 
         <!--

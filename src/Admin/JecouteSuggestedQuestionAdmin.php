@@ -14,19 +14,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class JecouteSuggestedQuestionAdmin extends AbstractAdmin
 {
-    private $enableCanary;
-
     protected $datagridValues = [
         '_page' => 1,
         '_per_page' => 32,
         '_sort_order' => 'DESC',
         '_sort_by' => 'createdAt',
     ];
-
-    public function hasAccess($action, $object = null)
-    {
-        return $this->enableCanary && parent::hasAccess($action, $object);
-    }
 
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -79,10 +72,5 @@ class JecouteSuggestedQuestionAdmin extends AbstractAdmin
                 ],
             ])
         ;
-    }
-
-    public function setEnableCanary(bool $enableCanary): void
-    {
-        $this->enableCanary = $enableCanary;
     }
 }
