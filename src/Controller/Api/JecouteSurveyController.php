@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\Api;
 
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Form\Jecoute\DataSurveyFormType;
 use AppBundle\Repository\SurveyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -24,8 +23,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class JecouteSurveyController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route("/survey", name="api_surveys_list")
      * @Method("GET")
@@ -35,8 +32,6 @@ class JecouteSurveyController extends Controller
         Serializer $serializer,
         UserInterface $user
     ): Response {
-        $this->disableInProduction();
-
         return new JsonResponse(
             $serializer->serialize(
                 $surveyRepository->findAllFor($user),
@@ -55,8 +50,6 @@ class JecouteSurveyController extends Controller
      */
     public function surveyReplyAction(Request $request, ObjectManager $manager): JsonResponse
     {
-        $this->disableInProduction();
-
         $form = $this->createForm(DataSurveyFormType::class, null, [
             'csrf_protection' => false,
         ]);
