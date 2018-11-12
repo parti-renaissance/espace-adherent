@@ -1,6 +1,7 @@
-{
-  "jecoute_surveys": {
+[
+  {
+    "scope": "jecoute_surveys",
     "ios": "1.0.0",
     "droid": "1.0"
   }
-}
+]
