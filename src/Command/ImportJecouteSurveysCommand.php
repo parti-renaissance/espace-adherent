@@ -5,6 +5,7 @@ namespace AppBundle\Command;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Jecoute\Choice;
 use AppBundle\Entity\Jecoute\Question;
+use AppBundle\Entity\Jecoute\SuggestedQuestion;
 use AppBundle\Entity\Jecoute\Survey;
 use AppBundle\Entity\Jecoute\SurveyQuestion;
 use AppBundle\Jecoute\SurveyQuestionTypeEnum;
@@ -24,25 +25,26 @@ class ImportJecouteSurveysCommand extends Command
             'content' => 'Quelle est la raison de votre présence à ... ?',
             'type' => SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE,
             'choices' => [
-                'Résident',
-                'Travail',
-                'Tourisme',
+                'Je suis résident(e)',
+                'Pour le travail',
+                'Pour le tourisme',
                 'Autre',
             ],
         ],
         [
-            'content' => 'Sur une échelle de 1 à 5 comment évaluez-vous l’intérêt que vous porterez aux élections municipales de 2020 à ... (1 étant « aucun intérêt », 5 étant « grand intérêt »).',
+            'content' => 'Sur une échelle de 1 à 5, comment évaluez-vous l’intérêt que vous porterez aux élections municipales de 2020 (1 étant « aucun intérêt », 5 étant « grand intérêt »).',
             'type' => SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE,
             'choices' => [
                 '1 - Aucun intérêt',
                 '2 - Faible intérêt',
                 '3 - Intérêt moyen',
                 '4 - Intéressé(e)',
-                '5 - Grant intérêt',
+                '5 - Grand intérêt',
             ],
+            'suggested_question' => true,
         ],
         [
-            'content' => 'Etes-vous inscrit sur les listes électorales ?',
+            'content' => 'Êtes-vous inscrit(e) sur les listes électorales ?',
             'type' => SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE,
             'choices' => [
                 'Oui et je connais mon bureau de vote',
@@ -59,17 +61,20 @@ class ImportJecouteSurveysCommand extends Command
         [
             'content' => 'Pour vous quelles sont les 3 choses à améliorer en priorité dans cette localité ? (précisez pour chaque point)',
             'type' => SurveyQuestionTypeEnum::SIMPLE_FIELD,
+            'suggested_question' => true,
         ],
         [
             'content' => 'A l’inverse, pour vous quelles sont les 3 choses qui fonctionnent le mieux ? (précisez pour chaque point)',
             'type' => SurveyQuestionTypeEnum::SIMPLE_FIELD,
+            'suggested_question' => true,
         ],
         [
-            'content' => 'Et si vous étiez maire de ..., quelle serait votre première mesure ?',
+            'content' => 'Et si vous étiez maire, quelle serait votre première mesure ?',
             'type' => SurveyQuestionTypeEnum::SIMPLE_FIELD,
+            'suggested_question' => true,
         ],
         [
-            'content' => 'Souhaiteriez-vous être directement associé à la prise de décisions dans votre ville ?',
+            'content' => 'Souhaiteriez-vous être directement associé(e) à la prise de décision dans votre ville ?',
             'type' => SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE,
             'choices' => [
                 'Oui',
@@ -77,22 +82,22 @@ class ImportJecouteSurveysCommand extends Command
             ],
         ],
         [
-            'content' => 'Si oui, de quelle façon aimeriez-vous y être associé ?',
+            'content' => 'Si oui, de quelle façon aimeriez-vous y être associé(e) ?',
             'type' => SurveyQuestionTypeEnum::SIMPLE_FIELD,
         ],
         [
-            'content' => 'Si non, pour quelle raison ne souhaitez-vous pas y être associé ?',
+            'content' => 'Si non, pour quelle raison ne souhaitez-vous pas y être associé(e) ?',
             'type' => SurveyQuestionTypeEnum::SIMPLE_FIELD,
         ],
         [
-            'content' => 'Sur une échelle de 1 à 5 à combien estimez-vous l’association des citoyens de ... aux décisions prises au niveau municipal (1 étant « pas du tout » et 5 étant « totalement ») ?',
+            'content' => 'Sur une échelle de 1 à 5, à combien estimez-vous l’association des citoyens de ... aux décisions prises au niveau municipal (1 étant « pas du tout » et 5 étant « totalement ») ?',
             'type' => SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE,
             'choices' => [
-                '1 - Pas du tout associé',
-                '2 - Rarement associé',
-                '3 - Régulièrement associé',
-                '4 - Souvent associé',
-                '5 - Totalement associé',
+                '1 - Pas du tout associé(e)',
+                '2 - Rarement associé(e)',
+                '3 - Régulièrement associé(e)',
+                '4 - Souvent associé(e)',
+                '5 - Totalement associé(e)',
             ],
         ],
     ];
@@ -120,6 +125,10 @@ class ImportJecouteSurveysCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->io->text('Start importing suggested questions');
+
+        $this->importSuggestedQuestions();
+
         $this->io->text('Start importing surveys');
 
         foreach ($this->adherentsRepository->findReferents() as $referent) {
@@ -129,6 +138,23 @@ class ImportJecouteSurveysCommand extends Command
         $this->em->flush();
 
         $this->io->success('Done');
+    }
+
+    private function importSuggestedQuestions(): void
+    {
+        foreach (self::QUESTIONS as $questionDatas) {
+            if (isset($questionDatas['suggested_question']) && true === $questionDatas['suggested_question']) {
+                $suggestedQuestion = new SuggestedQuestion($questionDatas['content'], $questionDatas['type'], true);
+
+                if (isset($questionDatas['choices'])) {
+                    foreach ($questionDatas['choices'] as $choice) {
+                        $suggestedQuestion->addChoice(new Choice($choice));
+                    }
+                }
+
+                $this->em->persist($suggestedQuestion);
+            }
+        }
     }
 
     private function importSurveyFor(Adherent $referent): void
@@ -144,7 +170,13 @@ class ImportJecouteSurveysCommand extends Command
                 }
             }
 
-            $survey->addQuestion(new SurveyQuestion($survey, $question));
+            $surveyQuestion = new SurveyQuestion($survey, $question);
+
+            if (isset($questionDatas['suggested_question']) && true === $questionDatas['suggested_question']) {
+                $surveyQuestion->setFromSuggestedQuestion(true);
+            }
+
+            $survey->addQuestion($surveyQuestion);
         }
 
         $this->em->persist($survey);
