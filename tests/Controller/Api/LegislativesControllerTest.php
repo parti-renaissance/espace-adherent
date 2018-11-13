@@ -18,7 +18,7 @@ class LegislativesControllerTest extends WebTestCase
     use ControllerTestTrait;
     use ApiControllerTestTrait;
 
-    public function testApiApprovedCommittees()
+    public function testApiWonCandidates()
     {
         $this->client->request(Request::METHOD_GET, '/api/candidates');
 
@@ -28,7 +28,7 @@ class LegislativesControllerTest extends WebTestCase
         $this->assertJson($content);
 
         // Check the payload
-        $this->assertNotEmpty(\GuzzleHttp\json_decode($content, true));
+        $this->assertSame(1, \count(\GuzzleHttp\json_decode($content, true)));
         $this->assertEachJsonItemContainsKey('id', $content);
         $this->assertEachJsonItemContainsKey('name', $content);
         $this->assertEachJsonItemContainsKey('district', $content);
