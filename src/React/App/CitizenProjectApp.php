@@ -26,7 +26,7 @@ class CitizenProjectApp implements ReactAppInterface
     {
         return [
             'home' => new Route('/projets-citoyens'),
-            'discover' => new Route('/projets-citoyens/decouvrir'),
+            'discover' => new Route('/projets-citoyens/cle-en-main'),
             'search' => new Route('/projets-citoyens/recherche'),
         ];
     }
