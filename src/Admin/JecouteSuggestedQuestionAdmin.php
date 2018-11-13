@@ -60,6 +60,7 @@ class JecouteSuggestedQuestionAdmin extends AbstractAdmin
             ])
             ->add('choices', 'array', [
                 'label' => 'Réponses',
+                'template' => 'admin/jecoute/suggested_question_choices.html.twig',
             ])
             ->add('published', null, [
                 'label' => 'Publié',

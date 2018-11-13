@@ -1,0 +1,9 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    <ul>
+        {% for choice in value %}
+            <li>{{ choice }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

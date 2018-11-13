@@ -1,5 +1,5 @@
 {% block survey_question_form_widget %}
-    <div class="form__row b__nudge--bottom-large survey-question__widget">
+    <div class="question-box {{ form.fromSuggestedQuestion.vars.value ? 'read-only' }} form__row b__nudge--bottom-large survey-question__widget">
         <div class="question-header">
             <div class="question-header__label l__row--h-stretch b__nudge--bottom-tiny">
                 {{ form_label(form.question, 'Question', { label_attr: { class: 'label__header--large' } }) }}
@@ -27,6 +27,7 @@
                 {{ form_label(form.question.choices, 'Choix possibles', { label_attr: { class: 'label__header--large' } }) }}
                 {{ form_widget(form.question.choices) }}
             </div>
+            {{ form_row(form.fromSuggestedQuestion) }}
         </div>
     </div>
 

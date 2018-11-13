@@ -60,6 +60,12 @@ Feature:
                 "content":"Réponse unique 2"
               }
             ]
+          },
+          {
+            "id": 4,
+            "type": "simple_field",
+            "content": "Ceci est-il un champ libre d'une question suggérée ?",
+            "choices": []
           }
         ],
         "name":"Questionnaire numéro 1"
