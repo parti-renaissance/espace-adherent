@@ -34,13 +34,15 @@
 {% endblock %}
 
 {% block content %}
-    <noscript>Vous devez activer Javascript pour voir cette page.</noscript>
+    <main>
+        <noscript>Vous devez activer JavaScript pour voir cette page.</noscript>
 
-    <div id="root">
-        <div class="react-app-loader">
-            <img src="{{ asset('images/loader-sm.gif') }}" />
-            <br />
-            Chargement ...
+        <div id="root">
+            <div class="react-app-loader">
+                <img src="{{ asset('images/loader-sm.gif') }}" />
+                <br />
+                Chargement ...
+            </div>
         </div>
-    </div>
+    </main>
 {% endblock %}
