@@ -103,7 +103,10 @@
                 $("input[name$='[fromSuggestedQuestion]']").last().val('1');
 
                 // Locks the current added suggested question
-                lockQuestion($('.question-box').last());
+                const currentQuestion = $('.question-box').last();
+
+                currentQuestion.addClass('read-only');
+                lockQuestion(currentQuestion);
 
                 suggestedQuestionsDialog.dialog('close');
             });
