@@ -28,7 +28,7 @@ class CommitteeFactoryTest extends TestCase
         $googlePlus = 'https://googleplus.com/en-marche';
         $address = Address::createFromAddress(PostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'));
 
-        $adherent = new Adherent(
+        $adherent = Adherent::create(
             $uuid,
             $email,
             'password',

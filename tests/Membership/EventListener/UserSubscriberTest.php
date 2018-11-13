@@ -20,7 +20,7 @@ class UserSubscriberTest extends KernelTestCase
         $producer = $this->getMockBuilder(ProducerInterface::class)->getMock();
         $userSubscriber = new UserSubscriber($producer, $serializer);
 
-        $user = new Adherent(
+        $user = Adherent::create(
             Uuid::fromString('a046adbe-9c7b-56a9-a676-6151a6785dda'),
             'jacques.picard@en-marche.fr',
             'password',

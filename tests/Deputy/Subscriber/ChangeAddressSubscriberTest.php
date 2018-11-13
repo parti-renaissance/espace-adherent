@@ -57,7 +57,7 @@ class ChangeAddressSubscriberTest extends TestCase
 
     private function createAdherent(): Adherent
     {
-        return new Adherent(
+        return Adherent::create(
             Uuid::fromString('c0d66d5f-e124-4641-8fd1-1dd72ffda563'),
             'john.smith@example.org',
             'super-password',

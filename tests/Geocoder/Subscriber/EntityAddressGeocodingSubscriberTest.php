@@ -207,7 +207,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
 
     private function createAdherent(string $address): Adherent
     {
-        return new Adherent(
+        return Adherent::create(
             Uuid::fromString('d3522426-1bac-4da4-ade8-5204c9e2caae'),
             'john.smith@example.org',
             'super-password',

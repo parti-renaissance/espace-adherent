@@ -166,7 +166,7 @@ class AdherentTest extends TestCase
         $phone->setCountryCode('FR');
         $phone->setNationalNumber('0140998211');
 
-        return new Adherent(
+        return Adherent::create(
             Adherent::createUuid($email),
             $email,
             'super-password',

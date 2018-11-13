@@ -35,7 +35,7 @@ class AdherentLoginTimestampRecorderTest extends TestCase
 
     private function createAdherent()
     {
-        return new Adherent(
+        return Adherent::create(
             Adherent::createUuid('john.smith@example.org'),
             'john.smith@example.org',
             'super-password',

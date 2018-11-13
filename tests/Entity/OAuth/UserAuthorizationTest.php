@@ -59,7 +59,7 @@ class UserAuthorizationTest extends TestCase
 
     public function createUser(): Adherent
     {
-        return new Adherent(
+        return Adherent::create(
             Uuid::uuid4(),
             'fake@example.org',
             '',

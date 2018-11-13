@@ -98,7 +98,7 @@ class CitizenProjectCommentTest extends TestCase
 
     private function createAdherent(CitizenProject $citizenProject = null): Adherent
     {
-        $adherent = new Adherent(
+        $adherent = Adherent::create(
             Uuid::uuid4(),
             'toto@mail.com',
             'password',
