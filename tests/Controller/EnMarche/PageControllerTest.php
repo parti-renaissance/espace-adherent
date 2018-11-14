@@ -62,6 +62,7 @@ class PageControllerTest extends WebTestCase
         yield ['/elles-marchent'];
         yield ['/formation'];
         yield ['/formation/dificultes-internet'];
+        yield ['/cestduconcret'];
         yield ['/action-talents'];
         yield ['/action-talents/candidater'];
         yield ['/nos-offres'];
