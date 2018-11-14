@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runManagedList(
+                [
+                    {
+                        key: 'subject',
+                        name: '{{ 'my_message.list.subject'|trans }}'
+                    },
+                    {
+                        key: 'body',
+                        name: '{{ 'my_message.list.body'|trans }}'
+                    },
+                    {
+                        key: 'recipientsNumber',
+                        name: '{{ 'my_message.list.recipients_number'|trans }}'
+                    }
+                ],
+                {{ managedEmailsJson|raw }}
+            );
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<main>
+    <section style="margin: 25px 0;">
+        <div class="l__wrapper procuration-manager__content text--body">
+            <div>
+                <a href="{{ path('app_user_dashboard') }}" class="btn btn--blue--soft referent__btn-send-email">
+                    {{ 'my_message.list.back'|trans }}
+                </a>
+                <h3>
+                    {{ 'my_message.list.emails'|trans }}
+                </h3>
+            </div>
+
+            <hr />
+
+            <div id="datagrid"></div>
+        </div>
+    </section>
+</main>
+{% endblock %}

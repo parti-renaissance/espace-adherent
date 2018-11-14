@@ -20,9 +20,10 @@ use AppBundle\Form\CitizenProjectCommandType;
 use AppBundle\CitizenProject\CitizenProjectCreationCommand;
 use AppBundle\Geocoder\Exception\GeocodingException;
 use AppBundle\Membership\MemberActivityTracker;
+use AppBundle\Referent\ManagedEmailsExporter;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CitizenProjectRepository;
-use AppBundle\Repository\EmailRepository;
+use AppBundle\Repository\EmailLogRepository;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\SummaryRepository;
 use AppBundle\Search\SearchParametersFilter;
@@ -82,14 +83,14 @@ class AdherentController extends Controller
     public function dashboardAction(
         AdherentRepository $adherentRepository,
         EventRepository $eventRepository,
-        EmailRepository $emailRepository,
+        EmailLogRepository $emailLogRepository,
         SummaryRepository $summaryRepository,
         MemberActivityTracker $memberActivityTracker,
         UserInterface $user
     ): Response {
         return $this->render('adherent/dashboard.html.twig', [
             'events' => $eventRepository->findEventsByOrganizer($user),
-            'emails' => $emailRepository->findBy(['sender' => $user->getEmailAddress()]),
+            'emails' => $emailLogRepository->findSendedBy($user),
             'summary' => $summaryRepository->findOneForAdherent($user),
             'activities' => $memberActivityTracker->getRecentActivitiesForAdherent($user),
             'area_stats' => $user->isReferent()
@@ -98,6 +99,20 @@ class AdherentController extends Controller
                         'subscriber' => $adherentRepository->countSubscriberInManagedArea($user->getManagedArea()),
                 ]
                 : null,
+        ]);
+    }
+
+    /**
+     * @Route("/tableau-de-bord/mes-messages", name="app_user_messages")
+     * @Method("GET")
+     */
+    public function myMessagesAction(
+        ManagedEmailsExporter $emailsExporter,
+        EmailLogRepository $emailLogRepository,
+        UserInterface $user
+    ): Response {
+        return $this->render('referent/emails_list.html.twig', [
+            'managedEmailsJson' => $emailsExporter->exportAsJson($emailLogRepository->findSendedBy($user)),
         ]);
     }
 

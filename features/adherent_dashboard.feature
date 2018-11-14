@@ -88,8 +88,7 @@ Feature:
     # As an animator, I should have an e-mail section
     Then I should see "Les e-mails que j'ai envoyés"
     And I should see 2 ".emails ul li" elements
-    And I should see "[Comité local] [Comité local] Nouveau message"
-    And I should see "destinataires"
+    And I should see "Voir tous les emails"
 
     # As an animator, I should have an events section
     Then I should see "Les événements que j'ai créés"

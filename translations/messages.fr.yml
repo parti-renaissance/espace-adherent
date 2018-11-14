@@ -137,6 +137,12 @@ dashboard.interests.empty: Aucun intérèt pour l'instant, renseignez-en <a href
 dashboard.committies.empty: Aucun comité pour l'instant, ajoutez-en <a href="%url%">ici</a>
 dashboard.picture.update: Modifier ma photo
 
+my_message.list.back: Retour au dashboard
+my_message.list.emails: Emails
+my_message.list.body: Contenu
+my_message.list.subject: Sujet
+my_message.list.recipients_number: Nombre de destinataires
+
 #
 # Committee
 #

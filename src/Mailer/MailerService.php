@@ -2,6 +2,7 @@
 
 namespace AppBundle\Mailer;
 
+use AppBundle\Mailer\Event\LogMailerEvents;
 use AppBundle\Mailer\Event\MailerEvent;
 use AppBundle\Mailer\Event\MailerEvents;
 use AppBundle\Mailer\Message\Message;
@@ -33,6 +34,7 @@ class MailerService
         $email = $this->factory->createFromMessage($message);
 
         try {
+            $this->dispatcher->dispatch(LogMailerEvents::DELIVERY_MESSAGE, new MailerEvent($message, $email));
             $this->dispatcher->dispatch(MailerEvents::DELIVERY_MESSAGE, new MailerEvent($message, $email));
             $this->transport->sendTemplateEmail($email);
             $this->dispatcher->dispatch(MailerEvents::DELIVERY_SUCCESS, new MailerEvent($message, $email));

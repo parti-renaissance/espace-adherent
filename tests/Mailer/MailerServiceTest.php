@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Mailer;
 
+use AppBundle\Mailer\Event\LogMailerEvents;
 use AppBundle\Mailer\Event\MailerEvent;
 use AppBundle\Mailer\Event\MailerEvents;
 use AppBundle\Mailer\MailerService;
@@ -20,11 +21,16 @@ class MailerServiceTest extends TestCase
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $dispatcher->expects($this->at(0))->method('dispatch')->with(
-            $this->equalTo(MailerEvents::DELIVERY_MESSAGE),
+            $this->equalTo(LogMailerEvents::DELIVERY_MESSAGE),
             $this->isInstanceOf(MailerEvent::class)
         );
 
         $dispatcher->expects($this->at(1))->method('dispatch')->with(
+            $this->equalTo(MailerEvents::DELIVERY_MESSAGE),
+            $this->isInstanceOf(MailerEvent::class)
+        );
+
+        $dispatcher->expects($this->at(2))->method('dispatch')->with(
             $this->equalTo(MailerEvents::DELIVERY_SUCCESS),
             $this->isInstanceOf(MailerEvent::class)
         );
@@ -47,11 +53,16 @@ class MailerServiceTest extends TestCase
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $dispatcher->expects($this->at(0))->method('dispatch')->with(
-            $this->equalTo(MailerEvents::DELIVERY_MESSAGE),
+            $this->equalTo(LogMailerEvents::DELIVERY_MESSAGE),
             $this->isInstanceOf(MailerEvent::class)
         );
 
         $dispatcher->expects($this->at(1))->method('dispatch')->with(
+            $this->equalTo(MailerEvents::DELIVERY_MESSAGE),
+            $this->isInstanceOf(MailerEvent::class)
+        );
+
+        $dispatcher->expects($this->at(2))->method('dispatch')->with(
             $this->equalTo(MailerEvents::DELIVERY_ERROR),
             $this->isInstanceOf(MailerEvent::class)
         );
