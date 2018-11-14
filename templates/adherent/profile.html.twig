@@ -98,26 +98,21 @@
 
         <div class="space--10-0"></div>
 
-        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-             <div class="register__form--third">
-                 <div>
-                     <span class="b__nudge--bottom-tiny text--gray">{{ 'adherent.form.elected'|trans }}</span>
-                     <span class="text--gray text--italic">({{ 'common.optional'|trans }})</span>
-                 </div>
+        <div class="register__form--line">
+            <label class="b__nudge--bottom-tiny text--gray text--italic">{{ 'common.optional'|trans|capitalize }}</label>
+            <hr id="hr_profile" />
+        </div>
 
-                 <div class="form__checkbox">
-                     {{ form_widget(form.elected) }}
-                     {{ form_errors(form.elected) }}
-                     <label class="form form__label" for="adherent_elected"></label>
-                 </div>
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col register__form--flex">
+             <div class="register__form--mid">
+                 {{ form_row(form.elected) }}
             </div>
             <div class="register__form--mid" id="form__mandate">
-                {{ form_label(form.mandate, 'adherent.mandate.label'|trans, { 'label_attr': {'class': 'text--gray'} }) }}
                 {{ form_widget(form.mandate) }}
                 {{ form_errors(form.mandate) }}
             </div>
         </div>
-
+        <hr>
         <div class="space--10-0"></div>
 
         <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
