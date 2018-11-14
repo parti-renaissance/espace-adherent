@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block open_graph_image (homepage_url ~ static_asset('pages-sharers/adherents-en-marche.jpg', {'q': 70}))|raw %}
+{% block open_graph_image (homepage_url ~ static_asset('pages-sharers/concrete.jpg', {'q': 70}))|raw %}
 
 {% block banner '' %}
 {% block footer '' %}
@@ -20,7 +20,6 @@
             <header class="hero hero--minimalist--center-20">
                 <div class="hero--minimalist__content">
                     <img src="images/concrete-logo.svg" alt="Ça, c'est du concret !" title="Ça, c'est du concret !">
-                    {% block talents_header_content %}{% endblock %}
                 </div>
             </header>
         {% endblock %}
