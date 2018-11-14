@@ -26,6 +26,7 @@ class SurveyExporter
             $data[] = [
                 'id' => $survey->getId(),
                 'name' => $survey->getName(),
+                'city' => $survey->getCity(),
                 'questionsCount' => $survey->questionsCount(),
                 'createdAt' => $survey->getCreatedAt()->format('d/m/Y'),
                 'creator' => $survey->getCreator()->getFullName(),
