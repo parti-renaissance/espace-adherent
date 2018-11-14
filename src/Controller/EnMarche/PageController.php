@@ -165,6 +165,16 @@ class PageController extends Controller
     }
 
     /**
+     * @Route("/cestduconcret", name="page_concrete")
+     * @Method("GET")
+     * @Entity("page", expr="repository.findOneBySlug('concrete')")
+     */
+    public function concreteAction(Page $page)
+    {
+        return $this->render('page/concrete/home.html.twig', ['page' => $page]);
+    }
+
+    /**
      * @Route("/action-talents", name="page_action_talents")
      * @Method("GET")
      * @Entity("page", expr="repository.findOneBySlug('action-talents')")

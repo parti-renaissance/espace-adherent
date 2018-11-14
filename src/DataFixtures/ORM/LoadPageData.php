@@ -139,6 +139,14 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
         ]));
 
         $manager->persist($factory->createFromArray([
+            'title' => 'Ça, c\'est du concret !',
+            'slug' => 'concrete',
+            'description' => $description,
+            'content' => file_get_contents(__DIR__.'/../concrete/home.html'),
+            'media' => $media,
+        ]));
+
+        $manager->persist($factory->createFromArray([
             'title' => 'Action talents - Accueil',
             'slug' => 'action-talents',
             'description' => $description,
