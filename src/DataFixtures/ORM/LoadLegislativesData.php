@@ -81,7 +81,7 @@ class LoadLegislativesData implements FixtureInterface
             Genders::MALE,
             'Etienne',
             'de Monté-Cristo',
-            null,
+            file_get_contents(__DIR__.'/../legislatives/geojson-paris-1.json'),
             null,
             LegislativeCandidate::STATUS_QUALIFIED
         ));

@@ -17,7 +17,7 @@ class ReferentsControllerTest extends WebTestCase
     use ControllerTestTrait;
     use ApiControllerTestTrait;
 
-    public function testApiApprovedCommittees()
+    public function testApiReferents()
     {
         $this->client->request(Request::METHOD_GET, '/api/referents');
 

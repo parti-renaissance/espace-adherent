@@ -2,6 +2,7 @@
 
 namespace AppBundle\Api;
 
+use AppBundle\Entity\LegislativeCandidate;
 use AppBundle\Repository\LegislativeCandidateRepository;
 use AppBundle\Twig\AssetRuntime;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -21,7 +22,7 @@ class LegislativeCandidateProvider
 
     public function getForApi(): array
     {
-        foreach ($this->repository->findAllForDirectory() as $candidate) {
+        foreach ($this->repository->findAllForDirectory(LegislativeCandidate::STATUS_WON) as $candidate) {
             if (!$candidate->getGeojson()) {
                 continue;
             }

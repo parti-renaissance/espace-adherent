@@ -34,7 +34,7 @@
                 <ul class="list__links list__links--row list__links--no-decor list__links--nav">
                     {% set currentRoute = app.request.attributes.get('_route') %}
                     {% for route, title in {
-                        'legislatives_map': 'La carte'
+                        'legislatives_map': 'Consulter la carte des député(e)s'
                     } %}
                         <li class="{{ route == currentRoute ? 'active' }}">
                             <a href="{{ path(route) }}">
