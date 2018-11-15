@@ -6,10 +6,7 @@ use Symfony\Component\Routing\Route;
 
 interface ReactAppInterface
 {
-    /**
-     * Title to use in the <title> HTML tag.
-     */
-    public function getTitle(): string;
+    public function getPageMetaData(): PageMetaDataInterface;
 
     /**
      * Return the directory name of this app.
