@@ -55,6 +55,7 @@ class AdherentType extends AbstractType
             ])
             ->add('elected', CheckboxType::class, [
                 'required' => false,
+                'label' => 'adherent.form.elected',
             ])
         ;
 

@@ -136,28 +136,31 @@
                                 </div>
                                 {{ form_errors(form.phone) }}
                             </div>
+                        </div>
 
-                            <div class="b__nudge--top form__checkbox form__checkbox--large">
-                                <div>
-                                    <span class="b__nudge--bottom-tiny text--bold">{{ 'adherent.form.elected'|trans }}</span>
-                                    <span class="text--gray text--italic">({{ 'common.optional'|trans }})</span>
-                                </div>
+                        <div class="space--10-0"></div>
+
+                        <div class="register__form--line">
+                            <span class="b__nudge--bottom-tiny text--gray text--italic">{{ 'common.optional'|trans|capitalize }}</span>
+                            <hr id="hr_join" />
+                        </div>
+                        <div class="l__row l__row--top l__row--h-stretch l__mobile--col register__form--flex">
+                            <div class="register__form--mid form__checkbox form__checkbox--large">
                                 {{ form_widget(form.elected) }}
                                 <label class="form form__label" for="{{ form.elected.vars.id }}">
                                     <span class="text__checkbox">
-                                        {{ 'global.yes'|trans }}
+                                        {{ 'adherent.form.elected'|trans }}
                                     </span>
                                 </label>
                                 {{ form_errors(form.elected) }}
                             </div>
-                            <div class="l__row l__row--top l__row--h-stretch l__mobile--col hidden" id="form__mandate">
-                                <p class="text--bold">{{ form_label(form.mandate) }}</p>
-                                <div class="l__row l__row--h-stretch register__form--full">
-                                    {{ form_widget(form.mandate, { attr: { class: 'l__row l__row--h-stretch' } }) }}
-                                    {{ form_errors(form.mandate) }}
-                                </div>
+                            <div class="register__form--mid hidden" id="form__mandate">
+                                {{ form_widget(form.mandate, { attr: { class: 'l__row l__row--h-stretch' } }) }}
+                                {{ form_errors(form.mandate) }}
                             </div>
                         </div>
+
+                        <hr>
 
                         <div class="space--10-0"></div>
 

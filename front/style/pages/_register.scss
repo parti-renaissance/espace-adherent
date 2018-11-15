@@ -85,6 +85,37 @@
                 margin-top: -5px;
             }
         }
+
+        &--flex {
+            display: flex;
+            align-items: center;
+        }
+
+        &--line {
+            hr {
+                bottom: 28px;
+                margin-bottom: -20px;
+                position: relative;
+                z-index: 1;
+            }
+
+            label {
+                position: relative;
+                z-index: 10;
+            }
+
+            #hr {
+                &_profile {
+                    width: 88%;
+                    left: 12%;
+                }
+
+                &_join {
+                    width: 84%;
+                    left: 16%;
+                }
+            }
+        }
     }
 
     &__interests {
