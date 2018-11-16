@@ -15,9 +15,7 @@ Feature:
     Then the response status code should be 200
     And I should be on "espace-adherent/tableau-de-bord/mes-messages"
 
-  Scenario: As an animator, I have a button on my messages page to go back to the dashboard
-    Given I am logged as "jacques.picard@en-marche.fr"
-    And I am on "espace-adherent/tableau-de-bord/mes-messages"
+    # As an animator, I have a button on my messages page to go back to the dashboard
     When I follow "Retour au dashboard"
     Then the response status code should be 200
     And I should be on "espace-adherent/tableau-de-bord"
