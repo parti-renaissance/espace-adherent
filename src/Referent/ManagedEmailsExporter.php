@@ -7,13 +7,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ManagedEmailsExporter
 {
-    private $urlGenerator;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator)
-    {
-        $this->urlGenerator = $urlGenerator;
-    }
-
     /**
      * @param EmailLog[] $managedEmails
      */

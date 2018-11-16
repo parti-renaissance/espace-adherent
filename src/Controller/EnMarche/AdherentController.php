@@ -112,7 +112,7 @@ class AdherentController extends Controller
         UserInterface $user
     ): Response {
         return $this->render('referent/emails_list.html.twig', [
-            'managedEmailsJson' => $emailsExporter->exportAsJson($emailLogRepository->findSendedBy($user)),
+            'sendedEmails' => $emailsExporter->exportAsJson($emailLogRepository->findSendedBy($user)),
         ]);
     }
 

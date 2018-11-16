@@ -127,6 +127,12 @@
             <tag name="doctrine.orm.entity_listener" />
         </prototype>
 
+        <service id="AppBundle\Mailer\EventSubscriber\EmailLogPersisterEventSubscriber">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="AppBundle\Repository\EmailLogRepository"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
         <!-- Exporter -->
         <prototype namespace="AppBundle\Exporter\" resource="../../../src/Exporter/" />
 
