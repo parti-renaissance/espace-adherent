@@ -1,6 +1,13 @@
 {% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
 
 {% block actions %}
+    <script>
+        $(function(){
+            $('.ban-link').click(function(){
+                $('#ban').submit();
+            })
+        })
+    </script>
     <li>
         <a href="{{ path('homepage', {'_switch_user': object.emailAddress}) }}" class="sonata-action-element" title="Impersonnifier">
             <i class="fa fa-user-secret" aria-hidden="true"></i>
@@ -13,6 +20,19 @@
             Afficher
         </a>
     </li>
+    {% if is_granted('ROLE_ADMIN_BAN') %}
+        <li>
+            <a href="#" class="sonata-action-element ban-link" title="Bannir">
+                <i class="fa fa-ban" aria-hidden="true"></i>
+                Bannir cet adhérent
+            </a>
+
+            {#Add a hidden form for csrf token#}
+            <form id="ban" method="post" action="{{ path('app_admin_ban_adherent', { id: object.id }) }}">
+                <input type="hidden" name="token" value="{{ csrf_token('app_admin_ban_adherent') }}" />
+            </form>
+        </li>
+    {% endif %}
     <li>
         <a href="{{ path('admin_app_adherent_list') }}" class="sonata-action-element" title="Éditer">
             <i class="fa fa-list" aria-hidden="true"></i>

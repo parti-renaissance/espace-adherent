@@ -5,6 +5,12 @@
 </div>
 
 <div class="form__row form__new">
+    {{ form_errors(form.city) }}
+    {{ form_label(form.city, 'Ville', { label_attr: { class: 'label__header--large' } }) }}
+    {{ form_widget(form.city, { attr: { class: 'form--full committee_event__form__name', placeholder: "Entrez la ville concernée" } }) }}
+</div>
+
+<div class="form__row form__new">
     {{ form_errors(form.questions) }}
     {{ form_widget(form.questions) }}
 </div>

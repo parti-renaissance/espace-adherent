@@ -18,6 +18,9 @@ class SurveyFormType extends AbstractType
             ->add('name', TextType::class, [
                 'filter_emojis' => true,
             ])
+            ->add('city', TextType::class, [
+                'filter_emojis' => true,
+            ])
             ->add('questions', CollectionType::class, [
                 'entry_type' => SurveyQuestionFormType::class,
                 'entry_options' => [

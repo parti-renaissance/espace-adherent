@@ -39,6 +39,19 @@ app_api:
         _format: 'json'
 
 #
+# API Legislatives
+#
+app_legislatives_api:
+    host:     "{app_domaines}"
+    resource: "@AppBundle/Controller/Api/LegislativesController.php"
+    type:     "annotation"
+    prefix:   "/api"
+    defaults:
+        _format: 'json'
+    requirements:
+        app_domaines: "%app_host%|%legislatives_host%"
+
+#
 # OAuth
 #
 app_oauth:

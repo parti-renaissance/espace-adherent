@@ -12,6 +12,7 @@
     "lint:watch": "npm run lint -- --watch"
   },
   "dependencies": {
+    "@google/markerclusterer": "^1.0.3",
     "@mapbox/polylabel": "^1.0.2",
     "algoliasearch": "^3.22.1",
     "babel-cli": "^6.18.0",

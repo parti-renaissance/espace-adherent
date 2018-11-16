@@ -9,27 +9,44 @@ export default (mapFactory, api) => {
             zoom: 5,
         });
 
-        let infowindow = null;
+        const infowindow = new google.maps.InfoWindow();
 
-        committees.forEach((committee) => {
-            const marker = mapFactory.addMarker(map, {
-                title: committee.name,
-                position: committee.position,
+        const committeeSetsMap = new Map();
+
+        for (const committee of committees) {
+            let committeeSet = [committee];
+
+            const key = JSON.stringify(committee.position);
+
+            if (committeeSetsMap.has(key)) {
+                committeeSet = committeeSetsMap.get(key);
+                committeeSet.push(committee);
+            }
+
+            committeeSetsMap.set(key, committeeSet);
+        }
+
+        const markers = [];
+
+        committeeSetsMap.forEach((committeeSet) => {
+            const marker = mapFactory.createMarker({
+                position: committeeSet[0].position,
+            });
+
+            const contentLinks = [];
+
+            committeeSet.forEach((committee) => {
+                contentLinks.push(`<a href="${committee.url}" target="_blank">${committee.name}</a>`);
             });
 
             google.maps.event.addListener(marker, 'click', () => {
-                if (infowindow) {
-                    infowindow.close();
-                }
-
-                infowindow = new google.maps.InfoWindow({
-                    content: `<a href="${committee.url}" target="_blank">${committee.name}</a>`,
-                    position: committee.position,
-                    pixelOffset: new google.maps.Size(0, -8),
-                });
-
-                infowindow.open(map);
+                infowindow.setContent(contentLinks.join('</br>&</br>'));
+                infowindow.open(map, marker);
             });
+
+            markers.push(marker);
         });
+
+        mapFactory.createMarkerClusterer(map, markers);
     });
 };

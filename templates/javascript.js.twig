@@ -57,14 +57,20 @@ CKEDITOR.on('dialogDefinition', function(ev) {
     }
 });
 
+var decodeHTML = function (html) {
+    var txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+};
+
 {% if maxLength is not same as(false) %}
     var maxlength_{{ element }} = $('#{{ element }}').attr("maxlength");
-    var text_length_{{ element }} = CKEDITOR.instances['{{ element }}'].getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '').length;
+    var text_length_{{ element }} = decodeHTML(CKEDITOR.instances['{{ element }}'].getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '').replace(/\n/g, ' ')).length;
     $('#{{ element }}_counter').html(text_length_{{ element }}  + '/' + maxlength_{{ element }});
 
     CKEDITOR.instances['{{ element }}'].on("instanceReady", function(){
         this.document.on("keyup", function(event) {
-            text_length_{{ element }} = CKEDITOR.instances['{{ element }}'].getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '').length;
+            text_length_{{ element }} = decodeHTML(CKEDITOR.instances['{{ element }}'].getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '').replace(/\n/g, ' ')).length;
             $('#{{ element }}_counter').html(text_length_{{ element }}  + '/' + maxlength_{{ element }});
             if (text_length_{{ element }} > maxlength_{{ element }}) {
                 $('#{{ element }}_counter').addClass('form__error');
@@ -90,12 +96,12 @@ CKEDITOR.replace('{{ element }}', {
 });
 
 var maxlength_{{ element }} = $('#{{ element }}').attr("maxlength");
-var text_length_{{ element }} = CKEDITOR.instances['{{ element }}'].getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '').length;
+var text_length_{{ element }} = decodeHTML(CKEDITOR.instances['{{ element }}'].getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '').replace(/\n/g, ' ')).length;
 $('#{{ element }}_counter').html(text_length_{{ element }}  + '/' + maxlength_{{ element }});
 
 CKEDITOR.instances['{{ element }}'].on("instanceReady", function(){
     this.document.on("keyup", function(event) {
-        text_length_{{ element }} = CKEDITOR.instances['{{ element }}'].getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '').length;
+        text_length_{{ element }} = decodeHTML(CKEDITOR.instances['{{ element }}'].getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '').replace(/\n/g, ' ')).length;
         $('#{{ element }}_counter').html(text_length_{{ element }}  + '/' + maxlength_{{ element }});
         if (text_length_{{ element }} > maxlength_{{ element }}) {
             $('#{{ element }}_counter').addClass('form__error');

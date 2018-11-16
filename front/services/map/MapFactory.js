@@ -1,3 +1,5 @@
+import MarkerClusterer from "@google/markerclusterer";
+
 export default class MapFactory {
     createMap(element, options) {
         const map = new google.maps.Map(element, options);
@@ -58,9 +60,23 @@ export default class MapFactory {
     }
 
     addMarker(map, options) {
-        options.map = map;
+        return this.createMarker(Object.assign(options, {map: map}));
+    }
+
+    createMarker(options) {
         options.icon = '/images/icons/marker-icon.png';
 
         return new google.maps.Marker(options);
+    }
+
+    createMarkerClusterer(map, markers, options = {}) {
+        return new MarkerClusterer(
+            map,
+            markers,
+            Object.assign({
+                maxZoom: 15,
+                imagePath: 'https://storage.googleapis.com/en-marche-prod/images/cluster-committees/m'
+            }, options)
+        );
     }
 }

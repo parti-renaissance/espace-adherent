@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\CitizenProject\CitizenProjectCommand;
+use AppBundle\CitizenProject\CitizenProjectCreationCommand;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use AppBundle\Entity\CitizenProjectSkill;
@@ -104,13 +105,18 @@ class CitizenProjectCommandType extends AbstractType
                     'placeholder' => 'Ajouter le comité local',
                 ],
             ])
-            ->add('cgu', CheckboxType::class, [
-                'mapped' => false,
-            ])
-            ->add('data_processing', CheckboxType::class, [
-                'mapped' => false,
-            ])
         ;
+
+        if ($command instanceof CitizenProjectCreationCommand) {
+            $builder
+                ->add('cgu', CheckboxType::class, [
+                    'mapped' => false,
+                ])
+                ->add('data_processing', CheckboxType::class, [
+                    'mapped' => false,
+                ])
+            ;
+        }
 
         if ($options['from_turnkey_project']) {
             $builder
