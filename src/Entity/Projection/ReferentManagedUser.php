@@ -190,6 +190,16 @@ class ReferentManagedUser
      */
     private $supervisorTags = [];
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $citizenProjects;
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $citizenProjectsOrganizer;
+
     public function __construct(
         int $status,
         string $type,
@@ -211,7 +221,9 @@ class ReferentManagedUser
         string $subscribedTags = null,
         \DateTime $createdAt = null,
         string $gender = null,
-        array $supervisorTags = []
+        array $supervisorTags = [],
+        ?array $citizenProjects,
+        ?array $citizenProjectsOrganizer
     ) {
         $this->status = $status;
         $this->type = $type;
@@ -234,6 +246,8 @@ class ReferentManagedUser
         $this->createdAt = $createdAt;
         $this->gender = $gender;
         $this->supervisorTags = $supervisorTags;
+        $this->citizenProjects = $citizenProjects;
+        $this->citizenProjectsOrganizer = $citizenProjectsOrganizer;
     }
 
     public function getId(): int
@@ -378,5 +392,15 @@ class ReferentManagedUser
     public function setSupervisorTags(array $supervisorTags): void
     {
         $this->supervisorTags = $supervisorTags;
+    }
+
+    public function getCitizenProjects(): ?array
+    {
+        return $this->citizenProjects;
+    }
+
+    public function getCitizenProjectsOrganizer(): ?array
+    {
+        return $this->citizenProjectsOrganizer;
     }
 }

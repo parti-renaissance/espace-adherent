@@ -341,6 +341,7 @@ class ReferentControllerTest extends WebTestCase
             's' => false,
             'anc' => false,
             'aic' => false,
+            'cp' => false,
         ];
 
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
@@ -416,6 +417,19 @@ class ReferentControllerTest extends WebTestCase
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
         $this->assertContains('Michel', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+
+        // filter adherents in CP
+        $data = [
+            'h' => false,
+            's' => false,
+            'anc' => false,
+            'aic' => false,
+            'cp' => true,
+        ];
+
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+
+        $this->assertContains('1 contact(s) trouvé(s)', $this->client->getCrawler()->filter('.referent__filters__count')->text());
     }
 
     public function providePages()

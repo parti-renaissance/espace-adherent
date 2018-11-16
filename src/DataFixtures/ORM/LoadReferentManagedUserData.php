@@ -104,6 +104,9 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'supervisor_tags' => [
                 '77',
             ],
+            'citizenProjects' => [
+                '59-en-marche-projet-citoyen' => 'En marche - Projet Citoyen',
+            ],
         ]);
 
         $manager->persist($managedUser1);

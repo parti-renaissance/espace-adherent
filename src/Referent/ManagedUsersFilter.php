@@ -28,11 +28,13 @@ class ManagedUsersFilter
     const PARAMETER_AGE_MIN = 'amin';
     const PARAMETER_AGE_MAX = 'amax';
     const PARAMETER_INTEREST = 'i';
+    const PARAMETER_INCLUDE_CP = 'cp';
 
     private $includeAdherentsNoCommittee = true;
     private $includeAdherentsInCommittee = true;
     private $includeHosts = true;
     private $includeSupevisors = true;
+    private $includeCP = true;
 
     /**
      * @Assert\NotNull
@@ -78,6 +80,7 @@ class ManagedUsersFilter
         $filter->queryLastName = $message->getLastName();
         $filter->queryAgeMinimum = $message->getAgeMinimum();
         $filter->queryAgeMaximum = $message->getAgeMaximum();
+        $filter->includeCP = $message->getIncludeCitizenProject();
 
         return $filter;
     }
@@ -107,6 +110,7 @@ class ManagedUsersFilter
         $this->queryAgeMinimum = $query->getInt(self::PARAMETER_AGE_MIN);
         $this->queryAgeMaximum = $query->getInt(self::PARAMETER_AGE_MAX);
         $this->queryInterests = (array) $query->get(self::PARAMETER_INTEREST, []);
+        $this->includeCP = $query->getBoolean(self::PARAMETER_INCLUDE_CP);
 
         return $this;
     }
@@ -134,6 +138,7 @@ class ManagedUsersFilter
             self::PARAMETER_AGE_MIN => $this->queryAgeMinimum,
             self::PARAMETER_AGE_MAX => $this->queryAgeMaximum,
             self::PARAMETER_INTEREST => $this->queryInterests,
+            self::PARAMETER_INCLUDE_CP => $this->includeCP ? '1' : '0',
         ]);
     }
 
@@ -262,5 +267,10 @@ class ManagedUsersFilter
     public function setQueryInterests(array $queryInterests): void
     {
         $this->queryInterests = $queryInterests;
+    }
+
+    public function getIncludeCitizenProject(): bool
+    {
+        return $this->includeCP;
     }
 }

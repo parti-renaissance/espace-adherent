@@ -49,6 +49,15 @@
                                 Co-animateurs de comités locaux
                             </label>
                         </div>
+
+                        <div class="form__row form__checkbox">
+                            <input type="checkbox" value="1" id="parameter_include_cp"
+                                   name="{{ constant('PARAMETER_INCLUDE_CP', filter) }}"
+                                    {{ filter.includeCitizenProject ? 'checked="checked"' : '' }} />
+                            <label for="parameter_include_cp">
+                                Porteurs de projets citoyens
+                            </label>
+                        </div>
                     </div>
                 </div>
 
@@ -228,6 +237,7 @@
                     <th style="width: 100px;">Nom</th>
                     <th style="width: 100px;">Téléphone</th>
                     <th style="width: 100px;">Ville</th>
+                    <th style="width: 120px;" class="">Projets citoyens</th>
                     <th style="width: 100px;" class="datagrid__table__col--left">Informations</th>
                     <th style="width: 120px;" class="datagrid__table__col--left datagrid__table__col--hide-mobile">Comités</th>
                     <th style="width: 150px;" class="datagrid__table__col--hide-mobile">Adhésion</th>
@@ -240,6 +250,17 @@
                         <td>{{ user.lastName }}</td>
                         <td>{{ user.phone ? user.phone|phone_number_format : '~' }}</td>
                         <td>{{ user.postalCode }} <br/> {{ user.city }}, {{ user.country }}</td>
+                        <td class="datagrid__table__col--left">
+                            <ul>
+                            {% for slug, name in user.citizenProjectsOrganizer %}
+                                <li><a href="{{ path('app_citizen_project_show', {'slug': slug}) }}"><strong>{{ name }}</strong></a></li>
+                            {% endfor %}
+
+                            {% for slug, name in user.citizenProjects %}
+                                <li><a href="{{ path('app_citizen_project_show', {'slug': slug}) }}">{{ name }}</a></li>
+                            {% endfor %}
+                            </ul>
+                        </td>
                         <td class="datagrid__table__col--left">
                             <small class="referent__item__metadata">
                                 {{ user.age ? user.age ~ ' ans' : '~'}},
