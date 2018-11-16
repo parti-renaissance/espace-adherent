@@ -6,12 +6,11 @@ use League\Flysystem\Filesystem;
 
 class DocumentRepository
 {
-    const DIRECTORY_ROOT = 'documents';
-    const DIRECTORY_ADHERENTS = 'adherents';
-    const DIRECTORY_HOSTS = 'animateurs';
-    const DIRECTORY_FOREIGN_HOSTS = 'animateurs-etrangers';
-    const DIRECTORY_REFERENTS = 'referents';
-    const DIRECTORY_LEGISLATIVE_CANDIDATES = 'candidats-legislatives';
+    public const DIRECTORY_ROOT = 'documents';
+    public const DIRECTORY_ADHERENTS = 'adherents';
+    public const DIRECTORY_HOSTS = 'animateurs';
+    public const DIRECTORY_FOREIGN_HOSTS = 'animateurs-etrangers';
+    public const DIRECTORY_REFERENTS = 'referents';
 
     private $storage;
 
@@ -50,14 +49,6 @@ class DocumentRepository
     public function listReferentDirectory(string $path = '/'): array
     {
         return $this->listDirectory(self::DIRECTORY_REFERENTS, $path);
-    }
-
-    /**
-     * @return Document[]
-     */
-    public function listLegislativeCandidateDirectory(string $path = '/'): array
-    {
-        return $this->listDirectory(self::DIRECTORY_LEGISLATIVE_CANDIDATES, $path);
     }
 
     /**
