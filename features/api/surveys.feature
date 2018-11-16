@@ -68,7 +68,8 @@ Feature:
             "choices": []
           }
         ],
-        "name":"Questionnaire numéro 1"
+        "name":"Questionnaire numéro 1",
+        "city":"Paris 1er"
       }
     ]
     """

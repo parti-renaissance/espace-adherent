@@ -35,6 +35,16 @@ class Survey
     private $name;
 
     /**
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
+     *
+     * @JMS\Groups({"survey_list"})
+     */
+    private $city;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
@@ -54,10 +64,15 @@ class Survey
      */
     private $published = false;
 
-    public function __construct(Adherent $creator = null, string $name = null, bool $published = false)
-    {
+    public function __construct(
+        Adherent $creator = null,
+        string $name = null,
+        string $city = null,
+        bool $published = false
+    ) {
         $this->uuid = Uuid::uuid4();
         $this->name = $name;
+        $this->city = $city;
         $this->creator = $creator;
         $this->published = $published;
         $this->questions = new ArrayCollection();
@@ -81,6 +96,16 @@ class Survey
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): void
+    {
+        $this->city = $city;
     }
 
     public function addQuestion(SurveyQuestion $surveyQuestion): void
