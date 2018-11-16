@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@google/markerclusterer@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@google/markerclusterer/-/markerclusterer-1.0.3.tgz#830b9dbba85fae9537a16d17947b484f9e860c65"
+  integrity sha512-/fRbSPyQKnm43zRnoyMerbiGS3vG3WkZiLgpBF3ovoLO84sKhEAzKMVcyozy/khEHlZoMJ9Axkr0NRVJRAQhcg==
+
 "@mapbox/polylabel@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@mapbox/polylabel/-/polylabel-1.0.2.tgz#c5714619b65add082638ea06027e69b14500efa6"
