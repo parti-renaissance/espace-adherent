@@ -51,6 +51,10 @@
                 {{ form_label(form.content, 'Message') }}
                 {{ form_errors(form.content) }}
                 {{ form_widget(form.content, {'attr': {'class': 'form--full form__field--textarea-300'}}) }}
+                <legend class="text--gray text--small message-legend">
+                    NB : le compteur de caractères peut indiquer une valeur différente de celle que vous aviez sur votre éditeur
+                    de texte sur lequel vous avez écrit votre message. Pensez à remettre en forme votre texte depuis cette page pour ne pas dépasser la limite
+                </legend>
             </div>
 
             <button class="btn btn--blue b__nudge--bottom-small" type="submit">
