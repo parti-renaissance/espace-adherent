@@ -29,17 +29,13 @@ class DocumentsController extends Controller
     /**
      * @Route(
      *     "/dossier/{type}/{path}",
-     *     requirements={"type": "adherents|animateurs|referents|animateurs-etrangers|candidats-legislatives", "path": ".+"},
+     *     requirements={"type": "adherents|animateurs|referents|animateurs-etrangers", "path": ".+"},
      *     name="app_documents_directory"
      * )
      * @Method("GET")
      */
     public function directoryAction($type, $path)
     {
-        if (DocumentRepository::DIRECTORY_LEGISLATIVE_CANDIDATES === $type && !$this->isGranted('ROLE_PREVIOUS_ADMIN')) {
-            throw $this->createNotFoundException();
-        }
-
         $this->checkDocumentTypeAccess($type);
 
         return $this->render('documents/directory.html.twig', [
@@ -52,7 +48,7 @@ class DocumentsController extends Controller
     /**
      * @Route(
      *     "/telecharger/{type}/{path}",
-     *     requirements={"type": "adherents|animateurs|referents|animateurs-etrangers|candidats-legislatives", "path": ".+"},
+     *     requirements={"type": "adherents|animateurs|referents|animateurs-etrangers", "path": ".+"},
      *     name="app_documents_file"
      * )
      * @Method("GET")
@@ -73,14 +69,13 @@ class DocumentsController extends Controller
         return $response;
     }
 
-    private function checkDocumentTypeAccess(string $type)
+    private function checkDocumentTypeAccess(string $type): void
     {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
         $isHost = $adherent->isHost();
         $isReferent = $adherent->isReferent();
-        $isLegislativeCandidate = $adherent->isLegislativeCandidate();
 
         if (DocumentRepository::DIRECTORY_HOSTS === $type && !($isHost || $isReferent)) {
             throw $this->createNotFoundException();
@@ -91,10 +86,6 @@ class DocumentsController extends Controller
         }
 
         if (DocumentRepository::DIRECTORY_REFERENTS === $type && !$isReferent) {
-            throw $this->createNotFoundException();
-        }
-
-        if (DocumentRepository::DIRECTORY_LEGISLATIVE_CANDIDATES === $type && !$isLegislativeCandidate) {
             throw $this->createNotFoundException();
         }
     }
