@@ -3,7 +3,6 @@
 namespace AppBundle\Referent;
 
 use AppBundle\Entity\EmailLog;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ManagedEmailsExporter
 {

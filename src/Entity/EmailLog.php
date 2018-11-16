@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Table()
+ * @ORM\Table
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EmailLogRepository")
  *
  * @Algolia\Index(autoIndex=false)
