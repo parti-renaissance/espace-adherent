@@ -2,16 +2,13 @@
 
 namespace AppBundle\React\App;
 
+use AppBundle\React\PageMetaData;
+use AppBundle\React\PageMetaDataInterface;
 use AppBundle\React\ReactAppInterface;
 use Symfony\Component\Routing\Route;
 
 class CitizenProjectApp implements ReactAppInterface
 {
-    public function getTitle(): string
-    {
-        return 'Projets citoyens';
-    }
-
     public function getDirectory(): string
     {
         return 'projets-citoyens';
@@ -29,5 +26,15 @@ class CitizenProjectApp implements ReactAppInterface
             'discover' => new Route('/projets-citoyens/cle-en-main'),
             'search' => new Route('/projets-citoyens/recherche'),
         ];
+    }
+
+    public function getPageMetaData(): PageMetaDataInterface
+    {
+        return new PageMetaData(
+            'Les projets citoyens',
+            'Les projets citoyens initiés par La République En Marche ! sont des actions locales qui permettent d\'améliorer concrètement le quotidien des habitants d\'un quartier, d\'un village, en réunissant la force et les compétences de tous ceux qui veulent agir.',
+            1698,
+            550
+        );
     }
 }
