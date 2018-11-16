@@ -34,13 +34,19 @@
                 <ul class="list__links list__links--row list__links--no-decor list__links--nav">
                     {% set currentRoute = app.request.attributes.get('_route') %}
                     {% for route, title in {
-                        'legislatives_map': 'Consulter la carte des député(e)s'
+                        'legislatives_map': 'Consulter la carte des député(e)s',
+                        'legislatives_homepage': 'Retourner à la liste des député(e)s'
                     } %}
-                        <li class="{{ route == currentRoute ? 'active' }}">
-                            <a href="{{ path(route) }}">
-                                {{ title }}
-                            </a>
-                        </li>
+                        {% if route != currentRoute %}
+                            <li>
+                                <a href="{{ path(route) }}" class="icon--with-text">
+                                    {% if 'legislatives_homepage' == route %}
+                                        {{ include('components/caret--left.html.twig') }}
+                                    {% endif %}
+                                    {{ title }}
+                                </a>
+                            </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </nav>
