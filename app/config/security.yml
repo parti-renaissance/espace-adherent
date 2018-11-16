@@ -207,6 +207,9 @@ security:
         ROLE_ADMIN_JECOUTE:
             - ROLE_APP_ADMIN_JECOUTE_SUGGESTED_QUESTION_ALL
 
+        ROLE_ADMIN_BAN:
+            - ROLE_APP_ADMIN_BAN
+
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN_DASHBOARD
             - ROLE_ADMIN_MEDIAS
@@ -248,6 +251,7 @@ security:
             - ROLE_ADMIN_EMAIL_SUBSCRIPTION_TYPES
             - ROLE_ADMIN_BIOGRAPHY
             - ROLE_ADMIN_JECOUTE
+            - ROLE_ADMIN_BAN
 
     access_decision_manager:
         strategy: unanimous

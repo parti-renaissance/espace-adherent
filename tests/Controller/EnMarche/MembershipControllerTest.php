@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadBannedAdherentData;
 use AppBundle\DataFixtures\ORM\LoadUserData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
@@ -235,6 +236,48 @@ class MembershipControllerTest extends WebTestCase
         self::assertCount(8, $adherent->getSubscriptionTypes());
     }
 
+    public function testBannedAdherentSubscription(): void
+    {
+        $this->client->request(Request::METHOD_GET, '/adhesion');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit(
+            $this->client->getCrawler()->selectButton('Je rejoins La République En Marche')->form(),
+            [
+                'g-recaptcha-response' => 'fake',
+                'adherent_registration' => [
+                    'firstName' => 'Test',
+                    'lastName' => 'Adhesion',
+                    'emailAddress' => [
+                        'first' => 'damien.schmidt@example.ch',
+                        'second' => 'damien.schmidt@example.ch',
+                    ],
+                    'password' => '12345678',
+                    'address' => [
+                        'address' => '1 rue des alouettes',
+                        'postalCode' => '94320',
+                        'cityName' => 'Thiais',
+                        'city' => '94320-94073',
+                        'country' => 'FR',
+                    ],
+                    'birthdate' => [
+                        'day' => 1,
+                        'month' => 1,
+                        'year' => 1989,
+                    ],
+                    'gender' => 'male',
+                    'conditions' => true,
+                    'allowNotifications' => true,
+                ],
+            ]
+        );
+
+        file_put_contents('index.html', $this->client->getResponse()->getContent());
+
+        $this->assertContains('L\'adresse email "damien.schmidt@example.ch" est bloquée.', $this->client->getCrawler()->filter('#adherent_registration_emailAddress_first_errors')->text());
+    }
+
     private static function createFormData(): array
     {
         return [
@@ -263,6 +306,7 @@ class MembershipControllerTest extends WebTestCase
         $this->init([
             LoadAdherentData::class,
             LoadUserData::class,
+            LoadBannedAdherentData::class,
         ]);
 
         $this->adherentRepository = $this->getAdherentRepository();
