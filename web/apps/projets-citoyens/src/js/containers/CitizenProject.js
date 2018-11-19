@@ -68,7 +68,7 @@ class CitizenProject extends Component {
                     </div>
                     <div className="turnkey__project__footer turnkey__video">
                         <a
-                            href="/projets-citoyens/decouvrir/"
+                            href="/projets-citoyens/cle-en-main"
                             className="turnkey__cta turnkey__cta__yellow"
                         >
                             Voir les projets clé en main
