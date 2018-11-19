@@ -14,10 +14,7 @@ trait EntitySoftDeletableTrait
      */
     private $deletedAt;
 
-    /**
-     * @return \DateTime|null
-     */
-    public function getDeletedAt()
+    public function getDeletedAt(): ?\DateTime
     {
         return $this->deletedAt;
     }
