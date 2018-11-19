@@ -42,6 +42,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
     const EVENT_18_UUID = 'c09fde77-cc05-4139-a127-f71c2702f281';
     const EVENT_19_UUID = '67e75e81-ad27-4414-bb0b-9e0c6e12b275';
     const EVENT_20_UUID = '65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e';
+    const EVENT_21_UUID = '0e5f9f02-fa33-4c2c-a700-4235d752315b';
 
     use ContainerAwareTrait;
 
@@ -54,6 +55,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         $eventCategory6 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE006']]);
         $eventCategory9 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE009']]);
         $eventCategory10 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE010']]);
+        $hiddenEventCategory = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::HIDDEN_CATEGORY_NAME]);
 
         $author3 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
         $author7 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_7_UUID);
@@ -80,6 +82,20 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
 
         $committeeEventFactory = $this->getEventFactory();
         $registrationFactory = $this->getEventRegistrationFactory();
+
+        $eventHidden = $committeeEventFactory->createFromArray([
+            'uuid' => self::EVENT_21_UUID,
+            'organizer' => $author3,
+            'committee' => $committee1,
+            'name' => 'Événement de la catégorie masquée',
+            'category' => $hiddenEventCategory,
+            'description' => 'Allons à la rencontre des citoyens.',
+            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.870507, 2.313243),
+            'begin_at' => (new Chronos('+3 days'))->format('Y-m-d').' 09:30:00',
+            'finish_at' => (new Chronos('+3 days'))->format('Y-m-d').' 19:00:00',
+            'capacity' => 10,
+        ]);
+        $eventHidden->setPublished(true);
 
         $event1 = $committeeEventFactory->createFromArray([
             'uuid' => self::EVENT_1_UUID,
@@ -363,6 +379,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
         ]);
         $event20->setPublished(true);
 
+        $manager->persist($eventHidden);
         $manager->persist($event1);
         $manager->persist($event2);
         $manager->persist($event3);

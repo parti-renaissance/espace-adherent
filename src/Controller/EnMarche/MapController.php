@@ -34,7 +34,7 @@ class MapController extends Controller
 
         return $this->render('map/events.html.twig', [
             'eventCount' => $doctrine->getRepository(Event::class)->countUpcomingEvents(),
-            'categories' => $doctrine->getRepository(EventCategory::class)->findBy([], ['name' => 'ASC']),
+            'categories' => $doctrine->getRepository(EventCategory::class)->findAllEnabledOrderedByName(),
         ]);
     }
 }
