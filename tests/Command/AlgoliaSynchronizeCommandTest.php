@@ -34,7 +34,7 @@ class AlgoliaSynchronizeCommandTest extends WebTestCase
         return [
             [
                 ['entityName' => 'AppBundle:Event'],
-                ['Synchronizing entity AppBundle\Entity\Event ... done, 20 records indexed'],
+                ['Synchronizing entity AppBundle\Entity\Event ... done, 21 records indexed'],
             ],
             [
                 ['entityName' => 'AppBundle\Entity\Timeline\Theme'],
@@ -47,7 +47,7 @@ class AlgoliaSynchronizeCommandTest extends WebTestCase
                     'Synchronizing entity AppBundle\Entity\Proposal ... done, 3 records indexed',
                     'Synchronizing entity AppBundle\Entity\Clarification ... done, 0 records indexed',
                     'Synchronizing entity AppBundle\Entity\CustomSearchResult ... done, 0 records indexed',
-                    'Synchronizing entity AppBundle\Entity\Event ... done, 20 records indexed',
+                    'Synchronizing entity AppBundle\Entity\Event ... done, 21 records indexed',
                     'Synchronizing entity AppBundle\Entity\Timeline\Profile ... done, 5 records indexed',
                     'Synchronizing entity AppBundle\Entity\Timeline\Theme ... done, 5 records indexed',
                     'Synchronizing entity AppBundle\Entity\Timeline\Measure ... done, 17 records indexed',

@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
+use AppBundle\Entity\BaseEventCategory;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\District;
@@ -46,12 +47,15 @@ class EventRepository extends ServiceEntityRepository
     {
         $qb = $this
             ->createQueryBuilder('e')
+            ->leftJoin('e.category', 'ec')
             ->select('COUNT(e)')
         ;
 
         if ($onlyPublished) {
             $qb->where('e.published = :published')
+                ->andWhere('ec.status = :enabled')
                 ->setParameter('published', true)
+                ->setParameter('enabled', BaseEventCategory::ENABLED)
             ;
         }
 
@@ -240,7 +244,7 @@ class EventRepository extends ServiceEntityRepository
         $qb = $this->createUpcomingEventsQueryBuilder();
 
         if ($category) {
-            $qb->andWhere('a.id = :category')->setParameter('category', $category);
+            $qb->andWhere('ec.id = :category')->setParameter('category', $category);
         }
 
         return $qb->getQuery()->getResult();
@@ -274,16 +278,18 @@ class EventRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('e');
 
         return $qb
-            ->select('e', 'a', 'c', 'o')
-            ->leftJoin('e.category', 'a')
+            ->select('e', 'ec', 'c', 'o')
+            ->leftJoin('e.category', 'ec')
             ->leftJoin('e.committee', 'c')
             ->leftJoin('e.organizer', 'o')
             ->where('e.published = :published')
             ->andWhere($qb->expr()->in('e.status', Event::ACTIVE_STATUSES))
             ->andWhere('e.beginAt >= :today')
+            ->andWhere('ec.status = :status')
             ->orderBy('e.beginAt', 'ASC')
             ->setParameter('published', true)
             ->setParameter('today', date('Y-m-d'))
+            ->setParameter('status', BaseEventCategory::ENABLED)
         ;
     }
 
@@ -402,7 +408,8 @@ WHERE (events.address_latitude IS NOT NULL
     AND (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) < :distance_max 
     AND events.begin_at > :today 
     AND events.published = :published
-    AND events.status = :scheduled) 
+    AND events.status = :scheduled
+    AND event_category.status = :enabled)
     __filter_query__ 
     __filter_category__
     __filter_type__ 
@@ -459,6 +466,7 @@ SQL;
         $query->setParameter('longitude', $search->getCityCoordinates()->getLongitude());
         $query->setParameter('published', 1, \PDO::PARAM_INT);
         $query->setParameter('scheduled', BaseEvent::STATUS_SCHEDULED);
+        $query->setParameter('enabled', BaseEventCategory::ENABLED);
         $query->setParameter('first_result', $search->getOffset(), \PDO::PARAM_INT);
         $query->setParameter('max_results', $search->getMaxResults(), \PDO::PARAM_INT);
 
