@@ -12,6 +12,10 @@
             <br />
             {{ organizer.phone|phone_number_format }}
         {% endif %}
+        {% if organizer.isReferent and not object.committee %}
+            <br />
+            (Référent)
+        {% endif %}
     {% else %}
         Anonyme (adhérent désadhéré)
     {% endif %}

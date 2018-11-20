@@ -19,6 +19,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -228,6 +229,20 @@ class EventAdmin extends AbstractAdmin
 
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
                     $qb->setParameter('cityName', '%'.strtolower($value['value']).'%');
+
+                    return true;
+                },
+            ])
+            ->add('referent', CallbackFilter::class, [
+                'label' => 'Événements du référent',
+                'show_filter' => true,
+                'field_type' => CheckboxType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb->andWhere(sprintf('%s.committee IS NULL', $alias));
 
                     return true;
                 },
