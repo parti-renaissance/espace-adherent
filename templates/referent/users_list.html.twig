@@ -276,12 +276,20 @@
                             </small>
                             <br />
                             <small>
-                                {% set is_host = user.isCommitteeHost %}
+                                {% set isBasicAdherent = true %}
+                                {%- if user.citizenProjectsOrganizer -%}
+                                    {% set isBasicAdherent = false %}
+                                    Porteur du projet<br />
+                                {% endif %}
                                 {%- if user.isCommitteeSupervisor -%}
-                                    Animateur local {{- is_host ? ' / ' -}}
-                                {%- elseif is_host -%}
-                                    Co-animateur local
-                                {%- else -%}
+                                    {% set isBasicAdherent = false %}
+                                    Animateur local<br />
+                                {% endif %}
+                                {%- if user.isCommitteeHost -%}
+                                    {% set isBasicAdherent = false %}
+                                    Co-animateur local<br />
+                                {% endif %}
+                                {%- if isBasicAdherent -%}
                                     Adhérent
                                 {% endif %}
                             </small>

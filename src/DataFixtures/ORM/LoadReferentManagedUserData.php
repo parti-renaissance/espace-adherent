@@ -79,6 +79,9 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'subscribedTags' => '92',
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'female',
+            'citizenProjects' => [
+                '59-en-marche-projet-citoyen' => 'En marche - Projet Citoyen',
+            ],
         ]);
 
         $managedUser4 = $referentManagedUserFactory->createFromArray([
@@ -105,6 +108,9 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
                 '77',
             ],
             'citizenProjects' => [
+                '59-en-marche-projet-citoyen' => 'En marche - Projet Citoyen',
+            ],
+            'citizenProjectsOrganizer' => [
                 '59-en-marche-projet-citoyen' => 'En marche - Projet Citoyen',
             ],
         ]);
