@@ -638,6 +638,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.jecoute_survey" class="AppBundle\Admin\JecouteSurveyAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Questionnaires locaux" group="J'écoute" />
+
+            <argument />
+            <argument>AppBundle\Entity\Jecoute\Survey</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # OAuth
