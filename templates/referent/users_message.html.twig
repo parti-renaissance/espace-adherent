@@ -11,7 +11,7 @@
     <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            {{ js.ckeditor('referent_message_content', null, constant('AppBundle\\Entity\\UserDocument::TYPE_REFERENT'), 5000) }}
+            {{ js.ckeditor('referent_message_content', null, constant('AppBundle\\Entity\\UserDocument::TYPE_REFERENT'), 5000, true) }}
         });
     </script>
 {% endblock %}
@@ -52,8 +52,9 @@
                 {{ form_errors(form.content) }}
                 {{ form_widget(form.content, {'attr': {'class': 'form--full form__field--textarea-300'}}) }}
                 <legend class="text--gray text--small message-legend">
-                    NB : le compteur de caractères peut indiquer une valeur différente de celle que vous aviez sur votre éditeur
-                    de texte sur lequel vous avez écrit votre message. Pensez à remettre en forme votre texte depuis cette page pour ne pas dépasser la limite
+                    NB : le compteur de caractères peut indiquer une valeur différente de celle que vous aviez sur
+                    votre éditeur de texte sur lequel vous avez écrit votre message. Pour ne pas dépasser cette limite,
+                    vous pouvez sélectionner votre texte et cliquer sur le bouton pour supprimer la mise en forme.
                 </legend>
             </div>
 
