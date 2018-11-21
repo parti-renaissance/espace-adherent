@@ -9,7 +9,7 @@ App.createAddressSelector(
 );
 {% endmacro %}
 
-{% macro ckeditor(element, height, uploadType = false, maxLength = false) %}
+{% macro ckeditor(element, height, uploadType = false, maxLength = false, removeFormat = false) %}
 CKEDITOR.replace('{{ element }}', {
     extraPlugins : 'confighelper',
     removePlugins: 'elementspath',
@@ -19,7 +19,7 @@ CKEDITOR.replace('{{ element }}', {
         { name: 'tools', items: [ 'Maximize' ] },
         { name: 'clipboard', items: [ 'Undo', 'Redo' ] },
         { name: 'styles', items: [ 'Format' ] },
-        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Strike' ] },
+        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Strike'{{ removeFormat ? ", '-', 'RemoveFormat'" : '' }} ] },
         { name: 'paragraph', items: [ 'NumberedList', 'BulletedList' ] },
         { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
         { name: 'links', items: [ 'Link', 'Image' ] }
