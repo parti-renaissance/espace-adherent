@@ -255,9 +255,9 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $chartAccepted = false;
 
     /**
-     * @ORM\Column(type="string", length=22, nullable=true)
+     * @ORM\Column(type="simple_array", nullable=true)
      */
-    private $mandate;
+    private $mandates;
 
     public function __construct()
     {
@@ -281,7 +281,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         string $registeredAt = 'now',
         ?array $tags = [],
         ?array $referentTags = [],
-        ?string $mandate = null
+        ?array $mandates = null
     ) {
         $adherent = new self();
 
@@ -300,7 +300,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $adherent->registeredAt = new \DateTime($registeredAt);
         $adherent->tags = new ArrayCollection($tags);
         $adherent->referentTags = new ArrayCollection($referentTags);
-        $adherent->mandate = $mandate;
+        $adherent->mandates = $mandates;
 
         return $adherent;
     }
@@ -642,7 +642,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->position = $membership->position;
         $this->phone = $membership->getPhone();
         $this->emailAddress = $membership->getEmailAddress();
-        $this->mandate = $membership->getMandate();
+        $this->mandates = $membership->getMandates();
 
         if (!$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;
@@ -1198,8 +1198,18 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->chartAccepted = $chartAccepted;
     }
 
-    public function getMandate(): ?string
+    public function getMandates(): ?array
     {
-        return $this->mandate;
+        return $this->mandates;
+    }
+
+    public function setMandates(?array $mandates): void
+    {
+        $this->mandates = $mandates;
+    }
+
+    public function hasMandate(): bool
+    {
+        return !empty($this->mandates);
     }
 }

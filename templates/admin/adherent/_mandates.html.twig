@@ -1,0 +1,3 @@
+{% for mandate in object.mandates %}
+    {{ ('adherent.mandate.'~mandate)|trans({}, 'messages') }}
+{% endfor %}

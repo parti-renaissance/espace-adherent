@@ -132,14 +132,13 @@ class MembershipRequest implements MembershipInterface
     private $elected = false;
 
     /**
-     * @var string|null
+     * @var array
      *
      * @Assert\Choice(
-     *     callback={"AppBundle\Membership\Mandates", "all"},
-     *     strict=true
+     *     callback={"AppBundle\Membership\Mandates", "all"}
      * )
      */
-    private $mandate;
+    private $mandates;
 
     public function __construct()
     {
@@ -169,8 +168,8 @@ class MembershipRequest implements MembershipInterface
         $dto->address = Address::createFromAddress($adherent->getPostAddress());
         $dto->phone = $adherent->getPhone();
         $dto->emailAddress = $adherent->getEmailAddress();
-        $dto->mandate = $adherent->getMandate();
-        $dto->elected = !\is_null($adherent->getMandate());
+        $dto->mandates = $adherent->getMandates();
+        $dto->elected = $adherent->hasMandate();
 
         return $dto;
     }
@@ -235,13 +234,13 @@ class MembershipRequest implements MembershipInterface
         $this->elected = $elected;
     }
 
-    public function getMandate(): ?string
+    public function getMandates(): ?array
     {
-        return $this->mandate;
+        return $this->mandates;
     }
 
-    public function setMandate(?string $mandate): void
+    public function setMandates(?array $mandates): void
     {
-        $this->mandate = $mandate;
+        $this->mandates = $mandates;
     }
 }

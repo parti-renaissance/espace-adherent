@@ -78,7 +78,8 @@ adherent.change_email.expired_key: Votre demande de changement d'email est expir
 
 adherent.contact.success: Votre message a bien été envoyé.
 
-adherent.mandate.label: Mandat actuel
+adherent.mandate.admin.label: Mandat actuel
+adherent.mandate.label: Votre ou vos mandats
 adherent.mandate.regional_councilor: Conseiller régional
 adherent.mandate.departmental_councilor: Conseiller départemental
 adherent.mandate.mayor: Maire

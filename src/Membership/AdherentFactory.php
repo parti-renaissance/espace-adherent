@@ -38,7 +38,7 @@ class AdherentFactory
             'now',
             [],
             [],
-            $request->getMandate()
+            $request->getMandates()
         );
     }
 
