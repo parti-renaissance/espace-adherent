@@ -1,17 +1,17 @@
 <script type="text/javascript">
     $(document).ready(function() {
-        var formMandate = $('#form__mandate');
+        var formMandates = $('#form__mandates');
         var formElected = $('#{{ form.elected.vars.id }}');
-        var selectMandate = $('#{{ form.mandate.vars.id }}');
+        var selectMandates = $('#{{ form.mandates.vars.id }}');
 
         formElected.click(function() {
             const isChecked = $(this).is(':checked');
 
-            formMandate.toggle(isChecked);
-            selectMandate.attr('required', isChecked);
+            formMandates.toggle(isChecked);
+            selectMandates.attr('required', isChecked);
 
             if (!isChecked) {
-                selectMandate.val("");
+                selectMandates.val("");
             }
         });
         formElected.triggerHandler('click');

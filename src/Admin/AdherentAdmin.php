@@ -119,9 +119,9 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('position', null, [
                     'label' => 'Statut',
                 ])
-                ->add('mandate', null, [
-                    'label' => 'adherent.mandate.label',
-                    'template' => 'admin/adherent/show_mandate.html.twig',
+                ->add('mandates', null, [
+                    'label' => 'adherent.mandate.admin.label',
+                    'template' => 'admin/adherent/show_mandates.html.twig',
                 ])
             ->end()
             ->with('Référent', ['class' => 'col-md-3'])
@@ -224,10 +224,11 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('position', ActivityPositionType::class, [
                     'label' => 'Statut',
                 ])
-                ->add('mandate', ChoiceType::class, [
-                    'label' => 'adherent.mandate.label',
+                ->add('mandates', ChoiceType::class, [
+                    'label' => 'adherent.mandate.admin.label',
                     'choices' => Mandates::CHOICES,
                     'required' => false,
+                    'multiple' => true,
                 ])
             ->end()
             ->with('Compte', ['class' => 'col-md-6'])
@@ -489,8 +490,8 @@ class AdherentAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('mandate', CallbackFilter::class, [
-                'label' => 'adherent.mandate.label',
+            ->add('mandates', CallbackFilter::class, [
+                'label' => 'adherent.mandate.admin.label',
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
@@ -502,7 +503,14 @@ class AdherentAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $qb->andWhere($qb->expr()->in("$alias.mandate", $value['value']));
+                    $where = new Expr\Orx();
+
+                    foreach ($value['value'] as $mandate) {
+                        $where->add("$alias.mandates LIKE :mandate_".$mandate);
+                        $qb->setParameter('mandate_'.$mandate, "%$mandate%");
+                    }
+
+                    $qb->andWhere($where);
 
                     return true;
                 },
@@ -579,9 +587,9 @@ class AdherentAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'template' => 'admin/adherent/list_managed_area_tags.html.twig',
             ])
-            ->add('mandate', null, [
+            ->add('mandates', null, [
                 'label' => 'adherent.mandate.label',
-                'template' => 'admin/adherent/list_mandate.html.twig',
+                'template' => 'admin/adherent/list_mandates.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

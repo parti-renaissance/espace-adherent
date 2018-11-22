@@ -1,14 +1,21 @@
 {% extends 'adherent/layout.twig' %}
 
+
+{% block stylesheets %}
+    <link href="{{ asset('bundles/sonatacore/vendor/select2/select2.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block javascripts %}
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonatacore/vendor/select2/select2.min.js') }}></script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places"></script>
     {% import 'javascript.js.twig' as js %}
-    {% include 'membership/_mandate_script.html.twig' %}
+    {% include 'membership/_mandates_script.html.twig' %}
 
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.address(form.address, { cityAutocomplete: true }) }}
+            $('.multi_mandate').select2();
         });
     </script>
 {% endblock %}
@@ -107,9 +114,9 @@
              <div class="register__form--mid">
                  {{ form_row(form.elected) }}
             </div>
-            <div class="register__form--mid" id="form__mandate">
-                {{ form_widget(form.mandate) }}
-                {{ form_errors(form.mandate) }}
+            <div class="register__form--mid" id="form__mandates">
+                {{ form_widget(form.mandates, { attr: { class: 'multi_mandate' } }) }}
+                {{ form_errors(form.mandates) }}
             </div>
         </div>
         <hr>

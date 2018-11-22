@@ -47,10 +47,11 @@ class AdherentType extends AbstractType
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                 'preferred_country_choices' => $countryCode ? [$countryCode] : [],
             ])
-            ->add('mandate', ChoiceType::class, [
+            ->add('mandates', ChoiceType::class, [
                 'label' => 'adherent.mandate.label',
                 'choices' => Mandates::CHOICES,
                 'required' => false,
+                'multiple' => true,
                 'placeholder' => 'adherent.form.mandate.placeholder',
             ])
             ->add('elected', CheckboxType::class, [
@@ -71,7 +72,7 @@ class AdherentType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
             if (array_key_exists('elected', $data) && false === $data['elected']) {
-                unset($data['mandate']);
+                unset($data['mandates']);
                 $event->setData($data);
             }
         });
