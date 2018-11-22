@@ -55,6 +55,7 @@ class JecouteSurveyAdmin extends AbstractAdmin
             ])
             ->add('published', null, [
                 'label' => 'Publié',
+                'editable' => true,
             ])
             ->add('_action', null, [
                 'actions' => [
