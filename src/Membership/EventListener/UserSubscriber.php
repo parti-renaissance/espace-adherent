@@ -20,21 +20,9 @@ class UserSubscriber implements EventSubscriberInterface
         $this->serializer = $serializer;
     }
 
-    public function publishUserCreated(UserEvent $event): void
+    public function publishUserEvent(UserEvent $event, string $eventName): void
     {
-        $this->producer->publish($this->serialize($event), UserEvents::USER_CREATED);
-    }
-
-    public function publishUserUpdated(UserEvent $event): void
-    {
-        $this->producer->publish($this->serialize($event), UserEvents::USER_UPDATED);
-    }
-
-    public function publishUserDeleted(UserEvent $event): void
-    {
-        $body = json_encode(['uuid' => $event->getUser()->getUuid()->toString()]);
-
-        $this->producer->publish($body, UserEvents::USER_DELETED);
+        $this->producer->publish($this->serialize($event), $eventName);
     }
 
     public function publishUserUpdateSubscription(UserEvent $event): void
@@ -58,9 +46,9 @@ class UserSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            UserEvents::USER_CREATED => 'publishUserCreated',
-            UserEvents::USER_UPDATED => 'publishUserUpdated',
-            UserEvents::USER_DELETED => 'publishUserDeleted',
+            UserEvents::USER_CREATED => 'publishUserEvent',
+            UserEvents::USER_UPDATED => 'publishUserEvent',
+            UserEvents::USER_DELETED => 'publishUserEvent',
             UserEvents::USER_UPDATE_SUBSCRIPTIONS => 'publishUserUpdateSubscription',
         ];
     }
