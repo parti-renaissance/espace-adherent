@@ -13,9 +13,9 @@ class WasNotInvitedRecently extends Constraint
 {
     const WAS_INVITED_RECENTLY = 'was_invited_recently';
 
-    protected static $errorNames = array(
+    protected static $errorNames = [
         self::WAS_INVITED_RECENTLY => 'WAS_INVITED_RECENTLY',
-    );
+    ];
 
     public $message = 'Cette personne a déjà été invitée récemment, mais merci de votre proposition !';
     public $emailField = 'email';

@@ -203,7 +203,7 @@ class CitizenProjectAdmin extends AbstractAdmin
                     'help' => 'Pour modifier l\'adresse, impersonnifiez un organisateur de ce projet citoyen.',
                 ])
             ->end()
-            ->with('Commentaire', array('class' => 'col-md-5'))
+            ->with('Commentaire', ['class' => 'col-md-5'])
                 ->add('adminComment', TextareaType::class, [
                     'label' => 'Commentaire sur le créateur',
                     'attr' => ['rows' => 5],

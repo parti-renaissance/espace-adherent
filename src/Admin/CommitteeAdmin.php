@@ -87,7 +87,7 @@ class CommitteeAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->with('Comité', array('class' => 'col-md-7'))
+            ->with('Comité', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
                     'format_title_case' => true,
@@ -128,7 +128,7 @@ class CommitteeAdmin extends AbstractAdmin
                     'label' => 'Date de refus',
                 ])
             ->end()
-            ->with('Adresse', array('class' => 'col-md-5'))
+            ->with('Adresse', ['class' => 'col-md-5'])
                 ->add('postAddress.address', TextType::class, [
                     'label' => 'Rue',
                 ])
@@ -159,7 +159,7 @@ class CommitteeAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Comité', array('class' => 'col-md-7'))
+            ->with('Comité', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
                 ])
@@ -188,7 +188,7 @@ class CommitteeAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
-            ->with('Localisation', array('class' => 'col-md-5'))
+            ->with('Localisation', ['class' => 'col-md-5'])
                 ->add('postAddress.address', TextType::class, [
                     'label' => 'Adresse postale',
                 ])
@@ -202,7 +202,7 @@ class CommitteeAdmin extends AbstractAdmin
                     'label' => 'Pays',
                 ])
             ->end()
-            ->with('Commentaire', array('class' => 'col-md-5'))
+            ->with('Commentaire', ['class' => 'col-md-5'])
                 ->add('adminComment', TextareaType::class, [
                     'label' => 'Commentaire sur l\'AL',
                     'attr' => ['rows' => 5],

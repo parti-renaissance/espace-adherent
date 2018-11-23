@@ -28,7 +28,7 @@ class ReferentAreaTransformer implements DataTransformerInterface
      */
     public function transform($arrayReferentArea)
     {
-        $newArray = array();
+        $newArray = [];
 
         if (!($arrayReferentArea instanceof PersistentCollection)) {
             return '';
@@ -47,14 +47,14 @@ class ReferentAreaTransformer implements DataTransformerInterface
      */
     public function reverseTransform($strAreasCodes)
     {
-        $newArray = array();
+        $newArray = [];
 
         $array = array_map('trim', explode(',', $strAreasCodes));
 
         foreach ($array as $key => $value) {
             $item = $this->em
                 ->getRepository(ReferentArea::class)
-                ->findOneBy(array('areaCode' => $value))
+                ->findOneBy(['areaCode' => $value])
             ;
 
             if (!\is_null($item)) {

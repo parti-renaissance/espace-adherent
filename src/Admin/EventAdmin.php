@@ -64,7 +64,7 @@ class EventAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->with('Événement', array('class' => 'col-md-7'))
+            ->with('Événement', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
                     'format_title_case' => true,
@@ -101,7 +101,7 @@ class EventAdmin extends AbstractAdmin
                     'label' => 'Publié',
                 ])
             ->end()
-            ->with('Adresse', array('class' => 'col-md-5'))
+            ->with('Adresse', ['class' => 'col-md-5'])
                 ->add('postAddress.address', TextType::class, [
                     'label' => 'Rue',
                 ])
@@ -136,7 +136,7 @@ class EventAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Événement', array('class' => 'col-md-7'))
+            ->with('Événement', ['class' => 'col-md-7'])
                 ->add('name', null, [
                     'label' => 'Nom',
                 ])
@@ -168,7 +168,7 @@ class EventAdmin extends AbstractAdmin
                     'label' => 'Publié',
                 ])
             ->end()
-            ->with('Adresse', array('class' => 'col-md-5'))
+            ->with('Adresse', ['class' => 'col-md-5'])
                 ->add('postAddress.address', TextType::class, [
                     'label' => 'Rue',
                 ])

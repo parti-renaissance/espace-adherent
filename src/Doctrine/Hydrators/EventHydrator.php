@@ -14,7 +14,7 @@ class EventHydrator extends AbstractHydrator
 {
     protected function hydrateAllData()
     {
-        $result = array();
+        $result = [];
         foreach ($this->_stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
             $this->hydrateRowData($row, $result);
         }

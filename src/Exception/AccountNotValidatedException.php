@@ -34,10 +34,10 @@ class AccountNotValidatedException extends AccountStatusException
      */
     public function serialize()
     {
-        return serialize(array(
+        return serialize([
             $this->redirect,
             parent::serialize(),
-        ));
+        ]);
     }
 
     /**

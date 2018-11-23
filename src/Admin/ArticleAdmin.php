@@ -90,7 +90,7 @@ class ArticleAdmin extends AbstractAdmin
                     'label' => 'Catégorie de publication',
                 ])
             ->end()
-            ->with('Contenu', array('class' => 'col-md-12'))
+            ->with('Contenu', ['class' => 'col-md-12'])
                 ->add('content', TextareaType::class, [
                     'label' => 'Contenu',
                     'required' => false,
