@@ -52,7 +52,6 @@ class AdherentType extends AbstractType
                 'choices' => Mandates::CHOICES,
                 'required' => false,
                 'multiple' => true,
-                'placeholder' => 'adherent.form.mandate.placeholder',
             ])
             ->add('elected', CheckboxType::class, [
                 'required' => false,

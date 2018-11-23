@@ -15,7 +15,12 @@
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.address(form.address, { cityAutocomplete: true }) }}
-            $('.multi_mandate').select2();
+            $('.multi_mandate').select2({
+                placeholder: "{{ 'adherent.form.mandate.placeholder'|trans }}",
+                formatNoMatches: function() {
+                    return "{{ 'adherent.form.mandate.no_result'|trans }}";
+                },
+            });
         });
     </script>
 {% endblock %}

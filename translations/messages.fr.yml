@@ -78,7 +78,7 @@ adherent.change_email.expired_key: Votre demande de changement d'email est expir
 
 adherent.contact.success: Votre message a bien été envoyé.
 
-adherent.mandate.admin.label: Mandat actuel
+adherent.mandate.admin.label: Mandat(s)
 adherent.mandate.label: Votre ou vos mandats
 adherent.mandate.regional_councilor: Conseiller régional
 adherent.mandate.departmental_councilor: Conseiller départemental
@@ -88,7 +88,8 @@ adherent.mandate.parliamentary: Parlementaire
 adherent.mandate.european_deputy: Député européen
 adherent.mandate.consular_conselor: Conseiller consulaire
 adherent.form.elected: Je suis élu(e)
-adherent.form.mandate.placeholder: Je suis actuellement
+adherent.form.mandate.placeholder: Choisissez un ou plusieurs mandats
+adherent.form.mandate.no_result: Pas de résultat
 
 #
 # Dashboard
