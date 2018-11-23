@@ -37,7 +37,6 @@ class Survey
     /**
      * @ORM\Column
      *
-     * @Assert\NotBlank
      * @Assert\Length(max=255)
      *
      * @JMS\Groups({"survey_list"})

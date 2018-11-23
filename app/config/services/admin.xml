@@ -652,6 +652,11 @@
             <argument />
             <argument>AppBundle\Entity\Jecoute\Survey</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>admin/jecoute/survey_edit.html.twig</argument>
+            </call>
         </service>
 
         <!--

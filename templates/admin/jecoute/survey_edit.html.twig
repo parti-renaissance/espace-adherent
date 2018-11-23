@@ -1,0 +1,32 @@
+{% extends '@SonataAdmin/CRUD/base_edit.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+       $(document).ready(function() {
+           const displayChoices = function(questionType) {
+               const questionBlock = $(questionType).parents(".sonata-ba-field div[id$='_question']").first();
+               const choicesBlock = questionBlock.find("div[id$='_question_choices']").first();
+
+               if ('{{ constant('AppBundle\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') }}' === $(questionType).val()) {
+                  choicesBlock.hide();
+               } else {
+                  choicesBlock.show();
+               }
+           };
+
+           $("ul[id$='_question_type'] .radio label input:checked").each(function() {
+               displayChoices($(this));
+           });
+
+           $("ul[id$='_question_type'] .radio label").click(function() {
+               displayChoices($(this).find('input'));
+           });
+
+           $('.question-disabled').each(function() {
+               $(this).find($("ul[id$='_question_type'] .radio label")).unbind('click');
+           });
+       });
+    </script>
+{% endblock %}

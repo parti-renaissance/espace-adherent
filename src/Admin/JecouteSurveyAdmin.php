@@ -2,7 +2,7 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Form\Jecoute\SurveyQuestionFormType;
+use AppBundle\Form\Admin\JecouteAdminSurveyQuestionFormType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -29,7 +29,7 @@ class JecouteSurveyAdmin extends AbstractAdmin
                     'label' => 'Nom du questionnaire',
                 ])
                 ->add('questions', CollectionType::class, [
-                    'entry_type' => SurveyQuestionFormType::class,
+                    'entry_type' => JecouteAdminSurveyQuestionFormType::class,
                     'required' => false,
                     'label' => 'Questions',
                     'allow_add' => true,
