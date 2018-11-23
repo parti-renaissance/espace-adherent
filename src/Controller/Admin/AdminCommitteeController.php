@@ -124,7 +124,7 @@ class AdminCommitteeController extends Controller
      */
     public function mergeAction(Request $request): Response
     {
-        $committeeMergeCommand = new CommitteeMergeCommand();
+        $committeeMergeCommand = new CommitteeMergeCommand($this->getUser());
 
         $form = $this
             ->createForm(CommitteeMergeType::class, $committeeMergeCommand)
@@ -139,9 +139,7 @@ class AdminCommitteeController extends Controller
 
                 $this->addFlash('success', 'Fusion effectuée avec succès!');
 
-                return $this->redirectToRoute('app_admin_committee_members', [
-                    'id' => $committeeMergeCommand->getDestinationCommittee()->getId(),
-                ]);
+                return $this->redirectToRoute('admin_app_reporting_committeemergehistory_list');
             }
 
             return $this->render('admin/committee/merge/confirm.html.twig', [

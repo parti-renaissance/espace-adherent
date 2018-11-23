@@ -2,6 +2,7 @@
 
 namespace AppBundle\Committee;
 
+use AppBundle\Entity\Administrator;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Reporting\CommitteeMembershipAction;
@@ -44,6 +45,7 @@ class CommitteeMergeCommandHandler
     {
         $sourceCommittee = $committeeMergeCommand->getSourceCommittee();
         $destinationCommittee = $committeeMergeCommand->getDestinationCommittee();
+        $administrator = $committeeMergeCommand->getMergedBy();
 
         $newFollowers = $this->committeeMembershipRepository->findMembersToMerge($sourceCommittee, $destinationCommittee);
 
@@ -69,7 +71,7 @@ class CommitteeMergeCommandHandler
 
         $sourceCommittee->refused();
 
-        $this->em->persist($this->createCommitteeMergeHistory($sourceCommittee, $destinationCommittee));
+        $this->em->persist($this->createCommitteeMergeHistory($sourceCommittee, $destinationCommittee, $administrator));
 
         $this->em->flush();
 
@@ -89,8 +91,9 @@ class CommitteeMergeCommandHandler
 
     private function createCommitteeMergeHistory(
         Committee $sourceCommittee,
-        Committee $destinationCommittee
+        Committee $destinationCommittee,
+        Administrator $administrator
     ): CommitteeMergeHistory {
-        return new CommitteeMergeHistory($sourceCommittee, $destinationCommittee);
+        return new CommitteeMergeHistory($sourceCommittee, $destinationCommittee, $administrator);
     }
 }
