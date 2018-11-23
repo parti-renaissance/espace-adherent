@@ -20,6 +20,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use League\OAuth2\Server\Entities\UserEntityInterface;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -36,7 +37,7 @@ use JMS\Serializer\Annotation as JMS;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, \Serializable
+class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, \Serializable
 {
     public const ENABLED = 'ENABLED';
     public const DISABLED = 'DISABLED';
@@ -303,6 +304,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $adherent->mandates = $mandates;
 
         return $adherent;
+    }
+
+    public function getIdentifier()
+    {
+        return $this->getUuidAsString();
     }
 
     public static function createUuid(string $email): UuidInterface
