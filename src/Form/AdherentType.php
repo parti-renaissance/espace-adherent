@@ -30,7 +30,10 @@ class AdherentType extends AbstractType
                 'format_identity_case' => true,
             ])
             ->add('emailAddress', EmailType::class)
-            ->add('position', ActivityPositionType::class)
+            ->add('position', ActivityPositionType::class, [
+                'required' => false,
+                'placeholder' => 'common.i.am',
+            ])
             ->add('gender', GenderType::class)
             ->add('birthdate', BirthdayType::class, [
                 'widget' => 'choice',

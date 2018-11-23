@@ -17,6 +17,7 @@ common.finish_at: Date de fin
 common.ordinal_number_feminine: '1ère|%count%ème'
 common.ordinal_number_masculine: '1er|%count%ème'
 common.optional: optionnel
+common.i.am: Je suis
 pending: En attente
 approved: Approuvé
 group: un groupe
