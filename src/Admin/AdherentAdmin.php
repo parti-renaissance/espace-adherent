@@ -188,7 +188,7 @@ class AdherentAdmin extends AbstractAdmin
             ->end()
             ->with('Tags', ['class' => 'col-md-6'])
                 ->add('tags', null, [
-                    'label' => 'Tags de l\'adhérent',
+                    'label' => 'Tags admin',
                 ])
             ->end()
         ;
@@ -254,6 +254,7 @@ class AdherentAdmin extends AbstractAdmin
             ->end()
             ->with('Tags', ['class' => 'col-md-6'])
                 ->add('tags', 'sonata_type_model', [
+                    'label' => 'Tags admin',
                     'multiple' => true,
                     'by_reference' => false,
                     'btn_add' => false,
@@ -367,7 +368,7 @@ class AdherentAdmin extends AbstractAdmin
                 },
             ])
             ->add('tags', ModelFilter::class, [
-                'label' => 'Tags adhérent',
+                'label' => 'Tags admin',
                 'field_options' => [
                     'class' => AdherentTag::class,
                     'multiple' => true,
@@ -577,7 +578,7 @@ class AdherentAdmin extends AbstractAdmin
                 'template' => 'admin/adherent/list_status.html.twig',
             ])
             ->add('tags', null, [
-                'label' => 'Tags adhérent',
+                'label' => 'Tags admin',
             ])
             ->add('referentTags', null, [
                 'label' => 'Tags souscrits',
