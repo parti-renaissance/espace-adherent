@@ -588,7 +588,7 @@ class AdherentAdmin extends AbstractAdmin
                 'template' => 'admin/adherent/list_managed_area_tags.html.twig',
             ])
             ->add('mandates', null, [
-                'label' => 'adherent.mandate.label',
+                'label' => 'adherent.mandate.admin.label',
                 'template' => 'admin/adherent/list_mandates.html.twig',
             ])
             ->add('_action', null, [

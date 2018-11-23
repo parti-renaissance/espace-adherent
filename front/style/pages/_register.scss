@@ -130,6 +130,18 @@
                     width: 84%;
                     left: 16%;
                 }
+
+                @media (max-width: $mobile) {
+                    &_profile {
+                        width: 66%;
+                        left: 34%;
+                    }
+
+                    &_join {
+                        width: 70%;
+                        left: 30%;
+                    }
+                }
             }
         }
     }

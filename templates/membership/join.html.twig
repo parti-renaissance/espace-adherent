@@ -30,7 +30,12 @@
         Kernel.onLoad(function() {
             App.runJoin('{{ form.vars.form_type_class|e('js') }}');
             {{ js.address(form.address) }}
-            $('.multi_mandate').select2();
+            $('.multi_mandate').select2({
+                placeholder: "{{ 'adherent.form.mandate.placeholder'|trans }}",
+                formatNoMatches: function() {
+                    return "{{ 'adherent.form.mandate.no_result'|trans }}";
+                },
+            });
         });
     </script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
