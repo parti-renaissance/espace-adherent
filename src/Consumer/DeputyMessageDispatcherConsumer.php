@@ -55,7 +55,7 @@ class DeputyMessageDispatcherConsumer extends AbstractConsumer
 
             $i = 0;
             $count = 0;
-            $chunk = [];
+            $chunk = [$this->getDefaultRecipient()];
 
             foreach ($results as $result) {
                 ++$i;
@@ -84,7 +84,7 @@ class DeputyMessageDispatcherConsumer extends AbstractConsumer
 
     public function sendMessage(DeputyManagedUsersMessage $savedMessage, DeputyMessage $message, array $recipients, int $count)
     {
-        $delivered = $this->getMailer()->sendMessage(Message::createFromModel($message, $recipients));
+        $delivered = $this->getMailer()->sendMessage(Message::create($message, $recipients));
 
         if ($delivered) {
             $this->writeln(
@@ -124,5 +124,34 @@ class DeputyMessageDispatcherConsumer extends AbstractConsumer
     public function getDeputyManagedUsersMessageRepository(): DeputyManagedUsersMessageRepository
     {
         return $this->deputyManagedUsersMessageRepository;
+    }
+
+    private function getDefaultRecipient()
+    {
+        return new class('territoires@en-marche.fr', 'Pôle Territoire') {
+            private $email;
+            private $name;
+
+            public function __construct(string $email, string $name)
+            {
+                $this->email = $email;
+                $this->name = $name;
+            }
+
+            public function getFullName(): string
+            {
+                return $this->name;
+            }
+
+            public function getFirstName(): string
+            {
+                return $this->name;
+            }
+
+            public function getEmailAddress(): string
+            {
+                return $this->email;
+            }
+        };
     }
 }
