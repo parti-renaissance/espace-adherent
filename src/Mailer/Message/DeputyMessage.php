@@ -36,7 +36,7 @@ final class DeputyMessage extends Message
             [
                 'target_firstname' => self::escape($first->getFirstName() ?: ''),
             ],
-            $deputy->getEmailAddress()
+            'ne-pas-repondre@en-marche.fr'
         );
 
         $message->setSenderEmail('jemarche@en-marche.fr');
