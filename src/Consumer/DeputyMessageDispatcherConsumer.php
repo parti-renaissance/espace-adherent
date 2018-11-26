@@ -51,7 +51,7 @@ class DeputyMessageDispatcherConsumer extends AbstractConsumer
             $this->writeln($data['uuid'], 'Dispatching message from '.$deputy->getEmailAddress());
 
             /** @var IterableResult $results */
-            $results = $this->getAdherentRepository()->createDispatcherIteratorForDistrict($deputy, $message->getDistrict(), $message->getOffset());
+            $results = $this->getAdherentRepository()->createDispatcherIteratorForDistrict($deputy->getManagedDistrict(), $message->getOffset());
 
             $i = 0;
             $count = 0;

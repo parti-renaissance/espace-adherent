@@ -680,6 +680,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     public function createQueryBuilderForDistrict(District $district): QueryBuilder
     {
         return $this->createQueryBuilder('adherent')
+            ->distinct()
             ->join('adherent.referentTags', 'tag')
             ->join('adherent.subscriptionTypes', 'subscriptionType')
             ->where('tag = :tag')
@@ -703,7 +704,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    public function createDispatcherIteratorForDistrict(Adherent $deputy, District $district, $offset = null): IterableResult
+    public function createDispatcherIteratorForDistrict(District $district, $offset = null): IterableResult
     {
         $qb = $this->createQueryBuilderForDistrict($district)
             ->select('partial adherent.{id, firstName, lastName, emailAddress}')
