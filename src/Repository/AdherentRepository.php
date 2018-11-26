@@ -24,6 +24,8 @@ use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -33,7 +35,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class AdherentRepository extends ServiceEntityRepository implements UserLoaderInterface, UserProviderInterface
+class AdherentRepository extends ServiceEntityRepository implements UserLoaderInterface, UserProviderInterface, UserRepositoryInterface
 {
     use NearbyTrait;
     use ReferentTrait;
@@ -44,6 +46,15 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Adherent::class);
+    }
+
+    public function getUserEntityByUserCredentials(
+        $username,
+        $password,
+        $grantType,
+        ClientEntityInterface $clientEntity
+    ) {
+        return $this->findOneByEmail($username);
     }
 
     public function countElements(): int

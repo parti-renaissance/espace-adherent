@@ -23,5 +23,6 @@ final class GrantTypeEnum extends Enum
         self::AUTHORIZATION_CODE,
         self::REFRESH_TOKEN,
         self::CLIENT_CREDENTIALS,
+        self::PASSWORD,
     ];
 }

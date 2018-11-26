@@ -2,9 +2,11 @@
 
 namespace AppBundle\OAuth;
 
+use AppBundle\Repository\AdherentRepository;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
+use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
@@ -15,6 +17,7 @@ use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 class AuthorizationServerFactory
 {
     private $accessTokenRepository;
+    private $adherentRepository;
     private $clientRepository;
     private $scopeRepository;
     private $privateKey;
@@ -24,6 +27,7 @@ class AuthorizationServerFactory
 
     public function __construct(
         AccessTokenRepositoryInterface $accessTokenRepository,
+        AdherentRepository $adherentRepository,
         AuthCodeRepositoryInterface $authCodeRepository,
         ClientRepositoryInterface $clientRepository,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
@@ -32,6 +36,7 @@ class AuthorizationServerFactory
         string $encryptionKey
     ) {
         $this->accessTokenRepository = $accessTokenRepository;
+        $this->adherentRepository = $adherentRepository;
         $this->clientRepository = $clientRepository;
         $this->scopeRepository = $scopeRepository;
         $this->privateKey = $privateKey;
@@ -51,6 +56,7 @@ class AuthorizationServerFactory
         );
 
         $accessTokenTtl = new \DateInterval('PT1H');
+        $refreshTokenTtl = new \DateInterval('P1M');
 
         $server->enableGrantType(
             new AuthCodeGrant($this->authCodeRepository, $this->refreshTokenRepository, new \DateInterval('PT10M')),
@@ -60,8 +66,13 @@ class AuthorizationServerFactory
         $server->enableGrantType(new ClientCredentialsGrant(), $accessTokenTtl);
 
         $refreshTokenGrant = new RefreshTokenGrant($this->refreshTokenRepository);
-        $refreshTokenGrant->setRefreshTokenTTL(new \DateInterval('P1M')); // new refresh tokens will expire after 1 month
+        $refreshTokenGrant->setRefreshTokenTTL($refreshTokenTtl);
         $server->enableGrantType($refreshTokenGrant, $accessTokenTtl);
+
+        $passwordGrant = new PasswordGrant($this->adherentRepository, $this->refreshTokenRepository);
+
+        $passwordGrant->setRefreshTokenTTL($refreshTokenTtl);
+        $server->enableGrantType($passwordGrant, $accessTokenTtl);
 
         return $server;
     }
