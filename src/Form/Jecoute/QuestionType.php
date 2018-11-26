@@ -30,9 +30,9 @@ class QuestionType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-                'attr' => array(
+                'attr' => [
                     'class' => 'survey-questions-choices-collection',
-                ),
+                ],
                 'prototype_name' => '__children_name__',
             ])
         ;

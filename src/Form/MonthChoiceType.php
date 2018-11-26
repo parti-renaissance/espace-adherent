@@ -18,7 +18,7 @@ class MonthChoiceType extends AbstractType
             ->remove('day')
             ->resetViewTransformers()
             ->addViewTransformer(new DateTimeToArrayTransformer(
-                $options['model_timezone'], $options['view_timezone'], array('year', 'month')
+                $options['model_timezone'], $options['view_timezone'], ['year', 'month']
             ))
         ;
 

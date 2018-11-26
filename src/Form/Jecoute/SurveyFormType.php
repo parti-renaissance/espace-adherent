@@ -29,9 +29,9 @@ class SurveyFormType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-                'attr' => array(
+                'attr' => [
                     'class' => 'survey-questions-collection',
-                ),
+                ],
                 'prototype_name' => '__parent_name__',
             ])
             ->add('published', CheckboxType::class, [

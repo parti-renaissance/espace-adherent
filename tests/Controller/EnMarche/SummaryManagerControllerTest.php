@@ -1200,15 +1200,15 @@ class SummaryManagerControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/photo');
 
-        $files = array(
-            'summary' => array(
-                'error' => array('profile_picture' => \UPLOAD_ERR_OK),
-                'name' => array('profile_picture' => 'image.jpg'),
-                'size' => array('profile_picture' => 631),
-                'tmp_name' => array('profile_picture' => __DIR__.'/../../Fixtures/image.jpg'),
-                'type' => array('profile_picture' => 'image/jpeg'),
-            ),
-        );
+        $files = [
+            'summary' => [
+                'error' => ['profile_picture' => \UPLOAD_ERR_OK],
+                'name' => ['profile_picture' => 'image.jpg'],
+                'size' => ['profile_picture' => 631],
+                'tmp_name' => ['profile_picture' => __DIR__.'/../../Fixtures/image.jpg'],
+                'type' => ['profile_picture' => 'image/jpeg'],
+            ],
+        ];
 
         $form = $crawler->filter('form[name=summary]')->form();
 
@@ -1231,15 +1231,15 @@ class SummaryManagerControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/photo');
 
-        $files = array(
-            'summary' => array(
-                'error' => array('profile_picture' => \UPLOAD_ERR_OK),
-                'name' => array('profile_picture' => 'image.jpg'),
-                'size' => array('profile_picture' => 631),
-                'tmp_name' => array('profile_picture' => __DIR__.'/../../Fixtures/image.jpg'),
-                'type' => array('profile_picture' => 'image/jpeg'),
-            ),
-        );
+        $files = [
+            'summary' => [
+                'error' => ['profile_picture' => \UPLOAD_ERR_OK],
+                'name' => ['profile_picture' => 'image.jpg'],
+                'size' => ['profile_picture' => 631],
+                'tmp_name' => ['profile_picture' => __DIR__.'/../../Fixtures/image.jpg'],
+                'type' => ['profile_picture' => 'image/jpeg'],
+            ],
+        ];
 
         $form = $crawler->filter('form[name=summary]')->form();
         $this->client->request($form->getMethod(), $form->getUri(), $form->getPhpValues(), $files);

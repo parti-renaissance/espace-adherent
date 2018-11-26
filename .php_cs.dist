@@ -20,7 +20,8 @@ return PhpCsFixer\Config::create()
         'multiline_whitespace_before_semicolons' => ['strategy' => 'new_line_for_chained_calls'],
         'phpdoc_to_comment' => false,
         'native_constant_invocation' => true,
-        'native_function_invocation' => ['include' => ['@compiler_optimized']]
+        'native_function_invocation' => ['include' => ['@compiler_optimized']],
+        'array_syntax' => ['syntax' => 'short']
     ])
     ->setRiskyAllowed(true)
     ->setFinder($finder)

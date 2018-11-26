@@ -18,9 +18,9 @@ class SkillListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::SUBMIT => 'onSubmit',
-        );
+        ];
     }
 
     public function onSubmit(FormEvent $event)
