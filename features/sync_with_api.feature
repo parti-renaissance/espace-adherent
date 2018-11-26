@@ -24,8 +24,8 @@ Feature:
     When I dispatch the "user.deleted" user event with "michel.vasseur@example.ch"
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
-      | routing_key  | body                                            |
-      | user.deleted | {"uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0"} |
+      | routing_key  | body                                                                                                                                                                                                               |
+      | user.deleted | {"uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0","subscriptionExternalIds":["123abc","456def"],"country":"CH","zipCode":"8802","emailAddress":"michel.vasseur@example.ch","firstName":"Michel","lastName":"VASSEUR"} |
 
   Scenario: Publish message on user update subscriptions
     Given the following fixtures are loaded:
