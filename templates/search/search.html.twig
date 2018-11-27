@@ -16,10 +16,15 @@
             on(moreButton, 'click', function () {
                 di.get('api').getSearchResults(query.value, radius.value, city.value, type, (page * limit), eventCategory.value, function (response) {
                     if (response instanceof XMLHttpRequest) {
-                        hide(moreButton);
+                        moreButton.classList.add('visually-hidden');
                         return;
                     }
 
+                    if (dom('#search-results').getElementsByClassName('search__results__item').length < limit) {
+                        moreButton.classList.add('visually-hidden');
+                    } else {
+                        moreButton.classList.remove('visually-hidden');
+                    }
                     dom('#search-results').innerHTML = dom('#search-results').innerHTML + response;
                 });
 
@@ -55,13 +60,18 @@
                 waitQueue = setTimeout(function() {
                     di.get('api').getSearchResults(query.value, radius.value, city.value, type, 0, eventCategory.value, function (response) {
                         if (response instanceof XMLHttpRequest) {
-                            hide(moreButton);
                             dom('#search-results').innerHTML = '<div class="text--body text--center l__wrapper">Aucun résultat pour ces critères de recherche.</div>';
+                            moreButton.classList.remove('visually-hidden');
 
                             return;
                         }
 
                         dom('#search-results').innerHTML = response;
+                        if (dom('#search-results').getElementsByClassName('search__results__item').length < limit) {
+                            moreButton.classList.add('visually-hidden');
+                        } else {
+                            moreButton.classList.remove('visually-hidden');
+                        }
                     });
                 }, 200);
             }

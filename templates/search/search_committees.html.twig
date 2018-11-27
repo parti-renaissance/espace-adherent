@@ -38,7 +38,7 @@
     </div>
 
     <div class="l__wrapper text--center b__nudge--bottom-huge">
-        <button role="button" class="btn" id="search-more">Afficher plus</button>
+        <button role="button" class="btn{{ results|length < search.maxResults ? ' visually-hidden' : '' }}" id="search-more">Afficher plus</button>
     </div>
 </main>
 {% endblock %}
