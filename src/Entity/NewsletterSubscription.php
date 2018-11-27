@@ -28,7 +28,7 @@ class NewsletterSubscription
      *
      * @ORM\Column(type="bigint")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue
      */
     private $id;
 

@@ -35,7 +35,7 @@ class Theme implements EntityMediaInterface, AlgoliaIndexedEntityInterface
      *
      * @ORM\Column(type="bigint")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue
      *
      * @Algolia\Attribute
      */
