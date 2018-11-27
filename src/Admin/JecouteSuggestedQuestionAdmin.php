@@ -9,6 +9,8 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
+use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -48,6 +50,25 @@ class JecouteSuggestedQuestionAdmin extends AbstractAdmin
         ;
     }
 
+    protected function configureShowFields(ShowMapper $show)
+    {
+        $show
+            ->add('content', null, [
+                'label' => 'Question',
+            ])
+            ->add('type', 'choice', [
+                'choices' => array_flip(SurveyQuestionTypeEnum::all()),
+                'label' => 'Type de question',
+            ])
+            ->add('choices', 'array_list', [
+                'label' => 'Réponses',
+            ])
+            ->add('published', null, [
+                'label' => 'Publié',
+            ])
+        ;
+    }
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -58,9 +79,8 @@ class JecouteSuggestedQuestionAdmin extends AbstractAdmin
                 'choices' => array_flip(SurveyQuestionTypeEnum::all()),
                 'label' => 'Type de question',
             ])
-            ->add('choices', 'array', [
+            ->add('choices', 'array_list', [
                 'label' => 'Réponses',
-                'template' => 'admin/jecoute/suggested_question_choices_list.html.twig',
             ])
             ->add('published', null, [
                 'label' => 'Publié',
@@ -73,5 +93,10 @@ class JecouteSuggestedQuestionAdmin extends AbstractAdmin
                 ],
             ])
         ;
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('edit');
     }
 }

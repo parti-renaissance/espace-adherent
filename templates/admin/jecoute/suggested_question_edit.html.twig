@@ -1,0 +1,38 @@
+{% extends '@SonataAdmin/CRUD/base_edit.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            const displayChoices = function(questionType) {
+                const choicesBlock = $(".sonata-ba-collapsed-fields div[id$='_choices']").first();
+
+                if ('{{ constant('AppBundle\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') }}' === $(questionType).val()) {
+                    choicesBlock.hide();
+                } else {
+                    choicesBlock.show();
+                }
+            };
+
+            $(".sonata-ba-collapsed-fields ul[id$='_type'] .radio label").click(function() {
+                displayChoices($(this).find('input'));
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block formactions %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="callout callout-warning">
+                <h4><i class="icon fa fa-warning"></i>&nbsp; Attention</h4>
+                Pour éviter de fausser les données, une question panier ne peut plus être modifiée
+                une fois qu'elle est créée.
+                Si nécessaire, vous pourrez la dépublier ou la supprimer et en créer une autre.
+            </div>
+        </div>
+    </div>
+
+    {{ parent() }}
+{% endblock %}

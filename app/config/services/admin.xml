@@ -644,6 +644,11 @@
             <argument />
             <argument>AppBundle\Entity\Jecoute\SuggestedQuestion</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>admin/jecoute/suggested_question_edit.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.jecoute_survey" class="AppBundle\Admin\JecouteSurveyAdmin">
