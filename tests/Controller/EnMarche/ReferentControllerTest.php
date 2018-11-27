@@ -287,7 +287,7 @@ class ReferentControllerTest extends WebTestCase
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
         $this->client->click($this->client->getCrawler()->selectLink('Leur envoyer un message')->link());
         $this->assertContains('Referent Referent', $this->client->getCrawler()->filter('form')->html());
-        $this->assertContains('4 marcheurs(s)', $this->client->getCrawler()->filter('form')->html());
+        $this->assertContains('4 marcheur(s)', $this->client->getCrawler()->filter('form')->html());
 
         $data = [];
         $data['referent_message']['subject'] = 'Event reminder';
