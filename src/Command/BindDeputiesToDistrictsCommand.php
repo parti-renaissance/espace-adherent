@@ -21,7 +21,7 @@ class BindDeputiesToDistrictsCommand extends Command
 
     private $em;
     private $decoder;
-    private $nbErrors = 0;
+    private $hasErrors = false;
 
     /**
      * @var SymfonyStyle
@@ -57,7 +57,7 @@ class BindDeputiesToDistrictsCommand extends Command
             return 1;
         }
 
-        $deputies = $this->decoder->decode(file_get_contents($file), 'csv', [CsvEncoder::DELIMITER_KEY => ';']);
+        $deputies = $this->decoder->decode(file_get_contents($file), 'csv', [CsvEncoder::DELIMITER_KEY => ',']);
         $this->io->title(sprintf('Starting bind deputies to districts: %s deputies are about to be binded.', \count($deputies)));
 
         $this->em->beginTransaction();
@@ -66,10 +66,10 @@ class BindDeputiesToDistrictsCommand extends Command
             $this->bindDeputies($deputies);
         } catch (\Exception $exception) {
             $this->io->error($exception->getMessage());
-            ++$this->nbErrors;
+            $this->hasErrors = true;
         }
 
-        if ($this->nbErrors > 0) {
+        if ($this->hasErrors) {
             $this->em->rollback();
             $this->io->text('Errors occurred while command execution. Any deputy has been bound to district. Please consult the log above for more information.');
 
@@ -83,31 +83,48 @@ class BindDeputiesToDistrictsCommand extends Command
     private function bindDeputies(array $deputies): void
     {
         foreach ($deputies as $deputy) {
-            $adherent = $this->em->getRepository(Adherent::class)->findOneBy(['uuid' => $deputy['uuid']]);
-            if (!$adherent) {
-                $this->io->error(sprintf("Adherent with uuid '%s' does not exist.", $deputy['uuid']));
-                ++$this->nbErrors;
-                continue;
+            if (!$deputy['code_dpt'] || !$deputy['email']) {
+                return;
             }
 
-            $district = $this->em->getRepository(District::class)->findOneBy([
-                'departmentCode' => sprintf('%05d', $deputy['code_dpt']),
-                'number' => (int) $deputy['num_circo'],
-            ]);
+            if ('FDE' === $deputy['code_dpt']) {
+                $params = [
+                    'code' => sprintf('FDE-%02d', $deputy['num_circo']),
+                ];
+            } elseif (1 === \strlen($deputy['code_dpt'])) {
+                $params = [
+                    'departmentCode' => sprintf('%02d', $deputy['code_dpt']),
+                    'number' => (int) $deputy['num_circo'],
+                ];
+            } else {
+                $params = [
+                    'departmentCode' => $deputy['code_dpt'],
+                    'number' => (int) $deputy['num_circo'],
+                ];
+            }
+
+            $district = $this->em->getRepository(District::class)->findOneBy($params);
             if (!$district) {
                 $this->io->error(sprintf(
                     "District with ID '%s' and department code '%s' does not exist. Impossible to bind a deputy with uuid '%s'.",
                     $deputy['num_circo'],
                     $deputy['code_dpt'],
-                    $deputy['uuid']
+                    $deputy['email']
                 ));
-                ++$this->nbErrors;
+                $this->hasErrors = true;
                 continue;
             }
 
+            $adherent = $this->em->getRepository(Adherent::class)->findOneBy(['emailAddress' => $deputy['email']]);
+            if (!$adherent) {
+                $this->io->error(sprintf("Adherent with email '%s' does not exist.", $deputy['email']));
+                $this->hasErrors = true;
+                continue;
+            }
             $district->setAdherent($adherent);
             $this->em->persist($district);
-            $this->em->flush();
         }
+
+        $this->em->flush();
     }
 }
