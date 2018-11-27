@@ -1,18 +1,20 @@
 <?php
 
-namespace AppBundle\Form\Jecoute;
+namespace AppBundle\Form\Admin;
 
 use AppBundle\Entity\Jecoute\Question;
+use AppBundle\Form\Jecoute\ChoiceFormType;
+use AppBundle\Form\Jecoute\QuestionChoiceType;
 use AppBundle\Jecoute\SurveyQuestionTypeEnum;
+use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class QuestionType extends AbstractType
+class JecouteAdminQuestionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -30,10 +32,6 @@ class QuestionType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-                'attr' => [
-                    'class' => 'survey-questions-choices-collection',
-                ],
-                'prototype_name' => '__children_name__',
             ])
         ;
 

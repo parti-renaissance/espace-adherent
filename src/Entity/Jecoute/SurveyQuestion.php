@@ -100,7 +100,7 @@ class SurveyQuestion
         $this->fromSuggestedQuestion = (bool) $fromSuggestedQuestion;
     }
 
-    public function getFromSuggestedQuestion(): bool
+    public function isFromSuggestedQuestion(): bool
     {
         return $this->fromSuggestedQuestion;
     }
