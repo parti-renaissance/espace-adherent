@@ -4,8 +4,6 @@
 {% block canonical_url url('articles_list', {category: current.slug, page: currentPage}) %}
 {% block meta_description "Retrouvez l'ensemble des " ~ ('actualites.label.' ~ current.slug)|trans ~ " publié(e)s sur le site de La République En Marche ! Nous publions dans cette partie du site l'ensemble des actualités liées à notre mouvement et aux réformes menées par Emmanuel Macron et le Gouverment pour transformer la France. La page actuelle est la numéro #{currentPage}." %}
 
-{% block final_javascripts include('bot/_javascript.html.twig') %}
-
 {% block extra_link %}
     {{ parent() }}
     {% if currentPage > 1 %}

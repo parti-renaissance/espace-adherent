@@ -8,8 +8,6 @@
 
 {% block open_graph_image (page.media ? (homepage_url ~ media_asset(page.media)) : default_sharer)|raw %}
 
-{% block final_javascripts include('bot/_javascript.html.twig') %}
-
 {% block content %}
     <main class="content">
         <section class="explainer">

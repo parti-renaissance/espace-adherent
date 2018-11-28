@@ -9,8 +9,6 @@
 
 {% block open_graph_image (proposal.media ? (homepage_url ~ media_asset(proposal.media)) : default_sharer)|raw %}
 
-{% block final_javascripts include('bot/_javascript.html.twig') %}
-
 {% block content %}
 <main class="content">
     <section class="programme">
