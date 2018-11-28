@@ -55,7 +55,6 @@ class Answer
     ) {
         $this->text = $text;
         $this->adherent = $adherent;
-
         $this->threads = new ArrayCollection();
     }
 

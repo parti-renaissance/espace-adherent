@@ -33,7 +33,7 @@ class Guideline
      *
      * @ORM\Column(type="boolean")
      */
-    private $enabled = true;
+    private $enabled;
 
     /**
      * @var ArrayCollection
@@ -49,18 +49,18 @@ class Guideline
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
      */
-    private $position = 0;
+    private $position;
 
     /**
      * @ORM\Column
      */
     private $name;
 
-    public function __construct(string $name, bool $enable = true)
+    public function __construct(string $name, bool $enable = true, int $position = 0)
     {
         $this->name = $name;
+        $this->position = $position;
         $this->enabled = $enable;
-
         $this->questions = new ArrayCollection();
     }
 

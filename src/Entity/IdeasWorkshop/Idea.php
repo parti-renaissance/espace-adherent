@@ -107,7 +107,6 @@ class Idea
         $this->committee = $committee;
         $this->publishedAt = $publishedAt;
         $this->status = $status;
-
         $this->needs = new ArrayCollection();
         $this->answers = new ArrayCollection();
     }

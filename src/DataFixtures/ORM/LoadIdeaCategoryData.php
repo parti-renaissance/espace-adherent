@@ -11,28 +11,28 @@ class LoadIdeaCategoryData extends AbstractFixture
     public function load(ObjectManager $manager)
     {
         $europeanCategory = new Category(
-            'Européenne',
+            'Echelle Européenne',
             true
         );
 
         $this->addReference('category-european', $europeanCategory);
 
         $nationalCategory = new Category(
-            'National',
+            'Echelle Nationale',
             true
         );
 
         $this->addReference('category-national', $nationalCategory);
 
         $localCategory = new Category(
-            'Local',
+            'Echelle Locale',
             true
         );
 
         $this->addReference('category-local', $localCategory);
 
         $notPublishedCategory = new Category(
-            'Not published category'
+            'Echelle non publié'
         );
 
         $this->addReference('category-not-published', $notPublishedCategory);

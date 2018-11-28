@@ -25,7 +25,7 @@ class LoadIdeaAnswerData extends AbstractFixture implements DependentFixtureInte
         $this->addReference('answer-lorem-adherent-1', $answerLoremAdherent1);
 
         $answerLoremAdherent2 = new Answer(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce aliquet, mi condimentum venenatis vestibulum, arcu neque feugiat massa, at pharetra velit sapien et elit. Sed vitae hendrerit nulla. Vivamus consectetur magna at tincidunt maximus. Aenean dictum metus vel tellus posuere venenatis.',
+            'Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex. Curabitur at eros et ex faucibus fringilla sed vel velit.',
             $adherent2
         );
         $ideaPeace->addAnswer($answerLoremAdherent2);

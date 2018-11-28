@@ -22,7 +22,7 @@ class LoadIdeaCommentData extends AbstractFixture implements DependentFixtureInt
         );
 
         $commentFromAdherent8 = new Comment(
-            'Lorem Ipsum Commentaris',
+            'Aenean viverra efficitur lorem',
             $adherent9,
             $thread
         );

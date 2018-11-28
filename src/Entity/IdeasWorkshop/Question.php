@@ -65,21 +65,20 @@ class Question
     /**
      * @ORM\Column(type="boolean")
      */
-    private $mandatory;
+    private $required;
 
     public function __construct(
         string $name,
         string $placeholder,
         int $position = 0,
-        bool $mandatory = false,
-        bool $publishable = true
+        bool $required = false,
+        bool $published = true
     ) {
         $this->name = $name;
         $this->position = $position;
         $this->placeholder = $placeholder;
-        $this->published = $publishable;
-        $this->mandatory = $mandatory;
-
+        $this->published = $published;
+        $this->required = $required;
         $this->answers = new ArrayCollection();
     }
 
@@ -146,13 +145,13 @@ class Question
         $this->name = $name;
     }
 
-    public function isMandatory(): bool
+    public function isRequired(): bool
     {
-        return $this->mandatory;
+        return $this->required;
     }
 
-    public function setMandatory(bool $mandatory): void
+    public function setRequired($required): void
     {
-        $this->mandatory = $mandatory;
+        $this->required = $required;
     }
 }

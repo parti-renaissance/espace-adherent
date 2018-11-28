@@ -45,7 +45,6 @@ class Thread
     public function __construct(Answer $answer)
     {
         $this->answer = $answer;
-
         $this->comments = new ArrayCollection();
     }
 
