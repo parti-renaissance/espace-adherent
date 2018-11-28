@@ -55,10 +55,10 @@ class Consultation
     private $name;
 
     public function __construct(
-        string $name,
-        string $url,
-        \DateTime $startedAt,
-        \DateTime $endedAt,
+        string $name = null,
+        string $url = null,
+        \DateTime $startedAt = null,
+        \DateTime $endedAt = null,
         int $responseTime = 0
     ) {
         $this->name = $name;
@@ -83,7 +83,7 @@ class Consultation
         $this->responseTime = $responseTime;
     }
 
-    public function getStartedAt(): \DateTime
+    public function getStartedAt(): ?\DateTime
     {
         return $this->startedAt;
     }
@@ -93,7 +93,7 @@ class Consultation
         $this->startedAt = $startedAt;
     }
 
-    public function getEndedAt(): \DateTime
+    public function getEndedAt(): ?\DateTime
     {
         return $this->endedAt;
     }
@@ -103,7 +103,7 @@ class Consultation
         $this->endedAt = $endedAt;
     }
 
-    public function getUrl(): string
+    public function getUrl(): ?string
     {
         return $this->url;
     }
@@ -113,7 +113,7 @@ class Consultation
         $this->url = $url;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -121,5 +121,10 @@ class Consultation
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?: '';
     }
 }
