@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 
 /**
- * @ORM\Table(name="note_answer")
+ * @ORM\Table(name="iw_answer")
  * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)
@@ -35,7 +35,7 @@ class Answer
     private $adherent;
 
     /**
-     * @ORM\OneToOne(targetEntity="Question", inversedBy="answer")
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="answers")
      */
     private $question;
 
@@ -44,19 +44,19 @@ class Answer
      */
     private $threads;
 
-    public function __construct()
-    {
+    /**
+     * @ORM\ManyToOne(targetEntity="Idea", inversedBy="answers")
+     */
+    private $idea;
+
+    public function __construct(
+        string $text,
+        Adherent $adherent
+    ) {
+        $this->text = $text;
+        $this->adherent = $adherent;
+
         $this->threads = new ArrayCollection();
-    }
-
-    public static function create(
-        string $text
-    ): Answer {
-        $answer = new self();
-
-        $answer->text = $text;
-
-        return $answer;
     }
 
     public function getId(): ?int
@@ -109,5 +109,15 @@ class Answer
     public function getThreads(): ArrayCollection
     {
         return $this->threads;
+    }
+
+    public function getIdea(): Idea
+    {
+        return $this->idea;
+    }
+
+    public function setIdea($idea): void
+    {
+        $this->idea = $idea;
     }
 }

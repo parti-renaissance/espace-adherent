@@ -3,20 +3,24 @@
 namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="note_thread")
+ * @ORM\Table(name="iw_thread")
  * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)
  */
 class Thread
 {
-    use EntityIdentityTrait;
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     */
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Answer", inversedBy="threads")
@@ -36,11 +40,18 @@ class Thread
      *
      * @ORM\Column(length=9, options={"default": ThreadStatusEnum::SUBMITTED})
      */
-    private $status;
+    private $status = ThreadStatusEnum::SUBMITTED;
 
-    public function __construct()
+    public function __construct(Answer $answer)
     {
+        $this->answer = $answer;
+
         $this->comments = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getAnswer(): Answer

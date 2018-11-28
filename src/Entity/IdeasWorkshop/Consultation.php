@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="note_consultation")
+ * @ORM\Table(name="iw_consultation")
  * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)
@@ -59,7 +59,7 @@ class Consultation
         string $url,
         \DateTime $startedAt,
         \DateTime $endedAt,
-        $responseTime = 0
+        int $responseTime = 0
     ) {
         $this->name = $name;
         $this->url = $url;

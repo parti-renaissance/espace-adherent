@@ -6,16 +6,16 @@ use AppBundle\Entity\IdeasWorkshop\Guideline;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadNoteGuidelineData extends AbstractFixture
+class LoadIdeaGuidelineData extends AbstractFixture
 {
     public function load(ObjectManager $manager)
     {
-        $guidelineMainFeature = Guideline::create(
+        $guidelineMainFeature = new Guideline(
             'POUR COMMENCER : QUELLES SONT LES PRINCIPALES CARACTÉRISTIQUES DE VOTRE IDÉE ?'
         );
         $this->addReference('guideline-main-feature', $guidelineMainFeature);
 
-        $guidelineImplementation = Guideline::create(
+        $guidelineImplementation = new Guideline(
             'POUR ALLER PLUS LOIN : VOTRE IDÉE PEUT-ELLE ÊTRE MISE EN OEUVRE ?'
         );
         $this->addReference('guideline-implementation', $guidelineImplementation);

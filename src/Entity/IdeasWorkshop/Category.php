@@ -10,10 +10,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity
  * @ORM\Table(
- *     name="note_scale",
+ *     name="iw_category",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="scale_name_unique", columns="name"),
- *         @ORM\UniqueConstraint(name="scale_slug_unique", columns="slug")
+ *         @ORM\UniqueConstraint(name="category_name_unique", columns="name"),
+ *         @ORM\UniqueConstraint(name="category_slug_unique", columns="slug")
  *     }
  * )
  *
@@ -22,7 +22,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Scale
+class Category
 {
     use EntityNameSlugTrait;
 

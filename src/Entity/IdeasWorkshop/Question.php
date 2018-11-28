@@ -4,13 +4,14 @@ namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\EntityPublishableTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="note_question")
+ * @ORM\Table(name="iw_question")
  * @ORM\Entity
  *
  * @UniqueEntity("name")
@@ -43,9 +44,9 @@ class Question
     private $placeholder;
 
     /**
-     * @ORM\OneToOne(targetEntity="Answer", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question")
      */
-    private $answer;
+    private $answers;
 
     /**
      * @Assert\GreaterThanOrEqual(0)
@@ -54,7 +55,7 @@ class Question
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
      */
-    private $position = 0;
+    private $position;
 
     /**
      * @ORM\Column
@@ -66,20 +67,20 @@ class Question
      */
     private $mandatory;
 
-    public static function create(
+    public function __construct(
         string $name,
         string $placeholder,
+        int $position = 0,
         bool $mandatory = false,
         bool $publishable = true
-    ): Question {
-        $question = new self();
+    ) {
+        $this->name = $name;
+        $this->position = $position;
+        $this->placeholder = $placeholder;
+        $this->published = $publishable;
+        $this->mandatory = $mandatory;
 
-        $question->name = $name;
-        $question->placeholder = $placeholder;
-        $question->published = $publishable;
-        $question->mandatory = $mandatory;
-
-        return $question;
+        $this->answers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -107,14 +108,22 @@ class Question
         $this->placeholder = $placeholder;
     }
 
-    public function getAnswer(): Answer
+    public function addAnswer(Answer $answer): void
     {
-        return $this->answer;
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
+            $answer->setQuestion($this);
+        }
     }
 
-    public function setAnswer(Answer $answer): void
+    public function removeAnswer(Answer $answer): void
     {
-        $this->answer = $answer;
+        $this->answers->removeElement($answer);
+    }
+
+    public function getAnswers(): ArrayCollection
+    {
+        return $this->answers;
     }
 
     public function getPosition(): int

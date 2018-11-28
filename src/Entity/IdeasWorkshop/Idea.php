@@ -19,10 +19,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  *
  * @ORM\Table(
- *     name="note_note",
+ *     name="iw_idea",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="note_name_unique", columns="name"),
- *         @ORM\UniqueConstraint(name="note_slug_unique", columns="slug")
+ *         @ORM\UniqueConstraint(name="idea_name_unique", columns="name"),
+ *         @ORM\UniqueConstraint(name="idea_slug_unique", columns="slug")
  *     }
  * )
  *
@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Note
+class Idea
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -45,13 +45,13 @@ class Note
     private $theme;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Scale")
+     * @ORM\ManyToOne(targetEntity="Category")
      */
-    private $scale;
+    private $category;
 
     /**
      * @ORM\ManyToMany(targetEntity="Need")
-     * @ORM\JoinTable(name="note_notes_needs")
+     * @ORM\JoinTable(name="iw_ideas_needs")
      */
     private $needs;
 
@@ -75,43 +75,41 @@ class Note
     private $committee;
 
     /**
-     * @var ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\IdeasWorkshop\Guideline")
-     * @ORM\JoinTable(name="note_notes_guidelines")
-     */
-    private $guidelines;
-
-    /**
      * @Assert\Choice(
-     *     callback={"AppBundle\Entity\IdeasWorkshop\NoteStatusEnum", "toArray"},
+     *     callback={"AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum", "toArray"},
      *     strict=true,
      * )
      *
-     * @ORM\Column(length=11, options={"default": NoteStatusEnum::IN_PROGRESS})
+     * @ORM\Column(length=11, options={"default": IdeaStatusEnum::IN_PROGRESS})
      */
     private $status;
 
-    public function __construct()
-    {
-        $this->needs = new ArrayCollection();
-        $this->guidelines = new ArrayCollection();
-    }
+    /**
+     * @ORM\OneToMany(targetEntity="Answer", mappedBy="idea")
+     */
+    private $answers;
 
-    public static function create(
+    public function __construct(
         UuidInterface $uuid,
         string $name,
         Adherent $adherent,
-        string $status = NoteStatusEnum::IN_PROGRESS
-    ): Note {
-        $note = new self();
+        Category $category,
+        Theme $theme,
+        ?Committee $committee,
+        ?\DateTime $publishedAt = null,
+        string $status = IdeaStatusEnum::IN_PROGRESS
+    ) {
+        $this->uuid = $uuid;
+        $this->setName($name);
+        $this->adherent = $adherent;
+        $this->category = $category;
+        $this->theme = $theme;
+        $this->committee = $committee;
+        $this->publishedAt = $publishedAt;
+        $this->status = $status;
 
-        $note->uuid = $uuid;
-        $note->setName($name);
-        $note->status = $status;
-        $note->setAdherent($adherent);
-
-        return $note;
+        $this->needs = new ArrayCollection();
+        $this->answers = new ArrayCollection();
     }
 
     public static function createUuid(string $name): UuidInterface
@@ -129,14 +127,14 @@ class Note
         $this->theme = $theme;
     }
 
-    public function getScale(): ?Scale
+    public function getCategory(): Category
     {
-        return $this->scale;
+        return $this->category;
     }
 
-    public function setScale(Scale $scale): void
+    public function setCategory($category): void
     {
-        $this->scale = $scale;
+        $this->category = $category;
     }
 
     public function getNeeds(): ArrayCollection
@@ -186,23 +184,6 @@ class Note
         $this->committee = $committee;
     }
 
-    public function addGuideline(Guideline $guideline): void
-    {
-        if (!$this->guidelines->contains($guideline)) {
-            $this->guidelines->add($guideline);
-        }
-    }
-
-    public function removeGuideline(Guideline $guideline): void
-    {
-        $this->guidelines->removeElement($guideline);
-    }
-
-    public function getGuidelines(): ArrayCollection
-    {
-        return $this->guidelines;
-    }
-
     public function getStatus(): string
     {
         return $this->status;
@@ -211,6 +192,24 @@ class Note
     public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    public function addAnswer(Answer $answer): void
+    {
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
+            $answer->setIdea($this);
+        }
+    }
+
+    public function removeAnswer(Answer $answer): void
+    {
+        $this->answers->removeElement($answer);
+    }
+
+    public function getAnswers(): ArrayCollection
+    {
+        return $this->answers;
     }
 
     public function getDaysBeforeDeadline(): int
@@ -223,16 +222,16 @@ class Note
 
     public function isInProgress(): bool
     {
-        return NoteStatusEnum::IN_PROGRESS === $this->status;
+        return IdeaStatusEnum::IN_PROGRESS === $this->status;
     }
 
     public function isPublished(): bool
     {
-        return NoteStatusEnum::PUBLISHED === $this->status;
+        return IdeaStatusEnum::PUBLISHED === $this->status;
     }
 
     public function isRefused(): bool
     {
-        return NoteStatusEnum::REFUSED === $this->status;
+        return IdeaStatusEnum::REFUSED === $this->status;
     }
 }

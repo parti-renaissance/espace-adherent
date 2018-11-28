@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table(name="note_consultation_report")
+ * @ORM\Table(name="iw_consultation_report")
  * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)
@@ -43,7 +43,7 @@ class ConsultationReport
      */
     private $name;
 
-    public function __construct(string $name, string $url, $position = 0)
+    public function __construct(string $name, string $url, int $position = 0)
     {
         $this->name = $name;
         $this->url = $url;

@@ -4,7 +4,7 @@ namespace AppBundle\Entity\IdeasWorkshop;
 
 use MyCLabs\Enum\Enum;
 
-final class NoteStatusEnum extends Enum
+final class IdeaStatusEnum extends Enum
 {
     public const IN_PROGRESS = 'IN PROGRESS';
     public const PUBLISHED = 'PUBLISHED';

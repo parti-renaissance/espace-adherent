@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table(name="note_guideline")
+ * @ORM\Table(name="iw_guideline")
  * @ORM\Entity
  *
  * @UniqueEntity("name")
@@ -56,19 +56,12 @@ class Guideline
      */
     private $name;
 
-    public function __construct()
+    public function __construct(string $name, bool $enable = true)
     {
+        $this->name = $name;
+        $this->enabled = $enable;
+
         $this->questions = new ArrayCollection();
-    }
-
-    public static function create(string $name, bool $enable = true): Guideline
-    {
-        $guideline = new self();
-
-        $guideline->name = $name;
-        $guideline->enabled = $enable;
-
-        return $guideline;
     }
 
     public function getId(): ?int
@@ -80,6 +73,8 @@ class Guideline
     {
         if (!$this->questions->contains($question)) {
             $this->questions->add($question);
+
+            $question->setGuideline($this);
         }
     }
 

@@ -4,23 +4,27 @@ namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntitySoftDeletableTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Table(name="note_comment")
+ * @ORM\Table(name="iw_comment")
  * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)
  */
 class Comment
 {
-    use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     */
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Thread", inversedBy="comments")
@@ -37,16 +41,19 @@ class Comment
      */
     private $adherent;
 
-    public static function create(
-        UuidInterface $uuid,
-        string $text
-    ): Comment {
-        $comment = new self();
+    public function __construct(
+        string $text,
+        Adherent $adherent,
+        Thread $thread
+    ) {
+        $this->text = $text;
+        $this->adherent = $adherent;
+        $this->thread = $thread;
+    }
 
-        $comment->uuid = $uuid;
-        $comment->text = $text;
-
-        return $comment;
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getThread(): Thread

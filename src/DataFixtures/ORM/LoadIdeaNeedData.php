@@ -6,7 +6,7 @@ use AppBundle\Entity\IdeasWorkshop\Need;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadNeedData extends AbstractFixture
+class LoadIdeaNeedData extends AbstractFixture
 {
     public function load(ObjectManager $manager)
     {
