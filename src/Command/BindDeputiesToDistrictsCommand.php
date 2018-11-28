@@ -84,7 +84,7 @@ class BindDeputiesToDistrictsCommand extends Command
     {
         foreach ($deputies as $deputy) {
             if (!$deputy['code_dpt'] || !$deputy['email']) {
-                return;
+                continue;
             }
 
             if ('FDE' === $deputy['code_dpt']) {
