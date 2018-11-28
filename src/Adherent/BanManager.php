@@ -8,15 +8,15 @@ use AppBundle\Membership\MembershipRequestHandler;
 use AppBundle\Membership\UnregistrationCommand;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class AdherentManagementAuthority
+class BanManager
 {
     private $membershipRequestHandler;
-    private $manager;
+    private $entityManager;
 
-    public function __construct(MembershipRequestHandler $membershipRequestHandler, ObjectManager $manager)
+    public function __construct(MembershipRequestHandler $membershipRequestHandler, ObjectManager $entityManager)
     {
         $this->membershipRequestHandler = $membershipRequestHandler;
-        $this->manager = $manager;
+        $this->entityManager = $entityManager;
     }
 
     public function ban(Adherent $adherent): void
@@ -30,8 +30,8 @@ class AdherentManagementAuthority
         $this->membershipRequestHandler->terminateMembership($unregistrationHandler, $adherent, false);
 
         $adherentBanned = BannedAdherent::createFromAdherent($adherent);
-        $this->manager->persist($adherentBanned);
-        $this->manager->flush();
+        $this->entityManager->persist($adherentBanned);
+        $this->entityManager->flush();
     }
 
     public function canBan(Adherent $adherent): bool

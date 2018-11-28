@@ -29,9 +29,9 @@ class AdherentAdminTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/app/adherent/%s/edit', $adherent->getId()));
 
         $navBar = $crawler->filter('ul.dropdown-menu > li');
-        $this->assertEquals('Impersonnifier', trim($navBar->getNode(0)->nodeValue));
-        $this->assertEquals('Afficher', trim($navBar->getNode(1)->nodeValue));
-        $this->assertEquals('Retourner à la liste', trim($navBar->getNode(2)->nodeValue));
+        $this->assertEquals('Afficher', trim($navBar->getNode(0)->nodeValue));
+        $this->assertEquals('Retourner à la liste', trim($navBar->getNode(1)->nodeValue));
+        $this->assertEquals('Impersonnifier', trim($navBar->getNode(2)->nodeValue));
 
         $this->client->request(Request::METHOD_GET, sprintf('/admin/adherent/%s/ban', $adherent->getId()));
         $this->assertResponseStatusCode(404, $this->client->getResponse());
@@ -48,15 +48,19 @@ class AdherentAdminTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/app/adherent/%s/edit', $adherent->getId()));
 
         $navBar = $crawler->filter('ul.dropdown-menu > li');
-        $this->assertEquals('Impersonnifier', trim($navBar->getNode(0)->nodeValue));
-        $this->assertEquals('Afficher', trim($navBar->getNode(1)->nodeValue));
-        $this->assertEquals('Bannir cet adhérent', trim($navBar->getNode(2)->nodeValue));
-        $this->assertEquals('Retourner à la liste', trim($navBar->getNode(3)->nodeValue));
+        $this->assertEquals('Afficher', trim($navBar->getNode(0)->nodeValue));
+        $this->assertEquals('Retourner à la liste', trim($navBar->getNode(1)->nodeValue));
+        $this->assertEquals('Impersonnifier', trim($navBar->getNode(2)->nodeValue));
+        $this->assertEquals('Bannir cet adhérent ⚠️', trim($navBar->getNode(3)->nodeValue));
 
-        $form = $crawler->filter('#ban')->form();
-        $this->client->submit($form);
+        $link = $crawler->selectLink('Bannir cet adhérent ⚠️')->link();
+        $crawler = $this->client->click($link);
 
-        $this->assertContains(sprintf('L\'adhérent %s a bien été banni', $adherent->getFullName()), $this->client->getResponse()->getContent());
+        $this->assertResponseStatusCode(200, $this->client->getResponse());
+
+        $this->client->submit($crawler->selectButton('Confirmer')->form());
+
+        $this->assertContains(sprintf('L\'adhérent <b>%s</b> a bien été banni', $adherent->getFullName()), $this->client->getResponse()->getContent());
     }
 
     public function testEditBoardMemberInformations()

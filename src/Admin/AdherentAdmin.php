@@ -51,6 +51,10 @@ class AdherentAdmin extends AbstractAdmin
         '_sort_by' => 'registeredAt',
     ];
 
+    protected $accessMapping = [
+        'ban' => 'BAN',
+    ];
+
     private $dispatcher;
     private $emailSubscriptionHistoryManager;
 
@@ -72,23 +76,34 @@ class AdherentAdmin extends AbstractAdmin
         $this->emailSubscriptionHistoryManager = $emailSubscriptionHistoryManager;
     }
 
-    public function getTemplate($name)
-    {
-        if ('show' === $name) {
-            return 'admin/adherent/show.html.twig';
-        }
-
-        if ('edit' === $name) {
-            return 'admin/adherent/edit.html.twig';
-        }
-
-        return parent::getTemplate($name);
-    }
-
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->remove('create');
-        $collection->remove('delete');
+        $collection
+            ->add('ban', $this->getRouterIdParameter().'/ban')
+            ->remove('create')
+            ->remove('delete')
+        ;
+    }
+
+    public function configureActionButtons($action, $object = null)
+    {
+        if ('ban' === $action) {
+            $actions = parent::configureActionButtons('show', $object);
+        } else {
+            $actions = parent::configureActionButtons($action, $object);
+        }
+
+        if (\in_array($action, ['edit', 'show', 'ban'], true)) {
+            $actions['switch_user'] = ['template' => 'admin/adherent/action_button_switch_user.html.twig'];
+        }
+
+        if (\in_array($action, ['edit', 'show'], true)) {
+            if ($this->canAccessObject('ban', $object) && $this->hasRoute('ban')) {
+                $actions['ban'] = ['template' => 'admin/adherent/action_button_ban.html.twig'];
+            }
+        }
+
+        return $actions;
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
