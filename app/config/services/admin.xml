@@ -648,6 +648,19 @@
 
         <!--
         ######################################################
+        # Ideas Workshop
+        ######################################################
+         -->
+        <service id="app.admin.consultation" class="AppBundle\Admin\ConsultationAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Consultation en cours" group="Atelier des idées" />
+
+            <argument />
+            <argument>AppBundle\Entity\IdeasWorkshop\Consultation</argument>
+            <argument />
+        </service>
+
+        <!--
+        ######################################################
         # OAuth
         ######################################################
          -->
