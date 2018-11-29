@@ -211,6 +211,9 @@ security:
         ROLE_ADMIN_BAN:
             - ROLE_APP_ADMIN_BAN
 
+        ROLE_ADMIN_IDEAS_WORKSHOP:
+            - ROLE_APP_ADMIN_CONSULTATION_REPORT_ALL
+
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN_DASHBOARD
             - ROLE_ADMIN_MEDIAS
