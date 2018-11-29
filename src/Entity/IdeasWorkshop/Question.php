@@ -11,7 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="iw_question")
+ * @ORM\Table(name="ideas_workshop_question")
  * @ORM\Entity
  *
  * @UniqueEntity("name")

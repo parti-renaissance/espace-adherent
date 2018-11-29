@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity
  * @ORM\Table(
- *     name="iw_theme",
+ *     name="ideas_workshop_theme",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="theme_name_unique", columns="name"),
  *         @ORM\UniqueConstraint(name="theme_slug_unique", columns="slug")

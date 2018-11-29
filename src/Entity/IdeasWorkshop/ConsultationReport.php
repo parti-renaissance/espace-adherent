@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table(name="iw_consultation_report")
+ * @ORM\Table(name="ideas_workshop_consultation_report")
  * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)

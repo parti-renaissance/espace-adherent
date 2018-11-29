@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="iw_consultation")
+ * @ORM\Table(name="ideas_workshop_consultation")
  * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)

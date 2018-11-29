@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  *
  * @ORM\Table(
- *     name="iw_idea",
+ *     name="ideas_workshop_idea",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="idea_name_unique", columns="name"),
  *         @ORM\UniqueConstraint(name="idea_slug_unique", columns="slug")
@@ -51,7 +51,7 @@ class Idea
 
     /**
      * @ORM\ManyToMany(targetEntity="Need")
-     * @ORM\JoinTable(name="iw_ideas_needs")
+     * @ORM\JoinTable(name="ideas_workshop_ideas_needs")
      */
     private $needs;
 

@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table(name="iw_guideline")
+ * @ORM\Table(name="ideas_workshop_guideline")
  * @ORM\Entity
  *
  * @UniqueEntity("name")

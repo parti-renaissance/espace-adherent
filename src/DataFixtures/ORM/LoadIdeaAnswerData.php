@@ -11,23 +11,17 @@ class LoadIdeaAnswerData extends AbstractFixture implements DependentFixtureInte
 {
     public function load(ObjectManager $manager)
     {
-        $adherent = $this->getReference('adherent-1');
-        $adherent2 = $this->getReference('adherent-2');
         $ideaPeace = $this->getReference('idea-peace');
         $questionProblem = $this->getReference('question-problem');
 
         $answerLoremAdherent1 = new Answer(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce aliquet, mi condimentum venenatis vestibulum, arcu neque feugiat massa, at pharetra velit sapien et elit. Sed vitae hendrerit nulla. Vivamus consectetur magna at tincidunt maximus. Aenean dictum metus vel tellus posuere venenatis.',
-            $adherent
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce aliquet, mi condimentum venenatis vestibulum, arcu neque feugiat massa, at pharetra velit sapien et elit. Sed vitae hendrerit nulla. Vivamus consectetur magna at tincidunt maximus. Aenean dictum metus vel tellus posuere venenatis.'
         );
         $ideaPeace->addAnswer($answerLoremAdherent1);
         $questionProblem->addAnswer($answerLoremAdherent1);
         $this->addReference('answer-lorem-adherent-1', $answerLoremAdherent1);
 
-        $answerLoremAdherent2 = new Answer(
-            'Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex. Curabitur at eros et ex faucibus fringilla sed vel velit.',
-            $adherent2
-        );
+        $answerLoremAdherent2 = new Answer('Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex. Curabitur at eros et ex faucibus fringilla sed vel velit.');
         $ideaPeace->addAnswer($answerLoremAdherent2);
         $questionProblem->addAnswer($answerLoremAdherent2);
         $this->addReference('answer-lorem-adherent-2', $answerLoremAdherent2);
@@ -41,7 +35,6 @@ class LoadIdeaAnswerData extends AbstractFixture implements DependentFixtureInte
     public function getDependencies(): array
     {
         return [
-            LoadAdherentData::class,
             LoadIdeaData::class,
             LoadIdeaQuestionData::class,
         ];

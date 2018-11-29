@@ -9,7 +9,7 @@ use AppBundle\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="iw_comment")
+ * @ORM\Table(name="ideas_workshop_comment")
  * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)

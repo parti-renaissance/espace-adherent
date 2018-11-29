@@ -2,13 +2,12 @@
 
 namespace AppBundle\Entity\IdeasWorkshop;
 
-use AppBundle\Entity\Adherent;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 
 /**
- * @ORM\Table(name="iw_answer")
+ * @ORM\Table(name="ideas_workshop_answer")
  * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)
@@ -30,11 +29,6 @@ class Answer
     private $text;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
-     */
-    private $adherent;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Question", inversedBy="answers")
      */
     private $question;
@@ -49,12 +43,9 @@ class Answer
      */
     private $idea;
 
-    public function __construct(
-        string $text,
-        Adherent $adherent
-    ) {
+    public function __construct(string $text)
+    {
         $this->text = $text;
-        $this->adherent = $adherent;
         $this->threads = new ArrayCollection();
     }
 
@@ -71,16 +62,6 @@ class Answer
     public function setText($text): void
     {
         $this->text = $text;
-    }
-
-    public function getAdherent(): Adherent
-    {
-        return $this->adherent;
-    }
-
-    public function setAdherent($adherent): void
-    {
-        $this->adherent = $adherent;
     }
 
     public function getQuestion(): Question
