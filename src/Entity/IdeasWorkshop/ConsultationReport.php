@@ -43,7 +43,7 @@ class ConsultationReport
      */
     private $name;
 
-    public function __construct(string $name, string $url, int $position = 0)
+    public function __construct(string $name = null, string $url = null, int $position = 1)
     {
         $this->name = $name;
         $this->url = $url;
@@ -83,5 +83,10 @@ class ConsultationReport
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?: '';
     }
 }
