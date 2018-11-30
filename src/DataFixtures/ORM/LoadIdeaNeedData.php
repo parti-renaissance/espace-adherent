@@ -17,6 +17,13 @@ class LoadIdeaNeedData extends AbstractFixture
 
         $this->addReference('need-legal', $legalNeed);
 
+        $editorialNeed = new Need(
+            'Rédactionnel',
+            true
+        );
+
+        $this->addReference('need-editorial', $legalNeed);
+
         $notPublishedNeed = new Need(
             'Besoin non publié'
         );
@@ -24,6 +31,7 @@ class LoadIdeaNeedData extends AbstractFixture
         $this->addReference('need-not-published', $notPublishedNeed);
 
         $manager->persist($legalNeed);
+        $manager->persist($editorialNeed);
         $manager->persist($notPublishedNeed);
 
         $manager->flush();
