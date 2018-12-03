@@ -9,10 +9,12 @@ use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntityNameSlugTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -53,6 +55,7 @@ class Idea
     private $needs;
 
     /**
+     * @JMS\Groups({"idea_list"})
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
      */
     private $adherent;
@@ -60,6 +63,7 @@ class Idea
     /**
      * @var \DateTime
      *
+     * @JMS\Groups({"idea_list"})
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $publishedAt;
@@ -82,6 +86,7 @@ class Idea
     private $status;
 
     /**
+     * @JMS\Groups({"idea_list"})
      * @ORM\OneToMany(targetEntity="Answer", mappedBy="idea")
      */
     private $answers;
@@ -199,7 +204,7 @@ class Idea
         $this->answers->removeElement($answer);
     }
 
-    public function getAnswers(): ArrayCollection
+    public function getAnswers(): Collection
     {
         return $this->answers;
     }
@@ -225,5 +230,15 @@ class Idea
     public function isRefused(): bool
     {
         return IdeaStatusEnum::REFUSED === $this->status;
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("uuid"),
+     * @JMS\Groups({"idea_list"})
+     */
+    public function getUuidAsString(): string
+    {
+        return $this->getUuid()->toString();
     }
 }

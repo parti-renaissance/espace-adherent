@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\IdeasWorkshop\Idea;
+use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -30,7 +31,8 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             $category,
             $theme,
             $committee,
-            new \DateTime()
+            new \DateTime(),
+            IdeaStatusEnum::PUBLISHED
         );
         $ideaMakePeace->addNeed($need);
         $this->addReference('idea-peace', $ideaMakePeace);

@@ -3,8 +3,10 @@
 namespace AppBundle\Entity\IdeasWorkshop;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Table(name="ideas_workshop_answer")
@@ -34,6 +36,7 @@ class Answer
     private $question;
 
     /**
+     * @JMS\Groups({"idea_list"})
      * @ORM\OneToMany(targetEntity="Thread", mappedBy="answer")
      */
     private $threads;
@@ -89,7 +92,7 @@ class Answer
         $this->threads->removeElement($thread);
     }
 
-    public function getThreads(): ArrayCollection
+    public function getThreads(): Collection
     {
         return $this->threads;
     }
