@@ -8,15 +8,14 @@ use AppBundle\Coordinator\CoordinatorAreaSectors;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentTag;
 use AppBundle\Entity\CitizenProjectMembership;
+use AppBundle\Form\Admin\ManagedAreaCollectionType;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\BoardMember\Role;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Form\ActivityPositionType;
 use AppBundle\Form\Admin\CoordinatorManagedAreaType;
-use AppBundle\Form\Admin\ReferentManagedAreaType;
 use AppBundle\Form\EventListener\BoardMemberListener;
-use AppBundle\Form\EventListener\ReferentManagedAreaListener;
 use AppBundle\Form\GenderType;
 use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\Mandates;
@@ -261,12 +260,6 @@ class AdherentAdmin extends AbstractAdmin
                     'multiple' => true,
                 ])
             ->end()
-            ->with('Référent', ['class' => 'col-md-6'])
-                ->add('managedArea', ReferentManagedAreaType::class, [
-                    'label' => false,
-                    'required' => false,
-                ])
-            ->end()
             ->with('Tags', ['class' => 'col-md-6'])
                 ->add('tags', 'sonata_type_model', [
                     'label' => 'Tags admin',
@@ -321,11 +314,17 @@ class AdherentAdmin extends AbstractAdmin
                         'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
                 ])
             ->end()
+            ->with('Zones gérées', ['class' => 'col-md-6'])
+                ->add('managedAreas', ManagedAreaCollectionType::class, [
+                    'label' => false,
+                    'adherent' => $this->getSubject(),
+                ])
+            ->end()
         ;
 
-        $formMapper->getFormBuilder()
+        $formMapper
+            ->getFormBuilder()
             ->addEventSubscriber(new BoardMemberListener())
-            ->addEventSubscriber(new ReferentManagedAreaListener())
         ;
     }
 
