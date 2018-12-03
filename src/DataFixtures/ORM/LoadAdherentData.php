@@ -10,6 +10,7 @@ use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\CoordinatorManagedArea;
+use AppBundle\Entity\ManagedArea\ReferentManagedArea;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentFactory;
@@ -359,9 +360,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             -1.6743,
             48.112
         );
-        $roles = new ArrayCollection();
-        $roles->add($this->getReference('referent'));
-        $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
+
+        $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, [$this->getReference('referent')]);
         $referent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $referent->addReferentTag($this->getReference('referent_tag_77'));
         $referent->setChartAccepted(true);
@@ -465,10 +465,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'birthdate' => '1982-06-02',
             'registered_at' => '2017-06-01 09:26:31',
         ]);
-        $roles = new ArrayCollection();
-        $roles->add($this->getReference('deputy'));
         $deputy_75_1->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $deputy_75_1->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
+        $deputy_75_1->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, [$this->getReference('deputy')]);
         $deputy_75_1->addReferentTag($this->getReference('referent_tag_75'));
         $deputy_75_1->addReferentTag($this->getReference('referent_tag_75008'));
         $this->addReference('deputy-75-1', $deputy_75_1);

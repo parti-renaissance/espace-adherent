@@ -4,6 +4,12 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
+use AppBundle\Entity\ManagedArea\CommunicationManagerManagedArea;
+use AppBundle\Entity\ManagedArea\DeputyManagedArea;
+use AppBundle\Entity\ManagedArea\ElectedOfficerManagedArea;
+use AppBundle\Entity\ManagedArea\ManagedArea;
+use AppBundle\Entity\ManagedArea\ReferentManagedArea;
+use AppBundle\Entity\ManagedArea\SenatorManagedArea;
 use AppBundle\OAuth\Model\User as InMemoryOAuthUser;
 use AppBundle\Collection\CitizenProjectMembershipCollection;
 use AppBundle\Collection\CommitteeMembershipCollection;
@@ -194,11 +200,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $legislativeCandidate;
 
     /**
-     * @var ReferentManagedArea|null
+     * @var ManagedArea[]|Collection
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ReferentManagedArea", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ManagedArea\ManagedArea", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
      */
-    private $managedArea;
+    private $managedAreas;
 
     /**
      * @var CoordinatorManagedArea|null
@@ -373,6 +379,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->citizenProjectMemberships = new ArrayCollection();
         $this->subscriptionTypes = new ArrayCollection();
         $this->ideas = new ArrayCollection();
+        $this->managedAreas = new ArrayCollection();
     }
 
     public static function create(
@@ -482,6 +489,26 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->isReferent()) {
             $roles[] = 'ROLE_REFERENT';
+        }
+
+        if ($this->isCommunicationManager()) {
+            $roles[] = 'ROLE_COMMUNICATION_MANAGER';
+        }
+
+        if ($this->isElectedOfficer()) {
+            $roles[] = 'ROLE_ELECTED_OFFICER';
+        }
+
+        if ($this->isSenator()) {
+            $roles[] = 'ROLE_SENATOR';
+        }
+
+        if ($this->isTerritoryPole()) {
+            $roles[] = 'ROLE_TERRITORY_POLE';
+        }
+
+        if ($this->isPoliticalPole()) {
+            $roles[] = 'ROLE_POLITICAL_POLE';
         }
 
         if ($this->isDeputy()) {
@@ -889,16 +916,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->updatedAt;
     }
 
-    public function getManagedArea(): ?ReferentManagedArea
-    {
-        return $this->managedArea;
-    }
-
-    public function setManagedArea(ReferentManagedArea $managedArea): void
-    {
-        $this->managedArea = $managedArea;
-    }
-
     /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("managedAreaTagCodes"),
@@ -956,38 +973,94 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->boardMember = null;
     }
 
-    public function setReferent(array $tags, string $markerLatitude = null, string $markerLongitude = null): void
+    public function getManagedAreas(): Collection
     {
-        $this->managedArea = new ReferentManagedArea($tags, $markerLatitude, $markerLongitude);
+        return $this->managedAreas;
+    }
+
+    public function setReferent(): void
+    {
+
+    }
+
+    public function addManagedArea(ManagedArea $managedArea): void
+    {
+        if (!$this->managedAreas->contains($managedArea)) {
+            $managedArea->setAdherent($this);
+            $this->managedAreas->add($managedArea);
+        }
+    }
+
+    public function removeManagedArea(ManagedArea $managedArea): void
+    {
+        $this->managedAreas->removeElement($managedArea);
+    }
+
+    public function getManagedAreasFor(string $class): Collection
+    {
+        return $this
+            ->managedAreas
+            ->filter(function(ManagedArea $managedArea) use ($class) {
+                return $managedArea instanceof $class;
+            });
+    }
+
+    /**
+     * @return ReferentManagedArea[]|Collection
+     */
+    public function getReferentManagedAreas(): Collection
+    {
+        return $this->getManagedAreasFor(ReferentManagedArea::class);
     }
 
     public function isReferent(): bool
     {
-        return $this->managedArea instanceof ReferentManagedArea
-            && !$this->managedArea->getTags()->isEmpty();
+        return !$this->getReferentManagedAreas()->isEmpty();
     }
 
-    public function revokeReferent(): void
+    public function getDeputyManagedArea(): ?District
     {
-        $this->managedArea = null;
+        $deputyManagedAreas = $this->getManagedAreasFor(DeputyManagedArea::class);
+
+        return !$deputyManagedAreas->isEmpty() ? $deputyManagedAreas->first()->getDistrict() : null;
     }
 
-    public function getManagedAreaMarkerLatitude(): ?string
+    public function isDeputy(): bool
     {
-        if (!$this->managedArea) {
-            return '';
-        }
-
-        return $this->managedArea->getMarkerLatitude();
+        return null !== $this->getDeputyManagedArea();
     }
 
-    public function getManagedAreaMarkerLongitude(): ?string
+    /**
+     * @return ElectedOfficerManagedArea[]|Collection
+     */
+    public function getElectedOfficerManagedAreas(): Collection
     {
-        if (!$this->managedArea) {
-            return '';
-        }
+        return $this->getManagedAreasFor(ElectedOfficerManagedArea::class);
+    }
 
-        return $this->managedArea->getMarkerLongitude();
+    public function isElectedOfficer(): bool
+    {
+        return !$this->getElectedOfficerManagedAreas()->isEmpty();
+    }
+
+    public function getCommunicationManagerManagedAreas(): Collection
+    {
+        return $this->getManagedAreasFor(CommunicationManagerManagedArea::class);
+    }
+
+    public function isCommunicationManager(): bool
+    {
+        return !$this->getCommunicationManagerManagedAreas()->isEmpty();
+    }
+
+    public function getSenatorManagedAreas(): Collection
+    {
+        return $this->getManagedAreasFor(SenatorManagedArea::class);
+    }
+
+    public function isSenator(): bool
+    {
+        return !$this->getSenatorManagedAreas()->isEmpty();
     }
 
     public function isProcurationManager(): bool
@@ -1307,11 +1380,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         if ($district) {
             $this->managedDistrict->setAdherent($this);
         }
-    }
-
-    public function isDeputy(): bool
-    {
-        return $this->managedDistrict instanceof District;
     }
 
     public function isAdherent(): bool

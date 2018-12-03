@@ -1,12 +1,17 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {% if object.managedArea %}
-        {% for tag in object.managedArea.tags %}
-            <a href="{{ path('admin_app_referenttag_edit', { id: tag.id }) }}">
-                {{- tag.name -}}
-            </a>
-            {%- if not loop.last -%}, {%- endif -%}
-        {% endfor %}
+
+    {% if object.deputyManagedArea %}
+        <span class="label label-success">{{ object.deputyManagedArea }}</span>
     {% endif %}
+
+    {% for managedArea in object.referentManagedAreas %}
+        <span class="label label-danger">{{ managedArea }}</span>
+    {% endfor %}
+
+    {% for managedArea in object.electedOfficerManagedAreas %}
+        <span class="label label-info">{{ managedArea }}</span>
+    {% endfor %}
+
 {% endblock %}

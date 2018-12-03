@@ -2,8 +2,16 @@
 
 {% block field %}
     {% if object.hasAdvancedPrivileges %}
+        {% if object.isDeputy %}
+            <span class="label label-success" style="padding: 2px;">Député</span><br/>
+        {% endif %}
+
         {% if object.isReferent %}
-            <span class="label label-primary" style="padding: 2px;">Référent</span><br/>
+            <span class="label label-danger" style="padding: 2px;">Référent</span><br/>
+        {% endif %}
+
+        {% if object.isElectedOfficer %}
+            <span class="label label-info" style="padding: 2px;">Responsable élu</span><br/>
         {% endif %}
 
         {% if object.isCoordinatorCitizenProjectSector %}
@@ -34,9 +42,6 @@
             <span class="label label-primary" style="padding: 2px;">Membre du Conseil</span><br/>
         {% endif %}
 
-        {% if object.isDeputy %}
-            <span class="label label-primary" style="padding: 2px;">Député</span><br/>
-        {% endif %}
     {% elseif object.isAdherent %}
         <span class="label label-primary">Adhérent</span>
     {% else %}

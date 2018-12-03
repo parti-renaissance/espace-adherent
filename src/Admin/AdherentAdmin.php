@@ -8,6 +8,7 @@ use AppBundle\Coordinator\CoordinatorAreaSectors;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentTag;
 use AppBundle\Entity\CitizenProjectMembership;
+use AppBundle\Form\Admin\ManagedAreaCollectionType;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Form\ActivityPositionType;
@@ -255,6 +256,14 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('media', null, [
                     'label' => 'Photo',
                 ])
+            ->end()
+            ->with('Tags', ['class' => 'col-md-6'])
+                ->add('tags', 'sonata_type_model', [
+                    'label' => 'Tags admin',
+                    'multiple' => true,
+                    'by_reference' => false,
+                    'btn_add' => false,
+                ])
                 ->add('description', TextareaType::class, [
                     'label' => 'Biographie',
                     'required' => false,
@@ -302,9 +311,16 @@ class AdherentAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
+            ->with('Zones gérées', ['class' => 'col-md-6'])
+                ->add('managedAreas', ManagedAreaCollectionType::class, [
+                    'label' => false,
+                    'adherent' => $this->getSubject(),
+                ])
+            ->end()
         ;
 
-        $formMapper->getFormBuilder()
+        $formMapper
+            ->getFormBuilder()
             ->addEventSubscriber(new ReferentManagedAreaListener())
         ;
     }

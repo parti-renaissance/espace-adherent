@@ -259,6 +259,23 @@ referent.popup.subtitle: à l’usage des référents
 referent.popup.file_url: https://storage.googleapis.com/en-marche-prod/documents/referents/2-kit-administratif/charte_referents.pdf
 
 #
+# Managed Areas
+#
+managed_area.type.label: Rôle
+managed_area.type.placeholder: Sélectionnez un rôle
+managed_area.referent.label: Référent
+managed_area.tag.placeholder: Sélectionnez une zone
+managed_area.deputy.label: Député
+managed_area.district.placeholder: Sélectionnez un district
+managed_area.type.elected_officer: Responsable élu
+managed_area.type.communication_manager: Responsable de communication
+managed_area.type.senator: Sénateur
+managed_area.type.territory_pole: Pôle territoire
+managed_area.type.political_pole: Pôle politique
+managed_area.tag.label: Zone
+managed_area.tag.placeholder: Sélectionnez une zone
+
+#
 # J'écoute
 #
 survey.create.success: Le questionnaire a bien été enregistré.
