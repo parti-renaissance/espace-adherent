@@ -12,12 +12,20 @@ class LoadConsultationReportData extends AbstractFixture
     {
         $consultationReportGreenEnergy = new ConsultationReport(
             'Rapport sur les énergies renouvables',
-            'https://fr.lipsum.com/'
+            'https://fr.lipsum.com/',
+            1
         );
-
         $this->addReference('consultation-report-green-energy', $consultationReportGreenEnergy);
 
+        $consultationReportHousingPolicy = new ConsultationReport(
+            'Rapport sur la politique du logement',
+            'https://google.fr/',
+            2
+        );
+        $this->addReference('consultation-report-housing-policy', $consultationReportHousingPolicy);
+
         $manager->persist($consultationReportGreenEnergy);
+        $manager->persist($consultationReportHousingPolicy);
 
         $manager->flush();
     }
