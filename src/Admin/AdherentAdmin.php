@@ -8,6 +8,8 @@ use AppBundle\Coordinator\CoordinatorAreaSectors;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentTag;
 use AppBundle\Entity\CitizenProjectMembership;
+use AppBundle\Form\Admin\CommunicationManagerAreaType;
+use AppBundle\Form\EventListener\CommunicationManagerAreaListener;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\BoardMember\Role;
@@ -267,6 +269,12 @@ class AdherentAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
+            ->with('Responsable Communication', ['class' => 'col-md-6'])
+                ->add('communicationManagerArea', CommunicationManagerAreaType::class, [
+                    'label' => false,
+                    'required' => false,
+                ])
+            ->end()
             ->with('Tags', ['class' => 'col-md-6'])
                 ->add('tags', 'sonata_type_model', [
                     'label' => 'Tags admin',
@@ -326,6 +334,7 @@ class AdherentAdmin extends AbstractAdmin
         $formMapper->getFormBuilder()
             ->addEventSubscriber(new BoardMemberListener())
             ->addEventSubscriber(new ReferentManagedAreaListener())
+            ->addEventSubscriber(new CommunicationManagerAreaListener())
         ;
     }
 
