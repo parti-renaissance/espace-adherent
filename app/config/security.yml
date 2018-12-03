@@ -214,6 +214,9 @@ security:
         ROLE_ADMIN_BAN:
             - ROLE_APP_ADMIN_BAN
 
+        ROLE_ADMIN_IDEAS_WORKSHOP:
+            - ROLE_APP_ADMIN_IDEAS_WORKSHOP_CONSULTATION_ALL
+
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN_DASHBOARD
             - ROLE_ADMIN_MEDIAS
@@ -256,6 +259,7 @@ security:
             - ROLE_ADMIN_BIOGRAPHY
             - ROLE_ADMIN_JECOUTE
             - ROLE_ADMIN_BAN
+            - ROLE_ADMIN_IDEAS_WORKSHOP
 
     access_decision_manager:
         strategy: unanimous

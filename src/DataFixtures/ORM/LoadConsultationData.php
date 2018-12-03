@@ -10,16 +10,28 @@ class LoadConsultationData extends AbstractFixture
 {
     public function load(ObjectManager $manager)
     {
-        $consultationRetraite = new Consultation(
+        $consultationRetirement = new Consultation(
             'Consultation sur les retraites',
             'https://fr.lipsum.com/',
-            new \DateTime(),
-            new \DateTime('tomorrow')
+            new \DateTime('-4 days'),
+            new \DateTime('yesterday'),
+            2
         );
 
-        $this->addReference('consultation-retirement', $consultationRetraite);
+        $this->addReference('consultation-retirement', $consultationRetirement);
 
-        $manager->persist($consultationRetraite);
+        $consultationHousingPolicy = new Consultation(
+            'Consultation sur la politique du logement',
+            'https://google.fr/',
+            new \DateTime('-3 days'),
+            new \DateTime('yesterday'),
+            3
+        );
+
+        $this->addReference('consultation-housing-policy', $consultationHousingPolicy);
+
+        $manager->persist($consultationRetirement);
+        $manager->persist($consultationHousingPolicy);
 
         $manager->flush();
     }
