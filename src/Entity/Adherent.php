@@ -150,6 +150,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $managedArea;
 
     /**
+     * @var CommunicationManagerArea|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CommunicationManagerArea", cascade={"all"}, orphanRemoval=true)
+     */
+    private $communicationManagerArea;
+
+    /**
      * @var CoordinatorManagedArea|null
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\CoordinatorManagedArea", cascade={"all"}, orphanRemoval=true)
@@ -378,6 +385,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->isSupervisor()) {
             $roles[] = 'ROLE_SUPERVISOR';
+        }
+
+        if ($this->isCommunicationManager()) {
+            $roles[] = 'ROLE_COMMUNICATION_MANAGER';
         }
 
         if ($this->isProcurationManager()) {
@@ -759,6 +770,27 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setManagedArea(ReferentManagedArea $managedArea): void
     {
         $this->managedArea = $managedArea;
+    }
+
+    public function getCommunicationManagerArea(): ?CommunicationManagerArea
+    {
+        return $this->communicationManagerArea;
+    }
+
+    public function setCommunicationManagerArea(CommunicationManagerArea $communicationManagerArea = null): void
+    {
+        $this->communicationManagerArea = $communicationManagerArea;
+    }
+
+    public function isCommunicationManager(): bool
+    {
+        return $this->communicationManagerArea instanceof CommunicationManagerArea
+            && !$this->communicationManagerArea->getTags()->isEmpty();
+    }
+
+    public function revokeCommunicationManager(): void
+    {
+        $this->communicationManagerArea = null;
     }
 
     /**
