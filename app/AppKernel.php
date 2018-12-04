@@ -47,6 +47,7 @@ class AppKernel extends Kernel
             new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),
 
+            new ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle(),
             new AppBundle\AppBundle(),
         ];
 
