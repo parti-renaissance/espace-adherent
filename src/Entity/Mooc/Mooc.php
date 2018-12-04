@@ -134,9 +134,8 @@ class Mooc
      * @Assert\Image(
      *     mimeTypes={"image/jpeg", "image/png"},
      *     maxSize="1M",
-     *     maxWidth="480",
-     *     maxHeight="360",
-     *     minWidth="211"
+     *     maxWidth="960",
+     *     maxHeight="720"
      * )
      */
     protected $image;
