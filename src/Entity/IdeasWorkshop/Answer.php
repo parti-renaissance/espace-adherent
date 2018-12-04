@@ -36,6 +36,7 @@ class Answer
     private $question;
 
     /**
+     * @JMS\SkipWhenEmpty
      * @JMS\Groups({"idea_list"})
      * @ORM\OneToMany(targetEntity="Thread", mappedBy="answer")
      */
@@ -84,6 +85,7 @@ class Answer
     {
         if (!$this->threads->contains($thread)) {
             $this->threads->add($thread);
+            $thread->setAnswer($this);
         }
     }
 

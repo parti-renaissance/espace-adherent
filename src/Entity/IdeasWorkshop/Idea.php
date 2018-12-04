@@ -71,6 +71,7 @@ class Idea
     /**
      * @var Committee
      *
+     * @JMS\Groups({"idea_list"})
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
      */
     private $committee;
@@ -86,7 +87,6 @@ class Idea
     private $status;
 
     /**
-     * @JMS\Groups({"idea_list"})
      * @ORM\OneToMany(targetEntity="Answer", mappedBy="idea")
      */
     private $answers;
@@ -209,6 +209,11 @@ class Idea
         return $this->answers;
     }
 
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("days_before_deadline"),
+     * @JMS\Groups({"idea_list"})
+     */
     public function getDaysBeforeDeadline(): int
     {
         $deadline = $this->createdAt->add(new \DateInterval(self::PUBLISHED_INTERVAL));
@@ -240,5 +245,19 @@ class Idea
     public function getUuidAsString(): string
     {
         return $this->getUuid()->toString();
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("answers"),
+     * @JMS\Groups({"idea_list"})
+     */
+    public function getAnswerSerialized(): Collection
+    {
+        return $this->answers
+            ->filter(function (Answer $answer) {
+                return !$answer->getThreads()->isEmpty();
+            })
+        ;
     }
 }

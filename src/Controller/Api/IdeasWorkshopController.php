@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 class IdeasWorkshopController extends Controller
 {
     /**
-     * @Route("/idea", name="api_ideas_list")
+     * @Route("/ideas", name="api_ideas_list")
      * @Method("GET")
      */
     public function ideaListAction(
@@ -35,9 +35,9 @@ class IdeasWorkshopController extends Controller
                     $limit,
                     ($request->query->getInt('_page', 1) - 1) * $limit,
                     $request->query->get('status', IdeaStatusEnum::PUBLISHED),
-                    $request->query->get('name'),
                     $request->query->get('theme'),
-                    $request->query->get('category')
+                    $request->query->get('category'),
+                    $request->query->get('name')
                 ),
                 'json',
                 SerializationContext::create()->setGroups('idea_list')

@@ -17,10 +17,10 @@ class IdeaRepository extends ServiceEntityRepository
     public function findIdeasByStatusThemeCategoryAndName(
         int $limit,
         int $offset,
-        string $status = null,
-        string $name = null,
+        string $status,
         string $theme = null,
-        string $category = null
+        string $category = null,
+        string $name = null
     ): array {
         $qb = $this->createQueryBuilder('idea');
 

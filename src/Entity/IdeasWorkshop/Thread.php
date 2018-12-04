@@ -30,6 +30,7 @@ class Thread
     private $answer;
 
     /**
+     * @JMS\SkipWhenEmpty
      * @JMS\Groups({"idea_list"})
      * @ORM\OneToMany(targetEntity="ThreadComment", mappedBy="thread")
      */
