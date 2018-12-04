@@ -101,4 +101,9 @@ class Theme implements EnabledInterface
     {
         return sprintf('images/ideas_workshop/themes/%s', $this->getImageName());
     }
+
+    public function __toString(): string
+    {
+        return $this->name ?: '';
+    }
 }

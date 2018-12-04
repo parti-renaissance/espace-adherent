@@ -396,6 +396,9 @@
         <!-- Storage -->
         <service id="AppBundle\Storage\ImageStorage" />
 
+        <!-- Ideas Workshop -->
+        <service id="AppBundle\IdeasWorkshop\ThemeManager" />
+
         <!-- ParamConverter -->
         <service id="AppBundle\ParamConverter\DoctrineQueryStringParamConverter">
             <tag name="request.param_converter" converter="querystring" priority="false" />

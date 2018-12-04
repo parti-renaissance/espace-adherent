@@ -32,10 +32,12 @@ Feature:
         "items": [
             {
                 "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
-                "theme": {
-                    "name": "Armées et défense",
-                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-                },
+                "themes": [
+                    {
+                        "name": "Armées et défense",
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+                    }
+                ],
                 "category": {
                     "name": "Echelle Européenne",
                     "enabled": true
@@ -86,10 +88,12 @@ Feature:
         "items": [
             {
                 "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
-                "theme": {
-                    "name": "Armées et défense",
-                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-                },
+                "themes": [
+                    {
+                        "name": "Armées et défense",
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+                    }
+                ],
                 "category": {
                     "name": "Echelle Européenne",
                     "enabled": true
@@ -150,10 +154,12 @@ Feature:
         "items": [
             {
                 "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
-                "theme": {
-                    "name": "Armées et défense",
-                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-                },
+                "themes": [
+                    {
+                        "name": "Armées et défense",
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+                    }
+                ],
                 "category": {
                     "name": "Echelle Européenne",
                     "enabled": true
@@ -215,10 +221,12 @@ Feature:
         "items": [
             {
                 "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
-                "theme": {
-                    "name": "Armées et défense",
-                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-                },
+                "themes": [
+                    {
+                        "name": "Armées et défense",
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+                    }
+                ],
                 "category": {
                     "name": "Echelle Européenne",
                     "enabled": true
@@ -284,10 +292,12 @@ Feature:
         "items": [
             {
                 "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
-                "theme": {
-                    "name": "Armées et défense",
-                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-                },
+                "themes": [
+                    {
+                        "name": "Armées et défense",
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+                    }
+                ],
                 "category": {
                     "name": "Echelle Européenne",
                     "enabled": true
@@ -328,10 +338,12 @@ Feature:
             },
             {
                 "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
-                "theme": {
-                    "name": "Armées et défense",
-                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-                },
+                "themes": [
+                    {
+                        "name": "Armées et défense",
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+                    }
+                ],
                 "category": {
                     "name": "Echelle Européenne",
                     "enabled": true
@@ -382,10 +394,12 @@ Feature:
         "items": [
             {
                 "uuid": "aa093ce6-8b20-4d86-bfbc-91a73fe47285",
-                "theme": {
-                    "name": "Armées et défense",
-                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-                },
+                "themes": [
+                    {
+                        "name": "Armées et défense",
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+                    }
+                ],
                 "category": {
                     "name": "Echelle Européenne",
                     "enabled": true
@@ -432,7 +446,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "theme": null,
+        "themes": [],
         "category": null,
         "needs": [],
         "author": {
@@ -470,7 +484,7 @@ Feature:
     {
       "name": "Mon idée",
       "description": "Mon idée",
-      "theme": 2,
+      "themes": [2],
       "category": 2,
       "committee": 1,
       "needs": [1,2],
@@ -496,10 +510,12 @@ Feature:
     """
     {
         "name": "Mon idée",
-        "theme": {
-            "name": "Trésorerie",
+        "themes": [
+            {
+                "name": "Trésorerie",
             "thumbnail": null
-        },
+            }
+        ],
         "category": {
             "name": "Echelle Nationale",
             "enabled": true
@@ -553,7 +569,7 @@ Feature:
     {
       "name": "Mon idée 2",
       "description": "Mon idée 2",
-      "theme": 2,
+      "themes": [2],
       "category": 2,
       "committee": 1,
       "needs": [1,2],
@@ -582,10 +598,12 @@ Feature:
     """
     {
         "name": "Mon idée 2",
-        "theme": {
-            "name": "Trésorerie",
+        "themes": [
+            {
+                "name": "Trésorerie",
             "thumbnail": null
-        },
+            }
+        ],
         "category": {
             "name": "Echelle Nationale",
             "enabled": true
@@ -654,10 +672,12 @@ Feature:
        "items":[
           {
              "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
-             "theme":{
-                "name":"Armées et défense",
-                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-             },
+             "themes": [
+                 {
+                     "name": "Armées et défense",
+                     "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+                 }
+             ],
              "category":{
                 "name":"Echelle Européenne",
                 "enabled":true
@@ -724,10 +744,12 @@ Feature:
        "items": [
           {
              "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
-             "theme": {
-                "name": "Armées et défense",
-                "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-             },
+             "themes": [
+                 {
+                     "name": "Armées et défense",
+                     "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+                 }
+             ],
              "category": {
                 "name": "Echelle Européenne",
                 "enabled": true
@@ -822,8 +844,8 @@ Feature:
         "detail": "@string@",
         "violations": [
             {
-                "propertyPath": "theme",
-                "message": "Pour publier votre idée, son thème devrait être rempli."
+                "propertyPath": "themes",
+                "message": "Pour publier votre idée, vous devez préciser au minimum 1 thème."
             },
             {
                 "propertyPath": "category",
@@ -871,10 +893,12 @@ Feature:
     """
     {
        "name":"Mon id\u00e9e 2",
-       "theme":{
-          "name":"Arm\u00e9es et d\u00e9fense",
-          "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
-       },
+       "themes": [
+           {
+               "name": "Armées et défense",
+               "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+           }
+       ],
        "category":{
           "name":"Echelle Europ\u00e9enne",
           "enabled":true

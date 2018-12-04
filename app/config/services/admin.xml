@@ -687,7 +687,7 @@
         # Ideas Workshop
         ######################################################
          -->
-        <service id="app.admin.consultation" class="AppBundle\Admin\IdeasWorkshopConsultationAdmin">
+        <service id="app.admin.ideas_workshop_consultation" class="AppBundle\Admin\IdeasWorkshopConsultationAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Consultation en cours" group="Atelier des idées" />
 
             <argument />
@@ -695,25 +695,36 @@
             <argument />
         </service>
 
-        <service id="app.admin.consultation" class="AppBundle\Admin\IdeasWorkshopConsultationReportAdmin">
+        <service id="app.admin.ideas_workshop_consultation_report" class="AppBundle\Admin\IdeasWorkshopConsultationReportAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Rapports de consultations" group="Atelier des idées" />
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\ConsultationReport</argument>
             <argument />
         </service>
 
-        <service id="app.admin.consultation" class="AppBundle\Admin\IdeasWorkshopCategoryAdmin">
+        <service id="app.admin.ideas_workshop_category" class="AppBundle\Admin\IdeasWorkshopCategoryAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Echelles des notes" group="Atelier des idées" />
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\Category</argument>
             <argument />
         </service>
 
-        <service id="app.admin.consultation" class="AppBundle\Admin\IdeasWorkshopNeedAdmin">
+        <service id="app.admin.ideas_workshop_need" class="AppBundle\Admin\IdeasWorkshopNeedAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Besoins des notes" group="Atelier des idées" />
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\Need</argument>
             <argument />
+        </service>
+
+        <service id="app.admin.ideas_workshop_theme" class="AppBundle\Admin\IdeasWorkshopThemeAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Thèmes des notes" group="Atelier des idées" />
+            <argument />
+            <argument>AppBundle\Entity\IdeasWorkshop\Theme</argument>
+            <argument />
+
+            <call method="setThemeManager">
+                <argument type="service" id="AppBundle\IdeasWorkshop\ThemeManager"/>
+            </call>
         </service>
 
         <!--

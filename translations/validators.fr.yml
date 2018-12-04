@@ -290,7 +290,9 @@ executive_office_member.executive_officer.unique: Le membre {{ fullName }} est d
 #
 idea.name.not_blank: Le nom de l'idée ne doit pas être vide.
 idea.description.not_blank: Pour publier votre idée, sa description ne doit pas être vide.
-idea.theme.not_blank: Pour publier votre idée, son thème devrait être rempli.
+idea.theme.min_count: |
+  {1} Pour publier votre idée, vous devez préciser au minimum 1 thème.|
+  ]1,Inf[ Pour publier votre idée, vous devez préciser au minimum {{ limit }} thèmes.
 idea.category.not_blank: Pour publier votre idée, sa catégorie devrait être remplie.
 idea.needs.min_count: |
   {1} Pour publier votre idée, vous devez préciser au minimum 1 besoin.|

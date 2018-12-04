@@ -40,8 +40,8 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             new \DateTime('-5 minutes')
         );
         $ideaMakePeace->setCategory($category);
-        $ideaMakePeace->setTheme($theme);
         $ideaMakePeace->setCommittee($committee);
+        $ideaMakePeace->addTheme($theme);
         $ideaMakePeace->addNeed($need);
         $this->addReference('idea-peace', $ideaMakePeace);
 
@@ -56,8 +56,8 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             new \DateTime('-4 minutes')
         );
         $ideaHelpEcology->setCategory($category);
-        $ideaHelpEcology->setTheme($theme);
         $ideaHelpEcology->setCommittee($committee);
+        $ideaHelpEcology->addTheme($theme);
         $this->addReference('idea-help-ecology', $ideaHelpEcology);
 
         $ideaHelpPeople = new Idea(
@@ -71,7 +71,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             new \DateTime('-3 minutes')
         );
         $ideaHelpPeople->setCategory($category);
-        $ideaHelpPeople->setTheme($theme);
+        $ideaHelpPeople->addTheme($theme);
         $this->addReference('idea-help-people', $ideaHelpPeople);
 
         $ideaReduceWaste = new Idea(
@@ -85,7 +85,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
              new \DateTime('-2 minutes')
         );
         $ideaReduceWaste->setCategory($category);
-        $ideaReduceWaste->setTheme($theme);
+        $ideaReduceWaste->addTheme($theme);
         $this->addReference('idea-reduce-waste', $ideaReduceWaste);
 
         $ideaReducePupils = new Idea(
