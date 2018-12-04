@@ -3,7 +3,6 @@
 namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntityNameSlugTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -12,18 +11,16 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(
  *     name="ideas_workshop_category",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="category_slug_unique", columns="slug")
+ *         @ORM\UniqueConstraint(name="category_name_unique", columns="name")
  *     }
  * )
  *
- * @UniqueEntity("slug")
+ * @UniqueEntity("name")
  *
  * @Algolia\Index(autoIndex=false)
  */
 class Category
 {
-    use EntityNameSlugTrait;
-
     /**
      * @var int
      *
@@ -34,15 +31,22 @@ class Category
     private $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column
+     */
+    protected $name;
+
+    /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
      */
     private $enabled;
 
-    public function __construct(string $name, bool $enabled = false)
+    public function __construct(string $name = null, bool $enabled = false)
     {
-        $this->setName($name);
+        $this->name = $name;
         $this->enabled = $enabled;
     }
 
@@ -59,5 +63,20 @@ class Category
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?: '';
     }
 }
