@@ -691,6 +691,13 @@
             <argument />
         </service>
 
+        <service id="app.admin.consultation" class="AppBundle\Admin\IdeasWorkshopNeedAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Besoins des notes" group="Atelier des idées" />
+            <argument />
+            <argument>AppBundle\Entity\IdeasWorkshop\Need</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # OAuth
