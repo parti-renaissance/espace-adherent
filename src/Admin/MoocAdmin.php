@@ -46,7 +46,7 @@ class MoocAdmin extends AbstractAdmin
                     ->add('image', FileType::class, [
                         'required' => false,
                         'label' => 'Ajoutez une photo',
-                        'help' => 'La photo ne doit pas dépasser 1 Mo et ne doit pas faire plus de 480x360px.',
+                        'help' => 'La photo ne doit pas dépasser 1 Mo et ne doit pas faire plus de 960x720px.',
                     ])
                     ->add('description', TextType::class, [
                         'label' => 'Description',
