@@ -4,13 +4,15 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 trait EntityPersonNameTrait
 {
     /**
      * @ORM\Column(length=50)
      *
-     * @JMS\Groups({"user_profile", "public", "idea_list"})
+     * @SymfonySerializer\Groups("idea_list_read")
+     * @JMS\Groups({"user_profile", "public"})
      * @JMS\SerializedName("firstName")
      */
     private $firstName = '';
@@ -18,7 +20,8 @@ trait EntityPersonNameTrait
     /**
      * @ORM\Column(length=50)
      *
-     * @JMS\Groups({"user_profile", "public", "idea_list"})
+     * @SymfonySerializer\Groups("idea_list_read")
+     * @JMS\Groups({"user_profile", "public"})
      * @JMS\SerializedName("lastName")
      */
     private $lastName = '';

@@ -48,9 +48,8 @@ class Vote
      */
     private $type;
 
-    public function __construct(Idea $idea, Adherent $adherent, string $type)
+    public function __construct(Adherent $adherent, string $type)
     {
-        $this->idea = $idea;
         $this->adherent = $adherent;
         $this->type = $type;
     }

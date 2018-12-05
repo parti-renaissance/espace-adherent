@@ -8,7 +8,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadVoteData extends AbstractFixture implements DependentFixtureInterface
+class LoadIdeaVoteData extends AbstractFixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -37,10 +37,11 @@ class LoadVoteData extends AbstractFixture implements DependentFixtureInterface
                         || !(2 === $key && VoteTypeEnum::IMPORTANT === $type)
                     ) {
                         $vote = new Vote(
-                            $idea,
                             $adherent,
                             $type
                         );
+
+                        $idea->addVote($vote);
 
                         $manager->persist($vote);
                     }
