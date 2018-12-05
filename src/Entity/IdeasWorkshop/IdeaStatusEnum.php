@@ -10,4 +10,9 @@ final class IdeaStatusEnum extends Enum
     public const PENDING = 'PENDING';
     public const FINALIZED = 'FINALIZED';
     public const UNPUBLISHED = 'UNPUBLISHED';
+
+    public const VISIBLE_STATUSES = [
+        self::PENDING,
+        self::FINALIZED,
+    ];
 }
