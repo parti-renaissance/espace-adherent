@@ -2,17 +2,25 @@
 
 namespace AppBundle\Entity\IdeasWorkshop;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\GroupSequenceProviderInterface;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"},
+ * )
+ *
  * @ORM\Table(name="ideas_workshop_answer")
  * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Answer
+class Answer implements GroupSequenceProviderInterface
 {
     /**
      * @var int
@@ -25,11 +33,16 @@ class Answer
 
     /**
      * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank(groups={"idea_post", "idea_put"})
+     * @Assert\Length(max=1700, groups={"idea_post", "idea_put"})
      */
     private $content;
 
     /**
      * @ORM\ManyToOne(targetEntity="Question")
+     *
+     * @Assert\NotBlank
      */
     private $question;
 
@@ -102,5 +115,14 @@ class Answer
     public function setIdea(Idea $idea): void
     {
         $this->idea = $idea;
+    }
+
+    public function getGroupSequence()
+    {
+        if ($this->getQuestion() && $this->getQuestion()->isRequired()) {
+            return [['idea_post', 'idea_put']];
+        } else {
+            return ['Answer'];
+        }
     }
 }

@@ -11,14 +11,23 @@ use AppBundle\Entity\EntityNameSlugTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\GroupSequenceProviderInterface;
 
 /**
  * @ApiResource(
- *     collectionOperations={"get"},
- *     itemOperations={"get"},
+ *     collectionOperations={
+ *         "get",
+ *         "post": {"access_control": "is_granted('IS_AUTHENTICATED_FULLY')"}
+ *     },
+ *     itemOperations={
+ *         "get",
+ *         "put": {"access_control": "object.getAdherent() == user", "normalization_context": {"groups": {"put"}}},
+ *     }
  * )
  *
  * @ORM\Entity
@@ -34,7 +43,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Idea
+class Idea implements GroupSequenceProviderInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -44,11 +53,19 @@ class Idea
 
     /**
      * @ORM\ManyToOne(targetEntity="Theme")
+     *
+     * @JMS\Groups({"put"})
+     *
+     * @Assert\NotBlank(groups={"idea_put"})
      */
     private $theme;
 
     /**
      * @ORM\ManyToOne(targetEntity="Category")
+     *
+     * @JMS\Groups({"put"})
+     *
+     * @Assert\NotBlank(groups={"idea_put"})
      */
     private $category;
 
@@ -60,13 +77,19 @@ class Idea
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     *
+     * @JMS\Groups({"post"})
+     *
+     * @Assert\NotBlank(groups={"idea_post"})
      */
-    private $adherent;
+    private $author;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Assert\NotBlank(groups={"idea_publish"})
      */
     private $publishedAt;
 
@@ -74,6 +97,10 @@ class Idea
      * @var Committee
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
+     *
+     * @JMS\Groups({"put"})
+     *
+     * @Assert\NotBlank(groups={"idea_put"})
      */
     private $committee;
 
@@ -81,7 +108,10 @@ class Idea
      * @Assert\Choice(
      *     callback={"AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum", "toArray"},
      *     strict=true,
+     *     groups={"idea_put"}
      * )
+     *
+     * @JMS\Groups({"put"})
      *
      * @ORM\Column(length=11, options={"default": IdeaStatusEnum::PENDING})
      */
@@ -89,22 +119,25 @@ class Idea
 
     /**
      * @ORM\OneToMany(targetEntity="Answer", mappedBy="idea")
+     *
+     * @JMS\Groups({"post"})
+     *
+     * @Assert\Count(min=1, groups={"idea_post"})
      */
     private $answers;
 
     public function __construct(
-        UuidInterface $uuid,
-        string $name,
-        Adherent $adherent,
-        Category $category,
-        Theme $theme,
+        Adherent $author,
+        string $name = null,
+        Category $category = null,
+        Theme $theme = null,
         Committee $committee = null,
         \DateTime $publishedAt = null,
         string $status = IdeaStatusEnum::PENDING
     ) {
-        $this->uuid = $uuid;
+        $this->uuid = Uuid::uuid4();
         $this->setName($name);
-        $this->adherent = $adherent;
+        $this->author = $author;
         $this->category = $category;
         $this->theme = $theme;
         $this->committee = $committee;
@@ -152,14 +185,14 @@ class Idea
         $this->needs->removeElement($need);
     }
 
-    public function getAdherent(): Adherent
+    public function getAuthor(): Adherent
     {
-        return $this->adherent;
+        return $this->author;
     }
 
-    public function setAdherent(Adherent $adherent): void
+    public function setAuthor(Adherent $author): void
     {
-        $this->adherent = $adherent;
+        $this->author = $author;
     }
 
     public function getPublishedAt(): ?\DateTime
@@ -231,5 +264,14 @@ class Idea
     public function isRefused(): bool
     {
         return IdeaStatusEnum::REFUSED === $this->status;
+    }
+
+    public function getGroupSequence()
+    {
+        if ($this->getId()) {
+            return ['idea_post'];
+        } else {
+            return [['idea_post', 'idea_put']];
+        }
     }
 }

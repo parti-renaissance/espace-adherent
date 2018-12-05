@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait EntityNameSlugTrait
 {
@@ -17,6 +18,9 @@ trait EntityNameSlugTrait
      * @Algolia\Attribute
      *
      * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
+     *
+     * @Assert\NotBlank(groups={"idea_post", "idea_put"})
+     * @Assert\Length(max=30, groups={"idea_post", "idea_put"})
      */
     protected $name;
 

@@ -201,6 +201,12 @@
         <service id="AppBundle\Serializer\MoocSerializerSubscriber">
             <tag name="jms_serializer.event_subscriber" />
         </service>
+        <service id="AppBundle\Serializer\AuthorNormalizer">
+            <argument type="service" id="api_platform.serializer.normalizer.item"/>
+            <argument type="service" id="security.token_storage" />
+
+            <tag name="serializer.normalizer" priority="128" />
+        </service>
 
         <!-- Timeline -->
         <service id="AppBundle\Command\TimelineImportCommand"/>

@@ -22,11 +22,10 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         $committee = $this->getReference('committee-1');
         $adherent = $this->getReference('adherent-3');
 
-        $ideaName = 'Faire la paix';
         $ideaMakePeace = new Idea(
             Uuid::fromString(self::IDEA_01_UUID),
-            $ideaName,
             $adherent,
+            'Faire la paix',
             $category,
             $theme,
             $committee,
@@ -35,22 +34,20 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         $ideaMakePeace->addNeed($need);
         $this->addReference('idea-peace', $ideaMakePeace);
 
-        $ideaName = 'Favoriser l\'écologie';
         $ideaHelpEcology = new Idea(
             Uuid::fromString(self::IDEA_02_UUID),
-            $ideaName,
             $adherent,
+            'Favoriser l\'écologie',
             $category,
             $theme,
             $committee
         );
         $this->addReference('idea-help-ecology', $ideaHelpEcology);
 
-        $ideaName = 'Aider les gens';
         $ideaHelpPeople = new Idea(
             Uuid::fromString(self::IDEA_03_UUID),
-            $ideaName,
             $adherent,
+            'Aider les gens',
             $category,
             $theme,
             $committee,
