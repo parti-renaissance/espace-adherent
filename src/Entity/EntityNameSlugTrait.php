@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 trait EntityNameSlugTrait
 {
@@ -16,7 +17,8 @@ trait EntityNameSlugTrait
      *
      * @Algolia\Attribute
      *
-     * @JMS\Groups({"public", "committee_read", "citizen_project_read", "idea_list"})
+     * @SymfonySerializer\Groups("idea_list_read")
+     * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
      */
     protected $name;
 
@@ -38,7 +40,8 @@ trait EntityNameSlugTrait
      *
      * @Algolia\Attribute
      *
-     * @JMS\Groups({"public", "committee_read", "citizen_project_read", "idea_list"})
+     * @SymfonySerializer\Groups("idea_list_read")
+     * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
      */
     protected $slug;
 

@@ -177,6 +177,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent6->addTag($this->getReference('adherent_tag_at001'));
         $adherent6->addTag($this->getReference('adherent_tag_at002'));
         $adherent6->addTag($this->getReference('adherent_tag_at003'));
+        $adherent6->addTag($this->getReference('adherent_tag_at007'));
         $adherent6->addReferentTag($this->getReference('referent_tag_13'));
         $this->addReference('adherent-6', $adherent6);
 

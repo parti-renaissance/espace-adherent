@@ -5,6 +5,7 @@ namespace AppBundle\Entity\IdeasWorkshop;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
  * @ORM\Entity
@@ -33,6 +34,7 @@ class Need
     /**
      * @var string
      *
+     * @SymfonySerializer\Groups("idea_list_read")
      * @ORM\Column
      */
     protected $name;
@@ -40,6 +42,7 @@ class Need
     /**
      * @var bool
      *
+     * @SymfonySerializer\Groups("idea_list_read")
      * @ORM\Column(type="boolean")
      */
     private $enabled;
