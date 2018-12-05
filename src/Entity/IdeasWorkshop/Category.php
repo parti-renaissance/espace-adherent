@@ -49,6 +49,7 @@ class Category implements EnabledInterface
     /**
      * @var string
      *
+     * @SymfonySerializer\Groups("idea_list_read")
      * @ORM\Column
      *
      * @SymfonySerializer\Groups({"idea_category_read", "idea_list_read"})

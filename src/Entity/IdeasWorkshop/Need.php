@@ -49,6 +49,7 @@ class Need implements EnabledInterface
     /**
      * @var string
      *
+     * @SymfonySerializer\Groups("idea_list_read")
      * @ORM\Column
      *
      * @SymfonySerializer\Groups({"need_read", "idea_list_read"})
