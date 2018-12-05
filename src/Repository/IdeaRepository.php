@@ -3,7 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
+use AppBundle\Entity\IdeasWorkshop\ThreadStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -14,49 +14,39 @@ class IdeaRepository extends ServiceEntityRepository
         parent::__construct($registry, Idea::class);
     }
 
-    public function findIdeasByStatusThemeCategoryAndName(
-        int $limit,
-        int $offset,
-        string $status,
-        string $theme = null,
-        string $category = null,
-        string $name = null
-    ): array {
-        $qb = $this->createQueryBuilder('idea');
-
-        $qb
-            ->where('idea.status != :unpublishedStatus')
-            ->setParameter('unpublishedStatus', IdeaStatusEnum::UNPUBLISHED)
-            ->andwhere('LOWER(idea.status) = :status')
-            ->setParameter('status', strtolower($status))
-        ;
-
-        if (!empty($name)) {
-            $qb
-                ->andWhere('idea.name LIKE :name')
-                ->setParameter('name', '%'.($name).'%')
-            ;
-        }
-
-        if ($theme) {
-            $qb
-                ->andWhere('idea.theme = :theme')
-                ->setParameter('theme', $theme)
-            ;
-        }
-
-        if ($category) {
-            $qb
-                ->andWhere('idea.category = :category')
-                ->setParameter('category', $category)
-            ;
-        }
-
-        return $qb
-            ->setMaxResults($limit)
-            ->setFirstResult($offset)
+    public function countIdeaContributors(Idea $idea): int
+    {
+        return $this->createQueryBuilder('idea')
+            ->select('COUNT(adherent)')
+            ->innerJoin('idea.answers', 'answers')
+            ->innerJoin('answers.threads', 'threads')
+            ->innerJoin('threads.comments', 'comments')
+            ->innerJoin('comments.author', 'adherent')
+            ->where('idea = :idea')
+            ->setParameter('idea', $idea)
+            ->andWhere('comments.deletedAt IS NULL')
+            ->andWhere('threads.status = :status')
+            ->setParameter('status', ThreadStatusEnum::APPROVED)
             ->getQuery()
-            ->getResult()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function countThreadComments(Idea $idea): int
+    {
+        return $this
+            ->createQueryBuilder('idea')
+            ->select('COUNT(threadComment)')
+            ->innerJoin('idea.answers', 'answer')
+            ->innerJoin('answer.threads', 'thread')
+            ->innerJoin('thread.comments', 'threadComment')
+            ->where('idea = :idea')
+            ->setParameter('idea', $idea)
+            ->andWhere('threadComment.deletedAt IS NULL')
+            ->andWhere('thread.status != :status')
+            ->setParameter('status', ThreadStatusEnum::DELETED)
+            ->getQuery()
+            ->getSingleScalarResult()
         ;
     }
 }
