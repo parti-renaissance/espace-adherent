@@ -12,6 +12,8 @@ use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\District;
+use AppBundle\Entity\IdeasWorkshop\Idea;
+use AppBundle\Entity\IdeasWorkshop\ThreadStatusEnum;
 use AppBundle\Entity\ReferentManagedArea;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Membership\CitizenProjectNotificationDistance;
@@ -741,6 +743,24 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->andWhere('adherent.status = :status')
             ->setParameter('tags', $managedArea->getTags())
             ->setParameter('status', Adherent::ENABLED)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function countIdeaContributors(Idea $idea): int
+    {
+        return $this->createQueryBuilder('adherent')
+            ->select('COUNT(adherent)')
+            ->innerJoin('adherent.ideas', 'ideas')
+            ->innerJoin('ideas.answers', 'answers')
+            ->innerJoin('answers.threads', 'threads')
+            ->innerJoin('threads.comments', 'comments')
+            ->where('ideas IN(:idea)')
+            ->setParameter('idea', $idea)
+            ->andWhere('comments.deletedAt IS NULL')
+            ->andWhere('threads.status = :status')
+            ->setParameter('status', ThreadStatusEnum::APPROVED)
             ->getQuery()
             ->getSingleScalarResult()
         ;

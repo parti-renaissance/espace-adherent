@@ -4,6 +4,7 @@ namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -80,7 +81,7 @@ class Guideline
         $this->questions->removeElement($question);
     }
 
-    public function getQuestions(): ArrayCollection
+    public function getQuestions(): Collection
     {
         return $this->questions;
     }

@@ -3,8 +3,11 @@
 namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\AdherentTag;
+use AppBundle\Entity\AdherentTagEnum;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntityNameSlugTrait;
@@ -14,14 +17,21 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
-use JMS\Serializer\Annotation as JMS;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
- *     collectionOperations={"get"},
- *     itemOperations={"get"},
+ *     collectionOperations={"get": {"method": "GET"}},
+ *     itemOperations={"get": {"method": "GET"}},
+ *     attributes={
+ *         "normalization_context": {"groups": {"idea_list_read"}},
+ *         "order": {"createdAt": "ASC"}
+ *     }
  * )
+ *
+ * @ApiFilter(SearchFilter::class, properties={"status": "exact", "name": "partial", "theme": "exact", "author_category": "exact"})
  *
  * @ORM\Entity
  *
@@ -45,24 +55,27 @@ class Idea
     private const PUBLISHED_INTERVAL = 'P3W';
 
     /**
+     * @SymfonySerializer\Groups("idea_list_read")
      * @ORM\ManyToOne(targetEntity="Theme")
      */
     private $theme;
 
     /**
+     * @SymfonySerializer\Groups("idea_list_read")
      * @ORM\ManyToOne(targetEntity="Category")
      */
     private $category;
 
     /**
+     * @SymfonySerializer\Groups("idea_list_read")
      * @ORM\ManyToMany(targetEntity="Need")
      * @ORM\JoinTable(name="ideas_workshop_ideas_needs")
      */
     private $needs;
 
     /**
-     * @JMS\Groups({"idea_list"})
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @SymfonySerializer\Groups("idea_list_read")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent", inversedBy="ideas")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $author;
@@ -70,7 +83,7 @@ class Idea
     /**
      * @var \DateTime
      *
-     * @JMS\Groups({"idea_list"})
+     * @SymfonySerializer\Groups("idea_list_read")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $publishedAt;
@@ -78,7 +91,7 @@ class Idea
     /**
      * @var Committee
      *
-     * @JMS\Groups({"idea_list"})
+     * @SymfonySerializer\Groups("idea_list_read")
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
      */
     private $committee;
@@ -89,6 +102,7 @@ class Idea
      *     strict=true,
      * )
      *
+     * @SymfonySerializer\Groups("idea_list_read")
      * @ORM\Column(length=11, options={"default": IdeaStatusEnum::DRAFT})
      */
     private $status;
@@ -96,6 +110,7 @@ class Idea
     /**
      * @var bool
      *
+     * @SymfonySerializer\Groups("idea_list_read")
      * @ORM\Column(type="boolean", options={"default": 0})
      */
     private $withCommittee;
@@ -156,7 +171,7 @@ class Idea
         $this->category = $category;
     }
 
-    public function getNeeds(): ArrayCollection
+    public function getNeeds(): Collection
     {
         return $this->needs;
     }
@@ -259,9 +274,7 @@ class Idea
     }
 
     /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("days_before_deadline"),
-     * @JMS\Groups({"idea_list"})
+     * @SymfonySerializer\Groups("idea_list_read")
      */
     public function getDaysBeforeDeadline(): int
     {
@@ -291,27 +304,34 @@ class Idea
         return IdeaStatusEnum::UNPUBLISHED === $this->status;
     }
 
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("uuid"),
-     * @JMS\Groups({"idea_list"})
-     */
     public function getUuidAsString(): string
     {
         return $this->getUuid()->toString();
     }
 
     /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("answers"),
-     * @JMS\Groups({"idea_list"})
+     * @SymfonySerializer\Groups("idea_list_read")
      */
-    public function getAnswerSerialized(): Collection
+    public function getVotesCount(): int
     {
-        return $this->answers
-            ->filter(function (Answer $answer) {
-                return !$answer->getThreads()->isEmpty();
-            })
-        ;
+        return $this->votes->count();
+    }
+
+    /**
+     * @SymfonySerializer\Groups("idea_list_read")
+     */
+    public function getAuthorCategory(): string
+    {
+        if ($this->withCommittee && $this->committee) {
+            return AuthorCategoryEnum::COMMITTEE;
+        } else {
+            $ideaTag = $this->author->getTags()
+                ->filter(function (AdherentTag $adherentTag) {
+                    return AdherentTagEnum::IDEAS === $adherentTag->getName();
+                })
+            ;
+
+            return $ideaTag ? AuthorCategoryEnum::QG : AuthorCategoryEnum::ADHERENT;
+        }
     }
 }
