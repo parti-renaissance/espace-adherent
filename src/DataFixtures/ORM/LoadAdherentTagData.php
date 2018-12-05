@@ -3,19 +3,21 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\AdherentTag;
+use AppBundle\Entity\AdherentTagEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadAdherentTagData extends AbstractFixture implements FixtureInterface
 {
-    const ADHERENT_TAG = [
-        'AT001' => 'Élu',
-        'AT002' => 'Très actif',
-        'AT003' => 'Actif',
-        'AT004' => 'Peu actif',
-        'AT005' => 'Médiation',
-        'AT006' => 'Suppléant',
+    public const ADHERENT_TAG = [
+        'AT001' => AdherentTagEnum::ELECTED,
+        'AT002' => AdherentTagEnum::VERY_ACTIVE,
+        'AT003' => AdherentTagEnum::ACTIVE,
+        'AT004' => AdherentTagEnum::LOW_ACTIVE,
+        'AT005' => AdherentTagEnum::MEDIATION,
+        'AT006' => AdherentTagEnum::SUBSTITUTE,
+        'AT007' => AdherentTagEnum::IDEAS,
     ];
 
     public function load(ObjectManager $manager)

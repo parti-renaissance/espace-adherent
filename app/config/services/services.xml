@@ -208,6 +208,11 @@
             <tag name="jms_serializer.event_subscriber" />
         </service>
 
+        <!-- Normalizer -->
+        <service id="AppBundle\Serializer\IdeasWorkshopSerializerNormalizer">
+            <argument type="service" id="api_platform.serializer.normalizer.item" />
+        </service>
+
         <!-- Timeline -->
         <service id="AppBundle\Command\TimelineImportCommand"/>
         <service id="AppBundle\Command\TimelineSynchronizeCommand"/>
@@ -376,6 +381,10 @@
             <tag name="request.param_converter" converter="querystring" priority="false" />
             <argument type="service" id="doctrine" on-invalid="ignore" />
             <argument type="service" id="sensio_framework_extra.converter.doctrine.orm.expression_language" on-invalid="null" />
+        </service>
+
+        <service id="AppBundle\Doctrine\IdeaExtension">
+            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
     </services>
 </container>
