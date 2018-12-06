@@ -57,6 +57,15 @@ a {
         display: block;
     }
 
+    &.link--blue--dark {
+        color: $blue--dark;
+        border-color: $blue--dark;
+
+        &:hover {
+            @include hover($blue--dark);
+        }
+    }
+
     &.link--blue {
         color: $blue;
         border-color: $blue;

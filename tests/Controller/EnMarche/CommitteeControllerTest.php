@@ -445,7 +445,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
     {
         $this->assertContains(
             'Connectez-vous pour pouvoir contacter les responsables de comité.',
-            $crawler->filter('.committee__card > .text--small')->text()
+            $crawler->filter('.committee__card > .text--summary')->text()
         );
     }
 
