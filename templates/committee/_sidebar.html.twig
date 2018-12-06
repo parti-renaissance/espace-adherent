@@ -20,20 +20,20 @@
             Administration
         </h5>
         {% if not has_role_user %}
-            <span class="text--small">Connectez-vous pour pouvoir contacter les responsables de comité.</span>
+            <span class="text--summary text--gray">Connectez-vous pour pouvoir contacter les responsables de comité.</span>
         {% endif %}
         <ul class="committee__hosts">
             {% for host in committee_hosts %}
                 <li class="committee-host text--body text--bold">
                     <div>
                         {{ has_role_adherent ? host.fullName : host.partialName }}
-                        <span class="text--normal text--small text--gray b__nudge--bottom">{{ host.isSupervisorOf(committee) ? 'animateur' : 'co-animateur' }}</span>
+                        <span class="text--normal text--gray b__nudge--bottom">{{ host.isSupervisorOf(committee) ? 'animateur' : 'co-animateur' }}</span>
                     </div>
                     {% if is_host and app.user.equals(host) %}
                         (vous)
                     {% elseif has_role_user %}
                         <a href="{{ path('app_adherent_contact', {'uuid': host.uuid, 'from': 'committee', 'id': committee.uuid.toString}) }}"
-                           class="link--no-decor text--blue text--normal">
+                           class="link--no-decor text--blue--dark text--normal">
                             Contacter
                         </a>
                     {% endif %}
@@ -47,8 +47,9 @@
             Localisation
         </h5>
 
-        <div class="text--summary">{{ committee.inlineFormattedAddress }}</div>
-        <a href="https://www.google.com/maps/search/{{ committee.inlineFormattedAddress }}" target="_blank" class="text--body link--blue-dark link--no-decor">Voir carte</a>
+        <div class="text--body">
+            <a href="https://www.google.com/maps/search/{{ committee.postalCode }}+{{ committee.cityName }}+{{ committee.countryName }}" target="_blank" class="link--blue--dark link--no-decor">{{ committee.cityName }}</a>
+            {% if committee.postalCode %}({{ committee.postalCode }}){% endif %}
     </div>
 
     {% if committee.socialNetworksLinks|length > 0 %}
