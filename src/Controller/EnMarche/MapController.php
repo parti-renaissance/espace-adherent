@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
@@ -12,12 +13,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class MapController extends Controller
 {
+    use CanaryControllerTrait;
+
     /**
      * @Route("/le-mouvement/la-carte", name="map_committees")
      * @Method("GET")
      */
     public function committeesAction()
     {
+        $this->disableInProduction();
+
         $doctrine = $this->getDoctrine();
 
         return $this->render('map/committees.html.twig', [
