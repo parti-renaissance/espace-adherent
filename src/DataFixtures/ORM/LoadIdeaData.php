@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\IdeasWorkshop\Idea;
+use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -30,7 +31,8 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             $category,
             $theme,
             $committee,
-            new \DateTime()
+            new \DateTime('2018-12-01 10:00:00'),
+            IdeaStatusEnum::PUBLISHED
         );
         $ideaMakePeace->addNeed($need);
         $this->addReference('idea-peace', $ideaMakePeace);
@@ -42,7 +44,8 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             $adherent,
             $category,
             $theme,
-            $committee
+            $committee,
+            new \DateTime('2018-12-02 10:00:00')
         );
         $this->addReference('idea-help-ecology', $ideaHelpEcology);
 
@@ -54,7 +57,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             $category,
             $theme,
             $committee,
-            new \DateTime()
+            new \DateTime('2018-12-03 10:00:00')
         );
         $this->addReference('idea-help-people', $ideaHelpPeople);
 
