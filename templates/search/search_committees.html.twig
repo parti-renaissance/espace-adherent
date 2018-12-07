@@ -12,13 +12,15 @@
     </header>
 
     <div class="l__wrapper">
-        <div class="search__bar--outer l__hide--on-mobile">
-            <a href="{% block button_link %}{{ path('map_committees') }}{% endblock %}"
-               class="search__bar__map-link link--no-decor text--body">
-               <i class="fa fa-map-marker"></i>
-                Voir la carte des {% block button_label %}comités{% endblock %}
-            </a>
-        </div>
+        {% if enable_canary %}
+            <div class="search__bar--outer l__hide--on-mobile">
+                <a href="{% block button_link %}{{ path('map_committees') }}{% endblock %}"
+                   class="search__bar__map-link link--no-decor text--body">
+                   <i class="fa fa-map-marker"></i>
+                    Voir la carte des {% block button_label %}comités{% endblock %}
+                </a>
+            </div>
+        {% endif %}
 
         <ul class="search__bar__toggle">
             {% set currentRoute = app.request.attributes.get('_route') %}
