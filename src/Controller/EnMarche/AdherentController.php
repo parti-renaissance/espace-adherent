@@ -20,6 +20,8 @@ use AppBundle\Form\CitizenProjectCommandType;
 use AppBundle\CitizenProject\CitizenProjectCreationCommand;
 use AppBundle\Geocoder\Exception\GeocodingException;
 use AppBundle\Membership\MemberActivityTracker;
+use AppBundle\Membership\UserEvent;
+use AppBundle\Membership\UserEvents;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CitizenProjectRepository;
 use AppBundle\Repository\EmailRepository;
@@ -34,6 +36,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -107,15 +110,19 @@ class AdherentController extends Controller
      * @Route("/mon-compte/centres-d-interet", name="app_adherent_pin_interests")
      * @Method("GET|POST")
      */
-    public function pinInterestsAction(Request $request): Response
+    public function pinInterestsAction(Request $request, EventDispatcherInterface $dispatcher): Response
     {
-        $form = $this->createForm(AdherentInterestsFormType::class, $this->getUser())
+        $form = $this
+            ->createForm(AdherentInterestsFormType::class, $adherent = $this->getUser())
             ->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications'])
+            ->handleRequest($request)
         ;
 
-        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('info', 'adherent.update_interests.success');
+
+            $dispatcher->dispatch(UserEvents::USER_UPDATE_INTERESTS, new UserEvent($adherent));
 
             return $this->redirectToRoute('app_adherent_pin_interests');
         }
@@ -142,7 +149,7 @@ class AdherentController extends Controller
             $this->get('app.committee.creation_handler')->handle($command);
             $this->addFlash('info', 'committee.creation.success');
 
-            return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $command->getCommittee()->getSlug()]));
+            return $this->redirectToRoute('app_committee_show', ['slug' => $command->getCommittee()->getSlug()]);
         }
 
         return $this->render('adherent/create_committee.html.twig', [
@@ -183,7 +190,7 @@ class AdherentController extends Controller
             $this->get('app.citizen_project.creation_handler')->handle($command, $turnkeyProject);
             $this->addFlash('info', 'citizen_project.creation.success');
 
-            return $this->redirect($this->generateUrl('app_citizen_project_show', ['slug' => $command->getCitizenProject()->getSlug()]));
+            return $this->redirectToRoute('app_citizen_project_show', ['slug' => $command->getCitizenProject()->getSlug()]);
         }
 
         return $this->render('adherent/create_citizen_project.html.twig', [

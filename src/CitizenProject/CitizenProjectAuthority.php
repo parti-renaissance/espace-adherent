@@ -5,15 +5,20 @@ namespace AppBundle\CitizenProject;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectMembership;
+use AppBundle\Membership\UserEvent;
+use AppBundle\Membership\UserEvents;
 use AppBundle\Repository\CitizenProjectMembershipRepository;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CitizenProjectAuthority
 {
     private $membershipRepository;
+    private $dispatcher;
 
-    public function __construct(CitizenProjectMembershipRepository $membershipRepository)
+    public function __construct(CitizenProjectMembershipRepository $membershipRepository, EventDispatcherInterface $dispatcher)
     {
         $this->membershipRepository = $membershipRepository;
+        $this->dispatcher = $dispatcher;
     }
 
     public function isPromotableAdministrator(Adherent $adherent, CitizenProject $citizenProject): bool
@@ -52,6 +57,8 @@ class CitizenProjectAuthority
         }
 
         $membership->setPrivilege($privilege);
+
+        $this->dispatcher->dispatch(UserEvents::USER_UPDATE_CITIZEN_PROJECT_PRIVILEGE, new UserEvent($adherent));
     }
 
     private function getCitizenProjectMembership(Adherent $adherent, CitizenProject $citizenProject): ?CitizenProjectMembership

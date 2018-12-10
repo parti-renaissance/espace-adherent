@@ -251,6 +251,8 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
      * that does not already belongs to list of all members of $destinationCommittee
      *
      * NOTE: this returns poorly hydrated instances of Adherent, but is optimized for merging of committees
+     *
+     * @return Adherent[]|self
      */
     public function findMembersToMerge(Committee $sourceCommittee, Committee $destinationCommittee): AdherentCollection
     {
@@ -259,12 +261,14 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->addEntityResult(Adherent::class, 'a')
             ->addFieldResult('a', 'id', 'id')
             ->addFieldResult('a', 'uuid', 'uuid')
+            ->addFieldResult('a', 'email_address', 'emailAddress')
         ;
 
         $sql = <<<'SQL'
             SELECT
                 a.id,
-                a.uuid
+                a.uuid,
+                a.email_address
             FROM adherents AS a
             INNER JOIN committees_memberships AS cm_src
                 ON cm_src.committee_id = :source_committee

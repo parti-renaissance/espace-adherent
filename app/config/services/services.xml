@@ -116,6 +116,7 @@
         <service id="AppBundle\Validator\BannedAdherentValidator">
             <argument type="service" id="AppBundle\Repository\BannedAdherentRepository" />
         </service>
+        <service id="AppBundle\Membership\AdherentAccountActivationHandler" />
 
         <!-- Event -->
         <service id="AppBundle\Event\EventFactory" public="true" />
@@ -377,5 +378,34 @@
             <argument type="service" id="doctrine" on-invalid="ignore" />
             <argument type="service" id="sensio_framework_extra.converter.doctrine.orm.expression_language" on-invalid="null" />
         </service>
+
+        <!-- Mailchimp -->
+        <service id="AppBundle\Mailchimp\Synchronisation\EventListener\AdherentEventSubscriber" />
+        <service id="AppBundle\Mailchimp\Synchronisation\Driver">
+            <argument type="service" id="csa_guzzle.client.mailchimp_api" />
+            <argument type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
+            <tag name="monolog.logger" channel="mailchimp_sync"/>
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+        </service>
+
+        <service id="AppBundle\Mailchimp\Synchronisation\Manager">
+            <argument key="$interestIds">%mailchimp_interests%</argument>
+            <tag name="monolog.logger" channel="mailchimp_sync"/>
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+        </service>
+
+        <service id="AppBundle\Mailchimp\Synchronisation\Handler\AdherentMessageHandler">
+            <tag name="messenger.message_handler" />
+            <tag name="monolog.logger" channel="mailchimp_sync"/>
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+        </service>
+
+        <service id="AppBundle\Normalizer\UuidNormalizer" />
     </services>
 </container>

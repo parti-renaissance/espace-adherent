@@ -10,7 +10,7 @@ trait EntityPersonNameTrait
     /**
      * @ORM\Column(length=50)
      *
-     * @JMS\Groups({"user_profile", "public", "idea_list"})
+     * @JMS\Groups({"change_diff", "user_profile", "public", "idea_list"})
      * @JMS\SerializedName("firstName")
      */
     private $firstName = '';
@@ -18,7 +18,7 @@ trait EntityPersonNameTrait
     /**
      * @ORM\Column(length=50)
      *
-     * @JMS\Groups({"user_profile", "public", "idea_list"})
+     * @JMS\Groups({"change_diff", "user_profile", "public", "idea_list"})
      * @JMS\SerializedName("lastName")
      */
     private $lastName = '';

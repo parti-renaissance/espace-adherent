@@ -59,9 +59,11 @@ class AdherentAdmin extends AbstractAdmin
     private $emailSubscriptionHistoryManager;
 
     /**
-     * @var array Useful on update to know state before update
+     * State of adherent data before update
+     *
+     * @var Adherent
      */
-    private $oldEmailsSubscriptions;
+    private $beforeUpdate;
 
     public function __construct(
         $code,
@@ -539,10 +541,15 @@ class AdherentAdmin extends AbstractAdmin
      */
     public function setSubject($subject)
     {
-        if (null === $this->oldEmailsSubscriptions) {
-            $this->oldEmailsSubscriptions = $subject->getSubscriptionTypes();
+        if (null === $this->beforeUpdate) {
+            $this->beforeUpdate = $subject;
         }
         parent::setSubject($subject);
+    }
+
+    public function preUpdate($object)
+    {
+        $this->dispatcher->dispatch(UserEvents::USER_BEFORE_UPDATE, new UserEvent($this->beforeUpdate));
     }
 
     /**
@@ -551,9 +558,9 @@ class AdherentAdmin extends AbstractAdmin
     public function postUpdate($object)
     {
         // No need to handle referent tags update as they are not update-able from admin
-        $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object, $this->oldEmailsSubscriptions);
+        $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object, $subscriptionTypes = $this->beforeUpdate->getSubscriptionTypes());
 
-        $this->dispatcher->dispatch(UserEvents::USER_UPDATE_SUBSCRIPTIONS, new UserEvent($object, null, null, $this->oldEmailsSubscriptions));
+        $this->dispatcher->dispatch(UserEvents::USER_UPDATE_SUBSCRIPTIONS, new UserEvent($object, null, null, $subscriptionTypes));
         $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($object));
     }
 

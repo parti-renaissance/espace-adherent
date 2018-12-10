@@ -53,7 +53,7 @@ class ReferentTag
      * @Assert\Length(max=100)
      * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="referent_tag.code.invalid")
      *
-     * @Serializer\Groups("public")
+     * @Serializer\Groups({"change_diff", "public"})
      */
     private $code;
 

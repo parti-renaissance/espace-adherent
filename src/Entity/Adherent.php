@@ -62,13 +62,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(length=6, nullable=true)
+     *
+     * @JMS\Groups({"change_diff"})
      */
     private $gender;
 
     /**
      * @ORM\Column
      *
-     * @JMS\Groups({"user_profile", "public"})
+     * @JMS\Groups({"change_diff", "user_profile", "public"})
      * @JMS\SerializedName("emailAddress")
      */
     private $emailAddress;
@@ -80,6 +82,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     *
+     * @JMS\Groups({"change_diff"})
      */
     private $birthdate;
 
@@ -116,6 +120,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @JMS\Groups({"change_diff"})
      */
     private $interests = [];
 
@@ -629,11 +635,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->interests;
     }
 
-    public function getInterestsAsJson(): string
-    {
-        return \GuzzleHttp\json_encode($this->interests, \JSON_PRETTY_PRINT);
-    }
-
     public function setInterests(array $interests): void
     {
         $this->interests = $interests;
@@ -1071,6 +1072,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getReferentTags(): Collection
     {
         return $this->referentTags;
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\Groups({"change_diff"})
+     * @JMS\SerializedName("referentTagCodes")
+     */
+    public function getReferentTagCodes(): array
+    {
+        return array_map(function (ReferentTag $tag) { return $tag->getCode(); }, $this->referentTags->toArray());
     }
 
     public function addReferentTag(ReferentTag $referentTag): void

@@ -54,7 +54,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"user_profile", "public", "committee_read", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"change_diff", "user_profile", "public", "committee_read", "event_read", "citizen_action_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("zipCode")
      */
@@ -65,7 +65,7 @@ trait EntityPostAddressTrait
 
     /**
      * @Algolia\Attribute(algoliaName="address_city")
-     * @JMS\Groups({"committee_read", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"change_diff", "committee_read", "event_read", "citizen_action_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("city")
      */

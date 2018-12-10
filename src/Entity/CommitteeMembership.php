@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Exception\CommitteeMembershipException;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -31,11 +30,11 @@ use Ramsey\Uuid\UuidInterface;
  */
 class CommitteeMembership
 {
-    const COMMITTEE_HOST = 'HOST';
-    const COMMITTEE_FOLLOWER = 'FOLLOWER';
-    const COMMITTEE_SUPERVISOR = 'SUPERVISOR';
+    public const COMMITTEE_HOST = 'HOST';
+    public const COMMITTEE_FOLLOWER = 'FOLLOWER';
+    public const COMMITTEE_SUPERVISOR = 'SUPERVISOR';
 
-    const PRIVILEGES = [
+    public const PRIVILEGES = [
         self::COMMITTEE_HOST,
         self::COMMITTEE_FOLLOWER,
         self::COMMITTEE_SUPERVISOR,
@@ -201,27 +200,9 @@ class CommitteeMembership
         return $this->isFollower();
     }
 
-    public function promote(): void
-    {
-        if (!$this->isPromotableHost()) {
-            throw CommitteeMembershipException::createNotPromotableHostPrivilegeException($this->uuid);
-        }
-
-        $this->privilege = self::COMMITTEE_HOST;
-    }
-
     public function isDemotableHost(): bool
     {
         return $this->isHostMember();
-    }
-
-    public function demote(): void
-    {
-        if (!$this->isDemotableHost()) {
-            throw CommitteeMembershipException::createNotDemotableFollowerPrivilegeException($this->uuid);
-        }
-
-        $this->privilege = self::COMMITTEE_FOLLOWER;
     }
 
     public function getSubscriptionDate(): \DateTimeImmutable

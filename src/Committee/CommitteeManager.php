@@ -16,6 +16,8 @@ use AppBundle\Exception\CommitteeMembershipException;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Coordinator\Filter\CommitteeFilter;
 use AppBundle\Intl\FranceCitiesBundle;
+use AppBundle\Membership\UserEvent;
+use AppBundle\Membership\UserEvents;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
@@ -203,27 +205,29 @@ class CommitteeManager
     /**
      * Promotes an adherent to be a host of a committee.
      */
-    public function promote(Adherent $adherent, Committee $committee, bool $flush = true): void
+    public function promote(Adherent $adherent, Committee $committee): void
     {
         $membership = $this->getMembershipRepository()->findMembership($adherent, $committee);
-        $membership->promote();
 
-        if ($flush) {
-            $this->getManager()->flush();
+        if (!$membership->isPromotableHost()) {
+            throw CommitteeMembershipException::createNotPromotableHostPrivilegeException($membership->getUuid());
         }
+
+        $this->changePrivilegeOnMembership($membership, CommitteeMembership::COMMITTEE_HOST, true);
     }
 
     /**
      * Promotes an adherent to be a host of a committee.
      */
-    public function demote(Adherent $adherent, Committee $committee, bool $flush = true): void
+    public function demote(Adherent $adherent, Committee $committee): void
     {
         $membership = $this->getMembershipRepository()->findMembership($adherent, $committee);
-        $membership->demote();
 
-        if ($flush) {
-            $this->getManager()->flush();
+        if (!$membership->isDemotableHost()) {
+            throw CommitteeMembershipException::createNotDemotableFollowerPrivilegeException($membership->getUuid());
         }
+
+        $this->changePrivilegeOnMembership($membership, CommitteeMembership::COMMITTEE_FOLLOWER, true);
     }
 
     /**
@@ -233,6 +237,7 @@ class CommitteeManager
     {
         $committee->approved();
 
+        /** @var Adherent $creator */
         $creator = $this->getAdherentRepository()->findOneByUuid($committee->getCreatedBy());
         $this->changePrivilege($creator, $committee, CommitteeMembership::COMMITTEE_SUPERVISOR, false);
 
@@ -345,9 +350,8 @@ class CommitteeManager
      *
      * @param Adherent  $adherent  The follower
      * @param Committee $committee The committee to follow
-     * @param bool      $flush     Whether or not to flush the transaction
      */
-    public function unfollowCommittee(Adherent $adherent, Committee $committee, bool $flush = true): void
+    public function unfollowCommittee(Adherent $adherent, Committee $committee): void
     {
         if ($adherent->hasLoadedMemberships()) {
             $membership = $adherent->getMembershipFor($committee);
@@ -356,11 +360,11 @@ class CommitteeManager
         }
 
         if ($membership) {
-            $this->doUnfollowCommittee($membership, $committee, $flush);
+            $this->doUnfollowCommittee($membership, $committee);
         }
     }
 
-    private function doUnfollowCommittee(CommitteeMembership $membership, Committee $committee, bool $flush = true): void
+    private function doUnfollowCommittee(CommitteeMembership $membership, Committee $committee): void
     {
         $manager = $this->getManager();
 
@@ -369,9 +373,9 @@ class CommitteeManager
 
         $manager->persist($this->createCommitteeMembershipHistory($membership, CommitteeMembershipAction::LEAVE()));
 
-        if ($flush) {
-            $manager->flush();
-        }
+        $manager->flush();
+
+        $this->dispatcher->dispatch(UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE, new UserEvent($membership->getAdherent()));
     }
 
     private function getManager(): ObjectManager
@@ -411,34 +415,11 @@ class CommitteeManager
 
     public function changePrivilege(Adherent $adherent, Committee $committee, string $privilege, bool $flush = true): void
     {
-        CommitteeMembership::checkPrivilege($privilege);
-
         if (!$committeeMembership = $this->getCommitteeMembership($adherent, $committee)) {
             return;
         }
 
-        if (CommitteeMembership::COMMITTEE_SUPERVISOR === $privilege) {
-            // We can't have more than 1 supervisors per committee
-            if ($this->countCommitteeSupervisors($committee)) {
-                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeException($committeeMembership->getUuid());
-            }
-
-            // Adherent can't be supervisor of multiple committees
-            if ($this->getMembershipRepository()->superviseCommittee($adherent)) {
-                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeForSupervisorException($committeeMembership->getUuid(), $adherent->getEmailAddress());
-            }
-
-            // We can't add a supervisor if committee is not approuved
-            if ($this->getMembershipRepository()->superviseCommittee($adherent)) {
-                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeForNotApprovedCommitteeException($committeeMembership->getUuid(), $committee->getName());
-            }
-        }
-
-        $committeeMembership->setPrivilege($privilege);
-
-        if ($flush) {
-            $this->getManager()->flush();
-        }
+        $this->changePrivilegeOnMembership($committeeMembership, $privilege, $flush);
     }
 
     public function getCoordinatorCommittees(Adherent $coordinator, CommitteeFilter $filter): array
@@ -490,5 +471,37 @@ class CommitteeManager
     private function createCommitteeMembershipHistory(CommitteeMembership $membership, CommitteeMembershipAction $action): CommitteeMembershipHistory
     {
         return new CommitteeMembershipHistory($membership, $action);
+    }
+
+    private function changePrivilegeOnMembership(CommitteeMembership $membership, string $privilege, bool $flush = true): void
+    {
+        CommitteeMembership::checkPrivilege($privilege);
+
+        $adherent = $membership->getAdherent();
+
+        if (CommitteeMembership::COMMITTEE_SUPERVISOR === $privilege) {
+            // We can't have more than 1 supervisors per committee
+            if ($this->countCommitteeSupervisors($committee = $membership->getCommittee())) {
+                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeException($membership->getUuid());
+            }
+
+            // Adherent can't be supervisor of multiple committees
+            if ($this->getMembershipRepository()->superviseCommittee($adherent)) {
+                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeForSupervisorException($membership->getUuid(), $adherent->getEmailAddress());
+            }
+
+            // We can't add a supervisor if committee is not approved
+            if ($this->getMembershipRepository()->superviseCommittee($adherent)) {
+                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeForNotApprovedCommitteeException($membership->getUuid(), $committee->getName());
+            }
+        }
+
+        $membership->setPrivilege($privilege);
+
+        if ($flush) {
+            $this->getManager()->flush();
+        }
+
+        $this->dispatcher->dispatch(UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE, new UserEvent($adherent));
     }
 }
