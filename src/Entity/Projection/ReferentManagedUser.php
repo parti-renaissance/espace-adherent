@@ -222,8 +222,8 @@ class ReferentManagedUser
         \DateTime $createdAt = null,
         string $gender = null,
         array $supervisorTags = [],
-        ?array $citizenProjects,
-        ?array $citizenProjectsOrganizer
+        array $citizenProjects = null,
+        array $citizenProjectsOrganizer = null
     ) {
         $this->status = $status;
         $this->type = $type;

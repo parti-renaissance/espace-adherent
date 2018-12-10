@@ -8,6 +8,9 @@ use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\CommitteeApprovalConfirmationMessage;
 use AppBundle\Mailer\Message\CommitteeApprovalReferentMessage;
 use AppBundle\Mailer\Message\CommitteeNewFollowerMessage;
+use AppBundle\Membership\UserEvent;
+use AppBundle\Membership\UserEvents;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CommitteeManagementAuthority
@@ -15,15 +18,18 @@ class CommitteeManagementAuthority
     private $manager;
     private $mailer;
     private $urlGenerator;
+    private $dispatcher;
 
     public function __construct(
         CommitteeManager $manager,
         UrlGeneratorInterface $urlGenerator,
-        MailerService $mailer
+        MailerService $mailer,
+        EventDispatcherInterface $dispatcher
     ) {
         $this->manager = $manager;
-        $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
+        $this->mailer = $mailer;
+        $this->dispatcher = $dispatcher;
     }
 
     public function approve(Committee $committee): void
@@ -80,6 +86,8 @@ class CommitteeManagementAuthority
     public function followCommittee(Adherent $adherent, Committee $committee): void
     {
         $this->manager->followCommittee($adherent, $committee);
+
+        $this->dispatcher->dispatch(UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE, new UserEvent($adherent));
 
         if (!$hosts = $this->manager->getCommitteeHosts($committee)->toArray()) {
             return;

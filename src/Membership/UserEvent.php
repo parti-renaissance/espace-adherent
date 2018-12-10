@@ -6,7 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\SubscriptionType;
 use Symfony\Component\EventDispatcher\Event;
 
-class UserEvent extends Event
+class UserEvent extends Event implements UserEventInterface
 {
     private $user;
     private $allowEmailNotifications;

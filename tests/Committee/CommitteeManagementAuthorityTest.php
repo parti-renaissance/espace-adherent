@@ -13,6 +13,7 @@ use AppBundle\Mailer\Message\CommitteeApprovalConfirmationMessage;
 use AppBundle\Mailer\Message\CommitteeApprovalReferentMessage;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -25,7 +26,7 @@ class CommitteeManagementAuthorityTest extends TestCase
         $committee = $this->createCommittee(LoadAdherentData::COMMITTEE_1_UUID, 'Paris 8e');
         $animator = $this->createAnimator(LoadAdherentData::ADHERENT_3_UUID);
 
-        $manager = $this->createManager($committee, $animator);
+        $manager = $this->createManager($animator);
         // ensure committee is approved
         $manager->expects($this->once())->method('approveCommittee')->with($committee);
 
@@ -41,7 +42,7 @@ class CommitteeManagementAuthorityTest extends TestCase
             'comite-lille-beach'
         ));
 
-        $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailer);
+        $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailer, $this->createMock(EventDispatcherInterface::class));
         $committeeManagementAuthority->approve($committee);
     }
 
@@ -52,7 +53,7 @@ class CommitteeManagementAuthorityTest extends TestCase
         $referent = $this->createMock(Adherent::class);
 
         $referents = new AdherentCollection([$referent]);
-        $manager = $this->createManager($committee, $animator, $referents);
+        $manager = $this->createManager($animator, $referents);
 
         $mailer = $this->createMock(MailerService::class);
         $mailer->expects($this->at(0))
@@ -68,7 +69,7 @@ class CommitteeManagementAuthorityTest extends TestCase
             LoadAdherentData::COMMITTEE_1_UUID
         ));
 
-        $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailer);
+        $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailer, $this->createMock(EventDispatcherInterface::class));
         $committeeManagementAuthority->notifyReferentsForApproval($committee);
     }
 
@@ -83,7 +84,7 @@ class CommitteeManagementAuthorityTest extends TestCase
 
         $referents = new AdherentCollection([$referent, $animator]);
 
-        $manager = $this->createManager($committee, $animator, $referents);
+        $manager = $this->createManager($animator, $referents);
 
         $mailer = $this->createMock(MailerService::class);
         // ensure no mail is sent
@@ -92,7 +93,7 @@ class CommitteeManagementAuthorityTest extends TestCase
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
         $urlGenerator->expects($this->never())->method('generate')->with($this->anything());
 
-        $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailer);
+        $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailer, $this->createMock(EventDispatcherInterface::class));
         $committeeManagementAuthority->notifyReferentsForApproval($committee);
     }
 
@@ -117,7 +118,7 @@ class CommitteeManagementAuthorityTest extends TestCase
         return $animator;
     }
 
-    private function createManager(Committee $committee, ?Adherent $animator = null, ?AdherentCollection $referents = null): CommitteeManager
+    private function createManager(?Adherent $animator = null, ?AdherentCollection $referents = null): CommitteeManager
     {
         $manager = $this->createMock(CommitteeManager::class);
 
