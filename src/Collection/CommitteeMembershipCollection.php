@@ -7,8 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class CommitteeMembershipCollection extends ArrayCollection
 {
-    const INCLUDE_SUPERVISORS = 1;
-    const EXCLUDE_SUPERVISORS = 2;
+    public const INCLUDE_SUPERVISORS = 1;
+    public const EXCLUDE_SUPERVISORS = 2;
 
     public function getAdherentUuids(): array
     {

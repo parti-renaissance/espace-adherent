@@ -56,7 +56,7 @@ class CommitteeController extends Controller
                     $this->addFlash('info', 'committee.message_created');
                 }
 
-                return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
+                return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
             }
         }
 
@@ -92,7 +92,7 @@ class CommitteeController extends Controller
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('info', 'committee.message_edited');
 
-            return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
+            return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
 
         $committeeManager = $this->getCommitteeManager();
@@ -129,7 +129,7 @@ class CommitteeController extends Controller
 
         $this->addFlash('info', 'committee.message_deleted');
 
-        return $this->redirect($this->generateUrl('app_committee_show', ['slug' => $committee->getSlug()]));
+        return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
     }
 
     /**

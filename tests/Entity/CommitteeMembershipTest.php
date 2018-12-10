@@ -69,41 +69,6 @@ class CommitteeMembershipTest extends TestCase
         $this->assertFalse($membership->canHostCommittee());
     }
 
-    public function testPromoteFollowerMembershipToHostMembership()
-    {
-        $membership = CommitteeMembership::createForAdherent($this->createCommittee(), $adherent = $this->createAdherent());
-
-        $this->assertFalse($membership->isSupervisor());
-        $this->assertFalse($membership->isHostMember());
-        $this->assertTrue($membership->isFollower());
-        $this->assertFalse($membership->canHostCommittee());
-
-        $membership->promote();
-
-        $this->assertFalse($membership->isSupervisor());
-        $this->assertTrue($membership->isHostMember());
-        $this->assertFalse($membership->isFollower());
-        $this->assertTrue($membership->canHostCommittee());
-    }
-
-    /**
-     * @expectedException \AppBundle\Exception\CommitteeMembershipException
-     */
-    public function testUnableToPromoteHostMembership()
-    {
-        $membership = CommitteeMembership::createForHost($this->createCommittee(), $this->createAdherent());
-        $membership->promote();
-    }
-
-    /**
-     * @expectedException \AppBundle\Exception\CommitteeMembershipException
-     */
-    public function testUnableToPromoteSupervisorMembership()
-    {
-        $membership = CommitteeMembership::createForSupervisor($this->createCommittee(), $this->createAdherent());
-        $membership->promote();
-    }
-
     public function testChangePrivileges()
     {
         $membership = CommitteeMembership::createForSupervisor($this->createCommittee(), $this->createAdherent());

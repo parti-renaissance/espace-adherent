@@ -195,7 +195,7 @@ class DonationController extends Controller
                 'Aucun don mensuel n\'a été trouvé'
             );
 
-            return $this->redirect($this->generateUrl('app_user_profile_donation'));
+            return $this->redirectToRoute('app_user_profile_donation');
         }
 
         $form = $this->createForm(ConfirmActionType::class)->handleRequest($request);
@@ -220,7 +220,7 @@ class DonationController extends Controller
                 }
             }
 
-            return $this->redirect($this->generateUrl('app_user_profile_donation'));
+            return $this->redirectToRoute('app_user_profile_donation');
         }
 
         return $this->render('user/donation_subscription_cancel_confirmation.html.twig', [

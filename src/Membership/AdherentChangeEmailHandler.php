@@ -48,8 +48,11 @@ class AdherentChangeEmailHandler
 
     public function handleValidationRequest(Adherent $adherent, AdherentChangeEmailToken $token): void
     {
+        $this->dispatcher->dispatch(UserEvents::USER_BEFORE_UPDATE, new UserEvent($adherent));
+
         $adherent->changeEmail($token);
         $this->manager->flush();
+
         $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($adherent));
     }
 

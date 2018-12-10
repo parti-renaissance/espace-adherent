@@ -745,4 +745,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->getSingleScalarResult()
         ;
     }
+
+    public function refresh(Adherent $adherent): void
+    {
+        $this->getEntityManager()->refresh($adherent);
+    }
 }
