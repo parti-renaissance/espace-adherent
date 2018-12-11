@@ -63,8 +63,9 @@ class Idea
     /**
      * @JMS\Groups({"idea_list"})
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private $adherent;
+    private $author;
 
     /**
      * @var \DateTime
@@ -88,35 +89,50 @@ class Idea
      *     strict=true,
      * )
      *
-     * @ORM\Column(length=11, options={"default": IdeaStatusEnum::PENDING})
+     * @ORM\Column(length=11, options={"default": IdeaStatusEnum::DRAFT})
      */
     private $status;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $withCommittee;
 
     /**
      * @ORM\OneToMany(targetEntity="Answer", mappedBy="idea")
      */
     private $answers;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Vote", mappedBy="idea")
+     */
+    private $votes;
+
     public function __construct(
         UuidInterface $uuid,
         string $name,
-        Adherent $adherent,
+        Adherent $author,
         Category $category,
         Theme $theme,
+        bool $withCommittee = false,
         Committee $committee = null,
         \DateTime $publishedAt = null,
-        string $status = IdeaStatusEnum::PENDING
+        string $status = IdeaStatusEnum::DRAFT
     ) {
         $this->uuid = $uuid;
         $this->setName($name);
-        $this->adherent = $adherent;
+        $this->author = $author;
         $this->category = $category;
         $this->theme = $theme;
         $this->committee = $committee;
         $this->publishedAt = $publishedAt;
         $this->status = $status;
+        $this->withCommittee = $withCommittee;
         $this->needs = new ArrayCollection();
         $this->answers = new ArrayCollection();
+        $this->votes = new ArrayCollection();
         $this->createdAt = new \DateTime();
     }
 
@@ -157,14 +173,14 @@ class Idea
         $this->needs->removeElement($need);
     }
 
-    public function getAdherent(): Adherent
+    public function getAuthor(): Adherent
     {
-        return $this->adherent;
+        return $this->author;
     }
 
-    public function setAdherent(Adherent $adherent): void
+    public function setAuthor(Adherent $author): void
     {
-        $this->adherent = $adherent;
+        $this->author = $author;
     }
 
     public function getPublishedAt(): ?\DateTime
@@ -197,6 +213,16 @@ class Idea
         $this->status = $status;
     }
 
+    public function isWithCommittee(): bool
+    {
+        return $this->withCommittee;
+    }
+
+    public function setWithCommittee(bool $withCommittee): void
+    {
+        $this->withCommittee = $withCommittee;
+    }
+
     public function addAnswer(Answer $answer): void
     {
         if (!$this->answers->contains($answer)) {
@@ -215,6 +241,23 @@ class Idea
         return $this->answers;
     }
 
+    public function addVote(Vote $vote): void
+    {
+        if (!$this->votes->contains($vote)) {
+            $this->votes->add($vote);
+        }
+    }
+
+    public function removeVote(Vote $vote): void
+    {
+        $this->votes->removeElement($vote);
+    }
+
+    public function getVotes(): ArrayCollection
+    {
+        return $this->votes;
+    }
+
     /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("days_before_deadline"),
@@ -228,19 +271,24 @@ class Idea
         return $deadline <= $now ? 0 : $deadline->diff($now)->d;
     }
 
+    public function isDraft(): bool
+    {
+        return IdeaStatusEnum::DRAFT === $this->status;
+    }
+
     public function isPending(): bool
     {
         return IdeaStatusEnum::PENDING === $this->status;
     }
 
-    public function isPublished(): bool
+    public function isFinalized(): bool
     {
-        return IdeaStatusEnum::PUBLISHED === $this->status;
+        return IdeaStatusEnum::FINALIZED === $this->status;
     }
 
-    public function isRefused(): bool
+    public function isUnpublished(): bool
     {
-        return IdeaStatusEnum::REFUSED === $this->status;
+        return IdeaStatusEnum::UNPUBLISHED === $this->status;
     }
 
     /**

@@ -11,20 +11,35 @@ class LoadIdeaCommentData extends AbstractFixture implements DependentFixtureInt
 {
     public function load(ObjectManager $manager)
     {
-        $thread = $this->getReference('thread');
+        $threadAQProblemAdherent2 = $this->getReference('thread-aq-problem');
+        $threadAQCompareAdherent5 = $this->getReference('thread-aq-compare');
+
+        $commentFromAdherent6 = new ThreadComment(
+            'Aenean viverra efficitur lorem',
+            $this->getReference('adherent-6'),
+            $threadAQProblemAdherent2
+        );
+
+        $commentFromAdherent7 = new ThreadComment(
+            'Lorem Ipsum Commentaris',
+            $this->getReference('adherent-7'),
+            $threadAQProblemAdherent2
+        );
 
         $commentFromAdherent8 = new ThreadComment(
             'Lorem Ipsum Commentaris',
             $this->getReference('adherent-8'),
-            $thread
+            $threadAQProblemAdherent2
         );
 
         $commentFromAdherent9 = new ThreadComment(
             'Aenean viverra efficitur lorem',
             $this->getReference('adherent-9'),
-            $thread
+            $threadAQCompareAdherent5
         );
 
+        $manager->persist($commentFromAdherent6);
+        $manager->persist($commentFromAdherent7);
         $manager->persist($commentFromAdherent8);
         $manager->persist($commentFromAdherent9);
 

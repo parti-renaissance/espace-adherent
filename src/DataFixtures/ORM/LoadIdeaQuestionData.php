@@ -31,6 +31,7 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
             2,
             $isMandatory
         );
+        $this->addReference('question-answer', $questionProblem);
         $guidelineMainFeature->addQuestion($questionAnswer);
 
         $questionCompare = new Question(
@@ -38,6 +39,7 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
             'Expliquez, en maximum 1700 caractères (espaces compris), si et comment cette proposition a été étudiée ou mise en oeuvre en France ou à l’étranger.',
             3
         );
+        $this->addReference('question-compare', $questionCompare);
         $guidelineMainFeature->addQuestion($questionCompare);
 
         $questionNegativeEffect = new Question(
@@ -45,6 +47,7 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
             'Expliquez, en maximum 1700 caractères (espaces compris), si cette proposition peut porter préjudice à certains publics (individus, entreprises, associations, ou pays) et comment il est possible d’en limiter les effets.',
             4
         );
+        $this->addReference('question-negative-effect', $questionNegativeEffect);
         $guidelineMainFeature->addQuestion($questionNegativeEffect);
 
         $questionLawImpact = new Question(
@@ -52,6 +55,7 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
             'Expliquez, en maximum 1700 caractères (espaces compris), si votre idée nécessite - ou non - de changer le droit en vigueur. Si oui, idéalement, précisez ce qu’il faudrait changer.',
             5
         );
+        $this->addReference('question-law-impact', $questionLawImpact);
         $guidelineImplementation->addQuestion($questionLawImpact);
 
         $questionBudgetImpact = new Question(
@@ -59,6 +63,7 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
             'Expliquez, en maximum 1700 caractères (espaces compris), si votre idée entraîne directement des recettes ou des dépenses pour l’État ou les collectivités locales. Si oui, idéalement, donnez des éléments de chiffrage.',
             6
         );
+        $this->addReference('question-budget-impact', $questionBudgetImpact);
         $guidelineImplementation->addQuestion($questionBudgetImpact);
 
         $questionEcologyImpact = new Question(
@@ -66,6 +71,7 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
             'Expliquez, en maximum 1700 caractères (espaces compris), si votre idée a des effets positifs ou négatifs sur l’environnement. Idéalement, précisez des éléments de réponse pour maximiser ou minimiser (selon les cas) ces effets.',
             7
         );
+        $this->addReference('question-ecology-impact', $questionEcologyImpact);
         $guidelineImplementation->addQuestion($questionEcologyImpact);
 
         $questionGenderEquality = new Question(
@@ -73,6 +79,7 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
             'Expliquez, en maximum 1700 caractères (espaces compris), si votre idée a des effets positifs ou négatifs sur l’égalité entre les femmes et les hommes. Idéalement, donnez des éléments pour maximiser ou minimiser (selon les cas) ces effets.',
             8
         );
+        $this->addReference('question-gender-equality', $questionGenderEquality);
         $guidelineImplementation->addQuestion($questionGenderEquality);
 
         $manager->persist($questionProblem);

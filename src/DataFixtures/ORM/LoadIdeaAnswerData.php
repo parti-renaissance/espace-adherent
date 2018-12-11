@@ -13,23 +13,78 @@ class LoadIdeaAnswerData extends AbstractFixture implements DependentFixtureInte
     {
         $ideaPeace = $this->getReference('idea-peace');
         $questionProblem = $this->getReference('question-problem');
+        $questionAnswer = $this->getReference('question-answer');
+        $questionCompare = $this->getReference('question-compare');
+        $questionNegativeEffect = $this->getReference('question-negative-effect');
+        $questionLawImpact = $this->getReference('question-law-impact');
+        $questionBudgetImpact = $this->getReference('question-budget-impact');
+        $questionEcologyImpact = $this->getReference('question-ecology-impact');
+        $questionGenderEquality = $this->getReference('question-gender-equality');
 
-        $answerLoremAdherent1 = new Answer(
+        $answerQuestionProblem = new Answer(
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce aliquet, mi condimentum venenatis vestibulum, arcu neque feugiat massa, at pharetra velit sapien et elit. Sed vitae hendrerit nulla. Vivamus consectetur magna at tincidunt maximus. Aenean dictum metus vel tellus posuere venenatis.',
             $questionProblem
         );
-        $ideaPeace->addAnswer($answerLoremAdherent1);
-        $this->addReference('answer-lorem-adherent-1', $answerLoremAdherent1);
+        $ideaPeace->addAnswer($answerQuestionProblem);
+        $this->addReference('answer-q-problem', $answerQuestionProblem);
 
-        $answerLoremAdherent2 = new Answer(
+        $answerQuestionAnswer = new Answer(
             'Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex. Curabitur at eros et ex faucibus fringilla sed vel velit.',
-            $questionProblem
+            $questionAnswer
         );
-        $ideaPeace->addAnswer($answerLoremAdherent2);
-        $this->addReference('answer-lorem-adherent-2', $answerLoremAdherent2);
+        $ideaPeace->addAnswer($answerQuestionAnswer);
+        $this->addReference('answer-q-answer', $answerQuestionAnswer);
 
-        $manager->persist($answerLoremAdherent1);
-        $manager->persist($answerLoremAdherent2);
+        $answerQuestionCompare = new Answer(
+            'Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex. Curabitur at eros et ex faucibus fringilla sed vel velit.',
+            $questionCompare
+        );
+        $ideaPeace->addAnswer($answerQuestionCompare);
+        $this->addReference('answer-q-compare', $answerQuestionCompare);
+
+        $answerQuestionNegativeEffect = new Answer(
+            'Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex. Curabitur at eros et ex faucibus fringilla sed vel velit.',
+            $questionNegativeEffect
+        );
+        $ideaPeace->addAnswer($answerQuestionNegativeEffect);
+        $this->addReference('answer-q-negative-effect', $answerQuestionNegativeEffect);
+
+        $answerQuestionLawImpact = new Answer(
+            'Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex. Curabitur at eros et ex faucibus fringilla sed vel velit.',
+            $questionLawImpact
+        );
+        $ideaPeace->addAnswer($answerQuestionLawImpact);
+        $this->addReference('answer-q-law-impact', $answerQuestionLawImpact);
+
+        $answerQuestionBudgetImpact = new Answer(
+            'Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex. Curabitur at eros et ex faucibus fringilla sed vel velit.',
+            $questionBudgetImpact
+        );
+        $ideaPeace->addAnswer($answerQuestionBudgetImpact);
+        $this->addReference('answer-q-budget-impact', $answerQuestionBudgetImpact);
+
+        $answerQuestionEcologyImpact = new Answer(
+            'Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex. Curabitur at eros et ex faucibus fringilla sed vel velit.',
+            $questionEcologyImpact
+        );
+        $ideaPeace->addAnswer($answerQuestionEcologyImpact);
+        $this->addReference('answer-q-ecology-impact', $answerQuestionEcologyImpact);
+
+        $answerQuestionGenderEquality = new Answer(
+            'Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex. Curabitur at eros et ex faucibus fringilla sed vel velit.',
+            $questionGenderEquality
+        );
+        $ideaPeace->addAnswer($answerQuestionGenderEquality);
+        $this->addReference('answer-q-gender-equality', $answerQuestionGenderEquality);
+
+        $manager->persist($answerQuestionProblem);
+        $manager->persist($answerQuestionAnswer);
+        $manager->persist($answerQuestionCompare);
+        $manager->persist($answerQuestionNegativeEffect);
+        $manager->persist($answerQuestionLawImpact);
+        $manager->persist($answerQuestionBudgetImpact);
+        $manager->persist($answerQuestionEcologyImpact);
+        $manager->persist($answerQuestionGenderEquality);
 
         $manager->flush();
     }
