@@ -53,11 +53,6 @@ class App extends Component {
                             {routes.map((route, index) => (
                                 <Route key={index} path={route.path} exact={route.exact} component={route.main} />
                             ))}
-
-                            {/* <Markup
-                                className="citizen__footer"
-                                markup={this.props.footer}
-                            /> */}
                         </div>
                     </div>
                 </ConnectedRouter>
