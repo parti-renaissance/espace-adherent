@@ -9,14 +9,8 @@ import CitizenProject from './js/containers/CitizenProject';
 import CitizenProjectTurnKey from './js/containers/CitizenProjectTurnKey';
 import CitizenProjectSearch from './js/containers/CitizenProjectSearch';
 
-import { getServerMarkup } from './js/actions/dom';
-
 import { history } from './js/store';
 import './App.css';
-
-// const Markup = ({ markup, className }) => (
-//     <div className={className} dangerouslySetInnerHTML={{ __html: markup }} />
-// );
 
 const routes = [
     {
@@ -24,28 +18,25 @@ const routes = [
         exact: true,
         main: () => <CitizenProject />,
         item_label: 'A propos des projets citoyens',
-        className: 'citizen-projects'
+        className: 'citizen-projects',
     },
     {
         path: '/projets-citoyens/cle-en-main',
         exact: true,
         main: () => <CitizenProjectTurnKey />,
         item_label: 'Découvrir les projets clé en main',
-        className: 'decouvrir-citizen-projects'
+        className: 'decouvrir-citizen-projects',
     },
     {
         path: '/projets-citoyens/recherche',
         exact: true,
         main: () => <CitizenProjectSearch />,
         item_label: 'Explorer tous les projets',
-        className: 'explorer-les-projects'
-    }
+        className: 'explorer-les-projects',
+    },
 ];
 
 class App extends Component {
-    componentDidMount() {
-        this.props.dispatch(getServerMarkup());
-    }
     render() {
         return (
             <div className="App ">
@@ -60,12 +51,7 @@ class App extends Component {
 
                         <div className="citizen__main l__wrapper ">
                             {routes.map((route, index) => (
-                                <Route
-                                    key={index}
-                                    path={route.path}
-                                    exact={route.exact}
-                                    component={route.main}
-                                />
+                                <Route key={index} path={route.path} exact={route.exact} component={route.main} />
                             ))}
 
                             {/* <Markup
@@ -80,9 +66,6 @@ class App extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    header: state.dom.header,
-    footer: state.dom.footer
-});
+const mapStateToProps = state => ({});
 
 export default connect(mapStateToProps)(App);
