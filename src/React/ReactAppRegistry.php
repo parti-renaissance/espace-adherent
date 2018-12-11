@@ -2,6 +2,7 @@
 
 namespace AppBundle\React;
 
+use AppBundle\React\App\IdeasWorkshopApp;
 use AppBundle\React\App\CitizenProjectApp;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -18,6 +19,7 @@ class ReactAppRegistry
     public function __construct()
     {
         $this->apps = [
+            'ideas_workshop' => new IdeasWorkshopApp(),
             'citizen_projects' => new CitizenProjectApp(),
         ];
     }
