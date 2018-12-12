@@ -1,9 +1,19 @@
 import { configure } from '@storybook/react';
+import { addDecorator } from '@storybook/react';
+import { withTests } from '@storybook/addon-jest';
+import results from '../.jest-test-results.json';
 
 // load stories dynamically
 const req = require.context('../src', true, /\.stories\.js$/);
 function loadStories() {
     req.keys().forEach(filename => req(filename));
 }
+
+// load tests results dynamically
+addDecorator(
+    withTests({
+        results,
+    })
+);
 
 configure(loadStories, module);
