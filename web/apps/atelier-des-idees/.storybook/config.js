@@ -2,6 +2,7 @@ import { configure } from '@storybook/react';
 import { addDecorator } from '@storybook/react';
 import { withTests } from '@storybook/addon-jest';
 import results from '../.jest-test-results.json';
+import '../src/App.css';
 
 // load stories dynamically
 const req = require.context('../src', true, /\.stories\.js$/);
