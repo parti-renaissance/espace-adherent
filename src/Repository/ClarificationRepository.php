@@ -3,10 +3,16 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Clarification;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ClarificationRepository extends EntityRepository
+class ClarificationRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Clarification::class);
+    }
+
     public function findOneBySlug(string $slug): ?Clarification
     {
         return $this->createQueryBuilder('c')

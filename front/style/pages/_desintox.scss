@@ -1,23 +1,21 @@
 .desintox {
     margin-bottom: 100px;
 
-    hr {
-        margin-top: 0;
-        background-color: rgba(0, 35, 73, 0.15);
+    header {
+        background: transparent;
+        margin-top: 60px;
     }
 
     &__intro {
         margin: 50px 0;
+        @include text--medium;
     }
 
     &__cases {
-        h1 {
-            margin: 0 30px 0 0;
-
-            @media (max-width: $mobile) {
-                margin: 0 0 25px 0;
-            }
-        }
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
 
         li {
             background: white;
@@ -25,16 +23,30 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-direction: column;
             list-style-type: none !important;
             margin-bottom: 30px;
+            width: 25%;
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+            transition: all 0.25s;
+            position: relative;
+            top: 0;
+
+            &:hover {
+                top: -2px;
+            }
+
+            .btn {
+                margin-top: 30px;
+                padding: 10px 40px;
+            }
+
+            @media (max-width: $tablet) {
+                width: 38%;
+            }
 
             @media (max-width: $mobile) {
-                flex-direction: column;
-                align-items: stretch;
-
-                .btn {
-                    width: 100%;
-                }
+                width: 100%;
             }
         }
     }
