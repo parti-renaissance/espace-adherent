@@ -46,6 +46,7 @@ class DonationController extends Controller
         if (!$amount = $request->query->get('montant')) {
             return $this->render('donation/index.html.twig', [
                 'amount' => DonationRequest::DEFAULT_AMOUNT,
+                'abonnement' => $request->query->has('abonnement'),
             ]);
         }
 
