@@ -43,52 +43,53 @@ class ClarificationAdmin extends AbstractAdmin
 
         $formMapper
             ->with('Méta-données', ['class' => 'col-md-4'])
-            ->add('title', TextType::class, [
-                'label' => 'Titre',
-                'filter_emojis' => true,
-            ])
-            ->add('description', TextareaType::class, [
-                'label' => 'Description',
-                'filter_emojis' => true,
-            ])
-            ->add('twitterDescription', TextareaType::class, [
-                'label' => 'Description pour Twitter',
-                'filter_emojis' => true,
-                'required' => false,
-            ])
-            ->add('keywords', null, [
-                'label' => 'Mots clés de recherche',
-                'required' => false,
-            ])
+                ->add('title', TextType::class, [
+                    'label' => 'Titre',
+                    'filter_emojis' => true,
+                ])
+                ->add('description', TextareaType::class, [
+                    'label' => 'Description',
+                    'filter_emojis' => true,
+                ])
+                ->add('twitterDescription', TextareaType::class, [
+                    'label' => 'Description pour Twitter',
+                    'filter_emojis' => true,
+                    'required' => false,
+                ])
+                ->add('keywords', null, [
+                    'label' => 'Mots clés de recherche',
+                    'required' => false,
+                ])
             ->end()
             ->with('Média', ['class' => 'col-md-4'])
-            ->add('media', AdminType::class, [
-                'label' => 'Image principale',
-            ])
-            ->add('displayMedia', CheckboxType::class, [
-                'label' => 'Afficher l\'image principale',
-                'required' => false,
-            ])
+                ->add('media', AdminType::class, [
+                    'label' => 'Image principale',
+                ])
+                ->add('displayMedia', CheckboxType::class, [
+                    'label' => 'Afficher l\'image principale',
+                    'required' => false,
+                ])
             ->end()
             ->with('Publication', ['class' => 'col-md-4'])
-            ->add('published', CheckboxType::class, [
-                'label' => 'Publier la désintox',
-                'required' => false,
-            ])
-            ->add('slug', null, [
-                'label' => 'URL de publication',
-                'disabled' => !$slugEditable,
-                'help' => $slugEditable ? 'Ne spécifier que la fin : http://en-marche.fr/emmanuel-macron/desintox/[votre-valeur]<br />Doit être unique' : 'Non modifiable car publié',
-            ])
+                ->add('published', CheckboxType::class, [
+                    'label' => 'Publier la désintox',
+                    'required' => false,
+                ])
+                ->add('slug', null, [
+                    'label' => 'URL de publication',
+                    'disabled' => !$slugEditable,
+                    'help' => $slugEditable ? 'Ne spécifier que la fin : http://en-marche.fr/emmanuel-macron/desintox/[votre-valeur]<br />Doit être unique' : 'Non modifiable car publié',
+                ])
             ->end()
             ->with('Contenu', ['class' => 'col-md-12'])
-            ->add('content', TextareaType::class, [
-                'label' => 'Contenu',
-                'required' => false,
-                'filter_emojis' => true,
-                'attr' => ['class' => 'content-editor', 'rows' => 20],
-            ])
-            ->end();
+                ->add('content', TextareaType::class, [
+                    'label' => 'Contenu',
+                    'required' => false,
+                    'filter_emojis' => true,
+                    'attr' => ['class' => 'content-editor', 'rows' => 20],
+                ])
+            ->end()
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
