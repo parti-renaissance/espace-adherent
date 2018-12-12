@@ -8,6 +8,12 @@
 {% block meta_description article.description %}
 {% block meta_twitter_description article.twitterDescription ?: article.description %}
 
+{% block base_stylesheets %}
+    {{ parent() }}
+
+    <link href="{{ asset('css/emoji.min.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block canonical_url url('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) %}
 
 {% block amp_link %}<link rel="amphtml" href="{{ url('amp_article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}" />{% endblock %}
