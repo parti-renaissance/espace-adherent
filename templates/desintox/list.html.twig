@@ -19,13 +19,19 @@
     </style>
 {% endblock %}
 
+{% block base_stylesheets %}
+    {{ parent() }}
+
+    <link href="{{ asset('css/emoji.min.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block final_javascripts include('bot/_javascript.html.twig') %}
 
 {% block content %}
 <main class="content">
     <section class="desintox">
 
-        <header class="space--60-0">
+        <header class="space--40-0">
             <div class="l__wrapper--slim text--center">
                 <h1 class="text--large text--inline text--on-white">
                     {{ page.title }}

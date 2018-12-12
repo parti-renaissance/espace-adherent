@@ -11,6 +11,12 @@
 
 {% block final_javascripts include('bot/_javascript.html.twig') %}
 
+{% block base_stylesheets %}
+    {{ parent() }}
+    
+    <link href="{{ asset('css/emoji.min.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
     <main class="content">
         <section class="programme">
@@ -25,7 +31,6 @@
                 <h1 class="text--large b__nudge--bottom-small">
                     {{ clarification.title }}
                 </h1>
-                <h2 class="text--gray b__nudge--bottom">{{ clarification.description }}</h2>
                 <ul class="clarification__social">
                     <li role="button" aria-label="Partagez sur Facebook"
                         class="btn btn--social btn--facebook"
