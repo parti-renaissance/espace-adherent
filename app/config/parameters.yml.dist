@@ -96,5 +96,11 @@ parameters:
             "securite": "15",
             "sport": "16",
             "territoire": "17",
-            "institution": "18"
+            "institution": "18",
+            "subscribed_emails_movement_information": "123abc",
+            "subscribed_emails_weekly_letter": "456def",
+            "deputy_email": "21",
+            "subscribed_emails_local_host": "22",
+            "subscribed_emails_referents": "23",
+            "citizen_project_host_email": "24"
         }

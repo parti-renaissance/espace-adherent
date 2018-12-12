@@ -43,7 +43,8 @@ class RequestBuilder
                     array_fill_keys(
                         array_intersect_key($interestIds, array_flip($adherent->getInterests())),
                         true
-                    )
+                    ),
+                    array_fill_keys($adherent->getSubscriptionExternalIds(), true)
                 )
             )
             ->setActiveTags($adherent->getReferentTagCodes())
