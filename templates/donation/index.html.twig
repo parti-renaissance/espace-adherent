@@ -32,6 +32,8 @@
                    class="form form__field form--full"
                    type="number" min="0.01" max="7500" step="0.01" value="{{ amount }}" />
 
+            <input name="abonnement" id="donation-abonnement" {% if abonnement is same as(true) %} checked{% endif %} />
+
             <button class="btn btn--large-and-medium btn--primary" type="submit">
                 Continuer
             </button>

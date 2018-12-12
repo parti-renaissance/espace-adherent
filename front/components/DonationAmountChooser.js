@@ -7,6 +7,7 @@ export default class DonationAmountChooser extends React.Component {
 
         this.state = {
             amount: props.value,
+            abonnement: props.abonnement,
         };
 
         this.handleAmountChange = this.handleAmountChange.bind(this);
@@ -24,6 +25,7 @@ export default class DonationAmountChooser extends React.Component {
                 <AmountChooser
                     name={this.props.name}
                     value={this.props.value}
+                    abonnement={this.props.abonnement}
                     onChange={this.handleAmountChange}
                 />
 
@@ -41,4 +43,5 @@ export default class DonationAmountChooser extends React.Component {
 DonationAmountChooser.propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.number,
+    abonnement: PropTypes.bool,
 };
