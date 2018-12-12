@@ -128,6 +128,8 @@ class CitizenProjectSearch extends Component {
                                 author={project.author}
                                 localisation={project.city}
                                 url={project.url}
+                                district={project.district}
+
                             />
                         ))
                     ) : (
