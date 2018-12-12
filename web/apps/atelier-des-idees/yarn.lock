@@ -739,6 +739,18 @@
     react-inspector "^2.3.0"
     uuid "^3.3.2"
 
+"@storybook/addon-jest@^4.0.12":
+  version "4.0.12"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-jest/-/addon-jest-4.0.12.tgz#ee19f4aa1876ce84e8bba76b03ccfe11c2409f10"
+  dependencies:
+    "@emotion/styled" "^0.10.6"
+    "@storybook/addons" "4.0.12"
+    "@storybook/components" "4.0.12"
+    global "^4.3.2"
+    prop-types "^15.6.2"
+    upath "^1.1.0"
+    util-deprecate "^1.0.2"
+
 "@storybook/addon-links@^4.0.12":
   version "4.0.12"
   resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-4.0.12.tgz#da0ea2b013e05dcc61eae8812a3c4bc8201ade82"
@@ -9345,7 +9357,7 @@ unzip-response@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/unzip-response/-/unzip-response-2.0.1.tgz#d2f0f737d16b0615e72a6935ed04214572d56f97"
 
-upath@^1.0.5:
+upath@^1.0.5, upath@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/upath/-/upath-1.1.0.tgz#35256597e46a581db4793d0ce47fa9aebfc9fabd"
 
