@@ -81,7 +81,7 @@ class ClarificationAdmin extends AbstractAdmin
                 'help' => $slugEditable ? 'Ne spécifier que la fin : http://en-marche.fr/emmanuel-macron/desintox/[votre-valeur]<br />Doit être unique' : 'Non modifiable car publié',
             ])
             ->end()
-            ->with('Contenu', array('class' => 'col-md-12'))
+            ->with('Contenu', ['class' => 'col-md-12'])
             ->add('content', TextareaType::class, [
                 'label' => 'Contenu',
                 'required' => false,
