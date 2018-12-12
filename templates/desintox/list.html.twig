@@ -11,7 +11,10 @@
 {% block stylesheets %}
     <style type="text/css">
         body {
-            background-color: #edf861;
+            background-color: #E5E5E5;
+        }
+        header {
+            background-color: #fff;
         }
     </style>
 {% endblock %}
@@ -30,13 +33,13 @@
             </div>
         </header>
 
-        <hr class="l__wrapper" />
-
         <div class="l__wrapper--slim">
             <div class="desintox__intro text--body">
                 {{ page.content|raw }}
             </div>
+        </div>
 
+        <div class="l__wrapper">
             <ul class="desintox__cases">
                 {% for clarification in clarifications %}
                 <li>
