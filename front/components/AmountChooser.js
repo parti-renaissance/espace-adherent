@@ -8,6 +8,7 @@ export default class AmountChooser extends React.Component {
 
         this.state = {
             amount: props.value,
+            abonnement: props.abonnement,
         };
 
         this.handleButtonClicked = this.handleButtonClicked.bind(this);
@@ -90,7 +91,12 @@ export default class AmountChooser extends React.Component {
                 </div>
 
                 <div className="amount-chooser__monthly form__checkbox form__checkbox--large">
-                    <input type="checkbox" name="abonnement" id="donation-monthly"/>
+                    <input
+                        type="checkbox"
+                        name="abonnement"
+                        id="donation-monthly"
+                        defaultChecked={this.props.abonnement} />
+
                     <label htmlFor="donation-monthly" id="donation-monthly_label">
                         Je veux donner ce montant chaque mois
                     </label>
@@ -106,6 +112,7 @@ export default class AmountChooser extends React.Component {
 AmountChooser.propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.number,
+    abonnement: PropTypes.bool,
     onChange: PropTypes.func,
     onSubmit: PropTypes.func,
 };
