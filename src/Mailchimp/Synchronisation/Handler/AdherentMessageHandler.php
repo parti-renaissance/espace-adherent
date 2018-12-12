@@ -33,8 +33,8 @@ class AdherentMessageHandler implements MessageHandlerInterface
             throw new AdherentNotFoundException($error);
         }
 
-        $this->repository->refresh($adherent);
-
         $this->manager->editMember($adherent, $message);
+
+        $this->repository->clear();
     }
 }

@@ -36,6 +36,7 @@ class AdherentEventSubscriber implements EventSubscriberInterface
             UserEvents::USER_BEFORE_UPDATE => 'onBeforeUpdate',
             UserEvents::USER_UPDATED => 'onAfterUpdate',
             UserEvents::USER_UPDATE_INTERESTS => 'onAfterUpdate',
+            UserEvents::USER_UPDATE_SUBSCRIPTIONS => 'onAfterUpdate',
 
             UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE => 'onPrivilegeChange',
             UserEvents::USER_UPDATE_CITIZEN_PROJECT_PRIVILEGE => 'onPrivilegeChange',
