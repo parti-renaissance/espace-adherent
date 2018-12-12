@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class DesintoxController extends Controller
 {
     /**
-     * @Route("/desintox", defaults={"_enable_campaign_silence"=true}, name="desintox_list")
+     * @Route("/desintox", name="desintox_list")
      * @Method("GET")
      * @Entity("page", expr="repository.findOneBySlug('desintox')")
      */
@@ -26,7 +26,7 @@ class DesintoxController extends Controller
     }
 
     /**
-     * @Route("/desintox/{slug}", defaults={"_enable_campaign_silence"=true}, name="desintox_view")
+     * @Route("/desintox/{slug}", name="desintox_view")
      * @Method("GET")
      * @Entity("clarification", expr="repository.findPublishedClarification(slug)")
      */
