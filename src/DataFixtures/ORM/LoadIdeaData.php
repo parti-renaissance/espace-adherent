@@ -23,40 +23,40 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         $committee = $this->getReference('committee-1');
         $adherent = $this->getReference('adherent-3');
 
-        $ideaName = 'Faire la paix';
         $ideaMakePeace = new Idea(
             Uuid::fromString(self::IDEA_01_UUID),
-            $ideaName,
+            'Faire la paix',
             $adherent,
             $category,
             $theme,
+            true,
             $committee,
             new \DateTime('2018-12-01 10:00:00'),
-            IdeaStatusEnum::PUBLISHED
+            IdeaStatusEnum::PENDING
         );
         $ideaMakePeace->addNeed($need);
         $this->addReference('idea-peace', $ideaMakePeace);
 
-        $ideaName = 'Favoriser l\'écologie';
         $ideaHelpEcology = new Idea(
             Uuid::fromString(self::IDEA_02_UUID),
-            $ideaName,
+            'Favoriser l\'écologie',
             $adherent,
             $category,
             $theme,
+            true,
             $committee,
             new \DateTime('2018-12-02 10:00:00')
         );
         $this->addReference('idea-help-ecology', $ideaHelpEcology);
 
-        $ideaName = 'Aider les gens';
         $ideaHelpPeople = new Idea(
             Uuid::fromString(self::IDEA_03_UUID),
-            $ideaName,
+            'Aider les gens',
             $adherent,
             $category,
             $theme,
-            $committee,
+            false,
+            null,
             new \DateTime('2018-12-03 10:00:00')
         );
         $this->addReference('idea-help-people', $ideaHelpPeople);

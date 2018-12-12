@@ -11,12 +11,34 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
 {
     public function load(ObjectManager $manager)
     {
-        $answerAdherent1 = $this->getReference('answer-lorem-adherent-1');
+        $adherent2 = $this->getReference('adherent-2');
+        $adherent4 = $this->getReference('adherent-4');
+        $adherent5 = $this->getReference('adherent-5');
 
-        $thread = new Thread($answerAdherent1);
-        $this->setReference('thread', $thread);
+        $threadAQProblemAdherent2 = new Thread(
+            'J\'ouvre une discussion sur le problème.',
+            $adherent2,
+            $this->getReference('answer-q-problem')
+        );
+        $this->setReference('thread-aq-problem', $threadAQProblemAdherent2);
 
-        $manager->persist($thread);
+        $threadAQAnswerAdherent4 = new Thread(
+            'J\'ouvre une discussion sur la solution.',
+            $adherent4,
+            $this->getReference('answer-q-answer')
+        );
+        $this->setReference('thread-aq-answer', $threadAQAnswerAdherent4);
+
+        $threadAQCompareAdherent5 = new Thread(
+            'J\'ouvre une discussion sur la comparaison.',
+            $adherent5,
+            $this->getReference('answer-q-compare')
+        );
+        $this->setReference('thread-aq-compare', $threadAQCompareAdherent5);
+
+        $manager->persist($threadAQProblemAdherent2);
+        $manager->persist($threadAQAnswerAdherent4);
+        $manager->persist($threadAQCompareAdherent5);
 
         $manager->flush();
     }

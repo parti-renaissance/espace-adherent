@@ -3,6 +3,9 @@
 namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\Adherent;
+use AppBundle\Entity\EntitySoftDeletableTrait;
+use AppBundle\Entity\EntityTimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,6 +20,9 @@ use JMS\Serializer\Annotation as JMS;
  */
 class Thread
 {
+    use EntityTimestampableTrait;
+    use EntitySoftDeletableTrait;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -25,7 +31,19 @@ class Thread
     private $id;
 
     /**
+     * @ORM\Column(type="text")
+     */
+    private $content;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
+     */
+    private $author;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Answer", inversedBy="threads")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $answer;
 
@@ -46,8 +64,10 @@ class Thread
      */
     private $status = ThreadStatusEnum::SUBMITTED;
 
-    public function __construct(Answer $answer)
+    public function __construct(string $content, Adherent $author, Answer $answer)
     {
+        $this->content = $content;
+        $this->author = $author;
         $this->answer = $answer;
         $this->comments = new ArrayCollection();
     }

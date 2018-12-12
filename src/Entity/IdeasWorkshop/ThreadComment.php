@@ -40,16 +40,17 @@ class ThreadComment
     /**
      * @JMS\Groups({"idea_list"})
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
-    private $adherent;
+    private $author;
 
     public function __construct(
         string $content,
-        Adherent $adherent,
+        Adherent $author,
         Thread $thread
     ) {
         $this->content = $content;
-        $this->adherent = $adherent;
+        $this->author = $author;
         $this->thread = $thread;
     }
 
@@ -68,14 +69,14 @@ class ThreadComment
         $this->thread = $thread;
     }
 
-    public function getAdherent(): Adherent
+    public function getAuthor(): Adherent
     {
-        return $this->adherent;
+        return $this->author;
     }
 
-    public function setAdherent(Adherent $adherent): void
+    public function setAuthor(Adherent $author): void
     {
-        $this->adherent = $adherent;
+        $this->author = $author;
     }
 
     public function getContent(): string

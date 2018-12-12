@@ -374,3 +374,8 @@ nelmio_cors:
             allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD']
             allow_headers: ['Content-Type']
             max_age: 3600
+
+api_platform:
+    mapping:
+        paths: ['%kernel.project_dir%/src/Entity']
+    enable_docs: '%kernel.debug%'

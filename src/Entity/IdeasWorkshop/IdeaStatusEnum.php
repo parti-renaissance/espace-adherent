@@ -6,7 +6,8 @@ use MyCLabs\Enum\Enum;
 
 final class IdeaStatusEnum extends Enum
 {
+    public const DRAFT = 'DRAFT';
     public const PENDING = 'PENDING';
-    public const PUBLISHED = 'PUBLISHED';
-    public const REFUSED = 'REFUSED';
+    public const FINALIZED = 'FINALIZED';
+    public const UNPUBLISHED = 'UNPUBLISHED';
 }

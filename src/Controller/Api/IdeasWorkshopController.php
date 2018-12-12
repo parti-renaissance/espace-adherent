@@ -34,7 +34,7 @@ class IdeasWorkshopController extends Controller
                 $ideaRepository->findIdeasByStatusThemeCategoryAndName(
                     $limit,
                     ($request->query->getInt('_page', 1) - 1) * $limit,
-                    $request->query->get('status', IdeaStatusEnum::PUBLISHED),
+                    $request->query->get('status', IdeaStatusEnum::PENDING),
                     $request->query->get('theme'),
                     $request->query->get('category'),
                     $request->query->get('name')

@@ -123,6 +123,9 @@
         <service id="AppBundle\EventListener\ProcurationMailerSubscriber">
             <argument key="$mailer" type="service" id="app.mailer.transactional" />
         </service>
+        <service id="AppBundle\EventListener\ControllerListener">
+            <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController" priority="8" />
+        </service>
         <prototype namespace="AppBundle\EntityListener\" resource="../../../src/EntityListener/">
             <tag name="doctrine.orm.entity_listener" />
         </prototype>

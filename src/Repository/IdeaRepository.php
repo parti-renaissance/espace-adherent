@@ -25,8 +25,8 @@ class IdeaRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('idea');
 
         $qb
-            ->where('idea.status != :refusedStatus')
-            ->setParameter('refusedStatus', IdeaStatusEnum::REFUSED)
+            ->where('idea.status != :unpublishedStatus')
+            ->setParameter('unpublishedStatus', IdeaStatusEnum::UNPUBLISHED)
             ->andwhere('LOWER(idea.status) = :status')
             ->setParameter('status', strtolower($status))
         ;
