@@ -21,6 +21,10 @@
         <service id="AppBundle\Algolia\ManualIndexer" />
         <service id="AppBundle\Command\AlgoliaSynchronizeCommand" />
 
+        <!-- Content -->
+        <service class="AppBundle\Content\ClarificationFactory" />
+        <service class="AppBundle\Content\MediaFactory" />
+
         <!-- CitizenProject -->
         <service id="AppBundle\CitizenProject\CitizenProjectAuthority" />
         <service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true">
