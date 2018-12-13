@@ -16,14 +16,14 @@
             on(moreButton, 'click', function () {
                 di.get('api').getSearchResults(query.value, radius.value, city.value, type, (page * limit), eventCategory.value, function (response) {
                     if (response instanceof XMLHttpRequest) {
-                        moreButton.classList.add('visually-hidden');
+                        hide(moreButton);
                         return;
                     }
 
                     if (dom('#search-results').getElementsByClassName('search__results__item').length < limit) {
-                        moreButton.classList.add('visually-hidden');
+                        hide(moreButton);
                     } else {
-                        moreButton.classList.remove('visually-hidden');
+                        show(moreButton);
                     }
                     dom('#search-results').innerHTML = dom('#search-results').innerHTML + response;
                 });
@@ -61,16 +61,16 @@
                     di.get('api').getSearchResults(query.value, radius.value, city.value, type, 0, eventCategory.value, function (response) {
                         if (response instanceof XMLHttpRequest) {
                             dom('#search-results').innerHTML = '<div class="text--body text--center l__wrapper">Aucun résultat pour ces critères de recherche.</div>';
-                            moreButton.classList.remove('visually-hidden');
+                            hide(moreButton);
 
                             return;
                         }
 
                         dom('#search-results').innerHTML = response;
                         if (dom('#search-results').getElementsByClassName('search__results__item').length < limit) {
-                            moreButton.classList.add('visually-hidden');
+                            hide(moreButton);
                         } else {
-                            moreButton.classList.remove('visually-hidden');
+                            show(moreButton);
                         }
                     });
                 }, 200);
