@@ -4,8 +4,10 @@ namespace AppBundle\Mailchimp\Synchronisation;
 
 use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\SubscriptionType;
 use AppBundle\Mailchimp\Synchronisation\Request\MemberRequest;
 use AppBundle\Mailchimp\Synchronisation\Request\MemberTagsRequest;
+use AppBundle\Subscription\SubscriptionTypeEnum;
 
 class RequestBuilder
 {
@@ -44,7 +46,21 @@ class RequestBuilder
                         array_intersect_key($interestIds, array_flip($adherent->getInterests())),
                         true
                     ),
-                    array_fill_keys($adherent->getSubscriptionExternalIds(), true)
+                    /*
+                     * This is a hack for to migrate progressively to the ID stored
+                     * into DB (subscription_types.external_id column), after that we will can use this method:
+                     * array_fill_keys(array_intersect($interestIds, $adherent->getSubscriptionExternalIds()), true)
+                     */
+                    array_fill_keys(array_map(function (SubscriptionType $type) {
+                        switch ($type->getCode()) {
+                            case SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL: return 'af139e7383';
+                            case SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL: return '700951ee3e';
+                            case SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL: return 'd6135f452e';
+                            case SubscriptionTypeEnum::DEPUTY_EMAIL: return '3465334fa2';
+                            case SubscriptionTypeEnum::LOCAL_HOST_EMAIL: return 'f34541ec0f';
+                            case SubscriptionTypeEnum::REFERENT_EMAIL: return 'c4e1880afe';
+                        }
+                    }, $adherent->getSubscriptionTypes()), true)
                 )
             )
             ->setActiveTags($adherent->getReferentTagCodes())
