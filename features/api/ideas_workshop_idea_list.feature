@@ -11,7 +11,8 @@ Feature:
       | LoadIdeaVoteData          |
 
   Scenario: As a non logged-in user I can see published ideas
-    When I send a "GET" request to "/api/ideas.json?status=FINALIZED"
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas?status=FINALIZED"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -30,24 +31,24 @@ Feature:
                 "firstName": "Jacques",
                 "lastName": "Picard"
             },
-            "publishedAt": "2018-12-04T10:00:00+01:00",
+            "published_at": "2018-12-04T10:00:00+01:00",
             "committee": null,
             "status": "FINALIZED",
-            "withCommittee": false,
-            "createdAt": "@string@.isDateTime()",
+            "with_committee": false,
+            "votes_count": 0,
+            "author_category": "ADHERENT",
+            "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
+            "created_at": "@string@.isDateTime()",
             "name": "Réduire le gaspillage",
             "slug": "reduire-le-gaspillage",
-            "daysBeforeDeadline": "@integer@",
-            "authorCategory": "QG",
-            "votesCount": 0,
-            "contributors_count": 0,
-            "comments_count": 0
+            "days_before_deadline": "@integer@"
         }
     ]
     """
 
   Scenario: As a non logged-in user I can see pending ideas
-    When I send a "GET" request to "/api/ideas.json?status=PENDING"
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas?status=PENDING"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -72,109 +73,108 @@ Feature:
                 "firstName": "Jacques",
                 "lastName": "Picard"
             },
-            "publishedAt": "2018-12-01T10:00:00+01:00",
-            "committee": {
-                "createdAt": "@string@.isDateTime()",
-                "name": "En Marche Paris 8",
-                "slug": "en-marche-paris-8"
-            },
-            "status": "PENDING",
-            "withCommittee": true,
-            "createdAt": "@string@.isDateTime()",
-            "name": "Faire la paix",
-            "slug": "faire-la-paix",
-            "daysBeforeDeadline": "@integer@",
-            "authorCategory": "COMMITTEE",
-            "votesCount": 21,
-            "contributors_count": 0,
-            "comments_count": 4
-        }
-    ]
-    """
-
-  Scenario: As a non logged-in user I can filter ideas by name
-    When I send a "GET" request to "/api/ideas.json?name=favoriser"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    [
-        {
-            "theme": {
-                "name": "Armées et défense",
-                "slug": "armees-et-defense"
-            },
-            "category": {
-                "name": "Echelle Européenne",
-                "enabled": true
-            },
-            "needs": [],
-            "author": {
-                "firstName": "Jacques",
-                "lastName": "Picard"
-            },
-            "publishedAt": "2018-12-02T10:00:00+01:00",
-            "committee": {
-                "createdAt": "@string@.isDateTime()",
-                "name": "En Marche Paris 8",
-                "slug": "en-marche-paris-8"
-            },
-            "status": "DRAFT",
-            "withCommittee": true,
-            "createdAt": "@string@.isDateTime()",
-            "name": "Favoriser l'écologie",
-            "slug": "favoriser-lecologie",
-            "daysBeforeDeadline": "@integer@",
-            "authorCategory": "COMMITTEE",
-            "votesCount": 21,
-            "contributors_count": 0,
-            "comments_count": 0
-        }
-    ]
-    """
-
-  Scenario: As a non logged-in user I can filter ideas by theme
-    When I send a "GET" request to "/api/ideas.json?theme.name=defense"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    [
-        {
-            "theme": {
-                "name": "Armées et défense",
-                "slug": "armees-et-defense"
-            },
-            "category": {
-                "name": "Echelle Européenne",
-                "enabled": true
-            },
-            "needs": [
-                {
-                    "name": "Juridique",
-                    "enabled": true
-                }
-            ],
-            "author": {
-                "firstName": "Jacques",
-                "lastName": "Picard"
-            },
-            "publishedAt": "2018-12-01T10:00:00+01:00",
+            "published_at": "2018-12-01T10:00:00+01:00",
             "committee": {
                 "createdAt": "2017-01-12T13:25:54+01:00",
                 "name": "En Marche Paris 8",
                 "slug": "en-marche-paris-8"
             },
             "status": "PENDING",
-            "withCommittee": true,
-            "createdAt": "@string@.isDateTime()",
+            "with_committee": true,
+            "votes_count": 21,
+            "author_category": "COMMITTEE",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
+            "created_at": "@string@.isDateTime()",
             "name": "Faire la paix",
             "slug": "faire-la-paix",
-            "daysBeforeDeadline": "@integer@",
-            "votesCount": 21,
-            "authorCategory": "COMMITTEE",
-            "contributors_count": 0,
-            "comments_count": 4
+            "days_before_deadline": "@integer@"
+        }
+    ]
+    """
+
+  Scenario: As a non logged-in user I can filter ideas by name
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas?name=favoriser"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+        {
+            "theme": {
+                "name": "Armées et défense",
+                "slug": "armees-et-defense"
+            },
+            "category": {
+                "name": "Echelle Européenne",
+                "enabled": true
+            },
+            "needs": [],
+            "author": {
+                "firstName": "Jacques",
+                "lastName": "Picard"
+            },
+            "published_at": "2018-12-02T10:00:00+01:00",
+            "committee": {
+                "createdAt": "2017-01-12T13:25:54+01:00",
+                "name": "En Marche Paris 8",
+                "slug": "en-marche-paris-8"
+            },
+            "status": "DRAFT",
+            "with_committee": true,
+            "votes_count": 21,
+            "author_category": "COMMITTEE",
+            "description": "Mauris posuere eros eget nunc dapibus ornare. Vestibulum dolor eros, facilisis in venenatis eu, tristique a sapien.",
+            "created_at": "@string@.isDateTime()",
+            "name": "Favoriser l'écologie",
+            "slug": "favoriser-lecologie",
+            "days_before_deadline": "@integer@"
+        }
+    ]
+    """
+
+  Scenario: As a non logged-in user I can filter ideas by theme
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas?theme.name=defense"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+        {
+            "theme": {
+                "name": "Armées et défense",
+                "slug": "armees-et-defense"
+            },
+            "category": {
+                "name": "Echelle Européenne",
+                "enabled": true
+            },
+            "needs": [
+                {
+                    "name": "Juridique",
+                    "enabled": true
+                }
+            ],
+            "author": {
+                "firstName": "Jacques",
+                "lastName": "Picard"
+            },
+            "published_at": "2018-12-01T10:00:00+01:00",
+            "committee": {
+                "createdAt": "2017-01-12T13:25:54+01:00",
+                "name": "En Marche Paris 8",
+                "slug": "en-marche-paris-8"
+            },
+            "status": "PENDING",
+            "with_committee": true,
+            "votes_count": 21,
+            "author_category": "COMMITTEE",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
+            "created_at": "@string@.isDateTime()",
+            "name": "Faire la paix",
+            "slug": "faire-la-paix",
+            "days_before_deadline": "@integer@"
         },
         {
             "theme": {
@@ -190,22 +190,21 @@ Feature:
                 "firstName": "Jacques",
                 "lastName": "Picard"
             },
-            "publishedAt": "2018-12-02T10:00:00+01:00",
+            "published_at": "2018-12-02T10:00:00+01:00",
             "committee": {
                 "createdAt": "2017-01-12T13:25:54+01:00",
                 "name": "En Marche Paris 8",
                 "slug": "en-marche-paris-8"
             },
             "status": "DRAFT",
-            "withCommittee": true,
-            "createdAt": "@string@.isDateTime()",
+            "with_committee": true,
+            "votes_count": 21,
+            "author_category": "COMMITTEE",
+            "description": "Mauris posuere eros eget nunc dapibus ornare. Vestibulum dolor eros, facilisis in venenatis eu, tristique a sapien.",
+            "created_at": "@string@.isDateTime()",
             "name": "Favoriser l'écologie",
             "slug": "favoriser-lecologie",
-            "daysBeforeDeadline": "@integer@",
-            "votesCount": 21,
-            "authorCategory": "COMMITTEE",
-            "contributors_count": 0,
-            "comments_count": 0
+            "days_before_deadline": "@integer@"
         },
         {
             "theme": {
@@ -221,18 +220,17 @@ Feature:
                 "firstName": "Benjamin",
                 "lastName": "Duroc"
             },
-            "publishedAt": "2018-12-03T10:00:00+01:00",
+            "published_at": "2018-12-03T10:00:00+01:00",
             "committee": null,
             "status": "DRAFT",
-            "withCommittee": false,
-            "createdAt": "@string@.isDateTime()",
+            "with_committee": false,
+            "votes_count": 21,
+            "author_category": "QG",
+            "description": "Nam laoreet eros diam, vitae hendrerit libero interdum nec. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+            "created_at": "@string@.isDateTime()",
             "name": "Aider les gens",
             "slug": "aider-les-gens",
-            "daysBeforeDeadline": "@integer@",
-            "votesCount": 21,
-            "authorCategory": "QG",
-            "contributors_count": 0,
-            "comments_count": 0
+            "days_before_deadline": "@integer@"
         },
         {
             "theme": {
@@ -248,18 +246,17 @@ Feature:
                 "firstName": "Jacques",
                 "lastName": "Picard"
             },
-            "publishedAt": "2018-12-04T10:00:00+01:00",
+            "published_at": "2018-12-04T10:00:00+01:00",
             "committee": null,
             "status": "FINALIZED",
-            "withCommittee": false,
-            "createdAt": "@string@.isDateTime()",
+            "with_committee": false,
+            "votes_count": 0,
+            "author_category": "ADHERENT",
+            "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
+            "created_at": "@string@.isDateTime()",
             "name": "Réduire le gaspillage",
             "slug": "reduire-le-gaspillage",
-            "daysBeforeDeadline": "@integer@",
-            "votesCount": 0,
-            "authorCategory": "QG",
-            "contributors_count": 0,
-            "comments_count": 0
+            "days_before_deadline": "@integer@"
         }
     ]
     """

@@ -37,10 +37,11 @@ class LoadIdeaVoteData extends AbstractFixture implements DependentFixtureInterf
                         || !(2 === $key && VoteTypeEnum::IMPORTANT === $type)
                     ) {
                         $vote = new Vote(
-                            $idea,
                             $adherent,
                             $type
                         );
+
+                        $idea->addVote($vote);
 
                         $manager->persist($vote);
                     }

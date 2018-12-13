@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\IdeasWorkshop\AuthorCategoryEnum;
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -28,9 +29,11 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         $ideaMakePeace = new Idea(
             Uuid::fromString(self::IDEA_01_UUID),
             'Faire la paix',
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.',
             $adherent3,
             $category,
             $theme,
+            AuthorCategoryEnum::COMMITTEE,
             true,
             $committee,
             new \DateTime('2018-12-01 10:00:00'),
@@ -42,9 +45,11 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         $ideaHelpEcology = new Idea(
             Uuid::fromString(self::IDEA_02_UUID),
             'Favoriser l\'écologie',
+            'Mauris posuere eros eget nunc dapibus ornare. Vestibulum dolor eros, facilisis in venenatis eu, tristique a sapien.',
             $adherent3,
             $category,
             $theme,
+            AuthorCategoryEnum::COMMITTEE,
             true,
             $committee,
             new \DateTime('2018-12-02 10:00:00')
@@ -54,9 +59,11 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         $ideaHelpPeople = new Idea(
             Uuid::fromString(self::IDEA_03_UUID),
             'Aider les gens',
+            'Nam laoreet eros diam, vitae hendrerit libero interdum nec. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.',
             $adherent6,
             $category,
             $theme,
+            AuthorCategoryEnum::QG,
             false,
             null,
             new \DateTime('2018-12-03 10:00:00')
@@ -66,9 +73,11 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         $ideaReduceWaste = new Idea(
             Uuid::fromString(self::IDEA_04_UUID),
             'Réduire le gaspillage',
+            'In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.',
             $adherent3,
             $category,
             $theme,
+            AuthorCategoryEnum::ADHERENT,
             false,
             null,
             new \DateTime('2018-12-04 10:00:00'),
