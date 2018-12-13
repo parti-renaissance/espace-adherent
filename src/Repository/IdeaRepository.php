@@ -4,7 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Entity\IdeasWorkshop\ThreadStatusEnum;
+use AppBundle\Entity\IdeasWorkshop\ThreadCommentStatusEnum;
 use AppBundle\Entity\IdeasWorkshop\VoteTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -27,8 +27,8 @@ class IdeaRepository extends ServiceEntityRepository
             ->where('idea = :idea')
             ->setParameter('idea', $idea)
             ->andWhere('comments.deletedAt IS NULL')
-            ->andWhere('threads.status = :status')
-            ->setParameter('status', ThreadStatusEnum::APPROVED)
+            ->andWhere('threads.status IN (:status)')
+            ->setParameter('status', ThreadCommentStatusEnum::VISIBLE_STATUSES)
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -45,8 +45,8 @@ class IdeaRepository extends ServiceEntityRepository
             ->where('idea = :idea')
             ->setParameter('idea', $idea)
             ->andWhere('threadComment.deletedAt IS NULL')
-            ->andWhere('thread.status != :status')
-            ->setParameter('status', ThreadStatusEnum::DELETED)
+            ->andWhere('thread.status IN (:status)')
+            ->setParameter('status', ThreadCommentStatusEnum::VISIBLE_STATUSES)
             ->getQuery()
             ->getSingleScalarResult()
         ;
