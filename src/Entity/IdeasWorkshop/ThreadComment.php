@@ -3,60 +3,52 @@
 namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use ApiPlatform\Core\Annotation\ApiResource;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AuthorInterface;
-use AppBundle\Entity\EntitySoftDeletableTrait;
-use AppBundle\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
+ * @ApiResource(
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"thread_comment_read"}
+ *         },
+ *         "filters": {"threadComment.thread"},
+ *         "order": {"createdAt": "ASC"}
+ *     },
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"},
+ * )
+ *
  * @ORM\Table(name="ideas_workshop_comment")
  *
  * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)
  */
-class ThreadComment implements AuthorInterface
+class ThreadComment extends BaseComment implements AuthorInterface
 {
-    use EntityTimestampableTrait;
-    use EntitySoftDeletableTrait;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
-    private $id;
-
     /**
      * @ORM\ManyToOne(targetEntity="Thread", inversedBy="comments")
+     *
+     * @SymfonySerializer\Groups("thread_comment_read")
      */
     private $thread;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $content;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
-     */
-    private $author;
 
     public function __construct(
         string $content,
         Adherent $author,
-        Thread $thread
+        Thread $thread,
+        string $status = ThreadCommentStatusEnum::POSTED,
+        \DateTime $createdAt = null
     ) {
         $this->content = $content;
         $this->author = $author;
         $this->thread = $thread;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
+        $this->status = $status;
+        $this->createdAt = $createdAt;
     }
 
     public function getThread(): Thread
@@ -67,25 +59,5 @@ class ThreadComment implements AuthorInterface
     public function setThread(Thread $thread): void
     {
         $this->thread = $thread;
-    }
-
-    public function getAuthor(): Adherent
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(Adherent $author): void
-    {
-        $this->author = $author;
-    }
-
-    public function getContent(): string
-    {
-        return $this->content;
-    }
-
-    public function setContent(string $content): void
-    {
-        $this->content = $content;
     }
 }
