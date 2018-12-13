@@ -115,8 +115,8 @@ Feature:
                 "name": "Faire la paix",
                 "slug": "faire-la-paix",
                 "days_before_deadline": "@integer@",
-                "contributors_count": 0,
-                "comments_count": 4
+                "contributors_count": 6,
+                "comments_count": 6
             }
         ]
     }
@@ -176,8 +176,8 @@ Feature:
                 "name": "Faire la paix",
                 "slug": "faire-la-paix",
                 "days_before_deadline": "@integer@",
-                "contributors_count": 0,
-                "comments_count": 4
+                "contributors_count": 6,
+                "comments_count": 6
             }
         ]
     }
@@ -243,8 +243,8 @@ Feature:
                 "name": "Faire la paix",
                 "slug": "faire-la-paix",
                 "days_before_deadline": "@integer@",
-                "contributors_count": 0,
-                "comments_count": 4
+                "contributors_count": 6,
+                "comments_count": 6
             }
         ]
     }
@@ -304,8 +304,8 @@ Feature:
                 "name": "Faire la paix",
                 "slug": "faire-la-paix",
                 "days_before_deadline": "@integer@",
-                "contributors_count": 0,
-                "comments_count": 4
+                "contributors_count": 6,
+                "comments_count": 6
             },
             {
                 "theme": {
@@ -343,7 +343,6 @@ Feature:
     }
     """
 
-  @wip
   Scenario: As a non logged-in user I can filter ideas by author uuid
     When I send a "GET" request to "/api/ideas?author.uuid=acc73b03-9743-47d8-99db-5a6c6f55ad67"
     Then the response status code should be 200
