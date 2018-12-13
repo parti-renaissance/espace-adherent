@@ -281,6 +281,7 @@ class Idea
     {
         if (!$this->votes->contains($vote)) {
             $this->votes->add($vote);
+            $vote->setIdea($this);
             $this->incrementVotesCount();
         }
     }
