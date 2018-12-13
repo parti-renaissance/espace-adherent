@@ -6,8 +6,6 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentTag;
-use AppBundle\Entity\AdherentTagEnum;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntityNameSlugTrait;
@@ -39,6 +37,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     name="ideas_workshop_idea",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="idea_slug_unique", columns="slug")
+ *     },
+ *     indexes={
+ *         @ORM\Index(name="status_idx", columns={"status"}),
+ *         @ORM\Index(name="author_category_idx", columns={"author_category"})
  *     }
  * )
  *
@@ -125,12 +127,30 @@ class Idea
      */
     private $votes;
 
+    /**
+     * @SymfonySerializer\Groups("idea_list_read")
+     * @ORM\Column(type="integer", options={"unsigned": true})
+     */
+    private $votesCount = 0;
+
+    /**
+     * @Assert\Choice(
+     *     callback={"AppBundle\Entity\IdeasWorkshop\AuthorCategoryEnum", "toArray"},
+     *     strict=true,
+     * )
+     *
+     * @SymfonySerializer\Groups("idea_list_read")
+     * @ORM\Column(length=9)
+     */
+    private $authorCategory;
+
     public function __construct(
         UuidInterface $uuid,
         string $name,
         Adherent $author,
         Category $category,
         Theme $theme,
+        string $authorCategory,
         bool $withCommittee = false,
         Committee $committee = null,
         \DateTime $publishedAt = null,
@@ -141,6 +161,7 @@ class Idea
         $this->author = $author;
         $this->category = $category;
         $this->theme = $theme;
+        $this->authorCategory = $authorCategory;
         $this->committee = $committee;
         $this->publishedAt = $publishedAt;
         $this->status = $status;
@@ -260,15 +281,17 @@ class Idea
     {
         if (!$this->votes->contains($vote)) {
             $this->votes->add($vote);
+            $this->incrementVotesCount();
         }
     }
 
     public function removeVote(Vote $vote): void
     {
         $this->votes->removeElement($vote);
+        $this->decrementVotesCount();
     }
 
-    public function getVotes(): ArrayCollection
+    public function getVotes(): Collection
     {
         return $this->votes;
     }
@@ -309,29 +332,28 @@ class Idea
         return $this->getUuid()->toString();
     }
 
-    /**
-     * @SymfonySerializer\Groups("idea_list_read")
-     */
-    public function getVotesCount(): int
-    {
-        return $this->votes->count();
-    }
-
-    /**
-     * @SymfonySerializer\Groups("idea_list_read")
-     */
     public function getAuthorCategory(): string
     {
-        if ($this->withCommittee && $this->committee) {
-            return AuthorCategoryEnum::COMMITTEE;
-        } else {
-            $ideaTag = $this->author->getTags()
-                ->filter(function (AdherentTag $adherentTag) {
-                    return AdherentTagEnum::IDEAS === $adherentTag->getName();
-                })
-            ;
+        return $this->authorCategory;
+    }
 
-            return $ideaTag ? AuthorCategoryEnum::QG : AuthorCategoryEnum::ADHERENT;
-        }
+    public function setAuthorCategory(string $authorCategory): void
+    {
+        $this->authorCategory = $authorCategory;
+    }
+
+    public function getVotesCount(): int
+    {
+        return $this->votesCount;
+    }
+
+    public function incrementVotesCount(int $increment = 1): void
+    {
+        $this->votesCount += $increment;
+    }
+
+    public function decrementVotesCount(int $increment = 1): void
+    {
+        $this->votesCount -= $increment;
     }
 }

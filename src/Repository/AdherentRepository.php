@@ -756,7 +756,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->innerJoin('ideas.answers', 'answers')
             ->innerJoin('answers.threads', 'threads')
             ->innerJoin('threads.comments', 'comments')
-            ->where('ideas IN(:idea)')
+            ->where('ideas = :idea')
             ->setParameter('idea', $idea)
             ->andWhere('comments.deletedAt IS NULL')
             ->andWhere('threads.status = :status')

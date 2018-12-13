@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\IdeasWorkshop\AuthorCategoryEnum;
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -31,6 +32,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             $adherent3,
             $category,
             $theme,
+            AuthorCategoryEnum::COMMITTEE,
             true,
             $committee,
             new \DateTime('2018-12-01 10:00:00'),
@@ -45,6 +47,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             $adherent3,
             $category,
             $theme,
+            AuthorCategoryEnum::COMMITTEE,
             true,
             $committee,
             new \DateTime('2018-12-02 10:00:00')
@@ -57,6 +60,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             $adherent6,
             $category,
             $theme,
+            AuthorCategoryEnum::QG,
             false,
             null,
             new \DateTime('2018-12-03 10:00:00')
@@ -69,6 +73,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             $adherent3,
             $category,
             $theme,
+            AuthorCategoryEnum::ADHERENT,
             false,
             null,
             new \DateTime('2018-12-04 10:00:00'),

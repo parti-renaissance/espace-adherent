@@ -30,18 +30,16 @@ Feature:
                 "firstName": "Jacques",
                 "lastName": "Picard"
             },
-            "publishedAt": "2018-12-04T10:00:00+01:00",
+            "published_at": "2018-12-04T10:00:00+01:00",
             "committee": null,
             "status": "FINALIZED",
-            "withCommittee": false,
-            "createdAt": "@string@.isDateTime()",
+            "with_committee": false,
+            "votes_count": 0,
+            "author_category": "ADHERENT",
+            "created_at": "@string@.isDateTime()",
             "name": "Réduire le gaspillage",
             "slug": "reduire-le-gaspillage",
-            "daysBeforeDeadline": "@integer@",
-            "authorCategory": "QG",
-            "votesCount": 0,
-            "contributors_count": 0,
-            "comments_count": 0
+            "days_before_deadline": "@integer@"
         }
     ]
     """
@@ -72,22 +70,20 @@ Feature:
                 "firstName": "Jacques",
                 "lastName": "Picard"
             },
-            "publishedAt": "2018-12-01T10:00:00+01:00",
+            "published_at": "2018-12-01T10:00:00+01:00",
             "committee": {
-                "createdAt": "@string@.isDateTime()",
+                "createdAt": "2017-01-12T13:25:54+01:00",
                 "name": "En Marche Paris 8",
                 "slug": "en-marche-paris-8"
             },
             "status": "PENDING",
-            "withCommittee": true,
-            "createdAt": "@string@.isDateTime()",
+            "with_committee": true,
+            "votes_count": 0,
+            "author_category": "COMMITTEE",
+            "created_at": "@string@.isDateTime()",
             "name": "Faire la paix",
             "slug": "faire-la-paix",
-            "daysBeforeDeadline": "@integer@",
-            "authorCategory": "COMMITTEE",
-            "votesCount": 21,
-            "contributors_count": 0,
-            "comments_count": 4
+            "days_before_deadline": "@integer@"
         }
     ]
     """
@@ -113,22 +109,20 @@ Feature:
                 "firstName": "Jacques",
                 "lastName": "Picard"
             },
-            "publishedAt": "2018-12-02T10:00:00+01:00",
+            "published_at": "2018-12-02T10:00:00+01:00",
             "committee": {
-                "createdAt": "@string@.isDateTime()",
+                "createdAt": "2017-01-12T13:25:54+01:00",
                 "name": "En Marche Paris 8",
                 "slug": "en-marche-paris-8"
             },
             "status": "DRAFT",
-            "withCommittee": true,
-            "createdAt": "@string@.isDateTime()",
+            "with_committee": true,
+            "votes_count": 0,
+            "author_category": "COMMITTEE",
+            "created_at": "@string@.isDateTime()",
             "name": "Favoriser l'écologie",
             "slug": "favoriser-lecologie",
-            "daysBeforeDeadline": "@integer@",
-            "authorCategory": "COMMITTEE",
-            "votesCount": 21,
-            "contributors_count": 0,
-            "comments_count": 0
+            "days_before_deadline": "@integer@"
         }
     ]
     """
@@ -159,22 +153,20 @@ Feature:
                 "firstName": "Jacques",
                 "lastName": "Picard"
             },
-            "publishedAt": "2018-12-01T10:00:00+01:00",
+            "published_at": "2018-12-01T10:00:00+01:00",
             "committee": {
                 "createdAt": "2017-01-12T13:25:54+01:00",
                 "name": "En Marche Paris 8",
                 "slug": "en-marche-paris-8"
             },
             "status": "PENDING",
-            "withCommittee": true,
-            "createdAt": "@string@.isDateTime()",
+            "with_committee": true,
+            "votes_count": 0,
+            "author_category": "COMMITTEE",
+            "created_at": "@string@.isDateTime()",
             "name": "Faire la paix",
             "slug": "faire-la-paix",
-            "daysBeforeDeadline": "@integer@",
-            "votesCount": 21,
-            "authorCategory": "COMMITTEE",
-            "contributors_count": 0,
-            "comments_count": 4
+            "days_before_deadline": "@integer@"
         },
         {
             "theme": {
@@ -190,22 +182,20 @@ Feature:
                 "firstName": "Jacques",
                 "lastName": "Picard"
             },
-            "publishedAt": "2018-12-02T10:00:00+01:00",
+            "published_at": "2018-12-02T10:00:00+01:00",
             "committee": {
                 "createdAt": "2017-01-12T13:25:54+01:00",
                 "name": "En Marche Paris 8",
                 "slug": "en-marche-paris-8"
             },
             "status": "DRAFT",
-            "withCommittee": true,
-            "createdAt": "@string@.isDateTime()",
+            "with_committee": true,
+            "votes_count": 0,
+            "author_category": "COMMITTEE",
+            "created_at": "@string@.isDateTime()",
             "name": "Favoriser l'écologie",
             "slug": "favoriser-lecologie",
-            "daysBeforeDeadline": "@integer@",
-            "votesCount": 21,
-            "authorCategory": "COMMITTEE",
-            "contributors_count": 0,
-            "comments_count": 0
+            "days_before_deadline": "@integer@"
         },
         {
             "theme": {
@@ -221,18 +211,16 @@ Feature:
                 "firstName": "Benjamin",
                 "lastName": "Duroc"
             },
-            "publishedAt": "2018-12-03T10:00:00+01:00",
+            "published_at": "2018-12-03T10:00:00+01:00",
             "committee": null,
             "status": "DRAFT",
-            "withCommittee": false,
-            "createdAt": "@string@.isDateTime()",
+            "with_committee": false,
+            "votes_count": 0,
+            "author_category": "QG",
+            "created_at": "@string@.isDateTime()",
             "name": "Aider les gens",
             "slug": "aider-les-gens",
-            "daysBeforeDeadline": "@integer@",
-            "votesCount": 21,
-            "authorCategory": "QG",
-            "contributors_count": 0,
-            "comments_count": 0
+            "days_before_deadline": "@integer@"
         },
         {
             "theme": {
@@ -248,18 +236,16 @@ Feature:
                 "firstName": "Jacques",
                 "lastName": "Picard"
             },
-            "publishedAt": "2018-12-04T10:00:00+01:00",
+            "published_at": "2018-12-04T10:00:00+01:00",
             "committee": null,
             "status": "FINALIZED",
-            "withCommittee": false,
-            "createdAt": "@string@.isDateTime()",
+            "with_committee": false,
+            "votes_count": 0,
+            "author_category": "ADHERENT",
+            "created_at": "@string@.isDateTime()",
             "name": "Réduire le gaspillage",
             "slug": "reduire-le-gaspillage",
-            "daysBeforeDeadline": "@integer@",
-            "votesCount": 0,
-            "authorCategory": "QG",
-            "contributors_count": 0,
-            "comments_count": 0
+            "days_before_deadline": "@integer@"
         }
     ]
     """
