@@ -10,6 +10,7 @@ use AppBundle\Events;
 use AppBundle\Form\PurifiedTextareaType;
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Intl\UnitedNationsBundle;
+use AppBundle\Referent\ReferentTagManager;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CitizenProjectMembershipRepository;
 use AppBundle\Repository\CitizenProjectRepository;
@@ -46,15 +47,25 @@ class CitizenProjectAdmin extends AbstractAdmin
     private $cachedDatagrid;
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
+    private $referentTagManager;
 
-    public function __construct($code, $class, $baseControllerName, CitizenProjectManager $manager, CitizenProjectRepository $repository, CitizenProjectMembershipRepository $membershipRepository, AdherentRepository $adherentRepository)
-    {
+    public function __construct(
+        $code,
+        $class,
+        $baseControllerName,
+        CitizenProjectManager $manager,
+        CitizenProjectRepository $repository,
+        CitizenProjectMembershipRepository $membershipRepository,
+        AdherentRepository $adherentRepository,
+        ReferentTagManager $referentTagManager
+    ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->manager = $manager;
         $this->adherentRepository = $adherentRepository;
         $this->citizenProjectRepository = $repository;
         $this->citizenProjectMembershipRepository = $membershipRepository;
+        $this->referentTagManager = $referentTagManager;
     }
 
     /**
@@ -89,6 +100,8 @@ class CitizenProjectAdmin extends AbstractAdmin
 
     public function postUpdate($object)
     {
+        $this->referentTagManager->assignReferentLocalTags($object);
+
         $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($object));
     }
 

@@ -33,11 +33,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class CitizenProject extends BaseGroup
+class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity
 {
     use EntityNullablePostAddressTrait;
+    use EntityReferentTagTrait;
     use SkillTrait;
-    use CoordinatorAreaTrait;
 
     public const STATUSES_NOT_ALLOWED_TO_CREATE = [
         self::PENDING,
@@ -224,37 +224,37 @@ class CitizenProject extends BaseGroup
         string $status = self::PENDING,
         string $approvedAt = null,
         string $createdAt = 'now',
-        int $membersCount = 0
+        int $membersCount = 0,
+        array $referentTags = []
     ) {
-        if ($approvedAt) {
-            $approvedAt = new \DateTimeImmutable($approvedAt);
-        }
+        parent::__construct(
+            $uuid,
+            $creator,
+            $name,
+            $slug,
+            $phone,
+            $status,
+            $approvedAt,
+            $createdAt,
+            $membersCount
+        );
 
-        if ($createdAt) {
-            $createdAt = new \DateTimeImmutable($createdAt);
-        }
-
-        $this->uuid = $uuid;
-        $this->createdBy = $creator;
-        $this->setName($name);
-        $this->slug = $slug;
         $this->category = $category;
         $this->subtitle = $subtitle;
         $this->postAddress = $address;
         $this->district = $district;
         $this->turnkeyProject = $turnkeyProject;
-        $this->phone = $phone;
-        $this->status = $status;
-        $this->membersCount = $membersCount;
-        $this->approvedAt = $approvedAt;
-        $this->createdAt = $createdAt;
-        $this->updatedAt = $createdAt;
         $this->problemDescription = $problemDescription;
         $this->proposedSolution = $proposedSolution;
         $this->requiredMeans = $requiredMeans;
         $this->skills = new ArrayCollection();
         $this->committeeSupports = new ArrayCollection();
         $this->setCommitteesOnSupport($committees);
+        $this->referentTags = new ArrayCollection();
+
+        foreach ($referentTags as $referentTag) {
+            $this->addReferentTag($referentTag);
+        }
     }
 
     public function getPostAddress(): NullablePostAddress

@@ -22,6 +22,7 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
     public const PENDING = 'PENDING';
     public const REFUSED = 'REFUSED';
 
+    use CoordinatorAreaTrait;
     use EntityIdentityTrait;
     use EntityCrudTrait;
     use EntityTimestampableTrait;

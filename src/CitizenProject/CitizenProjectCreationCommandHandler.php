@@ -4,29 +4,30 @@ namespace AppBundle\CitizenProject;
 
 use AppBundle\Entity\TurnkeyProject;
 use AppBundle\Events;
+use AppBundle\Referent\ReferentTagManager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CitizenProjectCreationCommandHandler
 {
     private $dispatcher;
-
     private $factory;
-
     private $manager;
-
     private $citizenProjectManager;
+    private $referentTagManager;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
         CitizenProjectFactory $factory,
         ObjectManager $manager,
-        CitizenProjectManager $citizenProjectManager
+        CitizenProjectManager $citizenProjectManager,
+        ReferentTagManager $referentTagManager
     ) {
         $this->dispatcher = $dispatcher;
         $this->factory = $factory;
         $this->manager = $manager;
         $this->citizenProjectManager = $citizenProjectManager;
+        $this->referentTagManager = $referentTagManager;
     }
 
     public function handle(CitizenProjectCreationCommand $command): void
@@ -49,6 +50,8 @@ class CitizenProjectCreationCommandHandler
         } else {
             $this->citizenProjectManager->setDefaultImage($citizenProject);
         }
+
+        $this->referentTagManager->assignReferentLocalTags($citizenProject);
 
         $command->setCitizenProject($citizenProject);
 

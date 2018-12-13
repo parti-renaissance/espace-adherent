@@ -325,7 +325,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
 
     private function getCitizenProjectFactory(): CitizenProjectFactory
     {
-        return $this->container->get('app.citizen_project.factory');
+        return $this->container->get(CitizenProjectFactory::class);
     }
 
     public function getDependencies()

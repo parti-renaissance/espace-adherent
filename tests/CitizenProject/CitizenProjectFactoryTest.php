@@ -11,6 +11,7 @@ use AppBundle\CitizenProject\CitizenProjectCreationCommand;
 use AppBundle\CitizenProject\CitizenProjectFactory;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Referent\ReferentTagManager;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 
@@ -54,7 +55,9 @@ class CitizenProjectFactoryTest extends TestCase
         $command->requiredMeans = $requiredMeans;
         $command->setSkills([$skill]);
 
-        $citizenProjectFactory = new CitizenProjectFactory();
+        $citizenProjectFactory = new CitizenProjectFactory(
+            $this->createMock(ReferentTagManager::class)
+        );
         $citizenProject = $citizenProjectFactory->createFromCitizenProjectCreationCommand($command);
 
         $this->assertInstanceOf(CitizenProject::class, $citizenProject);

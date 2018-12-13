@@ -4,15 +4,20 @@ namespace AppBundle\CitizenProject;
 
 use AppBundle\Address\PostAddressFactory;
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Referent\ReferentTagManager;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 
 class CitizenProjectFactory
 {
     private $addressFactory;
+    private $referentTagManager;
 
-    public function __construct(PostAddressFactory $addressFactory = null)
-    {
+    public function __construct(
+        ReferentTagManager $referentTagManager,
+        PostAddressFactory $addressFactory = null
+    ) {
+        $this->referentTagManager = $referentTagManager;
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
     }
 
@@ -56,6 +61,8 @@ class CitizenProjectFactory
         if (isset($data['skills'])) {
             $citizenProject->setSkills($data['skills']);
         }
+
+        $this->referentTagManager->assignReferentLocalTags($citizenProject);
 
         return $citizenProject;
     }

@@ -42,6 +42,8 @@
             <argument type="service" id="knp_snappy.image"/>
         </service>
 
+        <service id="AppBundle\CitizenProject\CitizenProjectFactory" public="true" />
+
         <!-- CitizenActions -->
         <service id="AppBundle\CitizenAction\CitizenActionMessageNotifier">
             <argument key="$mailer" type="service" id="app.mailer.transactional" />
