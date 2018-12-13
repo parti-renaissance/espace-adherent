@@ -180,10 +180,6 @@
             <argument type="service" id="event_dispatcher"/>
         </service>
 
-        <service id="app.citizen_project.factory" class="AppBundle\CitizenProject\CitizenProjectFactory">
-            <argument type="service" id="app.address.post_address_factory"/>
-        </service>
-
         <service id="app.validator.unique_citizen_project" class="AppBundle\Validator\UniqueCitizenProjectValidator">
             <argument type="service" id="AppBundle\Repository\CitizenProjectRepository"/>
             <tag name="validator.constraint_validator" alias="app.validator.unique_citizen_project"/>
@@ -191,9 +187,10 @@
 
         <service id="app.citizen_project.creation_handler" class="AppBundle\CitizenProject\CitizenProjectCreationCommandHandler">
             <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.citizen_project.factory"/>
+            <argument type="service" id="AppBundle\CitizenProject\CitizenProjectFactory"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
+            <argument type="service" id="AppBundle\Referent\ReferentTagManager"/>
         </service>
 
         <service id="app.citizen_project.update_handler" class="AppBundle\CitizenProject\CitizenProjectUpdateCommandHandler">
@@ -201,6 +198,7 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.address.post_address_factory"/>
             <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
+            <argument type="service" id="AppBundle\Referent\ReferentTagManager"/>
         </service>
 
         <service id="app.citizen_project.citizen_project_message_notifier" class="AppBundle\CitizenProject\CitizenProjectMessageNotifier">

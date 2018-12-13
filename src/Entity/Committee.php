@@ -35,7 +35,7 @@ use Ramsey\Uuid\UuidInterface;
 class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity
 {
     use EntityPostAddressTrait;
-    use CoordinatorAreaTrait;
+    use EntityReferentTagTrait;
 
     public const STATUSES_NOT_ALLOWED_TO_CREATE_ANOTHER = [
         self::PRE_REFUSED,
@@ -111,13 +111,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
      */
     public $hosts = [];
 
-    /**
-     * @var Collection|ReferentTag[]
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
-     */
-    private $referentTags;
-
     public function __construct(
         UuidInterface $uuid,
         UuidInterface $creator,
@@ -133,31 +126,29 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         array $citizenProjects = [],
         array $referentTags = []
     ) {
-        if ($approvedAt) {
-            $approvedAt = new \DateTime($approvedAt);
-        }
+        parent::__construct(
+            $uuid,
+            $creator,
+            $name,
+            $slug,
+            $phone,
+            $status,
+            $approvedAt,
+            $createdAt,
+            $membersCount
+        );
 
-        if ($createdAt) {
-            $createdAt = new \DateTime($createdAt);
-        }
-
-        $this->uuid = $uuid;
-        $this->createdBy = $creator;
-        $this->setName($name);
-        $this->slug = $slug;
         $this->description = $description;
         $this->postAddress = $address;
-        $this->phone = $phone;
-        $this->status = $status;
-        $this->membersCount = $membersCount;
-        $this->approvedAt = $approvedAt;
-        $this->createdAt = $createdAt;
-        $this->updatedAt = $createdAt;
         $this->citizenProjectSupports = new ArrayCollection();
-        $this->referentTags = new ArrayCollection($referentTags);
+        $this->referentTags = new ArrayCollection();
 
         foreach ($citizenProjects as $citizenProject) {
             $this->addSupportOnCitizenProject($citizenProject);
+        }
+
+        foreach ($referentTags as $referentTag) {
+            $this->addReferentTag($referentTag);
         }
     }
 
