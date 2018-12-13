@@ -5,29 +5,30 @@ namespace AppBundle\CitizenProject;
 use AppBundle\Address\PostAddressFactory;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Events;
+use AppBundle\Referent\ReferentTagManager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CitizenProjectUpdateCommandHandler
 {
     private $dispatcher;
-
     private $addressFactory;
-
     private $manager;
-
     private $citizenProjectManager;
+    private $referentTagManager;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
         ObjectManager $manager,
         PostAddressFactory $addressFactory,
-        CitizenProjectManager $citizenProjectManager
+        CitizenProjectManager $citizenProjectManager,
+        ReferentTagManager $referentTagManager
     ) {
         $this->dispatcher = $dispatcher;
         $this->manager = $manager;
         $this->addressFactory = $addressFactory;
         $this->citizenProjectManager = $citizenProjectManager;
+        $this->referentTagManager = $referentTagManager;
     }
 
     public function handle(CitizenProjectCommand $command)
@@ -52,6 +53,8 @@ class CitizenProjectUpdateCommandHandler
         );
 
         $this->doUpdateImage($command, $citizenProject);
+
+        $this->referentTagManager->assignReferentLocalTags($citizenProject);
 
         $this->manager->persist($citizenProject);
         $this->manager->flush();
