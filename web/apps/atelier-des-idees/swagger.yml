@@ -74,6 +74,57 @@ paths:
         400:
           description: Oups
 
+/idea: 
+  post: 
+    summary: Poster une idée
+    operationId: PostIdea
+    consumes: 
+    - application/json
+    parameters:
+      schema:
+        type: object
+        required:
+        - title
+        - theme
+        - geography_scale
+        - description
+        - createdAt
+        - author
+        - author_category
+        - difficult_part
+        properties:
+          title:
+            type: string
+            example: "Ceci est le titre"
+          theme:
+            type: array
+            items : {
+            example: ['Ecologie', 'Climat', 'Transport']
+            } 
+          geography_scale:
+            type: string
+            enum: [national, european]
+          description:
+            type: string
+            example : "Ceci est une description qui à 180 caractères max."
+          createdAt:
+            type: string
+            format: date-time
+            example: "2016-08-29T09:12:33.001Z"  
+          author:
+            type: string
+            example: Jean Moulin  
+          author_category:
+            type: string
+            enum: [adherent, committee, qg]  
+          difficult_part:
+            type: array
+            items : {
+              example: ['Ecologie', 'Climat', 'Transport']
+            }   
+  responses:
+    201:
+      description: Created
 
   /ideas/{idea_id}:
     get:
@@ -150,10 +201,10 @@ paths:
           
   /consultation-pinned:
     get:
-      summary: single idea
+      summary: Afficher la consultation mise en vant
       operationId: Consultation
       description: |
-        Affiche la consulation mise en avant
+        Afficher la consulation mise en avant
       produces:
       - application/json
       responses:
@@ -165,14 +216,7 @@ paths:
               $ref: '#/definitions/ConsultationPinned'
         400:
           description: bad input parameter  
-     
-
-#  Il faut checker si le user à déja voté sur ce comment, si oui,
-#  si la nouvelle valeur est diffente de la précédente, la nouvelle écrase
-#  l'ancienne. 
-#  Si la nouvelle valeur est égale à l ancienne valeur, le vote s'annule.
-  
-        
+          
   /vote/{category_vote}/{idea_id}: 
     post: 
       summary: je vote
@@ -200,9 +244,11 @@ paths:
         200:
           description: successful operation
  
- # Ajouter le post de note
+
  # Ajouter le get pour afficher les rapports
  
+
+
  
 definitions:
   Idea:
@@ -227,7 +273,7 @@ definitions:
         example: 555
       status:
         type: string
-        example: Approuved
+        enum: [Draft, Pending, Approved, Refused]
       thumbnail:
         type: string
         example: https://www.pets4homes.co.uk/images/articles/2424/large/is-the-papillon-a-good-choice-of-dog-549ea0d9a2631.jpg
