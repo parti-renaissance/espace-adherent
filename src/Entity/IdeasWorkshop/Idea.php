@@ -144,9 +144,16 @@ class Idea
      */
     private $authorCategory;
 
+    /**
+     * @SymfonySerializer\Groups("idea_list_read")
+     * @ORM\Column(type="text")
+     */
+    private $description;
+
     public function __construct(
         UuidInterface $uuid,
         string $name,
+        string $description,
         Adherent $author,
         Category $category,
         Theme $theme,
@@ -158,6 +165,7 @@ class Idea
     ) {
         $this->uuid = $uuid;
         $this->setName($name);
+        $this->description = $description;
         $this->author = $author;
         $this->category = $category;
         $this->theme = $theme;
@@ -356,5 +364,15 @@ class Idea
     public function decrementVotesCount(int $increment = 1): void
     {
         $this->votesCount -= $increment;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 }

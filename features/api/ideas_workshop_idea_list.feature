@@ -36,6 +36,7 @@ Feature:
             "with_committee": false,
             "votes_count": 0,
             "author_category": "ADHERENT",
+            "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
             "created_at": "@string@.isDateTime()",
             "name": "Réduire le gaspillage",
             "slug": "reduire-le-gaspillage",
@@ -44,6 +45,7 @@ Feature:
     ]
     """
 
+  @wip
   Scenario: As a non logged-in user I can see pending ideas
     When I send a "GET" request to "/api/ideas.json?status=PENDING"
     Then the response status code should be 200
@@ -80,6 +82,7 @@ Feature:
             "with_committee": true,
             "votes_count": 21,
             "author_category": "COMMITTEE",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
             "created_at": "@string@.isDateTime()",
             "name": "Faire la paix",
             "slug": "faire-la-paix",
@@ -119,6 +122,7 @@ Feature:
             "with_committee": true,
             "votes_count": 21,
             "author_category": "COMMITTEE",
+            "description": "Mauris posuere eros eget nunc dapibus ornare. Vestibulum dolor eros, facilisis in venenatis eu, tristique a sapien.",
             "created_at": "@string@.isDateTime()",
             "name": "Favoriser l'écologie",
             "slug": "favoriser-lecologie",
@@ -163,6 +167,7 @@ Feature:
             "with_committee": true,
             "votes_count": 21,
             "author_category": "COMMITTEE",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
             "created_at": "@string@.isDateTime()",
             "name": "Faire la paix",
             "slug": "faire-la-paix",
@@ -192,6 +197,7 @@ Feature:
             "with_committee": true,
             "votes_count": 21,
             "author_category": "COMMITTEE",
+            "description": "Mauris posuere eros eget nunc dapibus ornare. Vestibulum dolor eros, facilisis in venenatis eu, tristique a sapien.",
             "created_at": "@string@.isDateTime()",
             "name": "Favoriser l'écologie",
             "slug": "favoriser-lecologie",
@@ -217,6 +223,7 @@ Feature:
             "with_committee": false,
             "votes_count": 21,
             "author_category": "QG",
+            "description": "Nam laoreet eros diam, vitae hendrerit libero interdum nec. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
             "created_at": "@string@.isDateTime()",
             "name": "Aider les gens",
             "slug": "aider-les-gens",
@@ -242,6 +249,7 @@ Feature:
             "with_committee": false,
             "votes_count": 0,
             "author_category": "ADHERENT",
+            "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
             "created_at": "@string@.isDateTime()",
             "name": "Réduire le gaspillage",
             "slug": "reduire-le-gaspillage",
