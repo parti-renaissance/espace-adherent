@@ -46,6 +46,7 @@ Feature:
     ]
     """
 
+  @wip
   Scenario: As a non logged-in user I can see pending ideas
     Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/ideas?status=PENDING"
