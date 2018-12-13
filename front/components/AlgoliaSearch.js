@@ -144,7 +144,7 @@ export default class AlgoliaSearch extends React.Component {
         }
 
         if ('clarification' === hit.type) {
-            return `/emmanuel-macron/desintox/${hit.slug}`;
+            return `/desintox/${hit.slug}`;
         }
 
         if ('event' === hit.type) {
