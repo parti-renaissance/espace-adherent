@@ -6,7 +6,7 @@ ENV LANG="en_US.UTF-8" \
     TERM="xterm" \
     DEBIAN_FRONTEND="noninteractive" \
     SYMFONY_ALLOW_APPDEV=1 \
-    NODE_VERSION=8.9 \
+    NODE_VERSION=8.14.0 \
     COMPOSER_ALLOW_SUPERUSER=1
 
 EXPOSE 80
