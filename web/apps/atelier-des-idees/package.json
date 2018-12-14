@@ -6,7 +6,9 @@
   "dependencies": {
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "react-scripts": "1.1.5"
+    "react-redux": "^6.0.0",
+    "react-scripts": "1.1.5",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "build-css": "node-sass --include-path ./src --include-path ./node_modules src/ -o src/",
