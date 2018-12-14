@@ -151,6 +151,7 @@ class Idea
     private $authorCategory;
 
     /**
+     * @SymfonySerializer\Groups("idea_list_read")
      * @ORM\Column(type="text")
      */
     private $description;
