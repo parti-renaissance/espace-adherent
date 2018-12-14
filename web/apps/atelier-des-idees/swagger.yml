@@ -1,0 +1,395 @@
+swagger: '2.0'
+info:
+  description: This is a simple API
+  version: "1.1"
+  title: Simple Inventory API
+  # put the contact info for your development or API team
+  contact:
+    email: you@your-company.com
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# tags are used for organizing operations
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: developers
+  description: Operations available to regular developers
+
+paths:
+  /ideas:
+    get:
+      summary: idea list
+      operationId: ideaList
+      description: |
+        Affiche la liste de toutes les idées en cours de publication et publiées.
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: status
+        description: Trier par statut de publication (appouved - en cours)
+        required: true
+        type: string
+      - in: query
+        name: order_asc
+        description: Afficher par date croissante 
+        type: boolean
+      - in: query
+        name: order_desc
+        description: Afficher par date décroissante
+        type: boolean
+      - in: query
+        name: title
+        description: Filtrer dans le titre
+        type: string
+      - in: query
+        name: filter_by_theme
+        description: Trier par theme
+        type: string
+      - in: query
+        name: filter_by_author_category
+        description: Trier par type d'auteur
+        type: string
+      - in: query
+        name: filter_by_vote
+        description: Afficher les mieux votés
+        type: boolean       
+      - in: query
+        name: limit
+        description: pagination
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 30
+      responses:
+        200:
+          description: Voici les réultats
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Idea'
+        400:
+          description: Oups
+
+/idea: 
+  post: 
+    summary: Poster une idée
+    operationId: PostIdea
+    consumes: 
+    - application/json
+    parameters:
+      schema:
+        type: object
+        required:
+        - title
+        - theme
+        - geography_scale
+        - description
+        - createdAt
+        - author
+        - author_category
+        - difficult_part
+        properties:
+          title:
+            type: string
+            example: "Ceci est le titre"
+          theme:
+            type: array
+            items : {
+            example: ['Ecologie', 'Climat', 'Transport']
+            } 
+          geography_scale:
+            type: string
+            enum: [national, european]
+          description:
+            type: string
+            example : "Ceci est une description qui à 180 caractères max."
+          createdAt:
+            type: string
+            format: date-time
+            example: "2016-08-29T09:12:33.001Z"  
+          author:
+            type: string
+            example: Jean Moulin  
+          author_category:
+            type: string
+            enum: [adherent, committee, qg]  
+          difficult_part:
+            type: array
+            items : {
+              example: ['Ecologie', 'Climat', 'Transport']
+            }   
+  responses:
+    201:
+      description: Created
+
+  /ideas/{idea_id}:
+    get:
+      summary: single idea
+      operationId: SingleIdea
+      description: |
+        Affiche une seule idée
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: idea_id
+          required: true
+          type: integer
+          description: Numeric ID of the user to get
+      responses:
+        200:
+          description: Voici les réultats
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Idea'
+        400:
+          description: bad input parameter
+          
+          
+  /threads:
+    get:
+      summary: Commments
+      operationId: Commments
+      description: |
+        Affiche la liste de tous les commentaires parents de la note demandée
+      produces:
+      - application/json
+      parameters:
+        - in: query
+          name: idea_id
+          type: integer
+          description: Id de l'idée
+      responses:
+        200:
+          description: Voici les commentaires parents
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CommentsParent'
+        400:
+          description: Oups
+  
+  
+  /thread_comments :
+     get:
+      summary: CommmentsChild
+      operationId: CommmentsChild
+      description: |
+        Affiche la liste de tous les commentaires enfants du commentaire parent demandé
+      produces:
+      - application/json
+      parameters:
+        - in: query
+          name: thread_id
+          type: integer
+          description: Id du thread
+      responses:
+        200:
+          description: Voici les commentaires enfants -
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CommentsChildren'
+        400:
+          description: Oups
+  
+          
+  /consultation-pinned:
+    get:
+      summary: Afficher la consultation mise en vant
+      operationId: Consultation
+      description: |
+        Afficher la consulation mise en avant
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Voici la consulation mise en avant
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ConsultationPinned'
+        400:
+          description: bad input parameter  
+          
+  /vote/{category_vote}/{idea_id}: 
+    post: 
+      summary: je vote
+      operationId: Vote
+      consumes: 
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - in: path
+        name: idea_id
+        required: true
+        type: integer
+        description: |
+          Id de l'idée
+      - in: path
+        name: category_vote
+        required: true
+        type: string
+        description: | 
+          category du vote   
+      responses:
+        200:
+          description: successful operation
+ 
+
+ # Ajouter le get pour afficher les rapports
+ 
+
+
+ 
+definitions:
+  Idea:
+    type: object
+    required:
+    - id
+    - status
+    - thumbnail
+    - title
+    - description
+    - date
+    - author
+    - author_category
+    - contributors_count
+    - comments_count
+    - vote_count
+    - my_vote
+    - theme
+    properties:
+      id:
+        type: integer
+        example: 555
+      status:
+        type: string
+        enum: [Draft, Pending, Approved, Refused]
+      thumbnail:
+        type: string
+        example: https://www.pets4homes.co.uk/images/articles/2424/large/is-the-papillon-a-good-choice-of-dog-549ea0d9a2631.jpg
+      title:
+        type: string
+        example: Réduire le nombre d’élèves dans les classes dans les quartiers défavorisés
+      description:
+        type: string
+        example: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc euismod scelerisque condimentum. Vivamus viverra porta fringilla. Proin vitae
+      date:
+        type: string
+        format: date-time
+        example: "2016-08-29T09:12:33.001Z"
+      author:
+        type: string
+        example: Jean Moulin  
+      author_category:
+        type: string
+        example: Adhérent  
+      contributors_count:
+        type: integer
+        example: 59
+      comments_count:
+        type: integer
+        example: 118
+      vote_count:
+        type: object
+        example: {'important': 100, 'feasible' : 9, 'innovative': 9} 
+      my_vote:
+        type: string
+        enum : [important, feasible, innovative, null]
+      theme:
+        type: array
+        items : {
+         example: ['Ecologie', 'Climat', 'Transport']
+        }
+        
+        
+  ConsultationPinned:
+      type: object
+      required:
+      - title
+      - link
+      - calendar
+      - duration
+      properties:
+        title:
+          type: string
+          example: Ceci est le titre
+        link:
+          type: string
+          example: "www.google.fr"
+        calendar:
+          type: string
+          example: Du 24 janvier au 25 Février 2019.
+        duration:
+          type: string
+          example: 2 min.
+          
+          
+  CommentsParent:   
+      type: object
+      required:
+      - id
+      - content
+      - author
+      - date
+      - status
+      properties:
+        id:
+          type: integer
+          example: 555
+        content:
+          type: string
+          example: Voici le contenu de mon commentaire
+        author:
+          type: string
+          example: Jean Michel Moulin
+        date:
+          type: string
+          format: date-time
+          example: "2016-08-29T09:12:33.001Z"
+        status:
+          type: string
+          example: Approuved
+          
+          
+  CommentsChildren:   
+        type: object
+        required:
+        - id
+        - content
+        - author
+        - date
+        - status
+        properties:
+          id:
+            type: integer
+            example: 555
+          content:
+            type: string
+            example: Voici le contenu de mon commentaire
+          author:
+            type: string
+            example: Jean Michel Moulin
+          date:
+            type: string
+            format: date-time
+            example: "2016-08-29T09:12:33.001Z"
+          status:
+            type: string
+            example: Approuved 
+            
+      
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /Adi159/AtelierDesIdees/1.0.0
+schemes:
+ - https

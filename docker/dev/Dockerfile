@@ -6,14 +6,14 @@ ENV LANG="en_US.UTF-8" \
     TERM="xterm" \
     DEBIAN_FRONTEND="noninteractive" \
     SYMFONY_ALLOW_APPDEV=1 \
-    NODE_VERSION=6.9.4 \
+    NODE_VERSION=8.14.0 \
     COMPOSER_ALLOW_SUPERUSER=1
 
 EXPOSE 80
 WORKDIR /app
 
 RUN apt-get update -q && \
-    apt-get install -qy software-properties-common language-pack-en-base && \
+    apt-get install -qy software-properties-common language-pack-en-base build-essential && \
     export LC_ALL=en_US.UTF-8 && \
     export LANG=en_US.UTF-8 && \
     add-apt-repository ppa:ondrej/php && \
