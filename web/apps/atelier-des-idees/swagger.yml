@@ -190,7 +190,7 @@ paths:
           description: Id du thread
       responses:
         200:
-          description: Voici les commentaires enfants
+          description: Voici les commentaires enfants -
           schema:
             type: array
             items:
