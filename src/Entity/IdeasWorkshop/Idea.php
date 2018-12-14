@@ -22,7 +22,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 /**
  * @ApiResource(
  *     collectionOperations={"get": {"method": "GET"}},
- *     itemOperations={"get": {"method": "GET"}},
+ *     itemOperations={
+ *         "get": {
+ *             "method": "GET",
+ *             "normalization_context": {"groups": {"idea_read"}}
+ *         },
+ *     },
  *     attributes={
  *         "normalization_context": {"groups": {"idea_list_read"}},
  *         "order": {"createdAt": "ASC"}
@@ -118,6 +123,7 @@ class Idea
     private $withCommittee;
 
     /**
+     * @SymfonySerializer\Groups("idea_read")
      * @ORM\OneToMany(targetEntity="Answer", mappedBy="idea")
      */
     private $answers;
@@ -145,7 +151,6 @@ class Idea
     private $authorCategory;
 
     /**
-     * @SymfonySerializer\Groups("idea_list_read")
      * @ORM\Column(type="text")
      */
     private $description;

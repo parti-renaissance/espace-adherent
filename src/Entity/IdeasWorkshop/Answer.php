@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
  * @ORM\Table(name="ideas_workshop_answer")
@@ -25,11 +26,13 @@ class Answer
     private $id;
 
     /**
+     * @SymfonySerializer\Groups("idea_read")
      * @ORM\Column(type="text")
      */
     private $content;
 
     /**
+     * @SymfonySerializer\Groups("idea_read")
      * @ORM\ManyToOne(targetEntity="Question")
      */
     private $question;

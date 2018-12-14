@@ -46,7 +46,6 @@ Feature:
     ]
     """
 
-  @wip
   Scenario: As a non logged-in user I can see pending ideas
     Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/ideas?status=PENDING"
@@ -262,3 +261,65 @@ Feature:
     ]
     """
 
+  @wip
+  Scenario: As a non logged-in user I can get information about one idea
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas/1"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+        {
+        "answers": [
+            {
+                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce aliquet, mi condimentum venenatis vestibulum, arcu neque feugiat massa, at pharetra velit sapien et elit. Sed vitae hendrerit nulla. Vivamus consectetur magna at tincidunt maximus. Aenean dictum metus vel tellus posuere venenatis.",
+                "question": {
+                    "id": 1
+                }
+            },
+            {
+                "content": "Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex. Curabitur at eros et ex faucibus fringilla sed vel velit.",
+                "question": {
+                    "id": 1
+                }
+            },
+            {
+                "content": "Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex. Curabitur at eros et ex faucibus fringilla sed vel velit.",
+                "question": {
+                    "id": 3
+                }
+            },
+            {
+                "content": "Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex. Curabitur at eros et ex faucibus fringilla sed vel velit.",
+                "question": {
+                    "id": 4
+                }
+            },
+            {
+                "content": "Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex. Curabitur at eros et ex faucibus fringilla sed vel velit.",
+                "question": {
+                    "id": 5
+                }
+            },
+            {
+                "content": "Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex. Curabitur at eros et ex faucibus fringilla sed vel velit.",
+                "question": {
+                    "id": 6
+                }
+            },
+            {
+                "content": "Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex. Curabitur at eros et ex faucibus fringilla sed vel velit.",
+                "question": {
+                    "id": 7
+                }
+            },
+            {
+                "content": "Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex. Curabitur at eros et ex faucibus fringilla sed vel velit.",
+                "question": {
+                    "id": 8
+                }
+            }
+        ]
+    }
+    """

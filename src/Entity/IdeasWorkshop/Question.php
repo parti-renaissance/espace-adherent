@@ -7,6 +7,7 @@ use AppBundle\Entity\EntityPublishableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
  * @ORM\Table(name="ideas_workshop_question")
@@ -21,6 +22,7 @@ class Question
     /**
      * @var int
      *
+     * @SymfonySerializer\Groups("idea_read")
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
