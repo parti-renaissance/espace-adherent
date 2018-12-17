@@ -1,0 +1,20 @@
+.button {
+    cursor: pointer;
+    padding: 7px;
+}
+
+.button--primary {
+    font-family: $font-gillsans;
+    background-color: $blue;
+    color: $white;
+    text-transform: uppercase;
+    border: 1px solid $blue;
+}
+
+.button--secondary {
+    font-family: $font-gillsans;
+    background-color: $white;
+    color: $blue;
+    text-transform: uppercase;
+    border: 1px solid $blue;
+}
