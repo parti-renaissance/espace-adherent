@@ -26,6 +26,7 @@ Feature:
         },
         "items": [
             {
+                "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
                 "theme": {
                     "name": "Armées et défense"
                 },
@@ -35,6 +36,7 @@ Feature:
                 },
                 "needs": [],
                 "author": {
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
@@ -78,6 +80,7 @@ Feature:
         },
         "items": [
             {
+                "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
                 "theme": {
                     "name": "Armées et défense"
                 },
@@ -92,11 +95,13 @@ Feature:
                     }
                 ],
                 "author": {
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
                 "published_at": "2018-12-01T10:00:00+01:00",
                 "committee": {
+                    "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                     "created_at": "2017-01-12T13:25:54+01:00",
                     "name": "En Marche Paris 8",
                     "slug": "en-marche-paris-8"
@@ -139,6 +144,7 @@ Feature:
         },
         "items": [
             {
+                "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
                 "theme": {
                     "name": "Armées et défense"
                 },
@@ -153,11 +159,13 @@ Feature:
                     }
                 ],
                 "author": {
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
                 "published_at": "2018-12-01T10:00:00+01:00",
                 "committee": {
+                    "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                     "created_at": "2017-01-12T13:25:54+01:00",
                     "name": "En Marche Paris 8",
                     "slug": "en-marche-paris-8"
@@ -201,6 +209,7 @@ Feature:
         },
         "items": [
             {
+                "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
                 "theme": {
                     "name": "Armées et défense"
                 },
@@ -215,11 +224,13 @@ Feature:
                     }
                 ],
                 "author": {
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
                 "published_at": "2018-12-01T10:00:00+01:00",
                 "committee": {
+                    "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                     "created_at": "2017-01-12T13:25:54+01:00",
                     "name": "En Marche Paris 8",
                     "slug": "en-marche-paris-8"
@@ -267,6 +278,7 @@ Feature:
         },
         "items": [
             {
+                "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
                 "theme": {
                     "name": "Armées et défense"
                 },
@@ -281,11 +293,13 @@ Feature:
                     }
                 ],
                 "author": {
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
                 "published_at": "2018-12-01T10:00:00+01:00",
                 "committee": {
+                    "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                     "created_at": "2017-01-12T13:25:54+01:00",
                     "name": "En Marche Paris 8",
                     "slug": "en-marche-paris-8"
@@ -308,6 +322,7 @@ Feature:
                 "comments_count": 6
             },
             {
+                "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
                 "theme": {
                     "name": "Armées et défense"
                 },
@@ -317,6 +332,7 @@ Feature:
                 },
                 "needs": [],
                 "author": {
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
@@ -359,6 +375,7 @@ Feature:
         },
         "items": [
             {
+                "uuid": "aa093ce6-8b20-4d86-bfbc-91a73fe47285",
                 "theme": {
                     "name": "Armées et défense"
                 },
@@ -368,6 +385,7 @@ Feature:
                 },
                 "needs": [],
                 "author": {
+                    "uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67",
                     "first_name": "Benjamin",
                     "last_name": "Duroc"
                 },
