@@ -8,9 +8,17 @@ use AppBundle\Entity\IdeasWorkshop\ThreadCommentStatusEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Ramsey\Uuid\Uuid;
 
 class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixtureInterface
 {
+    public const THREAD_COMMENT_01_UUID = 'b99933f3-180c-4248-82f8-1b0eb950740d';
+    public const THREAD_COMMENT_02_UUID = '60123090-6cdc-4de6-9cb3-07e2ec411f2f';
+    public const THREAD_COMMENT_03_UUID = 'f716d3ba-004f-4958-af26-a7b010a6d458';
+    public const THREAD_COMMENT_04_UUID = '02bf299f-678a-4829-a6a1-241995339d8d';
+    public const THREAD_COMMENT_05_UUID = '001a53d0-1134-429c-8dc1-c57643b3f069';
+    public const THREAD_COMMENT_06_UUID = '3fa38c45-1122-4c48-9ada-b366b3408fec';
+
     public function load(ObjectManager $manager)
     {
         AutoIncrementResetter::resetAutoIncrement($manager, 'ideas_workshop_comment');
@@ -19,6 +27,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
         $threadAQCompareAdherent5 = $this->getReference('thread-aq-compare');
 
         $commentFromAdherent6 = new ThreadComment(
+            Uuid::fromString(self::THREAD_COMMENT_01_UUID),
             'Aenean viverra efficitur lorem',
             $this->getReference('adherent-6'),
             $threadAQProblemAdherent2,
@@ -27,6 +36,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
         );
 
         $commentFromAdherent7 = new ThreadComment(
+            Uuid::fromString(self::THREAD_COMMENT_02_UUID),
             'Lorem Ipsum Commentaris',
             $this->getReference('adherent-7'),
             $threadAQProblemAdherent2,
@@ -35,6 +45,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
         );
 
         $commentFromAdherent8 = new ThreadComment(
+            Uuid::fromString(self::THREAD_COMMENT_03_UUID),
             'Commentaire d\'un référent',
             $this->getReference('adherent-8'),
             $threadAQProblemAdherent2,
@@ -43,6 +54,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
         );
 
         $commentFromAdherent9 = new ThreadComment(
+            Uuid::fromString(self::THREAD_COMMENT_04_UUID),
             'Commentaire de Laura',
             $this->getReference('adherent-9'),
             $threadAQCompareAdherent5,
@@ -51,6 +63,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
         );
 
         $commentRefused = new ThreadComment(
+            Uuid::fromString(self::THREAD_COMMENT_05_UUID),
             'Commentaire refusé',
             $this->getReference('adherent-9'),
             $threadAQCompareAdherent5,
@@ -58,6 +71,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
         );
 
         $commentReported = new ThreadComment(
+                Uuid::fromString(self::THREAD_COMMENT_06_UUID),
             'Commentaire signalé',
             $this->getReference('adherent-9'),
             $threadAQCompareAdherent5,
