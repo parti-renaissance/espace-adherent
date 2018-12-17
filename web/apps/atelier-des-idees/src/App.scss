@@ -41,8 +41,7 @@
 @import '../src/style/fonts';
 @import '../src/style/variables';
 @import '../src/style/typographie';
+@import '../src/style/button';
 
-// components
-@import '../src/components/IdeaCard/style';
-@import '../src/components/IdeaCard/VotingFooter/style';
-@import '../src/components/IdeaCard/ContributingFooter/style';
+// component
+@import '../src/components/Button/style';
