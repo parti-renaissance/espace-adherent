@@ -43,9 +43,7 @@ framework:
     form:            ~
     csrf_protection: ~
     validation:      { enable_annotations: true }
-    serializer:
-        enable_annotations: true
-        name_converter: 'serializer.name_converter.camel_case_to_snake_case'
+    serializer:      { enable_annotations: true }
     templating:
         engines: ['twig']
     default_locale:  "%locale%"
@@ -386,6 +384,20 @@ nelmio_cors:
             max_age: 3600
 
 api_platform:
-    mapping:
-        paths: ['%kernel.project_dir%/src/Entity']
-    enable_docs: '%kernel.debug%'
+    name_converter: serializer.name_converter.camel_case_to_snake_case
+    resource_class_directories:
+        - '%kernel.project_dir%/src/Entity'
+    enable_docs: false
+    enable_entrypoint: false
+    formats:
+        json:
+            mime_types: ['application/json']
+    error_formats:
+        jsonproblem:
+            mime_types: ['application/problem+json']
+    collection:
+        pagination:
+            items_per_page: 10
+            maximum_items_per_page: 30
+            client_items_per_page: true
+            items_per_page_parameter_name: page_size

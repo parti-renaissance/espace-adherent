@@ -44,3 +44,8 @@ monolog:
         console:
             type:   console
             channels: ["!event", "!doctrine"]
+
+api_platform:
+    enable_docs: true
+    enable_swagger_ui: true
+    enable_entrypoint: true

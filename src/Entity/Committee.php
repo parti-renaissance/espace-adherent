@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use ApiPlatform\Core\Annotation\ApiResource;
 use AppBundle\Exception\CommitteeAlreadyApprovedException;
 use AppBundle\Report\ReportType;
 use AppBundle\ValueObject\Link;
@@ -16,6 +17,8 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * This entity represents a committee group.
+ *
+ * @ApiResource
  *
  * @ORM\Table(
  *     name="committees",

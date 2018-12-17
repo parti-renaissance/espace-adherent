@@ -19,8 +19,7 @@ Feature:
     [
         {
             "theme": {
-                "name": "Armées et défense",
-                "slug": "armees-et-defense"
+                "name": "Armées et défense"
             },
             "category": {
                 "name": "Echelle Européenne",
@@ -58,8 +57,7 @@ Feature:
     [
         {
             "theme": {
-                "name": "Armées et défense",
-                "slug": "armees-et-defense"
+                "name": "Armées et défense"
             },
             "category": {
                 "name": "Echelle Européenne",
@@ -106,8 +104,7 @@ Feature:
     [
         {
             "theme": {
-                "name": "Armées et défense",
-                "slug": "armees-et-defense"
+                "name": "Armées et défense"
             },
             "category": {
                 "name": "Echelle Européenne",
@@ -154,8 +151,7 @@ Feature:
     [
         {
             "theme": {
-                "name": "Armées et défense",
-                "slug": "armees-et-defense"
+                "name": "Armées et défense"
             },
             "category": {
                 "name": "Echelle Européenne",
@@ -191,8 +187,7 @@ Feature:
         },
         {
             "theme": {
-                "name": "Armées et défense",
-                "slug": "armees-et-defense"
+                "name": "Armées et défense"
             },
             "category": {
                 "name": "Echelle Européenne",
