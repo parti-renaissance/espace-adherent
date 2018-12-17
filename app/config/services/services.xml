@@ -385,6 +385,10 @@
             <argument type="service" id="sensio_framework_extra.converter.doctrine.orm.expression_language" on-invalid="null" />
         </service>
 
+        <!-- DoctrineExtension -->
+        <service id="AppBundle\Doctrine\EnabledExtension">
+            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
+        </service>
         <service id="AppBundle\Doctrine\IdeaExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>

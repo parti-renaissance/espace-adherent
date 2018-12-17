@@ -3,11 +3,24 @@
 namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use ApiPlatform\Core\Annotation\ApiResource;
+use AppBundle\Entity\EnabledInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
+ * @ApiResource(
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"idea_category_read"}
+ *         },
+ *         "order": {"name": "ASC"},
+ *     },
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"},
+ * )
+ *
  * @ORM\Entity
  * @ORM\Table(
  *     name="ideas_workshop_category",
@@ -20,7 +33,7 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Category
+class Category implements EnabledInterface
 {
     /**
      * @var int
@@ -28,14 +41,17 @@ class Category
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
+     *
+     * @SymfonySerializer\Groups("idea_category_read")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @SymfonySerializer\Groups("idea_list_read")
      * @ORM\Column
+     *
+     * @SymfonySerializer\Groups({"idea_category_read", "idea_list_read"})
      */
     protected $name;
 
