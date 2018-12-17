@@ -11,22 +11,20 @@ class IdeasWorkshopSerializerNormalizer implements NormalizerInterface
     private $normalizer;
     private $ideaRepository;
 
-    public function __construct(
-        NormalizerInterface $normalizer,
-        IdeaRepository $ideaRepository
-    ) {
+    public function __construct(NormalizerInterface $normalizer, IdeaRepository $ideaRepository)
+    {
         $this->normalizer = $normalizer;
 
         $this->ideaRepository = $ideaRepository;
     }
 
-    public function normalize($idea, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = $this->normalizer->normalize($idea, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context);
 
         if (\in_array('idea_list_read', $context['groups'])) {
-            $data['contributors_count'] = $this->ideaRepository->countIdeaContributors($idea);
-            $data['comments_count'] = $this->ideaRepository->countThreadComments($idea);
+            $data['contributors_count'] = $this->ideaRepository->countIdeaContributors($object);
+            $data['comments_count'] = $this->ideaRepository->countThreadComments($object);
         }
 
         return $data;
