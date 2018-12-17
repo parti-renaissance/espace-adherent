@@ -3,9 +3,11 @@
 namespace AppBundle\Entity\IdeasWorkshop;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntitySoftDeletableTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
@@ -13,30 +15,22 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  */
 abstract class BaseComment
 {
+    use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
     use EntityThreadCommentStatusTrait;
 
-    public static function getVisibleStatuses(): array
-    {
-        return ThreadCommentStatusEnum::VISIBLE_STATUSES;
-    }
-
-    public function __construct(string $content, Adherent $author, string $status = ThreadCommentStatusEnum::POSTED)
-    {
+    public function __construct(
+        UuidInterface $uuid,
+        string $content,
+        Adherent $author,
+        string $status = ThreadCommentStatusEnum::POSTED
+    ) {
+        $this->uuid = $uuid;
         $this->content = $content;
         $this->author = $author;
         $this->status = $status;
     }
-
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     *
-     * @SymfonySerializer\Groups("thread_comment_read")
-     */
-    protected $id;
 
     /**
      * @ORM\Column(type="text")
@@ -76,5 +70,10 @@ abstract class BaseComment
     public function setContent(string $content): void
     {
         $this->content = $content;
+    }
+
+    public static function getVisibleStatuses(): array
+    {
+        return ThreadCommentStatusEnum::VISIBLE_STATUSES;
     }
 }

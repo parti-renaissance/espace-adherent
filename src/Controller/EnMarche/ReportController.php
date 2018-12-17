@@ -22,13 +22,21 @@ class ReportController extends AbstractController
      * @Route(
      *     "/report/{type}/{uuid}",
      *     name="app_report",
-     *     requirements={"type": AppBundle\Report\ReportType::TYPES_URI_PATTERN}
+     *     requirements={
+     *         "type": AppBundle\Report\ReportType::TYPES_URI_PATTERN,
+     *         "uuid": "%pattern_uuid%"
+     *     }
      * )
      * @Method("GET|POST")
      * @Security("is_granted('REPORT')")
      */
-    public function reportAction(Request $request, string $type, string $uuid, ReportManager $reportManager, ReportCreationCommandHandler $handler): Response
-    {
+    public function reportAction(
+        Request $request,
+        string $type,
+        string $uuid,
+        ReportManager $reportManager,
+        ReportCreationCommandHandler $handler
+    ): Response {
         $subject = $reportManager->getSubjectByUuid(ReportType::URI_MAP[$type], $uuid);
 
         if (!$subject) {

@@ -6,7 +6,10 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AuthorInterface;
+use AppBundle\Entity\Report\ReportableInterface;
+use AppBundle\Report\ReportType;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
@@ -28,7 +31,7 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class ThreadComment extends BaseComment implements AuthorInterface
+class ThreadComment extends BaseComment implements AuthorInterface, ReportableInterface
 {
     /**
      * @ORM\ManyToOne(targetEntity="Thread", inversedBy="comments")
@@ -38,16 +41,16 @@ class ThreadComment extends BaseComment implements AuthorInterface
     private $thread;
 
     public function __construct(
+        UuidInterface $uuid,
         string $content,
         Adherent $author,
         Thread $thread,
         string $status = ThreadCommentStatusEnum::POSTED,
         \DateTime $createdAt = null
     ) {
-        $this->content = $content;
-        $this->author = $author;
+        parent::__construct($uuid, $content, $author, $status);
+
         $this->thread = $thread;
-        $this->status = $status;
         $this->createdAt = $createdAt;
     }
 
@@ -59,5 +62,10 @@ class ThreadComment extends BaseComment implements AuthorInterface
     public function setThread(Thread $thread): void
     {
         $this->thread = $thread;
+    }
+
+    public function getReportType(): string
+    {
+        return ReportType::IDEAS_WORKSHOP_THREAD_COMMENT;
     }
 }
