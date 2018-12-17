@@ -30,3 +30,19 @@
     transform: rotate(360deg);
   }
 }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// shared
+@import '../src/style/fonts';
+@import '../src/style/variables';
+@import '../src/style/typographie';
+
+// components
+@import '../src/components/IdeaCard/style';
+@import '../src/components/IdeaCard/VotingFooter/style';
+@import '../src/components/IdeaCard/ContributingFooter/style';
