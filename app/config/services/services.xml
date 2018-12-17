@@ -382,5 +382,10 @@
             <argument type="service" id="doctrine" on-invalid="ignore" />
             <argument type="service" id="sensio_framework_extra.converter.doctrine.orm.expression_language" on-invalid="null" />
         </service>
+
+        <!-- Doctrine Extension -->
+        <service id="AppBundle\Doctrine\ConsultationExtension">
+            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
+        </service>
     </services>
 </container>
