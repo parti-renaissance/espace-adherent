@@ -33,6 +33,12 @@
         </p>
     {% endif %}
 
+    {% if not is_granted('UNREGISTER') %}
+        <p class="b__nudge--top-large">
+            <strong>Si vous êtes (co-)animateur local, référent, député, porteur de projet ou membre du conseil, vous ne pouvez pas désadhérer du mouvement directement</strong> : il vous faut d'abord quitter vos responsabilités. Pour se faire, nous vous remercions de nous envoyer votre demande par e-mail à l'adresse suivante : <a href="mailto:territoires@en-marche.fr">territoires@en-marche.fr</a>.
+        </p>
+    {% endif %}
+
     {% if is_granted('UNREGISTER') and app.user.isUser %}
         <p>
             <a href="{{ path('app_user_terminate_membership') }}" class="settings__delete_account">Supprimer mon compte</a>
