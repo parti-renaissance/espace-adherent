@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 trait EntityIdentityTrait
 {
@@ -27,6 +28,8 @@ trait EntityIdentityTrait
      * @ORM\Column(type="uuid")
      *
      * @Algolia\Attribute
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "thread_comment_read"})
      */
     protected $uuid;
 
