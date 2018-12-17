@@ -14,6 +14,8 @@ trait EntityPersonNameTrait
      * @SymfonySerializer\Groups("idea_list_read")
      * @JMS\Groups({"user_profile", "public"})
      * @JMS\SerializedName("firstName")
+     *
+     * @SymfonySerializer\Groups({"idea_list_read"})
      */
     private $firstName = '';
 

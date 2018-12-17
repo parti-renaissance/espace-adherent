@@ -11,8 +11,6 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 trait EntityNameSlugTrait
 {
     /**
-     * The group name.
-     *
      * @ORM\Column
      *
      * @Algolia\Attribute
@@ -23,8 +21,6 @@ trait EntityNameSlugTrait
     protected $name;
 
     /**
-     * The group name.
-     *
      * @ORM\Column
      *
      * @Algolia\Attribute
@@ -32,8 +28,6 @@ trait EntityNameSlugTrait
     protected $canonicalName;
 
     /**
-     * The group slug.
-     *
      * @ORM\Column
      *
      * @Gedmo\Slug(fields={"canonicalName"})
