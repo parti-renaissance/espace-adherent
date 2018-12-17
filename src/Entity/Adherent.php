@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use ApiPlatform\Core\Annotation\ApiResource;
 use AppBundle\OAuth\Model\User as InMemoryOAuthUser;
 use AppBundle\Collection\CitizenProjectMembershipCollection;
 use AppBundle\Collection\CommitteeMembershipCollection;
@@ -29,6 +30,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use JMS\Serializer\Annotation as JMS;
 
 /**
+ * @ApiResource
+ *
  * @ORM\Table(name="adherents", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="adherents_uuid_unique", columns="uuid"),
  *     @ORM\UniqueConstraint(name="adherents_email_address_unique", columns="email_address")
