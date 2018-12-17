@@ -6,7 +6,7 @@ use AppBundle\Entity\IdeasWorkshop\Consultation;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadConsultationData extends AbstractFixture
+class LoadIdeaConsultationData extends AbstractFixture
 {
     public function load(ObjectManager $manager)
     {
@@ -15,7 +15,8 @@ class LoadConsultationData extends AbstractFixture
             'https://fr.lipsum.com/',
             new \DateTime('-4 days'),
             new \DateTime('yesterday'),
-            2
+            2,
+            true
         );
 
         $this->addReference('consultation-retirement', $consultationRetirement);
@@ -25,7 +26,8 @@ class LoadConsultationData extends AbstractFixture
             'https://google.fr/',
             new \DateTime('-3 days'),
             new \DateTime('yesterday'),
-            3
+            3,
+            false
         );
 
         $this->addReference('consultation-housing-policy', $consultationHousingPolicy);
