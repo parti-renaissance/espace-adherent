@@ -192,6 +192,7 @@ workflows:
                     branches:
                         only:
                             - master
+                            - adi-react
 
     prod_deploy:
         jobs:
