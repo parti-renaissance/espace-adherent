@@ -9,9 +9,12 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AuthorInterface;
+use AppBundle\Entity\Report\ReportableInterface;
+use AppBundle\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
@@ -33,7 +36,7 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Thread extends BaseComment implements AuthorInterface
+class Thread extends BaseComment implements AuthorInterface, ReportableInterface
 {
     /**
      * @ORM\ManyToOne(targetEntity="Answer", inversedBy="threads")
@@ -50,16 +53,16 @@ class Thread extends BaseComment implements AuthorInterface
     private $comments;
 
     public function __construct(
+        UuidInterface $uuid,
         string $content,
         Adherent $author,
         Answer $answer,
         string $status = ThreadCommentStatusEnum::POSTED,
         \DateTime $createdAt = null
     ) {
-        $this->content = $content;
-        $this->author = $author;
+        parent::__construct($uuid, $content, $author, $status);
+
         $this->answer = $answer;
-        $this->status = $status;
         $this->createdAt = $createdAt ?: new \DateTime();
         $this->comments = new ArrayCollection();
     }
@@ -90,5 +93,10 @@ class Thread extends BaseComment implements AuthorInterface
     public function getComments(): Collection
     {
         return $this->comments;
+    }
+
+    public function getReportType(): string
+    {
+        return ReportType::IDEAS_WORKSHOP_THREAD;
     }
 }
