@@ -1,7 +1,7 @@
 .movement-ideas {
     &__first__section {
         height: 400px;
-        padding: 50px 0 0 60px;
+        padding: 50px 0 0 100px;
 
         &__content {
             color: $medium-grey;
@@ -12,7 +12,7 @@
         display: flex;
         justify-content: center;
         height: 300px;
-        padding: 0px 60px 0 60px;
+        padding: 0px 100px 0 100px;
 
         &__item {
             display: flex;
@@ -22,6 +22,11 @@
 
             &__title {
                 color: $dark-blue;
+                &__main {
+                    border-bottom: 7px solid $pale-sky;
+                    display: inline-block;
+                    height: 21px;
+                }
             }
 
             &__content {
@@ -30,7 +35,7 @@
             }
 
             &__button {
-                width: 162px;
+                width: 140px;
                 align-self: center;
             }
         }
