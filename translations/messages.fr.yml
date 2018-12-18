@@ -177,6 +177,8 @@ committee.contact_members.success: Félicitations, votre message a bien été en
 committee.promote_host.success: Le membre a été promu animateur du comité avec succès.
 committee.demote_host.success: Le membre a été redéfini simple membre du comité avec succès.
 
+my_committees: Mes comités
+
 #
 # CitizenProject
 #
