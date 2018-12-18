@@ -1,8 +1,10 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { NotMobile, Mobile } from '../../helpers/responsive';
+import Slider from 'react-slick';
 
 import MovementIdeasSection from './MovementIdeasSection/.';
 
+// TODO: Update text
 const sectionContent = [
     {
         keyWord: 'vote',
@@ -25,10 +27,20 @@ const sectionContent = [
         linkLabel: 'Je propose',
         link: '/proposer',
     },
-]
+];
+
+const settingsSlider = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+};
 
 class MovementIdeas extends React.PureComponent {
     render() {
+        const items = sectionContent.map(content => <MovementIdeasSection {...content}/>);
         return (
             <div className="movement-ideas">
                 <div className="movement-ideas__first__section">
@@ -39,14 +51,19 @@ class MovementIdeas extends React.PureComponent {
                         Avec l’Atelier des Idées c’est possible !
                     </p>
                 </div>
-                <div className="movement-ideas__second__section">
-                    {
-                        sectionContent.map(content => <MovementIdeasSection {...content}/>)
-                    }
-                </div>
+                <NotMobile>
+                    <div className="movement-ideas__second__section">
+                        { items }
+                    </div>
+                </NotMobile>
+                <Mobile>
+                    <Slider className="movement-ideas__slider" {...settingsSlider}>
+                        { items }
+                    </Slider>
+                </Mobile>
             </div>
         );
     }
 }
 
-export default withRouter(MovementIdeas);
+export default MovementIdeas;
