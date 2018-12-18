@@ -4,6 +4,7 @@ import MediaQuery from 'react-responsive';
 const breakpoints = {
     desktop: '(min-width: 992px)',
     tablet: '(min-width: 768px) and (max-width: 991px)',
+    notMobile: '(min-width: 768px)',
     mobile: '(max-width: 767px)',
     default: '(max-width: 768px)',
 };
@@ -25,6 +26,12 @@ export const Desktop = props => (
 
 export const Tablet = props => (
     <Breakpoint {...props} name="tablet">
+        {props.children}
+    </Breakpoint>
+);
+
+export const NotMobile = props => (
+    <Breakpoint {...props} name="notMobile">
         {props.children}
     </Breakpoint>
 );
