@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\DataFixtures\AutoIncrementResetter;
 use AppBundle\Entity\IdeasWorkshop\AuthorCategoryEnum;
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
@@ -19,6 +20,8 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
+        AutoIncrementResetter::resetAutoIncrement($manager, 'ideas_workshop_idea');
+
         $need = $this->getReference('need-legal');
         $category = $this->getReference('category-european');
         $theme = $this->getReference('theme-army-defense');
