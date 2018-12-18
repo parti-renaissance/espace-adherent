@@ -1,0 +1,13 @@
+{% extends 'message/_layout.html.twig' %}
+
+{% block message_page_title 'Prévisualiser mon message' %}
+
+{% block message_content %}
+    <hr/>
+    <iframe width="100%" height="700px" src="{{ path('app_message_content', {uuid: message.uuid}) }}" ></iframe>
+    <hr/>
+    <div class="text--center">
+        <a class="btn" href="{{ path('app_message_update', route_params|default({})|merge({uuid: message.uuid})) }}">Modifier</a>
+        <a class="btn btn--blue" href="{{ path('app_message_update', route_params|default({})|merge({uuid: message.uuid})) }}">Envoyer</a>
+    </div>
+{% endblock %}

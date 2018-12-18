@@ -142,6 +142,7 @@
 
         <!-- Form -->
         <service id="AppBundle\Form\CitizenProjectCommentCommandType"/>
+        <service id="AppBundle\Form\AdherentMessageTypeType"/>
         <service id="AppBundle\Form\CitizenProjectCommandType"/>
         <service id="AppBundle\Form\EventListener\AmpSynchronisedListener"/>
         <service id="AppBundle\Form\EventRegistrationType"/>
@@ -381,7 +382,7 @@
 
         <!-- Mailchimp -->
         <service id="AppBundle\Mailchimp\Synchronisation\EventListener\AdherentEventSubscriber" />
-        <service id="AppBundle\Mailchimp\Synchronisation\Driver">
+        <service id="AppBundle\Mailchimp\Driver">
             <argument type="service" id="csa_guzzle.client.mailchimp_api" />
             <argument type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
             <tag name="monolog.logger" channel="mailchimp_sync"/>
@@ -390,12 +391,20 @@
             </call>
         </service>
 
-        <service id="AppBundle\Mailchimp\Synchronisation\Manager">
-            <argument key="$interestIds">%env(json:MAILCHIMP_INTEREST_IDS)%</argument>
-            <tag name="monolog.logger" channel="mailchimp_sync"/>
+        <service id="AppBundle\Mailchimp\Manager">
+            <argument key="$requestBuildersLocator" type="service" id="app.mailchimp.request_builders_locator" />
             <call method="setLogger">
                 <argument type="service" id="logger" />
             </call>
+            <tag name="monolog.logger" channel="mailchimp_sync" />
+        </service>
+
+        <service id="app.mailchimp.request_builders_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
+            <argument type="collection">
+                <argument key="AppBundle\Mailchimp\Synchronisation\RequestBuilder" type="service" id="AppBundle\Mailchimp\Synchronisation\RequestBuilder" />
+                <argument key="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder" type="service" id="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder" />
+            </argument>
+            <tag name="container.service_locator" />
         </service>
 
         <service id="AppBundle\Mailchimp\Synchronisation\Handler\AdherentMessageHandler">
@@ -404,6 +413,28 @@
             <call method="setLogger">
                 <argument type="service" id="logger" />
             </call>
+        </service>
+
+        <service id="AppBundle\AdherentMessage\Handler\AdherentMessageChangeCommandHandler">
+            <tag name="messenger.message_handler" />
+        </service>
+
+        <service id="AppBundle\AdherentMessage\Handler\AdherentMessageDeleteCommandHandler">
+            <tag name="messenger.message_handler" />
+        </service>
+
+        <service id="AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping">
+            <argument type="string">%env(json:MAILCHIMP_CAMPAIGN_FOLDER_IDS)%</argument>
+            <argument type="string">%env(json:MAILCHIMP_TEMPLATE_IDS)%</argument>
+        </service>
+
+        <service id="AppBundle\Mailchimp\Synchronisation\RequestBuilder">
+            <argument type="string">%env(json:MAILCHIMP_INTEREST_IDS)%</argument>
+        </service>
+        <service id="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder" />
+
+        <service id="AppBundle\AdherentMessage\Listener\AdherentMessageChangeSubscriber">
+            <tag name="doctrine.event_subscriber"/>
         </service>
 
         <service id="AppBundle\Normalizer\UuidNormalizer" />

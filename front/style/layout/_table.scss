@@ -1,0 +1,16 @@
+.table {
+
+    &__default {
+
+        thead tr th {
+            color: $black;
+            font-weight: bold;
+            font-size: 18px;
+            text-align: left;
+        }
+
+        td, th {
+            padding: 10px 0;
+        }
+    }
+}

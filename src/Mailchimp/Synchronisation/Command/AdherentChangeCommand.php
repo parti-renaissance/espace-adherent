@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation\Message;
+namespace AppBundle\Mailchimp\Synchronisation\Command;
 
 use Ramsey\Uuid\UuidInterface;
 
-class AdherentChangeMessage implements AdherentMessageInterface
+class AdherentChangeCommand implements AdherentCommandInterface
 {
     private $uuid;
     private $emailAddress;
