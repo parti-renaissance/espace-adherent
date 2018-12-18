@@ -209,7 +209,8 @@
         </service>
 
         <!-- Normalizer -->
-        <service id="AppBundle\Serializer\IdeasWorkshopSerializerNormalizer">
+        <service id="AppBundle\Normalizer\ItemCollectionNormalizer" />
+        <service id="AppBundle\Normalizer\IdeasWorkshopNormalizer">
             <argument type="service" id="api_platform.serializer.normalizer.item" />
         </service>
         <service id="AppBundle\Normalizer\AuthorNormalizer">

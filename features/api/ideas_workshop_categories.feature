@@ -14,16 +14,25 @@ Feature:
     And the response should be in JSON
     And the JSON should be equal to:
     """
-    [
-        {
-            "id": @integer@,
-            "name": "Echelle Européenne"
+    {
+        "metadata": {
+            "total_items": 3,
+            "items_per_page": 2,
+            "count": 2,
+            "current_page": 1,
+            "last_page": 2
         },
-        {
-            "id": @integer@,
-            "name": "Echelle Locale"
-        }
-    ]
+        "items": [
+            {
+                "id": @integer@,
+                "name": "Echelle Européenne"
+            },
+            {
+                "id": @integer@,
+                "name": "Echelle Locale"
+            }
+        ]
+    }
     """
 
     When I send a "GET" request to "/api/categories?page=2"
@@ -31,10 +40,19 @@ Feature:
     And the response should be in JSON
     And the JSON should be equal to:
     """
-    [
-        {
-            "id":@integer@,
-            "name": "Echelle Nationale"
-        }
-    ]
+    {
+        "metadata": {
+            "total_items": 3,
+            "items_per_page": 2,
+            "count": 1,
+            "current_page": 2,
+            "last_page": 2
+        },
+        "items": [
+            {
+                "id": @integer@,
+                "name": "Echelle Nationale"
+            }
+        ]
+    }
     """
