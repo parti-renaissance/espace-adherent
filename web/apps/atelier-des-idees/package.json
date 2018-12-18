@@ -5,6 +5,7 @@
   "homepage": "/apps/atelier-des-idees/build",
   "dependencies": {
     "axios": "^0.18.0",
+    "rc-tabs": "^9.5.7",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-redux": "^6.0.0",
