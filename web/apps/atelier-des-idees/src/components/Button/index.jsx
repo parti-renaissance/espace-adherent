@@ -34,7 +34,7 @@ Button.propTypes = {
     onClick: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
     className: PropTypes.string,
-    classIcon: PropTypes.string, // start or end
+    classIcon: PropTypes.oneOf(['start', 'end']),
     isLoading: PropTypes.bool,
 };
 
