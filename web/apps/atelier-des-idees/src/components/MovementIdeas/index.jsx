@@ -1,7 +1,31 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-import Button from '../Button/.';
+import MovementIdeasSection from './MovementIdeasSection/.';
+
+const sectionContent = [
+    {
+        keyWord: 'vote',
+        title: 'pour des idéees',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla urna sed erat auctor, ac sodales mi commodo.',
+        linkLabel: 'Je vote',
+        link: '/consulter',
+    },
+    {
+        keyWord: 'contribue',
+        title: 'aux idéees',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla urna sed erat auctor, ac sodales mi commodo.',
+        linkLabel: 'Je contribue',
+        link: '/contribuer',
+    },
+    {
+        keyWord: 'propose',
+        title: 'des idéees',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla urna sed erat auctor, ac sodales mi commodo.',
+        linkLabel: 'Je propose',
+        link: '/proposer',
+    },
+]
 
 class MovementIdeas extends React.PureComponent {
     render() {
@@ -16,45 +40,9 @@ class MovementIdeas extends React.PureComponent {
                     </p>
                 </div>
                 <div className="movement-ideas__second__section">
-                    <div className="movement-ideas__second__section__item">
-                        <h4 className="movement-ideas__second__section__item__title">
-                            Je <span className="movement-ideas__second__section__item__title__main">vote</span> pour des idées
-                        </h4>
-                        <p className="movement-ideas__second__section__item__content">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Sed fringilla urna sed erat auctor, ac sodales mi commodo.
-                        </p>
-                        <Button
-                            label="Je vote"
-                            className="button--secondary movement-ideas__second__section__item__button"
-                            onClick={() => this.props.history.push('/consulter')}/>
-                    </div>
-                    <div className="movement-ideas__second__section__item">
-                        <h4 className="movement-ideas__second__section__item__title">
-                            Je <span className="movement-ideas__second__section__item__title__main">contribue</span> aux idées
-                        </h4>
-                        <p className="movement-ideas__second__section__item__content">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Sed fringilla urna sed erat auctor, ac sodales mi commodo.
-                        </p>
-                        <Button
-                            label="Je contribue"
-                            className="button--secondary movement-ideas__second__section__item__button"
-                            onClick={() => this.props.history.push('/contribuer')}/>
-                    </div>
-                    <div className="movement-ideas__second__section__item">
-                        <h4 className="movement-ideas__second__section__item__title">
-                            Je <span className="movement-ideas__second__section__item__title__main">propose</span> des idées
-                        </h4>
-                        <p className="movement-ideas__second__section__item__content">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Sed fringilla urna sed erat auctor, ac sodales mi commodo.
-                        </p>
-                        <Button
-                            label="Je propose"
-                            className="button--secondary movement-ideas__second__section__item__button"
-                            onClick={() => this.props.history.push('/proposer')}/>
-                    </div>
+                    {
+                        sectionContent.map(content => <MovementIdeasSection {...content}/>)
+                    }
                 </div>
             </div>
         );

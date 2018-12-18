@@ -13,31 +13,5 @@
         justify-content: center;
         height: 300px;
         padding: 0px 100px 0 100px;
-
-        &__item {
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-            margin: 0 20px;
-
-            &__title {
-                color: $dark-blue;
-                &__main {
-                    border-bottom: 7px solid $pale-sky;
-                    display: inline-block;
-                    height: 21px;
-                }
-            }
-
-            &__content {
-                margin: 0 0 20px;
-                color: $dark-grey;
-            }
-
-            &__button {
-                width: 140px;
-                align-self: center;
-            }
-        }
     }
 }
