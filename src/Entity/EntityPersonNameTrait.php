@@ -15,14 +15,14 @@ trait EntityPersonNameTrait
      * @JMS\Groups({"user_profile", "public"})
      * @JMS\SerializedName("firstName")
      *
-     * @SymfonySerializer\Groups({"idea_list_read"})
+     * @SymfonySerializer\Groups({"idea_list_read", "vote_read"})
      */
     private $firstName = '';
 
     /**
      * @ORM\Column(length=50)
      *
-     * @SymfonySerializer\Groups("idea_list_read")
+     * @SymfonySerializer\Groups({"idea_list_read", "vote_read"})
      * @JMS\Groups({"user_profile", "public"})
      * @JMS\SerializedName("lastName")
      */

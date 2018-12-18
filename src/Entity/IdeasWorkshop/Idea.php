@@ -5,7 +5,9 @@ namespace AppBundle\Entity\IdeasWorkshop;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\AuthorInterface;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntityNameSlugTrait;
@@ -48,7 +50,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Idea
+class Idea implements AuthorInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -124,6 +126,8 @@ class Idea
 
     /**
      * @ORM\OneToMany(targetEntity="Vote", mappedBy="idea")
+     *
+     * @ApiSubresource
      */
     private $votes;
 
@@ -290,7 +294,6 @@ class Idea
         if (!$this->votes->contains($vote)) {
             $this->votes->add($vote);
             $vote->setIdea($this);
-            $this->incrementVotesCount();
         }
     }
 
