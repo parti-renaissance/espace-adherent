@@ -11,57 +11,57 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ManagedUsersFilter
 {
-    const PER_PAGE = 50;
+    public const PER_PAGE = 50;
 
-    const PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE = 'anc';
-    const PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE = 'aic';
-    const PARAMETER_INCLUDE_HOSTS = 'h';
-    const PARAMETER_INCLUDE_SUPERVISORS = 's';
-    const PARAMETER_QUERY_AREA_CODE = 'ac';
-    const PARAMETER_QUERY_CITY = 'city';
-    const PARAMETER_QUERY_ID = 'id';
-    const PARAMETER_OFFSET = 'o';
-    const PARAMETER_TOKEN = 't';
-    const PARAMETER_GENDER = 'g';
-    const PARAMETER_LAST_NAME = 'l';
-    const PARAMETER_FIRST_NAME = 'f';
-    const PARAMETER_AGE_MIN = 'amin';
-    const PARAMETER_AGE_MAX = 'amax';
-    const PARAMETER_INTEREST = 'i';
-    const PARAMETER_INCLUDE_CP = 'cp';
+    public const PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE = 'anc';
+    public const PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE = 'aic';
+    public const PARAMETER_INCLUDE_HOSTS = 'h';
+    public const PARAMETER_INCLUDE_SUPERVISORS = 's';
+    public const PARAMETER_QUERY_AREA_CODE = 'ac';
+    public const PARAMETER_QUERY_CITY = 'city';
+    public const PARAMETER_QUERY_ID = 'id';
+    public const PARAMETER_OFFSET = 'o';
+    public const PARAMETER_TOKEN = 't';
+    public const PARAMETER_GENDER = 'g';
+    public const PARAMETER_LAST_NAME = 'l';
+    public const PARAMETER_FIRST_NAME = 'f';
+    public const PARAMETER_AGE_MIN = 'amin';
+    public const PARAMETER_AGE_MAX = 'amax';
+    public const PARAMETER_INTEREST = 'i';
+    public const PARAMETER_INCLUDE_CP = 'cp';
 
-    private $includeAdherentsNoCommittee = true;
-    private $includeAdherentsInCommittee = true;
-    private $includeHosts = true;
-    private $includeSupevisors = true;
-    private $includeCP = true;
-
-    /**
-     * @Assert\NotNull
-     */
-    private $queryAreaCode = '';
+    protected $includeAdherentsNoCommittee = true;
+    protected $includeAdherentsInCommittee = true;
+    protected $includeHosts = true;
+    protected $includeSupervisors = true;
+    protected $includeCP = true;
 
     /**
      * @Assert\NotNull
      */
-    private $queryCity = '';
+    protected $queryAreaCode = '';
 
     /**
      * @Assert\NotNull
      */
-    private $queryId = '';
+    protected $queryCity = '';
 
     /**
      * @Assert\NotNull
      */
-    private $offset = 0;
-    private $token = '';
-    private $queryGender = '';
-    private $queryLastName = '';
-    private $queryFirstName = '';
-    private $queryAgeMinimum = 0;
-    private $queryAgeMaximum = 0;
-    private $queryInterests = [];
+    protected $queryId = '';
+
+    /**
+     * @Assert\NotNull
+     */
+    protected $offset = 0;
+    private $token;
+    protected $queryGender = '';
+    protected $queryLastName = '';
+    protected $queryFirstName = '';
+    protected $queryAgeMinimum = 0;
+    protected $queryAgeMaximum = 0;
+    protected $queryInterests = [];
 
     public static function createFromMessage(ReferentManagedUsersMessage $message): self
     {
@@ -69,7 +69,7 @@ class ManagedUsersFilter
         $filter->includeAdherentsNoCommittee = $message->includeAdherentsNoCommittee();
         $filter->includeAdherentsInCommittee = $message->includeAdherentsInCommittee();
         $filter->includeHosts = $message->includeHosts();
-        $filter->includeSupevisors = $message->includeSupevisors();
+        $filter->includeSupervisors = $message->includeSupervisors();
         $filter->queryAreaCode = $message->getQueryAreaCode();
         $filter->queryCity = $message->getQueryCity();
         $filter->queryId = $message->getQueryId();
@@ -80,7 +80,7 @@ class ManagedUsersFilter
         $filter->queryLastName = $message->getLastName();
         $filter->queryAgeMinimum = $message->getAgeMinimum();
         $filter->queryAgeMaximum = $message->getAgeMaximum();
-        $filter->includeCP = $message->getIncludeCitizenProject();
+        $filter->includeCP = $message->includeCitizenProject();
 
         return $filter;
     }
@@ -98,7 +98,7 @@ class ManagedUsersFilter
         $this->includeAdherentsNoCommittee = $query->getBoolean(self::PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE);
         $this->includeAdherentsInCommittee = $query->getBoolean(self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE);
         $this->includeHosts = $query->getBoolean(self::PARAMETER_INCLUDE_HOSTS);
-        $this->includeSupevisors = $query->getBoolean(self::PARAMETER_INCLUDE_SUPERVISORS);
+        $this->includeSupervisors = $query->getBoolean(self::PARAMETER_INCLUDE_SUPERVISORS);
         $this->queryAreaCode = trim($query->get(self::PARAMETER_QUERY_AREA_CODE, ''));
         $this->queryCity = trim($query->get(self::PARAMETER_QUERY_CITY, ''));
         $this->queryId = trim($query->get(self::PARAMETER_QUERY_ID, ''));
@@ -126,7 +126,7 @@ class ManagedUsersFilter
             self::PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE => $this->includeAdherentsNoCommittee ? '1' : '0',
             self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE => $this->includeAdherentsInCommittee ? '1' : '0',
             self::PARAMETER_INCLUDE_HOSTS => $this->includeHosts ? '1' : '0',
-            self::PARAMETER_INCLUDE_SUPERVISORS => $this->includeSupevisors ? '1' : '0',
+            self::PARAMETER_INCLUDE_SUPERVISORS => $this->includeSupervisors ? '1' : '0',
             self::PARAMETER_QUERY_AREA_CODE => $this->queryAreaCode ?: '',
             self::PARAMETER_QUERY_CITY => $this->queryCity ?: '',
             self::PARAMETER_QUERY_ID => $this->queryId ?: '',
@@ -186,7 +186,7 @@ class ManagedUsersFilter
 
     public function includeSupervisors(): bool
     {
-        return $this->includeSupevisors;
+        return $this->includeSupervisors;
     }
 
     public function getOffset(): int
@@ -194,7 +194,7 @@ class ManagedUsersFilter
         return $this->offset;
     }
 
-    public function getToken(): string
+    public function getToken(): ?string
     {
         return $this->token;
     }
@@ -204,7 +204,7 @@ class ManagedUsersFilter
         return !empty($this->token);
     }
 
-    public function setToken(string $token): void
+    public function setToken(?string $token): void
     {
         $this->token = $token;
     }
@@ -269,7 +269,7 @@ class ManagedUsersFilter
         $this->queryInterests = $queryInterests;
     }
 
-    public function getIncludeCitizenProject(): bool
+    public function includeCitizenProject(): bool
     {
         return $this->includeCP;
     }

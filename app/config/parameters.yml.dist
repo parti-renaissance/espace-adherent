@@ -104,3 +104,5 @@ parameters:
             "subscribed_emails_referents": "23",
             "citizen_project_host_email": "24"
         }
+    env(MAILCHIMP_CAMPAIGN_FOLDER_IDS): '{}'
+    env(MAILCHIMP_TEMPLATE_IDS): '{}'

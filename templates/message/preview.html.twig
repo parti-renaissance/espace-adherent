@@ -1,0 +1,15 @@
+{% extends 'message/_layout.html.twig' %}
+
+{% block message_page_title 'Prévisualiser mon message' %}
+
+{% block messages_header_left_block %}
+    <a href="{{ path('app_message_list', route_params|default({})) }}" class="link--blue link--no-decor">← Retour</a>
+{% endblock %}
+
+{% block message_content %}
+    <iframe width="100%" class="address__postal-code--loading" frameborder="0" height="700px" style="background-position: top;" src="{{ path('app_message_content', {uuid: message.uuid}) }}" ></iframe>
+    <hr/>
+    <div class="text--center">
+        <a class="btn" href="{{ path('app_message_update', route_params|default({})|merge({uuid: message.uuid})) }}">Modifier</a>
+    </div>
+{% endblock %}

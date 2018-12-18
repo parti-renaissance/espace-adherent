@@ -147,3 +147,45 @@ table {
 .cursor--pointer {
     cursor: pointer;
 }
+
+.action-menu-oval {
+    position: relative;
+
+    & > a {
+        border: 0 none;
+
+        & .oval {
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            background-color: $black--half;
+            border-radius: 50%;
+        }
+    }
+
+    .action-dropdown-menu {
+        display: none;
+        position: absolute;
+        left: -50px;
+        border: 1px solid $gray;
+        border-radius: 2px;
+
+        & a {
+            display: block;
+            padding: 8px 20px;
+            border-bottom: 1px solid $gray;
+            background-color: white;
+        }
+
+        & a:last-child {
+            border: 0 none;
+        }
+    }
+
+    &:hover {
+        & .action-dropdown-menu {
+            z-index: 9999999;
+            display: block;
+        }
+    }
+}

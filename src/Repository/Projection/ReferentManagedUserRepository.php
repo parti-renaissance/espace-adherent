@@ -199,7 +199,7 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
             $typeExpression->add($and);
         }
 
-        if ($filter->getIncludeCitizenProject()) {
+        if ($filter->includeCitizenProject()) {
             $typeExpression->add('json_length(u.citizenProjectsOrganizer) > 0');
         }
 

@@ -30,7 +30,7 @@ class ManagedUsersFilterTest extends TestCase
         $this->assertSame($expected['lastname'], $filter->getQueryLastName());
         $this->assertSame($expected['ageMinimum'], $filter->getQueryAgeMinimum());
         $this->assertSame($expected['ageMaximum'], $filter->getQueryAgeMaximum());
-        $this->assertTrue($filter->getIncludeCitizenProject());
+        $this->assertTrue($filter->includeCitizenProject());
     }
 
     public function dataProviderCreateFromMessage(): array
@@ -66,7 +66,7 @@ class ManagedUsersFilterTest extends TestCase
                     'queryCity' => '',
                     'queryId' => '1234',
                     'offset' => 0,
-                    'token' => '',
+                    'token' => null,
                     'includeCP' => true,
                     'interests' => ['sport'],
                     'male',
