@@ -30,7 +30,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @ApiResource
+ * @ApiResource(
+ *     collectionOperations={},
+ *     itemOperations={
+ *         "get": {
+ *             "normalization_context": {"groups": {"vote_read"}},
+ *         }
+ *     },
+ * )
  *
  * @ORM\Table(name="adherents", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="adherents_uuid_unique", columns="uuid"),

@@ -5,22 +5,43 @@ namespace AppBundle\Entity\IdeasWorkshop;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\AuthorInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource
+ * @ApiResource(
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"vote_read"}
+ *         },
+ *         "denormalization_context": {
+ *             "groups": {"vote_write"}
+ *         },
+ *     },
+ *     collectionOperations={
+ *         "get",
+ *         "post": {
+ *             "access_control": "is_granted('ROLE_ADHERENT') or is_granted('ROLE_ADMIN_DASHBOARD')",
+ *         }
+ *     },
+ *     itemOperations={
+ *         "get",
+ *         "delete": {"access_control": "object.getAuthor() == user"}
+ *     },
+ * )
  *
  * @ORM\Entity
- *
  * @ORM\Table(name="ideas_workshop_vote")
+ * @ORM\EntityListeners({"AppBundle\EntityListener\VoteListener"})
  *
- * @UniqueEntity(fields={"idea", "adherent", "type"})
+ * @UniqueEntity(fields={"idea", "author", "type"})
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Vote
+class Vote implements AuthorInterface
 {
     /**
      * @ORM\Id
@@ -32,27 +53,31 @@ class Vote
     /**
      * @ORM\ManyToOne(targetEntity="Idea", inversedBy="votes")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotNull
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "vote_read", "vote_write"})
      */
     private $idea;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
+     *
+     * @Assert\NotNull
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "vote_read", "vote_write"})
      */
-    private $adherent;
+    private $author;
 
     /**
      * @ORM\Column(length=10)
      *
      * @Assert\Choice(callback={"AppBundle\Entity\IdeasWorkshop\VoteTypeEnum", "toArray"})
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "vote_read", "vote_write"})
      */
     private $type;
-
-    public function __construct(Adherent $adherent, string $type)
-    {
-        $this->adherent = $adherent;
-        $this->type = $type;
-    }
 
     public function getId(): ?int
     {
@@ -69,14 +94,14 @@ class Vote
         $this->idea = $idea;
     }
 
-    public function getAdherent(): Adherent
+    public function getAuthor(): Adherent
     {
-        return $this->adherent;
+        return $this->author;
     }
 
-    public function setAdherent(Adherent $adherent): void
+    public function setAuthor(Adherent $author): void
     {
-        $this->adherent = $adherent;
+        $this->author = $author;
     }
 
     public function getType(): string

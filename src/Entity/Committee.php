@@ -18,7 +18,14 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * This entity represents a committee group.
  *
- * @ApiResource
+ * @ApiResource(
+ *     collectionOperations={},
+ *     itemOperations={
+ *         "get": {
+ *             "normalization_context": {"groups": {"idea_list_read"}},
+ *         }
+ *     },
+ * )
  *
  * @ORM\Table(
  *     name="committees",
