@@ -1,6 +1,7 @@
 .button {
     display: flex;
     align-items: center;
+    justify-content: center;
     .button__icon {
         &--start {
             margin-right: 7px;

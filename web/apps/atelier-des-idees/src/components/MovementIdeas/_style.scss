@@ -1,0 +1,38 @@
+.movement-ideas {
+    &__first__section {
+        height: 400px;
+        padding: 50px 0 0 60px;
+
+        &__content {
+            color: $medium-grey;
+        }
+    }
+
+    &__second__section {
+        display: flex;
+        justify-content: center;
+        height: 300px;
+        padding: 0px 60px 0 60px;
+
+        &__item {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            margin: 0 20px;
+
+            &__title {
+                color: $dark-blue;
+            }
+
+            &__content {
+                margin: 0 0 20px;
+                color: $dark-grey;
+            }
+
+            &__button {
+                width: 162px;
+                align-self: center;
+            }
+        }
+    }
+}
