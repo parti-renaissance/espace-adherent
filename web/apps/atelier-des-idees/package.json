@@ -10,7 +10,9 @@
     "react-responsive": "^6.0.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.5",
-    "redux-thunk": "^2.3.0"
+    "react-slick": "^0.23.2",
+    "redux-thunk": "^2.3.0",
+    "slick-carousel": "^1.8.1"
   },
   "scripts": {
     "build-css": "node-sass --include-path ./src --include-path ./node_modules src/ -o src/",
