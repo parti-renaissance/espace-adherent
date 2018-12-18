@@ -24,8 +24,9 @@ class IdeasWorkshopApp implements ReactAppInterface
     {
         return [
             'home' => new Route('/atelier-des-idees'),
-            'search' => new Route('/atelier-des-idees/recherche'),
-            'example2' => new Route('/atelier-des-idees/exemple2'),
+            'consult' => new Route('/atelier-des-idees/consulter'),
+            'contribute' => new Route('/atelier-des-idees/contribuer'),
+            'propose' => new Route('/atelier-des-idees/proposer'),
         ];
     }
 
