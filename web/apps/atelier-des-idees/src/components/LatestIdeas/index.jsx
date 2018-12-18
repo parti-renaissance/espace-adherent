@@ -7,11 +7,16 @@ function LatestIdeas(props) {
             title: 'Propositions finalisées',
             component: <div/>,
         },
+        {
+            title: 'Propositions en cours d\'élaboration',
+            component: <div/>,
+        },
     ];
 
     return (
         <div className="latest-ideas">
-            <Tabs panes={panes}/>
+            <h2 className="latest-ideas__title">Consultez les dernières propostions publiées par nos adhérents</h2>
+            <Tabs panes={ panes }/>
         </div>
     );
 }

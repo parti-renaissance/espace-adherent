@@ -6,6 +6,7 @@ import ScrollableInkTabBar from 'rc-tabs/lib/ScrollableInkTabBar';
 
 import 'rc-tabs/assets/index.css';
 
+// https://github.com/fis-components/rc-tabs
 
 function Tabs(props) {
     return (
