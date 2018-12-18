@@ -4,8 +4,8 @@ namespace AppBundle\Mailchimp\Synchronisation\Handler;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Mailchimp\Exception\AdherentNotFoundException;
-use AppBundle\Mailchimp\Synchronisation\Manager;
-use AppBundle\Mailchimp\Synchronisation\Message\AdherentMessageInterface;
+use AppBundle\Mailchimp\Manager;
+use AppBundle\Mailchimp\Synchronisation\Command\AdherentCommandInterface;
 use AppBundle\Repository\AdherentRepository;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -25,7 +25,7 @@ class AdherentMessageHandler implements MessageHandlerInterface
         $this->logger = new NullLogger();
     }
 
-    public function __invoke(AdherentMessageInterface $message): void
+    public function __invoke(AdherentCommandInterface $message): void
     {
         /** @var Adherent $adherent */
         if (!$adherent = $this->repository->findOneByUuid($uuid = $message->getUuid()->toString())) {

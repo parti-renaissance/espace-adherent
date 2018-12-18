@@ -3,7 +3,7 @@
 namespace AppBundle\Mailchimp\Synchronisation\EventListener;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Mailchimp\Synchronisation\Message\AdherentChangeMessage;
+use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use AppBundle\Membership\UserCollectionEvent;
 use AppBundle\Membership\UserEvent;
 use AppBundle\Membership\UserEventInterface;
@@ -84,7 +84,7 @@ class AdherentEventSubscriber implements EventSubscriberInterface
 
     private function dispatchMessage(UuidInterface $uuid, string $identifier, array $removedTags = []): void
     {
-        $this->bus->dispatch(new AdherentChangeMessage($uuid, $identifier, $removedTags));
+        $this->bus->dispatch(new AdherentChangeCommand($uuid, $identifier, $removedTags));
     }
 
     private function transformToArray(Adherent $adherent): array

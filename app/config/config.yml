@@ -212,7 +212,7 @@ csa_guzzle:
         mailchimp_api:
             config:
                 base_uri: 'https://us16.api.mailchimp.com'
-                timeout: 10.0
+                timeout: 60.0
                 headers:
                     Content-Type: 'application/json'
                     Authorization: 'Bearer %env(MAILCHIMP_API_KEY)%'

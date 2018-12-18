@@ -7,6 +7,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Exception\SitemapException;
 use AppBundle\Form\NewsletterSubscriptionType;
+use AppBundle\Mailchimp\Manager;
 use AppBundle\Sitemap\SitemapFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -20,7 +21,7 @@ class HomeController extends Controller
      * @Route("/", name="homepage")
      * @Method("GET")
      */
-    public function indexAction(Request $request, GeoCoder $geoCoder): Response
+    public function indexAction(Request $request, GeoCoder $geoCoder, Manager $m): Response
     {
         if (($user = $this->getUser()) instanceof Adherent) {
             $newsletterSubscription = new NewsletterSubscription(

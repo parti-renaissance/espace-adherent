@@ -192,8 +192,7 @@ deps: vendor web/built                                                          
 build: docker-dev.lock
 
 docker-dev.lock: $(DOCKER_FILES)
-	$(DOCKER_COMPOSE) pull --ignore-pull-failures
-	$(DOCKER_COMPOSE) build --force-rm --pull
+	$(DOCKER_COMPOSE) build --force-rm
 	touch docker-dev.lock
 
 rm-docker-dev.lock:

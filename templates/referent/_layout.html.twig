@@ -42,7 +42,8 @@
                         'label': 'Créer un événement'
                     },
                     {
-                        'route': 'app_referent_users',
+                        'route': 'app_message_list',
+                        'params': {'prefix': 'espace-referent/'},
                         'label': 'Envoyer un message'
                     },
                     {
@@ -58,7 +59,7 @@
                 <ul class="procuration-manager__tabs">
                     {% for page in pages if page.role is not defined or is_granted(page.role) %}
                         <li class="{{ app.request.attributes.get('_route') == page.route ? 'active' : '' }}">
-                            <a href="{{ path(page.route) }}">
+                            <a href="{{ path(page.route, page.params|default({})) }}">
                                 {{ page.label }}
                             </a>
                         </li>
@@ -66,6 +67,7 @@
                 </ul>
 
                 {% block referent_content %}{% endblock %}
+                {% block messages_main_block %}{% endblock %}
             </div>
         </section>
 

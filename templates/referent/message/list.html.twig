@@ -1,0 +1,6 @@
+{% extends 'referent/_layout.html.twig' %}
+
+{% block referent_content %}
+    {{ render(controller('AppBundle\\Controller\\EnMarche\\MessageController::messageListAction')) }}
+{% endblock %}
+

@@ -1,0 +1,16 @@
+{% extends base_template %}
+
+{% block messages_main_block %}
+    <main>
+        <section class="deputy procuration-manager b__nudge--bottom-huge">
+            <header class="l__wrapper b__nudge--bottom-tiny">
+                {% block messages_header_block %}{% endblock %}
+                <h2 class="text--center text--medium">{% block message_page_title %}Mes messages{% endblock %}</h2>
+            </header>
+            <div class="l__wrapper l__col">
+                <hr/>
+                {% block message_content %}{% endblock %}
+            </div>
+        </section>
+    </main>
+{% endblock %}

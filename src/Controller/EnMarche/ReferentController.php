@@ -42,6 +42,14 @@ class ReferentController extends Controller
 {
     public const TOKEN_ID = 'referent_managed_users';
 
+//    /**
+//     * @Route("/messagerie", name="app_referent_messages")
+//     */
+//    public function messagesAction(): Response
+//    {
+//        return $this->render('referent/message/list.html.twig');
+//    }
+
     /**
      * @Route("/utilisateurs", name="app_referent_users")
      * @Method("GET")

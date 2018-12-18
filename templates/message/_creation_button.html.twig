@@ -1,0 +1,34 @@
+{% import _self as fn %}
+
+{% set has_many_roles = app.user.isReferent() + app.user.isDeputy() + app.user.isSupervisor() + app.user.isHost() %}
+
+<div class="btn-group" role="group">
+    {% if has_many_roles %}
+        <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Nouveau message
+        </button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            {{ fn.render_message_links() }}
+        </div>
+    {% else %}
+        {{ fn.render_message_links() }}
+    {% endif %}
+</div>
+
+{% macro render_message_links() %}
+    {% if app.user.isReferent() %}
+        <a class="dropdown-item" href="{{ path("app_message_create", {type: constant('AppBundle\\AdherentMessage\\AdherentMessageTypeEnum::REFERENT')}) }}">Referent message</a>
+    {% endif %}
+
+    {% if app.user.isDeputy() %}
+        <a class="dropdown-item" href="{{ path("app_message_create", {type: constant('AppBundle\\AdherentMessage\\AdherentMessageTypeEnum::DEPUTY')}) }}">Depute message</a>
+    {% endif %}
+
+    {% if app.user.isSupervisor() %}
+        <a class="dropdown-item" href="{{ path("app_message_create", {type: constant('AppBundle\\AdherentMessage\\AdherentMessageTypeEnum::SUPERVISOR')}) }}">Animateur message</a>
+    {% endif %}
+
+    {% if app.user.isHost() %}
+        <a class="dropdown-item" href="{{ path("app_message_create", {type: constant('AppBundle\\AdherentMessage\\AdherentMessageTypeEnum::HOST')}) }}">Co-animateur message</a>
+    {% endif %}
+{% endmacro %}

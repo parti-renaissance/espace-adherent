@@ -30,9 +30,16 @@ class RequestBuilder
 
     private $citizenProjectHost = false;
 
-    public static function createFromAdherent(Adherent $adherent, array $interestIds): self
+    private $mailchimpInterestIds = [];
+
+    public function __construct(array $mailchimpInterestIds = [])
     {
-        return (new self())
+        $this->mailchimpInterestIds = $mailchimpInterestIds;
+    }
+
+    public function updateFromAdherent(Adherent $adherent): self
+    {
+        return $this
             ->setGender($adherent->getGender())
             ->setFirstName($adherent->getFirstName())
             ->setLastName($adherent->getLastName())
@@ -41,9 +48,9 @@ class RequestBuilder
             ->setCity($adherent->getCityName())
             ->setInterests(
                 array_replace(
-                    array_fill_keys($interestIds, false),
+                    array_fill_keys($this->mailchimpInterestIds, false),
                     array_fill_keys(
-                        array_intersect_key($interestIds, array_flip($adherent->getInterests())),
+                        array_intersect_key($this->mailchimpInterestIds, array_flip($adherent->getInterests())),
                         true
                     ),
                     /*
