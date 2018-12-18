@@ -260,11 +260,17 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $mandates;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\IdeasWorkshop\Idea", mappedBy="author", fetch="EXTRA_LAZY")
+     */
+    private $ideas;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
         $this->citizenProjectMemberships = new ArrayCollection();
         $this->subscriptionTypes = new ArrayCollection();
+        $this->ideas = new ArrayCollection();
     }
 
     public static function create(
