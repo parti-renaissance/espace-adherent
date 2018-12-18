@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\DataFixtures\AutoIncrementResetter;
 use AppBundle\Entity\IdeasWorkshop\Vote;
 use AppBundle\Entity\IdeasWorkshop\VoteTypeEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -12,6 +13,8 @@ class LoadIdeaVoteData extends AbstractFixture implements DependentFixtureInterf
 {
     public function load(ObjectManager $manager)
     {
+        AutoIncrementResetter::resetAutoIncrement($manager, 'ideas_workshop_vote');
+
         $adherents = [
             $this->getReference('adherent-2'),
             $this->getReference('adherent-3'),
@@ -33,14 +36,13 @@ class LoadIdeaVoteData extends AbstractFixture implements DependentFixtureInterf
                 foreach ($ideas as $idea) {
                     if (
                         !(\in_array($key, [4, 5, 7]) && VoteTypeEnum::INNOVATIVE === $type)
-                        || !(\in_array($key, [2, 3, 5]) && VoteTypeEnum::FEASIBLE === $type)
-                        || !(2 === $key && VoteTypeEnum::IMPORTANT === $type)
+                        && !(\in_array($key, [2, 3, 5]) && VoteTypeEnum::FEASIBLE === $type)
+                        && !(2 === $key && VoteTypeEnum::IMPORTANT === $type)
                     ) {
-                        $vote = new Vote(
-                            $adherent,
-                            $type
-                        );
+                        $vote = new Vote();
 
+                        $vote->setType($type);
+                        $vote->setAuthor($adherent);
                         $idea->addVote($vote);
 
                         $manager->persist($vote);

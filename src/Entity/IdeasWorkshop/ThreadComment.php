@@ -4,6 +4,7 @@ namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\AuthorInterface;
 use AppBundle\Entity\EntitySoftDeletableTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class ThreadComment
+class ThreadComment implements AuthorInterface
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
