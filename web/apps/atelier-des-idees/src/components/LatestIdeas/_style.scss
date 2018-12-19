@@ -1,0 +1,17 @@
+.latest-ideas {
+    height: 400px;
+    padding: 50px 0 0 100px;
+    background-color: $white-smoke;
+    &__title {
+        margin-bottom: 50px;
+        width: 40%;
+    }
+
+    @media screen and (max-width: $width-lg) {
+        height: 250px;
+        padding: 50px 0 0 20px;
+        &__title {
+            width: 100%;
+        }
+    }
+}
