@@ -298,3 +298,39 @@ Feature:
     ]
     """
 
+  Scenario: As a non logged-in user I can filter ideas by author uuid
+    When I send a "GET" request to "/api/ideas?author.uuid=acc73b03-9743-47d8-99db-5a6c6f55ad67"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+        {
+            "theme": {
+                "name": "Armées et défense"
+            },
+            "category": {
+                "name": "Echelle Européenne",
+                "enabled": true
+            },
+            "needs": [],
+            "author": {
+                "first_name": "Benjamin",
+                "last_name": "Duroc"
+            },
+            "published_at": "2018-12-03T10:00:00+01:00",
+            "committee": null,
+            "status": "DRAFT",
+            "with_committee": false,
+            "votes_count": 15,
+            "author_category": "QG",
+            "description": "Nam laoreet eros diam, vitae hendrerit libero interdum nec. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+            "created_at": "@string@.isDateTime()",
+            "name": "Aider les gens",
+            "slug": "aider-les-gens",
+            "days_before_deadline": @integer@,
+            "contributors_count": 0,
+            "comments_count": 0
+        }
+    ]
+    """
