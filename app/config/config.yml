@@ -381,6 +381,7 @@ api_platform:
         - '%kernel.project_dir%/src/Entity'
     enable_docs: false
     enable_entrypoint: false
+    allow_plain_identifiers: true
     formats:
         json:
             mime_types: ['application/json']

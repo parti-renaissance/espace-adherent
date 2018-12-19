@@ -4,6 +4,7 @@ namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\AuthorInterface;
 use AppBundle\Entity\EntitySoftDeletableTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Thread
+class Thread implements AuthorInterface
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
@@ -82,6 +83,16 @@ class Thread
     public function setAnswer(Answer $answer): void
     {
         $this->answer = $answer;
+    }
+
+    public function getAuthor(): Adherent
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(Adherent $author): void
+    {
+        $this->author = $author;
     }
 
     public function addComment(ThreadComment $comment): void
