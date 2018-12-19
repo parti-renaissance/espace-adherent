@@ -12,9 +12,9 @@ const props = {
             title: 'TABS2',
             component: <div>2</div>,
         },
-    ]
+    ],
 };
 
 storiesOf('Tabs', module)
     .addParameters({ jest: ['Tabs'] })
-    .add('default', () => <Tabs {...props}/>);
+    .add('default', () => <Tabs {...props} />);
