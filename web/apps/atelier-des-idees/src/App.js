@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
+
+import Home from './pages/Home';
+import Consult from './pages/Consult';
+import Contribute from './pages/Contribute';
+import Propose from './pages/Propose';
+
 import logo from './logo.svg';
 
 class App extends Component {
     render() {
         return (
             <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h1 className="App-title">Welcome to React</h1>
-                </header>
-                <p className="App-intro">
-                    To get started, edit <code>web/apps/atelier-des-idees/src/App.js</code> and save to reload.
-                </p>
+                <Switch>
+                    <Route exact path="/atelier-des-idees" component={Home}></Route>
+                    <Route exact path="/atelier-des-idees/consulter" component={Consult}></Route>
+                    <Route exact path="/atelier-des-idees/contribuer" component={Contribute}></Route>
+                    <Route exact path="/atelier-des-idees/proposer" component={Propose}></Route>
+                </Switch>
             </div>
         );
     }
