@@ -4,17 +4,22 @@ namespace AppBundle\Serializer;
 
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Repository\IdeaRepository;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class IdeasWorkshopSerializerNormalizer implements NormalizerInterface
 {
     private $normalizer;
+    private $tokenStorage;
     private $ideaRepository;
 
-    public function __construct(NormalizerInterface $normalizer, IdeaRepository $ideaRepository)
-    {
+    public function __construct(
+        NormalizerInterface $normalizer,
+        IdeaRepository $ideaRepository,
+        TokenStorageInterface $tokenStorage
+    ) {
         $this->normalizer = $normalizer;
-
+        $this->tokenStorage = $tokenStorage;
         $this->ideaRepository = $ideaRepository;
     }
 
@@ -25,6 +30,15 @@ class IdeasWorkshopSerializerNormalizer implements NormalizerInterface
         if (\in_array('idea_list_read', $context['groups'])) {
             $data['contributors_count'] = $this->ideaRepository->countIdeaContributors($object);
             $data['comments_count'] = $this->ideaRepository->countThreadComments($object);
+
+            $total = $data['votes_count'];
+            $votes = $this->ideaRepository->countVotesByType($object);
+            $data['votes_count'] = $votes;
+            $data['votes_count']['total'] = $total;
+
+            if (\is_object($loggedUser = $this->tokenStorage->getToken()->getUser())) {
+                $data['votes_count']['my_votes'] = $this->ideaRepository->getAdherentVotesForIdea($object, $loggedUser);
+            }
         }
 
         return $data;
