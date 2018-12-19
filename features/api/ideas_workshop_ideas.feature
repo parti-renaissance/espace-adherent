@@ -34,7 +34,12 @@ Feature:
             "committee": null,
             "status": "FINALIZED",
             "with_committee": false,
-            "votes_count": 0,
+            "votes_count": {
+                "total": 0,
+                "important": 0,
+                "feasible": 0,
+                "innovative": 0
+            },
             "author_category": "ADHERENT",
             "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
             "created_at": "@string@.isDateTime()",
@@ -81,7 +86,12 @@ Feature:
             },
             "status": "PENDING",
             "with_committee": true,
-            "votes_count": 15,
+            "votes_count": {
+                "total": 15,
+                "important": "6",
+                "feasible": "4",
+                "innovative": "5"
+            },
             "author_category": "COMMITTEE",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
             "created_at": "@string@.isDateTime()",
@@ -128,7 +138,70 @@ Feature:
             },
             "status": "PENDING",
             "with_committee": true,
-            "votes_count": 15,
+            "votes_count": {
+                "total": 15,
+                "important": "6",
+                "feasible": "4",
+                "innovative": "5"
+            },
+            "author_category": "COMMITTEE",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
+            "created_at": "@string@.isDateTime()",
+            "name": "Faire la paix",
+            "slug": "faire-la-paix",
+            "days_before_deadline": "@integer@",
+            "contributors_count": 0,
+            "comments_count": 4
+        }
+    ]
+    """
+
+  Scenario: As a logged-in user I can filter ideas by name
+    Given I am logged as "jacques.picard@en-marche.fr"
+    When I add "Accept" header equal to "application/json"
+    And I send a "GET" request to "/api/ideas?name=paix"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+        {
+            "theme": {
+                "name": "Armées et défense"
+            },
+            "category": {
+                "name": "Echelle Européenne",
+                "enabled": true
+            },
+            "needs": [
+                {
+                    "name": "Juridique",
+                    "enabled": true
+                }
+            ],
+            "author": {
+                "first_name": "Jacques",
+                "last_name": "Picard"
+            },
+            "published_at": "2018-12-01T10:00:00+01:00",
+            "committee": {
+                "created_at": "2017-01-12T13:25:54+01:00",
+                "name": "En Marche Paris 8",
+                "slug": "en-marche-paris-8"
+            },
+            "status": "PENDING",
+            "with_committee": true,
+            "votes_count": {
+                "total": 15,
+                "important": "6",
+                "feasible": "4",
+                "innovative": "5",
+                "my_votes": [
+                    "feasible",
+                    "important",
+                    "innovative"
+                ]
+            },
             "author_category": "COMMITTEE",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
             "created_at": "@string@.isDateTime()",
@@ -175,7 +248,12 @@ Feature:
             },
             "status": "PENDING",
             "with_committee": true,
-            "votes_count": 15,
+            "votes_count": {
+                "total": 15,
+                "important": "6",
+                "feasible": "4",
+                "innovative": "5"
+            },
             "author_category": "COMMITTEE",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
             "created_at": "@string@.isDateTime()",
@@ -202,7 +280,12 @@ Feature:
             "committee": null,
             "status": "FINALIZED",
             "with_committee": false,
-            "votes_count": 0,
+            "votes_count": {
+                "total": 0,
+                "important": 0,
+                "feasible": 0,
+                "innovative": 0
+            },
             "author_category": "ADHERENT",
             "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
             "created_at": "@string@.isDateTime()",

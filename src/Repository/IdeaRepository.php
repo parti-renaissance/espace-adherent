@@ -2,8 +2,10 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Entity\IdeasWorkshop\ThreadStatusEnum;
+use AppBundle\Entity\IdeasWorkshop\VoteTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -48,5 +50,46 @@ class IdeaRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
+    }
+
+    public function countVotesByType(Idea $idea): array
+    {
+        $votes = $this
+            ->createQueryBuilder('idea')
+            ->select('vote.type, COUNT(idea) as count')
+            ->innerJoin('idea.votes', 'vote')
+            ->where('idea = :idea')
+            ->setParameter('idea', $idea)
+            ->groupBy('vote.type')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return array_replace(
+            array_fill_keys(VoteTypeEnum::toArray(), 0),
+            array_column($votes, 'count', 'type')
+        );
+    }
+
+    public function getAdherentVotesForIdea(Idea $idea, Adherent $adherent): array
+    {
+        $votes = $this
+            ->createQueryBuilder('idea')
+            ->select('vote.type')
+            ->innerJoin('idea.votes', 'vote')
+            ->where('idea = :idea')
+            ->andWhere('vote.author = :author')
+            ->setParameter('idea', $idea)
+            ->setParameter('author', $adherent)
+            ->groupBy('vote.type')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        array_walk($votes, function (&$vote) {
+            $vote = $vote['type'];
+        });
+
+        return $votes;
     }
 }
