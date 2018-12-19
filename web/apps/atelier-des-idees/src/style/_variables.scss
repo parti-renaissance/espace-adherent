@@ -1,0 +1,40 @@
+// colors
+$white: #fff;
+$black: #000;
+$light-black: #444;
+$france: #4887f7;
+$saphir: #1d5fd1;
+$dark-blue: #353edd;
+$marine-blue: #0045c8;
+$blue-sky: #0496ff;
+$blue: #045bff;
+$light-blue: #d2ecff;
+$sky: #94acd5;
+$pale-sky: #b3d7ff;
+$light-sky: #d2ecff;
+$grey-sky: #cdd7ea;
+$grey: #939393;
+$medium-grey: #7f7f7f;
+$dark-grey: #636476;
+$white-smoke: #f6f8f9;
+$light-grey: #b7c8db;
+$orange: #f8b402;
+
+// fonts
+$font-gillsans: 'Gillsans', 'Roboto', Helvetica, sans-serif;
+$font-roboto: 'Roboto', Helvetica, sans-serif;
+
+// Breakpoints
+// Small devices (landscape phones, 576px and up)
+$width-sm: 576px;
+// Medium devices (tablets, 768px and up)
+$width-md: 768px;
+// Large devices (desktops, 992px and up)
+$width-lg: 992px;
+// Extra large devices (large desktops, 1200px and up)
+$width-xl: 1200px;
+
+// responsive mixins
+$mobile: '(max-width: #{$width-md - 1px})';
+$tablet: '(min-width: #{$width-md}) and (max-width: #{$width-lg - 1px})';
+$desktop: '(min-width: #{$width-lg})';
