@@ -36,6 +36,7 @@
 // shared
 @import '../src/style/fonts';
 @import '../src/style/variables';
+@import '../src/style/placeholders';
 @import '../src/style/typographie';
 @import '../src/style/button';
 
@@ -45,3 +46,4 @@
 @import '../src/components/MovementIdeas/style';
 @import '../src/components/MovementIdeas/MovementIdeasSection/style';
 @import '../src/components/LatestIdeas/style';
+@import '../src/containers/ModalRoot/style';

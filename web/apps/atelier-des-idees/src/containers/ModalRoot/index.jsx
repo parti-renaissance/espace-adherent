@@ -4,6 +4,7 @@ import ReactModal from 'react-modal';
 import { hideModal } from '../../redux/actions/modal';
 
 const MODAL_COMPONENTS = {
+    // to use a modal, just add it below with its corresponding type
     // ex:
     // modalTypes.TEST_MODAL: TestModal,
 };
@@ -26,8 +27,19 @@ class ModalRoot extends React.Component {
 
         const SpecificModal = MODAL_COMPONENTS[modalType];
         return (
-            <ReactModal isOpen={isOpen} onRequestClose={this.closeModal} ariaHideApp={false}>
-                <SpecificModal closeModal={this.closeModal} {...modalProps} />
+            <ReactModal
+                className="modal"
+                overlayClassName="modal-overlay"
+                isOpen={isOpen}
+                onRequestClose={this.closeModal}
+                ariaHideApp={false}
+            >
+                <button className="modal-closeBtn" onClick={this.closeModal}>
+                    <img src="/assets/img/icn_close.svg" />
+                </button>
+                <div className="modal-content-wrapper">
+                    <SpecificModal closeModal={this.closeModal} {...modalProps} />
+                </div>
             </ReactModal>
         );
     }
