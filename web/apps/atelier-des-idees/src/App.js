@@ -13,10 +13,10 @@ class App extends Component {
         return (
             <div className="App">
                 <Switch>
-                    <Route exact path="/atelier-des-idees" component={Home}></Route>
-                    <Route exact path="/atelier-des-idees/consulter" component={Consult}></Route>
-                    <Route exact path="/atelier-des-idees/contribuer" component={Contribute}></Route>
-                    <Route exact path="/atelier-des-idees/proposer" component={Propose}></Route>
+                    <Route exact path="/atelier-des-idees" component={Home} />
+                    <Route exact path="/atelier-des-idees/consulter" component={Consult} />
+                    <Route exact path="/atelier-des-idees/contribuer" component={Contribute} />
+                    <Route exact path="/atelier-des-idees/proposer" component={Propose} />
                 </Switch>
             </div>
         );
