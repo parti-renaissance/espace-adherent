@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "/apps/atelier-des-idees/build",
   "dependencies": {
+    "rc-tabs": "^9.5.7",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-redux": "^6.0.0",
