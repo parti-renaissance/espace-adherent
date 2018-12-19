@@ -1,0 +1,43 @@
+.button {
+    cursor: pointer;
+    padding: 7px;
+}
+
+.button--primary {
+    font-family: $font-gillsans;
+    background-color: $blue;
+    color: $white;
+    text-transform: uppercase;
+    border: 1px solid $blue;
+}
+
+.button--primary:hover {
+    background-color: $marine-blue;
+    color: $white;
+}
+
+.button--secondary {
+    font-family: $font-gillsans;
+    background-color: $white;
+    color: $blue;
+    text-transform: uppercase;
+    border: 1px solid $blue;
+}
+
+.button--secondary:hover {
+    background-color: $marine-blue;
+    color: $white;
+}
+
+.button--tertiary {
+    font-family: $font-gillsans;
+    background-color: $white;
+    color: $black;
+    text-transform: uppercase;
+    border: 1px solid $black;
+}
+
+.button--tertiary:hover {
+    background-color: $black;
+    color: $white;
+}

@@ -1,7 +1,3 @@
-.App {
-  text-align: center;
-}
-
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
@@ -31,3 +27,14 @@
   }
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// shared
+@import '../src/style/fonts';
+@import '../src/style/variables';
+@import '../src/style/typographie';
+@import '../src/style/button';
