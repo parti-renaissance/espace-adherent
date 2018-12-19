@@ -5,18 +5,18 @@ function LatestIdeas(props) {
     const panes = [
         {
             title: 'Propositions finalisées',
-            component: <div/>,
+            component: <div />,
         },
         {
             title: 'Propositions en cours d\'élaboration',
-            component: <div/>,
+            component: <div />,
         },
     ];
 
     return (
         <div className="latest-ideas">
             <h2 className="latest-ideas__title">Consultez les dernières propostions publiées par nos adhérents</h2>
-            <Tabs panes={ panes }/>
+            <Tabs panes={panes} />
         </div>
     );
 }
