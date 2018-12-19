@@ -1,0 +1,15 @@
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .button__icon {
+        &--start {
+            margin-right: 7px;
+        }
+
+        &--end {
+            order: 1;
+            margin-left: 7px;
+        }
+    }
+}
