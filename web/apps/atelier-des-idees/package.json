@@ -7,6 +7,7 @@
     "rc-tabs": "^9.5.7",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-modal": "^3.8.1",
     "react-redux": "^6.0.0",
     "react-responsive": "^6.0.1",
     "react-router-dom": "^4.3.1",
