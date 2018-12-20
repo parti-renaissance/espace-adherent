@@ -1,9 +1,16 @@
 .button {
     cursor: pointer;
-    padding: 7px;
+    padding: 7px 15px;
+}
+
+.button--transparent {
+    @extend .button;
+    background: transparent;
+    border: none;
 }
 
 .button--primary {
+    @extend .button;
     font-family: $font-gillsans;
     background-color: $blue;
     color: $white;
@@ -17,6 +24,7 @@
 }
 
 .button--secondary {
+    @extend .button;
     font-family: $font-gillsans;
     background-color: $white;
     color: $blue;
@@ -30,6 +38,7 @@
 }
 
 .button--tertiary {
+    @extend .button;
     font-family: $font-gillsans;
     background-color: $white;
     color: $black;
