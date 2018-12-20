@@ -1,6 +1,6 @@
 import { SET_IDEAS, ADD_IDEAS } from '../constants/actionTypes';
 
-const initialState = [];
+export const initialState = [];
 
 const ideasReducer = (state = initialState, action) => {
     const { type, payload } = action;
@@ -18,3 +18,4 @@ const ideasReducer = (state = initialState, action) => {
 export default ideasReducer;
 
 export const getIdeas = state => state;
+export const getPublishedIdeas = state => state.filter(idea => 'published' === idea.status);
