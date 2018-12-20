@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 /**
- * Interface is used for denormalization to get a logged used (ex. AppBundle\Normalizer\AuthorNormalizer).
+ * Interface is used for denormalization to get a logged user (ex. AppBundle\Normalizer\AuthorDenormalizer).
  */
 interface AuthorInterface
 {

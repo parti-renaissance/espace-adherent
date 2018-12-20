@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\DataFixtures\AutoIncrementResetter;
 use AppBundle\Entity\IdeasWorkshop\Question;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -11,6 +12,8 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
 {
     public function load(ObjectManager $manager)
     {
+        AutoIncrementResetter::resetAutoIncrement($manager, 'ideas_workshop_question');
+
         $guidelineMainFeature = $this->getReference('guideline-main-feature');
         $guidelineImplementation = $this->getReference('guideline-implementation');
 
@@ -31,7 +34,7 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
             2,
             $isMandatory
         );
-        $this->addReference('question-answer', $questionProblem);
+        $this->addReference('question-answer', $questionAnswer);
         $guidelineMainFeature->addQuestion($questionAnswer);
 
         $questionCompare = new Question(
