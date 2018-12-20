@@ -12,6 +12,7 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntityNameSlugTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
+use AppBundle\Entity\VisibleStatusesInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -50,13 +51,18 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Idea implements AuthorInterface
+class Idea implements AuthorInterface, VisibleStatusesInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityNameSlugTrait;
 
     private const PUBLISHED_INTERVAL = 'P3W';
+
+    public static function getVisibleStatuses(): array
+    {
+        return IdeaStatusEnum::VISIBLE_STATUSES;
+    }
 
     /**
      * @SymfonySerializer\Groups("idea_list_read")

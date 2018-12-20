@@ -2,10 +2,11 @@
 
 namespace AppBundle\Entity\IdeasWorkshop;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
  * @ORM\Table(name="ideas_workshop_answer")
@@ -21,6 +22,8 @@ class Answer
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
+     *
+     * @SymfonySerializer\Groups("thread_comment_read")
      */
     private $id;
 
