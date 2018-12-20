@@ -49,7 +49,7 @@ trait EntityNameSlugTrait
         return $this->slug;
     }
 
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->name = $name;
         $this->canonicalName = static::canonicalize($name);
