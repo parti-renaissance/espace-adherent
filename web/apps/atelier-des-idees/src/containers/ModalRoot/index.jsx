@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ReactModal from 'react-modal';
 import { hideModal } from '../../redux/actions/modal';
+import { selectModalData } from '../../redux/selectors/modal';
 
 const MODAL_COMPONENTS = {
     // to use a modal, just add it below with its corresponding type
@@ -46,7 +47,8 @@ class ModalRoot extends React.Component {
 }
 
 function mapStateToProps(state) {
-    return { ...state.modal };
+    const modalData = selectModalData(state);
+    return { ...modalData };
 }
 
 export default connect(
