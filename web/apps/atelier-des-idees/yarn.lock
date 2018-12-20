@@ -1465,7 +1465,6 @@ acorn@^5.0.0, acorn@^5.5.0, acorn@^5.6.2:
 add-dom-event-listener@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/add-dom-event-listener/-/add-dom-event-listener-1.1.0.tgz#6a92db3a0dd0abc254e095c0f1dc14acbbaae310"
-  integrity sha512-WCxx1ixHT0GQU9hb0KI/mhgRQhnU+U3GvwY6ZvVjYq8rsihIGoaIOUbY0yMPBxLH5MDtr0kz3fisWGNcbWW7Jw==
   dependencies:
     object-assign "4.x"
 
@@ -1828,6 +1827,13 @@ aws-sign2@~0.7.0:
 aws4@^1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.8.0.tgz#f0e003d9ca9e7f59c7a508945d7b2ef9a04a542f"
+
+axios@^0.18.0:
+  version "0.18.0"
+  resolved "http://registry.npmjs.org/axios/-/axios-0.18.0.tgz#32d53e4851efdc0a11993b6cd000789d70c05102"
+  dependencies:
+    follow-redirects "^1.3.0"
+    is-buffer "^1.1.5"
 
 axobject-query@^0.1.0:
   version "0.1.0"
@@ -3598,7 +3604,6 @@ create-react-class@^15.6.2:
 create-react-context@0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/create-react-context/-/create-react-context-0.2.2.tgz#9836542f9aaa22868cd7d4a6f82667df38019dca"
-  integrity sha512-KkpaLARMhsTsgp0d2NA/R94F/eDLbhXERdIq3LvX2biCAXcDvHYoOqHfWCHf1+OLj+HKBotLG3KqaOOf+C1C+A==
   dependencies:
     fbjs "^0.8.0"
     gud "^1.0.0"
@@ -4941,7 +4946,7 @@ flush-write-stream@^1.0.0:
     inherits "^2.0.1"
     readable-stream "^2.0.4"
 
-follow-redirects@^1.0.0:
+follow-redirects@^1.0.0, follow-redirects@^1.3.0:
   version "1.5.10"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.5.10.tgz#7b7a9f9aea2fdff36786a94ff643ed07f4ff5e2a"
   dependencies:
@@ -5258,7 +5263,6 @@ growly@^1.3.0:
 gud@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/gud/-/gud-1.0.0.tgz#a489581b17e6a70beca9abe3ae57de7a499852c0"
-  integrity sha512-zGEOVKFM5sVPPrYs7J5/hYEw2Pof8KCyOwyhG8sAF26mCAeUFAcYPu1mwB7hhpIP29zOIBaDqwuHdLp0jvZXjw==
 
 gzip-size@3.0.0:
   version "3.0.0"
@@ -5276,7 +5280,6 @@ gzip-size@5.0.0:
 hammerjs@^2.0.8:
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/hammerjs/-/hammerjs-2.0.8.tgz#04ef77862cff2bb79d30f7692095930222bf60f1"
-  integrity sha1-BO93hiz/K7edMPdpIJWTAiK/YPE=
 
 handle-thing@^1.2.5:
   version "1.2.5"
@@ -6671,7 +6674,6 @@ locate-path@^3.0.0:
 lodash._getnative@^3.0.0:
   version "3.9.1"
   resolved "https://registry.yarnpkg.com/lodash._getnative/-/lodash._getnative-3.9.1.tgz#570bc7dede46d61cdcde687d65d3eecbaa3aaff5"
-  integrity sha1-VwvH3t5G1hzc3mh9ZdPuy6o6r/U=
 
 lodash._reinterpolate@~3.0.0:
   version "3.0.0"
@@ -6704,12 +6706,10 @@ lodash.defaults@^4.2.0:
 lodash.isarguments@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/lodash.isarguments/-/lodash.isarguments-3.1.0.tgz#2f573d85c6a24289ff00663b491c1d338ff3458a"
-  integrity sha1-L1c9hcaiQon/AGY7SRwdM4/zRYo=
 
 lodash.isarray@^3.0.0:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/lodash.isarray/-/lodash.isarray-3.0.4.tgz#79e4eb88c36a8122af86f844aa9bcd851b5fbb55"
-  integrity sha1-eeTriMNqgSKvhvhEqpvNhRtfu1U=
 
 lodash.isplainobject@^4.0.6:
   version "4.0.6"
@@ -6718,7 +6718,6 @@ lodash.isplainobject@^4.0.6:
 lodash.keys@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/lodash.keys/-/lodash.keys-3.1.2.tgz#4dbc0472b156be50a0b286855d1bd0b0c656098a"
-  integrity sha1-TbwEcrFWvlCgsoaFXRvQsMZWCYo=
   dependencies:
     lodash._getnative "^3.0.0"
     lodash.isarguments "^3.0.0"
@@ -8343,7 +8342,6 @@ raf@3.4.0:
 raf@^3.4.1:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
-  integrity sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==
   dependencies:
     performance-now "^2.1.0"
 
@@ -8392,7 +8390,6 @@ raw-loader@^0.5.1:
 rc-hammerjs@~0.6.0:
   version "0.6.9"
   resolved "https://registry.yarnpkg.com/rc-hammerjs/-/rc-hammerjs-0.6.9.tgz#9a4ddbda1b2ec8f9b9596091a6a989842a243907"
-  integrity sha512-4llgWO3RgLyVbEqUdGsDfzUDqklRlQW5VEhE3x35IvhV+w//VPRG34SBavK3D2mD/UaLKaohgU41V4agiftC8g==
   dependencies:
     babel-runtime "6.x"
     hammerjs "^2.0.8"
@@ -8401,7 +8398,6 @@ rc-hammerjs@~0.6.0:
 rc-tabs@^9.5.7:
   version "9.5.7"
   resolved "https://registry.yarnpkg.com/rc-tabs/-/rc-tabs-9.5.7.tgz#bb4fd7d50e8f1c861c09220a551b258a96429e35"
-  integrity sha512-9aP4ra3zhy5VREqRG6t9Qce8uhCcRjHZuXx3LfLCP1Yip8bbm8zmPtcQ6dCeOJTFopdE1MwGSUJBGPs4jhbisw==
   dependencies:
     babel-runtime "6.x"
     classnames "2.x"
@@ -8416,7 +8412,6 @@ rc-tabs@^9.5.7:
 rc-util@^4.0.4:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/rc-util/-/rc-util-4.6.0.tgz#ba33721783192ec4f3afb259e182b04e55deb7f6"
-  integrity sha512-rbgrzm1/i8mgfwOI4t1CwWK7wGe+OwX+dNa7PVMgxZYPBADGh86eD4OcJO1UKGeajIMDUUKMluaZxvgraQIOmw==
   dependencies:
     add-dom-event-listener "^1.1.0"
     babel-runtime "6.x"
@@ -9369,7 +9364,6 @@ shallow-clone@^0.1.2:
 shallowequal@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/shallowequal/-/shallowequal-0.2.2.tgz#1e32fd5bcab6ad688a4812cb0cc04efc75c7014e"
-  integrity sha1-HjL9W8q2rWiKSBLLDMBO/HXHAU4=
   dependencies:
     lodash.keys "^3.1.2"
 
