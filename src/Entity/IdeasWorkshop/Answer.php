@@ -3,12 +3,24 @@
 namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get",
+ *         "post": {"access_control": "is_granted('ROLE_ADHERENT')"}
+ *     },
+ *     itemOperations={
+ *         "get",
+ *         "put": {"access_control": "object.getAuthor() == user"}
+ *     }
+ * )
+ *
  * @ORM\Table(name="ideas_workshop_answer")
  * @ORM\Entity
  *
@@ -28,6 +40,7 @@ class Answer
     private $id;
 
     /**
+     * @SymfonySerializer\Groups("idea_write")
      * @ORM\Column(type="text")
      */
     private $content;
@@ -47,12 +60,9 @@ class Answer
      */
     private $idea;
 
-    public function __construct(
-        string $content,
-        Question $question
-    ) {
+    public function __construct(string $content)
+    {
         $this->content = $content;
-        $this->question = $question;
         $this->threads = new ArrayCollection();
     }
 

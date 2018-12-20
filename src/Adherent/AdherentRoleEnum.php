@@ -23,4 +23,6 @@ class AdherentRoleEnum extends Enum
     public const PROCURATION_MANAGER = 'procuration_manager';
 
     public const USER = 'user';
+
+    public const QG_IDEAS = 'gq_ideas';
 }

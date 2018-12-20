@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *         "get",
  *         "post": {
- *             "access_control": "is_granted('ROLE_ADHERENT') or is_granted('ROLE_ADMIN_DASHBOARD')",
+ *             "access_control": "is_granted('ROLE_ADHERENT')",
  *         }
  *     },
  *     itemOperations={
