@@ -42,7 +42,7 @@ class MovementIdeas extends React.PureComponent {
     render() {
         const items = sectionContent.map(content => <MovementIdeasSection {...content}/>);
         return (
-            <article className="movement-ideas">
+            <article className="l__wrapper movement-ideas">
                 <div className="movement-ideas__first__section">
                     <h1 className="movement-ideas__first__section__title">Les idées du mouvement</h1>
                     <p className="movement-ideas__first__section__content">
