@@ -9628,6 +9628,12 @@ stdout-stream@^1.4.0:
   dependencies:
     readable-stream "^2.0.1"
 
+storybook-react-router@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/storybook-react-router/-/storybook-react-router-1.0.2.tgz#8c53a809b343d41002c3373e53ef4a642a2b34ce"
+  dependencies:
+    prop-types "^15.6.1"
+
 stream-browserify@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/stream-browserify/-/stream-browserify-2.0.1.tgz#66266ee5f9bdb9940a4e4514cafb43bb71e5c9db"
