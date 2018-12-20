@@ -48,7 +48,7 @@
 
 		&__link {
 			align-self: center;
-			margin: 28px 15% 0 0;
+			margin: 65px 15% 0 0;
 			background-color: transparent;
 			border-color: $white;
 			color: $white;
@@ -57,7 +57,9 @@
 		}
 
 		&__close {
-			align-self: flex-end;
+			position: absolute;
+			top: 6px;
+			right: 4px;
 			outline: none;
 		}
 	}
@@ -88,6 +90,12 @@
 		&__container {
 			&__link {
 				align-self: flex-start;
+			}
+			&__close {
+				position: initial;
+				display: flex;
+				padding: 6px 4px 0 0;
+				align-self: flex-end;
 			}
 		}
 	}
