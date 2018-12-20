@@ -6,10 +6,11 @@ import Button from '.';
 const props = {
     label: 'Je propose',
     icon: '/assets/img/icn_20px_comments.svg',
-    className: 'button--secondary',
     classIcon: 'start', // start or end
 };
 
 storiesOf('Button', module)
     .addParameters({ jest: ['Button'] })
-    .add('default', () => <Button {...props} onClick={action('click')}/>);
+    .add('default/primary', () => <Button {...props} onClick={action('click')} />)
+    .add('secondary', () => <Button {...props} mode="secondary" onClick={action('click')} />)
+    .add('tertiary', () => <Button {...props} mode="tertiary" onClick={action('click')} />);
