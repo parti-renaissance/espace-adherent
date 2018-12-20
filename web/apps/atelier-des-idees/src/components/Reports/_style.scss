@@ -15,6 +15,7 @@
 		&__button {
 			padding: 10px 30px;
 			background-color: $saphir;
+			letter-spacing: 2px;
 		}
 	}
 
@@ -32,7 +33,10 @@
 	@media screen and (max-width: $width-md) {
 		flex-direction: column;
 		height: auto;
-		padding: 30px 0;
+		padding: 41px 20px;
+		> * {
+			width: 100%;
+		}
 		&__first-section {
 			order: 1;
 			&__title {
