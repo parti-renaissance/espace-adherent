@@ -4,10 +4,14 @@ import ReactModal from 'react-modal';
 import { hideModal } from '../../redux/actions/modal';
 import { selectModalData } from '../../redux/selectors/modal';
 
+// components
+import ReportsModal from '../../components/Modal/ReportsModal';
+
 const MODAL_COMPONENTS = {
     // to use a modal, just add it below with its corresponding type
     // ex:
     // modalTypes.TEST_MODAL: TestModal,
+    REPORTS_MODAL: ReportsModal,
 };
 
 class ModalRoot extends React.Component {
