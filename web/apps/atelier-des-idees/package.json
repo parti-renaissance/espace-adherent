@@ -7,11 +7,13 @@
     "rc-tabs": "^9.5.7",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-modal": "^3.8.1",
     "react-redux": "^6.0.0",
     "react-responsive": "^6.0.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.5",
     "react-slick": "^0.23.2",
+    "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "slick-carousel": "^1.8.1"
   },
