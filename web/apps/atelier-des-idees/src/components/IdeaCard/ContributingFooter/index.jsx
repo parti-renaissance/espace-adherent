@@ -1,0 +1,29 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
+
+function ContributingFooter(props) {
+    return (
+        <div className="contributing-footer">
+            {/* TODO: implement report */}
+            {/* <button className="contributing-footer__report">Signaler</button> */}
+            <div className="contributing-footer__remaining-days">
+                <img className="contributing-footer__remaining-days__icon" src="/assets/img/icn_hourglass.svg" />
+                <span className="contributing-footer__remaining-days__text">{props.remainingDays}</span>
+            </div>
+            <div className="contributing-footer__container">
+                <Link className="contributing-footer__container__link button--secondary" href={props.link}>
+					+ Je contribue
+                </Link>
+            </div>
+        </div>
+    );
+}
+
+ContributingFooter.propTypes = {
+    remainingDays: PropTypes.string.isRequired,
+    link: PropTypes.string.isRequired,
+};
+
+export default ContributingFooter;
