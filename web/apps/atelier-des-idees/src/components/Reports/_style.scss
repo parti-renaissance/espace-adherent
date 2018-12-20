@@ -1,0 +1,46 @@
+.reports {
+	display: flex;
+	align-items: center;
+	height: 400px;
+	padding: 30px 100px;
+
+	> * {
+		width: 50%;
+	}
+
+	&__first-section {
+		&__title {
+			margin: 0 46% 0 0;
+		}
+		&__button {
+			padding: 10px 30px;
+			background-color: $saphir;
+		}
+	}
+
+	&__second-section {
+		display: flex;
+		justify-content: center;
+	}
+
+	.form {
+		width: 600px;
+		height: 260px;
+		background: $grey;
+	}
+
+	@media screen and (max-width: $width-md) {
+		flex-direction: column;
+		height: auto;
+		padding: 30px 0;
+		&__first-section {
+			order: 1;
+			&__title {
+				margin: 0;
+			}
+		}
+		&__second-section {
+			margin-bottom: 20px;
+		}
+	}
+}
