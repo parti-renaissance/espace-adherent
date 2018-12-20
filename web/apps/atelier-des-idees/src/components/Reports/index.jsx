@@ -1,4 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { showModal } from '../../redux/actions/modal';
+
+import { REPORTS_MODAL } from '../../constants/modalTypes';
 
 class Reports extends React.PureComponent {
     render() {
@@ -11,7 +15,10 @@ class Reports extends React.PureComponent {
                     <p className="reports__first-section__text">
 						Consultez les rapports de consultations terminées
                     </p>
-                    <button className="reports__first-section__button button--primary">
+                    <button
+                        className="reports__first-section__button button--primary"
+                        onClick={() => this.props.showModal(REPORTS_MODAL)}
+                    >
 						Je lis les rapports
                     </button>
                 </div>
@@ -24,4 +31,7 @@ class Reports extends React.PureComponent {
     }
 }
 
-export default Reports;
+export default connect(
+    null,
+    { showModal }
+)(Reports);
