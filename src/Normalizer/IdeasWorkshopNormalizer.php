@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Serializer;
+namespace AppBundle\Normalizer;
 
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Repository\IdeaRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class IdeasWorkshopSerializerNormalizer implements NormalizerInterface
+class IdeasWorkshopNormalizer implements NormalizerInterface
 {
     private $normalizer;
     private $tokenStorage;
