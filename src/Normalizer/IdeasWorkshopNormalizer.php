@@ -31,10 +31,10 @@ class IdeasWorkshopNormalizer implements NormalizerInterface
             $data['contributors_count'] = $this->ideaRepository->countIdeaContributors($object);
             $data['comments_count'] = $this->ideaRepository->countThreadComments($object);
 
-            $total = $data['votes_count'];
-            $votes = $this->ideaRepository->countVotesByType($object);
-            $data['votes_count'] = $votes;
-            $data['votes_count']['total'] = $total;
+            $data['votes_count'] = array_merge(
+                $this->ideaRepository->countVotesByType($object),
+                ['total' => $data['votes_count']]
+            );
 
             if (\is_object($loggedUser = $this->tokenStorage->getToken()->getUser())) {
                 $data['votes_count']['my_votes'] = $this->ideaRepository->getAdherentVotesForIdea($object, $loggedUser);

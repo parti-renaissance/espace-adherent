@@ -6,6 +6,10 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
+      | LoadIdeaQuestionData      |
+      | LoadIdeaCategoryData      |
+      | LoadIdeaNeedData          |
+      | LoadIdeaThemeData         |
       | LoadIdeaData              |
       | LoadIdeaThreadCommentData |
       | LoadIdeaVoteData          |
@@ -44,7 +48,6 @@ Feature:
                 "published_at": "2018-12-04T10:00:00+01:00",
                 "committee": null,
                 "status": "FINALIZED",
-                "with_committee": false,
                 "votes_count": {
                     "total": 0,
                     "important": 0,
@@ -56,7 +59,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "name": "Réduire le gaspillage",
                 "slug": "reduire-le-gaspillage",
-                "days_before_deadline": "@integer@",
+                "days_before_deadline": 20,
                 "contributors_count": 0,
                 "comments_count": 0
             }
@@ -109,7 +112,6 @@ Feature:
                     "slug": "en-marche-paris-8"
                 },
                 "status": "PENDING",
-                "with_committee": true,
                 "votes_count": {
                     "total": 15,
                     "important": "6",
@@ -121,7 +123,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "name": "Faire la paix",
                 "slug": "faire-la-paix",
-                "days_before_deadline": "@integer@",
+                "days_before_deadline": 20,
                 "contributors_count": 6,
                 "comments_count": 6
             }
@@ -174,7 +176,6 @@ Feature:
                     "slug": "en-marche-paris-8"
                 },
                 "status": "PENDING",
-                "with_committee": true,
                 "votes_count": {
                     "total": 15,
                     "important": "6",
@@ -186,7 +187,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "name": "Faire la paix",
                 "slug": "faire-la-paix",
-                "days_before_deadline": "@integer@",
+                "days_before_deadline": 20,
                 "contributors_count": 6,
                 "comments_count": 6
             }
@@ -240,7 +241,6 @@ Feature:
                     "slug": "en-marche-paris-8"
                 },
                 "status": "PENDING",
-                "with_committee": true,
                 "votes_count": {
                     "total": 15,
                     "important": "6",
@@ -257,7 +257,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "name": "Faire la paix",
                 "slug": "faire-la-paix",
-                "days_before_deadline": "@integer@",
+                "days_before_deadline": 20,
                 "contributors_count": 6,
                 "comments_count": 6
             }
@@ -310,7 +310,6 @@ Feature:
                     "slug": "en-marche-paris-8"
                 },
                 "status": "PENDING",
-                "with_committee": true,
                 "votes_count": {
                     "total": 15,
                     "important": "6",
@@ -322,7 +321,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "name": "Faire la paix",
                 "slug": "faire-la-paix",
-                "days_before_deadline": "@integer@",
+                "days_before_deadline": 20,
                 "contributors_count": 6,
                 "comments_count": 6
             },
@@ -345,7 +344,6 @@ Feature:
                 "published_at": "2018-12-04T10:00:00+01:00",
                 "committee": null,
                 "status": "FINALIZED",
-                "with_committee": false,
                 "votes_count": {
                     "total": 0,
                     "important": 0,
@@ -357,7 +355,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "name": "Réduire le gaspillage",
                 "slug": "reduire-le-gaspillage",
-                "days_before_deadline": "@integer@",
+                "days_before_deadline": 20,
                 "contributors_count": 0,
                 "comments_count": 0
             }
@@ -400,7 +398,6 @@ Feature:
                 "published_at": "2018-12-03T10:00:00+01:00",
                 "committee": null,
                 "status": "DRAFT",
-                "with_committee": false,
                 "votes_count": {
                     "important": "6",
                     "feasible": "4",
@@ -412,11 +409,228 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "name": "Aider les gens",
                 "slug": "aider-les-gens",
-                "days_before_deadline": @integer@,
+                "days_before_deadline": 20,
                 "contributors_count": 0,
                 "comments_count": 0
             }
         ]
+    }
+    """
+
+  Scenario: As a logged-in user I can add my idea only with a name
+    Given I am logged as "martine.lindt@gmail.com"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/ideas" with body:
+    """
+    {
+      "name": "Mon idée"
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "theme": null,
+        "category": null,
+        "needs": [],
+        "author": {
+            "uuid": "d4b1e7e1-ba18-42a9-ace9-316440b30fa7",
+            "first_name": "Martine",
+            "last_name": "Lindt"
+        },
+        "published_at": null,
+        "committee": null,
+        "status": "DRAFT",
+        "votes_count": {
+            "important": 0,
+            "feasible": 0,
+            "innovative": 0,
+            "total": 0,
+            "my_votes": []
+        },
+        "uuid": "@string@",
+        "author_category": "ADHERENT",
+        "description": null,
+        "created_at": "@string@.isDateTime()",
+        "name": "Mon idée",
+        "slug": "mon-idee",
+        "days_before_deadline": 20,
+        "contributors_count": 0,
+        "comments_count": 0
+    }
+    """
+
+  Scenario: As a logged-in user I can add my idea with all datas
+    Given I am logged as "jacques.picard@en-marche.fr"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/ideas" with body:
+    """
+    {
+      "name": "Mon idée",
+      "description": "Mon idée",
+      "theme": 2,
+      "category": 2,
+      "committee": 1,
+      "needs": [1,2],
+      "answers":[
+        {
+          "question":1,
+          "content":"Réponse à la question 1"
+        },
+        {
+          "question":2,
+          "content":"Réponse à la question 2"
+        },
+        {
+          "question":3,
+          "content":"Réponse à la question 3"
+        }
+      ]
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "name": "Mon idée",
+        "theme": {
+            "name": "Trésorerie",
+            "thumbnail": null
+        },
+        "category": {
+            "name": "Echelle Nationale",
+            "enabled": true
+        },
+        "needs": [
+            {
+                "name": "Juridique",
+                "enabled": true
+            },
+            {
+                "name": "Rédactionnel",
+                "enabled": true
+            }
+        ],
+        "author": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard"
+        },
+        "published_at": null,
+        "committee": {
+            "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
+            "created_at": "@string@.isDateTime()",
+            "name": "En Marche Paris 8",
+            "slug": "en-marche-paris-8"
+        },
+        "status": "DRAFT",
+        "votes_count": {
+            "important": 0,
+            "feasible": 0,
+            "innovative": 0,
+            "total": 0,
+            "my_votes": []
+        },
+        "author_category": "QG",
+        "description": "Mon idée",
+        "uuid": "@string@",
+        "created_at": "@string@.isDateTime()",
+        "slug": "mon-idee",
+        "days_before_deadline": @integer@,
+        "contributors_count": 0,
+        "comments_count": 0
+    }
+    """
+
+  Scenario: As a logged-in user I can modify my idea
+    Given I am logged as "jacques.picard@en-marche.fr"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/ideas/1" with body:
+    """
+    {
+      "name": "Mon idée 2",
+      "description": "Mon idée 2",
+      "theme": 2,
+      "category": 2,
+      "committee": 1,
+      "needs": [1,2],
+      "answers":[
+        {
+          "id": 1,
+          "question":1,
+          "content":"Réponse à la question 1"
+        },
+        {
+          "id": 2,
+          "question":2,
+          "content":"Réponse à la question 2"
+        },
+        {
+          "id": 3,
+          "question":3,
+          "content":"Réponse à la question 3"
+        }
+      ]
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "name": "Mon idée 2",
+        "theme": {
+            "name": "Trésorerie",
+            "thumbnail": null
+        },
+        "category": {
+            "name": "Echelle Nationale",
+            "enabled": true
+        },
+        "needs": [
+            {
+                "name": "Juridique",
+                "enabled": true
+            },
+            {
+                "name": "Rédactionnel",
+                "enabled": true
+            }
+        ],
+        "author": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard"
+        },
+        "published_at": "@string@.isDateTime()",
+        "committee": {
+            "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
+            "created_at": "@string@.isDateTime()",
+            "name": "En Marche Paris 8",
+            "slug": "en-marche-paris-8"
+        },
+        "status": "PENDING",
+        "votes_count": {
+            "important": "6",
+            "feasible": "4",
+            "innovative": "5",
+            "total": 15,
+            "my_votes": [
+                "feasible",
+                "important",
+                "innovative"
+            ]
+        },
+        "author_category": "QG",
+        "description": "Mon idée 2",
+        "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
+        "created_at": "@string@.isDateTime()",
+        "slug": "mon-idee-2",
+        "days_before_deadline": 20,
+        "contributors_count": 6,
+        "comments_count": 6
     }
     """
 
@@ -466,7 +680,6 @@ Feature:
                 "slug":"en-marche-paris-8"
              },
              "status":"PENDING",
-             "with_committee":true,
              "votes_count":{
                 "important":"6",
                 "feasible":"4",
@@ -483,7 +696,7 @@ Feature:
              "created_at": "@string@.isDateTime()",
              "name":"Faire la paix",
              "slug":"faire-la-paix",
-             "days_before_deadline": @integer@,
+             "days_before_deadline": 20,
              "contributors_count": @integer@,
              "comments_count": @integer@
           }
@@ -537,7 +750,6 @@ Feature:
                 "slug": "en-marche-paris-8"
              },
              "status": "PENDING",
-             "with_committee": true,
              "votes_count":{
                 "important": "6",
                 "feasible": "4",
@@ -553,7 +765,7 @@ Feature:
              "created_at": "@string@.isDateTime()",
              "name": "Faire la paix",
              "slug": "faire-la-paix",
-             "days_before_deadline": @integer@,
+             "days_before_deadline": 20,
              "contributors_count": @integer@,
              "comments_count": @integer@
           }

@@ -6,20 +6,20 @@ use AppBundle\Entity\AuthorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-final class AuthorNormalizer implements DenormalizerInterface
+final class AuthorDenormalizer implements DenormalizerInterface
 {
-    private $normalizer;
+    private $denormalizer;
     private $tokenStorage;
 
-    public function __construct(DenormalizerInterface $normalizer, TokenStorageInterface $tokenStorage)
+    public function __construct(DenormalizerInterface $denormalizer, TokenStorageInterface $tokenStorage)
     {
-        $this->normalizer = $normalizer;
+        $this->denormalizer = $denormalizer;
         $this->tokenStorage = $tokenStorage;
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        $data = $this->normalizer->denormalize($data, $class, $format, $context);
+        $data = $this->denormalizer->denormalize($data, $class, $format, $context);
         if (!$data->getId()) {
             $data->setAuthor($this->tokenStorage->getToken()->getUser());
         }
