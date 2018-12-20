@@ -1,5 +1,7 @@
 import { fetchIdeas } from './ideas';
 
 export function initHomePage() {
-    return dispatch => Promise.all([dispatch(fetchIdeas('published')), dispatch(fetchIdeas('pending'))]);
+    const params = { limit: 5, order_desc: true };
+    return dispatch =>
+        Promise.all([dispatch(fetchIdeas('published', params)), dispatch(fetchIdeas('pending', params))]);
 }
