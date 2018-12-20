@@ -1,15 +1,16 @@
 import React from 'react';
 import Tabs from '../Tabs/index';
+import LatestIdeasPane from './LatestIdeasPane';
 
 function LatestIdeas(props) {
     const panes = [
         {
             title: 'Propositions finalisées',
-            component: <div />,
+            component: <LatestIdeasPane link="/atelier-des-idees/consulter" />,
         },
         {
             title: 'Propositions en cours d\'élaboration',
-            component: <div />,
+            component: <LatestIdeasPane link="/atelier-des-idees/contribuer" />,
         },
     ];
 
