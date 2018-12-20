@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\DataFixtures\AutoIncrementResetter;
 use AppBundle\Entity\IdeasWorkshop\Theme;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -10,6 +11,8 @@ class LoadIdeaThemeData extends AbstractFixture
 {
     public function load(ObjectManager $manager)
     {
+        AutoIncrementResetter::resetAutoIncrement($manager, 'ideas_workshop_theme');
+
         $themeArmyDefense = new Theme(
             'Armées et défense',
             'default.png',
