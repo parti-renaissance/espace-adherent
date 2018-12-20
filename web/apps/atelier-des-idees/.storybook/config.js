@@ -1,6 +1,7 @@
 import { configure } from '@storybook/react';
 import { addDecorator } from '@storybook/react';
 import { withTests } from '@storybook/addon-jest';
+import StoryRouter from 'storybook-react-router';
 import results from '../.jest-test-results.json';
 import '../src/App.css';
 
@@ -16,5 +17,7 @@ addDecorator(
         results,
     })
 );
+
+addDecorator(StoryRouter());
 
 configure(loadStories, module);
