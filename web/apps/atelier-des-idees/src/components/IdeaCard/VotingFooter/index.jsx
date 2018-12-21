@@ -46,7 +46,7 @@ class VotingFooter extends React.Component {
                             })}
                             onClick={() => this.setState(prevState => ({ toggleVotes: !prevState.toggleVotes }))}
                         >
-							>
+                            <div className="voting-footer__label__action__arrow" />
                         </button>
                     </div>
                 </Mobile>
@@ -65,6 +65,10 @@ class VotingFooter extends React.Component {
                                         )
                                     }
                                 >
+                                    <img
+                                        className="voting-footer__action__button__icon"
+                                        src="/assets/img/icn_20px_thumb.svg"
+                                    />
 									Je vote
                                 </button>
                             </div>
@@ -77,7 +81,7 @@ class VotingFooter extends React.Component {
 					this.props.votes.map(vote => (
 					    <button
 					        key={vote.id}
-					        className={classnames('voting-footer__vote', 'button--secondary', {
+					        className={classnames('voting-footer__vote', {
 					            'voting-footer__vote--selected': vote.isSelected,
 					        })}
 					        onClick={() => this.props.onSelected(vote.id)}
