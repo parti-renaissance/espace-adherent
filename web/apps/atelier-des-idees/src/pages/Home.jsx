@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MovementIdeas from '../components/MovementIdeas';
 import LatestIdeas from '../containers/LatestIdeas';
-import Reports from '../components/Reports';
+import Reports from '../containers/Reports';
 import { initHomePage } from '../redux/thunk/navigation';
 
 class Home extends React.Component {
