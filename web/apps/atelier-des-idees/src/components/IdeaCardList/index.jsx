@@ -10,7 +10,7 @@ const IdeaCardList = (props) => {
         <div className="idea-card-list">
             {/* TODO: use IdeaCard */}
             {props.ideas.map(idea => (
-                <div>{idea.title}</div>
+                <div>{idea.name}</div>
             ))}
         </div>
     );
