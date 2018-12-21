@@ -1,17 +1,25 @@
 .latest-ideas {
-    height: 400px;
-    padding: 50px 0 0 100px;
-    background-color: $white-smoke;
+  padding: 50px 100px;
+  background-color: $white-smoke;
+
+  &__title {
+    margin-bottom: 50px;
+    width: 40%;
+  }
+
+  .latest-ideas__pane {
+    padding-top: 35px;
+  }
+
+  @media #{$mobile} {
+    padding: 50px 0;
+
     &__title {
-        margin-bottom: 50px;
-        width: 40%;
+      width: 100%;
     }
 
-    @media screen and (max-width: $width-lg) {
-        height: 250px;
-        padding: 50px 0 0 20px;
-        &__title {
-            width: 100%;
-        }
+    .latest-ideas__pane {
+      padding-top: 20px;
     }
+  }
 }
