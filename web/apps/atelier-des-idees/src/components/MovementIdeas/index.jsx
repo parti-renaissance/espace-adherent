@@ -9,21 +9,24 @@ const sectionContent = [
     {
         keyWord: 'vote',
         title: 'pour des idéees',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla urna sed erat auctor, ac sodales mi commodo.',
+        text:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla urna sed erat auctor, ac sodales mi commodo.',
         linkLabel: 'Je vote',
         link: '/atelier-des-idees/consulter',
     },
     {
         keyWord: 'contribue',
         title: 'aux idéees',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla urna sed erat auctor, ac sodales mi commodo.',
+        text:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla urna sed erat auctor, ac sodales mi commodo.',
         linkLabel: 'Je contribue',
         link: '/atelier-des-idees/contribuer',
     },
     {
         keyWord: 'propose',
         title: 'des idéees',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla urna sed erat auctor, ac sodales mi commodo.',
+        text:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla urna sed erat auctor, ac sodales mi commodo.',
         linkLabel: 'Je propose',
         link: '/atelier-des-idees/proposer',
     },
@@ -40,25 +43,23 @@ const settingsSlider = {
 
 class MovementIdeas extends React.PureComponent {
     render() {
-        const items = sectionContent.map(content => <MovementIdeasSection {...content}/>);
+        const items = sectionContent.map(content => <MovementIdeasSection {...content} />);
         return (
             <article className="l__wrapper movement-ideas">
                 <div className="movement-ideas__first__section">
                     <h1 className="movement-ideas__first__section__title">Les idées du mouvement</h1>
                     <p className="movement-ideas__first__section__content">
                         Vous avez envie de contribuer aux idées du mouvement ?
-                        <br/>
+                        <br />
                         Avec l’Atelier des Idées c’est possible !
                     </p>
                 </div>
                 <NotMobile>
-                    <div className="movement-ideas__second__section">
-                        { items }
-                    </div>
+                    <div className="movement-ideas__second__section l__wrapper--medium">{items}</div>
                 </NotMobile>
                 <Mobile>
                     <Slider className="movement-ideas__slider" {...settingsSlider}>
-                        { items }
+                        {items}
                     </Slider>
                 </Mobile>
             </article>
