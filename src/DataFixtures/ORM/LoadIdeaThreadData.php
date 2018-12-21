@@ -8,9 +8,17 @@ use AppBundle\Entity\IdeasWorkshop\ThreadCommentStatusEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Ramsey\Uuid\Uuid;
 
 class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInterface
 {
+    public const THREAD_01_UUID = 'dfd6a2f2-5579-421f-96ac-98993d0edea1';
+    public const THREAD_02_UUID = '6b077cc4-1cbd-4615-b607-c23009119406';
+    public const THREAD_03_UUID = 'a508a7c5-8b07-41f4-8515-064f674a65e8';
+    public const THREAD_04_UUID = '78d7daa1-657c-4e7e-87bc-24eb4ea26ea2';
+    public const THREAD_05_UUID = 'b191f13a-5a05-49ed-8ec3-c335aa68f439';
+    public const THREAD_06_UUID = '7857957c-2044-4469-bd9f-04a60820c8bd';
+
     public function load(ObjectManager $manager)
     {
         AutoIncrementResetter::resetAutoIncrement($manager, 'ideas_workshop_thread');
@@ -20,6 +28,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
         $adherent5 = $this->getReference('adherent-5');
 
         $threadAQProblemAdherent2 = new Thread(
+            Uuid::fromString(self::THREAD_01_UUID),
             'J\'ouvre une discussion sur le problème.',
             $adherent2,
             $this->getReference('answer-q-problem'),
@@ -29,6 +38,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
         $this->setReference('thread-aq-problem', $threadAQProblemAdherent2);
 
         $threadAQAnswerAdherent4 = new Thread(
+            Uuid::fromString(self::THREAD_02_UUID),
             'J\'ouvre une discussion sur la solution.',
             $adherent4,
             $this->getReference('answer-q-answer')
@@ -36,6 +46,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
         $this->setReference('thread-aq-answer', $threadAQAnswerAdherent4);
 
         $threadAQCompareAdherent5 = new Thread(
+            Uuid::fromString(self::THREAD_03_UUID),
             'J\'ouvre une discussion sur la comparaison.',
             $adherent5,
             $this->getReference('answer-q-compare')
@@ -43,6 +54,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
         $this->setReference('thread-aq-compare', $threadAQCompareAdherent5);
 
         $threadRefused = new Thread(
+            Uuid::fromString(self::THREAD_04_UUID),
             'Une discussion refusée.',
             $adherent5,
             $this->getReference('answer-q-compare'),
@@ -50,6 +62,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
         );
 
         $threadReported = new Thread(
+            Uuid::fromString(self::THREAD_05_UUID),
             'Une discussion signalée.',
             $adherent5,
             $this->getReference('answer-q-compare'),
@@ -57,6 +70,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
         );
 
         $threadHE = new Thread(
+            Uuid::fromString(self::THREAD_06_UUID),
             '[Help Ecology] J\'ouvre une discussion sur le problème.',
             $adherent5,
             $this->getReference('answer-q-problem-idea-he')

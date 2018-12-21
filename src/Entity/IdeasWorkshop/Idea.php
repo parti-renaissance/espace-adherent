@@ -12,6 +12,8 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntityNameSlugTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
+use AppBundle\Entity\Report\ReportableInterface;
+use AppBundle\Report\ReportType;
 use AppBundle\Entity\VisibleStatusesInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -51,18 +53,13 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Idea implements AuthorInterface, VisibleStatusesInterface
+class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityNameSlugTrait;
 
     private const PUBLISHED_INTERVAL = 'P3W';
-
-    public static function getVisibleStatuses(): array
-    {
-        return IdeaStatusEnum::VISIBLE_STATUSES;
-    }
 
     /**
      * @SymfonySerializer\Groups("idea_list_read")
@@ -325,6 +322,11 @@ class Idea implements AuthorInterface, VisibleStatusesInterface
         return $deadline <= $now ? 0 : $deadline->diff($now)->d;
     }
 
+    public static function getVisibleStatuses(): array
+    {
+        return IdeaStatusEnum::VISIBLE_STATUSES;
+    }
+
     public function isDraft(): bool
     {
         return IdeaStatusEnum::DRAFT === $this->status;
@@ -383,5 +385,10 @@ class Idea implements AuthorInterface, VisibleStatusesInterface
     public function setDescription(string $description): void
     {
         $this->description = $description;
+    }
+
+    public function getReportType(): string
+    {
+        return ReportType::IDEAS_WORKSHOP_IDEA;
     }
 }
