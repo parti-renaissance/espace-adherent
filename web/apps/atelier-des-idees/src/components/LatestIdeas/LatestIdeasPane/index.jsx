@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import IdeaCardSkeletonList from '../../Skeletons/IdeaCardSkeletonList';
+import IdeaCardList from '../../IdeaCardList';
 
 const LatestIdeasPane = props => (
     <div className="latest-ideas__pane">
-        {/* IdeasCardList */}
-        {props.isLoading && <IdeaCardSkeletonList nbItems={5} />}
+        <IdeaCardList ideas={props.ideas} isLoading={props.isLoading} />
         <div className="latest-ideas__pane__footer">
             <Link to={props.link} className="button button--tertiary latest-ideas__pane__footer__btn">
                 Voir toutes les propositions
