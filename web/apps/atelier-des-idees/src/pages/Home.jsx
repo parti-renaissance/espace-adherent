@@ -5,10 +5,16 @@ import MovementIdeas from '../components/MovementIdeas';
 import LatestIdeas from '../containers/LatestIdeas';
 import Reports from '../components/Reports';
 import { initHomePage } from '../redux/thunk/navigation';
+import { setIdeas } from '../redux/actions/ideas';
 
 class Home extends React.Component {
     componentDidMount() {
         this.props.initHomePage();
+    }
+
+    componentWillUnmount() {
+        // reset ideas
+        this.props.setIdeas();
     }
 
     render() {
@@ -24,11 +30,13 @@ class Home extends React.Component {
 
 Home.propTypes = {
     initHomePage: PropTypes.func.isRequired,
+    setIdeas: PropTypes.func.isRequired,
 };
 
 export default connect(
     null,
     {
         initHomePage,
+        setIdeas,
     }
 )(Home);
