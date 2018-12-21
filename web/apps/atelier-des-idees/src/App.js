@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import withAuth from './hocs/withAuth';
+import Header from './components/Header';
 // pages
 import Home from './pages/Home';
 import ThreeTabs from './pages/ThreeTabs';
@@ -17,6 +18,7 @@ class App extends Component {
         return (
             <div className="App">
                 <ModalRoot />
+                <Header />
                 <Switch>
                     <Route exact path="/atelier-des-idees" component={Home} />
                     <Route exact path="/atelier-des-idees/consulter" component={ThreeTabs} />
