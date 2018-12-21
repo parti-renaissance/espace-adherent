@@ -33,7 +33,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
             $adherent2,
             $this->getReference('answer-q-problem'),
             ThreadCommentStatusEnum::POSTED,
-            new \DateTime('-1 minute')
+            new \DateTime('2 hours ago')
         );
         $this->setReference('thread-aq-problem', $threadAQProblemAdherent2);
 
@@ -41,7 +41,9 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
             Uuid::fromString(self::THREAD_02_UUID),
             'J\'ouvre une discussion sur la solution.',
             $adherent4,
-            $this->getReference('answer-q-answer')
+            $this->getReference('answer-q-answer'),
+            ThreadCommentStatusEnum::POSTED,
+            new \DateTime('1 hour ago')
         );
         $this->setReference('thread-aq-answer', $threadAQAnswerAdherent4);
 
@@ -49,7 +51,9 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
             Uuid::fromString(self::THREAD_03_UUID),
             'J\'ouvre une discussion sur la comparaison.',
             $adherent5,
-            $this->getReference('answer-q-compare')
+            $this->getReference('answer-q-compare'),
+            ThreadCommentStatusEnum::POSTED,
+            new \DateTime('30 minutes ago')
         );
         $this->setReference('thread-aq-compare', $threadAQCompareAdherent5);
 
@@ -58,7 +62,8 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
             'Une discussion refusée.',
             $adherent5,
             $this->getReference('answer-q-compare'),
-            ThreadCommentStatusEnum::REFUSED
+            ThreadCommentStatusEnum::REFUSED,
+            new \DateTime('10 minutes ago')
         );
 
         $threadReported = new Thread(
@@ -66,14 +71,17 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
             'Une discussion signalée.',
             $adherent5,
             $this->getReference('answer-q-compare'),
-            ThreadCommentStatusEnum::REPORTED
+            ThreadCommentStatusEnum::REPORTED,
+            new \DateTime('5 minutes ago')
         );
 
         $threadHE = new Thread(
             Uuid::fromString(self::THREAD_06_UUID),
             '[Help Ecology] J\'ouvre une discussion sur le problème.',
             $adherent5,
-            $this->getReference('answer-q-problem-idea-he')
+            $this->getReference('answer-q-problem-idea-he'),
+            ThreadCommentStatusEnum::POSTED,
+            new \DateTime('2 minutes ago')
         );
 
         $manager->persist($threadAQProblemAdherent2);

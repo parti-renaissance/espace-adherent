@@ -15,7 +15,7 @@ trait EntityNameSlugTrait
      *
      * @Algolia\Attribute
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "vote_read"})
+     * @SymfonySerializer\Groups({"idea_list_read", "my_committees", "vote_read"})
      * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
      */
     protected $name;
@@ -34,7 +34,7 @@ trait EntityNameSlugTrait
      *
      * @Algolia\Attribute
      *
-     * @SymfonySerializer\Groups("idea_list_read")
+     * @SymfonySerializer\Groups({"idea_list_read", "my_committees"})
      * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
      */
     protected $slug;
