@@ -19,7 +19,17 @@ use Ramsey\Uuid\UuidInterface;
  * This entity represents a committee group.
  *
  * @ApiResource(
- *     collectionOperations={},
+ *     collectionOperations={
+ *         "get_my_committees": {
+ *             "method": "GET",
+ *             "path": "/committees/me",
+ *             "access_control": "is_granted('IS_AUTHENTICATED_FULLY')",
+ *             "controller": "AppBundle\Controller\Api\CommitteesController::myCommitteesAction",
+ *             "normalization_context": {
+ *                 "groups": {"my_committees"}
+ *             }
+ *         }
+ *     },
  *     itemOperations={
  *         "get": {
  *             "normalization_context": {"groups": {"idea_list_read"}},
