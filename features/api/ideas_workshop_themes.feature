@@ -25,11 +25,13 @@ Feature:
         "items": [
             {
                 "id": @integer@,
-                "name": "Armées et défense"
+                "name": "Armées et défense",
+                "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
             },
             {
                 "id": @integer@,
-                "name": "Trésorerie"
+                "name": "Trésorerie",
+                "thumbnail": null
             }
         ]
     }
