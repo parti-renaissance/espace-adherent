@@ -18,4 +18,5 @@ const ideasReducer = (state = initialState, action) => {
 export default ideasReducer;
 
 export const getIdeas = state => state;
+export const getIdeasWithStatus = (state, status) => state.filter(idea => idea.status === status);
 export const getFinalizedIdeas = state => state.filter(idea => 'finalized' === idea.status);
