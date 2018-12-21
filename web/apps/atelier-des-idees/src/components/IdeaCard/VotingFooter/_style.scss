@@ -41,6 +41,9 @@
                 radius: 2px;
                 font-family: $font-roboto;
             }
+            &__icon {
+                margin-right: 7px;
+            }
         }
     }
 
@@ -50,6 +53,8 @@
     }
 
     &__vote {
+        cursor: pointer;
+        outline: none;
         display: flex;
         width: 25%;
         height: 45px;
@@ -78,6 +83,11 @@
         }
     }
 
+    &__vote:hover {
+        border: 1px solid $france;
+        color: $france;
+    }
+
      /* Responsive */
     @media #{$mobile} {
         flex-direction: column;
@@ -86,20 +96,28 @@
         &__label {
             display: flex;
             margin: 0 20px 0 0;
-            font-size: 18px;
-            font-weight: bold;
+            font-size: 16px;
+            font-weight: 400;
+            color: $blue;
             &__text {
                 width: 95%;
                 text-align: center;
             }
             &__action {
                 cursor: pointer;
-                width: 5%;
-                display: inline;
+                display: flex;
+                justify-content: center;
                 text-align: end;
                 background: transparent;
                 border: none;
                 outline: none;
+                &__arrow {
+                    width: 0; 
+                    height: 0; 
+                    border-top: 7px solid transparent;
+                    border-bottom: 7px solid transparent;
+                    border-left: 7px solid $blue;
+                }
             }
         }
 
