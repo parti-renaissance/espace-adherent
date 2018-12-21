@@ -12,12 +12,14 @@ class LoadIdeaThemeData extends AbstractFixture
     {
         $themeArmyDefense = new Theme(
             'Armées et défense',
+            'default.png',
             true
         );
         $this->addReference('theme-army-defense', $themeArmyDefense);
 
         $themeTreasure = new Theme(
             'Trésorerie',
+            null,
             true
         );
         $this->addReference('theme-treasure', $themeTreasure);
