@@ -1,31 +1,30 @@
-@import "~slick-carousel/slick/slick.css"; 
-@import "~slick-carousel/slick/slick-theme.css";
+@import '~slick-carousel/slick/slick.css';
+@import '~slick-carousel/slick/slick-theme.css';
 
 .movement-ideas {
+  &__first__section {
+    height: 400px;
+    padding: 50px 0 0 100px;
+
+    &__content {
+      color: $medium-grey;
+    }
+  }
+
+  &__second__section {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 75px;
+  }
+
+  @media screen and (max-width: $width-md) {
     &__first__section {
-        height: 400px;
-        padding: 50px 0 0 100px;
-
-        &__content {
-            color: $medium-grey;
-        }
+      height: 250px;
+      padding: 50px 0 0 20px;
     }
 
-    &__second__section {
-        display: flex;
-        justify-content: center;
-        height: 280px;
-        padding: 0px 100px 0 100px;
+    &__slider {
+      margin-bottom: 60px;
     }
-    
-    @media screen and (max-width: $width-md) {
-        &__first__section {
-            height: 250px;
-            padding: 50px 0 0 20px;
-        }
-
-        &__slider {
-            margin-bottom: 60px;
-        }
-    }
+  }
 }
