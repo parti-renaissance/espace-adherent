@@ -7,6 +7,7 @@ import rootReducer from '../reducers';
 const baseURL = 'undefined' === typeof window.config ? process.env.REACT_APP_EM_API_HOST : window.config.em_api_host;
 const axiosInstance = axios.create({
     baseURL,
+    headers: { Accept: 'application/json' },
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk.withExtraArgument(axiosInstance)));
