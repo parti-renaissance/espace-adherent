@@ -1,26 +1,26 @@
 .movement-ideas__section__item {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    margin: 0 20px 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: 0 20px;
 
-    &__title {
-        color: $dark-blue;
-        &__main {
-            border-bottom: 7px solid $pale-sky;
-            display: inline-block;
-            height: 21px;
-        }
+  &__title {
+    color: $dark-blue;
+    &__main {
+      border-bottom: 7px solid $pale-sky;
+      display: inline-block;
+      height: 21px;
     }
+  }
 
-    &__content {
-        margin: 15px 0 15px;
-        color: $dark-grey;
-    }
+  &__content {
+    margin: 15px 0 15px;
+    color: $dark-grey;
+  }
 
-    &__link {
-        width: 140px;
-        align-self: center;
-        padding: 7px;
-    }
+  &__link {
+    width: 140px;
+    align-self: center;
+    padding: 7px;
+  }
 }
