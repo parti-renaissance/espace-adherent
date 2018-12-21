@@ -366,6 +366,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can filter ideas by author uuid
+    Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/ideas?author.uuid=acc73b03-9743-47d8-99db-5a6c6f55ad67"
     Then the response status code should be 200
     And the response should be in JSON
@@ -416,5 +417,146 @@ Feature:
                 "comments_count": 0
             }
         ]
+    }
+    """
+
+  Scenario: As a logged-in user I can get ideas where I voted
+    Given I am logged as "jacques.picard@en-marche.fr"
+    And I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas/my-contributions"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+       "metadata":{
+          "total_items":1,
+          "items_per_page":2,
+          "count":1,
+          "current_page":1,
+          "last_page":1
+       },
+       "items":[
+          {
+             "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
+             "theme":{
+                "name":"Armées et défense",
+                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+             },
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+                {
+                   "name":"Juridique",
+                   "enabled":true
+                }
+             ],
+             "author":{
+                "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name":"Jacques",
+                "last_name":"Picard"
+             },
+             "published_at":"2018-12-01T10:00:00+01:00",
+             "committee":{
+                "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
+                "created_at":"2017-01-12T13:25:54+01:00",
+                "name":"En Marche Paris 8",
+                "slug":"en-marche-paris-8"
+             },
+             "status":"PENDING",
+             "with_committee":true,
+             "votes_count":{
+                "important":"6",
+                "feasible":"4",
+                "innovative":"5",
+                "total":15,
+                "my_votes":[
+                   "feasible",
+                   "important",
+                   "innovative"
+                ]
+             },
+             "author_category":"COMMITTEE",
+             "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
+             "created_at": "@string@.isDateTime()",
+             "name":"Faire la paix",
+             "slug":"faire-la-paix",
+             "days_before_deadline": @integer@,
+             "contributors_count": @integer@,
+             "comments_count": @integer@
+          }
+       ]
+    }
+    """
+
+  Scenario: As a logged-in user I can get ideas where I wrote a comment
+    Given I am logged as "benjyd@aol.com"
+    And I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas/my-contributions"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+       "metadata": {
+          "total_items": 1,
+          "items_per_page": 2,
+          "count": 1,
+          "current_page": 1,
+          "last_page": 1
+       },
+       "items": [
+          {
+             "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
+             "theme": {
+                "name": "Armées et défense",
+                "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+             },
+             "category": {
+                "name": "Echelle Européenne",
+                "enabled": true
+             },
+             "needs": [
+                {
+                   "name": "Juridique",
+                   "enabled": true
+                }
+             ],
+             "author":{
+                "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name": "Jacques",
+                "last_name": "Picard"
+             },
+             "published_at": "2018-12-01T10:00:00+01:00",
+             "committee": {
+                "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
+                "created_at": "2017-01-12T13:25:54+01:00",
+                "name": "En Marche Paris 8",
+                "slug": "en-marche-paris-8"
+             },
+             "status": "PENDING",
+             "with_committee": true,
+             "votes_count":{
+                "important": "6",
+                "feasible": "4",
+                "innovative": "5",
+                "total": 15,
+                "my_votes": [
+                   "feasible",
+                   "important"
+                ]
+             },
+             "author_category": "COMMITTEE",
+             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
+             "created_at": "@string@.isDateTime()",
+             "name": "Faire la paix",
+             "slug": "faire-la-paix",
+             "days_before_deadline": @integer@,
+             "contributors_count": @integer@,
+             "comments_count": @integer@
+          }
+       ]
     }
     """
