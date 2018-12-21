@@ -45,7 +45,7 @@ class Reports extends React.PureComponent {
                     </p>
                     <button
                         className="reports__first-section__button button button--primary"
-                        onClick={() => this.props.showModal(REPORTS_MODAL)}
+                        onClick={() => this.props.showModal(REPORTS_MODAL, mockReports)}
                     >
 						Je lis les rapports
                     </button>
