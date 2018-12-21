@@ -8,8 +8,8 @@ export function fetchIdeas(status, params = {}) {
         return axios
             .get('/api/ideas', { params: { status, ...params } })
             .then(res => res.data)
-            .then((ideas) => {
-                dispatch(addIdeas(ideas));
+            .then(({ items, metadata }) => {
+                dispatch(addIdeas(items));
                 dispatch(createRequestSuccess(FETCH_IDEAS, status));
             })
             .catch(error => dispatch(createRequestFailure(FETCH_IDEAS, status)));
