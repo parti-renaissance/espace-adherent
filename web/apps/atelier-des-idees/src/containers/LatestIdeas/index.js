@@ -3,12 +3,12 @@ import LatestIdeas from '../../components/LatestIdeas';
 import { selectLoadingState } from '../../redux/selectors/loading';
 
 const mapStateToProps = (state) => {
-    const isLoadingPublishedIdeas = selectLoadingState(state, 'FETCH_IDEAS_published');
+    const isLoadingFinalizedIdeas = selectLoadingState(state, 'FETCH_IDEAS_finalized');
     const isLoadingPendingIdeas = selectLoadingState(state, 'FETCH_IDEAS_pending');
     // TODO: get items
     return {
         ideas: {
-            published: { isLoading: isLoadingPublishedIdeas, items: [] },
+            finalized: { isLoading: isLoadingFinalizedIdeas, items: [] },
             pending: { isLoading: isLoadingPendingIdeas, items: [] },
         },
     };

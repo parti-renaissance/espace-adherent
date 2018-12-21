@@ -4,15 +4,15 @@ import Tabs from '../Tabs/index';
 import LatestIdeasPane from './LatestIdeasPane';
 
 function LatestIdeas(props) {
-    const { published = {}, pending = {} } = props.ideas;
+    const { finalized = {}, pending = {} } = props.ideas;
     const panes = [
         {
             title: 'Propositions finalisées',
             component: (
                 <LatestIdeasPane
                     link="/atelier-des-idees/consulter"
-                    ideas={published.items}
-                    isLoading={published.isLoading}
+                    ideas={finalized.items}
+                    isLoading={finalized.isLoading}
                 />
             ),
         },
@@ -44,7 +44,7 @@ LatestIdeas.defaultProps = {
 
 LatestIdeas.propTypes = {
     ideas: PropTypes.shape({
-        published: PropTypes.shape({ isLoading: PropTypes.bool, items: PropTypes.array }),
+        finalized: PropTypes.shape({ isLoading: PropTypes.bool, items: PropTypes.array }),
         pending: PropTypes.shape({ isLoading: PropTypes.bool, items: PropTypes.array }),
     }),
 };
