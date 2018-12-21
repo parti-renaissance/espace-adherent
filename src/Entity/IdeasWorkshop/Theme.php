@@ -65,9 +65,10 @@ class Theme implements EnabledInterface
      */
     private $enabled;
 
-    public function __construct(string $name, bool $enabled = false)
+    public function __construct(string $name, string $imageName = null, bool $enabled = false)
     {
         $this->setName($name);
+        $this->imageName = $imageName;
         $this->enabled = $enabled;
     }
 
@@ -94,5 +95,10 @@ class Theme implements EnabledInterface
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function getImagePath(): string
+    {
+        return sprintf('images/ideas_workshop/themes/%s', $this->getImageName());
     }
 }
