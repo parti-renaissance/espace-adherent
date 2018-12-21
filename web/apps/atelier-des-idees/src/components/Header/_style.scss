@@ -1,0 +1,41 @@
+.header {
+  padding: 30px 0;
+  border-top: 1px solid $gainsboro;
+
+  .header__inner {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .header__nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .horizontal-menu {
+    width: 100%;
+  }
+
+  .menu-item-wrapper,
+  .header__item {
+    margin-right: 15px;
+  }
+
+  .header__item {
+    color: $black;
+    font-size: 16px;
+    text-decoration: none;
+    border: none;
+
+    &:hover,
+    &.active {
+      color: $blue;
+    }
+  }
+
+  .header__button {
+    @extend %reset-button;
+    cursor: pointer;
+  }
+}
