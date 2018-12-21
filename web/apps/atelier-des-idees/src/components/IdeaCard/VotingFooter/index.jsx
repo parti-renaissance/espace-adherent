@@ -39,7 +39,7 @@ class VotingFooter extends React.Component {
             <div className="voting-footer" ref={this.footerRef}>
                 <Mobile>
                     <div className="voting-footer__label">
-                        <div className="voting-footer__label__text">Je vote :</div>
+                        <p className="voting-footer__label__text">Je vote :</p>
                         <button
                             className={classnames('voting-footer__label__action', {
                                 rotate: this.state.toggleVotes,
@@ -70,13 +70,14 @@ class VotingFooter extends React.Component {
                             </div>
                         </div>
                     )}
+                    {this.state.toggleVotes && <p className="voting-footer__text">Je vote: </p>}
                 </NotMobile>
 
                 {this.state.toggleVotes &&
 					this.props.votes.map(vote => (
 					    <button
 					        key={vote.id}
-					        className={classnames('voting-footer__vote', {
+					        className={classnames('voting-footer__vote', 'button--secondary', {
 					            'voting-footer__vote--selected': vote.isSelected,
 					        })}
 					        onClick={() => this.props.onSelected(vote.id)}

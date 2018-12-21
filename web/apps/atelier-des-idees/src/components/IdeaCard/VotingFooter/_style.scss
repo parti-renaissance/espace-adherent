@@ -1,6 +1,7 @@
 .voting-footer {
     display: flex;
     justify-content: center;
+    align-items: center;
     padding: 15px;
     background: $white-smoke;
 
@@ -43,17 +44,22 @@
         }
     }
 
+    &__text {
+        color: $cadet-grey;
+        margin-right: 90px;
+    }
+
     &__vote {
-        cursor: pointer;
         display: flex;
-        width: 170px;
-        height: 40px;
+        width: 25%;
+        height: 45px;
         background-color: $white;
-        color: $sky;
-        font-size: 15px;
         border: 1px solid $grey-sky;
         border-radius: 3px;
-        outline: none;
+        font-family: $font-roboto;
+        color: $sky;
+        font-size: 15px;
+        text-transform: initial;
         > * {
             width: 50%;
         }
@@ -75,6 +81,7 @@
      /* Responsive */
     @media #{$mobile} {
         flex-direction: column;
+        padding: 0 15px;
 
         &__label {
             display: flex;
