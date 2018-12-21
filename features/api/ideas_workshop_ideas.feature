@@ -28,7 +28,8 @@ Feature:
             {
                 "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
                 "theme": {
-                    "name": "Armées et défense"
+                    "name": "Armées et défense",
+                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                 },
                 "category": {
                     "name": "Echelle Européenne",
@@ -82,7 +83,8 @@ Feature:
             {
                 "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
                 "theme": {
-                    "name": "Armées et défense"
+                    "name": "Armées et défense",
+                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                 },
                 "category": {
                     "name": "Echelle Européenne",
@@ -146,7 +148,8 @@ Feature:
             {
                 "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
                 "theme": {
-                    "name": "Armées et défense"
+                    "name": "Armées et défense",
+                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                 },
                 "category": {
                     "name": "Echelle Européenne",
@@ -211,7 +214,8 @@ Feature:
             {
                 "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
                 "theme": {
-                    "name": "Armées et défense"
+                    "name": "Armées et défense",
+                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                 },
                 "category": {
                     "name": "Echelle Européenne",
@@ -280,7 +284,8 @@ Feature:
             {
                 "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
                 "theme": {
-                    "name": "Armées et défense"
+                    "name": "Armées et défense",
+                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                 },
                 "category": {
                     "name": "Echelle Européenne",
@@ -324,7 +329,8 @@ Feature:
             {
                 "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
                 "theme": {
-                    "name": "Armées et défense"
+                    "name": "Armées et défense",
+                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                 },
                 "category": {
                     "name": "Echelle Européenne",
@@ -377,7 +383,8 @@ Feature:
             {
                 "uuid": "aa093ce6-8b20-4d86-bfbc-91a73fe47285",
                 "theme": {
-                    "name": "Armées et défense"
+                    "name": "Armées et défense",
+                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                 },
                 "category": {
                     "name": "Echelle Européenne",
