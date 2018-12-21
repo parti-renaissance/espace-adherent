@@ -38,7 +38,7 @@
     background: $skeleton-bg;
   }
 
-  @media #{$mobile} {
+  .idea-card-skeleton--grid {
     height: 310px;
 
     .idea-card-skeleton__main-line {
@@ -47,6 +47,25 @@
 
     .idea-card-skeleton__subline {
       margin-top: 145px;
+    }
+  }
+
+  @media #{$mobile} {
+    .idea-card-skeleton__main-line {
+      height: 20px;
+
+      &:first-child {
+        width: 67%;
+      }
+    }
+
+    .idea-card-skeleton__subline {
+      margin-top: 100px;
+    }
+
+    .idea-card-skeleton__subline__item {
+      width: 33%;
+      height: 10px;
     }
   }
 }
