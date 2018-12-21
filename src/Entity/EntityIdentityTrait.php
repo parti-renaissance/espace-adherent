@@ -29,7 +29,7 @@ trait EntityIdentityTrait
      *
      * @Algolia\Attribute
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "thread_comment_read"})
+     * @SymfonySerializer\Groups({"idea_list_read", "my_committees", "thread_comment_read"})
      */
     protected $uuid;
 
