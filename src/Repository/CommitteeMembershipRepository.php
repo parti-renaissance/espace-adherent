@@ -84,6 +84,23 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         return new CommitteeMembershipCollection($query->getResult());
     }
 
+    public function findMembershipsForActiveCommittees(Adherent $adherent): CommitteeMembershipCollection
+    {
+        $query = $this
+            ->createQueryBuilder('cm')
+            ->innerJoin('cm.committee', 'committee')
+            ->addSelect('committee')
+            ->where('cm.adherent = :adherent')
+            ->andWhere('committee.status = :status')
+            ->setParameter('adherent', $adherent)
+            ->setParameter('status', Committee::APPROVED)
+            ->addOrderBy('cm.privilege', 'DESC')
+            ->getQuery()
+        ;
+
+        return new CommitteeMembershipCollection($query->getResult());
+    }
+
     public function findMembership(Adherent $adherent, Committee $committee): ?CommitteeMembership
     {
         $query = $this
