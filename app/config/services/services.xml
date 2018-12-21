@@ -216,6 +216,9 @@
         <service id="AppBundle\Normalizer\AuthorNormalizer">
             <argument type="service" id="api_platform.serializer.normalizer.item"/>
         </service>
+        <service id="AppBundle\Normalizer\ThemeNormalizer">
+            <argument type="service" id="api_platform.serializer.normalizer.item"/>
+        </service>
 
         <!-- Timeline -->
         <service id="AppBundle\Command\TimelineImportCommand"/>
