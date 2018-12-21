@@ -18,4 +18,4 @@ const ideasReducer = (state = initialState, action) => {
 export default ideasReducer;
 
 export const getIdeas = state => state;
-export const getPublishedIdeas = state => state.filter(idea => 'published' === idea.status);
+export const getFinalizedIdeas = state => state.filter(idea => 'finalized' === idea.status);

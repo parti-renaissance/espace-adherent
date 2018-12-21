@@ -1,5 +1,5 @@
 import * as actionTypes from '../../constants/actionTypes';
-import reducer, { initialState, getIdeas, getPublishedIdeas } from '../../reducers/ideas';
+import reducer, { initialState, getIdeas, getFinalizedIdeas } from '../../reducers/ideas';
 
 describe('ideas reducer', () => {
     it('should return the initial state', () => {
@@ -31,16 +31,16 @@ describe('ideas reducer', () => {
         });
     });
 
-    describe('getPublishedIdeas', () => {
+    describe('getFinalizedIdeas', () => {
         it('returns all the ideas', () => {
-            expect(getPublishedIdeas(initialState)).toEqual(initialState);
+            expect(getFinalizedIdeas(initialState)).toEqual(initialState);
             const state = [
-                { id: '000', title: 'Super duper idea', status: 'published' },
+                { id: '000', title: 'Super duper idea', status: 'finalized' },
                 { id: '111', title: 'An other super duper idea', status: 'pending' },
             ];
-            const publishedIdeas = getPublishedIdeas(state);
-            expect(publishedIdeas).toHaveLength(1);
-            expect(publishedIdeas).toContain(state[0]);
+            const finalizedIdeas = getFinalizedIdeas(state);
+            expect(finalizedIdeas).toHaveLength(1);
+            expect(finalizedIdeas).toContain(state[0]);
         });
     });
 });
