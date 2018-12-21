@@ -26,8 +26,18 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
- *     collectionOperations={"get": {"method": "GET"}},
- *     itemOperations={"get": {"method": "GET"}},
+ *     collectionOperations={
+ *         "get": {"method": "GET"},
+ *         "get_my_contributions": {
+ *             "method": "GET",
+ *             "path": "/ideas/my-contributions",
+ *             "access_control": "is_granted('ROLE_ADHERENT')",
+ *             "normalization_context": {"groups": {"idea_list_read"}}
+ *         }
+ *     },
+ *     itemOperations={
+ *         "get": {"method": "GET"}
+ *     },
  *     attributes={
  *         "normalization_context": {"groups": {"idea_list_read"}},
  *         "order": {"createdAt": "ASC"}
