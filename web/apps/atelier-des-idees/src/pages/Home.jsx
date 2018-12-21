@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MovementIdeas from '../components/MovementIdeas';
-import LatestIdeas from '../components/LatestIdeas';
+import LatestIdeas from '../containers/LatestIdeas';
 import Reports from '../components/Reports';
 import { initHomePage } from '../redux/thunk/navigation';
 
