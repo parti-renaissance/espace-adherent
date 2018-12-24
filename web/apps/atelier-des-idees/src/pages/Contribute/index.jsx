@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { ideaStatus } from '../constants/api';
-import { initContributePage } from '../redux/thunk/navigation';
-import IdeaCardList from '../containers/IdeaCardList';
+import { ideaStatus } from '../../constants/api';
+import { initContributePage } from '../../redux/thunk/navigation';
+import IdeaCardList from '../../containers/IdeaCardList';
 
 class ContributePage extends React.Component {
     componentDidMount() {
@@ -13,7 +13,9 @@ class ContributePage extends React.Component {
     render() {
         return (
             <div className="contribute-page">
-                <IdeaCardList mode="grid" status={ideaStatus.FINALIZED} withPaging={true} />
+                <div className="l__wrapper">
+                    <IdeaCardList mode="grid" status={ideaStatus.FINALIZED} withPaging={true} />
+                </div>
             </div>
         );
     }
