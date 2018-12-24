@@ -14,8 +14,11 @@ use AppBundle\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ApiResource(
@@ -26,13 +29,36 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *         "order": {"createdAt": "ASC"},
  *         "filters": {"thread.answer"}
  *     },
- *     collectionOperations={"get"},
- *     itemOperations={"get"},
+ *     collectionOperations={
+ *         "get",
+ *         "post": {
+ *             "access_control": "is_granted('ROLE_ADHERENT')",
+ *         }
+ *     },
+ *     itemOperations={
+ *         "get",
+ *         "put_status_approve": {
+ *             "method": "PUT",
+ *             "path": "/threads/{id}/approve",
+ *             "requirements": {"id": "\d+"},
+ *             "access_control": "object.getIdeaAuthor() == user",
+ *             "controller": "AppBundle\Controller\Api\ThreadController::approveAction"
+ *         },
+ *         "put_status_report": {
+ *             "method": "PUT",
+ *             "path": "/threads/{id}/report",
+ *             "requirements": {"id": "\d+"},
+ *             "access_control": "is_granted('ROLE_ADHERENT') && object.getAuthor() != user",
+ *             "controller": "AppBundle\Controller\Api\ThreadController::reportAction"
+ *         },
+ *         "delete": {"access_control": "object.getAuthor() == user"}
+ *     },
  * )
  * @ApiFilter(SearchFilter::class, properties={"answer.idea": "exact"})
  *
  * @ORM\Table(name="ideas_workshop_thread")
  * @ORM\Entity
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -41,6 +67,8 @@ class Thread extends BaseComment implements AuthorInterface, ReportableInterface
     /**
      * @ORM\ManyToOne(targetEntity="Answer", inversedBy="threads")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
+     *
+     * @Assert\NotNull
      *
      * @SymfonySerializer\Groups("thread_comment_read")
      */
@@ -52,19 +80,29 @@ class Thread extends BaseComment implements AuthorInterface, ReportableInterface
      */
     private $comments;
 
-    public function __construct(
+    public function __construct(UuidInterface $uuid = null)
+    {
+        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->createdAt = new \DateTime();
+        $this->comments = new ArrayCollection();
+    }
+
+    public static function create(
         UuidInterface $uuid,
         string $content,
         Adherent $author,
         Answer $answer,
         string $status = ThreadCommentStatusEnum::POSTED,
         \DateTime $createdAt = null
-    ) {
-        parent::__construct($uuid, $content, $author, $status);
+    ): self {
+        $thread = new static($uuid);
+        $thread->content = $content;
+        $thread->author = $author;
+        $thread->answer = $answer;
+        $thread->status = $status;
+        $thread->createdAt = $createdAt ?: new \DateTime();
 
-        $this->answer = $answer;
-        $this->createdAt = $createdAt ?: new \DateTime();
-        $this->comments = new ArrayCollection();
+        return $thread;
     }
 
     public function getAnswer(): Answer
@@ -98,5 +136,10 @@ class Thread extends BaseComment implements AuthorInterface, ReportableInterface
     public function getReportType(): string
     {
         return ReportType::IDEAS_WORKSHOP_THREAD;
+    }
+
+    public function getIdeaAuthor(): Adherent
+    {
+        return $this->getAnswer()->getIdea()->getAuthor();
     }
 }

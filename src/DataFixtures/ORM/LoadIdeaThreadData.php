@@ -27,17 +27,17 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
         $adherent4 = $this->getReference('adherent-4');
         $adherent5 = $this->getReference('adherent-5');
 
-        $threadAQProblemAdherent2 = new Thread(
+        $threadAQProblemAdherent2 = Thread::create(
             Uuid::fromString(self::THREAD_01_UUID),
-            'J\'ouvre une discussion sur le problème.',
-            $adherent2,
-            $this->getReference('answer-q-problem'),
-            ThreadCommentStatusEnum::POSTED,
-            new \DateTime('2 hours ago')
+        'J\'ouvre une discussion sur le problème.',
+        $adherent2,
+        $this->getReference('answer-q-problem'),
+        ThreadCommentStatusEnum::POSTED,
+        new \DateTime('2 hours ago')
         );
-        $this->setReference('thread-aq-problem', $threadAQProblemAdherent2);
+        $this->addReference('thread-aq-problem', $threadAQProblemAdherent2);
 
-        $threadAQAnswerAdherent4 = new Thread(
+        $threadAQAnswerAdherent4 = Thread::create(
             Uuid::fromString(self::THREAD_02_UUID),
             'J\'ouvre une discussion sur la solution.',
             $adherent4,
@@ -47,7 +47,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
         );
         $this->setReference('thread-aq-answer', $threadAQAnswerAdherent4);
 
-        $threadAQCompareAdherent5 = new Thread(
+        $threadAQCompareAdherent5 = Thread::create(
             Uuid::fromString(self::THREAD_03_UUID),
             'J\'ouvre une discussion sur la comparaison.',
             $adherent5,
@@ -57,7 +57,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
         );
         $this->setReference('thread-aq-compare', $threadAQCompareAdherent5);
 
-        $threadRefused = new Thread(
+        $threadRefused = Thread::create(
             Uuid::fromString(self::THREAD_04_UUID),
             'Une discussion refusée.',
             $adherent5,
@@ -66,7 +66,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
             new \DateTime('10 minutes ago')
         );
 
-        $threadReported = new Thread(
+        $threadReported = Thread::create(
             Uuid::fromString(self::THREAD_05_UUID),
             'Une discussion signalée.',
             $adherent5,
@@ -75,7 +75,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
             new \DateTime('5 minutes ago')
         );
 
-        $threadHE = new Thread(
+        $threadHE = Thread::create(
             Uuid::fromString(self::THREAD_06_UUID),
             '[Help Ecology] J\'ouvre une discussion sur le problème.',
             $adherent5,
