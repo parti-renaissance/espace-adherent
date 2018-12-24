@@ -18,8 +18,10 @@ class DistrictRepository extends ServiceEntityRepository
 
     /**
      * Finds referent tag for district by coordinates of the point.
+     *
+     * @return ReferentTag[]
      */
-    public function findDistrictReferentTagByCoordinates($latitude, $longitude): ?ReferentTag
+    public function findDistrictReferentTagByCoordinates($latitude, $longitude): array
     {
         return $this->getEntityManager()->createQueryBuilder()
             ->from(ReferentTag::class, 'tag')
@@ -30,7 +32,7 @@ class DistrictRepository extends ServiceEntityRepository
             ->setParameter('latitude', $latitude)
             ->setParameter('longitude', $longitude)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
 }
