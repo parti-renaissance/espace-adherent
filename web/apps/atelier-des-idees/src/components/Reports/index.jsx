@@ -1,38 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { REPORTS_MODAL } from '../../constants/modalTypes';
 
-// TODO: api call reports
-const mockReports = {
-    reports: [
-        {
-            file: '/',
-            fileName: 'document-5.pdf',
-            size: '1.2 Mb',
-        },
-        {
-            file: '/',
-            fileName: 'document-5.pdf',
-            size: '1.2 Mb',
-        },
-        {
-            file: '/',
-            fileName: 'document-5.pdf',
-            size: '1.2 Mb',
-        },
-        {
-            file: '/',
-            fileName: 'document-5.pdf',
-            size: '1.2 Mb',
-        },
-        {
-            file: '/',
-            fileName: 'document-5.pdf',
-            size: '1.2 Mb',
-        },
-    ],
-};
 class Reports extends React.PureComponent {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <div className="l__wrapper reports">
@@ -45,7 +20,11 @@ class Reports extends React.PureComponent {
                     </p>
                     <button
                         className="reports__first-section__button button button--primary"
-                        onClick={() => this.props.showModal(REPORTS_MODAL, mockReports)}
+                        onClick={() =>
+                            this.props.showModal(REPORTS_MODAL, {
+                                reports: this.props.reports,
+                            })
+                        }
                     >
 						Je lis les rapports
                     </button>
@@ -58,5 +37,19 @@ class Reports extends React.PureComponent {
         );
     }
 }
+
+Reports.defaultProps = {
+    reports: [],
+};
+
+Reports.propTypes = {
+    reports: PropTypes.arrayOf(
+        PropTypes.shape({
+            file: PropTypes.string,
+            fileName: PropTypes.string,
+            size: PropTypes.string,
+        })
+    ),
+};
 
 export default Reports;
