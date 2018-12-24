@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import IdeaCardSkeletonList from '../Skeletons/IdeaCardSkeletonList';
 import IdeaCard from '../IdeaCard';
 
@@ -8,9 +9,11 @@ const IdeaCardList = (props) => {
         return <IdeaCardSkeletonList nbItems={5} />;
     }
     return (
-        <div className="idea-card-list">
+        <div className={classNames('idea-card-list', { 'idea-card-list--grid': 'grid' === props.mode })}>
             {props.ideas.map(idea => (
-                <IdeaCard {...idea} />
+                <div className="idea-card-list__wrapper">
+                    <IdeaCard {...idea} />
+                </div>
             ))}
         </div>
     );
@@ -18,11 +21,13 @@ const IdeaCardList = (props) => {
 
 IdeaCardList.defaultProps = {
     isLoading: false,
+    mode: 'list',
 };
 
 IdeaCardList.propTypes = {
     ideas: PropTypes.array.isRequired,
     isLoading: PropTypes.bool,
+    mode: PropTypes.oneOf(['list', 'grid']),
 };
 
 export default IdeaCardList;
