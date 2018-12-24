@@ -16,3 +16,8 @@ export function initHomePage() {
             dispatch(fetchReports()),
         ]);
 }
+
+export function initContributePage() {
+    const params = { limit: 10, 'order[\'created_at\']': 'DESC' };
+    return dispatch => dispatch(fetchIdeas(ideaStatus.FINALIZED, params));
+}

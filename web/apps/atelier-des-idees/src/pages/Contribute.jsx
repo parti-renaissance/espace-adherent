@@ -1,12 +1,25 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { ideaStatus } from '../constants/api';
+import { initContributePage } from '../redux/thunk/navigation';
+import IdeaCardList from '../containers/IdeaCardList';
 
-function Contribute(props) {
-    return (
-        <div className="contribute-page">
-            CONTRIBUER
-        </div>
-    )
+class ContributePage extends React.Component {
+    componentDidMount() {
+        this.props.initContributePage();
+    }
+
+    render() {
+        return (
+            <div className="contribute-page">
+                <IdeaCardList mode="grid" status={ideaStatus.FINALIZED} />
+            </div>
+        );
+    }
 }
 
-export default Contribute;
+export default connect(
+    null,
+    { initContributePage }
+)(ContributePage);
