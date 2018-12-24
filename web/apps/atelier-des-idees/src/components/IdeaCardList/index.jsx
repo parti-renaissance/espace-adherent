@@ -6,7 +6,7 @@ import IdeaCard from '../IdeaCard';
 
 const IdeaCardList = (props) => {
     if (props.isLoading) {
-        return <IdeaCardSkeletonList nbItems={5} />;
+        return <IdeaCardSkeletonList nbItems={props.nbSkeletons} mode={props.mode} />;
     }
     return (
         <div className={classNames('idea-card-list', { 'idea-card-list--grid': 'grid' === props.mode })}>
@@ -22,12 +22,14 @@ const IdeaCardList = (props) => {
 IdeaCardList.defaultProps = {
     isLoading: false,
     mode: 'list',
+    nbSkeletons: 6,
 };
 
 IdeaCardList.propTypes = {
     ideas: PropTypes.array.isRequired,
     isLoading: PropTypes.bool,
     mode: PropTypes.oneOf(['list', 'grid']),
+    nbSkeletons: PropTypes.number,
 };
 
 export default IdeaCardList;
