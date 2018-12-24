@@ -24,6 +24,7 @@ class VotingFooter extends React.Component {
     }
 
     cancelOnTimeout() {
+        clearTimeout(this.state.timerId);
         this.setState({
             timerId: setTimeout(() => {
                 this.setState({
@@ -55,29 +56,43 @@ class VotingFooter extends React.Component {
             <div className="voting-footer" ref={this.footerRef}>
                 <Mobile>
                     <div className="voting-footer__label">
-                        <p className="voting-footer__label__text">Je vote :</p>
+                        <p className="voting-footer__label__total-votes">
+                            {this.props.totalVotes} votes
+                        </p>
                         <button
-                            className={classnames('voting-footer__label__action', {
-                                rotate: this.state.toggleVotes,
-                            })}
+                            className="voting-footer__label__action-vote"
                             onClick={() =>
-                                this.setState(prevState => ({
-                                    toggleVotes: !prevState.toggleVotes,
-                                }))
+                                this.setState(
+                                    prevState => ({
+                                        toggleVotes: !prevState.toggleVotes,
+                                    }),
+                                    () => {
+                                        this.toggleOutsideHover();
+                                        this.cancelOnTimeout();
+                                    }
+                                )
                             }
                         >
-                            <div className="voting-footer__label__action__arrow" />
+                            <p className="voting-footer__label__action-vote__text">Je vote</p>
+                            <div
+                                className={classnames(
+                                    'voting-footer__label__action-vote__arrow',
+                                    {
+                                        rotate: this.state.toggleVotes,
+                                    }
+                                )}
+                            />
                         </button>
                     </div>
                 </Mobile>
 
                 <NotMobile>
                     {!this.state.toggleVotes && (
-                        <div className="voting-footer__action">
-                            <p className="voting-footer__action__total-votes">
+                        <div className="voting-footer__container">
+                            <p className="voting-footer__container__total-votes">
                                 {this.props.totalVotes} votes
                             </p>
-                            <div className="voting-footer__action__button">
+                            <div className="voting-footer__container__button">
                                 <button
                                     className="button--secondary"
                                     onClick={() =>
@@ -91,7 +106,7 @@ class VotingFooter extends React.Component {
                                     }
                                 >
                                     <img
-                                        className="voting-footer__action__button__icon"
+                                        className="voting-footer__container__button__icon"
                                         src="/assets/img/icn_20px_thumb.svg"
                                     />
 									Je vote
@@ -113,7 +128,6 @@ class VotingFooter extends React.Component {
 					        })}
 					        onClick={() => {
 					            this.props.onSelected(vote.id);
-					            clearTimeout(this.state.timerId);
 					            this.cancelOnTimeout();
 					        }}
 					    >

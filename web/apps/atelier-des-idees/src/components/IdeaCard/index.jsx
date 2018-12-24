@@ -60,24 +60,26 @@ function IdeaCard(props) {
                         {/* <span className="idea-card__content__infos__date">
                             {new Date(props.created_at).toLocaleDateString()}
                                 </span>*/}
-                        <span className="idea-card__content__infos__contributors">
-                            <img
-                                className="idea-card__content__infos__contributors__icon"
-                                src="/assets/img/icn_20px_contributors.svg"
-                            />
-                            <span className="idea-card__content__infos__contributors__text">
-                                {props.contributors_count}
+                        <div className="idea-card__content__infos__ideas">
+                            <span className="idea-card__content__infos__ideas__contributors">
+                                <img
+                                    className="idea-card__content__infos__ideas__ontributors__icon"
+                                    src="/assets/img/icn_20px_contributors.svg"
+                                />
+                                <span className="idea-card__content__infos__ideas__contributors__text">
+                                    {props.contributors_count}
+                                </span>
                             </span>
-                        </span>
-                        <span className="idea-card__content__infos__comments">
-                            <img
-                                className="idea-card__content__infos__contributors__icon"
-                                src="/assets/img/icn_20px_comments.svg"
-                            />
-                            <span className="idea-card__content__infos__contributors__text">
-                                {props.comments_count}
+                            <span className="idea-card__content__infos__ideas__comments">
+                                <img
+                                    className="idea-card__content__infos__ideas__contributors__icon"
+                                    src="/assets/img/icn_20px_comments.svg"
+                                />
+                                <span className="idea-card__content__infos__ideas__contributors__text">
+                                    {props.comments_count}
+                                </span>
                             </span>
-                        </span>
+                        </div>
                     </div>
                     <p className="idea-card__content__description">{props.description}</p>
                     <ul className="idea-card__content__tags">
