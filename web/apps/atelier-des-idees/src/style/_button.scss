@@ -46,3 +46,9 @@
   background-color: $black;
   color: $white;
 }
+
+.button--transparent {
+  @extend .button;
+  background: transparent;
+  border: none;
+}
