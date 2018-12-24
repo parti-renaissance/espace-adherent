@@ -19,18 +19,14 @@ const VOTES_NAMES = {
 };
 
 function formatVotes(votesCount) {
-    const votes = [];
-    Object.keys(votesCount).forEach((key) => {
-        if ('important' === key || 'feasible' === key || 'innovative' === key) {
-            votes.push({
-                id: key,
-                name: VOTES_NAMES[key],
-                count: votesCount[key],
-                isSelected: votesCount.my_votes.includes(key),
-            });
-        }
-    });
-    return votes;
+    return Object.keys(votesCount)
+        .filter(key => ['important', 'feasible', 'innovative'].includes(key))
+        .map(key => ({
+            id: key,
+            name: VOTES_NAMES[key],
+            count: votesCount[key],
+            isSelected: votesCount.my_votes.includes(key),
+        }));
 }
 
 function IdeaCard(props) {
