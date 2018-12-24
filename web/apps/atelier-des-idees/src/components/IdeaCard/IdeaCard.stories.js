@@ -1,12 +1,13 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 import IdeaCard from '.';
 
 const props = {
     author: {
         name: 'Jean-Michel Français',
     },
-    author_category: 'QG',
+    author_category: 'COMMITTEE',
     thumbnail: '/assets/img/icn_76px_education.svg',
     created_at: new Date().toISOString(),
     comments_count: 122,
@@ -30,4 +31,10 @@ const props = {
 
 storiesOf('IdeaCard', module)
     .addParameters({ jest: ['IdeaCard'] })
-    .add('default', () => <IdeaCard {...props} />);
+    .add('default', () => <IdeaCard {...props} onVote={action('Vote')} />)
+    .add('PENDING', () => (
+        <IdeaCard {...props} status="PENDING" onVote={action('Vote')} />
+    ))
+    .add('FINALIZED', () => (
+        <IdeaCard {...props} status="FINALIZED" onVote={action('Vote')} />
+    ));
