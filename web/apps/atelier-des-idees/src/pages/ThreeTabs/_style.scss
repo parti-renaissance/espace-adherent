@@ -1,0 +1,33 @@
+.tt-page {
+  position: relative;
+
+  .tt-page__header__title {
+    max-width: 60%;
+    margin-bottom: 50px;
+  }
+
+  .tt-page__header__subtitle {
+    color: $medium-grey;
+  }
+
+  .tt-page__header__nav {
+    width: 100%;
+    display: flex;
+  }
+
+  .tt-page__header__nav-link {
+    flex: 1;
+    padding: 15px 0;
+    border: 0;
+    text-align: center;
+    font-family: $font-gillsans;
+    font-size: 24px;
+    text-decoration: none;
+    color: $light-cobalt-blue;
+
+    &.active {
+      border-bottom: 4px solid $blue;
+      color: $blue;
+    }
+  }
+}

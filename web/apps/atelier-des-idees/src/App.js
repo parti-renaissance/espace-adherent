@@ -3,9 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 // pages
 import Home from './pages/Home';
-import Consult from './pages/Consult';
-import Contribute from './pages/Contribute';
-import Propose from './pages/Propose';
+import ThreeTabs from './pages/ThreeTabs';
 
 // modal
 import ModalRoot from './containers/ModalRoot';
@@ -19,9 +17,9 @@ class App extends Component {
                 <ModalRoot />
                 <Switch>
                     <Route exact path="/atelier-des-idees" component={Home} />
-                    <Route exact path="/atelier-des-idees/consulter" component={Consult} />
-                    <Route exact path="/atelier-des-idees/contribuer" component={Contribute} />
-                    <Route exact path="/atelier-des-idees/proposer" component={Propose} />
+                    <Route exact path="/atelier-des-idees/consulter" component={ThreeTabs} />
+                    <Route exact path="/atelier-des-idees/contribuer" component={ThreeTabs} />
+                    <Route exact path="/atelier-des-idees/proposer" component={ThreeTabs} />
                 </Switch>
             </div>
         );
