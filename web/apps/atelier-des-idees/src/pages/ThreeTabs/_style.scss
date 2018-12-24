@@ -1,6 +1,10 @@
 .tt-page {
   position: relative;
 
+  .tt-page__header {
+    padding-top: 80px;
+  }
+
   .tt-page__header__title {
     max-width: 60%;
     margin-bottom: 50px;

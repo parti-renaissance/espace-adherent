@@ -13,7 +13,7 @@ class ContributePage extends React.Component {
     render() {
         return (
             <div className="contribute-page">
-                <IdeaCardList mode="grid" status={ideaStatus.FINALIZED} />
+                <IdeaCardList mode="grid" status={ideaStatus.FINALIZED} withPaging={true} />
             </div>
         );
     }
