@@ -50,7 +50,7 @@ class VotingFooter extends React.Component {
     render() {
         return (
             <div className="voting-footer" ref={this.footerRef}>
-                {/* VERS MOBILE */}
+                {/* VUE MOBILE */}
                 <div className="voting-footer__label">
                     <p className="voting-footer__total-votes">
                         {this.props.totalVotes} votes
@@ -81,7 +81,7 @@ class VotingFooter extends React.Component {
                     </button>
                 </div>
 
-                {/* VERS DESKTOP */}
+                {/* VUE DESKTOP */}
                 {!this.state.toggleVotes && (
                     <div className="voting-footer__container">
                         <p className="voting-footer__total-votes">
