@@ -8,13 +8,29 @@ class VotingFooter extends React.Component {
         super(props);
         this.state = {
             toggleVotes: false,
+            timerId: null,
         };
 
         // ref of voting footer
         this.footerRef = React.createRef();
 
+        this.cancelOnTimeout = this.cancelOnTimeout.bind(this);
         this.toggleOutsideHover = this.toggleOutsideHover.bind(this);
         this.handleHoverOutside = this.handleHoverOutside.bind(this);
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.state.timerId);
+    }
+
+    cancelOnTimeout() {
+        this.setState({
+            timerId: setTimeout(() => {
+                this.setState({
+                    toggleVotes: false,
+                });
+            }, 5000),
+        });
     }
 
     toggleOutsideHover() {
@@ -67,7 +83,10 @@ class VotingFooter extends React.Component {
                                     onClick={() =>
                                         this.setState(
                                             prevState => ({ toggleVotes: !prevState.toggleVotes }),
-                                            () => this.toggleOutsideHover()
+                                            () => {
+                                                this.toggleOutsideHover();
+                                                this.cancelOnTimeout();
+                                            }
                                         )
                                     }
                                 >
@@ -92,7 +111,11 @@ class VotingFooter extends React.Component {
 					        className={classnames('voting-footer__vote', {
 					            'voting-footer__vote--selected': vote.isSelected,
 					        })}
-					        onClick={() => this.props.onSelected(vote.id)}
+					        onClick={() => {
+					            this.props.onSelected(vote.id);
+					            clearTimeout(this.state.timerId);
+					            this.cancelOnTimeout();
+					        }}
 					    >
 					        <span className="voting-footer__vote__name">{vote.name}</span>
 					        <span className="voting-footer__vote__count">{vote.count}</span>
