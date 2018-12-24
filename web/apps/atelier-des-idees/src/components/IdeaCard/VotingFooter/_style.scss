@@ -5,30 +5,28 @@
 	padding: 15px;
 	background: $white-smoke;
 
-	> * {
-		margin-right: 10px;
-	}
-
 	// Hide mobile version
 	&__label {
 		display: none;
 	}
 
+	&__total-votes {
+		color: $cadet-grey;
+		font-size: 14px;
+	}
+
+	&__text {
+		color: $cadet-grey;
+		margin-right: 90px;
+	}
+
 	&__container {
 		display: flex;
+		justify-content: space-between;
 		width: 100%;
-		> * {
-			width: 50%;
-		}
-
-		&__total-votes {
-			color: $cadet-grey;
-			font-size: 14px;
-		}
 
 		&__button {
 			display: flex;
-			justify-content: flex-end;
 			> * {
 				height: 40px;
 				width: 134px;
@@ -41,17 +39,13 @@
 		}
 	}
 
-	&__text {
-		color: $cadet-grey;
-		margin-right: 90px;
-	}
-
 	&__vote {
 		cursor: pointer;
 		outline: none;
 		display: flex;
 		width: 25%;
 		height: 45px;
+		margin-right: 10px;
 		background-color: $white;
 		border: 1px solid $grey-sky;
 		border-radius: 3px;
@@ -87,26 +81,34 @@
 		flex-direction: column;
 		padding: 0 15px;
 
+		&__container,
+		&__text {
+			display: none;
+		}
+
+		&__total-votes {
+			font-size: 14px;
+			margin-left: 20px;
+		}
+
+		&__vote,
+		&__label {
+			width: 100%;
+			margin-bottom: 10px;
+		}
+
 		&__label {
 			display: flex;
+			justify-content: space-between;
 			align-items: center;
 			margin: 0 20px 0 0;
 			font-size: 16px;
 			font-weight: 400;
 
-			> * {
-				display: flex;
-				flex: 1;
-			}
-			&__total-votes {
-				font-size: 14px;
-				color: $cadet-grey;
-				margin-left: 20px;
-			}
 			&__action-vote {
 				cursor: pointer;
+				display: flex;
 				flex-direction: row;
-				justify-content: flex-end;
 				align-items: center;
 				background: transparent;
 				font-size: 16px;
@@ -123,11 +125,6 @@
 					border-left: 7px solid $blue;
 				}
 			}
-		}
-
-		> * {
-			width: 100%;
-			margin-bottom: 10px;
 		}
 
 		.rotate {
