@@ -24,7 +24,7 @@ class VotingFooter extends React.Component {
     }
 
     handleHoverOutside(event) {
-        if (null !== this.footerRef) {
+        if (this.footerRef) {
             // Check if the postion of the mouse is outside of the footer
             const isOutofFooter = !this.footerRef.current.contains(event.target);
             if (isOutofFooter) {
@@ -44,7 +44,11 @@ class VotingFooter extends React.Component {
                             className={classnames('voting-footer__label__action', {
                                 rotate: this.state.toggleVotes,
                             })}
-                            onClick={() => this.setState(prevState => ({ toggleVotes: !prevState.toggleVotes }))}
+                            onClick={() =>
+                                this.setState(prevState => ({
+                                    toggleVotes: !prevState.toggleVotes,
+                                }))
+                            }
                         >
                             <div className="voting-footer__label__action__arrow" />
                         </button>
@@ -54,7 +58,9 @@ class VotingFooter extends React.Component {
                 <NotMobile>
                     {!this.state.toggleVotes && (
                         <div className="voting-footer__action">
-                            <p className="voting-footer__action__total-votes">{this.props.totalVotes} votes</p>
+                            <p className="voting-footer__action__total-votes">
+                                {this.props.totalVotes} votes
+                            </p>
                             <div className="voting-footer__action__button">
                                 <button
                                     className="button--secondary"
@@ -74,7 +80,9 @@ class VotingFooter extends React.Component {
                             </div>
                         </div>
                     )}
-                    {this.state.toggleVotes && <p className="voting-footer__text">Je vote: </p>}
+                    {this.state.toggleVotes && (
+                        <p className="voting-footer__text">Je vote: </p>
+                    )}
                 </NotMobile>
 
                 {this.state.toggleVotes &&

@@ -12,6 +12,27 @@ const AUTHOR_CATEGORY_NAMES = {
     QG: 'LaREM',
 };
 
+const VOTES_NAMES = {
+    important: 'Important',
+    feasible: 'Réalisable',
+    innovative: 'Novateur',
+};
+
+function formatVotes(votesCount) {
+    const votes = [];
+    Object.keys(votesCount).forEach((key) => {
+        if ('important' === key || 'feasible' === key || 'innovative' === key) {
+            votes.push({
+                id: key,
+                name: VOTES_NAMES[key],
+                count: votesCount[key],
+                isSelected: votesCount.my_votes.includes(key),
+            });
+        }
+    });
+    return votes;
+}
+
 function IdeaCard(props) {
     return (
         <div className="idea-card">
@@ -21,14 +42,16 @@ function IdeaCard(props) {
                     <div className="idea-card__content__infos">
                         <span className="idea-card__content__infos__author">
                             <span className="idea-card__content__infos__meta">Par</span>
-                            <span className="idea-card__content__infos__author__name">{`${props.author.first_name} ${
-                                props.author.last_name
-                            }`}</span>
+                            <span className="idea-card__content__infos__author__name">
+                                {props.author.name}
+                            </span>
                             <span className="idea-card__content__infos__author__separator" />
                             <span
                                 className={classnames(
                                     'idea-card__content__infos__author__type',
-                                    `idea-card__content__infos__author__type--${props.author_category}`
+                                    `idea-card__content__infos__author__type--${
+                                        props.author_category
+                                    }`
                                 )}
                             >
                                 {AUTHOR_CATEGORY_NAMES[props.author_category]}
@@ -58,8 +81,12 @@ function IdeaCard(props) {
                     </div>
                     <p className="idea-card__content__description">{props.description}</p>
                     <ul className="idea-card__content__tags">
-                        <li className="idea-card__content__tags__item">{props.category.name}</li>
-                        <li className="idea-card__content__tags__item">{props.theme.name}</li>
+                        <li className="idea-card__content__tags__item">
+                            {props.category.name}
+                        </li>
+                        <li className="idea-card__content__tags__item">
+                            {props.theme.name}
+                        </li>
                     </ul>
                 </div>
                 <div className="idea-card__container">
@@ -67,7 +94,20 @@ function IdeaCard(props) {
                 </div>
             </div>
             {/* FOOTER */}
-            {/* {'approuved' === props.status ? <VotingFooter /> : <VotingFooter />} */}
+            {'PENDING' === props.status ? (
+            // TODO: implement onSelected -> Vote
+                <VotingFooter
+                    totalVotes={props.votes_count.total}
+                    votes={formatVotes(props.votes_count)}
+                    onSelected={vote => console.log(vote)}
+                />
+            ) : (
+            // TODO: Link to idea
+                <ContributingFooter
+                    remainingDays={props.days_before_deadline}
+                    link="/atelier-des-idees"
+                />
+            )}
         </div>
     );
 }
@@ -88,9 +128,19 @@ IdeaCard.propTypes = {
     description: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
+    votes_count: PropTypes.arrayOf(
+        PropTypes.shape({
+            important: PropTypes.number.isRequired,
+            feasible: PropTypes.number.isRequired,
+            innovative: PropTypes.number.isRequired,
+            total: PropTypes.number.isRequired,
+            my_votes: PropTypes.arrayOf(PropTypes.string),
+        })
+    ).isRequired,
     comments_count: PropTypes.number,
     contributors_count: PropTypes.number,
     tags: PropTypes.arrayOf(PropTypes.string), // array of ids
+    days_before_deadline: PropTypes.number.isRequired,
     status: PropTypes.oneOf(ideaStatus).isRequired,
 };
 
