@@ -1,4 +1,4 @@
 import { action } from '../helpers/actions';
-import { ADD_REPORTS } from '../constants/actionTypes';
+import { SET_REPORTS } from '../constants/actionTypes';
 
-export const addReports = (reports = []) => action(ADD_REPORTS, { reports });
+export const setReports = (reports = []) => action(SET_REPORTS, { reports });
