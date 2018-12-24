@@ -2,7 +2,7 @@ import { HIDE_CONSULTATION_PINNED, SHOW_CONSULTATION_PINNED } from '../constants
 
 const initialState = { consultation: { show: false, data: {} } };
 
-function pinnedReducer(state = {}, action) {
+function pinnedReducer(state = initialState, action) {
     const { type, payload } = action;
     switch (type) {
     case SHOW_CONSULTATION_PINNED: {
@@ -17,3 +17,6 @@ function pinnedReducer(state = {}, action) {
 }
 
 export default pinnedReducer;
+
+export const getShowConsultationPinned = state => state.consultation.show;
+export const getConsultationPinned = state => state.consultation.data;
