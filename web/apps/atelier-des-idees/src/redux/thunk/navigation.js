@@ -1,5 +1,6 @@
 import { fetchIdeas } from './ideas';
 import { fetchConsultationPinned } from './pinned';
+import { fetchReports } from './reports';
 import { ideaStatus } from '../../constants/api';
 
 export function initHomePage() {
@@ -11,5 +12,7 @@ export function initHomePage() {
             // ideas
             dispatch(fetchIdeas(ideaStatus.FINALIZED, params)),
             dispatch(fetchIdeas(ideaStatus.PENDING, params)),
+            // reports
+            dispatch(fetchReports()),
         ]);
 }
