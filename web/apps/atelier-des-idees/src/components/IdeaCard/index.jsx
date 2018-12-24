@@ -56,26 +56,28 @@ function IdeaCard(props) {
                         {/* <span className="idea-card__content__infos__date">
                             {new Date(props.created_at).toLocaleDateString()}
                                 </span>*/}
-                        <div className="idea-card__content__infos__ideas">
-                            <span className="idea-card__content__infos__ideas__contributors">
-                                <img
-                                    className="idea-card__content__infos__ideas__ontributors__icon"
-                                    src="/assets/img/icn_20px_contributors.svg"
-                                />
-                                <span className="idea-card__content__infos__ideas__contributors__text">
-                                    {props.contributors_count}
+                        {'QG' !== props.author_category && (
+                            <div className="idea-card__content__infos__ideas">
+                                <span className="idea-card__content__infos__ideas__contributors">
+                                    <img
+                                        className="idea-card__content__infos__ideas__ontributors__icon"
+                                        src="/assets/img/icn_20px_contributors.svg"
+                                    />
+                                    <span className="idea-card__content__infos__ideas__contributors__text">
+                                        {props.contributors_count}
+                                    </span>
                                 </span>
-                            </span>
-                            <span className="idea-card__content__infos__ideas__comments">
-                                <img
-                                    className="idea-card__content__infos__ideas__contributors__icon"
-                                    src="/assets/img/icn_20px_comments.svg"
-                                />
-                                <span className="idea-card__content__infos__ideas__contributors__text">
-                                    {props.comments_count}
+                                <span className="idea-card__content__infos__ideas__comments">
+                                    <img
+                                        className="idea-card__content__infos__ideas__contributors__icon"
+                                        src="/assets/img/icn_20px_comments.svg"
+                                    />
+                                    <span className="idea-card__content__infos__ideas__contributors__text">
+                                        {props.comments_count}
+                                    </span>
                                 </span>
-                            </span>
-                        </div>
+                            </div>
+                        )}
                     </div>
                     <p className="idea-card__content__description">{props.description}</p>
                     <ul className="idea-card__content__tags">
@@ -97,7 +99,7 @@ function IdeaCard(props) {
                 <VotingFooter
                     totalVotes={props.votes_count.total}
                     votes={formatVotes(props.votes_count)}
-                    onSelected={vote => console.log(vote)}
+                    onSelected={vote => props.onVote(vote)}
                 />
             ) : (
             // TODO: Link to idea
@@ -113,6 +115,7 @@ function IdeaCard(props) {
 IdeaCard.defaultProps = {
     comments_count: 0,
     contributors_count: 0,
+    thumbnail: undefined,
 };
 
 IdeaCard.propTypes = {
@@ -121,7 +124,7 @@ IdeaCard.propTypes = {
         last_name: PropTypes.string.isRequired,
     }).isRequired,
     author_category: PropTypes.string.isRequired,
-    thumbnail: PropTypes.string.isRequired,
+    thumbnail: PropTypes.string,
     created_at: PropTypes.string.isRequired, // ISO UTC
     description: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
@@ -140,6 +143,7 @@ IdeaCard.propTypes = {
     tags: PropTypes.arrayOf(PropTypes.string), // array of ids
     days_before_deadline: PropTypes.number.isRequired,
     status: PropTypes.oneOf(ideaStatus).isRequired,
+    onVote: PropTypes.func.isRequired,
 };
 
 export default IdeaCard;
