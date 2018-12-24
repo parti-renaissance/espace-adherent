@@ -21,5 +21,6 @@ const ideasReducer = (state = initialState, action) => {
 export default ideasReducer;
 
 export const getIdeas = state => state.items;
+export const getIdeasMetadata = state => state.metadata;
 export const getIdeasWithStatus = (state, status) => state.items.filter(idea => idea.status === status);
 export const getFinalizedIdeas = state => state.items.filter(idea => 'finalized' === idea.status);
