@@ -23,7 +23,7 @@ class Banner extends React.PureComponent {
                 </div>
                 <div className="banner__container">
                     <a href={this.props.link} className="banner__container__link button--secondary" target="_blank">
-                        {this.props.linkLabel}
+                        {`${this.props.linkLabel}${this.props.extraInfo ? ` (${this.props.extraInfo})` : ''}`}
                     </a>
                 </div>
             </div>
@@ -31,11 +31,17 @@ class Banner extends React.PureComponent {
     }
 }
 
+Banner.defaultProps = {
+    extraInfo: undefined,
+    linkLabel: 'Je participe',
+};
+
 Banner.propTypes = {
-    title: PropTypes.string.isRequired,
-    subtitle: PropTypes.string.isRequired,
+    extraInfo: PropTypes.string,
     link: PropTypes.string.isRequired,
-    linkLabel: PropTypes.string.isRequired,
+    linkLabel: PropTypes.string,
+    subtitle: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
     onClose: PropTypes.func.isRequired,
 };
 
