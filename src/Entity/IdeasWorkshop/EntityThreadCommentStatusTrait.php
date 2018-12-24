@@ -49,4 +49,14 @@ trait EntityThreadCommentStatusTrait
     {
         return ThreadCommentStatusEnum::REFUSED === $this->status;
     }
+
+    public function approve(): void
+    {
+        $this->status = ThreadCommentStatusEnum::APPROVED;
+    }
+
+    public function report(): void
+    {
+        $this->status = ThreadCommentStatusEnum::REPORTED;
+    }
 }
