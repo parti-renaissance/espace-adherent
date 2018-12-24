@@ -213,7 +213,7 @@
         display: none;
     }
 
-    &__citizen-projects {
+    &__black {
         position: absolute;
         top: 34px;
         left: 0;
@@ -221,7 +221,7 @@
         margin: -10px -10px 0;
         padding: 15px 10px 5px;
         line-height: 24px;
-        background-color: #222;
+        background-color: $darker;
 
         ul {
             padding-left: 5px;
