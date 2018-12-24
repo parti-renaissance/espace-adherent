@@ -7,7 +7,6 @@ use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntitySoftDeletableTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
@@ -19,18 +18,6 @@ abstract class BaseComment
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
     use EntityThreadCommentStatusTrait;
-
-    public function __construct(
-        UuidInterface $uuid,
-        string $content,
-        Adherent $author,
-        string $status = ThreadCommentStatusEnum::POSTED
-    ) {
-        $this->uuid = $uuid;
-        $this->content = $content;
-        $this->author = $author;
-        $this->status = $status;
-    }
 
     /**
      * @ORM\Column(type="text")
