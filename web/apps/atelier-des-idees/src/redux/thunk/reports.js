@@ -1,5 +1,5 @@
 import { FETCH_REPORTS } from '../constants/actionTypes';
-import { addReports } from '../actions/reports';
+import { setReports } from '../actions/reports';
 import {
     createRequest,
     createRequestSuccess,
@@ -43,14 +43,14 @@ export function fetchReports() {
                 .get('/api/reports')
                 .then(res => res.data)
                 .then((data) => {
-                    dispatch(addReports(data));
+                    dispatch(setReports(data));
                     dispatch(createRequestSuccess(FETCH_REPORTS));
                 })
                 .catch((error) => {
                     dispatch(createRequestFailure(FETCH_REPORTS));
                 })
         // TODO: remove finally when endpoint is up
-                .finally(() => dispatch(addReports(reportsMock)))
+                .finally(() => dispatch(setReports(reportsMock)))
         );
     };
 }

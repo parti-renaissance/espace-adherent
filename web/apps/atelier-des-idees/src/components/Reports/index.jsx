@@ -1,13 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { REPORTS_MODAL } from '../../constants/modalTypes';
-
 class Reports extends React.PureComponent {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div className="l__wrapper reports">
@@ -20,11 +14,7 @@ class Reports extends React.PureComponent {
                     </p>
                     <button
                         className="reports__first-section__button button button--primary"
-                        onClick={() =>
-                            this.props.showModal(REPORTS_MODAL, {
-                                reports: this.props.reports,
-                            })
-                        }
+                        onClick={() => this.props.onReportBtnClicked(this.props.reports)}
                     >
 						Je lis les rapports
                     </button>
@@ -50,6 +40,7 @@ Reports.propTypes = {
             size: PropTypes.string,
         })
     ),
+    onReportBtnClicked: PropTypes.func.isRequired,
 };
 
 export default Reports;

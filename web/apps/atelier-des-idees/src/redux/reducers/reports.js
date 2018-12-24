@@ -1,12 +1,12 @@
-import { ADD_REPORTS } from '../constants/actionTypes';
+import { SET_REPORTS } from '../constants/actionTypes';
 
 export const initialState = [];
 
 const reportsReducer = (state = initialState, action) => {
     const { type, payload } = action;
     switch (type) {
-    case ADD_REPORTS: {
-        return [...state, ...payload.reports];
+    case SET_REPORTS: {
+        return payload.reports;
     }
     default:
         return state;
