@@ -19,8 +19,9 @@ const VOTES_NAMES = {
 };
 
 function formatVotes(votesCount) {
+    if (!votesCount.my_votes) return {};
     return Object.keys(votesCount)
-        .filter(key => ['important', 'feasible', 'innovative'].includes(key))
+        .filter(key => Object.keys(VOTES_NAMES).includes(key))
         .map(key => ({
             id: key,
             name: VOTES_NAMES[key],
@@ -89,12 +90,14 @@ function IdeaCard(props) {
                         </li>
                     </ul>
                 </div>
-                <div className="idea-card__container">
-                    <img className="idea-card__container__icon" src={props.thumbnail} />
-                </div>
+                {props.thumbnail && (
+                    <div className="idea-card__container">
+                        <img className="idea-card__container__icon" src={props.thumbnail} />
+                    </div>
+                )}
             </div>
             {/* FOOTER */}
-            {'PENDING' === props.status ? (
+            {'FINALIZED' === props.status ? (
             // TODO: implement onSelected -> Vote
                 <VotingFooter
                     totalVotes={props.votes_count.total}
