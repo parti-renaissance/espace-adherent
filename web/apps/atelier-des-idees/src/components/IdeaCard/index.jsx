@@ -120,8 +120,7 @@ IdeaCard.defaultProps = {
 
 IdeaCard.propTypes = {
     author: PropTypes.shape({
-        first_name: PropTypes.string.isRequired,
-        last_name: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
     }).isRequired,
     author_category: PropTypes.string.isRequired,
     thumbnail: PropTypes.string,
