@@ -1,102 +1,102 @@
 .banner {
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: 170px;
-  color: white;
+	position: relative;
+	display: flex;
+	align-items: center;
+	height: 170px;
+	color: white;
 
-  > * {
-    display: flex;
-    flex-direction: column;
-  }
+	> * {
+		display: flex;
+		flex-direction: column;
+	}
 
-  &__container__titles {
-    position: relative;
-    justify-content: center;
-    width: 60%;
-    height: 100%;
-    background-color: $dark-blue;
-    > * {
-      margin: 0 0 0 18%;
-      font-weight: normal;
-      z-index: 2;
-    }
-    &__title {
-      font-size: 24px;
-      margin-bottom: 7px;
-    }
-    &__subtitle {
-      font-size: 16px;
-    }
-  }
+	&__container__titles {
+		position: relative;
+		justify-content: center;
+		width: 60%;
+		height: 100%;
+		background-color: $dark-blue;
+		> * {
+			margin: 0 0 0 324px;
+			font-weight: normal;
+			z-index: 2;
+		}
+		&__title {
+			font-size: 24px;
+			margin-bottom: 7px;
+		}
+		&__subtitle {
+			font-size: 16px;
+		}
+	}
 
-  &__container__titles:before {
-    content: ' ';
-    background: $dark-blue;
-    position: absolute;
-    top: 0;
-    left: 20px;
-    right: -40px;
-    bottom: 0;
-    z-index: 1;
-    transform: skew(-10deg, 0deg);
-  }
+	&__container__titles:before {
+		content: ' ';
+		background: $dark-blue;
+		position: absolute;
+		top: 0;
+		left: 20px;
+		right: -40px;
+		bottom: 0;
+		z-index: 1;
+		transform: skew(-10deg, 0deg);
+	}
 
-  &__container {
-    width: 40%;
-    height: 100%;
-    background: linear-gradient(287deg, $dark-blue, $light-dark-blue);
+	&__container {
+		width: 40%;
+		height: 100%;
+		background: linear-gradient(287deg, $dark-blue, $light-dark-blue);
 
-    &__link {
-      align-self: center;
-      margin: 65px 15% 0 0;
-      background-color: transparent;
-      border-color: $white;
-      color: $white;
-      font-size: 14px;
-      text-decoration-line: none;
-    }
+		&__link {
+			align-self: center;
+			margin: 65px 15% 0 0;
+			background-color: transparent;
+			border-color: $white;
+			color: $white;
+			font-size: 14px;
+			text-decoration-line: none;
+		}
 
-    &__close {
-      position: absolute;
-      top: 6px;
-      right: 4px;
-    }
-  }
+		&__close {
+			position: absolute;
+			top: 6px;
+			right: 4px;
+		}
+	}
 
-  @media screen and (max-width: $width-md) {
-    flex-direction: column;
-    height: 100%;
-    > * {
-      width: 100%;
-      padding: 10px 0 20px 20px;
-      background: none;
-      background-color: $dark-blue;
-      > * {
-        margin: 0;
-      }
-    }
+	@media screen and (max-width: $width-md) {
+		flex-direction: column;
+		height: 100%;
+		> * {
+			width: 100%;
+			padding: 0 0 20px 20px;
+			background: none;
+			background-color: $dark-blue;
+			> * {
+				margin: 0;
+			}
+		}
 
-    &__container__titles {
-      &__title {
-        margin-bottom: 10px;
-      }
-    }
+		&__container__titles {
+			&__title {
+				margin-bottom: 10px;
+			}
+		}
 
-    &__container__titles:before {
-      content: none;
-    }
+		&__container__titles:before {
+			content: none;
+		}
 
-    &__container {
-      &__link {
-        align-self: flex-start;
-      }
-      &__close {
-        position: initial;
-        display: flex;
-        padding: 6px 4px 0 0;
-        align-self: flex-end;
-      }
-    }
-  }
+		&__container {
+			&__link {
+				align-self: flex-start;
+			}
+			&__close {
+				position: initial;
+				display: flex;
+				padding: 0 4px 0 0;
+				align-self: flex-end;
+			}
+		}
+	}
 }
