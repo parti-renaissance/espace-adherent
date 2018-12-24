@@ -13,11 +13,6 @@ class Home extends React.Component {
         this.props.initHomePage();
     }
 
-    componentWillUnmount() {
-        // reset ideas
-        this.props.setIdeas();
-    }
-
     render() {
         return (
             <div className="home-page">
