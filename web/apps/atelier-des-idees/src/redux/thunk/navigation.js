@@ -19,5 +19,5 @@ export function initHomePage() {
 
 export function initContributePage() {
     const params = { limit: 10, 'order[\'created_at\']': 'DESC' };
-    return dispatch => dispatch(fetchIdeas(ideaStatus.FINALIZED, params));
+    return dispatch => dispatch(fetchIdeas(ideaStatus.FINALIZED, params, true));
 }
