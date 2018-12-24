@@ -19,5 +19,10 @@ export function initHomePage() {
 
 export function initContributePage() {
     const params = { limit: 10, 'order[\'created_at\']': 'DESC' };
+    return dispatch => dispatch(fetchIdeas(ideaStatus.PENDING, params, true));
+}
+
+export function initConsultPage() {
+    const params = { limit: 10, 'order[\'created_at\']': 'DESC' };
     return dispatch => dispatch(fetchIdeas(ideaStatus.FINALIZED, params, true));
 }
