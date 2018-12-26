@@ -6,7 +6,7 @@
             <ul class="list__links">
                 <li><a href="#">{{ 'my_committees'|trans }}</a></li>
             </ul>
-            <div class="nav-dropdown__menu nav-dropdown__committees">
+            <div class="nav-dropdown__menu nav-dropdown__black">
                 <ul class="list__links">
                     {% for committee in committees %}
                         {% if app.user.hostOf(committee) %}
