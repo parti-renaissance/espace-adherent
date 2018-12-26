@@ -9,7 +9,7 @@ use AppBundle\Repository\DistrictRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ChangeAddressSubscriber implements EventSubscriberInterface
+class BindAdherentDistrictSubscriber implements EventSubscriberInterface
 {
     /**
      * @var DistrictRepository
@@ -28,19 +28,24 @@ class ChangeAddressSubscriber implements EventSubscriberInterface
         $adherent = $event->getAdherent();
 
         if ($adherent->isGeocoded()) {
-            $referentTag = $this->districtRepository->findDistrictReferentTagByCoordinates(
+            $referentTags = $this->districtRepository->findDistrictReferentTagByCoordinates(
                 $adherent->getLatitude(),
                 $adherent->getLongitude()
             );
 
-            if ($referentTag && !$adherent->getReferentTags()->contains($referentTag)) {
-                $adherent->addReferentTag($referentTag);
+            if (!empty($referentTags)) {
+                foreach ($referentTags as $referentTag) {
+                    if ($adherent->getReferentTags()->contains($referentTag)) {
+                        continue;
+                    }
+                    $adherent->addReferentTag($referentTag);
+                }
                 $this->em->flush();
             }
         }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             AdherentEvents::REGISTRATION_COMPLETED => ['updateReferentTagWithDistrict', -257],
