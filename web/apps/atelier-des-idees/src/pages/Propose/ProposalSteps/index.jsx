@@ -4,7 +4,7 @@ class ProposalSteps extends React.PureComponent {
     render() {
         return (
             <div className="proposal-steps">
-                <article className="l__wrap">
+                <article className="l__wrapper">
                     <h2 className="proposal-steps__title">Les étapes de votre notes</h2>
                     <div className="proposal-steps__container">
                         <div className="proposal-steps__container__step">
