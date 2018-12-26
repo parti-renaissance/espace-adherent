@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 class PreProposal extends React.PureComponent {
     render() {
         return (
-            <article className="l__wrap">
+            <article className="l__wrapper">
                 <div className="pre-proposal">
                     <div className="pre-proposal__container">
                         {/* TODO: Replace by the right img */}
