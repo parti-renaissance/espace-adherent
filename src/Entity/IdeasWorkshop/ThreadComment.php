@@ -35,6 +35,7 @@ class ThreadComment extends BaseComment implements AuthorInterface, ReportableIn
 {
     /**
      * @ORM\ManyToOne(targetEntity="Thread", inversedBy="comments")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      *
      * @SymfonySerializer\Groups("thread_comment_read")
      */
