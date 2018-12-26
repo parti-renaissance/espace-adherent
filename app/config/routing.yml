@@ -33,7 +33,11 @@ app_documents:
 api_platform:
     resource: .
     type: api_platform
-    prefix: /api
+    prefix: "%api_path_prefix%"
+
+swagger_ui:
+    path: "%api_path_prefix%/swagger"
+    controller: api_platform.swagger.action.ui
 
 #
 # API
