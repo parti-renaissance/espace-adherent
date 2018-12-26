@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 class PreProposal extends React.PureComponent {
     render() {
         return (
-            <React.Fragment>
+            <article className="l__wrap">
                 <div className="pre-proposal">
                     <div className="pre-proposal__container">
                         {/* TODO: Replace by the right img */}
@@ -46,7 +46,7 @@ class PreProposal extends React.PureComponent {
 						FAQ
                     </Link>
                 </p>
-            </React.Fragment>
+            </article>
         );
     }
 }
