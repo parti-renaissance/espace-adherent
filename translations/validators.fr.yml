@@ -284,3 +284,18 @@ message.max_length: Le message doit contenir moins de {{ limit }} caractères.
 # Biography
 #
 executive_office_member.executive_officer.unique: Le membre {{ fullName }} est déjà délégué général.
+
+#
+# Idea
+#
+idea.name.not_blank: Le nom de l'idée ne doit pas être vide.
+idea.description.not_blank: Pour publier votre idée, sa description ne doit pas être vide.
+idea.theme.not_blank: Pour publier votre idée, son thème devrait être rempli.
+idea.category.not_blank: Pour publier votre idée, sa catégorie devrait être remplie.
+idea.needs.min_count: |
+  {1} Pour publier votre idée, vous devez préciser au minimum 1 besoin.|
+  ]1,Inf[ Pour publier votre idée, vous devez préciser au minimum {{ limit }} besoins.
+idea.author.not_null: L'idée doit avoir un autheur.
+idea.answers.min_count: Pour publier votre idée, vous devez apporter des réponses aux questions obligatoires.
+answer.content.not_blank: Pour publier votre idée, vous devez apporter des réponses aux questions obligatoires.
+
