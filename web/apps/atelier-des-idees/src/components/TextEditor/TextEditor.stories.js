@@ -9,4 +9,7 @@ storiesOf('TextEditor', module)
     .addParameters({ jest: ['TextEditor'] })
     .add('default', () => <TextEditor onChange={action('editor change')} />)
     .add('with placeholder', () => <TextEditor placeholder="Coucou toi" onChange={action('editor change')} />)
-    .add('with initial content', () => <TextEditor initialContent={content} onChange={action('editor change')} />);
+    .add('with initial content', () => <TextEditor initialContent={content} onChange={action('editor change')} />)
+    .add('with max length', () => (
+        <TextEditor maxLength={10} onChange={action('editor change')} placeholder="10 characters max." />
+    ));
