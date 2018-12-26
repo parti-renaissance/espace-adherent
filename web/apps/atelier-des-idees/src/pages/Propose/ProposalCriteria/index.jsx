@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 class ProposalCriteria extends React.PureComponent {
     render() {
         return (
-            <article className="l__wrap">
+            <article className="l__wrapper">
                 <div className="proposal-criteria">
                     <div className="proposal-criteria__container">
                         <h2 className="proposal-criteria__container__title">
