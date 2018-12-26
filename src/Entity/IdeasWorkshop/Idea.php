@@ -41,7 +41,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     },
  *     itemOperations={
  *         "get": {"method": "GET"},
- *         "put": {"access_control": "object.getAuthor() == user"}
+ *         "put": {"access_control": "object.getAuthor() == user"},
+ *         "delete": {"access_control": "object.getAuthor() == user"}
  *     },
  *     attributes={
  *         "normalization_context": {"groups": {"idea_list_read"}},
@@ -77,7 +78,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
     use EntityTimestampableTrait;
     use EntityNameSlugTrait;
 
-    private const PUBLISHED_INTERVAL = 'P21D';
+    private const PUBLISHED_INTERVAL = 'P3W';
 
     /**
      * @ORM\Column
@@ -146,7 +147,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
     private $answers;
 
     /**
-     * @ORM\OneToMany(targetEntity="Vote", mappedBy="idea")
+     * @ORM\OneToMany(targetEntity="Vote", mappedBy="idea", cascade={"remove"}, orphanRemoval=true)
      *
      * @ApiSubresource
      */
