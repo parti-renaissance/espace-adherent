@@ -772,3 +772,18 @@ Feature:
        ]
     }
     """
+
+  Scenario: As a non logged-in user I can not delete an idea
+    When I send a "DELETE" request to "/api/ideas/1"
+    Then the response status code should be 401
+
+  Scenario: As a logged-in user I can not delete an idea that is not mine
+    When I am logged as "jacques.picard@en-marche.fr"
+    And I send a "DELETE" request to "/api/ideas/3"
+    Then the response status code should be 403
+
+  Scenario: As a logged-in user I can delete my idea
+    When I am logged as "jacques.picard@en-marche.fr"
+    And I send a "DELETE" request to "/api/ideas/1"
+    Then the response status code should be 204
+    And the response should be empty
