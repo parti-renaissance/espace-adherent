@@ -52,7 +52,7 @@ class Vote implements AuthorInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Idea", inversedBy="votes")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      *
      * @Assert\NotNull
      *

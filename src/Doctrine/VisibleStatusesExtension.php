@@ -13,7 +13,9 @@ class VisibleStatusesExtension implements QueryItemExtensionInterface, ContextAw
 {
     public function applyToItem(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, array $identifiers, string $operationName = null, array $context = [])
     {
-        $this->modifyQuery($queryBuilder, $resourceClass);
+        if ('delete' !== $operationName) {
+            $this->modifyQuery($queryBuilder, $resourceClass);
+        }
     }
 
     public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null, array $context = [])

@@ -47,7 +47,7 @@ class Thread extends BaseComment implements AuthorInterface, ReportableInterface
     private $answer;
 
     /**
-     * @ORM\OneToMany(targetEntity="ThreadComment", mappedBy="thread")
+     * @ORM\OneToMany(targetEntity="ThreadComment", mappedBy="thread", cascade={"remove"}, orphanRemoval=true)
      * @ApiSubresource
      */
     private $comments;
