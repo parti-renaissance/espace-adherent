@@ -15,4 +15,11 @@ final class IdeaStatusEnum extends Enum
         self::PENDING,
         self::FINALIZED,
     ];
+
+    public const ALL_STATUSES = [
+        self::DRAFT,
+        self::PENDING,
+        self::FINALIZED,
+        self::UNPUBLISHED,
+    ];
 }

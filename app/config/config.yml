@@ -29,6 +29,7 @@ parameters:
     amp_host:                             "%env(AMP_HOST)%"
     legislatives_host:                    "%env(LEGISLATIVES_HOST)%"
     mooc_base_url:                        "%env(MOOC_BASE_URL)%"
+    api_path_prefix:                      "%env(API_PATH_PREFIX)%"
     router.request_context.scheme:        "%env(APP_SCHEME)%"
     router.request_context.host:          "%app_host%"
     image_max_length:                     450px
@@ -387,7 +388,8 @@ api_platform:
     name_converter: serializer.name_converter.camel_case_to_snake_case
     resource_class_directories:
         - '%kernel.project_dir%/src/Entity'
-    enable_docs: false
+    enable_docs: true
+    enable_swagger_ui: true
     enable_entrypoint: false
     allow_plain_identifiers: true
     formats:

@@ -13,9 +13,9 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\EntityNameSlugTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use AppBundle\Entity\Report\ReportableInterface;
-use AppBundle\Report\ReportType;
 use AppBundle\Entity\VisibleStatusesInterface;
 use Cake\Chronos\Chronos;
+use AppBundle\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,7 +29,51 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 /**
  * @ApiResource(
  *     collectionOperations={
- *         "get": {"method": "GET"},
+ *         "get": {
+ *             "method": "GET",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "status",
+ *                         "in": "query",
+ *                         "type": "string",
+ *                         "description": "The status of the Idea resource.",
+ *                         "enum": IdeaStatusEnum::ALL_STATUSES,
+ *                         "example": IdeaStatusEnum::PENDING,
+ *                     },
+ *                     {
+ *                         "name": "name",
+ *                         "in": "query",
+ *                         "type": "string",
+ *                         "description": "The name of the Idea resource.",
+ *                         "example": "écologie",
+ *                     },
+ *                     {
+ *                         "name": "theme.name",
+ *                         "in": "query",
+ *                         "type": "string",
+ *                         "description": "The theme name of the Idea resource.",
+ *                         "example": "armée",
+ *                     },
+ *                     {
+ *                         "name": "author_category",
+ *                         "in": "query",
+ *                         "type": "uuid",
+ *                         "description": "The author category of the Idea resource.",
+ *                         "enum": AuthorCategoryEnum::ALL_CATEGORIES,
+ *                         "example": AuthorCategoryEnum::ADHERENT,
+ *                     },
+ *                     {
+ *                         "name": "author.uuid",
+ *                         "in": "query",
+ *                         "type": "string",
+ *                         "description": "The author uuid of the Idea resource.",
+ *                         "example": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+ *                     },
+ *                 }
+ *             }
+ *         },
  *         "get_my_contributions": {
  *             "method": "GET",
  *             "path": "/ideas/my-contributions",
@@ -43,7 +87,19 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     itemOperations={
  *         "get": {
  *             "method": "GET",
- *             "normalization_context": {"groups": {"idea_read"}}
+ *             "normalization_context": {"groups": {"idea_read"}},
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Idea resource.",
+ *                         "example": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
+ *                     }
+ *                 }
+ *             }
  *         },
  *         "put": {"access_control": "object.getAuthor() == user"},
  *         "publish": {
@@ -62,11 +118,18 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *         "denormalization_context": {
  *             "groups": {"idea_write"}
  *         },
+
  *         "order": {"createdAt": "ASC"}
  *     }
  * )
  *
- * @ApiFilter(SearchFilter::class, properties={"status": "exact", "name": "partial", "theme": "exact", "author_category": "exact", "author.uuid": "exact"})
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "status": "exact",
+ *     "name": "partial",
+ *     "theme.name": "exact",
+ *     "author_category": "exact",
+ *     "author.uuid": "exact"
+ * })
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\IdeaRepository")
  *
@@ -183,12 +246,19 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
     /**
      * @ORM\Column(length=11, options={"default": IdeaStatusEnum::DRAFT})
      *
-     * @Assert\Choice(
-     *     callback={"AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum", "toArray"},
-     *     strict=true,
-     * )
+     * @Assert\Choice(choices=IdeaStatusEnum::ALL_STATUSES, strict=true)
      *
      * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "swagger_context": {
+     *             "type": "string",
+     *             "enum": IdeaStatusEnum::ALL_STATUSES,
+     *             "example": IdeaStatusEnum::DRAFT
+     *         }
+     *     }
+     * )
      */
     private $status;
 
@@ -219,12 +289,19 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
     /**
      * @ORM\Column(length=9)
      *
-     * @Assert\Choice(
-     *     callback={"AppBundle\Entity\IdeasWorkshop\AuthorCategoryEnum", "toArray"},
-     *     strict=true,
-     * )
+     * @Assert\Choice(choices=AuthorCategoryEnum::ALL_CATEGORIES, strict=true)
      *
      * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "swagger_context": {
+     *             "type": "string",
+     *             "enum": AuthorCategoryEnum::ALL_CATEGORIES,
+     *             "example": AuthorCategoryEnum::ADHERENT
+     *         }
+     *     }
+     * )
      */
     private $authorCategory;
 

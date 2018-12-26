@@ -1,4 +1,5 @@
 @api
+  @ideas
 Feature:
   In order to see ideas
   As a non logged-in user
@@ -486,7 +487,7 @@ Feature:
       "description": "Mon idée",
       "themes": [2],
       "category": 2,
-      "committee": 1,
+      "committee": "515a56c0-bde8-56ef-b90c-4745b1c93818",
       "needs": [1,2],
       "answers":[
         {
@@ -513,7 +514,7 @@ Feature:
         "themes": [
             {
                 "name": "Trésorerie",
-            "thumbnail": null
+                "thumbnail": null
             }
         ],
         "category": {
@@ -571,7 +572,7 @@ Feature:
       "description": "Mon idée 2",
       "themes": [2],
       "category": 2,
-      "committee": 1,
+      "committee": "515a56c0-bde8-56ef-b90c-4745b1c93818",
       "needs": [1,2],
       "answers":[
         {

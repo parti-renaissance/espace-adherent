@@ -482,5 +482,15 @@
         </service>
 
         <service id="AppBundle\Normalizer\UuidNormalizer" />
+
+        <!-- Swagger -->
+        <service id="AppBundle\Swagger\SwaggerDecorator"
+            decorates="api_platform.swagger.normalizer.documentation"
+            autoconfigure="false">
+            <argument key="$decorated" type="service" id="AppBundle\Swagger\SwaggerDecorator.inner"/>
+            <argument key="$apiPathPrefix">%api_path_prefix%</argument>
+            <argument key="$operationPathResolver" type="service" id="api_platform.operation_path_resolver"/>
+            <argument key="$paginationEnabled">%%</argument>
+        </service>
     </services>
 </container>

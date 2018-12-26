@@ -26,13 +26,47 @@ use Ramsey\Uuid\UuidInterface;
  *             "access_control": "is_granted('IS_AUTHENTICATED_FULLY')",
  *             "controller": "AppBundle\Controller\Api\CommitteesController::myCommitteesAction",
  *             "normalization_context": {
- *                 "groups": {"my_committees"}
+ *                 "groups": {"my_committees"},
+ *             },
+ *             "pagination_enabled": false,
+ *             "swagger_context": {
+ *                 "summary": "Retrieves the committees of the current Adherent.",
+ *                 "description": "Retrieves the committees of the current Adherent ordered by privilege.",
+ *                 "responses": {
+ *                     "200": {
+ *                         "description": "Committee collection response",
+ *                         "schema": {
+ *                             "type": "array",
+ *                             "items": {
+ *                                 "$ref": "#/definitions/Committee-my_committees"
+ *                             }
+ *                         }
+ *                     },
+ *                     "401": {
+ *                         "description": "Unauthorized if the user is not connected."
+ *                     }
+ *                 }
  *             }
  *         }
  *     },
  *     itemOperations={
  *         "get": {
  *             "normalization_context": {"groups": {"idea_list_read"}},
+ *             "method": "GET",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "swagger_context": {
+ *                 "summary": "Retrieves a Committee resource by UUID.",
+ *                 "description": "Retrieves a Committee resource by UUID.",
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Committee resource.",
+ *                         "example": "515a56c0-bde8-56ef-b90c-4745b1c93818",
+ *                     }
+ *                 }
+ *             }
  *         }
  *     },
  * )
