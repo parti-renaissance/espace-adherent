@@ -7,7 +7,8 @@ import { stateFromHTML } from 'draft-js-import-html';
 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
-const toolbar = {
+// see https://jpuri.github.io/react-draft-wysiwyg/#/docs for more about this
+const initialToolbar = {
     options: ['inline', 'list', 'textAlign'],
     inline: {
         className: 'text-editor__toolbal__group',
@@ -51,7 +52,7 @@ class TextEditor extends React.Component {
             <Editor
                 editorState={this.state.editorState}
                 placeholder={this.props.placeholder}
-                toolbar={toolbar}
+                toolbar={this.props.toolbar}
                 editorClassName="text-editor__content"
                 toolbarClassName="text-editor__toolbar"
                 wrapperClassName="text-editor"
@@ -61,15 +62,17 @@ class TextEditor extends React.Component {
     }
 }
 
-TextEditor.defaultProp = {
+TextEditor.defaultProps = {
     initialContent: '',
     placeholder: '',
+    toolbar: initialToolbar,
 };
 
 TextEditor.propTypes = {
     initialContent: PropTypes.string, // html string
     onChange: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
+    toolbar: PropTypes.object,
 };
 
 export default TextEditor;
