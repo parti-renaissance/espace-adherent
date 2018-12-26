@@ -8,11 +8,9 @@ import PreProposal from './PreProposal';
 function Propose(props) {
     return (
         <div className="propose-page">
-            <div className="l__wrapper">
-                <ProposalSteps />
-                <ProposalCriteria />
-                <PreProposal />
-            </div>
+            <ProposalSteps />
+            <ProposalCriteria />
+            <PreProposal />
         </div>
     );
 }
