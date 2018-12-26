@@ -1,0 +1,80 @@
+.pre-proposal {
+	display: flex;
+	padding: 77px 80px 60px;
+
+	&__container {
+		width: 100%;
+
+		&__title,
+		&__text {
+			margin-bottom: 25px;
+		}
+
+		&__text {
+			color: $light-black;
+		}
+
+		&__link {
+			background: $pastel-red;
+			border-color: $pastel-red;
+		}
+
+		&__link:hover {
+			background: $ogre-odor;
+			border-color: $pastel-red;
+		}
+	}
+
+	&__container:first-child {
+		display: flex;
+		justify-content: center;
+	}
+
+	&__footer {
+		text-align: center;
+		margin: 130px 0;
+		color: $medium-grey;
+
+		&__highlighted {
+			color: $saphir;
+			text-decoration: none;
+		}
+	}
+
+	// responsive
+	@media #{$tablet} {
+		flex-direction: column;
+		&__container:first-child {
+			text-align: center;
+		}
+
+		&__container {
+			&__title,
+			&__link {
+				margin: 0 0 40px 0;
+			}
+		}
+	}
+
+	// responsive
+	@media #{$tablet} {
+		flex-direction: column;
+		padding: 0 80px;
+		&__container {
+			text-align: center;
+		}
+		&__footer {
+			margin: 80px 0 130px;
+		}
+	}
+	@media #{$mobile} {
+		flex-direction: column;
+		padding: 0 80px;
+		&__container {
+			text-align: center;
+		}
+		&__footer {
+			margin: 80px 0 130px;
+		}
+	}
+}
