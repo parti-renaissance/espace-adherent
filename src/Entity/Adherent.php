@@ -35,6 +35,21 @@ use JMS\Serializer\Annotation as JMS;
  *     itemOperations={
  *         "get": {
  *             "normalization_context": {"groups": {"vote_read"}},
+ *             "method": "GET",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "swagger_context": {
+ *                 "summary": "Retrieves an Adherent resource by UUID.",
+ *                 "description": "Retrieves an Adherent resource by UUID.",
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Adherent resource.",
+ *                         "example": "b4219d47-3138-5efd-9762-2ef9f9495084",
+ *                     }
+ *                 }
+ *             }
  *         }
  *     },
  * )
