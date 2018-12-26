@@ -51,12 +51,13 @@ class Answer
     private $question;
 
     /**
-     * @ORM\OneToMany(targetEntity="Thread", mappedBy="answer")
+     * @ORM\OneToMany(targetEntity="Thread", mappedBy="answer", cascade={"remove"}, orphanRemoval=true)
      */
     private $threads;
 
     /**
      * @ORM\ManyToOne(targetEntity="Idea", inversedBy="answers")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $idea;
 
