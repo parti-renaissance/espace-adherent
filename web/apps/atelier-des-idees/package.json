@@ -6,9 +6,11 @@
   "dependencies": {
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
+    "draft-js": "^0.10.5",
     "rc-tabs": "^9.5.7",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-draft-wysiwyg": "^1.12.17",
     "react-modal": "^3.8.1",
     "react-redux": "^6.0.0",
     "react-responsive": "^6.0.1",
