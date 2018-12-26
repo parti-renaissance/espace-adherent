@@ -1,4 +1,5 @@
 .text-editor {
+  position: relative;
   border: 1px solid $platinum;
   border-radius: 3px;
   padding: 25px;
@@ -24,5 +25,13 @@
   .text-editor__toolbal__group > .rdw-option-active {
     box-shadow: none;
     background-color: $platinum;
+  }
+
+  .text-editor__count {
+    position: absolute;
+    right: 25px;
+    bottom: 25px;
+    font-size: 14px;
+    color: $ash-grey;
   }
 }

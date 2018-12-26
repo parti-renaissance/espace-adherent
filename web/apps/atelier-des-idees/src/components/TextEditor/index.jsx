@@ -35,41 +35,79 @@ class TextEditor extends React.Component {
             editorState: props.initialContent
                 ? EditorState.createWithContent(stateFromHTML(props.initialContent)) // create initial state from html string
                 : EditorState.createEmpty(),
+            textContent: '',
         };
         this.onEditorStateChange = this.onEditorStateChange.bind(this);
+        this.handleBeforeInput = this.handleBeforeInput.bind(this);
+        // this.handlePastedText = this.handlePastedText.bind(this);
     }
 
+    handleBeforeInput() {
+        const { maxLength } = this.props;
+        const contentState = this.state.editorState.getCurrentContent();
+        const contentText = contentState.getPlainText();
+        // if text longer than maxLength, prevent Editor from adding new character
+        if (maxLength && contentText.length >= maxLength) {
+            this.onEditorStateChange(this.state.editorState);
+            return 'handled';
+        }
+        // otherwise, defer to draft-js
+        return 'not-handled';
+    }
+
+    // Uncomment to handle pasted text if longer than maxLength
+    // handlePastedText(pastedText) {
+    //     const { maxLength } = this.props;
+    //     const contentState = this.state.editorState.getCurrentContent();
+    //     const contentText = contentState.getPlainText();
+
+    //     if (contentText.length + pastedText.length > maxLength) {
+    //         return 'handled';
+    //     }
+    //     return 'not-handled';
+    // }
+
     onEditorStateChange(editorState) {
+        // convert content state to html and text
+        const contentState = editorState.getCurrentContent();
+        const htmlContent = stateToHTML(contentState);
+        const textContent = contentState.getPlainText();
         // update state
-        this.setState({ editorState });
-        // convert content state to html and send
-        const htmlContent = stateToHTML(editorState.getCurrentContent());
-        this.props.onChange(htmlContent);
+        this.setState({ editorState, textContent }, () => this.props.onChange(htmlContent));
     }
 
     render() {
         return (
-            <Editor
-                editorState={this.state.editorState}
-                placeholder={this.props.placeholder}
-                toolbar={this.props.toolbar}
-                editorClassName="text-editor__content"
-                toolbarClassName="text-editor__toolbar"
-                wrapperClassName="text-editor"
-                onEditorStateChange={this.onEditorStateChange}
-            />
+            <div className="text-editor">
+                <Editor
+                    editorState={this.state.editorState}
+                    placeholder={this.props.placeholder}
+                    toolbar={this.props.toolbar}
+                    editorClassName="text-editor__content"
+                    toolbarClassName="text-editor__toolbar"
+                    handleBeforeInput={this.handleBeforeInput}
+                    onEditorStateChange={this.onEditorStateChange}
+                />
+                {this.props.maxLength && (
+                    <div className="text-editor__count">{`${this.state.textContent.length}/${
+                        this.props.maxLength
+                    }`}</div>
+                )}
+            </div>
         );
     }
 }
 
 TextEditor.defaultProps = {
     initialContent: '',
+    maxLength: undefined,
     placeholder: '',
     toolbar: initialToolbar,
 };
 
 TextEditor.propTypes = {
     initialContent: PropTypes.string, // html string
+    maxLength: PropTypes.number,
     onChange: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
     toolbar: PropTypes.object,
