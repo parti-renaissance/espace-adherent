@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
+import { stateFromHTML } from 'draft-js-import-html';
 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
@@ -30,7 +31,9 @@ class TextEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            editorState: EditorState.createEmpty(),
+            editorState: props.initialContent
+                ? EditorState.createWithContent(stateFromHTML(props.initialContent)) // create initial state from html string
+                : EditorState.createEmpty(),
         };
         this.onEditorStateChange = this.onEditorStateChange.bind(this);
     }
@@ -59,10 +62,12 @@ class TextEditor extends React.Component {
 }
 
 TextEditor.defaultProp = {
+    initialContent: '',
     placeholder: '',
 };
 
 TextEditor.propTypes = {
+    initialContent: PropTypes.string, // html string
     onChange: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
 };
