@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 // pages
 import Home from './pages/Home';
 import ThreeTabs from './pages/ThreeTabs';
+import CreateIdea from './pages/CreateIdea';
 
 // modal
 import ModalRoot from './containers/ModalRoot';
@@ -20,6 +21,7 @@ class App extends Component {
                     <Route exact path="/atelier-des-idees/consulter" component={ThreeTabs} />
                     <Route exact path="/atelier-des-idees/contribuer" component={ThreeTabs} />
                     <Route exact path="/atelier-des-idees/proposer" component={ThreeTabs} />
+                    <Route exact path="/atelier-des-idees/creer-ma-note" component={CreateIdea} />
                 </Switch>
             </div>
         );
