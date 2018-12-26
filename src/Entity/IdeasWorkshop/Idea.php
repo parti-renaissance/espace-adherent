@@ -15,6 +15,7 @@ use AppBundle\Entity\EntityTimestampableTrait;
 use AppBundle\Entity\Report\ReportableInterface;
 use AppBundle\Report\ReportType;
 use AppBundle\Entity\VisibleStatusesInterface;
+use Cake\Chronos\Chronos;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -42,6 +43,13 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     itemOperations={
  *         "get": {"method": "GET"},
  *         "put": {"access_control": "object.getAuthor() == user"},
+ *         "publish": {
+ *             "method": "PUT",
+ *             "path": "/ideas/{id}/publish",
+ *             "access_control": "is_granted('PUBLISH_IDEA', object)",
+ *             "denormalization_context": {"groups": {"idea_publish"}},
+ *             "validation_groups": {"idea_publish"}
+ *         },
  *         "delete": {"access_control": "object.getAuthor() == user"}
  *     },
  *     attributes={
@@ -83,66 +91,90 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
     /**
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "vote_read"})
+     * @Assert\Length(max=120)
+     * @Assert\NotBlank(message="idea.name.not_blank")
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish", "vote_read"})
      */
     protected $name;
 
     /**
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
      * @ORM\ManyToOne(targetEntity="Theme")
+     *
+     * @Assert\NotBlank(message="idea.theme.not_blank", groups={"idea_publish"})
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
      */
     private $theme;
 
     /**
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
      * @ORM\ManyToOne(targetEntity="Category")
+     *
+     * @Assert\NotBlank(message="idea.category.not_blank", groups={"idea_publish"})
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
      */
     private $category;
 
     /**
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
      * @ORM\ManyToMany(targetEntity="Need")
      * @ORM\JoinTable(name="ideas_workshop_ideas_needs")
+     *
+     * @Assert\Count(min=1, minMessage="idea.needs.min_count", groups={"idea_publish"})
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
      */
     private $needs;
 
     /**
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent", inversedBy="ideas")
      * @ORM\JoinColumn(onDelete="SET NULL")
+     *
+     * @Assert\NotNull(message="idea.author.not_null", groups={"idea_publish"})
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
      */
     private $author;
 
     /**
      * @var \DateTime
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Assert\NotNull(message="idea.published_at.not_null", groups={"idea_publish"})
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
      */
     private $publishedAt;
 
     /**
      * @var Committee
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
      */
     private $committee;
 
     /**
+     * @ORM\Column(length=11, options={"default": IdeaStatusEnum::DRAFT})
+     *
      * @Assert\Choice(
      *     callback={"AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum", "toArray"},
-     *     strict=true,
+     *     strict=true
      * )
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
-     * @ORM\Column(length=11, options={"default": IdeaStatusEnum::DRAFT})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
      */
     private $status;
 
     /**
-     * @SymfonySerializer\Groups("idea_write")
      * @ORM\OneToMany(targetEntity="Answer", mappedBy="idea", cascade={"all"}, orphanRemoval=true)
+     *
+     * @Assert\Count(min=1, minMessage="idea.answers.min_count", groups={"idea_publish"})
+     * @Assert\Valid
+     *
+     * @SymfonySerializer\Groups({"idea_write", "idea_publish"})
      */
     private $answers;
 
@@ -154,25 +186,30 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
     private $votes;
 
     /**
-     * @SymfonySerializer\Groups("idea_list_read")
      * @ORM\Column(type="integer", options={"unsigned": true})
+     *
+     * @SymfonySerializer\Groups("idea_list_read")
      */
     private $votesCount = 0;
 
     /**
+     * @ORM\Column(length=9)
+     *
      * @Assert\Choice(
      *     callback={"AppBundle\Entity\IdeasWorkshop\AuthorCategoryEnum", "toArray"},
      *     strict=true,
      * )
      *
      * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
-     * @ORM\Column(length=9)
      */
     private $authorCategory;
 
     /**
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
      * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\NotBlank(message="idea.description.not_blank", groups={"idea_publish"})
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
      */
     private $description;
 
@@ -323,8 +360,12 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      */
     public function getDaysBeforeDeadline(): int
     {
-        $deadline = $this->createdAt->add(new \DateInterval(self::PUBLISHED_INTERVAL));
-        $now = new \DateTime();
+        if (!$this->publishedAt) {
+            return 0;
+        }
+
+        $deadline = $this->publishedAt->add(new \DateInterval(self::PUBLISHED_INTERVAL));
+        $now = new Chronos();
 
         return $deadline <= $now ? 0 : $deadline->diff($now)->d;
     }
@@ -347,6 +388,12 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
     public function isUnpublished(): bool
     {
         return IdeaStatusEnum::UNPUBLISHED === $this->status;
+    }
+
+    public function publish(): void
+    {
+        $this->status = IdeaStatusEnum::PENDING;
+        $this->publishedAt = new \DateTime();
     }
 
     public function getUuidAsString(): string

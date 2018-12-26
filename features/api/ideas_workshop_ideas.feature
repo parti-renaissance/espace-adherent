@@ -5,7 +5,8 @@ Feature:
   I should be able to access API Ideas Workshop
 
   Background:
-    Given the following fixtures are loaded:
+    Given I freeze the clock to "2018-12-24 09:00:00"
+    And the following fixtures are loaded:
       | LoadIdeaQuestionData      |
       | LoadIdeaCategoryData      |
       | LoadIdeaNeedData          |
@@ -59,7 +60,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "name": "Réduire le gaspillage",
                 "slug": "reduire-le-gaspillage",
-                "days_before_deadline": 20,
+                "days_before_deadline": 1,
                 "contributors_count": 0,
                 "comments_count": 0
             }
@@ -104,7 +105,7 @@ Feature:
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
-                "published_at": "2018-12-01T10:00:00+01:00",
+                "published_at": "2018-12-20T10:00:00+01:00",
                 "committee": {
                     "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                     "created_at": "2017-01-12T13:25:54+01:00",
@@ -123,7 +124,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "name": "Faire la paix",
                 "slug": "faire-la-paix",
-                "days_before_deadline": 20,
+                "days_before_deadline": 17,
                 "contributors_count": 6,
                 "comments_count": 6
             }
@@ -168,7 +169,7 @@ Feature:
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
-                "published_at": "2018-12-01T10:00:00+01:00",
+                "published_at": "2018-12-20T10:00:00+01:00",
                 "committee": {
                     "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                     "created_at": "2017-01-12T13:25:54+01:00",
@@ -187,7 +188,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "name": "Faire la paix",
                 "slug": "faire-la-paix",
-                "days_before_deadline": 20,
+                "days_before_deadline": 17,
                 "contributors_count": 6,
                 "comments_count": 6
             }
@@ -233,7 +234,7 @@ Feature:
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
-                "published_at": "2018-12-01T10:00:00+01:00",
+                "published_at": "2018-12-20T10:00:00+01:00",
                 "committee": {
                     "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                     "created_at": "2017-01-12T13:25:54+01:00",
@@ -257,7 +258,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "name": "Faire la paix",
                 "slug": "faire-la-paix",
-                "days_before_deadline": 20,
+                "days_before_deadline": 17,
                 "contributors_count": 6,
                 "comments_count": 6
             }
@@ -302,7 +303,7 @@ Feature:
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
-                "published_at": "2018-12-01T10:00:00+01:00",
+                "published_at": "2018-12-20T10:00:00+01:00",
                 "committee": {
                     "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                     "created_at": "2017-01-12T13:25:54+01:00",
@@ -321,7 +322,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "name": "Faire la paix",
                 "slug": "faire-la-paix",
-                "days_before_deadline": 20,
+                "days_before_deadline": 17,
                 "contributors_count": 6,
                 "comments_count": 6
             },
@@ -355,7 +356,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "name": "Réduire le gaspillage",
                 "slug": "reduire-le-gaspillage",
-                "days_before_deadline": 20,
+                "days_before_deadline": 1,
                 "contributors_count": 0,
                 "comments_count": 0
             }
@@ -395,7 +396,7 @@ Feature:
                     "first_name": "Benjamin",
                     "last_name": "Duroc"
                 },
-                "published_at": "2018-12-03T10:00:00+01:00",
+                "published_at": null,
                 "committee": null,
                 "status": "DRAFT",
                 "votes_count": {
@@ -409,7 +410,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "name": "Aider les gens",
                 "slug": "aider-les-gens",
-                "days_before_deadline": 20,
+                "days_before_deadline": 0,
                 "contributors_count": 0,
                 "comments_count": 0
             }
@@ -628,7 +629,7 @@ Feature:
         "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
         "created_at": "@string@.isDateTime()",
         "slug": "mon-idee-2",
-        "days_before_deadline": 20,
+        "days_before_deadline": 17,
         "contributors_count": 6,
         "comments_count": 6
     }
@@ -672,7 +673,7 @@ Feature:
                 "first_name":"Jacques",
                 "last_name":"Picard"
              },
-             "published_at":"2018-12-01T10:00:00+01:00",
+             "published_at":"2018-12-20T10:00:00+01:00",
              "committee":{
                 "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                 "created_at":"2017-01-12T13:25:54+01:00",
@@ -696,7 +697,7 @@ Feature:
              "created_at": "@string@.isDateTime()",
              "name":"Faire la paix",
              "slug":"faire-la-paix",
-             "days_before_deadline": 20,
+             "days_before_deadline": 17,
              "contributors_count": @integer@,
              "comments_count": @integer@
           }
@@ -742,7 +743,7 @@ Feature:
                 "first_name": "Jacques",
                 "last_name": "Picard"
              },
-             "published_at": "2018-12-01T10:00:00+01:00",
+             "published_at": "2018-12-20T10:00:00+01:00",
              "committee": {
                 "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                 "created_at": "2017-01-12T13:25:54+01:00",
@@ -765,7 +766,7 @@ Feature:
              "created_at": "@string@.isDateTime()",
              "name": "Faire la paix",
              "slug": "faire-la-paix",
-             "days_before_deadline": 20,
+             "days_before_deadline": 17,
              "contributors_count": @integer@,
              "comments_count": @integer@
           }
@@ -787,3 +788,132 @@ Feature:
     And I send a "DELETE" request to "/api/ideas/1"
     Then the response status code should be 204
     And the response should be empty
+
+  Scenario: As a non logged-in user I can not publish an idea
+    When I send a "PUT" request to "/api/ideas/3/publish"
+    Then the response status code should be 401
+
+  Scenario: As a logged-in user I can not publish an idea that is not mine
+    Given I am logged as "jacques.picard@en-marche.fr"
+    When I send a "PUT" request to "/api/ideas/3/publish"
+    Then the response status code should be 403
+
+  Scenario: As a logged-in user I can not publish an idea that has another status than PENDING at the moment of execution
+    Given I am logged as "jacques.picard@en-marche.fr"
+    When I send a "PUT" request to "/api/ideas/4/publish"
+    Then the response status code should be 403
+
+  Scenario: As a logged-in user I get errors when I publish my idea with few data
+    Given I am logged as "jacques.picard@en-marche.fr"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/ideas/5/publish" with body:
+    """
+    {
+      "name": "Mon idée"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "@string@",
+        "violations": [
+            {
+                "propertyPath": "theme",
+                "message": "Pour publier votre idée, son thème devrait être rempli."
+            },
+            {
+                "propertyPath": "category",
+                "message": "Pour publier votre idée, sa catégorie devrait être remplie."
+            },
+            {
+                "propertyPath": "needs",
+                "message": "Pour publier votre idée, vous devez préciser au minimum 1 besoin."
+            },
+            {
+                "propertyPath": "answers",
+                "message": "Pour publier votre idée, vous devez apporter des réponses aux questions obligatoires."
+            },
+            {
+                "propertyPath": "description",
+                "message": "Pour publier votre idée, sa description ne doit pas être vide."
+            }
+        ]
+    }
+    """
+
+  Scenario: As a logged-in user I can publish my idea in the status DRAFT
+    Given I am logged as "benjyd@aol.com"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/ideas/3/publish" with body:
+    """
+    {
+      "name": "Mon idée 2",
+      "needs": [1,2],
+      "answers":[
+        {
+          "question":1,
+          "content":"Réponse à la question 1"
+        },
+        {
+          "question":2,
+          "content":"Réponse à la question 2"
+        }
+      ]
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+       "name":"Mon id\u00e9e 2",
+       "theme":{
+          "name":"Arm\u00e9es et d\u00e9fense",
+          "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
+       },
+       "category":{
+          "name":"Echelle Europ\u00e9enne",
+          "enabled":true
+       },
+       "needs":[
+          {
+             "name":"Juridique",
+             "enabled":true
+          },
+          {
+             "name":"R\u00e9dactionnel",
+             "enabled":true
+          }
+       ],
+       "author":{
+          "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
+          "first_name":"Benjamin",
+          "last_name":"Duroc"
+       },
+       "published_at":"@string@.isDateTime()",
+       "committee":null,
+       "status":"PENDING",
+       "votes_count":{
+          "important":"6",
+          "feasible":"4",
+          "innovative":"5",
+          "total":15,
+          "my_votes":[
+             "feasible",
+             "important"
+          ]
+       },
+       "author_category":"QG",
+       "description":"Nam laoreet eros diam, vitae hendrerit libero interdum nec. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+       "uuid":"aa093ce6-8b20-4d86-bfbc-91a73fe47285",
+       "created_at":"@string@.isDateTime()",
+       "slug":"mon-idee-2",
+       "days_before_deadline":@integer@,
+       "contributors_count":0,
+       "comments_count":0
+    }
+    """

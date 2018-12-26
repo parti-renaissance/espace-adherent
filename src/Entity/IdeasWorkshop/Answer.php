@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -40,13 +41,20 @@ class Answer
     private $id;
 
     /**
-     * @SymfonySerializer\Groups("idea_write")
      * @ORM\Column(type="text")
+     *
+     * @Assert\Length(max=1700)
+     * @Assert\NotBlank(message="answer.content.not_blank", groups={"idea_publish"})
+     *
+     * @SymfonySerializer\Groups({"idea_write", "idea_publish"})
      */
     private $content;
 
     /**
      * @ORM\ManyToOne(targetEntity="Question")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
+     *
+     * @SymfonySerializer\Groups({"idea_write", "idea_publish"})
      */
     private $question;
 

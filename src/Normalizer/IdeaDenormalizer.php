@@ -38,6 +38,10 @@ class IdeaDenormalizer implements DenormalizerInterface, DenormalizerAwareInterf
             $data->setAuthorCategory(AuthorCategoryEnum::ADHERENT);
         }
 
+        if (\in_array('idea_publish', $context['groups']) && $data->isDraft() && !$data->getPublishedAt()) {
+            $data->publish();
+        }
+
         return $data;
     }
 

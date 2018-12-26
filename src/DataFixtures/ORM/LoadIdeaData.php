@@ -33,7 +33,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             'Faire la paix',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.',
             AuthorCategoryEnum::COMMITTEE,
-            new \DateTime('2018-12-01 10:00:00'),
+            new \DateTime('2018-12-20 10:00:00'),
             IdeaStatusEnum::PENDING,
             $adherent3,
             Uuid::fromString(self::IDEA_01_UUID),
@@ -64,7 +64,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             'Aider les gens',
             'Nam laoreet eros diam, vitae hendrerit libero interdum nec. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.',
             AuthorCategoryEnum::QG,
-            new \DateTime('2018-12-03 10:00:00'),
+            null,
             IdeaStatusEnum::DRAFT,
             $adherent6,
             Uuid::fromString(self::IDEA_03_UUID),
@@ -88,10 +88,23 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         $ideaReduceWaste->setTheme($theme);
         $this->addReference('idea-reduce-waste', $ideaReduceWaste);
 
+        $ideaReducePupils = new Idea(
+            'Réduire le nombre d’élèves dans les classes dans les quartiers défavorisés',
+            null,
+            AuthorCategoryEnum::QG,
+            null,
+            IdeaStatusEnum::DRAFT,
+            $adherent3,
+            Uuid::fromString(self::IDEA_04_UUID),
+            new \DateTime('-1 minute')
+        );
+        $this->addReference('idea-reduce-pupils', $ideaReducePupils);
+
         $manager->persist($ideaMakePeace);
         $manager->persist($ideaHelpEcology);
         $manager->persist($ideaHelpPeople);
         $manager->persist($ideaReduceWaste);
+        $manager->persist($ideaReducePupils);
 
         $manager->flush();
     }
