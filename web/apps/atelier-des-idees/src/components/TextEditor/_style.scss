@@ -1,0 +1,37 @@
+.text-editor {
+  position: relative;
+  border: 1px solid $platinum;
+  border-radius: 3px;
+  padding: 25px;
+
+  .text-editor__content {
+    height: 300px;
+  }
+
+  .text-editor__toolbar {
+    border: 0;
+    padding: 0;
+  }
+
+  .text-editor__toolbal__group:not(:last-child) {
+    border-right: 1px solid $quick-silver;
+  }
+
+  .text-editor__toolbal__group > .rdw-option-wrapper {
+    border: 0;
+    height: auto;
+  }
+  .text-editor__toolbal__group > .rdw-option-wrapper:hover,
+  .text-editor__toolbal__group > .rdw-option-active {
+    box-shadow: none;
+    background-color: $platinum;
+  }
+
+  .text-editor__count {
+    position: absolute;
+    right: 25px;
+    bottom: 25px;
+    font-size: 14px;
+    color: $ash-grey;
+  }
+}
