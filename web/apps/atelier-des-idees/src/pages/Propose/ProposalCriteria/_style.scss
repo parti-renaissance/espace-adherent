@@ -46,7 +46,7 @@
 	}
 	@media #{$mobile} {
 		flex-direction: column;
-		:first-child {
+		&__container:first-child {
 			text-align: center;
 		}
 
