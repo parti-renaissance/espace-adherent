@@ -1,0 +1,25 @@
+.first-form {
+	overflow-x: hidden;
+
+	&__section {
+		margin-bottom: 35px;
+
+		&__subtitle {
+			&__link {
+				text-decoration: none;
+				color: $saphir;
+			}
+		}
+
+		&__label {
+			display: inline-block;
+			margin-bottom: 15px;
+			font-weight: bold;
+		}
+	}
+
+	&__button {
+		width: 100%;
+		margin-bottom: 10px;
+	}
+}
