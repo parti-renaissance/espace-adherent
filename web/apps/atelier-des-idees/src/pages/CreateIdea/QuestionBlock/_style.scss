@@ -1,0 +1,15 @@
+.question-block {
+  margin: 20px 0;
+
+  .question-block-header {
+    margin-bottom: 20px;
+
+    .question-block-header__label {
+      color: $blue-sky;
+    }
+
+    .question-block-header__question {
+      font-weight: 400;
+    }
+  }
+}

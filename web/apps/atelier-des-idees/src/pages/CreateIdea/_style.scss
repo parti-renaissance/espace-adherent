@@ -1,3 +1,5 @@
+@import './QuestionBlock/style';
+
 .create-idea-page {
   .create-idea-page__content {
     padding: 50px 0;
@@ -9,21 +11,5 @@
     padding: 80px 100px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.09);
     background-color: $white;
-  }
-
-  .question-block {
-    margin: 20px 0;
-  }
-
-  .question-block-header {
-    margin-bottom: 20px;
-
-    .question-block-header__label {
-      color: $blue-sky;
-    }
-
-    .question-block-header__question {
-      font-weight: 400;
-    }
   }
 }
