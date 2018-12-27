@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Mobile, NotMobile } from '../../../helpers/responsive';
 
 class VotingFooter extends React.Component {
     constructor(props) {
@@ -51,70 +50,70 @@ class VotingFooter extends React.Component {
     render() {
         return (
             <div className="voting-footer" ref={this.footerRef}>
-                {/* VUE DESKTOP */}
                 <div className="voting-footer__container">
-                    <Mobile>
+                    {/* MOBILE ELEMENTS */}
+                    <p className="voting-footer__total-votes--mobile">
+                        {this.props.totalVotes} votes
+                    </p>
+                    <button
+                        className="voting-footer__container__action-vote--mobile"
+                        onClick={() =>
+                            this.setState(
+                                prevState => ({
+                                    toggleVotes: !prevState.toggleVotes,
+                                }),
+                                () => {
+                                    this.toggleOutsideHover();
+                                    this.resetTimeout();
+                                }
+                            )
+                        }
+                    >
+                        {/* DESKTOP ELEMENTS */}
+                        <p className="voting-footer__container__action-vote--mobile__text">
+							Je vote
+                        </p>
+                        <div
+                            className={classnames(
+                                'voting-footer__container__action-vote--mobile__arrow',
+                                {
+                                    rotate: this.state.toggleVotes,
+                                }
+                            )}
+                        />
+                    </button>
+
+                    {!this.state.toggleVotes && (
                         <p className="voting-footer__total-votes">
                             {this.props.totalVotes} votes
                         </p>
-                        <button
-                            className="voting-footer__container__action-vote"
-                            onClick={() =>
-                                this.setState(
-                                    prevState => ({
-                                        toggleVotes: !prevState.toggleVotes,
-                                    }),
-                                    () => {
-                                        this.toggleOutsideHover();
-                                        this.resetTimeout();
-                                    }
-                                )
-                            }
-                        >
-                            <p className="voting-footer__container__action-vote__text">
+                    )}
+                    {!this.state.toggleVotes ? (
+                        <div className="voting-footer__container__action-vote">
+                            <button
+                                className="button--secondary"
+                                onClick={() =>
+                                    this.setState(
+                                        prevState => ({ toggleVotes: !prevState.toggleVotes }),
+                                        () => {
+                                            this.toggleOutsideHover();
+                                            this.resetTimeout();
+                                        }
+                                    )
+                                }
+                            >
+                                <img
+                                    className="voting-footer__container__action-vote__icon"
+                                    src="/assets/img/icn_20px_thumb.svg"
+                                />
 								Je vote
-                            </p>
-                            <div
-                                className={classnames(
-                                    'voting-footer__container__action-vote__arrow',
-                                    {
-                                        rotate: this.state.toggleVotes,
-                                    }
-                                )}
-                            />
-                        </button>
-                    </Mobile>
-                    <NotMobile>
-                        {!this.state.toggleVotes && (
-                            <p className="voting-footer__total-votes">
-                                {this.props.totalVotes} votes
-                            </p>
-                        )}
-                        {!this.state.toggleVotes ? (
-                            <div className="voting-footer__container__button">
-                                <button
-                                    className="button--secondary"
-                                    onClick={() =>
-                                        this.setState(
-                                            prevState => ({ toggleVotes: !prevState.toggleVotes }),
-                                            () => {
-                                                this.toggleOutsideHover();
-                                                this.resetTimeout();
-                                            }
-                                        )
-                                    }
-                                >
-                                    <img
-                                        className="voting-footer__container__button__icon"
-                                        src="/assets/img/icn_20px_thumb.svg"
-                                    />
-									Je vote
-                                </button>
-                            </div>
-                        ) : (
-                            <p className="voting-footer__text">Je vote: </p>
-                        )}
-                    </NotMobile>
+                            </button>
+                        </div>
+                    ) : (
+                        <p className="voting-footer__container__action-vote__text">
+							Je vote:
+                        </p>
+                    )}
                 </div>
 
                 {/* VOTES BUTTONS */}

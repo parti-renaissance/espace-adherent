@@ -2,18 +2,19 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	height: 71px;
 	padding: 15px;
 	background: $white-smoke;
+
+	// hide mobile elements
+	&__total-votes--mobile,
+	&__container__action-vote--mobile {
+		display: none;
+	}
 
 	&__total-votes {
 		color: $cadet-grey;
 		font-size: 14px;
-	}
-
-	&__text {
-		color: $cadet-grey;
-		width: 100%;
-		text-align: center;
 	}
 
 	&__container {
@@ -21,16 +22,22 @@
 		justify-content: space-between;
 		width: 100%;
 
-		&__button {
+		&__action-vote {
 			display: flex;
 			> * {
 				height: 40px;
 				width: 134px;
-				radius: 2px;
+				border-radius: 2px;
 				font-family: $font-roboto;
+				text-transform: initial;
 			}
 			&__icon {
 				margin-right: 7px;
+			}
+			&__text {
+				color: $cadet-grey;
+				width: 100%;
+				text-align: center;
 			}
 		}
 	}
@@ -65,9 +72,19 @@
 	/* Responsive */
 	@media #{$mobile} {
 		flex-direction: column;
+		height: 100%;
 		padding: 0 15px;
 
-		&__total-votes {
+		// hide desktop elements
+		&__total-votes,
+		&__container__action-vote,
+		&__container__action-vote__text {
+			display: none;
+		}
+
+		&__total-votes--mobile {
+			display: block;
+			color: $cadet-grey;
 			font-size: 14px;
 			margin-left: 20px;
 		}
@@ -79,11 +96,12 @@
 
 		&__container {
 			align-items: center;
+			height: 71px;
 			margin: 0 20px 0 0;
 			font-size: 16px;
 			font-weight: 400;
 
-			&__action-vote {
+			&__action-vote--mobile {
 				cursor: pointer;
 				display: flex;
 				flex-direction: row;
