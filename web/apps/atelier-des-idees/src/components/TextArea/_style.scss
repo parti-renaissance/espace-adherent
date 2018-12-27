@@ -1,0 +1,20 @@
+.text-area {
+  position: relative;
+
+  .text-area__input {
+    width: 100%;
+    min-height: 120px;
+    resize: none;
+    border: 1px solid $black-bean;
+    border-radius: 3px;
+    padding: 15px 20px;
+  }
+
+  .text-area__counter {
+    position: absolute;
+    right: 15px;
+    bottom: 20px;
+    color: $grey;
+    font-size: 11px;
+  }
+}
