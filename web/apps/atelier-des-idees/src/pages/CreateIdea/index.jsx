@@ -81,7 +81,14 @@ class CreateIdeaPage extends React.Component {
     render() {
         return (
             <div className="create-idea-page">
-                <div className="create-idea-page__header l__wrapper">HEADER</div>
+                <div className="create-idea-page__header l__wrapper">
+                    <CreateIdeaActions
+                        onDeleteClicked={this.props.onDeleteClicked}
+                        onPublishClicked={() => this.props.onPublichClicked(this.state)}
+                        onSaveClicked={this.props.onSaveClicked}
+                        mode="header"
+                    />
+                </div>
                 <div className="create-idea-page__content">
                     <div className="create-idea-page__content__main l__wrapper--medium">
                         <section className="create-idea-page__start-section">
@@ -115,6 +122,7 @@ class CreateIdeaPage extends React.Component {
                                 onDeleteClicked={this.props.onDeleteClicked}
                                 onPublishClicked={() => this.props.onPublichClicked(this.state)}
                                 onSaveClicked={this.props.onSaveClicked}
+                                mode="footer"
                             />
                         </div>
                     </div>
