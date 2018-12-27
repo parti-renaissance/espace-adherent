@@ -2,6 +2,12 @@
 @import './CreateIdeaActions/style';
 
 .create-idea-page {
+  border-top: 1px solid $gainsboro;
+
+  .create-idea-page__header {
+    padding: 20px 0;
+  }
+
   .create-idea-page__content {
     padding: 50px 0;
     background-color: $snow;
