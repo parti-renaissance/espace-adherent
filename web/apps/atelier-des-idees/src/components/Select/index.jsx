@@ -34,6 +34,7 @@ class Select extends React.Component {
     }
 
     render() {
+        const SubTitle = this.props.subtitle;
         return (
             <div className="select">
                 <SelectComponent
@@ -65,7 +66,9 @@ class Select extends React.Component {
                     isMulti={this.props.isMulti}
                 />
                 {this.props.subtitle && (
-                    <p className="select__subtitle">{this.props.subtitle}</p>
+                    <p className="select__subtitle">
+                        {'function' === typeof SubTitle ? <SubTitle /> : SubTitle}
+                    </p>
                 )}
 
                 {this.props.error && (
@@ -86,7 +89,11 @@ Select.defaultProps = {
 };
 
 Select.propTypes = {
-    subtitle: PropTypes.string,
+    subtitle: PropTypes.oneOfType([
+        PropTypes.node.isRequired,
+        PropTypes.func,
+        PropTypes.string,
+    ]),
     error: PropTypes.string,
     options: PropTypes.arrayOf(
         PropTypes.shape({
