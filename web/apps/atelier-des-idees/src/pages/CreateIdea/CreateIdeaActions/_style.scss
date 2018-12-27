@@ -1,11 +1,15 @@
 .create-idea-actions {
-  text-align: right;
+  display: flex;
+  justify-content: space-between;
 
-  .create-idea-actions__delete {
+  .create-idea-actions__delete,
+  .create-idea-actions__back {
     @extend %reset-button;
-    float: left;
     cursor: pointer;
     color: $saphir;
+  }
+  .create-idea-actions__back {
+    margin-right: 20px;
   }
 
   .create-idea-actions__publish {
