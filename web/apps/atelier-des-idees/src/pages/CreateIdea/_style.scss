@@ -5,11 +5,25 @@
   border-top: 1px solid $gainsboro;
 
   .create-idea-page__header {
+    display: flex;
     padding: 20px 0;
+
+    .create-idea-actions {
+      flex: 1;
+    }
+
+    .create-idea-actions__back {
+      @extend %reset-button;
+      cursor: pointer;
+      color: $saphir;
+    }
+    .create-idea-actions__back {
+      margin-right: 20px;
+    }
   }
 
   .create-idea-page__content {
-    padding: 50px 0;
+    padding: 100px 0;
     background-color: $snow;
   }
 
