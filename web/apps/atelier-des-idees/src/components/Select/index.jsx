@@ -22,11 +22,15 @@ class Select extends React.Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
+    // @param {object, array} selectedOption object by default and array if multi-select
     handleChange(selectedOption) {
         this.setState({ selectedOption });
-        this.props.isMulti
-            ? this.props.onSelected(selectedOption.map(selected => selected.value))
-            : this.props.onSelected([selectedOption.value]);
+
+        const formatSelectedOption = this.props.isMulti
+            ? selectedOption.map(selected => selected.value)
+            : [selectedOption.value];
+
+        this.props.onSelected(formatSelectedOption);
     }
 
     render() {
@@ -35,6 +39,7 @@ class Select extends React.Component {
                 <SelectComponent
                     className="select__input"
                     value={this.state.selectedOption}
+                    defaultValue={this.props.defaultValue}
                     components={{ DropdownIndicator, MultiValueLabel, MultiValueRemove }}
                     styles={{
                         multiValueLabel: base => ({
