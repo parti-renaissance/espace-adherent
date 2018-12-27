@@ -103,7 +103,12 @@ class CreateIdeaPage extends React.Component {
                             />
                         </section>
                         <section className="create-idea-page__start-section">
-                            <h2>Quelles sont les caractéristiques principales de votre idée ?</h2>
+                            <div className="create-idea-page__section-title">
+                                <p className="create-idea-page__section-subtitle">Pour commencer</p>
+                                <h2 className="create-idea-page__section-title__main">
+                                    Quelles sont les caractéristiques principales de votre idée ?
+                                </h2>
+                            </div>
                             {FIRST_QUESTIONS.map(({ id, label, question, placeholder, canCollapse }, index) => (
                                 <QuestionBlock
                                     canCollapse={canCollapse}
@@ -117,7 +122,12 @@ class CreateIdeaPage extends React.Component {
                             ))}
                         </section>
                         <section className="create-idea-page__continue-section">
-                            <h2>Votre idée peut-elle être mise en oeuvre ?</h2>
+                            <div className="create-idea-page__section-title">
+                                <p className="create-idea-page__section-subtitle">Pour aller plus loin</p>
+                                <h2 className="create-idea-page__section-title__main">
+                                    Votre idée peut-elle être mise en oeuvre ?
+                                </h2>
+                            </div>
                             {SECOND_QUESTIONS.map(({ id, label, question, placeholder, canCollapse }, index) => (
                                 <QuestionBlock
                                     canCollapse={canCollapse}
