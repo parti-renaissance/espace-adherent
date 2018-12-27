@@ -1,0 +1,14 @@
+.create-idea-actions {
+  text-align: right;
+
+  .create-idea-actions__delete {
+    @extend %reset-button;
+    float: left;
+    cursor: pointer;
+    color: $saphir;
+  }
+
+  .create-idea-actions__publish {
+    margin-left: 15px;
+  }
+}
