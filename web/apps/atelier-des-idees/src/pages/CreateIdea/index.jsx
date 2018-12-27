@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import QuestionBlock from './QuestionBlock';
-import Button from '../../components/Button';
+import CreateIdeaActions from './CreateIdeaActions';
 
 const FIRST_QUESTIONS = [
     {
@@ -111,22 +111,10 @@ class CreateIdeaPage extends React.Component {
                             ))}
                         </section>
                         <div className="create-idea-page__footer">
-                            <button
-                                className="button create-idea-page__footer__delete"
-                                onClick={this.props.onDeleteClicked}
-                            >
-                                Supprimer la note
-                            </button>
-                            <Button
-                                className="create-idea-page__footer__save"
-                                label="Enregistrer le brouillon"
-                                mode="secondary"
-                                onClick={this.props.onSaveClicked}
-                            />
-                            <Button
-                                className="create-idea-page__footer__publish"
-                                label="Publier la note"
-                                onClick={() => this.props.onPublichClicked(this.state)}
+                            <CreateIdeaActions
+                                onDeleteClicked={this.props.onDeleteClicked}
+                                onPublishClicked={() => this.props.onPublichClicked(this.state)}
+                                onSaveClicked={this.props.onSaveClicked}
                             />
                         </div>
                     </div>
