@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import TextArea from '../../components/TextArea';
 import QuestionBlock from './QuestionBlock';
 import CreateIdeaActions from './CreateIdeaActions';
 
@@ -37,7 +38,7 @@ const SECOND_QUESTIONS = [
         id: 'right',
         label: 'Droit',
         question: 'Votre idée suppose t-elle de changer le droit ?',
-        canCollapse: false,
+        canCollapse: true,
         placeholder:
             'Expliquez si votre idée nécessite - ou non - de changer le droit en vigueur. Si oui, idéalement, précisez ce qu’il faudrait changer.',
     },
@@ -95,11 +96,11 @@ class CreateIdeaPage extends React.Component {
                 <div className="create-idea-page__content">
                     <div className="create-idea-page__content__main l__wrapper--medium">
                         <section className="create-idea-page__title-section">
-                            {/* TODO: replace with TextArea component */}
-                            <textarea
-                                value={this.state.title}
-                                onChange={e => this.setState({ title: e.target.value })}
+                            <TextArea
+                                maxLength={120}
+                                onChange={value => this.setState({ title: value })}
                                 placeholder="Titre de l'idée"
+                                value={this.state.title}
                             />
                         </section>
                         <section className="create-idea-page__start-section">
