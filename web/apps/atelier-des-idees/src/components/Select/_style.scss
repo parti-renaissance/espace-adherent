@@ -1,0 +1,27 @@
+.dropdown {
+	cursor: pointer;
+	width: 0;
+	height: 0;
+	margin: 12px 6px;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 5px solid $x11-grey;
+}
+
+.select {
+	&__input {
+		width: 500px;
+	}
+
+	&__subtitle {
+		margin: 5px 0;
+		font-size: 12px;
+		color: $medium-grey;
+	}
+
+	&__error {
+		margin: 5px 0 0;
+		font-size: 12px;
+		color: $giants-orange;
+	}
+}
