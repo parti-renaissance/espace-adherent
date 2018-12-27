@@ -11,11 +11,13 @@ function QuestionBlockHeader({ label, question, nbQuestion }) {
     );
 }
 
-function QuestionBlock({ label, question, placeholder, nbQuestion, onTextChange }) {
+function QuestionBlock(props) {
+    const { label, question, placeholder, nbQuestion, onTextChange, initialContent } = props;
     return (
         <div className="question-block">
             <QuestionBlockHeader label={label} question={question} nbQuestion={nbQuestion} />
             <TextEditor
+                initialContent={initialContent}
                 maxLength={1700}
                 onChange={htmlContent => onTextChange(htmlContent)}
                 placeholder={placeholder}
@@ -25,10 +27,12 @@ function QuestionBlock({ label, question, placeholder, nbQuestion, onTextChange 
 }
 
 QuestionBlock.defaultProps = {
+    initialContent: '',
     placeholder: undefined,
 };
 
 QuestionBlock.propTypes = {
+    initialContent: PropTypes.string,
     label: PropTypes.string.isRequired,
     nbQuestion: PropTypes.number.isRequired,
     onTextChange: PropTypes.func.isRequired,
