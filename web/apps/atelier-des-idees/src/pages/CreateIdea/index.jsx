@@ -60,43 +60,61 @@ const SECOND_QUESTIONS = [
     },
 ];
 
-function CreateIdeaPage(props) {
-    return (
-        <div className="create-idea-page">
-            <div className="create-idea-page__header l__wrapper">HEADER</div>
-            <div className="create-idea-page__content">
-                <div className="create-idea-page__content__main l__wrapper--medium">
-                    <section className="create-idea-page__start-section">
-                        <h2>Quelles sont les caractéristiques principales de votre idée ?</h2>
-                        {FIRST_QUESTIONS.map(({ id, label, question, placeholder }, index) => (
-                            <QuestionBlock
-                                key={id}
-                                label={label}
-                                question={question}
-                                placeholder={placeholder}
-                                nbQuestion={index + 1}
-                                onTextChange={htmlContent => console.warn(htmlContent)}
-                            />
-                        ))}
-                    </section>
-                    <section className="create-idea-page__continue-section">
-                        <h2>Votre idée peut-elle être mise en oeuvre ?</h2>
-                        {SECOND_QUESTIONS.map(({ id, label, question, placeholder }, index) => (
-                            <QuestionBlock
-                                key={id}
-                                label={label}
-                                question={question}
-                                placeholder={placeholder}
-                                nbQuestion={FIRST_QUESTIONS.length + index + 1}
-                                onTextChange={htmlContent => console.warn(htmlContent)}
-                            />
-                        ))}
-                    </section>
-                    <div className="create-idea-page__content__footer">FOOTER</div>
+function getInitialState(questions = []) {
+    return questions.reduce((acc, question) => {
+        acc[question.id] = '';
+        return acc;
+    }, {});
+}
+
+class CreateIdeaPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { ...getInitialState(FIRST_QUESTIONS), ...getInitialState(SECOND_QUESTIONS) };
+    }
+
+    onQuestionTextChange(id, htmlContent) {
+        this.setState({ [id]: htmlContent });
+    }
+
+    render() {
+        return (
+            <div className="create-idea-page">
+                <div className="create-idea-page__header l__wrapper">HEADER</div>
+                <div className="create-idea-page__content">
+                    <div className="create-idea-page__content__main l__wrapper--medium">
+                        <section className="create-idea-page__start-section">
+                            <h2>Quelles sont les caractéristiques principales de votre idée ?</h2>
+                            {FIRST_QUESTIONS.map(({ id, label, question, placeholder }, index) => (
+                                <QuestionBlock
+                                    key={id}
+                                    label={label}
+                                    question={question}
+                                    placeholder={placeholder}
+                                    nbQuestion={index + 1}
+                                    onTextChange={htmlContent => this.onQuestionTextChange(id, htmlContent)}
+                                />
+                            ))}
+                        </section>
+                        <section className="create-idea-page__continue-section">
+                            <h2>Votre idée peut-elle être mise en oeuvre ?</h2>
+                            {SECOND_QUESTIONS.map(({ id, label, question, placeholder }, index) => (
+                                <QuestionBlock
+                                    key={id}
+                                    label={label}
+                                    question={question}
+                                    placeholder={placeholder}
+                                    nbQuestion={FIRST_QUESTIONS.length + index + 1}
+                                    onTextChange={htmlContent => this.onQuestionTextChange(id, htmlContent)}
+                                />
+                            ))}
+                        </section>
+                        <div className="create-idea-page__content__footer">FOOTER</div>
+                    </div>
                 </div>
             </div>
-        </div>
-    );
+        );
+    }
 }
 
 export default CreateIdeaPage;
