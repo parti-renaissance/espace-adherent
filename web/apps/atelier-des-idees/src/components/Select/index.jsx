@@ -47,13 +47,14 @@ class Select extends React.Component {
                         }),
                         control: base => ({
                             ...base,
-                            borderColor: this.props.error && '#ff4a22',
+                            borderColor: this.props.error ? '#ff4a22' : '#e5e5e5',
                         }),
                     }}
                     onChange={this.handleChange}
                     options={this.props.options}
                     placeholder={this.props.placeholder}
                     isClearable={this.props.isClearable}
+                    isDisabled={this.props.isDisabled}
                     isMulti={this.props.isMulti}
                 />
                 {this.props.subtitle && (
@@ -74,6 +75,7 @@ Select.defaultProps = {
     isMulti: false,
     placeholder: '',
     isClearable: false,
+    isDisabled: false,
 };
 
 Select.propTypes = {
@@ -87,6 +89,7 @@ Select.propTypes = {
     ).isRequired,
     placeholder: PropTypes.string,
     isClearable: PropTypes.bool,
+    isDisabled: PropTypes.bool,
     isMulti: PropTypes.bool,
     onSelected: PropTypes.func.isRequired,
 };
