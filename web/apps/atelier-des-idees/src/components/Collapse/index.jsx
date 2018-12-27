@@ -21,6 +21,7 @@ class Collapse extends React.Component {
             >
                 <div className="collapse__container">
                     {'function' === typeof Component ? <Component /> : Component}
+                    {/* TODO: Replace by icon */}
                     {this.state.isCollapsed ? (
                         <button
                             className="button collapse__container__btn--open"
