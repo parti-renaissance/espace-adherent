@@ -1,4 +1,5 @@
 @import './QuestionBlock/style';
+@import './CreateIdeaActions/style';
 
 .create-idea-page {
   .create-idea-page__content {
@@ -13,20 +14,7 @@
     background-color: $white;
   }
 
-  /* footer */
   .create-idea-page__footer {
-    text-align: right;
     margin-top: 80px;
-  }
-
-  .create-idea-page__footer__delete {
-    @extend %reset-button;
-    float: left;
-    cursor: pointer;
-    color: $saphir;
-  }
-
-  .create-idea-page__footer__publish {
-    margin-left: 15px;
   }
 }
