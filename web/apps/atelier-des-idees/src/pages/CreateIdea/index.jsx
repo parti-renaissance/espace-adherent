@@ -71,7 +71,7 @@ function getInitialState(questions = []) {
 class CreateIdeaPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { ...getInitialState(FIRST_QUESTIONS), ...getInitialState(SECOND_QUESTIONS) };
+        this.state = { title: '', ...getInitialState(FIRST_QUESTIONS), ...getInitialState(SECOND_QUESTIONS) };
     }
 
     onQuestionTextChange(id, htmlContent) {
@@ -82,6 +82,9 @@ class CreateIdeaPage extends React.Component {
         return (
             <div className="create-idea-page">
                 <div className="create-idea-page__header l__wrapper">
+                    <button className="button create-idea-actions__back" onClick={() => this.props.onBackClicked()}>
+                        ← Retour
+                    </button>
                     <CreateIdeaActions
                         onDeleteClicked={this.props.onDeleteClicked}
                         onPublishClicked={() => this.props.onPublichClicked(this.state)}
@@ -91,6 +94,14 @@ class CreateIdeaPage extends React.Component {
                 </div>
                 <div className="create-idea-page__content">
                     <div className="create-idea-page__content__main l__wrapper--medium">
+                        <section className="create-idea-page__title-section">
+                            {/* TODO: replace with TextArea component */}
+                            <textarea
+                                value={this.state.title}
+                                onChange={e => this.setState({ title: e.target.value })}
+                                placeholder="Titre de l'idée"
+                            />
+                        </section>
                         <section className="create-idea-page__start-section">
                             <h2>Quelles sont les caractéristiques principales de votre idée ?</h2>
                             {FIRST_QUESTIONS.map(({ id, label, question, placeholder }, index) => (
@@ -133,6 +144,7 @@ class CreateIdeaPage extends React.Component {
 }
 
 CreateIdeaPage.propTypes = {
+    onBackClicked: PropTypes.func.isRequired,
     onPublichClicked: PropTypes.func.isRequired,
     onDeleteClicked: PropTypes.func.isRequired,
     onSaveClicked: PropTypes.func.isRequired,
