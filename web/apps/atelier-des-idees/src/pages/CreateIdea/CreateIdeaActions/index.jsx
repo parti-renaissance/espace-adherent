@@ -10,7 +10,7 @@ function CreateIdeaActions(props) {
                     Supprimer la note
                 </button>
             </div>
-            <div className="create-idea-actions--left">
+            <div className="create-idea-actions--right">
                 <Button
                     className="create-idea-actions__save"
                     label="Enregistrer le brouillon"

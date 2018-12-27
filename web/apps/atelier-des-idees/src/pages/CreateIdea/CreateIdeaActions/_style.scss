@@ -11,4 +11,16 @@
   .create-idea-actions__publish {
     margin-left: 15px;
   }
+
+  /* Responsive */
+  @media #{$mobile} {
+    flex-direction: column;
+    text-align: center;
+
+    .create-idea-actions__publish,
+    .create-idea-actions__save {
+      margin-left: 0;
+      margin-top: 15px;
+    }
+  }
 }
