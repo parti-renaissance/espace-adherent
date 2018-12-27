@@ -9,6 +9,7 @@
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",
     "html-to-draftjs": "^1.4.0",
+    "rc-switch": "^1.8.0",
     "rc-tabs": "^9.5.7",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
