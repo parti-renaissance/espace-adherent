@@ -3,11 +3,9 @@ import { storiesOf } from '@storybook/react';
 import Collapse from '.';
 
 const props = {
-    title: {
-        component: () => (
-            <div>5. Droit : Votre idée suppose t-elle de changer le droit ? </div>
-        ),
-    },
+    title: () => (
+        <div>5. Droit : Votre idée suppose t-elle de changer le droit ? </div>
+    ),
 };
 
 storiesOf('Collapse', module)
