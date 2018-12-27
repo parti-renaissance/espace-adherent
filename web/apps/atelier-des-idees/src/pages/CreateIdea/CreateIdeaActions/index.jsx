@@ -6,13 +6,6 @@ function CreateIdeaActions(props) {
     return (
         <div className="create-idea-actions">
             <div className="create-idea-actions--left">
-                {'header' === props.mode && (
-                    <React.Fragment>
-                        <button className="button create-idea-actions__back" onClick={() => props.onBackClicked()}>
-                            Retour
-                        </button>
-                    </React.Fragment>
-                )}
                 <button className="button create-idea-actions__delete" onClick={() => props.onDeleteClicked()}>
                     Supprimer la note
                 </button>
@@ -35,12 +28,10 @@ function CreateIdeaActions(props) {
 }
 
 CreateIdeaActions.defaultProps = {
-    mode: 'header',
     onBackClicked: undefined,
 };
 
 CreateIdeaActions.propTypes = {
-    mode: PropTypes.oneOf(['header', 'footer']),
     onBackClicked: PropTypes.func,
     onDeleteClicked: PropTypes.func.isRequired,
     onPublichClicked: PropTypes.func.isRequired,

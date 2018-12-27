@@ -2,14 +2,10 @@
   display: flex;
   justify-content: space-between;
 
-  .create-idea-actions__delete,
-  .create-idea-actions__back {
+  .create-idea-actions__delete {
     @extend %reset-button;
     cursor: pointer;
     color: $saphir;
-  }
-  .create-idea-actions__back {
-    margin-right: 20px;
   }
 
   .create-idea-actions__publish {
