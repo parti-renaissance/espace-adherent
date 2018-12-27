@@ -64,4 +64,33 @@
   .create-idea-page__footer {
     margin-top: 80px;
   }
+
+  /* Responsive */
+  @media #{$mobile} {
+    border-top: 0;
+
+    .create-idea-page__content {
+      padding: 50px 0;
+    }
+
+    .create-idea-page__content__main {
+      width: 100%;
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    .create-idea-page__header {
+      flex-direction: column;
+    }
+
+    .create-idea-actions__back {
+      margin-bottom: 20px;
+    }
+  }
+
+  @media #{$tablet} {
+    .create-idea-page__content__main {
+      padding: 40px;
+    }
+  }
 }
