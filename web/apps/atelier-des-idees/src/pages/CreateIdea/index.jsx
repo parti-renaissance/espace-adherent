@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import QuestionBlock from './QuestionBlock';
+import Button from '../../components/Button';
 
 const FIRST_QUESTIONS = [
     {
@@ -109,12 +110,36 @@ class CreateIdeaPage extends React.Component {
                                 />
                             ))}
                         </section>
-                        <div className="create-idea-page__content__footer">FOOTER</div>
+                        <div className="create-idea-page__footer">
+                            <button
+                                className="button create-idea-page__footer__delete"
+                                onClick={this.props.onDeleteClicked}
+                            >
+                                Supprimer la note
+                            </button>
+                            <Button
+                                className="create-idea-page__footer__save"
+                                label="Enregistrer le brouillon"
+                                mode="secondary"
+                                onClick={this.props.onSaveClicked}
+                            />
+                            <Button
+                                className="create-idea-page__footer__publish"
+                                label="Publier la note"
+                                onClick={() => this.props.onPublichClicked(this.state)}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
         );
     }
 }
+
+CreateIdeaPage.propTypes = {
+    onPublichClicked: PropTypes.func.isRequired,
+    onDeleteClicked: PropTypes.func.isRequired,
+    onSaveClicked: PropTypes.func.isRequired,
+};
 
 export default CreateIdeaPage;

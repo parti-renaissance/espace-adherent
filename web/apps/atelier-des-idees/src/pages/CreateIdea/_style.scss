@@ -12,4 +12,21 @@
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.09);
     background-color: $white;
   }
+
+  /* footer */
+  .create-idea-page__footer {
+    text-align: right;
+    margin-top: 80px;
+  }
+
+  .create-idea-page__footer__delete {
+    @extend %reset-button;
+    float: left;
+    cursor: pointer;
+    color: $saphir;
+  }
+
+  .create-idea-page__footer__publish {
+    margin-left: 15px;
+  }
 }
