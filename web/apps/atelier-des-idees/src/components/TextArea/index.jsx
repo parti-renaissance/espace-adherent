@@ -1,18 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 function TextArea(props) {
     return (
         <div className="text-area">
             <textarea
-                className="text-area__input"
+                className={classNames('text-area__input', {
+                    'text-area__input--error': props.error,
+                })}
                 disabled={props.disabled}
                 id={props.id}
                 maxLength={props.maxlength}
                 name={props.name}
                 onChange={(e) => {
                     const { value } = e.target;
-                    if (!props.maxLength || (props.maxLength && value.length <= props.maxLength)) {
+                    if (
+                        !props.maxLength ||
+						(props.maxLength && value.length <= props.maxLength)
+                    ) {
                         props.onChange(e.target.value);
                     }
                 }}
@@ -22,8 +28,11 @@ function TextArea(props) {
                 {props.value}
             </textarea>
             {props.maxLength && (
-                <div className="text-area__counter">{`${props.value.length} / ${props.maxLength}`}</div>
+                <div className="text-area__counter">{`${props.value.length}/${
+                    props.maxLength
+                }`}</div>
             )}
+            {props.error && <p className="text-area__error">{props.error}</p>}
         </div>
     );
 }
@@ -33,6 +42,7 @@ TextArea.defaultProps = {
     maxLength: undefined,
     placeholder: '',
     value: '',
+    error: '',
 };
 
 TextArea.propTypes = {
@@ -41,7 +51,8 @@ TextArea.propTypes = {
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.string,
+    error: PropTypes.string,
 };
 
 export default TextArea;
