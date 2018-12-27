@@ -155,6 +155,14 @@ class CreateIdeaPage extends React.Component {
     }
 }
 
+// TODO: remove default props when linking to proper callbacks
+CreateIdeaPage.defaultProps = {
+    onBackClicked: () => alert('Retour'),
+    onPublichClicked: () => alert('Publier'),
+    onDeleteClicked: () => alert('Supprimer'),
+    onSaveClicked: () => alert('Enregistrer'),
+};
+
 CreateIdeaPage.propTypes = {
     onBackClicked: PropTypes.func.isRequired,
     onPublichClicked: PropTypes.func.isRequired,
