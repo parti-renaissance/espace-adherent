@@ -8,13 +8,17 @@
     border: 1px solid $black-bean;
     border-radius: 3px;
     padding: 15px 20px;
+
+    &::placeholder {
+      color: $sonic-silver;
+    }
   }
 
   .text-area__counter {
     position: absolute;
     right: 15px;
     bottom: 20px;
-    color: $grey;
-    font-size: 11px;
+    color: $ash-grey;
+    font-size: 14px;
   }
 }

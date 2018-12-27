@@ -21,7 +21,9 @@ function TextArea(props) {
             >
                 {props.value}
             </textarea>
-            {props.maxLength && <div className="text-area__counter">{`${props.value.length}/${props.maxLength}`}</div>}
+            {props.maxLength && (
+                <div className="text-area__counter">{`${props.value.length} / ${props.maxLength}`}</div>
+            )}
         </div>
     );
 }
