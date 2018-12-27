@@ -24,7 +24,9 @@ class Select extends React.Component {
 
     handleChange(selectedOption) {
         this.setState({ selectedOption });
-        this.props.onSelected(selectedOption.value);
+        this.props.isMulti
+            ? this.props.onSelected(selectedOption.map(selected => selected.value))
+            : this.props.onSelected([selectedOption.value]);
     }
 
     render() {
