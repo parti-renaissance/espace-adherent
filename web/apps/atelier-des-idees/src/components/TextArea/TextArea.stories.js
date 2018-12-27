@@ -10,21 +10,49 @@ class ControlledTextArea extends React.Component {
     }
 
     render() {
-        return <TextArea {...this.props} onChange={value => this.setState({ value })} value={this.state.value} />;
+        return (
+            <TextArea
+                {...this.props}
+                onChange={value => this.setState({ value })}
+                value={this.state.value}
+            />
+        );
     }
 }
 
 storiesOf('TextArea', module)
     .addParameters({ jest: ['TextArea'] })
-    .add('default', () => <TextArea id="text-area" name="text-area" onChange={action('text area change')} />)
+    .add('default', () => (
+        <TextArea
+            id="text-area"
+            name="text-area"
+            onChange={action('text area change')}
+        />
+    ))
     .add('with value', () => (
-        <TextArea id="text-area" name="text-area" onChange={action('text area change')} value="Super text" />
+        <TextArea
+            id="text-area"
+            name="text-area"
+            onChange={action('text area change')}
+            value="Super text"
+        />
     ))
     .add('with maxLength', () => (
-        <TextArea id="text-area" name="text-area" maxLength={10} onChange={action('text area change')} />
+        <TextArea
+            id="text-area"
+            name="text-area"
+            maxLength={10}
+            onChange={action('text area change')}
+        />
     ))
     .add('with value and maxLength', () => (
-        <TextArea id="text-area" name="text-area" maxLength={10} onChange={action('text area change')} value="Lol" />
+        <TextArea
+            id="text-area"
+            name="text-area"
+            maxLength={10}
+            onChange={action('text area change')}
+            value="Lol"
+        />
     ))
     .add('disabled', () => (
         <TextArea
@@ -35,4 +63,14 @@ storiesOf('TextArea', module)
             onChange={action('text area change')}
         />
     ))
-    .add('controlled', () => <ControlledTextArea id="text-area" name="text-area" maxLength={120} />);
+    .add('controlled', () => (
+        <ControlledTextArea id="text-area" name="text-area" maxLength={120} />
+    ))
+    .add('error', () => (
+        <TextArea
+            id="text-area"
+            name="text-area"
+            onChange={action('text area change')}
+            error="Msg error"
+        />
+    ));
