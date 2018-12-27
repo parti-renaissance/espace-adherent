@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextEditor from '../../../components/TextEditor';
+import Collapse from '../../../components/Collapse';
 
 function QuestionBlockHeader({ label, question, nbQuestion }) {
     return (
@@ -15,23 +16,38 @@ function QuestionBlock(props) {
     const { label, question, placeholder, nbQuestion, onTextChange, initialContent } = props;
     return (
         <div className="question-block">
-            <QuestionBlockHeader label={label} question={question} nbQuestion={nbQuestion} />
-            <TextEditor
-                initialContent={initialContent}
-                maxLength={1700}
-                onChange={htmlContent => onTextChange(htmlContent)}
-                placeholder={placeholder}
-            />
+            {props.canCollapse ? (
+                <Collapse title={<QuestionBlockHeader label={label} question={question} nbQuestion={nbQuestion} />}>
+                    <TextEditor
+                        initialContent={initialContent}
+                        maxLength={1700}
+                        onChange={htmlContent => onTextChange(htmlContent)}
+                        placeholder={placeholder}
+                    />
+                </Collapse>
+            ) : (
+                <React.Fragment>
+                    <QuestionBlockHeader label={label} question={question} nbQuestion={nbQuestion} />
+                    <TextEditor
+                        initialContent={initialContent}
+                        maxLength={1700}
+                        onChange={htmlContent => onTextChange(htmlContent)}
+                        placeholder={placeholder}
+                    />
+                </React.Fragment>
+            )}
         </div>
     );
 }
 
 QuestionBlock.defaultProps = {
+    canCollapse: false,
     initialContent: '',
     placeholder: undefined,
 };
 
 QuestionBlock.propTypes = {
+    canCollapse: PropTypes.bool,
     initialContent: PropTypes.string,
     label: PropTypes.string.isRequired,
     nbQuestion: PropTypes.number.isRequired,

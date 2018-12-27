@@ -45,7 +45,7 @@ const SECOND_QUESTIONS = [
         id: 'budget',
         label: 'Budget',
         question: 'Votre idée a-t-elle un impact financier ?',
-        canCollapse: false,
+        canCollapse: true,
     },
     {
         id: 'environment',
@@ -104,8 +104,9 @@ class CreateIdeaPage extends React.Component {
                         </section>
                         <section className="create-idea-page__start-section">
                             <h2>Quelles sont les caractéristiques principales de votre idée ?</h2>
-                            {FIRST_QUESTIONS.map(({ id, label, question, placeholder }, index) => (
+                            {FIRST_QUESTIONS.map(({ id, label, question, placeholder, canCollapse }, index) => (
                                 <QuestionBlock
+                                    canCollapse={canCollapse}
                                     key={id}
                                     label={label}
                                     question={question}
@@ -117,8 +118,9 @@ class CreateIdeaPage extends React.Component {
                         </section>
                         <section className="create-idea-page__continue-section">
                             <h2>Votre idée peut-elle être mise en oeuvre ?</h2>
-                            {SECOND_QUESTIONS.map(({ id, label, question, placeholder }, index) => (
+                            {SECOND_QUESTIONS.map(({ id, label, question, placeholder, canCollapse }, index) => (
                                 <QuestionBlock
+                                    canCollapse={canCollapse}
                                     key={id}
                                     label={label}
                                     question={question}

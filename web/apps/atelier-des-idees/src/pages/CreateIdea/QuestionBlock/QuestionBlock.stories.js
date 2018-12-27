@@ -18,9 +18,17 @@ storiesOf('QuestionBlock', module)
     ))
     .add('with initial content', () => (
         <QuestionBlock
-            onTextChange={action('question block text change')}
             {...question}
+            onTextChange={action('question block text change')}
             nbQuestion={1}
             initialContent="<p><strong>Lorem</strong> ipsum</p>"
+        />
+    ))
+    .add('with collapse', () => (
+        <QuestionBlock
+            {...question}
+            onTextChange={action('question block text change')}
+            canCollapse={true}
+            nbQuestion={1}
         />
     ));

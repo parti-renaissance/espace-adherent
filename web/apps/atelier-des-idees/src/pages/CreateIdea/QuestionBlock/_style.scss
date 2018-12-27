@@ -2,7 +2,7 @@
   margin: 20px 0;
 
   .question-block-header {
-    margin-bottom: 20px;
+    margin: 20px 0;
 
     .question-block-header__label {
       color: $blue-sky;
@@ -10,6 +10,19 @@
 
     .question-block-header__question {
       font-weight: 400;
+    }
+  }
+
+  .collapse {
+    .question-block-header {
+      margin: initial;
+    }
+
+    &.collapse--close {
+      .question-block-header,
+      .question-block-header__label {
+        color: $aurometalsaurus;
+      }
     }
   }
 }
