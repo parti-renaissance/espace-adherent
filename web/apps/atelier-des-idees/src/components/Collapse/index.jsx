@@ -11,7 +11,7 @@ class Collapse extends React.Component {
     }
 
     render() {
-        const Component = this.props.title.component;
+        const Component = this.props.title;
         return (
             <div
                 className={classNames('collapse', {
@@ -51,9 +51,11 @@ class Collapse extends React.Component {
 }
 
 Collapse.propTypes = {
-    title: PropTypes.shape({
-        component: PropTypes.oneOfType([PropTypes.node.isRequired, PropTypes.func]),
-    }),
+    title: PropTypes.oneOfType([
+        PropTypes.node.isRequired,
+        PropTypes.func,
+        PropTypes.string,
+    ]).isRequired,
 };
 
 export default Collapse;
