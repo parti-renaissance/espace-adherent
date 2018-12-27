@@ -10,22 +10,29 @@ const IdeaCardList = (props) => {
     }
     return (
         <div className={classNames('idea-card-list', { 'idea-card-list--grid': 'grid' === props.mode })}>
-            {props.ideas.map(idea => (
-                <div className="idea-card-list__wrapper">
-                    <IdeaCard {...idea} />
-                </div>
-            ))}
+            {props.ideas.length ? (
+                props.ideas.map(idea => (
+                    <div className="idea-card-list__wrapper">
+                        <IdeaCard {...idea} />
+                    </div>
+                ))
+            ) : (
+                <p className="idea-card-list__empty-label">{props.emptyLabel}</p>
+            )}
+            {/* TODO: add empty illustration */}
         </div>
     );
 };
 
 IdeaCardList.defaultProps = {
+    emptyLabel: 'Il n\'y a pas d\'idée correspondant à votre recherche',
     isLoading: false,
     mode: 'list',
     nbSkeletons: 6,
 };
 
 IdeaCardList.propTypes = {
+    emptyLabel: PropTypes.string,
     ideas: PropTypes.array.isRequired,
     isLoading: PropTypes.bool,
     mode: PropTypes.oneOf(['list', 'grid']),

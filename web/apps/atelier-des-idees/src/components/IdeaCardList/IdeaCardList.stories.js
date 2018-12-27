@@ -25,4 +25,5 @@ const ideas = [{ id: '000', ...idea }, { id: '111', ...idea }];
 storiesOf('IdeaCardList', module)
     .add('default', () => <IdeaCardList ideas={ideas} />)
     .add('grid mode', () => <IdeaCardList ideas={ideas} mode="grid" />)
-    .add('loading', () => <IdeaCardList ideas={ideas} isLoading={true} />);
+    .add('loading', () => <IdeaCardList ideas={ideas} isLoading={true} />)
+    .add('empty', () => <IdeaCardList ideas={[]} />);

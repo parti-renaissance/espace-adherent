@@ -2,6 +2,12 @@
   .idea-card {
     margin-bottom: 20px;
   }
+
+  .idea-card-list__empty-label {
+    text-align: center;
+    font-size: 20px;
+    color: #667484; // TODO: replace with $aurometalsaurus
+  }
 }
 
 .idea-card-list--grid {
