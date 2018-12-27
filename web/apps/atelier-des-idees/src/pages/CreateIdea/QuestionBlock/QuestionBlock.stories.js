@@ -15,4 +15,12 @@ storiesOf('QuestionBlock', module)
     .addParameters({ jest: ['QuestionBlock'] })
     .add('default', () => (
         <QuestionBlock onTextChange={action('question block text change')} {...question} nbQuestion={1} />
+    ))
+    .add('with initial content', () => (
+        <QuestionBlock
+            onTextChange={action('question block text change')}
+            {...question}
+            nbQuestion={1}
+            initialContent="<p><strong>Lorem</strong> ipsum</p>"
+        />
     ));
