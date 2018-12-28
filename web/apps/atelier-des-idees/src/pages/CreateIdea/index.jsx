@@ -29,23 +29,26 @@ class CreateIdeaPage extends React.Component {
                     <button className="button create-idea-actions__back" onClick={() => this.props.onBackClicked()}>
                         ← Retour
                     </button>
-                    <CreateIdeaActions
-                        onDeleteClicked={this.props.onDeleteClicked}
-                        onPublishClicked={() => this.props.onPublichClicked(this.state)}
-                        onSaveClicked={this.props.onSaveClicked}
-                        mode="header"
-                    />
+                    {this.props.isAuthor && (
+                        <CreateIdeaActions
+                            onDeleteClicked={this.props.onDeleteClicked}
+                            onPublishClicked={() => this.props.onPublichClicked(this.state)}
+                            onSaveClicked={this.props.onSaveClicked}
+                            mode="header"
+                        />
+                    )}
                 </div>
                 <div className="create-idea-page__content">
                     <div className="create-idea-page__content__main l__wrapper--medium">
                         <CreateIdeaTool onQuestionTextChange={this.onQuestionTextChange} values={this.state} />
                         <div className="create-idea-page__footer">
-                            <CreateIdeaActions
-                                onDeleteClicked={this.props.onDeleteClicked}
-                                onPublishClicked={() => this.props.onPublichClicked(this.state)}
-                                onSaveClicked={this.props.onSaveClicked}
-                                mode="footer"
-                            />
+                            {this.props.isAuthor && (
+                                <CreateIdeaActions
+                                    onDeleteClicked={this.props.onDeleteClicked}
+                                    onPublishClicked={() => this.props.onPublichClicked(this.state)}
+                                    onSaveClicked={this.props.onSaveClicked}
+                                />
+                            )}
                         </div>
                     </div>
                 </div>
@@ -56,6 +59,7 @@ class CreateIdeaPage extends React.Component {
 
 // TODO: remove default props when linking to proper callbacks
 CreateIdeaPage.defaultProps = {
+    isAuthor: true,
     onBackClicked: () => alert('Retour'),
     onPublichClicked: () => alert('Publier'),
     onDeleteClicked: () => alert('Supprimer'),
@@ -63,6 +67,7 @@ CreateIdeaPage.defaultProps = {
 };
 
 CreateIdeaPage.propTypes = {
+    isAuthor: PropTypes.bool,
     onBackClicked: PropTypes.func.isRequired,
     onPublichClicked: PropTypes.func.isRequired,
     onDeleteClicked: PropTypes.func.isRequired,
