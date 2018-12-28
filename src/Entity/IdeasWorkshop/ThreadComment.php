@@ -35,14 +35,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *         "put_status_approve": {
  *             "method": "PUT",
  *             "path": "/thread_comments/{id}/approve",
- *             "requirements": {"id": "\d+"},
+ *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "object.getIdeaAuthor() == user",
  *             "controller": "AppBundle\Controller\Api\ThreadCommentController::approveAction"
  *         },
  *         "put_status_report": {
  *             "method": "PUT",
  *             "path": "/thread_comments/{id}/report",
- *             "requirements": {"id": "\d+"},
+ *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "is_granted('ROLE_ADHERENT') && object.getAuthor() != user",
  *             "controller": "AppBundle\Controller\Api\ThreadCommentController::reportAction"
  *         },
@@ -50,9 +50,16 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     },
  * )
  *
- * @ORM\Table(name="ideas_workshop_comment")
- *
+ * @ORM\Table(name="ideas_workshop_comment",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="threads_comments_uuid_unique", columns="uuid")
+ *     },
+ *     indexes={
+ *         @ORM\Index(name="idea_workshop_thread_comments_status_idx", columns={"status"})
+ *     }
+ * )
  * @ORM\Entity
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  *
  * @Algolia\Index(autoIndex=false)

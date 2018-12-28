@@ -73,7 +73,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can see visibled thread comments for an idea
-    When I send a "GET" request to "/api/threads/1/comments"
+    When I send a "GET" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/comments"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -139,7 +139,7 @@ Feature:
     When I send a "POST" request to "/api/thread_comments" with body:
     """
     {
-      "thread": 1,
+      "thread": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
       "content": "Phasellus vitae enim faucibus"
     }
     """
@@ -171,17 +171,17 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not report a comment
-    When I send a "PUT" request to "/api/thread_comments/1/report"
+    When I send a "PUT" request to "/api/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/report"
     Then the response status code should be 401
 
   Scenario: As a logged-in user I can not approve a comment
     Given I am logged as "carl999@example.fr"
-    When I send a "PUT" request to "/api/thread_comments/1/approve"
+    When I send a "PUT" request to "/api/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/approve"
     Then the response status code should be 403
 
   Scenario: As an idea author, I can approve my comment
     Given I am logged as "jacques.picard@en-marche.fr"
-    When I send a "PUT" request to "/api/thread_comments/1/approve"
+    When I send a "PUT" request to "/api/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/approve"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -211,12 +211,13 @@ Feature:
 
   Scenario: As an comment author, I can not report my comment
     Given I am logged as "benjyd@aol.com"
-    When I send a "PUT" request to "/api/thread_comments/1/report"
+    When I send a "PUT" request to "/api/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/report"
     Then the response status code should be 403
 
+  @wip
   Scenario: As a logged-in user I can report a comment
     Given I am logged as "benjyd@aol.com"
-    When I send a "PUT" request to "/api/thread_comments/2/report"
+    When I send a "PUT" request to "/api/thread_comments/60123090-6cdc-4de6-9cb3-07e2ec411f2f/report"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -245,16 +246,16 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not delete a comment
-    When I send a "DELETE" request to "/api/thread_comments/1"
+    When I send a "DELETE" request to "/api/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d"
     Then the response status code should be 401
 
   Scenario: As a logged-in user I can not delete a comment that is not mine
     When I am logged as "jacques.picard@en-marche.fr"
-    And I send a "DELETE" request to "/api/thread_comments/1"
+    And I send a "DELETE" request to "/api/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d"
     Then the response status code should be 403
 
   Scenario: As a logged-in user I can delete my comment
     When I am logged as "benjyd@aol.com"
-    And I send a "DELETE" request to "/api/thread_comments/1"
+    And I send a "DELETE" request to "/api/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d"
     Then the response status code should be 204
     And the response should be empty

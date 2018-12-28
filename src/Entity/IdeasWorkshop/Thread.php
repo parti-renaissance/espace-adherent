@@ -40,14 +40,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *         "put_status_approve": {
  *             "method": "PUT",
  *             "path": "/threads/{id}/approve",
- *             "requirements": {"id": "\d+"},
+ *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "object.getIdeaAuthor() == user",
  *             "controller": "AppBundle\Controller\Api\ThreadController::approveAction"
  *         },
  *         "put_status_report": {
  *             "method": "PUT",
  *             "path": "/threads/{id}/report",
- *             "requirements": {"id": "\d+"},
+ *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "is_granted('ROLE_ADHERENT') && object.getAuthor() != user",
  *             "controller": "AppBundle\Controller\Api\ThreadController::reportAction"
  *         },
@@ -56,8 +56,16 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * )
  * @ApiFilter(SearchFilter::class, properties={"answer.idea": "exact"})
  *
- * @ORM\Table(name="ideas_workshop_thread")
+ * @ORM\Table(name="ideas_workshop_thread",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="threads_uuid_unique", columns="uuid")
+ *     },
+ *     indexes={
+ *         @ORM\Index(name="idea_workshop_thread_status_idx", columns={"status"})
+ *     }
+ * )
  * @ORM\Entity
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  *
  * @Algolia\Index(autoIndex=false)

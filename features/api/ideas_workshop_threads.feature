@@ -57,7 +57,6 @@ Feature:
     When I send a "GET" request to "/api/threads?answer.idea=2"
     Then the response status code should be 200
     And the response should be in JSON
-    And print last response
     And the JSON should be equal to:
     """
     {
@@ -114,17 +113,17 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not update a thread
-    When I send a "PUT" request to "/api/threads/1/report"
+    When I send a "PUT" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/report"
     Then the response status code should be 401
 
   Scenario: As a logged-in user I can not approved a thread
     Given I am logged as "carl999@example.fr"
-    When I send a "PUT" request to "/api/threads/1/approve"
+    When I send a "PUT" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/approve"
     Then the response status code should be 403
 
   Scenario: As an idea author, I can update thread status to approved
     Given I am logged as "jacques.picard@en-marche.fr"
-    When I send a "PUT" request to "/api/threads/1/approve"
+    When I send a "PUT" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/approve"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -145,19 +144,19 @@ Feature:
 
   Scenario: As an thread author, I can not report my thread
     Given I am logged as "carl999@example.fr"
-    When I send a "PUT" request to "/api/threads/1/report"
+    When I send a "PUT" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/report"
     Then the response status code should be 403
 
   Scenario: As a logged-in user I can report any other thread
     Given I am logged as "carl999@example.fr"
-    When I send a "PUT" request to "/api/threads/2/report"
+    When I send a "PUT" request to "/api/threads/6b077cc4-1cbd-4615-b607-c23009119406/report"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
     """
     {
        "answer":{
-          "id":2
+          "id": 2
        },
        "content":"J'ouvre une discussion sur la solution.",
        "author":{
@@ -170,16 +169,16 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not delete a thread
-    When I send a "DELETE" request to "/api/threads/1"
+    When I send a "DELETE" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1"
     Then the response status code should be 401
 
   Scenario: As a logged-in user I can not delete a thread that is not mine
     Given I am logged as "jacques.picard@en-marche.fr"
-    When I send a "DELETE" request to "/api/threads/1"
+    When I send a "DELETE" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1"
     Then the response status code should be 403
 
   Scenario: As a logged-in user I can delete my thread
     Given I am logged as "carl999@example.fr"
-    When I send a "DELETE" request to "/api/threads/1"
+    When I send a "DELETE" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1"
     Then the response status code should be 204
     And the response should be empty
