@@ -1,5 +1,8 @@
 import { connect } from 'react-redux';
 import CreateIdea from '../index';
+import { DELETE_IDEA_MODAL } from '../../../constants/modalTypes';
+import { showModal } from '../../../redux/actions/modal';
+import { deleteIdea } from '../../../redux/thunk/ideas';
 
 function mapStateToProps(state) {
     // const currentUser = getCurrentUser(state)
@@ -9,12 +12,13 @@ function mapStateToProps(state) {
     return { isAuthor: true, metadata, isEditing: true };
 }
 
-function mapDispatchToProps() {
+function mapDispatchToProps(dispatch) {
     // TODO: replace with actual action creators
     return {
         onBackClicked: () => alert('Retour'),
         onPublishClicked: () => alert('Publier'),
-        onDeleteClicked: () => alert('Supprimer'),
+        onDeleteClicked: () =>
+            dispatch(showModal(DELETE_IDEA_MODAL, { onConfirmDelete: () => dispatch(deleteIdea()) })),
         onSaveClicked: () => alert('Enregistrer'),
     };
 }
