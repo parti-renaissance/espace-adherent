@@ -7,19 +7,63 @@ import Select from '../../../Select';
 class FirstForm extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            inputs: {
+                description: '',
+                theme: '',
+                locality: '',
+            },
+            errors: {
+                form: '',
+                description: '',
+                theme: '',
+                locality: '',
+            },
+        };
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleErrors = this.handleErrors.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleErrors() {
+        let canSubmit = true;
+        const verifErrors = Object.keys(this.state.inputs).reduce((acc, curr) => {
+            if ('' === this.state.inputs[curr]) {
+                // TODO: modify error msg
+                acc[curr] = 'Information manquante';
+                if (!acc.form) {
+                    acc.form = 'Certaines informations sont manquantes ou erronées';
+                }
+                canSubmit = false;
+            }
+            return acc;
+        }, {});
+        this.setState({ errors: verifErrors });
+        return canSubmit;
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        if (this.handleErrors()) this.props.onSubmit(this.state.inputs);
+    }
+
+    handleChange(input, value) {
+        this.setState(prevState => ({
+            ...prevState,
+            inputs: { ...prevState.inputs, [input]: value },
+        }));
     }
 
     render() {
         return (
-            <form class="first-form">
+            <form class="first-form" onSubmit={this.handleSubmit}>
                 <div class="first-form__section">
                     <h2 class="first-form__section__title">Soumettez votre note ici</h2>
-                    {/* TODO: link ici and là */}
                     <p class="first-form__section__subtitle">
 						Une fois ce dernier formulaire rempli, votre note pourra être
 						enrichie{' '}
                         <Link
-                            className="first-form__section__subtitle__link"
+                            className="link"
                             to="/atelier-des-idees/contribuer"
                             target="_blank"
                         >
@@ -28,7 +72,7 @@ class FirstForm extends React.Component {
 						par des contributions d’adhérents pendant 3 semaines. Passé ce
 						délai, elle sera affichée{' '}
                         <Link
-                            className="first-form__section__subtitle__link"
+                            className="link"
                             to="/atelier-des-idees/consulter"
                             target="_blank"
                         >
@@ -44,6 +88,9 @@ class FirstForm extends React.Component {
                     <TextArea
                         maxLength={180}
                         placeholder="Décrivez votre idée (180 caractères max)"
+                        error={this.state.errors.description}
+                        onChange={value => this.handleChange('description', value)}
+                        value={this.state.inputs.description}
                     />
                 </div>
                 <div class="first-form__section">
@@ -53,6 +100,8 @@ class FirstForm extends React.Component {
                         placeholder="Choisissez la(es) thémathique(s) de votre note"
                         subtitle="Ajoutez plusieurs thémathiques si besoin, dans l'ordre de leur importance"
                         isMulti={true}
+                        error={this.state.errors.theme}
+                        onSelected={value => this.handleChange('theme', value)}
                     />
                 </div>
                 <div class="first-form__section">
@@ -62,12 +111,25 @@ class FirstForm extends React.Component {
                     <Select
                         options={this.props.localityOptions}
                         placeholder="Choisissez l'échelle de votre note"
-                        subtitle="Pour un projet local, rapprochez-vous de votre référent via la rubrique contact du site de votre territoire"
+                        subtitle={() => (
+                            <p>
+								Pour un projet local, rapprochez-vous de votre référent via la
+								rubrique contact du {/* TODO: missing a link */}
+                                <Link className="link" to="/atelier-des-idees">
+									site de votre territoire
+                                </Link>
+                            </p>
+                        )}
+                        error={this.state.errors.locality}
+                        onSelected={value => this.handleChange('locality', value)}
                     />
                 </div>
-                <button className="first-form__button button--secondary">
+                <button type="submit" className="first-form__button button--secondary">
 					dernière étape →
                 </button>
+                {this.state.errors.form && (
+                    <p className="first-form__error">{this.state.errors.form}</p>
+                )}
             </form>
         );
     }
@@ -86,6 +148,7 @@ FirstForm.propTypes = {
             label: PropTypes.string.isRequired,
         })
     ).isRequired,
+    onSubmit: PropTypes.func.isRequired,
 };
 
 export default FirstForm;
