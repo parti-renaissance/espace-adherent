@@ -21,6 +21,7 @@ class SecondForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleErrors = this.handleErrors.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.checkIfComittee = this.checkIfComittee.bind(this);
     }
 
     handleErrors() {
@@ -40,6 +41,7 @@ class SecondForm extends React.Component {
             } else {
                 acc[curr] = '';
                 acc.form = '';
+                canSubmit = true;
             }
             return acc;
         }, {});
@@ -53,10 +55,35 @@ class SecondForm extends React.Component {
     }
 
     handleChange(input, value) {
-        this.setState(prevState => ({
-            ...prevState,
-            inputs: { ...prevState.inputs, [input]: value },
-        }));
+        this.setState(
+            prevState => ({
+                ...prevState,
+                inputs: { ...prevState.inputs, [input]: value },
+            }),
+            () => this.checkIfComittee(value)
+        );
+    }
+
+    checkIfComittee(value) {
+        if ('committee' === value[0]) {
+            this.setState(prevState => ({
+                ...prevState,
+                inputs: { ...prevState.inputs, committee: [] },
+                errors: { ...prevState.errors, committee: '' },
+            }));
+        } else if ('alone' === value[0]) {
+            this.setState({
+                errors: (({ author, legal }) => ({
+                    author,
+                    legal,
+                }))(this.state.errors),
+                inputs: (({ author, legal, difficulties }) => ({
+                    author,
+                    legal,
+                    difficulties,
+                }))(this.state.inputs),
+            });
+        }
     }
 
     render() {
@@ -73,6 +100,19 @@ class SecondForm extends React.Component {
                         onSelected={value => this.handleChange('author', value)}
                     />
                 </div>
+                {this.state.inputs.author &&
+					'committee' === this.state.inputs.author[0] && (
+                        <div class="second-form__section">
+                            <label class="second-form__section__label">
+								Nom de votre comité
+                            </label>
+                            <Select
+                                options={this.props.committeeOptions}
+                                error={this.state.errors.committee}
+                                onSelected={value => this.handleChange('committee', value)}
+                            />
+                        </div>
+                    )}
                 <div class="second-form__section">
                     <label class="second-form__section__label">
 						Y-a-t-il une partie qui vous a semblé difficile à remplir ?
@@ -151,6 +191,12 @@ class SecondForm extends React.Component {
 
 SecondForm.propTypes = {
     authorptions: PropTypes.arrayOf(
+        PropTypes.shape({
+            value: PropTypes.string.isRequired,
+            label: PropTypes.string.isRequired,
+        })
+    ).isRequired,
+    committeeOptions: PropTypes.arrayOf(
         PropTypes.shape({
             value: PropTypes.string.isRequired,
             label: PropTypes.string.isRequired,
