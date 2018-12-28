@@ -1,6 +1,7 @@
 @import './QuestionBlock/style';
 @import './CreateIdeaActions/style';
 @import './CreateIdeaTool/style';
+@import './IdeaPageTitle/style';
 
 .create-idea-page {
   border-top: 1px solid $gainsboro;
@@ -19,7 +20,10 @@
       color: $saphir;
     }
     .create-idea-actions__back {
-      margin-right: 20px;
+      margin-right: 40px;
+    }
+    .create-idea-actions {
+      margin-left: 25px;
     }
   }
 
