@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Switch from '../../components/Switch';
+import IdeaReader from '../../components/IdeaReader';
 import CreateIdeaActions from './CreateIdeaActions';
 import CreateIdeaTool from './CreateIdeaTool';
 import { FIRST_QUESTIONS, SECOND_QUESTIONS } from './constants/questions';
@@ -19,6 +20,7 @@ class CreateIdeaPage extends React.Component {
         this.state = { values, readingMode: false };
         this.onQuestionTextChange = this.onQuestionTextChange.bind(this);
         this.onToggleReadingMode = this.onToggleReadingMode.bind(this);
+        this.getParagraphs = this.getParagraphs.bind(this);
     }
 
     onQuestionTextChange(id, value) {
@@ -27,6 +29,16 @@ class CreateIdeaPage extends React.Component {
 
     onToggleReadingMode(toggleValue) {
         this.setState({ readingMode: toggleValue });
+    }
+
+    getParagraphs() {
+        const questions = [...FIRST_QUESTIONS, ...SECOND_QUESTIONS];
+        return questions.reduce((acc, { id }) => {
+            if (this.state.values[id]) {
+                acc.push(this.state.values[id]);
+            }
+            return acc;
+        }, []);
     }
 
     render() {
@@ -48,7 +60,10 @@ class CreateIdeaPage extends React.Component {
                 </div>
                 <div className="create-idea-page__content">
                     <div className="create-idea-page__content__main l__wrapper--medium">
-                        {!this.state.readingMode && (
+                        {/* TODO: add authorName and createdAt props */}
+                        {this.state.readingMode ? (
+                            <IdeaReader title={this.state.values.title} paragraphs={this.getParagraphs()} />
+                        ) : (
                             <CreateIdeaTool
                                 onQuestionTextChange={this.onQuestionTextChange}
                                 values={this.state.values}
