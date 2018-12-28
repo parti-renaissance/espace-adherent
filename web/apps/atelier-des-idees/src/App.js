@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 // pages
 import Home from './pages/Home';
 import ThreeTabs from './pages/ThreeTabs';
-import CreateIdea from './pages/CreateIdea';
+import CreateIdea from './pages/CreateIdea/containers/CreateIdeaPage';
 
 // modal
 import ModalRoot from './containers/ModalRoot';
