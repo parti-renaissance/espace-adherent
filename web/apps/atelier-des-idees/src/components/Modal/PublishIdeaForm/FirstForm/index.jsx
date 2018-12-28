@@ -28,13 +28,15 @@ class FirstForm extends React.Component {
     handleErrors() {
         let canSubmit = true;
         const verifErrors = Object.keys(this.state.inputs).reduce((acc, curr) => {
-            if (!this.state.inputs[curr] || !this.state.inputs[curr].length) {
+            if (!this.state.inputs[curr].length) {
                 // TODO: modify error msg
                 acc[curr] = 'Information manquante';
                 if (!acc.form) {
                     acc.form = 'Certaines informations sont manquantes ou erronées';
                 }
                 canSubmit = false;
+            } else {
+                acc[curr] = '';
             }
             return acc;
         }, {});
