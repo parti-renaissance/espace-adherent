@@ -46,7 +46,7 @@ class Answer
      * @Assert\Length(max=1700)
      * @Assert\NotBlank(message="answer.content.not_blank", groups={"idea_publish"})
      *
-     * @SymfonySerializer\Groups({"idea_write", "idea_publish"})
+     * @SymfonySerializer\Groups({"idea_write", "idea_publish", "idea_read"})
      */
     private $content;
 
@@ -54,7 +54,7 @@ class Answer
      * @ORM\ManyToOne(targetEntity="Question")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      *
-     * @SymfonySerializer\Groups({"idea_write", "idea_publish"})
+     * @SymfonySerializer\Groups({"idea_write", "idea_publish", "idea_read"})
      */
     private $question;
 

@@ -4,12 +4,12 @@ namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AuthorInterface;
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntityNameSlugTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use AppBundle\Entity\Report\ReportableInterface;
@@ -41,7 +41,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *         }
  *     },
  *     itemOperations={
- *         "get": {"method": "GET"},
+ *         "get": {
+ *             "method": "GET",
+ *             "normalization_context": {"groups": {"idea_read"}}
+ *         },
  *         "put": {"access_control": "object.getAuthor() == user"},
  *         "publish": {
  *             "method": "PUT",
@@ -68,6 +71,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ORM\Table(
  *     name="ideas_workshop_idea",
  *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="idea_uuid_unique", columns="uuid"),
  *         @ORM\UniqueConstraint(name="idea_slug_unique", columns="slug")
  *     },
  *     indexes={
@@ -82,11 +86,28 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  */
 class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInterface
 {
-    use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityNameSlugTrait;
 
     private const PUBLISHED_INTERVAL = 'P3W';
+
+    /**
+     * @ApiProperty(identifier=false)
+     *
+     * @ORM\Id
+     * @ORM\Column(type="integer", options={"unsigned": true})
+     * @ORM\GeneratedValue
+     */
+    protected $id;
+
+    /**
+     * @ApiProperty(identifier=true)
+     *
+     * @ORM\Column(type="uuid")
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "my_committees", "thread_comment_read"})
+     */
+    protected $uuid;
 
     /**
      * @ORM\Column
@@ -133,7 +154,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      *
      * @Assert\NotNull(message="idea.author.not_null", groups={"idea_publish"})
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish", "idea_read"})
      */
     private $author;
 
@@ -144,7 +165,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      *
      * @Assert\NotNull(message="idea.published_at.not_null", groups={"idea_publish"})
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish", "idea_read"})
      */
     private $publishedAt;
 
@@ -162,7 +183,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      *
      * @Assert\Choice(
      *     callback={"AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum", "toArray"},
-     *     strict=true
+     *     strict=true,
      * )
      *
      * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
@@ -175,7 +196,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      * @Assert\Count(min=1, minMessage="idea.answers.min_count", groups={"idea_publish"})
      * @Assert\Valid
      *
-     * @SymfonySerializer\Groups({"idea_write", "idea_publish"})
+     * @SymfonySerializer\Groups({"idea_write", "idea_publish", "idea_read"})
      */
     private $answers;
 
@@ -189,7 +210,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
     /**
      * @ORM\Column(type="integer", options={"unsigned": true})
      *
-     * @SymfonySerializer\Groups("idea_list_read")
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_read"})
      */
     private $votesCount = 0;
 
@@ -236,6 +257,16 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
         $this->answers = new ArrayCollection();
         $this->votes = new ArrayCollection();
         $this->createdAt = $createdAt ?: new \DateTime();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     public static function getVisibleStatuses(): array

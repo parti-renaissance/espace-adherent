@@ -16,7 +16,7 @@ Feature:
     And I send a "POST" request to "/api/votes" with body:
     """
     {
-      "idea": 1,
+      "idea": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
       "type": "important"
     }
     """
@@ -40,7 +40,7 @@ Feature:
     And I send a "POST" request to "/api/votes" with body:
     """
     {
-      "idea": 1,
+      "idea": e4ac3efc-b539-40ac-9417-b60df432bdc5,
       "type": "important"
     }
     """

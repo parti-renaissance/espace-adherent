@@ -27,9 +27,11 @@ class IdeasWorkshopNormalizer implements NormalizerInterface
     {
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        if (\in_array('idea_list_read', $context['groups'])) {
-            $data['contributors_count'] = $this->ideaRepository->countIdeaContributors($object);
-            $data['comments_count'] = $this->ideaRepository->countThreadComments($object);
+        if (\in_array('idea_list_read', $context['groups']) || \in_array('idea_read', $context['groups'])) {
+            if (\in_array('idea_list_read', $context['groups'])) {
+                $data['contributors_count'] = $this->ideaRepository->countIdeaContributors($object);
+                $data['comments_count'] = $this->ideaRepository->countThreadComments($object);
+            }
 
             $data['votes_count'] = array_merge(
                 $this->ideaRepository->countVotesByType($object),

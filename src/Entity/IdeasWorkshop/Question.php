@@ -28,6 +28,8 @@ class Question
     /**
      * @var int
      *
+     * @SymfonySerializer\Groups("idea_read")
+     *
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue

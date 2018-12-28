@@ -464,7 +464,7 @@ Feature:
             "total": 0,
             "my_votes": []
         },
-        "uuid": "@string@",
+        "uuid": "@uuid@",
         "author_category": "ADHERENT",
         "description": null,
         "created_at": "@string@.isDateTime()",
@@ -552,7 +552,7 @@ Feature:
         },
         "author_category": "QG",
         "description": "Mon idée",
-        "uuid": "@string@",
+        "uuid": "@uuid@",
         "created_at": "@string@.isDateTime()",
         "slug": "mon-idee",
         "days_before_deadline": @integer@,
@@ -564,7 +564,7 @@ Feature:
   Scenario: As a logged-in user I can modify my idea
     Given I am logged as "jacques.picard@en-marche.fr"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/ideas/1" with body:
+    And I send a "PUT" request to "/api/ideas/e4ac3efc-b539-40ac-9417-b60df432bdc5" with body:
     """
     {
       "name": "Mon idée 2",
@@ -797,38 +797,38 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not delete an idea
-    When I send a "DELETE" request to "/api/ideas/1"
+    When I send a "DELETE" request to "/api/ideas/e4ac3efc-b539-40ac-9417-b60df432bdc5"
     Then the response status code should be 401
 
   Scenario: As a logged-in user I can not delete an idea that is not mine
     When I am logged as "jacques.picard@en-marche.fr"
-    And I send a "DELETE" request to "/api/ideas/3"
+    And I send a "DELETE" request to "/api/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285"
     Then the response status code should be 403
 
   Scenario: As a logged-in user I can delete my idea
     When I am logged as "jacques.picard@en-marche.fr"
-    And I send a "DELETE" request to "/api/ideas/1"
+    And I send a "DELETE" request to "/api/ideas/e4ac3efc-b539-40ac-9417-b60df432bdc5"
     Then the response status code should be 204
     And the response should be empty
 
   Scenario: As a non logged-in user I can not publish an idea
-    When I send a "PUT" request to "/api/ideas/3/publish"
+    When I send a "PUT" request to "/api/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285/publish"
     Then the response status code should be 401
 
   Scenario: As a logged-in user I can not publish an idea that is not mine
     Given I am logged as "jacques.picard@en-marche.fr"
-    When I send a "PUT" request to "/api/ideas/3/publish"
+    When I send a "PUT" request to "/api/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285/publish"
     Then the response status code should be 403
 
   Scenario: As a logged-in user I can not publish an idea that has another status than PENDING at the moment of execution
     Given I am logged as "jacques.picard@en-marche.fr"
-    When I send a "PUT" request to "/api/ideas/4/publish"
+    When I send a "PUT" request to "/api/ideas/c14937d6-fd42-465c-8419-ced37f3e6194/publish"
     Then the response status code should be 403
 
   Scenario: As a logged-in user I get errors when I publish my idea with few data
     Given I am logged as "jacques.picard@en-marche.fr"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/ideas/5/publish" with body:
+    And I send a "PUT" request to "/api/ideas/9529e98c-2524-486f-a6ed-e2d707dc99ea/publish" with body:
     """
     {
       "name": "Mon idée"
@@ -870,7 +870,7 @@ Feature:
   Scenario: As a logged-in user I can publish my idea in the status DRAFT
     Given I am logged as "benjyd@aol.com"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/ideas/3/publish" with body:
+    And I send a "PUT" request to "/api/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285/publish" with body:
     """
     {
       "name": "Mon idée 2",
@@ -939,5 +939,105 @@ Feature:
        "days_before_deadline":@integer@,
        "contributors_count":0,
        "comments_count":0
+    }
+    """
+
+  Scenario: As a logged-in user I can get full information about one idea
+    Given I am logged as "benjyd@aol.com"
+    And I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas/e4ac3efc-b539-40ac-9417-b60df432bdc5"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "author": {
+            "first_name": "Jacques",
+            "last_name": "Picard"
+        },
+        "published_at": "@string@.isDateTime()",
+        "answers": [
+            {
+                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce aliquet, mi condimentum venenatis vestibulum, arcu neque feugiat massa, at pharetra velit sapien et elit. Sed vitae hendrerit nulla. Vivamus consectetur magna at tincidunt maximus. Aenean dictum metus vel tellus posuere venenatis.",
+                "question": {
+                    "id": 1
+                }
+            },
+            {
+                "content": "Nulla metus enim, congue eu facilisis ac, consectetur ut ipsum. ",
+                "question": {
+                    "id": 2
+                }
+            },
+            {
+                "content": "Mauris gravida semper tincidunt.",
+                "question": {
+                    "id": 3
+                }
+            },
+            {
+                "content": "Donec ac neque congue, condimentum ipsum ac, eleifend ex.",
+                "question": {
+                    "id": 4
+                }
+            },
+            {
+                "content": "Suspendisse interdum quis tortor quis sodales. Suspendisse vel mollis orci.",
+                "question": {
+                    "id": 5
+                }
+            },
+            {
+                "content": "Proin et quam a tortor pretium fringilla non et magna.",
+                "question": {
+                    "id": 6
+                }
+            },
+            {
+                "content": "Orci varius natoque penatibus et magnis dis parturient montes",
+                "question": {
+                    "id": 7
+                }
+            },
+            {
+                "content": "Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex.",
+                "question": {
+                    "id": 8
+                }
+            }
+        ],
+        "votes_count": {
+            "important": "6",
+            "feasible": "4",
+            "innovative": "5",
+            "total": 15,
+            "my_votes": [
+                "feasible",
+                "important"
+            ]
+        }
+    }
+    """
+
+  Scenario: As a non logged-in user I can get full information about one idea
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas/c14937d6-fd42-465c-8419-ced37f3e6194"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "author": {
+            "first_name": "Jacques",
+            "last_name": "Picard"
+        },
+        "published_at": "2018-12-04T10:00:00+01:00",
+        "answers": [],
+        "votes_count": {
+            "important": 0,
+            "feasible": 0,
+            "innovative": 0,
+            "total": 0
+        }
     }
     """

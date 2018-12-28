@@ -17,6 +17,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
     public const IDEA_02_UUID = '3b1ea810-115f-4b2c-944d-34a55d7b7e4d';
     public const IDEA_03_UUID = 'aa093ce6-8b20-4d86-bfbc-91a73fe47285';
     public const IDEA_04_UUID = 'c14937d6-fd42-465c-8419-ced37f3e6194';
+    public const IDEA_05_UUID = '9529e98c-2524-486f-a6ed-e2d707dc99ea';
 
     public function load(ObjectManager $manager)
     {
@@ -95,7 +96,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             null,
             IdeaStatusEnum::DRAFT,
             $adherent3,
-            Uuid::fromString(self::IDEA_04_UUID),
+            Uuid::fromString(self::IDEA_05_UUID),
             new \DateTime('-1 minute')
         );
         $this->addReference('idea-reduce-pupils', $ideaReducePupils);
