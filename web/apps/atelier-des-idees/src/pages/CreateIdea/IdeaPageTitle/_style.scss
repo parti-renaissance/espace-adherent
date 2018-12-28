@@ -1,0 +1,16 @@
+.idea-page-title {
+  .idea-page-title__title {
+    margin: 0;
+    margin-bottom: 20px;
+    font-family: $font-roboto;
+  }
+
+  .idea-page-title__info {
+    margin-bottom: 40px;
+    color: $sonic-silver;
+
+    &__author-name {
+      color: $black;
+    }
+  }
+}

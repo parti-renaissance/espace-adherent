@@ -1,19 +1,4 @@
 .idea-reader {
-  .idea-reader__title {
-    margin: 0;
-    margin-bottom: 20px;
-    font-family: $font-roboto;
-  }
-
-  .idea-reader__info {
-    margin-bottom: 40px;
-    color: $sonic-silver;
-
-    &__author-name {
-      color: $black;
-    }
-  }
-
   .idea-reader__content__paragraph {
     color: $light-black;
   }
