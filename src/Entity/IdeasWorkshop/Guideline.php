@@ -3,19 +3,33 @@
 namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use ApiPlatform\Core\Annotation\ApiResource;
+use AppBundle\Entity\EnabledInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
+ * @ApiResource(
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"guideline_read"}
+ *         },
+ *         "order": {"position": "ASC"},
+ *         "pagination_enabled": false,
+ *     },
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"},
+ * )
  * @ORM\Table(name="ideas_workshop_guideline")
  * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Guideline
+class Guideline implements EnabledInterface
 {
     /**
      * @var int
@@ -37,6 +51,9 @@ class Guideline
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Question", mappedBy="guideline")
+     * @ORM\OrderBy({"position": "ASC"})
+     *
+     * @SymfonySerializer\Groups("guideline_read")
      */
     private $questions;
 
@@ -46,11 +63,15 @@ class Guideline
      * @Gedmo\SortablePosition
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
+     *
+     * @SymfonySerializer\Groups("guideline_read")
      */
     private $position;
 
     /**
      * @ORM\Column
+     *
+     * @SymfonySerializer\Groups("guideline_read")
      */
     private $name;
 
