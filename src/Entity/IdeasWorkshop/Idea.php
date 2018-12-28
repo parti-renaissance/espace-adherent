@@ -4,12 +4,12 @@ namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AuthorInterface;
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntityNameSlugTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use AppBundle\Entity\Report\ReportableInterface;
@@ -71,6 +71,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ORM\Table(
  *     name="ideas_workshop_idea",
  *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="idea_uuid_unique", columns="uuid"),
  *         @ORM\UniqueConstraint(name="idea_slug_unique", columns="slug")
  *     },
  *     indexes={
@@ -85,13 +86,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  */
 class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInterface
 {
-    use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityNameSlugTrait;
 
     private const PUBLISHED_INTERVAL = 'P3W';
 
-	
     /**
      * @ApiProperty(identifier=false)
      *

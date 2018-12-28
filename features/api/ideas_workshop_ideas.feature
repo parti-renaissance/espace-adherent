@@ -790,23 +790,23 @@ Feature:
     And the response should be empty
 
   Scenario: As a non logged-in user I can not publish an idea
-    When I send a "PUT" request to "/api/ideas/3/publish"
+    When I send a "PUT" request to "/api/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285/publish"
     Then the response status code should be 401
 
   Scenario: As a logged-in user I can not publish an idea that is not mine
     Given I am logged as "jacques.picard@en-marche.fr"
-    When I send a "PUT" request to "/api/ideas/3/publish"
+    When I send a "PUT" request to "/api/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285/publish"
     Then the response status code should be 403
 
   Scenario: As a logged-in user I can not publish an idea that has another status than PENDING at the moment of execution
     Given I am logged as "jacques.picard@en-marche.fr"
-    When I send a "PUT" request to "/api/ideas/4/publish"
+    When I send a "PUT" request to "/api/ideas/c14937d6-fd42-465c-8419-ced37f3e6194/publish"
     Then the response status code should be 403
 
   Scenario: As a logged-in user I get errors when I publish my idea with few data
     Given I am logged as "jacques.picard@en-marche.fr"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/ideas/5/publish" with body:
+    And I send a "PUT" request to "/api/ideas/9529e98c-2524-486f-a6ed-e2d707dc99ea/publish" with body:
     """
     {
       "name": "Mon idée"
@@ -848,7 +848,7 @@ Feature:
   Scenario: As a logged-in user I can publish my idea in the status DRAFT
     Given I am logged as "benjyd@aol.com"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/ideas/3/publish" with body:
+    And I send a "PUT" request to "/api/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285/publish" with body:
     """
     {
       "name": "Mon idée 2",
@@ -931,7 +931,7 @@ Scenario: As a logged-in user I can get full information about one idea
             "first_name": "Jacques",
             "last_name": "Picard"
         },
-        "published_at": "2018-12-01T10:00:00+01:00",
+        "published_at": "@string@.isDateTime()",
         "answers": [
             {
                 "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce aliquet, mi condimentum venenatis vestibulum, arcu neque feugiat massa, at pharetra velit sapien et elit. Sed vitae hendrerit nulla. Vivamus consectetur magna at tincidunt maximus. Aenean dictum metus vel tellus posuere venenatis.",
