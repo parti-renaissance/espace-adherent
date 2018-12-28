@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Switch from '../../components/Switch';
 import IdeaReader from '../../components/IdeaReader';
 import CreateIdeaActions from './CreateIdeaActions';
+import IdeaPageTitle from './IdeaPageTitle';
 import CreateIdeaTool from './CreateIdeaTool';
 import { FIRST_QUESTIONS, SECOND_QUESTIONS } from './constants/questions';
 
@@ -60,18 +61,19 @@ class CreateIdeaPage extends React.Component {
                 </div>
                 <div className="create-idea-page__content">
                     <div className="create-idea-page__content__main l__wrapper--medium">
-                        {/* TODO: add authorName and createdAt props */}
+                        <IdeaPageTitle
+                            authorName={this.props.metadata.authorName}
+                            createdAt={this.props.metadata.createdAt}
+                            title={this.state.values.title}
+                            isEditing={this.props.isEditing && !this.state.readingMode}
+                        />
                         {this.state.readingMode ? (
-                            <IdeaReader
-                                authorName={this.props.metadata.authorName}
-                                createdAt={this.props.metadata.createdAt}
-                                paragraphs={this.getParagraphs()}
-                                title={this.state.values.title}
-                            />
+                            <IdeaReader paragraphs={this.getParagraphs()} />
                         ) : (
                             <CreateIdeaTool
                                 onQuestionTextChange={this.onQuestionTextChange}
                                 values={this.state.values}
+                                isEditing={this.props.isEditing}
                             />
                         )}
                         <div className="create-idea-page__footer">
@@ -93,11 +95,13 @@ class CreateIdeaPage extends React.Component {
 CreateIdeaPage.defaultProps = {
     isAuthor: false,
     metadata: {},
+    isEditing: false,
 };
 
 CreateIdeaPage.propTypes = {
     isAuthor: PropTypes.bool,
     metadata: PropTypes.shape({ authorName: PropTypes.string.isRequired, createdAt: PropTypes.string }),
+    isEditing: PropTypes.bool,
     onBackClicked: PropTypes.func.isRequired,
     onPublichClicked: PropTypes.func.isRequired,
     onDeleteClicked: PropTypes.func.isRequired,

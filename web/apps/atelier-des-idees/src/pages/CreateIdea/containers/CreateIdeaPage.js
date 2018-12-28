@@ -6,7 +6,7 @@ function mapStateToProps(state) {
     // const metadata = { authorName: currentUser.name, createdAt: new Date().toLocaleDateString() };
     // TODO: uncomment above and remove below
     const metadata = { authorName: 'Killian Mbappé', createdAt: new Date().toLocaleDateString() };
-    return { isAuthor: true, metadata };
+    return { isAuthor: true, metadata, isEditing: true };
 }
 
 function mapDispatchToProps() {
