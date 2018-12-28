@@ -8,6 +8,10 @@ const props = {
         { value: 'alone', label: 'Seul' },
         { value: 'committee', label: 'Mon comité' },
     ],
+    committeeOptions: [
+        { value: 'comittee_1', label: 'Comité 1' },
+        { value: 'comittee_2', label: 'Comité 2' },
+    ],
     difficultiesOptions: [
         { value: 'juridique', label: 'Juridique' },
         { value: 'finance', label: 'Finance' },
