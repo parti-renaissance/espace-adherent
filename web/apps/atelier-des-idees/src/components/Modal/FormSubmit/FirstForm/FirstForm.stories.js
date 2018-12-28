@@ -1,5 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 import FirstForm from '.';
 
 const props = {
@@ -14,8 +15,10 @@ const props = {
         { value: 'national', label: 'National' },
         { value: 'european', label: 'Européen' },
     ],
-}
+};
 
 storiesOf('FirstForm', module)
     .addParameters({ jest: ['FirstForm'] })
-    .add('default', () => <FirstForm {...props}/>);
+    .add('default', () => (
+        <FirstForm {...props} onSubmit={action('first form')} />
+    ));
