@@ -6,12 +6,14 @@ import { selectModalData } from '../../redux/selectors/modal';
 
 // components
 import ReportsModal from '../../components/Modal/ReportsModal';
+import PublishIdeaForm from '../../components/Modal/PublishIdeaForm';
 
 const MODAL_COMPONENTS = {
     // to use a modal, just add it below with its corresponding type
     // ex:
     // modalTypes.TEST_MODAL: TestModal,
     REPORTS_MODAL: ReportsModal,
+    PUBLISH_IDEA_MODAL: PublishIdeaForm,
 };
 
 class ModalRoot extends React.Component {
