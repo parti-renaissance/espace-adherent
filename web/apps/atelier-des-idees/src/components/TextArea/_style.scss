@@ -1,7 +1,6 @@
 .text-area {
-	position: relative;
-
 	.text-area__input {
+		position: relative;
 		width: 100%;
 		min-height: 120px;
 		resize: none;
@@ -20,8 +19,8 @@
 
 	.text-area__counter {
 		position: absolute;
-		right: 15px;
-		bottom: 20px;
+		right: 25px;
+		bottom: 25px;
 		color: $ash-grey;
 		font-size: 14px;
 	}
