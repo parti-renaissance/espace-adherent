@@ -62,7 +62,12 @@ class CreateIdeaPage extends React.Component {
                     <div className="create-idea-page__content__main l__wrapper--medium">
                         {/* TODO: add authorName and createdAt props */}
                         {this.state.readingMode ? (
-                            <IdeaReader title={this.state.values.title} paragraphs={this.getParagraphs()} />
+                            <IdeaReader
+                                authorName={this.props.metadata.authorName}
+                                createdAt={this.props.metadata.createdAt}
+                                paragraphs={this.getParagraphs()}
+                                title={this.state.values.title}
+                            />
                         ) : (
                             <CreateIdeaTool
                                 onQuestionTextChange={this.onQuestionTextChange}
@@ -85,17 +90,14 @@ class CreateIdeaPage extends React.Component {
     }
 }
 
-// TODO: remove default props when linking to proper callbacks
 CreateIdeaPage.defaultProps = {
-    isAuthor: true,
-    onBackClicked: () => alert('Retour'),
-    onPublichClicked: () => alert('Publier'),
-    onDeleteClicked: () => alert('Supprimer'),
-    onSaveClicked: () => alert('Enregistrer'),
+    isAuthor: false,
+    metadata: {},
 };
 
 CreateIdeaPage.propTypes = {
     isAuthor: PropTypes.bool,
+    metadata: PropTypes.shape({ authorName: PropTypes.string.isRequired, createdAt: PropTypes.string }),
     onBackClicked: PropTypes.func.isRequired,
     onPublichClicked: PropTypes.func.isRequired,
     onDeleteClicked: PropTypes.func.isRequired,
