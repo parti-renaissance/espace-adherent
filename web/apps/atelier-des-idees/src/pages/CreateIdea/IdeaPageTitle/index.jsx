@@ -8,7 +8,7 @@ function IdeaPageTitle(props) {
             {props.isEditing ? (
                 <TextArea
                     maxLength={120}
-                    onChange={value => props.onTitleChange('title', value)}
+                    onChange={props.onTitleChange}
                     placeholder="Titre de l'idée"
                     value={props.title}
                 />
@@ -38,6 +38,7 @@ IdeaPageTitle.defaultProps = {
 IdeaPageTitle.propTypes = {
     authorName: PropTypes.string,
     createdAt: PropTypes.string,
+    onTitleChange: PropTypes.func.isRequired,
     isEditing: PropTypes.bool,
     title: PropTypes.string.isRequired,
 };
