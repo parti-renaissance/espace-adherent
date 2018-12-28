@@ -7,11 +7,12 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use AppBundle\Entity\EntityPublishableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *     collectionOperations={"get"},
+ *     collectionOperations={},
  *     itemOperations={"get"},
  * )
  *
@@ -30,6 +31,8 @@ class Question
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
+     *
+     * @SymfonySerializer\Groups("guideline_read")
      */
     private $id;
 
@@ -42,6 +45,8 @@ class Question
 
     /**
      * @ORM\Column
+     *
+     * @SymfonySerializer\Groups("guideline_read")
      */
     private $placeholder;
 
@@ -51,16 +56,22 @@ class Question
      * @Gedmo\SortablePosition
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
+     *
+     * @SymfonySerializer\Groups("guideline_read")
      */
     private $position;
 
     /**
      * @ORM\Column
+     *
+     * @SymfonySerializer\Groups("guideline_read")
      */
     private $name;
 
     /**
      * @ORM\Column(type="boolean")
+     *
+     * @SymfonySerializer\Groups("guideline_read")
      */
     private $required;
 
