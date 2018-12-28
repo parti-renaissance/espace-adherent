@@ -2,11 +2,12 @@
 
 namespace AppBundle\Entity\IdeasWorkshop;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntitySoftDeletableTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
@@ -14,10 +15,27 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  */
 abstract class BaseComment
 {
-    use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
     use EntityThreadCommentStatusTrait;
+
+    /**
+     * @ApiProperty(identifier=false)
+     *
+     * @ORM\Id
+     * @ORM\Column(type="integer", options={"unsigned": true})
+     * @ORM\GeneratedValue
+     */
+    protected $id;
+
+    /**
+     * @ApiProperty(identifier=true)
+     *
+     * @ORM\Column(type="uuid")
+     *
+     * @SymfonySerializer\Groups("thread_comment_read")
+     */
+    protected $uuid;
 
     /**
      * @ORM\Column(type="text")
@@ -37,6 +55,11 @@ abstract class BaseComment
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     public function getAuthor(): Adherent
