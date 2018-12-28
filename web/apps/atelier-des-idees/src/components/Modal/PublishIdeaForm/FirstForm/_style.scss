@@ -1,0 +1,30 @@
+.first-form {
+	overflow-x: hidden;
+
+	&__section {
+		margin-bottom: 35px;
+
+		&__label {
+			display: inline-block;
+			margin-bottom: 15px;
+			font-weight: bold;
+		}
+	}
+
+	&__button {
+		width: 100%;
+		margin-bottom: 10px;
+	}
+
+	.link {
+		text-decoration: none;
+		color: $saphir;
+	}
+
+	&__error {
+		text-align: center;
+		margin: 5px 0 0;
+		font-size: 12px;
+		color: $giants-orange;
+	}
+}
