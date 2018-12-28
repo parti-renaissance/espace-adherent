@@ -27,10 +27,13 @@ class SecondForm extends React.Component {
     handleErrors() {
         let canSubmit = true;
         const verifErrors = Object.keys(this.state.inputs).reduce((acc, curr) => {
+            // if attribute is in state.errors : input is required
             const isRequired = Object.keys(this.state.errors).includes(curr);
+            // check if it's an array
             const isArrayEmpty =
 				Array.isArray(this.state.inputs[curr]) &&
 				!this.state.inputs[curr].length;
+            // check array is not empty and boolean is true
             if (isRequired && (!this.state.inputs[curr] || isArrayEmpty)) {
                 // TODO: modify error msg
                 acc[curr] = 'Information manquante';
@@ -60,7 +63,7 @@ class SecondForm extends React.Component {
                 ...prevState,
                 inputs: { ...prevState.inputs, [input]: value },
             }),
-            () => this.checkIfComittee(value)
+            () => 'author' === input && this.checkIfComittee(value)
         );
     }
 
@@ -68,21 +71,26 @@ class SecondForm extends React.Component {
         if ('committee' === value[0]) {
             this.setState(prevState => ({
                 ...prevState,
+                // add committee attribute to inputs
                 inputs: { ...prevState.inputs, committee: [] },
+                // committee is required
                 errors: { ...prevState.errors, committee: '' },
             }));
-        } else if ('alone' === value[0]) {
-            this.setState({
-                errors: (({ author, legal }) => ({
-                    author,
-                    legal,
-                }))(this.state.errors),
-                inputs: (({ author, legal, difficulties }) => ({
-                    author,
-                    legal,
-                    difficulties,
-                }))(this.state.inputs),
-            });
+        } else {
+            // value === alone
+            // remove committee atributes
+            this.setState(prevState => ({
+                ...prevState,
+                errors: {
+                    author: prevState.errors.author,
+                    legal: prevState.errors.legal,
+                },
+                inputs: {
+                    author: prevState.inputs.author,
+                    difficulties: prevState.inputs.difficulties,
+                    legal: prevState.inputs.legal,
+                },
+            }));
         }
     }
 
@@ -100,19 +108,18 @@ class SecondForm extends React.Component {
                         onSelected={value => this.handleChange('author', value)}
                     />
                 </div>
-                {this.state.inputs.author &&
-					'committee' === this.state.inputs.author[0] && (
-                        <div class="second-form__section">
-                            <label class="second-form__section__label">
-								Nom de votre comité
-                            </label>
-                            <Select
-                                options={this.props.committeeOptions}
-                                error={this.state.errors.committee}
-                                onSelected={value => this.handleChange('committee', value)}
-                            />
-                        </div>
-                    )}
+                {'committee' === this.state.inputs.author[0] && (
+                    <div class="second-form__section">
+                        <label class="second-form__section__label">
+							Nom de votre comité
+                        </label>
+                        <Select
+                            options={this.props.committeeOptions}
+                            error={this.state.errors.committee}
+                            onSelected={value => this.handleChange('committee', value)}
+                        />
+                    </div>
+                )}
                 <div class="second-form__section">
                     <label class="second-form__section__label">
 						Y-a-t-il une partie qui vous a semblé difficile à remplir ?
