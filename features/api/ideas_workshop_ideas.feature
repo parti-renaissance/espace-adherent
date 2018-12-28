@@ -455,7 +455,7 @@ Feature:
         "created_at": "@string@.isDateTime()",
         "name": "Mon idée",
         "slug": "mon-idee",
-        "days_before_deadline": 20,
+        "days_before_deadline": @integer@,
         "contributors_count": 0,
         "comments_count": 0
     }

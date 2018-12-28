@@ -26,7 +26,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
         $threadAQProblemAdherent2 = $this->getReference('thread-aq-problem');
         $threadAQCompareAdherent5 = $this->getReference('thread-aq-compare');
 
-        $commentFromAdherent6 = new ThreadComment(
+        $commentFromAdherent6 = ThreadComment::create(
             Uuid::fromString(self::THREAD_COMMENT_01_UUID),
             'Aenean viverra efficitur lorem',
             $this->getReference('adherent-6'),
@@ -35,7 +35,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
             new \DateTime('-4 minutes')
         );
 
-        $commentFromAdherent7 = new ThreadComment(
+        $commentFromAdherent7 = ThreadComment::create(
             Uuid::fromString(self::THREAD_COMMENT_02_UUID),
             'Lorem Ipsum Commentaris',
             $this->getReference('adherent-7'),
@@ -44,7 +44,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
             new \DateTime('-3 minutes')
         );
 
-        $commentFromAdherent8 = new ThreadComment(
+        $commentFromAdherent8 = ThreadComment::create(
             Uuid::fromString(self::THREAD_COMMENT_03_UUID),
             'Commentaire d\'un référent',
             $this->getReference('adherent-8'),
@@ -53,7 +53,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
             new \DateTime('-2 minutes')
         );
 
-        $commentFromAdherent9 = new ThreadComment(
+        $commentFromAdherent9 = ThreadComment::create(
             Uuid::fromString(self::THREAD_COMMENT_04_UUID),
             'Commentaire de Laura',
             $this->getReference('adherent-9'),
@@ -62,7 +62,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
             new \DateTime('-1 minute')
         );
 
-        $commentRefused = new ThreadComment(
+        $commentRefused = ThreadComment::create(
             Uuid::fromString(self::THREAD_COMMENT_05_UUID),
             'Commentaire refusé',
             $this->getReference('adherent-9'),
@@ -70,8 +70,8 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
             ThreadCommentStatusEnum::REFUSED
         );
 
-        $commentReported = new ThreadComment(
-                Uuid::fromString(self::THREAD_COMMENT_06_UUID),
+        $commentReported = ThreadComment::create(
+            Uuid::fromString(self::THREAD_COMMENT_06_UUID),
             'Commentaire signalé',
             $this->getReference('adherent-9'),
             $threadAQCompareAdherent5,
