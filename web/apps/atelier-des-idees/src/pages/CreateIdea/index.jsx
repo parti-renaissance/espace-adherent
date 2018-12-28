@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextArea from '../../components/TextArea';
-import QuestionBlock from './QuestionBlock';
 import CreateIdeaActions from './CreateIdeaActions';
+import CreateIdeaTool from './CreateIdeaTool';
 import { FIRST_QUESTIONS, SECOND_QUESTIONS } from './constants/questions';
 
 function getInitialState(questions = []) {
@@ -16,6 +15,7 @@ class CreateIdeaPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = { title: '', ...getInitialState(FIRST_QUESTIONS), ...getInitialState(SECOND_QUESTIONS) };
+        this.onQuestionTextChange = this.onQuestionTextChange.bind(this);
     }
 
     onQuestionTextChange(id, htmlContent) {
@@ -38,52 +38,7 @@ class CreateIdeaPage extends React.Component {
                 </div>
                 <div className="create-idea-page__content">
                     <div className="create-idea-page__content__main l__wrapper--medium">
-                        <section className="create-idea-page__title-section">
-                            <TextArea
-                                maxLength={120}
-                                onChange={value => this.setState({ title: value })}
-                                placeholder="Titre de l'idée"
-                                value={this.state.title}
-                            />
-                        </section>
-                        <section className="create-idea-page__start-section">
-                            <div className="create-idea-page__section-title">
-                                <p className="create-idea-page__section-subtitle">Pour commencer</p>
-                                <h2 className="create-idea-page__section-title__main">
-                                    Quelles sont les caractéristiques principales de votre idée ?
-                                </h2>
-                            </div>
-                            {FIRST_QUESTIONS.map(({ id, label, question, placeholder, canCollapse }, index) => (
-                                <QuestionBlock
-                                    canCollapse={canCollapse}
-                                    key={id}
-                                    label={label}
-                                    question={question}
-                                    placeholder={placeholder}
-                                    nbQuestion={index + 1}
-                                    onTextChange={htmlContent => this.onQuestionTextChange(id, htmlContent)}
-                                />
-                            ))}
-                        </section>
-                        <section className="create-idea-page__continue-section">
-                            <div className="create-idea-page__section-title">
-                                <p className="create-idea-page__section-subtitle">Pour aller plus loin</p>
-                                <h2 className="create-idea-page__section-title__main">
-                                    Votre idée peut-elle être mise en oeuvre ?
-                                </h2>
-                            </div>
-                            {SECOND_QUESTIONS.map(({ id, label, question, placeholder, canCollapse }, index) => (
-                                <QuestionBlock
-                                    canCollapse={canCollapse}
-                                    key={id}
-                                    label={label}
-                                    question={question}
-                                    placeholder={placeholder}
-                                    nbQuestion={FIRST_QUESTIONS.length + index + 1}
-                                    onTextChange={htmlContent => this.onQuestionTextChange(id, htmlContent)}
-                                />
-                            ))}
-                        </section>
+                        <CreateIdeaTool onQuestionTextChange={this.onQuestionTextChange} values={this.state} />
                         <div className="create-idea-page__footer">
                             <CreateIdeaActions
                                 onDeleteClicked={this.props.onDeleteClicked}
