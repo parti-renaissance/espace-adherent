@@ -3,6 +3,7 @@
 namespace AppBundle\Event;
 
 use AppBundle\Address\Address;
+use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
@@ -44,9 +45,10 @@ class EventCommand extends BaseEventCommand
         \DateTimeInterface $beginAt = null,
         \DateTimeInterface $finishAt = null,
         bool $isForLegislatives = false,
-        Event $event = null
+        Event $event = null,
+        string $timezone = GeoCoder::DEFAULT_TIME_ZONE
     ) {
-        parent::__construct($author, $uuid, $address, $beginAt, $finishAt, $event);
+        parent::__construct($author, $uuid, $address, $beginAt, $finishAt, $event, $timezone);
 
         $this->committee = $committee;
         $this->isForLegislatives = $isForLegislatives;
@@ -62,7 +64,8 @@ class EventCommand extends BaseEventCommand
             $event->getBeginAt(),
             $event->getFinishAt(),
             $event->isForLegislatives(),
-            $event
+            $event,
+            $event->getTimeZone()
         );
 
         $command->category = $event->getCategory();

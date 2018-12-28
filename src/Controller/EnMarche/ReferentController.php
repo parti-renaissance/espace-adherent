@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Jecoute\Survey;
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
@@ -119,9 +120,10 @@ class ReferentController extends Controller
      * @Route("/evenements/creer", name="app_referent_events_create")
      * @Method("GET|POST")
      */
-    public function eventsCreateAction(Request $request): Response
+    public function eventsCreateAction(Request $request, GeoCoder $geoCoder): Response
     {
         $command = new EventCommand($this->getUser());
+        $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
         $form = $this->createForm(EventCommandType::class, $command);
         $form->handleRequest($request);
 

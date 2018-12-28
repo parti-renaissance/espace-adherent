@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Address\GeoCoder;
 use AppBundle\Committee\CommitteeCommand;
 use AppBundle\Committee\CommitteeContactMembersCommand;
 use AppBundle\Entity\Adherent;
@@ -59,9 +60,10 @@ class CommitteeManagerController extends Controller
      * @Route("/evenements/ajouter", name="app_committee_manager_add_event")
      * @Method("GET|POST")
      */
-    public function addEventAction(Request $request, Committee $committee): Response
+    public function addEventAction(Request $request, Committee $committee, GeoCoder $geoCoder): Response
     {
         $command = new EventCommand($this->getUser(), $committee);
+        $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
         $form = $this->createForm(EventCommandType::class, $command);
         $form->handleRequest($request);
 

@@ -338,6 +338,86 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertCountMails(1, EventRegistrationConfirmationMessage::class, 'gisele-berthoux@caramail.com');
     }
 
+    public function testCommitteeHostCanPublishNewEventWithTimeZone()
+    {
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
+        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->click($crawler->selectLink('Créer un événement')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $eventCategory = $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']);
+
+        $this->client->submit($crawler->selectButton('Créer cet événement')->form([
+            'committee_event' => [
+                'name' => " ♻ débat sur l'agriculture écologique à Singapore",
+                'description' => " ♻ Cette journée sera consacrée à un grand débat sur la question de l'agriculture écologique. ♻ ",
+                'category' => $eventCategory,
+                'address' => [
+                    'address' => '6 rue Neyret',
+                    'country' => 'FR',
+                    'postalCode' => '69001',
+                    'city' => '69001-69381',
+                ],
+                'beginAt' => [
+                    'date' => [
+                        'year' => '2022',
+                        'month' => '3',
+                        'day' => '2',
+                    ],
+                    'time' => [
+                        'hour' => '9',
+                        'minute' => '30',
+                    ],
+                ],
+                'finishAt' => [
+                    'date' => [
+                        'year' => '2022',
+                        'month' => '3',
+                        'day' => '2',
+                    ],
+                    'time' => [
+                        'hour' => '19',
+                        'minute' => '0',
+                    ],
+                ],
+                'capacity' => '1500',
+                'timeZone' => 'Asia/Singapore',
+            ],
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertInstanceOf(Event::class, $event = $this->committeeEventRepository->findOneBySlug('2022-03-02-debat-sur-lagriculture-ecologique-a-singapore'));
+        $this->assertSame("Débat sur l'agriculture écologique à Singapore", $event->getName());
+        $this->assertSame('Cette journée sera consacrée à un grand débat sur la question de l\'agriculture écologique.', $event->getDescription());
+        $this->assertFalse($event->isForLegislatives());
+        $this->assertCountMails(1, EventNotificationMessage::class, 'jacques.picard@en-marche.fr');
+        $this->assertCountMails(1, EventNotificationMessage::class, 'gisele-berthoux@caramail.com');
+        $this->assertCountMails(1, EventNotificationMessage::class, 'luciole1989@spambox.fr');
+        $this->assertCountMails(0, EventNotificationMessage::class, 'carl999@example.fr');
+
+        $eventItem = $this->committeeFeedItemRepository->findMostRecentFeedEvent(LoadAdherentData::COMMITTEE_1_UUID);
+        $this->assertInstanceOf(CommitteeFeedItem::class, $eventItem);
+        $this->assertInstanceOf(Event::class, $eventItem->getEvent());
+
+        // Follow the redirect and check the adherent can see the committee page
+        $crawler = $this->client->followRedirect();
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->seeFlashMessage($crawler, 'Le nouvel événement a bien été créé et publié sur la page du comité.');
+        $this->assertSame('Débat sur l\'agriculture écologique à Singapore - Lyon 1er, 02/03/2022 | La République En Marche !', $crawler->filter('title')->text());
+        $this->assertSame('Débat sur l\'agriculture écologique à Singapore - Lyon 1er, 02/03/2022', $crawler->filter('.committee-event-name')->text());
+        $this->assertSame('Organisé par Gisele Berthoux du comité En Marche Paris 8', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
+        $this->assertSame('Mercredi 2 mars 2022, 9h30 UTC +08:00', $crawler->filter('.committee-event-date')->text());
+        $this->assertSame('6 rue Neyret, 69001 Lyon 1er', $crawler->filter('.committee-event-address')->text());
+        $this->assertSame('Cette journée sera consacrée à un grand débat sur la question de l\'agriculture écologique.', $crawler->filter('.committee-event-description')->text());
+
+        $this->assertCountMails(1, EventRegistrationConfirmationMessage::class, 'gisele-berthoux@caramail.com');
+    }
+
     public function testAuthenticatedCommitteeHostCanPostMessages()
     {
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');

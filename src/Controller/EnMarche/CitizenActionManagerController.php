@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Address\GeoCoder;
 use AppBundle\CitizenAction\CitizenActionCommand;
 use AppBundle\CitizenAction\CitizenActionCommandHandler;
 use AppBundle\CitizenAction\CitizenActionContactParticipantsCommand;
@@ -55,9 +56,14 @@ class CitizenActionManagerController extends Controller
      * @Method("GET|POST")
      * @Security("is_granted('CREATE_CITIZEN_ACTION', project)")
      */
-    public function createAction(Request $request, CitizenProject $project, CitizenProjectManager $citizenProjectManager): Response
-    {
+    public function createAction(
+        Request $request,
+        CitizenProject $project,
+        CitizenProjectManager $citizenProjectManager,
+        GeoCoder $geoCoder
+    ): Response {
         $command = new CitizenActionCommand($this->getUser(), $project);
+        $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
         $form = $this->createForm(CitizenActionCommandType::class, $command)
             ->handleRequest($request)
         ;

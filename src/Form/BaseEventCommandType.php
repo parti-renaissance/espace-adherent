@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -30,6 +31,9 @@ class BaseEventCommandType extends AbstractType
                 'purifier_type' => 'enrich_content',
             ])
             ->add('address', AddressType::class)
+            ->add('timeZone', TimezoneType::class, [
+                'choices' => $this->getTimezones(),
+            ])
             ->add('beginAt', DateTimeType::class, [
                 'years' => $options['years'],
                 'minutes' => $options['minutes'],
@@ -103,5 +107,31 @@ class BaseEventCommandType extends AbstractType
         }
 
         return $now;
+    }
+
+    private function getTimezones()
+    {
+        $timezones = [];
+        $dateTime = new \DateTime('now');
+        foreach (\DateTimeZone::listIdentifiers() as $timezone) {
+            $dateTime->setTimezone(new \DateTimeZone($timezone));
+            $parts = explode('/', $timezone);
+            $labelOffset = '(UTC '.$dateTime->format('P').')';
+
+            if (\count($parts) > 2) {
+                $region = $parts[0];
+                $name = $parts[1].' - '.$parts[2];
+            } elseif (\count($parts) > 1) {
+                $region = $parts[0];
+                $name = $parts[1];
+            } else {
+                $region = 'Other';
+                $name = $parts[0];
+            }
+            $name .= ' '.$labelOffset;
+            $timezones[$region][str_replace('_', ' ', $name)] = $timezone;
+        }
+
+        return 1 === \count($timezones) ? reset($timezones) : $timezones;
     }
 }
