@@ -53,7 +53,7 @@ class CreateIdeaPage extends React.Component {
                     {this.props.isAuthor && (
                         <CreateIdeaActions
                             onDeleteClicked={this.props.onDeleteClicked}
-                            onPublishClicked={() => this.props.onPublichClicked(this.state)}
+                            onPublishClicked={() => this.props.onPublishClicked(this.state)}
                             onSaveClicked={this.props.onSaveClicked}
                             mode="header"
                         />
@@ -64,6 +64,7 @@ class CreateIdeaPage extends React.Component {
                         <IdeaPageTitle
                             authorName={this.props.metadata.authorName}
                             createdAt={this.props.metadata.createdAt}
+                            onTitleChange={value => this.onQuestionTextChange('title', value)}
                             title={this.state.values.title}
                             isEditing={this.props.isEditing && !this.state.readingMode}
                         />
@@ -80,7 +81,7 @@ class CreateIdeaPage extends React.Component {
                             {this.props.isAuthor && !this.state.readingMode && (
                                 <CreateIdeaActions
                                     onDeleteClicked={this.props.onDeleteClicked}
-                                    onPublishClicked={() => this.props.onPublichClicked(this.state)}
+                                    onPublishClicked={() => this.props.onPublishClicked(this.state)}
                                     onSaveClicked={this.props.onSaveClicked}
                                 />
                             )}
@@ -103,7 +104,7 @@ CreateIdeaPage.propTypes = {
     metadata: PropTypes.shape({ authorName: PropTypes.string.isRequired, createdAt: PropTypes.string }),
     isEditing: PropTypes.bool,
     onBackClicked: PropTypes.func.isRequired,
-    onPublichClicked: PropTypes.func.isRequired,
+    onPublishClicked: PropTypes.func.isRequired,
     onDeleteClicked: PropTypes.func.isRequired,
     onSaveClicked: PropTypes.func.isRequired,
 };

@@ -13,7 +13,7 @@ function mapDispatchToProps() {
     // TODO: replace with actual action creators
     return {
         onBackClicked: () => alert('Retour'),
-        onPublichClicked: () => alert('Publier'),
+        onPublishClicked: () => alert('Publier'),
         onDeleteClicked: () => alert('Supprimer'),
         onSaveClicked: () => alert('Enregistrer'),
     };
