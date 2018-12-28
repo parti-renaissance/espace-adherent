@@ -4,7 +4,7 @@ import axios from 'axios';
 import rootReducer from '../reducers';
 
 // axios config
-const baseURL = 'undefined' === typeof window.config ? process.env.REACT_APP_EM_API_HOST : window.config.em_api_host;
+const baseURL = process.env.REACT_APP_ADI_BASE_URL || null;
 const axiosInstance = axios.create({
     baseURL,
     headers: { Accept: 'application/json' },
