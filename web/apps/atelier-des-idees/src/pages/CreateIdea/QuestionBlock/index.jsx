@@ -18,22 +18,30 @@ function QuestionBlock(props) {
         <div className="question-block">
             {props.canCollapse ? (
                 <Collapse title={<QuestionBlockHeader label={label} question={question} nbQuestion={nbQuestion} />}>
-                    <TextEditor
-                        initialContent={initialContent}
-                        maxLength={1700}
-                        onChange={htmlContent => onTextChange(htmlContent)}
-                        placeholder={placeholder}
-                    />
+                    {'edit' === props.mode ? (
+                        <TextEditor
+                            initialContent={initialContent}
+                            maxLength={1700}
+                            onChange={htmlContent => onTextChange(htmlContent)}
+                            placeholder={placeholder}
+                        />
+                    ) : (
+                        <div dangerouslySetInnerHTML={{ __html: props.initialContent }} />
+                    )}
                 </Collapse>
             ) : (
                 <React.Fragment>
                     <QuestionBlockHeader label={label} question={question} nbQuestion={nbQuestion} />
-                    <TextEditor
-                        initialContent={initialContent}
-                        maxLength={1700}
-                        onChange={htmlContent => onTextChange(htmlContent)}
-                        placeholder={placeholder}
-                    />
+                    {'edit' === props.mode ? (
+                        <TextEditor
+                            initialContent={initialContent}
+                            maxLength={1700}
+                            onChange={htmlContent => onTextChange(htmlContent)}
+                            placeholder={placeholder}
+                        />
+                    ) : (
+                        <div dangerouslySetInnerHTML={{ __html: props.initialContent }} />
+                    )}
                 </React.Fragment>
             )}
         </div>
@@ -50,6 +58,7 @@ QuestionBlock.propTypes = {
     canCollapse: PropTypes.bool,
     initialContent: PropTypes.string,
     label: PropTypes.string.isRequired,
+    mode: PropTypes.oneOf(['edit', 'contribute']),
     nbQuestion: PropTypes.number.isRequired,
     onTextChange: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
