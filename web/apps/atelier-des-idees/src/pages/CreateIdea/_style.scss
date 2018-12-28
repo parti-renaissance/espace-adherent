@@ -1,5 +1,6 @@
 @import './QuestionBlock/style';
 @import './CreateIdeaActions/style';
+@import './CreateIdeaTool/style';
 
 .create-idea-page {
   border-top: 1px solid $gainsboro;
@@ -25,33 +26,6 @@
   .create-idea-page__content {
     padding: 100px 0;
     background-color: $snow;
-  }
-
-  .create-idea-page__title-section {
-    .text-area__input {
-      font-size: 26px;
-      font-weight: bold;
-    }
-  }
-
-  .create-idea-page__section-title {
-    margin: 50px 0;
-
-    .create-idea-page__section-title__main::after {
-      content: '';
-      display: block;
-      width: 100px;
-      border-bottom: 1px solid $black-bean;
-      margin-top: 20px;
-    }
-
-    .create-idea-page__section-subtitle {
-      margin: 0;
-      font-size: 14px;
-      font-family: $font-gillsans;
-      text-transform: uppercase;
-      color: $dark-aurometalsaurus;
-    }
   }
 
   .create-idea-page__content__main {
