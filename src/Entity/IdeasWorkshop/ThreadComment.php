@@ -36,6 +36,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *             "method": "PUT",
  *             "path": "/thread_comments/{id}/approve",
  *             "requirements": {"id": "%pattern_uuid%"},
+ *             "denormalization_context": {"api_allow_update": false},
  *             "access_control": "object.getIdeaAuthor() == user",
  *             "controller": "AppBundle\Controller\Api\ThreadCommentController::approveAction"
  *         },
@@ -43,6 +44,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *             "method": "PUT",
  *             "path": "/thread_comments/{id}/report",
  *             "requirements": {"id": "%pattern_uuid%"},
+ *             "denormalization_context": {"api_allow_update": false},
  *             "access_control": "is_granted('ROLE_ADHERENT') && object.getAuthor() != user",
  *             "controller": "AppBundle\Controller\Api\ThreadCommentController::reportAction"
  *         },

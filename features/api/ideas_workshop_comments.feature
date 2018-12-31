@@ -214,7 +214,6 @@ Feature:
     When I send a "PUT" request to "/api/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/report"
     Then the response status code should be 403
 
-  @wip
   Scenario: As a logged-in user I can report a comment
     Given I am logged as "benjyd@aol.com"
     When I send a "PUT" request to "/api/thread_comments/60123090-6cdc-4de6-9cb3-07e2ec411f2f/report"

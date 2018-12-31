@@ -3,29 +3,26 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\IdeasWorkshop\ThreadComment;
-use Doctrine\Common\Persistence\ObjectManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\Request;
 
 class ThreadCommentController
 {
-    /**
-     * @ParamConverter("threadComment", options={"mapping": {"id": "uuid"}})
-     */
-    public function approveAction(ThreadComment $threadComment, ObjectManager $manager): ThreadComment
+    public function approveAction(Request $request): ThreadComment
     {
+        /** @var ThreadComment $threadComment */
+        $threadComment = $request->attributes->get('data');
+
         $threadComment->approve();
-        $manager->flush();
 
         return $threadComment;
     }
 
-    /**
-     * @ParamConverter("threadComment", options={"mapping": {"id": "uuid"}})
-     */
-    public function reportAction(ThreadComment $threadComment, ObjectManager $manager): ThreadComment
+    public function reportAction(Request $request): ThreadComment
     {
+        /** @var ThreadComment $threadComment */
+        $threadComment = $request->attributes->get('data');
+
         $threadComment->report();
-        $manager->flush();
 
         return $threadComment;
     }
