@@ -17,6 +17,7 @@ export const ADD_IDEAS = 'ADD_IDEAS';
 
 // current ideas
 export const SET_CURRENT_IDEA = 'SET_CURRENT_IDEA';
+export const UPDATE_CURRENT_IDEA = 'UPDATE_CURRENT_IDEA';
 
 // pinned
 export const FETCH_CONSULTATION_PINNED = createRequestTypes('FETCH_CONSULTATION_PINNED');
