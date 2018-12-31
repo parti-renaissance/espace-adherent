@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import IdeaPageBase from '../IdeaPageBase';
 import { DELETE_IDEA_MODAL } from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
-import { deleteCurrentIdea } from '../../redux/thunk/ideas';
+import { deleteCurrentIdea } from '../../redux/thunk/currentIdea';
 import { selectAuthUser } from '../../redux/selectors/auth';
 
 function mapStateToProps(state) {
