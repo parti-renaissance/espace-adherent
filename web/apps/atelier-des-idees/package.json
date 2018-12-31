@@ -6,6 +6,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
+    "connected-react-router": "^6.1.0",
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",
     "html-to-draftjs": "^1.4.0",
