@@ -727,6 +727,20 @@
             </call>
         </service>
 
+        <service id="app.admin.ideas_workshop_guideline" class="AppBundle\Admin\IdeasWorkshopGuidelineAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Trame de la note (sections)" group="Atelier des idées" />
+            <argument />
+            <argument>AppBundle\Entity\IdeasWorkshop\Guideline</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.ideas_workshop_question" class="AppBundle\Admin\IdeasWorkshopQuestionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Trame de la note (questions)" group="Atelier des idées" />
+            <argument />
+            <argument>AppBundle\Entity\IdeasWorkshop\Question</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # OAuth
@@ -811,6 +825,15 @@
             <tag name="sonata.admin.extension" target="app.admin.citizen_project" />
             <tag name="sonata.admin.extension" target="app.admin.citizen_action" />
             <tag name="sonata.admin.extension" target="app.admin.adherent" />
+        </service>
+
+        <service id="app.admin.filter_configuration_extension" class="AppBundle\Admin\Extension\DoctrineFilterConfigurationAdminExtension">
+            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_consultation" />
+            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_category" />
+            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_need" />
+            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_theme" />
+            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_guideline" />
+            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_question" />
         </service>
 
         <!--
