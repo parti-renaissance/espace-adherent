@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { connectRouter } from 'connected-react-router';
 import auth from './auth';
 import loading from './loading';
 import modal from './modal';
@@ -7,14 +8,16 @@ import currentIdea from './currentIdea';
 import pinned from './pinned';
 import reports from './reports';
 
-const rootReducer = combineReducers({
-    auth,
-    loading,
-    modal,
-    ideas,
-    currentIdea,
-    pinned,
-    reports,
-});
+const rootReducer = history =>
+    combineReducers({
+        router: connectRouter(history),
+        auth,
+        loading,
+        modal,
+        ideas,
+        currentIdea,
+        pinned,
+        reports,
+    });
 
 export default rootReducer;
