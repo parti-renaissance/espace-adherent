@@ -101,8 +101,8 @@ class CreateIdeaPage extends React.Component {
                 <div className="create-idea-page__content">
                     <div className="create-idea-page__content__main l__wrapper--medium">
                         <IdeaPageTitle
-                            authorName={this.props.metadata.authorName}
-                            createdAt={this.props.metadata.createdAt}
+                            authorName={this.props.idea.authorName}
+                            createdAt={this.props.idea.createdAt}
                             onTitleChange={value => this.onQuestionTextChange('name', value)}
                             title={this.state.values.name}
                             isEditing={this.props.isEditing && !this.state.readingMode}
@@ -137,14 +137,12 @@ CreateIdeaPage.defaultProps = {
     idea: {},
     isAuthor: false,
     isEditing: false,
-    metadata: {},
 };
 
 CreateIdeaPage.propTypes = {
     idea: PropTypes.object,
     isAuthor: PropTypes.bool,
     isEditing: PropTypes.bool,
-    metadata: PropTypes.shape({ authorName: PropTypes.string.isRequired, createdAt: PropTypes.string }),
     onBackClicked: PropTypes.func.isRequired,
     onPublishClicked: PropTypes.func.isRequired,
     onDeleteClicked: PropTypes.func.isRequired,
