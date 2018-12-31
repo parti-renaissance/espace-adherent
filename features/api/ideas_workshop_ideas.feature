@@ -820,20 +820,15 @@ Feature:
     When I send a "PUT" request to "/api/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285/publish"
     Then the response status code should be 403
 
-  Scenario: As a logged-in user I can not publish an idea that has another status than PENDING at the moment of execution
+  Scenario: As a logged-in user I can not publish an idea that has another status than DRAFT at the moment of execution
     Given I am logged as "jacques.picard@en-marche.fr"
     When I send a "PUT" request to "/api/ideas/c14937d6-fd42-465c-8419-ced37f3e6194/publish"
-    Then the response status code should be 403
+    Then the response status code should be 400
 
-  Scenario: As a logged-in user I get errors when I publish my idea with few data
+  Scenario: As a logged-in user I get errors when I try to publish an invalid idea
     Given I am logged as "jacques.picard@en-marche.fr"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/ideas/9529e98c-2524-486f-a6ed-e2d707dc99ea/publish" with body:
-    """
-    {
-      "name": "Mon idée"
-    }
-    """
+    And I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/ideas/9529e98c-2524-486f-a6ed-e2d707dc99ea/publish"
     Then the response status code should be 400
     And the response should be in JSON
     And the JSON should be equal to:
@@ -867,15 +862,14 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user I can publish my idea in the status DRAFT
+  Scenario: As a logged-in user I can publish my idea which is in DRAFT state
     Given I am logged as "benjyd@aol.com"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285/publish" with body:
+    And I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285" with body:
     """
     {
-      "name": "Mon idée 2",
       "needs": [1,2],
-      "answers":[
+      "answers": [
         {
           "question":1,
           "content":"Réponse à la question 1"
@@ -888,59 +882,13 @@ Feature:
     }
     """
     Then the response status code should be 200
+    Given I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285/publish"
+    Then the response status code should be 200
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-       "name":"Mon id\u00e9e 2",
-       "themes": [
-           {
-               "name": "Armées et défense",
-               "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-           }
-       ],
-       "category":{
-          "name":"Echelle Europ\u00e9enne",
-          "enabled":true
-       },
-       "needs":[
-          {
-             "name":"Juridique",
-             "enabled":true
-          },
-          {
-             "name":"R\u00e9dactionnel",
-             "enabled":true
-          }
-       ],
-       "author":{
-          "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
-          "first_name":"Benjamin",
-          "last_name":"Duroc"
-       },
-       "published_at":"@string@.isDateTime()",
-       "committee":null,
-       "status":"PENDING",
-       "votes_count":{
-          "important":"6",
-          "feasible":"4",
-          "innovative":"5",
-          "total":15,
-          "my_votes":[
-             "feasible",
-             "important"
-          ]
-       },
-       "author_category":"QG",
-       "description":"Nam laoreet eros diam, vitae hendrerit libero interdum nec. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
-       "uuid":"aa093ce6-8b20-4d86-bfbc-91a73fe47285",
-       "created_at":"@string@.isDateTime()",
-       "slug":"mon-idee-2",
-       "days_before_deadline":@integer@,
-       "contributors_count":0,
-       "comments_count":0
-    }
-    """
+    And the JSON nodes should contain:
+      | name   | Aider les gens |
+      | status | PENDING        |
 
   Scenario: As a logged-in user I can get full information about one idea
     Given I am logged as "benjyd@aol.com"

@@ -48,9 +48,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *         "put": {"access_control": "object.getAuthor() == user"},
  *         "publish": {
  *             "method": "PUT",
+ *             "denormalization_context": {"api_allow_update": false},
+ *             "access_control": "object.getAuthor() == user",
  *             "path": "/ideas/{id}/publish",
- *             "access_control": "is_granted('PUBLISH_IDEA', object)",
- *             "denormalization_context": {"groups": {"idea_publish"}},
+ *             "controller": "AppBundle\Controller\Api\IdeaPublishController",
+ *             "normalization_context": {"groups": {"idea_list_read"}},
  *             "validation_groups": {"idea_publish"}
  *         },
  *         "delete": {"access_control": "object.getAuthor() == user"}
@@ -115,7 +117,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      * @Assert\Length(max=120)
      * @Assert\NotBlank(message="idea.name.not_blank")
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish", "vote_read"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "vote_read"})
      */
     protected $name;
 
@@ -125,7 +127,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      *
      * @Assert\Count(min=1, minMessage="idea.theme.min_count", groups={"idea_publish"})
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
      */
     private $themes;
 
@@ -134,7 +136,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      *
      * @Assert\NotBlank(message="idea.category.not_blank", groups={"idea_publish"})
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
      */
     private $category;
 
@@ -144,7 +146,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      *
      * @Assert\Count(min=1, minMessage="idea.needs.min_count", groups={"idea_publish"})
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
      */
     private $needs;
 
@@ -154,7 +156,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      *
      * @Assert\NotNull(message="idea.author.not_null", groups={"idea_publish"})
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish", "idea_read"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read"})
      */
     private $author;
 
@@ -165,7 +167,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      *
      * @Assert\NotNull(message="idea.published_at.not_null", groups={"idea_publish"})
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish", "idea_read"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read"})
      */
     private $publishedAt;
 
@@ -174,7 +176,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
      */
     private $committee;
 
@@ -186,7 +188,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      *     strict=true,
      * )
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
      */
     private $status;
 
@@ -196,7 +198,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      * @Assert\Count(min=1, minMessage="idea.answers.min_count", groups={"idea_publish"})
      * @Assert\Valid
      *
-     * @SymfonySerializer\Groups({"idea_write", "idea_publish", "idea_read"})
+     * @SymfonySerializer\Groups({"idea_write", "idea_read"})
      */
     private $answers;
 
@@ -231,7 +233,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      *
      * @Assert\NotBlank(message="idea.description.not_blank", groups={"idea_publish"})
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
      */
     private $description;
 
