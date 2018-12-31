@@ -3,15 +3,11 @@ import IdeaPageBase from '../IdeaPageBase';
 import { DELETE_IDEA_MODAL } from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
 import { deleteIdea } from '../../redux/thunk/ideas';
+import { selectAuthUser } from '../../redux/selectors/auth';
 
 function mapStateToProps(state) {
-    // const currentUser = getCurrentUser(state)
-    // const metadata = { authorName: currentUser.name, createdAt: new Date().toLocaleDateString() };
-    // TODO: uncomment above and remove below
-    const metadata = {
-        authorName: 'Killian Mbappé',
-        createdAt: new Date().toLocaleDateString(),
-    };
+    const currentUser = selectAuthUser(state);
+    const metadata = { authorName: currentUser.name, createdAt: new Date().toLocaleDateString() };
     return {
         isAuthor: true,
         metadata,
