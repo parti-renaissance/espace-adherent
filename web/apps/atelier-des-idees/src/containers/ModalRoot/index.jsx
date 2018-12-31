@@ -6,7 +6,7 @@ import { selectModalData } from '../../redux/selectors/modal';
 
 // components
 import ReportsModal from '../../components/Modal/ReportsModal';
-import PublishIdeaForm from '../../components/Modal/PublishIdeaForm';
+import PublishIdeaFormModal from '../../components/Modal/PublishIdeaFormModal';
 import DeleteIdeaModal from '../../components/Modal/DeleteIdeaModal';
 
 const MODAL_COMPONENTS = {
@@ -14,7 +14,7 @@ const MODAL_COMPONENTS = {
     // ex:
     // modalTypes.TEST_MODAL: TestModal,
     REPORTS_MODAL: ReportsModal,
-    PUBLISH_IDEA_MODAL: PublishIdeaForm,
+    PUBLISH_IDEA_MODAL: PublishIdeaFormModal,
     DELETE_IDEA_MODAL: DeleteIdeaModal,
 };
 
