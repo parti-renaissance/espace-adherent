@@ -99,13 +99,14 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
     protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Theme")
+     * @ORM\ManyToMany(targetEntity="Theme")
+     * @ORM\JoinTable(name="ideas_workshop_ideas_themes")
      *
-     * @Assert\NotBlank(message="idea.theme.not_blank", groups={"idea_publish"})
+     * @Assert\Count(min=1, minMessage="idea.theme.min_count", groups={"idea_publish"})
      *
      * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_publish"})
      */
-    private $theme;
+    private $themes;
 
     /**
      * @ORM\ManyToOne(targetEntity="Category")
@@ -231,6 +232,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
         $this->publishedAt = $publishedAt;
         $this->status = $status;
         $this->needs = new ArrayCollection();
+        $this->themes = new ArrayCollection();
         $this->answers = new ArrayCollection();
         $this->votes = new ArrayCollection();
         $this->createdAt = $createdAt ?: new \DateTime();
@@ -241,16 +243,6 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
         return IdeaStatusEnum::VISIBLE_STATUSES;
     }
 
-    public function getTheme(): ?Theme
-    {
-        return $this->theme;
-    }
-
-    public function setTheme(Theme $theme): void
-    {
-        $this->theme = $theme;
-    }
-
     public function getCategory(): ?Category
     {
         return $this->category;
@@ -259,6 +251,23 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
     public function setCategory(Category $category): void
     {
         $this->category = $category;
+    }
+
+    public function getThemes(): Collection
+    {
+        return $this->themes;
+    }
+
+    public function addTheme(Theme $theme): void
+    {
+        if (!$this->themes->contains($theme)) {
+            $this->themes->add($theme);
+        }
+    }
+
+    public function removeTheme(Theme $theme): void
+    {
+        $this->themes->removeElement($theme);
     }
 
     public function getNeeds(): Collection
