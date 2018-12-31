@@ -5,14 +5,15 @@ import IdeaCard from '.';
 
 const props = {
     author: {
-        name: 'Jean-Michel Français',
+        first_name: 'Jean-Michel',
+        last_name: ' Français',
     },
     author_category: 'COMMITTEE',
     created_at: new Date().toISOString(),
     comments_count: 122,
     contributors_count: 4,
     description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed molestie sapien eu orci congue sollicitudin. Sed malesuada nisi sed diam tristique, ullamcorper fermentum massa euismod. Vivamus a augue vitae nibh scelerisque…',
+		'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed molestie sapien eu orci congue sollicitudin. Sed malesuada nisi sed diam tristique, ullamcorper fermentum massa euismod. Vivamus a augue vitae nibh scelerisque…',
     themes: [
         { name: 'Education', thumbnail: '/assets/img/icn_76px_education.svg' },
         { name: 'Droits civiques', thumbnail: null },
