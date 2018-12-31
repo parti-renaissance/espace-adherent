@@ -1,4 +1,10 @@
-import { createRequestTypes } from '../helpers/actions';
+import {
+  createRequestTypes
+} from '../helpers/actions';
+
+// auth
+export const SET_AUTH_USER = 'SET_AUTH_USER'
+export const FETCH_AUTH_USER = createRequestTypes('FETCH_AUTH_USER');
 
 // modal
 export const SHOW_MODAL = 'SHOW_MODAL';
