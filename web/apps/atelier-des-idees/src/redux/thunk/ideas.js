@@ -2,7 +2,6 @@ import { FETCH_IDEAS } from '../constants/actionTypes';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { addIdeas, setIdeas } from '../actions/ideas';
 import { selectIdeasMetadata } from '../selectors/ideas';
-import { selectCurrentIdea } from '../selectors/currentIdea';
 
 /**
  * Fetch ideas based on status and parameters
@@ -40,21 +39,5 @@ export function fetchNextIdeas(status, params = {}) {
         const metadata = selectIdeasMetadata(getState());
         const pagingParams = {}; // TODO: compute params based on metadata
         return dispatch(fetchIdeas(status, { ...params, ...pagingParams }));
-    };
-}
-
-/**
- * Delete an idea
- * @param {string} id idea to delete
- */
-export function deleteCurrentIdea() {
-    // TODO: add logic (delete idea, draft?, redirect? )
-    return (dispatch, getState, axios) => {
-        const { id } = selectCurrentIdea(getState());
-        if (id) {
-            // idea already exists (whatever its state)
-            return axios.delete(`/api/ideas/${id}`).then(() => (window.location = '/atelier-des-idees'));
-        }
-        return (window.location = '/atelier-des-idees');
     };
 }
