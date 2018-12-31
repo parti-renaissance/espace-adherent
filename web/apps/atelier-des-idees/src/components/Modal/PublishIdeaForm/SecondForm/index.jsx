@@ -7,11 +7,7 @@ class SecondForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            inputs: {
-                author: [],
-                difficulties: [],
-                legal: false,
-            },
+            inputs: { ...this.props.initInput },
             errors: {
                 form: '',
                 author: '',
@@ -30,9 +26,7 @@ class SecondForm extends React.Component {
             // if attribute is in state.errors : input is required
             const isRequired = Object.keys(this.state.errors).includes(curr);
             // check if it's an array
-            const isArrayEmpty =
-				Array.isArray(this.state.inputs[curr]) &&
-				!this.state.inputs[curr].length;
+            const isArrayEmpty = Array.isArray(this.state.inputs[curr]) && !this.state.inputs[curr].length;
             // check array is not empty and boolean is true
             if (isRequired && (!this.state.inputs[curr] || isArrayEmpty)) {
                 // TODO: modify error msg
@@ -98,9 +92,7 @@ class SecondForm extends React.Component {
         return (
             <form class="second-form" onSubmit={this.handleSubmit}>
                 <div class="second-form__section">
-                    <label class="second-form__section__label">
-						Avec qui avez-vous rédigé cette note ?
-                    </label>
+                    <label class="second-form__section__label">Avec qui avez-vous rédigé cette note ?</label>
                     <Select
                         options={this.props.authorOptions}
                         placeholder="Seul / Mon comité"
@@ -110,9 +102,7 @@ class SecondForm extends React.Component {
                 </div>
                 {'committee' === this.state.inputs.author[0] && (
                     <div class="second-form__section">
-                        <label class="second-form__section__label">
-							Nom de votre comité
-                        </label>
+                        <label class="second-form__section__label">Nom de votre comité</label>
                         <Select
                             options={this.props.committeeOptions}
                             error={this.state.errors.committee}
@@ -123,10 +113,7 @@ class SecondForm extends React.Component {
                 <div class="second-form__section">
                     <label class="second-form__section__label">
 						Y-a-t-il une partie qui vous a semblé difficile à remplir ?
-                        <span class="second-form__section__label__optional">
-                            {' '}
-							(Optionnel)
-                        </span>
+                        <span class="second-form__section__label__optional"> (Optionnel)</span>
                     </label>
                     <Select
                         options={this.props.difficultiesOptions}
@@ -142,9 +129,7 @@ class SecondForm extends React.Component {
                                 className="second-form__section__mentions__checkbox__input"
                                 type="checkbox"
                                 checked={this.state.legal}
-                                onChange={event =>
-                                    this.handleChange('legal', event.target.checked)
-                                }
+                                onChange={event => this.handleChange('legal', event.target.checked)}
                             />
                             <span className="second-form__section__mentions__checkbox__checkmark">
                                 <img src="/assets/img/icn_checklist-white.svg" />
@@ -163,41 +148,46 @@ class SecondForm extends React.Component {
                         </p>
                     </div>
                     {this.state.errors.legal && (
-                        <p className="second-form__section__mentions--error">
-                            {this.state.errors.legal}
-                        </p>
+                        <p className="second-form__section__mentions--error">{this.state.errors.legal}</p>
                     )}
                     <p className="second-form__section__text">
-						Les données recueillies sur ce formulaire sont traitées par La REM
-						afin de gérer les informations relatives aux adhérents de La REM et
-						lui permettent d’utiliser vos données pour des opérations de
-						communications politiques. Les informations marquées d’un astérisque
-						sont obligatoires. L’absence de réponse dans ces champs ne permettra
-						pas à La REM de traiter votre demande. Conformément à la
-						règlementation, vous disposez d’un droit d’opposition et d’un droit
-						à la limitation du traitement de données vous concernant, ainsi que
-						d’un droit d’accès, de rectification, de portabilité et d’effacement
-						de vos données. Vous disposez également de la faculté de donner des
-						directives sur le sort de vos données après votre décès. Vous pouvez
-						exercer vos droits en nous adressant votre demande accompagnée d’une
-						copie de votre pièce d’identité à l’adresse postale ou électronique
-						suivante : La République En Marche, 63 rue Sainte-Anne, 75002 Paris,
-						France et mes-donnees@en-marche.fr.
+						Les données recueillies sur ce formulaire sont traitées par La REM afin de gérer les
+						informations relatives aux adhérents de La REM et lui permettent d’utiliser vos données pour des
+						opérations de communications politiques. Les informations marquées d’un astérisque sont
+						obligatoires. L’absence de réponse dans ces champs ne permettra pas à La REM de traiter votre
+						demande. Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à
+						la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de
+						rectification, de portabilité et d’effacement de vos données. Vous disposez également de la
+						faculté de donner des directives sur le sort de vos données après votre décès. Vous pouvez
+						exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce
+						d’identité à l’adresse postale ou électronique suivante : La République En Marche, 63 rue
+						Sainte-Anne, 75002 Paris, France et mes-donnees@en-marche.fr.
                     </p>
                 </div>
                 <button type="submit" className="second-form__button button--primary">
 					publier la note
                 </button>
-                {this.state.errors.form && (
-                    <p className="second-form__error">{this.state.errors.form}</p>
-                )}
+                {this.state.errors.form && <p className="second-form__error">{this.state.errors.form}</p>}
             </form>
         );
     }
 }
 
+SecondForm.defaultProps = {
+    initInput: {
+        author: [],
+        difficulties: [],
+        legal: false,
+    },
+};
+
 SecondForm.propTypes = {
-    authorptions: PropTypes.arrayOf(
+    initInputs: PropTypes.shape({
+        author: PropTypes.array,
+        difficulties: PropTypes.array,
+        legal: PropTypes.boolean,
+    }),
+    authorOptions: PropTypes.arrayOf(
         PropTypes.shape({
             value: PropTypes.string.isRequired,
             label: PropTypes.string.isRequired,
