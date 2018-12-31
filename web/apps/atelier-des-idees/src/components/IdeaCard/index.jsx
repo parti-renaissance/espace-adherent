@@ -19,14 +19,13 @@ const VOTES_NAMES = {
 };
 
 function formatVotes(votesCount) {
-    if (!votesCount.my_votes) return {};
     return Object.keys(votesCount)
         .filter(key => Object.keys(VOTES_NAMES).includes(key))
         .map(key => ({
             id: key,
             name: VOTES_NAMES[key],
             count: votesCount[key],
-            isSelected: !votesCount.my_votes ? [] : votesCount.my_votes.includes(key),
+            isSelected: !votesCount.my_votes ? false : votesCount.my_votes.includes(key),
         }));
 }
 
@@ -113,6 +112,8 @@ IdeaCard.defaultProps = {
     comments_count: 0,
     contributors_count: 0,
     thumbnail: undefined,
+    /* TODO: implement vote*/
+    onVote: (vote, id) => console.log(vote, id),
 };
 
 IdeaCard.propTypes = {
@@ -139,7 +140,7 @@ IdeaCard.propTypes = {
     themes: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string, thumbnail: PropTypes.string })),
     days_before_deadline: PropTypes.number.isRequired,
     status: PropTypes.oneOf(ideaStatus).isRequired,
-    onVote: PropTypes.func.isRequired,
+    onVote: PropTypes.func,
 };
 
 export default IdeaCard;
