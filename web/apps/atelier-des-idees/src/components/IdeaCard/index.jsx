@@ -38,7 +38,9 @@ function IdeaCard(props) {
                     <div className="idea-card__content__infos">
                         <span className="idea-card__content__infos__author">
                             <span className="idea-card__content__infos__meta">Par</span>
-                            <span className="idea-card__content__infos__author__name">{props.author.name}</span>
+                            <span className="idea-card__content__infos__author__name">
+                                {props.author.first_name} {props.author.last_name}
+                            </span>
                             <span className="idea-card__content__infos__author__separator" />
                             <span
                                 className={classnames(
