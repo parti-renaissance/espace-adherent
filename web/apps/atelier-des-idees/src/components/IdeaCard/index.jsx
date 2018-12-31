@@ -19,14 +19,13 @@ const VOTES_NAMES = {
 };
 
 function formatVotes(votesCount) {
-    if (!votesCount.my_votes) return {};
     return Object.keys(votesCount)
         .filter(key => Object.keys(VOTES_NAMES).includes(key))
         .map(key => ({
             id: key,
             name: VOTES_NAMES[key],
             count: votesCount[key],
-            isSelected: votesCount.my_votes.includes(key),
+            isSelected: !votesCount.my_votes ? false : votesCount.my_votes.includes(key),
         }));
 }
 
@@ -39,7 +38,9 @@ function IdeaCard(props) {
                     <div className="idea-card__content__infos">
                         <span className="idea-card__content__infos__author">
                             <span className="idea-card__content__infos__meta">Par</span>
-                            <span className="idea-card__content__infos__author__name">{props.author.name}</span>
+                            <span className="idea-card__content__infos__author__name">
+                                {props.author.first_name} {props.author.last_name}
+                            </span>
                             <span className="idea-card__content__infos__author__separator" />
                             <span
                                 className={classnames(
@@ -95,14 +96,14 @@ function IdeaCard(props) {
             </div>
             {/* FOOTER */}
             {'FINALIZED' === props.status ? (
-                // TODO: implement onSelected -> Vote
+            // TODO: implement onSelected -> Vote
                 <VotingFooter
                     totalVotes={props.votes_count.total}
                     votes={formatVotes(props.votes_count)}
                     onSelected={vote => props.onVote(vote)}
                 />
             ) : (
-                // TODO: Link to idea
+            // TODO: Link to idea
                 <ContributingFooter remainingDays={props.days_before_deadline} link="/atelier-des-idees" />
             )}
         </div>
@@ -113,6 +114,8 @@ IdeaCard.defaultProps = {
     comments_count: 0,
     contributors_count: 0,
     thumbnail: undefined,
+    /* TODO: implement vote*/
+    onVote: (vote, id) => console.log(vote, id),
 };
 
 IdeaCard.propTypes = {
@@ -139,7 +142,7 @@ IdeaCard.propTypes = {
     themes: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string, thumbnail: PropTypes.string })),
     days_before_deadline: PropTypes.number.isRequired,
     status: PropTypes.oneOf(ideaStatus).isRequired,
-    onVote: PropTypes.func.isRequired,
+    onVote: PropTypes.func,
 };
 
 export default IdeaCard;
