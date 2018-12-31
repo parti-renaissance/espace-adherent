@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import { FETCH_AUTH_USER } from '../redux/constants/actionTypes';
 import { selectLoadingState } from '../redux/selectors/loading';
 import { selectIsAuthenticated } from '../redux/selectors/auth';
 
@@ -20,7 +19,7 @@ export default ChildComponent => {
   };
 
   function mapStateToProps(state) {
-    const isAuthLoading = selectLoadingState(state, FETCH_AUTH_USER);
+    const isAuthLoading = selectLoadingState(state, 'FETCH_AUTH_USER');
     const isAuthenticated = selectIsAuthenticated(state);
     return {
       isAuthLoading,
