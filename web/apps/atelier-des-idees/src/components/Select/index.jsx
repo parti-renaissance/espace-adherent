@@ -98,10 +98,18 @@ Select.propTypes = {
     isDisabled: PropTypes.bool,
     isMulti: PropTypes.bool,
     onSelected: PropTypes.func.isRequired,
-    defaultValue: PropTypes.shape({
-        value: PropTypes.string,
-        label: PropTypes.string,
-    }),
+    defaultValue: PropTypes.oneOf([
+        PropTypes.shape({
+            value: PropTypes.string.isRequired,
+            label: PropTypes.string.isRequired,
+        }),
+        PropTypes.arrayOf(
+            PropTypes.shape({
+                value: PropTypes.string.isRequired,
+                label: PropTypes.string.isRequired,
+            })
+        ),
+    ]),
 };
 
 export default Select;
