@@ -134,15 +134,17 @@ class CreateIdeaPage extends React.Component {
 }
 
 CreateIdeaPage.defaultProps = {
+    idea: {},
     isAuthor: false,
-    metadata: {},
     isEditing: false,
+    metadata: {},
 };
 
 CreateIdeaPage.propTypes = {
+    idea: PropTypes.object,
     isAuthor: PropTypes.bool,
-    metadata: PropTypes.shape({ authorName: PropTypes.string.isRequired, createdAt: PropTypes.string }),
     isEditing: PropTypes.bool,
+    metadata: PropTypes.shape({ authorName: PropTypes.string.isRequired, createdAt: PropTypes.string }),
     onBackClicked: PropTypes.func.isRequired,
     onPublishClicked: PropTypes.func.isRequired,
     onDeleteClicked: PropTypes.func.isRequired,
