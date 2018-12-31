@@ -22,28 +22,32 @@ Feature:
                     "id": @integer@,
                     "placeholder": "Expliquez, en maximum 1700 caractères (espaces compris) le problème que vous identifiez et espérez pouvoir remédier.",
                     "position": 1,
-                    "name": "Constat : quel problème souhaitez vous résoudre ?",
+                    "category": "Constat",
+                    "name": "quel problème souhaitez vous résoudre ?",
                     "required": true
                 },
                 {
                     "id": @integer@,
                     "placeholder": "Expliquez, en maximum 1700 caractères (espaces compris), comment votre proposition répond concrètement au problème.",
                     "position": 2,
-                    "name": "Solution : quelle réponse votre idée apporte-t-elle ? ",
+                    "category": "Solution",
+                    "name": "quelle réponse votre idée apporte-t-elle ? ",
                     "required": true
                 },
                 {
                     "id": @integer@,
                     "placeholder": "Expliquez, en maximum 1700 caractères (espaces compris), si et comment cette proposition a été étudiée ou mise en oeuvre en France ou à l’étranger.",
                     "position": 3,
-                    "name": "Comparaison : cette proposition a-t-elle déjà été mise en oeuvre ou étudiée ?",
+                    "category": "Comparaison",
+                    "name": "cette proposition a-t-elle déjà été mise en oeuvre ou étudiée ?",
                     "required": false
                 },
                 {
                     "id": @integer@,
                     "placeholder": "Expliquez, en maximum 1700 caractères (espaces compris), si cette proposition peut porter préjudice à certains publics (individus, entreprises, associations, ou pays) et comment il est possible d’en limiter les effets.",
                     "position": 4,
-                    "name": "Impact : Cette proposition peut elle avoir des effets négatifs pour certains publics ?",
+                    "category": "Impact",
+                    "name": "Cette proposition peut elle avoir des effets négatifs pour certains publics ?",
                     "required": false
                 }
             ],
@@ -56,28 +60,32 @@ Feature:
                     "id": @integer@,
                     "placeholder": "Expliquez, en maximum 1700 caractères (espaces compris), si votre idée nécessite - ou non - de changer le droit en vigueur. Si oui, idéalement, précisez ce qu’il faudrait changer.",
                     "position": 5,
-                    "name": "Droit : votre idée suppose-t-elle de changer le droit ?",
+                    "category": "Droit",
+                    "name": "votre idée suppose-t-elle de changer le droit ?",
                     "required": false
                 },
                 {
                     "id": @integer@,
                     "placeholder": "Expliquez, en maximum 1700 caractères (espaces compris), si votre idée entraîne directement des recettes ou des dépenses pour l’État ou les collectivités locales. Si oui, idéalement, donnez des éléments de chiffrage.",
                     "position": 6,
-                    "name": "Budget : votre idée a-t-elle un impact financier ?",
+                    "category": "Budget",
+                    "name": "votre idée a-t-elle un impact financier ?",
                     "required": false
                 },
                 {
                     "id": @integer@,
                     "placeholder": "Expliquez, en maximum 1700 caractères (espaces compris), si votre idée a des effets positifs ou négatifs sur l’environnement. Idéalement, précisez des éléments de réponse pour maximiser ou minimiser (selon les cas) ces effets.",
                     "position": 7,
-                    "name": "Environnement : votre idée a-t-elle un impact écologique ?",
+                    "category": "Environnement",
+                    "name": "votre idée a-t-elle un impact écologique ?",
                     "required": false
                 },
                 {
                     "id": @integer@,
                     "placeholder": "Expliquez, en maximum 1700 caractères (espaces compris), si votre idée a des effets positifs ou négatifs sur l’égalité entre les femmes et les hommes. Idéalement, donnez des éléments pour maximiser ou minimiser (selon les cas) ces effets.",
                     "position": 8,
-                    "name": "Égalité femmes-hommes : votre idée a-t-elle un impact sur l’égalité entre les femmes et les hommes ?",
+                    "category": "Égalité femmes-hommes",
+                    "name": "votre idée a-t-elle un impact sur l’égalité entre les femmes et les hommes ?",
                     "required": false
                 }
             ],

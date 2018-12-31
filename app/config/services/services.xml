@@ -405,9 +405,6 @@
         </service>
 
         <!-- DoctrineExtension -->
-        <service id="AppBundle\Doctrine\EnabledExtension">
-            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
-        </service>
         <service id="AppBundle\Doctrine\VisibleStatusesExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>

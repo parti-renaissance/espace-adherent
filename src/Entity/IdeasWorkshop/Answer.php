@@ -52,7 +52,7 @@ class Answer
 
     /**
      * @ORM\ManyToOne(targetEntity="Question")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
+     * @ORM\JoinColumn(nullable=false)
      *
      * @SymfonySerializer\Groups({"idea_write", "idea_publish", "idea_read"})
      */

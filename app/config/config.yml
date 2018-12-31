@@ -134,6 +134,9 @@ doctrine:
             oneLocale:
                 class: A2lix\I18nDoctrineBundle\Doctrine\ORM\Filter\OneLocaleFilter
                 enabled: true
+            enabled:
+                class:   AppBundle\Doctrine\Filter\EnabledFilter
+                enabled: true
 
         dql:
             datetime_functions:
