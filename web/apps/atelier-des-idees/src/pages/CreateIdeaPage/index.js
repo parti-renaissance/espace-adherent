@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import IdeaPageBase from '../IdeaPageBase';
 import { DELETE_IDEA_MODAL } from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
-import { deleteCurrentIdea } from '../../redux/thunk/currentIdea';
+import { deleteCurrentIdea, goBackFromCurrentIdea } from '../../redux/thunk/currentIdea';
 import { selectAuthUser } from '../../redux/selectors/auth';
 
 function mapStateToProps(state) {
@@ -18,7 +18,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     // TODO: replace with actual action creators
     return {
-        onBackClicked: () => alert('Retour'),
+        onBackClicked: () => dispatch(goBackFromCurrentIdea()),
         onPublishClicked: () => alert('Publier'),
         onDeleteClicked: () =>
             dispatch(
