@@ -1,9 +1,9 @@
 import {
-  createRequestTypes
+    createRequestTypes,
 } from '../helpers/actions';
 
 // auth
-export const SET_AUTH_USER = 'SET_AUTH_USER'
+export const SET_AUTH_USER = 'SET_AUTH_USER';
 export const FETCH_AUTH_USER = createRequestTypes('FETCH_AUTH_USER');
 
 // modal
@@ -14,6 +14,9 @@ export const HIDE_MODAL = 'HIDE_MODAL';
 export const FETCH_IDEAS = createRequestTypes('FETCH_IDEAS');
 export const SET_IDEAS = 'SET_IDEAS';
 export const ADD_IDEAS = 'ADD_IDEAS';
+
+// current ideas
+export const SET_CURRENT_IDEA = 'SET_CURRENT_IDEA';
 
 // pinned
 export const FETCH_CONSULTATION_PINNED = createRequestTypes('FETCH_CONSULTATION_PINNED');
