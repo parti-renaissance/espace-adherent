@@ -73,4 +73,13 @@ storiesOf('TextArea', module)
             onChange={action('text area change')}
             error="Msg error"
         />
+    ))
+    .add('error and maxLength', () => (
+        <TextArea
+            id="text-area"
+            maxLength={120}
+            name="text-area"
+            onChange={action('text area change')}
+            error="Msg error"
+        />
     ));
