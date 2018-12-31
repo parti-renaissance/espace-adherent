@@ -26,7 +26,7 @@ function formatVotes(votesCount) {
             id: key,
             name: VOTES_NAMES[key],
             count: votesCount[key],
-            isSelected: votesCount.my_votes.includes(key),
+            isSelected: !votesCount.my_votes ? [] : votesCount.my_votes.includes(key),
         }));
 }
 
@@ -95,14 +95,14 @@ function IdeaCard(props) {
             </div>
             {/* FOOTER */}
             {'FINALIZED' === props.status ? (
-                // TODO: implement onSelected -> Vote
+            // TODO: implement onSelected -> Vote
                 <VotingFooter
                     totalVotes={props.votes_count.total}
                     votes={formatVotes(props.votes_count)}
                     onSelected={vote => props.onVote(vote)}
                 />
             ) : (
-                // TODO: Link to idea
+            // TODO: Link to idea
                 <ContributingFooter remainingDays={props.days_before_deadline} link="/atelier-des-idees" />
             )}
         </div>
