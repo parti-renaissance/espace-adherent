@@ -1,6 +1,9 @@
 .text-area {
-	.text-area__input {
+	.text-area__input-wrapper {
 		position: relative;
+	}
+
+	.text-area__input {
 		width: 100%;
 		min-height: 120px;
 		resize: none;
