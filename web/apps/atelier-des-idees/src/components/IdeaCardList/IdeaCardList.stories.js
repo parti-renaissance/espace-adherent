@@ -8,14 +8,16 @@ const idea = {
         last_name: 'Français',
     },
     author_category: 'QG',
-    thumbnail: '/assets/img/icn_76px_education.svg',
     created_at: new Date().toISOString(),
     comments_count: 122,
     contributors_count: 4,
     description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed molestie sapien eu orci congue sollicitudin. Sed malesuada nisi sed diam tristique, ullamcorper fermentum massa euismod. Vivamus a augue vitae nibh scelerisque…',
-    theme: { name: 'Droits civiques' },
-    category: { name: 'Education' },
+    themes: [
+        { name: 'Education', thumbnail: '/assets/img/icn_76px_education.svg' },
+        { name: 'Droits civiques', thumbnail: null },
+    ],
+    category: { name: 'Education', enabled: true },
     name: 'Réduire le nombre d’élèves dans les classes dans les quartiers défavorisés',
     status: 'PENDING',
 };
