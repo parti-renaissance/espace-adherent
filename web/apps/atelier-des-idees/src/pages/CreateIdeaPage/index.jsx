@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import CreateIdea from '../CreateIdea';
+import IdeaPageBase from '../IdeaPageBase';
 import { DELETE_IDEA_MODAL } from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
 import { deleteIdea } from '../../redux/thunk/ideas';
@@ -37,4 +37,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreateIdea);
+)(IdeaPageBase);
