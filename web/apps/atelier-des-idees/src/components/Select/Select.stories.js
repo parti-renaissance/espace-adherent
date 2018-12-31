@@ -4,8 +4,7 @@ import { action } from '@storybook/addon-actions';
 import Select from '.';
 
 const props = {
-    subtitle:
-		'Ajoutez plusieurs désserts si besoin, dans l\'ordre de leur importance',
+    subtitle: 'Ajoutez plusieurs désserts si besoin, dans l\'ordre de leur importance',
     options: [
         { value: 'chocolate', label: 'Chocolate' },
         { value: 'strawberry', label: 'Strawberry' },
@@ -17,16 +16,13 @@ const props = {
 
 storiesOf('Select', module)
     .addParameters({ jest: ['Select'] })
-    .add('default', () => (
-        <Select {...props} onSelected={action('Selected option')} />
-    ))
-    .add('multi select', () => (
-        <Select {...props} onSelected={action('Selected option')} isMulti={true} />
-    ))
-    .add('with error', () => (
+    .add('default', () => <Select {...props} onSelected={action('Selected option')} />)
+    .add('multi select', () => <Select {...props} onSelected={action('Selected option')} isMulti={true} />)
+    .add('with default value', () => (
         <Select
             {...props}
             onSelected={action('Selected option')}
-            error="Message erreur"
+            defaultValue={{ value: 'chocolate', label: 'Chocolate' }}
         />
-    ));
+    ))
+    .add('with error', () => <Select {...props} onSelected={action('Selected option')} error="Message erreur" />);

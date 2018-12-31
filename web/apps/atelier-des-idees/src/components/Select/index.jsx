@@ -17,7 +17,7 @@ class Select extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedOption: null,
+            selectedOption: this.props.defaultValue,
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -26,9 +26,7 @@ class Select extends React.Component {
     handleChange(selectedOption) {
         this.setState({ selectedOption });
 
-        const formatSelectedOption = this.props.isMulti
-            ? selectedOption.map(selected => selected.value)
-            : [selectedOption.value];
+        const formatSelectedOption = this.props.isMulti ? selectedOption : [selectedOption];
 
         this.props.onSelected(formatSelectedOption);
     }
@@ -64,16 +62,13 @@ class Select extends React.Component {
                     isClearable={this.props.isClearable}
                     isDisabled={this.props.isDisabled}
                     isMulti={this.props.isMulti}
+                    defaultValue={this.props.defaultValue}
                 />
                 {this.props.subtitle && (
-                    <p className="select__subtitle">
-                        {'function' === typeof SubTitle ? <SubTitle /> : SubTitle}
-                    </p>
+                    <div className="select__subtitle">{'function' === typeof SubTitle ? <SubTitle /> : SubTitle}</div>
                 )}
 
-                {this.props.error && (
-                    <p className="select__error">{this.props.error}</p>
-                )}
+                {this.props.error && <p className="select__error">{this.props.error}</p>}
             </div>
         );
     }
@@ -86,14 +81,11 @@ Select.defaultProps = {
     placeholder: '',
     isClearable: false,
     isDisabled: false,
+    defaultValue: undefined,
 };
 
 Select.propTypes = {
-    subtitle: PropTypes.oneOfType([
-        PropTypes.node.isRequired,
-        PropTypes.func,
-        PropTypes.string,
-    ]),
+    subtitle: PropTypes.oneOfType([PropTypes.node.isRequired, PropTypes.func, PropTypes.string]),
     error: PropTypes.string,
     options: PropTypes.arrayOf(
         PropTypes.shape({
@@ -106,6 +98,10 @@ Select.propTypes = {
     isDisabled: PropTypes.bool,
     isMulti: PropTypes.bool,
     onSelected: PropTypes.func.isRequired,
+    defaultValue: PropTypes.shape({
+        value: PropTypes.string,
+        label: PropTypes.string,
+    }),
 };
 
 export default Select;
