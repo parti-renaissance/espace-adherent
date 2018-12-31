@@ -39,16 +39,12 @@ function IdeaCard(props) {
                     <div className="idea-card__content__infos">
                         <span className="idea-card__content__infos__author">
                             <span className="idea-card__content__infos__meta">Par</span>
-                            <span className="idea-card__content__infos__author__name">
-                                {props.author.name}
-                            </span>
+                            <span className="idea-card__content__infos__author__name">{props.author.name}</span>
                             <span className="idea-card__content__infos__author__separator" />
                             <span
                                 className={classnames(
                                     'idea-card__content__infos__author__type',
-                                    `idea-card__content__infos__author__type--${
-                                        props.author_category
-                                    }`
+                                    `idea-card__content__infos__author__type--${props.author_category}`
                                 )}
                             >
                                 {AUTHOR_CATEGORY_NAMES[props.author_category]}
@@ -81,35 +77,33 @@ function IdeaCard(props) {
                         )}
                     </div>
                     <p className="idea-card__content__description">{props.description}</p>
-                    <ul className="idea-card__content__tags">
-                        <li className="idea-card__content__tags__item">
-                            {props.category.name}
-                        </li>
-                        <li className="idea-card__content__tags__item">
-                            {props.theme.name}
-                        </li>
-                    </ul>
+                    {!!props.themes.length && (
+                        <ul className="idea-card__content__tags">
+                            {/* TODO: check what to do with category */}
+                            {/* <li className="idea-card__content__tags__item">{props.category.name}</li>*/}
+                            {props.themes.map(theme => (
+                                <li className="idea-card__content__tags__item">{theme.name}</li>
+                            ))}
+                        </ul>
+                    )}
                 </div>
-                {props.thumbnail && (
+                {!!props.themes.length && props.themes[0].thumbnail && (
                     <div className="idea-card__container">
-                        <img className="idea-card__container__icon" src={props.thumbnail} />
+                        <img className="idea-card__container__icon" src={props.themes[0].thumbnail} />
                     </div>
                 )}
             </div>
             {/* FOOTER */}
             {'FINALIZED' === props.status ? (
-            // TODO: implement onSelected -> Vote
+                // TODO: implement onSelected -> Vote
                 <VotingFooter
                     totalVotes={props.votes_count.total}
                     votes={formatVotes(props.votes_count)}
                     onSelected={vote => props.onVote(vote)}
                 />
             ) : (
-            // TODO: Link to idea
-                <ContributingFooter
-                    remainingDays={props.days_before_deadline}
-                    link="/atelier-des-idees"
-                />
+                // TODO: Link to idea
+                <ContributingFooter remainingDays={props.days_before_deadline} link="/atelier-des-idees" />
             )}
         </div>
     );
@@ -142,7 +136,7 @@ IdeaCard.propTypes = {
     ).isRequired,
     comments_count: PropTypes.number,
     contributors_count: PropTypes.number,
-    tags: PropTypes.arrayOf(PropTypes.string), // array of ids
+    themes: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string, thumbnail: PropTypes.string })),
     days_before_deadline: PropTypes.number.isRequired,
     status: PropTypes.oneOf(ideaStatus).isRequired,
     onVote: PropTypes.func.isRequired,
