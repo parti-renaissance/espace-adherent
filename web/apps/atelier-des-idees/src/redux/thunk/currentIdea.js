@@ -1,7 +1,10 @@
 import { ideaStatus } from '../../constants/api';
-import { selectCurrentIdea } from '../selectors/currentIdea';
-import { hideModal } from '../actions/modal';
 import { push } from 'connected-react-router';
+import { SAVE_CURRENT_IDEA } from '../constants/actionTypes';
+import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
+import { selectCurrentIdea } from '../selectors/currentIdea';
+import { setCurrentIdea, updateCurrentIdea } from '../actions/currentIdea';
+import { hideModal } from '../actions/modal';
 
 /**
  * Delete an idea
@@ -34,5 +37,31 @@ export function goBackFromCurrentIdea() {
         default:
             return dispatch(push('/atelier-des-idees/proposer'));
         }
+    };
+}
+
+export function saveCurrentIdea(ideaData) {
+    return (dispatch, getState, axios) => {
+        const { id } = selectCurrentIdea(getState());
+        dispatch(createRequest(SAVE_CURRENT_IDEA, id));
+        if (id) {
+            // idea already exists (whatever its state)
+            return axios
+                .put(`/api/ideas/${id}`, ideaData)
+                .then(res => res.data)
+                .then((data) => {
+                    dispatch(updateCurrentIdea(data));
+                    dispatch(createRequestSuccess(SAVE_CURRENT_IDEA, id));
+                })
+                .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA, id)));
+        }
+        return axios
+            .post('/api/ideas', ideaData)
+            .then(res => res.data)
+            .then((data) => {
+                dispatch(setCurrentIdea(data));
+                dispatch(createRequestSuccess(SAVE_CURRENT_IDEA, id));
+            })
+            .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA, id)));
     };
 }
