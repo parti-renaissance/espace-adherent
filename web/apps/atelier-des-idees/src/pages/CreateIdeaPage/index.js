@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import IdeaPageBase from '../IdeaPageBase';
 import { DELETE_IDEA_MODAL } from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
-import { deleteIdea } from '../../redux/thunk/ideas';
+import { deleteCurrentIdea } from '../../redux/thunk/ideas';
 import { selectAuthUser } from '../../redux/selectors/auth';
 
 function mapStateToProps(state) {
@@ -23,7 +23,7 @@ function mapDispatchToProps(dispatch) {
         onDeleteClicked: () =>
             dispatch(
                 showModal(DELETE_IDEA_MODAL, {
-                    onConfirmDelete: () => dispatch(deleteIdea()),
+                    onConfirmDelete: () => dispatch(deleteCurrentIdea()),
                 })
             ),
         onSaveClicked: () => alert('Enregistrer'),
