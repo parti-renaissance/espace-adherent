@@ -8,6 +8,7 @@ import withAuth from './hocs/withAuth';
 import Home from './pages/Home';
 import ThreeTabs from './pages/ThreeTabs';
 import CreateIdea from './pages/CreateIdeaPage';
+import IdeaPage from './pages/IdeaPage';
 
 // modal
 import ModalRoot from './containers/ModalRoot';
@@ -27,6 +28,7 @@ class App extends Component {
                     <Route exact path="/atelier-des-idees/contribuer" component={ThreeTabs} />
                     <Route exact path="/atelier-des-idees/proposer" component={ThreeTabs} />
                     <Route exact path="/atelier-des-idees/creer-ma-note" component={withAuth(CreateIdea)} />
+                    <Route exact path="/atelier-des-idees/note/:id" component={withAuth(IdeaPage)} />
                 </Switch>
             </div>
         );
