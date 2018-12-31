@@ -18,7 +18,9 @@ class CompleteForm extends React.Component {
     }
 
     handleSecondForm(res) {
-        this.setState({ secondForm: res });
+        this.setState({ secondForm: res }, () => {
+            this.props.submitForm({ ...this.state.firstForm, ...this.state.secondForm });
+        });
     }
 
     saveForm(res) {
@@ -96,6 +98,7 @@ CompleteForm.propTypes = {
             label: PropTypes.string.isRequired,
         })
     ).isRequired,
+    submitForm: PropTypes.func.isRequired,
 };
 
 export default CompleteForm;
