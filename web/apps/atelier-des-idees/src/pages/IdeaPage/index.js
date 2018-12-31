@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import IdeaPageBase from '../IdeaPageBase';
 import { DELETE_IDEA_MODAL } from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
-import { deleteIdea } from '../../redux/thunk/ideas';
+import { fetchIdea, deleteIdea } from '../../redux/thunk/ideas';
 import { selectAuthUser } from '../../redux/selectors/auth';
 
 class IdeaPage extends React.Component {
@@ -22,6 +22,7 @@ IdeaPage.propTypes = {
 };
 
 function mapStateToProps(state) {
+    // TODO: handle loading and error
     const currentUser = selectAuthUser(state);
     // TODO: uncomment
     // const idea = selectCurrentIdea(state)
@@ -39,7 +40,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     return {
         initIdeaPage: () => {
             const { id } = ownProps.match.params;
-            // TODO: dispatch thunk
+            dispatch(fetchIdea(id));
         },
         onBackClicked: () => alert('Retour'),
         onPublishClicked: () => alert('Publier'),
