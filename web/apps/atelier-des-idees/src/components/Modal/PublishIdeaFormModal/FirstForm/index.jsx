@@ -8,7 +8,7 @@ class FirstForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            inputs: { ...this.props.initInputs },
+            inputs: { ...this.props.defaultValues },
             errors: {
                 form: '',
                 description: '',
@@ -120,11 +120,11 @@ class FirstForm extends React.Component {
 }
 
 FirstForm.defaultProps = {
-    initInputs: { description: '', theme: [], locality: [] },
+    defaultValues: { description: '', theme: [], locality: [] },
 };
 
 FirstForm.propTypes = {
-    initInputs: PropTypes.shape({
+    defaultValues: PropTypes.shape({
         description: PropTypes.string,
         theme: PropTypes.array,
         locality: PropTypes.array,

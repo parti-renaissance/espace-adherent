@@ -7,7 +7,7 @@ class SecondForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            inputs: { ...this.props.initInputs },
+            inputs: { ...this.props.defaultValues },
             errors: {
                 form: '',
                 author: '',
@@ -61,8 +61,7 @@ class SecondForm extends React.Component {
                 if ('author' === input) {
                     this.checkIfComittee(value);
                 }
-                // save data form !== onSubmit
-                this.props.saveForm(this.state.inputs);
+                this.props.saveStateFormOnChange(this.state.inputs);
             }
         );
     }
@@ -186,7 +185,7 @@ class SecondForm extends React.Component {
 }
 
 SecondForm.defaultProps = {
-    initInputs: {
+    defaultValues: {
         author: [],
         difficulties: [],
         legal: false,
@@ -194,7 +193,7 @@ SecondForm.defaultProps = {
 };
 
 SecondForm.propTypes = {
-    initInputs: PropTypes.shape({
+    defaultValues: PropTypes.shape({
         author: PropTypes.array,
         difficulties: PropTypes.array,
         legal: PropTypes.boolean,
@@ -218,7 +217,7 @@ SecondForm.propTypes = {
         })
     ).isRequired,
     onSubmit: PropTypes.func.isRequired,
-    saveForm: PropTypes.func.isRequired,
+    saveStateFormOnChange: PropTypes.func.isRequired,
 };
 
 export default SecondForm;

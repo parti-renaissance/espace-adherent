@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import CompleteForm from '.';
+import PublishIdeaForm from '.';
 
 const props = {
     themeOptions: [
@@ -17,6 +17,6 @@ const props = {
     difficultiesOptions: [{ value: 'juridique', label: 'Juridique' }, { value: 'finance', label: 'Finance' }],
 };
 
-storiesOf('CompleteForm', module)
-    .addParameters({ jest: ['CompleteForm'] })
-    .add('default', () => <CompleteForm {...props} submitForm={action('Send form')} />);
+storiesOf('PublishIdeaForm', module)
+    .addParameters({ jest: ['PublishIdeaForm'] })
+    .add('default', () => <PublishIdeaForm {...props} submitForm={action('Send form')} />);

@@ -1,7 +1,9 @@
 @import '../FirstForm/style';
 @import '../SecondForm/style';
+@import '../StateForm/FailForm/style';
+@import '../StateForm/SuccessForm/style';
 
-.complete-form {
+.publish-idea-form {
   overflow-x: hidden;
   
   &__header {
