@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import IdeaPageBase from '../IdeaPageBase';
 import { DELETE_IDEA_MODAL } from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
-import { fetchIdea, deleteIdea } from '../../redux/thunk/ideas';
+import { fetchIdea } from '../../redux/thunk/ideas';
+import { deleteCurrentIdea } from '../../redux/thunk/currentIdea';
 import { selectAuthUser } from '../../redux/selectors/auth';
 
 class IdeaPage extends React.Component {
@@ -26,11 +27,10 @@ function mapStateToProps(state) {
     const currentUser = selectAuthUser(state);
     // TODO: uncomment
     // const idea = selectCurrentIdea(state)
-    const metadata = { authorName: currentUser.name, createdAt: new Date().toLocaleDateString() };
+    const idea = { authorName: currentUser.name, createdAt: new Date().toLocaleDateString() };
     return {
-        // idea,
+        idea,
         isAuthor: true,
-        metadata,
         isEditing: true,
     };
 }
@@ -47,7 +47,7 @@ function mapDispatchToProps(dispatch, ownProps) {
         onDeleteClicked: () =>
             dispatch(
                 showModal(DELETE_IDEA_MODAL, {
-                    onConfirmDelete: () => dispatch(deleteIdea()),
+                    onConfirmDelete: () => dispatch(deleteCurrentIdea()),
                 })
             ),
         onSaveClicked: () => alert('Enregistrer'),
