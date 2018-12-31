@@ -17,9 +17,10 @@ function getInitialState(questions = []) {
 class CreateIdeaPage extends React.Component {
     constructor(props) {
         super(props);
-        const values = { title: '', ...getInitialState(FIRST_QUESTIONS), ...getInitialState(SECOND_QUESTIONS) };
+        const values = { name: '', ...getInitialState(FIRST_QUESTIONS), ...getInitialState(SECOND_QUESTIONS) };
         this.state = { values, readingMode: false };
         this.onQuestionTextChange = this.onQuestionTextChange.bind(this);
+        this.onSaveIdea = this.onSaveIdea.bind(this);
         this.onToggleReadingMode = this.onToggleReadingMode.bind(this);
         this.getParagraphs = this.getParagraphs.bind(this);
     }
@@ -30,6 +31,12 @@ class CreateIdeaPage extends React.Component {
 
     onToggleReadingMode(toggleValue) {
         this.setState({ readingMode: toggleValue });
+    }
+
+    onSaveIdea() {
+        const { values } = this.state;
+        // TODO: format data before sending them
+        this.props.onSaveIdea(values);
     }
 
     getParagraphs() {
@@ -54,7 +61,7 @@ class CreateIdeaPage extends React.Component {
                         <CreateIdeaActions
                             onDeleteClicked={this.props.onDeleteClicked}
                             onPublishClicked={() => this.props.onPublishClicked(this.state)}
-                            onSaveClicked={this.props.onSaveClicked}
+                            onSaveClicked={this.onSaveIdea}
                             mode="header"
                         />
                     )}
@@ -64,8 +71,8 @@ class CreateIdeaPage extends React.Component {
                         <IdeaPageTitle
                             authorName={this.props.metadata.authorName}
                             createdAt={this.props.metadata.createdAt}
-                            onTitleChange={value => this.onQuestionTextChange('title', value)}
-                            title={this.state.values.title}
+                            onTitleChange={value => this.onQuestionTextChange('name', value)}
+                            title={this.state.values.name}
                             isEditing={this.props.isEditing && !this.state.readingMode}
                         />
                         {this.state.readingMode ? (
@@ -82,7 +89,7 @@ class CreateIdeaPage extends React.Component {
                                 <CreateIdeaActions
                                     onDeleteClicked={this.props.onDeleteClicked}
                                     onPublishClicked={() => this.props.onPublishClicked(this.state)}
-                                    onSaveClicked={this.props.onSaveClicked}
+                                    onSaveClicked={this.onSaveIdea}
                                 />
                             )}
                         </div>
@@ -106,7 +113,7 @@ CreateIdeaPage.propTypes = {
     onBackClicked: PropTypes.func.isRequired,
     onPublishClicked: PropTypes.func.isRequired,
     onDeleteClicked: PropTypes.func.isRequired,
-    onSaveClicked: PropTypes.func.isRequired,
+    onSaveIdea: PropTypes.func.isRequired,
 };
 
 export default CreateIdeaPage;
