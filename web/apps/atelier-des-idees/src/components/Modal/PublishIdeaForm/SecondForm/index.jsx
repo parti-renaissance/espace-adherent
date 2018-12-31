@@ -7,7 +7,7 @@ class SecondForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            inputs: { ...this.props.initInput },
+            inputs: { ...this.props.initInputs },
             errors: {
                 form: '',
                 author: '',
@@ -57,12 +57,16 @@ class SecondForm extends React.Component {
                 ...prevState,
                 inputs: { ...prevState.inputs, [input]: value },
             }),
-            () => 'author' === input && this.checkIfComittee(value)
+            () => {
+                'author' === input && this.checkIfComittee(value);
+                // save data form !== onSubmit
+                this.props.saveForm(this.state.inputs);
+            }
         );
     }
 
-    checkIfComittee(value) {
-        if ('committee' === value[0]) {
+    checkIfComittee(res) {
+        if ('committee' === res[0].value) {
             this.setState(prevState => ({
                 ...prevState,
                 // add committee attribute to inputs
@@ -89,46 +93,53 @@ class SecondForm extends React.Component {
     }
 
     render() {
+        const showCommittee =
+			0 < this.state.inputs.author.length ? 'committee' === this.state.inputs.author[0].value : '';
         return (
-            <form class="second-form" onSubmit={this.handleSubmit}>
-                <div class="second-form__section">
-                    <label class="second-form__section__label">Avec qui avez-vous rédigé cette note ?</label>
+            <form className="second-form" onSubmit={this.handleSubmit}>
+                <div className="second-form__section">
+                    <label className="second-form__section__label">Avec qui avez-vous rédigé cette note ?</label>
                     <Select
                         options={this.props.authorOptions}
                         placeholder="Seul / Mon comité"
                         error={this.state.errors.author}
                         onSelected={value => this.handleChange('author', value)}
+                        defaultValue={this.state.inputs.author.length ? this.state.inputs.author : undefined}
                     />
                 </div>
-                {'committee' === this.state.inputs.author[0] && (
-                    <div class="second-form__section">
-                        <label class="second-form__section__label">Nom de votre comité</label>
+                {showCommittee && (
+                    <div className="second-form__section">
+                        <label className="second-form__section__label">Nom de votre comité</label>
                         <Select
                             options={this.props.committeeOptions}
                             error={this.state.errors.committee}
                             onSelected={value => this.handleChange('committee', value)}
+                            defaultValue={this.state.inputs.committee ? this.state.inputs.committee : undefined}
                         />
                     </div>
                 )}
-                <div class="second-form__section">
-                    <label class="second-form__section__label">
+                <div className="second-form__section">
+                    <label className="second-form__section__label">
 						Y-a-t-il une partie qui vous a semblé difficile à remplir ?
-                        <span class="second-form__section__label__optional"> (Optionnel)</span>
+                        <span className="second-form__section__label__optional"> (Optionnel)</span>
                     </label>
                     <Select
                         options={this.props.difficultiesOptions}
                         placeholder="Juridique / Finance / etc."
                         isMulti={true}
                         onSelected={value => this.handleChange('difficulties', value)}
+                        defaultValue={
+                            this.state.inputs.difficulties.length ? this.state.inputs.difficulties : undefined
+                        }
                     />
                 </div>
-                <div class="second-form__section">
+                <div className="second-form__section">
                     <div className="second-form__section__mentions">
                         <label className="second-form__section__mentions__checkbox">
                             <input
                                 className="second-form__section__mentions__checkbox__input"
                                 type="checkbox"
-                                checked={this.state.legal}
+                                checked={this.state.inputs.legal}
                                 onChange={event => this.handleChange('legal', event.target.checked)}
                             />
                             <span className="second-form__section__mentions__checkbox__checkmark">
@@ -174,7 +185,7 @@ class SecondForm extends React.Component {
 }
 
 SecondForm.defaultProps = {
-    initInput: {
+    initInputs: {
         author: [],
         difficulties: [],
         legal: false,
@@ -206,6 +217,7 @@ SecondForm.propTypes = {
         })
     ).isRequired,
     onSubmit: PropTypes.func.isRequired,
+    saveForm: PropTypes.func.isRequired,
 };
 
 export default SecondForm;

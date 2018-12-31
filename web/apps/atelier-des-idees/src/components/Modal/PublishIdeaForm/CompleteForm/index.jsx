@@ -14,18 +14,18 @@ class CompleteForm extends React.Component {
     }
 
     handleFirstForm(res) {
-        console.log(res);
-        this.setState(
-            { firstForm: res },
-            () => !Object.is(this.state.firstForm, {}) && this.setState({ pagination: 2 })
-        );
+        this.setState({ firstForm: res }, () => this.setState({ pagination: 2 }));
     }
 
     handleSecondForm(res) {
         this.setState({ secondForm: res });
     }
 
-    goToPrevious() {
+    saveForm(res) {
+        this.setState({ secondForm: res });
+    }
+
+    goBack() {
         this.setState({ pagination: 1 });
     }
 
@@ -34,7 +34,7 @@ class CompleteForm extends React.Component {
             <div className="complete-form">
                 <div className="complete-form__header">
                     {2 === this.state.pagination && (
-                        <button className="complete-form__header__previous" onClick={() => this.goToPrevious()}>
+                        <button className="complete-form__header__previous" onClick={() => this.goBack()}>
 							← Précédent
                         </button>
                     )}
@@ -42,7 +42,7 @@ class CompleteForm extends React.Component {
                 </div>
                 {1 === this.state.pagination && (
                     <FirstForm
-                        initInputs={!Object.is(this.state.firstForm, {}) && this.state.firstForm}
+                        initInputs={0 === Object.keys(this.state.firstForm).length ? undefined : this.state.firstForm}
                         themeOptions={this.props.themeOptions}
                         localityOptions={this.props.localityOptions}
                         onSubmit={res => this.handleFirstForm(res)}
@@ -50,11 +50,12 @@ class CompleteForm extends React.Component {
                 )}
                 {2 === this.state.pagination && (
                     <SecondForm
-                        initInputs={!Object.is(this.state.secondForm, {}) && this.state.secondForm}
+                        initInputs={0 === Object.keys(this.state.secondForm).length ? undefined : this.state.secondForm}
                         authorOptions={this.props.authorOptions}
                         committeeOptions={this.props.committeeOptions}
                         difficultiesOptions={this.props.difficultiesOptions}
                         onSubmit={res => this.handleSecondForm(res)}
+                        saveForm={res => this.saveForm(res)}
                     />
                 )}
             </div>
