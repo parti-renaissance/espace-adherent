@@ -18,12 +18,12 @@ class App extends Component {
             <div className="App">
                 <ModalRoot />
                 <Switch>
-                    <Route exact path="/atelier-des-idees" component={Home} />{' '}
-                    <Route exact path="/atelier-des-idees/consulter" component={ThreeTabs} />{' '}
-                    <Route exact path="/atelier-des-idees/contribuer" component={ThreeTabs} />{' '}
-                    <Route exact path="/atelier-des-idees/proposer" component={ThreeTabs} />{' '}
-                    <Route exact path="/atelier-des-idees/creer-ma-note" component={withAuth(CreateIdea)} />{' '}
-                </Switch>{' '}
+                    <Route exact path="/atelier-des-idees" component={Home} />
+                    <Route exact path="/atelier-des-idees/consulter" component={ThreeTabs} />
+                    <Route exact path="/atelier-des-idees/contribuer" component={ThreeTabs} />
+                    <Route exact path="/atelier-des-idees/proposer" component={ThreeTabs} />
+                    <Route exact path="/atelier-des-idees/creer-ma-note" component={withAuth(CreateIdea)} />
+                </Switch>
             </div>
         );
     }
