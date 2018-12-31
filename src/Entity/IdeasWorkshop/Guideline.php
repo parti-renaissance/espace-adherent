@@ -4,6 +4,7 @@ namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use AppBundle\Entity\EnabledInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -50,8 +51,10 @@ class Guideline implements EnabledInterface
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Question", mappedBy="guideline")
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="guideline", cascade={"persist"})
      * @ORM\OrderBy({"position": "ASC"})
+     *
+     * @ApiSubresource
      *
      * @SymfonySerializer\Groups("guideline_read")
      */
@@ -75,7 +78,7 @@ class Guideline implements EnabledInterface
      */
     private $name;
 
-    public function __construct(string $name, bool $enabled = true, int $position = 0)
+    public function __construct(string $name = '', bool $enabled = true, int $position = 0)
     {
         $this->name = $name;
         $this->position = $position;
@@ -135,5 +138,10 @@ class Guideline implements EnabledInterface
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?: '';
     }
 }
