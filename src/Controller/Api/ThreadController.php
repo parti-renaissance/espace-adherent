@@ -3,29 +3,26 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\IdeasWorkshop\Thread;
-use Doctrine\Common\Persistence\ObjectManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\Request;
 
 class ThreadController
 {
-    /**
-     * @ParamConverter("thread", options={"mapping": {"id": "uuid"}})
-     */
-    public function approveAction(Thread $thread, ObjectManager $manager): Thread
+    public function approveAction(Request $request): Thread
     {
+        /** @var Thread $thread */
+        $thread = $request->attributes->get('data');
+
         $thread->approve();
-        $manager->flush();
 
         return $thread;
     }
 
-    /**
-     * @ParamConverter("thread", options={"mapping": {"id": "uuid"}})
-     */
-    public function reportAction(Thread $thread, ObjectManager $manager): Thread
+    public function reportAction(Request $request): Thread
     {
+        /** @var Thread $thread */
+        $thread = $request->attributes->get('data');
+
         $thread->report();
-        $manager->flush();
 
         return $thread;
     }
