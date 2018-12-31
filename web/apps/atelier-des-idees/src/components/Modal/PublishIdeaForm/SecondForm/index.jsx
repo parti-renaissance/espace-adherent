@@ -58,7 +58,9 @@ class SecondForm extends React.Component {
                 inputs: { ...prevState.inputs, [input]: value },
             }),
             () => {
-                'author' === input && this.checkIfComittee(value);
+                if ('author' === input) {
+                    this.checkIfComittee(value);
+                }
                 // save data form !== onSubmit
                 this.props.saveForm(this.state.inputs);
             }
@@ -93,8 +95,7 @@ class SecondForm extends React.Component {
     }
 
     render() {
-        const showCommittee =
-			0 < this.state.inputs.author.length ? 'committee' === this.state.inputs.author[0].value : '';
+        const showCommittee = 0 < this.state.inputs.author.length && 'committee' === this.state.inputs.author[0].value;
         return (
             <form className="second-form" onSubmit={this.handleSubmit}>
                 <div className="second-form__section">
