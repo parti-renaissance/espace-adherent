@@ -18,6 +18,7 @@ export const SET_IDEAS = 'SET_IDEAS';
 export const ADD_IDEAS = 'ADD_IDEAS';
 
 // current ideas
+export const SAVE_CURRENT_IDEA = createRequestTypes('SAVE_CURRENT_IDEA');
 export const SET_CURRENT_IDEA = 'SET_CURRENT_IDEA';
 export const UPDATE_CURRENT_IDEA = 'UPDATE_CURRENT_IDEA';
 
