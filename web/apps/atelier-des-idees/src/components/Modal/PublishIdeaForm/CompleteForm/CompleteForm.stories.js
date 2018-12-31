@@ -19,4 +19,4 @@ const props = {
 
 storiesOf('CompleteForm', module)
     .addParameters({ jest: ['CompleteForm'] })
-    .add('default', () => <CompleteForm {...props} />);
+    .add('default', () => <CompleteForm {...props} submitForm={action('Send form')} />);
