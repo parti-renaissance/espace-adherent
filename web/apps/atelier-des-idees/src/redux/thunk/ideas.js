@@ -1,4 +1,4 @@
-import { FETCH_IDEAS } from '../constants/actionTypes';
+import { FETCH_IDEAS, FETCH_IDEA } from '../constants/actionTypes';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { addIdeas, setIdeas } from '../actions/ideas';
 import { selectIdeasMetadata } from '../selectors/ideas';
@@ -39,5 +39,23 @@ export function fetchNextIdeas(status, params = {}) {
         const metadata = selectIdeasMetadata(getState());
         const pagingParams = {}; // TODO: compute params based on metadata
         return dispatch(fetchIdeas(status, { ...params, ...pagingParams }));
+    };
+}
+
+/**
+ *
+ * @param {string} id idea
+ */
+export function fetchIdea(id) {
+    return (dispatch, getState, axios) => {
+        dispatch(createRequest(FETCH_IDEAS, id));
+        return axios
+            .get(`/api/ideas/${id}`)
+            .then(res => res.data)
+            .then((data) => {
+                // TODO: dispatch(setCurrentIdea(data))
+                dispatch(createRequestSuccess(FETCH_IDEA, id));
+            })
+            .catch(error => dispatch(createRequestFailure(FETCH_IDEA, id)));
     };
 }
