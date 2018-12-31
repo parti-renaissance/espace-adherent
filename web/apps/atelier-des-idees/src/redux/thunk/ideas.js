@@ -41,3 +41,17 @@ export function fetchNextIdeas(status, params = {}) {
         return dispatch(fetchIdeas(status, { ...params, ...pagingParams }));
     };
 }
+
+/**
+ * Delete an idea
+ * @param {string} id idea to delete
+ */
+export function deleteIdea(id = '') {
+    // TODO: add logic (delete idea, draft?, redirect? )
+    return (dispatch, getState, axios) => {
+        if (id) {
+            return axios.delete('/api/idea');
+        }
+        return (window.location = '/atelier-des-idees');
+    };
+}
