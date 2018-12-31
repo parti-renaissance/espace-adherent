@@ -38,7 +38,9 @@ class CompleteForm extends React.Component {
 							← Précédent
                         </button>
                     )}
-                    <p className="complete-form__header__paging">{this.state.pagination}/2</p>
+                    <p className="complete-form__header__paging">
+                        <span className="complete-form__header__paging--current">{this.state.pagination} </span>/ 2
+                    </p>
                 </div>
                 {1 === this.state.pagination && (
                     <FirstForm
