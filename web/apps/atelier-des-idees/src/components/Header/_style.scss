@@ -1,10 +1,12 @@
 .header {
-  padding: 30px 0;
+  height: 80px;
   border-top: 1px solid $gainsboro;
 
   .header__inner {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    height: 100%;
   }
 
   .header__nav {
@@ -37,5 +39,29 @@
   .header__button {
     @extend %reset-button;
     cursor: pointer;
+  }
+
+  @media #{$mobile} {
+    height: 60px;
+    background-color: $snow;
+
+    .header__inner {
+      justify-content: initial;
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      margin: 0;
+      padding: 0 20px;
+    }
+
+    .header__item,
+    .header__create-btn {
+      white-space: nowrap;
+    }
+
+    .menu-item-wrapper,
+    .header__item {
+      margin-right: 25px;
+    }
   }
 }
