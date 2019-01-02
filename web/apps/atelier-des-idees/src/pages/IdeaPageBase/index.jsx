@@ -18,7 +18,13 @@ class CreateIdeaPage extends React.Component {
     constructor(props) {
         super(props);
         const values = { name: '', ...getInitialState(FIRST_QUESTIONS), ...getInitialState(SECOND_QUESTIONS) };
-        this.state = { values, readingMode: false };
+        this.state = {
+            values,
+            errors: {
+                name: false,
+            },
+            readingMode: false,
+        };
         this.onQuestionTextChange = this.onQuestionTextChange.bind(this);
         this.onSaveIdea = this.onSaveIdea.bind(this);
         this.onToggleReadingMode = this.onToggleReadingMode.bind(this);
@@ -26,7 +32,10 @@ class CreateIdeaPage extends React.Component {
     }
 
     onQuestionTextChange(id, value) {
-        this.setState(prevState => ({ values: { ...prevState.values, [id]: value } }));
+        this.setState(prevState => ({
+            values: { ...prevState.values, [id]: value },
+            errors: { name: !prevState.values.name },
+        }));
     }
 
     onToggleReadingMode(toggleValue) {
@@ -35,8 +44,12 @@ class CreateIdeaPage extends React.Component {
 
     onSaveIdea() {
         const { values } = this.state;
-        // TODO: format data before sending them
-        this.props.onSaveIdea(values);
+        if (values.name) {
+            // TODO: format data before sending them
+            this.props.onSaveIdea(values);
+        } else {
+            this.setState(prevState => ({ errors: { name: true } }));
+        }
     }
 
     getParagraphs() {
@@ -56,7 +69,9 @@ class CreateIdeaPage extends React.Component {
                     <button className="button create-idea-actions__back" onClick={() => this.props.onBackClicked()}>
                         ← Retour
                     </button>
-                    <Switch onChange={this.onToggleReadingMode} label="Passer en mode lecture" />
+                    {this.state.values.name && (
+                        <Switch onChange={this.onToggleReadingMode} label="Passer en mode lecture" />
+                    )}
                     {this.props.isAuthor && (
                         <CreateIdeaActions
                             onDeleteClicked={this.props.onDeleteClicked}
@@ -74,6 +89,7 @@ class CreateIdeaPage extends React.Component {
                             onTitleChange={value => this.onQuestionTextChange('name', value)}
                             title={this.state.values.name}
                             isEditing={this.props.isEditing && !this.state.readingMode}
+                            hasError={this.state.errors.name}
                         />
                         {this.state.readingMode ? (
                             <IdeaReader paragraphs={this.getParagraphs()} />
