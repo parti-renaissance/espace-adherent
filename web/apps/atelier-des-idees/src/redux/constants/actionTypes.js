@@ -22,6 +22,8 @@ export const ADD_IDEAS = 'ADD_IDEAS';
 export const SAVE_CURRENT_IDEA = createRequestTypes('SAVE_CURRENT_IDEA');
 export const SET_CURRENT_IDEA = 'SET_CURRENT_IDEA';
 export const UPDATE_CURRENT_IDEA = 'UPDATE_CURRENT_IDEA';
+export const FETCH_GUIDELINES = createRequestTypes('FETCH_GUIDELINES');
+export const SET_GUIDELINES = 'SET_GUIDELINES';
 
 // pinned
 export const FETCH_CONSULTATION_PINNED = createRequestTypes('FETCH_CONSULTATION_PINNED');
