@@ -4,14 +4,20 @@
 @import './IdeaPageTitle/style';
 
 .create-idea-page {
+  position: relative;
   border-top: 1px solid $gainsboro;
 
   .create-idea-page__header {
     display: flex;
-    padding: 20px 0;
+    height: 80px;
+    align-items: center;
 
     .create-idea-actions {
       flex: 1;
+
+      &:nth-child(2) {
+        margin-left: 0;
+      }
     }
 
     .create-idea-actions__back {
