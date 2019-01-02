@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Geocoder\GeoPointInterface;
+use Cake\Chronos\Chronos;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use libphonenumber\PhoneNumber;
@@ -123,7 +124,7 @@ class Donation implements GeoPointInterface
         $this->emailAddress = $emailAddress;
         $this->postAddress = $postAddress;
         $this->clientIp = $clientIp;
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new Chronos();
         $this->duration = $duration;
         $this->status = self::STATUS_WAITING_CONFIRMATION;
         $this->payboxOrderRef = $payboxOrderRef;
