@@ -12,11 +12,11 @@ storiesOf('CreateIdeaActions', module)
             onSaveClicked={action('save clicked')}
         />
     ))
-    .add('footer mode', () => (
+    .add('isEditing:false', () => (
         <CreateIdeaActions
             onDeleteClicked={action('delete clicked')}
             onPublishClicked={action('publish clicked')}
             onSaveClicked={action('save clicked')}
-            mode="footer"
+            isEditing={false}
         />
     ));
