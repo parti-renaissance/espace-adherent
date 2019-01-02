@@ -8,20 +8,21 @@ import IdeaPageTitle from './IdeaPageTitle';
 import CreateIdeaTool from './CreateIdeaTool';
 import { FIRST_QUESTIONS, SECOND_QUESTIONS } from './constants/questions';
 
-function getInitialState(questions = []) {
-    return questions.reduce((acc, question) => {
-        acc[question.id] = '';
+function getInitialAnswers(answers = []) {
+    const questions = [...FIRST_QUESTIONS, ...SECOND_QUESTIONS];
+    return questions.reduce((acc, question, index) => {
+        const answer = answers.find(item => item.question === index + 1);
+        acc[question.id] = answer ? answer.content : '';
         return acc;
     }, {});
 }
 
-class CreateIdeaPage extends React.Component {
+class IdeaPageBase extends React.Component {
     constructor(props) {
         super(props);
-        const answers = { ...getInitialState(FIRST_QUESTIONS), ...getInitialState(SECOND_QUESTIONS) };
         this.state = {
             name: props.idea.name || '',
-            answers,
+            answers: getInitialAnswers(props.idea.answers),
             errors: {
                 name: false,
             },
@@ -143,17 +144,17 @@ class CreateIdeaPage extends React.Component {
     }
 }
 
-CreateIdeaPage.defaultProps = {
+IdeaPageBase.defaultProps = {
     idea: {},
     isAuthor: false,
     isEditing: false,
 };
 
-CreateIdeaPage.propTypes = {
+IdeaPageBase.propTypes = {
     idea: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        answers: PropTypes.array.isRequired,
-        status: PropTypes.oneOf(ideaStatus),
+        name: PropTypes.string,
+        answers: PropTypes.array,
+        status: PropTypes.oneOf(Object.keys(ideaStatus)),
     }),
     isAuthor: PropTypes.bool,
     isEditing: PropTypes.bool,
@@ -163,4 +164,4 @@ CreateIdeaPage.propTypes = {
     onSaveIdea: PropTypes.func.isRequired,
 };
 
-export default CreateIdeaPage;
+export default IdeaPageBase;

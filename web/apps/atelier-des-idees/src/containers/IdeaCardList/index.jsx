@@ -28,7 +28,7 @@ IdeaCardListContainer.defaultProps = {
 
 IdeaCardListContainer.propTypes = {
     onMoreClicked: PropTypes.func,
-    status: PropTypes.oneOf(ideaStatus).isRequired,
+    status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
     withPaging: PropTypes.bool,
 };
 
