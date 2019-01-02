@@ -8,10 +8,10 @@ import IdeaPageTitle from './IdeaPageTitle';
 import CreateIdeaTool from './CreateIdeaTool';
 import { FIRST_QUESTIONS, SECOND_QUESTIONS } from './constants/questions';
 
-function getInitialAnswers(answers = []) {
-    const questions = [...FIRST_QUESTIONS, ...SECOND_QUESTIONS];
-    return questions.reduce((acc, question, index) => {
-        const answer = answers.find(item => item.question === index + 1);
+function getInitialAnswers(guidelines, answers = []) {
+    const questions = guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
+    return questions.reduce((acc, question) => {
+        const answer = answers.find(item => item.question.id === question.id);
         acc[question.id] = answer ? answer.content : '';
         return acc;
     }, {});
@@ -20,9 +20,10 @@ function getInitialAnswers(answers = []) {
 class IdeaPageBase extends React.Component {
     constructor(props) {
         super(props);
+        const answers = getInitialAnswers(props.guidelines, props.idea.answers);
         this.state = {
             name: props.idea.name || '',
-            answers: getInitialAnswers(props.idea.answers),
+            answers,
             errors: {
                 name: false,
             },
@@ -54,11 +55,11 @@ class IdeaPageBase extends React.Component {
     }
 
     formatAnswers() {
-        const formattedAnswers = Object.values(this.state.answers)
-            .filter(value => !!value)
-            .map((value, index) => {
+        const formattedAnswers = Object.entries(this.state.answers)
+            .filter(([, value]) => !!value)
+            .map(([id, value], index) => {
                 if (value) {
-                    return { question: index + 1, content: value };
+                    return { question: id, content: value };
                 }
                 return null;
             });
@@ -121,6 +122,7 @@ class IdeaPageBase extends React.Component {
                         ) : (
                             <CreateIdeaTool
                                 onQuestionTextChange={this.onQuestionTextChange}
+                                guidelines={this.props.guidelines}
                                 values={this.state.answers}
                                 isEditing={idea.status === ideaStatus.DRAFT}
                             />
@@ -155,6 +157,7 @@ IdeaPageBase.propTypes = {
         answers: PropTypes.array,
         status: PropTypes.oneOf(Object.keys(ideaStatus)),
     }),
+    guidelines: PropTypes.array.isRequired,
     isAuthor: PropTypes.bool,
     onBackClicked: PropTypes.func.isRequired,
     onPublishClicked: PropTypes.func.isRequired,
