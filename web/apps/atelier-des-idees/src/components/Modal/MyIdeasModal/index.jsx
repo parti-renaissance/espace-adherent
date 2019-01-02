@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '../../Tabs';
+import MyIdeas from './MyIdeas';
+import MyContributions from './MyContributions';
 
 const panes = [
     {
-        title: 'TABS1',
-        component: () => <div>1</div>,
+        title: 'Mes idées',
+        component: () => <MyIdeas />,
     },
     {
-        title: 'TABS2',
-        component: <div>2</div>,
+        title: 'Mes contributions',
+        component: () => <MyContributions />,
     },
 ];
 
