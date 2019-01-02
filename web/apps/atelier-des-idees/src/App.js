@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { selectShowHeader } from './redux/selectors/ui';
 
+// HoC
 import withAuth from './hocs/withAuth';
+import withoutHeader from './hocs/withoutHeader';
+
+// components
 import Header from './components/Header';
+
 // pages
 import Home from './pages/Home';
 import ThreeTabs from './pages/ThreeTabs';
@@ -18,7 +26,7 @@ class App extends Component {
         return (
             <div className="App">
                 <ModalRoot />
-                <Header />
+                {this.props.showHeader && <Header />}
                 <Switch>
                     <Route exact path="/atelier-des-idees" component={Home} />
                     <Route exact path="/atelier-des-idees/consulter" component={ThreeTabs} />
@@ -31,4 +39,15 @@ class App extends Component {
     }
 }
 
-export default App;
+App.propTypes = {
+    showHeader: PropTypes.bool.isRequired,
+};
+
+function mapDispatchToProps(state) {
+    return { showHeader: selectShowHeader(state) };
+}
+
+export default connect(
+    mapDispatchToProps,
+    {}
+)(App);
