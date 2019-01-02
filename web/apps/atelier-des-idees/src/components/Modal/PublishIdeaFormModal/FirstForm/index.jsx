@@ -8,11 +8,7 @@ class FirstForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            inputs: {
-                description: '',
-                theme: [],
-                locality: [],
-            },
+            inputs: { ...this.props.defaultValues },
             errors: {
                 form: '',
                 description: '',
@@ -58,35 +54,23 @@ class FirstForm extends React.Component {
 
     render() {
         return (
-            <form class="first-form" onSubmit={this.handleSubmit}>
-                <div class="first-form__section">
-                    <h2 class="first-form__section__title">Soumettez votre note ici</h2>
-                    <p class="first-form__section__subtitle">
-						Une fois ce dernier formulaire rempli, votre note pourra être
-						enrichie{' '}
-                        <Link
-                            className="link"
-                            to="/atelier-des-idees/contribuer"
-                            target="_blank"
-                        >
+            <form className="first-form" onSubmit={this.handleSubmit}>
+                <div className="first-form__section">
+                    <h2 className="first-form__section__title">Soumettez votre note ici</h2>
+                    <p className="first-form__section__subtitle">
+						Une fois ce dernier formulaire rempli, votre note pourra être enrichie{' '}
+                        <Link className="link" to="/atelier-des-idees/contribuer" target="_blank">
 							ici
                         </Link>{' '}
-						par des contributions d’adhérents pendant 3 semaines. Passé ce
-						délai, elle sera affichée{' '}
-                        <Link
-                            className="link"
-                            to="/atelier-des-idees/consulter"
-                            target="_blank"
-                        >
+						par des contributions d’adhérents pendant 3 semaines. Passé ce délai, elle sera affichée{' '}
+                        <Link className="link" to="/atelier-des-idees/consulter" target="_blank">
 							là
                         </Link>{' '}
 						et pourra être soumise aux votes des adhérents.
                     </p>
                 </div>
-                <div class="first-form__section">
-                    <label class="first-form__section__label">
-						Description de l’idée
-                    </label>
+                <div className="first-form__section">
+                    <label className="first-form__section__label">Description de l’idée</label>
                     <TextArea
                         maxLength={180}
                         placeholder="Décrivez votre idée (180 caractères max)"
@@ -95,8 +79,8 @@ class FirstForm extends React.Component {
                         value={this.state.inputs.description}
                     />
                 </div>
-                <div class="first-form__section">
-                    <label class="first-form__section__label">Thématique</label>
+                <div className="first-form__section">
+                    <label className="first-form__section__label">Thématique</label>
                     <Select
                         options={this.props.themeOptions}
                         placeholder="Choisissez la(es) thémathique(s) de votre note"
@@ -104,19 +88,18 @@ class FirstForm extends React.Component {
                         isMulti={true}
                         error={this.state.errors.theme}
                         onSelected={value => this.handleChange('theme', value)}
+                        defaultValue={this.state.inputs.theme.length ? this.state.inputs.theme : undefined}
                     />
                 </div>
-                <div class="first-form__section">
-                    <label class="first-form__section__label">
-						Est-ce un projet national ou européen ?
-                    </label>
+                <div className="first-form__section">
+                    <label className="first-form__section__label">Est-ce un projet national ou européen ?</label>
                     <Select
                         options={this.props.localityOptions}
                         placeholder="Choisissez l'échelle de votre note"
                         subtitle={() => (
                             <p>
-								Pour un projet local, rapprochez-vous de votre référent via la
-								rubrique contact du {/* TODO: missing a link */}
+								Pour un projet local, rapprochez-vous de votre référent via la rubrique contact du{' '}
+                                {/* TODO: missing a link */}
                                 <Link className="link" to="/atelier-des-idees">
 									site de votre territoire
                                 </Link>
@@ -124,20 +107,28 @@ class FirstForm extends React.Component {
                         )}
                         error={this.state.errors.locality}
                         onSelected={value => this.handleChange('locality', value)}
+                        defaultValue={this.state.inputs.locality.length ? this.state.inputs.locality : undefined}
                     />
                 </div>
                 <button type="submit" className="first-form__button button--secondary">
 					dernière étape →
                 </button>
-                {this.state.errors.form && (
-                    <p className="first-form__error">{this.state.errors.form}</p>
-                )}
+                {this.state.errors.form && <p className="first-form__error">{this.state.errors.form}</p>}
             </form>
         );
     }
 }
 
+FirstForm.defaultProps = {
+    defaultValues: { description: '', theme: [], locality: [] },
+};
+
 FirstForm.propTypes = {
+    defaultValues: PropTypes.shape({
+        description: PropTypes.string,
+        theme: PropTypes.array,
+        locality: PropTypes.array,
+    }),
     themeOptions: PropTypes.arrayOf(
         PropTypes.shape({
             value: PropTypes.string.isRequired,
