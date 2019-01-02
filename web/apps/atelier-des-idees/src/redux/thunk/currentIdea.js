@@ -1,9 +1,9 @@
 import { ideaStatus } from '../../constants/api';
-import { push, replace } from 'connected-react-router';
-import { SAVE_CURRENT_IDEA } from '../constants/actionTypes';
+import { push } from 'connected-react-router';
+import { SAVE_CURRENT_IDEA, FETCH_GUIDELINES } from '../constants/actionTypes';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { selectCurrentIdea } from '../selectors/currentIdea';
-import { setCurrentIdea, updateCurrentIdea } from '../actions/currentIdea';
+import { setCurrentIdea, updateCurrentIdea, setGuidelines } from '../actions/currentIdea';
 import { hideModal } from '../actions/modal';
 
 /**
@@ -65,5 +65,19 @@ export function saveCurrentIdea(ideaData) {
                 // dispatch(replace(`/atelier-des-idees/note/${data.uuid}`));
             })
             .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA, id)));
+    };
+}
+
+export function fetchGuidelines() {
+    return (dispatch, getState, axios) => {
+        dispatch(createRequest(FETCH_GUIDELINES));
+        axios
+            .get('/api/guidelines')
+            .then(res => res.data)
+            .then((data) => {
+                dispatch(setGuidelines(data));
+                dispatch(createRequestSuccess(FETCH_GUIDELINES));
+            })
+            .catch(() => dispatch(createRequestFailure(FETCH_GUIDELINES)));
     };
 }
