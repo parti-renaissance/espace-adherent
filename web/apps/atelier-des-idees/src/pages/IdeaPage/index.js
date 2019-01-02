@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import IdeaPageBase from '../IdeaPageBase';
 import { DELETE_IDEA_MODAL } from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
-import { fetchIdea } from '../../redux/thunk/ideas';
+import { initIdeaPage } from '../../redux/thunk/navigation';
 import { deleteCurrentIdea, goBackFromCurrentIdea } from '../../redux/thunk/currentIdea';
 import { selectAuthUser } from '../../redux/selectors/auth';
 import { selectCurrentIdea } from '../../redux/selectors/currentIdea';
@@ -45,7 +45,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     return {
         initIdeaPage: () => {
             const { id } = ownProps.match.params;
-            dispatch(fetchIdea(id));
+            dispatch(initIdeaPage(id));
         },
         onBackClicked: () => dispatch(goBackFromCurrentIdea()),
         onPublishClicked: () => alert('Publier'),
