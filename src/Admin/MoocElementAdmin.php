@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Mooc\AttachmentFile;
+use AppBundle\Entity\Mooc\Chapter;
 use AppBundle\Entity\Mooc\Quiz;
 use AppBundle\Entity\Mooc\Video;
 use AppBundle\Form\Admin\BaseFileType;
@@ -14,8 +15,8 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
-use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
@@ -51,10 +52,9 @@ class MoocElementAdmin extends AbstractAdmin
                     'purifier_type' => 'enrich_content',
                     'filter_emojis' => true,
                 ])
-                ->add('chapter', ModelListType::class, [
-                    'btn_add' => false,
-                    'btn_edit' => false,
-                    'btn_delete' => false,
+                ->add('chapter', EntityType::class, [
+                    'class' => Chapter::class,
+                    'placeholder' => 'Sélectionner un chapitre',
                 ])
                 ->add('position', IntegerType::class, [
                     'label' => 'Ordre d\'affichage',
