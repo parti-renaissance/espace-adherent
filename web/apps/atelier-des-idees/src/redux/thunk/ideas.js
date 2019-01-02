@@ -1,6 +1,7 @@
 import { FETCH_IDEAS, FETCH_IDEA } from '../constants/actionTypes';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { addIdeas, setIdeas } from '../actions/ideas';
+import { setCurrentIdea } from '../actions/currentIdea';
 import { selectIdeasMetadata } from '../selectors/ideas';
 
 /**
@@ -53,7 +54,7 @@ export function fetchIdea(id) {
             .get(`/api/ideas/${id}`)
             .then(res => res.data)
             .then((data) => {
-                // TODO: dispatch(setCurrentIdea(data))
+                dispatch(setCurrentIdea(data));
                 dispatch(createRequestSuccess(FETCH_IDEA, id));
             })
             .catch(error => dispatch(createRequestFailure(FETCH_IDEA, id)));
