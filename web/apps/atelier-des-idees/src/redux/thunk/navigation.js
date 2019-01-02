@@ -1,8 +1,9 @@
+import { ideaStatus } from '../../constants/api';
 import { fetchIdeas, fetchIdea } from './ideas';
 import { fetchConsultationPinned } from './pinned';
 import { fetchReports } from './reports';
-import { ideaStatus } from '../../constants/api';
 import { fetchAuthUser } from './auth';
+import { fetchGuidelines } from './currentIdea';
 
 export function initApp() {
     return dispatch => dispatch(fetchAuthUser());
@@ -43,4 +44,8 @@ export function initConsultPage() {
 
 export function initIdeaPage(id) {
     return dispatch => dispatch(fetchIdea(id));
+}
+
+export function initCreateIdeaPage() {
+    return dispatch => dispatch(fetchGuidelines());
 }
