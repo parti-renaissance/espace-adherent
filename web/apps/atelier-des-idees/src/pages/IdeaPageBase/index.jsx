@@ -113,7 +113,7 @@ class IdeaPageBase extends React.Component {
                             createdAt={this.props.idea.createdAt}
                             onTitleChange={value => this.onNameChange(value)}
                             title={this.state.name}
-                            isEditing={this.props.isEditing && !this.state.readingMode}
+                            isEditing={idea.status === ideaStatus.DRAFT && !this.state.readingMode}
                             hasError={this.state.errors.name}
                         />
                         {this.state.readingMode ? (
@@ -122,7 +122,7 @@ class IdeaPageBase extends React.Component {
                             <CreateIdeaTool
                                 onQuestionTextChange={this.onQuestionTextChange}
                                 values={this.state.answers}
-                                isEditing={this.props.isEditing}
+                                isEditing={idea.status === ideaStatus.DRAFT}
                             />
                         )}
                         {idea.status === ideaStatus.DRAFT && (
@@ -147,7 +147,6 @@ class IdeaPageBase extends React.Component {
 IdeaPageBase.defaultProps = {
     idea: {},
     isAuthor: false,
-    isEditing: false,
 };
 
 IdeaPageBase.propTypes = {
@@ -157,7 +156,6 @@ IdeaPageBase.propTypes = {
         status: PropTypes.oneOf(Object.keys(ideaStatus)),
     }),
     isAuthor: PropTypes.bool,
-    isEditing: PropTypes.bool,
     onBackClicked: PropTypes.func.isRequired,
     onPublishClicked: PropTypes.func.isRequired,
     onDeleteClicked: PropTypes.func.isRequired,
