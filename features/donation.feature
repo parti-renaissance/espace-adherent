@@ -26,7 +26,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | /articles     |
 
   Scenario: A user can't donate more than 7500€ per year
-    Given the following fixtures are loaded:
+    Given I freeze the clock to "2018-12-01"
+    And the following fixtures are loaded:
       | LoadDonationData |
     And I am logged as "jacques.picard@en-marche.fr"
     And I am on "/don/coordonnees?montant=7490&abonnement=0"
@@ -60,7 +61,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | NUMERO_CARTE | 4012001037141112 |
       | CVVX         | 123              |
     And I select "12" from "MOIS_VALIDITE"
-    And I select "18" from "AN_VALIDITE"
+    And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I should see "Paiement accepté"
@@ -95,7 +96,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | NUMERO_CARTE | 4012001037141112 |
       | CVVX         | 123              |
     And I select "12" from "MOIS_VALIDITE"
-    And I select "18" from "AN_VALIDITE"
+    And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I should see "Paiement accepté"
@@ -154,7 +155,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | NUMERO_CARTE | 4012001037141112 |
       | CVVX         | 123              |
     And I select "12" from "MOIS_VALIDITE"
-    And I select "18" from "AN_VALIDITE"
+    And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I should see "Paiement accepté"
@@ -202,7 +203,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | NUMERO_CARTE | 4012001037141112 |
       | CVVX         | 123              |
     And I select "12" from "MOIS_VALIDITE"
-    And I select "18" from "AN_VALIDITE"
+    And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I should see "Paiement accepté"
@@ -244,7 +245,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | NUMERO_CARTE | 4012001037141112 |
       | CVVX         | 123              |
     And I select "12" from "MOIS_VALIDITE"
-    And I select "18" from "AN_VALIDITE"
+    And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I should see "Paiement accepté"
