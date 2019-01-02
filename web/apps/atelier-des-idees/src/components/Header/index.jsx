@@ -1,14 +1,14 @@
 import React from 'react';
-import ScrollMenu from 'react-horizontal-scrolling-menu';
+// import ScrollMenu from 'react-horizontal-scrolling-menu';
 import { NavLink } from 'react-router-dom';
-import { NotMobile, Mobile } from '../../helpers/responsive';
+// import { NotMobile, Mobile } from '../../helpers/responsive';
 import Button from '../Button';
 
 class Header extends React.PureComponent {
     render() {
         // const menuItems = [<NavLink to="/atelier-des-idees">Vue d'ensemble</NavLink>];
         const menuItems = [
-            <NavLink className="header__item" to="/atelier-des-idees">
+            <NavLink exact className="header__item" to="/atelier-des-idees">
                 Vue d'ensemble
             </NavLink>,
             <button className="header__item header__button">Mes notes</button>,
@@ -17,10 +17,8 @@ class Header extends React.PureComponent {
         return (
             <section className="header">
                 <div className="header__inner l__wrapper">
-                    <NotMobile>
-                        <div className="header__nav">{menuItems}</div>
-                        <Button className="button--primary" label="Je rédige mon idée" />
-                    </NotMobile>
+                    <div className="header__nav">{menuItems}</div>
+                    <Button className="header__create-btn button--primary" label="Je rédige mon idée" />
                     {/* <Mobile>
                 <ScrollMenu
                     alignCenter={false}
