@@ -59,6 +59,7 @@ class CommentsList extends React.Component {
                         {this.props.comments.length
                             ? this.props.comments.map(comment => (
                                 <React.Fragment>
+                                    {/* TODO: add onEdit and onApproved */}
                                     <Comment
                                         {...comment}
                                         ownerId={this.props.ownerId}
