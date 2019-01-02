@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class SucessForm extends React.PureComponent {
     render() {
@@ -14,9 +15,13 @@ class SucessForm extends React.PureComponent {
 					Vous devrez ensuite intégrer vous-même leurs contributions à votre
 					partie.
                 </p>
-                <button className="success-form__button button--secondary">
+                {/* TODO: Lien vers la nouvelle note créée ? */}
+                <Link
+                    to="/atelier-des-idees/contribuer"
+                    className="success-form__button button--secondary"
+                >
 					Voir la page
-                </button>
+                </Link>
                 <img src="assets/img/how-to-approve.svg" />
             </div>
         );
