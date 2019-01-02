@@ -1,6 +1,8 @@
-import {
-    createRequestTypes,
-} from '../helpers/actions';
+import { createRequestTypes } from '../helpers/actions';
+
+// ui
+export const SHOW_HEADER = 'SHOW_HEADER';
+export const HIDE_HEADER = 'HIDE_HEADER';
 
 // auth
 export const SET_AUTH_USER = 'SET_AUTH_USER';

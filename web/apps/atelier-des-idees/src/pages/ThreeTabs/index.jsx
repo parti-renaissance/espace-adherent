@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink, Route, Switch } from 'react-router-dom';
 
+import Header from '../../components/Header';
 import Consult from '../Consult';
 import Contribute from '../Contribute';
 import Propose from '../Propose';
@@ -11,7 +12,7 @@ const routes = [
         path: '/atelier-des-idees/consulter',
         exact: true,
         title: () => (
-            <Header title="Les idées finalisées" subtitle="Consultez les idées devenues de vraies propositions !" />
+            <TTHeader title="Les idées finalisées" subtitle="Consultez les idées devenues de vraies propositions !" />
         ),
         main: Consult,
     },
@@ -19,7 +20,7 @@ const routes = [
         path: '/atelier-des-idees/contribuer',
         exact: true,
         title: () => (
-            <Header
+            <TTHeader
                 title="Contribuer aux idées en cours"
                 subtitle="Explorez les idées en cours de vos concitoyens et enrichissez-les !"
             />
@@ -30,7 +31,7 @@ const routes = [
         path: '/atelier-des-idees/proposer',
         exact: true,
         title: () => (
-            <Header
+            <TTHeader
                 title="Proposer une nouvelle idée"
                 subtitle="Vous avez une idée que vous aimeriez voir émerger dans le débat public ? Ecrivez une note sur votre thème de prédilection !"
             />
@@ -39,7 +40,7 @@ const routes = [
     },
 ];
 
-function Header(props) {
+function TTHeader(props) {
     return (
         <React.Fragment>
             <h1>{props.title}</h1>
@@ -50,31 +51,34 @@ function Header(props) {
 
 function ThreeTabs(props) {
     return (
-        <div className="tt-page">
-            <div className="tt-page__header l__wrapper">
-                <div className="tt-page__header__title">
+        <React.Fragment>
+            <Header />
+            <div className="tt-page">
+                <div className="tt-page__header l__wrapper">
+                    <div className="tt-page__header__title">
+                        {routes.map((route, index) => (
+                            <Route key={index} path={route.path} exact={route.exact} component={route.title} />
+                        ))}
+                    </div>
+                    <div className="tt-page__header__nav">
+                        <NavLink className="tt-page__header__nav-link" to="/atelier-des-idees/consulter">
+                            Consulter
+                        </NavLink>
+                        <NavLink className="tt-page__header__nav-link" to="/atelier-des-idees/contribuer">
+                            Contribuer
+                        </NavLink>
+                        <NavLink className="tt-page__header__nav-link" to="/atelier-des-idees/proposer">
+                            Proposer
+                        </NavLink>
+                    </div>
+                </div>
+                <div className="tt-page__main">
                     {routes.map((route, index) => (
-                        <Route key={index} path={route.path} exact={route.exact} component={route.title} />
+                        <Route key={index} path={route.path} exact={route.exact} component={route.main} />
                     ))}
                 </div>
-                <div className="tt-page__header__nav">
-                    <NavLink className="tt-page__header__nav-link" to="/atelier-des-idees/consulter">
-                        Consulter
-                    </NavLink>
-                    <NavLink className="tt-page__header__nav-link" to="/atelier-des-idees/contribuer">
-                        Contribuer
-                    </NavLink>
-                    <NavLink className="tt-page__header__nav-link" to="/atelier-des-idees/proposer">
-                        Proposer
-                    </NavLink>
-                </div>
             </div>
-            <div className="tt-page__main">
-                {routes.map((route, index) => (
-                    <Route key={index} path={route.path} exact={route.exact} component={route.main} />
-                ))}
-            </div>
-        </div>
+        </React.Fragment>
     );
 }
 

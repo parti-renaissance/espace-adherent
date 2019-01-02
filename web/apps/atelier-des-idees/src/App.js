@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
+// HoC
 import withAuth from './hocs/withAuth';
+
 // pages
 import Home from './pages/Home';
 import ThreeTabs from './pages/ThreeTabs';
@@ -17,6 +19,8 @@ class App extends Component {
         return (
             <div className="App">
                 <ModalRoot />
+                {/* TODO: improve Header handling using withoutHeader HoC (bug with connected-react-router for now) */}
+                {/* <Header /> */}
                 <Switch>
                     <Route exact path="/atelier-des-idees" component={Home} />
                     <Route exact path="/atelier-des-idees/consulter" component={ThreeTabs} />
