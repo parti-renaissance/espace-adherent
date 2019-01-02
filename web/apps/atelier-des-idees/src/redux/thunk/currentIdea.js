@@ -1,5 +1,6 @@
 import { ideaStatus } from '../../constants/api';
 import { selectCurrentIdea } from '../selectors/currentIdea';
+import { hideModal } from '../actions/modal';
 import { push } from 'connected-react-router';
 
 /**
@@ -11,8 +12,12 @@ export function deleteCurrentIdea() {
         const { id } = selectCurrentIdea(getState());
         if (id) {
             // idea already exists (whatever its state)
-            return axios.delete(`/api/ideas/${id}`).then(() => dispatch(push('/atelier-des-idees')));
+            return axios.delete(`/api/ideas/${id}`).then(() => {
+                dispatch(hideModal());
+                dispatch(push('/atelier-des-idees'));
+            });
         }
+        dispatch(hideModal());
         return dispatch(push('/atelier-des-idees'));
     };
 }
