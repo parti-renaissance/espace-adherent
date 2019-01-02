@@ -10,28 +10,32 @@ function CreateIdeaActions(props) {
                     Supprimer la note
                 </button>
             </div>
-            <div className="create-idea-actions--right">
-                <Button
-                    className="create-idea-actions__save"
-                    label="Enregistrer le brouillon"
-                    mode="secondary"
-                    onClick={props.onSaveClicked}
-                />
-                <Button
-                    className="create-idea-actions__publish"
-                    label="Publier la note"
-                    onClick={props.onPublishClicked}
-                />
-            </div>
+            {props.isEditing && (
+                <div className="create-idea-actions--right">
+                    <Button
+                        className="create-idea-actions__save"
+                        label="Enregistrer le brouillon"
+                        mode="secondary"
+                        onClick={props.onSaveClicked}
+                    />
+                    <Button
+                        className="create-idea-actions__publish"
+                        label="Publier la note"
+                        onClick={props.onPublishClicked}
+                    />
+                </div>
+            )}
         </div>
     );
 }
 
 CreateIdeaActions.defaultProps = {
+    isEditing: true,
     onBackClicked: undefined,
 };
 
 CreateIdeaActions.propTypes = {
+    isEditing: PropTypes.bool,
     onBackClicked: PropTypes.func,
     onDeleteClicked: PropTypes.func.isRequired,
     onPublichClicked: PropTypes.func.isRequired,
