@@ -61,7 +61,8 @@ export function saveCurrentIdea(ideaData) {
             .then((data) => {
                 dispatch(setCurrentIdea(data));
                 dispatch(createRequestSuccess(SAVE_CURRENT_IDEA, id));
-                dispatch(replace(`/atelier-des-idees/note/${data.uuid}`));
+                // TODO: uncomment when page exists
+                // dispatch(replace(`/atelier-des-idees/note/${data.uuid}`));
             })
             .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA, id)));
     };
