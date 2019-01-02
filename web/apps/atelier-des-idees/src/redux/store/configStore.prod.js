@@ -19,7 +19,7 @@ const axiosInstance = axios.create({
 export const history = createBrowserHistory();
 
 const store = createStore(
-    rootReducer,
+    rootReducer(history),
     applyMiddleware(thunk.withExtraArgument(axiosInstance), routerMiddleware(history))
 );
 
