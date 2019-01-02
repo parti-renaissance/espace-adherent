@@ -6,7 +6,6 @@ import IdeaReader from '../../components/IdeaReader';
 import CreateIdeaActions from './CreateIdeaActions';
 import IdeaPageTitle from './IdeaPageTitle';
 import CreateIdeaTool from './CreateIdeaTool';
-import { FIRST_QUESTIONS, SECOND_QUESTIONS } from './constants/questions';
 
 function getInitialAnswers(guidelines, answers = []) {
     const questions = guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
@@ -78,7 +77,7 @@ class IdeaPageBase extends React.Component {
     }
 
     getParagraphs() {
-        const questions = [...FIRST_QUESTIONS, ...SECOND_QUESTIONS];
+        const questions = this.props.guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
         return questions.reduce((acc, { id }) => {
             if (this.state.answers[id]) {
                 acc.push(this.state.answers[id]);
