@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ideaStatus } from '../../constants/api';
 import Switch from '../../components/Switch';
 import IdeaReader from '../../components/IdeaReader';
 import CreateIdeaActions from './CreateIdeaActions';
@@ -23,7 +24,7 @@ class CreateIdeaPage extends React.Component {
             errors: {
                 name: false,
             },
-            readingMode: false,
+            readingMode: props.idea.status === ideaStatus.FINALIZED,
         };
         this.onQuestionTextChange = this.onQuestionTextChange.bind(this);
         this.onSaveIdea = this.onSaveIdea.bind(this);
@@ -80,13 +81,14 @@ class CreateIdeaPage extends React.Component {
     }
 
     render() {
+        const { idea } = this.props;
         return (
             <div className="create-idea-page">
                 <div className="create-idea-page__header l__wrapper">
                     <button className="button create-idea-actions__back" onClick={() => this.props.onBackClicked()}>
                         ← Retour
                     </button>
-                    {this.state.values.name && (
+                    {idea.status !== ideaStatus.FINALIZED && this.state.values.name && (
                         <Switch onChange={this.onToggleReadingMode} label="Passer en mode lecture" />
                     )}
                     {this.props.isAuthor && (
@@ -94,7 +96,7 @@ class CreateIdeaPage extends React.Component {
                             onDeleteClicked={this.props.onDeleteClicked}
                             onPublishClicked={() => this.props.onPublishClicked(this.state)}
                             onSaveClicked={this.onSaveIdea}
-                            mode="header"
+                            isEditing={idea.status === ideaStatus.DRAFT}
                         />
                     )}
                 </div>
@@ -117,15 +119,18 @@ class CreateIdeaPage extends React.Component {
                                 isEditing={this.props.isEditing}
                             />
                         )}
-                        <div className="create-idea-page__footer">
-                            {this.props.isAuthor && !this.state.readingMode && (
-                                <CreateIdeaActions
-                                    onDeleteClicked={this.props.onDeleteClicked}
-                                    onPublishClicked={() => this.props.onPublishClicked(this.state)}
-                                    onSaveClicked={this.onSaveIdea}
-                                />
-                            )}
-                        </div>
+                        {idea.status === ideaStatus.DRAFT && (
+                            <div className="create-idea-page__footer">
+                                {this.props.isAuthor && !this.state.readingMode && (
+                                    <CreateIdeaActions
+                                        onDeleteClicked={this.props.onDeleteClicked}
+                                        onPublishClicked={() => this.props.onPublishClicked(this.state)}
+                                        onSaveClicked={this.onSaveIdea}
+                                    />
+                                )}
+                            </div>
+                        )}
+                        {/* TODO: add voting footer for FINALIZED status */}
                     </div>
                 </div>
             </div>
@@ -140,7 +145,11 @@ CreateIdeaPage.defaultProps = {
 };
 
 CreateIdeaPage.propTypes = {
-    idea: PropTypes.object,
+    idea: PropTypes.shape({
+        name: PropTypes.string.title,
+        answers: PropTypes.array.isRequired,
+        status: PropTypes.oneOf(ideaStatus),
+    }),
     isAuthor: PropTypes.bool,
     isEditing: PropTypes.bool,
     onBackClicked: PropTypes.func.isRequired,
