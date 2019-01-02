@@ -26,7 +26,6 @@ CreateIdeaPage.propTypes = {
 function mapStateToProps(state) {
     const currentUser = selectAuthUser(state);
     const guidelines = selectGuidelines(state);
-    console.warn(guidelines);
     const idea = {
         authorName: `${currentUser.first_name} ${currentUser.last_name}`,
         createdAt: new Date().toLocaleDateString(),
