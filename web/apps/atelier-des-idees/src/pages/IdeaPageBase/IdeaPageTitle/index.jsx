@@ -11,6 +11,7 @@ function IdeaPageTitle(props) {
                     onChange={props.onTitleChange}
                     placeholder="Titre de l'idée"
                     value={props.title}
+                    error={props.hasError ? 'Merci de remplir un titre avant de poursuivre' : undefined}
                 />
             ) : (
                 <React.Fragment>
@@ -32,12 +33,14 @@ function IdeaPageTitle(props) {
 IdeaPageTitle.defaultProps = {
     authorName: '',
     createdAt: '',
+    hasError: false,
     isEditing: false,
 };
 
 IdeaPageTitle.propTypes = {
     authorName: PropTypes.string,
     createdAt: PropTypes.string,
+    hasError: PropTypes.bool,
     onTitleChange: PropTypes.func.isRequired,
     isEditing: PropTypes.bool,
     title: PropTypes.string.isRequired,

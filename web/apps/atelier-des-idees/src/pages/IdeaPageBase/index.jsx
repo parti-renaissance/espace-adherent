@@ -17,19 +17,56 @@ function getInitialState(questions = []) {
 class CreateIdeaPage extends React.Component {
     constructor(props) {
         super(props);
-        const values = { title: '', ...getInitialState(FIRST_QUESTIONS), ...getInitialState(SECOND_QUESTIONS) };
-        this.state = { values, readingMode: false };
+        const values = { name: '', ...getInitialState(FIRST_QUESTIONS), ...getInitialState(SECOND_QUESTIONS) };
+        this.state = {
+            values,
+            errors: {
+                name: false,
+            },
+            readingMode: false,
+        };
         this.onQuestionTextChange = this.onQuestionTextChange.bind(this);
+        this.onSaveIdea = this.onSaveIdea.bind(this);
         this.onToggleReadingMode = this.onToggleReadingMode.bind(this);
         this.getParagraphs = this.getParagraphs.bind(this);
+        this.formatAnswers = this.formatAnswers.bind(this);
     }
 
     onQuestionTextChange(id, value) {
-        this.setState(prevState => ({ values: { ...prevState.values, [id]: value } }));
+        this.setState(
+            prevState => ({
+                values: { ...prevState.values, [id]: value },
+            }),
+            () => this.setState({ errors: { name: !this.state.values.name } })
+        );
     }
 
     onToggleReadingMode(toggleValue) {
         this.setState({ readingMode: toggleValue });
+    }
+
+    formatAnswers() {
+        const { name, ...answers } = this.state.values;
+        const formattedAnswers = Object.values(answers)
+            .filter(value => !!value)
+            .map((value, index) => {
+                if (value) {
+                    return { question: index + 1, content: value };
+                }
+                return null;
+            });
+        return formattedAnswers;
+    }
+
+    onSaveIdea() {
+        const { values } = this.state;
+        if (values.name) {
+            // format data before sending them
+            const data = { name: values.name, answers: this.formatAnswers() };
+            this.props.onSaveIdea(data);
+        } else {
+            this.setState(prevState => ({ errors: { name: true } }));
+        }
     }
 
     getParagraphs() {
@@ -49,12 +86,14 @@ class CreateIdeaPage extends React.Component {
                     <button className="button create-idea-actions__back" onClick={() => this.props.onBackClicked()}>
                         ← Retour
                     </button>
-                    <Switch onChange={this.onToggleReadingMode} label="Passer en mode lecture" />
+                    {this.state.values.name && (
+                        <Switch onChange={this.onToggleReadingMode} label="Passer en mode lecture" />
+                    )}
                     {this.props.isAuthor && (
                         <CreateIdeaActions
                             onDeleteClicked={this.props.onDeleteClicked}
                             onPublishClicked={() => this.props.onPublishClicked(this.state)}
-                            onSaveClicked={this.props.onSaveClicked}
+                            onSaveClicked={this.onSaveIdea}
                             mode="header"
                         />
                     )}
@@ -64,9 +103,10 @@ class CreateIdeaPage extends React.Component {
                         <IdeaPageTitle
                             authorName={this.props.metadata.authorName}
                             createdAt={this.props.metadata.createdAt}
-                            onTitleChange={value => this.onQuestionTextChange('title', value)}
-                            title={this.state.values.title}
+                            onTitleChange={value => this.onQuestionTextChange('name', value)}
+                            title={this.state.values.name}
                             isEditing={this.props.isEditing && !this.state.readingMode}
+                            hasError={this.state.errors.name}
                         />
                         {this.state.readingMode ? (
                             <IdeaReader paragraphs={this.getParagraphs()} />
@@ -82,7 +122,7 @@ class CreateIdeaPage extends React.Component {
                                 <CreateIdeaActions
                                     onDeleteClicked={this.props.onDeleteClicked}
                                     onPublishClicked={() => this.props.onPublishClicked(this.state)}
-                                    onSaveClicked={this.props.onSaveClicked}
+                                    onSaveClicked={this.onSaveIdea}
                                 />
                             )}
                         </div>
@@ -106,7 +146,7 @@ CreateIdeaPage.propTypes = {
     onBackClicked: PropTypes.func.isRequired,
     onPublishClicked: PropTypes.func.isRequired,
     onDeleteClicked: PropTypes.func.isRequired,
-    onSaveClicked: PropTypes.func.isRequired,
+    onSaveIdea: PropTypes.func.isRequired,
 };
 
 export default CreateIdeaPage;
