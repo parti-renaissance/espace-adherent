@@ -1,5 +1,5 @@
 import { ideaStatus } from '../../constants/api';
-import { push } from 'connected-react-router';
+import { push, replace } from 'connected-react-router';
 import { SAVE_CURRENT_IDEA } from '../constants/actionTypes';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { selectCurrentIdea } from '../selectors/currentIdea';
@@ -61,6 +61,7 @@ export function saveCurrentIdea(ideaData) {
             .then((data) => {
                 dispatch(setCurrentIdea(data));
                 dispatch(createRequestSuccess(SAVE_CURRENT_IDEA, id));
+                dispatch(replace(`/atelier-des-idees/note/${data.uuid}`));
             })
             .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA, id)));
     };
