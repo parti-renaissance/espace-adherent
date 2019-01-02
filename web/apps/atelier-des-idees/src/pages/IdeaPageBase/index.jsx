@@ -29,24 +29,41 @@ class CreateIdeaPage extends React.Component {
         this.onSaveIdea = this.onSaveIdea.bind(this);
         this.onToggleReadingMode = this.onToggleReadingMode.bind(this);
         this.getParagraphs = this.getParagraphs.bind(this);
+        this.formatAnswers = this.formatAnswers.bind(this);
     }
 
     onQuestionTextChange(id, value) {
-        this.setState(prevState => ({
-            values: { ...prevState.values, [id]: value },
-            errors: { name: !prevState.values.name },
-        }));
+        this.setState(
+            prevState => ({
+                values: { ...prevState.values, [id]: value },
+            }),
+            () => this.setState({ errors: { name: !this.state.values.name } })
+        );
     }
 
     onToggleReadingMode(toggleValue) {
         this.setState({ readingMode: toggleValue });
     }
 
+    formatAnswers() {
+        const { name, ...answers } = this.state.values;
+        const formattedAnswers = Object.values(answers)
+            .filter(value => !!value)
+            .map((value, index) => {
+                if (value) {
+                    return { question: index + 1, content: value };
+                }
+                return null;
+            });
+        return formattedAnswers;
+    }
+
     onSaveIdea() {
         const { values } = this.state;
         if (values.name) {
-            // TODO: format data before sending them
-            this.props.onSaveIdea(values);
+            // format data before sending them
+            const data = { name: values.name, answers: this.formatAnswers() };
+            this.props.onSaveIdea(data);
         } else {
             this.setState(prevState => ({ errors: { name: true } }));
         }
