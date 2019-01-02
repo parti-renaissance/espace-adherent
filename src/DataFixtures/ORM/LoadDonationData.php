@@ -6,6 +6,7 @@ use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\Transaction;
+use Cake\Chronos\Chronos;
 use Cocur\Slugify\Slugify;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -105,7 +106,7 @@ class LoadDonationData extends Fixture
         $reflectTransaction = new \ReflectionObject($transaction);
         $reflectTransactionAt = $reflectTransaction->getProperty('payboxDateTime');
         $reflectTransactionAt->setAccessible(true);
-        $reflectTransactionAt->setValue($transaction, new \DateTimeImmutable($modifier));
+        $reflectTransactionAt->setValue($transaction, new Chronos($modifier));
         $reflectTransactionAt->setAccessible(false);
     }
 
