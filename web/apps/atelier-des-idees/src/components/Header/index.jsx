@@ -1,6 +1,6 @@
 import React from 'react';
 // import ScrollMenu from 'react-horizontal-scrolling-menu';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 // import { NotMobile, Mobile } from '../../helpers/responsive';
 import Button from '../Button';
 
@@ -18,7 +18,9 @@ class Header extends React.PureComponent {
             <section className="header">
                 <div className="header__inner l__wrapper">
                     <div className="header__nav">{menuItems}</div>
-                    <Button className="header__create-btn button--primary" label="Je rédige mon idée" />
+                    <Link to="/atelier-des-idees/creer-ma-note" className="header__create-btn button button--primary">
+                        Je rédige mon idée
+                    </Link>
                     {/* <Mobile>
                 <ScrollMenu
                     alignCenter={false}
