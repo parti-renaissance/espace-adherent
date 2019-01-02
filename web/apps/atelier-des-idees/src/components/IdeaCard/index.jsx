@@ -103,8 +103,10 @@ function IdeaCard(props) {
                     onSelected={vote => props.onVote(vote)}
                 />
             ) : (
-                // TODO: Link to idea
-                <ContributingFooter remainingDays={props.days_before_deadline} link="/atelier-des-idees" />
+                <ContributingFooter
+                    remainingDays={props.days_before_deadline}
+                    link={`/atelier-des-idees/note/${props.uuid}`}
+                />
             )}
         </div>
     );
@@ -126,7 +128,7 @@ IdeaCard.propTypes = {
     thumbnail: PropTypes.string,
     created_at: PropTypes.string.isRequired, // ISO UTC
     description: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
+    uuid: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     votes_count: PropTypes.arrayOf(
         PropTypes.shape({
