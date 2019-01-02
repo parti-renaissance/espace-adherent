@@ -96,14 +96,14 @@ function IdeaCard(props) {
             </div>
             {/* FOOTER */}
             {'FINALIZED' === props.status ? (
-            // TODO: implement onSelected -> Vote
+                // TODO: implement onSelected -> Vote
                 <VotingFooter
                     totalVotes={props.votes_count.total}
                     votes={formatVotes(props.votes_count)}
                     onSelected={vote => props.onVote(vote)}
                 />
             ) : (
-            // TODO: Link to idea
+                // TODO: Link to idea
                 <ContributingFooter remainingDays={props.days_before_deadline} link="/atelier-des-idees" />
             )}
         </div>
@@ -141,7 +141,7 @@ IdeaCard.propTypes = {
     contributors_count: PropTypes.number,
     themes: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string, thumbnail: PropTypes.string })),
     days_before_deadline: PropTypes.number.isRequired,
-    status: PropTypes.oneOf(ideaStatus).isRequired,
+    status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
     onVote: PropTypes.func,
 };
 
