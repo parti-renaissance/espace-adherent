@@ -153,7 +153,12 @@ IdeaPageBase.defaultProps = {
 IdeaPageBase.propTypes = {
     idea: PropTypes.shape({
         name: PropTypes.string,
-        answers: PropTypes.array,
+        answers: PropTypes.arrayOf(
+            PropTypes.shape({
+                content: PropTypes.string,
+                question: PropTypes.shape({ id: PropTypes.number }),
+            })
+        ),
         status: PropTypes.oneOf(Object.keys(ideaStatus)),
     }),
     guidelines: PropTypes.array.isRequired,
