@@ -1,7 +1,7 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 // shared
@@ -33,6 +33,7 @@
 @import '../src/components/Switch/style';
 @import '../src/components/IdeaReader/style';
 @import '../src/components/Header/style';
+@import '../src/components/CommentsList/style';
 
 // containers
 @import '../src/containers/ModalRoot/style';
