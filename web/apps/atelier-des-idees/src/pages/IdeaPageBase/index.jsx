@@ -18,14 +18,16 @@ function getInitialState(questions = []) {
 class CreateIdeaPage extends React.Component {
     constructor(props) {
         super(props);
-        const values = { name: '', ...getInitialState(FIRST_QUESTIONS), ...getInitialState(SECOND_QUESTIONS) };
+        const answers = { ...getInitialState(FIRST_QUESTIONS), ...getInitialState(SECOND_QUESTIONS) };
         this.state = {
-            values,
+            name: props.idea.name || '',
+            answers,
             errors: {
                 name: false,
             },
             readingMode: props.idea.status === ideaStatus.FINALIZED,
         };
+        this.onNameChange = this.onNameChange.bind(this);
         this.onQuestionTextChange = this.onQuestionTextChange.bind(this);
         this.onSaveIdea = this.onSaveIdea.bind(this);
         this.onToggleReadingMode = this.onToggleReadingMode.bind(this);
@@ -33,12 +35,16 @@ class CreateIdeaPage extends React.Component {
         this.formatAnswers = this.formatAnswers.bind(this);
     }
 
+    onNameChange(value) {
+        this.setState({ name: value, errors: { name: !value } });
+    }
+
     onQuestionTextChange(id, value) {
         this.setState(
             prevState => ({
-                values: { ...prevState.values, [id]: value },
+                answers: { ...prevState.answers, [id]: value },
             }),
-            () => this.setState({ errors: { name: !this.state.values.name } })
+            () => this.setState({ errors: { name: !this.state.name } })
         );
     }
 
@@ -47,8 +53,7 @@ class CreateIdeaPage extends React.Component {
     }
 
     formatAnswers() {
-        const { name, ...answers } = this.state.values;
-        const formattedAnswers = Object.values(answers)
+        const formattedAnswers = Object.values(this.state.answers)
             .filter(value => !!value)
             .map((value, index) => {
                 if (value) {
@@ -60,10 +65,10 @@ class CreateIdeaPage extends React.Component {
     }
 
     onSaveIdea() {
-        const { values } = this.state;
-        if (values.name) {
+        const { name } = this.state;
+        if (name) {
             // format data before sending them
-            const data = { name: values.name, answers: this.formatAnswers() };
+            const data = { name, answers: this.formatAnswers() };
             this.props.onSaveIdea(data);
         } else {
             this.setState(prevState => ({ errors: { name: true } }));
@@ -73,8 +78,8 @@ class CreateIdeaPage extends React.Component {
     getParagraphs() {
         const questions = [...FIRST_QUESTIONS, ...SECOND_QUESTIONS];
         return questions.reduce((acc, { id }) => {
-            if (this.state.values[id]) {
-                acc.push(this.state.values[id]);
+            if (this.state.answers[id]) {
+                acc.push(this.state.answers[id]);
             }
             return acc;
         }, []);
@@ -88,7 +93,7 @@ class CreateIdeaPage extends React.Component {
                     <button className="button create-idea-actions__back" onClick={() => this.props.onBackClicked()}>
                         ← Retour
                     </button>
-                    {idea.status !== ideaStatus.FINALIZED && this.state.values.name && (
+                    {idea.status !== ideaStatus.FINALIZED && this.state.name && (
                         <Switch onChange={this.onToggleReadingMode} label="Passer en mode lecture" />
                     )}
                     {this.props.isAuthor && (
@@ -105,8 +110,8 @@ class CreateIdeaPage extends React.Component {
                         <IdeaPageTitle
                             authorName={this.props.idea.authorName}
                             createdAt={this.props.idea.createdAt}
-                            onTitleChange={value => this.onQuestionTextChange('name', value)}
-                            title={this.state.values.name}
+                            onTitleChange={value => this.onNameChange(value)}
+                            title={this.state.name}
                             isEditing={this.props.isEditing && !this.state.readingMode}
                             hasError={this.state.errors.name}
                         />
@@ -115,7 +120,7 @@ class CreateIdeaPage extends React.Component {
                         ) : (
                             <CreateIdeaTool
                                 onQuestionTextChange={this.onQuestionTextChange}
-                                values={this.state.values}
+                                values={this.state.answers}
                                 isEditing={this.props.isEditing}
                             />
                         )}
@@ -146,7 +151,7 @@ CreateIdeaPage.defaultProps = {
 
 CreateIdeaPage.propTypes = {
     idea: PropTypes.shape({
-        name: PropTypes.string.title,
+        name: PropTypes.string.isRequired,
         answers: PropTypes.array.isRequired,
         status: PropTypes.oneOf(ideaStatus),
     }),
