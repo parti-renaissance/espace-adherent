@@ -7,14 +7,14 @@ import { selectAuthUser } from '../../redux/selectors/auth';
 
 function mapStateToProps(state) {
     const currentUser = selectAuthUser(state);
-    const metadata = {
-        authorName: currentUser.name,
+    const idea = {
+        authorName: `${currentUser.first_name} ${currentUser.last_name}`,
         createdAt: new Date().toLocaleDateString(),
+        status: 'DRAFT',
     };
     return {
+        idea,
         isAuthor: true,
-        metadata,
-        isEditing: true,
     };
 }
 

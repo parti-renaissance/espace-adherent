@@ -3,13 +3,13 @@ import { SET_AUTH_USER } from '../constants/actionTypes';
 // TODO: uncomment when linked to users api
 // const initialState = {
 //     isAuthenticated: false,
-//     user: null,
+//     user: {},
 // };
 
 // TODO: remove when linked to users api
 const initialState = {
     isAuthenticated: true,
-    user: { name: 'Jean-Pierre F.' },
+    user: { uuid: '0000', first_name: 'Jean-Pierre', last_name: 'Français' },
 };
 
 function authReducer(state = initialState, action) {
