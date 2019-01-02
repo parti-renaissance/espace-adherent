@@ -1,2 +1,26 @@
 .success-form {
+	overflow-x: hidden;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+	margin-top: 234px;
+
+	&__title {
+		margin-top: 76px;
+	}
+
+	&__subtitle {
+		margin: 17px 100px;
+		&__approved {
+			color: $ufo-green;
+		}
+	}
+
+	&__button {
+		width: 155px;
+		height: 40px;
+		margin: 25px 0 44px;
+	}
 }
