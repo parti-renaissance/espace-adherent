@@ -42,9 +42,11 @@ class TextEditor extends React.Component {
 
     constructor(props) {
         super(props);
+        const initialEditorState = TextEditor.getEditorStateFromContent(props.initialContent);
+        const initialTextContent = initialEditorState.getCurrentContent().getPlainText();
         this.state = {
-            editorState: TextEditor.getEditorStateFromContent(props.initialContent),
-            textContent: '',
+            editorState: initialEditorState,
+            textContent: initialTextContent,
         };
         this.onEditorStateChange = this.onEditorStateChange.bind(this);
         this.handleBeforeInput = this.handleBeforeInput.bind(this);
@@ -81,8 +83,10 @@ class TextEditor extends React.Component {
         const contentState = editorState.getCurrentContent();
         const htmlContent = draftToHtml(convertToRaw(contentState));
         const textContent = contentState.getPlainText();
-        // update state
-        this.setState({ editorState, textContent }, () => this.props.onChange(htmlContent));
+        // update state and send data
+        // don't send html if text is empty
+        const contentToSend = textContent ? htmlContent : textContent;
+        this.setState({ editorState, textContent }, () => this.props.onChange(contentToSend));
     }
 
     render() {
