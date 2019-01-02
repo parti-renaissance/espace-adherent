@@ -4,27 +4,27 @@
 @import '../StateForm/SuccessForm/style';
 
 .publish-idea-form {
-  overflow-x: hidden;
-  
-  &__header {
-    display: flex;
-    margin-bottom: 35px;
-    &__paging {
-      width: 100%;
-      text-align: end;
-      font-size: 18px;
-      color: $taupe-grey;
-      &--current {
-        font-size: 20px;
-        color: $black;
-      }
-    }
+	overflow-x: hidden;
 
-    &__previous {
-      @extend %reset-button;
-      width: 122px;
-      cursor: pointer;
-      color: $saphir;
-    }
-  }
+	&__header {
+		display: flex;
+		margin-bottom: 35px;
+		&__paging {
+			width: 100%;
+			text-align: end;
+			font-size: 18px;
+			color: $taupe-grey;
+			&--current {
+				font-size: 20px;
+				color: $black;
+			}
+		}
+
+		&__previous {
+			@extend %reset-button;
+			width: 122px;
+			cursor: pointer;
+			color: $saphir;
+		}
+	}
 }
