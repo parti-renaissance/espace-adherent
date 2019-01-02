@@ -1,1 +1,60 @@
 @import './Comment/style';
+
+.comments-list {
+	background-color: $snow;
+	padding: 30px 25px;
+
+	&__replies {
+		> * {
+			padding: 30px 0 30px 91px;
+		}
+	}
+
+	&__collapse-button {
+		@extend %reset-button;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 21px;
+		margin-bottom: 24px;
+
+		&__icon-replies {
+			margin-right: 9px;
+		}
+
+		&__icon-toggle {
+			margin: 3px 0 0 7px;
+		}
+
+		&__icon-toggle--rotate {
+			transform: rotate(180deg);
+		}
+
+		&__label {
+			font-size: 18px;
+			color: $light-black;
+		}
+	}
+
+	&__form {
+		position: relative;
+		margin: 15px 0 40px;
+		.text-area__input {
+			resize: none;
+			overflow: auto;
+			min-height: 76px;
+		}
+
+		&__button {
+			cursor: pointer;
+			position: absolute;
+			right: 0;
+			width: 140px;
+			height: 40px;
+			margin-top: 10px;
+			font-size: 14px;
+			letter-spacing: 1.5px;
+		}
+	}
+}
