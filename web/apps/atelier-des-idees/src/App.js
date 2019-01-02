@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { selectShowHeader } from './redux/selectors/ui';
 
 // HoC
 import withAuth from './hocs/withAuth';
-import withoutHeader from './hocs/withoutHeader';
-
-// components
-import Header from './components/Header';
 
 // pages
 import Home from './pages/Home';
@@ -26,7 +19,8 @@ class App extends Component {
         return (
             <div className="App">
                 <ModalRoot />
-                {this.props.showHeader && <Header />}
+                {/* TODO: improve Header handling using withoutHeader HoC (bug with connected-react-router for now) */}
+                {/* <Header /> */}
                 <Switch>
                     <Route exact path="/atelier-des-idees" component={Home} />
                     <Route exact path="/atelier-des-idees/consulter" component={ThreeTabs} />
@@ -39,15 +33,4 @@ class App extends Component {
     }
 }
 
-App.propTypes = {
-    showHeader: PropTypes.bool.isRequired,
-};
-
-function mapDispatchToProps(state) {
-    return { showHeader: selectShowHeader(state) };
-}
-
-export default connect(
-    mapDispatchToProps,
-    {}
-)(App);
+export default App;
