@@ -28,6 +28,7 @@ class IdeasWorkshopApp implements ReactAppInterface
             'contribute' => new Route('/atelier-des-idees/contribuer'),
             'propose' => new Route('/atelier-des-idees/proposer'),
             'create' => new Route('/atelier-des-idees/creer-ma-note'),
+            'note' => new Route('/atelier-des-idees/note/{id}'),
         ];
     }
 
