@@ -9,9 +9,19 @@ class CommentsList extends React.Component {
         super(props);
         this.state = {
             comment: '',
+            errorComment: '',
             replyingTo: undefined,
             showComments: true,
         };
+    }
+
+    handleSendComment() {
+        // Check if empty
+        if (!this.state.comment) {
+            this.setState({ errorComment: 'Veuillez remplir ce champ' });
+            return;
+        }
+        this.props.onSendComment(this.state.comment);
     }
 
     render() {
@@ -84,15 +94,19 @@ class CommentsList extends React.Component {
                         className="comments-list__form"
                         onSubmit={(e) => {
                             e.preventDefault();
-                            this.props.onSendComment(this.state.comment);
+                            this.handleSendComment();
                         }}
                     >
                         <TextArea
                             value={this.state.comment}
-                            onChange={e => this.setState({ comment: e.target.value })}
+                            onChange={value => this.setState({ comment: value })}
                             placeholder={this.props.placeholder}
+                            error={this.state.errorComment}
                         />
-                        <button className="comments-list__form__button button--primary">
+                        <button
+                            type="submit"
+                            className="comments-list__form__button button--primary"
+                        >
 							Envoyer
                         </button>
                     </form>
@@ -124,6 +138,8 @@ CommentsList.propTypes = {
     ),
     onSendComment: PropTypes.func.isRequired,
     onDeleteComment: PropTypes.func.isRequired,
+    onEditComment: PropTypes.func.isRequired,
+    onApprovedComment: PropTypes.func.isRequired,
     ownerId: PropTypes.string.isRequired,
     showForm: PropTypes.bool,
     parentId: PropTypes.string,
