@@ -6,6 +6,7 @@ import CreateIdeaActions from './CreateIdeaActions';
 import IdeaPageTitle from './IdeaPageTitle';
 import CreateIdeaTool from './CreateIdeaTool';
 import { FIRST_QUESTIONS, SECOND_QUESTIONS } from './constants/questions';
+import withoutHeader from '../../hocs/withoutHeader';
 
 function getInitialState(questions = []) {
     return questions.reduce((acc, question) => {
@@ -109,4 +110,4 @@ CreateIdeaPage.propTypes = {
     onSaveClicked: PropTypes.func.isRequired,
 };
 
-export default CreateIdeaPage;
+export default withoutHeader(CreateIdeaPage);
