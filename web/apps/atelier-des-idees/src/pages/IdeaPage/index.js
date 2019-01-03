@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import IdeaPageBase from '../IdeaPageBase';
 import { DELETE_IDEA_MODAL } from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
-import { fetchIdea } from '../../redux/thunk/ideas';
-import { deleteCurrentIdea, goBackFromCurrentIdea } from '../../redux/thunk/currentIdea';
+import { initIdeaPage } from '../../redux/thunk/navigation';
+import { saveCurrentIdea, deleteCurrentIdea, goBackFromCurrentIdea } from '../../redux/thunk/currentIdea';
 import { selectAuthUser } from '../../redux/selectors/auth';
-import { selectCurrentIdea } from '../../redux/selectors/currentIdea';
+import { selectCurrentIdea, selectGuidelines } from '../../redux/selectors/currentIdea';
 
 class IdeaPage extends React.Component {
     componentDidMount() {
@@ -15,7 +15,7 @@ class IdeaPage extends React.Component {
     }
 
     render() {
-        return <IdeaPageBase {...this.props} />;
+        return this.props.guidelines.length ? <IdeaPageBase {...this.props} /> : null;
     }
 }
 
@@ -26,6 +26,8 @@ IdeaPage.propTypes = {
 function mapStateToProps(state) {
     // TODO: handle loading and error
     const currentUser = selectAuthUser(state);
+    // guidelines
+    const guidelines = selectGuidelines(state);
     // get and format current idea
     const idea = selectCurrentIdea(state);
     const { author, created_at, ...ideaData } = idea;
@@ -36,6 +38,7 @@ function mapStateToProps(state) {
     };
     return {
         idea: formattedIdea,
+        guidelines,
         isAuthor: !!author && author.uuid === currentUser.uuid,
     };
 }
@@ -45,7 +48,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     return {
         initIdeaPage: () => {
             const { id } = ownProps.match.params;
-            dispatch(fetchIdea(id));
+            dispatch(initIdeaPage(id));
         },
         onBackClicked: () => dispatch(goBackFromCurrentIdea()),
         onPublishClicked: () => alert('Publier'),
@@ -55,7 +58,7 @@ function mapDispatchToProps(dispatch, ownProps) {
                     onConfirmDelete: () => dispatch(deleteCurrentIdea()),
                 })
             ),
-        onSaveClicked: () => alert('Enregistrer'),
+        onSaveIdea: data => dispatch(saveCurrentIdea(data)),
     };
 }
 

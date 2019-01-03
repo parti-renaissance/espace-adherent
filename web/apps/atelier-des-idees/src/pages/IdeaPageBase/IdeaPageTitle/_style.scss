@@ -17,5 +17,9 @@
   .text-area__input {
     font-size: 26px;
     font-weight: bold;
+
+    &::placeholder {
+      font-size: 26px;
+    }
   }
 }
