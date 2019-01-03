@@ -6,6 +6,7 @@ import { selectIdeasMetadata } from '../selectors/ideas';
 import { setMyIdeas } from '../actions/myIdeas';
 import { setMyContributions } from '../actions/myContributions';
 import { selectAuthUser } from '../selectors/auth';
+import { hideModal } from '../actions/modal';
 
 /**
  * Fetch ideas based on status and parameters
@@ -112,6 +113,12 @@ export function saveIdea(id, ideaData) {
             : { method: 'POST', url: '/api/ideas', data: ideaData };
         return axios(requestBody).then(res => res.data);
     };
+}
+
+export function deleteIdea(id) {
+    return (dispatch, getState, axios) => axios.delete(`/api/ideas/${id}`).then(() => {
+        dispatch(hideModal());
+    });
 }
 
 export function publishIdea(id) {
