@@ -12,5 +12,5 @@ const props = {
 storiesOf('SecondForm', module)
     .addParameters({ jest: ['SecondForm'] })
     .add('default', () => (
-        <SecondForm {...props} onSubmit={action('second form')} saveForm={action('save second form')} />
+        <SecondForm {...props} onSubmit={action('second form')} saveStateFormOnChange={action('save second form')} />
     ));
