@@ -45,6 +45,7 @@ class IdeaPageBase extends React.Component {
         this.onNameChange = this.onNameChange.bind(this);
         this.onQuestionTextChange = this.onQuestionTextChange.bind(this);
         this.onSaveIdea = this.onSaveIdea.bind(this);
+        this.onPublishIdea = this.onPublishIdea.bind(this);
         this.onToggleReadingMode = this.onToggleReadingMode.bind(this);
         this.getParagraphs = this.getParagraphs.bind(this);
         this.formatAnswers = this.formatAnswers.bind(this);
@@ -90,6 +91,14 @@ class IdeaPageBase extends React.Component {
         }
     }
 
+    onPublishIdea() {
+        if (this.hasRequiredValues()) {
+            // format data before sending them
+            const data = { name: this.state.name, answers: this.formatAnswers() };
+            this.props.onPublishIdea(data);
+        }
+    }
+
     getParagraphs() {
         const questions = this.props.guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
         return questions.reduce((acc, { id }) => {
@@ -126,7 +135,7 @@ class IdeaPageBase extends React.Component {
                     {this.props.isAuthor && (
                         <CreateIdeaActions
                             onDeleteClicked={this.props.onDeleteClicked}
-                            onPublishClicked={() => this.props.onPublishClicked(this.state)}
+                            onPublishClicked={this.onPublishIdea}
                             onSaveClicked={this.onSaveIdea}
                             isEditing={idea.status === ideaStatus.DRAFT}
                             canPublish={this.hasRequiredValues()}
@@ -158,7 +167,7 @@ class IdeaPageBase extends React.Component {
                                 {this.props.isAuthor && !this.state.readingMode && (
                                     <CreateIdeaActions
                                         onDeleteClicked={this.props.onDeleteClicked}
-                                        onPublishClicked={() => this.props.onPublishClicked(this.state)}
+                                        onPublishClicked={this.onPublishIdea}
                                         onSaveClicked={this.onSaveIdea}
                                         canPublish={this.hasRequiredValues()}
                                     />
@@ -192,7 +201,7 @@ IdeaPageBase.propTypes = {
     guidelines: PropTypes.array.isRequired,
     isAuthor: PropTypes.bool,
     onBackClicked: PropTypes.func.isRequired,
-    onPublishClicked: PropTypes.func.isRequired,
+    onPublishIdea: PropTypes.func.isRequired,
     onDeleteClicked: PropTypes.func.isRequired,
     onSaveIdea: PropTypes.func.isRequired,
 };
