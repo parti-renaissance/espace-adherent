@@ -6,51 +6,18 @@ import {
     createRequestFailure,
 } from '../actions/loading';
 
-const reportsMock = [
-    {
-        file: '/',
-        fileName: 'document-5.pdf',
-        size: '1.2 Mb',
-    },
-    {
-        file: '/',
-        fileName: 'document-5.pdf',
-        size: '1.2 Mb',
-    },
-    {
-        file: '/',
-        fileName: 'document-5.pdf',
-        size: '1.2 Mb',
-    },
-    {
-        file: '/',
-        fileName: 'document-5.pdf',
-        size: '1.2 Mb',
-    },
-    {
-        file: '/',
-        fileName: 'document-5.pdf',
-        size: '1.2 Mb',
-    },
-];
-
 export function fetchReports() {
     return (dispatch, getState, axios) => {
         dispatch(createRequest(FETCH_REPORTS));
-        return (
-            axios
-        // TODO: Replace by real api
-                .get('/api/reports')
-                .then(res => res.data)
-                .then((data) => {
-                    dispatch(setReports(data));
-                    dispatch(createRequestSuccess(FETCH_REPORTS));
-                })
-                .catch((error) => {
-                    dispatch(createRequestFailure(FETCH_REPORTS));
-                })
-        // TODO: remove finally when endpoint is up
-                .finally(() => dispatch(setReports(reportsMock)))
-        );
+        return axios
+            .get('/api/consultation_reports')
+            .then(res => res.data)
+            .then(({ items, metadata }) => {
+                dispatch(setReports(items));
+                dispatch(createRequestSuccess(FETCH_REPORTS));
+            })
+            .catch((error) => {
+                dispatch(createRequestFailure(FETCH_REPORTS));
+            });
     };
 }

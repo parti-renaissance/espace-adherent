@@ -4,13 +4,16 @@ import { action } from '@storybook/addon-actions';
 import Banner from '.';
 
 const props = {
-    title: 'Répondez à notre consultation sur les retraites !',
-    subtitle: 'Du 5 aout 2018 au 29 septembre 2018',
+    name: 'Répondez à notre consultation sur les retraites !',
+    started_at: '2019-01-03T16:01:01.670Z',
+    ended_at: '2019-01-03T16:01:01.670Z',
     linkLabel: 'Je participe',
-    link: 'http://google.fr',
+    url: 'http://google.fr',
 };
 
 storiesOf('Banner', module)
     .addParameters({ jest: ['Banner'] })
     .add('default', () => <Banner {...props} onClose={action('close')} />)
-    .add('with extra info', () => <Banner {...props} extraInfo="2 min." onClose={action('close')} />);
+    .add('with extra info', () => (
+        <Banner {...props} response_time="2" onClose={action('close')} />
+    ));
