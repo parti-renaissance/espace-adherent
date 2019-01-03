@@ -159,6 +159,7 @@ class IdeaPageBase extends React.Component {
                                 onQuestionTextChange={this.onQuestionTextChange}
                                 guidelines={this.props.guidelines}
                                 values={this.state.answers}
+                                isAuthor={this.props.isAuthor}
                                 isEditing={idea.status === ideaStatus.DRAFT}
                             />
                         )}
