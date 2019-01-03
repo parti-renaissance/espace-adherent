@@ -4,6 +4,10 @@
   height: 40px;
   font-size: 14px;
   text-decoration: none;
+
+  &[disabled] {
+    cursor: not-allowed;
+  }
 }
 
 .button--primary {
@@ -14,7 +18,7 @@
   border: 1px solid $blue;
 }
 
-.button--primary:hover {
+.button--primary:not([disabled]):hover {
   background-color: $marine-blue;
   color: $white;
 }
@@ -28,7 +32,7 @@
   border: 1px solid $blue;
 }
 
-.button--secondary:hover {
+.button--secondary:not([disabled]):hover {
   background-color: $marine-blue;
   border-color: $marine-blue;
   color: $white;
@@ -43,7 +47,7 @@
   border: 1px solid $black;
 }
 
-.button--tertiary:hover {
+.button--tertiary:not([disabled]):hover {
   background-color: $black;
   color: $white;
 }

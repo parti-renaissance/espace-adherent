@@ -30,8 +30,8 @@
       margin: 0 5px;
       background: $white;
       border-radius: 50%;
-      -webkit-animation: loader .6s infinite alternate;
-      -moz-animation: loader .6s infinite alternate;
+      -webkit-animation: loader 0.6s infinite alternate;
+      -moz-animation: loader 0.6s infinite alternate;
 
       &:nth-of-type(2) {
         -webkit-animation-delay: 0.2s;
