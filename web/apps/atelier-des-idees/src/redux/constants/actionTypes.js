@@ -18,6 +18,16 @@ export const FETCH_IDEAS = createRequestTypes('FETCH_IDEAS');
 export const SET_IDEAS = 'SET_IDEAS';
 export const ADD_IDEAS = 'ADD_IDEAS';
 
+// my ideas
+export const FETCH_MY_IDEAS = createRequestTypes('FETCH_MY_IDEAS');
+export const SET_MY_IDEAS = 'SET_MY_IDEAS';
+
+// my contributions
+export const FETCH_MY_CONTRIBUTIONS = createRequestTypes(
+    'FETCH_MY_CONTRIBUTION'
+);
+export const SET_MY_CONTRIBUTIONS = 'SET_MY_CONTRIBUTIONS ';
+
 // current ideas
 export const SAVE_CURRENT_IDEA = createRequestTypes('SAVE_CURRENT_IDEA');
 export const SET_CURRENT_IDEA = 'SET_CURRENT_IDEA';
@@ -26,7 +36,9 @@ export const FETCH_GUIDELINES = createRequestTypes('FETCH_GUIDELINES');
 export const SET_GUIDELINES = 'SET_GUIDELINES';
 
 // pinned
-export const FETCH_CONSULTATION_PINNED = createRequestTypes('FETCH_CONSULTATION_PINNED');
+export const FETCH_CONSULTATION_PINNED = createRequestTypes(
+    'FETCH_CONSULTATION_PINNED'
+);
 export const SHOW_CONSULTATION_PINNED = 'SHOW_CONSULTATION_PINNED';
 export const HIDE_CONSULTATION_PINNED = 'HIDE_CONSULTATION_PINNED';
 // reports
