@@ -1,0 +1,17 @@
+@import './MyIdeas/style';
+@import './MyContributions/style';
+
+.my-ideas-modal {
+	overflow-x: hidden;
+	&__title {
+		font-size: 26px;
+		margin-bottom: 15px;
+	}
+
+	&__subtitle {
+		width: 500px;
+		margin: 0 0 20px;
+		color: $light-black;
+		font-size: 14px;
+	}
+}
