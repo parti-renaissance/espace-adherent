@@ -9,7 +9,6 @@ export function fetchAuthUser() {
             .get('/api/users/me')
             .then(res => res.data)
             .then((data) => {
-                // TODO: integration with actual data
                 dispatch(setAuthUser(data));
                 dispatch(createRequestSuccess(FETCH_AUTH_USER));
             })
