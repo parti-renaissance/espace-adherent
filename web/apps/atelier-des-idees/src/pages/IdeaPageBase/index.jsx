@@ -16,18 +16,32 @@ function getInitialAnswers(guidelines, answers = []) {
     }, {});
 }
 
+function getRequiredAnswers(guidelines) {
+    const questions = guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
+    return questions
+        .filter(question => question.required)
+        .reduce((acc, question) => {
+            acc[question.id] = false;
+            return acc;
+        }, {});
+}
+
 class IdeaPageBase extends React.Component {
     constructor(props) {
         super(props);
+        // init state
         const answers = getInitialAnswers(props.guidelines, props.idea.answers);
+        const requiredAnswers = getRequiredAnswers(props.guidelines);
         this.state = {
             name: props.idea.name || '',
             answers,
             errors: {
                 name: false,
+                ...requiredAnswers,
             },
             readingMode: props.idea.status === ideaStatus.FINALIZED,
         };
+        // bindings
         this.onNameChange = this.onNameChange.bind(this);
         this.onQuestionTextChange = this.onQuestionTextChange.bind(this);
         this.onSaveIdea = this.onSaveIdea.bind(this);
@@ -37,7 +51,7 @@ class IdeaPageBase extends React.Component {
     }
 
     onNameChange(value) {
-        this.setState({ name: value, errors: { name: !value } });
+        this.setState(prevState => ({ name: value, errors: { ...prevState.errors, name: !value } }));
     }
 
     onQuestionTextChange(id, value) {
@@ -45,7 +59,7 @@ class IdeaPageBase extends React.Component {
             prevState => ({
                 answers: { ...prevState.answers, [id]: value },
             }),
-            () => this.setState({ errors: { name: !this.state.name } })
+            () => this.setState(prevState => ({ errors: { ...prevState.errors, name: !this.state.name } }))
         );
     }
 
@@ -72,7 +86,7 @@ class IdeaPageBase extends React.Component {
             const data = { name, answers: this.formatAnswers() };
             this.props.onSaveIdea(data);
         } else {
-            this.setState(prevState => ({ errors: { name: true } }));
+            this.setState(prevState => ({ errors: { ...prevState.errors, name: true } }));
         }
     }
 
@@ -84,6 +98,18 @@ class IdeaPageBase extends React.Component {
             }
             return acc;
         }, []);
+    }
+
+    hasRequiredValues() {
+        const { answers, errors } = this.state;
+        // check if all the required questions are answered
+        const { name, ...answersErrors } = errors;
+        const hasRequiredAnswers = Object.keys(answersErrors).reduce(
+            (acc, questionId) => acc && !!answers[questionId],
+            true
+        );
+        // true if has answered to required questions and has set a name
+        return hasRequiredAnswers && !!this.state.name;
     }
 
     render() {
@@ -103,6 +129,7 @@ class IdeaPageBase extends React.Component {
                             onPublishClicked={() => this.props.onPublishClicked(this.state)}
                             onSaveClicked={this.onSaveIdea}
                             isEditing={idea.status === ideaStatus.DRAFT}
+                            canPublish={this.hasRequiredValues()}
                         />
                     )}
                 </div>
@@ -133,6 +160,7 @@ class IdeaPageBase extends React.Component {
                                         onDeleteClicked={this.props.onDeleteClicked}
                                         onPublishClicked={() => this.props.onPublishClicked(this.state)}
                                         onSaveClicked={this.onSaveIdea}
+                                        canPublish={this.hasRequiredValues()}
                                     />
                                 )}
                             </div>
