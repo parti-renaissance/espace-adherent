@@ -47,10 +47,7 @@ class PublishIdeaForm extends React.Component {
 
     submitForm() {
         const formattedData = this.formatFormData();
-        this.props.submitForm({
-            ...formattedData,
-            ...this.props.ideaContent,
-        });
+        this.props.submitForm(formattedData);
     }
 
     saveForm(res) {
@@ -104,7 +101,7 @@ class PublishIdeaForm extends React.Component {
                         )}
                     </React.Fragment>
                 )}
-                {this.props.isSubmitSuccess && <SuccessForm />}
+                {this.props.isSubmitSuccess && <SuccessForm id={this.props.id} />}
                 {this.props.isSubmitError && <FailForm submitAgain={() => this.submitForm()} />}
             </div>
         );
@@ -112,7 +109,6 @@ class PublishIdeaForm extends React.Component {
 }
 
 PublishIdeaForm.defaultProps = {
-    ideaContent: {},
     isSubmitSuccess: false,
     isSubmitError: false,
 };
@@ -148,7 +144,7 @@ PublishIdeaForm.propTypes = {
             label: PropTypes.string.isRequired,
         })
     ).isRequired,
-    ideaContent: PropTypes.object,
+    id: PropTypes.string,
     submitForm: PropTypes.func.isRequired,
     isSubmitSuccess: PropTypes.bool,
     isSubmitError: PropTypes.bool,
