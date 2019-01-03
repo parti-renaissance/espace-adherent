@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ConsultationPinned from '../containers/ConsultationPinned';
 import MovementIdeas from '../components/MovementIdeas';
-import Header from '../components/Header';
+import Header from '../containers/Header';
 import LatestIdeas from '../containers/LatestIdeas';
 import Reports from '../containers/Reports';
 import { initHomePage } from '../redux/thunk/navigation';

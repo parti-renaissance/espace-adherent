@@ -1,8 +1,19 @@
-import { FETCH_IDEAS, FETCH_IDEA } from '../constants/actionTypes';
-import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
+import {
+    FETCH_IDEAS,
+    FETCH_IDEA,
+    FETCH_MY_IDEAS,
+} from '../constants/actionTypes';
+import {
+    createRequest,
+    createRequestSuccess,
+    createRequestFailure,
+} from '../actions/loading';
 import { addIdeas, setIdeas } from '../actions/ideas';
 import { setCurrentIdea } from '../actions/currentIdea';
 import { selectIdeasMetadata } from '../selectors/ideas';
+import { setMyIdeas } from '../actions/myIdeas';
+import { setMyContributions } from '../actions/myContributions';
+import { selectAuthUser } from '../selectors/auth';
 
 /**
  * Fetch ideas based on status and parameters
@@ -58,5 +69,46 @@ export function fetchIdea(id) {
                 dispatch(createRequestSuccess(FETCH_IDEA, id));
             })
             .catch(error => dispatch(createRequestFailure(FETCH_IDEA, id)));
+    };
+}
+
+/**
+ * Fetch ideas of current auth user
+ * @param {object} params Query params
+ */
+export function fetchUserIdeas(params = {}) {
+    return (dispatch, getState, axios) => {
+        const user = selectAuthUser(getState());
+        dispatch(createRequest(FETCH_MY_IDEAS));
+        return axios
+            .get(`/api/ideas?author.uuid=${user.uuid}`, { params: { ...params } })
+            .then(res => res.data)
+            .then(({ items, metadata }) => {
+                dispatch(setMyIdeas(items, metadata));
+                dispatch(createRequestSuccess(FETCH_MY_IDEAS));
+            })
+            .catch((error) => {
+                dispatch(createRequestFailure(FETCH_MY_IDEAS));
+            });
+    };
+}
+
+/**
+ * Fetch contributions of current auth user
+ * @param {object} params Query params
+ */
+export function fetchUserContributions(params = {}) {
+    return (dispatch, getState, axios) => {
+        dispatch(createRequest(FETCH_MY_IDEAS));
+        return axios
+            .get('/api/ideas/my-contributions', { params: { ...params } })
+            .then(res => res.data)
+            .then(({ items, metadata }) => {
+                dispatch(setMyContributions(items, metadata));
+                dispatch(createRequestSuccess(FETCH_MY_IDEAS));
+            })
+            .catch((error) => {
+                dispatch(createRequestFailure(FETCH_MY_IDEAS));
+            });
     };
 }
