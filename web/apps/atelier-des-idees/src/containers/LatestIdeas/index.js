@@ -21,8 +21,8 @@ function sortIdeasByDate(ideas = []) {
 }
 
 const mapStateToProps = (state) => {
-    const isLoadingFinalizedIdeas = selectLoadingState(state, 'FETCH_IDEAS_FINALIZED');
-    const isLoadingPendingIdeas = selectLoadingState(state, 'FETCH_IDEAS_PENDING');
+    const isLoadingFinalizedIdeas = selectLoadingState(state, 'FETCH_IDEAS_FINALIZED').isFetching;
+    const isLoadingPendingIdeas = selectLoadingState(state, 'FETCH_IDEAS_PENDING').isFetching;
     // get ideas
     const finalizedIdeas = selectIdeasWithStatus(state, ideaStatus.FINALIZED);
     const pendingIdeas = selectIdeasWithStatus(state, ideaStatus.PENDING);
