@@ -28,7 +28,7 @@ function mapStateToProps(state) {
     const currentUser = selectAuthUser(state);
     const guidelines = selectGuidelines(state);
     const idea = {
-        authorName: `${currentUser.first_name} ${currentUser.last_name}`,
+        authorName: `${currentUser.firstName} ${currentUser.lastName}`,
         createdAt: new Date().toLocaleDateString(),
         status: 'DRAFT',
     };
