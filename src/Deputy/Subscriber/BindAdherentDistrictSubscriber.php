@@ -28,7 +28,7 @@ class BindAdherentDistrictSubscriber implements EventSubscriberInterface
         $adherent = $event->getAdherent();
 
         if ($adherent->isGeocoded()) {
-            $districts = $this->districtRepository->findDistrictReferentTagByCoordinates(
+            $districts = $this->districtRepository->findDistrictsByCoordinates(
                 $adherent->getLatitude(),
                 $adherent->getLongitude()
             );

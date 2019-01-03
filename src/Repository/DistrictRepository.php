@@ -19,7 +19,7 @@ class DistrictRepository extends ServiceEntityRepository
      *
      * @return District[]
      */
-    public function findDistrictReferentTagByCoordinates($latitude, $longitude): array
+    public function findDistrictsByCoordinates($latitude, $longitude): array
     {
         return $this->createQueryBuilder('district')
             ->join('district.referentTag', 'referentTag')

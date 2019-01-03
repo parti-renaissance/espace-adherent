@@ -40,7 +40,7 @@ class BindAdherentDistrictSubscriberTest extends TestCase
         if (0 < $count) {
             $this->manager->expects($this->once())->method('flush');
         }
-        $this->districtRepository->expects($this->once())->method('findDistrictReferentTagByCoordinates')->willReturn($districts);
+        $this->districtRepository->expects($this->once())->method('findDistrictsByCoordinates')->willReturn($districts);
         $this->subscriber->updateReferentTagWithDistrict(new AdherentAccountWasCreatedEvent($adherent));
 
         $this->assertSame($count, $adherent->getReferentTags()->count());
@@ -59,7 +59,7 @@ class BindAdherentDistrictSubscriberTest extends TestCase
         if (0 < $count) {
             $this->manager->expects($this->once())->method('flush');
         }
-        $this->districtRepository->expects($this->once())->method('findDistrictReferentTagByCoordinates')->willReturn($referentTags);
+        $this->districtRepository->expects($this->once())->method('findDistrictsByCoordinates')->willReturn($referentTags);
         $this->subscriber->updateReferentTagWithDistrict(new AdherentProfileWasUpdatedEvent($adherent));
 
         $this->assertSame($count, $adherent->getReferentTags()->count());
