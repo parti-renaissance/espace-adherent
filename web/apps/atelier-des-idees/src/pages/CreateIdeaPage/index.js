@@ -49,8 +49,7 @@ function mapDispatchToProps(dispatch) {
         onPublishIdea: data =>
             dispatch(
                 showModal(PUBLISH_IDEA_MODAL, {
-                    ideaContent: data,
-                    submitForm: ideaData => dispatch(publishCurrentIdea(ideaData)),
+                    submitForm: ideaData => dispatch(publishCurrentIdea({ ...ideaData, ...data })),
                 })
             ),
         onDeleteClicked: () =>
