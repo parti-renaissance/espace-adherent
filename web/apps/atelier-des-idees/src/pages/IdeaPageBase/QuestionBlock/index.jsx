@@ -58,8 +58,7 @@ class QuestionBlock extends React.Component {
     }
 
     onSaveAnswer() {
-        // this.props.onSaveAnswer(this.state.value)
-        this.props.onTextChange(this.state.value);
+        this.props.onTextChange(this.state.value, true);
         this.setState({ isEditing: false, value: '' });
     }
 

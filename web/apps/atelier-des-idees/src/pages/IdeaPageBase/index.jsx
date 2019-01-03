@@ -55,12 +55,17 @@ class IdeaPageBase extends React.Component {
         this.setState(prevState => ({ name: value, errors: { ...prevState.errors, name: !value } }));
     }
 
-    onQuestionTextChange(id, value) {
+    onQuestionTextChange(id, value, withSave = false) {
         this.setState(
             prevState => ({
                 answers: { ...prevState.answers, [id]: value },
             }),
-            () => this.setState(prevState => ({ errors: { ...prevState.errors, name: !this.state.name } }))
+            () => {
+                this.setState(prevState => ({ errors: { ...prevState.errors, name: !this.state.name } }));
+                if (withSave) {
+                    this.onSaveIdea();
+                }
+            }
         );
     }
 

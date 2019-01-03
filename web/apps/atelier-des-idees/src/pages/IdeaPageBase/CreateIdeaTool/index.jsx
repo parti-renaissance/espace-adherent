@@ -22,7 +22,9 @@ function CreateIdeaTool(props) {
                             question={name}
                             placeholder={placeholder}
                             nbQuestion={index + 1}
-                            onTextChange={htmlContent => props.onQuestionTextChange(id, htmlContent)}
+                            onTextChange={(htmlContent, save = false) =>
+                                props.onQuestionTextChange(id, htmlContent, save)
+                            }
                         />
                     ))}
                 </section>
