@@ -18,12 +18,35 @@ class Banner extends React.PureComponent {
                     </button>
                 </div>
                 <div className="banner__container__titles">
-                    <h3 className="banner__container__titles__title">{this.props.title}</h3>
-                    <h4 className="banner__container__titles__subtitle">{this.props.subtitle}</h4>
+                    <h3 className="banner__container__titles__title">
+                        {this.props.name}
+                    </h3>
+                    <h4 className="banner__container__titles__subtitle">
+						Du{' '}
+                        {new Date(this.props.started_at).toLocaleDateString('fr-fr', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric',
+                        })}{' '}
+						au{' '}
+                        {new Date(this.props.ended_at).toLocaleDateString('fr-fr', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric',
+                        })}
+                    </h4>
                 </div>
                 <div className="banner__container">
-                    <a href={this.props.link} className="banner__container__link button--secondary" target="_blank">
-                        {`${this.props.linkLabel}${this.props.extraInfo ? ` (${this.props.extraInfo})` : ''}`}
+                    <a
+                        href={this.props.url}
+                        className="banner__container__link button--secondary"
+                        target="_blank"
+                    >
+                        {`${this.props.linkLabel}${
+                            this.props.response_time
+                                ? ` (${this.props.response_time}MIN)`
+                                : ''
+                        }`}
                     </a>
                 </div>
             </div>
@@ -32,16 +55,17 @@ class Banner extends React.PureComponent {
 }
 
 Banner.defaultProps = {
-    extraInfo: undefined,
+    response_time: undefined,
     linkLabel: 'Je participe',
 };
 
 Banner.propTypes = {
-    extraInfo: PropTypes.string,
-    link: PropTypes.string.isRequired,
+    response_time: PropTypes.string,
+    url: PropTypes.string.isRequired,
     linkLabel: PropTypes.string,
-    subtitle: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
+    started_at: PropTypes.string.isRequired,
+    ended_at: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     onClose: PropTypes.func.isRequired,
 };
 
