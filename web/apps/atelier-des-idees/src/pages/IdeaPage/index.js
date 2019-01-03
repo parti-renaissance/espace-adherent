@@ -2,10 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import IdeaPageBase from '../IdeaPageBase';
-import { DELETE_IDEA_MODAL } from '../../constants/modalTypes';
+import { DELETE_IDEA_MODAL, PUBLISH_IDEA_MODAL } from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
 import { initIdeaPage } from '../../redux/thunk/navigation';
-import { saveCurrentIdea, deleteCurrentIdea, goBackFromCurrentIdea } from '../../redux/thunk/currentIdea';
+import {
+    saveCurrentIdea,
+    publishCurrentIdea,
+    deleteCurrentIdea,
+    goBackFromCurrentIdea,
+} from '../../redux/thunk/currentIdea';
 import { selectAuthUser } from '../../redux/selectors/auth';
 import { selectCurrentIdea, selectGuidelines } from '../../redux/selectors/currentIdea';
 
@@ -51,7 +56,13 @@ function mapDispatchToProps(dispatch, ownProps) {
             dispatch(initIdeaPage(id));
         },
         onBackClicked: () => dispatch(goBackFromCurrentIdea()),
-        onPublishClicked: () => alert('Publier'),
+        onPublishIdea: data =>
+            dispatch(
+                showModal(PUBLISH_IDEA_MODAL, {
+                    ideaContent: data,
+                    submitForm: ideaData => dispatch(publishCurrentIdea(ideaData)),
+                })
+            ),
         onDeleteClicked: () =>
             dispatch(
                 showModal(DELETE_IDEA_MODAL, {

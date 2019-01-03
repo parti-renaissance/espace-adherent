@@ -5,8 +5,8 @@ import QuestionBlock from '../QuestionBlock';
 function CreateIdeaTool(props) {
     return (
         <article className="create-idea-tool">
-            {props.guidelines.map(guideline => (
-                <section className="create-idea-tool__start-section">
+            {props.guidelines.map((guideline, idx) => (
+                <section key={`guideline_${idx}`} className="create-idea-tool__start-section">
                     <div className="create-idea-tool__section-title">
                         {/* TODO: uncomment */}
                         {/* <p className="create-idea-tool__section-subtitle">{guideline.category_name}</p>*/}

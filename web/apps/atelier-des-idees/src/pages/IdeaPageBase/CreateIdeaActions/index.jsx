@@ -41,7 +41,7 @@ CreateIdeaActions.propTypes = {
     canPublish: PropTypes.bool,
     onBackClicked: PropTypes.func,
     onDeleteClicked: PropTypes.func.isRequired,
-    onPublichClicked: PropTypes.func.isRequired,
+    onPublishClicked: PropTypes.func.isRequired,
     onSaveClicked: PropTypes.func.isRequired,
 };
 
