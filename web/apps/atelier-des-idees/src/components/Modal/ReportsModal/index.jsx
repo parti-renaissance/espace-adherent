@@ -14,7 +14,8 @@ function ReportsModal(props) {
                 <a
                     className="reports-modal__report"
                     key={index}
-                    href={report.file}
+                    target="_blank"
+                    href={report.url}
                     download
                 >
                     <img
@@ -23,11 +24,13 @@ function ReportsModal(props) {
                     />
                     <div className="reports-modal__report__content">
                         <span className="reports-modal__report__content__file">
-                            {report.fileName}
+                            {report.name}
                         </span>
-                        <span className="reports-modal__report__content__size">
-                            {report.size}
-                        </span>
+                        {report.size && (
+                            <span className="reports-modal__report__content__size">
+                                {report.size}
+                            </span>
+                        )}
                     </div>
                 </a>
             ))}
@@ -42,8 +45,8 @@ ReportsModal.defaultProps = {
 ReportsModal.propTypes = {
     reports: PropTypes.arrayOf(
         PropTypes.shape({
-            file: PropTypes.string,
-            fileName: PropTypes.string,
+            url: PropTypes.string,
+            name: PropTypes.string,
             size: PropTypes.string,
         })
     ),

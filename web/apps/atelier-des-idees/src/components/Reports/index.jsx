@@ -35,8 +35,8 @@ Reports.defaultProps = {
 Reports.propTypes = {
     reports: PropTypes.arrayOf(
         PropTypes.shape({
-            file: PropTypes.string,
-            fileName: PropTypes.string,
+            url: PropTypes.string,
+            name: PropTypes.string,
             size: PropTypes.string,
         })
     ),
