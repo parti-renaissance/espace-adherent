@@ -2,9 +2,7 @@
 
 namespace AppBundle\Entity\IdeasWorkshop;
 
-use MyCLabs\Enum\Enum;
-
-final class ThreadCommentStatusEnum extends Enum
+final class ThreadCommentStatusEnum
 {
     public const POSTED = 'POSTED';
     public const APPROVED = 'APPROVED';
@@ -14,5 +12,12 @@ final class ThreadCommentStatusEnum extends Enum
     public const VISIBLE_STATUSES = [
         self::APPROVED,
         self::POSTED,
+    ];
+
+    public const ALL_STATUSES = [
+        self::POSTED,
+        self::APPROVED,
+        self::REPORTED,
+        self::REFUSED,
     ];
 }

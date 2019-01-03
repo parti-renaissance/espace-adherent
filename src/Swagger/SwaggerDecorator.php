@@ -39,8 +39,12 @@ final class SwaggerDecorator implements NormalizerInterface
                 $context = $resourceMetadata->getCollectionOperationAttribute('get', 'normalization_context', null, true);
 
                 if (isset($context['groups']) && ($groups = $context['groups']) && \is_array($groups)) {
-                    $docs = $this->overridePaginatedResponseFormat($docs, $resourceMetadata, $groups[0]);
+                    $group = $groups[0];
+                } else {
+                    $group = null;
                 }
+
+                $docs = $this->overridePaginatedResponseFormat($docs, $resourceMetadata, $group);
             }
         }
 
@@ -54,11 +58,15 @@ final class SwaggerDecorator implements NormalizerInterface
         return $this->decorated->supportsNormalization($data, $format);
     }
 
-    private function overridePaginatedResponseFormat(array $docs, ResourceMetadata $resourceMetadata, string $group): array
+    private function overridePaginatedResponseFormat(array $docs, ResourceMetadata $resourceMetadata, ?string $group): array
     {
         $path = sprintf('%s%s', $this->apiPathPrefix, $this->getPath($resourceMetadata->getShortName(), ['get'], 'collection'));
 
-        $definition = sprintf('%s-%s', $resourceMetadata->getShortName(), $group);
+        if ($group) {
+            $definition = sprintf('%s-%s', $resourceMetadata->getShortName(), $group);
+        } else {
+            $definition = $resourceMetadata->getShortName();
+        }
 
         $docs['paths'][$path]['get']['responses'][200] = PaginatorSwagger::getPaginatedResponseFor($definition);
 

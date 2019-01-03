@@ -31,14 +31,38 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *         }
  *     },
  *     itemOperations={
- *         "get",
+ *         "get": {
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the ThreadComment resource.",
+ *                         "example": "b99933f3-180c-4248-82f8-1b0eb950740d",
+ *                     }
+ *                 }
+ *             }
+ *         },
  *         "put_status_approve": {
  *             "method": "PUT",
  *             "path": "/thread_comments/{id}/approve",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "denormalization_context": {"api_allow_update": false},
  *             "access_control": "object.getIdeaAuthor() == user",
- *             "controller": "AppBundle\Controller\Api\ThreadCommentController::approveAction"
+ *             "controller": "AppBundle\Controller\Api\ThreadCommentController::approveAction",
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the ThreadComment resource.",
+ *                         "example": "b99933f3-180c-4248-82f8-1b0eb950740d",
+ *                     }
+ *                 }
+ *             }
  *         },
  *         "put_status_report": {
  *             "method": "PUT",
@@ -46,9 +70,33 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "denormalization_context": {"api_allow_update": false},
  *             "access_control": "is_granted('ROLE_ADHERENT') && object.getAuthor() != user",
- *             "controller": "AppBundle\Controller\Api\ThreadCommentController::reportAction"
+ *             "controller": "AppBundle\Controller\Api\ThreadCommentController::reportAction",
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the ThreadComment resource.",
+ *                         "example": "b99933f3-180c-4248-82f8-1b0eb950740d",
+ *                     }
+ *                 }
+ *             }
  *         },
- *         "delete": {"access_control": "object.getAuthor() == user"}
+ *         "delete": {
+ *             "access_control": "object.getAuthor() == user",
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the ThreadComment resource.",
+ *                         "example": "b99933f3-180c-4248-82f8-1b0eb950740d",
+ *                     }
+ *                 }
+ *             }
+ *         }
  *     },
  * )
  *

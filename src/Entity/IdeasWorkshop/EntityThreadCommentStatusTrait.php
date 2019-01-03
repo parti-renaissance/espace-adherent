@@ -9,14 +9,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 trait EntityThreadCommentStatusTrait
 {
     /**
-     * @Assert\Choice(
-     *     callback={"AppBundle\Entity\IdeasWorkshop\ThreadCommentStatusEnum", "toArray"},
-     *     strict=true,
-     * )
+     * @Assert\Choice(choices=ThreadCommentStatusEnum::ALL_STATUSES, strict=true)
      *
      * @ORM\Column(length=9, options={"default": ThreadCommentStatusEnum::POSTED})
      *
      * @SymfonySerializer\Groups("comment_read")
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "swagger_context": {
+     *             "type": "string",
+     *             "enum": ThreadCommentStatusEnum::ALL_STATUSES,
+     *             "example": ThreadCommentStatusEnum::POSTED
+     *         }
+     *     }
+     * )
      */
     protected $status = ThreadCommentStatusEnum::POSTED;
 
