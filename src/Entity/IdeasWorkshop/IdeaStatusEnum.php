@@ -2,9 +2,7 @@
 
 namespace AppBundle\Entity\IdeasWorkshop;
 
-use MyCLabs\Enum\Enum;
-
-final class IdeaStatusEnum extends Enum
+final class IdeaStatusEnum
 {
     public const DRAFT = 'DRAFT';
     public const PENDING = 'PENDING';
