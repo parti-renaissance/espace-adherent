@@ -1,4 +1,4 @@
-import { SET_IDEAS, ADD_IDEAS } from '../constants/actionTypes';
+import { SET_IDEAS, ADD_IDEAS, REMOVE_IDEA } from '../constants/actionTypes';
 
 export const initialState = { items: [], metadata: {} };
 
@@ -12,6 +12,9 @@ const ideasReducer = (state = initialState, action) => {
     case ADD_IDEAS: {
         const { items, metadata } = payload;
         return { items: [...state.items, ...items], metadata };
+    }
+    case REMOVE_IDEA: {
+        return { ...state, items: state.items.filter(idea => idea.uuid !== payload.id) };
     }
     default:
         return state;
