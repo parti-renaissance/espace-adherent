@@ -1,13 +1,5 @@
-import {
-    FETCH_IDEAS,
-    FETCH_IDEA,
-    FETCH_MY_IDEAS,
-} from '../constants/actionTypes';
-import {
-    createRequest,
-    createRequestSuccess,
-    createRequestFailure,
-} from '../actions/loading';
+import { FETCH_IDEAS, FETCH_IDEA, FETCH_MY_IDEAS } from '../constants/actionTypes';
+import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { addIdeas, setIdeas } from '../actions/ideas';
 import { setCurrentIdea } from '../actions/currentIdea';
 import { selectIdeasMetadata } from '../selectors/ideas';
@@ -111,4 +103,17 @@ export function fetchUserContributions(params = {}) {
                 dispatch(createRequestFailure(FETCH_MY_IDEAS));
             });
     };
+}
+
+export function saveIdea(id, ideaData) {
+    return (dispatch, getState, axios) => {
+        const requestBody = id
+            ? { method: 'PUT', url: `/api/ideas/${id}`, data: ideaData }
+            : { method: 'POST', url: '/api/ideas', data: ideaData };
+        return axios(requestBody).then(res => res.data);
+    };
+}
+
+export function publishIdea(id) {
+    return (dispatch, getState, axios) => axios.put(`/api/ideas/${id}/publish`).then(res => res.data);
 }
