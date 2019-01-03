@@ -11,6 +11,7 @@ import myContributions from './myContributions';
 import currentIdea from './currentIdea';
 import pinned from './pinned';
 import reports from './reports';
+import staticData from './static';
 
 const rootReducer = history =>
     combineReducers({
@@ -25,6 +26,7 @@ const rootReducer = history =>
         currentIdea,
         pinned,
         reports,
+        static: staticData,
     });
 
 export default rootReducer;

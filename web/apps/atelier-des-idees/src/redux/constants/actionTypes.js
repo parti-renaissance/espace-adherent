@@ -43,3 +43,6 @@ export const HIDE_CONSULTATION_PINNED = 'HIDE_CONSULTATION_PINNED';
 // reports
 export const FETCH_REPORTS = createRequestTypes('FETCH_REPORTS');
 export const SET_REPORTS = 'SET_REPORTS';
+
+// static
+export const UPDATE_STATIC = 'UPDATE_STATIC';
