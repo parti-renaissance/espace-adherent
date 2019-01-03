@@ -19,10 +19,12 @@ export const PUBLISH_IDEA = createRequestTypes('PUBLISH_IDEA');
 export const SAVE_IDEA = createRequestTypes('SAVE_IDEA');
 export const SET_IDEAS = 'SET_IDEAS';
 export const ADD_IDEAS = 'ADD_IDEAS';
+export const REMOVE_IDEA = 'REMOVE_IDEA';
 
 // my ideas
 export const FETCH_MY_IDEAS = createRequestTypes('FETCH_MY_IDEAS');
 export const SET_MY_IDEAS = 'SET_MY_IDEAS';
+export const REMOVE_MY_IDEA = 'REMOVE_MY_IDEA';
 
 // my contributions
 export const FETCH_MY_CONTRIBUTIONS = createRequestTypes('FETCH_MY_CONTRIBUTION');
