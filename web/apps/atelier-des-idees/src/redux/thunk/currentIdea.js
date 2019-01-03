@@ -1,6 +1,7 @@
 import { ideaStatus } from '../../constants/api';
 import { push } from 'connected-react-router';
-import { SAVE_CURRENT_IDEA, FETCH_GUIDELINES } from '../constants/actionTypes';
+import { SAVE_CURRENT_IDEA, PUBLISH_CURRENT_IDEA, FETCH_GUIDELINES } from '../constants/actionTypes';
+import { publishIdea, saveIdea } from '../thunk/ideas';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { selectCurrentIdea } from '../selectors/currentIdea';
 import { setCurrentIdea, updateCurrentIdea, setGuidelines } from '../actions/currentIdea';
@@ -65,6 +66,20 @@ export function saveCurrentIdea(ideaData) {
                 // dispatch(replace(`/atelier-des-idees/note/${data.uuid}`));
             })
             .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA, id)));
+    };
+}
+
+export function publishCurrentIdea(ideaData) {
+    return (dispatch, getState, axios) => {
+        const { id } = selectCurrentIdea(getState());
+        dispatch(createRequest(PUBLISH_CURRENT_IDEA));
+        dispatch(saveIdea(id, ideaData))
+            .then((data) => {
+                const uuid = id || data.uuid;
+                dispatch(publishIdea(uuid));
+                dispatch(createRequestSuccess(PUBLISH_CURRENT_IDEA));
+            })
+            .catch(() => dispatch(createRequestFailure(PUBLISH_CURRENT_IDEA)));
     };
 }
 
