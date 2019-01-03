@@ -54,9 +54,14 @@
                         </li>
                     </ul>
                 {% endif %}
-                {% if has_role_adherent %}
+                {% if app.user.isReferent %}
                     <li>
                         <a href="{{ path('app_referent_events') }}">Espace référent</a>
+                    </li>
+                {% endif %}
+                {% if app.user.isDeputy %}
+                    <li>
+                        <a href="{{ path('app_deputy_users_message') }}">Espace député</a>
                     </li>
                 {% endif %}
                 {% if app.user.isCoordinatorCitizenProjectSector %}
