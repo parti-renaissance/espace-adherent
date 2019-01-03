@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 import { ideaStatus } from '../../../../constants/api';
+import Button from '../../../Button';
 
 class MyIdeas extends React.Component {
     constructor(props) {
@@ -44,14 +46,10 @@ class MyIdeas extends React.Component {
                                 }))
                             }
                         >
-                            <span className="my-ideas__category__button__label">
-                                {cat.label.toUpperCase()}
-                            </span>
+                            <span className="my-ideas__category__button__label">{cat.label.toUpperCase()}</span>
                             <img
                                 className={classNames('my-ideas__category__button__icon', {
-                                    'my-ideas__category__button__icon--rotate': !this.state[
-                                        cat.showCat
-                                    ],
+                                    'my-ideas__category__button__icon--rotate': !this.state[cat.showCat],
                                 })}
                                 src="/assets/img/icn_toggle_content-blue-yonder.svg"
                             />
@@ -62,31 +60,29 @@ class MyIdeas extends React.Component {
                                     <React.Fragment>
                                         <div className="my-ideas__category__idea">
                                             <p className="my-ideas__category__idea__date">
-												Créée le{' '}
-                                                {new Date(idea.created_at).toLocaleDateString()}
+                                                Créée le {new Date(idea.created_at).toLocaleDateString()}
                                             </p>
-                                            <h4 className="my-ideas__category__idea__name">
-                                                {idea.name}
-                                            </h4>
+                                            <h4 className="my-ideas__category__idea__name">{idea.name}</h4>
                                             <div className="my-ideas__category__idea__actions">
                                                 {'DRAFT' === idea.status && (
-                                                    <button className="my-ideas__category__idea__actions__publish button--primary">
-														PUBLIER
-                                                    </button>
+                                                    <Button
+                                                        className="my-ideas__category__idea__actions__publish button--primary"
+                                                        label="Publier"
+                                                        onClick={() => console.warn('Implement me')}
+                                                    />
                                                 )}
-                                                {'FINALIZED' === idea.status && (
-                                                    <button className="my-ideas__category__idea__actions__see-note button--secondary">
-														VOIR LA NOTE
-                                                    </button>
-                                                )}
-                                                {'FINALIZED' !== idea.status && (
-                                                    <button className="my-ideas__category__idea__actions__edit button--secondary">
-														EDITER
-                                                    </button>
-                                                )}
-                                                <button className="my-ideas__category__idea__actions__delete button--tertiary">
-													SUPPRIMER
-                                                </button>
+                                                <Link
+                                                    to={`/atelier-des-idees/note/${idea.uuid}`}
+                                                    className="my-ideas__category__idea__actions__edit button button--secondary"
+                                                >
+                                                    {'FINALIZED' !== idea.status && 'Editer'}
+                                                    {'FINALIZED' === idea.status && 'Voir la note'}
+                                                </Link>
+                                                <Button
+                                                    className="my-ideas__category__idea__actions__delete button--tertiary"
+                                                    label="Supprimer"
+                                                    onClick={() => this.props.onDeleteIdea(idea.uuid)}
+                                                />
                                             </div>
                                         </div>
                                         <div className="separator" />
@@ -100,16 +96,16 @@ class MyIdeas extends React.Component {
     }
 }
 
-MyIdeas.defaultProps = {};
-
 MyIdeas.propTypes = {
     ideas: PropTypes.arrayOf(
         PropTypes.shape({
+            uuid: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
             created_at: PropTypes.string.isRequired, // ISO UTC
             status: PropTypes.oneOf(ideaStatus).isRequired,
         })
     ).isRequired,
+    onDeleteIdea: PropTypes.func.isRequired,
 };
 
 export default MyIdeas;

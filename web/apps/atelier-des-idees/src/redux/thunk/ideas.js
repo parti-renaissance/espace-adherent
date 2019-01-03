@@ -1,11 +1,12 @@
 import { FETCH_IDEAS, FETCH_IDEA, PUBLISH_IDEA, FETCH_MY_IDEAS } from '../constants/actionTypes';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
-import { addIdeas, setIdeas } from '../actions/ideas';
+import { addIdeas, setIdeas, removeIdea } from '../actions/ideas';
 import { setCurrentIdea } from '../actions/currentIdea';
 import { selectIdeasMetadata } from '../selectors/ideas';
-import { setMyIdeas } from '../actions/myIdeas';
+import { setMyIdeas, removeMyIdea } from '../actions/myIdeas';
 import { setMyContributions } from '../actions/myContributions';
 import { selectAuthUser } from '../selectors/auth';
+import { hideModal } from '../actions/modal';
 
 /**
  * Fetch ideas based on status and parameters
@@ -112,6 +113,17 @@ export function saveIdea(id, ideaData) {
             : { method: 'POST', url: '/api/ideas', data: ideaData };
         return axios(requestBody).then(res => res.data);
     };
+}
+
+export function deleteIdea(id) {
+    return (dispatch, getState, axios) =>
+        axios.delete(`/api/ideas/${id}`).then(() => {
+            // remove idea entity
+            dispatch(removeIdea(id));
+            dispatch(removeMyIdea(id));
+            // hide modal
+            dispatch(hideModal());
+        });
 }
 
 export function publishIdea(id) {

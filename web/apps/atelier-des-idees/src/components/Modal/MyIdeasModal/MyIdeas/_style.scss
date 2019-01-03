@@ -1,62 +1,58 @@
 .my-ideas {
-	margin-top: 38px;
+  margin-top: 38px;
 
-	&__category__button {
-		@extend %reset-button;
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		margin-bottom: 25px;
+  &__category__button {
+    @extend %reset-button;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
 
-		&__label {
-			margin-right: 6px;
-			font-size: 14px;
-			font-weight: bold;
-			color: $wild-blue-yonder;
-		}
+    &__label {
+      margin-right: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      color: $wild-blue-yonder;
+    }
 
-		&__icon {
-			&--rotate {
-				transform: rotate(180deg);
-			}
-		}
-	}
+    &__icon {
+      &--rotate {
+        transform: rotate(180deg);
+      }
+    }
+  }
 
-	&__category__idea {
-		&__date {
-			margin: 0 0 7px;
-			color: $light-black;
-			font-size: 14px;
-		}
+  &__category__idea {
+    &__date {
+      margin: 0 0 7px;
+      color: $light-black;
+      font-size: 14px;
+    }
 
-		&__name {
-			margin: 0 0 15px;
-			font-size: 20px;
-		}
+    &__name {
+      margin: 0 0 15px;
+      font-size: 20px;
+    }
 
-		&__actions {
-			> * {
-				cursor: pointer;
-				width: 98px;
-				height: 40px;
-				margin-right: 14px;
-				letter-spacing: 1.5px;
-			}
+    &__actions {
+      > * {
+        margin-right: 14px;
+      }
 
-			&__publish {
-				font-size: 14px;
-			}
+      &__publish {
+        font-size: 14px;
+      }
 
-			&__see-note {
-				width: 145px;
-			}
-		}
-	}
+      &__see-note {
+        width: 145px;
+      }
+    }
+  }
 
-	.separator {
-		width: 100%;
-		height: 1px;
-		margin: 21px 0 20px;
-		background-color: $platinum;
-	}
+  .separator {
+    width: 100%;
+    height: 1px;
+    margin: 21px 0 20px;
+    background-color: $platinum;
+  }
 }

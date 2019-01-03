@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { DELETE_IDEA_MODAL } from '../../constants/modalTypes';
+import { showModal } from '../../redux/actions/modal';
+import { deleteIdea } from '../../redux/thunk/ideas';
 import { selectMyIdeas } from '../../redux/selectors/myIdeas';
 import { selectMyContributions } from '../../redux/selectors/myContributions';
 import MyIdeasModal from '../../components/Modal/MyIdeasModal';
 
 function MyIdeasContainer(props) {
-    const { myIdeasData, myContributionsData } = props.data;
+    const { data, ...otherProps } = props;
+    const { myIdeasData, myContributionsData } = data;
     const { tabActive } = props;
     return (
-        <MyIdeasModal
-            my_ideas={myIdeasData}
-            my_contribs={myContributionsData}
-            tabActive={tabActive}
-        />
+        <MyIdeasModal my_ideas={myIdeasData} my_contribs={myContributionsData} tabActive={tabActive} {...otherProps} />
     );
 }
 
@@ -29,7 +29,18 @@ function mapStateToProps(state) {
     };
 }
 
+function mapDispatchToProps(dispatch) {
+    return {
+        onDeleteIdea: id =>
+            dispatch(
+                showModal(DELETE_IDEA_MODAL, {
+                    onConfirmDelete: () => dispatch(deleteIdea(id)),
+                })
+            ),
+    };
+}
+
 export default connect(
     mapStateToProps,
-    {}
+    mapDispatchToProps
 )(MyIdeasContainer);
