@@ -5,7 +5,6 @@ import TabContent from 'rc-tabs/lib/TabContent';
 import ScrollableInkTabBar from 'rc-tabs/lib/ScrollableInkTabBar';
 
 import 'rc-tabs/assets/index.css';
-import { getTransformByIndex } from 'rc-tabs/lib/utils';
 
 // https://github.com/fis-components/rc-tabs
 
