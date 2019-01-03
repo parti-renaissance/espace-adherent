@@ -15,20 +15,17 @@ final class SwaggerDecorator implements NormalizerInterface
     private $apiPathPrefix;
     private $resourceMetadataFactory;
     private $operationPathResolver;
-    private $paginationEnabled;
 
     public function __construct(
         NormalizerInterface $decorated,
         string $apiPathPrefix,
         ResourceMetadataFactoryInterface $resourceMetadataFactory,
-        OperationPathResolverInterface $operationPathResolver,
-        bool $paginationEnabled
+        OperationPathResolverInterface $operationPathResolver
     ) {
         $this->decorated = $decorated;
         $this->apiPathPrefix = $apiPathPrefix;
         $this->resourceMetadataFactory = $resourceMetadataFactory;
         $this->operationPathResolver = $operationPathResolver;
-        $this->paginationEnabled = $paginationEnabled;
     }
 
     public function normalize($object, $format = null, array $context = [])
