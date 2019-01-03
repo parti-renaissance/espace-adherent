@@ -1,21 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ideaStatus } from '../../../constants/api';
 import Tabs from '../../Tabs';
 import MyIdeas from './MyIdeas';
 import MyContributions from './MyContributions';
 
-const panes = [
-    {
-        title: 'Mes idées',
-        component: () => <MyIdeas />,
-    },
-    {
-        title: 'Mes contributions',
-        component: () => <MyContributions />,
-    },
-];
-
 function MyIdeasModal(props) {
+    const panes = [
+        {
+            title: 'Mes idées',
+            component: () => <MyIdeas ideas={props.my_ideas} />,
+        },
+        {
+            title: 'Mes contributions',
+            component: () => <MyContributions ideas={props.my_contribs} />,
+        },
+    ];
+
     return (
         <div className="my-ideas-modal">
             <h2 className="my-ideas-modal__title">Mes idées</h2>
@@ -37,6 +38,19 @@ MyIdeasModal.defaultProps = {
 
 MyIdeasModal.propTypes = {
     tabActive: PropTypes.oneOf(['my_ideas', 'my_contributions']),
+    my_contribs: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            created_at: PropTypes.string.isRequired, // ISO UTC
+        })
+    ).isRequired,
+    my_ideas: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            created_at: PropTypes.string.isRequired, // ISO UTC
+            status: PropTypes.oneOf(ideaStatus).isRequired,
+        })
+    ).isRequired,
 };
 
 export default MyIdeasModal;
