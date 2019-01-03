@@ -6,7 +6,7 @@ import { selectModalData } from '../../redux/selectors/modal';
 
 // components
 import ReportsModal from '../../components/Modal/ReportsModal';
-import PublishIdeaFormModal from '../../components/Modal/PublishIdeaFormModal';
+import PublishIdeaFormModal from '../../containers/PublishIdeaFormModal';
 import DeleteIdeaModal from '../../components/Modal/DeleteIdeaModal';
 // import MyIdeasModal from '../../components/Modal/MyIdeasModal';
 import MyIdeasContainer from '../../containers/MyIdeas';
