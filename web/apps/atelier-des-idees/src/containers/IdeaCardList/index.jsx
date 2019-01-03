@@ -33,13 +33,13 @@ IdeaCardListContainer.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-    const isLoading = selectLoadingState(state, `FETCH_IDEAS_${ownProps.status}`);
+    const { isFetching } = selectLoadingState(state, 'FETCH_IDEAS', ownProps.status);
     const ideas = selectIdeasWithStatus(state, ownProps.status);
     /* paging data */
     const { current_page, last_page } = selectIdeasMetadata(state);
     // show paging if props says so and is not loading and is not at the end of the list
-    const withPaging = ownProps.withPaging && current_page < last_page && !isLoading;
-    return { ideas, isLoading: isLoading && !ideas.length, withPaging };
+    const withPaging = ownProps.withPaging && current_page < last_page && !isFetching;
+    return { ideas, isLoading: isFetching && !ideas.length, withPaging };
 }
 
 function mapDispatchToProps(dispatch, ownProps) {

@@ -13,10 +13,15 @@ const loadingReducer = (state = initialState, action) => {
         // Store whether a request is happening at the moment or not
         // e.g. will be true when receiving GET_TODOS_REQUEST
         //      and false when receiving GET_TODOS_SUCCESS / GET_TODOS_FAILURE
-        [`${requestName}${payload.id ? `_${payload.id}` : ''}`]: { isFetching: 'REQUEST' === requestState },
+        [`${requestName}${payload.id ? `_${payload.id}` : ''}`]: {
+            isFetching: 'REQUEST' === requestState,
+            isSuccess: 'SUCCESS' === requestState,
+            isError: 'FAILURE' === requestState,
+        },
     };
 };
 
 export default loadingReducer;
 
-export const getLoadingState = (state, requestName) => state[requestName] && state[requestName].isFetching;
+export const getLoadingState = (state, requestName, requestState) =>
+    state[requestName] || { isfetching: false, isSuccess: false, isError: false };
