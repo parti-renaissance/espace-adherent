@@ -56,13 +56,15 @@ function mapDispatchToProps(dispatch, ownProps) {
             dispatch(initIdeaPage(id));
         },
         onBackClicked: () => dispatch(goBackFromCurrentIdea()),
-        onPublishIdea: data =>
+        onPublishIdea: (data) => {
+            const { id } = ownProps.match.params;
             dispatch(
                 showModal(PUBLISH_IDEA_MODAL, {
-                    ideaContent: data,
-                    submitForm: ideaData => dispatch(publishCurrentIdea(ideaData)),
+                    id,
+                    submitForm: ideaData => dispatch(publishCurrentIdea({ ...ideaData, ...data })),
                 })
-            ),
+            );
+        },
         onDeleteClicked: () =>
             dispatch(
                 showModal(DELETE_IDEA_MODAL, {
