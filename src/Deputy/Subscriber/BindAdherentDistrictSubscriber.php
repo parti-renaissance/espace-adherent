@@ -28,17 +28,19 @@ class BindAdherentDistrictSubscriber implements EventSubscriberInterface
         $adherent = $event->getAdherent();
 
         if ($adherent->isGeocoded()) {
-            $referentTags = $this->districtRepository->findDistrictReferentTagByCoordinates(
+            $districts = $this->districtRepository->findDistrictReferentTagByCoordinates(
                 $adherent->getLatitude(),
                 $adherent->getLongitude()
             );
 
-            if (!empty($referentTags)) {
-                foreach ($referentTags as $referentTag) {
-                    if ($adherent->getReferentTags()->contains($referentTag)) {
+            if (!empty($districts)) {
+                foreach ($districts as $district) {
+                    if (!\in_array($adherent->getCountry(), $district->getCountries(), false)) {
                         continue;
                     }
-                    $adherent->addReferentTag($referentTag);
+                    if (!$adherent->getReferentTags()->contains($district->getReferentTag())) {
+                        $adherent->addReferentTag($district->getReferentTag());
+                    }
                 }
                 $this->em->flush();
             }
