@@ -199,4 +199,17 @@ class Thread extends BaseComment implements AuthorInterface, ReportableInterface
     {
         return $this->getAnswer()->getIdea()->getAuthor();
     }
+
+    public function getContributors(): ArrayCollection
+    {
+        $contributors = new ArrayCollection();
+
+        foreach ($this->comments as $comment) {
+            if (!$contributors->contains($comment->getAuthor())) {
+                $contributors->add($comment->getAuthor());
+            }
+        }
+
+        return $contributors;
+    }
 }
