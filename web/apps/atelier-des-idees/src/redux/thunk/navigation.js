@@ -7,7 +7,7 @@ import { fetchGuidelines } from './currentIdea';
 import { fetchThemes, fetchCategories, fetchCommittees, fetchNeeds } from './static';
 
 export function initApp() {
-    return dispatch => dispatch(fetchAuthUser());
+    return async dispatch => await dispatch(fetchAuthUser());
 }
 
 export function initHomePage() {
