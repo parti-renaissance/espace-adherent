@@ -4,4 +4,4 @@ import SucessForm from '.';
 
 storiesOf('SucessForm', module)
     .addParameters({ jest: ['SucessForm'] })
-    .add('default', () => <SucessForm />);
+    .add('default', () => <SucessForm id="0000" />);
