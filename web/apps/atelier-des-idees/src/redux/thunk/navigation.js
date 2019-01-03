@@ -5,6 +5,7 @@ import { fetchReports } from './reports';
 import { fetchAuthUser } from './auth';
 import { fetchGuidelines } from './currentIdea';
 import { fetchThemes, fetchCategories, fetchCommittees, fetchNeeds } from './static';
+import { setCurrentIdea } from '../actions/currentIdea';
 
 export function initApp() {
     return async dispatch => await dispatch(fetchAuthUser());
@@ -61,5 +62,8 @@ export function initIdeaPage(id) {
 }
 
 export function initCreateIdeaPage() {
-    return dispatch => dispatch(initIdeaPageBase());
+    return dispatch => {
+        dispatch(initIdeaPageBase());
+        dispatch(setCurrentIdea());
+    };
 }

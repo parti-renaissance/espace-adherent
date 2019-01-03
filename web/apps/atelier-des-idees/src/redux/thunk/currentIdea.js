@@ -43,29 +43,29 @@ export function goBackFromCurrentIdea() {
 
 export function saveCurrentIdea(ideaData) {
     return (dispatch, getState, axios) => {
-        const { id } = selectCurrentIdea(getState());
-        dispatch(createRequest(SAVE_CURRENT_IDEA, id));
-        if (id) {
+        const { uuid } = selectCurrentIdea(getState());
+        dispatch(createRequest(SAVE_CURRENT_IDEA, uuid));
+        if (uuid) {
             // idea already exists (whatever its state)
             return axios
-                .put(`/api/ideas/${id}`, ideaData)
+                .put(`/api/ideas/${uuid}`, ideaData)
                 .then(res => res.data)
                 .then((data) => {
                     dispatch(updateCurrentIdea(data));
-                    dispatch(createRequestSuccess(SAVE_CURRENT_IDEA, id));
+                    dispatch(createRequestSuccess(SAVE_CURRENT_IDEA, uuid));
                 })
-                .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA, id)));
+                .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA, uuid)));
         }
         return axios
             .post('/api/ideas', ideaData)
             .then(res => res.data)
             .then((data) => {
                 dispatch(setCurrentIdea(data));
-                dispatch(createRequestSuccess(SAVE_CURRENT_IDEA, id));
+                dispatch(createRequestSuccess(SAVE_CURRENT_IDEA, uuid));
                 // TODO: uncomment when page exists
                 // dispatch(replace(`/atelier-des-idees/note/${data.uuid}`));
             })
-            .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA, id)));
+            .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA, uuid)));
     };
 }
 
