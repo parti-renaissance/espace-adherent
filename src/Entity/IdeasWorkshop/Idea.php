@@ -638,4 +638,9 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     {
         return ReportType::IDEAS_WORKSHOP_IDEA;
     }
+
+    public function __toString(): string
+    {
+        return (string) $this->name;
+    }
 }
