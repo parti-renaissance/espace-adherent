@@ -12,49 +12,110 @@ function QuestionBlockHeader({ label, question, nbQuestion }) {
     );
 }
 
-function QuestionBlock(props) {
-    const { label, question, placeholder, nbQuestion, onTextChange, initialContent } = props;
+function QuestionBlockBody(props) {
     return (
-        <div className="question-block">
-            {props.canCollapse ? (
-                <Collapse title={<QuestionBlockHeader label={label} question={question} nbQuestion={nbQuestion} />}>
-                    {'edit' === props.mode ? (
-                        <TextEditor
-                            initialContent={initialContent}
-                            maxLength={1700}
-                            onChange={htmlContent => onTextChange(htmlContent)}
-                            placeholder={placeholder}
-                        />
-                    ) : (
-                        <div dangerouslySetInnerHTML={{ __html: props.initialContent }} />
-                    )}
-                </Collapse>
+        <React.Fragment>
+            {'edit' === props.mode || props.isEditing ? (
+                <React.Fragment>
+                    <TextEditor
+                        initialContent={props.initialContent}
+                        maxLength={1700}
+                        onChange={htmlContent => props.onTextChange(htmlContent)}
+                        placeholder={props.placeholder}
+                    />
+                    {props.isEditing && props.isAuthor && <button onClick={props.onCancelAnswer}>Annuler</button>}
+                    {props.isEditing && props.isAuthor && <button onClick={props.onSaveAnswer}>Enregistrer</button>}
+                </React.Fragment>
             ) : (
                 <React.Fragment>
-                    <QuestionBlockHeader label={label} question={question} nbQuestion={nbQuestion} />
-                    {'edit' === props.mode ? (
-                        <TextEditor
-                            initialContent={initialContent}
-                            maxLength={1700}
-                            onChange={htmlContent => onTextChange(htmlContent)}
-                            placeholder={placeholder}
-                        />
-                    ) : (
-                        <div dangerouslySetInnerHTML={{ __html: props.initialContent }} />
-                    )}
+                    <div dangerouslySetInnerHTML={{ __html: props.initialContent }} />
+                    {props.isAuthor && <button onClick={props.onEditAnswer}>Editer</button>}
                 </React.Fragment>
             )}
-        </div>
+        </React.Fragment>
     );
+}
+
+class QuestionBlock extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isEditing: false,
+            value: '',
+            initialValue: props.initialContent,
+        };
+        this.onTextChange = this.onTextChange.bind(this);
+    }
+
+    onTextChange(content) {
+        if (this.state.isEditing) {
+            this.setState({ value: content });
+        } else {
+            this.props.onTextChange(content);
+        }
+    }
+
+    render() {
+        const { label, question, placeholder, nbQuestion, onTextChange, initialContent } = this.props;
+        // const Body = () =>
+        return (
+            <div className="question-block">
+                {this.props.canCollapse ? (
+                    <Collapse title={<QuestionBlockHeader label={label} question={question} nbQuestion={nbQuestion} />}>
+                        <QuestionBlockBody
+                            isAuthor={this.props.isAuthor}
+                            initialContent={initialContent}
+                            placeholder={placeholder}
+                            onTextChange={this.onTextChange}
+                            mode={this.props.mode}
+                            isEditing={this.state.isEditing}
+                            onEditAnswer={() => this.setState({ isEditing: true })}
+                            onSaveAnswer={() => {
+                                // this.props.onSaveAnswer(this.state.value)
+                                this.props.onTextChange(this.state.value);
+                                this.setState({ isEditing: false, value: '' });
+                            }}
+                            onCancelAnswer={() => {
+                                this.setState({ isEditing: false, value: '' });
+                            }}
+                        />
+                    </Collapse>
+                ) : (
+                    <React.Fragment>
+                        <QuestionBlockHeader label={label} question={question} nbQuestion={nbQuestion} />
+                        <QuestionBlockBody
+                            isAuthor={this.props.isAuthor}
+                            initialContent={initialContent}
+                            placeholder={placeholder}
+                            onTextChange={this.onTextChange}
+                            mode={this.props.mode}
+                            isEditing={this.state.isEditing}
+                            onEditAnswer={() => this.setState({ isEditing: true })}
+                            onSaveAnswer={() => {
+                                // this.props.onSaveAnswer(this.state.value)
+                                this.props.onTextChange(this.state.value);
+                                this.setState({ isEditing: false, value: '' });
+                            }}
+                            onCancelAnswer={() => {
+                                this.setState({ isEditing: false, value: '' });
+                            }}
+                        />
+                    </React.Fragment>
+                )}
+            </div>
+        );
+    }
 }
 
 QuestionBlock.defaultProps = {
     canCollapse: false,
     initialContent: '',
+    isAuthor: false,
     placeholder: undefined,
 };
 
 QuestionBlock.propTypes = {
+    isAuthor: PropTypes.bool,
     canCollapse: PropTypes.bool,
     initialContent: PropTypes.string,
     label: PropTypes.string.isRequired,

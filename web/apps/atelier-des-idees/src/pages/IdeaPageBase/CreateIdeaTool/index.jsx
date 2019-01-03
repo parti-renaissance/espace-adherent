@@ -14,6 +14,7 @@ function CreateIdeaTool(props) {
                     </div>
                     {guideline.questions.map(({ id, name, required, placeholder }, index) => (
                         <QuestionBlock
+                            isAuthor={props.isAuthor}
                             canCollapse={!required}
                             initialContent={props.values[id]}
                             key={id}
@@ -31,11 +32,13 @@ function CreateIdeaTool(props) {
 }
 
 CreateIdeaTool.defaultProps = {
+    isAuthor: false,
     values: {},
     isEditing: false,
 };
 
 CreateIdeaTool.propTypes = {
+    isAuthor: PropTypes.bool,
     isEditing: PropTypes.bool,
     onQuestionTextChange: PropTypes.func.isRequired,
     values: PropTypes.object,
