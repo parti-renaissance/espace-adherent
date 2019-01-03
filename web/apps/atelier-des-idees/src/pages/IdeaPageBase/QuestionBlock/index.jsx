@@ -6,7 +6,7 @@ import Collapse from '../../../components/Collapse';
 function QuestionBlockHeader({ label, question, nbQuestion }) {
     return (
         <h3 className="question-block-header">
-            <span className="question-block-header__label">{`${nbQuestion}. ${label} : `}</span>
+            <span className="question-block-header__label">{`${nbQuestion}. ${label ? `${label} : ` : ''}`}</span>
             <span className="question-block-header__question">{question}</span>
         </h3>
     );
