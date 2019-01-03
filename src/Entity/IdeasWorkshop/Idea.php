@@ -107,11 +107,37 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *             "denormalization_context": {"api_allow_update": false},
  *             "access_control": "object.getAuthor() == user",
  *             "path": "/ideas/{id}/publish",
+ *             "requirements": {"id": "%pattern_uuid%"},
  *             "controller": "AppBundle\Controller\Api\IdeaPublishController",
  *             "normalization_context": {"groups": {"idea_list_read"}},
- *             "validation_groups": {"idea_publish"}
+ *             "validation_groups": {"idea_publish"},
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Idea resource.",
+ *                         "example": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
+ *                     }
+ *                 }
+ *             }
  *         },
- *         "delete": {"access_control": "object.getAuthor() == user"}
+ *         "delete": {
+ *             "access_control": "object.getAuthor() == user",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Idea resource.",
+ *                         "example": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
+ *                     }
+ *                 }
+ *             }
+ *         }
  *     },
  *     attributes={
  *         "normalization_context": {"groups": {"idea_list_read"}},
