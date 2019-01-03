@@ -76,8 +76,7 @@ export function publishCurrentIdea(ideaData) {
         dispatch(saveIdea(id, ideaData))
             .then((data) => {
                 const uuid = id || data.uuid;
-                dispatch(publishIdea(uuid));
-                dispatch(createRequestSuccess(PUBLISH_CURRENT_IDEA));
+                dispatch(publishIdea(uuid)).then(() => dispatch(createRequestSuccess(PUBLISH_CURRENT_IDEA)));
             })
             .catch(() => dispatch(createRequestFailure(PUBLISH_CURRENT_IDEA)));
     };

@@ -15,8 +15,8 @@ export const HIDE_MODAL = 'HIDE_MODAL';
 // ideas
 export const FETCH_IDEA = createRequestTypes('FETCH_IDEA');
 export const FETCH_IDEAS = createRequestTypes('FETCH_IDEAS');
-export const PUBLISH_IDEAS = createRequestTypes('PUBLISH_IDEA');
-export const SAVE_IDEAS = createRequestTypes('SAVE_IDEA');
+export const PUBLISH_IDEA = createRequestTypes('PUBLISH_IDEA');
+export const SAVE_IDEA = createRequestTypes('SAVE_IDEA');
 export const SET_IDEAS = 'SET_IDEAS';
 export const ADD_IDEAS = 'ADD_IDEAS';
 

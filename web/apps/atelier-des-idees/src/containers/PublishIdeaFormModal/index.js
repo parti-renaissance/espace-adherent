@@ -1,10 +1,14 @@
 import { connect } from 'react-redux';
 import PublishIdeaFormModal from '../../components/Modal/PublishIdeaFormModal';
+import { selectLoadingState } from '../../redux/selectors/loading';
 
-function mapStateToProps(state) {
+function mapStateToProps(state, { id }) {
+    // get request status
+    const { isFetching, isSuccess, isError } = selectLoadingState(state, 'PUBLISH_IDEA', id);
     // TODO: fetch static data
-    // TODO: get submit status
     return {
+        isSubmitSuccess: isSuccess,
+        isSubmitError: isError,
         themeOptions: [
             { value: 'agriculture', label: 'Agriculture' },
             { value: 'education', label: 'Education' },
