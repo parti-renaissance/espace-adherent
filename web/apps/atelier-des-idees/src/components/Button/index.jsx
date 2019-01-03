@@ -11,7 +11,7 @@ function Button(props) {
             aria-label={props.label}
             disabled={props.disabled}
             onClick={() => {
-                if (!props.disabled) {
+                if (!props.disabled && props.onClick) {
                     props.onClick();
                 }
             }}

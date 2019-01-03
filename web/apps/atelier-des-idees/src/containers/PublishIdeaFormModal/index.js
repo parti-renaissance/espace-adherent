@@ -14,6 +14,7 @@ function mapStateToProps(state, { id }) {
     const { themes, needs, categories, committees } = selectStatic(state);
     const formattedCommittees = committees.map(({ uuid, name }) => ({ value: uuid, label: name }));
     return {
+        isSubmitting: isFetching,
         isSubmitSuccess: isSuccess,
         isSubmitError: isError,
         themeOptions: formatStaticData(themes),

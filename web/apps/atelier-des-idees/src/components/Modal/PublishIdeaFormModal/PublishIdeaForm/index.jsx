@@ -64,7 +64,7 @@ class PublishIdeaForm extends React.Component {
                 {!this.props.isSubmitSuccess && !this.props.isSubmitError && (
                     <React.Fragment>
                         <div className="publish-idea-form__header">
-                            {2 === this.state.currentPage && (
+                            {2 === this.state.currentPage && !this.props.isSubmitting && (
                                 <button className="publish-idea-form__header__previous" onClick={() => this.goBack()}>
                                     ← Précédent
                                 </button>
@@ -95,6 +95,7 @@ class PublishIdeaForm extends React.Component {
                                 authorOptions={this.props.authorOptions}
                                 committeeOptions={this.props.committeeOptions}
                                 difficultiesOptions={this.props.difficultiesOptions}
+                                isSubmitting={this.props.isSubmitting}
                                 onSubmit={res => this.handleSecondForm(res)}
                                 saveStateFormOnChange={res => this.saveForm(res)}
                             />
@@ -109,6 +110,7 @@ class PublishIdeaForm extends React.Component {
 }
 
 PublishIdeaForm.defaultProps = {
+    isSubmitting: false,
     isSubmitSuccess: false,
     isSubmitError: false,
 };
@@ -146,6 +148,7 @@ PublishIdeaForm.propTypes = {
     ).isRequired,
     id: PropTypes.string,
     submitForm: PropTypes.func.isRequired,
+    isSubmitting: PropTypes.bool,
     isSubmitSuccess: PropTypes.bool,
     isSubmitError: PropTypes.bool,
 };
