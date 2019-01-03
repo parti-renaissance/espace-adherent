@@ -1,16 +1,15 @@
 import { SET_AUTH_USER } from '../constants/actionTypes';
 
-// TODO: uncomment when linked to users api
-// const initialState = {
-//     isAuthenticated: false,
-//     user: {},
-// };
-
-// TODO: remove when linked to users api
 const initialState = {
-    isAuthenticated: true,
-    user: { uuid: '0000', first_name: 'Jean-Pierre', last_name: 'Français' },
+    isAuthenticated: false,
+    user: {},
 };
+
+// TODO: uncomment below and comment above to mock auth
+// const initialState = {
+//     isAuthenticated: true,
+//     user: { uuid: '0000', first_name: 'Jean-Pierre', last_name: 'Français' },
+// };
 
 function authReducer(state = initialState, action) {
     const { type, payload } = action;
