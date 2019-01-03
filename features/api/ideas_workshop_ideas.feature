@@ -1,5 +1,4 @@
 @api
-  @ideas
 Feature:
   In order to see ideas
   As a non logged-in user
