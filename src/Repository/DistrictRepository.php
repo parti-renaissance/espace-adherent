@@ -23,12 +23,13 @@ class DistrictRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('district')
             ->join('district.referentTag', 'referentTag')
+            ->addSelect('referentTag')
             ->join('district.geoData', 'geoData')
             ->where("ST_Within(ST_GeomFromText(CONCAT('POINT(',:longitude,' ',:latitude,')')), geoData.geoShape) = 1")
             ->setParameter('latitude', $latitude)
             ->setParameter('longitude', $longitude)
             ->getQuery()
             ->getResult()
-            ;
+        ;
     }
 }

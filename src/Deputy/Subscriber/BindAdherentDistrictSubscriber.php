@@ -32,10 +32,9 @@ class BindAdherentDistrictSubscriber implements EventSubscriberInterface
                 $adherent->getLatitude(),
                 $adherent->getLongitude()
             );
-
             if (!empty($districts)) {
                 foreach ($districts as $district) {
-                    if (!\in_array($adherent->getCountry(), $district->getCountries(), false)) {
+                    if (!\in_array($adherent->getCountry(), $district->getCountries())) {
                         continue;
                     }
                     if (!$adherent->getReferentTags()->contains($district->getReferentTag())) {
