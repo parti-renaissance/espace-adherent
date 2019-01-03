@@ -8,7 +8,7 @@ const initialState = {
 // TODO: uncomment below and comment above to mock auth
 // const initialState = {
 //     isAuthenticated: true,
-//     user: { uuid: '0000', first_name: 'Jean-Pierre', last_name: 'Français' },
+//     user: { uuid: '0000', firstName: 'Jean-Pierre', lastName: 'Français' },
 // };
 
 function authReducer(state = initialState, action) {
