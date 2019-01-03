@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 import { ideaStatus } from '../../../../constants/api';
 import Button from '../../../Button';
 
@@ -64,20 +65,19 @@ class MyIdeas extends React.Component {
                                             <h4 className="my-ideas__category__idea__name">{idea.name}</h4>
                                             <div className="my-ideas__category__idea__actions">
                                                 {'DRAFT' === idea.status && (
-                                                    <button className="my-ideas__category__idea__actions__publish button--primary">
-                                                        PUBLIER
-                                                    </button>
+                                                    <Button
+                                                        className="my-ideas__category__idea__actions__publish button--primary"
+                                                        label="Publier"
+                                                        onClick={() => console.warn('Implement me')}
+                                                    />
                                                 )}
-                                                {'FINALIZED' === idea.status && (
-                                                    <button className="my-ideas__category__idea__actions__see-note button--secondary">
-                                                        VOIR LA NOTE
-                                                    </button>
-                                                )}
-                                                {'FINALIZED' !== idea.status && (
-                                                    <button className="my-ideas__category__idea__actions__edit button--secondary">
-                                                        EDITER
-                                                    </button>
-                                                )}
+                                                <Link
+                                                    to={`/atelier-des-idees/note/${idea.uuid}`}
+                                                    className="my-ideas__category__idea__actions__edit button button--secondary"
+                                                >
+                                                    {'FINALIZED' !== idea.status && 'Editer'}
+                                                    {'FINALIZED' === idea.status && 'Voir la note'}
+                                                </Link>
                                                 <Button
                                                     className="my-ideas__category__idea__actions__delete button--tertiary"
                                                     label="Supprimer"
