@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Select from '../../../Select';
+import Button from '../../../Button';
 
 class SecondForm extends React.Component {
     constructor(props) {
@@ -13,6 +14,7 @@ class SecondForm extends React.Component {
                 author: '',
                 legal: '',
             },
+            isSubmitting: false,
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleErrors = this.handleErrors.bind(this);
@@ -48,7 +50,10 @@ class SecondForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        if (this.handleErrors()) this.props.onSubmit(this.state.inputs);
+        if (this.handleErrors()) {
+            this.setState({ isSubmitting: true });
+            this.props.onSubmit(this.state.inputs);
+        }
     }
 
     handleChange(input, value) {
@@ -120,7 +125,7 @@ class SecondForm extends React.Component {
                 )}
                 <div className="second-form__section">
                     <label className="second-form__section__label">
-						Y-a-t-il une partie qui vous a semblé difficile à remplir ?
+                        Y-a-t-il une partie qui vous a semblé difficile à remplir ?
                         <span className="second-form__section__label__optional"> (Optionnel)</span>
                     </label>
                     <Select
@@ -148,13 +153,13 @@ class SecondForm extends React.Component {
                         </label>
                         <p className="second-form__section__mentions__text">
                             {/* TODO: Missing link */}
-							J’accepte les{' '}
+                            J’accepte les{' '}
                             <Link
                                 to="/atelier-des-idees"
                                 className="second-form__section__mentions__text__link"
                                 target="_blank"
                             >
-								mentions légales
+                                mentions légales
                             </Link>
                         </p>
                     </div>
@@ -162,22 +167,25 @@ class SecondForm extends React.Component {
                         <p className="second-form__section__mentions--error">{this.state.errors.legal}</p>
                     )}
                     <p className="second-form__section__text">
-						Les données recueillies sur ce formulaire sont traitées par La REM afin de gérer les
-						informations relatives aux adhérents de La REM et lui permettent d’utiliser vos données pour des
-						opérations de communications politiques. Les informations marquées d’un astérisque sont
-						obligatoires. L’absence de réponse dans ces champs ne permettra pas à La REM de traiter votre
-						demande. Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à
-						la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de
-						rectification, de portabilité et d’effacement de vos données. Vous disposez également de la
-						faculté de donner des directives sur le sort de vos données après votre décès. Vous pouvez
-						exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce
-						d’identité à l’adresse postale ou électronique suivante : La République En Marche, 63 rue
-						Sainte-Anne, 75002 Paris, France et mes-donnees@en-marche.fr.
+                        Les données recueillies sur ce formulaire sont traitées par La REM afin de gérer les
+                        informations relatives aux adhérents de La REM et lui permettent d’utiliser vos données pour des
+                        opérations de communications politiques. Les informations marquées d’un astérisque sont
+                        obligatoires. L’absence de réponse dans ces champs ne permettra pas à La REM de traiter votre
+                        demande. Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à
+                        la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de
+                        rectification, de portabilité et d’effacement de vos données. Vous disposez également de la
+                        faculté de donner des directives sur le sort de vos données après votre décès. Vous pouvez
+                        exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce
+                        d’identité à l’adresse postale ou électronique suivante : La République En Marche, 63 rue
+                        Sainte-Anne, 75002 Paris, France et mes-donnees@en-marche.fr.
                     </p>
                 </div>
-                <button type="submit" className="second-form__button button--primary">
-					publier la note
-                </button>
+                <Button
+                    type="submit"
+                    className="second-form__button button--primary"
+                    label="Publier la note"
+                    isLoading={this.state.isSubmitting}
+                />
                 {this.state.errors.form && <p className="second-form__error">{this.state.errors.form}</p>}
             </form>
         );
