@@ -7,6 +7,7 @@ import loading from './loading';
 import modal from './modal';
 import ideas from './ideas';
 import myIdeas from './myIdeas';
+import myContributions from './myContributions';
 import currentIdea from './currentIdea';
 import pinned from './pinned';
 import reports from './reports';
@@ -20,6 +21,7 @@ const rootReducer = history =>
         modal,
         ideas,
         myIdeas,
+        myContributions,
         currentIdea,
         pinned,
         reports,
