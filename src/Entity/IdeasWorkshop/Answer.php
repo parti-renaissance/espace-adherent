@@ -36,7 +36,7 @@ class Answer
      * @ORM\Id
      * @ORM\GeneratedValue
      *
-     * @SymfonySerializer\Groups("thread_comment_read")
+     * @SymfonySerializer\Groups({"thread_comment_read", "idea_read"})
      */
     private $id;
 

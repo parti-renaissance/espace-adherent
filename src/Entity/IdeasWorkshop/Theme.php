@@ -45,7 +45,7 @@ class Theme implements EnabledInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      *
-     * @SymfonySerializer\Groups("theme_read")
+     * @SymfonySerializer\Groups({"theme_read", "idea_read"})
      */
     private $id;
 

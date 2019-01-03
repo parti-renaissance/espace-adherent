@@ -899,71 +899,93 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "author": {
-            "first_name": "Jacques",
-            "last_name": "Picard"
-        },
-        "published_at": "@string@.isDateTime()",
-        "answers": [
-            {
-                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce aliquet, mi condimentum venenatis vestibulum, arcu neque feugiat massa, at pharetra velit sapien et elit. Sed vitae hendrerit nulla. Vivamus consectetur magna at tincidunt maximus. Aenean dictum metus vel tellus posuere venenatis.",
-                "question": {
-                    "id": 1
-                }
-            },
-            {
-                "content": "Nulla metus enim, congue eu facilisis ac, consectetur ut ipsum. ",
-                "question": {
-                    "id": 2
-                }
-            },
-            {
-                "content": "Mauris gravida semper tincidunt.",
-                "question": {
-                    "id": 3
-                }
-            },
-            {
-                "content": "Donec ac neque congue, condimentum ipsum ac, eleifend ex.",
-                "question": {
-                    "id": 4
-                }
-            },
-            {
-                "content": "Suspendisse interdum quis tortor quis sodales. Suspendisse vel mollis orci.",
-                "question": {
-                    "id": 5
-                }
-            },
-            {
-                "content": "Proin et quam a tortor pretium fringilla non et magna.",
-                "question": {
-                    "id": 6
-                }
-            },
-            {
-                "content": "Orci varius natoque penatibus et magnis dis parturient montes",
-                "question": {
-                    "id": 7
-                }
-            },
-            {
-                "content": "Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex.",
-                "question": {
-                    "id": 8
-                }
-            }
-        ],
-        "votes_count": {
-            "important": "6",
-            "feasible": "4",
-            "innovative": "5",
-            "total": 15,
-            "my_votes": [
-                "feasible",
-                "important"
-            ]
-        }
+       "themes":[
+          {
+             "id":1,
+             "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
+          }
+       ],
+       "category":{
+          "id":1
+       },
+       "needs":[
+          {
+             "id":1
+          }
+       ],
+       "author":{
+          "first_name":"Jacques",
+          "last_name":"Picard"
+       },
+       "published_at": "@string@.isDateTime()",
+       "answers":[
+          {
+             "id":1,
+             "content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce aliquet, mi condimentum venenatis vestibulum, arcu neque feugiat massa, at pharetra velit sapien et elit. Sed vitae hendrerit nulla. Vivamus consectetur magna at tincidunt maximus. Aenean dictum metus vel tellus posuere venenatis.",
+             "question":{
+                "id":1
+             }
+          },
+          {
+             "id":2,
+             "content":"Nulla metus enim, congue eu facilisis ac, consectetur ut ipsum. ",
+             "question":{
+                "id":2
+             }
+          },
+          {
+             "id":3,
+             "content":"Mauris gravida semper tincidunt.",
+             "question":{
+                "id":3
+             }
+          },
+          {
+             "id":4,
+             "content":"Donec ac neque congue, condimentum ipsum ac, eleifend ex.",
+             "question":{
+                "id":4
+             }
+          },
+          {
+             "id":5,
+             "content":"Suspendisse interdum quis tortor quis sodales. Suspendisse vel mollis orci.",
+             "question":{
+                "id":5
+             }
+          },
+          {
+             "id":6,
+             "content":"Proin et quam a tortor pretium fringilla non et magna.",
+             "question":{
+                "id":6
+             }
+          },
+          {
+             "id":7,
+             "content":"Orci varius natoque penatibus et magnis dis parturient montes",
+             "question":{
+                "id":7
+             }
+          },
+          {
+             "id":8,
+             "content":"Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex.",
+             "question":{
+                "id":8
+             }
+          }
+       ],
+       "votes_count":{
+          "important":"6",
+          "feasible":"4",
+          "innovative":"5",
+          "total":15,
+          "my_votes":[
+             "feasible",
+             "important"
+          ]
+       }
     }
     """
 
@@ -975,17 +997,30 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "author": {
-            "first_name": "Jacques",
-            "last_name": "Picard"
-        },
-        "published_at": "2018-12-04T10:00:00+01:00",
-        "answers": [],
-        "votes_count": {
-            "important": 0,
-            "feasible": 0,
-            "innovative": 0,
-            "total": 0
-        }
+       "themes":[
+          {
+             "id":1,
+             "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
+          }
+       ],
+       "category":{
+          "id":1
+       },
+       "needs":[
+       ],
+       "author":{
+          "first_name":"Jacques",
+          "last_name":"Picard"
+       },
+       "published_at":"2018-12-04T10:00:00+01:00",
+       "answers":[
+
+       ],
+       "votes_count":{
+          "important":0,
+          "feasible":0,
+          "innovative":0,
+          "total":0
+       }
     }
     """
