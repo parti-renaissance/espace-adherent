@@ -45,6 +45,8 @@ class QuestionBlock extends React.Component {
             initialValue: props.initialContent,
         };
         this.onTextChange = this.onTextChange.bind(this);
+        this.onSaveAnswer = this.onSaveAnswer.bind(this);
+        this.onCancelAnswer = this.onCancelAnswer.bind(this);
     }
 
     onTextChange(content) {
@@ -53,6 +55,16 @@ class QuestionBlock extends React.Component {
         } else {
             this.props.onTextChange(content);
         }
+    }
+
+    onSaveAnswer() {
+        // this.props.onSaveAnswer(this.state.value)
+        this.props.onTextChange(this.state.value);
+        this.setState({ isEditing: false, value: '' });
+    }
+
+    onCancelAnswer() {
+        this.setState({ isEditing: false, value: '' });
     }
 
     render() {
@@ -70,14 +82,8 @@ class QuestionBlock extends React.Component {
                             mode={this.props.mode}
                             isEditing={this.state.isEditing}
                             onEditAnswer={() => this.setState({ isEditing: true })}
-                            onSaveAnswer={() => {
-                                // this.props.onSaveAnswer(this.state.value)
-                                this.props.onTextChange(this.state.value);
-                                this.setState({ isEditing: false, value: '' });
-                            }}
-                            onCancelAnswer={() => {
-                                this.setState({ isEditing: false, value: '' });
-                            }}
+                            onSaveAnswer={this.onSaveAnswer}
+                            onCancelAnswer={this.onCancelAnswer}
                         />
                     </Collapse>
                 ) : (
@@ -91,14 +97,8 @@ class QuestionBlock extends React.Component {
                             mode={this.props.mode}
                             isEditing={this.state.isEditing}
                             onEditAnswer={() => this.setState({ isEditing: true })}
-                            onSaveAnswer={() => {
-                                // this.props.onSaveAnswer(this.state.value)
-                                this.props.onTextChange(this.state.value);
-                                this.setState({ isEditing: false, value: '' });
-                            }}
-                            onCancelAnswer={() => {
-                                this.setState({ isEditing: false, value: '' });
-                            }}
+                            onSaveAnswer={this.onSaveAnswer}
+                            onCancelAnswer={this.onCancelAnswer}
                         />
                     </React.Fragment>
                 )}
