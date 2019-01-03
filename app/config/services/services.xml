@@ -490,7 +490,6 @@
             <argument key="$decorated" type="service" id="AppBundle\Swagger\SwaggerDecorator.inner"/>
             <argument key="$apiPathPrefix">%api_path_prefix%</argument>
             <argument key="$operationPathResolver" type="service" id="api_platform.operation_path_resolver"/>
-            <argument key="$paginationEnabled">%%</argument>
         </service>
     </services>
 </container>
