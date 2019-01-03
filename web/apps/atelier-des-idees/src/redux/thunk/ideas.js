@@ -1,4 +1,4 @@
-import { FETCH_IDEAS, FETCH_IDEA, FETCH_MY_IDEAS } from '../constants/actionTypes';
+import { FETCH_IDEAS, FETCH_IDEA, PUBLISH_IDEA, FETCH_MY_IDEAS } from '../constants/actionTypes';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { addIdeas, setIdeas } from '../actions/ideas';
 import { setCurrentIdea } from '../actions/currentIdea';
@@ -115,5 +115,12 @@ export function saveIdea(id, ideaData) {
 }
 
 export function publishIdea(id) {
-    return (dispatch, getState, axios) => axios.put(`/api/ideas/${id}/publish`).then(res => res.data);
+    return (dispatch, getState, axios) => {
+        dispatch(createRequest(PUBLISH_IDEA, id));
+        return axios
+            .put(`/api/ideas/${id}/publish`)
+            .then(res => res.data)
+            .then(() => dispatch(createRequestSuccess(PUBLISH_IDEA, id)))
+            .catch(() => dispatch(createRequestFailure(PUBLISH_IDEA, id)));
+    };
 }
