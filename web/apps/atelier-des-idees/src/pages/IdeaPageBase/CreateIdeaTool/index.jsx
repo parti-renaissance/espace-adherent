@@ -20,6 +20,7 @@ function CreateIdeaTool(props) {
                             key={id}
                             mode={props.isEditing ? 'edit' : 'contribute'}
                             question={name}
+                            questionId={id}
                             placeholder={placeholder}
                             nbQuestion={index + 1}
                             onTextChange={(htmlContent, save = false) =>
