@@ -12,7 +12,8 @@ function mapStateToProps(state, { questionId }) {
     const answerThread = selectCurrentIdeaThread(state, answerId);
     return {
         comments: [],
-        showForm: isAuthenticated,
+        // showForm: isAuthenticated,
+        showForm: false, // TODO: remove and uncomment above
     };
 }
 
