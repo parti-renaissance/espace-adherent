@@ -16,14 +16,4 @@ class ThreadController
 
         return $thread;
     }
-
-    public function reportAction(Request $request): Thread
-    {
-        /** @var Thread $thread */
-        $thread = $request->attributes->get('data');
-
-        $thread->report();
-
-        return $thread;
-    }
 }
