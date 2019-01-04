@@ -4,6 +4,8 @@ namespace Tests\AppBundle\Deputy\Subscriber;
 
 use AppBundle\Deputy\Subscriber\BindAdherentDistrictSubscriber;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\District;
+use AppBundle\Entity\GeoData;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Entity\ReferentTag;
 use AppBundle\Entity\ReferentTaggableEntity;
@@ -28,17 +30,17 @@ class BindAdherentDistrictSubscriberTest extends TestCase
     /**
      * @dataProvider provideReferentTagHasCount
      */
-    public function testOnAdherentAccountRegistrationCompletedSucceeds(array $referentTags)
+    public function testOnAdherentAccountRegistrationCompletedSucceeds(array $districts, int $count): void
     {
         $adherent = $this->createAdherent();
 
         $this->assertInstanceOf(ReferentTaggableEntity::class, $adherent);
         $this->assertSame(0, $adherent->getReferentTags()->count());
 
-        if ($count = \count($referentTags)) {
+        if (0 < $count) {
             $this->manager->expects($this->once())->method('flush');
         }
-        $this->districtRepository->expects($this->once())->method('findDistrictReferentTagByCoordinates')->willReturn($referentTags);
+        $this->districtRepository->expects($this->once())->method('findDistrictsByCoordinates')->willReturn($districts);
         $this->subscriber->updateReferentTagWithDistrict(new AdherentAccountWasCreatedEvent($adherent));
 
         $this->assertSame($count, $adherent->getReferentTags()->count());
@@ -47,17 +49,17 @@ class BindAdherentDistrictSubscriberTest extends TestCase
     /**
      * @dataProvider provideReferentTagHasCount
      */
-    public function testOnAdherentProfileUpdatedSuccessfully(array $referentTags)
+    public function testOnAdherentProfileUpdatedSuccessfully(array $referentTags, int $count): void
     {
         $adherent = $this->createAdherent();
 
         $this->assertInstanceOf(ReferentTaggableEntity::class, $adherent);
         $this->assertSame(0, $adherent->getReferentTags()->count());
 
-        if (0 < $count = \count($referentTags)) {
+        if (0 < $count) {
             $this->manager->expects($this->once())->method('flush');
         }
-        $this->districtRepository->expects($this->once())->method('findDistrictReferentTagByCoordinates')->willReturn($referentTags);
+        $this->districtRepository->expects($this->once())->method('findDistrictsByCoordinates')->willReturn($referentTags);
         $this->subscriber->updateReferentTagWithDistrict(new AdherentProfileWasUpdatedEvent($adherent));
 
         $this->assertSame($count, $adherent->getReferentTags()->count());
@@ -80,13 +82,26 @@ class BindAdherentDistrictSubscriberTest extends TestCase
 
     public function provideReferentTagHasCount(): array
     {
+        /** @var GeoData $geoData */
+        $geoData = $this->createMock(GeoData::class);
+
         $tag1 = new ReferentTag('1ère circonscription, Paris', 'CIRCO_75001');
         $tag2 = new ReferentTag('Alpes-Maritimes, 1ère circonscription (06-01)', 'CIRCO_06001');
+        $district1 = new District(
+            ['FR'], 'Ain', '01001', 1, 01, $geoData, $tag1
+        );
+        $district2 = new District(
+            ['FR'], 'Ain', '01002', 2, 01, $geoData, $tag2
+        );
+        $district3 = new District(
+            ['GB', 'DK', 'EE', 'FI', 'IE', 'IS', 'LV', 'LT', 'NO', 'SE'], 'Français établis hors de France', 'FDE_03', 3, 999, $geoData, $tag2
+        );
 
         return [
-            [[]],
-            [[$tag1]],
-            [[$tag1, $tag2]],
+            [[], 0],
+            [[$district1], 1],
+            [[$district2, $district1], 2],
+            [[$district3, $district2, $district1], 2],
         ];
     }
 

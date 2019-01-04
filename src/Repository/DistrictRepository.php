@@ -3,10 +3,8 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\District;
-use AppBundle\Entity\ReferentTag;
 use CrEOF\Spatial\PHP\Types\Geometry\Point;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class DistrictRepository extends ServiceEntityRepository
@@ -17,17 +15,16 @@ class DistrictRepository extends ServiceEntityRepository
     }
 
     /**
-     * Finds referent tag for district by coordinates of the point.
+     * Finds district by coordinates of the point.
      *
-     * @return ReferentTag[]
+     * @return District[]
      */
-    public function findDistrictReferentTagByCoordinates($latitude, $longitude): array
+    public function findDistrictsByCoordinates($latitude, $longitude): array
     {
-        return $this->getEntityManager()->createQueryBuilder()
-            ->from(ReferentTag::class, 'tag')
-            ->select('tag')
-            ->innerJoin(District::class, 'district', Join::WITH, 'district.referentTag = tag')
-            ->innerJoin('district.geoData', 'geoData')
+        return $this->createQueryBuilder('district')
+            ->join('district.referentTag', 'referentTag')
+            ->addSelect('referentTag')
+            ->join('district.geoData', 'geoData')
             ->where("ST_Within(ST_GeomFromText(CONCAT('POINT(',:longitude,' ',:latitude,')')), geoData.geoShape) = 1")
             ->setParameter('latitude', $latitude)
             ->setParameter('longitude', $longitude)
