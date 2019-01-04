@@ -10,6 +10,7 @@ import PublishIdeaFormModal from '../../containers/PublishIdeaFormModal';
 import DeleteIdeaModal from '../../components/Modal/DeleteIdeaModal';
 // import MyIdeasModal from '../../components/Modal/MyIdeasModal';
 import MyIdeasContainer from '../../containers/MyIdeas';
+import FlagModal from '../../components/Modal/FlagModal';
 
 const MODAL_COMPONENTS = {
     // to use a modal, just add it below with its corresponding type
@@ -19,6 +20,7 @@ const MODAL_COMPONENTS = {
     PUBLISH_IDEA_MODAL: PublishIdeaFormModal,
     DELETE_IDEA_MODAL: DeleteIdeaModal,
     MY_IDEAS_MODAL: MyIdeasContainer,
+    FLAG_MODAL: FlagModal,
 };
 
 class ModalRoot extends React.Component {
