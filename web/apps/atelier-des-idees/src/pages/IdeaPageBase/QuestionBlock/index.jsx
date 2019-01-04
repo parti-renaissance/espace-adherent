@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextEditor from '../../../components/TextEditor';
 import Collapse from '../../../components/Collapse';
+import IdeaThreads from '../../../containers/IdeaThreads';
 
 function QuestionBlockHeader({ label, question, nbQuestion }) {
     return (
@@ -92,18 +93,25 @@ class QuestionBlock extends React.Component {
     renderBody() {
         const { placeholder, initialContent, isAuthor, mode, canCollapse } = this.props;
         return (
-            <QuestionBlockBody
-                isAuthor={isAuthor}
-                initialContent={initialContent}
-                placeholder={placeholder}
-                onTextChange={this.onTextChange}
-                mode={mode}
-                isEditing={this.state.isEditing}
-                onEditAnswer={() => this.setState({ isEditing: true })}
-                onSaveAnswer={this.onSaveAnswer}
-                onCancelAnswer={this.onCancelAnswer}
-                canSaveAnswer={canCollapse ? true : !!this.state.value}
-            />
+            <React.Fragment>
+                <QuestionBlockBody
+                    isAuthor={isAuthor}
+                    initialContent={initialContent}
+                    placeholder={placeholder}
+                    onTextChange={this.onTextChange}
+                    mode={mode}
+                    isEditing={this.state.isEditing}
+                    onEditAnswer={() => this.setState({ isEditing: true })}
+                    onSaveAnswer={this.onSaveAnswer}
+                    onCancelAnswer={this.onCancelAnswer}
+                    canSaveAnswer={canCollapse ? true : !!this.state.value}
+                />
+                {'edit' !== this.props.mode && (
+                    <div className="question-block__threads">
+                        <IdeaThreads questionId={this.props.questionId} />
+                    </div>
+                )}
+            </React.Fragment>
         );
     }
 
@@ -131,6 +139,7 @@ QuestionBlock.defaultProps = {
     initialContent: '',
     isAuthor: false,
     placeholder: undefined,
+    questionId: undefined,
 };
 
 QuestionBlock.propTypes = {
@@ -143,6 +152,7 @@ QuestionBlock.propTypes = {
     onTextChange: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
     question: PropTypes.string.isRequired,
+    questionId: PropTypes.string,
 };
 
 export default QuestionBlock;

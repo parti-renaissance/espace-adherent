@@ -28,7 +28,7 @@ class App extends Component {
                     <Route exact path="/atelier-des-idees/contribuer" component={ThreeTabs} />
                     <Route exact path="/atelier-des-idees/proposer" component={ThreeTabs} />
                     <Route exact path="/atelier-des-idees/creer-ma-note" component={withAuth(CreateIdea)} />
-                    <Route exact path="/atelier-des-idees/note/:id" component={withAuth(IdeaPage)} />
+                    <Route exact path="/atelier-des-idees/note/:id" component={IdeaPage} />
                 </Switch>
             </div>
         );
