@@ -16,14 +16,4 @@ class ThreadCommentController
 
         return $threadComment;
     }
-
-    public function reportAction(Request $request): ThreadComment
-    {
-        /** @var ThreadComment $threadComment */
-        $threadComment = $request->attributes->get('data');
-
-        $threadComment->report();
-
-        return $threadComment;
-    }
 }

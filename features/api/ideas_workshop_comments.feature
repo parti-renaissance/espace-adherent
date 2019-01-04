@@ -170,10 +170,6 @@ Feature:
     }
     """
 
-  Scenario: As a non logged-in user I can not report a comment
-    When I send a "PUT" request to "/api/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/report"
-    Then the response status code should be 401
-
   Scenario: As a logged-in user I can not approve a comment
     Given I am logged as "carl999@example.fr"
     When I send a "PUT" request to "/api/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/approve"
@@ -206,41 +202,6 @@ Feature:
           "last_name":"Duroc"
        },
        "uuid":"b99933f3-180c-4248-82f8-1b0eb950740d"
-    }
-    """
-
-  Scenario: As an comment author, I can not report my comment
-    Given I am logged as "benjyd@aol.com"
-    When I send a "PUT" request to "/api/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/report"
-    Then the response status code should be 403
-
-  Scenario: As a logged-in user I can report a comment
-    Given I am logged as "benjyd@aol.com"
-    When I send a "PUT" request to "/api/thread_comments/60123090-6cdc-4de6-9cb3-07e2ec411f2f/report"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-       "thread":{
-          "answer":{
-             "id":1
-          },
-          "content":"J'ouvre une discussion sur le probl\u00e8me.",
-          "author":{
-             "uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458",
-             "first_name":"Carl",
-             "last_name":"Mirabeau"
-          },
-          "uuid":"@uuid@"
-       },
-       "content":"Lorem Ipsum Commentaris",
-       "author":{
-          "uuid":"a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
-          "first_name":"Francis",
-          "last_name":"Brioul"
-       },
-       "uuid":"@uuid@"
     }
     """
 
