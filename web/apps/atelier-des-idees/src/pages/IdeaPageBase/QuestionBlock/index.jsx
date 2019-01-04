@@ -16,7 +16,7 @@ function QuestionBlockHeader({ label, question, nbQuestion }) {
 function QuestionBlockBody(props) {
     return (
         <React.Fragment>
-            {'edit' === props.mode || props.isEditing ? (
+            {props.isAuthor && ('edit' === props.mode || props.isEditing) ? (
                 <React.Fragment>
                     <TextEditor
                         initialContent={props.initialContent}
