@@ -31,3 +31,13 @@ export function fetchNeeds() {
             .then(res => res.data)
             .then(data => dispatch(updateStatic({ needs: data.items })));
 }
+
+export function fetchStaticData() {
+    return dispatch =>
+        Promise.all([
+            dispatch(fetchThemes()),
+            dispatch(fetchCategories()),
+            dispatch(fetchNeeds()),
+            dispatch(fetchCommittees()),
+        ]);
+}
