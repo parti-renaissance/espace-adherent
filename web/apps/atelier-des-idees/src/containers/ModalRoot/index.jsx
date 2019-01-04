@@ -10,7 +10,7 @@ import PublishIdeaFormModal from '../../containers/PublishIdeaFormModal';
 import DeleteIdeaModal from '../../components/Modal/DeleteIdeaModal';
 // import MyIdeasModal from '../../components/Modal/MyIdeasModal';
 import MyIdeasContainer from '../../containers/MyIdeas';
-import FlagModal from '../../components/Modal/FlagModal';
+import FlagModal from '../../containers/FlagModal';
 
 const MODAL_COMPONENTS = {
     // to use a modal, just add it below with its corresponding type

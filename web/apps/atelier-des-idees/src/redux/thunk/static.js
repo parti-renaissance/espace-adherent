@@ -32,6 +32,14 @@ export function fetchNeeds() {
             .then(data => dispatch(updateStatic({ needs: data.items })));
 }
 
+export function fetchFlagReasons() {
+    return (dispatch, getState, axios) =>
+        axios
+            .get('/api/report/reasons')
+            .then(res => res.data)
+            .then(data => dispatch(updateStatic({ reasons: data })));
+}
+
 export function fetchStaticData() {
     return dispatch =>
         Promise.all([
@@ -39,5 +47,6 @@ export function fetchStaticData() {
             dispatch(fetchCategories()),
             dispatch(fetchNeeds()),
             dispatch(fetchCommittees()),
+            dispatch(fetchFlagReasons()),
         ]);
 }
