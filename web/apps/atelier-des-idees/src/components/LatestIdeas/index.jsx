@@ -13,6 +13,7 @@ function LatestIdeas(props) {
                     link="/atelier-des-idees/consulter"
                     ideas={finalized.items}
                     isLoading={finalized.isLoading}
+                    onVoteIdea={props.onVoteIdea}
                 />
             ),
         },
@@ -31,7 +32,9 @@ function LatestIdeas(props) {
     return (
         <article className="latest-ideas">
             <div className="l__wrapper">
-                <h2 className="latest-ideas__title">Consultez les dernières propostions publiées par nos adhérents</h2>
+                <h2 className="latest-ideas__title">
+					Consultez les dernières propostions publiées par nos adhérents
+                </h2>
                 <Tabs panes={panes} />
             </div>
         </article>
@@ -44,9 +47,16 @@ LatestIdeas.defaultProps = {
 
 LatestIdeas.propTypes = {
     ideas: PropTypes.shape({
-        finalized: PropTypes.shape({ isLoading: PropTypes.bool, items: PropTypes.array }),
-        pending: PropTypes.shape({ isLoading: PropTypes.bool, items: PropTypes.array }),
+        finalized: PropTypes.shape({
+            isLoading: PropTypes.bool,
+            items: PropTypes.array,
+        }),
+        pending: PropTypes.shape({
+            isLoading: PropTypes.bool,
+            items: PropTypes.array,
+        }),
     }),
+    onVoteIdea: PropTypes.func,
 };
 
 export default LatestIdeas;
