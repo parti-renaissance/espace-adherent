@@ -17,41 +17,28 @@ function formatVotes(votesCount) {
             id: key,
             name: VOTES_NAMES[key],
             count: votesCount[key],
-            isSelected: !votesCount.my_votes
-                ? false
-                : votesCount.my_votes.includes(key),
+            isSelected: !votesCount.my_votes ? false : votesCount.my_votes.includes(key),
         }));
 }
 
 function VotingFooterIdeaPage(props) {
-    const votes = formatVotes(props.currentIdea.votes_count);
+    const votes = formatVotes(props.votesCount);
     return (
         <div className="voting-footer-idea-page">
-            <h2 className="voting-footer-idea-page__title">
-				Votez pour cette idée !
-            </h2>
+            <h2 className="voting-footer-idea-page__title">Votez pour cette idée !</h2>
             <div className="voting-footer-idea-page__vote">
                 {votes.map(vote => (
                     <button
                         key={vote.id}
-                        className={classNames(
-                            'button',
-                            'voting-footer-idea-page__vote__button',
-                            {
-                                'voting-footer-idea-page__vote__button--selected':
-									vote.isSelected,
-                            }
-                        )}
+                        className={classNames('button', 'voting-footer-idea-page__vote__button', {
+                            'voting-footer-idea-page__vote__button--selected': vote.isSelected,
+                        })}
                         onClick={() => {
-                            props.onVote(props.currentIdea.uuid, vote.id);
+                            props.onVote(vote.id);
                         }}
                     >
-                        <span className="voting-footer-idea-page__vote__button__name">
-                            {vote.name}
-                        </span>
-                        <span className="voting-footer-idea-page__vote__button__count">
-                            {vote.count}
-                        </span>
+                        <span className="voting-footer-idea-page__vote__button__name">{vote.name}</span>
+                        <span className="voting-footer-idea-page__vote__button__count">{vote.count}</span>
                     </button>
                 ))}
             </div>
@@ -61,10 +48,10 @@ function VotingFooterIdeaPage(props) {
 
 function mapStateToProps(state) {
     const currentIdea = selectCurrentIdea(state);
-    return { currentIdea };
+    return { votesCount: currentIdea.votes_count };
 }
 
 export default connect(
     mapStateToProps,
-    { onVote: (id, typeVote) => voteCurrentIdea(id, typeVote) }
+    { onVote: typeVote => voteCurrentIdea(typeVote) }
 )(VotingFooterIdeaPage);
