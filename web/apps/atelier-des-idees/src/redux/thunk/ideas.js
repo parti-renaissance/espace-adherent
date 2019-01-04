@@ -42,8 +42,11 @@ export function fetchIdeas(status, params = {}, setMode = false) {
 export function fetchNextIdeas(status, params = {}) {
     return (dispatch, getState) => {
         const metadata = selectIdeasMetadata(getState());
-        const pagingParams = {}; // TODO: compute params based on metadata
-        return dispatch(fetchIdeas(status, { ...params, ...pagingParams }));
+        const { current_page, last_page } = metadata;
+        if (current_page !== last_page) {
+            const pagingParams = { page: current_page + 1 };
+            return dispatch(fetchIdeas(status, { ...params, ...pagingParams }));
+        }
     };
 }
 
