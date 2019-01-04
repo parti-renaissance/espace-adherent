@@ -87,11 +87,6 @@
             <argument type="service" id="security.encoder_factory"/>
         </service>
 
-        <service id="app.adherent_account_activation_handler" class="AppBundle\Membership\AdherentAccountActivationHandler">
-            <argument type="service" id="AppBundle\Membership\AdherentManager"/>
-            <argument type="service" id="app.security.authentication_utils"/>
-        </service>
-
         <service id="app.membership.adherent_factory" class="AppBundle\Membership\AdherentFactory">
             <argument type="service" id="security.encoder_factory"/>
             <argument type="service" id="app.address.post_address_factory"/>
@@ -133,6 +128,7 @@
             <argument type="service" id="app.committee.manager"/>
             <argument type="service" id="router"/>
             <argument type="service" id="app.mailer.transactional"/>
+            <argument type="service" id="event_dispatcher" />
         </service>
 
         <service id="app.committee.factory" class="AppBundle\Committee\CommitteeFactory">
@@ -203,7 +199,6 @@
 
         <service id="app.citizen_project.citizen_project_message_notifier" class="AppBundle\CitizenProject\CitizenProjectMessageNotifier">
             <argument type="service" id="AppBundle\Repository\AdherentRepository"/>
-            <argument type="service" id="old_sound_rabbit_mq.project_citizen_creation_notification_producer"/>
             <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="app.committee.manager"/>

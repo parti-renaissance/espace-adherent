@@ -156,14 +156,17 @@ class MembershipRequestHandler
 
     public function update(Adherent $adherent, MembershipRequest $membershipRequest): void
     {
+        $this->dispatcher->dispatch(UserEvents::USER_BEFORE_UPDATE, new UserEvent($adherent));
+
         $adherent->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
 
         $this->updateReferentTagsAndSubscriptionHistoryIfNeeded($adherent);
 
         $this->dispatcher->dispatch(AdherentEvents::PROFILE_UPDATED, new AdherentProfileWasUpdatedEvent($adherent));
-        $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($adherent));
 
         $this->manager->flush();
+
+        $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($adherent));
     }
 
     /**

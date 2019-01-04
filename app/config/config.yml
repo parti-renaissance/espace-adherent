@@ -43,7 +43,7 @@ framework:
     form:            ~
     csrf_protection: ~
     validation:      { enable_annotations: true }
-    #serializer:      { enable_annotations: true }
+    serializer:      { enable_annotations: true }
     templating:
         engines: ['twig']
     default_locale:  "%locale%"
@@ -208,6 +208,14 @@ csa_guzzle:
             config:
                 base_uri: 'https://graph.facebook.com'
                 timeout: 2.0
+
+        mailchimp_api:
+            config:
+                base_uri: 'https://us16.api.mailchimp.com'
+                timeout: 10.0
+                headers:
+                    Content-Type: 'application/json'
+                    Authorization: 'Bearer %env(MAILCHIMP_API_KEY)%'
 
 scheb_two_factor:
     google:

@@ -78,6 +78,7 @@
         "stof/doctrine-extensions-bundle": "^1.2",
         "suin/php-rss-writer": "^1.5",
         "superbalist/flysystem-google-storage": "^3.0",
+        "symfony/messenger": "~4.2",
         "symfony/monolog-bundle": "^3.1.0",
         "symfony/polyfill-apcu": "^1.0",
         "symfony/psr-http-message-bridge": "^1.0",

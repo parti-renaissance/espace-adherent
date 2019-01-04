@@ -157,7 +157,7 @@ lint: ls ly lt lj phpcs                                                         
 ls: ly lt                                                                                              ## Lint Symfony (Twig and YAML) files
 
 ly:
-	$(EXEC) $(CONSOLE) lint:yaml app/config
+	$(EXEC) $(CONSOLE) lint:yaml app/config --parse-tags
 
 lt:
 	$(EXEC) $(CONSOLE) lint:twig templates

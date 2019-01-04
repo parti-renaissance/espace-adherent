@@ -96,7 +96,7 @@ class BoardMemberController extends Controller
 
             $this->addFlash('info', 'board_member.message.success');
 
-            return $this->redirect($this->generateUrl('app_board_member_search'));
+            return $this->redirectToRoute('app_board_member_search');
         }
 
         return $this->render('board_member/message/search.html.twig', [
@@ -123,7 +123,7 @@ class BoardMemberController extends Controller
 
             $this->addFlash('info', 'board_member.message.success');
 
-            return $this->redirect($this->generateUrl('app_board_member_message_saved_profile'));
+            return $this->redirectToRoute('app_board_member_message_saved_profile');
         }
 
         return $this->render('board_member/message/saved_profile.html.twig', [
@@ -148,7 +148,7 @@ class BoardMemberController extends Controller
 
             $this->addFlash('info', 'board_member.message.success');
 
-            return $this->redirect($this->generateUrl('app_board_member_search'));
+            return $this->redirectToRoute('app_board_member_search');
         }
 
         return $this->render('board_member/message/member.html.twig', [

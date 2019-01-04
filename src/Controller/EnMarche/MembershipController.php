@@ -16,12 +16,12 @@ use AppBundle\Form\CommitteeAroundAdherentType;
 use AppBundle\Form\UserRegistrationType;
 use AppBundle\Geocoder\CoordinatesFactory;
 use AppBundle\Intl\UnitedNationsBundle;
+use AppBundle\Membership\AdherentAccountActivationHandler;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\Membership\MembershipRequestHandler;
 use AppBundle\Membership\MembershipRegistrationProcess;
 use AppBundle\OAuth\CallbackManager;
 use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -189,14 +189,18 @@ class MembershipController extends Controller
      * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
      * @Entity("activationToken", expr="repository.findByToken(activation_token)")
      */
-    public function activateAction(Adherent $adherent, AdherentActivationToken $activationToken, CallbackManager $callbackManager): Response
-    {
+    public function activateAction(
+        Adherent $adherent,
+        AdherentActivationToken $activationToken,
+        CallbackManager $callbackManager,
+        AdherentAccountActivationHandler $accountActivationHandler
+    ): Response {
         if ($this->getUser()) {
             $this->redirectToRoute('app_search_events');
         }
 
         try {
-            $this->get('app.adherent_account_activation_handler')->handle($adherent, $activationToken);
+            $accountActivationHandler->handle($adherent, $activationToken);
 
             if ($adherent->isAdherent()) {
                 $this->get(MembershipRequestHandler::class)->sendConfirmationJoinMessage($adherent);
@@ -270,7 +274,6 @@ class MembershipController extends Controller
     public function chooseCommitteesAction(
         Request $request,
         AdherentRepository $adherentRepository,
-        CommitteeRepository $committeeRepository,
         MembershipRegistrationProcess $membershipRegistrationProcess,
         CoordinatesFactory $coordinatesFactory,
         CommitteeManager $committeeManager
