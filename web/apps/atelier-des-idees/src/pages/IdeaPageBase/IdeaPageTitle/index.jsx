@@ -18,7 +18,7 @@ class IdeaPageTitle extends React.Component {
     render() {
         return (
             <section className="idea-page-title">
-                {this.props.isEditing || this.state.isEditing ? (
+                {!this.props.isReadOnly && (this.props.isEditing || this.state.isEditing) ? (
                     <React.Fragment>
                         <TextArea
                             maxLength={120}
