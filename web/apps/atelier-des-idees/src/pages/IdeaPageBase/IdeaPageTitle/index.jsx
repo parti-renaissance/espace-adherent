@@ -69,8 +69,8 @@ class IdeaPageTitle extends React.Component {
                                     <span className="idea-page-title__info__author-name">{this.props.authorName}</span>
                                 </span>
                             )}
-                            {this.props.createdAt && (
-                                <span className="idea-page-title__info__date"> le {this.props.createdAt}</span>
+                            {this.props.showPublicationDate && this.props.publishedAt && (
+                                <span className="idea-page-title__info__date"> le {this.props.publishedAt}</span>
                             )}
                         </div>
                     </React.Fragment>
@@ -82,22 +82,24 @@ class IdeaPageTitle extends React.Component {
 
 IdeaPageTitle.defaultProps = {
     authorName: '',
-    createdAt: '',
+    publishedAt: '',
     hasError: false,
     isAuthor: false,
     isEditing: false,
     isReadOnly: true,
+    showPublicationDate: false,
 };
 
 IdeaPageTitle.propTypes = {
     authorName: PropTypes.string,
-    createdAt: PropTypes.string,
+    publishedAt: PropTypes.string,
     hasError: PropTypes.bool,
     onTitleChange: PropTypes.func.isRequired,
     isAuthor: PropTypes.bool,
     isEditing: PropTypes.bool,
     isReadOnly: PropTypes.bool,
     title: PropTypes.string.isRequired,
+    showPublicationDate: PropTypes.bool,
 };
 
 export default IdeaPageTitle;
