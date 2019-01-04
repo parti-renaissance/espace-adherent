@@ -35,11 +35,11 @@ function mapStateToProps(state) {
     const guidelines = selectGuidelines(state);
     // get and format current idea
     const idea = selectCurrentIdea(state);
-    const { author, created_at, ...ideaData } = idea;
+    const { author, published_at, ...ideaData } = idea;
     const formattedIdea = {
         ...ideaData,
         authorName: author ? `${author.first_name} ${author.last_name}` : '',
-        createdAt: created_at && new Date(created_at).toLocaleDateString(),
+        publishedAt: published_at && new Date(published_at).toLocaleDateString(),
     };
     return {
         idea: formattedIdea,

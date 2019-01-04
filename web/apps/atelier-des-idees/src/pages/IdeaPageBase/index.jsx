@@ -181,15 +181,14 @@ class IdeaPageBase extends React.Component {
                     <div className="create-idea-page__content__main l__wrapper--medium">
                         <IdeaPageTitle
                             authorName={this.props.idea.authorName}
-                            createdAt={this.props.idea.createdAt}
-                            onTitleChange={(value, withSave) =>
-                                this.onNameChange(value, withSave)
-                            }
+                            publishedAt={this.props.idea.publishedAt}
+                            onTitleChange={(value, withSave) => this.onNameChange(value, withSave)}
                             title={this.state.name}
                             isAuthor={this.props.isAuthor}
                             isEditing={idea.status === ideaStatus.DRAFT}
                             isReadOnly={this.state.readingMode}
                             hasError={this.state.errors.name}
+                            showPublicationDate={idea.status === ideaStatus.FINALIZED}
                         />
                         {this.state.readingMode ? (
                             <IdeaReader paragraphs={this.getParagraphs()} />
@@ -238,6 +237,7 @@ IdeaPageBase.propTypes = {
             })
         ),
         status: PropTypes.oneOf(Object.keys(ideaStatus)),
+        publishedAt: PropTypes.string,
     }),
     guidelines: PropTypes.array.isRequired,
     isAuthor: PropTypes.bool,
