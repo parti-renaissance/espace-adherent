@@ -1,14 +1,19 @@
 import { ideaStatus } from '../../constants/api';
-import { fetchIdeas, fetchIdea } from './ideas';
+import { fetchIdeas, fetchIdea, fetchUserIdeas, fetchUserContributions } from './ideas';
 import { fetchConsultationPinned } from './pinned';
 import { fetchReports } from './reports';
 import { fetchAuthUser } from './auth';
 import { fetchGuidelines } from './currentIdea';
-import { fetchThemes, fetchCategories, fetchCommittees, fetchNeeds } from './static';
+import { fetchStaticData } from './static';
 import { setCurrentIdea } from '../actions/currentIdea';
 
 export function initApp() {
-    return async dispatch => await dispatch(fetchAuthUser());
+    return dispatch =>
+        Promise.all([
+            dispatch(fetchAuthUser()).then(() => dispatch(fetchUserIdeas())),
+            dispatch(fetchStaticData()),
+            dispatch(fetchUserContributions()),
+        ]);
 }
 
 export function initHomePage() {
@@ -45,13 +50,7 @@ export function initConsultPage() {
 }
 
 export function initIdeaPageBase() {
-    return dispatch => {
-        dispatch(fetchGuidelines());
-        dispatch(fetchThemes());
-        dispatch(fetchCategories());
-        dispatch(fetchNeeds());
-        dispatch(fetchCommittees());
-    };
+    return dispatch => dispatch(fetchGuidelines());
 }
 
 export function initIdeaPage(id) {
