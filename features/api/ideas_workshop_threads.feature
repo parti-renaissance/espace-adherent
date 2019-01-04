@@ -54,7 +54,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can see visibled threads for an idea
-    When I send a "GET" request to "/api/threads?answer.idea=2"
+    When I send a "GET" request to "/api/threads?answer.idea.uuid=3b1ea810-115f-4b2c-944d-34a55d7b7e4d"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
