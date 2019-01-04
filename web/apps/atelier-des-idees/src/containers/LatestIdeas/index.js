@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { ideaStatus } from '../../constants/api';
 import LatestIdeas from '../../components/LatestIdeas';
+import { voteIdea } from '../../redux/thunk/ideas';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectIdeasWithStatus } from '../../redux/selectors/ideas';
 
@@ -21,20 +22,30 @@ function sortIdeasByDate(ideas = []) {
 }
 
 const mapStateToProps = (state) => {
-    const isLoadingFinalizedIdeas = selectLoadingState(state, 'FETCH_IDEAS_FINALIZED').isFetching;
-    const isLoadingPendingIdeas = selectLoadingState(state, 'FETCH_IDEAS_PENDING').isFetching;
+    const isLoadingFinalizedIdeas = selectLoadingState(
+        state,
+        'FETCH_IDEAS_FINALIZED'
+    ).isFetching;
+    const isLoadingPendingIdeas = selectLoadingState(state, 'FETCH_IDEAS_PENDING')
+        .isFetching;
     // get ideas
     const finalizedIdeas = selectIdeasWithStatus(state, ideaStatus.FINALIZED);
     const pendingIdeas = selectIdeasWithStatus(state, ideaStatus.PENDING);
     return {
         ideas: {
-            finalized: { isLoading: isLoadingFinalizedIdeas, items: sortIdeasByDate(finalizedIdeas) },
-            pending: { isLoading: isLoadingPendingIdeas, items: sortIdeasByDate(pendingIdeas) },
+            finalized: {
+                isLoading: isLoadingFinalizedIdeas,
+                items: sortIdeasByDate(finalizedIdeas),
+            },
+            pending: {
+                isLoading: isLoadingPendingIdeas,
+                items: sortIdeasByDate(pendingIdeas),
+            },
         },
     };
 };
 
 export default connect(
     mapStateToProps,
-    {}
+    { onVoteIdea: (id, vote) => voteIdea(id, vote) }
 )(LatestIdeas);
