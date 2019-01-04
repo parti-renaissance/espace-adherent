@@ -51,8 +51,15 @@ class IdeaPageBase extends React.Component {
         this.formatAnswers = this.formatAnswers.bind(this);
     }
 
-    onNameChange(value) {
-        this.setState(prevState => ({ name: value, errors: { ...prevState.errors, name: !value } }));
+    onNameChange(value, withSave = false) {
+        this.setState(
+            prevState => ({ name: value, errors: { ...prevState.errors, name: !value } }),
+            () => {
+                if (value && withSave) {
+                    this.onSaveIdea();
+                }
+            }
+        );
     }
 
     onQuestionTextChange(id, value, withSave = false) {
@@ -152,9 +159,11 @@ class IdeaPageBase extends React.Component {
                         <IdeaPageTitle
                             authorName={this.props.idea.authorName}
                             createdAt={this.props.idea.createdAt}
-                            onTitleChange={value => this.onNameChange(value)}
+                            onTitleChange={(value, withSave) => this.onNameChange(value, withSave)}
                             title={this.state.name}
-                            isEditing={idea.status === ideaStatus.DRAFT && !this.state.readingMode}
+                            isAuthor={this.props.isAuthor}
+                            isEditing={idea.status === ideaStatus.DRAFT}
+                            isReadOnly={this.state.readingMode}
                             hasError={this.state.errors.name}
                         />
                         {this.state.readingMode ? (

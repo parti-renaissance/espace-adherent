@@ -37,7 +37,7 @@ function QuestionBlockBody(props) {
                                 Annuler
                             </button>
                             <button
-                                className="question-block__editing-footer__btn question-block__editing-footer__btn--main"
+                                className="question-block__editing-footer__btn editing-footer__btn--main"
                                 onClick={props.onSaveAnswer}
                             >
                                 Enregistrer
@@ -45,7 +45,7 @@ function QuestionBlockBody(props) {
                         </React.Fragment>
                     ) : (
                         <button
-                            className="question-block__editing-footer__btn question-block__editing-footer__btn--main"
+                            className="question-block__editing-footer__btn editing-footer__btn--main"
                             onClick={props.onEditAnswer}
                         >
                             Editer
