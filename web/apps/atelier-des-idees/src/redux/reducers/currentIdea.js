@@ -82,3 +82,4 @@ export default combineReducers({ idea: ideaReducer, guidelines: guidelinesReduce
 
 export const getCurrentIdea = state => state.idea;
 export const getGuidelines = state => state.guidelines;
+export const getCurrentIdeaThread = (state, answerId) => state.threads.find(thread => thread.answer.id === answerId);
