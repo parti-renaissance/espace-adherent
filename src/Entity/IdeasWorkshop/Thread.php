@@ -69,25 +69,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *                 }
  *             }
  *         },
- *         "put_status_report": {
- *             "method": "PUT",
- *             "path": "/threads/{id}/report",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "denormalization_context": {"api_allow_update": false},
- *             "access_control": "is_granted('ROLE_ADHERENT') && object.getAuthor() != user",
- *             "controller": "AppBundle\Controller\Api\ThreadController::reportAction",
- *             "swagger_context": {
- *                 "parameters": {
- *                     {
- *                         "name": "id",
- *                         "in": "path",
- *                         "type": "uuid",
- *                         "description": "The UUID of the Thread resource.",
- *                         "example": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
- *                     }
- *                 }
- *             }
- *         },
  *         "delete": {
  *             "access_control": "object.getAuthor() == user",
  *             "swagger_context": {

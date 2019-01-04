@@ -112,10 +112,6 @@ Feature:
     }
     """
 
-  Scenario: As a non logged-in user I can not update a thread
-    When I send a "PUT" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/report"
-    Then the response status code should be 401
-
   Scenario: As a logged-in user I can not approved a thread
     Given I am logged as "carl999@example.fr"
     When I send a "PUT" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/approve"
@@ -139,32 +135,6 @@ Feature:
           "last_name":"Mirabeau"
        },
        "uuid":"dfd6a2f2-5579-421f-96ac-98993d0edea1"
-    }
-    """
-
-  Scenario: As an thread author, I can not report my thread
-    Given I am logged as "carl999@example.fr"
-    When I send a "PUT" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/report"
-    Then the response status code should be 403
-
-  Scenario: As a logged-in user I can report any other thread
-    Given I am logged as "carl999@example.fr"
-    When I send a "PUT" request to "/api/threads/6b077cc4-1cbd-4615-b607-c23009119406/report"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-       "answer":{
-          "id": 2
-       },
-       "content":"J'ouvre une discussion sur la solution.",
-       "author":{
-          "uuid":"29461c49-6316-5be1-9ac3-17816bf2d819",
-          "first_name":"Lucie",
-          "last_name":"Olivera"
-       },
-       "uuid":"6b077cc4-1cbd-4615-b607-c23009119406"
     }
     """
 
