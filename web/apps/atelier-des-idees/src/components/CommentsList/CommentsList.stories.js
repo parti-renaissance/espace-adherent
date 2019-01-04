@@ -5,25 +5,25 @@ import CommentsList from '.';
 
 const comments = [
     {
-        id: '0000',
+        uuid: '0000',
         content: 'Commentaire 1',
-        author: { id: 'u1', name: 'Jean-Charles F.' },
+        author: { uuid: 'u1', first_name: 'Jean-Charles', last_name: 'F.' },
         createdAt: '29/11/2018 à 16h02',
         verified: true,
         replies: [
             {
-                id: '2222',
+                uuid: '2222',
                 content: 'Réponse 1',
-                author: { id: 'u2', name: 'Micheline B.' },
+                author: { uuid: 'u2', first_name: 'Micheline', last_name: 'B.' },
                 createdAt: '29/11/2018 à 18h04',
                 verified: false,
             },
         ],
     },
     {
-        id: '1111',
+        uuid: '1111',
         content: 'Commentaire 2',
-        author: { id: 'u2', name: 'Micheline B.' },
+        author: { uuid: 'u2', first_name: 'Micheline', last_name: 'B.' },
         createdAt: '29/11/2018 à 18h04',
         verified: false,
         replies: [],
