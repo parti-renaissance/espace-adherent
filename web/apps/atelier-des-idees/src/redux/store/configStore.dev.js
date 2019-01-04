@@ -1,8 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import axios from 'axios';
-import { createBrowserHistory } from 'history';
-import { routerMiddleware } from 'connected-react-router';
 import rootReducer from '../reducers';
 import { initApp } from '../thunk/navigation';
 
@@ -15,14 +13,8 @@ const axiosInstance = axios.create({
     },
 });
 
-// routing
-export const history = createBrowserHistory();
-
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(
-    rootReducer(history),
-    composeEnhancers(applyMiddleware(thunk.withExtraArgument(axiosInstance), routerMiddleware(history)))
-);
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk.withExtraArgument(axiosInstance))));
 
 // initial dispatch
 store.dispatch(initApp());

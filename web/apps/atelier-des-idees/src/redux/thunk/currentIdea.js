@@ -1,5 +1,5 @@
 import { ideaStatus } from '../../constants/api';
-import { push } from 'connected-react-router';
+import history from '../../history';
 import { SAVE_CURRENT_IDEA, PUBLISH_CURRENT_IDEA, FETCH_GUIDELINES } from '../constants/actionTypes';
 import { publishIdea, saveIdea } from '../thunk/ideas';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
@@ -18,11 +18,11 @@ export function deleteCurrentIdea() {
             // idea already exists (whatever its state)
             return axios.delete(`/api/ideas/${id}`).then(() => {
                 dispatch(hideModal());
-                dispatch(push('/atelier-des-idees'));
+                history.push('/atelier-des-idees');
             });
         }
         dispatch(hideModal());
-        return dispatch(push('/atelier-des-idees'));
+        history.push('/atelier-des-idees');
     };
 }
 
@@ -31,12 +31,14 @@ export function goBackFromCurrentIdea() {
         const { status } = selectCurrentIdea(getState());
         switch (status) {
         case ideaStatus.FINALIZED:
-            return dispatch(push('/atelier-des-idees/consulter'));
+            history.push('/atelier-des-idees/consulter');
+            break;
         case ideaStatus.PENDING:
-            return dispatch(push('/atelier-des-idees/contribuer'));
+            history.push('/atelier-des-idees/contribuer');
+            break;
         case ideaStatus.DRAFT:
         default:
-            return dispatch(push('/atelier-des-idees/proposer'));
+            history.push('/atelier-des-idees/proposer');
         }
     };
 }
@@ -63,7 +65,7 @@ export function saveCurrentIdea(ideaData) {
                 dispatch(setCurrentIdea(data));
                 dispatch(createRequestSuccess(SAVE_CURRENT_IDEA));
                 // TODO: uncomment when page exists
-                // dispatch(replace(`/atelier-des-idees/note/${data.uuid}`));
+                // replace location with `/atelier-des-idees/note/${data.uuid}`
             })
             .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA)));
     };
