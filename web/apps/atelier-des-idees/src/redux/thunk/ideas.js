@@ -5,7 +5,7 @@ import { setCurrentIdea } from '../actions/currentIdea';
 import { selectIdeasMetadata } from '../selectors/ideas';
 import { setMyIdeas, removeMyIdea } from '../actions/myIdeas';
 import { setMyContributions } from '../actions/myContributions';
-import { selectAuthUser } from '../selectors/auth';
+import { selectAuthUser, selectIsAuthenticated } from '../selectors/auth';
 import { hideModal } from '../actions/modal';
 
 /**
@@ -71,18 +71,21 @@ export function fetchIdea(id) {
  */
 export function fetchUserIdeas(params = {}) {
     return (dispatch, getState, axios) => {
-        const user = selectAuthUser(getState());
-        dispatch(createRequest(FETCH_MY_IDEAS));
-        return axios
-            .get(`/api/ideas?author.uuid=${user.uuid}`, { params: { ...params } })
-            .then(res => res.data)
-            .then(({ items, metadata }) => {
-                dispatch(setMyIdeas(items, metadata));
-                dispatch(createRequestSuccess(FETCH_MY_IDEAS));
-            })
-            .catch((error) => {
-                dispatch(createRequestFailure(FETCH_MY_IDEAS));
-            });
+        const isAuthenticated = selectIsAuthenticated(getState());
+        if (isAuthenticated) {
+            const user = selectAuthUser(getState());
+            dispatch(createRequest(FETCH_MY_IDEAS));
+            return axios
+                .get(`/api/ideas?author.uuid=${user.uuid}`, { params: { ...params } })
+                .then(res => res.data)
+                .then(({ items, metadata }) => {
+                    dispatch(setMyIdeas(items, metadata));
+                    dispatch(createRequestSuccess(FETCH_MY_IDEAS));
+                })
+                .catch((error) => {
+                    dispatch(createRequestFailure(FETCH_MY_IDEAS));
+                });
+        }
     };
 }
 
@@ -92,17 +95,20 @@ export function fetchUserIdeas(params = {}) {
  */
 export function fetchUserContributions(params = {}) {
     return (dispatch, getState, axios) => {
-        dispatch(createRequest(FETCH_MY_IDEAS));
-        return axios
-            .get('/api/ideas/my-contributions', { params: { ...params } })
-            .then(res => res.data)
-            .then(({ items, metadata }) => {
-                dispatch(setMyContributions(items, metadata));
-                dispatch(createRequestSuccess(FETCH_MY_IDEAS));
-            })
-            .catch((error) => {
-                dispatch(createRequestFailure(FETCH_MY_IDEAS));
-            });
+        const isAuthenticated = selectIsAuthenticated(getState());
+        if (isAuthenticated) {
+            dispatch(createRequest(FETCH_MY_IDEAS));
+            return axios
+                .get('/api/ideas/my-contributions', { params: { ...params } })
+                .then(res => res.data)
+                .then(({ items, metadata }) => {
+                    dispatch(setMyContributions(items, metadata));
+                    dispatch(createRequestSuccess(FETCH_MY_IDEAS));
+                })
+                .catch((error) => {
+                    dispatch(createRequestFailure(FETCH_MY_IDEAS));
+                });
+        }
     };
 }
 
