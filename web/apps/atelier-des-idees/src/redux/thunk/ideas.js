@@ -61,7 +61,7 @@ export function fetchIdea(id) {
             .get(`/api/ideas/${id}`)
             .then(res => res.data)
             .then((data) => {
-                dispatch(setCurrentIdea(data));
+                dispatch(setCurrentIdea({ ...data, uuid: id }));
                 dispatch(createRequestSuccess(FETCH_IDEA, id));
             })
             .catch(error => dispatch(createRequestFailure(FETCH_IDEA, id)));
