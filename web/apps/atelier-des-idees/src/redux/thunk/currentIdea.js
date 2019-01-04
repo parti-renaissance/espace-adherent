@@ -45,10 +45,15 @@ export function goBackFromCurrentIdea() {
 
 export function saveCurrentIdea(ideaData) {
     return (dispatch, getState, axios) => {
-        const { uuid } = selectCurrentIdea(getState());
+        const { uuid, answers } = selectCurrentIdea(getState());
         dispatch(createRequest(SAVE_CURRENT_IDEA, uuid));
         if (uuid) {
             // idea already exists (whatever its state)
+            // add answer id to answers before sending
+            ideaData.answers = ideaData.answers.map((answer) => {
+                const { id } = answers.find(a => a.question.id === parseInt(answer.question, 10)) || {};
+                return id ? { ...answer, id } : answer;
+            });
             return axios
                 .put(`/api/ideas/${uuid}`, ideaData)
                 .then(res => res.data)
