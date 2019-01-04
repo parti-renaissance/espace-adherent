@@ -8,6 +8,36 @@ import {
 
 const initialState = { idea: {}, guidelines: [] };
 
+function toggleVote(state, typeVote) {
+    let voteCount = state.votes_count[typeVote];
+    let total = state.votes_count.total;
+    let myVotes = state.votes_count.my_votes;
+    if (!myVotes) {
+        // my_votes does not exist
+        myVotes = [];
+    }
+    // remove vote
+    if (myVotes.includes(typeVote)) {
+        voteCount -= 1;
+        total -= 1;
+        myVotes = myVotes.filter(vote => vote !== typeVote);
+    } else {
+        // vote
+        voteCount += 1;
+        total += 1;
+        myVotes = [...myVotes, typeVote];
+    }
+    return {
+        ...state,
+        votes_count: {
+            ...state.votes_count,
+            [typeVote]: voteCount,
+            total,
+            my_votes: myVotes,
+        },
+    };
+}
+
 function ideaReducer(state = initialState.idea, action) {
     const { type, payload } = action;
     switch (type) {
@@ -19,39 +49,7 @@ function ideaReducer(state = initialState.idea, action) {
     }
     case TOGGLE_VOTE_CURRENT_IDEA: {
         const { typeVote } = payload;
-        let voteCount = state.votes_count[typeVote];
-        let total = state.votes_count.total;
-        let myVotes = state.votes_count.my_votes;
-        // my_votes exists
-        if (myVotes && myVotes.length) {
-            // remove vote
-            if (myVotes.includes(typeVote)) {
-                voteCount -= 1;
-                total -= 1;
-                myVotes = state.votes_count.my_votes.filter(
-                    vote => vote !== typeVote
-                );
-            } else {
-                // vote
-                voteCount += 1;
-                total += 1;
-                myVotes = [...state.votes_count.my_votes, typeVote];
-            }
-        } else {
-            // vote -> create new array my_vote
-            voteCount += 1;
-            total += 1;
-            myVotes = [typeVote];
-        }
-        return {
-            ...state,
-            votes_count: {
-                ...state.votes_count,
-                [typeVote]: voteCount,
-                total,
-                my_votes: myVotes,
-            },
-        };
+        return toggleVote(state, typeVote);
     }
     default:
         return state;
