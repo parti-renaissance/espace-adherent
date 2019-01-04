@@ -104,7 +104,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *         }
  *     },
  * )
- * @ApiFilter(SearchFilter::class, properties={"answer.idea": "exact"})
+ * @ApiFilter(SearchFilter::class, properties={"answer.idea.uuid": "exact"})
  *
  * @ORM\Table(name="ideas_workshop_thread",
  *     uniqueConstraints={
