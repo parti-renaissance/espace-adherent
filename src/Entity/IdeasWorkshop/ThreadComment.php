@@ -64,25 +64,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *                 }
  *             }
  *         },
- *         "put_status_report": {
- *             "method": "PUT",
- *             "path": "/thread_comments/{id}/report",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "denormalization_context": {"api_allow_update": false},
- *             "access_control": "is_granted('ROLE_ADHERENT') && object.getAuthor() != user",
- *             "controller": "AppBundle\Controller\Api\ThreadCommentController::reportAction",
- *             "swagger_context": {
- *                 "parameters": {
- *                     {
- *                         "name": "id",
- *                         "in": "path",
- *                         "type": "uuid",
- *                         "description": "The UUID of the ThreadComment resource.",
- *                         "example": "b99933f3-180c-4248-82f8-1b0eb950740d",
- *                     }
- *                 }
- *             }
- *         },
  *         "delete": {
  *             "access_control": "object.getAuthor() == user",
  *             "swagger_context": {
