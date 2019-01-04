@@ -40,11 +40,9 @@ final class SwaggerDecorator implements NormalizerInterface
 
                 if (isset($context['groups']) && ($groups = $context['groups']) && \is_array($groups)) {
                     $group = $groups[0];
-                } else {
-                    $group = null;
                 }
 
-                $docs = $this->overridePaginatedResponseFormat($docs, $resourceMetadata, $group);
+                $docs = $this->overridePaginatedResponseFormat($docs, $resourceMetadata, $group ?? null);
             }
         }
 
