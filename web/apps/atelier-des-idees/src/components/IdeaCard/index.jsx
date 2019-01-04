@@ -25,7 +25,9 @@ function formatVotes(votesCount) {
             id: key,
             name: VOTES_NAMES[key],
             count: votesCount[key],
-            isSelected: !votesCount.my_votes ? false : votesCount.my_votes.includes(key),
+            isSelected: !votesCount.my_votes
+                ? false
+                : votesCount.my_votes.includes(key),
         }));
 }
 
@@ -45,7 +47,9 @@ function IdeaCard(props) {
                             <span
                                 className={classnames(
                                     'idea-card__content__infos__author__type',
-                                    `idea-card__content__infos__author__type--${props.author_category}`
+                                    `idea-card__content__infos__author__type--${
+                                        props.author_category
+                                    }`
                                 )}
                             >
                                 {AUTHOR_CATEGORY_NAMES[props.author_category]}
@@ -90,17 +94,20 @@ function IdeaCard(props) {
                 </div>
                 {!!props.themes.length && props.themes[0].thumbnail && (
                     <div className="idea-card__container">
-                        <img className="idea-card__container__icon" src={props.themes[0].thumbnail} />
+                        <img
+                            className="idea-card__container__icon"
+                            src={props.themes[0].thumbnail}
+                        />
                     </div>
                 )}
             </div>
             {/* FOOTER */}
             {'FINALIZED' === props.status ? (
-                // TODO: implement onSelected -> Vote
+            // TODO: implement onSelected -> Vote
                 <VotingFooter
                     totalVotes={props.votes_count.total}
                     votes={formatVotes(props.votes_count)}
-                    onSelected={vote => props.onVote(vote)}
+                    onSelected={vote => props.onVote(props.uuid, vote)}
                 />
             ) : (
                 <ContributingFooter
@@ -116,8 +123,6 @@ IdeaCard.defaultProps = {
     comments_count: 0,
     contributors_count: 0,
     thumbnail: undefined,
-    /* TODO: implement vote*/
-    onVote: (vote, id) => console.log(vote, id),
 };
 
 IdeaCard.propTypes = {
@@ -141,7 +146,9 @@ IdeaCard.propTypes = {
     ).isRequired,
     comments_count: PropTypes.number,
     contributors_count: PropTypes.number,
-    themes: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string, thumbnail: PropTypes.string })),
+    themes: PropTypes.arrayOf(
+        PropTypes.shape({ name: PropTypes.string, thumbnail: PropTypes.string })
+    ),
     days_before_deadline: PropTypes.number.isRequired,
     status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
     onVote: PropTypes.func,
