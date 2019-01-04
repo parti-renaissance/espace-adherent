@@ -37,10 +37,12 @@ export const SET_MY_CONTRIBUTIONS = 'SET_MY_CONTRIBUTIONS ';
 // current ideas
 export const SAVE_CURRENT_IDEA = createRequestTypes('SAVE_CURRENT_IDEA');
 export const PUBLISH_CURRENT_IDEA = createRequestTypes('PUBLISH_CURRENT_IDEA');
+export const VOTE_CURRENT_IDEA = createRequestTypes('VOTE_CURRENT_IDEA');
 export const SET_CURRENT_IDEA = 'SET_CURRENT_IDEA';
 export const UPDATE_CURRENT_IDEA = 'UPDATE_CURRENT_IDEA';
 export const FETCH_GUIDELINES = createRequestTypes('FETCH_GUIDELINES');
 export const SET_GUIDELINES = 'SET_GUIDELINES';
+export const TOGGLE_VOTE_CURRENT_IDEA = 'TOGGLE_VOTE_CURRENT_IDEA';
 
 // pinned
 export const FETCH_CONSULTATION_PINNED = createRequestTypes(
