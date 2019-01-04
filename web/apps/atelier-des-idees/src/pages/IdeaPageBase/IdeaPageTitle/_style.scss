@@ -22,4 +22,21 @@
       font-size: 26px;
     }
   }
+
+  .idea-page-title__title__editing-footer {
+    text-align: right;
+  }
+  .idea-page-title__title__editing-footer__btn {
+    @extend %reset-button;
+    margin-left: 15px;
+    cursor: pointer;
+    font-size: 15px;
+    color: $light-black;
+
+    &.editing-footer__btn--save,
+    &.editing-footer__btn--edit {
+      color: $saphir;
+      font-weight: 400;
+    }
+  }
 }
