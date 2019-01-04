@@ -1,6 +1,12 @@
 import { UPDATE_STATIC } from '../constants/actionTypes';
 
-const initialState = { committees: [], categories: [], needs: [], themes: [] };
+const initialState = {
+    committees: [],
+    categories: [],
+    needs: [],
+    themes: [],
+    reasons: [],
+};
 
 function staticReducer(state = initialState, action) {
     const { type, payload } = action;

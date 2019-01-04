@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Select from '../../Select';
 import TextArea from '../../TextArea';
+import SuccessSignal from './SuccessSignal';
 
 class FlagModal extends React.Component {
     constructor(props) {
@@ -79,7 +80,7 @@ class FlagModal extends React.Component {
                     acc[curr] = 'Information manquante';
                 }
                 if (!acc.form) {
-                    acc.form = 'Certaines informations sont manquantes ou erronées';
+                    acc.form = 'Certaines informations sont manquantes';
                 }
                 canSubmit = false;
             } else {
@@ -93,57 +94,72 @@ class FlagModal extends React.Component {
 
     render() {
         return (
-            <form className="flag-modal" onSubmit={this.handleSubmit}>
-                <h2 className="flag-modal__title">Signaler un abus</h2>
-                <p className="flag-modal__subtitle">
-					Veuillez signaler tout élément qui pourrait contrevenir aux Conditions
-					d'utilisation ou à la Charte des bonnes pratiques de La République En
-					Marche.
-                </p>
-                <div className="flag-modal__reasons">
-                    <label className="flag-modal__label">Raison du signalement </label>
-                    <Select
-                        options={this.props.reasons}
-                        isMulti={true}
-                        placholder="Discours incitant à la haine"
-                        onSelected={value => this.handleChange('reasons', value)}
-                        error={this.state.errors.reasons}
-                    />
-                </div>
-                {this.state.inputs.reasons.some(reason => 'other' === reason.value) && (
-                    <div className="flag-modal__comment">
-                        <label className="flag-modal__label">Autre raison </label>
-                        <TextArea
-                            value={this.state.inputs.comment}
-                            error={this.state.errors.comment}
-                            placeholder="Merci d'expliquer pourquoi vous signalez ce commentaire ou cette idée à La République En Marche et merci d'indiquer toute information qui nous aiderait à l'évaluer"
-                            onChange={value => this.handleChange('comment', value)}
-                        />
-                    </div>
-                )}
+            <React.Fragment>
+                {!this.props.isSubmitSuccess && (
+                    <form className="flag-modal" onSubmit={this.handleSubmit}>
+                        <h2 className="flag-modal__title">Signaler un abus</h2>
+                        <p className="flag-modal__subtitle">
+							Veuillez signaler tout élément qui pourrait contrevenir aux
+							Conditions d'utilisation ou à la Charte des bonnes pratiques de La
+							République En Marche.
+                        </p>
+                        <div className="flag-modal__reasons">
+                            <label className="flag-modal__label">
+								Raison du signalement{' '}
+                            </label>
+                            <Select
+                                options={this.props.reasons}
+                                isMulti={false}
+                                placholder="Discours incitant à la haine"
+                                onSelected={value => this.handleChange('reasons', value)}
+                                error={this.state.errors.reasons}
+                            />
+                        </div>
+                        {this.state.inputs.reasons.some(
+                            reason => 'other' === reason.value
+                        ) && (
+                                <div className="flag-modal__comment">
+                                    <label className="flag-modal__label">Autre raison </label>
+                                    <TextArea
+                                        value={this.state.inputs.comment}
+                                        error={this.state.errors.comment}
+                                        placeholder="Merci d'expliquer pourquoi vous signalez ce commentaire ou cette idée à La République En Marche et merci d'indiquer toute information qui nous aiderait à l'évaluer"
+                                        onChange={value => this.handleChange('comment', value)}
+                                    />
+                                </div>
+                            )}
 
-                <button
-                    type="submit"
-                    className="button button--primary flag-modal__button"
-                >
-					ENVOYER
-                </button>
-                {this.state.errors.form && (
-                    <p className="flag-modal__error">{this.state.errors.form}</p>
+                        <button
+                            type="submit"
+                            className="button button--primary flag-modal__button"
+                        >
+							ENVOYER
+                        </button>
+                        {this.state.errors.form && (
+                            <p className="flag-modal__error">{this.state.errors.form}</p>
+                        )}
+                        <p className="flag-modal__text">
+							Les commentaies ou idées signalés sont passés en revue par les
+							équipes de La République En Marche afin de déterminer s'ils
+							violent nos Conditions d'utilisation ou notre Charte des bonnes
+							pratiques
+                        </p>
+                    </form>
                 )}
-                <p className="flag-modal__text">
-					Les commentaies ou idées signalés sont passés en revue par les équipes
-					de La République En Marche afin de déterminer s'ils violent nos
-					Conditions d'utilisation ou notre Charte des bonnes pratiques
-                </p>
-            </form>
+                {this.props.isSubmitSuccess && <SuccessSignal />}
+            </React.Fragment>
         );
     }
 }
 
+FlagModal.defaultProps = {
+    isSubmitSuccess: false,
+};
+
 FlagModal.propTypes = {
     reasons: PropTypes.array.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    isSubmitSuccess: PropTypes.bool,
 };
 
 export default FlagModal;

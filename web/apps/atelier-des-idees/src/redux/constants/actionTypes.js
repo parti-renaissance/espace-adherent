@@ -55,9 +55,7 @@ export const FETCH_REPORTS = createRequestTypes('FETCH_REPORTS');
 export const SET_REPORTS = 'SET_REPORTS';
 
 // flag
-export const FETCH_FLAG_REASONS = createRequestTypes('FETCH_FLAG_REASONS');
-export const SET_FLAG_REASONS = 'SET_FLAG_REASONS';
-export const POST_FLAG = 'POST_FLAG';
+export const ADD_FLAG = 'ADD_FLAG';
 
 // static
 export const UPDATE_STATIC = 'UPDATE_STATIC';
