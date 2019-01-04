@@ -3,18 +3,29 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { DELETE_IDEA_MODAL } from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
-import { deleteIdea } from '../../redux/thunk/ideas';
+import { deleteIdea, fetchUserIdeas, fetchUserContributions } from '../../redux/thunk/ideas';
 import { selectMyIdeas } from '../../redux/selectors/myIdeas';
 import { selectMyContributions } from '../../redux/selectors/myContributions';
 import MyIdeasModal from '../../components/Modal/MyIdeasModal';
 
-function MyIdeasContainer(props) {
-    const { data, ...otherProps } = props;
-    const { myIdeasData, myContributionsData } = data;
-    const { tabActive } = props;
-    return (
-        <MyIdeasModal my_ideas={myIdeasData} my_contribs={myContributionsData} tabActive={tabActive} {...otherProps} />
-    );
+class MyIdeasContainer extends React.Component {
+    componentDidMount() {
+        this.props.initMyIdeas();
+    }
+
+    render() {
+        const { data, ...otherProps } = this.props;
+        const { myIdeasData, myContributionsData } = data;
+        const { tabActive } = this.props;
+        return (
+            <MyIdeasModal
+                my_ideas={myIdeasData}
+                my_contribs={myContributionsData}
+                tabActive={tabActive}
+                {...otherProps}
+            />
+        );
+    }
 }
 
 MyIdeasContainer.propTypes = {
@@ -37,6 +48,12 @@ function mapDispatchToProps(dispatch) {
                     onConfirmDelete: () => dispatch(deleteIdea(id)),
                 })
             ),
+        initMyIdeas: () => {
+            // user ideas
+            dispatch(fetchUserIdeas());
+            // user contributions
+            dispatch(fetchUserContributions());
+        },
     };
 }
 
