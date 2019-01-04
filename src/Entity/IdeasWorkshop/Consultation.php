@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use AppBundle\Entity\EnabledInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
@@ -19,8 +20,15 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *     }
  * )
  *
- * @ORM\Table(name="ideas_workshop_consultation")
+ * @ORM\Table(
+ *     name="ideas_workshop_consultation",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="consultation_enabled_unique", columns="enabled")
+ *     },
+ * )
  * @ORM\Entity
+ *
+ * @UniqueEntity("enabled")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -74,7 +82,7 @@ class Consultation implements EnabledInterface
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $enabled;
 
@@ -84,7 +92,7 @@ class Consultation implements EnabledInterface
         \DateTime $startedAt = null,
         \DateTime $endedAt = null,
         int $responseTime = 0,
-        bool $enabled = true
+        bool $enabled = null
     ) {
         $this->name = $name;
         $this->url = $url;
@@ -151,12 +159,12 @@ class Consultation implements EnabledInterface
 
     public function isEnabled(): bool
     {
-        return $this->enabled;
+        return true === $this->enabled;
     }
 
     public function setEnabled(bool $enabled): void
     {
-        $this->enabled = $enabled;
+        $this->enabled = $enabled ?: null;
     }
 
     public function __toString(): string
