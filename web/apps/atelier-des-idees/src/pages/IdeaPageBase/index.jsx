@@ -9,10 +9,7 @@ import CreateIdeaTool from './CreateIdeaTool';
 import VotingFooterIdeaPage from './VotingFooterIdeaPage';
 
 function getInitialAnswers(guidelines, answers = []) {
-    const questions = guidelines.reduce(
-        (acc, guideline) => [...acc, ...guideline.questions],
-        []
-    );
+    const questions = guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
     return questions.reduce((acc, question) => {
         const answer = answers.find(item => item.question.id === question.id);
         acc[question.id] = answer ? answer.content : '';
@@ -21,10 +18,7 @@ function getInitialAnswers(guidelines, answers = []) {
 }
 
 function getRequiredAnswers(guidelines) {
-    const questions = guidelines.reduce(
-        (acc, guideline) => [...acc, ...guideline.questions],
-        []
-    );
+    const questions = guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
     return questions
         .filter(question => question.required)
         .reduce((acc, question) => {
@@ -126,10 +120,7 @@ class IdeaPageBase extends React.Component {
     }
 
     getParagraphs() {
-        const questions = this.props.guidelines.reduce(
-            (acc, guideline) => [...acc, ...guideline.questions],
-            []
-        );
+        const questions = this.props.guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
         return questions.reduce((acc, { id }) => {
             if (this.state.answers[id]) {
                 acc.push(this.state.answers[id]);
@@ -155,17 +146,11 @@ class IdeaPageBase extends React.Component {
         return (
             <div className="create-idea-page">
                 <div className="create-idea-page__header l__wrapper">
-                    <button
-                        className="button create-idea-actions__back"
-                        onClick={() => this.props.onBackClicked()}
-                    >
-						← Retour
+                    <button className="button create-idea-actions__back" onClick={() => this.props.onBackClicked()}>
+                        ← Retour
                     </button>
                     {idea.status !== ideaStatus.FINALIZED && this.state.name && (
-                        <Switch
-                            onChange={this.onToggleReadingMode}
-                            label="Passer en mode lecture"
-                        />
+                        <Switch onChange={this.onToggleReadingMode} label="Passer en mode lecture" />
                     )}
                     {this.props.isAuthor && (
                         <CreateIdeaActions
@@ -186,7 +171,7 @@ class IdeaPageBase extends React.Component {
                             title={this.state.name}
                             isAuthor={this.props.isAuthor}
                             isEditing={idea.status === ideaStatus.DRAFT}
-                            isReadOnly={this.state.readingMode}
+                            isReadOnly={this.state.readingMode || !this.props.isAuthor}
                             hasError={this.state.errors.name}
                             showPublicationDate={idea.status === ideaStatus.FINALIZED}
                         />

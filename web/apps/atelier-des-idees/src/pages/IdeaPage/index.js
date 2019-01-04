@@ -35,7 +35,7 @@ function mapStateToProps(state) {
     const guidelines = selectGuidelines(state);
     // get and format current idea
     const idea = selectCurrentIdea(state);
-    const { author, published_at, ...ideaData } = idea;
+    const { author = {}, published_at, ...ideaData } = idea;
     const formattedIdea = {
         ...ideaData,
         authorName: author ? `${author.first_name} ${author.last_name}` : '',
@@ -44,7 +44,7 @@ function mapStateToProps(state) {
     return {
         idea: formattedIdea,
         guidelines,
-        isAuthor: !!author && author.uuid === currentUser.uuid,
+        isAuthor: !!author.uuid && author.uuid === currentUser.uuid,
     };
 }
 
