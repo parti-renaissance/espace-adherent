@@ -96,11 +96,10 @@ function IdeaCard(props) {
             </div>
             {/* FOOTER */}
             {'FINALIZED' === props.status ? (
-                // TODO: implement onSelected -> Vote
                 <VotingFooter
                     totalVotes={props.votes_count.total}
                     votes={formatVotes(props.votes_count)}
-                    onSelected={vote => props.onVote(vote)}
+                    onSelected={vote => props.onVote(props.uuid, vote)}
                 />
             ) : (
                 <ContributingFooter
@@ -116,8 +115,6 @@ IdeaCard.defaultProps = {
     comments_count: 0,
     contributors_count: 0,
     thumbnail: undefined,
-    /* TODO: implement vote*/
-    onVote: (vote, id) => console.log(vote, id),
 };
 
 IdeaCard.propTypes = {

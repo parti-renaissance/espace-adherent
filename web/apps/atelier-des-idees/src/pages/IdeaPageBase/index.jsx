@@ -6,9 +6,13 @@ import IdeaReader from '../../components/IdeaReader';
 import CreateIdeaActions from './CreateIdeaActions';
 import IdeaPageTitle from './IdeaPageTitle';
 import CreateIdeaTool from './CreateIdeaTool';
+import VotingFooterIdeaPage from './VotingFooterIdeaPage';
 
 function getInitialAnswers(guidelines, answers = []) {
-    const questions = guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
+    const questions = guidelines.reduce(
+        (acc, guideline) => [...acc, ...guideline.questions],
+        []
+    );
     return questions.reduce((acc, question) => {
         const answer = answers.find(item => item.question.id === question.id);
         acc[question.id] = answer ? answer.content : '';
@@ -17,7 +21,10 @@ function getInitialAnswers(guidelines, answers = []) {
 }
 
 function getRequiredAnswers(guidelines) {
-    const questions = guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
+    const questions = guidelines.reduce(
+        (acc, guideline) => [...acc, ...guideline.questions],
+        []
+    );
     return questions
         .filter(question => question.required)
         .reduce((acc, question) => {
@@ -53,7 +60,10 @@ class IdeaPageBase extends React.Component {
 
     onNameChange(value, withSave = false) {
         this.setState(
-            prevState => ({ name: value, errors: { ...prevState.errors, name: !value } }),
+            prevState => ({
+                name: value,
+                errors: { ...prevState.errors, name: !value },
+            }),
             () => {
                 if (value && withSave) {
                     this.onSaveIdea();
@@ -68,7 +78,9 @@ class IdeaPageBase extends React.Component {
                 answers: { ...prevState.answers, [id]: value },
             }),
             () => {
-                this.setState(prevState => ({ errors: { ...prevState.errors, name: !this.state.name } }));
+                this.setState(prevState => ({
+                    errors: { ...prevState.errors, name: !this.state.name },
+                }));
                 if (withSave) {
                     this.onSaveIdea();
                 }
@@ -99,7 +111,9 @@ class IdeaPageBase extends React.Component {
             const data = { name, answers: this.formatAnswers() };
             this.props.onSaveIdea(data);
         } else {
-            this.setState(prevState => ({ errors: { ...prevState.errors, name: true } }));
+            this.setState(prevState => ({
+                errors: { ...prevState.errors, name: true },
+            }));
         }
     }
 
@@ -112,7 +126,10 @@ class IdeaPageBase extends React.Component {
     }
 
     getParagraphs() {
-        const questions = this.props.guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
+        const questions = this.props.guidelines.reduce(
+            (acc, guideline) => [...acc, ...guideline.questions],
+            []
+        );
         return questions.reduce((acc, { id }) => {
             if (this.state.answers[id]) {
                 acc.push(this.state.answers[id]);
@@ -138,11 +155,17 @@ class IdeaPageBase extends React.Component {
         return (
             <div className="create-idea-page">
                 <div className="create-idea-page__header l__wrapper">
-                    <button className="button create-idea-actions__back" onClick={() => this.props.onBackClicked()}>
-                        ← Retour
+                    <button
+                        className="button create-idea-actions__back"
+                        onClick={() => this.props.onBackClicked()}
+                    >
+						← Retour
                     </button>
                     {idea.status !== ideaStatus.FINALIZED && this.state.name && (
-                        <Switch onChange={this.onToggleReadingMode} label="Passer en mode lecture" />
+                        <Switch
+                            onChange={this.onToggleReadingMode}
+                            label="Passer en mode lecture"
+                        />
                     )}
                     {this.props.isAuthor && (
                         <CreateIdeaActions
@@ -159,7 +182,9 @@ class IdeaPageBase extends React.Component {
                         <IdeaPageTitle
                             authorName={this.props.idea.authorName}
                             createdAt={this.props.idea.createdAt}
-                            onTitleChange={(value, withSave) => this.onNameChange(value, withSave)}
+                            onTitleChange={(value, withSave) =>
+                                this.onNameChange(value, withSave)
+                            }
                             title={this.state.name}
                             isAuthor={this.props.isAuthor}
                             isEditing={idea.status === ideaStatus.DRAFT}
@@ -189,7 +214,7 @@ class IdeaPageBase extends React.Component {
                                 )}
                             </div>
                         )}
-                        {/* TODO: add voting footer for FINALIZED status */}
+                        {idea.status === ideaStatus.FINALIZED && <VotingFooterIdeaPage />}
                     </div>
                 </div>
             </div>

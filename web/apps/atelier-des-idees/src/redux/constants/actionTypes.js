@@ -17,9 +17,11 @@ export const FETCH_IDEA = createRequestTypes('FETCH_IDEA');
 export const FETCH_IDEAS = createRequestTypes('FETCH_IDEAS');
 export const PUBLISH_IDEA = createRequestTypes('PUBLISH_IDEA');
 export const SAVE_IDEA = createRequestTypes('SAVE_IDEA');
+export const VOTE_IDEA = createRequestTypes('VOTE_IDEA');
 export const SET_IDEAS = 'SET_IDEAS';
 export const ADD_IDEAS = 'ADD_IDEAS';
 export const REMOVE_IDEA = 'REMOVE_IDEA';
+export const TOGGLE_VOTE_IDEA = 'TOGGLE_VOTE_IDEA';
 
 // my ideas
 export const FETCH_MY_IDEAS = createRequestTypes('FETCH_MY_IDEAS');
@@ -27,19 +29,25 @@ export const SET_MY_IDEAS = 'SET_MY_IDEAS';
 export const REMOVE_MY_IDEA = 'REMOVE_MY_IDEA';
 
 // my contributions
-export const FETCH_MY_CONTRIBUTIONS = createRequestTypes('FETCH_MY_CONTRIBUTION');
+export const FETCH_MY_CONTRIBUTIONS = createRequestTypes(
+    'FETCH_MY_CONTRIBUTION'
+);
 export const SET_MY_CONTRIBUTIONS = 'SET_MY_CONTRIBUTIONS ';
 
 // current ideas
 export const SAVE_CURRENT_IDEA = createRequestTypes('SAVE_CURRENT_IDEA');
 export const PUBLISH_CURRENT_IDEA = createRequestTypes('PUBLISH_CURRENT_IDEA');
+export const VOTE_CURRENT_IDEA = createRequestTypes('VOTE_CURRENT_IDEA');
 export const SET_CURRENT_IDEA = 'SET_CURRENT_IDEA';
 export const UPDATE_CURRENT_IDEA = 'UPDATE_CURRENT_IDEA';
 export const FETCH_GUIDELINES = createRequestTypes('FETCH_GUIDELINES');
 export const SET_GUIDELINES = 'SET_GUIDELINES';
+export const TOGGLE_VOTE_CURRENT_IDEA = 'TOGGLE_VOTE_CURRENT_IDEA';
 
 // pinned
-export const FETCH_CONSULTATION_PINNED = createRequestTypes('FETCH_CONSULTATION_PINNED');
+export const FETCH_CONSULTATION_PINNED = createRequestTypes(
+    'FETCH_CONSULTATION_PINNED'
+);
 export const SHOW_CONSULTATION_PINNED = 'SHOW_CONSULTATION_PINNED';
 export const HIDE_CONSULTATION_PINNED = 'HIDE_CONSULTATION_PINNED';
 // reports
