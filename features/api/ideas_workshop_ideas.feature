@@ -899,6 +899,8 @@ Feature:
     And the JSON should be equal to:
     """
     {
+       "name": "Faire la paix",
+       "status": "PENDING",
        "themes":[
           {
              "id":1,
@@ -997,6 +999,8 @@ Feature:
     And the JSON should be equal to:
     """
     {
+       "name": "Réduire le gaspillage",
+       "status": "FINALIZED",
        "themes":[
           {
              "id":1,
