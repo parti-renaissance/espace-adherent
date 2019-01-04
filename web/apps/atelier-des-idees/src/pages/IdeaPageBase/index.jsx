@@ -232,6 +232,7 @@ IdeaPageBase.propTypes = {
         name: PropTypes.string,
         answers: PropTypes.arrayOf(
             PropTypes.shape({
+                id: PropTypes.string,
                 content: PropTypes.string,
                 question: PropTypes.shape({ id: PropTypes.number }),
             })
