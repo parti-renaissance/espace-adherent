@@ -1,7 +1,25 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import PublishIdeaFormModal from '../../components/Modal/PublishIdeaFormModal';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectStatic } from '../../redux/selectors/static';
+import { fetchStaticData } from '../../redux/thunk/static';
+
+class PublishFormModalContainer extends React.Component {
+    componentDidMount() {
+        this.props.initPublishForm();
+    }
+
+    render() {
+        const { initPublishForm, ...otherProps } = this.props;
+        return <PublishIdeaFormModal {...otherProps} />;
+    }
+}
+
+PublishFormModalContainer.propTypes = {
+    initPublishForm: PropTypes.func.isRequired,
+};
 
 function formatStaticData(data) {
     return data.map(({ id, name }) => ({ value: id, label: name }));
@@ -25,7 +43,13 @@ function mapStateToProps(state, { id }) {
     };
 }
 
+function mapDispatchToProps(dispatch) {
+    return {
+        initPublishForm: () => dispatch(fetchStaticData()),
+    };
+}
+
 export default connect(
     mapStateToProps,
-    {}
-)(PublishIdeaFormModal);
+    mapDispatchToProps
+)(PublishFormModalContainer);
