@@ -206,7 +206,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      * @Assert\Length(max=120)
      * @Assert\NotBlank(message="idea.name.not_blank")
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "vote_read"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read", "vote_read"})
      */
     protected $name;
 
@@ -274,7 +274,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      *
      * @Assert\Choice(choices=IdeaStatusEnum::ALL_STATUSES, strict=true)
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read"})
      *
      * @ApiProperty(
      *     attributes={
