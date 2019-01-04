@@ -1,10 +1,24 @@
 import { ideaStatus } from '../../constants/api';
 import history from '../../history';
-import { SAVE_CURRENT_IDEA, PUBLISH_CURRENT_IDEA, FETCH_GUIDELINES } from '../constants/actionTypes';
+import {
+    SAVE_CURRENT_IDEA,
+    PUBLISH_CURRENT_IDEA,
+    FETCH_GUIDELINES,
+    VOTE_CURRENT_IDEA,
+} from '../constants/actionTypes';
 import { publishIdea, saveIdea } from '../thunk/ideas';
-import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
+import {
+    createRequest,
+    createRequestSuccess,
+    createRequestFailure,
+} from '../actions/loading';
 import { selectCurrentIdea } from '../selectors/currentIdea';
-import { setCurrentIdea, updateCurrentIdea, setGuidelines } from '../actions/currentIdea';
+import {
+    setCurrentIdea,
+    updateCurrentIdea,
+    setGuidelines,
+    toggleVoteCurrentIdea,
+} from '../actions/currentIdea';
 import { hideModal } from '../actions/modal';
 
 /**
@@ -78,7 +92,9 @@ export function publishCurrentIdea(ideaData) {
         dispatch(saveIdea(id, ideaData))
             .then((data) => {
                 const uuid = id || data.uuid;
-                dispatch(publishIdea(uuid)).then(() => dispatch(createRequestSuccess(PUBLISH_CURRENT_IDEA)));
+                dispatch(publishIdea(uuid)).then(() =>
+                    dispatch(createRequestSuccess(PUBLISH_CURRENT_IDEA))
+                );
             })
             .catch(() => dispatch(createRequestFailure(PUBLISH_CURRENT_IDEA)));
     };
@@ -95,5 +111,23 @@ export function fetchGuidelines() {
                 dispatch(createRequestSuccess(FETCH_GUIDELINES));
             })
             .catch(() => dispatch(createRequestFailure(FETCH_GUIDELINES)));
+    };
+}
+
+export function voteCurrentIdea(id, vote) {
+    return (dispatch, getState, axios) => {
+        dispatch(createRequest(VOTE_CURRENT_IDEA, id));
+        const requestBody = {
+            method: 'POST',
+            url: '/api/votes',
+            data: { idea: id, type: vote },
+        };
+        return axios(requestBody)
+            .then(res => res.data)
+            .then(() => {
+                dispatch(toggleVoteCurrentIdea(id, vote));
+                dispatch(createRequestSuccess(VOTE_CURRENT_IDEA, id));
+            })
+            .catch(() => dispatch(createRequestFailure(VOTE_CURRENT_IDEA, id)));
     };
 }

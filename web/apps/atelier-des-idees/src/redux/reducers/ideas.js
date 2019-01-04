@@ -33,23 +33,23 @@ const ideasReducer = (state = initialState, action) => {
                 let myVotes = item.votes_count.my_votes;
                 // my_votes exists
                 if (item.votes_count.my_votes && item.votes_count.my_votes.length) {
-                    // remove vote -> operation : -
+                    // remove vote
                     if (item.votes_count.my_votes.includes(typeVote)) {
-                        voteCount = item.votes_count[typeVote] - 1;
-                        total = item.votes_count.total - 1;
+                        voteCount -= 1;
+                        total -= 1;
                         myVotes = item.votes_count.my_votes.filter(
                             vote => vote !== typeVote
                         );
                     } else {
-                        // vote -> add vote to my_vote
-                        voteCount = item.votes_count[typeVote] + 1;
-                        total = item.votes_count.total + 1;
+                        // vote
+                        voteCount += 1;
+                        total += 1;
                         myVotes = [...item.votes_count.my_votes, typeVote];
                     }
                 } else {
                     // vote -> create new array my_vote
-                    voteCount = item.votes_count[typeVote] + 1;
-                    total = item.votes_count.total + 1;
+                    voteCount += 1;
+                    total += 1;
                     myVotes = [typeVote];
                 }
                 item.votes_count = {
