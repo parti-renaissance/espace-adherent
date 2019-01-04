@@ -1,5 +1,5 @@
 import { ideaStatus } from '../../constants/api';
-import { fetchIdeas, fetchIdea, fetchUserIdeas } from './ideas';
+import { fetchIdeas, fetchIdea, fetchUserIdeas, fetchUserContributions } from './ideas';
 import { fetchConsultationPinned } from './pinned';
 import { fetchReports } from './reports';
 import { fetchAuthUser } from './auth';
@@ -9,7 +9,11 @@ import { setCurrentIdea } from '../actions/currentIdea';
 
 export function initApp() {
     return dispatch =>
-        Promise.all([dispatch(fetchAuthUser()).then(() => dispatch(fetchUserIdeas())), dispatch(fetchStaticData())]);
+        Promise.all([
+            dispatch(fetchAuthUser()).then(() => dispatch(fetchUserIdeas())),
+            dispatch(fetchStaticData()),
+            dispatch(fetchUserContributions()),
+        ]);
 }
 
 export function initHomePage() {
