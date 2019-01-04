@@ -44,13 +44,9 @@ class CommentsList extends React.Component {
                         {1 < this.props.comments.length && 's'}
                     </span>
                     <img
-                        className={classNames(
-                            'comments-list__collapse-button__icon-toggle',
-                            {
-                                'comments-list__collapse-button__icon-toggle--rotate': !this
-                                    .state.showComments,
-                            }
-                        )}
+                        className={classNames('comments-list__collapse-button__icon-toggle', {
+                            'comments-list__collapse-button__icon-toggle--rotate': !this.state.showComments,
+                        })}
                         src="/assets/img/icn_toggle_content.svg"
                     />
                 </button>
@@ -64,20 +60,20 @@ class CommentsList extends React.Component {
                                         {...comment}
                                         ownerId={this.props.ownerId}
                                         hasActions={!this.props.parentId}
-                                        isAuthor={this.props.ownerId === comment.author.id}
-                                        onReply={() => this.setState({ replyingTo: comment.id })}
-                                        onDelete={() => this.props.onDeleteComment(comment.id)}
+                                        isAuthor={this.props.ownerId === comment.author.uuid}
+                                        onReply={() => this.setState({ replyingTo: comment.uuid })}
+                                        onDelete={() => this.props.onDeleteComment(comment.uuid)}
                                     />
                                     {((comment.replies && !!comment.replies.length) ||
-											this.state.replyingTo === comment.id) && (
+                                          this.state.replyingTo === comment.uuid) && (
                                             <div className="comments-list__replies">
                                                 <CommentsList
                                                     comments={comment.replies}
                                                     onSendComment={value =>
                                                         // send parent comment id as (optional) second parameter
-                                                        this.props.onSendComment(value, comment.id)
+                                                        this.props.onSendComment(value, comment.uuid)
                                                     }
-                                                    parentId={comment.id}
+                                                    parentId={comment.uuid}
                                                     showForm={this.props.showForm}
                                                     collapseLabel="réponse"
                                                     placeholder="Écrivez votre réponse"
@@ -86,7 +82,7 @@ class CommentsList extends React.Component {
                                             </div>
                                         )}
                                 </React.Fragment>
-							  ))
+                            ))
                             : this.props.emptyLabel && <p>{this.props.emptyLabel}</p>}
                     </div>
                 )}
@@ -104,11 +100,8 @@ class CommentsList extends React.Component {
                             placeholder={this.props.placeholder}
                             error={this.state.errorComment}
                         />
-                        <button
-                            type="submit"
-                            className="comments-list__form__button button--primary"
-                        >
-							Envoyer
+                        <button type="submit" className="comments-list__form__button button--primary">
+                            Envoyer
                         </button>
                     </form>
                 )}
@@ -129,7 +122,7 @@ CommentsList.defaultProps = {
 CommentsList.propTypes = {
     comments: PropTypes.arrayOf(
         PropTypes.shape({
-            id: PropTypes.string.isRequired,
+            uuid: PropTypes.string.isRequired,
             author: PropTypes.object.isRequired,
             content: PropTypes.string.isRequired,
             createdAt: PropTypes.string.isRequired, // iso date
@@ -140,7 +133,7 @@ CommentsList.propTypes = {
     onSendComment: PropTypes.func.isRequired,
     onDeleteComment: PropTypes.func.isRequired,
     onEditComment: PropTypes.func.isRequired,
-    onApprovedComment: PropTypes.func.isRequired,
+    onApproveComment: PropTypes.func.isRequired,
     ownerId: PropTypes.string.isRequired,
     showForm: PropTypes.bool,
     parentId: PropTypes.string,
