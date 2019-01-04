@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextEditor from '../../../components/TextEditor';
 import Collapse from '../../../components/Collapse';
-import IdeaThreads from '../../../containers/IdeaThreads';
+import IdeaThread from '../../../containers/IdeaThread';
 
 function QuestionBlockHeader({ label, question, nbQuestion }) {
     return (
@@ -108,7 +108,7 @@ class QuestionBlock extends React.Component {
                 />
                 {'edit' !== this.props.mode && (
                     <div className="question-block__threads">
-                        <IdeaThreads questionId={this.props.questionId} />
+                        <IdeaThread questionId={this.props.questionId} />
                     </div>
                 )}
             </React.Fragment>
