@@ -25,4 +25,21 @@
       }
     }
   }
+
+  .question-block__editing-footer {
+    margin-top: 20px;
+    text-align: right;
+
+    .question-block__editing-footer__btn {
+      @extend %reset-button;
+      margin-left: 15px;
+      cursor: pointer;
+      font-size: 15px;
+      color: $light-black;
+
+      &--main {
+        color: $saphir;
+      }
+    }
+  }
 }
