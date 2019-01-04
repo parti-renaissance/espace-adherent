@@ -36,12 +36,14 @@ function QuestionBlockBody(props) {
                             <button className="question-block__editing-footer__btn" onClick={props.onCancelAnswer}>
                                 Annuler
                             </button>
-                            <button
-                                className="question-block__editing-footer__btn editing-footer__btn--main"
-                                onClick={props.onSaveAnswer}
-                            >
-                                Enregistrer
-                            </button>
+                            {props.canSaveAnswer && (
+                                <button
+                                    className="question-block__editing-footer__btn editing-footer__btn--main"
+                                    onClick={props.onSaveAnswer}
+                                >
+                                    Enregistrer
+                                </button>
+                            )}
                         </React.Fragment>
                     ) : (
                         <button
@@ -62,8 +64,7 @@ class QuestionBlock extends React.Component {
         super(props);
         this.state = {
             isEditing: false,
-            value: '',
-            initialValue: props.initialContent,
+            value: this.props.initialContent,
         };
         this.onTextChange = this.onTextChange.bind(this);
         this.onSaveAnswer = this.onSaveAnswer.bind(this);
@@ -81,15 +82,15 @@ class QuestionBlock extends React.Component {
 
     onSaveAnswer() {
         this.props.onTextChange(this.state.value, true);
-        this.setState({ isEditing: false, value: '' });
+        this.setState({ isEditing: false, value: this.props.initialContent });
     }
 
     onCancelAnswer() {
-        this.setState({ isEditing: false, value: '' });
+        this.setState({ isEditing: false, value: this.props.initialContent });
     }
 
     renderBody() {
-        const { placeholder, initialContent, isAuthor, mode } = this.props;
+        const { placeholder, initialContent, isAuthor, mode, canCollapse } = this.props;
         return (
             <QuestionBlockBody
                 isAuthor={isAuthor}
@@ -101,6 +102,7 @@ class QuestionBlock extends React.Component {
                 onEditAnswer={() => this.setState({ isEditing: true })}
                 onSaveAnswer={this.onSaveAnswer}
                 onCancelAnswer={this.onCancelAnswer}
+                canSaveAnswer={canCollapse ? true : !!this.state.value}
             />
         );
     }
@@ -133,7 +135,7 @@ QuestionBlock.defaultProps = {
 
 QuestionBlock.propTypes = {
     isAuthor: PropTypes.bool,
-    canCollapse: PropTypes.bool,
+    canCollapse: PropTypes.bool, // true: question not required
     initialContent: PropTypes.string,
     label: PropTypes.string.isRequired,
     mode: PropTypes.oneOf(['edit', 'contribute']),
