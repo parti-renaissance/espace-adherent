@@ -916,6 +916,7 @@ Feature:
           }
        ],
        "author":{
+          "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
           "first_name":"Jacques",
           "last_name":"Picard"
        },
@@ -1013,6 +1014,7 @@ Feature:
        "needs":[
        ],
        "author":{
+          "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
           "first_name":"Jacques",
           "last_name":"Picard"
        },
