@@ -1,6 +1,21 @@
-import { FETCH_IDEAS, FETCH_IDEA, PUBLISH_IDEA, FETCH_MY_IDEAS } from '../constants/actionTypes';
-import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
-import { addIdeas, setIdeas, removeIdea } from '../actions/ideas';
+import {
+    FETCH_IDEAS,
+    FETCH_IDEA,
+    PUBLISH_IDEA,
+    FETCH_MY_IDEAS,
+    VOTE_IDEA,
+} from '../constants/actionTypes';
+import {
+    createRequest,
+    createRequestSuccess,
+    createRequestFailure,
+} from '../actions/loading';
+import {
+    addIdeas,
+    setIdeas,
+    removeIdea,
+    toggleVoteIdea,
+} from '../actions/ideas';
 import { setCurrentIdea } from '../actions/currentIdea';
 import { selectIdeasMetadata } from '../selectors/ideas';
 import { setMyIdeas, removeMyIdea } from '../actions/myIdeas';
@@ -112,6 +127,24 @@ export function fetchUserContributions(params = {}) {
                     dispatch(createRequestFailure(FETCH_MY_IDEAS));
                 });
         }
+    };
+}
+
+export function voteIdea(id, vote) {
+    return (dispatch, getState, axios) => {
+        dispatch(createRequest(VOTE_IDEA, id));
+        const requestBody = {
+            method: 'POST',
+            url: '/api/votes',
+            data: { idea: id, type: vote },
+        };
+        return axios(requestBody)
+            .then(res => res.data)
+            .then(() => {
+                dispatch(toggleVoteIdea(id, vote));
+                dispatch(createRequestSuccess(VOTE_IDEA, id));
+            })
+            .catch(() => dispatch(createRequestFailure(VOTE_IDEA, id)));
     };
 }
 
