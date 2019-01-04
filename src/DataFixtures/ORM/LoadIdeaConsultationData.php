@@ -26,8 +26,7 @@ class LoadIdeaConsultationData extends AbstractFixture
             'https://google.fr/',
             new \DateTime('-3 days'),
             new \DateTime('yesterday'),
-            3,
-            false
+            3
         );
 
         $this->addReference('consultation-housing-policy', $consultationHousingPolicy);
