@@ -1,24 +1,10 @@
 import { ideaStatus } from '../../constants/api';
 import history from '../../history';
-import {
-    SAVE_CURRENT_IDEA,
-    PUBLISH_CURRENT_IDEA,
-    FETCH_GUIDELINES,
-    VOTE_CURRENT_IDEA,
-} from '../constants/actionTypes';
+import { SAVE_CURRENT_IDEA, PUBLISH_CURRENT_IDEA, FETCH_GUIDELINES, VOTE_CURRENT_IDEA } from '../constants/actionTypes';
 import { publishIdea, saveIdea } from '../thunk/ideas';
-import {
-    createRequest,
-    createRequestSuccess,
-    createRequestFailure,
-} from '../actions/loading';
+import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { selectCurrentIdea } from '../selectors/currentIdea';
-import {
-    setCurrentIdea,
-    updateCurrentIdea,
-    setGuidelines,
-    toggleVoteCurrentIdea,
-} from '../actions/currentIdea';
+import { setCurrentIdea, updateCurrentIdea, setGuidelines, toggleVoteCurrentIdea } from '../actions/currentIdea';
 import { hideModal } from '../actions/modal';
 
 /**
@@ -87,12 +73,11 @@ export function saveCurrentIdea(ideaData) {
 
 export function publishCurrentIdea(ideaData) {
     return (dispatch, getState, axios) => {
-        const { id } = selectCurrentIdea(getState());
+        const { uuid } = selectCurrentIdea(getState());
         dispatch(createRequest(PUBLISH_CURRENT_IDEA));
-        dispatch(saveIdea(id, ideaData))
+        dispatch(saveIdea(uuid, ideaData))
             .then((data) => {
-                const uuid = id || data.uuid;
-                dispatch(publishIdea(uuid)).then(() =>
+                dispatch(publishIdea(uuid || data.uuid)).then(() =>
                     dispatch(createRequestSuccess(PUBLISH_CURRENT_IDEA))
                 );
             })
@@ -114,20 +99,24 @@ export function fetchGuidelines() {
     };
 }
 
-export function voteCurrentIdea(id, vote) {
+export function voteCurrentIdea(vote) {
     return (dispatch, getState, axios) => {
-        dispatch(createRequest(VOTE_CURRENT_IDEA, id));
+        const { uuid } = selectCurrentIdea(getState());
+        dispatch(toggleVoteCurrentIdea(vote));
+        dispatch(createRequest(VOTE_CURRENT_IDEA, uuid));
         const requestBody = {
             method: 'POST',
             url: '/api/votes',
-            data: { idea: id, type: vote },
+            data: { idea: uuid, type: vote },
         };
         return axios(requestBody)
             .then(res => res.data)
             .then(() => {
-                dispatch(toggleVoteCurrentIdea(id, vote));
-                dispatch(createRequestSuccess(VOTE_CURRENT_IDEA, id));
+                dispatch(createRequestSuccess(VOTE_CURRENT_IDEA, uuid));
             })
-            .catch(() => dispatch(createRequestFailure(VOTE_CURRENT_IDEA, id)));
+            .catch(() => {
+                dispatch(toggleVoteCurrentIdea(vote));
+                dispatch(createRequestFailure(VOTE_CURRENT_IDEA, uuid));
+            });
     };
 }
