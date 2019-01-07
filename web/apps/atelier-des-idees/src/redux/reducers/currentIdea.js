@@ -4,8 +4,6 @@ import {
     UPDATE_CURRENT_IDEA,
     SET_GUIDELINES,
     TOGGLE_VOTE_CURRENT_IDEA,
-    SET_CURRENT_IDEA_THREADS,
-    ADD_CURRENT_IDEA_THREAD,
 } from '../constants/actionTypes';
 
 const initialState = { idea: {}, guidelines: [], threads: [] };
@@ -58,18 +56,6 @@ function ideaReducer(state = initialState.idea, action) {
     }
 }
 
-function threadsReducer(state = initialState.threads, action) {
-    const { type, payload } = action;
-    switch (type) {
-    case SET_CURRENT_IDEA_THREADS:
-        return [...payload.data];
-    case ADD_CURRENT_IDEA_THREAD:
-        return [...state, payload.data];
-    default:
-        return state;
-    }
-}
-
 function guidelinesReducer(state = initialState.guidelines, action) {
     const { type, payload } = action;
     switch (type) {
@@ -81,8 +67,7 @@ function guidelinesReducer(state = initialState.guidelines, action) {
     }
 }
 
-export default combineReducers({ idea: ideaReducer, guidelines: guidelinesReducer, threads: threadsReducer });
+export default combineReducers({ idea: ideaReducer, guidelines: guidelinesReducer });
 
 export const getCurrentIdea = state => state.idea;
 export const getGuidelines = state => state.guidelines;
-export const getCurrentIdeaThread = (state, answerId) => state.threads.find(thread => thread.answer.id === answerId);
