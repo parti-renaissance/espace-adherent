@@ -1,4 +1,9 @@
 .consult-page {
   padding: 80px 0;
   background-color: $snow;
+
+  /* Responsive */
+  @media #{$mobile} {
+    padding: 40px 0;
+  }
 }
