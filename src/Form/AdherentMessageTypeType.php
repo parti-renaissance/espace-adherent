@@ -27,7 +27,7 @@ class AdherentMessageTypeType extends AbstractType
                 $resolver->setDefault('choices', $this->choices);
             } else {
                 $resolver->setDefaults([
-                    'data' => $this->choices[0],
+                    'data' => current($this->choices),
                     'label' => false,
                 ]);
             }
