@@ -1,0 +1,25 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if author is not defined %}
+        {% set author = object.author %}
+    {% endif %}
+
+    {% if author %}
+        <a href="{{ path('admin_app_adherent_show', { id: author.id }) }}">
+            {{ author.fullName }}
+        </a>
+        <br />
+        {{ author.emailAddress }}
+        {% if author.phone %}
+            <br />
+            {{ author.phone|phone_number_format }}
+        {% endif %}
+        {% if author.isReferent and not object.committee %}
+            <br />
+            (Référent)
+        {% endif %}
+    {% else %}
+        Anonyme (adhérent désadhéré)
+    {% endif %}
+{% endblock %}
