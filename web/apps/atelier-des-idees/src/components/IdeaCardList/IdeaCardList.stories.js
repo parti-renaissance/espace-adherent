@@ -35,4 +35,5 @@ const ideas = [{ uuid: '000', ...idea }, { uuid: '111', ...idea, status: 'FINALI
 storiesOf('IdeaCardList', module)
     .add('default', () => <IdeaCardList ideas={ideas} />)
     .add('grid mode', () => <IdeaCardList ideas={ideas} mode="grid" />)
-    .add('loading', () => <IdeaCardList ideas={ideas} isLoading={true} />);
+    .add('loading', () => <IdeaCardList ideas={ideas} isLoading={true} />)
+    .add('grid:loading', () => <IdeaCardList mode="grid" isLoading={true} />);
