@@ -33,19 +33,25 @@ class VotingFooter extends React.Component {
 
     render() {
         return (
-            <div className="voting-footer" ref={this.footerRef}>
+            <div
+                className={classnames('voting-footer', { 'voting-footer--open': this.state.toggleVotes })}
+                ref={this.footerRef}
+            >
                 <div className="voting-footer__container">
                     {/* MOBILE ELEMENTS */}
-                    <p className="voting-footer__total-votes--mobile">{this.props.totalVotes} votes</p>
                     <button
                         className="voting-footer__container__action-vote--mobile"
                         onClick={() =>
                             this.setState(
-                                {
-                                    toggleVotes: true,
-                                },
+                                prevState => ({
+                                    toggleVotes: !prevState.toggleVotes,
+                                }),
                                 () => {
-                                    this.resetTimeout();
+                                    if (this.state.toggleVotes) {
+                                        this.resetTimeout();
+                                    } else {
+                                        clearTimeout(this.timerId);
+                                    }
                                 }
                             )
                         }
