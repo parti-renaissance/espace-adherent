@@ -3,10 +3,13 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\IdeasWorkshop\Answer;
 use AppBundle\Entity\IdeasWorkshop\Idea;
+use AppBundle\Entity\IdeasWorkshop\ThreadComment;
 use AppBundle\Entity\IdeasWorkshop\ThreadCommentStatusEnum;
 use AppBundle\Entity\IdeasWorkshop\VoteTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class IdeaRepository extends ServiceEntityRepository
@@ -16,10 +19,29 @@ class IdeaRepository extends ServiceEntityRepository
         parent::__construct($registry, Idea::class);
     }
 
+    public function getIdeaContributors(Idea $idea): array
+    {
+        return $this->getEntityManager()->createQueryBuilder()
+            ->from(Adherent::class, 'adherent')
+            ->select('adherent')
+            ->join(ThreadComment::class, 'comment', Join::WITH, 'comment.author = adherent.id')
+            ->join('comment.thread', 'thread')
+            ->join(Answer::class, 'answer', Join::WITH, 'thread.answer = answer.id')
+            ->join('answer.idea', 'idea')
+            ->where('idea = :idea')
+            ->setParameter('idea', $idea)
+            ->andWhere('comment.deletedAt IS NULL')
+            ->andWhere('thread.status IN (:status)')
+            ->setParameter('status', ThreadCommentStatusEnum::VISIBLE_STATUSES)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function countIdeaContributors(Idea $idea): int
     {
         return $this->createQueryBuilder('idea')
-            ->select('COUNT(adherent)')
+            ->select('COUNT(DISTINCT adherent)')
             ->innerJoin('idea.answers', 'answers')
             ->innerJoin('answers.threads', 'threads')
             ->innerJoin('threads.comments', 'comments')

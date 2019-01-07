@@ -129,7 +129,7 @@ Feature:
                 "name": "Faire la paix",
                 "slug": "faire-la-paix",
                 "days_before_deadline": 17,
-                "contributors_count": 7,
+                "contributors_count": 4,
                 "comments_count": 7
             }
         ]
@@ -195,7 +195,7 @@ Feature:
                 "name": "Faire la paix",
                 "slug": "faire-la-paix",
                 "days_before_deadline": 17,
-                "contributors_count": 7,
+                "contributors_count": 4,
                 "comments_count": 7
             }
         ]
@@ -267,7 +267,7 @@ Feature:
                 "name": "Faire la paix",
                 "slug": "faire-la-paix",
                 "days_before_deadline": 17,
-                "contributors_count": 7,
+                "contributors_count": 4,
                 "comments_count": 7
             }
         ]
@@ -333,7 +333,7 @@ Feature:
                 "name": "Faire la paix",
                 "slug": "faire-la-paix",
                 "days_before_deadline": 17,
-                "contributors_count": 7,
+                "contributors_count": 4,
                 "comments_count": 7
             },
             {
@@ -648,7 +648,7 @@ Feature:
         "created_at": "@string@.isDateTime()",
         "slug": "mon-idee-2",
         "days_before_deadline": 17,
-        "contributors_count": 7,
+        "contributors_count": 4,
         "comments_count": 7
     }
     """

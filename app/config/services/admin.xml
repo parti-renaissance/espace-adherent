@@ -687,6 +687,13 @@
         # Ideas Workshop
         ######################################################
          -->
+        <service id="app.admin.ideas_workshop_idea" class="AppBundle\Admin\IdeasWorkshopIdeaAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Notes thématiques" group="Atelier des idées" />
+            <argument />
+            <argument>AppBundle\Entity\IdeasWorkshop\Idea</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.ideas_workshop_consultation" class="AppBundle\Admin\IdeasWorkshopConsultationAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Consultation en cours" group="Atelier des idées" />
 

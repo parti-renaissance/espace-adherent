@@ -144,7 +144,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *         "denormalization_context": {
  *             "groups": {"idea_write"}
  *         },
-
  *         "order": {"createdAt": "ASC"}
  *     }
  * )
@@ -509,7 +508,8 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
             return 0;
         }
 
-        $deadline = $this->publishedAt->add(new \DateInterval(self::PUBLISHED_INTERVAL));
+        $date = clone $this->publishedAt;
+        $deadline = $date->add(new \DateInterval(self::PUBLISHED_INTERVAL));
         $now = new Chronos();
 
         return $deadline <= $now ? 0 : $deadline->diff($now)->d;
