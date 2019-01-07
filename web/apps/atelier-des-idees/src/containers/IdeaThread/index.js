@@ -31,7 +31,7 @@ function IdeaThread(props) {
 function mapStateToProps(state, { questionId }) {
     const isAuthenticated = selectIsAuthenticated(state);
     const currentIdea = selectCurrentIdea(state);
-    const currentAnswer = currentIdea.answers.find(answer => answer.question.id === questionId);
+    const currentAnswer = currentIdea.answers && currentIdea.answers.find(answer => answer.question.id === questionId);
     const answerId = currentAnswer && currentAnswer.id;
     const answerThread = selectCurrentIdeaThread(state, answerId);
     return {
