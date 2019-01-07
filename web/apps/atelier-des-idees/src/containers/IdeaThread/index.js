@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import CommentsList from '../../components/CommentsList';
 import { selectCurrentIdea, selectCurrentIdeaThread } from '../../redux/selectors/currentIdea';
 import { selectIsAuthenticated } from '../../redux/selectors/auth';
-import { postComment, deleteComment, approveComment } from '../../redux/thunk/threads';
+import { deleteComment, approveComment } from '../../redux/thunk/threads';
+import { postCommentToCurrentIdea } from '../../redux/thunk/currentIdea';
 
 function IdeaThread(props) {
     const { isAuthenticated, ...otherProps } = props;
@@ -48,7 +49,7 @@ function mapStateToProps(state, { questionId }) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onSendComment: (content, answerId, threadId) => dispatch(postComment(content, answerId, threadId)),
+        onSendComment: (content, answerId, threadId) => dispatch(postCommentToCurrentIdea(content, answerId, threadId)),
         onDeleteComment: (commentId, threadId) => dispatch(deleteComment(commentId, threadId)),
         onApproveComment: (commentId, threadId) => dispatch(approveComment(commentId, threadId)),
         onLoadMore: (answerId, threadId) => alert('Load more comment for answer', answerId),

@@ -5,6 +5,7 @@ import {
     SET_GUIDELINES,
     TOGGLE_VOTE_CURRENT_IDEA,
     SET_CURRENT_IDEA_THREADS,
+    ADD_CURRENT_IDEA_THREAD,
 } from '../constants/actionTypes';
 
 const initialState = { idea: {}, guidelines: [], threads: [] };
@@ -62,6 +63,8 @@ function threadsReducer(state = initialState.threads, action) {
     switch (type) {
     case SET_CURRENT_IDEA_THREADS:
         return [...payload.data];
+    case ADD_CURRENT_IDEA_THREAD:
+        return [...state, payload.data];
     default:
         return state;
     }
