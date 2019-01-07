@@ -10,6 +10,7 @@
 
   .idea-card-list__wrapper {
     flex-basis: 50%;
+    max-width: 50%;
     padding-bottom: 10px;
 
     &:nth-child(2n) {
