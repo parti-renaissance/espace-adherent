@@ -69,7 +69,7 @@ class IdeaCard extends React.Component {
                         <p className="idea-card__content__title">{this.props.name}</p>
                         <div className="idea-card__content__infos">
                             <span className="idea-card__content__infos__author">
-                                <span className="idea-card__content__infos__meta">Par</span>
+                                <span className="idea-card__content__infos__meta">Par </span>
                                 <span className="idea-card__content__infos__author__name">
                                     {this.props.author.first_name} {this.props.author.last_name}
                                 </span>
@@ -123,8 +123,8 @@ class IdeaCard extends React.Component {
                         )}
                     </div>
                     {!!this.props.themes.length && this.props.themes[0].thumbnail && (
-                        <div className="idea-card__container">
-                            <img className="idea-card__container__icon" src={this.props.themes[0].thumbnail} />
+                        <div className="idea-card__theme">
+                            <img className="idea-card__theme__icon" src={this.props.themes[0].thumbnail} />
                         </div>
                     )}
                 </div>

@@ -20,9 +20,10 @@ const idea = {
     category: { name: 'Education', enabled: true },
     name: 'Réduire le nombre d’élèves dans les classes dans les quartiers défavorisés',
     status: 'PENDING',
+    days_before_deadline: 6,
 };
 
-const ideas = [{ id: '000', ...idea }, { id: '111', ...idea }];
+const ideas = [{ uuid: '000', ...idea }, { uuid: '111', ...idea }];
 
 storiesOf('IdeaCardList', module)
     .add('default', () => <IdeaCardList ideas={ideas} />)
