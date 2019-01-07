@@ -136,7 +136,7 @@ CommentsList.propTypes = {
             uuid: PropTypes.string.isRequired,
             author: PropTypes.object.isRequired,
             content: PropTypes.string.isRequired,
-            createdAt: PropTypes.string.isRequired, // iso date
+            created_at: PropTypes.string.isRequired, // iso date
             replies: PropTypes.array,
             verified: PropTypes.bool,
             nbReplies: PropTypes.number,
