@@ -20,4 +20,23 @@
       padding-right: 10px;
     }
   }
+
+  /* Responsive */
+  @media #{$mobile} {
+    flex-direction: column;
+
+    .idea-card-skeleton-list__item-wrapper {
+      flex-basis: initial;
+      max-width: initial;
+      padding: 0;
+
+      &:nth-child(2n) {
+        padding-left: 0;
+      }
+
+      &:nth-child(2n + 1) {
+        padding-right: 0;
+      }
+    }
+  }
 }
