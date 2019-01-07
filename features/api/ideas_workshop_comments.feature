@@ -19,9 +19,9 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 6,
-            "items_per_page": 2,
-            "count": 2,
+            "total_items": 7,
+            "items_per_page": 3,
+            "count": 3,
             "current_page": 1,
             "last_page": 3
         },
@@ -38,14 +38,16 @@ Feature:
                         "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
                         "first_name": "Carl",
                         "last_name": "Mirabeau"
-                    }
+                    },
+                    "created_at": "@string@.isDateTime()"
                 },
                 "content": "Aenean viverra efficitur lorem",
                 "author": {
                     "uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67",
                     "first_name": "Benjamin",
                     "last_name": "Duroc"
-                }
+                },
+                "created_at": "@string@.isDateTime()"
             },
             {
                 "uuid": "60123090-6cdc-4de6-9cb3-07e2ec411f2f",
@@ -59,14 +61,39 @@ Feature:
                         "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
                         "first_name": "Carl",
                         "last_name": "Mirabeau"
-                    }
+                    },
+                    "created_at": "@string@.isDateTime()"
                 },
                 "content": "Lorem Ipsum Commentaris",
                 "author": {
                     "uuid":"a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
                     "first_name": "Francis",
                     "last_name": "Brioul"
-                }
+                },
+                "created_at": "@string@.isDateTime()"
+            },
+            {
+                "uuid": "f716d3ba-004f-4958-af26-a7b010a6d458",
+                "thread": {
+                    "uuid": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
+                    "answer": {
+                        "id": 1
+                    },
+                    "content": "J'ouvre une discussion sur le problème.",
+                    "author": {
+                        "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
+                        "first_name": "Carl",
+                        "last_name": "Mirabeau"
+                    },
+                    "created_at": "@string@.isDateTime()"
+                },
+                "content": "Commentaire d'un référent",
+                "author": {
+                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "first_name": "Referent",
+                    "last_name": "Referent"
+                },
+                "created_at": "@string@.isDateTime()"
             }
         ]
     }
@@ -80,9 +107,9 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 3,
-            "items_per_page": 2,
-            "count": 2,
+            "total_items": 4,
+            "items_per_page": 3,
+            "count": 3,
             "current_page": 1,
             "last_page": 2
         },
@@ -99,14 +126,16 @@ Feature:
                         "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
                         "first_name": "Carl",
                         "last_name": "Mirabeau"
-                    }
+                    },
+                    "created_at": "@string@.isDateTime()"
                 },
                 "content": "Aenean viverra efficitur lorem",
                 "author": {
                     "uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67",
                     "first_name": "Benjamin",
                     "last_name": "Duroc"
-                }
+                },
+                "created_at": "@string@.isDateTime()"
             },
             {
                 "uuid": "60123090-6cdc-4de6-9cb3-07e2ec411f2f",
@@ -120,14 +149,39 @@ Feature:
                         "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
                         "first_name": "Carl",
                         "last_name": "Mirabeau"
-                    }
+                    },
+                    "created_at": "@string@.isDateTime()"
                 },
                 "content": "Lorem Ipsum Commentaris",
                 "author": {
                     "uuid":"a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
                     "first_name": "Francis",
                     "last_name": "Brioul"
-                }
+                },
+                "created_at": "@string@.isDateTime()"
+            },
+            {
+                "uuid": "f716d3ba-004f-4958-af26-a7b010a6d458",
+                "thread": {
+                    "uuid": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
+                    "answer": {
+                        "id": 1
+                    },
+                    "content": "J'ouvre une discussion sur le problème.",
+                    "author": {
+                        "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
+                        "first_name": "Carl",
+                        "last_name": "Mirabeau"
+                    },
+                    "created_at":  "@string@.isDateTime()"
+                },
+                "content": "Commentaire d'un référent",
+                "author": {
+                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "first_name": "Referent",
+                    "last_name": "Referent"
+                },
+                "created_at":  "@string@.isDateTime()"
             }
         ]
     }
@@ -158,6 +212,7 @@ Feature:
              "first_name":"Carl",
              "last_name":"Mirabeau"
           },
+          "created_at": "@string@.isDateTime()",
           "uuid":"dfd6a2f2-5579-421f-96ac-98993d0edea1"
        },
        "content":"Phasellus vitae enim faucibus",
@@ -166,6 +221,7 @@ Feature:
           "first_name":"Martine",
           "last_name":"Lindt"
        },
+       "created_at": "@string@.isDateTime()",
        "uuid": "@uuid@"
     }
     """
@@ -193,6 +249,7 @@ Feature:
              "first_name":"Carl",
              "last_name":"Mirabeau"
           },
+          "created_at": "@string@.isDateTime()",
           "uuid":"dfd6a2f2-5579-421f-96ac-98993d0edea1"
        },
        "content":"Aenean viverra efficitur lorem",
@@ -201,6 +258,7 @@ Feature:
           "first_name":"Benjamin",
           "last_name":"Duroc"
        },
+       "created_at": "@string@.isDateTime()",
        "uuid":"b99933f3-180c-4248-82f8-1b0eb950740d"
     }
     """
