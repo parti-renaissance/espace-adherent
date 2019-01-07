@@ -19,6 +19,7 @@ const comments = [
                 verified: false,
             },
         ],
+        nbReplies: 3,
     },
     {
         uuid: '1111',
@@ -40,5 +41,6 @@ storiesOf('CommentsList', module)
             onEditComment={action('edit comment')}
             onApprovedComment={action('edit comment')}
             ownerId="u1"
+            onLoadMore={action('Load more comments')}
         />
     ));
