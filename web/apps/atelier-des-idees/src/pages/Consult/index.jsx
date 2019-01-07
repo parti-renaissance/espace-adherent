@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { ideaStatus } from '../../constants/api';
 import { initConsultPage } from '../../redux/thunk/navigation';
+import ThreeTabsPage from '../ThreeTabs';
 import IdeaCardList from '../../containers/IdeaCardList';
 
 class ConsultPage extends React.Component {
@@ -12,11 +12,16 @@ class ConsultPage extends React.Component {
 
     render() {
         return (
-            <div className="consult-page">
-                <div className="l__wrapper">
-                    <IdeaCardList mode="grid" status={ideaStatus.FINALIZED} withPaging={true} />
+            <ThreeTabsPage
+                title="Les idées finalisées"
+                subtitle="Consultez les idées devenues de vraies propositions !"
+            >
+                <div className="consult-page">
+                    <div className="l__wrapper">
+                        <IdeaCardList mode="grid" status={ideaStatus.FINALIZED} withPaging={true} />
+                    </div>
                 </div>
-            </div>
+            </ThreeTabsPage>
         );
     }
 }

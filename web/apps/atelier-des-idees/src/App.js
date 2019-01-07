@@ -6,7 +6,9 @@ import withAuth from './hocs/withAuth';
 
 // pages
 import Home from './pages/Home';
-import ThreeTabs from './pages/ThreeTabs';
+import ConsultPage from './pages/Consult';
+import ContributePage from './pages/Contribute';
+import ProposePage from './pages/Propose';
 import CreateIdea from './pages/CreateIdeaPage';
 import IdeaPage from './pages/IdeaPage';
 
@@ -24,9 +26,9 @@ class App extends Component {
                 {/* <Header /> */}
                 <Switch>
                     <Route exact path="/atelier-des-idees" component={Home} />
-                    <Route exact path="/atelier-des-idees/consulter" component={ThreeTabs} />
-                    <Route exact path="/atelier-des-idees/contribuer" component={ThreeTabs} />
-                    <Route exact path="/atelier-des-idees/proposer" component={ThreeTabs} />
+                    <Route exact path="/atelier-des-idees/consulter" component={ConsultPage} />
+                    <Route exact path="/atelier-des-idees/contribuer" component={ContributePage} />
+                    <Route exact path="/atelier-des-idees/proposer" component={ProposePage} />
                     <Route exact path="/atelier-des-idees/creer-ma-note" component={withAuth(CreateIdea)} />
                     <Route exact path="/atelier-des-idees/note/:id" component={IdeaPage} />
                 </Switch>
