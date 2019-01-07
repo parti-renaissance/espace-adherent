@@ -1,0 +1,20 @@
+.idea-thread__contribute {
+  padding: 30px 25px;
+  text-align: center;
+  background-color: $snow;
+  font-size: 22px;
+  font-family: $font-gillsans;
+
+  .idea-thread__contribute__main {
+    padding: 50px 60px;
+    margin: 0;
+    background-color: $white;
+    color: $light-black;
+  }
+
+  .idea-thread__contribute__link {
+    color: $saphir;
+    text-decoration: none;
+    border: 0;
+  }
+}

@@ -83,7 +83,7 @@ class CommentsList extends React.Component {
                                         )}
                                 </React.Fragment>
                             ))
-                            : this.props.emptyLabel && <p>{this.props.emptyLabel}</p>}
+                            : this.props.emptyLabel && <p className="comments-list__empty">{this.props.emptyLabel}</p>}
                     </div>
                 )}
                 {this.props.showForm && (
