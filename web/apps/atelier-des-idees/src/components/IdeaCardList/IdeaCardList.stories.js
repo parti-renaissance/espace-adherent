@@ -20,11 +20,20 @@ const idea = {
     category: { name: 'Education', enabled: true },
     name: 'Réduire le nombre d’élèves dans les classes dans les quartiers défavorisés',
     status: 'PENDING',
+    days_before_deadline: 6,
+    votes_count: {
+        important: 10,
+        feasible: 20,
+        innovative: 30,
+        total: 60,
+        my_votes: ['feasible', 'important'],
+    },
 };
 
-const ideas = [{ id: '000', ...idea }, { id: '111', ...idea }];
+const ideas = [{ uuid: '000', ...idea }, { uuid: '111', ...idea, status: 'FINALIZED' }];
 
 storiesOf('IdeaCardList', module)
     .add('default', () => <IdeaCardList ideas={ideas} />)
     .add('grid mode', () => <IdeaCardList ideas={ideas} mode="grid" />)
-    .add('loading', () => <IdeaCardList ideas={ideas} isLoading={true} />);
+    .add('loading', () => <IdeaCardList ideas={ideas} isLoading={true} />)
+    .add('grid:loading', () => <IdeaCardList mode="grid" isLoading={true} />);
