@@ -54,5 +54,8 @@ export const HIDE_CONSULTATION_PINNED = 'HIDE_CONSULTATION_PINNED';
 export const FETCH_REPORTS = createRequestTypes('FETCH_REPORTS');
 export const SET_REPORTS = 'SET_REPORTS';
 
+// flag
+export const ADD_FLAG = 'ADD_FLAG';
+
 // static
 export const UPDATE_STATIC = 'UPDATE_STATIC';
