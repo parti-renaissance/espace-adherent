@@ -23,12 +23,15 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *             "groups": {"thread_comment_read"}
  *         },
  *         "filters": {"threadComment.thread"},
- *         "order": {"createdAt": "ASC"}
+ *         "order": {"createdAt": "DESC"}
  *     },
  *     collectionOperations={
  *         "get",
  *         "post": {
  *             "access_control": "is_granted('ROLE_ADHERENT')",
+ *             "normalization_context": {
+ *                 "groups": {"thread_comment_write", "thread_comment_read"}
+ *             },
  *         }
  *     },
  *     itemOperations={
@@ -104,7 +107,7 @@ class ThreadComment extends BaseComment implements AuthorInterface, ReportableIn
      *
      * @Assert\NotNull
      *
-     * @SymfonySerializer\Groups("thread_comment_read")
+     * @SymfonySerializer\Groups({"thread_comment_write"})
      */
     private $thread;
 

@@ -33,14 +33,14 @@ abstract class BaseComment
      *
      * @ORM\Column(type="uuid")
      *
-     * @SymfonySerializer\Groups("thread_comment_read")
+     * @SymfonySerializer\Groups({"thread_comment_read", "thread_list_read"})
      */
     protected $uuid;
 
     /**
      * @ORM\Column(type="text")
      *
-     * @SymfonySerializer\Groups("thread_comment_read")
+     * @SymfonySerializer\Groups({"thread_comment_read", "thread_list_read"})
      */
     protected $content;
 
@@ -48,7 +48,7 @@ abstract class BaseComment
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      *
-     * @SymfonySerializer\Groups("thread_comment_read")
+     * @SymfonySerializer\Groups({"thread_comment_read", "thread_list_read"})
      */
     protected $author;
 
