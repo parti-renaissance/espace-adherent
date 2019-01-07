@@ -1,135 +1,140 @@
 .idea-card {
-	display: flex;
-	flex-direction: column;
-	background: $white;
-	border-radius: 3px;
-	box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.15);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: $white;
+  border-radius: 3px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.15);
 
-	&__main {
-		display: flex;
-		padding: 30px;
-	}
+  &__main {
+    display: flex;
+    padding: 30px;
+  }
 
-	&__content {
-		flex: 1;
+  &__content {
+    flex: 1;
+    max-width: 100%;
 
-		&__title {
-			margin: 0 0 10px;
-			font-family: $font-gillsans;
-			font-size: 24px;
-			/* line-height: 1em;
+    &__title {
+      margin: 0 0 10px;
+      font-family: $font-gillsans;
+      font-size: 24px;
+      /* line-height: 1em;
             height: 2em;
             overflow: hidden;
             text-overflow: ellipsis; */
-		}
+    }
 
-		&__infos {
-			display: flex;
-			> * {
-				display: flex;
-				align-items: center;
-				height: 26px;
-				margin-right: 10px;
-			}
+    &__infos {
+      display: flex;
+      > * {
+        display: flex;
+        align-items: center;
+        height: 26px;
+        margin-right: 10px;
+      }
 
-			&__author {
-				> * {
-					margin-right: 10px;
-				}
-				:last-child {
-					margin: 0;
-				}
+      &__author {
+        > * {
+          margin-right: 10px;
+        }
+        :last-child {
+          margin: 0;
+        }
 
-				&__name {
-					margin: 0 4px;
-				}
+        &__name {
+          margin: 0 4px;
+        }
 
-				&__separator {
-					display: inline-block;
-					height: 4px;
-					width: 4px;
-					background: $light-grey;
-					border-radius: 50%;
-				}
+        &__separator {
+          display: inline-block;
+          height: 4px;
+          width: 4px;
+          background: $light-grey;
+          border-radius: 50%;
+        }
 
-				&__type {
-					font-family: $font-gillsans;
+        &__type {
+          font-family: $font-gillsans;
 
-					&--QG {
-						color: $france;
-					}
+          &--QG {
+            color: $france;
+          }
 
-					&--COMMITTEE,
-					&--ADHERENT {
-						color: $dark-blue;
-					}
-				}
-			}
+          &--COMMITTEE,
+          &--ADHERENT {
+            color: $dark-blue;
+          }
+        }
+      }
 
-			&__ideas {
-				&__contributors,
-				&__comments {
-					display: flex;
-					align-items: center;
-					margin-right: 10px;
-					&__icon {
-						vertical-align: middle;
-						margin-right: 5px;
-					}
-				}
-			}
+      &__ideas {
+        &__contributors,
+        &__comments {
+          display: flex;
+          align-items: center;
+          margin-right: 10px;
+          &__icon {
+            vertical-align: middle;
+            margin-right: 5px;
+          }
+        }
+      }
 
-			&__date,
-			&__meta {
-				color: $grey;
-			}
-		}
+      &__date,
+      &__meta {
+        color: $grey;
+      }
+    }
 
-		&__description {
-			color: $light-black;
-		}
+    &__description {
+      white-space: nowrap;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      color: $light-black;
+    }
 
-		&__tags {
-			margin: 0;
-			padding: 0;
-			list-style: none;
-			> * {
-				display: inline-block;
-				margin-right: 6px;
-				padding: 4px 7px;
-				border: 1px solid $alice-blue;
-				border-radius: 1px;
-				background-color: $alice-blue;
-				color: $cadet-grey;
-			}
-		}
-	}
+    &__tags {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      > * {
+        display: inline-block;
+        margin-right: 6px;
+        padding: 4px 7px;
+        border: 1px solid $alice-blue;
+        border-radius: 1px;
+        background-color: $alice-blue;
+        color: $cadet-grey;
+      }
+    }
+  }
 
-	&__container {
-		display: flex;
-		justify-content: center;
-		width: 120px;
-		padding: 0 25px;
-		&__icon {
-			width: 76px;
-			height: 76px;
-		}
-	}
+  &__container {
+    display: flex;
+    justify-content: center;
+    width: 120px;
+    padding: 0 25px;
+    &__icon {
+      width: 76px;
+      height: 76px;
+    }
+  }
 
-	/* Responsive */
-	@media #{$mobile} {
-		&__content {
-			&__title {
-				font-size: 22px;
-			}
-			font-size: 14px;
-			&__infos {
-				flex-direction: column;
-			}
-		}
+  /* Responsive */
+  @media #{$mobile} {
+    &__content {
+      &__title {
+        font-size: 22px;
+      }
+      font-size: 14px;
+      &__infos {
+        flex-direction: column;
+      }
+    }
 
-		&__container {
-			display: none;
-		}
-	}
+    &__container {
+      display: none;
+    }
+  }
 }
