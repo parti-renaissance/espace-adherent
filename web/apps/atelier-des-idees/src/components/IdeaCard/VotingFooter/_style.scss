@@ -1,130 +1,131 @@
 .voting-footer {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 71px;
-	padding: 15px;
-	background: $white-smoke;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 71px;
+  padding: 15px;
+  padding-left: 30px;
+  background: $white-smoke;
 
-	// hide mobile elements
-	&__total-votes--mobile,
-	&__container__action-vote--mobile {
-		display: none;
-	}
+  // hide mobile elements
+  &__total-votes--mobile,
+  &__container__action-vote--mobile {
+    display: none;
+  }
 
-	&__total-votes {
-		color: $cadet-grey;
-		font-size: 14px;
-	}
+  &__total-votes {
+    color: $cadet-grey;
+    font-size: 14px;
+  }
 
-	&__container {
-		display: flex;
-		justify-content: space-between;
-		width: 100%;
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 
-		&__action-vote {
-			display: flex;
-			> * {
-				height: 40px;
-				width: 134px;
-				border-radius: 2px;
-				font-family: $font-roboto;
-				text-transform: initial;
-			}
-			&__icon {
-				margin-right: 7px;
-			}
-			&__text {
-				color: $cadet-grey;
-				width: 100%;
-				text-align: center;
-			}
-		}
-	}
+    &__action-vote {
+      display: flex;
+      > * {
+        height: 40px;
+        width: 134px;
+        border-radius: 2px;
+        font-family: $font-roboto;
+        text-transform: initial;
+      }
+      &__icon {
+        margin-right: 7px;
+      }
+      &__text {
+        color: $cadet-grey;
+        width: 100%;
+        text-align: center;
+      }
+    }
+  }
 
-	&__vote {
-		cursor: pointer;
-		outline: none;
-		width: 100%;
-		display: flex;
-		justify-content: space-between;
-		height: 40px;
-		margin-right: 10px;
-		background-color: $white;
-		border: 1px solid $grey-sky;
-		border-radius: 3px;
-		font-family: $font-roboto;
-		color: $sky;
-		font-size: 15px;
-		text-transform: initial;
+  &__vote {
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    margin-right: 10px;
+    background-color: $white;
+    border: 1px solid $grey-sky;
+    border-radius: 3px;
+    font-family: $font-roboto;
+    color: $sky;
+    font-size: 15px;
+    text-transform: initial;
 
-		&--selected {
-			border: 1px solid $france;
-			color: $france;
-		}
-	}
+    &--selected {
+      border: 1px solid $france;
+      color: $france;
+    }
+  }
 
-	&__vote:hover {
-		border: 1px solid $france;
-		color: $france;
-	}
+  &__vote:hover {
+    border: 1px solid $france;
+    color: $france;
+  }
 
-	/* Responsive */
-	@media #{$mobile} {
-		flex-direction: column;
-		height: 100%;
-		padding: 0 15px;
+  /* Responsive */
+  @media #{$mobile} {
+    flex-direction: column;
+    height: 100%;
+    padding: 0 15px;
 
-		// hide desktop elements
-		&__total-votes,
-		&__container__action-vote,
-		&__container__action-vote__text {
-			display: none;
-		}
+    // hide desktop elements
+    &__total-votes,
+    &__container__action-vote,
+    &__container__action-vote__text {
+      display: none;
+    }
 
-		&__total-votes--mobile {
-			display: block;
-			color: $cadet-grey;
-			font-size: 14px;
-			margin-left: 20px;
-		}
+    &__total-votes--mobile {
+      display: block;
+      color: $cadet-grey;
+      font-size: 14px;
+      margin-left: 20px;
+    }
 
-		&__vote,
-		&__container {
-			margin-bottom: 10px;
-		}
+    &__vote,
+    &__container {
+      margin-bottom: 10px;
+    }
 
-		&__container {
-			align-items: center;
-			height: 71px;
-			margin: 0 20px 0 0;
-			font-size: 16px;
-			font-weight: 400;
+    &__container {
+      align-items: center;
+      height: 71px;
+      margin: 0 20px 0 0;
+      font-size: 16px;
+      font-weight: 400;
 
-			&__action-vote--mobile {
-				cursor: pointer;
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-				background: transparent;
-				font-size: 16px;
-				font-weight: 400;
-				color: $blue;
-				border: none;
-				outline: none;
-				&__arrow {
-					width: 0;
-					height: 0;
-					margin-left: 10px;
-					border-top: 7px solid transparent;
-					border-bottom: 7px solid transparent;
-					border-left: 7px solid $blue;
-				}
-			}
-		}
+      &__action-vote--mobile {
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background: transparent;
+        font-size: 16px;
+        font-weight: 400;
+        color: $blue;
+        border: none;
+        outline: none;
+        &__arrow {
+          width: 0;
+          height: 0;
+          margin-left: 10px;
+          border-top: 7px solid transparent;
+          border-bottom: 7px solid transparent;
+          border-left: 7px solid $blue;
+        }
+      }
+    }
 
-		.rotate {
-			transform: rotate(90deg);
-		}
-	}
+    .rotate {
+      transform: rotate(90deg);
+    }
+  }
 }

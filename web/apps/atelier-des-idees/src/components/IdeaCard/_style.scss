@@ -5,15 +5,17 @@
   background: $white;
   border-radius: 3px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.15);
+  font-size: 14px;
 
   &__main {
     display: flex;
     padding: 30px;
+    padding-bottom: 20px;
   }
 
   &__content {
     flex: 1;
-    max-width: 100%;
+    max-width: calc(100% - 120px);
 
     &__title {
       margin: 0 0 10px;
@@ -35,19 +37,13 @@
       }
 
       &__author {
-        > * {
-          margin-right: 10px;
-        }
-        :last-child {
-          margin: 0;
-        }
-
         &__name {
-          margin: 0 4px;
+          margin-left: 4px;
         }
 
         &__separator {
           display: inline-block;
+          margin: 0 10px;
           height: 4px;
           width: 4px;
           background: $light-grey;
@@ -88,6 +84,8 @@
     }
 
     &__description {
+      margin-top: 20px;
+      margin-bottom: 25px;
       white-space: nowrap;
       overflow-x: hidden;
       text-overflow: ellipsis;
@@ -98,6 +96,7 @@
       margin: 0;
       padding: 0;
       list-style: none;
+
       > * {
         display: inline-block;
         margin-right: 6px;
@@ -105,16 +104,17 @@
         border: 1px solid $alice-blue;
         border-radius: 1px;
         background-color: $alice-blue;
+        font-size: 12px;
         color: $cadet-grey;
       }
     }
   }
 
-  &__container {
-    display: flex;
-    justify-content: center;
-    width: 120px;
-    padding: 0 25px;
+  &__theme {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+
     &__icon {
       width: 76px;
       height: 76px;
@@ -133,7 +133,7 @@
       }
     }
 
-    &__container {
+    &__theme {
       display: none;
     }
   }
