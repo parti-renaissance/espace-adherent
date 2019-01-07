@@ -4,6 +4,7 @@ import { SAVE_CURRENT_IDEA, PUBLISH_CURRENT_IDEA, FETCH_GUIDELINES, VOTE_CURRENT
 import { saveAndPublishIdea } from '../thunk/ideas';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { selectCurrentIdea } from '../selectors/currentIdea';
+import { selectIsAuthenticated } from '../selectors/auth';
 import { setCurrentIdea, updateCurrentIdea, setGuidelines, toggleVoteCurrentIdea } from '../actions/currentIdea';
 import { hideModal } from '../actions/modal';
 
@@ -99,22 +100,26 @@ export function fetchGuidelines() {
 
 export function voteCurrentIdea(vote) {
     return (dispatch, getState, axios) => {
-        const { uuid } = selectCurrentIdea(getState());
-        dispatch(toggleVoteCurrentIdea(vote));
-        dispatch(createRequest(VOTE_CURRENT_IDEA, uuid));
-        const requestBody = {
-            method: 'POST',
-            url: '/api/votes',
-            data: { idea: uuid, type: vote },
-        };
-        return axios(requestBody)
-            .then(res => res.data)
-            .then(() => {
-                dispatch(createRequestSuccess(VOTE_CURRENT_IDEA, uuid));
-            })
-            .catch(() => {
-                dispatch(toggleVoteCurrentIdea(vote));
-                dispatch(createRequestFailure(VOTE_CURRENT_IDEA, uuid));
-            });
+        const isAuthenticated = selectIsAuthenticated(getState());
+        if (isAuthenticated) {
+            const { uuid } = selectCurrentIdea(getState());
+            dispatch(toggleVoteCurrentIdea(vote));
+            dispatch(createRequest(VOTE_CURRENT_IDEA, uuid));
+            const requestBody = {
+                method: 'POST',
+                url: '/api/votes',
+                data: { idea: uuid, type: vote },
+            };
+            return axios(requestBody)
+                .then(res => res.data)
+                .then(() => {
+                    dispatch(createRequestSuccess(VOTE_CURRENT_IDEA, uuid));
+                })
+                .catch(() => {
+                    dispatch(toggleVoteCurrentIdea(vote));
+                    dispatch(createRequestFailure(VOTE_CURRENT_IDEA, uuid));
+                });
+        }
+        window.location = '/connexion';
     };
 }

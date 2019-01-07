@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
 import { selectLoadingState } from '../redux/selectors/loading';
 import { selectIsAuthenticated } from '../redux/selectors/auth';
 
 export default (ChildComponent) => {
     const withAuth = ({ isAuthLoading, isAuthenticated, ...props }) => {
         if (!isAuthLoading && !isAuthenticated) {
-            return <Redirect to="/connexion" />;
+            window.location = '/connexion';
+            return null;
         }
         return isAuthLoading ? null : <ChildComponent {...props} />;
     };
