@@ -1,0 +1,17 @@
+.idea-filters {
+  .idea-filters__label,
+  .select {
+    display: inline-block;
+  }
+
+  .idea-filters__label {
+    margin-right: 15px;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: $wild-blue-yonder;
+  }
+
+  .select {
+    width: 220px;
+  }
+}
