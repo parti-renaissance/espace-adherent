@@ -6,13 +6,8 @@ import { postComment } from '../thunk/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { selectCurrentIdea } from '../selectors/currentIdea';
 import { selectIsAuthenticated } from '../selectors/auth';
-import {
-    setCurrentIdea,
-    updateCurrentIdea,
-    setGuidelines,
-    toggleVoteCurrentIdea,
-    addCurrentIdeaThread,
-} from '../actions/currentIdea';
+import { setCurrentIdea, updateCurrentIdea, setGuidelines, toggleVoteCurrentIdea } from '../actions/currentIdea';
+import { addThread } from '../actions/threads';
 import { hideModal } from '../actions/modal';
 
 /**
@@ -133,6 +128,5 @@ export function voteCurrentIdea(vote) {
 
 export function postCommentToCurrentIdea(content, answerId, parentId = '') {
     // TODO: handle parentId
-    return dispatch =>
-        dispatch(postComment(content, answerId, parentId)).then(thread => dispatch(addCurrentIdeaThread(thread)));
+    return dispatch => dispatch(postComment(content, answerId, parentId)).then(thread => dispatch(addThread(thread)));
 }
