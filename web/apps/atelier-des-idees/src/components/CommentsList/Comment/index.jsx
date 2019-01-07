@@ -11,10 +11,12 @@ function Comment(props) {
         >
             <div className="comments-list__comment__infos">
                 <span className="comments-list__comment__infos__author">
-                    {props.author.name}
+                    {props.author.first_name} {props.author.last_name}
                 </span>
                 <span className="comments-list__comment__infos__date">
-                    {props.createdAt}
+                    {`${new Date(props.created_at).toLocaleDateString()} à ${new Date(
+                        props.created_at
+                    ).toLocaleTimeString()}`}
                 </span>
                 {props.verified && (
                     <span className="comments-list__comment__infos__approved">
@@ -34,38 +36,32 @@ function Comment(props) {
                                 className="comments-list__comment__actions__button__delete"
                                 onClick={props.onDelete}
                             >
-								Supprimer
+                                Supprimer
                             </button>
-                            <button
-                                className="comments-list__comment__actions__button__edit"
-                                onClick={props.onEdit}
-                            >
-								Modifier
+                            <button className="comments-list__comment__actions__button__edit" onClick={props.onEdit}>
+                                Modifier
                             </button>
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
                             {props.canApprove &&
-								(props.verified ? (
-								    <button
-								        onClick={props.onApproved}
-								        className="comments-list__comment__actions__button__disapproved"
-								    >
-										Désapprouver
-								    </button>
-								) : (
-								    <button
-								        onClick={props.onApproved}
-								        className="comments-list__comment__actions__button__approved"
-								    >
-										Approuver
-								    </button>
-								))}
-                            <button
-                                className="comments-list__comment__actions__button__answer"
-                                onClick={props.onReply}
-                            >
-								Répondre
+                                (props.verified ? (
+                                    <button
+                                        onClick={props.onApproved}
+                                        className="comments-list__comment__actions__button__disapproved"
+                                    >
+                                        Désapprouver
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={props.onApproved}
+                                        className="comments-list__comment__actions__button__approved"
+                                    >
+                                        Approuver
+                                    </button>
+                                ))}
+                            <button className="comments-list__comment__actions__button__answer" onClick={props.onReply}>
+                                Répondre
                             </button>
                         </React.Fragment>
                     )}
@@ -83,10 +79,10 @@ Comment.defaultProps = {
 };
 
 Comment.propTypes = {
-    author: PropTypes.shape({ id: PropTypes.string, name: PropTypes.string })
+    author: PropTypes.shape({ id: PropTypes.string, first_name: PropTypes.string, last_name: PropTypes.string })
         .isRequired,
     content: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired, // iso date
+    created_at: PropTypes.string.isRequired, // iso date
     verified: PropTypes.bool,
     canApprove: PropTypes.bool,
     isAuthor: PropTypes.bool,
