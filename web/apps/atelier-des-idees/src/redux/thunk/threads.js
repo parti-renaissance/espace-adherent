@@ -30,14 +30,20 @@ export function deleteComment(id, parentId = '') {
 
 export function postComment(content, answerId, parentId = '') {
     return (dispatch, getState, axios) => {
-        // TODO: use answerId
         let type = 'threads';
         const body = { content };
         if (parentId) {
             type = 'thread_comments';
             body.thread = parentId;
+        } else {
+            body.answer = answerId;
         }
-        return axios.post(`/api/${type}`, body);
+        return axios
+            .post(`/api/${type}`, body)
+            .then(res => res.data)
+            .catch((error) => {
+                throw error;
+            });
     };
 }
 
