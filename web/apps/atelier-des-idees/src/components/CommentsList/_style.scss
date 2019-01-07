@@ -37,6 +37,18 @@
     }
   }
 
+  &__more {
+    text-align: center;
+    padding: 20px 0;
+
+    &-btn {
+      @extend %reset-button;
+      color: $light-black;
+      font-size: 15px;
+      cursor: pointer;
+    }
+  }
+
   &__form {
     position: relative;
     margin: 15px 0 40px;

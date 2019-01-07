@@ -9,7 +9,12 @@ function IdeaThread(props) {
     const { isAuthenticated, ...otherProps } = props;
     return (
         <React.Fragment>
-            <CommentsList {...otherProps} showForm={isAuthenticated} />
+            <CommentsList
+                {...otherProps}
+                showForm={isAuthenticated}
+                onSendComment={(value, parentId = '') => props.onSendComment(value, props.answerId, parentId)}
+                onLoadMore={(parentId = '') => props.onLoadMore(props.answerId, parentId)}
+            />
             {!isAuthenticated && (
                 <div className="idea-thread__contribute">
                     <p className="idea-thread__contribute__main">
@@ -37,6 +42,7 @@ function mapStateToProps(state, { questionId }) {
     return {
         comments: [],
         isAuthenticated,
+        answerId,
     };
 }
 
@@ -45,6 +51,7 @@ function mapDispatchToProps(dispatch) {
         onSendComment: (content, answerId, threadId) => dispatch(postComment(content, answerId, threadId)),
         onDeleteComment: (commentId, threadId) => dispatch(deleteComment(commentId, threadId)),
         onApproveComment: (commentId, threadId) => dispatch(approveComment(commentId, threadId)),
+        onLoadMore: (answerId, threadId) => alert('Load more comment for answer', answerId),
     };
 }
 

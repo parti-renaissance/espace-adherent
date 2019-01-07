@@ -73,17 +73,27 @@ class CommentsList extends React.Component {
                                                         // send parent comment id as (optional) second parameter
                                                         this.props.onSendComment(value, comment.uuid)
                                                     }
+                                                    onLoadMore={() => this.props.onLoadMore(comment.uuid)}
                                                     parentId={comment.uuid}
                                                     showForm={this.props.showForm}
                                                     collapseLabel="réponse"
                                                     placeholder="Écrivez votre réponse"
                                                     emptyLabel={null}
+                                                    nbMore={comment.nbReplies - comment.replies.length}
                                                 />
                                             </div>
                                         )}
                                 </React.Fragment>
                             ))
                             : this.props.emptyLabel && <p className="comments-list__empty">{this.props.emptyLabel}</p>}
+                    </div>
+                )}
+                {0 < this.props.nbMore && (
+                    <div className="comments-list__more">
+                        <button
+                            className="comments-list__more-btn"
+                            onClick={() => this.props.onLoadMore()}
+                        >{`Afficher plus de réponses (${this.props.nbMore})`}</button>
                     </div>
                 )}
                 {this.props.showForm && (
@@ -117,6 +127,7 @@ CommentsList.defaultProps = {
     emptyLabel: 'Soyez le premier à contribuer sur cette partie',
     placeholder: 'Ajoutez votre contribution',
     collapseLabel: 'commentaire',
+    nbMore: 0,
 };
 
 CommentsList.propTypes = {
@@ -128,17 +139,20 @@ CommentsList.propTypes = {
             createdAt: PropTypes.string.isRequired, // iso date
             replies: PropTypes.array,
             verified: PropTypes.bool,
+            nbReplies: PropTypes.number,
         })
     ),
     onSendComment: PropTypes.func.isRequired,
     onDeleteComment: PropTypes.func.isRequired,
     onEditComment: PropTypes.func.isRequired,
     onApproveComment: PropTypes.func.isRequired,
+    onLoadMore: PropTypes.func.isRequired,
     ownerId: PropTypes.string.isRequired,
     showForm: PropTypes.bool,
     parentId: PropTypes.string,
     emptyLabel: PropTypes.string,
     placeholder: PropTypes.string,
+    nbMore: PropTypes.number,
 };
 
 export default CommentsList;
