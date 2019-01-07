@@ -25,6 +25,7 @@ export const TOGGLE_VOTE_IDEA = 'TOGGLE_VOTE_IDEA';
 
 // comments & threads
 export const FETCH_IDEA_THREADS = createRequestTypes('FETCH_IDEA_THREADS');
+export const POST_THREAD = createRequestTypes('POST_THREAD');
 
 // my ideas
 export const FETCH_MY_IDEAS = createRequestTypes('FETCH_MY_IDEAS');
@@ -45,6 +46,7 @@ export const FETCH_GUIDELINES = createRequestTypes('FETCH_GUIDELINES');
 export const SET_GUIDELINES = 'SET_GUIDELINES';
 export const TOGGLE_VOTE_CURRENT_IDEA = 'TOGGLE_VOTE_CURRENT_IDEA';
 export const SET_CURRENT_IDEA_THREADS = 'SET_CURRENT_IDEA_THREADS';
+export const ADD_CURRENT_IDEA_THREAD = 'ADD_CURRENT_IDEA_THREAD';
 
 // pinned
 export const FETCH_CONSULTATION_PINNED = createRequestTypes('FETCH_CONSULTATION_PINNED');
