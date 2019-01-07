@@ -163,10 +163,17 @@ class IdeaPageBase extends React.Component {
                     )}
                 </div>
                 <div className="create-idea-page__content">
+                    {idea.status === ideaStatus.DRAFT && (
+                        <div className="create-idea-page__auto-save">
+                            <p className="create-idea-page__auto-save__label">
+                                Votre note est automatiquement sauvegardée
+                            </p>
+                        </div>
+                    )}
                     <div className="create-idea-page__content__main l__wrapper--medium">
                         <IdeaPageTitle
-                            authorName={this.props.idea.authorName}
-                            publishedAt={this.props.idea.publishedAt}
+                            authorName={idea.authorName}
+                            publishedAt={idea.publishedAt}
                             onTitleChange={(value, withSave) => this.onNameChange(value, withSave)}
                             title={this.state.name}
                             isAuthor={this.props.isAuthor}
