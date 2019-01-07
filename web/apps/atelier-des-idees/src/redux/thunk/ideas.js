@@ -56,7 +56,7 @@ export function fetchNextIdeas(status, params = {}) {
  */
 export function fetchIdea(id) {
     return (dispatch, getState, axios) => {
-        dispatch(createRequest(FETCH_IDEAS, id));
+        dispatch(createRequest(FETCH_IDEA, id));
         return axios
             .get(`/api/ideas/${id}`)
             .then(res => res.data)

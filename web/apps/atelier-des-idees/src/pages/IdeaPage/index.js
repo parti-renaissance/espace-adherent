@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import IdeaPageBase from '../IdeaPageBase';
 import { DELETE_IDEA_MODAL, PUBLISH_IDEA_MODAL } from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
@@ -12,6 +13,7 @@ import {
     goBackFromCurrentIdea,
 } from '../../redux/thunk/currentIdea';
 import { selectAuthUser } from '../../redux/selectors/auth';
+import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectCurrentIdea, selectGuidelines } from '../../redux/selectors/currentIdea';
 
 class IdeaPage extends React.Component {
@@ -20,16 +22,27 @@ class IdeaPage extends React.Component {
     }
 
     render() {
+        if (this.props.hasFetchError) {
+            // redirect to home is error in fetch
+            return <Redirect to="/atelier-des-idees" />;
+        }
         return this.props.guidelines.length ? <IdeaPageBase {...this.props} /> : null;
     }
 }
 
-IdeaPage.propTypes = {
-    initIdeaPage: PropTypes.func.isRequired,
+IdeaPage.defaultProps = {
+    hasFetchError: false,
 };
 
-function mapStateToProps(state) {
-    // TODO: handle loading and error
+IdeaPage.propTypes = {
+    initIdeaPage: PropTypes.func.isRequired,
+    hasFetchError: PropTypes.bool,
+};
+
+function mapStateToProps(state, ownProps) {
+    const { id } = ownProps.match.params;
+    const fetchIdeaState = selectLoadingState(state, 'FETCH_IDEA', id);
+    // data
     const currentUser = selectAuthUser(state);
     // guidelines
     const guidelines = selectGuidelines(state);
@@ -45,6 +58,7 @@ function mapStateToProps(state) {
         idea: formattedIdea,
         guidelines,
         isAuthor: !!author.uuid && author.uuid === currentUser.uuid,
+        hasFetchError: fetchIdeaState.isError,
     };
 }
 
