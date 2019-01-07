@@ -29,86 +29,123 @@ function formatVotes(votesCount) {
         }));
 }
 
-function IdeaCard(props) {
-    return (
-        <div className="idea-card">
-            <div className="idea-card__main">
-                <div className="idea-card__content">
-                    <p className="idea-card__content__title">{props.name}</p>
-                    <div className="idea-card__content__infos">
-                        <span className="idea-card__content__infos__author">
-                            <span className="idea-card__content__infos__meta">Par</span>
-                            <span className="idea-card__content__infos__author__name">
-                                {props.author.first_name} {props.author.last_name}
+class IdeaCard extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            votesState: false, // keep track of voting footer state changes
+        };
+        // bindings
+        this.cardRef = React.createRef();
+        this.toggleOutsideHover = this.toggleOutsideHover.bind(this);
+        this.handleHoverOutside = this.handleHoverOutside.bind(this);
+    }
+
+    toggleOutsideHover(showVotes) {
+        if (showVotes) {
+            document.addEventListener('mouseover', this.handleHoverOutside);
+        } else {
+            document.removeEventListener('mouseover', this.handleHoverOutside);
+        }
+    }
+
+    handleHoverOutside(event) {
+        if (this.cardRef) {
+            // check if the postion of the mouse is outside of the card
+            const isOutofCard = !this.cardRef.current.contains(event.target);
+            if (isOutofCard) {
+                // change state.votesState to force render the VotingFooter
+                this.setState(prevState => ({ votesState: !prevState.votesState }));
+                document.removeEventListener('mouseover', this.handleHoverOutside);
+            }
+        }
+    }
+
+    render() {
+        return (
+            <div className="idea-card" ref={this.cardRef}>
+                <div className="idea-card__main">
+                    <div className="idea-card__content">
+                        <p className="idea-card__content__title">{this.props.name}</p>
+                        <div className="idea-card__content__infos">
+                            <span className="idea-card__content__infos__author">
+                                <span className="idea-card__content__infos__meta">Par</span>
+                                <span className="idea-card__content__infos__author__name">
+                                    {this.props.author.first_name} {this.props.author.last_name}
+                                </span>
+                                <span className="idea-card__content__infos__author__separator" />
+                                <span
+                                    className={classnames(
+                                        'idea-card__content__infos__author__type',
+                                        `idea-card__content__infos__author__type--${this.props.author_category}`
+                                    )}
+                                >
+                                    {AUTHOR_CATEGORY_NAMES[this.props.author_category]}
+                                </span>
                             </span>
-                            <span className="idea-card__content__infos__author__separator" />
-                            <span
-                                className={classnames(
-                                    'idea-card__content__infos__author__type',
-                                    `idea-card__content__infos__author__type--${props.author_category}`
-                                )}
-                            >
-                                {AUTHOR_CATEGORY_NAMES[props.author_category]}
-                            </span>
-                        </span>
-                        {/* <span className="idea-card__content__infos__date">
-                            {new Date(props.created_at).toLocaleDateString()}
+                            {/* <span className="idea-card__content__infos__date">
+                            {new Date(this.props.created_at).toLocaleDateString()}
                                 </span>*/}
-                        {'QG' !== props.author_category && (
-                            <div className="idea-card__content__infos__ideas">
-                                <span className="idea-card__content__infos__ideas__contributors">
-                                    <img
-                                        className="idea-card__content__infos__ideas__ontributors__icon"
-                                        src="/assets/img/icn_20px_contributors.svg"
-                                    />
-                                    <span className="idea-card__content__infos__ideas__contributors__text">
-                                        {props.contributors_count}
+                            {'QG' !== this.props.author_category && (
+                                <div className="idea-card__content__infos__ideas">
+                                    <span className="idea-card__content__infos__ideas__contributors">
+                                        <img
+                                            className="idea-card__content__infos__ideas__ontributors__icon"
+                                            src="/assets/img/icn_20px_contributors.svg"
+                                        />
+                                        <span className="idea-card__content__infos__ideas__contributors__text">
+                                            {this.props.contributors_count}
+                                        </span>
                                     </span>
-                                </span>
-                                <span className="idea-card__content__infos__ideas__comments">
-                                    <img
-                                        className="idea-card__content__infos__ideas__contributors__icon"
-                                        src="/assets/img/icn_20px_comments.svg"
-                                    />
-                                    <span className="idea-card__content__infos__ideas__contributors__text">
-                                        {props.comments_count}
+                                    <span className="idea-card__content__infos__ideas__comments">
+                                        <img
+                                            className="idea-card__content__infos__ideas__contributors__icon"
+                                            src="/assets/img/icn_20px_comments.svg"
+                                        />
+                                        <span className="idea-card__content__infos__ideas__contributors__text">
+                                            {this.props.comments_count}
+                                        </span>
                                     </span>
-                                </span>
-                            </div>
+                                </div>
+                            )}
+                        </div>
+                        <p className="idea-card__content__description">{this.props.description}</p>
+                        {!!this.props.themes.length && (
+                            <ul className="idea-card__content__tags">
+                                {/* TODO: check what to do with category */}
+                                {/* <li className="idea-card__content__tags__item">{this.props.category.name}</li>*/}
+                                {this.props.themes.map((theme, index) => (
+                                    <li key={`theme__${index}`} className="idea-card__content__tags__item">
+                                        {theme.name}
+                                    </li>
+                                ))}
+                            </ul>
                         )}
                     </div>
-                    <p className="idea-card__content__description">{props.description}</p>
-                    {!!props.themes.length && (
-                        <ul className="idea-card__content__tags">
-                            {/* TODO: check what to do with category */}
-                            {/* <li className="idea-card__content__tags__item">{props.category.name}</li>*/}
-                            {props.themes.map(theme => (
-                                <li className="idea-card__content__tags__item">{theme.name}</li>
-                            ))}
-                        </ul>
+                    {!!this.props.themes.length && this.props.themes[0].thumbnail && (
+                        <div className="idea-card__container">
+                            <img className="idea-card__container__icon" src={this.props.themes[0].thumbnail} />
+                        </div>
                     )}
                 </div>
-                {!!props.themes.length && props.themes[0].thumbnail && (
-                    <div className="idea-card__container">
-                        <img className="idea-card__container__icon" src={props.themes[0].thumbnail} />
-                    </div>
+                {/* FOOTER */}
+                {'FINALIZED' === this.props.status ? (
+                    <VotingFooter
+                        key={`voting-footer__${this.state.votesState}`}
+                        totalVotes={this.props.votes_count.total}
+                        votes={formatVotes(this.props.votes_count)}
+                        onSelected={vote => this.props.onVote(this.props.uuid, vote)}
+                        onToggleVotePanel={this.toggleOutsideHover}
+                    />
+                ) : (
+                    <ContributingFooter
+                        remainingDays={this.props.days_before_deadline}
+                        link={`/atelier-des-idees/note/${this.props.uuid}`}
+                    />
                 )}
             </div>
-            {/* FOOTER */}
-            {'FINALIZED' === props.status ? (
-                <VotingFooter
-                    totalVotes={props.votes_count.total}
-                    votes={formatVotes(props.votes_count)}
-                    onSelected={vote => props.onVote(props.uuid, vote)}
-                />
-            ) : (
-                <ContributingFooter
-                    remainingDays={props.days_before_deadline}
-                    link={`/atelier-des-idees/note/${props.uuid}`}
-                />
-            )}
-        </div>
-    );
+        );
+    }
 }
 
 IdeaCard.defaultProps = {
@@ -119,7 +156,8 @@ IdeaCard.defaultProps = {
 
 IdeaCard.propTypes = {
     author: PropTypes.shape({
-        name: PropTypes.string.isRequired,
+        first_name: PropTypes.string.isRequired,
+        last_name: PropTypes.string.isRequired,
     }).isRequired,
     author_category: PropTypes.string.isRequired,
     thumbnail: PropTypes.string,
@@ -127,15 +165,13 @@ IdeaCard.propTypes = {
     description: PropTypes.string.isRequired,
     uuid: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    votes_count: PropTypes.arrayOf(
-        PropTypes.shape({
-            important: PropTypes.number.isRequired,
-            feasible: PropTypes.number.isRequired,
-            innovative: PropTypes.number.isRequired,
-            total: PropTypes.number.isRequired,
-            my_votes: PropTypes.arrayOf(PropTypes.string),
-        })
-    ).isRequired,
+    votes_count: PropTypes.shape({
+        important: PropTypes.number.isRequired,
+        feasible: PropTypes.number.isRequired,
+        innovative: PropTypes.number.isRequired,
+        total: PropTypes.number.isRequired,
+        my_votes: PropTypes.arrayOf(PropTypes.string),
+    }).isRequired,
     comments_count: PropTypes.number,
     contributors_count: PropTypes.number,
     themes: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string, thumbnail: PropTypes.string })),

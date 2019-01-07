@@ -4,6 +4,7 @@ import { action } from '@storybook/addon-actions';
 import IdeaCard from '.';
 
 const props = {
+    uuid: '0000',
     author: {
         first_name: 'Jean-Michel',
         last_name: ' Français',
@@ -13,7 +14,7 @@ const props = {
     comments_count: 122,
     contributors_count: 4,
     description:
-		'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed molestie sapien eu orci congue sollicitudin. Sed malesuada nisi sed diam tristique, ullamcorper fermentum massa euismod. Vivamus a augue vitae nibh scelerisque…',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed molestie sapien eu orci congue sollicitudin. Sed malesuada nisi sed diam tristique, ullamcorper fermentum massa euismod. Vivamus a augue vitae nibh scelerisque…',
     themes: [
         { name: 'Education', thumbnail: '/assets/img/icn_76px_education.svg' },
         { name: 'Droits civiques', thumbnail: null },
