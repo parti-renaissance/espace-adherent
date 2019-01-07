@@ -2,10 +2,17 @@ import { ideaStatus } from '../../constants/api';
 import history from '../../history';
 import { SAVE_CURRENT_IDEA, FETCH_GUIDELINES, VOTE_CURRENT_IDEA } from '../constants/actionTypes';
 import { saveAndPublishIdea } from '../thunk/ideas';
+import { postComment } from '../thunk/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { selectCurrentIdea } from '../selectors/currentIdea';
 import { selectIsAuthenticated } from '../selectors/auth';
-import { setCurrentIdea, updateCurrentIdea, setGuidelines, toggleVoteCurrentIdea } from '../actions/currentIdea';
+import {
+    setCurrentIdea,
+    updateCurrentIdea,
+    setGuidelines,
+    toggleVoteCurrentIdea,
+    addCurrentIdeaThread,
+} from '../actions/currentIdea';
 import { hideModal } from '../actions/modal';
 
 /**
@@ -122,4 +129,10 @@ export function voteCurrentIdea(vote) {
         }
         window.location = '/connexion';
     };
+}
+
+export function postCommentToCurrentIdea(content, answerId, parentId = '') {
+    // TODO: handle parentId
+    return dispatch =>
+        dispatch(postComment(content, answerId, parentId)).then(thread => dispatch(addCurrentIdeaThread(thread)));
 }
