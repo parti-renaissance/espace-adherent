@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { DELETE_IDEA_MODAL } from '../../constants/modalTypes';
+import { DELETE_IDEA_MODAL, PUBLISH_IDEA_MODAL } from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
-import { deleteIdea, fetchUserIdeas, fetchUserContributions } from '../../redux/thunk/ideas';
+import { deleteIdea, fetchUserIdeas, fetchUserContributions, saveAndPublishIdea } from '../../redux/thunk/ideas';
 import { selectMyIdeas } from '../../redux/selectors/myIdeas';
 import { selectMyContributions } from '../../redux/selectors/myContributions';
 import MyIdeasModal from '../../components/Modal/MyIdeasModal';
@@ -36,7 +36,10 @@ function mapStateToProps(state) {
     const myIdeasData = selectMyIdeas(state);
     const myContributionsData = selectMyContributions(state);
     return {
-        data: { myIdeasData, myContributionsData },
+        data: {
+            myIdeasData,
+            myContributionsData,
+        },
     };
 }
 
@@ -46,6 +49,13 @@ function mapDispatchToProps(dispatch) {
             dispatch(
                 showModal(DELETE_IDEA_MODAL, {
                     onConfirmDelete: () => dispatch(deleteIdea(id)),
+                })
+            ),
+        onPublishIdea: uuid =>
+            dispatch(
+                showModal(PUBLISH_IDEA_MODAL, {
+                    id: uuid,
+                    submitForm: ideaData => dispatch(saveAndPublishIdea(uuid, ideaData)),
                 })
             ),
         initMyIdeas: () => {
