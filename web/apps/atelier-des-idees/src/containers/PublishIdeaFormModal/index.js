@@ -27,14 +27,15 @@ function formatStaticData(data) {
 
 function mapStateToProps(state, { id }) {
     // get request status
-    const { isFetching, isSuccess, isError } = selectLoadingState(state, 'PUBLISH_IDEA', id);
+    const saveIdeaState = selectLoadingState(state, 'SAVE_IDEA', id);
+    const publishIdeaState = selectLoadingState(state, 'PUBLISH_IDEA', id);
     // get static data
     const { themes, needs, categories, committees } = selectStatic(state);
     const formattedCommittees = committees.map(({ uuid, name }) => ({ value: uuid, label: name }));
     return {
-        isSubmitting: isFetching,
-        isSubmitSuccess: isSuccess,
-        isSubmitError: isError,
+        isSubmitting: saveIdeaState.isFetching || publishIdeaState.isFetching,
+        isSubmitSuccess: saveIdeaState.isSuccess && publishIdeaState.isSuccess,
+        isSubmitError: saveIdeaState.isError || publishIdeaState.isError,
         themeOptions: formatStaticData(themes),
         localityOptions: formatStaticData(categories),
         difficultiesOptions: formatStaticData(needs),
