@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { ideaStatus } from '../../constants/api';
 import { initContributePage } from '../../redux/thunk/navigation';
+import ThreeTabsPage from '../ThreeTabs';
 import IdeaCardList from '../../containers/IdeaCardList';
 
 class ContributePage extends React.Component {
@@ -12,11 +12,16 @@ class ContributePage extends React.Component {
 
     render() {
         return (
-            <div className="contribute-page">
-                <div className="l__wrapper">
-                    <IdeaCardList mode="grid" status={ideaStatus.PENDING} withPaging={true} />
+            <ThreeTabsPage
+                title="Contribuer aux idées en cours"
+                subtitle="Explorez les idées en cours de vos concitoyens et enrichissez-les !"
+            >
+                <div className="contribute-page">
+                    <div className="l__wrapper">
+                        <IdeaCardList mode="grid" status={ideaStatus.PENDING} withPaging={true} />
+                    </div>
                 </div>
-            </div>
+            </ThreeTabsPage>
         );
     }
 }
