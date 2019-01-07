@@ -19,12 +19,14 @@
   }
 
   &__container {
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    white-space: nowrap;
 
     &__action-vote {
       display: flex;
+
       > * {
         height: 40px;
         width: 134px;
@@ -32,13 +34,16 @@
         font-family: $font-roboto;
         text-transform: initial;
       }
+
       &__icon {
         margin-right: 7px;
       }
+
       &__text {
         color: $cadet-grey;
         width: 100%;
         text-align: center;
+        margin-right: 38px;
       }
     }
   }
@@ -46,11 +51,11 @@
   &__vote {
     cursor: pointer;
     outline: none;
-    width: 100%;
+    flex: 1;
     display: flex;
     justify-content: space-between;
-    height: 40px;
     margin-right: 10px;
+    height: 40px;
     background-color: $white;
     border: 1px solid $grey-sky;
     border-radius: 3px;
@@ -71,10 +76,18 @@
   }
 
   /* Responsive */
+  @media #{$desktop} {
+    &--open {
+      .voting-footer__container {
+        width: initial;
+      }
+    }
+  }
+
   @media #{$mobile} {
     flex-direction: column;
     height: 100%;
-    padding: 0 15px;
+    padding: 20px;
 
     // hide desktop elements
     &__total-votes,
@@ -92,28 +105,44 @@
 
     &__vote,
     &__container {
+      margin: 0;
       margin-bottom: 10px;
     }
 
+    &__vote {
+      width: 100%;
+      height: 32px;
+      padding: 0 10px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
     &__container {
+      width: 100%;
       align-items: center;
-      height: 71px;
-      margin: 0 20px 0 0;
+      margin: 0;
       font-size: 16px;
       font-weight: 400;
 
       &__action-vote--mobile {
-        cursor: pointer;
+        position: relative;
         display: flex;
         flex-direction: row;
         align-items: center;
+        width: 100%;
+        padding: 15px 0;
         background: transparent;
         font-size: 16px;
         font-weight: 400;
         color: $blue;
         border: none;
-        outline: none;
+        cursor: pointer;
+
         &__arrow {
+          position: relative;
+          right: 5px;
           width: 0;
           height: 0;
           margin-left: 10px;
@@ -121,6 +150,11 @@
           border-bottom: 7px solid transparent;
           border-left: 7px solid $blue;
         }
+      }
+
+      &__action-vote--mobile__text {
+        flex: 1;
+        margin: 0;
       }
     }
 
