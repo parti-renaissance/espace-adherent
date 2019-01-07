@@ -27,67 +27,28 @@ Feature:
         },
         "items": [
             {
-                "uuid": "b99933f3-180c-4248-82f8-1b0eb950740d",
-                "thread": {
-                    "uuid": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
-                    "answer": {
-                        "id": 1
-                    },
-                    "content": "J'ouvre une discussion sur le problème.",
-                    "author": {
-                        "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
-                        "first_name": "Carl",
-                        "last_name": "Mirabeau"
-                    },
-                    "created_at": "@string@.isDateTime()"
-                },
-                "content": "Aenean viverra efficitur lorem",
+                "uuid": "001a53d0-1134-429c-8dc1-c57643b3f069",
+                "content": "Commentaire refusé",
                 "author": {
-                    "uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67",
-                    "first_name": "Benjamin",
-                    "last_name": "Duroc"
+                    "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
+                    "first_name": "Laura",
+                    "last_name": "Deloche"
                 },
                 "created_at": "@string@.isDateTime()"
             },
             {
-                "uuid": "60123090-6cdc-4de6-9cb3-07e2ec411f2f",
-                "thread": {
-                    "uuid": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
-                    "answer": {
-                        "id": 1
-                    },
-                    "content": "J'ouvre une discussion sur le problème.",
-                    "author": {
-                        "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
-                        "first_name": "Carl",
-                        "last_name": "Mirabeau"
-                    },
-                    "created_at": "@string@.isDateTime()"
-                },
-                "content": "Lorem Ipsum Commentaris",
+                "uuid": "3fa38c45-1122-4c48-9ada-b366b3408fec",
+                "content": "Commentaire signalé",
                 "author": {
-                    "uuid":"a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
-                    "first_name": "Francis",
-                    "last_name": "Brioul"
+                    "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
+                    "first_name": "Laura",
+                    "last_name": "Deloche"
                 },
                 "created_at": "@string@.isDateTime()"
             },
             {
-                "uuid": "f716d3ba-004f-4958-af26-a7b010a6d458",
-                "thread": {
-                    "uuid": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
-                    "answer": {
-                        "id": 1
-                    },
-                    "content": "J'ouvre une discussion sur le problème.",
-                    "author": {
-                        "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
-                        "first_name": "Carl",
-                        "last_name": "Mirabeau"
-                    },
-                    "created_at": "@string@.isDateTime()"
-                },
-                "content": "Commentaire d'un référent",
+                "uuid": "ecbe9136-3dc0-477d-b817-a25878dd639a",
+                "content": "Deuxième commentaire d'un référent",
                 "author": {
                     "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                     "first_name": "Referent",
@@ -99,7 +60,7 @@ Feature:
     }
     """
 
-  Scenario: As a non logged-in user I can see visibled thread comments for an idea
+  Scenario: As a non logged-in user I can see visible thread comments for a specific thread
     When I send a "GET" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/comments"
     Then the response status code should be 200
     And the response should be in JSON
@@ -115,73 +76,34 @@ Feature:
         },
         "items": [
             {
-                "uuid": "b99933f3-180c-4248-82f8-1b0eb950740d",
-                "thread": {
-                    "uuid": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
-                    "answer": {
-                        "id": 1
-                    },
-                    "content": "J'ouvre une discussion sur le problème.",
-                    "author": {
-                        "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
-                        "first_name": "Carl",
-                        "last_name": "Mirabeau"
-                    },
-                    "created_at": "@string@.isDateTime()"
-                },
-                "content": "Aenean viverra efficitur lorem",
+                "uuid": "ecbe9136-3dc0-477d-b817-a25878dd639a",
+                "content": "Deuxième commentaire d'un référent",
                 "author": {
-                    "uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67",
-                    "first_name": "Benjamin",
-                    "last_name": "Duroc"
-                },
-                "created_at": "@string@.isDateTime()"
-            },
-            {
-                "uuid": "60123090-6cdc-4de6-9cb3-07e2ec411f2f",
-                "thread": {
-                    "uuid": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
-                    "answer": {
-                        "id": 1
-                    },
-                    "content": "J'ouvre une discussion sur le problème.",
-                    "author": {
-                        "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
-                        "first_name": "Carl",
-                        "last_name": "Mirabeau"
-                    },
-                    "created_at": "@string@.isDateTime()"
-                },
-                "content": "Lorem Ipsum Commentaris",
-                "author": {
-                    "uuid":"a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
-                    "first_name": "Francis",
-                    "last_name": "Brioul"
+                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "first_name": "Referent",
+                    "last_name": "Referent"
                 },
                 "created_at": "@string@.isDateTime()"
             },
             {
                 "uuid": "f716d3ba-004f-4958-af26-a7b010a6d458",
-                "thread": {
-                    "uuid": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
-                    "answer": {
-                        "id": 1
-                    },
-                    "content": "J'ouvre une discussion sur le problème.",
-                    "author": {
-                        "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
-                        "first_name": "Carl",
-                        "last_name": "Mirabeau"
-                    },
-                    "created_at":  "@string@.isDateTime()"
-                },
                 "content": "Commentaire d'un référent",
                 "author": {
                     "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                     "first_name": "Referent",
                     "last_name": "Referent"
                 },
-                "created_at":  "@string@.isDateTime()"
+                "created_at": "@string@.isDateTime()"
+            },
+            {
+                "uuid": "60123090-6cdc-4de6-9cb3-07e2ec411f2f",
+                "content": "Lorem Ipsum Commentaris",
+                "author": {
+                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
+                    "first_name": "Francis",
+                    "last_name": "Brioul"
+                },
+                "created_at": "@string@.isDateTime()"
             }
         ]
     }
@@ -239,19 +161,6 @@ Feature:
     And the JSON should be equal to:
     """
     {
-       "thread":{
-          "answer":{
-             "id":1
-          },
-          "content":"J'ouvre une discussion sur le probl\u00e8me.",
-          "author":{
-             "uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458",
-             "first_name":"Carl",
-             "last_name":"Mirabeau"
-          },
-          "created_at": "@string@.isDateTime()",
-          "uuid":"dfd6a2f2-5579-421f-96ac-98993d0edea1"
-       },
        "content":"Aenean viverra efficitur lorem",
        "author":{
           "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",

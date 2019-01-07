@@ -31,7 +31,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *         "filters": {"thread.answer"}
  *     },
  *     collectionOperations={
- *         "get",
+ *         "get": {
+ *             "normalization_context": {
+ *                 "groups": {"thread_list_read"}
+ *             }
+ *         },
  *         "post": {
  *             "access_control": "is_granted('ROLE_ADHERENT')",
  *         }
@@ -110,13 +114,17 @@ class Thread extends BaseComment implements AuthorInterface, ReportableInterface
      *
      * @Assert\NotNull
      *
-     * @SymfonySerializer\Groups("thread_comment_read")
+     * @SymfonySerializer\Groups({"thread_comment_read", "thread_list_read"})
      */
     private $answer;
 
     /**
-     * @ORM\OneToMany(targetEntity="ThreadComment", mappedBy="thread", cascade={"remove"}, orphanRemoval=true)
      * @ApiSubresource
+     *
+     * @ORM\OneToMany(targetEntity="ThreadComment", mappedBy="thread", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"createdAt": "DESC"})
+     *
+     * @SymfonySerializer\Groups({"thread_list_read"})
      */
     private $comments;
 
