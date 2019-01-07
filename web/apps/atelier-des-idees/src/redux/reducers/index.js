@@ -8,6 +8,7 @@ import ideas from './ideas';
 import myIdeas from './myIdeas';
 import myContributions from './myContributions';
 import currentIdea from './currentIdea';
+import threads from './threads';
 import pinned from './pinned';
 import reports from './reports';
 import staticData from './static';
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     loading,
     modal,
     ideas,
+    threads,
     myIdeas,
     myContributions,
     currentIdea,
