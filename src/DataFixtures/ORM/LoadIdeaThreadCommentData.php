@@ -18,6 +18,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
     public const THREAD_COMMENT_04_UUID = '02bf299f-678a-4829-a6a1-241995339d8d';
     public const THREAD_COMMENT_05_UUID = '001a53d0-1134-429c-8dc1-c57643b3f069';
     public const THREAD_COMMENT_06_UUID = '3fa38c45-1122-4c48-9ada-b366b3408fec';
+    public const THREAD_COMMENT_07_UUID = 'ecbe9136-3dc0-477d-b817-a25878dd639a';
 
     public function load(ObjectManager $manager)
     {
@@ -53,6 +54,15 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
             new \DateTime('-2 minutes')
         );
 
+        $anotherCommentFromAdherent8 = ThreadComment::create(
+            Uuid::fromString(self::THREAD_COMMENT_07_UUID),
+            'Deuxième commentaire d\'un référent',
+            $this->getReference('adherent-8'),
+            $threadAQProblemAdherent2,
+            ThreadCommentStatusEnum::POSTED,
+            new \DateTime('-1 minute')
+        );
+
         $commentFromAdherent9 = ThreadComment::create(
             Uuid::fromString(self::THREAD_COMMENT_04_UUID),
             'Commentaire de Laura',
@@ -81,6 +91,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
         $manager->persist($commentFromAdherent6);
         $manager->persist($commentFromAdherent7);
         $manager->persist($commentFromAdherent8);
+        $manager->persist($anotherCommentFromAdherent8);
         $manager->persist($commentFromAdherent9);
         $manager->persist($commentRefused);
         $manager->persist($commentReported);

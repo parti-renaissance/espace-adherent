@@ -14,7 +14,7 @@ trait EntityTimestampableTrait
      *
      * @ORM\Column(type="datetime")
      *
-     * @SymfonySerializer\Groups("idea_list_read")
+     * @SymfonySerializer\Groups({"idea_list_read", "thread_comment_read"})
      * @Gedmo\Timestampable(on="create")
      */
     protected $createdAt;

@@ -6,8 +6,8 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadIdeaAnswerData |
-      | LoadIdeaThreadData |
+      | LoadIdeaAnswerData        |
+      | LoadIdeaThreadData        |
       | LoadIdeaThreadCommentData |
 
   Scenario: As a non logged-in user I can see visibled threads paginated
@@ -19,10 +19,10 @@ Feature:
     {
         "metadata": {
             "total_items": 6,
-            "items_per_page": 2,
-            "count": 2,
+            "items_per_page": 3,
+            "count": 3,
             "current_page": 1,
-            "last_page": 3
+            "last_page": 2
         },
         "items": [
             {
@@ -35,7 +35,8 @@ Feature:
                     "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
                     "first_name": "Carl",
                     "last_name": "Mirabeau"
-                }
+                },
+                "created_at": "@string@.isDateTime()"
             },
             {
                 "uuid": "6b077cc4-1cbd-4615-b607-c23009119406",
@@ -47,7 +48,21 @@ Feature:
                     "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
                     "first_name": "Lucie",
                     "last_name": "Olivera"
-                }
+                },
+                "created_at": "@string@.isDateTime()"
+            },
+            {
+                "uuid": "a508a7c5-8b07-41f4-8515-064f674a65e8",
+                "answer": {
+                    "id": @integer@
+                },
+                "content": "J'ouvre une discussion sur la comparaison.",
+                "author": {
+                    "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+                    "first_name": "Gisele",
+                    "last_name": "Berthoux"
+                },
+                "created_at": "@string@.isDateTime()"
             }
         ]
     }
@@ -62,7 +77,7 @@ Feature:
     {
         "metadata": {
             "total_items": 1,
-            "items_per_page": 2,
+            "items_per_page": 3,
             "count": 1,
             "current_page": 1,
             "last_page": 1
@@ -78,7 +93,8 @@ Feature:
                     "uuid":"b4219d47-3138-5efd-9762-2ef9f9495084",
                     "first_name": "Gisele",
                     "last_name": "Berthoux"
-                }
+                },
+                "created_at": "@string@.isDateTime()"
             }
         ]
     }
@@ -108,6 +124,7 @@ Feature:
           "first_name":"Martine",
           "last_name":"Lindt"
        },
+       "created_at": "@string@.isDateTime()",
        "uuid":"@string@"
     }
     """
@@ -134,6 +151,7 @@ Feature:
           "first_name":"Carl",
           "last_name":"Mirabeau"
        },
+       "created_at": "@string@.isDateTime()",
        "uuid":"dfd6a2f2-5579-421f-96ac-98993d0edea1"
     }
     """
