@@ -23,6 +23,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ApiResource(
  *     attributes={
+ *         "pagination_items_per_page": 3,
  *         "normalization_context": {
  *             "groups": {"thread_comment_read"}
  *         },
