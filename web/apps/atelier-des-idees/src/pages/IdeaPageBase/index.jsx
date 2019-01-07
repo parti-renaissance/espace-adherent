@@ -183,7 +183,8 @@ class IdeaPageBase extends React.Component {
                                 guidelines={this.props.guidelines}
                                 values={this.state.answers}
                                 isAuthor={this.props.isAuthor}
-                                isEditing={idea.status === ideaStatus.DRAFT}
+                                isDraft={idea.status === ideaStatus.DRAFT}
+                                onAutoSave={this.onSaveIdea}
                             />
                         )}
                         {idea.status === ideaStatus.DRAFT && (
