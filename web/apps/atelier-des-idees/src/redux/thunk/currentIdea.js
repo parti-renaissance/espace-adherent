@@ -1,7 +1,7 @@
 import { ideaStatus } from '../../constants/api';
 import history from '../../history';
 import { SAVE_CURRENT_IDEA, PUBLISH_CURRENT_IDEA, FETCH_GUIDELINES, VOTE_CURRENT_IDEA } from '../constants/actionTypes';
-import { publishIdea, saveIdea } from '../thunk/ideas';
+import { saveAndPublishIdea } from '../thunk/ideas';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { selectCurrentIdea } from '../selectors/currentIdea';
 import { setCurrentIdea, updateCurrentIdea, setGuidelines, toggleVoteCurrentIdea } from '../actions/currentIdea';
@@ -79,14 +79,7 @@ export function saveCurrentIdea(ideaData) {
 export function publishCurrentIdea(ideaData) {
     return (dispatch, getState, axios) => {
         const { uuid } = selectCurrentIdea(getState());
-        dispatch(createRequest(PUBLISH_CURRENT_IDEA));
-        dispatch(saveIdea(uuid, ideaData))
-            .then((data) => {
-                dispatch(publishIdea(uuid || data.uuid)).then(() =>
-                    dispatch(createRequestSuccess(PUBLISH_CURRENT_IDEA))
-                );
-            })
-            .catch(() => dispatch(createRequestFailure(PUBLISH_CURRENT_IDEA)));
+        return dispatch(saveAndPublishIdea(uuid, ideaData));
     };
 }
 

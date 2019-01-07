@@ -9,9 +9,9 @@ function Button(props) {
                 'button--loading': props.isLoading,
             })}
             aria-label={props.label}
-            disabled={props.disabled}
+            disabled={props.disabled || props.isLoading}
             onClick={() => {
-                if (!props.disabled && props.onClick) {
+                if (props.onClick && !props.disabled && !props.isLoading) {
                     props.onClick();
                 }
             }}

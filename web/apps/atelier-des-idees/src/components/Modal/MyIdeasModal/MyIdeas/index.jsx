@@ -68,7 +68,7 @@ class MyIdeas extends React.Component {
                                                     <Button
                                                         className="my-ideas__category__idea__actions__publish button--primary"
                                                         label="Publier"
-                                                        onClick={() => console.warn('Implement me')}
+                                                        onClick={() => this.props.onPublishIdea(idea.uuid)}
                                                     />
                                                 )}
                                                 <Link
@@ -106,6 +106,7 @@ MyIdeas.propTypes = {
         })
     ).isRequired,
     onDeleteIdea: PropTypes.func.isRequired,
+    onPublishIdea: PropTypes.func.isRequired,
 };
 
 export default MyIdeas;

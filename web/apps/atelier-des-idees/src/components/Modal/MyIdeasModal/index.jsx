@@ -9,7 +9,9 @@ function MyIdeasModal(props) {
     const panes = [
         {
             title: 'Mes idées',
-            component: () => <MyIdeas ideas={props.my_ideas} onDeleteIdea={props.onDeleteIdea} />,
+            component: () => (
+                <MyIdeas ideas={props.my_ideas} onDeleteIdea={props.onDeleteIdea} onPublishIdea={props.onPublishIdea} />
+            ),
         },
         {
             title: 'Mes contributions',
@@ -49,6 +51,7 @@ MyIdeasModal.propTypes = {
         })
     ).isRequired,
     onDeleteIdea: PropTypes.func.isRequired,
+    onPublishIdea: PropTypes.func.isRequired,
 };
 
 export default MyIdeasModal;

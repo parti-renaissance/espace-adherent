@@ -1,4 +1,4 @@
-import { FETCH_IDEAS, FETCH_IDEA, PUBLISH_IDEA, FETCH_MY_IDEAS, VOTE_IDEA } from '../constants/actionTypes';
+import { FETCH_IDEAS, FETCH_IDEA, SAVE_IDEA, PUBLISH_IDEA, FETCH_MY_IDEAS, VOTE_IDEA } from '../constants/actionTypes';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { addIdeas, setIdeas, removeIdea, toggleVoteIdea } from '../actions/ideas';
 import { setCurrentIdea } from '../actions/currentIdea';
@@ -138,10 +138,17 @@ export function voteIdea(id, vote) {
 
 export function saveIdea(id, ideaData) {
     return (dispatch, getState, axios) => {
+        dispatch(createRequest(SAVE_IDEA, id));
         const requestBody = id
             ? { method: 'PUT', url: `/api/ideas/${id}`, data: ideaData }
             : { method: 'POST', url: '/api/ideas', data: ideaData };
-        return axios(requestBody).then(res => res.data);
+        return axios(requestBody)
+            .then(res => res.data)
+            .then(() => dispatch(createRequestSuccess(SAVE_IDEA, id)))
+            .catch((error) => {
+                dispatch(createRequestFailure(SAVE_IDEA, id));
+                throw error;
+            });
     };
 }
 
@@ -165,4 +172,11 @@ export function publishIdea(id) {
             .then(() => dispatch(createRequestSuccess(PUBLISH_IDEA, id)))
             .catch(() => dispatch(createRequestFailure(PUBLISH_IDEA, id)));
     };
+}
+
+export function saveAndPublishIdea(uuid, data) {
+    return dispatch =>
+        dispatch(saveIdea(uuid, data)).then((resData) => {
+            dispatch(publishIdea(uuid || resData.uuid));
+        });
 }
