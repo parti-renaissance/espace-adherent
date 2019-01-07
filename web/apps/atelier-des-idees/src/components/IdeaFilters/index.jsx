@@ -5,8 +5,10 @@ import Select from '../Select';
 const filterItems = {
     order: {
         options: [
-            { value: 'created_at/ASC', label: 'Plus récentes' },
-            { value: 'created_at/DESC', label: 'Plus anciennes' },
+            { value: 'created_at/DESC', label: 'Plus récentes' },
+            { value: 'created_at/ASC', label: 'Plus anciennes' },
+            { value: 'comments_count/DESC', label: 'Plus commentées' },
+            { value: 'votes_count.total/DESC', label: 'Plus votées' },
         ],
     },
 };
