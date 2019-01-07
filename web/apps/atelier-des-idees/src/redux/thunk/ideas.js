@@ -117,22 +117,26 @@ export function fetchUserContributions(params = {}) {
 
 export function voteIdea(id, vote) {
     return (dispatch, getState, axios) => {
-        dispatch(toggleVoteIdea(id, vote));
-        dispatch(createRequest(VOTE_IDEA, id));
-        const requestBody = {
-            method: 'POST',
-            url: '/api/votes',
-            data: { idea: id, type: vote },
-        };
-        return axios(requestBody)
-            .then(res => res.data)
-            .then(() => {
-                dispatch(createRequestSuccess(VOTE_IDEA, id));
-            })
-            .catch(() => {
-                dispatch(toggleVoteIdea(id, vote));
-                dispatch(createRequestFailure(VOTE_IDEA, id));
-            });
+        const isAuthenticated = selectIsAuthenticated(getState());
+        if (isAuthenticated) {
+            dispatch(toggleVoteIdea(id, vote));
+            dispatch(createRequest(VOTE_IDEA, id));
+            const requestBody = {
+                method: 'POST',
+                url: '/api/votes',
+                data: { idea: id, type: vote },
+            };
+            return axios(requestBody)
+                .then(res => res.data)
+                .then(() => {
+                    dispatch(createRequestSuccess(VOTE_IDEA, id));
+                })
+                .catch(() => {
+                    dispatch(toggleVoteIdea(id, vote));
+                    dispatch(createRequestFailure(VOTE_IDEA, id));
+                });
+        }
+        window.location = '/connexion';
     };
 }
 
