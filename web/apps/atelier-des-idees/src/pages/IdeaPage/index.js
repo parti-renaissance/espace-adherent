@@ -49,7 +49,6 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
-    // TODO: replace with actual action creators
     return {
         initIdeaPage: () => {
             const { id } = ownProps.match.params;
