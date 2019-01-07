@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import CommentsList from '../../components/CommentsList';
 import { selectCurrentIdea, selectCurrentIdeaThread } from '../../redux/selectors/currentIdea';
+import { selectAnswerThreads } from '../../redux/selectors/threads';
 import { selectIsAuthenticated } from '../../redux/selectors/auth';
 import { deleteComment, approveComment } from '../../redux/thunk/threads';
 import { postCommentToCurrentIdea } from '../../redux/thunk/currentIdea';
@@ -39,7 +40,7 @@ function mapStateToProps(state, { questionId }) {
     const currentIdea = selectCurrentIdea(state);
     const currentAnswer = currentIdea.answers && currentIdea.answers.find(answer => answer.question.id === questionId);
     const answerId = currentAnswer && currentAnswer.id;
-    const answerThread = selectCurrentIdeaThread(state, answerId);
+    const answerThreads = selectAnswerThreads(state, answerId);
     return {
         comments: [],
         isAuthenticated,

@@ -1,11 +1,11 @@
-import { setCurrentIdeaThreads } from '../actions/currentIdea';
+import { setThreads } from '../actions/threads';
 
 export function fetchIdeaThreads(id) {
     return (dispatch, getState, axios) =>
         axios
-            .get(`/api/threads/${id}/comments`)
+            .get(`/api/threads?answer.idea.uuid=${id}`)
             .then(res => res.data)
-            .then(data => dispatch(setCurrentIdeaThreads(data.items)));
+            .then(data => dispatch(setThreads(data)));
 }
 
 export function approveComment(id, parentId = '') {
