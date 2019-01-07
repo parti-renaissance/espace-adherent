@@ -33,7 +33,7 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $includeSupevisors;
+    private $includeSupervisors;
 
     /**
      * @ORM\Column(type="text")
@@ -93,7 +93,7 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         bool $includeAdherentsNoCommittee,
         bool $includeAdherentsInCommittee,
         bool $includeHosts,
-        bool $includeSupevisors,
+        bool $includeSupervisors,
         string $firstName,
         string $lastName,
         string $queryAreaCode,
@@ -113,7 +113,7 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         $this->includeAdherentsNoCommittee = $includeAdherentsNoCommittee;
         $this->includeAdherentsInCommittee = $includeAdherentsInCommittee;
         $this->includeHosts = $includeHosts;
-        $this->includeSupevisors = $includeSupevisors;
+        $this->includeSupervisors = $includeSupervisors;
         $this->queryAreaCode = $queryAreaCode;
         $this->queryCity = $queryCity;
         $this->queryId = $queryId;
@@ -146,7 +146,7 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
             $message->getFilter()->getQueryGender(),
             $message->getFilter()->getQueryAgeMinimum(),
             $message->getFilter()->getQueryAgeMaximum(),
-            $message->getFilter()->getIncludeCitizenProject(),
+            $message->getFilter()->includeCitizenProject(),
             $message->getFilter()->getQueryInterests()
         );
     }
@@ -181,9 +181,9 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         return $this->includeHosts;
     }
 
-    public function includeSupevisors(): bool
+    public function includeSupervisors(): bool
     {
-        return $this->includeSupevisors;
+        return $this->includeSupervisors;
     }
 
     public function getQueryAreaCode(): string
@@ -261,7 +261,7 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         $this->ageMaximum = $ageMaximum;
     }
 
-    public function getIncludeCitizenProject(): bool
+    public function includeCitizenProject(): bool
     {
         return $this->includeCP;
     }

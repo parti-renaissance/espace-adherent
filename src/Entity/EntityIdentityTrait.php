@@ -32,10 +32,8 @@ trait EntityIdentityTrait
 
     /**
      * Returns the primary key identifier.
-     *
-     * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

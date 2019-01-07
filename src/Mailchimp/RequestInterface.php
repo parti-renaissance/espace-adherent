@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation\Request;
+namespace AppBundle\Mailchimp;
 
 interface RequestInterface
 {

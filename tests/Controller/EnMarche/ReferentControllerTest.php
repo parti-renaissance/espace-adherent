@@ -320,7 +320,7 @@ class ReferentControllerTest extends WebTestCase
         $this->assertTrue($message->includeAdherentsNoCommittee());
         $this->assertTrue($message->includeAdherentsInCommittee());
         $this->assertTrue($message->includeHosts());
-        $this->assertTrue($message->includeSupevisors());
+        $this->assertTrue($message->includeSupervisors());
         $this->assertEmpty($message->getQueryAreaCode());
         $this->assertEmpty($message->getQueryCity());
         $this->assertEmpty($message->getQueryId());

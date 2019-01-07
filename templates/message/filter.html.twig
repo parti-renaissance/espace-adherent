@@ -1,0 +1,15 @@
+{% extends 'message/_layout.html.twig' %}
+
+{% block message_page_title 'Filtrer pour envoyer' %}
+
+{% block messages_header_left_block %}
+    <a href="{{ path('app_message_list', route_params|default({})) }}">← Retour</a>
+{% endblock %}
+
+{% block messages_header_right_block %}
+    <span class="text--bold text--black">2</span> / 2
+{% endblock %}
+
+{% block message_content %}
+    {% include('message/filter/'~ message.type ~'.html.twig') %}
+{% endblock %}

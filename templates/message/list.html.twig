@@ -1,0 +1,55 @@
+{% extends 'message/_layout.html.twig' %}
+
+{% block message_content %}
+    <div class="b__nudge--bottom-small">
+        <a class="btn btn--blue" href="{{ path("app_message_create", route_params|default({})) }}">Nouveau message</a>
+    </div>
+
+    <table class="table__default">
+        <thead>
+            <tr>
+                <th>Statut</th>
+                <th>Label</th>
+                <th>Objet</th>
+                <th>Date de création</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for message in messages %}
+                <tr class="{{ message.status == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'text--gray' : '' }}">
+                    <td>{{ message.status|trans }}</td>
+                    <td>{{ message.label }}</td>
+                    <td>{{ message.subject }}</td>
+                    <td>{{ message.createdAt|date }}</td>
+                    <td>
+                        <div class="action-menu-oval">
+                            <a href="javascript:void(0);">
+                                <span class="oval"></span>
+                                <span class="oval"></span>
+                                <span class="oval"></span>
+                            </a>
+                            <div class="action-dropdown-menu">
+                                <a class="link--blue" href="{{ path('app_message_update', route_params|default({})|merge({uuid: message.uuid})) }}">Modifier</a>
+                                {% if message.isSynchronized %}
+                                    <a class="link--no-decor" href="{{ path('app_message_preview', route_params|default({})|merge({uuid: message.uuid})) }}">Visualiser</a>
+                                {% else %}
+                                    <a class="btn--disabled" href="javascript:void(0);">
+                                        <span class="text--small">
+                                            Visualiser<br/>
+                                            (en cours de préparation ...)
+                                        </span>
+                                    </a>
+                                {% endif %}
+                                <a class="link--blue" href="{{ path('app_message_filter', route_params|default({})|merge({uuid: message.uuid})) }}">Filtrer</a>
+                                <a class="link--red" href="{{ path('app_message_delete', route_params|default({})|merge({uuid: message.uuid})) }}">Supprimer</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="5" class="text--center">Vous n'avez aucun message</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
