@@ -143,3 +143,13 @@ Feature:
     Given I am logged as "luciole1989@spambox.fr"
     When I am on "/espace-adherent/tableau-de-bord"
     Then I should see "responsable procuration"
+
+  Scenario: As a host of single committee, I should not see a dropdown for a single committee
+    Given I am logged as "gisele-berthoux@caramail.com"
+    When I am on "/evenements"
+    Then I should not see an ".nav-dropdown__menu.nav-dropdown__black .list__links" element
+
+  Scenario: As a host of multi committee, I should see a dropdown with committees
+    Given I am logged as "jacques.picard@en-marche.fr"
+    When I am on "/evenements"
+    Then I should see an ".nav-dropdown__menu.nav-dropdown__black .list__links" element

@@ -8,6 +8,7 @@ use AppBundle\Contact\ContactMessage;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\TurnkeyProject;
 use AppBundle\Exception\BadUuidRequestException;
@@ -24,6 +25,7 @@ use AppBundle\Membership\UserEvent;
 use AppBundle\Membership\UserEvents;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CitizenProjectRepository;
+use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\SummaryRepository;
@@ -294,12 +296,13 @@ class AdherentController extends Controller
         ]);
     }
 
-    public function listCommitteesAlAction(): Response
+    public function listCommitteesAlAction(CommitteeMembershipRepository $repository): Response
     {
-        $manager = $this->get('app.committee.manager');
-
         return $this->render('adherent/list_my_committees_al.html.twig', [
-            'committees' => $manager->getAdherentCommittees($this->getUser()),
+            'committees' => $repository->findCommitteesByPrivilege(
+                $this->getUser(),
+                CommitteeMembership::getHostPrivileges()
+            ),
         ]);
     }
 
