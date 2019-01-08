@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { SET_THREADS, ADD_THREAD } from '../constants/actionTypes';
+import { SET_THREADS, ADD_THREAD, REMOVE_THREAD } from '../constants/actionTypes';
 
 const initialState = { threads: { items: [], metadata: {} }, comments: { items: [], metadata: {} } };
 
@@ -10,6 +10,10 @@ function threadsReducer(state = initialState.threads, action) {
         return payload.data;
     case ADD_THREAD:
         return { ...state, items: [...state.items, payload.data] };
+    case REMOVE_THREAD: {
+        const { id } = payload;
+        return { ...state, items: state.items.filter(thread => thread.uuid !== id) };
+    }
     default:
         return state;
     }
