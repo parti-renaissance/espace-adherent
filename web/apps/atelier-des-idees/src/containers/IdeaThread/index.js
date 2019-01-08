@@ -42,7 +42,7 @@ function mapStateToProps(state, { questionId }) {
     const answerId = currentAnswer && currentAnswer.id;
     const answerThreads = selectAnswerThreads(state, answerId);
     return {
-        comments: [],
+        comments: answerThreads,
         isAuthenticated,
         answerId,
     };
