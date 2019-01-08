@@ -1,11 +1,13 @@
-import { setCurrentIdeaThreads } from '../actions/currentIdea';
+import { setThreads, removeThread, toggleApproveThread } from '../actions/threads';
+import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
+import { POST_THREAD } from '../constants/actionTypes';
 
 export function fetchIdeaThreads(id) {
     return (dispatch, getState, axios) =>
         axios
-            .get(`/api/threads/${id}/comments`)
+            .get(`/api/threads?answer.idea.uuid=${id}`)
             .then(res => res.data)
-            .then(data => dispatch(setCurrentIdeaThreads(data.items)));
+            .then(data => dispatch(setThreads(data)));
 }
 
 export function approveComment(id, parentId = '') {
@@ -14,7 +16,8 @@ export function approveComment(id, parentId = '') {
         if (parentId) {
             type = 'thread_comments';
         }
-        return axios.put(`/api/${type}/${id}/approve`);
+        dispatch(toggleApproveThread(id));
+        return axios.put(`/api/${type}/${id}/approve`).catch(() => dispatch(toggleApproveThread(id)));
     };
 }
 
@@ -24,20 +27,29 @@ export function deleteComment(id, parentId = '') {
         if (parentId) {
             type = 'thread_comments';
         }
-        return axios.delete(`/api/${type}/${id}`);
+        return axios.delete(`/api/${type}/${id}`).then(() => dispatch(removeThread(id)));
     };
 }
 
 export function postComment(content, answerId, parentId = '') {
     return (dispatch, getState, axios) => {
-        // TODO: use answerId
         let type = 'threads';
         const body = { content };
         if (parentId) {
             type = 'thread_comments';
             body.thread = parentId;
+        } else {
+            body.answer = answerId;
         }
-        return axios.post(`/api/${type}`, body);
+        dispatch(createRequest(POST_THREAD, answerId));
+        return axios
+            .post(`/api/${type}`, body)
+            .then(res => res.data)
+            .then(() => dispatch(createRequestSuccess(POST_THREAD, answerId)))
+            .catch((error) => {
+                dispatch(createRequestFailure(POST_THREAD, answerId));
+                throw error;
+            });
     };
 }
 

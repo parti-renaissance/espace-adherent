@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Comment from './Comment';
 import TextArea from '../TextArea';
+import Button from '../Button';
 
 class CommentsList extends React.Component {
     constructor(props) {
@@ -22,6 +23,11 @@ class CommentsList extends React.Component {
             return;
         }
         this.props.onSendComment(this.state.comment);
+        this.setState({ comment: '' });
+    }
+
+    handleCommentChange(value) {
+        this.setState({ comment: value, errorComment: '' });
     }
 
     render() {
@@ -58,11 +64,12 @@ class CommentsList extends React.Component {
                                     {/* TODO: add onEdit and onApproved */}
                                     <Comment
                                         {...comment}
-                                        ownerId={this.props.ownerId}
                                         hasActions={!this.props.parentId}
-                                        isAuthor={this.props.ownerId === comment.author.uuid}
+                                        isAuthor={this.props.currentUserId === comment.author.uuid}
                                         onReply={() => this.setState({ replyingTo: comment.uuid })}
                                         onDelete={() => this.props.onDeleteComment(comment.uuid)}
+                                        onApprove={() => this.props.onApproveComment(comment.uuid)}
+                                        canApprove={this.props.currentUserId === this.props.ownerId}
                                     />
                                     {((comment.replies && !!comment.replies.length) ||
                                           this.state.replyingTo === comment.uuid) && (
@@ -73,17 +80,27 @@ class CommentsList extends React.Component {
                                                         // send parent comment id as (optional) second parameter
                                                         this.props.onSendComment(value, comment.uuid)
                                                     }
+                                                    onLoadMore={() => this.props.onLoadMore(comment.uuid)}
                                                     parentId={comment.uuid}
                                                     showForm={this.props.showForm}
                                                     collapseLabel="réponse"
                                                     placeholder="Écrivez votre réponse"
                                                     emptyLabel={null}
+                                                    nbMore={comment.nbReplies - comment.replies.length}
                                                 />
                                             </div>
                                         )}
                                 </React.Fragment>
                             ))
                             : this.props.emptyLabel && <p className="comments-list__empty">{this.props.emptyLabel}</p>}
+                    </div>
+                )}
+                {0 < this.props.nbMore && (
+                    <div className="comments-list__more">
+                        <button
+                            className="comments-list__more-btn"
+                            onClick={() => this.props.onLoadMore()}
+                        >{`Afficher plus de réponses (${this.props.nbMore})`}</button>
                     </div>
                 )}
                 {this.props.showForm && (
@@ -96,13 +113,16 @@ class CommentsList extends React.Component {
                     >
                         <TextArea
                             value={this.state.comment}
-                            onChange={value => this.setState({ comment: value })}
+                            onChange={value => this.handleCommentChange(value)}
                             placeholder={this.props.placeholder}
                             error={this.state.errorComment}
                         />
-                        <button type="submit" className="comments-list__form__button button--primary">
-                            Envoyer
-                        </button>
+                        <Button
+                            type="submit"
+                            className="comments-list__form__button button--primary"
+                            label="Envoyer"
+                            isLoading={this.props.isSendingComment}
+                        />
                     </form>
                 )}
             </div>
@@ -112,11 +132,13 @@ class CommentsList extends React.Component {
 
 CommentsList.defaultProps = {
     comments: [],
+    isSendingComment: false,
     showForm: true,
     parentId: undefined,
     emptyLabel: 'Soyez le premier à contribuer sur cette partie',
     placeholder: 'Ajoutez votre contribution',
     collapseLabel: 'commentaire',
+    nbMore: 0,
 };
 
 CommentsList.propTypes = {
@@ -125,20 +147,25 @@ CommentsList.propTypes = {
             uuid: PropTypes.string.isRequired,
             author: PropTypes.object.isRequired,
             content: PropTypes.string.isRequired,
-            createdAt: PropTypes.string.isRequired, // iso date
+            created_at: PropTypes.string.isRequired, // iso date
             replies: PropTypes.array,
-            verified: PropTypes.bool,
+            approved: PropTypes.bool,
+            nbReplies: PropTypes.number,
         })
     ),
+    isSendingComment: PropTypes.bool,
     onSendComment: PropTypes.func.isRequired,
     onDeleteComment: PropTypes.func.isRequired,
     onEditComment: PropTypes.func.isRequired,
     onApproveComment: PropTypes.func.isRequired,
+    onLoadMore: PropTypes.func.isRequired,
+    currentUserId: PropTypes.string.isRequired,
     ownerId: PropTypes.string.isRequired,
     showForm: PropTypes.bool,
     parentId: PropTypes.string,
     emptyLabel: PropTypes.string,
     placeholder: PropTypes.string,
+    nbMore: PropTypes.number,
 };
 
 export default CommentsList;

@@ -4,6 +4,10 @@
   background-color: $snow;
   padding: 30px 25px;
 
+  .comments-list__comment {
+    margin-bottom: 15px;
+  }
+
   &__replies {
     > * {
       padding: 30px 0 30px 91px;
@@ -34,6 +38,18 @@
     &__label {
       font-size: 18px;
       color: $light-black;
+    }
+  }
+
+  &__more {
+    text-align: center;
+    padding: 20px 0;
+
+    &-btn {
+      @extend %reset-button;
+      color: $light-black;
+      font-size: 15px;
+      cursor: pointer;
     }
   }
 
