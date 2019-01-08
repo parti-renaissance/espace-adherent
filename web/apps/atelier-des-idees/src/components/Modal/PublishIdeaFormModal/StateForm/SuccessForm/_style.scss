@@ -1,25 +1,34 @@
 .success-form {
-	overflow-x: hidden;
-	display: flex;
-	flex-direction: column;
-	text-align: center;
-	justify-content: center;
-	align-items: center;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 
-	&__title {
-		margin-top: 76px;
-	}
+  &__title {
+    margin-top: 60px;
+    font-size: 26px;
+  }
 
-	&__subtitle {
-		margin: 17px 100px;
-		&__approved {
-			color: $ufo-green;
-		}
-	}
+  &__subtitle {
+    margin: 17px 0;
 
-	&__button {
-		width: 155px;
-		height: 40px;
-		margin: 25px 0 44px;
-	}
+    &__approved {
+      color: $ufo-green;
+    }
+  }
+
+  &__button {
+    width: 155px;
+    height: 40px;
+    margin: 25px 0 44px;
+  }
+
+  @media #{$mobile} {
+    &__title {
+      margin-top: 30px;
+      font-size: 18px;
+    }
+  }
 }
