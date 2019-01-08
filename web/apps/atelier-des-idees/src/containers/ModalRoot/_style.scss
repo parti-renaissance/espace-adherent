@@ -1,48 +1,50 @@
 .ReactModal__Body--open {
-	z-index: 2;
-	overflow: hidden;
+  z-index: 2;
+  overflow: hidden;
 }
 
 .modal-overlay {
-	position: fixed;
-	top: 0px;
-	right: 0px;
-	bottom: 0px;
-	left: 0px;
-	background-color: rgba($dark-jungle-green, 0.84);
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  background-color: rgba($dark-jungle-green, 0.84);
 }
 
 .modal {
-	width: 700px;
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	overflow: auto;
-	outline: none;
-	padding: 100px;
-	background-color: $snow;
+  width: 700px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+  outline: none;
+  padding: 100px;
+  background-color: $snow;
 
-	@media screen and (max-width: $width-sm) {
-		width: 100%;
-		padding: 0 20px;
-		padding-top: 80px;
-	}
+  @media screen and (max-width: $width-sm) {
+    width: 100%;
+    padding: 0 20px;
+    padding-top: 80px;
+  }
 
-	.modal-closeBtn {
-		@extend %reset-button;
-		position: absolute;
-		top: 30px;
-		left: 30px;
-		cursor: pointer;
+  .modal-closeBtn {
+    @extend %reset-button;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    cursor: pointer;
 
-		@media screen and (max-width: $width-sm) {
-			left: 20px;
-		}
-	}
+    @media screen and (max-width: $width-sm) {
+      left: 20px;
+    }
+  }
 
-	.modal-content-wrapper {
-		height: 100%;
-		overflow-y: auto;
-	}
+  .modal-content-wrapper {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    overflow-y: auto;
+  }
 }

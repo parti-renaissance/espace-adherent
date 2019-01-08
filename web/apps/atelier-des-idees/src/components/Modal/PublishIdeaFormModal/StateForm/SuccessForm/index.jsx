@@ -20,7 +20,7 @@ class SuccessForm extends React.PureComponent {
                 >
                     Voir la page
                 </Link>
-                <img src="assets/img/how-to-approve.svg" />
+                <img src="/assets/img/how-to-approve.svg" />
             </div>
         );
     }

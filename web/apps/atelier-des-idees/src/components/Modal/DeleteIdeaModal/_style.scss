@@ -1,11 +1,11 @@
 .delete-idea-modal {
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
 
   .delete-idea-modal__title {
+    margin-top: 50px;
     font-size: 26px;
   }
 
@@ -17,6 +17,12 @@
   .delete-ideal-modal__actions {
     .button:first-child {
       margin-right: 15px;
+    }
+  }
+
+  @media #{$mobile} {
+    .delete-idea-modal__title {
+      font-size: 18px;
     }
   }
 }
