@@ -1,4 +1,12 @@
 .idea-filters {
+  display: flex;
+  justify-content: space-between;
+
+  .idea-filters__section {
+    display: inline-flex;
+    align-items: center;
+  }
+
   .idea-filters__label,
   .select {
     display: inline-block;
@@ -13,5 +21,21 @@
 
   .select {
     width: 220px;
+
+    .select__input__control {
+      height: 43px;
+      border-color: $columbia-blue;
+      cursor: pointer;
+      color: $light-black;
+    }
+  }
+
+  .idea-filters__input {
+    height: 43px;
+    border: 1px solid $columbia-blue;
+    border-radius: 3px;
+    padding: 12px 15px;
+    font-size: 16px;
+    color: $light-black;
   }
 }
