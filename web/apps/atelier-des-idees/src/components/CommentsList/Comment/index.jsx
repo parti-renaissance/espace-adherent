@@ -38,9 +38,9 @@ function Comment(props) {
                             >
                                 Supprimer
                             </button>
-                            <button className="comments-list__comment__actions__button__edit" onClick={props.onEdit}>
+                            {/* <button className="comments-list__comment__actions__button__edit" onClick={props.onEdit}>
                                 Modifier
-                            </button>
+                    </button>*/}
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
@@ -60,9 +60,10 @@ function Comment(props) {
                                         Approuver
                                     </button>
                                 ))}
-                            <button className="comments-list__comment__actions__button__answer" onClick={props.onReply}>
+                            {/* TODO: uncomment when implemented */}
+                            {/* <button className="comments-list__comment__actions__button__answer" onClick={props.onReply}>
                                 Répondre
-                            </button>
+                                </button>*/}
                         </React.Fragment>
                     )}
                 </div>

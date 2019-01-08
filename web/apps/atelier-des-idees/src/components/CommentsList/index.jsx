@@ -22,6 +22,11 @@ class CommentsList extends React.Component {
             return;
         }
         this.props.onSendComment(this.state.comment);
+        this.setState({ comment: '' });
+    }
+
+    handleCommentChange(value) {
+        this.setState({ comment: value, errorComment: '' });
     }
 
     render() {
@@ -106,7 +111,7 @@ class CommentsList extends React.Component {
                     >
                         <TextArea
                             value={this.state.comment}
-                            onChange={value => this.setState({ comment: value })}
+                            onChange={value => this.handleCommentChange(value)}
                             placeholder={this.props.placeholder}
                             error={this.state.errorComment}
                         />
