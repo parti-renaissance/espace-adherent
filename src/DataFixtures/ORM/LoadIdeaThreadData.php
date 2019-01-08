@@ -4,7 +4,6 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\DataFixtures\AutoIncrementResetter;
 use AppBundle\Entity\IdeasWorkshop\Thread;
-use AppBundle\Entity\IdeasWorkshop\ThreadCommentStatusEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -32,7 +31,6 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
         'J\'ouvre une discussion sur le problème.',
         $adherent2,
         $this->getReference('answer-q-problem'),
-        ThreadCommentStatusEnum::POSTED,
         new \DateTime('2 hours ago')
         );
         $this->addReference('thread-aq-problem', $threadAQProblemAdherent2);
@@ -42,7 +40,6 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
             'J\'ouvre une discussion sur la solution.',
             $adherent4,
             $this->getReference('answer-q-answer'),
-            ThreadCommentStatusEnum::POSTED,
             new \DateTime('1 hour ago')
         );
         $this->setReference('thread-aq-answer', $threadAQAnswerAdherent4);
@@ -52,7 +49,6 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
             'J\'ouvre une discussion sur la comparaison.',
             $adherent5,
             $this->getReference('answer-q-compare'),
-            ThreadCommentStatusEnum::POSTED,
             new \DateTime('30 minutes ago')
         );
         $this->setReference('thread-aq-compare', $threadAQCompareAdherent5);
@@ -62,7 +58,6 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
             'Une discussion refusée.',
             $adherent5,
             $this->getReference('answer-q-compare'),
-            ThreadCommentStatusEnum::REFUSED,
             new \DateTime('10 minutes ago')
         );
 
@@ -71,8 +66,8 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
             'Une discussion signalée.',
             $adherent5,
             $this->getReference('answer-q-compare'),
-            ThreadCommentStatusEnum::REPORTED,
-            new \DateTime('5 minutes ago')
+            new \DateTime('5 minutes ago'),
+            false
         );
 
         $threadHE = Thread::create(
@@ -80,7 +75,6 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
             '[Help Ecology] J\'ouvre une discussion sur le problème.',
             $adherent5,
             $this->getReference('answer-q-problem-idea-he'),
-            ThreadCommentStatusEnum::POSTED,
             new \DateTime('2 minutes ago')
         );
 

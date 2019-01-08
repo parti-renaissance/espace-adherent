@@ -40,7 +40,8 @@ Feature:
                                 "first_name": "Referent",
                                 "last_name": "Referent"
                             },
-                            "created_at":"@string@.isDateTime()"
+                            "created_at":"@string@.isDateTime()",
+                            "approved": false
                         },
                         {
                             "uuid": "f716d3ba-004f-4958-af26-a7b010a6d458",
@@ -50,7 +51,8 @@ Feature:
                                 "first_name": "Referent",
                                 "last_name": "Referent"
                             },
-                            "created_at":"@string@.isDateTime()"
+                            "created_at":"@string@.isDateTime()",
+                            "approved": false
                         },
                         {
                             "uuid": "60123090-6cdc-4de6-9cb3-07e2ec411f2f",
@@ -60,7 +62,8 @@ Feature:
                                 "first_name": "Francis",
                                 "last_name": "Brioul"
                             },
-                            "created_at":"@string@.isDateTime()"
+                            "created_at":"@string@.isDateTime()",
+                            "approved": false
                         }
                     ]
                 },
@@ -71,7 +74,8 @@ Feature:
                     "first_name": "Carl",
                     "last_name": "Mirabeau"
                 },
-                "created_at":"@string@.isDateTime()"
+                "created_at":"@string@.isDateTime()",
+                "approved": false
             },
             {
                 "answer": {
@@ -88,7 +92,8 @@ Feature:
                     "first_name": "Lucie",
                     "last_name": "Olivera"
                 },
-                "created_at":"@string@.isDateTime()"
+                "created_at":"@string@.isDateTime()",
+                "approved": false
             },
             {
                 "answer": {
@@ -105,7 +110,8 @@ Feature:
                                 "first_name": "Laura",
                                 "last_name": "Deloche"
                             },
-                            "created_at":"@string@.isDateTime()"
+                            "created_at":"@string@.isDateTime()",
+                            "approved": false
                         },
                         {
                             "uuid": "3fa38c45-1122-4c48-9ada-b366b3408fec",
@@ -115,7 +121,8 @@ Feature:
                                 "first_name": "Laura",
                                 "last_name": "Deloche"
                             },
-                            "created_at":"@string@.isDateTime()"
+                            "created_at":"@string@.isDateTime()",
+                            "approved": false
                         },
                         {
                             "uuid": "02bf299f-678a-4829-a6a1-241995339d8d",
@@ -125,7 +132,8 @@ Feature:
                                 "first_name": "Laura",
                                 "last_name": "Deloche"
                             },
-                            "created_at":"@string@.isDateTime()"
+                            "created_at":"@string@.isDateTime()",
+                            "approved": false
                         }
                     ]
                 },
@@ -136,7 +144,8 @@ Feature:
                     "first_name": "Gisele",
                     "last_name": "Berthoux"
                 },
-                "created_at":"@string@.isDateTime()"
+                "created_at":"@string@.isDateTime()",
+                "approved": false
             }
         ]
     }
@@ -172,7 +181,8 @@ Feature:
                                 "first_name": "Referent",
                                 "last_name": "Referent"
                             },
-                            "created_at":"@string@.isDateTime()"
+                            "created_at":"@string@.isDateTime()",
+                            "approved": false
                         },
                         {
                             "uuid": "f716d3ba-004f-4958-af26-a7b010a6d458",
@@ -182,7 +192,8 @@ Feature:
                                 "first_name": "Referent",
                                 "last_name": "Referent"
                             },
-                            "created_at":"@string@.isDateTime()"
+                            "created_at":"@string@.isDateTime()",
+                            "approved": false
                         },
                         {
                             "uuid": "60123090-6cdc-4de6-9cb3-07e2ec411f2f",
@@ -192,7 +203,8 @@ Feature:
                                 "first_name": "Francis",
                                 "last_name": "Brioul"
                             },
-                            "created_at":"@string@.isDateTime()"
+                            "created_at":"@string@.isDateTime()",
+                            "approved": false
                         }
                     ]
                 },
@@ -203,7 +215,8 @@ Feature:
                     "first_name": "Carl",
                     "last_name": "Mirabeau"
                 },
-                "created_at":"@string@.isDateTime()"
+                "created_at":"@string@.isDateTime()",
+                "approved": false
             },
             {
                 "answer": {
@@ -220,7 +233,8 @@ Feature:
                     "first_name": "Lucie",
                     "last_name": "Olivera"
                 },
-                "created_at":"@string@.isDateTime()"
+                "created_at":"@string@.isDateTime()",
+                "approved": false
             },
             {
                 "answer": {
@@ -237,7 +251,8 @@ Feature:
                                 "first_name": "Laura",
                                 "last_name": "Deloche"
                             },
-                            "created_at":"@string@.isDateTime()"
+                            "created_at":"@string@.isDateTime()",
+                            "approved": false
                         },
                         {
                             "uuid": "3fa38c45-1122-4c48-9ada-b366b3408fec",
@@ -247,7 +262,8 @@ Feature:
                                 "first_name": "Laura",
                                 "last_name": "Deloche"
                             },
-                            "created_at":"@string@.isDateTime()"
+                            "created_at":"@string@.isDateTime()",
+                            "approved": false
                         },
                         {
                             "uuid": "02bf299f-678a-4829-a6a1-241995339d8d",
@@ -257,7 +273,8 @@ Feature:
                                 "first_name": "Laura",
                                 "last_name": "Deloche"
                             },
-                            "created_at":"@string@.isDateTime()"
+                            "created_at":"@string@.isDateTime()",
+                            "approved": false
                         }
                     ]
                 },
@@ -268,7 +285,8 @@ Feature:
                     "first_name": "Gisele",
                     "last_name": "Berthoux"
                 },
-                "created_at":"@string@.isDateTime()"
+                "created_at":"@string@.isDateTime()",
+                "approved": false
             }
         ]
     }
@@ -299,18 +317,25 @@ Feature:
           "first_name":"Martine",
           "last_name":"Lindt"
        },
-       "created_at":"@string@.isDateTime()"
+       "created_at":"@string@.isDateTime()",
+       "approved": false
     }
     """
 
   Scenario: As a logged-in user I can not approved a thread
     Given I am logged as "carl999@example.fr"
-    When I send a "PUT" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/approve"
+    When I send a "PUT" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/approval-toggle"
     Then the response status code should be 403
 
   Scenario: As an idea author, I can update thread status to approved
     Given I am logged as "jacques.picard@en-marche.fr"
-    When I send a "PUT" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/approve"
+    And I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/approval-toggle" with body:
+    """
+    {
+        "approved": true
+    }
+    """
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -326,7 +351,8 @@ Feature:
           "first_name":"Carl",
           "last_name":"Mirabeau"
        },
-       "created_at":"@string@.isDateTime()"
+       "created_at":"@string@.isDateTime()",
+       "approved": true
     }
     """
 

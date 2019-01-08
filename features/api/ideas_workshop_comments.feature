@@ -34,7 +34,8 @@ Feature:
                     "first_name": "Laura",
                     "last_name": "Deloche"
                 },
-                "created_at": "@string@.isDateTime()"
+                "created_at": "@string@.isDateTime()",
+                "approved": false
             },
             {
                 "uuid": "3fa38c45-1122-4c48-9ada-b366b3408fec",
@@ -44,7 +45,8 @@ Feature:
                     "first_name": "Laura",
                     "last_name": "Deloche"
                 },
-                "created_at": "@string@.isDateTime()"
+                "created_at": "@string@.isDateTime()",
+                "approved": false
             },
             {
                 "uuid": "ecbe9136-3dc0-477d-b817-a25878dd639a",
@@ -54,7 +56,8 @@ Feature:
                     "first_name": "Referent",
                     "last_name": "Referent"
                 },
-                "created_at": "@string@.isDateTime()"
+                "created_at": "@string@.isDateTime()",
+                "approved": false
             }
         ]
     }
@@ -83,7 +86,8 @@ Feature:
                     "first_name": "Referent",
                     "last_name": "Referent"
                 },
-                "created_at": "@string@.isDateTime()"
+                "created_at": "@string@.isDateTime()",
+                "approved": false
             },
             {
                 "uuid": "f716d3ba-004f-4958-af26-a7b010a6d458",
@@ -93,7 +97,8 @@ Feature:
                     "first_name": "Referent",
                     "last_name": "Referent"
                 },
-                "created_at": "@string@.isDateTime()"
+                "created_at": "@string@.isDateTime()",
+                "approved": false
             },
             {
                 "uuid": "60123090-6cdc-4de6-9cb3-07e2ec411f2f",
@@ -103,15 +108,16 @@ Feature:
                     "first_name": "Francis",
                     "last_name": "Brioul"
                 },
-                "created_at": "@string@.isDateTime()"
+                "created_at": "@string@.isDateTime()",
+                "approved": false
             }
         ]
     }
     """
 
   Scenario: As a logged-in user I can add my comment to a thread
-    Given I add "Content-Type" header equal to "application/json"
-    And I am logged as "martine.lindt@gmail.com"
+    Given I am logged as "martine.lindt@gmail.com"
+    And I add "Content-Type" header equal to "application/json"
     When I send a "POST" request to "/api/thread_comments" with body:
     """
     {
@@ -135,7 +141,8 @@ Feature:
              "last_name":"Mirabeau"
           },
           "created_at": "@string@.isDateTime()",
-          "uuid":"dfd6a2f2-5579-421f-96ac-98993d0edea1"
+          "uuid":"dfd6a2f2-5579-421f-96ac-98993d0edea1",
+          "approved": false
        },
        "content":"Phasellus vitae enim faucibus",
        "author":{
@@ -144,18 +151,25 @@ Feature:
           "last_name":"Lindt"
        },
        "created_at": "@string@.isDateTime()",
-       "uuid": "@uuid@"
+       "uuid": "@uuid@",
+       "approved": false
     }
     """
 
   Scenario: As a logged-in user I can not approve a comment
     Given I am logged as "carl999@example.fr"
-    When I send a "PUT" request to "/api/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/approve"
+    When I send a "PUT" request to "/api/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/approval-toggle"
     Then the response status code should be 403
 
   Scenario: As an idea author, I can approve my comment
     Given I am logged as "jacques.picard@en-marche.fr"
-    When I send a "PUT" request to "/api/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/approve"
+    And I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/approval-toggle" with body:
+    """
+    {
+        "approved": true
+    }
+    """
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -168,7 +182,8 @@ Feature:
           "last_name":"Duroc"
        },
        "created_at": "@string@.isDateTime()",
-       "uuid":"b99933f3-180c-4248-82f8-1b0eb950740d"
+       "uuid":"b99933f3-180c-4248-82f8-1b0eb950740d",
+       "approved": true
     }
     """
 

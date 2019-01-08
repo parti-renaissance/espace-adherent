@@ -17,7 +17,6 @@ abstract class BaseComment
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
-    use EntityThreadCommentStatusTrait;
 
     /**
      * @ApiProperty(identifier=false)
@@ -52,6 +51,13 @@ abstract class BaseComment
      */
     protected $author;
 
+    /**
+     * @ORM\Column(type="boolean")
+     *
+     * @SymfonySerializer\Groups({"thread_comment_read", "thread_list_read", "thread_approval", "thread_comment_approval"})
+     */
+    protected $approved = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -82,8 +88,13 @@ abstract class BaseComment
         $this->content = $content;
     }
 
-    public static function getVisibleStatuses(): array
+    public function isApproved(): bool
     {
-        return ThreadCommentStatusEnum::VISIBLE_STATUSES;
+        return $this->approved;
+    }
+
+    public function setApproved(bool $approved): void
+    {
+        $this->approved = $approved;
     }
 }
