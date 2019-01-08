@@ -57,7 +57,7 @@ RUN apt-get update -q && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
 
     # Blackfire
-    wget -O - https://packagecloud.io/gpg.key | apt-key add - \
+    wget -O - https://packages.blackfire.io/gpg.key | apt-key add - \
     && echo "deb http://packages.blackfire.io/debian any main" | tee /etc/apt/sources.list.d/blackfire.list \
     && apt-get update -q \
     && apt-get install -qy blackfire-agent \
