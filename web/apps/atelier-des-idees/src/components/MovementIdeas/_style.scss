@@ -4,9 +4,15 @@
 .movement-ideas {
   &__first__section {
     height: 400px;
-    padding: 50px 0 0 100px;
+    padding-top: 125px;
+
+    &__title {
+      display: inline-block;
+      font-size: 48px;
+    }
 
     &__content {
+      margin-top: 20px;
       color: $medium-grey;
     }
   }
