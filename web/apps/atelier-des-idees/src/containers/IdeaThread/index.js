@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import CommentsList from '../../components/CommentsList';
-import { selectCurrentIdea, selectCurrentIdeaThread } from '../../redux/selectors/currentIdea';
+import { selectLoadingState } from '../../redux/selectors/loading';
+import { selectCurrentIdea } from '../../redux/selectors/currentIdea';
 import { selectAnswerThreads } from '../../redux/selectors/threads';
 import { selectIsAuthenticated } from '../../redux/selectors/auth';
 import { deleteComment, approveComment } from '../../redux/thunk/threads';
@@ -36,15 +37,21 @@ function IdeaThread(props) {
 }
 
 function mapStateToProps(state, { questionId }) {
+    // auth
     const isAuthenticated = selectIsAuthenticated(state);
+    // threads
     const currentIdea = selectCurrentIdea(state);
     const currentAnswer = currentIdea.answers && currentIdea.answers.find(answer => answer.question.id === questionId);
     const answerId = currentAnswer && currentAnswer.id;
     const answerThreads = selectAnswerThreads(state, answerId);
+    // loading
+    // TODO: handle send thread comment
+    const sendCommentState = selectLoadingState(state, 'POST_THREAD', answerId);
     return {
         comments: answerThreads,
         isAuthenticated,
         answerId,
+        isSendingComment: sendCommentState.isFetching,
     };
 }
 
