@@ -21,10 +21,23 @@ class IdeaFilters extends React.Component {
             // name: '',
         };
         this.onFilterChange = this.onFilterChange.bind(this);
+        this.formatFilters = this.formatFilters.bind(this);
     }
 
     onFilterChange(filterKey, value) {
-        this.setState({ [filterKey]: value }, () => this.props.onFilterChange(this.state));
+        this.setState({ [filterKey]: value }, () => this.props.onFilterChange(this.formatFilters()));
+    }
+
+    formatFilters() {
+        return Object.entries(this.state).reduce((acc, [filterName, filterValue]) => {
+            const [attr, value] = filterValue.split('/');
+            if (value) {
+                acc[`${filterName}['${attr}']`] = value;
+                return acc;
+            }
+            acc[filterName] = filterValue;
+            return acc;
+        }, {});
     }
 
     render() {
@@ -34,6 +47,7 @@ class IdeaFilters extends React.Component {
                     <p className="idea-filters__label">Trier par</p>
                     <Select
                         options={filterItems.order.options}
+                        defaultValue={filterItems.order.options[0]}
                         onSelected={([selected]) => this.onFilterChange('order', selected.value)}
                     />
                 </div>
