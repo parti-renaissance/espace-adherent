@@ -25,8 +25,12 @@
 
   @media screen and (max-width: $width-md) {
     &__first__section {
-      height: 250px;
-      padding: 50px 0 0 20px;
+      padding-top: 30px;
+      padding-bottom: 100px;
+
+      &__title {
+        font-size: 32px;
+      }
     }
 
     &__slider {

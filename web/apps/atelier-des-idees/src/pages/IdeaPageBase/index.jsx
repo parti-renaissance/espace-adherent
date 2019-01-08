@@ -166,7 +166,11 @@ class IdeaPageBase extends React.Component {
                     {idea.status === ideaStatus.DRAFT && (
                         <div className="create-idea-page__auto-save">
                             <p className="create-idea-page__auto-save__label">
-                                Votre note est automatiquement sauvegardée
+                                <img
+                                    className="create-idea-page__auto-save__icon"
+                                    src="/assets/img/icn_20px_autosave.svg"
+                                />
+                                <span>Votre note est automatiquement sauvegardée</span>
                             </p>
                         </div>
                     )}
