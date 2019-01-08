@@ -64,11 +64,11 @@ class CommentsList extends React.Component {
                                     {/* TODO: add onEdit and onApproved */}
                                     <Comment
                                         {...comment}
-                                        ownerId={this.props.ownerId}
                                         hasActions={!this.props.parentId}
-                                        isAuthor={this.props.ownerId === comment.author.uuid}
+                                        isAuthor={this.props.currentUserId === comment.author.uuid}
                                         onReply={() => this.setState({ replyingTo: comment.uuid })}
                                         onDelete={() => this.props.onDeleteComment(comment.uuid)}
+                                        canApprove={this.props.currentUserId === this.props.ownerId}
                                     />
                                     {((comment.replies && !!comment.replies.length) ||
                                           this.state.replyingTo === comment.uuid) && (
@@ -158,6 +158,7 @@ CommentsList.propTypes = {
     onEditComment: PropTypes.func.isRequired,
     onApproveComment: PropTypes.func.isRequired,
     onLoadMore: PropTypes.func.isRequired,
+    currentUserId: PropTypes.string.isRequired,
     ownerId: PropTypes.string.isRequired,
     showForm: PropTypes.bool,
     parentId: PropTypes.string,

@@ -1,82 +1,80 @@
 .comments-list__comment {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	padding: 20px 20px 40px;
-	border-radius: 6px;
-	border: 1px solid $platinum;
-	background-color: $white;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 20px 20px 12px;
+  border-radius: 6px;
+  border: 1px solid $platinum;
+  background-color: $white;
 
-	&--approved {
-		border-left: 3px $ufo-green solid;
-	}
+  &--approved {
+    border-left: 3px $ufo-green solid;
+  }
 
-	&__infos {
-		margin-bottom: 11px;
-		&__author {
-			margin-right: 8px;
-			font-weight: bold;
-			color: $black;
-		}
+  &__infos {
+    margin-bottom: 11px;
+    &__author {
+      margin-right: 8px;
+      font-weight: bold;
+      color: $black;
+    }
 
-		&__date {
-			color: $sonic-silver;
-			font-size: 13px;
-		}
+    &__date {
+      color: $sonic-silver;
+      font-size: 13px;
+    }
 
-		&__approved {
-			display: inline-block;
-			width: 18px;
-			height: 18px;
-			margin-left: 8px;
-			background-color: $ufo-green;
-			border-radius: 50%;
-			text-align: center;
+    &__approved {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      margin-left: 8px;
+      background-color: $ufo-green;
+      border-radius: 50%;
+      text-align: center;
 
-			&__icon {
-				width: 10px;
-				height: 10px;
-			}
-		}
-	}
+      &__icon {
+        width: 10px;
+        height: 10px;
+      }
+    }
+  }
 
-	&__content {
-		color: $light-black;
-	}
+  &__content {
+    color: $light-black;
+  }
 
-	&__actions {
-		position: absolute;
-		margin-top: 8px;
-		bottom: 12px;
-		right: 12px;
+  &__actions {
+    margin-top: 8px;
+    text-align: right;
 
-		> * {
-			@extend %reset-button;
-			cursor: pointer;
-			font-size: 15px;
-			margin-left: 15px;
-		}
+    > * {
+      @extend %reset-button;
+      cursor: pointer;
+      font-size: 15px;
+      margin-left: 15px;
+    }
 
-		&__button {
-			&__answer {
-				color: $saphir;
-			}
+    &__button {
+      &__answer {
+        color: $saphir;
+      }
 
-			&__edit {
-				color: $saphir;
-			}
+      &__edit {
+        color: $saphir;
+      }
 
-			&__approved {
-				color: $ufo-green;
-			}
+      &__approved {
+        color: $ufo-green;
+      }
 
-			&__disapproved {
-				color: $light-black;
-			}
+      &__disapproved {
+        color: $light-black;
+      }
 
-			&__delete {
-				color: $light-black;
-			}
-		}
-	}
+      &__delete {
+        color: $light-black;
+      }
+    }
+  }
 }

@@ -4,7 +4,7 @@ import CommentsList from '../../components/CommentsList';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectCurrentIdea } from '../../redux/selectors/currentIdea';
 import { selectAnswerThreads } from '../../redux/selectors/threads';
-import { selectIsAuthenticated } from '../../redux/selectors/auth';
+import { selectIsAuthenticated, selectAuthUser } from '../../redux/selectors/auth';
 import { deleteComment, approveComment } from '../../redux/thunk/threads';
 import { postCommentToCurrentIdea } from '../../redux/thunk/currentIdea';
 
@@ -39,6 +39,7 @@ function IdeaThread(props) {
 function mapStateToProps(state, { questionId }) {
     // auth
     const isAuthenticated = selectIsAuthenticated(state);
+    const currentUser = selectAuthUser(state);
     // threads
     const currentIdea = selectCurrentIdea(state);
     const currentAnswer = currentIdea.answers && currentIdea.answers.find(answer => answer.question.id === questionId);
@@ -52,6 +53,8 @@ function mapStateToProps(state, { questionId }) {
         isAuthenticated,
         answerId,
         isSendingComment: sendCommentState.isFetching,
+        currentUserId: currentUser.uuid,
+        ownerId: currentIdea.author.uuid,
     };
 }
 
