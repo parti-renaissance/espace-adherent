@@ -8,7 +8,7 @@ import MovementIdeasSection from './MovementIdeasSection/.';
 const sectionContent = [
     {
         keyWord: 'vote',
-        title: 'pour des idéees',
+        title: 'pour des idées',
         text:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla urna sed erat auctor, ac sodales mi commodo.',
         linkLabel: 'Je vote',
@@ -16,7 +16,7 @@ const sectionContent = [
     },
     {
         keyWord: 'contribue',
-        title: 'aux idéees',
+        title: 'aux idées',
         text:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla urna sed erat auctor, ac sodales mi commodo.',
         linkLabel: 'Je contribue',
@@ -24,7 +24,7 @@ const sectionContent = [
     },
     {
         keyWord: 'propose',
-        title: 'des idéees',
+        title: 'des idées',
         text:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla urna sed erat auctor, ac sodales mi commodo.',
         linkLabel: 'Je propose',

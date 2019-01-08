@@ -58,15 +58,15 @@ class FirstForm extends React.Component {
                 <div className="first-form__section">
                     <h2 className="first-form__section__title">Soumettez votre note ici</h2>
                     <p className="first-form__section__subtitle">
-						Une fois ce dernier formulaire rempli, votre note pourra être enrichie{' '}
+                        Une fois ce dernier formulaire rempli, votre note pourra être enrichie{' '}
                         <Link className="link" to="/atelier-des-idees/contribuer" target="_blank">
-							ici
+                            ici
                         </Link>{' '}
-						par des contributions d’adhérents pendant 3 semaines. Passé ce délai, elle sera affichée{' '}
+                        par des contributions d’adhérents pendant 3 semaines. Passé ce délai, elle sera affichée{' '}
                         <Link className="link" to="/atelier-des-idees/consulter" target="_blank">
-							là
+                            là
                         </Link>{' '}
-						et pourra être soumise aux votes des adhérents.
+                        et pourra être soumise aux votes des adhérents.
                     </p>
                 </div>
                 <div className="first-form__section">
@@ -98,11 +98,10 @@ class FirstForm extends React.Component {
                         placeholder="Choisissez l'échelle de votre note"
                         subtitle={() => (
                             <p>
-								Pour un projet local, rapprochez-vous de votre référent via la rubrique contact du{' '}
-                                {/* TODO: missing a link */}
-                                <Link className="link" to="/atelier-des-idees">
-									site de votre territoire
-                                </Link>
+                                Pour un projet local, rapprochez-vous de votre référent via la rubrique contact du{' '}
+                                <a className="link" href="https://dpt.en-marche.fr/" target="_blank">
+                                    site de votre territoire
+                                </a>
                             </p>
                         )}
                         error={this.state.errors.locality}
@@ -111,7 +110,7 @@ class FirstForm extends React.Component {
                     />
                 </div>
                 <button type="submit" className="first-form__button button--secondary">
-					dernière étape →
+                    dernière étape →
                 </button>
                 {this.state.errors.form && <p className="first-form__error">{this.state.errors.form}</p>}
             </form>

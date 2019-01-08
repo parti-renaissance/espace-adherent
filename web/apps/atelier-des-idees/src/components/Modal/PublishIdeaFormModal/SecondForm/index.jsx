@@ -152,15 +152,14 @@ class SecondForm extends React.Component {
                             </span>
                         </label>
                         <p className="second-form__section__mentions__text">
-                            {/* TODO: Missing link */}
                             J’accepte les{' '}
-                            <Link
-                                to="/atelier-des-idees"
+                            <a
                                 className="second-form__section__mentions__text__link"
+                                href="/atelier-des-idees/cgu"
                                 target="_blank"
                             >
                                 mentions légales
-                            </Link>
+                            </a>
                         </p>
                     </div>
                     {this.state.errors.legal && (

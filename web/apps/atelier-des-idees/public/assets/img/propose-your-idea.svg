@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="404" height="294" viewBox="0 0 404 294">
+  <defs>
+    <linearGradient id="propose-your-idea-c" x1="0%" y1="50%" y2="50%">
+      <stop offset="0%" stop-color="#FCFDFD"/>
+      <stop offset="100%" stop-color="#FFF"/>
+    </linearGradient>
+    <rect id="propose-your-idea-b" width="304" height="39" rx="2"/>
+    <filter id="propose-your-idea-a" width="112.2%" height="194.9%" x="-8.4%" y="-29.5%" filterUnits="objectBoundingBox">
+      <feOffset dx="-7" dy="7" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5"/>
+      <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.455982426   0 0 0 0 0.516079885   0 0 0 0 0.605920493  0 0 0 0.08 0"/>
+    </filter>
+    <linearGradient id="propose-your-idea-d" x1="100%" x2="0%" y1="50%" y2="50%">
+      <stop offset="0%" stop-color="#FFF"/>
+      <stop offset="100%" stop-color="#E9EBF1"/>
+    </linearGradient>
+    <rect id="propose-your-idea-f" width="304" height="39" rx="2"/>
+    <filter id="propose-your-idea-e" width="112.2%" height="194.9%" x="-8.4%" y="-29.5%" filterUnits="objectBoundingBox">
+      <feOffset dx="-7" dy="7" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5"/>
+      <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.455982426   0 0 0 0 0.516079885   0 0 0 0 0.605920493  0 0 0 0.08 0"/>
+    </filter>
+    <rect id="propose-your-idea-h" width="304" height="39" rx="2"/>
+    <filter id="propose-your-idea-g" width="112.2%" height="194.9%" x="-8.4%" y="-29.5%" filterUnits="objectBoundingBox">
+      <feOffset dx="-7" dy="7" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5"/>
+      <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.455982426   0 0 0 0 0.516079885   0 0 0 0 0.605920493  0 0 0 0.08 0"/>
+    </filter>
+    <rect id="propose-your-idea-j" width="370" height="63" x="16" y="215" rx="2"/>
+    <filter id="propose-your-idea-i" width="110%" height="158.7%" x="-6.9%" y="-18.3%" filterUnits="objectBoundingBox">
+      <feOffset dx="-7" dy="7" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5"/>
+      <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"/>
+      <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.455982426   0 0 0 0 0.516079885   0 0 0 0 0.605920493  0 0 0 0.08 0"/>
+    </filter>
+    <linearGradient id="propose-your-idea-k" x1="100%" x2="0%" y1="50%" y2="50%">
+      <stop offset="0%" stop-color="#FFF"/>
+      <stop offset="100%" stop-color="#E9EBF1"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" fill-rule="evenodd" transform="translate(8 8)">
+    <g transform="translate(31 30)">
+      <use fill="#000" filter="url(#propose-your-idea-a)" xlink:href="#propose-your-idea-b"/>
+      <use fill="url(#propose-your-idea-c)" xlink:href="#propose-your-idea-b"/>
+      <g transform="translate(17 12)">
+        <rect width="46" height="16" fill="#2CCA9E" rx="8"/>
+        <path fill="#FFF" d="M21.4441549,9.86903642 L27.849635,3 L29.4494712,4.4918714 L21.6917398,12.8110198 L21.5921567,12.7181571 L21.5908151,12.7199384 L16,8.5046253 L17.3163558,6.7567952 L21.4441549,9.86903642 Z"/>
+        <rect width="195" height="8" x="60" y="4" fill="url(#propose-your-idea-d)" rx="4"/>
+      </g>
+    </g>
+    <g transform="translate(15 155)">
+      <use fill="#000" filter="url(#propose-your-idea-e)" xlink:href="#propose-your-idea-f"/>
+      <use fill="url(#propose-your-idea-c)" xlink:href="#propose-your-idea-f"/>
+      <g transform="translate(17 12)">
+        <rect width="46" height="16" fill="#00BEF9" rx="8"/>
+        <g fill="#FFF" transform="translate(14 6)">
+          <circle cx="2" cy="2" r="2"/>
+          <circle cx="9" cy="2" r="2"/>
+          <circle cx="16" cy="2" r="2"/>
+        </g>
+        <rect width="195" height="8" x="60" y="4" fill="url(#propose-your-idea-d)" rx="4"/>
+      </g>
+    </g>
+    <g transform="rotate(-21 246.758 45.734)">
+      <path stroke="#FF4E89" d="M11,5.49864765 C11,8.53872633 8.53872633,11 5.50135235,11 C2.46397836,11 0,8.53872633 0,5.49864765 C0,2.46127367 2.46397836,0 5.50135235,0 C8.53872633,0 11,2.46127367 11,5.49864765 Z"/>
+      <path fill="#0098FF" d="M32,37 C32,38.6571195 30.6571195,40 29,40 C27.3453355,40 26,38.6571195 26,37 C26,35.3428805 27.3453355,34 29,34 C30.6571195,34 32,35.3428805 32,37"/>
+    </g>
+    <g transform="translate(81 92)">
+      <use fill="#000" filter="url(#propose-your-idea-g)" xlink:href="#propose-your-idea-h"/>
+      <use fill="url(#propose-your-idea-c)" xlink:href="#propose-your-idea-h"/>
+      <g transform="translate(17 12)">
+        <rect width="46" height="16" fill="#2CCA9E" rx="8"/>
+        <path fill="#FFF" d="M21.4441549,9.86903642 L27.849635,3 L29.4494712,4.4918714 L21.6917398,12.8110198 L21.5921567,12.7181571 L21.5908151,12.7199384 L16,8.5046253 L17.3163558,6.7567952 L21.4441549,9.86903642 Z"/>
+        <rect width="195" height="8" x="60" y="4" fill="url(#propose-your-idea-d)" rx="4"/>
+      </g>
+    </g>
+    <use fill="#000" filter="url(#propose-your-idea-i)" xlink:href="#propose-your-idea-j"/>
+    <rect width="369" height="62" x="16.5" y="215.5" fill="url(#propose-your-idea-c)" stroke="#045BFF" stroke-linejoin="square" rx="2"/>
+    <g transform="translate(34 228)">
+      <rect width="46" height="16" fill="#045BFF"/>
+      <rect width="30" height="2" x="8" y="7" fill="#FFF" rx="1"/>
+    </g>
+    <g transform="translate(209)">
+      <path stroke="#46C4DB" d="M25 15L25 29M32 22L18 22"/>
+      <path fill="#045BFF" d="M5,2.5 C5,3.8809329 3.8809329,5 2.5,5 C1.1190671,5 0,3.8809329 0,2.5 C0,1.1190671 1.1190671,0 2.5,0 C3.8809329,0 5,1.1190671 5,2.5"/>
+    </g>
+    <g transform="translate(345 125)">
+      <path stroke="#0098FF" d="M37 19L37 31M43 25L31 25"/>
+      <path stroke="#FF4E89" d="M10,55 C10,57.7592593 7.76190476,60 5,60 C2.23809524,60 0,57.7592593 0,55 C0,52.2380952 2.23809524,50 5,50 C7.76190476,50 10,52.2380952 10,55 Z"/>
+      <path fill="#045BFF" d="M31,2 C31,3.1047619 30.1047619,4 29,4 C27.8952381,4 27,3.1047619 27,2 C27,0.895238095 27.8952381,0 29,0 C30.1047619,0 31,0.895238095 31,2"/>
+    </g>
+    <rect width="333" height="8" x="34" y="254" fill="url(#propose-your-idea-k)" rx="4"/>
+    <rect width="273" height="8" x="91" y="231" fill="url(#propose-your-idea-k)" rx="4"/>
+  </g>
+</svg>
