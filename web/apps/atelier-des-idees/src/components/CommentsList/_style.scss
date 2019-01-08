@@ -4,6 +4,10 @@
   background-color: $snow;
   padding: 30px 25px;
 
+  .comments-list__comment {
+    margin-bottom: 15px;
+  }
+
   &__replies {
     > * {
       padding: 30px 0 30px 91px;
