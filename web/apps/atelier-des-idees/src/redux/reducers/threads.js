@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { SET_THREADS, ADD_THREAD, REMOVE_THREAD } from '../constants/actionTypes';
+import { SET_THREADS, ADD_THREAD, REMOVE_THREAD, TOGGLE_APPROVE_THREAD } from '../constants/actionTypes';
 
 const initialState = { threads: { items: [], metadata: {} }, comments: { items: [], metadata: {} } };
 
@@ -13,6 +13,16 @@ function threadsReducer(state = initialState.threads, action) {
     case REMOVE_THREAD: {
         const { id } = payload;
         return { ...state, items: state.items.filter(thread => thread.uuid !== id) };
+    }
+    case TOGGLE_APPROVE_THREAD: {
+        const { id } = payload;
+        const threads = state.items.map((thread) => {
+            if (thread.uuid === id) {
+                return { ...thread, approuved: !thread.approuved };
+            }
+            return thread;
+        });
+        return { ...state, items: threads };
     }
     default:
         return state;

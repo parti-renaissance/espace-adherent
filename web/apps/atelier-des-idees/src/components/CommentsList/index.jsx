@@ -68,6 +68,7 @@ class CommentsList extends React.Component {
                                         isAuthor={this.props.currentUserId === comment.author.uuid}
                                         onReply={() => this.setState({ replyingTo: comment.uuid })}
                                         onDelete={() => this.props.onDeleteComment(comment.uuid)}
+                                        onApprove={() => this.props.onApproveComment(comment.uuid)}
                                         canApprove={this.props.currentUserId === this.props.ownerId}
                                     />
                                     {((comment.replies && !!comment.replies.length) ||
@@ -148,7 +149,7 @@ CommentsList.propTypes = {
             content: PropTypes.string.isRequired,
             created_at: PropTypes.string.isRequired, // iso date
             replies: PropTypes.array,
-            verified: PropTypes.bool,
+            approuved: PropTypes.bool,
             nbReplies: PropTypes.number,
         })
     ),

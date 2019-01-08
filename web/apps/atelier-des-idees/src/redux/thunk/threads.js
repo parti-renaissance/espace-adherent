@@ -1,4 +1,4 @@
-import { setThreads, removeThread } from '../actions/threads';
+import { setThreads, removeThread, toggleApproveThread } from '../actions/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { POST_THREAD } from '../constants/actionTypes';
 
@@ -16,7 +16,8 @@ export function approveComment(id, parentId = '') {
         if (parentId) {
             type = 'thread_comments';
         }
-        return axios.put(`/api/${type}/${id}/approve`);
+        dispatch(toggleApproveThread(id));
+        return axios.put(`/api/${type}/${id}/approve`).catch(() => dispatch(toggleApproveThread(id)));
     };
 }
 
