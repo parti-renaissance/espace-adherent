@@ -29,7 +29,7 @@ class IdeaCardListContainer extends React.Component {
     render() {
         return this.props.isLoading || this.props.ideas.length ? (
             <React.Fragment>
-                <IdeaFilters onFilterChange={this.onFilterChange} />
+                <IdeaFilters onFilterChange={this.onFilterChange} status={this.props.status} />
                 <IdeaCardList
                     ideas={this.props.ideas}
                     isLoading={this.props.isLoading}
