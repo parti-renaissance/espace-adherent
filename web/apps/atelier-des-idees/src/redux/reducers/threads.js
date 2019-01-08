@@ -18,7 +18,7 @@ function threadsReducer(state = initialState.threads, action) {
         const { id } = payload;
         const threads = state.items.map((thread) => {
             if (thread.uuid === id) {
-                return { ...thread, approuved: !thread.approuved };
+                return { ...thread, approved: !thread.approved };
             }
             return thread;
         });
