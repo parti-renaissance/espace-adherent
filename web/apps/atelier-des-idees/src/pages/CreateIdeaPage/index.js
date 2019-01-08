@@ -39,7 +39,6 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    // TODO: replace with actual action creators
     return {
         initCreateIdeaPage: () => {
             dispatch(initCreateIdeaPage());

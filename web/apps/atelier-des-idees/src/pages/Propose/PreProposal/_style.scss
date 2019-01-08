@@ -1,6 +1,7 @@
 .pre-proposal {
   display: flex;
-  padding: 77px 80px 60px;
+  align-items: center;
+  padding: 40px 80px 60px;
 
   &__container {
     width: 100%;
@@ -23,6 +24,10 @@
       background: $ogre-odor;
       border-color: $pastel-red;
     }
+
+    &__img {
+      width: 100%;
+    }
   }
 
   &__container:first-child {
@@ -36,6 +41,7 @@
     color: $medium-grey;
 
     &__highlighted {
+      border: 0;
       color: $saphir;
       text-decoration: none;
     }
