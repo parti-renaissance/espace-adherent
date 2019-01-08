@@ -7,29 +7,39 @@ import { selectIdeasWithStatus, selectIdeasMetadata } from '../../redux/selector
 import { fetchNextIdeas, voteIdea } from '../../redux/thunk/ideas';
 import Button from '../../components/Button';
 import IdeaCardList from '../../components/IdeaCardList';
-import noResultImg from '../../img/no-idea-result.svg';
+import IdeaFilters from '../../components/IdeaFilters';
 
-function IdeaCardListContainer(props) {
-    return props.isLoading || props.ideas.length ? (
-        <React.Fragment>
-            <IdeaCardList
-                ideas={props.ideas}
-                isLoading={props.isLoading}
-                mode={props.mode}
-                onVoteIdea={props.onVoteIdea}
-            />
-            {props.withPaging && (
-                <div className="idea-card-list__paging">
-                    <Button label="Plus d'idées" mode="tertiary" onClick={props.onMoreClicked} />
-                </div>
-            )}
-        </React.Fragment>
-    ) : (
-        <div className="idea-card-list__empty">
-            <img className="idea-card-list__empty__img" src={noResultImg} />
-            <p>Il n'y a pas d'idée correspondant à votre recherche</p>
-        </div>
-    );
+class IdeaCardListContainer extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            params: {},
+        };
+    }
+
+    render() {
+        return this.props.ideas.length ? (
+            <React.Fragment>
+                <IdeaFilters onFilterChange={filters => console.warn(filters)} />
+                <IdeaCardList
+                    ideas={this.props.ideas}
+                    isLoading={this.props.isLoading}
+                    mode={this.props.mode}
+                    onVoteIdea={this.props.onVoteIdea}
+                />
+                {this.props.withPaging && (
+                    <div className="idea-card-list__paging">
+                        <Button label="Plus d'idées" mode="tertiary" onClick={this.props.onMoreClicked} />
+                    </div>
+                )}
+            </React.Fragment>
+        ) : (
+            <div className="idea-card-list__empty">
+                <img className="idea-card-list__empty__img" src="/assets/img/no-idea-result.svg" />
+                <p>Il n'y a pas d'idée correspondant à votre recherche</p>
+            </div>
+        );
+    }
 }
 
 IdeaCardListContainer.defaultProps = {
