@@ -30,6 +30,13 @@
     background: $grey;
   }
 
+  // responsive
+  @media #{$tablet} {
+    &__first-section {
+      padding: 0 50px;
+    }
+  }
+
   @media screen and (max-width: $width-md) {
     flex-direction: column;
     height: auto;

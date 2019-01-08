@@ -18,4 +18,11 @@
       color: $dark-aurometalsaurus;
     }
   }
+
+  // responsive
+  @media #{$tablet} {
+    .create-idea-tool__section-title__main {
+      font-size: 20px;
+    }
+  }
 }
