@@ -4,7 +4,6 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\DataFixtures\AutoIncrementResetter;
 use AppBundle\Entity\IdeasWorkshop\ThreadComment;
-use AppBundle\Entity\IdeasWorkshop\ThreadCommentStatusEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -32,7 +31,6 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
             'Aenean viverra efficitur lorem',
             $this->getReference('adherent-6'),
             $threadAQProblemAdherent2,
-            ThreadCommentStatusEnum::POSTED,
             new \DateTime('-4 minutes')
         );
 
@@ -41,7 +39,6 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
             'Lorem Ipsum Commentaris',
             $this->getReference('adherent-7'),
             $threadAQProblemAdherent2,
-            ThreadCommentStatusEnum::POSTED,
             new \DateTime('-3 minutes')
         );
 
@@ -50,7 +47,6 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
             'Commentaire d\'un référent',
             $this->getReference('adherent-8'),
             $threadAQProblemAdherent2,
-            ThreadCommentStatusEnum::POSTED,
             new \DateTime('-2 minutes')
         );
 
@@ -59,7 +55,6 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
             'Deuxième commentaire d\'un référent',
             $this->getReference('adherent-8'),
             $threadAQProblemAdherent2,
-            ThreadCommentStatusEnum::POSTED,
             new \DateTime('-1 minute')
         );
 
@@ -68,7 +63,6 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
             'Commentaire de Laura',
             $this->getReference('adherent-9'),
             $threadAQCompareAdherent5,
-            ThreadCommentStatusEnum::POSTED,
             new \DateTime('-1 minute')
         );
 
@@ -76,16 +70,14 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
             Uuid::fromString(self::THREAD_COMMENT_05_UUID),
             'Commentaire refusé',
             $this->getReference('adherent-9'),
-            $threadAQCompareAdherent5,
-            ThreadCommentStatusEnum::REFUSED
+            $threadAQCompareAdherent5
         );
 
         $commentReported = ThreadComment::create(
             Uuid::fromString(self::THREAD_COMMENT_06_UUID),
             'Commentaire signalé',
             $this->getReference('adherent-9'),
-            $threadAQCompareAdherent5,
-            ThreadCommentStatusEnum::REPORTED
+            $threadAQCompareAdherent5
         );
 
         $manager->persist($commentFromAdherent6);
