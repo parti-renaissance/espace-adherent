@@ -32,7 +32,7 @@ trait EntityIdentityTrait
      *
      * @Algolia\Attribute
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "my_committees", "thread_comment_read", "idea_read"})
+     * @SymfonySerializer\Groups({"idea_list_read", "my_committees", "thread_comment_read", "idea_read", "thread_list_read"})
      *
      * @ApiProperty(
      *     identifier=true,
