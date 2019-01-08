@@ -899,8 +899,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-       "name": "Faire la paix",
-       "status": "PENDING",
+       "name":"Faire la paix",
        "themes":[
           {
              "id":1,
@@ -920,13 +919,28 @@ Feature:
           "first_name":"Jacques",
           "last_name":"Picard"
        },
-       "published_at": "@string@.isDateTime()",
+       "published_at":"2018-12-20T10:00:00+01:00",
+       "status":"PENDING",
        "answers":[
           {
              "id":1,
              "content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce aliquet, mi condimentum venenatis vestibulum, arcu neque feugiat massa, at pharetra velit sapien et elit. Sed vitae hendrerit nulla. Vivamus consectetur magna at tincidunt maximus. Aenean dictum metus vel tellus posuere venenatis.",
              "question":{
                 "id":1
+             },
+             "threads":{
+                "total_items":1,
+                "items":[
+                   {
+                      "uuid":"dfd6a2f2-5579-421f-96ac-98993d0edea1",
+                      "content":"J'ouvre une discussion sur le probl\u00e8me.",
+                      "author":{
+                         "uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458",
+                         "first_name":"Carl",
+                         "last_name":"Mirabeau"
+                      }
+                   }
+                ]
              }
           },
           {
@@ -934,6 +948,20 @@ Feature:
              "content":"Nulla metus enim, congue eu facilisis ac, consectetur ut ipsum. ",
              "question":{
                 "id":2
+             },
+             "threads":{
+                "total_items":1,
+                "items":[
+                   {
+                      "uuid":"6b077cc4-1cbd-4615-b607-c23009119406",
+                      "content":"J'ouvre une discussion sur la solution.",
+                      "author":{
+                         "uuid":"29461c49-6316-5be1-9ac3-17816bf2d819",
+                         "first_name":"Lucie",
+                         "last_name":"Olivera"
+                      }
+                   }
+                ]
              }
           },
           {
@@ -941,6 +969,38 @@ Feature:
              "content":"Mauris gravida semper tincidunt.",
              "question":{
                 "id":3
+             },
+             "threads":{
+                "total_items":3,
+                "items":[
+                   {
+                      "uuid":"a508a7c5-8b07-41f4-8515-064f674a65e8",
+                      "content":"J'ouvre une discussion sur la comparaison.",
+                      "author":{
+                         "uuid":"b4219d47-3138-5efd-9762-2ef9f9495084",
+                         "first_name":"Gisele",
+                         "last_name":"Berthoux"
+                      }
+                   },
+                   {
+                      "uuid":"78d7daa1-657c-4e7e-87bc-24eb4ea26ea2",
+                      "content":"Une discussion refus\u00e9e.",
+                      "author":{
+                         "uuid":"b4219d47-3138-5efd-9762-2ef9f9495084",
+                         "first_name":"Gisele",
+                         "last_name":"Berthoux"
+                      }
+                   },
+                   {
+                      "uuid":"b191f13a-5a05-49ed-8ec3-c335aa68f439",
+                      "content":"Une discussion signal\u00e9e.",
+                      "author":{
+                         "uuid":"b4219d47-3138-5efd-9762-2ef9f9495084",
+                         "first_name":"Gisele",
+                         "last_name":"Berthoux"
+                      }
+                   }
+                ]
              }
           },
           {
@@ -948,6 +1008,12 @@ Feature:
              "content":"Donec ac neque congue, condimentum ipsum ac, eleifend ex.",
              "question":{
                 "id":4
+             },
+             "threads":{
+                "total_items":0,
+                "items":[
+
+                ]
              }
           },
           {
@@ -955,6 +1021,12 @@ Feature:
              "content":"Suspendisse interdum quis tortor quis sodales. Suspendisse vel mollis orci.",
              "question":{
                 "id":5
+             },
+             "threads":{
+                "total_items":0,
+                "items":[
+
+                ]
              }
           },
           {
@@ -962,6 +1034,12 @@ Feature:
              "content":"Proin et quam a tortor pretium fringilla non et magna.",
              "question":{
                 "id":6
+             },
+             "threads":{
+                "total_items":0,
+                "items":[
+
+                ]
              }
           },
           {
@@ -969,6 +1047,12 @@ Feature:
              "content":"Orci varius natoque penatibus et magnis dis parturient montes",
              "question":{
                 "id":7
+             },
+             "threads":{
+                "total_items":0,
+                "items":[
+
+                ]
              }
           },
           {
@@ -976,6 +1060,12 @@ Feature:
              "content":"Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex.",
              "question":{
                 "id":8
+             },
+             "threads":{
+                "total_items":0,
+                "items":[
+
+                ]
              }
           }
        ],
