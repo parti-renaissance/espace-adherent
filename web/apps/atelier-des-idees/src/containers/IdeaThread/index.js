@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { sortEntitiesByDate } from '../../helpers/entities';
 import CommentsList from '../../components/CommentsList';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectCurrentIdea } from '../../redux/selectors/currentIdea';
@@ -49,7 +50,7 @@ function mapStateToProps(state, { questionId }) {
     // TODO: handle send thread comment
     const sendCommentState = selectLoadingState(state, 'POST_THREAD', answerId);
     return {
-        comments: answerThreads,
+        comments: sortEntitiesByDate(answerThreads),
         isAuthenticated,
         answerId,
         isSendingComment: sendCommentState.isFetching,
