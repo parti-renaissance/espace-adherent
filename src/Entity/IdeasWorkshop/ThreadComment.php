@@ -49,13 +49,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *                 }
  *             }
  *         },
- *         "put_status_approve": {
+ *         "put_approval_toggle": {
  *             "method": "PUT",
- *             "path": "/thread_comments/{id}/approve",
+ *             "path": "/thread_comments/{id}/approval-toggle",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "denormalization_context": {"api_allow_update": false},
+ *             "denormalization_context": {
+ *                 "groups": {"thread_comment_approval"}
+ *             },
  *             "access_control": "object.getIdeaAuthor() == user",
- *             "controller": "AppBundle\Controller\Api\ThreadCommentController::approveAction",
  *             "swagger_context": {
  *                 "parameters": {
  *                     {
@@ -88,9 +89,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="ideas_workshop_comment",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="threads_comments_uuid_unique", columns="uuid")
- *     },
- *     indexes={
- *         @ORM\Index(name="idea_workshop_thread_comments_status_idx", columns={"status"})
  *     }
  * )
  * @ORM\Entity
@@ -121,15 +119,15 @@ class ThreadComment extends BaseComment implements AuthorInterface, ReportableIn
         string $content,
         Adherent $author,
         Thread $thread,
-        string $status = ThreadCommentStatusEnum::POSTED,
-        \DateTime $createdAt = null
+        \DateTime $createdAt = null,
+        bool $approved = false
     ): self {
         $threadComment = new static($uuid);
         $threadComment->content = $content;
         $threadComment->author = $author;
         $threadComment->thread = $thread;
-        $threadComment->status = $status;
         $threadComment->createdAt = $createdAt ?: new \DateTime();
+        $threadComment->approved = $approved;
 
         return $threadComment;
     }
