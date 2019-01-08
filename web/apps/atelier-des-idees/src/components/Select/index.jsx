@@ -37,6 +37,7 @@ class Select extends React.Component {
             <div className="select">
                 <SelectComponent
                     className="select__input"
+                    classNamePrefix="select__input"
                     value={this.state.selectedOption}
                     defaultValue={this.props.defaultValue}
                     components={{ DropdownIndicator, MultiValueLabel, MultiValueRemove }}
