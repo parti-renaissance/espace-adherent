@@ -5,7 +5,7 @@ import Button from '../../Button';
 function DeleteIdeaModal(props) {
     return (
         <div className="delete-idea-modal">
-            {/* TODO: add illustration */}
+            <img src="/assets/img/icn_state_delete.svg" />
             <h1 className="delete-idea-modal__title">Confirmer la suppression ?</h1>
             <p className="delete-idea-modal__subtitle">Êtes vous certain de vouloir supprimer cette note ?</p>
             <div className="delete-ideal-modal__actions">
