@@ -14,9 +14,10 @@ function Comment(props) {
                     {props.author.first_name} {props.author.last_name}
                 </span>
                 <span className="comments-list__comment__infos__date">
-                    {`${new Date(props.created_at).toLocaleDateString()} à ${new Date(
-                        props.created_at
-                    ).toLocaleTimeString()}`}
+                    {`${new Date(props.created_at).toLocaleDateString()} à ${new Date(props.created_at)
+                        .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                        .split(':')
+                        .join('h')}`}
                 </span>
                 {props.approved && (
                     <span className="comments-list__comment__infos__approved">
@@ -45,7 +46,7 @@ function Comment(props) {
                     ) : (
                         <React.Fragment>
                             {props.canApprove &&
-                                (props.approuved ? (
+                                (props.approved ? (
                                     <button
                                         onClick={props.onApprove}
                                         className="comments-list__comment__actions__button__disapproved"
@@ -84,7 +85,7 @@ Comment.propTypes = {
         .isRequired,
     content: PropTypes.string.isRequired,
     created_at: PropTypes.string.isRequired, // iso date
-    approuved: PropTypes.bool,
+    approved: PropTypes.bool,
     canApprove: PropTypes.bool,
     isAuthor: PropTypes.bool,
     hasActions: PropTypes.bool,

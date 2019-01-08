@@ -25,13 +25,14 @@
     }
 
     &__approved {
-      display: inline-block;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
       width: 18px;
       height: 18px;
       margin-left: 8px;
       background-color: $ufo-green;
       border-radius: 50%;
-      text-align: center;
 
       &__icon {
         width: 10px;

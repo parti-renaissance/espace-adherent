@@ -149,7 +149,7 @@ CommentsList.propTypes = {
             content: PropTypes.string.isRequired,
             created_at: PropTypes.string.isRequired, // iso date
             replies: PropTypes.array,
-            approuved: PropTypes.bool,
+            approved: PropTypes.bool,
             nbReplies: PropTypes.number,
         })
     ),
