@@ -124,7 +124,7 @@ class Thread extends BaseComment implements AuthorInterface, ReportableInterface
      * @ORM\OneToMany(targetEntity="ThreadComment", mappedBy="thread", cascade={"remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"createdAt": "DESC"})
      *
-     * @SymfonySerializer\Groups({"thread_list_read"})
+     * @SymfonySerializer\Groups({"thread_list_read", "idea_read"})
      */
     private $comments;
 

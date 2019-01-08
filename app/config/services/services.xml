@@ -225,6 +225,10 @@
             <argument type="service" id="api_platform.serializer.normalizer.item"/>
             <argument type="service" id="api_platform.metadata.resource.metadata_factory"/>
         </service>
+        <service id="AppBundle\Normalizer\AnswerNormalizer">
+            <argument type="service" id="api_platform.serializer.normalizer.item"/>
+            <argument type="service" id="api_platform.metadata.resource.metadata_factory"/>
+        </service>
 
         <!-- Timeline -->
         <service id="AppBundle\Command\TimelineImportCommand"/>

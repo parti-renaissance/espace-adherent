@@ -60,6 +60,8 @@ class Answer
 
     /**
      * @ORM\OneToMany(targetEntity="Thread", mappedBy="answer", cascade={"remove"}, orphanRemoval=true)
+     *
+     * @SymfonySerializer\Groups({"idea_read"})
      */
     private $threads;
 
