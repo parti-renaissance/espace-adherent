@@ -29,6 +29,7 @@ export const POST_THREAD = createRequestTypes('POST_THREAD');
 export const SET_THREADS = createRequestTypes('SET_THREADS');
 export const ADD_THREAD = createRequestTypes('ADD_THREAD');
 export const REMOVE_THREAD = 'REMOVE_THREAD';
+export const TOGGLE_APPROVE_THREAD = 'TOGGLE_APPROVE_THREAD';
 
 // my ideas
 export const FETCH_MY_IDEAS = createRequestTypes('FETCH_MY_IDEAS');
