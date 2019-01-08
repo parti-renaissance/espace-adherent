@@ -22,7 +22,7 @@ class ThreadNormalizer implements NormalizerInterface
     {
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        if (\in_array('thread_list_read', $context['groups'])) {
+        if (\in_array('thread_list_read', $context['groups']) || \in_array('idea_read', $context['groups'])) {
             $data['comments'] = [
                 'total_items' => \count($data['comments']),
                 'items' => \array_slice(
