@@ -6,7 +6,7 @@ function Comment(props) {
     return (
         <div
             className={classNames('comments-list__comment', {
-                'comments-list__comment--approved': props.verified,
+                'comments-list__comment--approved': props.approved,
             })}
         >
             <div className="comments-list__comment__infos">
@@ -18,7 +18,7 @@ function Comment(props) {
                         props.created_at
                     ).toLocaleTimeString()}`}
                 </span>
-                {props.verified && (
+                {props.approved && (
                     <span className="comments-list__comment__infos__approved">
                         <img
                             className="comments-list__comment__infos__approved__icon"
@@ -45,16 +45,16 @@ function Comment(props) {
                     ) : (
                         <React.Fragment>
                             {props.canApprove &&
-                                (props.verified ? (
+                                (props.approuved ? (
                                     <button
-                                        onClick={props.onApproved}
+                                        onClick={props.onApprove}
                                         className="comments-list__comment__actions__button__disapproved"
                                     >
                                         Désapprouver
                                     </button>
                                 ) : (
                                     <button
-                                        onClick={props.onApproved}
+                                        onClick={props.onApprove}
                                         className="comments-list__comment__actions__button__approved"
                                     >
                                         Approuver
@@ -84,11 +84,11 @@ Comment.propTypes = {
         .isRequired,
     content: PropTypes.string.isRequired,
     created_at: PropTypes.string.isRequired, // iso date
-    verified: PropTypes.bool,
+    approuved: PropTypes.bool,
     canApprove: PropTypes.bool,
     isAuthor: PropTypes.bool,
     hasActions: PropTypes.bool,
-    onApproved: PropTypes.func,
+    onApprove: PropTypes.func,
     onEdit: PropTypes.func,
     onReply: PropTypes.func,
     onDelete: PropTypes.func,
