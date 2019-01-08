@@ -26,4 +26,4 @@ function commentsReducer(state = initialState.comments, action) {
 export default combineReducers({ threads: threadsReducer, comments: commentsReducer });
 
 export const getAnswerThreads = (state, answerId) =>
-    state.threads.items.find(thread => thread.answer.uuid === answerId);
+    state.threads.items.filter(thread => thread.answer.id === answerId);
