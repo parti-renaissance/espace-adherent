@@ -49,7 +49,7 @@ function mapStateToProps(state, ownProps) {
     const { current_page, last_page } = selectIdeasMetadata(state);
     // show paging if props says so and is not loading and is not at the end of the list
     const withPaging = ownProps.withPaging && current_page < last_page && !isFetching;
-    return { ideas: [], isLoading: isFetching && !ideas.length, withPaging };
+    return { ideas, isLoading: isFetching && !ideas.length, withPaging };
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
