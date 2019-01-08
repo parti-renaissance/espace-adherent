@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ideaStatus } from '../../constants/api';
 import Select from '../Select';
 
 const filterItems = {
@@ -8,7 +9,7 @@ const filterItems = {
             { value: 'created_at/DESC', label: 'Plus récentes' },
             { value: 'created_at/ASC', label: 'Plus anciennes' },
             { value: 'comments_count/DESC', label: 'Plus commentées' },
-            { value: 'votes_count.total/DESC', label: 'Plus votées' },
+            { value: 'votes_count.total/DESC', label: 'Plus votées', status: ideaStatus.FINALIZED },
         ],
     },
 };
@@ -46,7 +47,9 @@ class IdeaFilters extends React.Component {
                 <div className="idea-filters__sort">
                     <p className="idea-filters__label">Trier par</p>
                     <Select
-                        options={filterItems.order.options}
+                        options={filterItems.order.options.filter(
+                            option => !option.status || (!!option.status && option.status === this.props.status)
+                        )}
                         defaultValue={filterItems.order.options[0]}
                         onSelected={([selected]) => this.onFilterChange('order', selected.value)}
                     />
@@ -56,8 +59,13 @@ class IdeaFilters extends React.Component {
     }
 }
 
+IdeaFilters.defaultProps = {
+    status: 'PENDING',
+};
+
 IdeaFilters.propTypes = {
     onFilterChange: PropTypes.func.isRequired,
+    status: PropTypes.oneOf(Object.keys(ideaStatus)),
 };
 
 export default IdeaFilters;

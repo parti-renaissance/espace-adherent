@@ -3,4 +3,6 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import IdeaFilters from '.';
 
-storiesOf('IdeaFilters', module).add('default', () => <IdeaFilters onFilterChange={action('filter change')} />);
+storiesOf('IdeaFilters', module)
+    .add('default', () => <IdeaFilters onFilterChange={action('filter change')} />)
+    .add('FINALIZED', () => <IdeaFilters onFilterChange={action('filter change')} status="FINALIZED" />);
