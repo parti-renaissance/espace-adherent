@@ -284,7 +284,22 @@ security:
             guard:
                 authenticators:
                     - 'AppBundle\OAuth\OAuthAuthenticator'
+        api2_login:
+            pattern:  ^/api2/login
+            provider: users_db
+            stateless: true
+            json_login:
+                check_path:               /api2/login_check
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
 
+        api2:
+            pattern:   ^/api2
+            stateless: true
+            anonymous: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
         api:
             context: main_context
             pattern: ^/api
@@ -352,3 +367,6 @@ security:
         - { path: '^/admin/impersonation/exit', roles: [ROLE_PREVIOUS_ADMIN] }
         - { path: '^/admin', roles: [ROLE_ADMIN_DASHBOARD] }
         - { path: '^/membre/.*', roles: IS_AUTHENTICATED_FULLY }
+
+        - { path: '^/api2/login', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: '^/api2',       roles: IS_AUTHENTICATED_FULLY }

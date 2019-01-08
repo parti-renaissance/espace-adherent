@@ -438,5 +438,9 @@
         </service>
 
         <service id="AppBundle\Normalizer\UuidNormalizer" />
+
+        <service id="AppBundle\Security\JWTCreatedListener">
+            <tag name="kernel.event_listener" event="lexik_jwt_authentication.on_jwt_created" method="onJWTCreated"/>
+        </service>
     </services>
 </container>

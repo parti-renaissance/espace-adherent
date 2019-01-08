@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Misd\PhoneNumberBundle\MisdPhoneNumberBundle(),
+            new Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle(),
             new Lexik\Bundle\PayboxBundle\LexikPayboxBundle(),
             new Csa\Bundle\GuzzleBundle\CsaGuzzleBundle(),
             new Scheb\TwoFactorBundle\SchebTwoFactorBundle(),

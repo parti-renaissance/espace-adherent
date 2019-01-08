@@ -47,6 +47,12 @@ app_api:
         _format: 'json'
 
 #
+# API2
+#
+api2_login_check:
+    path: /api2/login_check
+
+#
 # API Legislatives
 #
 app_legislatives_api:
