@@ -1,6 +1,5 @@
 import { ideaStatus } from '../../constants/api';
 import { fetchIdeas, fetchIdea, fetchUserIdeas, fetchUserContributions } from './ideas';
-import { fetchIdeaThreads } from './threads';
 import { fetchConsultationPinned } from './pinned';
 import { fetchReports } from './reports';
 import { fetchAuthUser } from './auth';
@@ -57,7 +56,6 @@ export function initIdeaPageBase() {
 export function initIdeaPage(id) {
     return async dispatch => {
         await dispatch(fetchIdea(id));
-        dispatch(fetchIdeaThreads(id));
         dispatch(initIdeaPageBase());
     };
 }
