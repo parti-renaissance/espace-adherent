@@ -2,14 +2,6 @@ import { setThreads, removeThread, toggleApproveThread } from '../actions/thread
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { POST_THREAD } from '../constants/actionTypes';
 
-export function fetchIdeaThreads(id) {
-    return (dispatch, getState, axios) =>
-        axios
-            .get(`/api/threads?answer.idea.uuid=${id}`)
-            .then(res => res.data)
-            .then(data => dispatch(setThreads(data)));
-}
-
 export function approveComment(id, parentId = '') {
     return (dispatch, getState, axios) => {
         let type = 'threads';
