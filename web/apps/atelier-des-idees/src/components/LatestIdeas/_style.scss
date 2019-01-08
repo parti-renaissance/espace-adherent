@@ -11,6 +11,15 @@
     padding-top: 35px;
   }
 
+  // responsive
+  @media #{$tablet} {
+    padding: 50px;
+
+    &__title {
+      width: 60%;
+    }
+  }
+
   @media #{$mobile} {
     padding: 50px 0;
 

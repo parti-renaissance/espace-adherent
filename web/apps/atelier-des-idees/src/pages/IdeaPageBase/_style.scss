@@ -55,13 +55,17 @@
     text-align: center;
 
     .create-idea-page__auto-save__label {
-      display: inline-block;
+      display: inline-flex;
       margin: 0;
       border-radius: 20px;
       padding: 7px 13px;
       background-color: $glitter;
       font-size: 14px;
       color: $slate-grey;
+
+      .create-idea-page__auto-save__icon {
+        margin-right: 8px;
+      }
     }
   }
 
@@ -81,10 +85,20 @@
 
     .create-idea-page__header {
       flex-direction: column;
+      height: initial;
+      padding: 30px 0;
+
+      .create-idea-actions__back {
+        margin: 0;
+      }
     }
 
     .create-idea-actions__back {
       margin-bottom: 20px;
+    }
+
+    .create-idea-page__auto-save {
+      margin-bottom: 30px;
     }
   }
 

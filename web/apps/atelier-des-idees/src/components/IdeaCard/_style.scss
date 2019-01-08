@@ -123,6 +123,14 @@
     }
   }
 
+  @media #{$tablet} {
+    .idea-card__content__description {
+      white-space: nowrap;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
   @media #{$mobile} {
     &__main {
       padding: 20px;

@@ -23,6 +23,24 @@
   }
 
   /* Responsive */
+  @media #{$tablet} {
+    flex-direction: column;
+
+    .idea-card-list__wrapper {
+      flex-basis: initial;
+      max-width: initial;
+      padding: 0;
+
+      &:nth-child(2n) {
+        padding-left: 0;
+      }
+
+      &:nth-child(2n + 1) {
+        padding-right: 0;
+      }
+    }
+  }
+
   @media #{$mobile} {
     flex-direction: column;
 

@@ -50,6 +50,26 @@
     }
   }
 
+  // responsive
+  @media #{$tablet} {
+    .idea-card-skeleton__main-line {
+      height: 20px;
+
+      &:first-child {
+        width: 67%;
+      }
+    }
+
+    .idea-card-skeleton__subline {
+      margin-top: 100px;
+    }
+
+    .idea-card-skeleton__subline__item {
+      width: 33%;
+      height: 10px;
+    }
+  }
+
   @media #{$mobile} {
     .idea-card-skeleton__main-line {
       height: 20px;
