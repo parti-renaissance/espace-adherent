@@ -1,4 +1,6 @@
 import { setThreads } from '../actions/threads';
+import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
+import { POST_THREAD } from '../constants/actionTypes';
 
 export function fetchIdeaThreads(id) {
     return (dispatch, getState, axios) =>
@@ -38,10 +40,13 @@ export function postComment(content, answerId, parentId = '') {
         } else {
             body.answer = answerId;
         }
+        dispatch(createRequest(POST_THREAD, answerId));
         return axios
             .post(`/api/${type}`, body)
             .then(res => res.data)
+            .then(() => dispatch(createRequestSuccess(POST_THREAD, answerId)))
             .catch((error) => {
+                dispatch(createRequestFailure(POST_THREAD, answerId));
                 throw error;
             });
     };

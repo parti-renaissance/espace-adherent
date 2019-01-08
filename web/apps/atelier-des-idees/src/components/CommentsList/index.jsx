@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Comment from './Comment';
 import TextArea from '../TextArea';
+import Button from '../Button';
 
 class CommentsList extends React.Component {
     constructor(props) {
@@ -115,9 +116,12 @@ class CommentsList extends React.Component {
                             placeholder={this.props.placeholder}
                             error={this.state.errorComment}
                         />
-                        <button type="submit" className="comments-list__form__button button--primary">
-                            Envoyer
-                        </button>
+                        <Button
+                            type="submit"
+                            className="comments-list__form__button button--primary"
+                            label="Envoyer"
+                            isLoading={this.props.isSendingComment}
+                        />
                     </form>
                 )}
             </div>
@@ -127,6 +131,7 @@ class CommentsList extends React.Component {
 
 CommentsList.defaultProps = {
     comments: [],
+    isSendingComment: false,
     showForm: true,
     parentId: undefined,
     emptyLabel: 'Soyez le premier à contribuer sur cette partie',
@@ -147,6 +152,7 @@ CommentsList.propTypes = {
             nbReplies: PropTypes.number,
         })
     ),
+    isSendingComment: PropTypes.bool,
     onSendComment: PropTypes.func.isRequired,
     onDeleteComment: PropTypes.func.isRequired,
     onEditComment: PropTypes.func.isRequired,
