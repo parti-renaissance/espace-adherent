@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { ideaStatus } from '../../constants/api';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectIdeasWithStatus, selectIdeasMetadata } from '../../redux/selectors/ideas';
+import { selectStatic } from '../../redux/selectors/static';
 import { fetchIdeas, fetchNextIdeas, voteIdea } from '../../redux/thunk/ideas';
 import Button from '../../components/Button';
 import IdeaCardList from '../../components/IdeaCardList';
@@ -29,7 +30,11 @@ class IdeaCardListContainer extends React.Component {
     render() {
         return this.props.isLoading || this.props.ideas.length ? (
             <React.Fragment>
-                <IdeaFilters onFilterChange={this.onFilterChange} status={this.props.status} />
+                <IdeaFilters
+                    onFilterChange={this.onFilterChange}
+                    status={this.props.status}
+                    options={this.props.filters}
+                />
                 <IdeaCardList
                     ideas={this.props.ideas}
                     isLoading={this.props.isLoading}
@@ -54,6 +59,7 @@ class IdeaCardListContainer extends React.Component {
 IdeaCardListContainer.defaultProps = {
     onMoreClicked: undefined,
     withPaging: false,
+    filters: undefined,
 };
 
 IdeaCardListContainer.propTypes = {
@@ -61,6 +67,7 @@ IdeaCardListContainer.propTypes = {
     onMoreClicked: PropTypes.func,
     status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
     withPaging: PropTypes.bool,
+    filters: PropTypes.object,
 };
 
 function mapStateToProps(state, ownProps) {
@@ -70,7 +77,16 @@ function mapStateToProps(state, ownProps) {
     const { current_page, last_page } = selectIdeasMetadata(state);
     // show paging if props says so and is not loading and is not at the end of the list
     const withPaging = ownProps.withPaging && current_page < last_page && !isFetching;
-    return { ideas, isLoading: isFetching && !ideas.length, withPaging };
+    // filter options
+    const { themes } = selectStatic(state);
+    return {
+        ideas,
+        isLoading: isFetching && !ideas.length,
+        withPaging,
+        filters: {
+            themes: themes.map(theme => ({ value: theme.name, label: theme.name })),
+        },
+    };
 }
 
 function mapDispatchToProps(dispatch, ownProps) {

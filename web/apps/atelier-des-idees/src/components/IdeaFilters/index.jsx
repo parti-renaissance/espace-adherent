@@ -22,7 +22,7 @@ class IdeaFilters extends React.Component {
         this.state = {
             order: this.filterItems.order.options[0].value,
             author_category: null,
-            name: '',
+            // name: '',
         };
         // bindings
         this.onFilterChange = this.onFilterChange.bind(this);
@@ -65,6 +65,13 @@ class IdeaFilters extends React.Component {
                         placeholder="Auteur"
                         onSelected={([selected]) => this.onFilterChange('author_category', selected.value)}
                     />
+                    {!!this.props.options && !!this.props.options.themes.length && (
+                        <Select
+                            options={this.props.options.themes}
+                            placeholder="Thème"
+                            onSelected={([selected]) => this.onFilterChange('theme.name', selected.value)}
+                        />
+                    )}
                 </div>
                 <div className="idea-filters__section idea-filters__sort">
                     <p className="idea-filters__label">Trier par</p>
@@ -83,11 +90,17 @@ class IdeaFilters extends React.Component {
 
 IdeaFilters.defaultProps = {
     status: 'PENDING',
+    options: undefined,
 };
 
 IdeaFilters.propTypes = {
     onFilterChange: PropTypes.func.isRequired,
     status: PropTypes.oneOf(Object.keys(ideaStatus)),
+    options: PropTypes.shape({
+        themes: PropTypes.array,
+        categories: PropTypes.array,
+        needs: PropTypes.array,
+    }),
 };
 
 export default IdeaFilters;
