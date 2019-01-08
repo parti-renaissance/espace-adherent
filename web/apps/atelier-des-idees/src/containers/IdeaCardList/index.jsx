@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { ideaStatus } from '../../constants/api';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectIdeasWithStatus, selectIdeasMetadata } from '../../redux/selectors/ideas';
-import { fetchNextIdeas, voteIdea } from '../../redux/thunk/ideas';
+import { fetchIdeas, fetchNextIdeas, voteIdea } from '../../redux/thunk/ideas';
 import Button from '../../components/Button';
 import IdeaCardList from '../../components/IdeaCardList';
 import IdeaFilters from '../../components/IdeaFilters';
@@ -15,12 +15,21 @@ class IdeaCardListContainer extends React.Component {
         this.state = {
             params: {},
         };
+        this.onFilterChange = this.onFilterChange.bind(this);
+    }
+
+    fetchIdeas() {
+        this.props.fetchIdeas(this.state.params);
+    }
+
+    onFilterChange(filters) {
+        this.setState({ params: filters }, () => this.fetchIdeas());
     }
 
     render() {
-        return this.props.ideas.length ? (
+        return this.props.isLoading || this.props.ideas.length ? (
             <React.Fragment>
-                <IdeaFilters onFilterChange={filters => console.warn(filters)} />
+                <IdeaFilters onFilterChange={this.onFilterChange} />
                 <IdeaCardList
                     ideas={this.props.ideas}
                     isLoading={this.props.isLoading}
@@ -48,6 +57,7 @@ IdeaCardListContainer.defaultProps = {
 };
 
 IdeaCardListContainer.propTypes = {
+    fetchIdeas: PropTypes.func.isRequired,
     onMoreClicked: PropTypes.func,
     status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
     withPaging: PropTypes.bool,
@@ -65,7 +75,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch, ownProps) {
     return {
-        onMoreClicked: () => dispatch(fetchNextIdeas(ownProps.status)),
+        fetchIdeas: params => dispatch(fetchIdeas(ownProps.status, params, true)),
+        onMoreClicked: params => dispatch(fetchNextIdeas(ownProps.status, params)),
         onVoteIdea: (id, vote) => dispatch(voteIdea(id, vote)),
     };
 }

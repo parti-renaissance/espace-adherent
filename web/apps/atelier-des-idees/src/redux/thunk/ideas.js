@@ -18,6 +18,9 @@ import { setThreads } from '../actions/threads';
 export function fetchIdeas(status, params = {}, setMode = false) {
     return (dispatch, getState, axios) => {
         dispatch(createRequest(FETCH_IDEAS, status));
+        if (setMode) {
+            dispatch(setIdeas([], {}));
+        }
         return axios
             .get('/api/ideas', { params: { status, ...params } })
             .then(res => res.data)
