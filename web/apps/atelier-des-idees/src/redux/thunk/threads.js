@@ -54,3 +54,13 @@ export function reportComment(id, parentId = '') {
         return axios.put(`/api/${type}/${id}/report`);
     };
 }
+
+export function fetchThreads(params = {}) {
+    return (dispatch, getState, axios) =>
+        axios
+            .get('/api/threads', { params })
+            .then(res => res.data)
+            .catch((error) => {
+                throw error;
+            });
+}
