@@ -19,7 +19,7 @@ const comments = [
                 verified: false,
             },
         ],
-        nbReplies: 3,
+        nbReplies: 4,
     },
     {
         uuid: '1111',
@@ -54,5 +54,17 @@ storiesOf('CommentsList', module)
             ownerId="u1"
             onLoadMore={action('Load more comments')}
             isSendingComment={true}
+        />
+    ))
+    .add('load more', () => (
+        <CommentsList
+            comments={comments}
+            onSendComment={action('send comment')}
+            onDeleteComment={action('delete comment')}
+            onEditComment={action('edit comment')}
+            onApprovedComment={action('edit comment')}
+            ownerId="u1"
+            onLoadMore={action('Load more comments')}
+            total={comments.length * 2}
         />
     ));

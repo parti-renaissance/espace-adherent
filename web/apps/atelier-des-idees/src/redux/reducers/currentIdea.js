@@ -70,4 +70,6 @@ function guidelinesReducer(state = initialState.guidelines, action) {
 export default combineReducers({ idea: ideaReducer, guidelines: guidelinesReducer });
 
 export const getCurrentIdea = state => state.idea;
+export const getCurrentIdeaAnswer = (state, answerId) =>
+    state.idea.answers && state.idea.answers.find(answer => answer.id === answerId);
 export const getGuidelines = state => state.guidelines;

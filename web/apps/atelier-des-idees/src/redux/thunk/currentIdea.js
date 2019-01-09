@@ -2,12 +2,13 @@ import { ideaStatus } from '../../constants/api';
 import history from '../../history';
 import { SAVE_CURRENT_IDEA, FETCH_GUIDELINES, VOTE_CURRENT_IDEA } from '../constants/actionTypes';
 import { saveAndPublishIdea } from '../thunk/ideas';
-import { postComment } from '../thunk/threads';
+import { postComment, fetchThreads } from '../thunk/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
-import { selectCurrentIdea } from '../selectors/currentIdea';
 import { selectIsAuthenticated } from '../selectors/auth';
+import { selectCurrentIdea, selectCurrentIdeaAnswer } from '../selectors/currentIdea';
+import { selectAnswerThreads } from '../selectors/threads';
 import { setCurrentIdea, updateCurrentIdea, setGuidelines, toggleVoteCurrentIdea } from '../actions/currentIdea';
-import { addThread } from '../actions/threads';
+import { addThreads } from '../actions/threads';
 import { hideModal } from '../actions/modal';
 
 /**
@@ -128,5 +129,73 @@ export function voteCurrentIdea(vote) {
 
 export function postCommentToCurrentIdea(content, answerId, parentId = '') {
     // TODO: handle parentId
-    return dispatch => dispatch(postComment(content, answerId, parentId)).then(thread => dispatch(addThread(thread)));
+    return dispatch =>
+        dispatch(postComment(content, answerId, parentId))
+            .then(thread => dispatch(addThreads([thread])))
+            // TODO: remove catch
+            .catch(
+                thread =>
+                    dispatch(
+                        addThreads([
+                            {
+                                answer: {
+                                    id: answerId,
+                                },
+                                content,
+                                author: {
+                                    uuid: '0000',
+                                    first_name: 'Adrien',
+                                    last_name: 'Casanova',
+                                },
+                                created_at: new Date().toISOString(),
+                                uuid: '909920830',
+                            },
+                        ])
+                    )
+                // TODO: update current answer total items
+            );
+}
+
+export function fetchNextAnswerThreads(answerId) {
+    return (dispatch, getState) => {
+        // compute page to fetch from threads data
+        const answer = selectCurrentIdeaAnswer(getState(), answerId);
+        const answerThreads = selectAnswerThreads(getState(), answerId);
+        const { threads } = answer;
+        const page = threads.total_items / answerThreads.length;
+        return dispatch(fetchThreads({ 'answer.id': answerId, page })).then(({ items, metadata }) => {
+            dispatch(addThreads(items));
+            // dispatch(
+            //     addThreads([
+            //         {
+            //             answer: {
+            //                 id: answerId,
+            //             },
+            //             content: 'New comment',
+            //             author: {
+            //                 uuid: '0000',
+            //                 first_name: 'Adrien',
+            //                 last_name: 'Casanova',
+            //             },
+            //             created_at: new Date().toISOString(),
+            //             uuid: '909920830',
+            //         },
+            //         {
+            //             answer: {
+            //                 id: answerId,
+            //             },
+            //             content: 'New comment',
+            //             author: {
+            //                 uuid: '0000',
+            //                 first_name: 'Adrien',
+            //                 last_name: 'Casanova',
+            //             },
+            //             created_at: new Date().toISOString(),
+            //             uuid: '909920830',
+            //         },
+            //     ])
+            // );
+            // TODO: update current answer total items
+        });
+    };
 }

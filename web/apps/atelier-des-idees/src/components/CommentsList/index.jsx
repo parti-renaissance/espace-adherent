@@ -41,7 +41,8 @@ class CommentsList extends React.Component {
                         this.setState(prevState => ({
                             showComments: !prevState.showComments,
                         }))
-                    }>
+                    }
+                >
                     <img className="comments-list__collapse-button__icon-replies" src={icn_20px_replies} />
                     <span className="comments-list__collapse-button__label">
                         {this.props.comments.length} {this.props.collapseLabel}
@@ -84,7 +85,7 @@ class CommentsList extends React.Component {
                                                     collapseLabel="réponse"
                                                     placeholder="Écrivez votre réponse"
                                                     emptyLabel={null}
-                                                    nbMore={comment.nbReplies - comment.replies.length}
+                                                    total={comment.nbReplies}
                                                 />
                                             </div>
                                         )}
@@ -93,13 +94,12 @@ class CommentsList extends React.Component {
                             : this.props.emptyLabel && <p className="comments-list__empty">{this.props.emptyLabel}</p>}
                     </div>
                 )}
-                {0 < this.props.nbMore && (
+                {0 < this.props.total - this.props.comments.length && (
                     <div className="comments-list__more">
                         <button
                             className="comments-list__more-btn"
-                            onClick={() => this.props.onLoadMore()}>{`Afficher plus de réponses (${
-                                this.props.nbMore
-                            })`}</button>
+                            onClick={() => this.props.onLoadMore()}
+                        >{`Afficher plus de réponses (${this.props.total - this.props.comments.length})`}</button>
                     </div>
                 )}
                 {this.props.showForm && (
@@ -108,7 +108,8 @@ class CommentsList extends React.Component {
                         onSubmit={(e) => {
                             e.preventDefault();
                             this.handleSendComment();
-                        }}>
+                        }}
+                    >
                         <TextArea
                             value={this.state.comment}
                             onChange={value => this.handleCommentChange(value)}
@@ -136,7 +137,7 @@ CommentsList.defaultProps = {
     emptyLabel: 'Soyez le premier à contribuer sur cette partie',
     placeholder: 'Ajoutez votre contribution',
     collapseLabel: 'commentaire',
-    nbMore: 0,
+    total: 0,
 };
 
 CommentsList.propTypes = {
@@ -163,7 +164,7 @@ CommentsList.propTypes = {
     parentId: PropTypes.string,
     emptyLabel: PropTypes.string,
     placeholder: PropTypes.string,
-    nbMore: PropTypes.number,
+    total: PropTypes.number,
 };
 
 export default CommentsList;
