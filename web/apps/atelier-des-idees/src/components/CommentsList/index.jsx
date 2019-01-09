@@ -60,14 +60,14 @@ class CommentsList extends React.Component {
                         {this.props.comments.length
                             ? this.props.comments.map(comment => (
                                 <React.Fragment>
-                                    {/* TODO: add onEdit and onApproved */}
                                     <Comment
                                         {...comment}
-                                        hasActions={!this.props.parentId}
+                                        hasActions={this.props.hasActions && !this.props.parentId}
                                         isAuthor={this.props.currentUserId === comment.author.uuid}
                                         onReply={() => this.setState({ replyingTo: comment.uuid })}
                                         onDelete={() => this.props.onDeleteComment(comment.uuid)}
                                         onApprove={() => this.props.onApproveComment(comment.uuid)}
+                                        onReport={() => this.props.onReportComment(comment.uuid)}
                                         canApprove={this.props.currentUserId === this.props.ownerId}
                                     />
                                     {((comment.replies && !!comment.replies.length) ||
@@ -138,6 +138,7 @@ CommentsList.defaultProps = {
     placeholder: 'Ajoutez votre contribution',
     collapseLabel: 'commentaire',
     total: 0,
+    hasActions: false,
 };
 
 CommentsList.propTypes = {
@@ -155,7 +156,7 @@ CommentsList.propTypes = {
     isSendingComment: PropTypes.bool,
     onSendComment: PropTypes.func.isRequired,
     onDeleteComment: PropTypes.func.isRequired,
-    onEditComment: PropTypes.func.isRequired,
+    onReportComment: PropTypes.func.isRequired,
     onApproveComment: PropTypes.func.isRequired,
     onLoadMore: PropTypes.func.isRequired,
     currentUserId: PropTypes.string.isRequired,
@@ -165,6 +166,7 @@ CommentsList.propTypes = {
     emptyLabel: PropTypes.string,
     placeholder: PropTypes.string,
     total: PropTypes.number,
+    hasActions: PropTypes.bool,
 };
 
 export default CommentsList;
