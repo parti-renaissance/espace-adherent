@@ -1,0 +1,19 @@
+.dropdown-button {
+  @extend %reset-button;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  .rc-dropdown-menu {
+    border-color: $columbia-blue;
+    box-shadow: none;
+  }
+
+  .rc-dropdown-menu-item.dropdown-menu__item {
+    cursor: pointer;
+
+    &--important {
+      color: $rose-madder;
+    }
+  }
+}
