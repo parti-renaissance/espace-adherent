@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import icn_state_success from './../../../../../img/icn_state_success.svg';
+import how_to_approve from './../../../../../img/how-to-approve.svg';
 
 class SuccessForm extends React.PureComponent {
     render() {
         return (
             <div className="success-form">
-                <img src="/assets/img/icn_state_success.svg" />
+                <img src={icn_state_success} />
                 <h3 className="success-form__title">Votre note a bien été publiée</h3>
                 <p className="success-form__subtitle">
                     Votre idée va maintenant être enrichie par des adhérents pendant 3 semaines. Vous pouvez leur
@@ -16,11 +18,10 @@ class SuccessForm extends React.PureComponent {
                 </p>
                 <Link
                     to={`/atelier-des-idees/note/${this.props.id}`}
-                    className="success-form__button button--secondary"
-                >
+                    className="success-form__button button--secondary">
                     Voir la page
                 </Link>
-                <img src="/assets/img/how-to-approve.svg" />
+                <img src={how_to_approve} />
             </div>
         );
     }

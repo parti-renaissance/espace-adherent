@@ -1,4 +1,7 @@
 import React from 'react';
+import step1 from './../../../img/proposal_step_1.svg';
+import step2 from './../../../img/proposal_step_2.svg';
+import step3 from './../../../img/proposal_step_3.svg';
 
 class ProposalSteps extends React.PureComponent {
     render() {
@@ -8,39 +11,28 @@ class ProposalSteps extends React.PureComponent {
                     <h2 className="proposal-steps__title">Les étapes de votre notes</h2>
                     <div className="proposal-steps__container">
                         <div className="proposal-steps__container__step">
-                            <img
-                                className="proposal-steps__container__step__img"
-                                src="/assets/img/proposal_step_1.svg"
-                            />
+                            <img className="proposal-steps__container__step__img" src={step1} />
                             <span className="proposal-steps__container__step__number">1</span>
                             <p className="proposal-steps__container__step__text">
-								Commencez à écrire votre idée à partir d’un document prêt à
-								l’emploi.
+                                Commencez à écrire votre idée à partir d’un document prêt à l’emploi.
                             </p>
                         </div>
                         <div className="proposal-steps__container__separator" />
                         <div className="proposal-steps__container__step">
-                            <img
-                                className="proposal-steps__container__step__img"
-                                src="/assets/img/proposal_step_2.svg"
-                            />
+                            <img className="proposal-steps__container__step__img" src={step2} />
                             <span className="proposal-steps__container__step__number">2</span>
                             <p className="proposal-steps__container__step__text">
-								Quand vous êtes (presque) prêt(e), n’oubliez pas de publier
-								votre idée sur notre site. Vous aurez alors 3 semaines pour
-								l’amender et recueillir le plus de contributions.
+                                Quand vous êtes (presque) prêt(e), n’oubliez pas de publier votre idée sur notre site.
+                                Vous aurez alors 3 semaines pour l’amender et recueillir le plus de contributions.
                             </p>
                         </div>
                         <div className="proposal-steps__container__separator" />
                         <div className="proposal-steps__container__step">
-                            <img
-                                className="proposal-steps__container__step__img"
-                                src="/assets/img/proposal_step_3.svg"
-                            />
+                            <img className="proposal-steps__container__step__img" src={step3} />
                             <span className="proposal-steps__container__step__number">3</span>
                             <p className="proposal-steps__container__step__text">
-								Passé ce délai, les équipes du pôle Idées étudieront votre
-								proposition et pourront la mettre en avant sur notre site !
+                                Passé ce délai, les équipes du pôle Idées étudieront votre proposition et pourront la
+                                mettre en avant sur notre site !
                             </p>
                         </div>
                     </div>

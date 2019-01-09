@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Select from '../../../Select';
 import Button from '../../../Button';
+import icn_checklist from './../../../../img/icn_checklist-white.svg';
 
 class SecondForm extends React.Component {
     constructor(props) {
@@ -148,7 +149,7 @@ class SecondForm extends React.Component {
                                 onChange={event => this.handleChange('legal', event.target.checked)}
                             />
                             <span className="second-form__section__mentions__checkbox__checkmark">
-                                <img src="/assets/img/icn_checklist-white.svg" />
+                                <img src={icn_checklist} />
                             </span>
                         </label>
                         <p className="second-form__section__mentions__text">
@@ -156,8 +157,7 @@ class SecondForm extends React.Component {
                             <a
                                 className="second-form__section__mentions__text__link"
                                 href="/atelier-des-idees/cgu"
-                                target="_blank"
-                            >
+                                target="_blank">
                                 mentions légales
                             </a>
                         </p>

@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { ideaStatus } from '../../../../constants/api';
 import Button from '../../../Button';
+import icn_toggle_content from './../../../../img/icn_toggle_content-blue-yonder.svg';
 
 class MyIdeas extends React.Component {
     constructor(props) {
@@ -44,14 +45,13 @@ class MyIdeas extends React.Component {
                                 this.setState(prevState => ({
                                     [cat.showCat]: !prevState[cat.showCat],
                                 }))
-                            }
-                        >
+                            }>
                             <span className="my-ideas__category__button__label">{cat.label.toUpperCase()}</span>
                             <img
                                 className={classNames('my-ideas__category__button__icon', {
                                     'my-ideas__category__button__icon--rotate': !this.state[cat.showCat],
                                 })}
-                                src="/assets/img/icn_toggle_content-blue-yonder.svg"
+                                src={icn_toggle_content}
                             />
                         </button>
                         {cat.ideas.map(
@@ -73,8 +73,7 @@ class MyIdeas extends React.Component {
                                                 )}
                                                 <Link
                                                     to={`/atelier-des-idees/note/${idea.uuid}`}
-                                                    className="my-ideas__category__idea__actions__edit button button--secondary"
-                                                >
+                                                    className="my-ideas__category__idea__actions__edit button button--secondary">
                                                     {'FINALIZED' !== idea.status && 'Editer'}
                                                     {'FINALIZED' === idea.status && 'Voir la note'}
                                                 </Link>

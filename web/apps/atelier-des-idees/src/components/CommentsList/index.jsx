@@ -4,6 +4,8 @@ import classNames from 'classnames';
 import Comment from './Comment';
 import TextArea from '../TextArea';
 import Button from '../Button';
+import icn_20px_replies from './../../img/icn_20px_replies.svg';
+import icn_toggle_content from './../../img/icn_toggle_content.svg';
 
 class CommentsList extends React.Component {
     constructor(props) {
@@ -39,12 +41,8 @@ class CommentsList extends React.Component {
                         this.setState(prevState => ({
                             showComments: !prevState.showComments,
                         }))
-                    }
-                >
-                    <img
-                        className="comments-list__collapse-button__icon-replies"
-                        src="/assets/img/icn_20px_replies.svg"
-                    />
+                    }>
+                    <img className="comments-list__collapse-button__icon-replies" src={icn_20px_replies} />
                     <span className="comments-list__collapse-button__label">
                         {this.props.comments.length} {this.props.collapseLabel}
                         {1 < this.props.comments.length && 's'}
@@ -53,7 +51,7 @@ class CommentsList extends React.Component {
                         className={classNames('comments-list__collapse-button__icon-toggle', {
                             'comments-list__collapse-button__icon-toggle--rotate': !this.state.showComments,
                         })}
-                        src="/assets/img/icn_toggle_content.svg"
+                        src={icn_toggle_content}
                     />
                 </button>
                 {this.state.showComments && (
@@ -99,8 +97,9 @@ class CommentsList extends React.Component {
                     <div className="comments-list__more">
                         <button
                             className="comments-list__more-btn"
-                            onClick={() => this.props.onLoadMore()}
-                        >{`Afficher plus de réponses (${this.props.nbMore})`}</button>
+                            onClick={() => this.props.onLoadMore()}>{`Afficher plus de réponses (${
+                                this.props.nbMore
+                            })`}</button>
                     </div>
                 )}
                 {this.props.showForm && (
@@ -109,8 +108,7 @@ class CommentsList extends React.Component {
                         onSubmit={(e) => {
                             e.preventDefault();
                             this.handleSendComment();
-                        }}
-                    >
+                        }}>
                         <TextArea
                             value={this.state.comment}
                             onChange={value => this.handleCommentChange(value)}

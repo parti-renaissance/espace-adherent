@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import proposal_step_1 from './../../../img/proposal_step_1.svg';
 
 class PreProposal extends React.PureComponent {
     render() {
@@ -7,7 +8,8 @@ class PreProposal extends React.PureComponent {
             <article className="l__wrapper">
                 <div className="pre-proposal">
                     <div className="pre-proposal__container">
-                        <img className="pre-proposal__container__img" src="/assets/img/propose-your-idea.svg" />
+                        {/* TODO: Replace by the right img */}
+                        <img className="pre-proposal__container__img" src={proposal_step_1} />
                     </div>
                     <div className="pre-proposal__container">
                         <h2 className="pre-proposal__container__title">Une petite étape avant de vous lancer</h2>
@@ -18,8 +20,7 @@ class PreProposal extends React.PureComponent {
                         <a
                             className="button button--primary pre-proposal__container__link"
                             href="https://transformer.en-marche.fr/fr"
-                            target="_blank"
-                        >
+                            target="_blank">
                             Suivre la mise en œuvre du programme
                         </a>
                     </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import icn_20px_thumb from './../../../img/icn_20px_thumb.svg';
 
 class VotingFooter extends React.Component {
     constructor(props) {
@@ -35,8 +36,7 @@ class VotingFooter extends React.Component {
         return (
             <div
                 className={classnames('voting-footer', { 'voting-footer--open': this.state.toggleVotes })}
-                ref={this.footerRef}
-            >
+                ref={this.footerRef}>
                 <div className="voting-footer__container">
                     {/* MOBILE ELEMENTS */}
                     <button
@@ -54,8 +54,7 @@ class VotingFooter extends React.Component {
                                     }
                                 }
                             )
-                        }
-                    >
+                        }>
                         <p className="voting-footer__container__action-vote--mobile__text">Je vote</p>
                         <div
                             className={classnames('voting-footer__container__action-vote--mobile__arrow', {
@@ -76,12 +75,8 @@ class VotingFooter extends React.Component {
                                         this.props.onToggleVotePanel(true);
                                         this.resetTimeout();
                                     })
-                                }
-                            >
-                                <img
-                                    className="voting-footer__container__action-vote__icon"
-                                    src="/assets/img/icn_20px_thumb.svg"
-                                />
+                                }>
+                                <img className="voting-footer__container__action-vote__icon" src={icn_20px_thumb} />
                                 Je vote
                             </button>
                         </div>
@@ -101,8 +96,7 @@ class VotingFooter extends React.Component {
                             onClick={() => {
                                 this.props.onSelected(vote.id);
                                 this.resetTimeout();
-                            }}
-                        >
+                            }}>
                             <span className="voting-footer__vote__name">{vote.name}</span>
                             <span className="voting-footer__vote__count">{vote.count}</span>
                         </button>

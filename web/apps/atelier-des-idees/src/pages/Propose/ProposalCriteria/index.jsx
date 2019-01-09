@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import icn_checklist from './../../../img/icn_checklist.svg';
 
 class ProposalCriteria extends React.PureComponent {
     render() {
@@ -8,70 +9,55 @@ class ProposalCriteria extends React.PureComponent {
                 <div className="proposal-criteria">
                     <div className="proposal-criteria__container">
                         <h2 className="proposal-criteria__container__title">
-							À quels critères doit répondre une bonne note ?
+                            À quels critères doit répondre une bonne note ?
                         </h2>
                         <Link
                             to="/atelier-des-idees/creer-ma-note"
-                            className="button button--primary proposal-criteria__container__link"
-                        >
-							Je rédige ma note
+                            className="button button--primary proposal-criteria__container__link">
+                            Je rédige ma note
                         </Link>
                     </div>
                     <div className="proposal-criteria__container">
                         <div className="proposal-criteria__container__item">
-                            <img
-                                className="proposal-criteria__container__item__icon"
-                                src="/assets/img/icn_checklist.svg"
-                            />
+                            <img className="proposal-criteria__container__item__icon" src={icn_checklist} />
                             <p className="proposal-criteria__container__item__text">
                                 <span className="proposal-criteria__container__item__text__main">
-									Être une vraie proposition :
+                                    Être une vraie proposition :
                                 </span>{' '}
-								il ne s’agit pas uniquement d’une critique ou d’un constat quant
-								à une situation existante.
+                                il ne s’agit pas uniquement d’une critique ou d’un constat quant à une situation
+                                existante.
                             </p>
                         </div>
                         <div className="proposal-criteria__container__item">
-                            <img
-                                className="proposal-criteria__container__item__icon"
-                                src="/assets/img/icn_checklist.svg"
-                            />
+                            <img className="proposal-criteria__container__item__icon" src={icn_checklist} />
                             <p className="proposal-criteria__container__item__text">
                                 <span className="proposal-criteria__container__item__text__main">
-									Répondre à une politique publique :
+                                    Répondre à une politique publique :
                                 </span>{' '}
-								le problème visé doit être national, la réponse politique se
-								situant au niveau de l’état (et non de la municipalité ou de la
-								collectivité)
+                                le problème visé doit être national, la réponse politique se situant au niveau de l’état
+                                (et non de la municipalité ou de la collectivité)
                             </p>
                         </div>
                         <div className="proposal-criteria__container__item">
-                            <img
-                                className="proposal-criteria__container__item__icon"
-                                src="/assets/img/icn_checklist.svg"
-                            />
+                            <img className="proposal-criteria__container__item__icon" src={icn_checklist} />
                             <p className="proposal-criteria__container__item__text">
                                 <span className="proposal-criteria__container__item__text__main">
-									Répondre à un problème précis :
+                                    Répondre à un problème précis :
                                 </span>{' '}
-								la proposition a pour objet de répondre à un problème précis, un
-								constat, une situation améliorable.
+                                la proposition a pour objet de répondre à un problème précis, un constat, une situation
+                                améliorable.
                             </p>
                         </div>
                         <div className="proposal-criteria__container__item">
-                            <img
-                                className="proposal-criteria__container__item__icon"
-                                src="/assets/img/icn_checklist.svg"
-                            />
+                            <img className="proposal-criteria__container__item__icon" src={icn_checklist} />
                             <p className="proposal-criteria__container__item__text">
                                 <span className="proposal-criteria__container__item__text__main">
-									Être respectueuse et courtoise :
+                                    Être respectueuse et courtoise :
                                 </span>{' '}
-								votre proposition doit être conforme à notre charte des valeurs,
-								nos CGU et respecter la législation en vigueur notamment
-								relative à la diffamation, la prohibition des propos, injurieux,
-								discriminatoires, raciste ou d&apos;incitation à commettre un
-								délit ou un crime.
+                                votre proposition doit être conforme à notre charte des valeurs, nos CGU et respecter la
+                                législation en vigueur notamment relative à la diffamation, la prohibition des propos,
+                                injurieux, discriminatoires, raciste ou d&apos;incitation à commettre un délit ou un
+                                crime.
                             </p>
                         </div>
                     </div>
