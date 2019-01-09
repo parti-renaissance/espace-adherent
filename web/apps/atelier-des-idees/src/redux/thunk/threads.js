@@ -1,4 +1,4 @@
-import { setThreads, removeThread, toggleApproveThread } from '../actions/threads';
+import { removeThread, toggleApproveThread } from '../actions/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { POST_THREAD } from '../constants/actionTypes';
 
@@ -19,7 +19,12 @@ export function deleteComment(id, parentId = '') {
         if (parentId) {
             type = 'thread_comments';
         }
-        return axios.delete(`/api/${type}/${id}`).then(() => dispatch(removeThread(id)));
+        return axios
+            .delete(`/api/${type}/${id}`)
+            .then(() => dispatch(removeThread(id)))
+            .catch((error) => {
+                throw error;
+            });
     };
 }
 

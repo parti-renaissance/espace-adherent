@@ -2,12 +2,18 @@ import { ideaStatus } from '../../constants/api';
 import history from '../../history';
 import { SAVE_CURRENT_IDEA, FETCH_GUIDELINES, VOTE_CURRENT_IDEA } from '../constants/actionTypes';
 import { saveAndPublishIdea } from '../thunk/ideas';
-import { postComment, fetchThreads } from '../thunk/threads';
+import { postComment, fetchThreads, deleteComment } from '../thunk/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { selectIsAuthenticated } from '../selectors/auth';
 import { selectCurrentIdea, selectCurrentIdeaAnswer } from '../selectors/currentIdea';
-import { selectAnswerThreads } from '../selectors/threads';
-import { setCurrentIdea, updateCurrentIdea, setGuidelines, toggleVoteCurrentIdea } from '../actions/currentIdea';
+import { selectAnswerThreads, selectThread } from '../selectors/threads';
+import {
+    setCurrentIdea,
+    updateCurrentIdea,
+    setGuidelines,
+    toggleVoteCurrentIdea,
+    updateCurrentIdeaAnswer,
+} from '../actions/currentIdea';
 import { addThreads } from '../actions/threads';
 import { hideModal } from '../actions/modal';
 
@@ -129,31 +135,35 @@ export function voteCurrentIdea(vote) {
 
 export function postCommentToCurrentIdea(content, answerId, parentId = '') {
     // TODO: handle parentId
-    return dispatch =>
-        dispatch(postComment(content, answerId, parentId))
-            .then(thread => dispatch(addThreads([thread])))
-            // TODO: remove catch
-            .catch(
-                thread =>
-                    dispatch(
-                        addThreads([
-                            {
-                                answer: {
-                                    id: answerId,
-                                },
-                                content,
-                                author: {
-                                    uuid: '0000',
-                                    first_name: 'Adrien',
-                                    last_name: 'Casanova',
-                                },
-                                created_at: new Date().toISOString(),
-                                uuid: '909920830',
-                            },
-                        ])
-                    )
-                // TODO: update current answer total items
-            );
+    return (dispatch, getState) =>
+        dispatch(postComment(content, answerId, parentId)).then((thread) => {
+            dispatch(addThreads([thread]));
+            // increment answer total item
+            const answer = selectCurrentIdeaAnswer(getState(), answerId);
+            const updatedAnswer = {
+                ...answer,
+                threads: { ...answer.threads, total_items: answer.threads.total_items + 1 },
+            };
+            dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
+        });
+}
+
+export function removeCommentFromCurrentIdea(id, parentId = '') {
+    // TODO: handle parentId
+    return (dispatch, getState) => {
+        const thread = selectThread(getState(), id);
+        // TODO: turn finally into .then
+        return dispatch(deleteComment(id)).then(() => {
+            // decrement answer total item
+            const answerId = thread.answer.id;
+            const answer = selectCurrentIdeaAnswer(getState(), answerId);
+            const updatedAnswer = {
+                ...answer,
+                threads: { ...answer.threads, total_items: answer.threads.total_items - 1 },
+            };
+            dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
+        });
+    };
 }
 
 export function fetchNextAnswerThreads(answerId) {
@@ -164,38 +174,11 @@ export function fetchNextAnswerThreads(answerId) {
         const { threads } = answer;
         const page = threads.total_items / answerThreads.length;
         return dispatch(fetchThreads({ 'answer.id': answerId, page })).then(({ items, metadata }) => {
+            // add threads to collection
             dispatch(addThreads(items));
-            // dispatch(
-            //     addThreads([
-            //         {
-            //             answer: {
-            //                 id: answerId,
-            //             },
-            //             content: 'New comment',
-            //             author: {
-            //                 uuid: '0000',
-            //                 first_name: 'Adrien',
-            //                 last_name: 'Casanova',
-            //             },
-            //             created_at: new Date().toISOString(),
-            //             uuid: '909920830',
-            //         },
-            //         {
-            //             answer: {
-            //                 id: answerId,
-            //             },
-            //             content: 'New comment',
-            //             author: {
-            //                 uuid: '0000',
-            //                 first_name: 'Adrien',
-            //                 last_name: 'Casanova',
-            //             },
-            //             created_at: new Date().toISOString(),
-            //             uuid: '909920830',
-            //         },
-            //     ])
-            // );
-            // TODO: update current answer total items
+            // update current answer total items
+            const updatedAnswer = { ...answer, threads: { ...answer.threads, total_items: metadata.total_items } };
+            dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
         });
     };
 }
