@@ -4,7 +4,9 @@
 
   &__title {
     margin-bottom: 50px;
-    width: 40%;
+    width: 60%;
+    font-size: 34px;
+    line-height: normal;
   }
 
   .latest-ideas__pane {
@@ -12,11 +14,18 @@
   }
 
   // responsive
+  @media #{$desktop} {
+    .rc-tabs-tab {
+      font-size: 18px;
+    }
+  }
+
   @media #{$tablet} {
     padding: 50px;
 
     &__title {
-      width: 60%;
+      width: 100%;
+      font-size: 28px;
     }
   }
 
@@ -25,6 +34,7 @@
 
     &__title {
       width: 100%;
+      font-size: 24px;
     }
 
     .latest-ideas__pane {
