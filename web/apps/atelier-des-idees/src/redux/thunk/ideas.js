@@ -11,10 +11,10 @@ import { setThreads } from '../actions/threads';
 
 const newAnswersMock = [
     {
-        id: 3,
+        id: 586,
         content: 'Mauris gravida semper tincidunt.',
         question: {
-            id: 3,
+            id: 521,
         },
         threads: {
             total_items: 3,
@@ -31,7 +31,7 @@ const newAnswersMock = [
                                     first_name: 'Laura',
                                     last_name: 'Deloche',
                                 },
-                                created_at: '@string@.isDateTime()',
+                                created_at: new Date().toISOString(),
                             },
                             {
                                 uuid: '3fa38c45-1122-4c48-9ada-b366b3408fec',
@@ -41,7 +41,7 @@ const newAnswersMock = [
                                     first_name: 'Laura',
                                     last_name: 'Deloche',
                                 },
-                                created_at: '@string@.isDateTime()',
+                                created_at: new Date().toISOString(),
                             },
                             {
                                 uuid: '02bf299f-678a-4829-a6a1-241995339d8d',
@@ -51,7 +51,7 @@ const newAnswersMock = [
                                     first_name: 'Laura',
                                     last_name: 'Deloche',
                                 },
-                                created_at: '@string@.isDateTime()',
+                                created_at: new Date().toISOString(),
                             },
                         ],
                     },
@@ -62,7 +62,7 @@ const newAnswersMock = [
                         first_name: 'Gisele',
                         last_name: 'Berthoux',
                     },
-                    created_at: '@string@.isDateTime()',
+                    created_at: new Date().toISOString(),
                 },
                 {
                     comments: {
@@ -76,7 +76,7 @@ const newAnswersMock = [
                         first_name: 'Gisele',
                         last_name: 'Berthoux',
                     },
-                    created_at: '@string@.isDateTime()',
+                    created_at: new Date().toISOString(),
                 },
                 {
                     comments: {
@@ -90,17 +90,17 @@ const newAnswersMock = [
                         first_name: 'Gisele',
                         last_name: 'Berthoux',
                     },
-                    created_at: '@string@.isDateTime()',
+                    created_at: new Date().toISOString(),
                 },
             ],
         },
     },
     {
-        id: 1,
+        id: 588,
         content:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce aliquet, mi condimentum venenatis vestibulum, arcu neque feugiat massa, at pharetra velit sapien et elit. Sed vitae hendrerit nulla. Vivamus consectetur magna at tincidunt maximus. Aenean dictum metus vel tellus posuere venenatis.',
         question: {
-            id: 1,
+            id: 523,
         },
         threads: {
             total_items: 1,
@@ -117,7 +117,7 @@ const newAnswersMock = [
                                     first_name: 'Referent',
                                     last_name: 'Referent',
                                 },
-                                created_at: '@string@.isDateTime()',
+                                created_at: new Date().toISOString(),
                             },
                             {
                                 uuid: 'f716d3ba-004f-4958-af26-a7b010a6d458',
@@ -127,7 +127,7 @@ const newAnswersMock = [
                                     first_name: 'Referent',
                                     last_name: 'Referent',
                                 },
-                                created_at: '@string@.isDateTime()',
+                                created_at: new Date().toISOString(),
                             },
                             {
                                 uuid: '60123090-6cdc-4de6-9cb3-07e2ec411f2f',
@@ -137,7 +137,7 @@ const newAnswersMock = [
                                     first_name: 'Francis',
                                     last_name: 'Brioul',
                                 },
-                                created_at: '@string@.isDateTime()',
+                                created_at: new Date().toISOString(),
                             },
                         ],
                     },
@@ -148,91 +148,9 @@ const newAnswersMock = [
                         first_name: 'Carl',
                         last_name: 'Mirabeau',
                     },
-                    created_at: '@string@.isDateTime()',
+                    created_at: new Date().toISOString(),
                 },
             ],
-        },
-    },
-    {
-        id: 2,
-        content: 'Nulla metus enim, congue eu facilisis ac, consectetur ut ipsum. ',
-        question: {
-            id: 2,
-        },
-        threads: {
-            total_items: 1,
-            items: [
-                {
-                    comments: {
-                        total_items: 0,
-                        items: [],
-                    },
-                    uuid: '6b077cc4-1cbd-4615-b607-c23009119406',
-                    content: 'J\'ouvre une discussion sur la solution.',
-                    author: {
-                        uuid: '29461c49-6316-5be1-9ac3-17816bf2d819',
-                        first_name: 'Lucie',
-                        last_name: 'Olivera',
-                    },
-                    created_at: '@string@.isDateTime()',
-                },
-            ],
-        },
-    },
-    {
-        id: 4,
-        content: 'Donec ac neque congue, condimentum ipsum ac, eleifend ex.',
-        question: {
-            id: 4,
-        },
-        threads: {
-            total_items: 0,
-            items: [],
-        },
-    },
-    {
-        id: 5,
-        content: 'Suspendisse interdum quis tortor quis sodales. Suspendisse vel mollis orci.',
-        question: {
-            id: 5,
-        },
-        threads: {
-            total_items: 0,
-            items: [],
-        },
-    },
-    {
-        id: 6,
-        content: 'Proin et quam a tortor pretium fringilla non et magna.',
-        question: {
-            id: 6,
-        },
-        threads: {
-            total_items: 0,
-            items: [],
-        },
-    },
-    {
-        id: 7,
-        content: 'Orci varius natoque penatibus et magnis dis parturient montes',
-        question: {
-            id: 7,
-        },
-        threads: {
-            total_items: 0,
-            items: [],
-        },
-    },
-    {
-        id: 8,
-        content:
-            'Nam nisi nunc, ornare nec elit id, porttitor vestibulum ligula. Donec enim tellus, congue non quam at, aliquam porta ex.',
-        question: {
-            id: 8,
-        },
-        threads: {
-            total_items: 0,
-            items: [],
         },
     },
 ];
@@ -290,19 +208,27 @@ export function fetchIdea(id) {
             .get(`/api/ideas/${id}`)
             .then(res => res.data)
             .then((data) => {
-                data.answers = newAnswersMock;
+                // TODO: remove use of mock
+                // data.answers = newAnswersMock;
                 dispatch(
                     setCurrentIdea({
                         ...data,
                         uuid: id,
                     })
                 );
-                // format idea threads
+                // (kinda) normalize idea threads
                 const threads = data.answers.reduce((acc, answer) => {
-                    const answerThreads = answer.threads.items.map(item => ({ ...item, answer: { id: answer.id } }));
-                    return [...acc, ...answerThreads];
+                    if (answer.threads) {
+                        const answerThreads = answer.threads.items.map(item => ({
+                            ...item,
+                            answer: { id: answer.id },
+                        }));
+                        return [...acc, ...answerThreads];
+                    }
+                    return acc;
                 }, []);
-                dispatch(setThreads({ items: threads }));
+                dispatch(setThreads(threads));
+
                 dispatch(createRequestSuccess(FETCH_IDEA, id));
             })
             .catch(error => dispatch(createRequestFailure(FETCH_IDEA, id)));
