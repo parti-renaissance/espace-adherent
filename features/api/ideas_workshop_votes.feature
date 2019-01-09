@@ -25,6 +25,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
+        "id": @integer@,
         "idea": {
             "name": "Faire la paix"
         },

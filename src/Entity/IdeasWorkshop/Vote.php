@@ -47,6 +47,8 @@ class Vote implements AuthorInterface
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned": true})
      * @ORM\GeneratedValue
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "vote_read"})
      */
     private $id;
 
