@@ -7,6 +7,7 @@ import { selectIdeasWithStatus, selectIdeasMetadata } from '../../redux/selector
 import { fetchNextIdeas, voteIdea } from '../../redux/thunk/ideas';
 import Button from '../../components/Button';
 import IdeaCardList from '../../components/IdeaCardList';
+import noResultImg from '../../img/no-idea-result.svg';
 
 function IdeaCardListContainer(props) {
     return props.ideas.length ? (
@@ -25,7 +26,7 @@ function IdeaCardListContainer(props) {
         </React.Fragment>
     ) : (
         <div className="idea-card-list__empty">
-            <img className="idea-card-list__empty__img" src="/assets/img/no-idea-result.svg" />
+            <img className="idea-card-list__empty__img" src={noResultImg} />
             <p>Il n'y a pas d'idée correspondant à votre recherche</p>
         </div>
     );
