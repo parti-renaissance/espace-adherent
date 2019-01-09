@@ -1,17 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { sortEntitiesByDate } from '../../helpers/entities';
+import { FLAG_MODAL } from '../../constants/modalTypes';
 import CommentsList from '../../components/CommentsList';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectCurrentIdea } from '../../redux/selectors/currentIdea';
 import { selectAnswerThreads } from '../../redux/selectors/threads';
 import { selectIsAuthenticated, selectAuthUser } from '../../redux/selectors/auth';
-import { approveComment } from '../../redux/thunk/threads';
+import { approveComment, reportComment } from '../../redux/thunk/threads';
 import {
     postCommentToCurrentIdea,
     removeCommentFromCurrentIdea,
     fetchNextAnswerThreads,
 } from '../../redux/thunk/currentIdea';
+import { showModal } from '../../redux/actions/modal';
 
 function IdeaThread(props) {
     const { isAuthenticated, ...otherProps } = props;
@@ -69,6 +71,8 @@ function mapDispatchToProps(dispatch) {
         onSendComment: (content, answerId, threadId) => dispatch(postCommentToCurrentIdea(content, answerId, threadId)),
         onDeleteComment: (commentId, threadId) => dispatch(removeCommentFromCurrentIdea(commentId, threadId)),
         onApproveComment: (commentId, threadId) => dispatch(approveComment(commentId, threadId)),
+        onReportComment: (commentId, threadId) =>
+            dispatch(showModal(FLAG_MODAL, { onSubmit: data => dispatch(reportComment(data, commentId, threadId)) })),
         onLoadMore: (answerId, threadId) => dispatch(fetchNextAnswerThreads(answerId)),
     };
 }
