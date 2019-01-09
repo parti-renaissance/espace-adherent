@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import icn_toggle_content from './../../../../img/icn_toggle_content-blue-yonder.svg';
+
 class MyContributions extends React.Component {
     constructor(props) {
         super(props);
@@ -19,17 +21,15 @@ class MyContributions extends React.Component {
                         this.setState(prevState => ({
                             showList: !prevState.showList,
                         }))
-                    }
-                >
+                    }>
                     <span className="my-contributions__category__button__label">
                         {'vous avez voté ou contribué'.toUpperCase()}
                     </span>
                     <img
                         className={classNames('my-contributions__category__button__icon', {
-                            'my-contributions__category__button__icon--rotate': !this.state
-                                .showList,
+                            'my-contributions__category__button__icon--rotate': !this.state.showList,
                         })}
-                        src="/assets/img/icn_toggle_content-blue-yonder.svg"
+                        src={icn_toggle_content}
                     />
                 </button>
                 {this.props.ideas.map(
@@ -38,14 +38,12 @@ class MyContributions extends React.Component {
                             <React.Fragment>
                                 <div className="my-ideas__category__idea">
                                     <p className="my-ideas__category__idea__date">
-										Créée le {new Date(idea.created_at).toLocaleDateString()}
+                                        Créée le {new Date(idea.created_at).toLocaleDateString()}
                                     </p>
-                                    <h4 className="my-ideas__category__idea__name">
-                                        {idea.name}
-                                    </h4>
+                                    <h4 className="my-ideas__category__idea__name">{idea.name}</h4>
                                     <div className="my-ideas__category__idea__actions">
                                         <button className="my-ideas__category__idea__actions__see-note button--secondary">
-											VOIR LA NOTE
+                                            VOIR LA NOTE
                                         </button>
                                     </div>
                                 </div>
