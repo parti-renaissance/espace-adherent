@@ -7,7 +7,7 @@ import { selectCurrentIdea } from '../../redux/selectors/currentIdea';
 import { selectAnswerThreads } from '../../redux/selectors/threads';
 import { selectIsAuthenticated, selectAuthUser } from '../../redux/selectors/auth';
 import { deleteComment, approveComment } from '../../redux/thunk/threads';
-import { postCommentToCurrentIdea } from '../../redux/thunk/currentIdea';
+import { postCommentToCurrentIdea, fetchNextAnswerThreads } from '../../redux/thunk/currentIdea';
 
 function IdeaThread(props) {
     const { isAuthenticated, ...otherProps } = props;
@@ -56,6 +56,7 @@ function mapStateToProps(state, { questionId }) {
         isSendingComment: sendCommentState.isFetching,
         currentUserId: currentUser.uuid,
         ownerId: currentIdea.author.uuid,
+        total: currentAnswer && currentAnswer.threads.total_items,
     };
 }
 
@@ -64,7 +65,7 @@ function mapDispatchToProps(dispatch) {
         onSendComment: (content, answerId, threadId) => dispatch(postCommentToCurrentIdea(content, answerId, threadId)),
         onDeleteComment: (commentId, threadId) => dispatch(deleteComment(commentId, threadId)),
         onApproveComment: (commentId, threadId) => dispatch(approveComment(commentId, threadId)),
-        onLoadMore: (answerId, threadId) => alert('Load more comment for answer', answerId),
+        onLoadMore: (answerId, threadId) => dispatch(fetchNextAnswerThreads(answerId)),
     };
 }
 
