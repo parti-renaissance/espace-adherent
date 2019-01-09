@@ -12,7 +12,10 @@
   }
 
   &__infos {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 11px;
+
     &__author {
       margin-right: 8px;
       font-weight: bold;
@@ -75,12 +78,6 @@
 
       &__delete {
         color: $light-black;
-      }
-
-      &__report {
-        position: absolute;
-        top: 3px;
-        right: 6px;
       }
     }
   }
