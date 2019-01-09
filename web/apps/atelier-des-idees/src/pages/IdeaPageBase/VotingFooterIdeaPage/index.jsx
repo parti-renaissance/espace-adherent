@@ -17,7 +17,7 @@ function formatVotes(votesCount) {
             id: key,
             name: VOTES_NAMES[key],
             count: votesCount[key],
-            isSelected: !votesCount.my_votes ? false : votesCount.my_votes.includes(key),
+            isSelected: !votesCount.my_votes ? false : Object.keys(votesCount.my_votes).includes(key),
         }));
 }
 
