@@ -2,14 +2,16 @@
   display: flex;
   flex-direction: column;
   text-align: center;
-  margin: 0 20px;
+  margin: 0 30px;
 
   &__title {
+    font-size: 24px;
     color: $dark-blue;
+
     &__main {
       border-bottom: 7px solid $pale-sky;
       display: inline-block;
-      height: 21px;
+      height: 24px;
     }
   }
 
@@ -19,7 +21,7 @@
   }
 
   &__link {
-    width: 140px;
+    width: 160px;
     align-self: center;
     padding: 7px;
   }

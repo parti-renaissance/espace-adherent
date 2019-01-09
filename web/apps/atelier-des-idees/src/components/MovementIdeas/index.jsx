@@ -55,7 +55,7 @@ class MovementIdeas extends React.PureComponent {
                     </p>
                 </div>
                 <NotMobile>
-                    <div className="movement-ideas__second__section l__wrapper--medium">{items}</div>
+                    <div className="movement-ideas__second__section">{items}</div>
                 </NotMobile>
                 <Mobile>
                     <Slider className="movement-ideas__slider" {...settingsSlider}>
