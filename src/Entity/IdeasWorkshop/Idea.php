@@ -14,6 +14,7 @@ use AppBundle\Entity\EntityNameSlugTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use AppBundle\Entity\Report\ReportableInterface;
 use AppBundle\Entity\VisibleStatusesInterface;
+use AppBundle\Filter\CommentsCountFilter;
 use Cake\Chronos\Chronos;
 use AppBundle\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -25,6 +26,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * @ApiResource(
@@ -144,7 +146,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *         "denormalization_context": {
  *             "groups": {"idea_write"}
  *         },
- *         "order": {"createdAt": "ASC"}
+ *         "order": {"createdAt": "ASC"},
+ *         "filters": {CommentsCountFilter::class}
  *     }
  * )
  *
@@ -155,6 +158,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     "author_category": "exact",
  *     "author.uuid": "exact"
  * })
+ * @ApiFilter(OrderFilter::class, properties={"publishedAt"})
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\IdeaRepository")
  *

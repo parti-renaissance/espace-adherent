@@ -1216,3 +1216,211 @@ Feature:
        "created_at": "@string@.isDateTime()"
     }
     """
+
+  Scenario: As a non logged-in user I can order ideas by publishedAt property
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas?order[publishedAt]=asc"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+       "metadata":{
+          "total_items":2,
+          "items_per_page":2,
+          "count":2,
+          "current_page":1,
+          "last_page":1
+       },
+       "items":[
+          {
+             "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
+             "name":"Réduire le gaspillage",
+             "themes":[
+                {
+                   "name":"Armées et défense",
+                   "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+
+             ],
+             "author":{
+                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name":"Jacques",
+                "last_name":"Picard"
+             },
+             "published_at":"2018-12-04T10:00:00+01:00",
+             "committee":null,
+             "status":"FINALIZED",
+             "votes_count":{
+                "important":0,
+                "feasible":0,
+                "innovative":0,
+                "total":0
+             },
+             "author_category":"ADHERENT",
+             "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
+             "comments_count":0,
+             "created_at": "@string@.isDateTime()",
+             "slug":"reduire-le-gaspillage",
+             "days_before_deadline":1,
+             "contributors_count":0
+          },
+          {
+             "uuid":"e4ac3efc-b539-40ac-9417-b60df432bdc5",
+             "name":"Faire la paix",
+             "themes":[
+                {
+                   "name":"Armées et défense",
+                   "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+                {
+                   "name":"Juridique",
+                   "enabled":true
+                }
+             ],
+             "author":{
+                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name":"Jacques",
+                "last_name":"Picard"
+             },
+             "published_at":"2018-12-20T10:00:00+01:00",
+             "committee":{
+                "uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818",
+                "created_at":"2017-01-12T13:25:54+01:00",
+                "name":"En Marche Paris 8",
+                "slug":"en-marche-paris-8"
+             },
+             "status":"PENDING",
+             "votes_count":{
+                "important":"6",
+                "feasible":"4",
+                "innovative":"5",
+                "total":15
+             },
+             "author_category":"COMMITTEE",
+             "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
+             "comments_count":7,
+             "created_at": "@string@.isDateTime()",
+             "slug":"faire-la-paix",
+             "days_before_deadline":17,
+             "contributors_count":4
+          }
+       ]
+    }
+    """
+
+  Scenario: As a non logged-in user I can order ideas by comment_count property
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas?commentsCount=asc"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+       "metadata":{
+          "total_items":2,
+          "items_per_page":2,
+          "count":2,
+          "current_page":1,
+          "last_page":1
+       },
+       "items":[
+          {
+             "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
+             "name":"Réduire le gaspillage",
+             "themes":[
+                {
+                   "name":"Armées et défense",
+                   "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+
+             ],
+             "author":{
+                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name":"Jacques",
+                "last_name":"Picard"
+             },
+             "published_at":"2018-12-04T10:00:00+01:00",
+             "committee":null,
+             "status":"FINALIZED",
+             "votes_count":{
+                "important":0,
+                "feasible":0,
+                "innovative":0,
+                "total":0
+             },
+             "author_category":"ADHERENT",
+             "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
+             "comments_count":0,
+             "created_at": "@string@.isDateTime()",
+             "slug":"reduire-le-gaspillage",
+             "days_before_deadline":1,
+             "contributors_count":0
+          },
+          {
+             "uuid":"e4ac3efc-b539-40ac-9417-b60df432bdc5",
+             "name":"Faire la paix",
+             "themes":[
+                {
+                   "name":"Armées et défense",
+                   "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+                {
+                   "name":"Juridique",
+                   "enabled":true
+                }
+             ],
+             "author":{
+                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name":"Jacques",
+                "last_name":"Picard"
+             },
+             "published_at":"2018-12-20T10:00:00+01:00",
+             "committee":{
+                "uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818",
+                "created_at":"2017-01-12T13:25:54+01:00",
+                "name":"En Marche Paris 8",
+                "slug":"en-marche-paris-8"
+             },
+             "status":"PENDING",
+             "votes_count":{
+                "important":"6",
+                "feasible":"4",
+                "innovative":"5",
+                "total":15
+             },
+             "author_category":"COMMITTEE",
+             "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
+             "comments_count":7,
+             "created_at": "@string@.isDateTime()",
+             "slug":"faire-la-paix",
+             "days_before_deadline":17,
+             "contributors_count":4
+          }
+       ]
+    }
+    """
