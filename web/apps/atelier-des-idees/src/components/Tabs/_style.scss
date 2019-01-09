@@ -1,3 +1,12 @@
 .rc-tabs.tabs {
-    border-bottom: none;
+  border-bottom: none;
+
+  .rc-tabs-tab {
+    color: $spiro-disco-ball;
+  }
+
+  .rc-tabs-ink-bar {
+    background-color: $spiro-disco-ball;
+    z-index: 0;
+  }
 }

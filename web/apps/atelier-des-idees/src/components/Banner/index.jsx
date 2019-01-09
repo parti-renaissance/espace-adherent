@@ -1,12 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import icn_close from './../../img/icn_close-white.svg';
+import icnClose from '../../img/icn_close-white.svg';
 
 class Banner extends React.PureComponent {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div className="banner">
@@ -16,7 +12,7 @@ class Banner extends React.PureComponent {
                             className="banner__container__close button--transparent"
                             onClick={() => this.props.onClose()}
                         >
-                            <img src="/assets/img/icn_close-white.svg" />
+                            <img src={icnClose} />
                         </button>
                     </div>
                     <div className="banner__container__titles">
