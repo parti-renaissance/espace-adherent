@@ -19,7 +19,7 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 7,
+            "total_items": 8,
             "items_per_page": 3,
             "count": 3,
             "current_page": 1,
@@ -27,37 +27,37 @@ Feature:
         },
         "items": [
             {
-                "uuid": "001a53d0-1134-429c-8dc1-c57643b3f069",
-                "content": "Commentaire refusé",
+                "uuid": "37116c8b-a36e-4a0d-8346-baba91cd1330",
+                "content": "Commentaire de l'adhérent à desadhérer",
                 "author": {
-                    "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
-                    "first_name": "Laura",
-                    "last_name": "Deloche"
+                    "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                    "first_name": "Michel",
+                    "last_name": "VASSEUR"
                 },
-                "created_at": "@string@.isDateTime()",
-                "approved": false
+                "approved": false,
+                "created_at": "@string@.isDateTime()"
             },
             {
-                "uuid": "3fa38c45-1122-4c48-9ada-b366b3408fec",
+                "uuid": "ecbe9136-3dc0-477d-b817-a25878dd639a",
                 "content": "Commentaire signalé",
                 "author": {
                     "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
                     "first_name": "Laura",
                     "last_name": "Deloche"
                 },
-                "created_at": "@string@.isDateTime()",
-                "approved": false
+                "approved": false,
+                "created_at": "@string@.isDateTime()"
             },
             {
-                "uuid": "ecbe9136-3dc0-477d-b817-a25878dd639a",
-                "content": "Deuxième commentaire d'un référent",
+                "uuid": "3fa38c45-1122-4c48-9ada-b366b3408fec",
+                "content": "Commentaire non approuvé",
                 "author": {
-                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
-                    "first_name": "Referent",
-                    "last_name": "Referent"
+                    "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
+                    "first_name": "Laura",
+                    "last_name": "Deloche"
                 },
-                "created_at": "@string@.isDateTime()",
-                "approved": false
+                "approved": false,
+                "created_at": "@string@.isDateTime()"
             }
         ]
     }
@@ -79,15 +79,15 @@ Feature:
         },
         "items": [
             {
-                "uuid": "ecbe9136-3dc0-477d-b817-a25878dd639a",
+                "uuid": "02bf299f-678a-4829-a6a1-241995339d8d",
                 "content": "Deuxième commentaire d'un référent",
                 "author": {
                     "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                     "first_name": "Referent",
                     "last_name": "Referent"
                 },
-                "created_at": "@string@.isDateTime()",
-                "approved": false
+                "approved": false,
+                "created_at": "@string@.isDateTime()"
             },
             {
                 "uuid": "f716d3ba-004f-4958-af26-a7b010a6d458",
@@ -97,8 +97,8 @@ Feature:
                     "first_name": "Referent",
                     "last_name": "Referent"
                 },
-                "created_at": "@string@.isDateTime()",
-                "approved": false
+                "approved": false,
+                "created_at": "@string@.isDateTime()"
             },
             {
                 "uuid": "60123090-6cdc-4de6-9cb3-07e2ec411f2f",
@@ -108,8 +108,8 @@ Feature:
                     "first_name": "Francis",
                     "last_name": "Brioul"
                 },
-                "created_at": "@string@.isDateTime()",
-                "approved": false
+                "approved": false,
+                "created_at": "@string@.isDateTime()"
             }
         ]
     }

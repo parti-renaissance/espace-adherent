@@ -12,6 +12,10 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
+use AppBundle\Entity\IdeasWorkshop\Idea;
+use AppBundle\Entity\IdeasWorkshop\Thread;
+use AppBundle\Entity\IdeasWorkshop\ThreadComment;
+use AppBundle\Entity\IdeasWorkshop\Vote;
 use AppBundle\Entity\Report\Report;
 use AppBundle\Entity\Summary;
 use AppBundle\Entity\Unregistration;
@@ -49,6 +53,14 @@ class AdherentRegistry
         $eventRepository = $this->em->getRepository(Event::class);
         $eventRepository->removeOrganizerEvents($adherent, EventRepository::TYPE_PAST, true);
         $eventRepository->removeOrganizerEvents($adherent, EventRepository::TYPE_UPCOMING);
+
+        $ideaRepository = $this->em->getRepository(Idea::class);
+        $ideaRepository->removeNotFinalizedIdeas($adherent);
+        $ideaRepository->anonymizeFinalizedIdeas($adherent);
+
+        $this->em->getRepository(Thread::class)->removeAuthorItems($adherent);
+        $this->em->getRepository(ThreadComment::class)->removeAuthorItems($adherent);
+        $this->em->getRepository(Vote::class)->removeAuthorItems($adherent);
 
         $this->em->getRepository(EventRegistration::class)->anonymizeAdherentRegistrations($adherent);
         $this->em->getRepository(CommitteeFeedItem::class)->removeAuthorItems($adherent);
