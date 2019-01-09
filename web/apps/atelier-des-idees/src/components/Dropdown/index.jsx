@@ -6,6 +6,7 @@ import RCDropdown from 'rc-dropdown';
 import 'rc-dropdown/assets/index.css';
 import moreIcn from '../../img/icn_20px_more.svg';
 
+// docs: https://github.com/react-component/dropdown
 function Dropdown(props) {
     const menu = (
         <Menu onClick={({ key }) => props.onSelect(key)} selectable={false}>
@@ -22,7 +23,14 @@ function Dropdown(props) {
         </Menu>
     );
     return (
-        <RCDropdown trigger={['click']} overlay={menu} overlayClassName="dropdown-menu">
+        <RCDropdown
+            trigger={['click']}
+            overlay={menu}
+            overlayClassName="dropdown-menu"
+            align={{
+                points: ['tr', 'br'],
+            }}
+        >
             <button className="dropdown-button">{props.label || <img src={moreIcn} />}</button>
         </RCDropdown>
     );
