@@ -59,13 +59,14 @@ export function postComment(content, answerId, parentId = '') {
     };
 }
 
-export function reportComment(id, parentId = '') {
+export function reportComment(reportData, id, parentId = '') {
     return (dispatch, getState, axios) => {
         let type = 'threads';
         if (parentId) {
             type = 'thread_comments';
         }
-        return axios.put(`/api/${type}/${id}/report`);
+        const reportType = parentId ? 'atelier-des-idees-reponses' : 'atelier-des-idees-commentaires';
+        return axios.post(`/api/report/${reportType}/${id}`, reportData);
     };
 }
 
