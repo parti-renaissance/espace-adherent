@@ -16,11 +16,11 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 2,
+            "total_items": 3,
             "items_per_page": 2,
             "count": 2,
             "current_page": 1,
-            "last_page": 1
+            "last_page": 2
         },
         "items": [
             {
@@ -30,7 +30,7 @@ Feature:
             },
             {
                 "id": @integer@,
-                "name": "Trésorerie",
+                "name": "Écologie",
                 "thumbnail": null
             }
         ]

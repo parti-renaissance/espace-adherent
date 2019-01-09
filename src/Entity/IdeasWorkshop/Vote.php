@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  * )
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\VoteRepository")
  * @ORM\Table(name="ideas_workshop_vote")
  * @ORM\EntityListeners({"AppBundle\EntityListener\VoteListener"})
  *
