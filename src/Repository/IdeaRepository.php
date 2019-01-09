@@ -91,7 +91,7 @@ class IdeaRepository extends ServiceEntityRepository
     {
         $votes = $this
             ->createQueryBuilder('idea')
-            ->select('vote.type')
+            ->select('vote.type, vote.id')
             ->innerJoin('idea.votes', 'vote')
             ->where('idea = :idea')
             ->andWhere('vote.author = :author')
@@ -102,10 +102,10 @@ class IdeaRepository extends ServiceEntityRepository
             ->getArrayResult()
         ;
 
-        array_walk($votes, function (&$vote) {
-            $vote = $vote['type'];
-        });
+        return array_reduce($votes, function ($result, $vote) {
+            $result[$vote['type']] = $vote['id'];
 
-        return $votes;
+            return $result;
+        }, []);
     }
 }
