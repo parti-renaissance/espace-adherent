@@ -11,6 +11,7 @@ import DeleteIdeaModal from '../../components/Modal/DeleteIdeaModal';
 // import MyIdeasModal from '../../components/Modal/MyIdeasModal';
 import MyIdeasContainer from '../../containers/MyIdeas';
 import FlagModal from '../../containers/FlagModal';
+import icn_close from './../../img/icn_close.svg';
 
 const MODAL_COMPONENTS = {
     // to use a modal, just add it below with its corresponding type
@@ -46,10 +47,9 @@ class ModalRoot extends React.Component {
                 overlayClassName="modal-overlay"
                 isOpen={isOpen}
                 onRequestClose={this.closeModal}
-                ariaHideApp={false}
-            >
+                ariaHideApp={false}>
                 <button className="modal-closeBtn" onClick={this.closeModal}>
-                    <img src="/assets/img/icn_close.svg" />
+                    <img src={icn_close} />
                 </button>
                 <div className="modal-content-wrapper">
                     <SpecificModal closeModal={this.closeModal} {...modalProps} />
