@@ -51,7 +51,10 @@ export function postComment(content, answerId, parentId = '') {
         return axios
             .post(`/api/${type}`, body)
             .then(res => res.data)
-            .then(() => dispatch(createRequestSuccess(POST_THREAD, answerId)))
+            .then((thread) => {
+                dispatch(createRequestSuccess(POST_THREAD, answerId));
+                return thread;
+            })
             .catch((error) => {
                 dispatch(createRequestFailure(POST_THREAD, answerId));
                 throw error;
