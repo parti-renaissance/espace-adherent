@@ -76,6 +76,12 @@
       &__delete {
         color: $light-black;
       }
+
+      &__report {
+        position: absolute;
+        top: 3px;
+        right: 6px;
+      }
     }
   }
 }

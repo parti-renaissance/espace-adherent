@@ -24,6 +24,7 @@ function IdeaThread(props) {
                 showForm={isAuthenticated}
                 onSendComment={(value, parentId = '') => props.onSendComment(value, props.answerId, parentId)}
                 onLoadMore={(parentId = '') => props.onLoadMore(props.answerId, parentId)}
+                hasActions={isAuthenticated}
             />
             {!isAuthenticated && (
                 <div className="idea-thread__contribute">
