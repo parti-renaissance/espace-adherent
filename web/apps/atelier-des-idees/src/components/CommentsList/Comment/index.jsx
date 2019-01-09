@@ -52,6 +52,9 @@ function Comment(props) {
                                 </button>*/}
                         </React.Fragment>
                     )}
+                    <button className="comments-list__comment__actions__button__report" onClick={props.onReport}>
+                        ...
+                    </button>
                 </div>
             )}
         </div>
@@ -78,6 +81,7 @@ Comment.propTypes = {
     onEdit: PropTypes.func,
     onReply: PropTypes.func,
     onDelete: PropTypes.func,
+    onReport: PropTypes.func,
 };
 
 export default Comment;
