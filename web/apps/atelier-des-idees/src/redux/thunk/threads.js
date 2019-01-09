@@ -1,6 +1,7 @@
 import { removeThread, toggleApproveThread } from '../actions/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { POST_THREAD } from '../constants/actionTypes';
+import { selectThread } from '../selectors/threads';
 
 export function approveComment(id, parentId = '') {
     return (dispatch, getState, axios) => {
@@ -8,8 +9,16 @@ export function approveComment(id, parentId = '') {
         if (parentId) {
             type = 'thread_comments';
         }
+        // TODO: handle threadcomment
+        const thread = selectThread(getState(), id);
+        // simulate toggle
         dispatch(toggleApproveThread(id));
-        return axios.put(`/api/${type}/${id}/approve`).catch(() => dispatch(toggleApproveThread(id)));
+        return (
+            axios
+                .put(`/api/${type}/${id}/approval-toggle`, { approved: !thread.approved })
+                // toggle back if error
+                .catch(() => dispatch(toggleApproveThread(id)))
+        );
     };
 }
 
