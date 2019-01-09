@@ -24,6 +24,11 @@ class AssetsController extends Controller
     private const WIDTH = 250;
     private const HEIGHT = 170;
 
+    private const EXTENSIONS_TYPES = [
+        'gif' => 'image/gif',
+        'svg' => 'image/svg+xml',
+    ];
+
     /**
      * @Route("/assets/{path}", requirements={"path": ".+"}, name="asset_url")
      * @Method("GET")
@@ -49,9 +54,9 @@ class AssetsController extends Controller
             }
         }
 
-        if ('gif' === substr($path, -3)) {
+        if (\in_array($extension = substr($path, -3), self::EXTENSIONS_TYPES, true)) {
             return new Response($this->get('app.storage')->read($path), Response::HTTP_OK, [
-                'Content-Type' => 'image/gif',
+                'Content-Type' => self::EXTENSIONS_TYPES[$extension],
             ]);
         }
 
