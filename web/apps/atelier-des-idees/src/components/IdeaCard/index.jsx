@@ -6,6 +6,9 @@ import classnames from 'classnames';
 import VotingFooter from './VotingFooter';
 import ContributingFooter from './ContributingFooter';
 
+import icn_20px_contributors from './../../img/icn_20px_contributors.svg';
+import icn_20px_comments from './../../img/icn_20px_comments.svg';
+
 const AUTHOR_CATEGORY_NAMES = {
     ADHERENT: 'Adhérent',
     COMMITTEE: 'Comité',
@@ -78,8 +81,7 @@ class IdeaCard extends React.Component {
                                     className={classnames(
                                         'idea-card__content__infos__author__type',
                                         `idea-card__content__infos__author__type--${this.props.author_category}`
-                                    )}
-                                >
+                                    )}>
                                     {AUTHOR_CATEGORY_NAMES[this.props.author_category]}
                                 </span>
                             </span>
@@ -91,7 +93,7 @@ class IdeaCard extends React.Component {
                                     <span className="idea-card__content__infos__ideas__contributors">
                                         <img
                                             className="idea-card__content__infos__ideas__ontributors__icon"
-                                            src="/assets/img/icn_20px_contributors.svg"
+                                            src={icn_20px_contributors}
                                         />
                                         <span className="idea-card__content__infos__ideas__contributors__text">
                                             {this.props.contributors_count}
@@ -100,7 +102,7 @@ class IdeaCard extends React.Component {
                                     <span className="idea-card__content__infos__ideas__comments">
                                         <img
                                             className="idea-card__content__infos__ideas__contributors__icon"
-                                            src="/assets/img/icn_20px_comments.svg"
+                                            src={icn_20px_comments}
                                         />
                                         <span className="idea-card__content__infos__ideas__contributors__text">
                                             {this.props.comments_count}

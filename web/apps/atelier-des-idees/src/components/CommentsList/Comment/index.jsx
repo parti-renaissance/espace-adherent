@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import icn_checklist from './../../../img/icn_checklist-white.svg';
 
 function Comment(props) {
     return (
         <div
             className={classNames('comments-list__comment', {
                 'comments-list__comment--approved': props.approved,
-            })}
-        >
+            })}>
             <div className="comments-list__comment__infos">
                 <span className="comments-list__comment__infos__author">
                     {props.author.first_name} {props.author.last_name}
@@ -21,10 +21,7 @@ function Comment(props) {
                 </span>
                 {props.approved && (
                     <span className="comments-list__comment__infos__approved">
-                        <img
-                            className="comments-list__comment__infos__approved__icon"
-                            src="/assets/img/icn_checklist-white.svg"
-                        />
+                        <img className="comments-list__comment__infos__approved__icon" src={icn_checklist} />
                     </span>
                 )}
             </div>
@@ -35,8 +32,7 @@ function Comment(props) {
                         <React.Fragment>
                             <button
                                 className="comments-list__comment__actions__button__delete"
-                                onClick={props.onDelete}
-                            >
+                                onClick={props.onDelete}>
                                 Supprimer
                             </button>
                             {/* <button className="comments-list__comment__actions__button__edit" onClick={props.onEdit}>
@@ -49,15 +45,13 @@ function Comment(props) {
                                 (props.approved ? (
                                     <button
                                         onClick={props.onApprove}
-                                        className="comments-list__comment__actions__button__disapproved"
-                                    >
+                                        className="comments-list__comment__actions__button__disapproved">
                                         Désapprouver
                                     </button>
                                 ) : (
                                     <button
                                         onClick={props.onApprove}
-                                        className="comments-list__comment__actions__button__approved"
-                                    >
+                                        className="comments-list__comment__actions__button__approved">
                                         Approuver
                                     </button>
                                 ))}
