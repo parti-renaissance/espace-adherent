@@ -847,10 +847,6 @@ Feature:
                 "message": "Pour publier votre idée, sa catégorie devrait être remplie."
             },
             {
-                "propertyPath": "needs",
-                "message": "Pour publier votre idée, vous devez préciser au minimum 1 besoin."
-            },
-            {
                 "propertyPath": "answers",
                 "message": "Pour publier votre idée, vous devez apporter des réponses aux questions obligatoires."
             },
