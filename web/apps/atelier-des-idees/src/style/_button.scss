@@ -4,7 +4,6 @@
   height: 40px;
   font-size: 14px;
   text-decoration: none;
-  letter-spacing: 1.5px;
 
   &[disabled] {
     cursor: not-allowed;
@@ -17,6 +16,7 @@
   color: $white;
   text-transform: uppercase;
   border: 1px solid $blue;
+  letter-spacing: 1.5px;
 }
 
 .button--primary:not([disabled]):hover {
@@ -31,6 +31,7 @@
   color: $blue;
   text-transform: uppercase;
   border: 1px solid $blue;
+  letter-spacing: 1.5px;
 }
 
 .button--secondary:not([disabled]):hover {
@@ -46,6 +47,7 @@
   color: $black;
   text-transform: uppercase;
   border: 1px solid $black;
+  letter-spacing: 1.5px;
 }
 
 .button--tertiary:not([disabled]):hover {
