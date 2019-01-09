@@ -7,6 +7,7 @@ import { setMyIdeas, removeMyIdea } from '../actions/myIdeas';
 import { setMyContributions } from '../actions/myContributions';
 import { selectAuthUser, selectIsAuthenticated } from '../selectors/auth';
 import { hideModal } from '../actions/modal';
+import { setThreads } from '../actions/threads';
 
 /**
  * Fetch ideas based on status and parameters
@@ -61,7 +62,25 @@ export function fetchIdea(id) {
             .get(`/api/ideas/${id}`)
             .then(res => res.data)
             .then((data) => {
-                dispatch(setCurrentIdea({ ...data, uuid: id }));
+                dispatch(
+                    setCurrentIdea({
+                        ...data,
+                        uuid: id,
+                    })
+                );
+                // (kinda) normalize idea threads
+                const threads = data.answers.reduce((acc, answer) => {
+                    if (answer.threads) {
+                        const answerThreads = answer.threads.items.map(item => ({
+                            ...item,
+                            answer: { id: answer.id },
+                        }));
+                        return [...acc, ...answerThreads];
+                    }
+                    return acc;
+                }, []);
+                dispatch(setThreads(threads));
+
                 dispatch(createRequestSuccess(FETCH_IDEA, id));
             })
             .catch(error => dispatch(createRequestFailure(FETCH_IDEA, id)));

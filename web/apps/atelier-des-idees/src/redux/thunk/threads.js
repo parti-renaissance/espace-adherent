@@ -1,14 +1,7 @@
-import { setThreads, removeThread, toggleApproveThread } from '../actions/threads';
+import { removeThread, toggleApproveThread } from '../actions/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { POST_THREAD } from '../constants/actionTypes';
-
-export function fetchIdeaThreads(id) {
-    return (dispatch, getState, axios) =>
-        axios
-            .get(`/api/threads?answer.idea.uuid=${id}`)
-            .then(res => res.data)
-            .then(data => dispatch(setThreads(data)));
-}
+import { selectThread } from '../selectors/threads';
 
 export function approveComment(id, parentId = '') {
     return (dispatch, getState, axios) => {
@@ -16,8 +9,16 @@ export function approveComment(id, parentId = '') {
         if (parentId) {
             type = 'thread_comments';
         }
+        // TODO: handle threadcomment
+        const thread = selectThread(getState(), id);
+        // simulate toggle
         dispatch(toggleApproveThread(id));
-        return axios.put(`/api/${type}/${id}/approve`).catch(() => dispatch(toggleApproveThread(id)));
+        return (
+            axios
+                .put(`/api/${type}/${id}/approval-toggle`, { approved: !thread.approved })
+                // toggle back if error
+                .catch(() => dispatch(toggleApproveThread(id)))
+        );
     };
 }
 
@@ -27,7 +28,12 @@ export function deleteComment(id, parentId = '') {
         if (parentId) {
             type = 'thread_comments';
         }
-        return axios.delete(`/api/${type}/${id}`).then(() => dispatch(removeThread(id)));
+        return axios
+            .delete(`/api/${type}/${id}`)
+            .then(() => dispatch(removeThread(id)))
+            .catch((error) => {
+                throw error;
+            });
     };
 }
 
@@ -61,4 +67,14 @@ export function reportComment(id, parentId = '') {
         }
         return axios.put(`/api/${type}/${id}/report`);
     };
+}
+
+export function fetchThreads(params = {}) {
+    return (dispatch, getState, axios) =>
+        axios
+            .get('/api/threads', { params })
+            .then(res => res.data)
+            .catch((error) => {
+                throw error;
+            });
 }

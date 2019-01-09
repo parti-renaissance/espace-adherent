@@ -4,6 +4,7 @@ import {
     UPDATE_CURRENT_IDEA,
     SET_GUIDELINES,
     TOGGLE_VOTE_CURRENT_IDEA,
+    UPDATE_CURRENT_IDEA_ANSWER,
 } from '../constants/actionTypes';
 
 const initialState = { idea: {}, guidelines: [], threads: [] };
@@ -47,6 +48,17 @@ function ideaReducer(state = initialState.idea, action) {
     case UPDATE_CURRENT_IDEA: {
         return { ...state, ...payload.data };
     }
+    case UPDATE_CURRENT_IDEA_ANSWER: {
+        const { answerId, data } = payload;
+        const { answers } = state;
+        const updatedAnswers = answers.map((answer) => {
+            if (answer.id === answerId) {
+                return { ...answer, ...data };
+            }
+            return answer;
+        });
+        return { ...state, answers: updatedAnswers };
+    }
     case TOGGLE_VOTE_CURRENT_IDEA: {
         const { typeVote } = payload;
         return toggleVote(state, typeVote);
@@ -70,4 +82,6 @@ function guidelinesReducer(state = initialState.guidelines, action) {
 export default combineReducers({ idea: ideaReducer, guidelines: guidelinesReducer });
 
 export const getCurrentIdea = state => state.idea;
+export const getCurrentIdeaAnswer = (state, answerId) =>
+    state.idea.answers && state.idea.answers.find(answer => answer.id === answerId);
 export const getGuidelines = state => state.guidelines;

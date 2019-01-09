@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../../Button';
+import deleteIcn from '../../../img/icn_state_delete.svg';
 
 function DeleteIdeaModal(props) {
     return (
         <div className="delete-idea-modal">
-            <img src="/assets/img/icn_state_delete.svg" />
+            <img src={deleteIcn} />
             <h1 className="delete-idea-modal__title">Confirmer la suppression ?</h1>
             <p className="delete-idea-modal__subtitle">Êtes vous certain de vouloir supprimer cette note ?</p>
             <div className="delete-ideal-modal__actions">

@@ -7,6 +7,7 @@ import CreateIdeaActions from './CreateIdeaActions';
 import IdeaPageTitle from './IdeaPageTitle';
 import CreateIdeaTool from './CreateIdeaTool';
 import VotingFooterIdeaPage from './VotingFooterIdeaPage';
+import autoSaveIcn from '../../img/icn_20px_autosave.svg';
 
 function getInitialAnswers(guidelines, answers = []) {
     const questions = guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
@@ -166,10 +167,7 @@ class IdeaPageBase extends React.Component {
                     {idea.status === ideaStatus.DRAFT && (
                         <div className="create-idea-page__auto-save">
                             <p className="create-idea-page__auto-save__label">
-                                <img
-                                    className="create-idea-page__auto-save__icon"
-                                    src="/assets/img/icn_20px_autosave.svg"
-                                />
+                                <img className="create-idea-page__auto-save__icon" src={autoSaveIcn} />
                                 <span>Votre note est automatiquement sauvegardée</span>
                             </p>
                         </div>

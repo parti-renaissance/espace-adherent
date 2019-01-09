@@ -26,8 +26,8 @@ export const TOGGLE_VOTE_IDEA = 'TOGGLE_VOTE_IDEA';
 // comments & threads
 export const FETCH_IDEA_THREADS = createRequestTypes('FETCH_IDEA_THREADS');
 export const POST_THREAD = createRequestTypes('POST_THREAD');
-export const SET_THREADS = createRequestTypes('SET_THREADS');
-export const ADD_THREAD = createRequestTypes('ADD_THREAD');
+export const SET_THREADS = 'SET_THREADS';
+export const ADD_THREADS = 'ADD_THREADS';
 export const REMOVE_THREAD = 'REMOVE_THREAD';
 export const TOGGLE_APPROVE_THREAD = 'TOGGLE_APPROVE_THREAD';
 
@@ -46,6 +46,7 @@ export const PUBLISH_CURRENT_IDEA = createRequestTypes('PUBLISH_CURRENT_IDEA');
 export const VOTE_CURRENT_IDEA = createRequestTypes('VOTE_CURRENT_IDEA');
 export const SET_CURRENT_IDEA = 'SET_CURRENT_IDEA';
 export const UPDATE_CURRENT_IDEA = 'UPDATE_CURRENT_IDEA';
+export const UPDATE_CURRENT_IDEA_ANSWER = 'UPDATE_CURRENT_IDEA_ANSWER';
 export const FETCH_GUIDELINES = createRequestTypes('FETCH_GUIDELINES');
 export const SET_GUIDELINES = 'SET_GUIDELINES';
 export const TOGGLE_VOTE_CURRENT_IDEA = 'TOGGLE_VOTE_CURRENT_IDEA';
