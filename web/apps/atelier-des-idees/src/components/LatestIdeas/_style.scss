@@ -14,6 +14,12 @@
   }
 
   // responsive
+  @media #{$desktop} {
+    .rc-tabs-tab {
+      font-size: 18px;
+    }
+  }
+
   @media #{$tablet} {
     padding: 50px;
 
