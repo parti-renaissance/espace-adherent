@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\IdeasWorkshop\Idea;
+use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
 use AppBundle\Entity\IdeasWorkshop\ThreadCommentStatusEnum;
 use AppBundle\Entity\IdeasWorkshop\VoteTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -107,5 +108,34 @@ class IdeaRepository extends ServiceEntityRepository
 
             return $result;
         }, []);
+    }
+
+    public function removeNotFinalizedIdeas(Adherent $author): void
+    {
+        $qb = $this->createQueryBuilder('idea');
+
+        $qb->delete()
+            ->set('idea.author', $qb->expr()->literal(null))
+            ->where('idea.author = :author')
+            ->andWhere('idea.status != :status')
+            ->setParameter('author', $author)
+            ->setParameter('status', IdeaStatusEnum::FINALIZED)
+            ->getQuery()
+            ->execute()
+        ;
+    }
+
+    public function anonymizeFinalizedIdeas(Adherent $author): void
+    {
+        $this->createQueryBuilder('idea')
+            ->update()
+            ->set('idea.author', 'null')
+            ->where('idea.author = :author')
+            ->andWhere('idea.status = :status')
+            ->setParameter('author', $author)
+            ->setParameter('status', IdeaStatusEnum::FINALIZED)
+            ->getQuery()
+            ->execute()
+        ;
     }
 }

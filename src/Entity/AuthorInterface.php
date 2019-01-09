@@ -9,5 +9,5 @@ interface AuthorInterface
 {
     public function setAuthor(Adherent $adherent): void;
 
-    public function getAuthor(): Adherent;
+    public function getAuthor(): ?Adherent;
 }

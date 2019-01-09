@@ -27,6 +27,13 @@ class LoadIdeaThemeData extends AbstractFixture
         );
         $this->addReference('theme-treasure', $themeTreasure);
 
+        $themeEcology = new Theme(
+            'Écologie',
+            null,
+            true
+        );
+        $this->addReference('theme-ecology', $themeEcology);
+
         $themeNotPublished = new Theme(
             'Thème non publié'
         );
@@ -34,6 +41,7 @@ class LoadIdeaThemeData extends AbstractFixture
 
         $manager->persist($themeArmyDefense);
         $manager->persist($themeTreasure);
+        $manager->persist($themeEcology);
         $manager->persist($themeNotPublished);
 
         $manager->flush();

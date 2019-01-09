@@ -18,6 +18,8 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
     public const IDEA_03_UUID = 'aa093ce6-8b20-4d86-bfbc-91a73fe47285';
     public const IDEA_04_UUID = 'c14937d6-fd42-465c-8419-ced37f3e6194';
     public const IDEA_05_UUID = '9529e98c-2524-486f-a6ed-e2d707dc99ea';
+    public const IDEA_06_UUID = 'bbf35ba6-52ba-4913-aae8-5948449d0c1d';
+    public const IDEA_07_UUID = '982bd810-a3ef-4611-a998-ebfadc335d66';
 
     public function load(ObjectManager $manager)
     {
@@ -25,10 +27,12 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
 
         $need = $this->getReference('need-legal');
         $category = $this->getReference('category-european');
-        $theme = $this->getReference('theme-army-defense');
+        $themeDefense = $this->getReference('theme-army-defense');
+        $themeEcology = $this->getReference('theme-ecology');
         $committee = $this->getReference('committee-1');
         $adherent3 = $this->getReference('adherent-3');
         $adherent6 = $this->getReference('adherent-6');
+        $adherent13 = $this->getReference('adherent-13');
 
         $ideaMakePeace = new Idea(
             'Faire la paix',
@@ -42,7 +46,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         );
         $ideaMakePeace->setCategory($category);
         $ideaMakePeace->setCommittee($committee);
-        $ideaMakePeace->addTheme($theme);
+        $ideaMakePeace->addTheme($themeDefense);
         $ideaMakePeace->addNeed($need);
         $this->addReference('idea-peace', $ideaMakePeace);
 
@@ -58,7 +62,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         );
         $ideaHelpEcology->setCategory($category);
         $ideaHelpEcology->setCommittee($committee);
-        $ideaHelpEcology->addTheme($theme);
+        $ideaHelpEcology->addTheme($themeEcology);
         $this->addReference('idea-help-ecology', $ideaHelpEcology);
 
         $ideaHelpPeople = new Idea(
@@ -72,7 +76,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             new \DateTime('-3 minutes')
         );
         $ideaHelpPeople->setCategory($category);
-        $ideaHelpPeople->addTheme($theme);
+        $ideaHelpPeople->addTheme($themeDefense);
         $this->addReference('idea-help-people', $ideaHelpPeople);
 
         $ideaReduceWaste = new Idea(
@@ -86,7 +90,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
              new \DateTime('-2 minutes')
         );
         $ideaReduceWaste->setCategory($category);
-        $ideaReduceWaste->addTheme($theme);
+        $ideaReduceWaste->addTheme($themeEcology);
         $this->addReference('idea-reduce-waste', $ideaReduceWaste);
 
         $ideaReducePupils = new Idea(
@@ -95,17 +99,48 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             AuthorCategoryEnum::QG,
             null,
             IdeaStatusEnum::DRAFT,
-            $adherent3,
+            $adherent13,
             Uuid::fromString(self::IDEA_05_UUID),
             new \DateTime('-1 minute')
         );
         $this->addReference('idea-reduce-pupils', $ideaReducePupils);
+
+        $ideaReduceNoise = new Idea(
+            'Reduire le bruit dans les opens spaces',
+            'Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.',
+            AuthorCategoryEnum::ADHERENT,
+            new \DateTime('2018-11-27 09:09:09'),
+            IdeaStatusEnum::PENDING,
+            $adherent13,
+            Uuid::fromString(self::IDEA_06_UUID),
+            new \DateTime()
+        );
+        $ideaReduceNoise->setCategory($category);
+        $ideaReduceNoise->addTheme($themeEcology);
+        $ideaReduceNoise->addNeed($need);
+        $this->addReference('idea-noise', $ideaReduceNoise);
+
+        $ideaReduceFoodWaste = new Idea(
+            'Reduire le gaspillage alimentaire',
+            'Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.',
+            AuthorCategoryEnum::ADHERENT,
+            new \DateTime('2018-12-24 09:09:09'),
+            IdeaStatusEnum::FINALIZED,
+            $adherent13,
+            Uuid::fromString(self::IDEA_07_UUID),
+            new \DateTime()
+        );
+        $ideaReduceFoodWaste->setCategory($category);
+        $ideaReduceFoodWaste->addTheme($themeEcology);
+        $this->addReference('idea-food-waste', $ideaReduceFoodWaste);
 
         $manager->persist($ideaMakePeace);
         $manager->persist($ideaHelpEcology);
         $manager->persist($ideaHelpPeople);
         $manager->persist($ideaReduceWaste);
         $manager->persist($ideaReducePupils);
+        $manager->persist($ideaReduceNoise);
+        $manager->persist($ideaReduceFoodWaste);
 
         $manager->flush();
     }

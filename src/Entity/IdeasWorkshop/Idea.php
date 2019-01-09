@@ -424,7 +424,7 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
         $this->needs->removeElement($need);
     }
 
-    public function getAuthor(): Adherent
+    public function getAuthor(): ?Adherent
     {
         return $this->author;
     }

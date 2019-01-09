@@ -91,7 +91,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *         @ORM\UniqueConstraint(name="threads_comments_uuid_unique", columns="uuid")
  *     }
  * )
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ThreadCommentRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  *

@@ -23,19 +23,20 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 1,
+            "total_items": 2,
             "items_per_page": 2,
-            "count": 1,
+            "count": 2,
             "current_page": 1,
             "last_page": 1
         },
         "items": [
             {
                 "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
+                "name": "Réduire le gaspillage",
                 "themes": [
                     {
-                        "name": "Armées et défense",
-                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+                        "name": "Écologie",
+                        "thumbnail": null
                     }
                 ],
                 "category": {
@@ -52,17 +53,52 @@ Feature:
                 "committee": null,
                 "status": "FINALIZED",
                 "votes_count": {
-                    "total": 0,
                     "important": 0,
                     "feasible": 0,
-                    "innovative": 0
+                    "innovative": 0,
+                    "total": 0
                 },
                 "author_category": "ADHERENT",
                 "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
                 "created_at": "@string@.isDateTime()",
-                "name": "Réduire le gaspillage",
                 "slug": "reduire-le-gaspillage",
                 "days_before_deadline": 1,
+                "contributors_count": 0,
+                "comments_count": 0
+            },
+            {
+                "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
+                "name": "Reduire le gaspillage alimentaire",
+                "themes": [
+                    {
+                        "name": "Écologie",
+                        "thumbnail": null
+                    }
+                ],
+                "category": {
+                    "name": "Echelle Européenne",
+                    "enabled": true
+                },
+                "needs": [],
+                "author": {
+                    "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                    "first_name": "Michel",
+                    "last_name": "VASSEUR"
+                },
+                "published_at": "2018-12-24T09:09:09+01:00",
+                "committee": null,
+                "status": "FINALIZED",
+                "votes_count": {
+                    "important": 0,
+                    "feasible": 0,
+                    "innovative": 0,
+                    "total": 0
+                },
+                "author_category": "ADHERENT",
+                "description": "Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
+                "created_at": "@string@.isDateTime()",
+                "slug": "reduire-le-gaspillage-alimentaire",
+                "days_before_deadline": 21,
                 "contributors_count": 0,
                 "comments_count": 0
             }
@@ -79,15 +115,16 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 1,
+            "total_items": 2,
             "items_per_page": 2,
-            "count": 1,
+            "count": 2,
             "current_page": 1,
             "last_page": 1
         },
         "items": [
             {
                 "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
+                "name": "Faire la paix",
                 "themes": [
                     {
                         "name": "Armées et défense",
@@ -112,25 +149,65 @@ Feature:
                 "published_at": "2018-12-20T10:00:00+01:00",
                 "committee": {
                     "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
-                    "created_at": "2017-01-12T13:25:54+01:00",
+                    "created_at": "@string@.isDateTime()",
                     "name": "En Marche Paris 8",
                     "slug": "en-marche-paris-8"
                 },
                 "status": "PENDING",
                 "votes_count": {
-                    "total": 15,
-                    "important": "6",
-                    "feasible": "4",
-                    "innovative": "5"
+                    "important": "7",
+                    "feasible": "5",
+                    "innovative": "5",
+                    "total": 17
                 },
                 "author_category": "COMMITTEE",
                 "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
                 "created_at": "@string@.isDateTime()",
-                "name": "Faire la paix",
                 "slug": "faire-la-paix",
                 "days_before_deadline": 17,
-                "contributors_count": 4,
-                "comments_count": 7
+                "contributors_count": 5,
+                "comments_count": 8
+            },
+            {
+                "uuid": "bbf35ba6-52ba-4913-aae8-5948449d0c1d",
+                "name": "Reduire le bruit dans les opens spaces",
+                "themes": [
+                    {
+                        "name": "Écologie",
+                        "thumbnail": null
+                    }
+                ],
+                "category": {
+                    "name": "Echelle Européenne",
+                    "enabled": true
+                },
+                "needs": [
+                    {
+                        "name": "Juridique",
+                        "enabled": true
+                    }
+                ],
+                "author": {
+                    "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                    "first_name": "Michel",
+                    "last_name": "VASSEUR"
+                },
+                "published_at": "2018-11-27T09:09:09+01:00",
+                "committee": null,
+                "status": "PENDING",
+                "votes_count": {
+                    "important": 0,
+                    "feasible": 0,
+                    "innovative": 0,
+                    "total": 0
+                },
+                "author_category": "ADHERENT",
+                "description": "Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
+                "created_at": "@string@.isDateTime()",
+                "slug": "reduire-le-bruit-dans-les-opens-spaces",
+                "days_before_deadline": 0,
+                "contributors_count": 0,
+                "comments_count": 0
             }
         ]
     }
@@ -154,6 +231,7 @@ Feature:
         "items": [
             {
                 "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
+                "name": "Faire la paix",
                 "themes": [
                     {
                         "name": "Armées et défense",
@@ -178,25 +256,24 @@ Feature:
                 "published_at": "2018-12-20T10:00:00+01:00",
                 "committee": {
                     "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
-                    "created_at": "2017-01-12T13:25:54+01:00",
+                    "created_at": "@string@.isDateTime()",
                     "name": "En Marche Paris 8",
                     "slug": "en-marche-paris-8"
                 },
                 "status": "PENDING",
                 "votes_count": {
-                    "total": 15,
-                    "important": "6",
-                    "feasible": "4",
-                    "innovative": "5"
+                    "important": "7",
+                    "feasible": "5",
+                    "innovative": "5",
+                    "total": 17
                 },
                 "author_category": "COMMITTEE",
                 "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
                 "created_at": "@string@.isDateTime()",
-                "name": "Faire la paix",
                 "slug": "faire-la-paix",
                 "days_before_deadline": 17,
-                "contributors_count": 4,
-                "comments_count": 7
+                "contributors_count": 5,
+                "comments_count": 8
             }
         ]
     }
@@ -221,6 +298,7 @@ Feature:
         "items": [
             {
                 "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
+                "name": "Faire la paix",
                 "themes": [
                     {
                         "name": "Armées et défense",
@@ -245,16 +323,16 @@ Feature:
                 "published_at": "2018-12-20T10:00:00+01:00",
                 "committee": {
                     "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
-                    "created_at": "2017-01-12T13:25:54+01:00",
+                    "created_at": "@string@.isDateTime()",
                     "name": "En Marche Paris 8",
                     "slug": "en-marche-paris-8"
                 },
                 "status": "PENDING",
                 "votes_count": {
-                    "total": 15,
-                    "important": "6",
-                    "feasible": "4",
+                    "important": "7",
+                    "feasible": "5",
                     "innovative": "5",
+                    "total": 17,
                     "my_votes": {
                         "feasible": @integer@,
                         "important": @integer@,
@@ -264,11 +342,10 @@ Feature:
                 "author_category": "COMMITTEE",
                 "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
                 "created_at": "@string@.isDateTime()",
-                "name": "Faire la paix",
                 "slug": "faire-la-paix",
                 "days_before_deadline": 17,
-                "contributors_count": 4,
-                "comments_count": 7
+                "contributors_count": 5,
+                "comments_count": 8
             }
         ]
     }
@@ -283,15 +360,16 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 2,
+            "total_items": 4,
             "items_per_page": 2,
             "count": 2,
             "current_page": 1,
-            "last_page": 1
+            "last_page": 2
         },
         "items": [
             {
                 "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
+                "name": "Faire la paix",
                 "themes": [
                     {
                         "name": "Armées et défense",
@@ -316,32 +394,32 @@ Feature:
                 "published_at": "2018-12-20T10:00:00+01:00",
                 "committee": {
                     "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
-                    "created_at": "2017-01-12T13:25:54+01:00",
+                    "created_at": "@string@.isDateTime()",
                     "name": "En Marche Paris 8",
                     "slug": "en-marche-paris-8"
                 },
                 "status": "PENDING",
                 "votes_count": {
-                    "total": 15,
-                    "important": "6",
-                    "feasible": "4",
-                    "innovative": "5"
+                    "important": "7",
+                    "feasible": "5",
+                    "innovative": "5",
+                    "total": 17
                 },
                 "author_category": "COMMITTEE",
                 "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
                 "created_at": "@string@.isDateTime()",
-                "name": "Faire la paix",
                 "slug": "faire-la-paix",
                 "days_before_deadline": 17,
-                "contributors_count": 4,
-                "comments_count": 7
+                "contributors_count": 5,
+                "comments_count": 8
             },
             {
                 "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
+                "name": "Réduire le gaspillage",
                 "themes": [
                     {
-                        "name": "Armées et défense",
-                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+                        "name": "Écologie",
+                        "thumbnail": null
                     }
                 ],
                 "category": {
@@ -358,15 +436,14 @@ Feature:
                 "committee": null,
                 "status": "FINALIZED",
                 "votes_count": {
-                    "total": 0,
                     "important": 0,
                     "feasible": 0,
-                    "innovative": 0
+                    "innovative": 0,
+                    "total": 0
                 },
                 "author_category": "ADHERENT",
                 "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
                 "created_at": "@string@.isDateTime()",
-                "name": "Réduire le gaspillage",
                 "slug": "reduire-le-gaspillage",
                 "days_before_deadline": 1,
                 "contributors_count": 0,
@@ -394,6 +471,7 @@ Feature:
         "items": [
             {
                 "uuid": "aa093ce6-8b20-4d86-bfbc-91a73fe47285",
+                "name": "Aider les gens",
                 "themes": [
                     {
                         "name": "Armées et défense",
@@ -414,15 +492,14 @@ Feature:
                 "committee": null,
                 "status": "DRAFT",
                 "votes_count": {
-                    "important": "6",
-                    "feasible": "4",
+                    "important": "7",
+                    "feasible": "5",
                     "innovative": "5",
-                    "total": 15
+                    "total": 17
                 },
                 "author_category": "QG",
                 "description": "Nam laoreet eros diam, vitae hendrerit libero interdum nec. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
                 "created_at": "@string@.isDateTime()",
-                "name": "Aider les gens",
                 "slug": "aider-les-gens",
                 "days_before_deadline": 0,
                 "contributors_count": 0,
@@ -632,10 +709,10 @@ Feature:
         },
         "status": "PENDING",
         "votes_count": {
-            "important": "6",
-            "feasible": "4",
+            "important": "7",
+            "feasible": "5",
             "innovative": "5",
-            "total": 15,
+            "total": 17,
             "my_votes": {
                 "feasible": @integer@,
                 "important": @integer@,
@@ -648,8 +725,8 @@ Feature:
         "created_at": "@string@.isDateTime()",
         "slug": "mon-idee-2",
         "days_before_deadline": 17,
-        "contributors_count": 4,
-        "comments_count": 7
+        "contributors_count": 5,
+        "comments_count": 8
     }
     """
 
@@ -662,66 +739,66 @@ Feature:
     And the JSON should be equal to:
     """
     {
-       "metadata":{
-          "total_items":1,
-          "items_per_page":2,
-          "count":1,
-          "current_page":1,
-          "last_page":1
-       },
-       "items":[
-          {
-             "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
-             "themes": [
-                 {
-                     "name": "Armées et défense",
-                     "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-                 }
-             ],
-             "category":{
-                "name":"Echelle Européenne",
-                "enabled":true
-             },
-             "needs":[
-                {
-                   "name":"Juridique",
-                   "enabled":true
-                }
-             ],
-             "author":{
-                "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"Picard"
-             },
-             "published_at":"2018-12-20T10:00:00+01:00",
-             "committee":{
-                "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
-                "created_at":"2017-01-12T13:25:54+01:00",
-                "name":"En Marche Paris 8",
-                "slug":"en-marche-paris-8"
-             },
-             "status":"PENDING",
-             "votes_count":{
-                "important":"6",
-                "feasible":"4",
-                "innovative":"5",
-                "total":15,
-                "my_votes": {
+        "metadata": {
+            "total_items": 1,
+            "items_per_page": 2,
+            "count": 1,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
+                "name": "Faire la paix",
+                "themes": [
+                    {
+                        "name": "Armées et défense",
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+                    }
+                ],
+                "category": {
+                    "name": "Echelle Européenne",
+                    "enabled": true
+                },
+                "needs": [
+                    {
+                        "name": "Juridique",
+                        "enabled": true
+                    }
+                ],
+                "author": {
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                    "first_name": "Jacques",
+                    "last_name": "Picard"
+                },
+                "published_at": "2018-12-20T10:00:00+01:00",
+                "committee": {
+                    "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
+                    "created_at": "@string@.isDateTime()",
+                    "name": "En Marche Paris 8",
+                    "slug": "en-marche-paris-8"
+                },
+                "status": "PENDING",
+                "votes_count": {
+                    "important": "7",
+                    "feasible": "5",
+                    "innovative": "5",
+                    "total": 17,
+                    "my_votes": {
                     "feasible": @integer@,
                     "important": @integer@,
                     "innovative": @integer@
                 }
-             },
-             "author_category":"COMMITTEE",
-             "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
-             "created_at": "@string@.isDateTime()",
-             "name":"Faire la paix",
-             "slug":"faire-la-paix",
-             "days_before_deadline": 17,
-             "contributors_count": @integer@,
-             "comments_count": @integer@
-          }
-       ]
+                },
+                "author_category": "COMMITTEE",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
+                "created_at": "@string@.isDateTime()",
+                "slug": "faire-la-paix",
+                "days_before_deadline": 17,
+                "contributors_count": 5,
+                "comments_count": 8
+            }
+        ]
     }
     """
 
@@ -774,10 +851,10 @@ Feature:
              },
              "status": "PENDING",
              "votes_count":{
-                "important": "6",
-                "feasible": "4",
+                "important": "7",
+                "feasible": "5",
                 "innovative": "5",
-                "total": 15,
+                "total": 17,
                 "my_votes": {
                     "feasible": @integer@,
                     "important": @integer@
@@ -789,8 +866,8 @@ Feature:
              "name": "Faire la paix",
              "slug": "faire-la-paix",
              "days_before_deadline": 17,
-             "contributors_count": @integer@,
-             "comments_count": @integer@
+             "contributors_count": 5,
+             "comments_count": 8
           }
        ]
     }
@@ -826,7 +903,7 @@ Feature:
     Then the response status code should be 400
 
   Scenario: As a logged-in user I get errors when I try to publish an invalid idea
-    Given I am logged as "jacques.picard@en-marche.fr"
+    Given I am logged as "michel.vasseur@example.ch"
     And I add "Content-Type" header equal to "application/json"
     When I send a "PUT" request to "/api/ideas/9529e98c-2524-486f-a6ed-e2d707dc99ea/publish"
     Then the response status code should be 400
@@ -899,7 +976,7 @@ Feature:
        "themes":[
           {
              "id":1,
-             "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
+             "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
           }
        ],
        "category":{
@@ -929,35 +1006,35 @@ Feature:
                 "items":[
                    {
                       "comments":{
-                         "total_items":3,
+                         "total_items":4,
                          "items":[
                             {
-                               "uuid":"001a53d0-1134-429c-8dc1-c57643b3f069",
-                               "content":"Commentaire refus\u00e9",
-                               "author":{
-                                  "uuid":"93de5d98-383a-4863-9f47-eb7a348873a8",
-                                  "first_name":"Laura",
-                                  "last_name":"Deloche"
-                               },
-                               "created_at": "@string@.isDateTime()"
+                                "uuid": "37116c8b-a36e-4a0d-8346-baba91cd1330",
+                                "content": "Commentaire de l'adhérent à desadhérer",
+                                "author": {
+                                    "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                                    "first_name": "Michel",
+                                    "last_name": "VASSEUR"
+                                },
+                                "created_at": "@string@.isDateTime()"
                             },
                             {
-                               "uuid":"3fa38c45-1122-4c48-9ada-b366b3408fec",
-                               "content":"Commentaire signal\u00e9",
-                               "author":{
-                                  "uuid":"93de5d98-383a-4863-9f47-eb7a348873a8",
-                                  "first_name":"Laura",
-                                  "last_name":"Deloche"
-                               },
-                               "created_at": "@string@.isDateTime()"
+                                "uuid": "ecbe9136-3dc0-477d-b817-a25878dd639a",
+                                "content": "Commentaire signalé",
+                                "author": {
+                                    "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
+                                    "first_name": "Laura",
+                                    "last_name": "Deloche"
+                                },
+                                "created_at": "@string@.isDateTime()"
                             },
                             {
-                               "uuid":"02bf299f-678a-4829-a6a1-241995339d8d",
-                               "content":"Commentaire de Laura",
-                               "author":{
-                                  "uuid":"93de5d98-383a-4863-9f47-eb7a348873a8",
-                                  "first_name":"Laura",
-                                  "last_name":"Deloche"
+                               "uuid": "3fa38c45-1122-4c48-9ada-b366b3408fec",
+                               "content": "Commentaire non approuvé",
+                               "author": {
+                                  "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
+                                  "first_name": "Laura",
+                                  "last_name": "Deloche"
                                },
                                "created_at": "@string@.isDateTime()"
                             }
@@ -1021,18 +1098,18 @@ Feature:
                          "total_items":4,
                          "items":[
                             {
-                               "uuid":"ecbe9136-3dc0-477d-b817-a25878dd639a",
-                               "content":"Deuxi\u00e8me commentaire d'un r\u00e9f\u00e9rent",
-                               "author":{
-                                  "uuid":"29461c49-2646-4d89-9c82-50b3f9b586f4",
-                                  "first_name":"Referent",
-                                  "last_name":"Referent"
-                               },
-                               "created_at": "@string@.isDateTime()"
+                                "uuid": "02bf299f-678a-4829-a6a1-241995339d8d",
+                                "content": "Deuxième commentaire d'un référent",
+                                "author": {
+                                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                                    "first_name": "Referent",
+                                    "last_name": "Referent"
+                                },
+                                "created_at": "@string@.isDateTime()"
                             },
                             {
                                "uuid":"f716d3ba-004f-4958-af26-a7b010a6d458",
-                               "content":"Commentaire d'un r\u00e9f\u00e9rent",
+                               "content":"Commentaire d'un référent",
                                "author":{
                                   "uuid":"29461c49-2646-4d89-9c82-50b3f9b586f4",
                                   "first_name":"Referent",
@@ -1159,11 +1236,11 @@ Feature:
           }
        ],
        "votes_count":{
-          "important":"6",
-          "feasible":"4",
+          "important":"7",
+          "feasible":"5",
           "innovative":"5",
-          "total":15,
-          "my_votes": {
+          "total":17,
+          "my_votes":{
               "feasible": @integer@,
               "important": @integer@
           }
@@ -1180,36 +1257,32 @@ Feature:
     And the JSON should be equal to:
     """
     {
-       "name":"Réduire le gaspillage",
-       "themes":[
-          {
-             "id":1,
-             "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
-          }
-       ],
-       "category":{
-          "id":1
-       },
-       "needs":[
-
-       ],
-       "author":{
-          "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-          "first_name":"Jacques",
-          "last_name":"Picard"
-       },
-       "published_at":"2018-12-04T10:00:00+01:00",
-       "status":"FINALIZED",
-       "answers":[
-
-       ],
-       "votes_count":{
-          "important":0,
-          "feasible":0,
-          "innovative":0,
-          "total":0
-       },
-       "created_at": "@string@.isDateTime()"
+        "name": "Réduire le gaspillage",
+        "themes": [
+            {
+                "id": 3,
+                "thumbnail": null
+            }
+        ],
+        "category": {
+            "id": 1
+        },
+        "needs": [],
+        "author": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard"
+        },
+        "published_at": "2018-12-04T10:00:00+01:00",
+        "status": "FINALIZED",
+        "answers": [],
+        "votes_count": {
+            "important": 0,
+            "feasible": 0,
+            "innovative": 0,
+            "total": 0
+        },
+        "created_at": "@string@.isDateTime()"
     }
     """
 
@@ -1221,229 +1294,62 @@ Feature:
     And the JSON should be equal to:
     """
     {
-       "metadata":{
-          "total_items":2,
-          "items_per_page":2,
-          "count":2,
-          "current_page":1,
-          "last_page":1
-       },
-       "items":[
-          {
-             "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
-             "name":"Réduire le gaspillage",
-             "themes":[
-                {
-                   "name":"Armées et défense",
-                   "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
-                }
-             ],
-             "category":{
-                "name":"Echelle Européenne",
-                "enabled":true
-             },
-             "needs":[
-
-             ],
-             "author":{
-                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"Picard"
-             },
-             "published_at":"2018-12-04T10:00:00+01:00",
-             "committee":null,
-             "status":"FINALIZED",
-             "votes_count":{
-                "important":0,
-                "feasible":0,
-                "innovative":0,
-                "total":0
-             },
-             "author_category":"ADHERENT",
-             "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
-             "comments_count":0,
-             "created_at": "@string@.isDateTime()",
-             "slug":"reduire-le-gaspillage",
-             "days_before_deadline":1,
-             "contributors_count":0
-          },
-          {
-             "uuid":"e4ac3efc-b539-40ac-9417-b60df432bdc5",
-             "name":"Faire la paix",
-             "themes":[
-                {
-                   "name":"Armées et défense",
-                   "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
-                }
-             ],
-             "category":{
-                "name":"Echelle Européenne",
-                "enabled":true
-             },
-             "needs":[
-                {
-                   "name":"Juridique",
-                   "enabled":true
-                }
-             ],
-             "author":{
-                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"Picard"
-             },
-             "published_at":"2018-12-20T10:00:00+01:00",
-             "committee":{
-                "uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818",
-                "created_at":"2017-01-12T13:25:54+01:00",
-                "name":"En Marche Paris 8",
-                "slug":"en-marche-paris-8"
-             },
-             "status":"PENDING",
-             "votes_count":{
-                "important":"6",
-                "feasible":"4",
-                "innovative":"5",
-                "total":15
-             },
-             "author_category":"COMMITTEE",
-             "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
-             "comments_count":7,
-             "created_at": "@string@.isDateTime()",
-             "slug":"faire-la-paix",
-             "days_before_deadline":17,
-             "contributors_count":4
-          }
-       ]
-    }
-    """
-
-  Scenario: As a non logged-in user I can order ideas by number of comments
-    Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas?commentsCount=asc"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-       "metadata":{
-          "total_items":2,
-          "items_per_page":2,
-          "count":2,
-          "current_page":1,
-          "last_page":1
-       },
-       "items":[
-          {
-             "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
-             "name":"Réduire le gaspillage",
-             "themes":[
-                {
-                   "name":"Armées et défense",
-                   "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
-                }
-             ],
-             "category":{
-                "name":"Echelle Européenne",
-                "enabled":true
-             },
-             "needs":[
-
-             ],
-             "author":{
-                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"Picard"
-             },
-             "published_at":"2018-12-04T10:00:00+01:00",
-             "committee":null,
-             "status":"FINALIZED",
-             "votes_count":{
-                "important":0,
-                "feasible":0,
-                "innovative":0,
-                "total":0
-             },
-             "author_category":"ADHERENT",
-             "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
-             "comments_count":0,
-             "created_at": "@string@.isDateTime()",
-             "slug":"reduire-le-gaspillage",
-             "days_before_deadline":1,
-             "contributors_count":0
-          },
-          {
-             "uuid":"e4ac3efc-b539-40ac-9417-b60df432bdc5",
-             "name":"Faire la paix",
-             "themes":[
-                {
-                   "name":"Armées et défense",
-                   "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
-                }
-             ],
-             "category":{
-                "name":"Echelle Européenne",
-                "enabled":true
-             },
-             "needs":[
-                {
-                   "name":"Juridique",
-                   "enabled":true
-                }
-             ],
-             "author":{
-                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"Picard"
-             },
-             "published_at":"2018-12-20T10:00:00+01:00",
-             "committee":{
-                "uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818",
-                "created_at":"2017-01-12T13:25:54+01:00",
-                "name":"En Marche Paris 8",
-                "slug":"en-marche-paris-8"
-             },
-             "status":"PENDING",
-             "votes_count":{
-                "important":"6",
-                "feasible":"4",
-                "innovative":"5",
-                "total":15
-             },
-             "author_category":"COMMITTEE",
-             "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
-             "comments_count":7,
-             "created_at": "@string@.isDateTime()",
-             "slug":"faire-la-paix",
-             "days_before_deadline":17,
-             "contributors_count":4
-          }
-       ]
-    }
-    """
-
-  Scenario: As a non logged-in user I can order ideas by number of votes
-    Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas?order[votesCount]=asc"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
         "metadata": {
-            "total_items": 2,
+            "total_items": 4,
             "items_per_page": 2,
             "count": 2,
             "current_page": 1,
-            "last_page": 1
+            "last_page": 2
         },
         "items": [
+            {
+                "uuid": "bbf35ba6-52ba-4913-aae8-5948449d0c1d",
+                "name": "Reduire le bruit dans les opens spaces",
+                "themes": [
+                    {
+                        "name": "Écologie",
+                        "thumbnail": null
+                    }
+                ],
+                "category": {
+                    "name": "Echelle Européenne",
+                    "enabled": true
+                },
+                "needs": [
+                    {
+                        "name": "Juridique",
+                        "enabled": true
+                    }
+                ],
+                "author": {
+                    "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                    "first_name": "Michel",
+                    "last_name": "VASSEUR"
+                },
+                "published_at": "2018-11-27T09:09:09+01:00",
+                "committee": null,
+                "status": "PENDING",
+                "votes_count": {
+                    "important": 0,
+                    "feasible": 0,
+                    "innovative": 0,
+                    "total": 0
+                },
+                "author_category": "ADHERENT",
+                "description": "Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
+                "created_at": "@string@.isDateTime()",
+                "slug": "reduire-le-bruit-dans-les-opens-spaces",
+                "days_before_deadline": 0,
+                "contributors_count": 0,
+                "comments_count": 0
+            },
             {
                 "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
                 "name": "Réduire le gaspillage",
                 "themes": [
                     {
-                        "name": "Armées et défense",
-                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+                        "name": "Écologie",
+                        "thumbnail": null
                     }
                 ],
                 "category": {
@@ -1469,17 +1375,73 @@ Feature:
                 "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "reduire-le-gaspillage",
-                "days_before_deadline": @integer@,
+                "days_before_deadline": 1,
+                "contributors_count": 0,
+                "comments_count": 0
+            }
+        ]
+    }
+    """
+
+  Scenario: As a non logged-in user I can order ideas by number of comments
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas?commentsCount=asc"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 4,
+            "items_per_page": 2,
+            "count": 2,
+            "current_page": 1,
+            "last_page": 2
+        },
+        "items": [
+            {
+                "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
+                "name": "Réduire le gaspillage",
+                "themes": [
+                    {
+                        "name": "Écologie",
+                        "thumbnail": null
+                    }
+                ],
+                "category": {
+                    "name": "Echelle Européenne",
+                    "enabled": true
+                },
+                "needs": [],
+                "author": {
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                    "first_name": "Jacques",
+                    "last_name": "Picard"
+                },
+                "published_at": "2018-12-04T10:00:00+01:00",
+                "committee": null,
+                "status": "FINALIZED",
+                "votes_count": {
+                    "important": 0,
+                    "feasible": 0,
+                    "innovative": 0,
+                    "total": 0
+                },
+                "author_category": "ADHERENT",
+                "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
+                "created_at": "@string@.isDateTime()",
+                "slug": "reduire-le-gaspillage",
+                "days_before_deadline": 1,
                 "contributors_count": 0,
                 "comments_count": 0
             },
             {
-                "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
-                "name": "Faire la paix",
+                "uuid": "bbf35ba6-52ba-4913-aae8-5948449d0c1d",
+                "name": "Reduire le bruit dans les opens spaces",
                 "themes": [
                     {
-                        "name": "Armées et défense",
-                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+                        "name": "Écologie",
+                        "thumbnail": null
                     }
                 ],
                 "category": {
@@ -1493,31 +1455,123 @@ Feature:
                     }
                 ],
                 "author": {
+                    "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                    "first_name": "Michel",
+                    "last_name": "VASSEUR"
+                },
+                "published_at": "2018-11-27T09:09:09+01:00",
+                "committee": null,
+                "status": "PENDING",
+                "votes_count": {
+                    "important": 0,
+                    "feasible": 0,
+                    "innovative": 0,
+                    "total": 0
+                },
+                "author_category": "ADHERENT",
+                "description": "Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
+                "created_at": "@string@.isDateTime()",
+                "slug": "reduire-le-bruit-dans-les-opens-spaces",
+                "days_before_deadline": 0,
+                "contributors_count": 0,
+                "comments_count": 0
+            }
+        ]
+    }
+    """
+
+  Scenario: As a non logged-in user I can order ideas by number of votes
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas?order[votesCount]=asc"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 4,
+            "items_per_page": 2,
+            "count": 2,
+            "current_page": 1,
+            "last_page": 2
+        },
+        "items": [
+            {
+                "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
+                "name": "Réduire le gaspillage",
+                "themes": [
+                    {
+                        "name": "Écologie",
+                        "thumbnail": null
+                    }
+                ],
+                "category": {
+                    "name": "Echelle Européenne",
+                    "enabled": true
+                },
+                "needs": [],
+                "author": {
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
-                "published_at": "2018-12-20T10:00:00+01:00",
-                "committee": {
-                    "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
-                    "created_at": "@string@.isDateTime()",
-                    "name": "En Marche Paris 8",
-                    "slug": "en-marche-paris-8"
+                "published_at": "2018-12-04T10:00:00+01:00",
+                "committee": null,
+                "status": "FINALIZED",
+                "votes_count": {
+                    "important": 0,
+                    "feasible": 0,
+                    "innovative": 0,
+                    "total": 0
                 },
+                "author_category": "ADHERENT",
+                "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
+                "created_at": "@string@.isDateTime()",
+                "slug": "reduire-le-gaspillage",
+                "days_before_deadline": 1,
+                "contributors_count": 0,
+                "comments_count": 0
+            },
+            {
+                "uuid": "bbf35ba6-52ba-4913-aae8-5948449d0c1d",
+                "name": "Reduire le bruit dans les opens spaces",
+                "themes": [
+                    {
+                        "name": "Écologie",
+                        "thumbnail": null
+                    }
+                ],
+                "category": {
+                    "name": "Echelle Européenne",
+                    "enabled": true
+                },
+                "needs": [
+                    {
+                        "name": "Juridique",
+                        "enabled": true
+                    }
+                ],
+                "author": {
+                    "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                    "first_name": "Michel",
+                    "last_name": "VASSEUR"
+                },
+                "published_at": "2018-11-27T09:09:09+01:00",
+                "committee": null,
                 "status": "PENDING",
                 "votes_count": {
-                    "important": "6",
-                    "feasible": "4",
-                    "innovative": "5",
-                    "total": 15
+                    "important": 0,
+                    "feasible": 0,
+                    "innovative": 0,
+                    "total": 0
                 },
-                "author_category": "COMMITTEE",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
+                "author_category": "ADHERENT",
+                "description": "Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
                 "created_at": "@string@.isDateTime()",
-                "slug": "faire-la-paix",
-                "days_before_deadline": @integer@,
-                "contributors_count": 4,
-                "comments_count": 7
+                "slug": "reduire-le-bruit-dans-les-opens-spaces",
+                "days_before_deadline": 0,
+                "contributors_count": 0,
+                "comments_count": 0
             }
         ]
     }
