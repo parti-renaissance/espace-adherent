@@ -294,9 +294,6 @@ idea.theme.min_count: |
   {1} Pour publier votre idée, vous devez préciser au minimum 1 thème.|
   ]1,Inf[ Pour publier votre idée, vous devez préciser au minimum {{ limit }} thèmes.
 idea.category.not_blank: Pour publier votre idée, sa catégorie devrait être remplie.
-idea.needs.min_count: |
-  {1} Pour publier votre idée, vous devez préciser au minimum 1 besoin.|
-  ]1,Inf[ Pour publier votre idée, vous devez préciser au minimum {{ limit }} besoins.
 idea.author.not_null: L'idée doit avoir un autheur.
 idea.answers.min_count: Pour publier votre idée, vous devez apporter des réponses aux questions obligatoires.
 answer.content.not_blank: Pour publier votre idée, vous devez apporter des réponses aux questions obligatoires.

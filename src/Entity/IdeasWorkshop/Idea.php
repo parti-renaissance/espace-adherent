@@ -236,8 +236,6 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      * @ORM\ManyToMany(targetEntity="Need")
      * @ORM\JoinTable(name="ideas_workshop_ideas_needs")
      *
-     * @Assert\Count(min=1, minMessage="idea.needs.min_count", groups={"idea_publish"})
-     *
      * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read"})
      */
     private $needs;
