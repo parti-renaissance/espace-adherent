@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import hideIcn from '../../img/icn_48px_tool_hide.svg';
+import revealIcn from '../../img/icn_48px_tool_reveal.svg';
 
 class Collapse extends React.Component {
     constructor(props) {
@@ -26,14 +28,14 @@ class Collapse extends React.Component {
                             className="button collapse__container__btn--open"
                             onClick={() => this.setState({ isCollapsed: !this.state.isCollapsed })}
                         >
-                            <img src="/assets/img/icn_48px_tool_hide.svg" />
+                            <img src={hideIcn} />
                         </button>
                     ) : (
                         <button
                             className="button collapse__container__btn--close"
                             onClick={() => this.setState({ isCollapsed: !this.state.isCollapsed })}
                         >
-                            <img src="/assets/img/icn_48px_tool_reveal.svg" />
+                            <img src={revealIcn} />
                         </button>
                     )}
                 </div>
