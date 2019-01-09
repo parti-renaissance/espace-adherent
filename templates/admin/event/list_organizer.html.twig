@@ -1,22 +1,6 @@
-{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% extends 'admin/list/list_author.html.twig' %}
 
 {% block field %}
-    {% set organizer = object.organizer %}
-    {% if organizer %}
-        <a href="{{ path('admin_app_adherent_show', {'id': organizer.id}) }}">
-            {{ organizer.fullName }}
-        </a>
-        <br />
-        {{ organizer.emailAddress }}
-        {% if organizer.phone %}
-            <br />
-            {{ organizer.phone|phone_number_format }}
-        {% endif %}
-        {% if organizer.isReferent and not object.committee %}
-            <br />
-            (Référent)
-        {% endif %}
-    {% else %}
-        Anonyme (adhérent désadhéré)
-    {% endif %}
+    {% set author = object.organizer %}
+    {{ parent() }}
 {% endblock %}
