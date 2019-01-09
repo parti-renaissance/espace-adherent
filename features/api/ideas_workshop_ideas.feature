@@ -255,11 +255,11 @@ Feature:
                     "important": "6",
                     "feasible": "4",
                     "innovative": "5",
-                    "my_votes": [
-                        "feasible",
-                        "important",
-                        "innovative"
-                    ]
+                    "my_votes": {
+                        "feasible": @integer@,
+                        "important": @integer@,
+                        "innovative": @integer@
+                    }
                 },
                 "author_category": "COMMITTEE",
                 "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
@@ -636,11 +636,11 @@ Feature:
             "feasible": "4",
             "innovative": "5",
             "total": 15,
-            "my_votes": [
-                "feasible",
-                "important",
-                "innovative"
-            ]
+            "my_votes": {
+                "feasible": @integer@,
+                "important": @integer@,
+                "innovative": @integer@
+            }
         },
         "author_category": "QG",
         "description": "Mon idée 2",
@@ -706,11 +706,11 @@ Feature:
                 "feasible":"4",
                 "innovative":"5",
                 "total":15,
-                "my_votes":[
-                   "feasible",
-                   "important",
-                   "innovative"
-                ]
+                "my_votes": {
+                    "feasible": @integer@,
+                    "important": @integer@,
+                    "innovative": @integer@
+                }
              },
              "author_category":"COMMITTEE",
              "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
@@ -778,10 +778,10 @@ Feature:
                 "feasible": "4",
                 "innovative": "5",
                 "total": 15,
-                "my_votes": [
-                   "feasible",
-                   "important"
-                ]
+                "my_votes": {
+                    "feasible": @integer@,
+                    "important": @integer@
+                }
              },
              "author_category": "COMMITTEE",
              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
@@ -1167,10 +1167,10 @@ Feature:
           "feasible":"4",
           "innovative":"5",
           "total":15,
-          "my_votes":[
-             "feasible",
-             "important"
-          ]
+          "my_votes": {
+              "feasible": @integer@,
+              "important": @integer@
+          }
        },
        "created_at": "@string@.isDateTime()"
     }
