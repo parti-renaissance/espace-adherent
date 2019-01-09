@@ -94,7 +94,7 @@ class CommentsList extends React.Component {
                             : this.props.emptyLabel && <p className="comments-list__empty">{this.props.emptyLabel}</p>}
                     </div>
                 )}
-                {0 < this.props.total - this.props.comments.length && (
+                {this.state.showComments && 0 < this.props.total - this.props.comments.length && (
                     <div className="comments-list__more">
                         <button
                             className="comments-list__more-btn"
