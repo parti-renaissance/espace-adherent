@@ -7,7 +7,7 @@ use AppBundle\Repository\IdeaRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class IdeasWorkshopNormalizer implements NormalizerInterface
+class IdeaNormalizer implements NormalizerInterface
 {
     private $normalizer;
     private $tokenStorage;

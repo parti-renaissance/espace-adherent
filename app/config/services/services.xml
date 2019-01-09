@@ -213,7 +213,7 @@
 
         <!-- Normalizer -->
         <service id="AppBundle\Normalizer\ItemCollectionNormalizer" />
-        <service id="AppBundle\Normalizer\IdeasWorkshopNormalizer">
+        <service id="AppBundle\Normalizer\IdeaNormalizer">
             <argument type="service" id="api_platform.serializer.normalizer.item" />
         </service>
         <service id="AppBundle\Normalizer\IdeaDenormalizer" />
@@ -495,6 +495,14 @@
             <argument key="$decorated" type="service" id="AppBundle\Swagger\SwaggerDecorator.inner"/>
             <argument key="$apiPathPrefix">%api_path_prefix%</argument>
             <argument key="$operationPathResolver" type="service" id="api_platform.operation_path_resolver"/>
+        </service>
+
+        <!-- Filter -->
+        <service id="AppBundle\Filter\CommentsCountFilter">
+            <argument type="service" id="doctrine"/>
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="logger" on-invalid="ignore"/>
+            <argument type="collection"><argument key="commentsCount"/></argument>
         </service>
     </services>
 </container>
