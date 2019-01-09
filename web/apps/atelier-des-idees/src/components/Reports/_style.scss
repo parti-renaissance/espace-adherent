@@ -9,11 +9,17 @@
   }
 
   &__first-section {
+    padding-right: 50px;
+
     &__title {
-      margin: 0 30% 0 0;
+      font-size: 25px;
     }
+
+    &__text {
+      margin: 25px 0;
+    }
+
     &__button {
-      padding: 10px 30px;
       background-color: $saphir;
       letter-spacing: 2px;
     }
@@ -46,6 +52,7 @@
     }
     &__first-section {
       order: 1;
+      padding-right: 0;
 
       &__title {
         margin: 0;
