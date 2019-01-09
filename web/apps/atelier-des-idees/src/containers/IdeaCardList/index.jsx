@@ -10,7 +10,7 @@ import IdeaCardList from '../../components/IdeaCardList';
 import noResultImg from '../../img/no-idea-result.svg';
 
 function IdeaCardListContainer(props) {
-    return props.ideas.length ? (
+    return props.isLoading || props.ideas.length ? (
         <React.Fragment>
             <IdeaCardList
                 ideas={props.ideas}
