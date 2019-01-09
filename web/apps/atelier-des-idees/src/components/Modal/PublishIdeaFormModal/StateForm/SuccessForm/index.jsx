@@ -16,11 +16,9 @@ class SuccessForm extends React.PureComponent {
                     <span className="success-form__subtitle__approved">Approuver</span>. Vous devrez ensuite intégrer
                     vous-même leurs contributions à votre partie.
                 </p>
-                <Link
-                    to={`/atelier-des-idees/note/${this.props.id}`}
-                    className="success-form__button button--secondary">
+                <a href={`/atelier-des-idees/note/${this.props.id}`} className="success-form__button button--secondary">
                     Voir la page
-                </Link>
+                </a>
                 <img src={how_to_approve} />
             </div>
         );
