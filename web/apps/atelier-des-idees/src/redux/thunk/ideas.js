@@ -2,7 +2,7 @@ import { FETCH_IDEAS, FETCH_IDEA, SAVE_IDEA, PUBLISH_IDEA, FETCH_MY_IDEAS, VOTE_
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { addIdeas, setIdeas, removeIdea, toggleVoteIdea } from '../actions/ideas';
 import { setCurrentIdea } from '../actions/currentIdea';
-import { selectIdeasMetadata } from '../selectors/ideas';
+import { selectIdeasMetadata, selectIdea } from '../selectors/ideas';
 import { setMyIdeas, removeMyIdea } from '../actions/myIdeas';
 import { setMyContributions } from '../actions/myContributions';
 import { selectAuthUser, selectIsAuthenticated } from '../selectors/auth';
@@ -134,26 +134,45 @@ export function fetchUserContributions(params = {}) {
     };
 }
 
-export function voteIdea(id, vote) {
+export function postVote(uuid, voteType) {
+    return (dispatch, getState, axios) =>
+        axios
+            .post('/api/votes', { idea: uuid, type: voteType })
+            .then(res => res.data)
+            .then((voteData) => {
+                dispatch(toggleVoteIdea(uuid, { voteType, voteId: voteData.id }));
+            });
+}
+
+export function cancelVote(uuid, voteType, voteId) {
+    return (dispatch, getState, axios) => {
+        dispatch(toggleVoteIdea(uuid, { voteType }));
+        return axios
+            .delete(`/api/votes/${voteId}`)
+            .then(res => res.data)
+            .catch(() => {
+                dispatch(toggleVoteIdea(uuid, { voteType, voteId }));
+            });
+    };
+}
+
+/**
+ * Toggle a vote on an idea
+ * @param {string} id idea's uuid
+ * @param {string} voteType type of toggled vote
+ */
+export function voteIdea(uuid, voteType) {
     return (dispatch, getState, axios) => {
         const isAuthenticated = selectIsAuthenticated(getState());
         if (isAuthenticated) {
-            dispatch(toggleVoteIdea(id, vote));
-            dispatch(createRequest(VOTE_IDEA, id));
-            const requestBody = {
-                method: 'POST',
-                url: '/api/votes',
-                data: { idea: id, type: vote },
-            };
-            return axios(requestBody)
-                .then(res => res.data)
-                .then(() => {
-                    dispatch(createRequestSuccess(VOTE_IDEA, id));
-                })
-                .catch(() => {
-                    dispatch(toggleVoteIdea(id, vote));
-                    dispatch(createRequestFailure(VOTE_IDEA, id));
-                });
+            const idea = selectIdea(getState(), uuid);
+            const { votes_count } = idea;
+            if (votes_count.my_votes && Object.keys(votes_count.my_votes).includes(voteType)) {
+                // user has already voted that, cancel vote
+                return dispatch(cancelVote(uuid, voteType, votes_count.my_votes[voteType]));
+            }
+            // user has not already voted that, post vote
+            return dispatch(postVote(uuid, voteType));
         }
         window.location = '/connexion';
     };

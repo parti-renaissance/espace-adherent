@@ -169,9 +169,9 @@ IdeaCard.propTypes = {
     uuid: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     votes_count: PropTypes.shape({
-        important: PropTypes.number.isRequired,
-        feasible: PropTypes.number.isRequired,
-        innovative: PropTypes.number.isRequired,
+        important: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        feasible: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        innovative: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
         total: PropTypes.number.isRequired,
         my_votes: PropTypes.arrayOf(PropTypes.string),
     }).isRequired,

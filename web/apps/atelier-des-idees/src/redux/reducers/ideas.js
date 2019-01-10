@@ -2,30 +2,35 @@ import { SET_IDEAS, ADD_IDEAS, REMOVE_IDEA, TOGGLE_VOTE_IDEA } from '../constant
 
 export const initialState = { items: [], metadata: {} };
 
-function toggleVote(idea, typeVote) {
-    let voteCount = idea.votes_count[typeVote];
+function toggleVote(idea, voteType, voteId) {
+    let voteCount = parseInt(idea.votes_count[voteType], 10);
     let total = idea.votes_count.total;
     let myVotes = idea.votes_count.my_votes;
     if (!myVotes) {
         // my_votes does not exist
-        myVotes = [];
+        myVotes = {};
     }
     // remove vote
-    if (myVotes.includes(typeVote)) {
+    if (Object.keys(myVotes).includes(voteType)) {
         voteCount -= 1;
         total -= 1;
-        myVotes = myVotes.filter(vote => vote !== typeVote);
+        myVotes = Object.entries(myVotes)
+            .filter(([type]) => type !== voteType)
+            .reduce((acc, [type, id]) => {
+                acc[type] = id;
+                return acc;
+            }, {});
     } else {
         // vote
         voteCount += 1;
         total += 1;
-        myVotes = [...myVotes, typeVote];
+        myVotes = { ...myVotes, [voteType]: voteId };
     }
     return {
         ...idea,
         votes_count: {
             ...idea.votes_count,
-            [typeVote]: voteCount,
+            [voteType]: voteCount,
             total,
             my_votes: myVotes,
         },
@@ -50,10 +55,10 @@ const ideasReducer = (state = initialState, action) => {
         };
     }
     case TOGGLE_VOTE_IDEA: {
-        const { id, typeVote } = payload;
+        const { id, voteType } = payload;
         const updatedItems = state.items.map((item) => {
             if (item.uuid === id) {
-                return toggleVote(item, typeVote);
+                return toggleVote(item, voteType);
             }
             return item;
         });
@@ -70,6 +75,7 @@ const ideasReducer = (state = initialState, action) => {
 export default ideasReducer;
 
 export const getIdeas = state => state.items;
+export const getIdea = (state, uuid) => state.items.find(idea => idea.uuid === uuid);
 export const getIdeasMetadata = state => state.metadata;
 export const getIdeasWithStatus = (state, status) => state.items.filter(idea => idea.status === status);
 export const getFinalizedIdeas = state => state.items.filter(idea => 'finalized' === idea.status);
