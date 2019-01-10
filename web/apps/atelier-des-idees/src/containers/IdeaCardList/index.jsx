@@ -9,6 +9,7 @@ import { fetchIdeas, fetchNextIdeas, voteIdea } from '../../redux/thunk/ideas';
 import Button from '../../components/Button';
 import IdeaCardList from '../../components/IdeaCardList';
 import IdeaFilters from '../../components/IdeaFilters';
+import noIdeaImg from '../../img/no-idea-result.svg';
 
 class IdeaCardListContainer extends React.Component {
     constructor(props) {
@@ -52,7 +53,7 @@ class IdeaCardListContainer extends React.Component {
                     </React.Fragment>
                 ) : (
                     <div className="idea-card-list__empty">
-                        <img className="idea-card-list__empty__img" src="/assets/img/no-idea-result.svg" />
+                        <img className="idea-card-list__empty__img" src={noIdeaImg} />
                         <p>Il n'y a pas d'idée correspondant à votre recherche</p>
                     </div>
                 )}
@@ -100,7 +101,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch, ownProps) {
     return {
-        fetchIdeas: params => dispatch(fetchIdeas(ownProps.status, params, true)),
+        fetchIdeas: params => dispatch(fetchIdeas(ownProps.status, params, { setMode: true, cancel: true })),
         onMoreClicked: params => dispatch(fetchNextIdeas(ownProps.status, params)),
         onVoteIdea: (id, vote) => dispatch(voteIdea(id, vote)),
     };

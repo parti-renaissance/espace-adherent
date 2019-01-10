@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ideaStatus, AUTHOR_CATEGORIES } from '../../constants/api';
 import Select from '../Select';
+import searchIcn from '../../img/icn_input_search.svg';
 
 class IdeaFilters extends React.Component {
     constructor(props) {
@@ -58,12 +59,15 @@ class IdeaFilters extends React.Component {
                 <div className="idea-filters__section idea-filters__filter">
                     <p className="idea-filters__label">Filtrer par</p>
                     <div className="idea-filters__section__filters">
-                        <input
-                            className="idea-filters__input"
-                            value={this.state.name}
-                            onChange={e => this.onFilterChange('name', e.target.value)}
-                            placeholder="Mot clé"
-                        />
+                        <span className="idea-filters__input-wrapper">
+                            <img src={searchIcn} className="idea-filters__input-icon" />
+                            <input
+                                className="idea-filters__input"
+                                value={this.state.name}
+                                onChange={e => this.onFilterChange('name', e.target.value)}
+                                placeholder="Mot clé"
+                            />
+                        </span>
                         {!!this.props.options && (
                             <React.Fragment>
                                 {!!this.props.options.categories.length && (
