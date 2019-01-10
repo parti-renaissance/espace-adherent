@@ -28,30 +28,35 @@ class IdeaCardListContainer extends React.Component {
     }
 
     render() {
-        return this.props.isLoading || this.props.ideas.length ? (
+        return (
             <React.Fragment>
                 <IdeaFilters
                     onFilterChange={this.onFilterChange}
                     status={this.props.status}
                     options={this.props.filters}
+                    disabled={this.props.isLoading}
                 />
-                <IdeaCardList
-                    ideas={this.props.ideas}
-                    isLoading={this.props.isLoading}
-                    mode={this.props.mode}
-                    onVoteIdea={this.props.onVoteIdea}
-                />
-                {this.props.withPaging && (
-                    <div className="idea-card-list__paging">
-                        <Button label="Plus d'idées" mode="tertiary" onClick={this.props.onMoreClicked} />
+                {this.props.isLoading || this.props.ideas.length ? (
+                    <React.Fragment>
+                        <IdeaCardList
+                            ideas={this.props.ideas}
+                            isLoading={this.props.isLoading}
+                            mode={this.props.mode}
+                            onVoteIdea={this.props.onVoteIdea}
+                        />
+                        {this.props.withPaging && (
+                            <div className="idea-card-list__paging">
+                                <Button label="Plus d'idées" mode="tertiary" onClick={this.props.onMoreClicked} />
+                            </div>
+                        )}
+                    </React.Fragment>
+                ) : (
+                    <div className="idea-card-list__empty">
+                        <img className="idea-card-list__empty__img" src="/assets/img/no-idea-result.svg" />
+                        <p>Il n'y a pas d'idée correspondant à votre recherche</p>
                     </div>
                 )}
             </React.Fragment>
-        ) : (
-            <div className="idea-card-list__empty">
-                <img className="idea-card-list__empty__img" src="/assets/img/no-idea-result.svg" />
-                <p>Il n'y a pas d'idée correspondant à votre recherche</p>
-            </div>
         );
     }
 }

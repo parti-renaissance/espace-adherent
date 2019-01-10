@@ -54,42 +54,51 @@ class IdeaFilters extends React.Component {
             <div className="idea-filters">
                 <div className="idea-filters__section idea-filters__filter">
                     <p className="idea-filters__label">Filtrer par</p>
-                    {/* <input
+                    <div className="idea-filters__section__filters">
+                        {/* <input
                         className="idea-filters__input"
                         value={this.state.name}
                         onChange={e => this.setState({ name: e.target.value })}
                         placeholder="Mot clé"
                     />*/}
-                    <Select
-                        options={this.filterItems.author_category.options}
-                        placeholder="Auteur"
-                        onSelected={([selected]) => this.onFilterChange('author_category', selected && selected.value)}
-                        isClearable={true}
-                    />
-                    {!!this.props.options && (
-                        <React.Fragment>
-                            {!!this.props.options.themes.length && (
-                                <Select
-                                    options={this.props.options.themes}
-                                    placeholder="Thème"
-                                    onSelected={([selected]) =>
-                                        this.onFilterChange('theme.name', selected && selected.value)
-                                    }
-                                    isClearable={true}
-                                />
-                            )}
-                        </React.Fragment>
-                    )}
+                        <Select
+                            options={this.filterItems.author_category.options}
+                            placeholder="Auteur"
+                            onSelected={([selected]) =>
+                                this.onFilterChange('author_category', selected && selected.value)
+                            }
+                            isClearable={true}
+                            isDisabled={this.props.disabled}
+                        />
+                        {!!this.props.options && (
+                            <React.Fragment>
+                                {!!this.props.options.themes.length && (
+                                    <Select
+                                        options={this.props.options.themes}
+                                        placeholder="Thème"
+                                        onSelected={([selected]) =>
+                                            this.onFilterChange('theme.name', selected && selected.value)
+                                        }
+                                        isClearable={true}
+                                        isDisabled={this.props.disabled}
+                                    />
+                                )}
+                            </React.Fragment>
+                        )}
+                    </div>
                 </div>
                 <div className="idea-filters__section idea-filters__sort">
                     <p className="idea-filters__label">Trier par</p>
-                    <Select
-                        options={this.filterItems.order.options.filter(
-                            option => !option.status || (!!option.status && option.status === this.props.status)
-                        )}
-                        defaultValue={this.filterItems.order.options[0]}
-                        onSelected={([selected]) => this.onFilterChange('order', selected.value)}
-                    />
+                    <div className="idea-filters__section__filters">
+                        <Select
+                            options={this.filterItems.order.options.filter(
+                                option => !option.status || (!!option.status && option.status === this.props.status)
+                            )}
+                            defaultValue={this.filterItems.order.options[0]}
+                            onSelected={([selected]) => this.onFilterChange('order', selected.value)}
+                            isDisabled={this.props.disabled}
+                        />
+                    </div>
                 </div>
             </div>
         );
@@ -97,6 +106,7 @@ class IdeaFilters extends React.Component {
 }
 
 IdeaFilters.defaultProps = {
+    disabled: false,
     status: 'PENDING',
     options: undefined,
 };
@@ -109,6 +119,7 @@ IdeaFilters.propTypes = {
         categories: PropTypes.array,
         needs: PropTypes.array,
     }),
+    disabled: PropTypes.bool,
 };
 
 export default IdeaFilters;
