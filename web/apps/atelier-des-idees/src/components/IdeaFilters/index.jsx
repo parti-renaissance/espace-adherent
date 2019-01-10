@@ -61,17 +61,19 @@ class IdeaFilters extends React.Component {
                         onChange={e => this.setState({ name: e.target.value })}
                         placeholder="Mot clé"
                     />*/}
-                        <Select
-                            options={this.filterItems.author_category.options}
-                            placeholder="Auteur"
-                            onSelected={([selected]) =>
-                                this.onFilterChange('author_category', selected && selected.value)
-                            }
-                            isClearable={true}
-                            isDisabled={this.props.disabled}
-                        />
                         {!!this.props.options && (
                             <React.Fragment>
+                                {!!this.props.options.categories.length && (
+                                    <Select
+                                        options={this.props.options.categories}
+                                        placeholder="Echelle"
+                                        onSelected={
+                                            ([selected]) => this.onFilterChange('category', selected && selected.value) // TODO: wait for final param name
+                                        }
+                                        isClearable={true}
+                                        isDisabled={this.props.disabled}
+                                    />
+                                )}
                                 {!!this.props.options.themes.length && (
                                     <Select
                                         options={this.props.options.themes}
@@ -85,6 +87,28 @@ class IdeaFilters extends React.Component {
                                 )}
                             </React.Fragment>
                         )}
+                        <Select
+                            options={this.filterItems.author_category.options}
+                            placeholder="Auteur"
+                            onSelected={([selected]) =>
+                                this.onFilterChange('author_category', selected && selected.value)
+                            }
+                            isClearable={true}
+                            isDisabled={this.props.disabled}
+                        />
+                        {this.props.status === ideaStatus.PENDING &&
+                            !!this.props.options &&
+                            !!this.props.options.needs.length && (
+                                <Select
+                                    options={this.props.options.needs}
+                                    placeholder="Besoin"
+                                    onSelected={
+                                        ([selected]) => this.onFilterChange('need', selected && selected.value) // TODO: wait for final param name
+                                    }
+                                    isClearable={true}
+                                    isDisabled={this.props.disabled}
+                                />
+                            )}
                     </div>
                 </div>
                 <div className="idea-filters__section idea-filters__sort">
