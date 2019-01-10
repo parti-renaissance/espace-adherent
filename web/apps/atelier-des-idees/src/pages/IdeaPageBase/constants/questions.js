@@ -1,4 +1,4 @@
-export const FIRST_QUESTIONS = [
+riexport const FIRST_QUESTIONS = [
     {
         id: 'problem',
         label: 'Constat',
@@ -13,6 +13,9 @@ export const FIRST_QUESTIONS = [
         canCollapse: false,
         placeholder: 'Expliquez comment votre proposition répond concrètement au problème.',
     },
+];
+
+export const SECOND_QUESTIONS = [
     {
         id: 'comparison',
         label: 'Comparaison',
@@ -25,9 +28,6 @@ export const FIRST_QUESTIONS = [
         question: 'Cette proposition peut elle avoir des effets négatifs pour certains publics ?',
         canCollapse: true,
     },
-];
-
-export const SECOND_QUESTIONS = [
     {
         id: 'right',
         label: 'Droit',
