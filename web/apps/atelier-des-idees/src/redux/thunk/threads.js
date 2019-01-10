@@ -1,6 +1,6 @@
 import { removeThread, toggleApproveThread } from '../actions/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
-import { POST_THREAD } from '../constants/actionTypes';
+import { POST_THREAD, POST_THREAD_COMMENT } from '../constants/actionTypes';
 import { selectThread } from '../selectors/threads';
 
 export function approveComment(id, parentId = '') {
@@ -40,6 +40,8 @@ export function deleteComment(id, parentId = '') {
 export function postComment(content, answerId, parentId = '') {
     return (dispatch, getState, axios) => {
         let type = 'threads';
+        const fetchType = parentId ? POST_THREAD_COMMENT : POST_THREAD;
+        const fetchId = `${answerId}${parentId ? `_${parentId}` : ''}`;
         const body = { content };
         if (parentId) {
             type = 'thread_comments';
@@ -47,16 +49,16 @@ export function postComment(content, answerId, parentId = '') {
         } else {
             body.answer = answerId;
         }
-        dispatch(createRequest(POST_THREAD, answerId));
+        dispatch(createRequest(fetchType, fetchId));
         return axios
             .post(`/api/${type}`, body)
             .then(res => res.data)
             .then((thread) => {
-                dispatch(createRequestSuccess(POST_THREAD, answerId));
+                dispatch(createRequestSuccess(fetchType, fetchId));
                 return thread;
             })
             .catch((error) => {
-                dispatch(createRequestFailure(POST_THREAD, answerId));
+                dispatch(createRequestFailure(fetchType, fetchId));
                 throw error;
             });
     };
