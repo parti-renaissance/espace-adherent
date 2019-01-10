@@ -32,16 +32,19 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     },
  *     collectionOperations={
  *         "get": {
+ *             "path": "/ideas-workshop/threads",
  *             "normalization_context": {
  *                 "groups": {"thread_list_read"}
  *             }
  *         },
  *         "post": {
+ *             "path": "/ideas-workshop/threads",
  *             "access_control": "is_granted('ROLE_ADHERENT')",
  *         }
  *     },
  *     itemOperations={
  *         "get": {
+ *             "path": "/ideas-workshop/threads/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "swagger_context": {
  *                 "parameters": {
@@ -57,7 +60,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *         },
  *         "put_approval_toggle": {
  *             "method": "PUT",
- *             "path": "/threads/{id}/approval-toggle",
+ *             "path": "/ideas-workshop/threads/{id}/approval-toggle",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "denormalization_context": {
  *                 "groups": {"thread_approval"}
@@ -76,6 +79,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *             }
  *         },
  *         "delete": {
+ *             "path": "/ideas-workshop/threads/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "object.getAuthor() == user",
  *             "swagger_context": {
  *                 "parameters": {
@@ -90,6 +95,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *             }
  *         }
  *     },
+ *     subresourceOperations={
+ *         "comments_get_subresource": {
+ *             "method": "GET",
+ *             "path": "/ideas-workshop/threads/{id}/comments"
+ *         },
+ *     }
  * )
  * @ApiFilter(SearchFilter::class, properties={"answer.id": "exact"})
  *
