@@ -47,7 +47,7 @@ MyIdeasModal.propTypes = {
         PropTypes.shape({
             name: PropTypes.string.isRequired,
             created_at: PropTypes.string.isRequired, // ISO UTC
-            status: PropTypes.oneOf(ideaStatus).isRequired,
+            status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
         })
     ).isRequired,
     onDeleteIdea: PropTypes.func.isRequired,
