@@ -45,7 +45,8 @@ class MyIdeas extends React.Component {
                                 this.setState(prevState => ({
                                     [cat.showCat]: !prevState[cat.showCat],
                                 }))
-                            }>
+                            }
+                        >
                             <span className="my-ideas__category__button__label">{cat.label.toUpperCase()}</span>
                             <img
                                 className={classNames('my-ideas__category__button__icon', {
@@ -73,7 +74,8 @@ class MyIdeas extends React.Component {
                                                 )}
                                                 <Link
                                                     to={`/atelier-des-idees/note/${idea.uuid}`}
-                                                    className="my-ideas__category__idea__actions__edit button button--secondary">
+                                                    className="my-ideas__category__idea__actions__edit button button--secondary"
+                                                >
                                                     {'FINALIZED' !== idea.status && 'Editer'}
                                                     {'FINALIZED' === idea.status && 'Voir la note'}
                                                 </Link>
@@ -101,7 +103,7 @@ MyIdeas.propTypes = {
             uuid: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
             created_at: PropTypes.string.isRequired, // ISO UTC
-            status: PropTypes.oneOf(ideaStatus).isRequired,
+            status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
         })
     ).isRequired,
     onDeleteIdea: PropTypes.func.isRequired,

@@ -26,6 +26,7 @@ class IdeaPageTitle extends React.Component {
                             placeholder="Titre de l'idée"
                             value={this.state.isEditing ? this.state.value : this.props.title}
                             error={this.props.hasError ? 'Merci de remplir un titre avant de poursuivre' : undefined}
+                            name="title"
                         />
                         {this.state.isEditing && (
                             <div className="idea-page-title__title__editing-footer">
