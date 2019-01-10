@@ -51,6 +51,7 @@
 
   .idea-filters__input {
     height: 43px;
+    margin-right: 10px;
     border: 1px solid $columbia-blue;
     border-radius: 3px;
     padding: 12px 15px;
@@ -72,6 +73,7 @@
     .idea-filters__section__filters {
       width: 100%;
 
+      .idea-filters__input,
       .select {
         width: 100%;
         margin: 0;
@@ -97,6 +99,7 @@
       width: 100%;
       justify-content: space-between;
 
+      .idea-filters__input,
       .select {
         width: calc(50% - 10px);
         margin-bottom: 10px;
