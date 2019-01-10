@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import proposeIdeaImg from './../../../img/propose-your-idea.svg';
 
 class PreProposal extends React.PureComponent {
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
     render() {
         return (
             <article className="l__wrapper">
@@ -19,8 +22,7 @@ class PreProposal extends React.PureComponent {
                         <a
                             className="button button--primary pre-proposal__container__link"
                             href="https://transformer.en-marche.fr/fr"
-                            target="_blank"
-                        >
+                            target="_blank">
                             Suivre la mise en œuvre du programme
                         </a>
                     </div>

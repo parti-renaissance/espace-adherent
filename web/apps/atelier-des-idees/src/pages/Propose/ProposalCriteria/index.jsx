@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import icn_checklist from './../../../img/icn_checklist.svg';
 
 class ProposalCriteria extends React.PureComponent {
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
     render() {
         return (
             <article className="l__wrapper">

@@ -4,6 +4,9 @@ import step2 from './../../../img/proposal_step_2.svg';
 import step3 from './../../../img/proposal_step_3.svg';
 
 class ProposalSteps extends React.PureComponent {
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
     render() {
         return (
             <div className="proposal-steps">
