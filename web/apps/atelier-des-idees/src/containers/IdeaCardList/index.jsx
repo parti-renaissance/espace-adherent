@@ -83,13 +83,17 @@ function mapStateToProps(state, ownProps) {
     // show paging if props says so and is not loading and is not at the end of the list
     const withPaging = ownProps.withPaging && current_page < last_page && !isFetching;
     // filter options
-    const { themes } = selectStatic(state);
+    const { themes, categories, needs } = selectStatic(state);
     return {
         ideas,
         isLoading: isFetching && !ideas.length,
         withPaging,
         filters: {
             themes: themes.map(theme => ({ value: theme.name, label: theme.name })),
+            // categories: categories.map(category => ({ value: category.id, label: category.name })),
+            // needs: needs.map(need => ({ value: need.id, label: need.name })),
+            categories: [],
+            needs: [],
         },
     };
 }
