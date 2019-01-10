@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Dropdown from '../../Dropdown';
 import icn_checklist from './../../../img/icn_checklist-white.svg';
 
 function Comment(props) {
@@ -11,19 +12,27 @@ function Comment(props) {
             })}
         >
             <div className="comments-list__comment__infos">
-                <span className="comments-list__comment__infos__author">
-                    {props.author.first_name} {props.author.last_name}
-                </span>
-                <span className="comments-list__comment__infos__date">
-                    {`${new Date(props.created_at).toLocaleDateString()} à ${new Date(props.created_at)
-                        .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                        .split(':')
-                        .join('h')}`}
-                </span>
-                {props.approved && (
-                    <span className="comments-list__comment__infos__approved">
-                        <img className="comments-list__comment__infos__approved__icon" src={icn_checklist} />
+                <div className="comments-list__comment__infos--main">
+                    <span className="comments-list__comment__infos__author">
+                        {props.author.first_name} {props.author.last_name}
                     </span>
+                    <span className="comments-list__comment__infos__date">
+                        {`${new Date(props.created_at).toLocaleDateString()} à ${new Date(props.created_at)
+                            .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                            .split(':')
+                            .join('h')}`}
+                    </span>
+                    {props.approved && (
+                        <span className="comments-list__comment__infos__approved">
+                            <img className="comments-list__comment__infos__approved__icon" src={icn_checklist} />
+                        </span>
+                    )}
+                </div>
+                {props.hasActions && (
+                    <Dropdown
+                        onSelect={props.onReport}
+                        options={[{ value: 'report', label: 'Signaler', isImportant: true }]}
+                    />
                 )}
             </div>
             <div className="comments-list__comment__content">{props.content}</div>
@@ -52,9 +61,6 @@ function Comment(props) {
                                 </button>*/}
                         </React.Fragment>
                     )}
-                    <button className="comments-list__comment__actions__button__report" onClick={props.onReport}>
-                        ...
-                    </button>
                 </div>
             )}
         </div>
