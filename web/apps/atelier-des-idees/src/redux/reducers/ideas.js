@@ -10,8 +10,8 @@ function toggleVote(idea, voteType, voteId) {
         // my_votes does not exist
         myVotes = {};
     }
-    // remove vote
     if (Object.keys(myVotes).includes(voteType)) {
+        // vote exists, remove it
         voteCount -= 1;
         total -= 1;
         myVotes = Object.entries(myVotes)

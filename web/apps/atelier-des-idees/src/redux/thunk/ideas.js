@@ -141,18 +141,20 @@ export function postVote(uuid, voteType) {
             .then(res => res.data)
             .then((voteData) => {
                 dispatch(toggleVoteIdea(uuid, { voteType, voteId: voteData.id }));
+                return voteData;
+            })
+            .catch((error) => {
+                throw error;
             });
 }
 
 export function cancelVote(uuid, voteType, voteId) {
     return (dispatch, getState, axios) => {
         dispatch(toggleVoteIdea(uuid, { voteType }));
-        return axios
-            .delete(`/api/votes/${voteId}`)
-            .then(res => res.data)
-            .catch(() => {
-                dispatch(toggleVoteIdea(uuid, { voteType, voteId }));
-            });
+        return axios.delete(`/api/votes/${voteId}`).catch((error) => {
+            dispatch(toggleVoteIdea(uuid, { voteType, voteId }));
+            throw error;
+        });
     };
 }
 
@@ -160,12 +162,13 @@ export function cancelVote(uuid, voteType, voteId) {
  * Toggle a vote on an idea
  * @param {string} id idea's uuid
  * @param {string} voteType type of toggled vote
+ * @param {object} baseIdea optional, can be used to override ideas reducer item
  */
-export function voteIdea(uuid, voteType) {
+export function voteIdea(uuid, voteType, baseIdea) {
     return (dispatch, getState, axios) => {
         const isAuthenticated = selectIsAuthenticated(getState());
         if (isAuthenticated) {
-            const idea = selectIdea(getState(), uuid);
+            const idea = baseIdea || selectIdea(getState(), uuid);
             const { votes_count } = idea;
             if (votes_count.my_votes && Object.keys(votes_count.my_votes).includes(voteType)) {
                 // user has already voted that, cancel vote
