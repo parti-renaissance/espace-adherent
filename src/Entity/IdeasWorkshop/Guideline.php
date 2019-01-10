@@ -22,8 +22,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *         "order": {"position": "ASC"},
  *         "pagination_enabled": false,
  *     },
- *     collectionOperations={"get"},
- *     itemOperations={"get"},
+ *     collectionOperations={"get": {"path": "/ideas-workshop/guidelines"}},
+ *     itemOperations={"get": {"path": "/ideas-workshop/guidelines/{id}"}},
+ *     subresourceOperations={
+ *         "questions_get_subresource": {
+ *             "method": "GET",
+ *             "path": "/ideas-workshop/guidelines/{id}/questions"
+ *         },
+ *     }
  * )
  * @ORM\Table(name="ideas_workshop_guideline")
  * @ORM\Entity

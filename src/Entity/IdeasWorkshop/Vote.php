@@ -22,15 +22,21 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     },
  *     collectionOperations={
- *         "get",
+ *         "get": {
+ *             "path": "/ideas-workshop/votes",
+ *         },
  *         "post": {
+ *             "path": "/ideas-workshop/votes",
  *             "access_control": "is_granted('ROLE_ADHERENT')",
  *         }
  *     },
  *     itemOperations={
- *         "get",
- *         "delete": {"access_control": "object.getAuthor() == user"}
- *     },
+ *         "get": {"path": "/ideas-workshop/votes/{id}"},
+ *         "delete": {
+ *             "path": "/ideas-workshop/votes/{id}",
+ *             "access_control": "object.getAuthor() == user"
+ *         }
+ *     }
  * )
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\VoteRepository")

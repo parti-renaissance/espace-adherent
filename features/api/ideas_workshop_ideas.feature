@@ -17,7 +17,7 @@ Feature:
 
   Scenario: As a non logged-in user I can see published ideas
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas?status=FINALIZED"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?status=FINALIZED"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -108,7 +108,7 @@ Feature:
 
   Scenario: As a non logged-in user I can see pending ideas
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas?status=PENDING"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?status=PENDING"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -215,7 +215,7 @@ Feature:
 
   Scenario: As a non logged-in user I can filter ideas by name
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas?name=paix"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?name=paix"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -282,7 +282,7 @@ Feature:
   Scenario: As a logged-in user I can filter ideas by name
     Given I am logged as "jacques.picard@en-marche.fr"
     When I add "Accept" header equal to "application/json"
-    And I send a "GET" request to "/api/ideas?name=paix"
+    And I send a "GET" request to "/api/ideas-workshop/ideas?name=paix"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -353,7 +353,7 @@ Feature:
 
   Scenario: As a non logged-in user I can filter ideas by theme
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas?theme.name=defense"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?theme.name=defense"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -457,7 +457,7 @@ Feature:
 
   Scenario: As a non logged-in user I can filter ideas by category's name
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas?category.name=Echelle Européenne"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?category.name=Echelle Européenne"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -561,7 +561,7 @@ Feature:
 
   Scenario: As a non logged-in user I can filter ideas by author uuid
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas?author.uuid=acc73b03-9743-47d8-99db-5a6c6f55ad67"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?author.uuid=acc73b03-9743-47d8-99db-5a6c6f55ad67"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -617,7 +617,7 @@ Feature:
 
   Scenario: As a non logged-in user I can filter ideas by need's name
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas?needs.name=Juridique"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?needs.name=Juridique"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -725,7 +725,7 @@ Feature:
   Scenario: As a logged-in user I can add my idea only with a name
     Given I am logged as "martine.lindt@gmail.com"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/ideas" with body:
+    And I send a "POST" request to "/api/ideas-workshop/ideas" with body:
     """
     {
       "name": "Mon idée"
@@ -769,7 +769,7 @@ Feature:
   Scenario: As a logged-in user I can add my idea with all datas
     Given I am logged as "jacques.picard@en-marche.fr"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/ideas" with body:
+    And I send a "POST" request to "/api/ideas-workshop/ideas" with body:
     """
     {
       "name": "Mon idée",
@@ -854,7 +854,7 @@ Feature:
   Scenario: As a logged-in user I can modify my idea
     Given I am logged as "jacques.picard@en-marche.fr"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/ideas/e4ac3efc-b539-40ac-9417-b60df432bdc5" with body:
+    And I send a "PUT" request to "/api/ideas-workshop/ideas/e4ac3efc-b539-40ac-9417-b60df432bdc5" with body:
     """
     {
       "name": "Mon idée 2",
@@ -946,7 +946,7 @@ Feature:
   Scenario: As a logged-in user I can get ideas where I voted
     Given I am logged as "jacques.picard@en-marche.fr"
     And I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas/my-contributions"
+    When I send a "GET" request to "/api/ideas-workshop/ideas/my-contributions"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -1018,7 +1018,7 @@ Feature:
   Scenario: As a logged-in user I can get ideas where I wrote a comment
     Given I am logged as "benjyd@aol.com"
     And I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas/my-contributions"
+    When I send a "GET" request to "/api/ideas-workshop/ideas/my-contributions"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -1087,38 +1087,38 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not delete an idea
-    When I send a "DELETE" request to "/api/ideas/e4ac3efc-b539-40ac-9417-b60df432bdc5"
+    When I send a "DELETE" request to "/api/ideas-workshop/ideas/e4ac3efc-b539-40ac-9417-b60df432bdc5"
     Then the response status code should be 401
 
   Scenario: As a logged-in user I can not delete an idea that is not mine
     When I am logged as "jacques.picard@en-marche.fr"
-    And I send a "DELETE" request to "/api/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285"
+    And I send a "DELETE" request to "/api/ideas-workshop/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285"
     Then the response status code should be 403
 
   Scenario: As a logged-in user I can delete my idea
     When I am logged as "jacques.picard@en-marche.fr"
-    And I send a "DELETE" request to "/api/ideas/e4ac3efc-b539-40ac-9417-b60df432bdc5"
+    And I send a "DELETE" request to "/api/ideas-workshop/ideas/e4ac3efc-b539-40ac-9417-b60df432bdc5"
     Then the response status code should be 204
     And the response should be empty
 
   Scenario: As a non logged-in user I can not publish an idea
-    When I send a "PUT" request to "/api/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285/publish"
+    When I send a "PUT" request to "/api/ideas-workshop/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285/publish"
     Then the response status code should be 401
 
   Scenario: As a logged-in user I can not publish an idea that is not mine
     Given I am logged as "jacques.picard@en-marche.fr"
-    When I send a "PUT" request to "/api/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285/publish"
+    When I send a "PUT" request to "/api/ideas-workshop/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285/publish"
     Then the response status code should be 403
 
   Scenario: As a logged-in user I can not publish an idea that has another status than DRAFT at the moment of execution
     Given I am logged as "jacques.picard@en-marche.fr"
-    When I send a "PUT" request to "/api/ideas/c14937d6-fd42-465c-8419-ced37f3e6194/publish"
+    When I send a "PUT" request to "/api/ideas-workshop/ideas/c14937d6-fd42-465c-8419-ced37f3e6194/publish"
     Then the response status code should be 400
 
   Scenario: As a logged-in user I get errors when I try to publish an invalid idea
     Given I am logged as "michel.vasseur@example.ch"
     And I add "Content-Type" header equal to "application/json"
-    When I send a "PUT" request to "/api/ideas/9529e98c-2524-486f-a6ed-e2d707dc99ea/publish"
+    When I send a "PUT" request to "/api/ideas-workshop/ideas/9529e98c-2524-486f-a6ed-e2d707dc99ea/publish"
     Then the response status code should be 400
     And the response should be in JSON
     And the JSON should be equal to:
@@ -1151,7 +1151,7 @@ Feature:
   Scenario: As a logged-in user I can publish my idea which is in DRAFT state
     Given I am logged as "benjyd@aol.com"
     And I add "Content-Type" header equal to "application/json"
-    When I send a "PUT" request to "/api/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285" with body:
+    When I send a "PUT" request to "/api/ideas-workshop/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285" with body:
     """
     {
       "needs": [1,2],
@@ -1169,7 +1169,7 @@ Feature:
     """
     Then the response status code should be 200
     Given I add "Content-Type" header equal to "application/json"
-    When I send a "PUT" request to "/api/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285/publish"
+    When I send a "PUT" request to "/api/ideas-workshop/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285/publish"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON nodes should contain:
@@ -1179,7 +1179,7 @@ Feature:
   Scenario: As a logged-in user I can get full information about one idea
     Given I am logged as "benjyd@aol.com"
     And I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas/e4ac3efc-b539-40ac-9417-b60df432bdc5"
+    When I send a "GET" request to "/api/ideas-workshop/ideas/e4ac3efc-b539-40ac-9417-b60df432bdc5"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -1464,7 +1464,7 @@ Feature:
 
   Scenario: As a non logged-in user I can get full information about one idea
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas/c14937d6-fd42-465c-8419-ced37f3e6194"
+    When I send a "GET" request to "/api/ideas-workshop/ideas/c14937d6-fd42-465c-8419-ced37f3e6194"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -1501,7 +1501,7 @@ Feature:
 
   Scenario: As a non logged-in user I can order ideas by publishedAt property
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas?order[publishedAt]=asc"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?order[publishedAt]=asc"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -1598,7 +1598,7 @@ Feature:
 
   Scenario: As a non logged-in user I can order ideas by number of comments
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas?commentsCount=asc"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?commentsCount=asc"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -1695,7 +1695,7 @@ Feature:
 
   Scenario: As a non logged-in user I can order ideas by number of votes
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas?order[votesCount]=asc"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?order[votesCount]=asc"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -1792,7 +1792,7 @@ Feature:
 
   Scenario: As a non logged-in user I can order ideas by number of contributors
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas?contributorsCount=asc"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?contributorsCount=asc?page=2"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -1807,16 +1807,62 @@ Feature:
        },
        "items":[
           {
-             "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
-             "name":"Réduire le gaspillage",
+             "uuid":"e4ac3efc-b539-40ac-9417-b60df432bdc5",
+             "name":"Faire la paix",
              "themes":[
                 {
-                   "name":"Écologie",
+                   "name":"Arm\u00e9es et d\u00e9fense",
+                   "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
+                }
+             ],
+             "category":{
+                "name":"Echelle Europ\u00e9enne",
+                "enabled":true
+             },
+             "needs":[
+                {
+                   "name":"Juridique",
+                   "enabled":true
+                }
+             ],
+             "author":{
+                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name":"Jacques",
+                "last_name":"Picard"
+             },
+             "published_at":"2018-12-20T10:00:00+01:00",
+             "committee":{
+                "uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818",
+                "created_at":"2017-01-12T13:25:54+01:00",
+                "name":"En Marche Paris 8",
+                "slug":"en-marche-paris-8"
+             },
+             "status":"PENDING",
+             "votes_count":{
+                "important":"7",
+                "feasible":"5",
+                "innovative":"5",
+                "total":17
+             },
+             "author_category":"COMMITTEE",
+             "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
+             "created_at": "@string@.isDateTime()",
+             "slug":"faire-la-paix",
+             "days_before_deadline":17,
+             "contributors_count":5,
+             "comments_count":8
+          },
+          {
+             "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
+             "name":"R\u00e9duire le gaspillage",
+             "themes":[
+                {
+                   "name":"\u00c9cologie",
                    "thumbnail":null
                 }
              ],
              "category":{
-                "name":"Echelle Européenne",
+                "name":"Echelle Europ\u00e9enne",
                 "enabled":true
              },
              "needs":[
@@ -1843,47 +1889,6 @@ Feature:
              "days_before_deadline":1,
              "contributors_count":0,
              "comments_count":0
-          },
-          {
-             "uuid":"bbf35ba6-52ba-4913-aae8-5948449d0c1d",
-             "name":"Reduire le bruit dans les opens spaces",
-             "themes":[
-                {
-                   "name":"Écologie",
-                   "thumbnail":null
-                }
-             ],
-             "category":{
-                "name":"Echelle Européenne",
-                "enabled":true
-             },
-             "needs":[
-                {
-                   "name":"Juridique",
-                   "enabled":true
-                }
-             ],
-             "author":{
-                "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                "first_name":"Michel",
-                "last_name":"VASSEUR"
-             },
-             "published_at":"2018-11-27T09:09:09+01:00",
-             "committee":null,
-             "status":"PENDING",
-             "votes_count":{
-                "important":0,
-                "feasible":0,
-                "innovative":0,
-                "total":0
-             },
-             "author_category":"ADHERENT",
-             "description":"Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
-             "created_at": "@string@.isDateTime()",
-             "slug":"reduire-le-bruit-dans-les-opens-spaces",
-             "days_before_deadline":0,
-             "contributors_count":0,
-             "comments_count":0
           }
        ]
     }
@@ -1891,7 +1896,7 @@ Feature:
 
   Scenario: As a non logged-in user I can filter ideas by author category
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas?authorCategory=COMMITTEE"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?authorCategory=COMMITTEE"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:

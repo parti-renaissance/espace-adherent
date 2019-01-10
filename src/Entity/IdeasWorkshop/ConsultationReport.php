@@ -11,8 +11,8 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
  * @ApiResource(
- *     collectionOperations={"get": {"method": "GET"}},
- *     itemOperations={"get": {"method": "GET"}},
+ *     collectionOperations={"get": {"method": "GET", "path": "/ideas-workshop/consultation_reports"}},
+ *     itemOperations={"get": {"method": "GET", "path": "/ideas-workshop/consultation_reports/{id}"}},
  *     attributes={
  *         "normalization_context": {"groups": {"consultation_report_read"}},
  *         "order": {"position": "ASC"}

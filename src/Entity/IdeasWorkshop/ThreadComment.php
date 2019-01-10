@@ -26,8 +26,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *         "order": {"createdAt": "DESC"}
  *     },
  *     collectionOperations={
- *         "get",
+ *         "get": {"path": "/ideas-workshop/thread_comments"},
  *         "post": {
+ *             "path": "/ideas-workshop/thread_comments",
  *             "access_control": "is_granted('ROLE_ADHERENT')",
  *             "normalization_context": {
  *                 "groups": {"thread_comment_write", "thread_comment_read"}
@@ -36,6 +37,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     },
  *     itemOperations={
  *         "get": {
+ *             "path": "/ideas-workshop/thread_comments/{id}/comments",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "swagger_context": {
  *                 "parameters": {
@@ -51,7 +53,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *         },
  *         "put_approval_toggle": {
  *             "method": "PUT",
- *             "path": "/thread_comments/{id}/approval-toggle",
+ *             "path": "/ideas-workshop/thread_comments/{id}/approval-toggle",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "denormalization_context": {
  *                 "groups": {"thread_comment_approval"}
@@ -70,6 +72,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *             }
  *         },
  *         "delete": {
+ *             "path": "/ideas-workshop/thread_comments/{id}",
  *             "access_control": "object.getAuthor() == user",
  *             "swagger_context": {
  *                 "parameters": {

@@ -11,7 +11,7 @@ Feature:
       | LoadIdeaThreadCommentData |
 
   Scenario: As a non logged-in user I can see visibled threads paginated
-    When I send a "GET" request to "/api/threads?page=1"
+    When I send a "GET" request to "/api/ideas-workshop/threads?page=1"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -152,7 +152,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can see visible threads for an answer
-    When I send a "GET" request to "/api/threads?answer.id=3"
+    When I send a "GET" request to "/api/ideas-workshop/threads?answer.id=3"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -261,7 +261,7 @@ Feature:
   Scenario: As a logged-in user I can add my thread to an answer
     Given I add "Content-Type" header equal to "application/json"
     And I am logged as "martine.lindt@gmail.com"
-    When I send a "POST" request to "/api/threads" with body:
+    When I send a "POST" request to "/api/ideas-workshop/threads" with body:
     """
     {
         "answer": "1",
@@ -290,13 +290,13 @@ Feature:
 
   Scenario: As a logged-in user I can not approved a thread
     Given I am logged as "carl999@example.fr"
-    When I send a "PUT" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/approval-toggle"
+    When I send a "PUT" request to "/api/ideas-workshop/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/approval-toggle"
     Then the response status code should be 403
 
   Scenario: As an idea author, I can update thread status to approved
     Given I am logged as "jacques.picard@en-marche.fr"
     And I add "Content-Type" header equal to "application/json"
-    When I send a "PUT" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/approval-toggle" with body:
+    When I send a "PUT" request to "/api/ideas-workshop/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/approval-toggle" with body:
     """
     {
         "approved": true
@@ -323,16 +323,16 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not delete a thread
-    When I send a "DELETE" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1"
+    When I send a "DELETE" request to "/api/ideas-workshop/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1"
     Then the response status code should be 401
 
   Scenario: As a logged-in user I can not delete a thread that is not mine
     Given I am logged as "jacques.picard@en-marche.fr"
-    When I send a "DELETE" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1"
+    When I send a "DELETE" request to "/api/ideas-workshop/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1"
     Then the response status code should be 403
 
   Scenario: As a logged-in user I can delete my thread
     Given I am logged as "carl999@example.fr"
-    When I send a "DELETE" request to "/api/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1"
+    When I send a "DELETE" request to "/api/ideas-workshop/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1"
     Then the response status code should be 204
     And the response should be empty

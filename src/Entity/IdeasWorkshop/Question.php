@@ -12,8 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *     collectionOperations={"get"},
- *     itemOperations={"get"},
+ *     collectionOperations={"get": {"path": "/ideas-workshop/questions/{id}"}},
+ *     itemOperations={"get": {"path": "/ideas-workshop/questions/{id}"}},
  * )
  *
  * @ORM\Table(name="ideas_workshop_question")

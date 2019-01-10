@@ -33,6 +33,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * @ApiResource(
  *     collectionOperations={
  *         "get": {
+ *             "path": "/ideas-workshop/ideas",
  *             "method": "GET",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "swagger_context": {
@@ -79,16 +80,18 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *         },
  *         "get_my_contributions": {
  *             "method": "GET",
- *             "path": "/ideas/my-contributions",
+ *             "path": "/ideas-workshop/ideas/my-contributions",
  *             "access_control": "is_granted('ROLE_ADHERENT')",
  *             "normalization_context": {"groups": {"idea_list_read"}}
  *         },
  *         "post": {
+ *             "path": "/ideas-workshop/ideas",
  *             "access_control": "is_granted('ROLE_ADHERENT')",
  *         }
  *     },
  *     itemOperations={
  *         "get": {
+ *             "path": "/ideas-workshop/ideas/{id}",
  *             "method": "GET",
  *             "normalization_context": {"groups": {"idea_read"}},
  *             "requirements": {"id": "%pattern_uuid%"},
@@ -104,12 +107,15 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *                 }
  *             }
  *         },
- *         "put": {"access_control": "object.getAuthor() == user"},
+ *         "put": {
+ *             "path": "/ideas-workshop/ideas/{id}",
+ *             "access_control": "object.getAuthor() == user"
+ *         },
  *         "publish": {
  *             "method": "PUT",
  *             "denormalization_context": {"api_allow_update": false},
  *             "access_control": "object.getAuthor() == user",
- *             "path": "/ideas/{id}/publish",
+ *             "path": "/ideas-workshop/ideas/{id}/publish",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "controller": "AppBundle\Controller\Api\IdeaPublishController",
  *             "normalization_context": {"groups": {"idea_list_read"}},
@@ -127,6 +133,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *             }
  *         },
  *         "delete": {
+ *             "path": "/ideas-workshop/ideas/{id}",
  *             "access_control": "object.getAuthor() == user",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "swagger_context": {
@@ -149,6 +156,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *         },
  *         "order": {"createdAt": "ASC"},
  *         "filters": {CommentsCountFilter::class, ContributorsCountFilter::class}
+ *     },
+ *     subresourceOperations={
+ *         "votes_get_subresource": {
+ *             "method": "GET",
+ *             "path": "/ideas-workshop/ideas/{id}/votes"
+ *         },
  *     }
  * )
  *

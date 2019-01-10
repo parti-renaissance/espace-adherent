@@ -9,7 +9,7 @@ Feature:
       | LoadIdeaThemeData  |
 
   Scenario: As a non logged-in user I can see all enabled themes
-    When I send a "GET" request to "/api/themes"
+    When I send a "GET" request to "/api/ideas-workshop/themes"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:

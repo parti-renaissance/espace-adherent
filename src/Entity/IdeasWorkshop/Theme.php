@@ -18,8 +18,8 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *         },
  *         "order": {"name": "ASC"},
  *     },
- *     collectionOperations={"get"},
- *     itemOperations={"get"},
+ *     collectionOperations={"get": {"path": "/ideas-workshop/themes"}},
+ *     itemOperations={"get": {"path": "/ideas-workshop/theme/{id}"}},
  * )
  *
  * @ORM\Entity
