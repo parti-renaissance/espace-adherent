@@ -1,10 +1,16 @@
 .idea-filters {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
 
   .idea-filters__section {
     display: inline-flex;
-    align-items: center;
+    align-items: flex-start;
+  }
+
+  .idea-filters__section__filters {
+    display: flex;
+    flex-wrap: wrap;
   }
 
   .idea-filters__label,
@@ -14,20 +20,28 @@
 
   .idea-filters__label {
     margin-right: 15px;
+    margin-top: 10px;
+    white-space: nowrap;
     font-size: 14px;
+    font-weight: bold;
     text-transform: uppercase;
     color: $wild-blue-yonder;
   }
 
   .select {
     width: 220px;
-    margin-right: 15px;
+    margin-right: 10px;
+    margin-bottom: 10px;
 
     .select__input__control {
       height: 43px;
       border-color: $columbia-blue;
       cursor: pointer;
       color: $light-black;
+    }
+
+    .select__input__menu {
+      border-color: $columbia-blue;
     }
   }
 
@@ -45,9 +59,14 @@
     flex-direction: column;
 
     .idea-filters__section {
+      width: 100%;
       flex-direction: column;
       align-items: start;
       margin-bottom: 10px;
+    }
+
+    .idea-filters__section__filters {
+      width: 100%;
 
       .select {
         width: 100%;
@@ -66,14 +85,18 @@
 
     .idea-filters__section {
       flex-direction: column;
-      align-items: start;
+      width: 100%;
       margin-bottom: 10px;
+    }
+
+    .idea-filters__section__filters {
+      width: 100%;
+      justify-content: space-between;
 
       .select {
-        flex-basis: 1;
-        width: 100%;
-        margin: 0;
+        width: calc(50% - 10px);
         margin-bottom: 10px;
+        margin-right: 0;
       }
     }
 
