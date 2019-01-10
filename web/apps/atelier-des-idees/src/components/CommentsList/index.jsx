@@ -86,6 +86,7 @@ class CommentsList extends React.Component {
                                                     placeholder="Écrivez votre réponse"
                                                     emptyLabel={null}
                                                     total={comment.nbReplies}
+                                                    isSendingComment={this.props.sendingReplies.includes(comment.uuid)}
                                                 />
                                             </div>
                                         )}
@@ -132,6 +133,7 @@ class CommentsList extends React.Component {
 CommentsList.defaultProps = {
     comments: [],
     isSendingComment: false,
+    sendingReplies: [],
     showForm: true,
     parentId: undefined,
     emptyLabel: 'Soyez le premier à contribuer sur cette partie',
@@ -154,6 +156,7 @@ CommentsList.propTypes = {
         })
     ),
     isSendingComment: PropTypes.bool,
+    sendingReplies: PropTypes.array,
     onSendComment: PropTypes.func.isRequired,
     onDeleteComment: PropTypes.func.isRequired,
     onReportComment: PropTypes.func.isRequired,

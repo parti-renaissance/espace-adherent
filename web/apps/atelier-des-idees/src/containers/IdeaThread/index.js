@@ -54,15 +54,23 @@ function mapStateToProps(state, { questionId }) {
     const answerId = currentAnswer && currentAnswer.id;
     const answerThreads = selectAnswerThreads(state, answerId);
     // loading
-    // TODO: handle send thread comment
-    const sendCommentState = selectLoadingState(state, 'POST_THREAD', answerId);
+    const sendThreadState = selectLoadingState(state, 'POST_THREAD', answerId);
+    const sendingThreadComments = answerThreads.reduce((acc, thread) => {
+        // get thread comment post status for each thread of the answer
+        const { isFetching } = selectLoadingState(state, 'POST_THREAD_COMMENT', `${answerId}_${thread.uuid}`);
+        if (isFetching) {
+            acc.push(thread.uuid);
+        }
+        return acc;
+    }, []);
     return {
         comments: sortEntitiesByDate(answerThreads),
         isAuthenticated,
         answerId,
-        isSendingComment: sendCommentState.isFetching,
+        isSendingComment: sendThreadState.isFetching,
+        sendingReplies: sendingThreadComments,
         currentUserId: currentUser.uuid,
-        ownerId: currentIdea.author.uuid,
+        ownerId: currentIdea.author && currentIdea.author.uuid,
         total: currentAnswer && currentAnswer.threads.total_items,
     };
 }

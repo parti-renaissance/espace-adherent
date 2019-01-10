@@ -139,17 +139,20 @@ export function voteCurrentIdea(voteType) {
 }
 
 export function postCommentToCurrentIdea(content, answerId, parentId = '') {
-    // TODO: handle parentId
     return (dispatch, getState) =>
         dispatch(postComment(content, answerId, parentId)).then((thread) => {
-            dispatch(addThreads([thread]));
-            // increment answer total item
-            const answer = selectCurrentIdeaAnswer(getState(), answerId);
-            const updatedAnswer = {
-                ...answer,
-                threads: { ...answer.threads, total_items: answer.threads.total_items + 1 },
-            };
-            dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
+            if (!parentId) {
+                dispatch(addThreads([thread]));
+                // increment answer total item
+                const answer = selectCurrentIdeaAnswer(getState(), answerId);
+                const updatedAnswer = {
+                    ...answer,
+                    threads: { ...answer.threads, total_items: answer.threads.total_items + 1 },
+                };
+                dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
+            } else {
+                // TODO: update thread & comments
+            }
         });
 }
 

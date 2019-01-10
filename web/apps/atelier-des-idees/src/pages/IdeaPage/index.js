@@ -26,7 +26,7 @@ class IdeaPage extends React.Component {
             // redirect to home is error in fetch
             return <Redirect to="/atelier-des-idees" />;
         }
-        return this.props.guidelines.length ? <IdeaPageBase {...this.props} /> : null;
+        return !this.props.isFetchingIdea && this.props.guidelines.length ? <IdeaPageBase {...this.props} /> : null;
     }
 }
 
@@ -59,6 +59,7 @@ function mapStateToProps(state, ownProps) {
         guidelines,
         isAuthor: !!author.uuid && author.uuid === currentUser.uuid,
         hasFetchError: fetchIdeaState.isError,
+        isFetchingIdea: fetchIdeaState.isFetching,
     };
 }
 

@@ -55,10 +55,9 @@ function Comment(props) {
                                     {props.approved ? 'Désapprouver' : 'Approuver'}
                                 </button>
                             )}
-                            {/* TODO: uncomment when implemented */}
-                            {/* <button className="comments-list__comment__actions__button__answer" onClick={props.onReply}>
+                            <button className="comments-list__comment__actions__button__answer" onClick={props.onReply}>
                                 Répondre
-                                </button>*/}
+                            </button>
                         </React.Fragment>
                     )}
                 </div>
