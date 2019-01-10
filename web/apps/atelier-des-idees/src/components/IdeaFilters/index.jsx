@@ -9,10 +9,10 @@ class IdeaFilters extends React.Component {
         this.filterItems = {
             order: {
                 options: [
-                    { value: 'created_at/DESC', label: 'Plus récentes' },
-                    { value: 'created_at/ASC', label: 'Plus anciennes' },
-                    { value: 'comments_count/DESC', label: 'Plus commentées' },
-                    { value: 'votes_count.total/DESC', label: 'Plus votées', status: ideaStatus.FINALIZED },
+                    { value: 'order[\'publishedAt\']/DESC', label: 'Plus récentes' },
+                    { value: 'order[\'publishedAt\']/ASC', label: 'Plus anciennes' },
+                    { value: 'commentsCount/DESC', label: 'Plus commentées' },
+                    { value: 'votesCount/DESC', label: 'Plus votées', status: ideaStatus.FINALIZED },
                 ],
             },
             author_category: {
@@ -39,7 +39,7 @@ class IdeaFilters extends React.Component {
             if (filterValue) {
                 const [attr, value] = filterValue.split('/');
                 if (value) {
-                    acc[`${filterName}['${attr}']`] = value;
+                    acc[attr] = value;
                     return acc;
                 }
                 acc[filterName] = filterValue;
