@@ -63,14 +63,22 @@ class IdeaFilters extends React.Component {
                     <Select
                         options={this.filterItems.author_category.options}
                         placeholder="Auteur"
-                        onSelected={([selected]) => this.onFilterChange('author_category', selected.value)}
+                        onSelected={([selected]) => this.onFilterChange('author_category', selected && selected.value)}
+                        isClearable={true}
                     />
-                    {!!this.props.options && !!this.props.options.themes.length && (
-                        <Select
-                            options={this.props.options.themes}
-                            placeholder="Thème"
-                            onSelected={([selected]) => this.onFilterChange('theme.name', selected.value)}
-                        />
+                    {!!this.props.options && (
+                        <React.Fragment>
+                            {!!this.props.options.themes.length && (
+                                <Select
+                                    options={this.props.options.themes}
+                                    placeholder="Thème"
+                                    onSelected={([selected]) =>
+                                        this.onFilterChange('theme.name', selected && selected.value)
+                                    }
+                                    isClearable={true}
+                                />
+                            )}
+                        </React.Fragment>
                     )}
                 </div>
                 <div className="idea-filters__section idea-filters__sort">
