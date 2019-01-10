@@ -20,9 +20,12 @@ class IdeaFilters extends React.Component {
             },
         };
         this.state = {
-            order: this.filterItems.order.options[0].value,
+            name: '',
             author_category: null,
-            // name: '',
+            'theme.name': '',
+            category: '',
+            need: '',
+            order: this.filterItems.order.options[0].value,
         };
         // bindings
         this.onFilterChange = this.onFilterChange.bind(this);
@@ -46,7 +49,7 @@ class IdeaFilters extends React.Component {
             }
             return acc;
         }, {});
-        return { name, ...formattedFilters };
+        return name ? { name, ...formattedFilters } : formattedFilters;
     }
 
     render() {
@@ -55,12 +58,12 @@ class IdeaFilters extends React.Component {
                 <div className="idea-filters__section idea-filters__filter">
                     <p className="idea-filters__label">Filtrer par</p>
                     <div className="idea-filters__section__filters">
-                        {/* <input
-                        className="idea-filters__input"
-                        value={this.state.name}
-                        onChange={e => this.setState({ name: e.target.value })}
-                        placeholder="Mot clé"
-                    />*/}
+                        <input
+                            className="idea-filters__input"
+                            value={this.state.name}
+                            onChange={e => this.onFilterChange('name', e.target.value)}
+                            placeholder="Mot clé"
+                        />
                         {!!this.props.options && (
                             <React.Fragment>
                                 {!!this.props.options.categories.length && (
