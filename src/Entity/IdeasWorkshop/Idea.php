@@ -30,6 +30,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * @ApiResource(
+ *     shortName="ideas-workshop/idea",
  *     collectionOperations={
  *         "get": {
  *             "method": "GET",
@@ -78,7 +79,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *         },
  *         "get_my_contributions": {
  *             "method": "GET",
- *             "path": "/ideas/my-contributions",
+ *             "path": "/ideas-workshop/ideas/my-contributions",
  *             "access_control": "is_granted('ROLE_ADHERENT')",
  *             "normalization_context": {"groups": {"idea_list_read"}}
  *         },
@@ -108,7 +109,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *             "method": "PUT",
  *             "denormalization_context": {"api_allow_update": false},
  *             "access_control": "object.getAuthor() == user",
- *             "path": "/ideas/{id}/publish",
+ *             "path": "/ideas-workshop/ideas/{id}/publish",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "controller": "AppBundle\Controller\Api\IdeaPublishController",
  *             "normalization_context": {"groups": {"idea_list_read"}},
