@@ -1,3 +1,4 @@
+import Axios from 'axios';
 import { FETCH_IDEAS, FETCH_IDEA, SAVE_IDEA, PUBLISH_IDEA, FETCH_MY_IDEAS, VOTE_IDEA } from '../constants/actionTypes';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { addIdeas, setIdeas, removeIdea, toggleVoteIdea } from '../actions/ideas';
@@ -9,23 +10,34 @@ import { selectAuthUser, selectIsAuthenticated } from '../selectors/auth';
 import { hideModal } from '../actions/modal';
 import { setThreads } from '../actions/threads';
 
+// axios cancellation
+const CancelToken = Axios.CancelToken;
+let cancel;
 /**
  * Fetch ideas based on status and parameters
  * @param {string} status Ideas status to fetch
  * @param {object} params Query params
  * @param {boolean} setMode If true, set ideas by erasing previous ones. Default: false
  */
-export function fetchIdeas(status, params = {}, setMode = false) {
+export function fetchIdeas(status, params = {}, options = { setMode: false, cancel: false }) {
     return (dispatch, getState, axios) => {
         dispatch(createRequest(FETCH_IDEAS, status));
-        if (setMode) {
+        if (options.setMode) {
             dispatch(setIdeas([], {}));
         }
+        if (options.cancel) {
+            cancel();
+        }
         return axios
-            .get('/api/ideas', { params: { status, ...params } })
+            .get('/api/ideas', {
+                params: { status, ...params },
+                cancelToken: new CancelToken((c) => {
+                    cancel = c;
+                }),
+            })
             .then(res => res.data)
             .then(({ items, metadata }) => {
-                if (setMode) {
+                if (options.setMode) {
                     dispatch(setIdeas(items, metadata));
                 } else {
                     dispatch(addIdeas(items, metadata));
