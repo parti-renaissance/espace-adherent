@@ -6,6 +6,7 @@
 
   .text-editor__content {
     height: 300px;
+    margin-top: 12px;
   }
 
   .public-DraftStyleDefault-block {
@@ -19,6 +20,8 @@
 
   .text-editor__toolbal__group:not(:last-child) {
     border-right: 1px solid $quick-silver;
+    margin-right: 12px;
+    padding-right: 10px;
   }
 
   .text-editor__toolbal__group > .rdw-option-wrapper {
