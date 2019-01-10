@@ -158,7 +158,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     "author_category": "exact",
  *     "author.uuid": "exact"
  * })
- * @ApiFilter(OrderFilter::class, properties={"publishedAt"})
+ * @ApiFilter(OrderFilter::class, properties={"publishedAt", "votesCount"})
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\IdeaRepository")
  *
