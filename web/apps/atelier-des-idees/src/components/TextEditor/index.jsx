@@ -10,7 +10,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 // see https://jpuri.github.io/react-draft-wysiwyg/#/docs for more about this
 const initialToolbar = {
-    options: ['inline', 'list', 'textAlign'],
+    options: ['inline', 'list'],
     inline: {
         className: 'text-editor__toolbal__group',
         options: ['bold', 'italic', 'underline'],

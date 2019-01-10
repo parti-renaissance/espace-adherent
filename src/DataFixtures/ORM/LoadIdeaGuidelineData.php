@@ -18,7 +18,7 @@ class LoadIdeaGuidelineData extends AbstractFixture
         $this->addReference('guideline-main-feature', $guidelineMainFeature);
 
         $guidelineImplementation = new Guideline(
-            'POUR ALLER PLUS LOIN : VOTRE IDÉE PEUT-ELLE ÊTRE MISE EN OEUVRE ?',
+            'POUR ALLER PLUS LOIN :',
             true,
             3
         );

@@ -1,15 +1,17 @@
 .question-block {
-  margin: 20px 0;
+  margin: 45px 0;
 
   .question-block-header {
     margin: 20px 0;
 
     .question-block-header__label {
       color: $blue-sky;
+      font-size: 24px;
     }
 
     .question-block-header__question {
       font-weight: 400;
+      font-size: 24px;
     }
   }
 

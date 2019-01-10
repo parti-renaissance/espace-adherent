@@ -90,7 +90,7 @@ Feature:
                 }
             ],
             "position": 3,
-            "name": "POUR ALLER PLUS LOIN : VOTRE IDÉE PEUT-ELLE ÊTRE MISE EN OEUVRE ?"
+            "name": "POUR ALLER PLUS LOIN :"
         }
     ]
     """
