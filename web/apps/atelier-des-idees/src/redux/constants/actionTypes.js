@@ -26,6 +26,7 @@ export const TOGGLE_VOTE_IDEA = 'TOGGLE_VOTE_IDEA';
 // comments & threads
 export const FETCH_IDEA_THREADS = createRequestTypes('FETCH_IDEA_THREADS');
 export const POST_THREAD = createRequestTypes('POST_THREAD');
+export const POST_THREAD_COMMENT = createRequestTypes('POST_THREAD_COMMENT');
 export const SET_THREADS = 'SET_THREADS';
 export const ADD_THREADS = 'ADD_THREADS';
 export const REMOVE_THREAD = 'REMOVE_THREAD';
