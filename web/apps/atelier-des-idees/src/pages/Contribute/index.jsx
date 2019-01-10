@@ -7,6 +7,7 @@ import IdeaCardList from '../../containers/IdeaCardList';
 
 class ContributePage extends React.Component {
     componentDidMount() {
+        window.scrollTo(0, 0);
         this.props.initContributePage();
     }
 
@@ -14,8 +15,7 @@ class ContributePage extends React.Component {
         return (
             <ThreeTabsPage
                 title="Contribuer aux idées en cours"
-                subtitle="Explorez les idées en cours de vos concitoyens et enrichissez-les !"
-            >
+                subtitle="Explorez les idées en cours de vos concitoyens et enrichissez-les !">
                 <div className="contribute-page">
                     <div className="l__wrapper">
                         <IdeaCardList mode="grid" status={ideaStatus.PENDING} withPaging={true} />

@@ -12,6 +12,7 @@ import { selectGuidelines } from '../../redux/selectors/currentIdea';
 
 class CreateIdeaPage extends React.Component {
     componentDidMount() {
+        window.scrollTo(0, 0);
         this.props.initCreateIdeaPage();
     }
 

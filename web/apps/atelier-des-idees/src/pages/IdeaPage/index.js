@@ -18,6 +18,7 @@ import { selectCurrentIdea, selectGuidelines } from '../../redux/selectors/curre
 
 class IdeaPage extends React.Component {
     componentDidMount() {
+        window.scrollTo(0, 0);
         this.props.initIdeaPage();
     }
 

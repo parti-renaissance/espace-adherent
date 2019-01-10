@@ -7,6 +7,7 @@ import IdeaCardList from '../../containers/IdeaCardList';
 
 class ConsultPage extends React.Component {
     componentDidMount() {
+        window.scrollTo(0, 0);
         this.props.initConsultPage();
     }
 
@@ -14,8 +15,7 @@ class ConsultPage extends React.Component {
         return (
             <ThreeTabsPage
                 title="Les idées finalisées"
-                subtitle="Consultez les idées devenues de vraies propositions !"
-            >
+                subtitle="Consultez les idées devenues de vraies propositions !">
                 <div className="consult-page">
                     <div className="l__wrapper">
                         <IdeaCardList mode="grid" status={ideaStatus.FINALIZED} withPaging={true} />
