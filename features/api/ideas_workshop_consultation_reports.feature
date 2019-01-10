@@ -9,7 +9,7 @@ Feature:
       | LoadIdeaConsultationReportData |
 
   Scenario: As a non logged-in user I can see consultation reports
-    When I send a "GET" request to "/api/consultation_reports"
+    When I send a "GET" request to "/api/ideas-workshop/consultation_reports"
     Then the response status code should be 200
     And the JSON should be equal to:
     """

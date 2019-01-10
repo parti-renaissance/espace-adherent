@@ -13,12 +13,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     collectionOperations={
- *         "get",
- *         "post": {"access_control": "is_granted('ROLE_ADHERENT')"}
+ *         "get": {"path": "/ideas-workshop/answers"},
+ *         "post": {
+ *             "path": "/ideas-workshop/answers",
+ *             "access_control": "is_granted('ROLE_ADHERENT')"
+ *         }
  *     },
  *     itemOperations={
- *         "get",
- *         "put": {"access_control": "object.getAuthor() == user"}
+ *         "get": {"path": "/ideas-workshop/answers/{id}"},
+ *         "put": {
+ *             "path": "/ideas-workshop/answers/{id}",
+ *             "access_control": "object.getAuthor() == user"
+ *         }
  *     }
  * )
  *
