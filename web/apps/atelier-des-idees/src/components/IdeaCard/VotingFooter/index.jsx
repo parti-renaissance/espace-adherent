@@ -36,7 +36,8 @@ class VotingFooter extends React.Component {
         return (
             <div
                 className={classnames('voting-footer', { 'voting-footer--open': this.state.toggleVotes })}
-                ref={this.footerRef}>
+                ref={this.footerRef}
+            >
                 <div className="voting-footer__container">
                     {/* MOBILE ELEMENTS */}
                     <button
@@ -54,7 +55,8 @@ class VotingFooter extends React.Component {
                                     }
                                 }
                             )
-                        }>
+                        }
+                    >
                         <p className="voting-footer__container__action-vote--mobile__text">Je vote</p>
                         <div
                             className={classnames('voting-footer__container__action-vote--mobile__arrow', {
@@ -75,7 +77,8 @@ class VotingFooter extends React.Component {
                                         this.props.onToggleVotePanel(true);
                                         this.resetTimeout();
                                     })
-                                }>
+                                }
+                            >
                                 <img className="voting-footer__container__action-vote__icon" src={icn_20px_thumb} />
                                 Je vote
                             </button>
@@ -96,7 +99,8 @@ class VotingFooter extends React.Component {
                             onClick={() => {
                                 this.props.onSelected(vote.id);
                                 this.resetTimeout();
-                            }}>
+                            }}
+                        >
                             <span className="voting-footer__vote__name">{vote.name}</span>
                             <span className="voting-footer__vote__count">{vote.count}</span>
                         </button>
@@ -111,7 +115,7 @@ VotingFooter.propTypes = {
         PropTypes.shape({
             id: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
-            count: PropTypes.number.isRequired,
+            count: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
             isSelected: PropTypes.bool.isRequired,
         })
     ).isRequired,
