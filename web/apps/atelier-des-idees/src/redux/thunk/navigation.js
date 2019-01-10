@@ -19,7 +19,7 @@ export function initApp() {
 export function initHomePage() {
     const params = {
         limit: 5,
-        "order['created_at']": 'DESC',
+        "order['publishedAt']": 'DESC',
     };
     return dispatch =>
         Promise.all([
@@ -36,7 +36,7 @@ export function initHomePage() {
 export function initContributePage() {
     const params = {
         limit: 10,
-        "order['created_at']": 'DESC',
+        "order['publishedAt']": 'DESC',
     };
     return dispatch => dispatch(fetchIdeas(ideaStatus.PENDING, params, true));
 }
@@ -44,7 +44,7 @@ export function initContributePage() {
 export function initConsultPage() {
     const params = {
         limit: 10,
-        "order['created_at']": 'DESC',
+        "order['publishedAt']": 'DESC',
     };
     return dispatch => dispatch(fetchIdeas(ideaStatus.FINALIZED, params, true));
 }
