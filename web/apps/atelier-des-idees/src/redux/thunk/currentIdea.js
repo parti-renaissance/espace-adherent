@@ -6,7 +6,7 @@ import { postComment, fetchThreads, deleteComment } from '../thunk/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { selectIsAuthenticated } from '../selectors/auth';
 import { selectCurrentIdea, selectCurrentIdeaAnswer } from '../selectors/currentIdea';
-import { selectAnswerThreads, selectThread } from '../selectors/threads';
+import { selectAnswerThreads, selectThread, selectAnswerThreadsPagingData } from '../selectors/threads';
 import {
     setCurrentIdea,
     updateCurrentIdea,
@@ -14,7 +14,7 @@ import {
     toggleVoteCurrentIdea,
     updateCurrentIdeaAnswer,
 } from '../actions/currentIdea';
-import { addThreads } from '../actions/threads';
+import { addThreads, setAnswerThreadsPaging } from '../actions/threads';
 import { hideModal } from '../actions/modal';
 
 /**
@@ -174,16 +174,19 @@ export function removeCommentFromCurrentIdea(id, parentId = '') {
 export function fetchNextAnswerThreads(answerId) {
     return (dispatch, getState) => {
         // compute page to fetch from threads data
-        const answer = selectCurrentIdeaAnswer(getState(), answerId);
-        const answerThreads = selectAnswerThreads(getState(), answerId);
-        const { threads } = answer;
-        const page = threads.total_items / answerThreads.length;
-        return dispatch(fetchThreads({ 'answer.id': answerId, page })).then(({ items, metadata }) => {
+        const state = getState();
+        const answer = selectCurrentIdeaAnswer(state, answerId);
+        // pading data
+        const pagingData = selectAnswerThreadsPagingData(state, answerId);
+        const page = pagingData ? pagingData.current_page + 1 : 2;
+        return dispatch(fetchThreads({ 'answer.id': answerId, page, limit: 3 })).then(({ items, metadata }) => {
             // add threads to collection
             dispatch(addThreads(items));
             // update current answer total items
             const updatedAnswer = { ...answer, threads: { ...answer.threads, total_items: metadata.total_items } };
             dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
+            // update paging data
+            dispatch(setAnswerThreadsPaging(answerId, metadata));
         });
     };
 }

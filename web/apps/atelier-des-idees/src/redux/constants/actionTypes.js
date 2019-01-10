@@ -30,6 +30,7 @@ export const SET_THREADS = 'SET_THREADS';
 export const ADD_THREADS = 'ADD_THREADS';
 export const REMOVE_THREAD = 'REMOVE_THREAD';
 export const TOGGLE_APPROVE_THREAD = 'TOGGLE_APPROVE_THREAD';
+export const SET_ANSWER_THREADS_PAGING = 'SET_ANSWER_THREADS_PAGING';
 
 // my ideas
 export const FETCH_MY_IDEAS = createRequestTypes('FETCH_MY_IDEAS');
