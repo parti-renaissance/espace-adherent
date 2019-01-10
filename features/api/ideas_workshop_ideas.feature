@@ -359,97 +359,203 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "metadata": {
-            "total_items": 4,
-            "items_per_page": 2,
-            "count": 2,
-            "current_page": 1,
-            "last_page": 2
-        },
-        "items": [
-            {
-                "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
-                "name": "Faire la paix",
-                "themes": [
-                    {
-                        "name": "Armées et défense",
-                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-                    }
-                ],
-                "category": {
-                    "name": "Echelle Européenne",
-                    "enabled": true
-                },
-                "needs": [
-                    {
-                        "name": "Juridique",
-                        "enabled": true
-                    }
-                ],
-                "author": {
-                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                    "first_name": "Jacques",
-                    "last_name": "Picard"
-                },
-                "published_at": "2018-12-20T10:00:00+01:00",
-                "committee": {
-                    "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
-                    "created_at": "@string@.isDateTime()",
-                    "name": "En Marche Paris 8",
-                    "slug": "en-marche-paris-8"
-                },
-                "status": "PENDING",
-                "votes_count": {
-                    "important": "7",
-                    "feasible": "5",
-                    "innovative": "5",
-                    "total": 17
-                },
-                "author_category": "COMMITTEE",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
-                "created_at": "@string@.isDateTime()",
-                "slug": "faire-la-paix",
-                "days_before_deadline": 17,
-                "contributors_count": 5,
-                "comments_count": 8
-            },
-            {
-                "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
-                "name": "Réduire le gaspillage",
-                "themes": [
-                    {
-                        "name": "Écologie",
-                        "thumbnail": null
-                    }
-                ],
-                "category": {
-                    "name": "Echelle Européenne",
-                    "enabled": true
-                },
-                "needs": [],
-                "author": {
-                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                    "first_name": "Jacques",
-                    "last_name": "Picard"
-                },
-                "published_at": "2018-12-04T10:00:00+01:00",
-                "committee": null,
-                "status": "FINALIZED",
-                "votes_count": {
-                    "important": 0,
-                    "feasible": 0,
-                    "innovative": 0,
-                    "total": 0
-                },
-                "author_category": "ADHERENT",
-                "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
-                "created_at": "@string@.isDateTime()",
-                "slug": "reduire-le-gaspillage",
-                "days_before_deadline": 1,
-                "contributors_count": 0,
-                "comments_count": 0
-            }
-        ]
+       "metadata":{
+          "total_items":4,
+          "items_per_page":2,
+          "count":2,
+          "current_page":1,
+          "last_page":2
+       },
+       "items":[
+          {
+             "uuid":"e4ac3efc-b539-40ac-9417-b60df432bdc5",
+             "name":"Faire la paix",
+             "themes":[
+                {
+                   "name":"Armées et défense",
+                   "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+                {
+                   "name":"Juridique",
+                   "enabled":true
+                }
+             ],
+             "author":{
+                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name":"Jacques",
+                "last_name":"Picard"
+             },
+             "published_at":"2018-12-20T10:00:00+01:00",
+             "committee":{
+                "uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818",
+                "created_at":"2017-01-12T13:25:54+01:00",
+                "name":"En Marche Paris 8",
+                "slug":"en-marche-paris-8"
+             },
+             "status":"PENDING",
+             "votes_count":{
+                "important":"7",
+                "feasible":"5",
+                "innovative":"5",
+                "total":17
+             },
+             "author_category":"COMMITTEE",
+             "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
+             "created_at": "@string@.isDateTime()",
+             "slug":"faire-la-paix",
+             "days_before_deadline":17,
+             "contributors_count":5,
+             "comments_count":8
+          },
+          {
+             "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
+             "name":"Réduire le gaspillage",
+             "themes":[
+                {
+                   "name":"Écologie",
+                   "thumbnail":null
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+
+             ],
+             "author":{
+                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name":"Jacques",
+                "last_name":"Picard"
+             },
+             "published_at":"2018-12-04T10:00:00+01:00",
+             "committee":null,
+             "status":"FINALIZED",
+             "votes_count":{
+                "important":0,
+                "feasible":0,
+                "innovative":0,
+                "total":0
+             },
+             "author_category":"ADHERENT",
+             "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
+             "created_at": "@string@.isDateTime()",
+             "slug":"reduire-le-gaspillage",
+             "days_before_deadline":1,
+             "contributors_count":0,
+             "comments_count":0
+          }
+       ]
+    }
+    """
+
+  Scenario: As a non logged-in user I can filter ideas by category's name
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas?category.name=Echelle Européenne"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+       "metadata":{
+          "total_items":4,
+          "items_per_page":2,
+          "count":2,
+          "current_page":1,
+          "last_page":2
+       },
+       "items":[
+          {
+             "uuid":"e4ac3efc-b539-40ac-9417-b60df432bdc5",
+             "name":"Faire la paix",
+             "themes":[
+                {
+                   "name":"Armées et défense",
+                   "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+                {
+                   "name":"Juridique",
+                   "enabled":true
+                }
+             ],
+             "author":{
+                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name":"Jacques",
+                "last_name":"Picard"
+             },
+             "published_at":"2018-12-20T10:00:00+01:00",
+             "committee":{
+                "uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818",
+                "created_at":"2017-01-12T13:25:54+01:00",
+                "name":"En Marche Paris 8",
+                "slug":"en-marche-paris-8"
+             },
+             "status":"PENDING",
+             "votes_count":{
+                "important":"7",
+                "feasible":"5",
+                "innovative":"5",
+                "total":17
+             },
+             "author_category":"COMMITTEE",
+             "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
+             "created_at": "@string@.isDateTime()",
+             "slug":"faire-la-paix",
+             "days_before_deadline":17,
+             "contributors_count":5,
+             "comments_count":8
+          },
+          {
+             "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
+             "name":"Réduire le gaspillage",
+             "themes":[
+                {
+                   "name":"Écologie",
+                   "thumbnail":null
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+
+             ],
+             "author":{
+                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name":"Jacques",
+                "last_name":"Picard"
+             },
+             "published_at":"2018-12-04T10:00:00+01:00",
+             "committee":null,
+             "status":"FINALIZED",
+             "votes_count":{
+                "important":0,
+                "feasible":0,
+                "innovative":0,
+                "total":0
+             },
+             "author_category":"ADHERENT",
+             "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
+             "created_at": "@string@.isDateTime()",
+             "slug":"reduire-le-gaspillage",
+             "days_before_deadline":1,
+             "contributors_count":0,
+             "comments_count":0
+          }
+       ]
     }
     """
 
@@ -506,6 +612,113 @@ Feature:
                 "comments_count": 0
             }
         ]
+    }
+    """
+
+  Scenario: As a non logged-in user I can filter ideas by need's name
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas?needs.name=Juridique"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+       "metadata":{
+          "total_items":2,
+          "items_per_page":2,
+          "count":2,
+          "current_page":1,
+          "last_page":1
+       },
+       "items":[
+          {
+             "uuid":"e4ac3efc-b539-40ac-9417-b60df432bdc5",
+             "name":"Faire la paix",
+             "themes":[
+                {
+                   "name":"Armées et défense",
+                   "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+                {
+                   "name":"Juridique",
+                   "enabled":true
+                }
+             ],
+             "author":{
+                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name":"Jacques",
+                "last_name":"Picard"
+             },
+             "published_at":"2018-12-20T10:00:00+01:00",
+             "committee":{
+                "uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818",
+                "created_at":"2017-01-12T13:25:54+01:00",
+                "name":"En Marche Paris 8",
+                "slug":"en-marche-paris-8"
+             },
+             "status":"PENDING",
+             "votes_count":{
+                "important":"7",
+                "feasible":"5",
+                "innovative":"5",
+                "total":17
+             },
+             "author_category":"COMMITTEE",
+             "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
+             "created_at": "@string@.isDateTime()",
+             "slug":"faire-la-paix",
+             "days_before_deadline":17,
+             "contributors_count":5,
+             "comments_count":8
+          },
+          {
+             "uuid":"bbf35ba6-52ba-4913-aae8-5948449d0c1d",
+             "name":"Reduire le bruit dans les opens spaces",
+             "themes":[
+                {
+                   "name":"\u00c9cologie",
+                   "thumbnail":null
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+                {
+                   "name":"Juridique",
+                   "enabled":true
+                }
+             ],
+             "author":{
+                "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                "first_name":"Michel",
+                "last_name":"VASSEUR"
+             },
+             "published_at":"2018-11-27T09:09:09+01:00",
+             "committee":null,
+             "status":"PENDING",
+             "votes_count":{
+                "important":0,
+                "feasible":0,
+                "innovative":0,
+                "total":0
+             },
+             "author_category":"ADHERENT",
+             "description":"Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
+             "created_at": "@string@.isDateTime()",
+             "slug":"reduire-le-bruit-dans-les-opens-spaces",
+             "days_before_deadline":0,
+             "contributors_count":0,
+             "comments_count":0
+          }
+       ]
     }
     """
 
@@ -1057,7 +1270,7 @@ Feature:
                          ]
                       },
                       "uuid":"78d7daa1-657c-4e7e-87bc-24eb4ea26ea2",
-                      "content":"Une discussion refus\u00e9e.",
+                      "content":"Une discussion refusée.",
                       "author":{
                          "uuid":"b4219d47-3138-5efd-9762-2ef9f9495084",
                          "first_name":"Gisele",
@@ -1073,7 +1286,7 @@ Feature:
                          ]
                       },
                       "uuid":"b191f13a-5a05-49ed-8ec3-c335aa68f439",
-                      "content":"Une discussion signal\u00e9e.",
+                      "content":"Une discussion signalée.",
                       "author":{
                          "uuid":"b4219d47-3138-5efd-9762-2ef9f9495084",
                          "first_name":"Gisele",
@@ -1574,5 +1787,104 @@ Feature:
                 "comments_count": 0
             }
         ]
+    }
+    """
+
+  Scenario: As a non logged-in user I can order ideas by number of contributors
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas?contributorsCount=asc"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+       "metadata":{
+          "total_items":4,
+          "items_per_page":2,
+          "count":2,
+          "current_page":1,
+          "last_page":2
+       },
+       "items":[
+          {
+             "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
+             "name":"Réduire le gaspillage",
+             "themes":[
+                {
+                   "name":"Écologie",
+                   "thumbnail":null
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+
+             ],
+             "author":{
+                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name":"Jacques",
+                "last_name":"Picard"
+             },
+             "published_at":"2018-12-04T10:00:00+01:00",
+             "committee":null,
+             "status":"FINALIZED",
+             "votes_count":{
+                "important":0,
+                "feasible":0,
+                "innovative":0,
+                "total":0
+             },
+             "author_category":"ADHERENT",
+             "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
+             "created_at": "@string@.isDateTime()",
+             "slug":"reduire-le-gaspillage",
+             "days_before_deadline":1,
+             "contributors_count":0,
+             "comments_count":0
+          },
+          {
+             "uuid":"bbf35ba6-52ba-4913-aae8-5948449d0c1d",
+             "name":"Reduire le bruit dans les opens spaces",
+             "themes":[
+                {
+                   "name":"Écologie",
+                   "thumbnail":null
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+                {
+                   "name":"Juridique",
+                   "enabled":true
+                }
+             ],
+             "author":{
+                "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                "first_name":"Michel",
+                "last_name":"VASSEUR"
+             },
+             "published_at":"2018-11-27T09:09:09+01:00",
+             "committee":null,
+             "status":"PENDING",
+             "votes_count":{
+                "important":0,
+                "feasible":0,
+                "innovative":0,
+                "total":0
+             },
+             "author_category":"ADHERENT",
+             "description":"Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
+             "created_at": "@string@.isDateTime()",
+             "slug":"reduire-le-bruit-dans-les-opens-spaces",
+             "days_before_deadline":0,
+             "contributors_count":0,
+             "comments_count":0
+          }
+       ]
     }
     """

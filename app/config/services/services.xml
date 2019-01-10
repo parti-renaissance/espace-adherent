@@ -504,5 +504,12 @@
             <argument type="service" id="logger" on-invalid="ignore"/>
             <argument type="collection"><argument key="commentsCount"/></argument>
         </service>
+
+        <service id="AppBundle\Filter\ContributorsCountFilter">
+            <argument type="service" id="doctrine"/>
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="logger" on-invalid="ignore"/>
+            <argument type="collection"><argument key="contributorsCount"/></argument>
+        </service>
     </services>
 </container>
