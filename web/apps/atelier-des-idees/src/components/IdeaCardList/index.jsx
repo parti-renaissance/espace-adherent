@@ -6,9 +6,7 @@ import IdeaCard from '../IdeaCard';
 
 const IdeaCardList = (props) => {
     if (props.isLoading) {
-        return (
-            <IdeaCardSkeletonList nbItems={props.nbSkeletons} mode={props.mode} />
-        );
+        return <IdeaCardSkeletonList nbItems={props.nbSkeletons} mode={props.mode} />;
     }
     return (
         <div
@@ -17,11 +15,8 @@ const IdeaCardList = (props) => {
             })}
         >
             {props.ideas.map(idea => (
-                <div className="idea-card-list__wrapper">
-                    <IdeaCard
-                        {...idea}
-                        onVote={(id, vote) => props.onVoteIdea(id, vote)}
-                    />
+                <div className="idea-card-list__wrapper" key={idea.uuid}>
+                    <IdeaCard {...idea} onVote={(id, vote) => props.onVoteIdea(id, vote)} />
                 </div>
             ))}
         </div>

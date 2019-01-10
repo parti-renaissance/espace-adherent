@@ -1,7 +1,7 @@
 import { ideaStatus } from '../../constants/api';
 import history from '../../history';
 import { SAVE_CURRENT_IDEA, FETCH_GUIDELINES, VOTE_CURRENT_IDEA } from '../constants/actionTypes';
-import { saveAndPublishIdea } from '../thunk/ideas';
+import { saveAndPublishIdea, voteIdea } from '../thunk/ideas';
 import { postComment, fetchThreads, deleteComment } from '../thunk/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { selectIsAuthenticated } from '../selectors/auth';
@@ -107,27 +107,32 @@ export function fetchGuidelines() {
     };
 }
 
-export function voteCurrentIdea(vote) {
-    return (dispatch, getState, axios) => {
+export function voteCurrentIdea(voteType) {
+    return (dispatch, getState) => {
         const isAuthenticated = selectIsAuthenticated(getState());
         if (isAuthenticated) {
-            const { uuid } = selectCurrentIdea(getState());
-            dispatch(toggleVoteCurrentIdea(vote));
-            dispatch(createRequest(VOTE_CURRENT_IDEA, uuid));
-            const requestBody = {
-                method: 'POST',
-                url: '/api/votes',
-                data: { idea: uuid, type: vote },
-            };
-            return axios(requestBody)
-                .then(res => res.data)
-                .then(() => {
-                    dispatch(createRequestSuccess(VOTE_CURRENT_IDEA, uuid));
-                })
-                .catch(() => {
-                    dispatch(toggleVoteCurrentIdea(vote));
-                    dispatch(createRequestFailure(VOTE_CURRENT_IDEA, uuid));
-                });
+            const currentIdea = selectCurrentIdea(getState());
+            const { votes_count } = currentIdea;
+            const hasAlreadyVoted = votes_count.my_votes && Object.keys(votes_count.my_votes).includes(voteType);
+            // TODO: improve all that below by storing all ideas in ideas reducer
+            // simulate vote cancel if has already voted
+            if (hasAlreadyVoted) {
+                dispatch(toggleVoteCurrentIdea({ voteType }));
+            }
+            return dispatch(voteIdea(currentIdea.uuid, voteType, currentIdea)).then(
+                (voteData) => {
+                    if (!hasAlreadyVoted) {
+                        // post vote success, update state data
+                        dispatch(toggleVoteCurrentIdea({ voteType, voteId: voteData.id }));
+                    }
+                },
+                () => {
+                    if (hasAlreadyVoted) {
+                        // cancel vote failure, toggle back state data
+                        dispatch(toggleVoteCurrentIdea({ voteType, voteId: votes_count.my_votes[voteType] }));
+                    }
+                }
+            );
         }
         window.location = '/connexion';
     };

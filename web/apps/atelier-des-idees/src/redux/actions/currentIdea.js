@@ -11,4 +11,4 @@ export const setCurrentIdea = (data = {}) => action(SET_CURRENT_IDEA, { data });
 export const updateCurrentIdea = data => action(UPDATE_CURRENT_IDEA, { data });
 export const updateCurrentIdeaAnswer = (answerId, data) => action(UPDATE_CURRENT_IDEA_ANSWER, { answerId, data });
 export const setGuidelines = data => action(SET_GUIDELINES, { data });
-export const toggleVoteCurrentIdea = typeVote => action(TOGGLE_VOTE_CURRENT_IDEA, { typeVote });
+export const toggleVoteCurrentIdea = vote => action(TOGGLE_VOTE_CURRENT_IDEA, { ...vote });
