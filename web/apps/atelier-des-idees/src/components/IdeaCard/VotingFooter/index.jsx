@@ -71,7 +71,7 @@ class VotingFooter extends React.Component {
                     {!this.state.toggleVotes ? (
                         <div className="voting-footer__container__action-vote">
                             <button
-                                className="button--secondary"
+                                className="button--lowercase"
                                 onClick={() =>
                                     this.setState({ toggleVotes: true }, () => {
                                         this.props.onToggleVotePanel(true);
