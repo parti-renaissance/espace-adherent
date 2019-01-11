@@ -2,39 +2,105 @@
 @import '~slick-carousel/slick/slick-theme.css';
 
 .movement-ideas {
+    overflow: hidden;
+
   &__first__section {
-    height: 400px;
-    padding-top: 125px;
+    background-image: url('./img/hp-main-illustration-bkg.svg');
+    background-size: 100%;
+    background-position: center bottom 0;
+    background-repeat: no-repeat;
 
-    &__title {
-      display: inline-block;
-      font-size: 48px;
+    @media screen and (min-width: 1440px) {
+        background-position: center bottom 30%;
     }
 
-    &__content {
-      margin-top: 20px;
-      color: $medium-grey;
+    @media screen and (max-width: $width-lg) {
+        background-position: center bottom 0;
     }
+
+
+
+    &__in {
+        position: relative;
+        min-height: 468px;
+        padding-top: 105px;
+
+        @media screen and (max-width: $width-lg) {
+            padding-top: 35px;
+            padding-bottom: 43%;
+        }
+
+        &__title {
+          display: inline-block;
+          font-size: 48px;
+          line-height: 55px;
+          letter-spacing: -1.5px;
+          position: relative;
+          z-index: 5;
+
+          @media screen and (max-width: $width-lg) {
+              font-size: 32px;
+              line-height: 34px;
+          }
+
+        }
+
+        &__content {
+          margin-top: 20px;
+          color: $medium-grey;
+          font-size: 22px;
+          line-height: 27px;
+          position: relative;
+          z-index: 5;
+
+          @media screen and (max-width: $width-lg) {
+              font-size: 18px;
+              line-height: 24px;
+          }
+        }
+
+        &__main-illustration {
+          position: absolute;
+          bottom: 0;
+          z-index: 1;
+          right: -90px;
+          max-width: 120%;
+
+          @media screen and (max-width: $width-lg) {
+              width: 160%;
+              min-width: 750px;
+              max-width: none;
+              right: 0;
+              left: auto;
+          }
+
+          @media screen and (min-width: 1440px) {
+              max-width: none;
+          }
+        }
+    }
+
   }
 
-  &__second__section {
+    &__second__section {
     display: flex;
     justify-content: space-between;
     padding-bottom: 75px;
-  }
+    padding-top: 50px;
 
-  @media screen and (max-width: $width-md) {
-    &__first__section {
-      padding-top: 30px;
-      padding-bottom: 100px;
-
-      &__title {
-        font-size: 32px;
-      }
     }
 
     &__slider {
-      margin-bottom: 60px;
+
+        @media screen and (max-width: $width-md) {
+            margin-bottom: 60px;
+            padding-top: 50px;
+        }
+
+        .slick-dots {
+            bottom: -35px;
+        }
     }
-  }
+
+
 }
