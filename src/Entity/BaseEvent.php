@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Report\ReportableInterface;
 use AppBundle\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -100,6 +101,16 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface
      * @Algolia\Attribute
      */
     protected $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(length=50)
+     *
+     * @JMS\Groups({"public", "event_read", "citizen_action_read"})
+     * @JMS\SerializedName("timeZone")
+     */
+    protected $timeZone;
 
     /**
      * @var \DateTimeInterface|null
@@ -254,34 +265,25 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface
         $this->canonicalName = static::canonicalize($name);
     }
 
+    public function getTimeZone(): string
+    {
+        return $this->timeZone;
+    }
+
+    public function setTimeZone(string $timeZone): void
+    {
+        $this->timeZone = $timeZone;
+    }
+
     public function isFinished(): bool
     {
-        // The production web server is configured with Europe/Paris timezone.
-        // So if the event happens in France, then we can compare its ending
-        // date and time with the current time.
-        if ('FR' === $country = $this->getCountry()) {
-            return $this->finishAt < new \DateTime('now', new \DateTimeZone('Europe/Paris'));
-        }
+        $finishAt = new \DateTimeImmutable(
+            $this->finishAt->format('Y-m-d H:i'),
+            $timezone = new \DateTimeZone($this->timeZone ?? GeoCoder::DEFAULT_TIME_ZONE)
+        );
+        $now = new \DateTime('now');
 
-        // However, for an event taking place in another country in the world,
-        // we need to know the timezone of this country. Some large countries
-        // like the United States, Canada, Russia or Australia have multiple
-        // timezones. Since we cannot accurately know the timezone of the event
-        // taking place in a foreign country, the algorithm below will make the
-        // following simple assumption.
-        //
-        // If there is at least one timezone for which the event is considered
-        // not finished, then the method will return false. However, if the
-        // event is finished in all timezones of this country, then the method
-        // can return true.
-        foreach (\DateTimeZone::listIdentifiers(\DateTimeZone::PER_COUNTRY, $country) as $timezone) {
-            $finishAt = new \DateTimeImmutable($this->finishAt->format('Y-m-d H:i'), $timezone = new \DateTimeZone($timezone));
-            if (false === $finishAt < new \DateTime('now', $timezone)) {
-                return false;
-            }
-        }
-
-        return true;
+        return $finishAt < $now->setTimezone($timezone);
     }
 
     public function getStatus(): string

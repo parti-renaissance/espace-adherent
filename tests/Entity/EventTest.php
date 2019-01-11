@@ -14,10 +14,9 @@ class EventTest extends TestCase
     /**
      * @dataProvider provideNotFinishedEventDate
      */
-    public function testEventIsNotConsideredFinished(string $country, string $date)
+    public function testEventIsNotConsideredFinished(string $timeZone, string $date)
     {
         $address = $this->createMock(PostAddress::class);
-        $address->expects($this->any())->method('getCountry')->willReturn($country);
 
         $event = new Event(
             $this->createMock(UuidInterface::class),
@@ -30,6 +29,7 @@ class EventTest extends TestCase
             '',
             $date
         );
+        $event->setTimeZone($timeZone);
 
         $this->assertFalse($event->isFinished());
     }
@@ -37,11 +37,11 @@ class EventTest extends TestCase
     public static function provideNotFinishedEventDate()
     {
         return [
-            ['FR', '+3 hours'],
-            ['FR', '+24 hours'],
-            ['US', '-1 hours'],
-            ['US', '-5 hours'],
-            ['US', '-8 hours'],
+            ['Europe/Paris', '+3 hours'],
+            ['Europe/Paris', '+24 hours'],
+            ['America/New_York', '-1 hours'],
+            ['America/Indiana/Indianapolis', '-5 hours'],
+            ['America/Los_Angeles', '-8 hours'],
         ];
     }
 

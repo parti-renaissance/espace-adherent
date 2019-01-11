@@ -383,7 +383,7 @@ events.created_at AS event_created_at, events.participants_count AS event_partic
 events.type AS event_type, events.address_address AS event_address_address, 
 events.address_country AS event_address_country, events.address_city_name AS event_address_city_name, 
 events.address_city_insee AS event_address_city_insee, events.address_postal_code AS event_address_postal_code, 
-events.address_latitude AS event_address_latitude, events.address_longitude AS event_address_longitude, 
+events.address_latitude AS event_address_latitude, events.address_longitude AS event_address_longitude, events.time_zone AS timeZone,
 event_category.name AS event_category_name, 
 committees.uuid AS committee_uuid, committees.name AS committee_name, committees.slug AS committee_slug, 
 committees.description AS committee_description, committees.created_by AS committee_created_by, 

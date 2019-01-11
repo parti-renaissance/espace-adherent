@@ -44,6 +44,7 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'begin_at' => (new Chronos('+3 days'))->setTime(9, 30, 00, 000),
             'finish_at' => (new Chronos('+3 days'))->setTime(19, 00, 00, 000),
             'capacity' => 1,
+            'time_zone' => 'Europe/Zurich',
         ]);
         $actionCitoyenne1->setPublished(true);
         $actionCitoyenne1->incrementParticipantsCount();
@@ -103,7 +104,7 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '54 Pilgerweg', 47.3164934, 8.553012),
             'begin_at' => (new Chronos('+11 days'))->setTime(9, 00, 00, 000),
             'finish_at' => (new Chronos('+11 days'))->setTime(12, 00, 00, 000),
-            'capacity' => 10,
+            'time_zone' => 'Europe/Zurich',
         ]);
         $actionCitoyenne5->setPublished(true);
         $actionCitoyenne5->incrementParticipantsCount();
@@ -119,6 +120,7 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'begin_at' => (new Chronos('+20 days'))->setTime(9, 00, 00, 000),
             'finish_at' => (new Chronos('+20 days'))->setTime(18, 00, 00, 000),
             'capacity' => 5,
+            'time_zone' => 'Europe/Zurich',
         ]);
         $actionCitoyenne6->setPublished(true);
         $actionCitoyenne6->cancel();
@@ -135,6 +137,7 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'begin_at' => (new Chronos('+15 days'))->setTime(9, 00, 00, 000),
             'finish_at' => (new Chronos('+15 days'))->setTime(12, 00, 00, 000),
             'capacity' => 10,
+            'time_zone' => 'Europe/Zurich',
         ]);
         $actionCitoyenne7->setPublished(true);
         $actionCitoyenne7->incrementParticipantsCount(10);
@@ -150,6 +153,7 @@ class LoadCitizenActionData extends AbstractFixture implements FixtureInterface,
             'begin_at' => (new Chronos('+15 days'))->setTime(9, 00, 00, 000),
             'finish_at' => (new Chronos('+15 days'))->setTime(12, 00, 00, 000),
             'capacity' => 10,
+            'time_zone' => 'Europe/Zurich',
         ]);
 
         $actionCitoyenne9 = $eventFactory->createCitizenActionFromArray([

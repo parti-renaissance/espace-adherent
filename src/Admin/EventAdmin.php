@@ -22,6 +22,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 
 class EventAdmin extends AbstractAdmin
 {
@@ -120,6 +121,9 @@ class EventAdmin extends AbstractAdmin
                 ->add('postAddress.longitude', TextType::class, [
                     'label' => 'Longitude',
                 ])
+                ->add('timeZone', TimezoneType::class, [
+                    'label' => 'Fuseau horaire',
+                ])
             ->end()
         ;
     }
@@ -162,7 +166,9 @@ class EventAdmin extends AbstractAdmin
                     'label' => 'Statut',
                     'choices' => Event::STATUSES,
                     'choice_translation_domain' => 'forms',
-                    'choice_label' => function (?string $choice) { return $choice; },
+                    'choice_label' => function (?string $choice) {
+                        return $choice;
+                    },
                 ])
                 ->add('published', null, [
                     'label' => 'Publié',
@@ -186,6 +192,9 @@ class EventAdmin extends AbstractAdmin
                 ])
                 ->add('postAddress.longitude', TextType::class, [
                     'label' => 'Longitude',
+                ])
+                ->add('timeZone', null, [
+                    'label' => 'Fuseau horaire',
                 ])
             ->end()
         ;

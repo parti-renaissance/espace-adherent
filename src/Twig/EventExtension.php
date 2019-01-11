@@ -3,6 +3,7 @@
 namespace AppBundle\Twig;
 
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class EventExtension extends AbstractExtension
@@ -11,6 +12,13 @@ class EventExtension extends AbstractExtension
     {
         return [
             new TwigFunction('is_event_already_participating', [EventRuntime::class, 'isEventAlreadyParticipating']),
+        ];
+    }
+
+    public function getFilters()
+    {
+        return [
+            new TwigFilter('utc_offset', [EventRuntime::class, 'offsetTimeZone']),
         ];
     }
 }

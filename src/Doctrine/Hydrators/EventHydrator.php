@@ -69,7 +69,6 @@ class EventHydrator extends AbstractHydrator
                 $addressAdherent
             );
         }
-
         $event = new Event(
             $uuidEvent,
             $organizer,
@@ -85,7 +84,9 @@ class EventHydrator extends AbstractHydrator
             $row['event_created_at'],
             $row['event_participants_count'],
             $row['event_slug'],
-            $row['event_type']
+            $row['event_type'],
+            [],
+            $row['timeZone']
         );
 
         $result[] = $event;

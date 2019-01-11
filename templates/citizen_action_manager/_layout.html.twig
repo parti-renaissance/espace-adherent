@@ -98,6 +98,13 @@
                             {{ form_label(citizen_action_form.address.country, 'Pays', { label_attr : { class: 'text--bold' } }) }}
                             {{ form_widget(citizen_action_form.address.country, { attr: { class: 'form--full', placeholder: 'Choisissez le pays' } }) }}
                         </div>
+
+                        <div class="form__row citizen_action__form__timezone register__form--third"
+                             id="citizen-action-address-timezone-field">
+                            {{ form_errors(citizen_action_form.timeZone) }}
+                            {{ form_label(citizen_action_form.timeZone, 'Fuseau horaire', { label_attr : { class: 'text--bold' } }) }}
+                            {{ form_widget(citizen_action_form.timeZone, { attr: { class: 'form--full', placeholder: 'Choisissez le fuseau horaire' } }) }}
+                        </div>
                     </div>
                 </div>
 

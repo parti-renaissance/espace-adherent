@@ -47,6 +47,9 @@ class EventFactory
             $data['capacity'],
             $data['is_for_legislatives'] ?? false
         );
+        if (!empty($data['time_zone'])) {
+            $event->setTimeZone($data['time_zone']);
+        }
 
         $this->referentTagManager->assignReferentLocalTags($event);
 
@@ -62,8 +65,7 @@ class EventFactory
         }
 
         $uuid = Uuid::fromString($data['uuid']);
-
-        return new CitizenAction(
+        $citizenAction = new CitizenAction(
             $uuid,
             $data['organizer'],
             $data['citizen_project'],
@@ -74,6 +76,11 @@ class EventFactory
             $data['begin_at'],
             $data['finish_at']
         );
+        if (!empty($data['time_zone'])) {
+            $citizenAction->setTimeZone($data['time_zone']);
+        }
+
+        return $citizenAction;
     }
 
     public function createFromEventCommand(EventCommand $command): Event
@@ -91,6 +98,7 @@ class EventFactory
             $command->getCapacity(),
             $command->isForLegislatives()
         );
+        $event->setTimeZone($command->getTimeZone());
 
         $this->referentTagManager->assignReferentLocalTags($event);
 
@@ -104,6 +112,7 @@ class EventFactory
             $command->getCategory(),
             $command->getDescription(),
             $this->createPostAddress($command->getAddress()),
+            $command->getTimeZone(),
             $command->getBeginAt()->format(\DATE_ATOM),
             $command->getFinishAt()->format(\DATE_ATOM),
             $command->getCapacity(),
@@ -126,7 +135,9 @@ class EventFactory
             $command->getDescription(),
             $this->createPostAddress($command->getAddress()),
             $command->getBeginAt(),
-            $command->getFinishAt()
+            $command->getFinishAt(),
+            0,
+            $command->getTimeZone()
         );
     }
 
@@ -138,7 +149,8 @@ class EventFactory
             $command->getDescription(),
             $this->createPostAddress($command->getAddress()),
             $command->getBeginAt(),
-            $command->getFinishAt()
+            $command->getFinishAt(),
+            $command->getTimeZone()
         );
     }
 
