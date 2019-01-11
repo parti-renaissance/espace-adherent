@@ -33,6 +33,10 @@
     margin-right: 10px;
     margin-bottom: 10px;
 
+    &:last-child {
+        margin-right: 0;
+    }
+
     .select__input__control {
       height: 43px;
       border-color: $columbia-blue;
