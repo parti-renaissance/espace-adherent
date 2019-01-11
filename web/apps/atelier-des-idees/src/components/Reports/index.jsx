@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import hpIllustrationRapports from './../../img/hp-illustration-rapports.svg';
 
 class Reports extends React.PureComponent {
     render() {
@@ -20,8 +21,7 @@ class Reports extends React.PureComponent {
                     </button>
                 </div>
                 <div className="reports__second-section">
-                    {/* TODO: replace by image */}
-                    <div className="form" />
+                    <img className="hp-illustration-rapports" src={hpIllustrationRapports} />
                 </div>
             </div>
         );

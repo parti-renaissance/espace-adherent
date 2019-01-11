@@ -1,6 +1,7 @@
 import React from 'react';
 import { NotMobile, Mobile } from '../../helpers/responsive';
 import Slider from 'react-slick';
+import hpMainIllustration from './../../img/hp-main-illustration.svg';
 
 import MovementIdeasSection from './MovementIdeasSection/.';
 
@@ -45,23 +46,28 @@ class MovementIdeas extends React.PureComponent {
     render() {
         const items = sectionContent.map(content => <MovementIdeasSection {...content} />);
         return (
-            <article className="l__wrapper movement-ideas">
+            <article className="movement-ideas">
                 <div className="movement-ideas__first__section">
-                    <h1 className="movement-ideas__first__section__title">Les idées du mouvement</h1>
-                    <p className="movement-ideas__first__section__content">
-                        Vous avez envie de contribuer aux idées du mouvement ?
-                        <br />
-                        Avec l’Atelier des Idées c’est possible !
-                    </p>
+                    <div className="l__wrapper movement-ideas__first__section__in">
+                        <h1 className="movement-ideas__first__section__in__title">Les idées du mouvement</h1>
+                        <p className="movement-ideas__first__section__in__content">
+                            Vous avez envie de contribuer aux idées du mouvement ?
+                            <br />
+                            Avec l’Atelier des Idées c’est possible !
+                        </p>
+                        <img className="movement-ideas__first__section__in__main-illustration" src={hpMainIllustration} />
+                    </div>
                 </div>
-                <NotMobile>
-                    <div className="movement-ideas__second__section">{items}</div>
-                </NotMobile>
-                <Mobile>
-                    <Slider className="movement-ideas__slider" {...settingsSlider}>
-                        {items}
-                    </Slider>
-                </Mobile>
+                <div className="l__wrapper">
+                    <NotMobile>
+                        <div className="movement-ideas__second__section">{items}</div>
+                    </NotMobile>
+                    <Mobile>
+                        <Slider className="movement-ideas__slider" {...settingsSlider}>
+                            {items}
+                        </Slider>
+                    </Mobile>
+                </div>
             </article>
         );
     }
