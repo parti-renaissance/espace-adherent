@@ -68,3 +68,9 @@
   background: transparent;
   border: none;
 }
+
+.button--lowercase {
+  @extend .button--secondary;
+  font-size: 16px;
+  letter-spacing: 0;
+}

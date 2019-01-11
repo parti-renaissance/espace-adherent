@@ -20,7 +20,9 @@
     &__title {
       margin: 0 0 10px;
       font-family: $font-gillsans;
+      font-weight: bold;
       font-size: 24px;
+      overflow-wrap: break-word;
     }
 
     &__infos {
@@ -47,8 +49,6 @@
         }
 
         &__type {
-          font-family: $font-gillsans;
-
           &--QG {
             color: $france;
           }
@@ -93,7 +93,7 @@
       > * {
         display: inline-block;
         margin-right: 6px;
-        padding: 4px 7px;
+        padding: 0 7px;
         border: 1px solid $alice-blue;
         border-radius: 1px;
         background-color: $alice-blue;
