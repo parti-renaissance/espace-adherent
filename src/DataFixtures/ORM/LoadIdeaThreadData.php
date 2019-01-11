@@ -68,7 +68,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
             'Une discussion signalée.',
             $adherent5,
             $this->getReference('answer-q-compare'),
-            new \DateTime('-10 minute'),
+            new \DateTime('-10 minutes'),
             false
         );
 
