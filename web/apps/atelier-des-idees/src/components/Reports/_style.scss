@@ -1,8 +1,7 @@
 .reports {
   display: flex;
   align-items: center;
-  height: 400px;
-  padding: 30px 100px;
+  padding: 75px 0;
 
   > * {
     width: 50%;
@@ -11,8 +10,14 @@
   &__first-section {
     padding-right: 50px;
 
+    @media screen and (min-width: $width-lg) {
+        margin-left: 100px;
+        max-width: 500px;
+    }
+
     &__title {
       font-size: 25px;
+      line-height: 29px;
     }
 
     &__text {
@@ -26,20 +31,21 @@
   }
 
   &__second-section {
-    display: flex;
-    justify-content: center;
-  }
 
-  .form {
-    width: 600px;
-    height: 260px;
-    background: $grey;
+    img.hp-illustration-rapports {
+        max-width: 100%;
+
+        @media screen and (max-width: $width-md) {
+            max-width: 460px;
+            width: 100%;
+        }
+    }
   }
 
   // responsive
   @media #{$tablet} {
     &__first-section {
-      padding: 0 50px;
+      // padding: 0 50px;
     }
   }
 
@@ -53,6 +59,7 @@
     &__first-section {
       order: 1;
       padding-right: 0;
+      margin: 20px 0;
 
       &__title {
         margin: 0;
