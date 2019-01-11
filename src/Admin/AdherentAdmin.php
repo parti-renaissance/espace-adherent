@@ -542,7 +542,7 @@ class AdherentAdmin extends AbstractAdmin
     public function setSubject($subject)
     {
         if (null === $this->beforeUpdate) {
-            $this->beforeUpdate = $subject;
+            $this->beforeUpdate = clone $subject;
         }
         parent::setSubject($subject);
     }

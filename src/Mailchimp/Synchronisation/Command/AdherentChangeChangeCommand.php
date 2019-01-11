@@ -4,7 +4,7 @@ namespace AppBundle\Mailchimp\Synchronisation\Command;
 
 use Ramsey\Uuid\UuidInterface;
 
-class AdherentChangeCommand implements AdherentCommandInterface
+class AdherentChangeChangeCommand implements AdherentChangeCommandInterface
 {
     private $uuid;
     private $emailAddress;

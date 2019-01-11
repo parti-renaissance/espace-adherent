@@ -407,7 +407,7 @@
             <tag name="container.service_locator" />
         </service>
 
-        <service id="AppBundle\Mailchimp\Synchronisation\Handler\AdherentMessageHandler">
+        <service id="AppBundle\Mailchimp\Synchronisation\Handler\AdherentChangeCommandHandler">
             <tag name="messenger.message_handler" />
             <tag name="monolog.logger" channel="mailchimp_sync"/>
             <call method="setLogger">

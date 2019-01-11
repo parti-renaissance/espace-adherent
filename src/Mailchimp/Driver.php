@@ -54,7 +54,7 @@ class Driver implements LoggerAwareInterface
             return $this->toArray($response)['html'] ?? '';
         }
 
-        $this->logger->warning(sprintf('[API] Error: %s', $response->getBody()), ['campaignId' => $campaignId]);
+        $this->logger->error(sprintf('[API] Error: %s', $response->getBody()), ['campaignId' => $campaignId]);
 
         return '';
     }
@@ -101,7 +101,7 @@ class Driver implements LoggerAwareInterface
                 ($body && \in_array($method, ['POST', 'PUT', 'PATCH'], true) ? ['json' => $body] : [])
             );
         } catch (RequestException $e) {
-            $this->logger->warning(sprintf(
+            $this->logger->error(sprintf(
                 '[API] Error: %s',
                 ($response = $e->getResponse()) ? $response->getBody() : 'Unknown'
             ), ['exception' => $e]);
