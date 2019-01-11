@@ -419,6 +419,9 @@
         <service id="AppBundle\Doctrine\MyIdeaContributionExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
+        <service id="AppBundle\Doctrine\IdeaExtension">
+            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
+        </service>
 
         <!-- Mailchimp -->
         <service id="AppBundle\Mailchimp\Synchronisation\EventListener\AdherentEventSubscriber" />
@@ -510,6 +513,15 @@
             <argument type="service" id="request_stack"/>
             <argument type="service" id="logger" on-invalid="ignore"/>
             <argument type="collection"><argument key="contributorsCount"/></argument>
+        </service>
+        <service id="AppBundle\Filter\IdeaStatusFilter">
+            <argument type="service" id="doctrine"/>
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="logger" on-invalid="ignore"/>
+            <argument type="collection"><argument key="status"/></argument>
+            <call method="setIdeaRepository">
+                <argument type="service" id="AppBundle\Repository\IdeaRepository" />
+            </call>
         </service>
     </services>
 </container>

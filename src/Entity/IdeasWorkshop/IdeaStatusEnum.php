@@ -9,11 +9,6 @@ final class IdeaStatusEnum
     public const FINALIZED = 'FINALIZED';
     public const UNPUBLISHED = 'UNPUBLISHED';
 
-    public const VISIBLE_STATUSES = [
-        self::PENDING,
-        self::FINALIZED,
-    ];
-
     public const ALL_STATUSES = [
         self::DRAFT,
         self::PENDING,

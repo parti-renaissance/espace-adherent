@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
 use AppBundle\Repository\IdeaRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -9,6 +10,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class IdeasWorkshopIdeaAdmin extends AbstractAdmin
 {
@@ -116,9 +120,22 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
             ->add('author.emailAddress', null, [
                 'label' => 'Mail du créateur',
             ])
-            ->add('status', null, [
+            ->add('status', CallbackFilter::class, [
                 'label' => 'Statut',
                 'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => array_combine(IdeaStatusEnum::ALL_STATUSES, IdeaStatusEnum::ALL_STATUSES),
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$status = $value['value']) {
+                        return;
+                    }
+
+                    $this->ideaRepository->addStatusFilter($qb, $alias, $status);
+
+                    return true;
+                },
             ])
         ;
     }

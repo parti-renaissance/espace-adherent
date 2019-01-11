@@ -10,13 +10,13 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AuthorInterface;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\EnabledInterface;
 use AppBundle\Entity\EntityNameSlugTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use AppBundle\Entity\Report\ReportableInterface;
-use AppBundle\Entity\VisibleStatusesInterface;
 use AppBundle\Filter\CommentsCountFilter;
+use AppBundle\Filter\IdeaStatusFilter;
 use AppBundle\Filter\ContributorsCountFilter;
-use Cake\Chronos\Chronos;
 use AppBundle\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -155,7 +155,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *             "groups": {"idea_write"}
  *         },
  *         "order": {"createdAt": "ASC"},
- *         "filters": {CommentsCountFilter::class, ContributorsCountFilter::class}
+ *         "filters": {CommentsCountFilter::class, ContributorsCountFilter::class, IdeaStatusFilter::class}
  *     },
  *     subresourceOperations={
  *         "votes_get_subresource": {
@@ -166,7 +166,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * )
  *
  * @ApiFilter(SearchFilter::class, properties={
- *     "status": "exact",
  *     "name": "partial",
  *     "themes.name": "exact",
  *     "authorCategory": "exact",
@@ -185,7 +184,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *         @ORM\UniqueConstraint(name="idea_slug_unique", columns="slug")
  *     },
  *     indexes={
- *         @ORM\Index(name="idea_workshop_status_idx", columns={"status"}),
  *         @ORM\Index(name="idea_workshop_author_category_idx", columns={"author_category"})
  *     }
  * )
@@ -194,7 +192,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInterface
+class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
 {
     use EntityTimestampableTrait;
     use EntityNameSlugTrait;
@@ -278,6 +276,22 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
     private $publishedAt;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_read"})
+     */
+    private $finalizedAt;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 1})
+     */
+    private $enabled;
+
+    /**
      * @var Committee
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
@@ -285,25 +299,6 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
      */
     private $committee;
-
-    /**
-     * @ORM\Column(length=11, options={"default": IdeaStatusEnum::DRAFT})
-     *
-     * @Assert\Choice(choices=IdeaStatusEnum::ALL_STATUSES, strict=true)
-     *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read"})
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "swagger_context": {
-     *             "type": "string",
-     *             "enum": IdeaStatusEnum::ALL_STATUSES,
-     *             "example": IdeaStatusEnum::DRAFT
-     *         }
-     *     }
-     * )
-     */
-    private $status;
 
     /**
      * @ORM\OneToMany(targetEntity="Answer", mappedBy="idea", cascade={"all"}, orphanRemoval=true)
@@ -362,7 +357,8 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
         string $description = null,
         string $authorCategory = AuthorCategoryEnum::ADHERENT,
         \DateTime $publishedAt = null,
-        string $status = IdeaStatusEnum::DRAFT,
+        \DateTime $finalizedAt = null,
+        bool $enabled = true,
         Adherent $author = null,
         UuidInterface $uuid = null,
         \DateTime $createdAt = null
@@ -373,7 +369,8 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
         $this->description = $description;
         $this->authorCategory = $authorCategory;
         $this->publishedAt = $publishedAt;
-        $this->status = $status;
+        $this->finalizedAt = $finalizedAt;
+        $this->enabled = $enabled;
         $this->needs = new ArrayCollection();
         $this->themes = new ArrayCollection();
         $this->answers = new ArrayCollection();
@@ -389,11 +386,6 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
     public function getUuid(): UuidInterface
     {
         return $this->uuid;
-    }
-
-    public static function getVisibleStatuses(): array
-    {
-        return IdeaStatusEnum::VISIBLE_STATUSES;
     }
 
     public function getCategory(): ?Category
@@ -460,6 +452,26 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
         $this->publishedAt = $publishedAt;
     }
 
+    public function getFinalizedAt(): ?\DateTime
+    {
+        return $this->finalizedAt;
+    }
+
+    public function setFinalizedAt(\DateTime $finalizedAt): void
+    {
+        $this->finalizedAt = $finalizedAt;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
+    }
+
     public function getCommittee(): ?Committee
     {
         return $this->committee;
@@ -470,14 +482,36 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
         $this->committee = $committee;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_read"})
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "swagger_context": {
+     *             "type": "string",
+     *             "enum": IdeaStatusEnum::ALL_STATUSES,
+     *             "example": IdeaStatusEnum::DRAFT
+     *         }
+     *     }
+     * )
+     */
     public function getStatus(): string
     {
-        return $this->status;
-    }
+        if (!$this->isEnabled()) {
+            return IdeaStatusEnum::UNPUBLISHED;
+        }
 
-    public function setStatus(string $status): void
-    {
-        $this->status = $status;
+        if ($this->isDraft()) {
+            return IdeaStatusEnum::DRAFT;
+        }
+
+        if ($this->isPending()) {
+            return IdeaStatusEnum::PENDING;
+        }
+
+        if ($this->isFinalized()) {
+            return IdeaStatusEnum::FINALIZED;
+        }
     }
 
     public function addAnswer(Answer $answer): void
@@ -522,41 +556,42 @@ class Idea implements AuthorInterface, ReportableInterface, VisibleStatusesInter
      */
     public function getDaysBeforeDeadline(): int
     {
-        if (!$this->publishedAt) {
+        if (!$this->isPending()) {
             return 0;
         }
 
-        $date = clone $this->publishedAt;
-        $deadline = $date->add(new \DateInterval(self::PUBLISHED_INTERVAL));
-        $now = new Chronos();
-
-        return $deadline <= $now ? 0 : $deadline->diff($now)->d;
+        return $this->finalizedAt->diff(new \DateTime('now'))->d;
     }
 
     public function isDraft(): bool
     {
-        return IdeaStatusEnum::DRAFT === $this->status;
+        return null === $this->publishedAt;
     }
 
     public function isPending(): bool
     {
-        return IdeaStatusEnum::PENDING === $this->status;
+        return !$this->isDraft() && new \DateTime('now') < $this->finalizedAt;
     }
 
     public function isFinalized(): bool
     {
-        return IdeaStatusEnum::FINALIZED === $this->status;
+        return !$this->isDraft() && new \DateTime('now') >= $this->finalizedAt;
     }
 
     public function isUnpublished(): bool
     {
-        return IdeaStatusEnum::UNPUBLISHED === $this->status;
+        return !$this->enabled;
     }
 
     public function publish(): void
     {
-        $this->status = IdeaStatusEnum::PENDING;
-        $this->publishedAt = new \DateTime();
+        $this->publishedAt = $now = new \DateTimeImmutable();
+        $this->finalizedAt = $now->add(new \DateInterval(self::PUBLISHED_INTERVAL));
+    }
+
+    public function finalize(): void
+    {
+        $this->finalizedAt = new \DateTime();
     }
 
     public function getUuidAsString(): string

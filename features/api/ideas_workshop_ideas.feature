@@ -5,8 +5,7 @@ Feature:
   I should be able to access API Ideas Workshop
 
   Background:
-    Given I freeze the clock to "2018-12-24 09:00:00"
-    And the following fixtures are loaded:
+    Given the following fixtures are loaded:
       | LoadIdeaQuestionData      |
       | LoadIdeaCategoryData      |
       | LoadIdeaNeedData          |
@@ -49,7 +48,8 @@ Feature:
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
-                "published_at": "2018-12-04T10:00:00+01:00",
+                "published_at": "@string@.isDateTime()",
+                "finalized_at": "@string@.isDateTime()",
                 "committee": null,
                 "status": "FINALIZED",
                 "votes_count": {
@@ -62,7 +62,7 @@ Feature:
                 "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "reduire-le-gaspillage",
-                "days_before_deadline": 1,
+                "days_before_deadline": 0,
                 "contributors_count": 0,
                 "comments_count": 0
             },
@@ -85,7 +85,8 @@ Feature:
                     "first_name": "Michel",
                     "last_name": "VASSEUR"
                 },
-                "published_at": "2018-12-24T09:09:09+01:00",
+                "published_at": "@string@.isDateTime()",
+                "finalized_at": "@string@.isDateTime()",
                 "committee": null,
                 "status": "FINALIZED",
                 "votes_count": {
@@ -98,7 +99,7 @@ Feature:
                 "description": "Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "reduire-le-gaspillage-alimentaire",
-                "days_before_deadline": 21,
+                "days_before_deadline": 0,
                 "contributors_count": 0,
                 "comments_count": 0
             }
@@ -146,7 +147,8 @@ Feature:
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
-                "published_at": "2018-12-20T10:00:00+01:00",
+                "published_at": "@string@.isDateTime()",
+                "finalized_at": "@string@.isDateTime()",
                 "committee": {
                     "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                     "created_at": "@string@.isDateTime()",
@@ -164,7 +166,7 @@ Feature:
                 "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "faire-la-paix",
-                "days_before_deadline": 17,
+                "days_before_deadline": 18,
                 "contributors_count": 5,
                 "comments_count": 8
             },
@@ -192,7 +194,8 @@ Feature:
                     "first_name": "Michel",
                     "last_name": "VASSEUR"
                 },
-                "published_at": "2018-11-27T09:09:09+01:00",
+                "published_at": "@string@.isDateTime()",
+                "finalized_at": "@string@.isDateTime()",
                 "committee": null,
                 "status": "PENDING",
                 "votes_count": {
@@ -205,7 +208,7 @@ Feature:
                 "description": "Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "reduire-le-bruit-dans-les-opens-spaces",
-                "days_before_deadline": 0,
+                "days_before_deadline": 19,
                 "contributors_count": 0,
                 "comments_count": 0
             }
@@ -253,7 +256,8 @@ Feature:
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
-                "published_at": "2018-12-20T10:00:00+01:00",
+                "published_at": "@string@.isDateTime()",
+                "finalized_at": "@string@.isDateTime()",
                 "committee": {
                     "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                     "created_at": "@string@.isDateTime()",
@@ -271,7 +275,7 @@ Feature:
                 "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "faire-la-paix",
-                "days_before_deadline": 17,
+                "days_before_deadline": 18,
                 "contributors_count": 5,
                 "comments_count": 8
             }
@@ -320,7 +324,8 @@ Feature:
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
-                "published_at": "2018-12-20T10:00:00+01:00",
+                "published_at": "@string@.isDateTime()",
+                "finalized_at": "@string@.isDateTime()",
                 "committee": {
                     "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                     "created_at": "@string@.isDateTime()",
@@ -343,7 +348,7 @@ Feature:
                 "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "faire-la-paix",
-                "days_before_deadline": 17,
+                "days_before_deadline": 18,
                 "contributors_count": 5,
                 "comments_count": 8
             }
@@ -353,7 +358,7 @@ Feature:
 
   Scenario: As a non logged-in user I can filter ideas by theme
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas-workshop/ideas?theme.name=defense"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?theme.name=ecologie"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -368,88 +373,78 @@ Feature:
        },
        "items":[
           {
-             "uuid":"e4ac3efc-b539-40ac-9417-b60df432bdc5",
-             "name":"Faire la paix",
-             "themes":[
-                {
-                   "name":"Armées et défense",
-                   "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
-                }
-             ],
-             "category":{
-                "name":"Echelle Européenne",
-                "enabled":true
-             },
-             "needs":[
-                {
-                   "name":"Juridique",
-                   "enabled":true
-                }
-             ],
-             "author":{
-                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"Picard"
-             },
-             "published_at":"2018-12-20T10:00:00+01:00",
-             "committee":{
-                "uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818",
-                "created_at":"2017-01-12T13:25:54+01:00",
-                "name":"En Marche Paris 8",
-                "slug":"en-marche-paris-8"
-             },
-             "status":"PENDING",
-             "votes_count":{
-                "important":"7",
-                "feasible":"5",
-                "innovative":"5",
-                "total":17
-             },
-             "author_category":"COMMITTEE",
-             "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
-             "created_at": "@string@.isDateTime()",
-             "slug":"faire-la-paix",
-             "days_before_deadline":17,
-             "contributors_count":5,
-             "comments_count":8
+              "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
+              "name": "Réduire le gaspillage",
+              "themes": [
+                  {
+                      "name": "Écologie",
+                      "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
+                  }
+              ],
+              "category": {
+                  "name": "Echelle Européenne",
+                  "enabled": true
+              },
+              "needs": [],
+              "author": {
+                  "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                  "first_name": "Jacques",
+                  "last_name": "Picard"
+              },
+              "published_at": "@string@.isDateTime()",
+              "finalized_at": "@string@.isDateTime()",
+              "committee": null,
+              "votes_count": {
+                  "important": 0,
+                  "feasible": 0,
+                  "innovative": 0,
+                  "total": 0
+              },
+              "author_category": "ADHERENT",
+              "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
+              "created_at": "@string@.isDateTime()",
+              "slug": "reduire-le-gaspillage",
+              "status": "FINALIZED",
+              "days_before_deadline": 0,
+              "contributors_count": 0,
+              "comments_count": 0
           },
           {
-             "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
-             "name":"Réduire le gaspillage",
-             "themes":[
-                {
-                   "name":"Écologie",
-                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                }
-             ],
-             "category":{
-                "name":"Echelle Européenne",
-                "enabled":true
-             },
-             "needs":[
-
-             ],
-             "author":{
-                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"Picard"
-             },
-             "published_at":"2018-12-04T10:00:00+01:00",
-             "committee":null,
-             "status":"FINALIZED",
-             "votes_count":{
-                "important":0,
-                "feasible":0,
-                "innovative":0,
-                "total":0
-             },
-             "author_category":"ADHERENT",
-             "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
-             "created_at": "@string@.isDateTime()",
-             "slug":"reduire-le-gaspillage",
-             "days_before_deadline":1,
-             "contributors_count":0,
-             "comments_count":0
+              "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
+              "name": "Reduire le gaspillage alimentaire",
+              "themes": [
+                  {
+                      "name": "Écologie",
+                      "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
+                  }
+              ],
+              "category": {
+                  "name": "Echelle Européenne",
+                  "enabled": true
+              },
+              "needs": [],
+              "author": {
+                  "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                  "first_name": "Michel",
+                  "last_name": "VASSEUR"
+              },
+              "published_at": "@string@.isDateTime()",
+              "finalized_at": "@string@.isDateTime()",
+              "committee": null,
+              "votes_count": {
+                  "important": 0,
+                  "feasible": 0,
+                  "innovative": 0,
+                  "total": 0
+              },
+              "author_category": "ADHERENT",
+              "description": "Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
+              "created_at": "@string@.isDateTime()",
+              "slug": "reduire-le-gaspillage-alimentaire",
+              "status": "FINALIZED",
+              "days_before_deadline": 0,
+              "contributors_count": 0,
+              "comments_count": 0
           }
        ]
     }
@@ -470,56 +465,47 @@ Feature:
           "current_page":1,
           "last_page":2
        },
-       "items":[
+      "items": [
           {
-             "uuid":"e4ac3efc-b539-40ac-9417-b60df432bdc5",
-             "name":"Faire la paix",
-             "themes":[
-                {
-                   "name":"Armées et défense",
-                   "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
-                }
-             ],
-             "category":{
-                "name":"Echelle Européenne",
-                "enabled":true
-             },
-             "needs":[
-                {
-                   "name":"Juridique",
-                   "enabled":true
-                }
-             ],
-             "author":{
-                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"Picard"
-             },
-             "published_at":"2018-12-20T10:00:00+01:00",
-             "committee":{
-                "uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818",
-                "created_at":"2017-01-12T13:25:54+01:00",
-                "name":"En Marche Paris 8",
-                "slug":"en-marche-paris-8"
-             },
-             "status":"PENDING",
-             "votes_count":{
-                "important":"7",
-                "feasible":"5",
-                "innovative":"5",
-                "total":17
-             },
-             "author_category":"COMMITTEE",
-             "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
-             "created_at": "@string@.isDateTime()",
-             "slug":"faire-la-paix",
-             "days_before_deadline":17,
-             "contributors_count":5,
-             "comments_count":8
+              "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
+              "name": "Réduire le gaspillage",
+              "themes": [
+                  {
+                      "name": "Écologie",
+                      "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
+                  }
+              ],
+              "category": {
+                  "name": "Echelle Européenne",
+                  "enabled": true
+              },
+              "needs": [],
+              "author": {
+                  "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                  "first_name": "Jacques",
+                  "last_name": "Picard"
+              },
+              "published_at": "@string@.isDateTime()",
+              "finalized_at": "@string@.isDateTime()",
+              "committee": null,
+              "status": "FINALIZED",
+              "votes_count": {
+                  "important": 0,
+                  "feasible": 0,
+                  "innovative": 0,
+                  "total": 0
+              },
+              "author_category": "ADHERENT",
+              "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
+              "created_at": "@string@.isDateTime()",
+              "slug": "reduire-le-gaspillage",
+              "days_before_deadline": 0,
+              "contributors_count": 0,
+              "comments_count": 0
           },
           {
-             "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
-             "name":"Réduire le gaspillage",
+             "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
+             "name":"Reduire le gaspillage alimentaire",
              "themes":[
                 {
                    "name":"Écologie",
@@ -530,15 +516,16 @@ Feature:
                 "name":"Echelle Européenne",
                 "enabled":true
              },
-             "needs":[
+             "needs":[],
 
-             ],
+
              "author":{
-                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"Picard"
+                "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                "first_name":"Michel",
+                "last_name":"VASSEUR"
              },
-             "published_at":"2018-12-04T10:00:00+01:00",
+             "published_at":"@string@.isDateTime()",
+              "finalized_at": "@string@.isDateTime()",
              "committee":null,
              "status":"FINALIZED",
              "votes_count":{
@@ -548,14 +535,14 @@ Feature:
                 "total":0
              },
              "author_category":"ADHERENT",
-             "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
+             "description":"Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
              "created_at": "@string@.isDateTime()",
-             "slug":"reduire-le-gaspillage",
-             "days_before_deadline":1,
+             "slug":"reduire-le-gaspillage-alimentaire",
+             "days_before_deadline":0,
              "contributors_count":0,
              "comments_count":0
           }
-       ]
+      ]
     }
     """
 
@@ -595,6 +582,7 @@ Feature:
                     "last_name": "Duroc"
                 },
                 "published_at": null,
+                "finalized_at": null,
                 "committee": null,
                 "status": "DRAFT",
                 "votes_count": {
@@ -655,7 +643,8 @@ Feature:
                 "first_name":"Jacques",
                 "last_name":"Picard"
              },
-             "published_at":"2018-12-20T10:00:00+01:00",
+             "published_at":"@string@.isDateTime()",
+             "finalized_at":"@string@.isDateTime()",
              "committee":{
                 "uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818",
                 "created_at":"2017-01-12T13:25:54+01:00",
@@ -673,7 +662,7 @@ Feature:
              "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
              "created_at": "@string@.isDateTime()",
              "slug":"faire-la-paix",
-             "days_before_deadline":17,
+             "days_before_deadline":18,
              "contributors_count":5,
              "comments_count":8
           },
@@ -701,7 +690,8 @@ Feature:
                 "first_name":"Michel",
                 "last_name":"VASSEUR"
              },
-             "published_at":"2018-11-27T09:09:09+01:00",
+             "published_at":"@string@.isDateTime()",
+             "finalized_at":"@string@.isDateTime()",
              "committee":null,
              "status":"PENDING",
              "votes_count":{
@@ -714,7 +704,7 @@ Feature:
              "description":"Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
              "created_at": "@string@.isDateTime()",
              "slug":"reduire-le-bruit-dans-les-opens-spaces",
-             "days_before_deadline":0,
+             "days_before_deadline":19,
              "contributors_count":0,
              "comments_count":0
           }
@@ -745,6 +735,7 @@ Feature:
             "last_name": "Lindt"
         },
         "published_at": null,
+        "finalized_at": null,
         "committee": null,
         "status": "DRAFT",
         "votes_count": {
@@ -826,6 +817,7 @@ Feature:
             "last_name": "Picard"
         },
         "published_at": null,
+        "finalized_at": null,
         "committee": {
             "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
             "created_at": "@string@.isDateTime()",
@@ -914,6 +906,7 @@ Feature:
             "last_name": "Picard"
         },
         "published_at": "@string@.isDateTime()",
+        "finalized_at": "@string@.isDateTime()",
         "committee": {
             "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
             "created_at": "@string@.isDateTime()",
@@ -937,7 +930,7 @@ Feature:
         "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
         "created_at": "@string@.isDateTime()",
         "slug": "mon-idee-2",
-        "days_before_deadline": 17,
+        "days_before_deadline": 18,
         "contributors_count": 5,
         "comments_count": 8
     }
@@ -984,7 +977,8 @@ Feature:
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
-                "published_at": "2018-12-20T10:00:00+01:00",
+                "published_at": "@string@.isDateTime()",
+                "finalized_at": "@string@.isDateTime()",
                 "committee": {
                     "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                     "created_at": "@string@.isDateTime()",
@@ -1007,7 +1001,7 @@ Feature:
                 "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "faire-la-paix",
-                "days_before_deadline": 17,
+                "days_before_deadline": 18,
                 "contributors_count": 5,
                 "comments_count": 8
             }
@@ -1055,7 +1049,8 @@ Feature:
                 "first_name": "Jacques",
                 "last_name": "Picard"
              },
-             "published_at": "2018-12-20T10:00:00+01:00",
+             "published_at": "@string@.isDateTime()",
+             "finalized_at": "@string@.isDateTime()",
              "committee": {
                 "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
                 "created_at": "2017-01-12T13:25:54+01:00",
@@ -1078,7 +1073,7 @@ Feature:
              "created_at": "@string@.isDateTime()",
              "name": "Faire la paix",
              "slug": "faire-la-paix",
-             "days_before_deadline": 17,
+             "days_before_deadline": 18,
              "contributors_count": 5,
              "comments_count": 8
           }
@@ -1205,7 +1200,8 @@ Feature:
           "first_name":"Jacques",
           "last_name":"Picard"
        },
-       "published_at":"2018-12-20T10:00:00+01:00",
+       "published_at": "@string@.isDateTime()",
+       "finalized_at": "@string@.isDateTime()",
        "status":"PENDING",
        "answers":[
           {
@@ -1486,7 +1482,8 @@ Feature:
             "first_name": "Jacques",
             "last_name": "Picard"
         },
-        "published_at": "2018-12-04T10:00:00+01:00",
+        "published_at": "@string@.isDateTime()",
+        "finalized_at": "@string@.isDateTime()",
         "status": "FINALIZED",
         "answers": [],
         "votes_count": {
@@ -1516,47 +1513,6 @@ Feature:
         },
         "items": [
             {
-                "uuid": "bbf35ba6-52ba-4913-aae8-5948449d0c1d",
-                "name": "Reduire le bruit dans les opens spaces",
-                "themes": [
-                    {
-                        "name": "Écologie",
-                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                    }
-                ],
-                "category": {
-                    "name": "Echelle Européenne",
-                    "enabled": true
-                },
-                "needs": [
-                    {
-                        "name": "Juridique",
-                        "enabled": true
-                    }
-                ],
-                "author": {
-                    "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                    "first_name": "Michel",
-                    "last_name": "VASSEUR"
-                },
-                "published_at": "2018-11-27T09:09:09+01:00",
-                "committee": null,
-                "status": "PENDING",
-                "votes_count": {
-                    "important": 0,
-                    "feasible": 0,
-                    "innovative": 0,
-                    "total": 0
-                },
-                "author_category": "ADHERENT",
-                "description": "Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
-                "created_at": "@string@.isDateTime()",
-                "slug": "reduire-le-bruit-dans-les-opens-spaces",
-                "days_before_deadline": 0,
-                "contributors_count": 0,
-                "comments_count": 0
-            },
-            {
                 "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
                 "name": "Réduire le gaspillage",
                 "themes": [
@@ -1575,7 +1531,8 @@ Feature:
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
-                "published_at": "2018-12-04T10:00:00+01:00",
+                "published_at": "@string@.isDateTime()",
+                "finalized_at": "@string@.isDateTime()",
                 "committee": null,
                 "status": "FINALIZED",
                 "votes_count": {
@@ -1588,7 +1545,44 @@ Feature:
                 "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "reduire-le-gaspillage",
-                "days_before_deadline": 1,
+                "days_before_deadline": 0,
+                "contributors_count": 0,
+                "comments_count": 0
+            },
+            {
+                "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
+                "name": "Reduire le gaspillage alimentaire",
+                "themes": [
+                    {
+                        "name": "Écologie",
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
+                    }
+                ],
+                "category": {
+                    "name": "Echelle Européenne",
+                    "enabled": true
+                },
+                "needs": [],
+                "author": {
+                    "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                    "first_name": "Michel",
+                    "last_name": "VASSEUR"
+                },
+                "published_at": "@string@.isDateTime()",
+                "finalized_at": "@string@.isDateTime()",
+                "committee": null,
+                "status": "FINALIZED",
+                "votes_count": {
+                    "important": 0,
+                    "feasible": 0,
+                    "innovative": 0,
+                    "total": 0
+                },
+                "author_category": "ADHERENT",
+                "description": "Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
+                "created_at": "@string@.isDateTime()",
+                "slug": "reduire-le-gaspillage-alimentaire",
+                "days_before_deadline": 0,
                 "contributors_count": 0,
                 "comments_count": 0
             }
@@ -1631,7 +1625,8 @@ Feature:
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
-                "published_at": "2018-12-04T10:00:00+01:00",
+                "published_at": "@string@.isDateTime()",
+                "finalized_at": "@string@.isDateTime()",
                 "committee": null,
                 "status": "FINALIZED",
                 "votes_count": {
@@ -1644,13 +1639,13 @@ Feature:
                 "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "reduire-le-gaspillage",
-                "days_before_deadline": 1,
+                "days_before_deadline": 0,
                 "contributors_count": 0,
                 "comments_count": 0
             },
             {
-                "uuid": "bbf35ba6-52ba-4913-aae8-5948449d0c1d",
-                "name": "Reduire le bruit dans les opens spaces",
+                "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
+                "name": "Reduire le gaspillage alimentaire",
                 "themes": [
                     {
                         "name": "Écologie",
@@ -1661,20 +1656,16 @@ Feature:
                     "name": "Echelle Européenne",
                     "enabled": true
                 },
-                "needs": [
-                    {
-                        "name": "Juridique",
-                        "enabled": true
-                    }
-                ],
+                "needs": [],
                 "author": {
                     "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                     "first_name": "Michel",
                     "last_name": "VASSEUR"
                 },
-                "published_at": "2018-11-27T09:09:09+01:00",
+                "published_at": "@string@.isDateTime()",
+                "finalized_at": "@string@.isDateTime()",
                 "committee": null,
-                "status": "PENDING",
+                "status": "FINALIZED",
                 "votes_count": {
                     "important": 0,
                     "feasible": 0,
@@ -1682,9 +1673,9 @@ Feature:
                     "total": 0
                 },
                 "author_category": "ADHERENT",
-                "description": "Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
+                "description": "Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
                 "created_at": "@string@.isDateTime()",
-                "slug": "reduire-le-bruit-dans-les-opens-spaces",
+                "slug": "reduire-le-gaspillage-alimentaire",
                 "days_before_deadline": 0,
                 "contributors_count": 0,
                 "comments_count": 0
@@ -1728,7 +1719,8 @@ Feature:
                     "first_name": "Jacques",
                     "last_name": "Picard"
                 },
-                "published_at": "2018-12-04T10:00:00+01:00",
+                "published_at": "@string@.isDateTime()",
+                "finalized_at": "@string@.isDateTime()",
                 "committee": null,
                 "status": "FINALIZED",
                 "votes_count": {
@@ -1741,13 +1733,13 @@ Feature:
                 "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "reduire-le-gaspillage",
-                "days_before_deadline": 1,
+                "days_before_deadline": 0,
                 "contributors_count": 0,
                 "comments_count": 0
             },
             {
-                "uuid": "bbf35ba6-52ba-4913-aae8-5948449d0c1d",
-                "name": "Reduire le bruit dans les opens spaces",
+                "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
+                "name": "Reduire le gaspillage alimentaire",
                 "themes": [
                     {
                         "name": "Écologie",
@@ -1758,20 +1750,16 @@ Feature:
                     "name": "Echelle Européenne",
                     "enabled": true
                 },
-                "needs": [
-                    {
-                        "name": "Juridique",
-                        "enabled": true
-                    }
-                ],
+                "needs": [],
                 "author": {
                     "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                     "first_name": "Michel",
                     "last_name": "VASSEUR"
                 },
-                "published_at": "2018-11-27T09:09:09+01:00",
+                "published_at": "@string@.isDateTime()",
+                "finalized_at": "@string@.isDateTime()",
                 "committee": null,
-                "status": "PENDING",
+                "status": "FINALIZED",
                 "votes_count": {
                     "important": 0,
                     "feasible": 0,
@@ -1779,9 +1767,9 @@ Feature:
                     "total": 0
                 },
                 "author_category": "ADHERENT",
-                "description": "Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
+                "description": "Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
                 "created_at": "@string@.isDateTime()",
-                "slug": "reduire-le-bruit-dans-les-opens-spaces",
+                "slug": "reduire-le-gaspillage-alimentaire",
                 "days_before_deadline": 0,
                 "contributors_count": 0,
                 "comments_count": 0
@@ -1807,54 +1795,8 @@ Feature:
        },
        "items":[
           {
-             "uuid":"e4ac3efc-b539-40ac-9417-b60df432bdc5",
-             "name":"Faire la paix",
-             "themes":[
-                {
-                   "name":"Armées et défense",
-                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-                }
-             ],
-             "category":{
-                "name":"Echelle Européenne",
-                "enabled":true
-             },
-             "needs":[
-                {
-                   "name":"Juridique",
-                   "enabled":true
-                }
-             ],
-             "author":{
-                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"Picard"
-             },
-             "published_at":"2018-12-20T10:00:00+01:00",
-             "committee":{
-                "uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818",
-                "created_at":"2017-01-12T13:25:54+01:00",
-                "name":"En Marche Paris 8",
-                "slug":"en-marche-paris-8"
-             },
-             "status":"PENDING",
-             "votes_count":{
-                "important":"7",
-                "feasible":"5",
-                "innovative":"5",
-                "total":17
-             },
-             "author_category":"COMMITTEE",
-             "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
-             "created_at": "@string@.isDateTime()",
-             "slug":"faire-la-paix",
-             "days_before_deadline":17,
-             "contributors_count":5,
-             "comments_count":8
-          },
-          {
              "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
-             "name":"R\u00e9duire le gaspillage",
+             "name":"Réduire le gaspillage",
              "themes":[
                 {
                     "name": "Écologie",
@@ -1862,7 +1804,7 @@ Feature:
                 }
              ],
              "category":{
-                "name":"Echelle Europ\u00e9enne",
+                "name":"Echelle Européenne",
                 "enabled":true
              },
              "needs":[
@@ -1873,7 +1815,8 @@ Feature:
                 "first_name":"Jacques",
                 "last_name":"Picard"
              },
-             "published_at":"2018-12-04T10:00:00+01:00",
+             "published_at":"@string@.isDateTime()",
+             "finalized_at":"@string@.isDateTime()",
              "committee":null,
              "status":"FINALIZED",
              "votes_count":{
@@ -1884,11 +1827,48 @@ Feature:
              },
              "author_category":"ADHERENT",
              "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
-             "created_at": "@string@.isDateTime()",
+             "created_at":"@string@.isDateTime()",
              "slug":"reduire-le-gaspillage",
-             "days_before_deadline":1,
+             "days_before_deadline":0,
              "contributors_count":0,
              "comments_count":0
+          },
+          {
+              "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
+              "name": "Reduire le gaspillage alimentaire",
+              "themes": [
+                  {
+                      "name": "Écologie",
+                      "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
+                  }
+              ],
+              "category": {
+                  "name": "Echelle Européenne",
+                  "enabled": true
+              },
+              "needs": [],
+              "author": {
+                  "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                  "first_name": "Michel",
+                  "last_name": "VASSEUR"
+              },
+              "published_at": "@string@.isDateTime()",
+              "finalized_at": "@string@.isDateTime()",
+              "committee": null,
+              "status": "FINALIZED",
+              "votes_count": {
+                  "important": 0,
+                  "feasible": 0,
+                  "innovative": 0,
+                  "total": 0
+              },
+              "author_category": "ADHERENT",
+              "description": "Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
+              "created_at": "@string@.isDateTime()",
+              "slug": "reduire-le-gaspillage-alimentaire",
+              "days_before_deadline": 0,
+              "contributors_count": 0,
+              "comments_count": 0
           }
        ]
     }
@@ -1934,10 +1914,11 @@ Feature:
                 "first_name":"Jacques",
                 "last_name":"Picard"
              },
-             "published_at":"2018-12-20T10:00:00+01:00",
+             "published_at": "@string@.isDateTime()",
+             "finalized_at": "@string@.isDateTime()",
              "committee":{
                 "uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818",
-                "created_at":"2017-01-12T13:25:54+01:00",
+                "created_at":"@string@.isDateTime()",
                 "name":"En Marche Paris 8",
                 "slug":"en-marche-paris-8"
              },
@@ -1952,7 +1933,7 @@ Feature:
              "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
              "created_at": "@string@.isDateTime()",
              "slug":"faire-la-paix",
-             "days_before_deadline":17,
+             "days_before_deadline":18,
              "contributors_count":5,
              "comments_count":8
           }

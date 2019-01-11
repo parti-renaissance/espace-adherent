@@ -5,7 +5,6 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\DataFixtures\AutoIncrementResetter;
 use AppBundle\Entity\IdeasWorkshop\AuthorCategoryEnum;
 use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -20,6 +19,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
     public const IDEA_05_UUID = '9529e98c-2524-486f-a6ed-e2d707dc99ea';
     public const IDEA_06_UUID = 'bbf35ba6-52ba-4913-aae8-5948449d0c1d';
     public const IDEA_07_UUID = '982bd810-a3ef-4611-a998-ebfadc335d66';
+    public const IDEA_08_UUID = '6b6e41f9-d14b-4c86-9328-11151c99fc84';
 
     public function load(ObjectManager $manager)
     {
@@ -38,11 +38,12 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             'Faire la paix',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.',
             AuthorCategoryEnum::COMMITTEE,
-            new \DateTime('2018-12-20 10:00:00'),
-            IdeaStatusEnum::PENDING,
+            new \DateTime('-3 days 1 minute'),
+            new \DateTime('+18 days 1 minute'),
+            true,
             $adherent3,
             Uuid::fromString(self::IDEA_01_UUID),
-            new \DateTime('-5 minutes')
+            new \DateTime('-20 days 1 minute')
         );
         $ideaMakePeace->setCategory($category);
         $ideaMakePeace->setCommittee($committee);
@@ -54,11 +55,12 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             'Favoriser l\'écologie',
             'Mauris posuere eros eget nunc dapibus ornare. Vestibulum dolor eros, facilisis in venenatis eu, tristique a sapien.',
             AuthorCategoryEnum::COMMITTEE,
-            new \DateTime('2018-12-02 10:00:00'),
-            IdeaStatusEnum::DRAFT,
+            null,
+            null,
+            true,
             $adherent3,
             Uuid::fromString(self::IDEA_02_UUID),
-            new \DateTime('-4 minutes')
+            new \DateTime('-15 days 1 minute')
         );
         $ideaHelpEcology->setCategory($category);
         $ideaHelpEcology->setCommittee($committee);
@@ -70,10 +72,11 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             'Nam laoreet eros diam, vitae hendrerit libero interdum nec. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.',
             AuthorCategoryEnum::QG,
             null,
-            IdeaStatusEnum::DRAFT,
+            null,
+            true,
             $adherent6,
             Uuid::fromString(self::IDEA_03_UUID),
-            new \DateTime('-3 minutes')
+            new \DateTime('-10 days 1 minute')
         );
         $ideaHelpPeople->setCategory($category);
         $ideaHelpPeople->addTheme($themeDefense);
@@ -83,11 +86,12 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             'Réduire le gaspillage',
             'In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.',
             AuthorCategoryEnum::ADHERENT,
-            new \DateTime('2018-12-04 10:00:00'),
-            IdeaStatusEnum::FINALIZED,
+            new \DateTime('-26 days 1 minute'),
+            new \DateTime('-5 days 1 minute'),
+            true,
             $adherent3,
             Uuid::fromString(self::IDEA_04_UUID),
-             new \DateTime('-2 minutes')
+             new \DateTime('-27 days 1 minute')
         );
         $ideaReduceWaste->setCategory($category);
         $ideaReduceWaste->addTheme($themeEcology);
@@ -98,10 +102,11 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             null,
             AuthorCategoryEnum::QG,
             null,
-            IdeaStatusEnum::DRAFT,
+            null,
+            true,
             $adherent13,
             Uuid::fromString(self::IDEA_05_UUID),
-            new \DateTime('-1 minute')
+            new \DateTime('-5 days 1 minute')
         );
         $this->addReference('idea-reduce-pupils', $ideaReducePupils);
 
@@ -109,11 +114,12 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             'Reduire le bruit dans les opens spaces',
             'Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.',
             AuthorCategoryEnum::ADHERENT,
-            new \DateTime('2018-11-27 09:09:09'),
-            IdeaStatusEnum::PENDING,
+            new \DateTime('-2 days 1 minute'),
+            new \DateTime('+19 days 1 minute'),
+            true,
             $adherent13,
             Uuid::fromString(self::IDEA_06_UUID),
-            new \DateTime()
+            new \DateTime('-2 days 1 minute')
         );
         $ideaReduceNoise->setCategory($category);
         $ideaReduceNoise->addTheme($themeEcology);
@@ -124,15 +130,30 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             'Reduire le gaspillage alimentaire',
             'Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.',
             AuthorCategoryEnum::ADHERENT,
-            new \DateTime('2018-12-24 09:09:09'),
-            IdeaStatusEnum::FINALIZED,
+            new \DateTime('-23 days 1 minute'),
+            new \DateTime('-2 days 1 minute'),
+            true,
             $adherent13,
             Uuid::fromString(self::IDEA_07_UUID),
-            new \DateTime()
+            new \DateTime('-24 days 1 minute')
         );
         $ideaReduceFoodWaste->setCategory($category);
         $ideaReduceFoodWaste->addTheme($themeEcology);
         $this->addReference('idea-food-waste', $ideaReduceFoodWaste);
+
+        $ideaDisabled = new Idea(
+            'Idée modérée',
+            'Ideas moderatis',
+            AuthorCategoryEnum::ADHERENT,
+            new \DateTime('-26 days 1 minute'),
+            new \DateTime('-5 days 1 minute'),
+            false,
+            $adherent13,
+            Uuid::fromString(self::IDEA_08_UUID),
+            new \DateTime('-27 days 1 minute')
+        );
+        $ideaReduceWaste->addTheme($themeEcology);
+        $this->addReference('idea-disabled', $ideaDisabled);
 
         $manager->persist($ideaMakePeace);
         $manager->persist($ideaHelpEcology);
@@ -141,6 +162,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         $manager->persist($ideaReducePupils);
         $manager->persist($ideaReduceNoise);
         $manager->persist($ideaReduceFoodWaste);
+        $manager->persist($ideaDisabled);
 
         $manager->flush();
     }

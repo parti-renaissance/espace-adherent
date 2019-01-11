@@ -117,9 +117,9 @@ class IdeaRepository extends ServiceEntityRepository
         $qb->delete()
             ->set('idea.author', $qb->expr()->literal(null))
             ->where('idea.author = :author')
-            ->andWhere('idea.status != :status')
+            ->andWhere('idea.finalizedAt IS NULL OR idea.finalizedAt > :now')
             ->setParameter('author', $author)
-            ->setParameter('status', IdeaStatusEnum::FINALIZED)
+            ->setParameter('now', new \DateTime())
             ->getQuery()
             ->execute()
         ;
@@ -131,11 +131,34 @@ class IdeaRepository extends ServiceEntityRepository
             ->update()
             ->set('idea.author', 'null')
             ->where('idea.author = :author')
-            ->andWhere('idea.status = :status')
+            ->andWhere('idea.finalizedAt IS NOT NULL AND idea.finalizedAt <= :now')
             ->setParameter('author', $author)
-            ->setParameter('status', IdeaStatusEnum::FINALIZED)
+            ->setParameter('now', new \DateTime())
             ->getQuery()
             ->execute()
         ;
+    }
+
+    public function addStatusFilter($queryBuilder, string $alias, string $status)
+    {
+        switch ($status) {
+            case IdeaStatusEnum::UNPUBLISHED:
+                $queryBuilder->andWhere(sprintf('%s.enabled = 0', $alias));
+                break;
+            case IdeaStatusEnum::DRAFT:
+                $queryBuilder->andWhere(sprintf('%s.publishedAt IS NULL', $alias));
+                break;
+            case IdeaStatusEnum::PENDING:
+                $queryBuilder
+                    ->andWhere(sprintf('%s.publishedAt IS NOT NULL AND %s.finalizedAt > :now', $alias, $alias))
+                    ->setParameter('now', new \DateTime())
+                ;
+                break;
+            case IdeaStatusEnum::FINALIZED:
+                $queryBuilder->andWhere(sprintf('%s.finalizedAt <= :now', $alias))
+                    ->setParameter('now', new \DateTime())
+                ;
+                break;
+        }
     }
 }
