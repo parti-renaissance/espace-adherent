@@ -6,12 +6,20 @@
   }
 
   .tt-page__header__title {
-    max-width: 60%;
     margin-bottom: 50px;
+
+    h1 {
+        font-size: 48px;
+        letter-spacing: -1.5px;
+        line-height: normal;
+    }
   }
 
   .tt-page__header__subtitle {
     color: $medium-grey;
+    font-size: 20px;
+    line-height: 27px;
+    min-height: 54px;
   }
 
   .tt-page__header__nav {
@@ -44,12 +52,22 @@
   /* Responsive */
   @media #{$mobile} {
     .tt-page__header {
-      padding-top: 20px;
+      padding-top: 30px;
     }
 
     .tt-page__header__title {
       max-width: initial;
       margin-bottom: 45px;
+
+      h1 {
+          font-size: 32px;
+          line-height: normal;
+      }
+    }
+
+    .tt-page__header__subtitle {
+      font-size: 18px;
+      line-height: 24px;
     }
 
     .tt-page__header__nav-link {
