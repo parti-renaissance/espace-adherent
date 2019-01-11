@@ -10,11 +10,18 @@ use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
+use AppBundle\DataFixtures\ORM\LoadIdeaData;
+use AppBundle\DataFixtures\ORM\LoadIdeaThreadCommentData;
+use AppBundle\DataFixtures\ORM\LoadIdeaThreadData;
+use AppBundle\DataFixtures\ORM\LoadIdeaVoteData;
 use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
 use AppBundle\DataFixtures\ORM\LoadTurnkeyProjectData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Entity\IdeasWorkshop\Idea;
+use AppBundle\Entity\IdeasWorkshop\Thread;
+use AppBundle\Entity\IdeasWorkshop\ThreadComment;
 use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
 use AppBundle\Entity\SubscriptionType;
 use AppBundle\Entity\TurnkeyProject;
@@ -1108,6 +1115,21 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame($adherentBeforeUnregistration->getPostalCode(), $unregistration->getPostalCode());
         $this->assertCount(0, $this->getCitizenProjectCommentRepository()->findForAuthor($adherentBeforeUnregistration));
         $this->assertEquals($referentTagsBeforeUnregistration, $unregistration->getReferentTags()->toArray());
+
+        if (LoadAdherentData::ADHERENT_13_UUID === $uuid) {
+            $draftIdea = $this->getRepository(Idea::class)->findOneBy(['uuid' => LoadIdeaData::IDEA_05_UUID]);
+            $pendingIdea = $this->getRepository(Idea::class)->findOneBy(['uuid' => LoadIdeaData::IDEA_06_UUID]);
+            $finalizedIdea = $this->getRepository(Idea::class)->findOneBy(['uuid' => LoadIdeaData::IDEA_07_UUID]);
+            $thread = $this->getRepository(Thread::class)->findOneBy(['uuid' => LoadIdeaThreadData::THREAD_07_UUID]);
+            $threadComment = $this->getRepository(ThreadComment::class)->findOneBy(['uuid' => LoadIdeaThreadCommentData::THREAD_COMMENT_08_UUID]);
+
+            $this->assertNull($draftIdea);
+            $this->assertNull($pendingIdea);
+            $this->assertNotNull($finalizedIdea);
+            $this->assertNull($finalizedIdea->getAuthor());
+            $this->assertNull($thread);
+            $this->assertNull($threadComment);
+        }
     }
 
     public function provideAdherentCredentials(): array
@@ -1160,6 +1182,9 @@ class AdherentControllerTest extends WebTestCase
             LoadCitizenProjectCommentData::class,
             LoadEmailSubscriptionHistoryData::class,
             LoadTurnkeyProjectData::class,
+            LoadIdeaData::class,
+            LoadIdeaThreadCommentData::class,
+            LoadIdeaVoteData::class,
         ]);
 
         $this->committeeRepository = $this->getCommitteeRepository();

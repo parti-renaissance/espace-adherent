@@ -91,14 +91,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *         }
  *     },
  * )
- * @ApiFilter(SearchFilter::class, properties={"answer.idea.uuid": "exact"})
+ * @ApiFilter(SearchFilter::class, properties={"answer.id": "exact"})
  *
  * @ORM\Table(name="ideas_workshop_thread",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="threads_uuid_unique", columns="uuid")
  *     }
  * )
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ThreadRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  *

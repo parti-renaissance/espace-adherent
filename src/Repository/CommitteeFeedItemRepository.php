@@ -2,7 +2,6 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CommitteeFeedItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -12,6 +11,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CommitteeFeedItemRepository extends ServiceEntityRepository
 {
+    use AuthorTrait;
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, CommitteeFeedItem::class);
@@ -93,17 +94,5 @@ class CommitteeFeedItemRepository extends ServiceEntityRepository
         ;
 
         return $qb;
-    }
-
-    public function removeAuthorItems(Adherent $author)
-    {
-        $qb = $this->createQueryBuilder('i');
-        $qb
-            ->delete()
-            ->where('i.author = :author')
-            ->setParameter(':author', $author)
-        ;
-
-        return $qb->getQuery()->execute();
     }
 }

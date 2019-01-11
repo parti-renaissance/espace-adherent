@@ -23,6 +23,7 @@ class LoadIdeaVoteData extends AbstractFixture implements DependentFixtureInterf
             $this->getReference('adherent-6'),
             $this->getReference('adherent-7'),
             $this->getReference('adherent-9'),
+            $this->getReference('adherent-13'),
         ];
 
         $ideas = [
