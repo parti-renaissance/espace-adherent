@@ -45,5 +45,7 @@ class AdherentMessageChangeCommandHandler implements MessageHandlerInterface
                 $this->entityManager->flush();
             }
         }
+
+        $this->entityManager->clear();
     }
 }

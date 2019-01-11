@@ -59,7 +59,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
 
         $changes = $args->getEntityManager()->getUnitOfWork()->getEntityChangeSet($object);
 
-        if (isset($changes['content']) || isset($changes['subject'])) {
+        if (isset($changes['content']) || isset($changes['subject']) || isset($changes['filter'])) {
             $object->setSynchronized(false);
         }
     }
@@ -69,11 +69,11 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
         $object = $args->getObject();
 
         if ($object instanceof AdherentMessageInterface && false === $object->isSynchronized()) {
-            $this->dispatchMessage($args->getObject());
+            $this->dispatchMessage($object);
         }
     }
 
-    private function dispatchMessage($object): void
+    private function dispatchMessage(AdherentMessageInterface $object): void
     {
         $this->bus->dispatch(new AdherentMessageChangeCommand($object->getUuid()));
     }

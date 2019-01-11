@@ -6,7 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
 use AppBundle\Mailchimp\Campaign\CampaignRequestBuilder;
 use AppBundle\Mailchimp\Exception\InvalidCampaignIdException;
-use AppBundle\Mailchimp\Synchronisation\Command\AdherentCommandInterface;
+use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
 use AppBundle\Mailchimp\Synchronisation\RequestBuilder;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -28,7 +28,7 @@ class Manager implements LoggerAwareInterface
     /**
      * Creates/updates a Mailchimp member
      */
-    public function editMember(Adherent $adherent, AdherentCommandInterface $message): void
+    public function editMember(Adherent $adherent, AdherentChangeCommandInterface $message): void
     {
         $requestBuilder = $this->requestBuildersLocator
             ->get(RequestBuilder::class)
