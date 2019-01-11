@@ -26,6 +26,8 @@
     text-align: center;
     font-family: $font-gillsans;
     font-size: 24px;
+    letter-spacing: -0.5px;
+    font-weight: 700;
     text-decoration: none;
     color: $light-cobalt-blue;
 
@@ -52,7 +54,8 @@
 
     .tt-page__header__nav-link {
       font-size: 16px;
-      font-weight: bold;
+      font-weight: 700;
+      letter-spacing: -0.5px;
     }
   }
 }

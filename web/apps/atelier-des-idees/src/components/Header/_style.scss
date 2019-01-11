@@ -1,6 +1,12 @@
 .header {
   height: 80px;
   border-top: 1px solid $gainsboro;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 10;
+  background-color: $white;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.09);
 
   .header__inner {
     display: flex;
@@ -58,9 +64,12 @@
       padding: 0 20px;
     }
 
-    .header__item,
-    .header__create-btn {
+    .header__item {
       white-space: nowrap;
+    }
+
+    .header__create-btn {
+        display: none;
     }
 
     .menu-item-wrapper,
