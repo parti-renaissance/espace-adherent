@@ -54,7 +54,7 @@ class AssetsController extends Controller
             }
         }
 
-        if (\in_array($extension = substr($path, -3), self::EXTENSIONS_TYPES, true)) {
+        if (\array_key_exists($extension = substr($path, -3), self::EXTENSIONS_TYPES)) {
             return new Response($this->get('app.storage')->read($path), Response::HTTP_OK, [
                 'Content-Type' => self::EXTENSIONS_TYPES[$extension],
             ]);
