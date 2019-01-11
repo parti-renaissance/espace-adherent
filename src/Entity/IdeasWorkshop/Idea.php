@@ -15,6 +15,7 @@ use AppBundle\Entity\EntityTimestampableTrait;
 use AppBundle\Entity\Report\ReportableInterface;
 use AppBundle\Entity\VisibleStatusesInterface;
 use AppBundle\Filter\CommentsCountFilter;
+use AppBundle\Filter\ContributorsCountFilter;
 use Cake\Chronos\Chronos;
 use AppBundle\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -147,16 +148,18 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *             "groups": {"idea_write"}
  *         },
  *         "order": {"createdAt": "ASC"},
- *         "filters": {CommentsCountFilter::class}
+ *         "filters": {CommentsCountFilter::class, ContributorsCountFilter::class}
  *     }
  * )
  *
  * @ApiFilter(SearchFilter::class, properties={
  *     "status": "exact",
  *     "name": "partial",
- *     "theme.name": "exact",
+ *     "themes.name": "exact",
  *     "author_category": "exact",
- *     "author.uuid": "exact"
+ *     "author.uuid": "exact",
+ *     "category.name": "exact",
+ *     "needs.name": "exact"
  * })
  * @ApiFilter(OrderFilter::class, properties={"publishedAt", "votesCount"})
  *

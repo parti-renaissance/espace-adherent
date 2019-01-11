@@ -7,7 +7,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use Doctrine\ORM\QueryBuilder;
 
-final class CommentsCountFilter extends AbstractFilter
+final class ContributorsCountFilter extends AbstractFilter
 {
     protected function filterProperty(
         string $property, $value,
@@ -26,12 +26,13 @@ final class CommentsCountFilter extends AbstractFilter
         $alias = $queryBuilder->getRootAliases()[0];
 
         $queryBuilder
-            ->addSelect('COUNT(threadComment) as HIDDEN threadCommentCount')
+            ->addSelect('COUNT(adherent) as HIDDEN contributorsCount')
             ->leftJoin($alias.'.answers', 'answer')
             ->leftJoin('answer.threads', 'thread')
             ->leftJoin('thread.comments', 'threadComment')
+            ->leftJoin('threadComment.author', 'adherent')
             ->groupBy($alias.'.id')
-            ->addOrderBy('threadCommentCount', $value)
+            ->addOrderBy('contributorsCount', $value)
         ;
     }
 
@@ -43,13 +44,13 @@ final class CommentsCountFilter extends AbstractFilter
 
         $description = [];
         foreach ($this->properties as $property => $strategy) {
-            $description['commentsCount'] = [
+            $description['contributorsCount'] = [
                 'property' => $property,
                 'type' => 'string',
                 'required' => false,
                 'swagger' => [
-                    'description' => 'Order by comments count.',
-                    'name' => 'commentsCount',
+                    'description' => 'Order by contributors count.',
+                    'name' => 'contributorsCount',
                     'type' => 'string',
                 ],
             ];
