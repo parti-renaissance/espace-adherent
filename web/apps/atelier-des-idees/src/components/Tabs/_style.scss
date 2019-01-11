@@ -2,7 +2,11 @@
   border-bottom: none;
 
   .rc-tabs-tab {
-    color: $spiro-disco-ball;
+    color: $black;
+
+    &-active {
+      color: $spiro-disco-ball;
+    }
   }
 
   .rc-tabs-ink-bar {
