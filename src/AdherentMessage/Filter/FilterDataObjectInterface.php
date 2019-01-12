@@ -10,5 +10,9 @@ interface FilterDataObjectInterface extends \Serializable
 
     public function getToken(): ?string;
 
-    public function handleRequest(Request $request);
+    public function handleRequest(Request $request): FilterDataObjectInterface;
+
+    public function updateChangeStatus(Request $request): void;
+
+    public function isChanged(): bool;
 }

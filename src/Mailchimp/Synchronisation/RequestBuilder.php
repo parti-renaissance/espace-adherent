@@ -5,6 +5,7 @@ namespace AppBundle\Mailchimp\Synchronisation;
 use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\SubscriptionType;
+use AppBundle\Mailchimp\Manager;
 use AppBundle\Mailchimp\Synchronisation\Request\MemberRequest;
 use AppBundle\Mailchimp\Synchronisation\Request\MemberTagsRequest;
 use AppBundle\Subscription\SubscriptionTypeEnum;
@@ -24,12 +25,6 @@ class RequestBuilder
     private $activeTags = [];
     private $inactiveTags = [];
 
-    private $committeeFollower = false;
-    private $committeeHost = false;
-    private $committeeSupervisor = false;
-
-    private $citizenProjectHost = false;
-
     private $mailchimpInterestIds = [];
 
     public function __construct(array $mailchimpInterestIds = [])
@@ -48,12 +43,21 @@ class RequestBuilder
             ->setCity($adherent->getCityName())
             ->setInterests(
                 array_replace(
+                    // By default all interests are disabled (`false` value) for a member
                     array_fill_keys($this->mailchimpInterestIds, false),
+
+                    // Activate adherent's interests
                     array_fill_keys(
-                        array_intersect_key($this->mailchimpInterestIds, array_flip($adherent->getInterests())),
+                        array_intersect_key(
+                            $this->mailchimpInterestIds,
+                            array_flip($adherent->getInterests())
+                        ),
                         true
                     ),
+
                     /*
+                     * Activate Notification group interests.
+                     *
                      * This is a hack to migrate progressively the ID stored
                      * into DB (subscription_types.external_id column), after that we will be able to use this method:
                      * array_fill_keys(array_intersect($interestIds, $adherent->getSubscriptionExternalIds()), true)
@@ -67,22 +71,25 @@ class RequestBuilder
                             case SubscriptionTypeEnum::LOCAL_HOST_EMAIL: return 'f34541ec0f';
                             case SubscriptionTypeEnum::REFERENT_EMAIL: return 'c4e1880afe';
                         }
-                    }, $adherent->getSubscriptionTypes())), true)
+                    }, $adherent->getSubscriptionTypes())), true),
+
+                    // Activate Member group interest
+                    array_fill_keys(
+                        array_intersect_key(
+                            $this->mailchimpInterestIds,
+                            array_filter([
+                                Manager::INTEREST_KEY_COMMITTEE_SUPERVISOR => !($memberships = $adherent->getMemberships())->getCommitteeSupervisorMemberships()->isEmpty(),
+                                Manager::INTEREST_KEY_COMMITTEE_HOST => !$memberships->getCommitteeHostMemberships(CommitteeMembershipCollection::EXCLUDE_SUPERVISORS)->isEmpty(),
+                                Manager::INTEREST_KEY_COMMITTEE_FOLLOWER => $isFollower = !$memberships->getCommitteeFollowerMembershipsNotWaitingForApproval()->isEmpty(),
+                                Manager::INTEREST_KEY_COMMITTEE_NO_FOLLOWER => !$isFollower,
+                                Manager::INTEREST_KEY_CP_HOST => $adherent->isCitizenProjectAdministrator(),
+                            ])
+                        ),
+                        true
+                    )
                 )
             )
             ->setActiveTags($adherent->getReferentTagCodes())
-            ->setCommitteeFollower(
-                !($memberships = $adherent->getMemberships())
-                    ->getCommitteeFollowerMembershipsNotWaitingForApproval()
-                    ->isEmpty()
-            )
-            ->setCommitteeHost(
-                !$memberships
-                    ->getCommitteeHostMemberships(CommitteeMembershipCollection::EXCLUDE_SUPERVISORS)
-                    ->isEmpty()
-            )
-            ->setCommitteeSupervisor(!$memberships->getCommitteeSupervisorMemberships()->isEmpty())
-            ->setCitizenProjectHost($adherent->isCitizenProjectAdministrator())
         ;
     }
 
@@ -156,34 +163,6 @@ class RequestBuilder
         return $this;
     }
 
-    public function setCommitteeFollower(bool $committeeFollower): self
-    {
-        $this->committeeFollower = $committeeFollower;
-
-        return $this;
-    }
-
-    public function setCommitteeHost(bool $committeeHost): self
-    {
-        $this->committeeHost = $committeeHost;
-
-        return $this;
-    }
-
-    public function setCommitteeSupervisor(bool $committeeSupervisor): self
-    {
-        $this->committeeSupervisor = $committeeSupervisor;
-
-        return $this;
-    }
-
-    public function setCitizenProjectHost(bool $citizenProjectHost): self
-    {
-        $this->citizenProjectHost = $citizenProjectHost;
-
-        return $this;
-    }
-
     public function buildMemberRequest(string $memberIdentifier): MemberRequest
     {
         $request = new MemberRequest($memberIdentifier);
@@ -247,11 +226,6 @@ class RequestBuilder
         if ($this->activeTags) {
             $mergeFields[MemberRequest::MERGE_FIELD_TAGS] = implode(',', $this->activeTags);
         }
-
-        $mergeFields[MemberRequest::MERGE_FIELD_COMMITTEE_FOLLOWER] = (int) $this->committeeFollower;
-        $mergeFields[MemberRequest::MERGE_FIELD_COMMITTEE_SUPERVISOR] = (int) $this->committeeSupervisor;
-        $mergeFields[MemberRequest::MERGE_FIELD_COMMITTEE_HOST] = (int) $this->committeeHost;
-        $mergeFields[MemberRequest::MERGE_FIELD_CITIZEN_PROJECT_HOST] = (int) $this->citizenProjectHost;
 
         return $mergeFields;
     }
