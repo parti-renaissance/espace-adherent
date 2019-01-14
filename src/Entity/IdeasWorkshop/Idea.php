@@ -156,7 +156,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     "status": "exact",
  *     "name": "partial",
  *     "themes.name": "exact",
- *     "author_category": "exact",
+ *     "authorCategory": "exact",
  *     "author.uuid": "exact",
  *     "category.name": "exact",
  *     "needs.name": "exact"
