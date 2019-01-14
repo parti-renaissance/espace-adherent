@@ -22,7 +22,6 @@ class Collapse extends React.Component {
                 })}>
                 <div className="collapse__container">
                     <a onClick={() => this.setState({ isCollapsed: !this.state.isCollapsed })}>
-                        {' '}
                         {'function' === typeof Component ? <Component /> : Component}
                     </a>
 
