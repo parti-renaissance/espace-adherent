@@ -14,35 +14,43 @@ import {
     fetchNextAnswerThreads,
 } from '../../redux/thunk/currentIdea';
 import { showModal } from '../../redux/actions/modal';
+import { resetThreadPagingData } from '../../redux/actions/threads';
 
-// TODO: reset paging data on unmount
-function IdeaThread(props) {
-    const { isAuthenticated, ...otherProps } = props;
-    return (
-        <React.Fragment>
-            <CommentsList
-                {...otherProps}
-                showForm={isAuthenticated}
-                onSendComment={(value, parentId = '') => props.onSendComment(value, props.answerId, parentId)}
-                onLoadMore={(parentId = '') => props.onLoadMore(props.answerId, parentId)}
-                hasActions={isAuthenticated}
-            />
-            {!isAuthenticated && (
-                <div className="idea-thread__contribute">
-                    <p className="idea-thread__contribute__main">
-                        Pour ajouter votre contribution,{' '}
-                        <a className="idea-thread__contribute__link" href="/connexion">
-                            connectez-vous
-                        </a>{' '}
-                        ou{' '}
-                        <a className="idea-thread__contribute__link" href="/adhesion">
-                            créez un compte
-                        </a>
-                    </p>
-                </div>
-            )}
-        </React.Fragment>
-    );
+class IdeaThread extends React.Component {
+    componentWillUnmount() {
+        this.props.unmountIdeaThread();
+    }
+
+    render() {
+        const { isAuthenticated, ...otherProps } = this.props;
+        return (
+            <React.Fragment>
+                <CommentsList
+                    {...otherProps}
+                    showForm={isAuthenticated}
+                    onSendComment={(value, parentId = '') =>
+                        this.props.onSendComment(value, this.props.answerId, parentId)
+                    }
+                    onLoadMore={(parentId = '') => this.props.onLoadMore(this.props.answerId, parentId)}
+                    hasActions={isAuthenticated}
+                />
+                {!isAuthenticated && (
+                    <div className="idea-thread__contribute">
+                        <p className="idea-thread__contribute__main">
+                            Pour ajouter votre contribution,{' '}
+                            <a className="idea-thread__contribute__link" href="/connexion">
+                                connectez-vous
+                            </a>{' '}
+                            ou{' '}
+                            <a className="idea-thread__contribute__link" href="/adhesion">
+                                créez un compte
+                            </a>
+                        </p>
+                    </div>
+                )}
+            </React.Fragment>
+        );
+    }
 }
 
 function mapStateToProps(state, { questionId }) {
@@ -90,6 +98,7 @@ function mapDispatchToProps(dispatch) {
                 dispatch(fetchNextAnswerThreads(answerId));
             }
         },
+        unmountIdeaThread: () => dispatch(resetThreadPagingData()),
     };
 }
 
