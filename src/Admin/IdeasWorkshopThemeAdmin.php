@@ -36,7 +36,6 @@ class IdeasWorkshopThemeAdmin extends AbstractAdmin
                 'label' => 'Visibilité',
             ])
             ->add('image', FileType::class, [
-                'required' => false,
                 'label' => 'Ajoutez une image',
             ])
         ;
