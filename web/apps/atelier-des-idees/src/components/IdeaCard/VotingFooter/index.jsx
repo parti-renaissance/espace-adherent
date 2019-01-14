@@ -8,8 +8,10 @@ class VotingFooter extends React.Component {
         super(props);
         this.state = {
             toggleVotes: false,
+            fadeout: false,
         };
         this.timerId = null;
+        this.fadeOutStyle = null;
         // ref of voting footer
         this.footerRef = React.createRef();
 
@@ -18,17 +20,24 @@ class VotingFooter extends React.Component {
 
     componentWillUnmount() {
         clearTimeout(this.timerId);
+        clearTimeout(this.fadeOutStyle);
     }
 
     resetTimeout() {
         clearTimeout(this.timerId);
+        clearTimeout(this.fadeOutStyle);
         this.timerId = setTimeout(() => {
-            this.setState(
-                {
-                    toggleVotes: false,
-                },
-                () => this.props.onToggleVotePanel(false)
-            );
+            this.setState({
+                fadeout: false,
+            });
+            this.fadeOutStyle = setTimeout(() => {
+                this.setState(
+                    {
+                        toggleVotes: false,
+                    },
+                    () => this.props.onToggleVotePanel(false)
+                );
+            }, 300);
         }, 5000);
     }
 
@@ -37,6 +46,7 @@ class VotingFooter extends React.Component {
             <div
                 className={classnames('voting-footer', {
                     'voting-footer--open': this.state.toggleVotes,
+                    'voting-footer--close': !this.state.fadeout,
                 })}
                 ref={this.footerRef}
             >
@@ -82,7 +92,7 @@ class VotingFooter extends React.Component {
                             <button
                                 className="button--lowercase"
                                 onClick={() =>
-                                    this.setState({ toggleVotes: true }, () => {
+                                    this.setState({ toggleVotes: true, fadeout: true }, () => {
                                         this.props.onToggleVotePanel(true);
                                         this.resetTimeout();
                                     })
