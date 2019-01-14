@@ -10,10 +10,10 @@ class IdeaFilters extends React.Component {
         this.filterItems = {
             order: {
                 options: [
-                    { value: 'order[\'publishedAt\']/DESC', label: 'Plus récentes' },
-                    { value: 'order[\'publishedAt\']/ASC', label: 'Plus anciennes' },
+                    { value: 'order[publishedAt]/DESC', label: 'Plus récentes' },
+                    { value: 'order[publishedAt]/ASC', label: 'Plus anciennes' },
                     { value: 'commentsCount/DESC', label: 'Plus commentées' },
-                    { value: 'votesCount/DESC', label: 'Plus votées', status: ideaStatus.FINALIZED },
+                    { value: 'order[votesCount]/DESC', label: 'Plus votées', status: ideaStatus.FINALIZED },
                 ],
             },
             author_category: {
