@@ -32,10 +32,12 @@ class IdeaPage extends React.Component {
 
 IdeaPage.defaultProps = {
     hasFetchError: false,
+    isFetchingIdea: false,
 };
 
 IdeaPage.propTypes = {
     initIdeaPage: PropTypes.func.isRequired,
+    isFetchingIdea: PropTypes.bool,
     hasFetchError: PropTypes.bool,
 };
 
