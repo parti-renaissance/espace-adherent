@@ -8,7 +8,7 @@ import { setMyIdeas, removeMyIdea } from '../actions/myIdeas';
 import { setMyContributions } from '../actions/myContributions';
 import { selectAuthUser, selectIsAuthenticated } from '../selectors/auth';
 import { hideModal } from '../actions/modal';
-import { setThreads } from '../actions/threads';
+import { setThreads, setThreadComments } from '../actions/threads';
 
 // axios cancellation
 const CancelToken = Axios.CancelToken;
@@ -95,7 +95,17 @@ export function fetchIdea(id) {
                     return acc;
                 }, []);
                 dispatch(setThreads(threads));
-
+                // set thread comments
+                const comments = threads.reduce((acc, thread) => {
+                    // add parent thread id to each comment
+                    const threadComments = thread.comments.items.map(threadComment => ({
+                        ...threadComment,
+                        thread: { uuid: thread.uuid },
+                    }));
+                    return [...acc, ...threadComments];
+                }, []);
+                dispatch(setThreadComments(comments));
+                //  request success state
                 dispatch(createRequestSuccess(FETCH_IDEA, id));
             })
             .catch(error => dispatch(createRequestFailure(FETCH_IDEA, id)));

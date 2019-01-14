@@ -5,7 +5,7 @@ import { FLAG_MODAL } from '../../constants/modalTypes';
 import CommentsList from '../../components/CommentsList';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectCurrentIdea } from '../../redux/selectors/currentIdea';
-import { selectAnswerThreads } from '../../redux/selectors/threads';
+import { selectAnswerThreadsWithReplies } from '../../redux/selectors/threads';
 import { selectIsAuthenticated, selectAuthUser } from '../../redux/selectors/auth';
 import { approveComment, reportComment } from '../../redux/thunk/threads';
 import {
@@ -52,7 +52,7 @@ function mapStateToProps(state, { questionId }) {
     const currentIdea = selectCurrentIdea(state);
     const currentAnswer = currentIdea.answers && currentIdea.answers.find(answer => answer.question.id === questionId);
     const answerId = currentAnswer && currentAnswer.id;
-    const answerThreads = selectAnswerThreads(state, answerId);
+    const answerThreads = selectAnswerThreadsWithReplies(state, answerId);
     // loading
     const sendThreadState = selectLoadingState(state, 'POST_THREAD', answerId);
     const sendingThreadComments = answerThreads.reduce((acc, thread) => {
