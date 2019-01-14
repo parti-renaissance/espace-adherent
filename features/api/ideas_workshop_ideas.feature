@@ -36,7 +36,7 @@ Feature:
                 "themes": [
                     {
                         "name": "Écologie",
-                        "thumbnail": null
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                     }
                 ],
                 "category": {
@@ -72,7 +72,7 @@ Feature:
                 "themes": [
                     {
                         "name": "Écologie",
-                        "thumbnail": null
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                     }
                 ],
                 "category": {
@@ -174,7 +174,7 @@ Feature:
                 "themes": [
                     {
                         "name": "Écologie",
-                        "thumbnail": null
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                     }
                 ],
                 "category": {
@@ -419,7 +419,7 @@ Feature:
              "themes":[
                 {
                    "name":"Écologie",
-                   "thumbnail":null
+                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                 }
              ],
              "category":{
@@ -523,7 +523,7 @@ Feature:
              "themes":[
                 {
                    "name":"Écologie",
-                   "thumbnail":null
+                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                 }
              ],
              "category":{
@@ -682,8 +682,8 @@ Feature:
              "name":"Reduire le bruit dans les opens spaces",
              "themes":[
                 {
-                   "name":"\u00c9cologie",
-                   "thumbnail":null
+                    "name": "Écologie",
+                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                 }
              ],
              "category":{
@@ -803,7 +803,7 @@ Feature:
         "themes": [
             {
                 "name": "Trésorerie",
-                "thumbnail": null
+                "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/tresory.png"
             }
         ],
         "category": {
@@ -891,7 +891,7 @@ Feature:
         "themes": [
             {
                 "name": "Trésorerie",
-            "thumbnail": null
+                "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/tresory.png"
             }
         ],
         "category": {
@@ -1474,7 +1474,7 @@ Feature:
         "themes": [
             {
                 "id": 3,
-                "thumbnail": null
+                "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
             }
         ],
         "category": {
@@ -1521,7 +1521,7 @@ Feature:
                 "themes": [
                     {
                         "name": "Écologie",
-                        "thumbnail": null
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                     }
                 ],
                 "category": {
@@ -1562,7 +1562,7 @@ Feature:
                 "themes": [
                     {
                         "name": "Écologie",
-                        "thumbnail": null
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                     }
                 ],
                 "category": {
@@ -1618,7 +1618,7 @@ Feature:
                 "themes": [
                     {
                         "name": "Écologie",
-                        "thumbnail": null
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                     }
                 ],
                 "category": {
@@ -1654,7 +1654,7 @@ Feature:
                 "themes": [
                     {
                         "name": "Écologie",
-                        "thumbnail": null
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                     }
                 ],
                 "category": {
@@ -1715,7 +1715,7 @@ Feature:
                 "themes": [
                     {
                         "name": "Écologie",
-                        "thumbnail": null
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                     }
                 ],
                 "category": {
@@ -1751,7 +1751,7 @@ Feature:
                 "themes": [
                     {
                         "name": "Écologie",
-                        "thumbnail": null
+                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                     }
                 ],
                 "category": {
@@ -1811,12 +1811,12 @@ Feature:
              "name":"Faire la paix",
              "themes":[
                 {
-                   "name":"Arm\u00e9es et d\u00e9fense",
-                   "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
+                   "name":"Armées et défense",
+                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                 }
              ],
              "category":{
-                "name":"Echelle Europ\u00e9enne",
+                "name":"Echelle Européenne",
                 "enabled":true
              },
              "needs":[
@@ -1857,8 +1857,8 @@ Feature:
              "name":"R\u00e9duire le gaspillage",
              "themes":[
                 {
-                   "name":"\u00c9cologie",
-                   "thumbnail":null
+                    "name": "Écologie",
+                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                 }
              ],
              "category":{

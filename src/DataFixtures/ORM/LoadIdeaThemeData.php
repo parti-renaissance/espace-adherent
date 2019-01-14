@@ -22,20 +22,21 @@ class LoadIdeaThemeData extends AbstractFixture
 
         $themeTreasure = new Theme(
             'Trésorerie',
-            null,
+            'tresory.png',
             true
         );
         $this->addReference('theme-treasure', $themeTreasure);
 
         $themeEcology = new Theme(
             'Écologie',
-            null,
+            'ecology.png',
             true
         );
         $this->addReference('theme-ecology', $themeEcology);
 
         $themeNotPublished = new Theme(
-            'Thème non publié'
+            'Thème non publié',
+            'not_published.png'
         );
         $this->addReference('theme-not-published', $themeNotPublished);
 

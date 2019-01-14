@@ -9,6 +9,7 @@ use AppBundle\Entity\ImageTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -54,6 +55,8 @@ class Theme implements EnabledInterface
      *
      * @ORM\Column
      *
+     * @Assert\NotBlank
+     *
      * @SymfonySerializer\Groups({"theme_read", "idea_list_read"})
      */
     protected $name;
@@ -64,6 +67,13 @@ class Theme implements EnabledInterface
      * @ORM\Column(type="boolean")
      */
     private $enabled;
+
+    /**
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     */
+    protected $imageName;
 
     public function __construct(string $name = '', string $imageName = null, bool $enabled = false)
     {
