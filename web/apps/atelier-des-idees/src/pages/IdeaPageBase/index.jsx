@@ -146,22 +146,24 @@ class IdeaPageBase extends React.Component {
         const { idea } = this.props;
         return (
             <div className="create-idea-page">
-                <div className="create-idea-page__header l__wrapper">
-                    <button className="button create-idea-actions__back" onClick={() => this.props.onBackClicked()}>
-                        ← Retour
-                    </button>
-                    {idea.status !== ideaStatus.FINALIZED && this.state.name && (
-                        <Switch onChange={this.onToggleReadingMode} label="Passer en mode lecture" />
-                    )}
-                    {this.props.isAuthor && (
-                        <CreateIdeaActions
-                            onDeleteClicked={this.props.onDeleteClicked}
-                            onPublishClicked={this.onPublishIdea}
-                            onSaveClicked={this.onSaveIdea}
-                            isEditing={idea.status === ideaStatus.DRAFT}
-                            canPublish={this.hasRequiredValues()}
-                        />
-                    )}
+                <div className="header">
+                    <div className="create-idea-page__header l__wrapper">
+                        <button className="button create-idea-actions__back" onClick={() => this.props.onBackClicked()}>
+                            ← Retour
+                        </button>
+                        {idea.status !== ideaStatus.FINALIZED && this.state.name && (
+                            <Switch onChange={this.onToggleReadingMode} label="Passer en mode lecture" />
+                        )}
+                        {this.props.isAuthor && (
+                            <CreateIdeaActions
+                                onDeleteClicked={this.props.onDeleteClicked}
+                                onPublishClicked={this.onPublishIdea}
+                                onSaveClicked={this.onSaveIdea}
+                                isEditing={idea.status === ideaStatus.DRAFT}
+                                canPublish={this.hasRequiredValues()}
+                            />
+                        )}
+                    </div>
                 </div>
                 <div className="create-idea-page__content">
                     {idea.status === ideaStatus.DRAFT && (
