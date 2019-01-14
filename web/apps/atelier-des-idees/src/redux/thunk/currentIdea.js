@@ -26,7 +26,7 @@ export function deleteCurrentIdea() {
         const { id } = selectCurrentIdea(getState());
         if (id) {
             // idea already exists (whatever its state)
-            return axios.delete(`/api/ideas/${id}`).then(() => {
+            return axios.delete(`/api/ideas-workshop/ideas/${id}`).then(() => {
                 dispatch(hideModal());
                 history.push('/atelier-des-idees');
             });
@@ -65,7 +65,7 @@ export function saveCurrentIdea(ideaData) {
                 return id ? { ...answer, id } : answer;
             });
             return axios
-                .put(`/api/ideas/${uuid}`, ideaData)
+                .put(`/api/ideas-workshop/ideas/${uuid}`, ideaData)
                 .then(res => res.data)
                 .then((data) => {
                     dispatch(updateCurrentIdea(data));
@@ -74,7 +74,7 @@ export function saveCurrentIdea(ideaData) {
                 .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA, uuid)));
         }
         return axios
-            .post('/api/ideas', ideaData)
+            .post('/api/ideas-workshop/ideas', ideaData)
             .then(res => res.data)
             .then((data) => {
                 dispatch(setCurrentIdea(data));
@@ -97,7 +97,7 @@ export function fetchGuidelines() {
     return (dispatch, getState, axios) => {
         dispatch(createRequest(FETCH_GUIDELINES));
         axios
-            .get('/api/guidelines')
+            .get('/api/ideas-workshop/guidelines')
             .then(res => res.data)
             .then((data) => {
                 dispatch(setGuidelines(data));
