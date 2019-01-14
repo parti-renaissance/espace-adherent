@@ -29,16 +29,15 @@ class AdherentMessageChangeCommandHandler implements MessageHandlerInterface
         /** @var AdherentMessageInterface $message */
         $message = $this->repository->findOneByUuid($command->getUuid()->toString());
 
+        $this->entityManager->refresh($message);
+
         if (!$message || $message->isSynchronized()) {
             return;
         }
 
-        $needPersistCampaignId = null === $message->getExternalId();
-
         if ($this->mailchimpManager->editCampaign($message)) {
-            if ($needPersistCampaignId) {
-                $this->entityManager->flush();
-            }
+            // Persists Mailchimp campaign ID on creation (first API call)
+            $this->entityManager->flush();
 
             if ($this->mailchimpManager->editCampaignContent($message)) {
                 $message->setSynchronized(true);
