@@ -94,6 +94,41 @@
 			}
 		}
 
+		&--close {
+			.voting-footer__container,
+			.voting-footer__total-votes {
+				animation: fadeIn 200ms ease-in;
+			}
+			.voting-footer__vote-0 {
+				animation: fadeOut 300ms ease-in;
+			}
+			.voting-footer__vote-1 {
+				animation: fadeOut 350ms ease-in;
+			}
+			.voting-footer__vote-2 {
+				animation: fadeOut 400ms ease-in;
+			}
+		}
+
+		@keyframes fadeOut {
+			0% {
+				opacity: 1;
+				transform: translateX(0);
+			}
+			50% {
+				opacity: 0.7;
+			}
+			90% {
+				opacity: 0.2;
+			}
+			100% {
+				opacity: 0;
+				color: $white;
+				border-color: $white;
+				transform: translateX(-18px);
+			}
+		}
+
 		@keyframes fadeIn {
 			0% {
 				opacity: 0;
