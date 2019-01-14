@@ -86,6 +86,9 @@ class CommentsList extends React.Component {
                                                     onApproveComment={commentId =>
                                                         this.props.onApproveComment(commentId, comment.uuid)
                                                     }
+                                                    onReportComment={commentId =>
+                                                        this.props.onReportComment(commentId, comment.uuid)
+                                                    }
                                                     onLoadMore={() => this.props.onLoadMore(comment.uuid)}
                                                     parentId={comment.uuid}
                                                     showForm={this.props.showForm}
