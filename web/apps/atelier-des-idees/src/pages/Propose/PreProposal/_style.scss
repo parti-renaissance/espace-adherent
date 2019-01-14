@@ -1,10 +1,15 @@
 .pre-proposal {
   display: flex;
   align-items: center;
-  padding: 40px 80px 60px;
 
   &__container {
     width: 100%;
+
+    &__title {
+        font-size: 32px;
+        line-height: normal;
+        letter-spacing: -0.5px;
+    }
 
     &__title,
     &__text {
@@ -13,6 +18,7 @@
 
     &__text {
       color: $light-black;
+      max-width: 630px;
     }
 
     &__link {
@@ -24,21 +30,20 @@
       background: $ogre-odor;
       border-color: $pastel-red;
     }
-
-    &__img {
-      width: 100%;
-    }
   }
 
   &__container:first-child {
-    display: flex;
-    justify-content: center;
+      width: auto;
+      margin: 0 70px;
+      text-align: center;
   }
 
   &__footer {
     text-align: center;
-    margin: 130px 0;
+    margin: 130px auto;
     color: $medium-grey;
+    font-size: 20px;
+    max-width: 75%;
 
     &__highlighted {
       border: 0;
@@ -50,8 +55,8 @@
   // responsive
   @media #{$tablet} {
     flex-direction: column;
+
     &__container:first-child {
-      text-align: center;
     }
 
     &__container {
@@ -65,27 +70,46 @@
   // responsive
   @media #{$tablet} {
     flex-direction: column;
-    padding: 0 80px;
+    align-items: flex-start;
+    padding: 0 70px;
 
     &__container {
-      text-align: center;
+        &:first-child {
+          margin: 0 0 30px 0;
+        }
     }
 
     &__footer {
-      margin: 80px 0 130px;
+      margin: 80px auto 130px;
     }
   }
 
   @media #{$mobile} {
     flex-direction: column;
+    align-items: flex-start;
     padding: 0;
 
     &__container {
-      text-align: center;
+
+        &:first-child {
+          margin: 0 0 30px 0;
+        }
+
+      // text-align: center;
+
+      &__title {
+          font-size: 24px;
+          line-height: normal;
+      }
+
+      &__img {
+        max-width: 100%;
+      }
     }
 
     &__footer {
-      margin: 80px 0 130px;
+      margin: 80px auto 130px;
+      font-size: 16px;
     }
   }
 }
