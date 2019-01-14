@@ -91,10 +91,9 @@ function mapStateToProps(state, ownProps) {
         withPaging,
         filters: {
             themes: themes.map(theme => ({ value: theme.name, label: theme.name })),
+            needs: needs.map(need => ({ value: need.name, label: need.name })),
             // categories: categories.map(category => ({ value: category.id, label: category.name })),
-            // needs: needs.map(need => ({ value: need.id, label: need.name })),
             categories: [],
-            needs: [],
         },
     };
 }
