@@ -32,24 +32,28 @@ class MyContributions extends React.Component {
                         src={icn_toggle_content}
                     />
                 </button>
-                {this.props.ideas.map(
-                    idea =>
-                        this.state.showList && (
-                            <React.Fragment>
-                                <div className="my-ideas__category__idea">
-                                    <p className="my-ideas__category__idea__date">
-                                        Créée le {new Date(idea.created_at).toLocaleDateString()}
-                                    </p>
-                                    <h4 className="my-ideas__category__idea__name">{idea.name}</h4>
-                                    <div className="my-ideas__category__idea__actions">
-                                        <button className="my-ideas__category__idea__actions__see-note button--secondary">
-                                            VOIR LA NOTE
-                                        </button>
+                {0 < this.props.ideas.length ? (
+                    this.props.ideas.map(
+                        idea =>
+                            this.state.showList && (
+                                <React.Fragment>
+                                    <div className="my-ideas__category__idea">
+                                        <p className="my-ideas__category__idea__date">
+                                            Créée le {new Date(idea.created_at).toLocaleDateString()}
+                                        </p>
+                                        <h4 className="my-ideas__category__idea__name">{idea.name}</h4>
+                                        <div className="my-ideas__category__idea__actions">
+                                            <button className="my-ideas__category__idea__actions__see-note button--secondary">
+                                                VOIR LA NOTE
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="separator" />
-                            </React.Fragment>
-                        )
+                                    <div className="separator" />
+                                </React.Fragment>
+                            )
+                    )
+                ) : (
+                    <small>Vous n'avez pas encore de contribution</small>
                 )}
             </div>
         );
