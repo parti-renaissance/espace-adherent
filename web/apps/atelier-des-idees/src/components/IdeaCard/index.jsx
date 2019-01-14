@@ -173,7 +173,7 @@ IdeaCard.propTypes = {
         feasible: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
         innovative: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
         total: PropTypes.number.isRequired,
-        my_votes: PropTypes.arrayOf(PropTypes.string),
+        my_votes: PropTypes.object,
     }).isRequired,
     comments_count: PropTypes.number,
     contributors_count: PropTypes.number,

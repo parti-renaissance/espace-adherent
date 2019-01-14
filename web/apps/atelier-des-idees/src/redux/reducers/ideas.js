@@ -55,10 +55,10 @@ const ideasReducer = (state = initialState, action) => {
         };
     }
     case TOGGLE_VOTE_IDEA: {
-        const { id, voteType } = payload;
+        const { id, voteType, voteId } = payload;
         const updatedItems = state.items.map((item) => {
             if (item.uuid === id) {
-                return toggleVote(item, voteType);
+                return toggleVote(item, voteType, voteId);
             }
             return item;
         });
