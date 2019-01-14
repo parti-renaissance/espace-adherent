@@ -14,7 +14,7 @@ import {
     toggleVoteCurrentIdea,
     updateCurrentIdeaAnswer,
 } from '../actions/currentIdea';
-import { addThreads, setAnswerThreadsPaging } from '../actions/threads';
+import { addThreads, setAnswerThreadsPaging, addThreadComments, updateThread } from '../actions/threads';
 import { hideModal } from '../actions/modal';
 
 /**
@@ -140,9 +140,9 @@ export function voteCurrentIdea(voteType) {
 
 export function postCommentToCurrentIdea(content, answerId, parentId = '') {
     return (dispatch, getState) =>
-        dispatch(postComment(content, answerId, parentId)).then((thread) => {
+        dispatch(postComment(content, answerId, parentId)).then((newComment) => {
             if (!parentId) {
-                dispatch(addThreads([thread]));
+                dispatch(addThreads([newComment]));
                 // increment answer total item
                 const answer = selectCurrentIdeaAnswer(getState(), answerId);
                 const updatedAnswer = {
@@ -151,9 +151,52 @@ export function postCommentToCurrentIdea(content, answerId, parentId = '') {
                 };
                 dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
             } else {
-                // TODO: update thread & comments
+                dispatch(addThreadComments([newComment]));
+                const thread = selectThread(getState(), parentId);
+                dispatch(
+                    updateThread(parentId, {
+                        comments: { ...thread.comments, total_items: thread.comments.total_items + 1 },
+                    })
+                );
             }
         });
+    // .finally(() => {
+    //     dispatch(
+    //         addThreadComments([
+    //             {
+    //                 thread: {
+    //                     answer: {
+    //                         id: 1,
+    //                     },
+    //                     content: 'J\'ouvre une discussion sur le probl\u00e8me.',
+    //                     author: {
+    //                         uuid: 'e6977a4d-2646-5f6c-9c82-88e58dca8458',
+    //                         first_name: 'Carl',
+    //                         last_name: 'Mirabeau',
+    //                     },
+    //                     created_at: new Date().toISOString(),
+    //                     uuid: parentId,
+    //                     approved: false,
+    //                 },
+    //                 content,
+    //                 author: {
+    //                     uuid: 'd4b1e7e1-ba18-42a9-ace9-316440b30fa7',
+    //                     first_name: 'Martine',
+    //                     last_name: 'Lindt',
+    //                 },
+    //                 created_at: new Date().toISOString(),
+    //                 uuid: '11111',
+    //                 approved: false,
+    //             },
+    //         ])
+    //     );
+    //     const thread = selectThread(getState(), parentId);
+    //     dispatch(
+    //         updateThread(parentId, {
+    //             comments: { ...thread.comments, total_items: thread.comments.total_items + 1 },
+    //         })
+    //     );
+    // });
 }
 
 export function removeCommentFromCurrentIdea(id, parentId = '') {

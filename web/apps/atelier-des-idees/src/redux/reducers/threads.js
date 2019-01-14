@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import {
     SET_THREADS,
     ADD_THREADS,
+    UPDATE_THREAD,
     REMOVE_THREAD,
     TOGGLE_APPROVE_THREAD,
     SET_ANSWER_THREADS_PAGING,
@@ -22,6 +23,16 @@ function threadsReducer(state = initialState.threads, action) {
     case REMOVE_THREAD: {
         const { id } = payload;
         return state.filter(thread => thread.uuid !== id);
+    }
+    case UPDATE_THREAD: {
+        const { id, data } = payload;
+        const threads = state.map((thread) => {
+            if (thread.uuid === id) {
+                return { ...thread, ...data };
+            }
+            return thread;
+        });
+        return threads;
     }
     case TOGGLE_APPROVE_THREAD: {
         const { id } = payload;
