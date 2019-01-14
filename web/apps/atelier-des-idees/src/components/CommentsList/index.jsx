@@ -62,12 +62,13 @@ class CommentsList extends React.Component {
                                 <React.Fragment>
                                     <Comment
                                         {...comment}
-                                        hasActions={this.props.hasActions && !this.props.parentId}
+                                        hasActions={this.props.hasActions}
                                         isAuthor={this.props.currentUserId === comment.author.uuid}
                                         onReply={() => this.setState({ replyingTo: comment.uuid })}
                                         onDelete={() => this.props.onDeleteComment(comment.uuid)}
                                         onApprove={() => this.props.onApproveComment(comment.uuid)}
                                         onReport={() => this.props.onReportComment(comment.uuid)}
+                                        canAnswer={!this.props.parentId}
                                         canApprove={this.props.currentUserId === this.props.ownerId}
                                     />
                                     {((comment.replies && !!comment.replies.length) ||
@@ -79,6 +80,12 @@ class CommentsList extends React.Component {
                                                         // send parent comment id as (optional) second parameter
                                                         this.props.onSendComment(value, comment.uuid)
                                                     }
+                                                    onDeleteComment={commentId =>
+                                                        this.props.onDeleteComment(commentId, comment.uuid)
+                                                    }
+                                                    onApproveComment={commentId =>
+                                                        this.props.onApproveComment(commentId, comment.uuid)
+                                                    }
                                                     onLoadMore={() => this.props.onLoadMore(comment.uuid)}
                                                     parentId={comment.uuid}
                                                     showForm={this.props.showForm}
@@ -87,6 +94,9 @@ class CommentsList extends React.Component {
                                                     emptyLabel={null}
                                                     total={comment.nbReplies}
                                                     isSendingComment={this.props.sendingReplies.includes(comment.uuid)}
+                                                    hasActions={this.props.hasActions}
+                                                    ownerId={this.props.ownerId}
+                                                    currentUserId={this.props.currentUserId}
                                                 />
                                             </div>
                                         )}

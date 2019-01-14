@@ -4,10 +4,12 @@ import {
     addThreadComments,
     updateThread,
     setThreadPagingData,
+    removeThreadComment,
+    toggleApproveThreadComment,
 } from '../actions/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { POST_THREAD, POST_THREAD_COMMENT } from '../constants/actionTypes';
-import { selectThread, selectThreadPagingData } from '../selectors/threads';
+import { selectThread, selectThreadPagingData, selectThreadComment } from '../selectors/threads';
 
 export function approveComment(id, parentId = '') {
     return (dispatch, getState, axios) => {
@@ -15,15 +17,24 @@ export function approveComment(id, parentId = '') {
         if (parentId) {
             type = 'thread_comments';
         }
-        // TODO: handle threadcomment
-        const thread = selectThread(getState(), id);
+        const comment = parentId ? selectThreadComment(getState(), id) : selectThread(getState(), id);
         // simulate toggle
-        dispatch(toggleApproveThread(id));
+        if (parentId) {
+            dispatch(toggleApproveThreadComment(id));
+        } else {
+            dispatch(toggleApproveThread(id));
+        }
         return (
             axios
-                .put(`/api/${type}/${id}/approval-toggle`, { approved: !thread.approved })
+                .put(`/api/${type}/${id}/approval-toggle`, { approved: !comment.approved })
                 // toggle back if error
-                .catch(() => dispatch(toggleApproveThread(id)))
+                .catch(() => {
+                    if (parentId) {
+                        dispatch(toggleApproveThreadComment(id));
+                    } else {
+                        dispatch(toggleApproveThread(id));
+                    }
+                })
         );
     };
 }
@@ -36,7 +47,13 @@ export function deleteComment(id, parentId = '') {
         }
         return axios
             .delete(`/api/${type}/${id}`)
-            .then(() => dispatch(removeThread(id)))
+            .then(() => {
+                if (parentId) {
+                    dispatch(removeThreadComment(id));
+                } else {
+                    dispatch(removeThread(id));
+                }
+            })
             .catch((error) => {
                 throw error;
             });
