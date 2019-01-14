@@ -21,7 +21,7 @@ class PreProposal extends React.PureComponent {
                             href="https://transformer.en-marche.fr/fr"
                             target="_blank"
                         >
-                            Suivre la mise en œuvre du programme
+                            Suivre l'avancée du programme
                         </a>
                     </div>
                 </div>

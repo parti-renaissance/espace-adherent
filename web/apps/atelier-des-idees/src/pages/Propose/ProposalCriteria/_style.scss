@@ -1,17 +1,25 @@
 .proposal-criteria {
   display: flex;
-  padding: 77px 80px 60px;
+  // padding: 77px 80px 60px;
+  padding: 80px 70px;
 
   &__container {
     width: 100%;
 
-    &__title,
-    &__link {
-      margin: 0 32% 0 76px;
+    &:first-child {
+        max-width: 380px;
+        margin-right: 70px;
+    }
+
+    &:nth-child(2) {
+        padding-right: 40px;
     }
 
     &__title {
       margin-bottom: 20px;
+      font-size: 32px;
+      letter-spacing: -0.5px;
+      line-height: normal;
     }
 
     &__item {
@@ -21,8 +29,13 @@
         height: 15px;
       }
       &__text {
-        margin: 0 0 24px 16px;
+        margin: 0 0 24px 0;
         line-height: 24px;
+        background-image: url('./img/icn_checklist.svg');
+        background-repeat: no-repeat;
+        background-position: top left;
+        padding-left: 35px;
+
         &__main {
           font-weight: bold;
         }
@@ -34,28 +47,43 @@
   @media #{$tablet} {
     flex-direction: column;
     &__container:first-child {
-      text-align: center;
+      max-width: 80%;
+      margin: 0;
     }
 
     &__container {
-      &__title,
+        &:nth-child(2) {
+            padding-right: 0px;
+        }
+
       &__link {
-        margin: 0 0 40px 0;
+        margin-bottom: 50px;
       }
     }
   }
   @media #{$mobile} {
     flex-direction: column;
-    padding: 0;
+    padding: 50px 0;
 
     &__container:first-child {
-      text-align: center;
+      max-width: 90%;
+      margin: 0;
     }
 
     &__container {
-      &__title,
+
+        &:nth-child(2) {
+            padding-right: 0px;
+        }
+
+      &__title {
+          font-size: 24px;
+
+
+      }
+
       &__link {
-        margin: 0 0 40px 0;
+        margin-bottom: 50px;
       }
     }
   }

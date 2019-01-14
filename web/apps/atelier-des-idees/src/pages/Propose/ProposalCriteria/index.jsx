@@ -19,7 +19,6 @@ class ProposalCriteria extends React.PureComponent {
                     </div>
                     <div className="proposal-criteria__container">
                         <div className="proposal-criteria__container__item">
-                            <img className="proposal-criteria__container__item__icon" src={icn_checklist} />
                             <p className="proposal-criteria__container__item__text">
                                 <span className="proposal-criteria__container__item__text__main">
                                     Être une vraie proposition :
@@ -29,7 +28,6 @@ class ProposalCriteria extends React.PureComponent {
                             </p>
                         </div>
                         <div className="proposal-criteria__container__item">
-                            <img className="proposal-criteria__container__item__icon" src={icn_checklist} />
                             <p className="proposal-criteria__container__item__text">
                                 <span className="proposal-criteria__container__item__text__main">
                                     Répondre à une politique publique :
@@ -39,7 +37,6 @@ class ProposalCriteria extends React.PureComponent {
                             </p>
                         </div>
                         <div className="proposal-criteria__container__item">
-                            <img className="proposal-criteria__container__item__icon" src={icn_checklist} />
                             <p className="proposal-criteria__container__item__text">
                                 <span className="proposal-criteria__container__item__text__main">
                                     Répondre à un problème précis :
@@ -49,7 +46,6 @@ class ProposalCriteria extends React.PureComponent {
                             </p>
                         </div>
                         <div className="proposal-criteria__container__item">
-                            <img className="proposal-criteria__container__item__icon" src={icn_checklist} />
                             <p className="proposal-criteria__container__item__text">
                                 <span className="proposal-criteria__container__item__text__main">
                                     Être respectueuse et courtoise :
