@@ -160,44 +160,6 @@ export function postCommentToCurrentIdea(content, answerId, parentId = '') {
                 );
             }
         });
-    // .finally(() => {
-    //     dispatch(
-    //         addThreadComments([
-    //             {
-    //                 thread: {
-    //                     answer: {
-    //                         id: 1,
-    //                     },
-    //                     content: 'J\'ouvre une discussion sur le probl\u00e8me.',
-    //                     author: {
-    //                         uuid: 'e6977a4d-2646-5f6c-9c82-88e58dca8458',
-    //                         first_name: 'Carl',
-    //                         last_name: 'Mirabeau',
-    //                     },
-    //                     created_at: new Date().toISOString(),
-    //                     uuid: parentId,
-    //                     approved: false,
-    //                 },
-    //                 content,
-    //                 author: {
-    //                     uuid: '00002',
-    //                     first_name: 'Adrien',
-    //                     last_name: 'Casanova',
-    //                 },
-    //                 created_at: new Date().toISOString(),
-    //                 uuid: '11111',
-    //                 approved: false,
-    //             },
-    //         ])
-    //     );
-    //     const thread = selectThread(getState(), parentId);
-    //     dispatch(
-    //         updateThread(parentId, {
-    //             // comments: { ...thread.comments, total_items: thread.comments.total_items + 1 },
-    //             comments: { ...thread.comments, total_items: 10 },
-    //         })
-    //     );
-    // });
 }
 
 export function removeCommentFromCurrentIdea(id, parentId = '') {
