@@ -28,7 +28,7 @@ class Collapse extends React.Component {
                     {this.state.isCollapsed ? (
                         <button
                             className="button collapse__container__btn--open"
-                            onClick={() => this.setState({ isCollapsed: !this.state.isCollapsed })}>
+                            onClick={() => this.setState(prevState => ({ isCollapsed: !prevState.isCollapsed }))}>
                             <img src={hideIcn} />
                         </button>
                     ) : (
