@@ -70,3 +70,5 @@ export const getAnswerThreads = (state, answerId) =>
     state.threads.filter(thread => thread.answer && thread.answer.id === answerId);
 export const getThread = (state, id) => state.threads.find(thread => thread.uuid === id);
 export const getAnswerThreadsPagingData = (state, answerId) => state.paging[answerId];
+export const getCommentsByThreadId = (state, threadId) =>
+    state.comments.filter(comment => comment.thread && comment.thread.uuid === threadId);
