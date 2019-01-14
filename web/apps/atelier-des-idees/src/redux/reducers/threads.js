@@ -9,6 +9,7 @@ import {
     SET_THREAD_COMMENTS,
     ADD_THREAD_COMMENTS,
     REMOVE_THREAD_COMMENT,
+    SET_THREAD_PAGING_DATA,
 } from '../constants/actionTypes';
 
 const initialState = { threads: [], comments: [], paging: {} };
@@ -68,8 +69,10 @@ function commentsReducer(state = initialState.comments, action) {
 function pagingReducer(state = initialState.paging, action) {
     const { type, payload } = action;
     switch (type) {
-    case SET_ANSWER_THREADS_PAGING:
+    case SET_ANSWER_THREADS_PAGING: // TODO: remove
         return { ...state, [payload.answerId]: payload.data };
+    case SET_THREAD_PAGING_DATA:
+        return { ...state, [payload.id]: payload.data };
     default:
         return state;
     }
