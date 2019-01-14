@@ -26,7 +26,7 @@ export function approveComment(id, parentId = '') {
         }
         return (
             axios
-                .put(`/api/${type}/${id}/approval-toggle`, { approved: !comment.approved })
+                .put(`/api/ideas-workshop/${type}/${id}/approval-toggle`, { approved: !comment.approved })
                 // toggle back if error
                 .catch(() => {
                     if (parentId) {
@@ -46,7 +46,7 @@ export function deleteComment(id, parentId = '') {
             type = 'thread_comments';
         }
         return axios
-            .delete(`/api/${type}/${id}`)
+            .delete(`/api/ideas-workshop/${type}/${id}`)
             .then(() => {
                 if (parentId) {
                     dispatch(removeThreadComment(id));
@@ -74,7 +74,7 @@ export function postComment(content, answerId, parentId = '') {
         }
         dispatch(createRequest(fetchType, fetchId));
         return axios
-            .post(`/api/${type}`, body)
+            .post(`/api/ideas-workshop/${type}`, body)
             .then(res => res.data)
             .then((thread) => {
                 dispatch(createRequestSuccess(fetchType, fetchId));
@@ -97,7 +97,7 @@ export function reportComment(reportData, id, parentId = '') {
 export function fetchThreads(params = {}) {
     return (dispatch, getState, axios) =>
         axios
-            .get('/api/threads', { params })
+            .get('/api/ideas-workshop/threads', { params })
             .then(res => res.data)
             .catch((error) => {
                 throw error;
@@ -107,7 +107,7 @@ export function fetchThreads(params = {}) {
 export function fetchThreadComments(threadId, params = {}) {
     return (dispatch, getState, axios) =>
         axios
-            .get(`/api/threads/${threadId}/comments`, { params })
+            .get(`/api/ideas-workshop/threads/${threadId}/comments`, { params })
             .then(res => res.data)
             .catch((error) => {
                 throw error;
