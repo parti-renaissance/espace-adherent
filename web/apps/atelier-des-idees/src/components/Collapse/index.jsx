@@ -19,22 +19,23 @@ class Collapse extends React.Component {
                 className={classNames('collapse', {
                     'collapse--close': !this.state.isCollapsed,
                     'collapse--open': this.state.isCollapsed,
-                })}
-            >
+                })}>
                 <div className="collapse__container">
-                    {'function' === typeof Component ? <Component /> : Component}
+                    <a onClick={() => this.setState({ isCollapsed: !this.state.isCollapsed })}>
+                        {' '}
+                        {'function' === typeof Component ? <Component /> : Component}
+                    </a>
+
                     {this.state.isCollapsed ? (
                         <button
                             className="button collapse__container__btn--open"
-                            onClick={() => this.setState({ isCollapsed: !this.state.isCollapsed })}
-                        >
+                            onClick={() => this.setState({ isCollapsed: !this.state.isCollapsed })}>
                             <img src={hideIcn} />
                         </button>
                     ) : (
                         <button
                             className="button collapse__container__btn--close"
-                            onClick={() => this.setState({ isCollapsed: !this.state.isCollapsed })}
-                        >
+                            onClick={() => this.setState({ isCollapsed: !this.state.isCollapsed })}>
                             <img src={revealIcn} />
                         </button>
                     )}

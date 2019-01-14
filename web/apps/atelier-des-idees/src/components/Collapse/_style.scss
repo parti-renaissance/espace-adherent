@@ -5,6 +5,12 @@
     align-items: center;
     padding: 20px 30px 20px 20px;
 
+    a {
+      text-decoration: none;
+      border-bottom: 0;
+      cursor: pointer;
+    }
+
     .button {
       width: 48px;
       height: 48px;
