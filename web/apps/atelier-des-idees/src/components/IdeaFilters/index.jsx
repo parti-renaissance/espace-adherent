@@ -24,7 +24,7 @@ class IdeaFilters extends React.Component {
             name: '',
             author_category: null,
             'theme.name': '',
-            category: '',
+            'category.name': '',
             'needs.name': '',
             order: this.filterItems.order.options[0].value,
         };
@@ -74,8 +74,8 @@ class IdeaFilters extends React.Component {
                                     <Select
                                         options={this.props.options.categories}
                                         placeholder="Echelle"
-                                        onSelected={
-                                            ([selected]) => this.onFilterChange('category', selected && selected.value) // TODO: wait for final param name
+                                        onSelected={([selected]) =>
+                                            this.onFilterChange('category.name', selected && selected.value)
                                         }
                                         isClearable={true}
                                         isDisabled={this.props.disabled}
@@ -109,8 +109,8 @@ class IdeaFilters extends React.Component {
                                 <Select
                                     options={this.props.options.needs}
                                     placeholder="Besoin"
-                                    onSelected={
-                                        ([selected]) => this.onFilterChange('needs.name', selected && selected.value)
+                                    onSelected={([selected]) =>
+                                        this.onFilterChange('needs.name', selected && selected.value)
                                     }
                                     isClearable={true}
                                     isDisabled={this.props.disabled}
