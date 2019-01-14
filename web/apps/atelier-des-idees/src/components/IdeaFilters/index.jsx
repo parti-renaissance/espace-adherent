@@ -16,13 +16,13 @@ class IdeaFilters extends React.Component {
                     { value: 'order[votesCount]/DESC', label: 'Plus votées', status: ideaStatus.FINALIZED },
                 ],
             },
-            author_category: {
+            authorCategory: {
                 options: Object.entries(AUTHOR_CATEGORIES).map(([key, value]) => ({ label: value, value: key })),
             },
         };
         this.state = {
             name: '',
-            author_category: null,
+            authorCategory: null,
             'theme.name': '',
             'category.name': '',
             'needs.name': '',
@@ -95,10 +95,10 @@ class IdeaFilters extends React.Component {
                             </React.Fragment>
                         )}
                         <Select
-                            options={this.filterItems.author_category.options}
+                            options={this.filterItems.authorCategory.options}
                             placeholder="Auteur"
                             onSelected={([selected]) =>
-                                this.onFilterChange('author_category', selected && selected.value)
+                                this.onFilterChange('authorCategory', selected && selected.value)
                             }
                             isClearable={true}
                             isDisabled={this.props.disabled}
