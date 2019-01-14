@@ -29,7 +29,7 @@ export function fetchIdeas(status, params = {}, options = { setMode: false, canc
             cancel();
         }
         return axios
-            .get('/api/ideas', {
+            .get('/api/ideas-workshop/ideas', {
                 params: { status, ...params },
                 cancelToken: new CancelToken((c) => {
                     cancel = c;
@@ -74,7 +74,7 @@ export function fetchIdea(id) {
     return (dispatch, getState, axios) => {
         dispatch(createRequest(FETCH_IDEA, id));
         return axios
-            .get(`/api/ideas/${id}`)
+            .get(`/api/ideas-workshop/ideas/${id}`)
             .then(res => res.data)
             .then((data) => {
                 dispatch(
@@ -123,7 +123,7 @@ export function fetchUserIdeas(params = {}) {
             const user = selectAuthUser(getState());
             dispatch(createRequest(FETCH_MY_IDEAS));
             return axios
-                .get(`/api/ideas?author.uuid=${user.uuid}`, { params: { ...params } })
+                .get(`/api/ideas-workshop/ideas?author.uuid=${user.uuid}`, { params: { ...params } })
                 .then(res => res.data)
                 .then(({ items, metadata }) => {
                     dispatch(setMyIdeas(items, metadata));
@@ -146,7 +146,7 @@ export function fetchUserContributions(params = {}) {
         if (isAuthenticated) {
             dispatch(createRequest(FETCH_MY_IDEAS));
             return axios
-                .get('/api/ideas/my-contributions', { params: { ...params } })
+                .get('/api/ideas-workshop/ideas/my-contributions', { params: { ...params } })
                 .then(res => res.data)
                 .then(({ items, metadata }) => {
                     dispatch(setMyContributions(items, metadata));
@@ -162,7 +162,7 @@ export function fetchUserContributions(params = {}) {
 export function postVote(uuid, voteType) {
     return (dispatch, getState, axios) =>
         axios
-            .post('/api/votes', { idea: uuid, type: voteType })
+            .post('/api/ideas-workshop/votes', { idea: uuid, type: voteType })
             .then(res => res.data)
             .then((voteData) => {
                 dispatch(toggleVoteIdea(uuid, { voteType, voteId: voteData.id }));
@@ -176,7 +176,7 @@ export function postVote(uuid, voteType) {
 export function cancelVote(uuid, voteType, voteId) {
     return (dispatch, getState, axios) => {
         dispatch(toggleVoteIdea(uuid, { voteType }));
-        return axios.delete(`/api/votes/${voteId}`).catch((error) => {
+        return axios.delete(`/api/ideas-workshop/votes/${voteId}`).catch((error) => {
             dispatch(toggleVoteIdea(uuid, { voteType, voteId }));
             throw error;
         });
@@ -210,8 +210,8 @@ export function saveIdea(id, ideaData) {
     return (dispatch, getState, axios) => {
         dispatch(createRequest(SAVE_IDEA, id));
         const requestBody = id
-            ? { method: 'PUT', url: `/api/ideas/${id}`, data: ideaData }
-            : { method: 'POST', url: '/api/ideas', data: ideaData };
+            ? { method: 'PUT', url: `/api/ideas-workshop/ideas/${id}`, data: ideaData }
+            : { method: 'POST', url: '/api/ideas-workshop/ideas', data: ideaData };
         return axios(requestBody)
             .then(res => res.data)
             .then(() => dispatch(createRequestSuccess(SAVE_IDEA, id)))
@@ -224,7 +224,7 @@ export function saveIdea(id, ideaData) {
 
 export function deleteIdea(id) {
     return (dispatch, getState, axios) =>
-        axios.delete(`/api/ideas/${id}`).then(() => {
+        axios.delete(`/api/ideas-workshop/ideas/${id}`).then(() => {
             // remove idea entity
             dispatch(removeIdea(id));
             dispatch(removeMyIdea(id));
@@ -237,7 +237,7 @@ export function publishIdea(id) {
     return (dispatch, getState, axios) => {
         dispatch(createRequest(PUBLISH_IDEA, id));
         return axios
-            .put(`/api/ideas/${id}/publish`)
+            .put(`/api/ideas-workshop/ideas/${id}/publish`)
             .then(res => res.data)
             .then(() => dispatch(createRequestSuccess(PUBLISH_IDEA, id)))
             .catch(() => dispatch(createRequestFailure(PUBLISH_IDEA, id)));
