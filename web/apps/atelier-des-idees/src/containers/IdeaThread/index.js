@@ -7,7 +7,7 @@ import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectCurrentIdea } from '../../redux/selectors/currentIdea';
 import { selectAnswerThreadsWithReplies } from '../../redux/selectors/threads';
 import { selectIsAuthenticated, selectAuthUser } from '../../redux/selectors/auth';
-import { approveComment, reportComment } from '../../redux/thunk/threads';
+import { approveComment, reportComment, fetchNextThreadComments } from '../../redux/thunk/threads';
 import {
     postCommentToCurrentIdea,
     removeCommentFromCurrentIdea,
@@ -15,6 +15,7 @@ import {
 } from '../../redux/thunk/currentIdea';
 import { showModal } from '../../redux/actions/modal';
 
+// TODO: reset paging data on unmount
 function IdeaThread(props) {
     const { isAuthenticated, ...otherProps } = props;
     return (
@@ -82,7 +83,13 @@ function mapDispatchToProps(dispatch) {
         onApproveComment: (commentId, threadId) => dispatch(approveComment(commentId, threadId)),
         onReportComment: (commentId, threadId) =>
             dispatch(showModal(FLAG_MODAL, { onSubmit: data => dispatch(reportComment(data, commentId, threadId)) })),
-        onLoadMore: (answerId, threadId) => dispatch(fetchNextAnswerThreads(answerId)),
+        onLoadMore: (answerId, threadId) => {
+            if (threadId) {
+                dispatch(fetchNextThreadComments(threadId));
+            } else {
+                dispatch(fetchNextAnswerThreads(answerId));
+            }
+        },
     };
 }
 

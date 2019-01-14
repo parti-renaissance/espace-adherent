@@ -1,7 +1,13 @@
-import { removeThread, toggleApproveThread } from '../actions/threads';
+import {
+    removeThread,
+    toggleApproveThread,
+    addThreadComments,
+    updateThread,
+    setThreadPagingData,
+} from '../actions/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { POST_THREAD, POST_THREAD_COMMENT } from '../constants/actionTypes';
-import { selectThread } from '../selectors/threads';
+import { selectThread, selectThreadPagingData } from '../selectors/threads';
 
 export function approveComment(id, parentId = '') {
     return (dispatch, getState, axios) => {
@@ -83,4 +89,35 @@ export function fetchThreads(params = {}) {
             .catch((error) => {
                 throw error;
             });
+}
+
+export function fetchThreadComments(threadId, params = {}) {
+    return (dispatch, getState, axios) =>
+        axios
+            .get(`/api/threads/${threadId}/comments`, { params })
+            .then(res => res.data)
+            .catch((error) => {
+                throw error;
+            });
+}
+
+export function fetchNextThreadComments(threadId) {
+    return (dispatch, getState) => {
+        // pading data
+        const pagingData = selectThreadPagingData(getState(), threadId);
+        const page = pagingData ? pagingData.current_page + 1 : 2;
+        dispatch(fetchThreadComments(threadId, { page, limit: 3 })).then(({ items, metadata }) => {
+            // add comments to collection
+            dispatch(addThreadComments(items));
+            // update parent thread total items
+            const thread = selectThread(getState(), threadId);
+            dispatch(
+                updateThread(threadId, {
+                    comments: { ...thread.comments, total_items: metadata.total_items },
+                })
+            );
+            // update paging data
+            dispatch(setThreadPagingData(threadId, metadata));
+        });
+    };
 }
