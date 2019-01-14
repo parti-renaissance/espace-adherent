@@ -38,7 +38,7 @@ export function initContributePage() {
         limit: 10,
         "order['publishedAt']": 'DESC',
     };
-    return dispatch => dispatch(fetchIdeas(ideaStatus.PENDING, params, true));
+    return dispatch => dispatch(fetchIdeas(ideaStatus.PENDING, params, { setMode: true }));
 }
 
 export function initConsultPage() {
@@ -46,7 +46,7 @@ export function initConsultPage() {
         limit: 10,
         "order['publishedAt']": 'DESC',
     };
-    return dispatch => dispatch(fetchIdeas(ideaStatus.FINALIZED, params, true));
+    return dispatch => dispatch(fetchIdeas(ideaStatus.FINALIZED, params, { setMode: true }));
 }
 
 export function initIdeaPageBase() {

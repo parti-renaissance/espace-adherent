@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ideaStatus, AUTHOR_CATEGORIES } from '../../constants/api';
 import Select from '../Select';
+import searchIcn from '../../img/icn_input_search.svg';
 
 class IdeaFilters extends React.Component {
     constructor(props) {
@@ -9,10 +10,10 @@ class IdeaFilters extends React.Component {
         this.filterItems = {
             order: {
                 options: [
-                    { value: 'order[\'publishedAt\']/DESC', label: 'Plus récentes' },
-                    { value: 'order[\'publishedAt\']/ASC', label: 'Plus anciennes' },
+                    { value: 'order[publishedAt]/DESC', label: 'Plus récentes' },
+                    { value: 'order[publishedAt]/ASC', label: 'Plus anciennes' },
                     { value: 'commentsCount/DESC', label: 'Plus commentées' },
-                    { value: 'votesCount/DESC', label: 'Plus votées', status: ideaStatus.FINALIZED },
+                    { value: 'order[votesCount]/DESC', label: 'Plus votées', status: ideaStatus.FINALIZED },
                 ],
             },
             author_category: {
@@ -20,9 +21,12 @@ class IdeaFilters extends React.Component {
             },
         };
         this.state = {
-            order: this.filterItems.order.options[0].value,
+            name: '',
             author_category: null,
-            // name: '',
+            'theme.name': '',
+            'category.name': '',
+            'needs.name': '',
+            order: this.filterItems.order.options[0].value,
         };
         // bindings
         this.onFilterChange = this.onFilterChange.bind(this);
@@ -46,7 +50,7 @@ class IdeaFilters extends React.Component {
             }
             return acc;
         }, {});
-        return { name, ...formattedFilters };
+        return name ? { name, ...formattedFilters } : formattedFilters;
     }
 
     render() {
@@ -55,20 +59,23 @@ class IdeaFilters extends React.Component {
                 <div className="idea-filters__section idea-filters__filter">
                     <p className="idea-filters__label">Filtrer par</p>
                     <div className="idea-filters__section__filters">
-                        {/* <input
-                        className="idea-filters__input"
-                        value={this.state.name}
-                        onChange={e => this.setState({ name: e.target.value })}
-                        placeholder="Mot clé"
-                    />*/}
+                        <span className="idea-filters__input-wrapper">
+                            <img src={searchIcn} className="idea-filters__input-icon" />
+                            <input
+                                className="idea-filters__input"
+                                value={this.state.name}
+                                onChange={e => this.onFilterChange('name', e.target.value)}
+                                placeholder="Mot clé"
+                            />
+                        </span>
                         {!!this.props.options && (
                             <React.Fragment>
                                 {!!this.props.options.categories.length && (
                                     <Select
                                         options={this.props.options.categories}
                                         placeholder="Echelle"
-                                        onSelected={
-                                            ([selected]) => this.onFilterChange('category', selected && selected.value) // TODO: wait for final param name
+                                        onSelected={([selected]) =>
+                                            this.onFilterChange('category.name', selected && selected.value)
                                         }
                                         isClearable={true}
                                         isDisabled={this.props.disabled}
@@ -102,8 +109,8 @@ class IdeaFilters extends React.Component {
                                 <Select
                                     options={this.props.options.needs}
                                     placeholder="Besoin"
-                                    onSelected={
-                                        ([selected]) => this.onFilterChange('need', selected && selected.value) // TODO: wait for final param name
+                                    onSelected={([selected]) =>
+                                        this.onFilterChange('needs.name', selected && selected.value)
                                     }
                                     isClearable={true}
                                     isDisabled={this.props.disabled}
