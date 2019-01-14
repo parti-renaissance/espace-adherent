@@ -6,6 +6,14 @@
   border-radius: 3px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.15);
   font-size: 14px;
+  transition: 0.20s ease-in;
+  -webkit-transition: 0.20s ease-in;
+  cursor: pointer;
+
+  &:hover {
+      transform: translateY(-3px);
+      -webkit-transform: translateY(-3px);
+  }
 
   &__main {
     display: flex;
