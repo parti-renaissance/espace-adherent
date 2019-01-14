@@ -2,6 +2,13 @@
 
 {% block message_content %}
     <div class="b__nudge--bottom-small">
+        <form onchange="this.submit();" class="pull-left">
+            <select class="form form__field" name="status">
+                <option value="">Tous les messages</option>
+                <option {{ app.request.query.get('status') == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::SENT_SUCCESSFULLY') ? 'selected="selected"' }} value="{{ constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::SENT_SUCCESSFULLY') }}">Messages envoyés</option>
+                <option {{ app.request.query.get('status') == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'selected="selected"' }} value="{{ constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') }}">Brouillons</option>
+            </select>
+        </form>
         <a class="btn btn--blue" href="{{ path("app_message_create", route_params|default({})) }}">Nouveau message</a>
     </div>
 
@@ -12,6 +19,7 @@
                 <th>Label</th>
                 <th>Objet</th>
                 <th>Date de création</th>
+                <th>Date d'envoi</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -21,7 +29,8 @@
                     <td>{{ message.status|trans }}</td>
                     <td>{{ message.label }}</td>
                     <td>{{ message.subject }}</td>
-                    <td>{{ message.createdAt|date }}</td>
+                    <td>{{ message.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y à HH:mm") }}</td>
+                    <td>{{ message.sentAt ? message.sentAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y à HH:mm") : '~' }}</td>
                     <td>
                         <div class="action-menu-oval">
                             <a href="javascript:void(0);">
@@ -30,7 +39,10 @@
                                 <span class="oval"></span>
                             </a>
                             <div class="action-dropdown-menu">
-                                <a class="link--blue" href="{{ path('app_message_update', route_params|default({})|merge({uuid: message.uuid})) }}">Modifier</a>
+                                {% if not message.isSent %}
+                                    <a class="link--blue" href="{{ path('app_message_update', route_params|default({})|merge({uuid: message.uuid})) }}">Modifier</a>
+                                {% endif %}
+
                                 {% if message.isSynchronized %}
                                     <a class="link--no-decor" href="{{ path('app_message_preview', route_params|default({})|merge({uuid: message.uuid})) }}">Visualiser</a>
                                 {% else %}
@@ -41,7 +53,11 @@
                                         </span>
                                     </a>
                                 {% endif %}
-                                <a class="link--blue" href="{{ path('app_message_filter', route_params|default({})|merge({uuid: message.uuid})) }}">Filtrer</a>
+
+                                {% if not message.isSent %}
+                                    <a class="link--blue" href="{{ path('app_message_filter', route_params|default({})|merge({uuid: message.uuid})) }}">Filtrer</a>
+                                {% endif %}
+
                                 <a class="link--red" href="{{ path('app_message_delete', route_params|default({})|merge({uuid: message.uuid})) }}">Supprimer</a>
                             </div>
                         </div>

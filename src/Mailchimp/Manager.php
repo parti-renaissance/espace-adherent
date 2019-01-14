@@ -76,19 +76,26 @@ class Manager implements LoggerAwareInterface
 
         $editCampaignRequest = $requestBuilder->createEditCampaignRequestFromMessage($message);
 
+        // When ExternalId does not exist, then it is Campaign creation
         if (!$campaignId = $message->getExternalId()) {
-            if (!$campaignId = $this->driver->createCampaign($editCampaignRequest)) {
+            $campaignData = $this->driver->createCampaign($editCampaignRequest);
+
+            if (empty($campaignData['id'])) {
                 throw new \RuntimeException(
                     sprintf('Campaign for the message "%s" has not been created', $message->getUuid())
                 );
             }
 
-            $message->setExternalId($campaignId);
-
-            return true;
+            $message->setExternalId($campaignData['id']);
+        } else {
+            $campaignData = $this->driver->updateCampaign($campaignId, $editCampaignRequest);
         }
 
-        return $this->driver->updateCampaign($campaignId, $editCampaignRequest);
+        if (isset($campaignData['recipients']['recipient_count'])) {
+            $message->setRecipientCount($campaignData['recipients']['recipient_count']);
+        }
+
+        return true;
     }
 
     public function editCampaignContent(AdherentMessageInterface $message): bool
@@ -120,5 +127,16 @@ class Manager implements LoggerAwareInterface
         if (!$this->driver->deleteCampaign($campaignId)) {
             $this->logger->warning(sprintf('Campaign "%s" has not be deleted', $campaignId));
         }
+    }
+
+    public function sendCampaign(AdherentMessageInterface $message): bool
+    {
+        if (!$message->getExternalId()) {
+            throw new InvalidCampaignIdException(
+                sprintf('Message "%s" does not have a valid campaign id', $message->getUuid()->toString())
+            );
+        }
+
+        return $this->driver->sendCampaign($message->getExternalId());
     }
 }

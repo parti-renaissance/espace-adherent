@@ -167,10 +167,21 @@
         <input type="hidden" name="{{ constant('PARAMETER_TOKEN', filter) }}" value="{{ filter.token ?? csrf_token(constant('AppBundle\\Controller\\EnMarche\\ReferentController::TOKEN_ID')) }}"/>
         <input type="hidden" name="c" value="{{ 'now'|date('His') }}" />
 
-        <div class="referent__filters__buttons b__nudge--top">
+        <div class="referent__filters__buttons text--center space--45-5 l__wrapper--500 background--lighter">
+            {% if not message.synchronized %}
+                <p>Nous recherchons les adhérents correspodant à vos critères</p>
+            {% elseif message.recipientCount is not null %}
+                {%  if message.recipientCount == 0 %}
+                    <p>Votre filtre ne correspond à aucun adhérent :(</p>
+                {% else %}
+                    <p>Votre filtre correspond à {{ message.recipientCount }} adhérent(s) !</p>
+                {% endif %}
+            {% endif %}
+
             {% if message.filter %}
                 <button type="submit" name="reset" class="btn btn--no-border">Réinitialiser le filtre</button>
             {% endif %}
+
             <button type="submit" class="btn btn--blue">Sauvegarder le filtre</button>
         </div>
     </form>
