@@ -14,7 +14,7 @@ import {
     toggleVoteCurrentIdea,
     updateCurrentIdeaAnswer,
 } from '../actions/currentIdea';
-import { addThreads, setAnswerThreadsPaging } from '../actions/threads';
+import { addThreads, addThreadComments, updateThread, setThreadPagingData } from '../actions/threads';
 import { hideModal } from '../actions/modal';
 
 /**
@@ -139,34 +139,48 @@ export function voteCurrentIdea(voteType) {
 }
 
 export function postCommentToCurrentIdea(content, answerId, parentId = '') {
-    // TODO: handle parentId
     return (dispatch, getState) =>
-        dispatch(postComment(content, answerId, parentId)).then((thread) => {
-            dispatch(addThreads([thread]));
-            // increment answer total item
-            const answer = selectCurrentIdeaAnswer(getState(), answerId);
-            const updatedAnswer = {
-                ...answer,
-                threads: { ...answer.threads, total_items: answer.threads.total_items + 1 },
-            };
-            dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
+        dispatch(postComment(content, answerId, parentId)).then((newComment) => {
+            if (!parentId) {
+                dispatch(addThreads([newComment]));
+                // increment answer total item
+                const answer = selectCurrentIdeaAnswer(getState(), answerId);
+                const updatedAnswer = {
+                    ...answer,
+                    threads: { ...answer.threads, total_items: answer.threads.total_items + 1 },
+                };
+                dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
+            } else {
+                dispatch(addThreadComments([newComment]));
+                const thread = selectThread(getState(), parentId);
+                dispatch(
+                    updateThread(parentId, {
+                        comments: { ...thread.comments, total_items: thread.comments.total_items + 1 },
+                    })
+                );
+            }
         });
 }
 
 export function removeCommentFromCurrentIdea(id, parentId = '') {
-    // TODO: handle parentId
     return (dispatch, getState) => {
         const thread = selectThread(getState(), id);
-        // TODO: turn finally into .then
-        return dispatch(deleteComment(id)).then(() => {
-            // decrement answer total item
-            const answerId = thread.answer.id;
-            const answer = selectCurrentIdeaAnswer(getState(), answerId);
-            const updatedAnswer = {
-                ...answer,
-                threads: { ...answer.threads, total_items: answer.threads.total_items - 1 },
-            };
-            dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
+        return dispatch(deleteComment(id, parentId)).then(() => {
+            if (parentId) {
+                // update thread parent items counter
+                updateThread(parentId, {
+                    comments: { ...thread.comments, total_items: thread.comments.total_items - 1 },
+                });
+            } else {
+                // decrement answer total item
+                const answerId = thread.answer.id;
+                const answer = selectCurrentIdeaAnswer(getState(), answerId);
+                const updatedAnswer = {
+                    ...answer,
+                    threads: { ...answer.threads, total_items: answer.threads.total_items - 1 },
+                };
+                dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
+            }
         });
     };
 }
@@ -186,7 +200,7 @@ export function fetchNextAnswerThreads(answerId) {
             const updatedAnswer = { ...answer, threads: { ...answer.threads, total_items: metadata.total_items } };
             dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
             // update paging data
-            dispatch(setAnswerThreadsPaging(answerId, metadata));
+            dispatch(setThreadPagingData(answerId, metadata));
         });
     };
 }

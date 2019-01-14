@@ -26,11 +26,19 @@ export const TOGGLE_VOTE_IDEA = 'TOGGLE_VOTE_IDEA';
 // comments & threads
 export const FETCH_IDEA_THREADS = createRequestTypes('FETCH_IDEA_THREADS');
 export const POST_THREAD = createRequestTypes('POST_THREAD');
+export const POST_THREAD_COMMENT = createRequestTypes('POST_THREAD_COMMENT');
 export const SET_THREADS = 'SET_THREADS';
 export const ADD_THREADS = 'ADD_THREADS';
+export const UPDATE_THREAD = 'UPDATE_THREAD';
 export const REMOVE_THREAD = 'REMOVE_THREAD';
 export const TOGGLE_APPROVE_THREAD = 'TOGGLE_APPROVE_THREAD';
-export const SET_ANSWER_THREADS_PAGING = 'SET_ANSWER_THREADS_PAGING';
+export const SET_THREAD_COMMENTS = 'SET_THREAD_COMMENTS';
+export const ADD_THREAD_COMMENTS = 'ADD_THREAD_COMMENTS';
+export const REMOVE_THREAD_COMMENT = 'REMOVE_THREAD_COMMENT';
+export const TOGGLE_APPROVE_THREAD_COMMENT = 'TOGGLE_APPROVE_THREAD_COMMENT';
+// thread paging
+export const SET_THREAD_PAGING_DATA = 'SET_THREAD_PAGING_DATA';
+export const RESET_THREAD_PAGING_DATA = 'RESET_THREAD_PAGING_DATA';
 
 // my ideas
 export const FETCH_MY_IDEAS = createRequestTypes('FETCH_MY_IDEAS');
