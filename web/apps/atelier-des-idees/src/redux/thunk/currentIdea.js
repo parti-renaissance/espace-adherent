@@ -14,7 +14,7 @@ import {
     toggleVoteCurrentIdea,
     updateCurrentIdeaAnswer,
 } from '../actions/currentIdea';
-import { addThreads, setAnswerThreadsPaging, addThreadComments, updateThread } from '../actions/threads';
+import { addThreads, addThreadComments, updateThread, setThreadPagingData } from '../actions/threads';
 import { hideModal } from '../actions/modal';
 
 /**
@@ -200,7 +200,7 @@ export function fetchNextAnswerThreads(answerId) {
             const updatedAnswer = { ...answer, threads: { ...answer.threads, total_items: metadata.total_items } };
             dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
             // update paging data
-            dispatch(setAnswerThreadsPaging(answerId, metadata));
+            dispatch(setThreadPagingData(answerId, metadata));
         });
     };
 }
