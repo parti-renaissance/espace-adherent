@@ -8,7 +8,7 @@ class VotingFooter extends React.Component {
         super(props);
         this.state = {
             toggleVotes: false,
-            fadeout: false,
+            toggleFadeout: false,
         };
         this.timerId = null;
         this.fadeOutStyle = null;
@@ -19,6 +19,7 @@ class VotingFooter extends React.Component {
     }
 
     componentWillUnmount() {
+        // clear both timeout
         clearTimeout(this.timerId);
         clearTimeout(this.fadeOutStyle);
     }
@@ -28,8 +29,9 @@ class VotingFooter extends React.Component {
         clearTimeout(this.fadeOutStyle);
         this.timerId = setTimeout(() => {
             this.setState({
-                fadeout: false,
+                toggleFadeout: false,
             });
+            // if 5s passed add 300ms for the fadeout animation before toggle back to inital state
             this.fadeOutStyle = setTimeout(() => {
                 this.setState(
                     {
@@ -46,7 +48,7 @@ class VotingFooter extends React.Component {
             <div
                 className={classnames('voting-footer', {
                     'voting-footer--open': this.state.toggleVotes,
-                    'voting-footer--close': !this.state.fadeout,
+                    'voting-footer--close': !this.state.toggleFadeout,
                 })}
                 ref={this.footerRef}
             >
@@ -92,10 +94,13 @@ class VotingFooter extends React.Component {
                             <button
                                 className="button--lowercase"
                                 onClick={() =>
-                                    this.setState({ toggleVotes: true, fadeout: true }, () => {
-                                        this.props.onToggleVotePanel(true);
-                                        this.resetTimeout();
-                                    })
+                                    this.setState(
+                                        { toggleVotes: true, toggleFadeout: true },
+                                        () => {
+                                            this.props.onToggleVotePanel(true);
+                                            this.resetTimeout();
+                                        }
+                                    )
                                 }
                             >
                                 <img
