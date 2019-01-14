@@ -11,6 +11,13 @@ class EditCampaignRequest implements RequestInterface
     private $templateId;
     private $subject;
     private $title;
+    private $listId;
+    private $conditions;
+
+    public function __construct(string $listId = null)
+    {
+        $this->listId = $listId;
+    }
 
     public function setFolderId(?string $id)
     {
@@ -40,6 +47,19 @@ class EditCampaignRequest implements RequestInterface
         return $this;
     }
 
+    public function setConditions(array $conditions): self
+    {
+        if (!empty($conditions) && empty($this->listId)) {
+            throw new \InvalidArgumentException(
+                'You must instantiate a request object with Mailchimp List id for using the filters'
+            );
+        }
+
+        $this->conditions = $conditions;
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         $settings = [];
@@ -60,9 +80,24 @@ class EditCampaignRequest implements RequestInterface
             $settings['title'] = $this->title;
         }
 
-        return [
-            'type' => $this->type,
-            'settings' => $settings,
-        ];
+        if ($this->conditions) {
+            $recipients = [
+                'recipients' => [
+                    'list_id' => $this->listId,
+                    'segment_opts' => [
+                        'match' => 'all',
+                        'conditions' => $this->conditions,
+                    ],
+                ],
+            ];
+        }
+
+        return array_merge(
+            [
+                'type' => $this->type,
+                'settings' => $settings,
+            ],
+            $recipients ?? []
+        );
     }
 }

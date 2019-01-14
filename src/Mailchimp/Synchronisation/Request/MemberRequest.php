@@ -11,10 +11,6 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_CITY = 'CITY';
     public const MERGE_FIELD_ZIP_CODE = 'ZIP_CODE';
     public const MERGE_FIELD_TAGS = 'TAGS';
-    public const MERGE_FIELD_COMMITTEE_FOLLOWER = 'COMM_FLLWR';
-    public const MERGE_FIELD_COMMITTEE_SUPERVISOR = 'COMM_SUPVR';
-    public const MERGE_FIELD_COMMITTEE_HOST = 'COMM_HOST';
-    public const MERGE_FIELD_CITIZEN_PROJECT_HOST = 'CP_HOST';
 
     private $memberIdentifier;
 

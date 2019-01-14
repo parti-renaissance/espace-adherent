@@ -4,8 +4,8 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\AdherentMessage\AdherentMessageDataObject;
 use AppBundle\AdherentMessage\AdherentMessageFactory;
+use AppBundle\AdherentMessage\Filter\FilterDataObjectInterface;
 use AppBundle\AdherentMessage\Filter\FilterFactory;
-use AppBundle\AdherentMessage\Filter\ReferentFilterDataObject;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AbstractAdherentMessage;
 use AppBundle\Form\AdherentMessageType;
@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -28,6 +29,8 @@ class MessageController extends AbstractController
 {
     /**
      * @Route(name="app_message_list", methods={"GET"})
+     *
+     * @param Adherent|UserInterface $adherent
      */
     public function messageListAction(
         string $prefix,
@@ -89,6 +92,7 @@ class MessageController extends AbstractController
 
     /**
      * @Route("/{uuid}/modifier", name="app_message_update", methods={"GET", "POST"})
+     *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
     public function updateMessageAction(
@@ -131,15 +135,22 @@ class MessageController extends AbstractController
 
     /**
      * @Route("/{uuid}/visualiser", name="app_message_preview", methods={"GET"})
-     * @Security("message.isSynchronized() && is_granted('IS_AUTHOR_OF', message)")
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
     public function previewMessageAction(string $prefix, AbstractAdherentMessage $message): Response
     {
+        if (!$message->isSynchronized()) {
+            throw new BadRequestHttpException('Message preview is not ready yet.');
+        }
+
         return $this->renderTemplate($prefix, 'message/preview.html.twig', ['message' => $message]);
     }
 
     /**
      * @Route("/{uuid}/supprimer", name="app_message_delete", methods={"GET"})
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
     public function deleteAction(string $prefix, AbstractAdherentMessage $message, ObjectManager $manager): Response
     {
@@ -153,6 +164,7 @@ class MessageController extends AbstractController
 
     /**
      * @Route("/{uuid}/content", name="app_message_content", methods={"GET"})
+     *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
     public function getMessageTemplateAction(AbstractAdherentMessage $message, Manager $manager): Response
@@ -162,6 +174,7 @@ class MessageController extends AbstractController
 
     /**
      * @Route("/{uuid}/filtrer", name="app_message_filter", methods={"GET"})
+     *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
     public function filterMessageAction(
@@ -187,7 +200,7 @@ class MessageController extends AbstractController
         // Get Message filter or create a new object
         $filter = ($message->getFilter() ?? FilterFactory::create($message->getType()))->handleRequest($request);
 
-        /** @var ReferentFilterDataObject $filter */
+        /** @var FilterDataObjectInterface $filter */
         if ($filter->hasToken()) {
             // Redirect if CSRF is invalid
             if (!$this->isCsrfTokenValid(ReferentController::TOKEN_ID, $filter->getToken())) {
@@ -200,18 +213,12 @@ class MessageController extends AbstractController
                 );
             }
 
-            $message->setFilter(clone $filter);
-            $manager->flush();
+            if ($filter->isChanged()) {
+                $message->setFilter(clone $filter);
+                $manager->flush();
 
-            $this->addFlash('info', 'adherent_message.filter_updated');
-
-            return $this->redirectToRoute(
-                'app_message_list',
-                [
-                    'prefix' => $prefix,
-                    'uuid' => $message->getUuid()->toString(),
-                ]
-            );
+                $this->addFlash('info', 'adherent_message.filter_updated');
+            }
         }
 
         return $this->renderTemplate($prefix, 'message/filter.html.twig', [

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\AdherentMessage;
 
+use AppBundle\AdherentMessage\Filter\FilterDataObjectInterface;
 use AppBundle\Entity\AuthoredInterface;
 use Ramsey\Uuid\UuidInterface;
 
@@ -24,4 +25,6 @@ interface AdherentMessageInterface extends AuthoredInterface
     public function getSubject(): ?string;
 
     public function getContent(): ?string;
+
+    public function getFilter(): ?FilterDataObjectInterface;
 }
