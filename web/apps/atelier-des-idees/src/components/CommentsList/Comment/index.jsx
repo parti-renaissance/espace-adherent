@@ -55,9 +55,14 @@ function Comment(props) {
                                     {props.approved ? 'Désapprouver' : 'Approuver'}
                                 </button>
                             )}
-                            <button className="comments-list__comment__actions__button__answer" onClick={props.onReply}>
-                                Répondre
-                            </button>
+                            {props.canAnswer && (
+                                <button
+                                    className="comments-list__comment__actions__button__answer"
+                                    onClick={props.onReply}
+                                >
+                                    Répondre
+                                </button>
+                            )}
                         </React.Fragment>
                     )}
                 </div>
@@ -70,6 +75,7 @@ Comment.defaultProps = {
     hasActions: true,
     isAuthor: false,
     verified: false,
+    canAnswer: true,
     canApprove: false,
 };
 
@@ -79,6 +85,7 @@ Comment.propTypes = {
     content: PropTypes.string.isRequired,
     created_at: PropTypes.string.isRequired, // iso date
     approved: PropTypes.bool,
+    canAnswer: PropTypes.bool,
     canApprove: PropTypes.bool,
     isAuthor: PropTypes.bool,
     hasActions: PropTypes.bool,
