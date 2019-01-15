@@ -26,7 +26,13 @@ class IdeaPage extends React.Component {
             // redirect to home is error in fetch
             return <Redirect to="/atelier-des-idees" />;
         }
-        return !this.props.isFetchingIdea && this.props.guidelines.length ? <IdeaPageBase {...this.props} /> : null;
+        return (
+            <IdeaPageBase
+                {...this.props}
+                isLoading={this.props.isFetchingIdea && !this.props.guidelines.length}
+                key={`idea-page__${this.props.isFetchingIdea && !this.props.guidelines.length}`}
+            />
+        );
     }
 }
 
