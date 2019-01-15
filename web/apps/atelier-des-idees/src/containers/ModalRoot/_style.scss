@@ -33,12 +33,22 @@
   .modal-closeBtn {
     @extend %reset-button;
     position: absolute;
-    top: 30px;
-    left: 30px;
+    top: 22px;
+    left: 22px;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
     cursor: pointer;
+    transition: 0.1s ease-in;
+    -webkit-transition: 0.1s ease-in;
+    outline: 0;
 
     @media screen and (max-width: $width-sm) {
       left: 20px;
+    }
+
+    &:hover {
+        opacity: 0.5;
     }
   }
 
