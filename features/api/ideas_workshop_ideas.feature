@@ -358,14 +358,14 @@ Feature:
 
   Scenario: As a non logged-in user I can filter ideas by theme
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas-workshop/ideas?theme.name=ecologie"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?themes.name=ecologie"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
     """
     {
        "metadata":{
-          "total_items":4,
+          "total_items":3,
           "items_per_page":2,
           "count":2,
           "current_page":1,
