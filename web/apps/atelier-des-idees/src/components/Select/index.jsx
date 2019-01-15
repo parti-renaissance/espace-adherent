@@ -32,9 +32,9 @@ class Select extends React.Component {
         if (isMaxOptionsSelected) {
             // set the error
             this.setState({
-                errorMaxOptions: `Vous avez atteint le nombre maximum d'options de ${
+                errorMaxOptions: `Vous ne pouvez sélectionner que ${
                     this.props.maxOptionsSelected
-                }`,
+                } option${1 < this.props.maxOptionsSelected ? 's' : ''}`,
             });
             // remove the option that is too much
             selectedOption.pop();
