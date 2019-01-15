@@ -121,7 +121,7 @@ export function fetchNextThreadComments(threadId) {
         const page = pagingData ? pagingData.current_page + 1 : 2;
         dispatch(fetchThreadComments(threadId, { page, limit: 3 })).then(({ items, metadata }) => {
             // add comments to collection
-            dispatch(addThreadComments(items));
+            dispatch(addThreadComments(items.map(comment => ({ ...comment, thread: { uuid: threadId } }))));
             // update parent thread total items
             const thread = selectThread(getState(), threadId);
             dispatch(
