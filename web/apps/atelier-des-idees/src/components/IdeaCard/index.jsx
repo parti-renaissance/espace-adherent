@@ -115,8 +115,6 @@ class IdeaCard extends React.Component {
                         <p className="idea-card__content__description">{this.props.description}</p>
                         {!!this.props.themes.length && (
                             <ul className="idea-card__content__tags">
-                                {/* TODO: check what to do with category */}
-                                {/* <li className="idea-card__content__tags__item">{this.props.category.name}</li>*/}
                                 {this.props.themes.map((theme, index) => (
                                     <li key={`theme__${index}`} className="idea-card__content__tags__item">
                                         {theme.name}
