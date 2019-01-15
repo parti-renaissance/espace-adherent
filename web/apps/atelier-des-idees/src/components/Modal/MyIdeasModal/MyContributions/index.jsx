@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 
 import icn_toggle_content from './../../../../img/icn_toggle_content-blue-yonder.svg';
 
@@ -21,13 +22,15 @@ class MyContributions extends React.Component {
                         this.setState(prevState => ({
                             showList: !prevState.showList,
                         }))
-                    }>
+                    }
+                >
                     <span className="my-contributions__category__button__label">
                         {'vous avez voté ou contribué'.toUpperCase()}
                     </span>
                     <img
                         className={classNames('my-contributions__category__button__icon', {
-                            'my-contributions__category__button__icon--rotate': !this.state.showList,
+                            'my-contributions__category__button__icon--rotate': !this.state
+                                .showList,
                         })}
                         src={icn_toggle_content}
                     />
@@ -39,13 +42,18 @@ class MyContributions extends React.Component {
                                 <React.Fragment>
                                     <div className="my-ideas__category__idea">
                                         <p className="my-ideas__category__idea__date">
-                                            Créée le {new Date(idea.created_at).toLocaleDateString()}
+											Créée le {new Date(idea.created_at).toLocaleDateString()}
                                         </p>
-                                        <h4 className="my-ideas__category__idea__name">{idea.name}</h4>
+                                        <h4 className="my-ideas__category__idea__name">
+                                            {idea.name}
+                                        </h4>
                                         <div className="my-ideas__category__idea__actions">
-                                            <button className="my-ideas__category__idea__actions__see-note button--secondary">
-                                                VOIR LA NOTE
-                                            </button>
+                                            <Link
+                                                to={`/atelier-des-idees/note/${idea.uuid}`}
+                                                className="my-ideas__category__idea__actions__see-note button--secondary"
+                                            >
+												VOIR LA NOTE
+                                            </Link>
                                         </div>
                                     </div>
                                     <div className="separator" />
@@ -63,6 +71,7 @@ class MyContributions extends React.Component {
 MyContributions.propTypes = {
     ideas: PropTypes.arrayOf(
         PropTypes.shape({
+            uuid: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
             created_at: PropTypes.string.isRequired, // ISO UTC
         })

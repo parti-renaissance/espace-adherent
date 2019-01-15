@@ -10,7 +10,11 @@ function MyIdeasModal(props) {
         {
             title: 'Mes idées',
             component: () => (
-                <MyIdeas ideas={props.my_ideas} onDeleteIdea={props.onDeleteIdea} onPublishIdea={props.onPublishIdea} />
+                <MyIdeas
+                    ideas={props.my_ideas}
+                    onDeleteIdea={props.onDeleteIdea}
+                    onPublishIdea={props.onPublishIdea}
+                />
             ),
         },
         {
@@ -23,10 +27,13 @@ function MyIdeasModal(props) {
         <div className="my-ideas-modal">
             <h2 className="my-ideas-modal__title">Mes idées</h2>
             <p className="my-ideas-modal__subtitle">
-                Retrouvez ici toutes votes idées que ce soient celles dont vous êtes l’auteur ou bien celles celles
-                auxquelles vous avez participé.
+				Retrouvez ici toutes votes idées que ce soient celles dont vous êtes
+				l’auteur ou bien celles celles auxquelles vous avez participé.
             </p>
-            <Tabs panes={panes} defaultActiveKey={'my_ideas' === props.tabActive ? '0' : '1'} />
+            <Tabs
+                panes={panes}
+                defaultActiveKey={'my_ideas' === props.tabActive ? '0' : '1'}
+            />
         </div>
     );
 }
@@ -39,12 +46,14 @@ MyIdeasModal.propTypes = {
     tabActive: PropTypes.oneOf(['my_ideas', 'my_contributions']),
     my_contribs: PropTypes.arrayOf(
         PropTypes.shape({
+            uuid: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
             created_at: PropTypes.string.isRequired, // ISO UTC
         })
     ).isRequired,
     my_ideas: PropTypes.arrayOf(
         PropTypes.shape({
+            uuid: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
             created_at: PropTypes.string.isRequired, // ISO UTC
             status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
