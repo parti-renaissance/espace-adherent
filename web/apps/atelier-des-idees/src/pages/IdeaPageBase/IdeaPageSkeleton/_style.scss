@@ -5,4 +5,23 @@
     height: 100px;
     background-image: $skeleton-bg;
   }
+
+  .idea-page-skeleton__item {
+    margin-top: 80px;
+
+    .idea-page-skeleton__item__title,
+    .idea-page-skeleton__item__body {
+      background-image: $skeleton-bg;
+    }
+
+    .idea-page-skeleton__item__title {
+      width: 75%;
+      height: 32px;
+      margin-bottom: 40px;
+    }
+
+    .idea-page-skeleton__item__body {
+      height: 302px;
+    }
+  }
 }
