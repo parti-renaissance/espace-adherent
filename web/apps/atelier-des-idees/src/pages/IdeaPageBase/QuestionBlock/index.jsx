@@ -23,6 +23,7 @@ function QuestionBlockBody(props) {
                         maxLength={1700}
                         onChange={htmlContent => props.onTextChange(htmlContent)}
                         placeholder={props.placeholder}
+                        error={props.hasError ? 'Merci de répondre à cette question avant de poursuivre' : ''}
                     />
                 </React.Fragment>
             ) : (
@@ -94,7 +95,7 @@ class QuestionBlock extends React.Component {
     }
 
     renderBody() {
-        const { placeholder, initialContent, isAuthor, mode, canCollapse } = this.props;
+        const { placeholder, initialContent, isAuthor, mode, canCollapse, hasError } = this.props;
         return (
             <React.Fragment>
                 <QuestionBlockBody
@@ -103,6 +104,7 @@ class QuestionBlock extends React.Component {
                     placeholder={placeholder}
                     onTextChange={this.onTextChange}
                     mode={mode}
+                    hasError={this.props.hasError}
                     isEditing={this.state.isEditing}
                     onEditAnswer={() => this.setState({ isEditing: true })}
                     onSaveAnswer={this.onSaveAnswer}
@@ -139,6 +141,7 @@ class QuestionBlock extends React.Component {
 
 QuestionBlock.defaultProps = {
     canCollapse: false,
+    hasError: false,
     initialContent: '',
     isAuthor: false,
     placeholder: undefined,
@@ -146,6 +149,7 @@ QuestionBlock.defaultProps = {
 };
 
 QuestionBlock.propTypes = {
+    hasError: PropTypes.bool,
     isAuthor: PropTypes.bool,
     canCollapse: PropTypes.bool, // true: question not required
     initialContent: PropTypes.string,

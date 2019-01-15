@@ -53,6 +53,7 @@ class CreateIdeaTool extends React.Component {
                                     onTextChange={(htmlContent, save = false) =>
                                         this.props.onQuestionTextChange(id, htmlContent, save)
                                     }
+                                    hasError={this.props.errors.includes(id.toString())}
                                 />
                             ))}
                         </section>
@@ -64,6 +65,7 @@ class CreateIdeaTool extends React.Component {
 }
 
 CreateIdeaTool.defaultProps = {
+    errors: [],
     isAuthor: false,
     values: {},
     isDraft: false,
@@ -71,6 +73,7 @@ CreateIdeaTool.defaultProps = {
 };
 
 CreateIdeaTool.propTypes = {
+    errors: PropTypes.arrayOf(PropTypes.string),
     isAuthor: PropTypes.bool,
     isDraft: PropTypes.bool,
     onQuestionTextChange: PropTypes.func.isRequired,
