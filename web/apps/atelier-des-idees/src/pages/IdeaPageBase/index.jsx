@@ -74,9 +74,18 @@ class IdeaPageBase extends React.Component {
                 answers: { ...prevState.answers, [id]: value },
             }),
             () => {
-                this.setState(prevState => ({
-                    errors: { ...prevState.errors, name: !this.state.name },
-                }));
+                // check if field is required and set errors accordingly
+                const isFieldRequired = Object.keys(this.state.errors).includes(id.toString());
+                this.setState((prevState) => {
+                    const errors = { ...prevState.errors, name: !this.state.name };
+                    if (isFieldRequired) {
+                        // if is required, update error state
+                        errors[id] = !value;
+                    }
+                    return {
+                        errors,
+                    };
+                });
                 if (withSave) {
                     this.onSaveIdea();
                 }
@@ -91,7 +100,7 @@ class IdeaPageBase extends React.Component {
     formatAnswers() {
         const formattedAnswers = Object.entries(this.state.answers)
             .filter(([, value]) => !!value)
-            .map(([id, value], index) => {
+            .map(([id, value]) => {
                 if (value) {
                     return { question: id, content: value };
                 }
@@ -135,12 +144,22 @@ class IdeaPageBase extends React.Component {
         const { answers, errors } = this.state;
         // check if all the required questions are answered
         const { name, ...answersErrors } = errors;
-        const hasRequiredAnswers = Object.keys(answersErrors).reduce(
-            (acc, questionId) => acc && !!answers[questionId],
-            true
-        );
+        // compute missing values from required fields
+        const missingValues = Object.keys(answersErrors).reduce((acc, questionId) => {
+            if (!answers[questionId]) {
+                acc[questionId] = true;
+            }
+            return acc;
+        }, {});
+        // update name error
+        if (!this.state.name) {
+            missingValues.name = true;
+        }
+        this.setState({ errors: missingValues });
+        // check if form has all the required answers
+        const hasRequiredAnswers = 0 === Object.keys(missingValues).length;
         // true if has answered to required questions and has set a name
-        return hasRequiredAnswers && !!this.state.name;
+        return hasRequiredAnswers;
     }
 
     render() {
@@ -165,7 +184,6 @@ class IdeaPageBase extends React.Component {
                                     onPublishClicked={this.onPublishIdea}
                                     onSaveClicked={this.onSaveIdea}
                                     isEditing={idea.status === ideaStatus.DRAFT}
-                                    canPublish={this.hasRequiredValues()}
                                 />
                             )}
                         </React.Fragment>
@@ -206,6 +224,9 @@ class IdeaPageBase extends React.Component {
                                         isAuthor={this.props.isAuthor}
                                         isDraft={idea.status === ideaStatus.DRAFT}
                                         onAutoSave={this.onSaveIdea}
+                                        errors={Object.entries(this.state.errors)
+                                            .filter(([, hasError]) => hasError)
+                                            .map(([key]) => key)}
                                     />
                                 )}
                                 {idea.status === ideaStatus.DRAFT && (
@@ -215,7 +236,6 @@ class IdeaPageBase extends React.Component {
                                                 onDeleteClicked={this.props.onDeleteClicked}
                                                 onPublishClicked={this.onPublishIdea}
                                                 onSaveClicked={this.onSaveIdea}
-                                                canPublish={this.hasRequiredValues()}
                                             />
                                         )}
                                     </div>
