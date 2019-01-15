@@ -56,21 +56,35 @@ class FirstForm extends React.Component {
         return (
             <form className="first-form" onSubmit={this.handleSubmit}>
                 <div className="first-form__section">
-                    <h2 className="first-form__section__title">Soumettez votre note ici</h2>
+                    <h2 className="first-form__section__title">
+						Soumettez votre note ici
+                    </h2>
                     <p className="first-form__section__subtitle">
-                        Une fois ce dernier formulaire rempli, votre note pourra être enrichie{' '}
-                        <Link className="link" to="/atelier-des-idees/contribuer" target="_blank">
-                            ici
+						Une fois ce dernier formulaire rempli, votre note pourra être
+						enrichie{' '}
+                        <Link
+                            className="link"
+                            to="/atelier-des-idees/contribuer"
+                            target="_blank"
+                        >
+							ici
                         </Link>{' '}
-                        par des contributions d’adhérents pendant 3 semaines. Passé ce délai, elle sera affichée{' '}
-                        <Link className="link" to="/atelier-des-idees/consulter" target="_blank">
-                            là
+						par des contributions d’adhérents pendant 3 semaines. Passé ce
+						délai, elle sera affichée{' '}
+                        <Link
+                            className="link"
+                            to="/atelier-des-idees/consulter"
+                            target="_blank"
+                        >
+							là
                         </Link>{' '}
-                        et pourra être soumise aux votes des adhérents.
+						et pourra être soumise aux votes des adhérents.
                     </p>
                 </div>
                 <div className="first-form__section">
-                    <label className="first-form__section__label">Description de l’idée</label>
+                    <label className="first-form__section__label">
+						Description de l’idée
+                    </label>
                     <TextArea
                         maxLength={180}
                         placeholder="Décrivez votre idée (180 caractères max)"
@@ -88,31 +102,49 @@ class FirstForm extends React.Component {
                         isMulti={true}
                         error={this.state.errors.theme}
                         onSelected={value => this.handleChange('theme', value)}
-                        defaultValue={this.state.inputs.theme.length ? this.state.inputs.theme : undefined}
+                        defaultValue={
+                            this.state.inputs.theme.length
+                                ? this.state.inputs.theme
+                                : undefined
+                        }
+                        maxOptionsSelected={5}
                     />
                 </div>
                 <div className="first-form__section">
-                    <label className="first-form__section__label">Est-ce un projet national ou européen ?</label>
+                    <label className="first-form__section__label">
+						Est-ce un projet national ou européen ?
+                    </label>
                     <Select
                         options={this.props.localityOptions}
                         placeholder="Choisissez l'échelle de votre note"
                         subtitle={() => (
                             <p>
-                                Pour un projet local, rapprochez-vous de votre référent via la rubrique contact du{' '}
-                                <a className="link" href="https://dpt.en-marche.fr/" target="_blank">
-                                    site de votre territoire
+								Pour un projet local, rapprochez-vous de votre référent via la
+								rubrique contact du{' '}
+                                <a
+                                    className="link"
+                                    href="https://dpt.en-marche.fr/"
+                                    target="_blank"
+                                >
+									site de votre territoire
                                 </a>
                             </p>
                         )}
                         error={this.state.errors.locality}
                         onSelected={value => this.handleChange('locality', value)}
-                        defaultValue={this.state.inputs.locality.length ? this.state.inputs.locality : undefined}
+                        defaultValue={
+                            this.state.inputs.locality.length
+                                ? this.state.inputs.locality
+                                : undefined
+                        }
                     />
                 </div>
                 <button type="submit" className="first-form__button button--secondary">
-                    dernière étape →
+					dernière étape →
                 </button>
-                {this.state.errors.form && <p className="first-form__error">{this.state.errors.form}</p>}
+                {this.state.errors.form && (
+                    <p className="first-form__error">{this.state.errors.form}</p>
+                )}
             </form>
         );
     }
