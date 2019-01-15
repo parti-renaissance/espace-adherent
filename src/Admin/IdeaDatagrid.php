@@ -23,7 +23,7 @@ class IdeaDatagrid extends DatagridDecorator
             $results = $this->decorated->getResults();
 
             foreach ($results as $result) {
-                $result->contributorsCount = $this->repository->countIdeaContributors($result);
+                $result->contributorsCount = $this->repository->countContributors($result);
             }
 
             $this->cachedResults = $results;
