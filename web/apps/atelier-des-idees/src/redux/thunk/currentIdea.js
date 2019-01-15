@@ -142,7 +142,7 @@ export function postCommentToCurrentIdea(content, answerId, parentId = '') {
     return (dispatch, getState) =>
         dispatch(postComment(content, answerId, parentId)).then((newComment) => {
             if (!parentId) {
-                dispatch(addThreads([newComment]));
+                dispatch(addThreads([{ ...newComment, comments: { total_items: 0 } }]));
                 // increment answer total item
                 const answer = selectCurrentIdeaAnswer(getState(), answerId);
                 const updatedAnswer = {
