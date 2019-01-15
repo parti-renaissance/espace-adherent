@@ -6,112 +6,113 @@
 @import './IdeaPageSkeleton/style';
 
 .create-idea-page {
-	position: relative;
-	border-top: 1px solid $gainsboro;
+  position: relative;
+  border-top: 1px solid $gainsboro;
+  word-wrap: break-word;
 
-	.create-idea-page__header {
-		display: flex;
-		height: 80px;
-		align-items: center;
+  .create-idea-page__header {
+    display: flex;
+    height: 80px;
+    align-items: center;
 
-		.create-idea-actions {
-			flex: 1;
+    .create-idea-actions {
+      flex: 1;
 
-			&:nth-child(2) {
-				margin-left: 0;
-			}
-		}
+      &:nth-child(2) {
+        margin-left: 0;
+      }
+    }
 
-		.create-idea-actions__back,
-		.create-idea-actions__report {
-			@extend %reset-button;
-			cursor: pointer;
-			color: $saphir;
-		}
-		.create-idea-actions__back {
-			margin-right: 40px;
-		}
+    .create-idea-actions__back,
+    .create-idea-actions__report {
+      @extend %reset-button;
+      cursor: pointer;
+      color: $saphir;
+    }
+    .create-idea-actions__back {
+      margin-right: 40px;
+    }
 
-		.create-idea-actions__report {
-			margin-left: auto;
-		}
+    .create-idea-actions__report {
+      margin-left: auto;
+    }
 
-		.create-idea-actions {
-			margin-left: 25px;
-		}
-	}
+    .create-idea-actions {
+      margin-left: 25px;
+    }
+  }
 
-	.create-idea-page__content {
-		padding: 70px 0;
-		background-color: $snow;
-	}
+  .create-idea-page__content {
+    padding: 70px 0;
+    background-color: $snow;
+  }
 
-	.create-idea-page__content__main {
-		margin-top: 30px;
-		border-radius: 2px;
-		padding: 80px 100px;
-		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.09);
-		background-color: $white;
-	}
+  .create-idea-page__content__main {
+    margin-top: 30px;
+    border-radius: 2px;
+    padding: 80px 100px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.09);
+    background-color: $white;
+  }
 
-	.create-idea-page__footer {
-		margin-top: 80px;
-	}
+  .create-idea-page__footer {
+    margin-top: 80px;
+  }
 
-	.create-idea-page__auto-save {
-		text-align: center;
+  .create-idea-page__auto-save {
+    text-align: center;
 
-		.create-idea-page__auto-save__label {
-			display: inline-flex;
-			margin: 0;
-			border-radius: 20px;
-			padding: 7px 13px;
-			background-color: $glitter;
-			font-size: 14px;
-			color: $slate-grey;
+    .create-idea-page__auto-save__label {
+      display: inline-flex;
+      margin: 0;
+      border-radius: 20px;
+      padding: 7px 13px;
+      background-color: $glitter;
+      font-size: 14px;
+      color: $slate-grey;
 
-			.create-idea-page__auto-save__icon {
-				margin-right: 8px;
-			}
-		}
-	}
+      .create-idea-page__auto-save__icon {
+        margin-right: 8px;
+      }
+    }
+  }
 
-	/* Responsive */
-	@media #{$mobile} {
-		border-top: 0;
+  /* Responsive */
+  @media #{$mobile} {
+    border-top: 0;
 
-		.create-idea-page__content {
-			padding: 50px 0;
-		}
+    .create-idea-page__content {
+      padding: 50px 0;
+    }
 
-		.create-idea-page__content__main {
-			width: 100%;
-			margin: 0;
-			padding: 40px 20px;
-		}
+    .create-idea-page__content__main {
+      width: 100%;
+      margin: 0;
+      padding: 40px 20px;
+    }
 
-		.create-idea-page__header {
-			flex-direction: column;
-			height: initial;
-			padding: 30px 0;
+    .create-idea-page__header {
+      flex-direction: column;
+      height: initial;
+      padding: 30px 0;
 
-			.create-idea-actions__back {
-				margin: 0;
-			}
-		}
+      .create-idea-actions__back {
+        margin: 0;
+      }
+    }
 
-		.create-idea-actions__back {
-			margin-bottom: 20px;
-		}
+    .create-idea-actions__back {
+      margin-bottom: 20px;
+    }
 
-		.create-idea-page__auto-save {
-			margin-bottom: 30px;
-		}
-	}
+    .create-idea-page__auto-save {
+      margin-bottom: 30px;
+    }
+  }
 
-	@media #{$tablet} {
-		.create-idea-page__content__main {
-			padding: 40px;
-		}
-	}
+  @media #{$tablet} {
+    .create-idea-page__content__main {
+      padding: 40px;
+    }
+  }
 }
