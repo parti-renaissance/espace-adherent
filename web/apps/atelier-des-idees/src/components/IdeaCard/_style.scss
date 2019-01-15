@@ -28,8 +28,9 @@
     &__title {
       margin: 0 0 10px;
       font-family: $font-gillsans;
-      font-weight: bold;
       font-size: 24px;
+      line-height: 28px;
+      letter-spacing: -0.5px;
       overflow-wrap: break-word;
     }
 
@@ -40,6 +41,7 @@
         align-items: center;
         height: 26px;
         margin-right: 10px;
+        margin-top: 10px;
       }
 
       &__author {
@@ -91,6 +93,8 @@
       margin-top: 20px;
       margin-bottom: 25px;
       color: $light-black;
+      height: 44px;
+      overflow: hidden;
     }
 
     &__tags {
