@@ -3,7 +3,7 @@ import { updateStatic } from '../actions/static';
 export function fetchThemes() {
     return (dispatch, getState, axios) =>
         axios
-            .get('/api/themes')
+            .get('/api/ideas-workshop/themes')
             .then(res => res.data)
             .then(data => dispatch(updateStatic({ themes: data.items })));
 }
@@ -11,7 +11,7 @@ export function fetchThemes() {
 export function fetchCategories() {
     return (dispatch, getState, axios) =>
         axios
-            .get('/api/categories')
+            .get('/api/ideas-workshop/categories')
             .then(res => res.data)
             .then(data => dispatch(updateStatic({ categories: data.items })));
 }
@@ -27,7 +27,7 @@ export function fetchCommittees() {
 export function fetchNeeds() {
     return (dispatch, getState, axios) =>
         axios
-            .get('/api/needs')
+            .get('/api/ideas-workshop/needs')
             .then(res => res.data)
             .then(data => dispatch(updateStatic({ needs: data.items })));
 }
