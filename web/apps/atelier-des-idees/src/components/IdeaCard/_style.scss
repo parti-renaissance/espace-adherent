@@ -6,13 +6,17 @@
   border-radius: 3px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.15);
   font-size: 14px;
-  transition: 0.20s ease-in;
-  -webkit-transition: 0.20s ease-in;
+  transition: 0.2s ease-in;
+  -webkit-transition: 0.2s ease-in;
   cursor: pointer;
 
   &:hover {
-      transform: translateY(-3px);
-      -webkit-transform: translateY(-3px);
+    transform: translateY(-3px);
+    -webkit-transform: translateY(-3px);
+  }
+
+  &__link {
+    border: none;
   }
 
   &__main {
@@ -28,23 +32,18 @@
     &__title {
       margin: 0 0 10px;
       font-family: $font-gillsans;
+      font-weight: bold;
       font-size: 24px;
-      line-height: 28px;
-      font-weight: 600;
-      letter-spacing: -0.5px;
       overflow-wrap: break-word;
     }
 
     &__infos {
       display: flex;
-      margin-top: 10px;
-      
       > * {
         display: flex;
         align-items: center;
         height: 26px;
         margin-right: 10px;
-
       }
 
       &__author {
@@ -96,8 +95,6 @@
       margin-top: 20px;
       margin-bottom: 25px;
       color: $light-black;
-      height: 44px;
-      overflow: hidden;
     }
 
     &__tags {
