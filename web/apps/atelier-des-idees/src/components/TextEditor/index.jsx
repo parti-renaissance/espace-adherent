@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { EditorState, ContentState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 
@@ -34,10 +35,7 @@ class TextEditor extends React.Component {
         if (content) {
             const blocksFromHtml = htmlToDraft(content);
             const { contentBlocks, entityMap } = blocksFromHtml;
-            const contentState = ContentState.createFromBlockArray(
-                contentBlocks,
-                entityMap
-            );
+            const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
             return EditorState.createWithContent(contentState);
         }
         return EditorState.createEmpty();
@@ -45,12 +43,8 @@ class TextEditor extends React.Component {
 
     constructor(props) {
         super(props);
-        const initialEditorState = TextEditor.getEditorStateFromContent(
-            props.initialContent
-        );
-        const initialTextContent = initialEditorState
-            .getCurrentContent()
-            .getPlainText();
+        const initialEditorState = TextEditor.getEditorStateFromContent(props.initialContent);
+        const initialTextContent = initialEditorState.getCurrentContent().getPlainText();
         this.state = {
             editorState: initialEditorState,
             textContent: initialTextContent,
@@ -93,35 +87,37 @@ class TextEditor extends React.Component {
         // update state and send data
         // don't send html if text is empty
         const contentToSend = textContent ? htmlContent : textContent;
-        this.setState({ editorState, textContent }, () =>
-            this.props.onChange(contentToSend)
-        );
+        this.setState({ editorState, textContent }, () => this.props.onChange(contentToSend));
     }
 
     render() {
         return (
-            <div className="text-editor">
-                <Editor
-                    editorState={this.state.editorState}
-                    placeholder={this.props.placeholder}
-                    toolbar={this.props.toolbar}
-                    editorClassName="text-editor__content"
-                    toolbarClassName="text-editor__toolbar"
-                    handleBeforeInput={this.handleBeforeInput}
-                    handlePastedText={this.handlePastedText}
-                    onEditorStateChange={this.onEditorStateChange}
-                />
-                {this.props.maxLength && (
-                    <div className="text-editor__count">{`${
-                        this.state.textContent.length
-                    }/${this.props.maxLength}`}</div>
-                )}
+            <div className="text-editor__wrapper">
+                <div className={classNames('text-editor', { 'text-editor--error': !!this.props.error })}>
+                    <Editor
+                        editorState={this.state.editorState}
+                        placeholder={this.props.placeholder}
+                        toolbar={this.props.toolbar}
+                        editorClassName="text-editor__content"
+                        toolbarClassName="text-editor__toolbar"
+                        handleBeforeInput={this.handleBeforeInput}
+                        handlePastedText={this.handlePastedText}
+                        onEditorStateChange={this.onEditorStateChange}
+                    />
+                    {this.props.maxLength && (
+                        <div className="text-editor__count">{`${this.state.textContent.length}/${
+                            this.props.maxLength
+                        }`}</div>
+                    )}
+                </div>
+                {this.props.error && <p className="text-editor__error">{this.props.error}</p>}
             </div>
         );
     }
 }
 
 TextEditor.defaultProps = {
+    error: '',
     initialContent: '',
     maxLength: undefined,
     placeholder: '',
@@ -129,6 +125,7 @@ TextEditor.defaultProps = {
 };
 
 TextEditor.propTypes = {
+    error: PropTypes.string,
     initialContent: PropTypes.string, // html string
     maxLength: PropTypes.number,
     onChange: PropTypes.func.isRequired,
