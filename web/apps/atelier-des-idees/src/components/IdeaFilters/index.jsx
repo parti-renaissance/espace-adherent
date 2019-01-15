@@ -30,7 +30,7 @@ class IdeaFilters extends React.Component {
         this.state = {
             name: '',
             authorCategory: null,
-            'theme.name': '',
+            'themes.name': '',
             'category.name': '',
             'needs.name': '',
             order: this.filterItems.order.options[0].value,
@@ -103,7 +103,7 @@ class IdeaFilters extends React.Component {
                                         placeholder="Thème"
                                         onSelected={([selected]) =>
                                             this.onFilterChange(
-                                                'theme.name',
+                                                'themes.name',
                                                 selected && selected.value
                                             )
                                         }
