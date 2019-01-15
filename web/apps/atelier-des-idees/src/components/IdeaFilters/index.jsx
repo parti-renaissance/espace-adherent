@@ -13,11 +13,18 @@ class IdeaFilters extends React.Component {
                     { value: 'order[publishedAt]/DESC', label: 'Plus récentes' },
                     { value: 'order[publishedAt]/ASC', label: 'Plus anciennes' },
                     { value: 'commentsCount/DESC', label: 'Plus commentées' },
-                    { value: 'order[votesCount]/DESC', label: 'Plus votées', status: ideaStatus.FINALIZED },
+                    {
+                        value: 'order[votesCount]/DESC',
+                        label: 'Plus votées',
+                        status: ideaStatus.FINALIZED,
+                    },
                 ],
             },
             authorCategory: {
-                options: Object.entries(AUTHOR_CATEGORIES).map(([key, value]) => ({ label: value, value: key })),
+                options: Object.entries(AUTHOR_CATEGORIES).map(([key, value]) => ({
+                    label: value,
+                    value: key,
+                })),
             },
         };
         this.state = {
@@ -34,22 +41,27 @@ class IdeaFilters extends React.Component {
     }
 
     onFilterChange(filterKey, value) {
-        this.setState({ [filterKey]: value }, () => this.props.onFilterChange(this.formatFilters()));
+        this.setState({ [filterKey]: value }, () =>
+            this.props.onFilterChange(this.formatFilters())
+        );
     }
 
     formatFilters() {
         const { name, ...filters } = this.state;
-        const formattedFilters = Object.entries(filters).reduce((acc, [filterName, filterValue]) => {
-            if (filterValue) {
-                const [attr, value] = filterValue.split('/');
-                if (value) {
-                    acc[attr] = value;
-                    return acc;
+        const formattedFilters = Object.entries(filters).reduce(
+            (acc, [filterName, filterValue]) => {
+                if (filterValue) {
+                    const [attr, value] = filterValue.split('/');
+                    if (value) {
+                        acc[attr] = value;
+                        return acc;
+                    }
+                    acc[filterName] = filterValue;
                 }
-                acc[filterName] = filterValue;
-            }
-            return acc;
-        }, {});
+                return acc;
+            },
+            {}
+        );
         return name ? { name, ...formattedFilters } : formattedFilters;
     }
 
@@ -75,10 +87,14 @@ class IdeaFilters extends React.Component {
                                         options={this.props.options.categories}
                                         placeholder="Echelle"
                                         onSelected={([selected]) =>
-                                            this.onFilterChange('category.name', selected && selected.value)
+                                            this.onFilterChange(
+                                                'category.name',
+                                                selected && selected.value
+                                            )
                                         }
                                         isClearable={true}
                                         isDisabled={this.props.disabled}
+                                        isSearchable={false}
                                     />
                                 )}
                                 {!!this.props.options.themes.length && (
@@ -86,10 +102,14 @@ class IdeaFilters extends React.Component {
                                         options={this.props.options.themes}
                                         placeholder="Thème"
                                         onSelected={([selected]) =>
-                                            this.onFilterChange('theme.name', selected && selected.value)
+                                            this.onFilterChange(
+                                                'theme.name',
+                                                selected && selected.value
+                                            )
                                         }
                                         isClearable={true}
                                         isDisabled={this.props.disabled}
+                                        isSearchable={false}
                                     />
                                 )}
                             </React.Fragment>
@@ -98,22 +118,30 @@ class IdeaFilters extends React.Component {
                             options={this.filterItems.authorCategory.options}
                             placeholder="Auteur"
                             onSelected={([selected]) =>
-                                this.onFilterChange('authorCategory', selected && selected.value)
+                                this.onFilterChange(
+                                    'authorCategory',
+                                    selected && selected.value
+                                )
                             }
                             isClearable={true}
                             isDisabled={this.props.disabled}
+                            isSearchable={false}
                         />
                         {this.props.status === ideaStatus.PENDING &&
-                            !!this.props.options &&
-                            !!this.props.options.needs.length && (
+							!!this.props.options &&
+							!!this.props.options.needs.length && (
                                 <Select
                                     options={this.props.options.needs}
                                     placeholder="Besoin"
                                     onSelected={([selected]) =>
-                                        this.onFilterChange('needs.name', selected && selected.value)
+                                        this.onFilterChange(
+                                            'needs.name',
+                                            selected && selected.value
+                                        )
                                     }
                                     isClearable={true}
                                     isDisabled={this.props.disabled}
+                                    isSearchable={false}
                                 />
                             )}
                     </div>
@@ -123,11 +151,16 @@ class IdeaFilters extends React.Component {
                     <div className="idea-filters__section__filters">
                         <Select
                             options={this.filterItems.order.options.filter(
-                                option => !option.status || (!!option.status && option.status === this.props.status)
+                                option =>
+                                    !option.status ||
+									(!!option.status && option.status === this.props.status)
                             )}
                             defaultValue={this.filterItems.order.options[0]}
-                            onSelected={([selected]) => this.onFilterChange('order', selected.value)}
+                            onSelected={([selected]) =>
+                                this.onFilterChange('order', selected.value)
+                            }
                             isDisabled={this.props.disabled}
+                            isSearchable={false}
                         />
                     </div>
                 </div>
