@@ -75,11 +75,14 @@
   }
 
   .comments-list__empty {
-    margin-top: 35px;
-    margin-bottom: 0;
+    margin: 40px 0;
     text-align: center;
     font-size: 22px;
     font-family: $font-gillsans;
     color: $light-black;
+
+    &--highlight {
+      border-bottom: 3px solid $pale-sky;
+    }
   }
 }
