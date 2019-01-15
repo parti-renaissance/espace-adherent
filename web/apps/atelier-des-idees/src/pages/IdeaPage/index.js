@@ -30,7 +30,7 @@ class IdeaPage extends React.Component {
             <IdeaPageBase
                 {...this.props}
                 isLoading={this.props.isFetchingIdea && !this.props.guidelines.length}
-                key={`idea-page__${this.props.isFetchingIdea && !this.props.guidelines.length}`}
+                key={`idea-page__${this.props.isFetchingIdea || !this.props.guidelines.length}`}
             />
         );
     }
