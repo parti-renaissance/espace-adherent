@@ -8,7 +8,7 @@
             .idea-card__content {
 
             &__title {
-                height: 56px;
+                max-height: 56px;
                 overflow: hidden;
                 margin: 0;
             }
