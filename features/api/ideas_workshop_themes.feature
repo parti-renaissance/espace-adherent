@@ -31,7 +31,7 @@ Feature:
             {
                 "id": @integer@,
                 "name": "Écologie",
-                "thumbnail": null
+                "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
             }
         ]
     }
