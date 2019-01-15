@@ -9,6 +9,7 @@ import { saveCurrentIdea, deleteCurrentIdea, goBackFromCurrentIdea } from '../..
 import { publishCurrentIdea } from '../../redux/thunk/currentIdea';
 import { selectAuthUser } from '../../redux/selectors/auth';
 import { selectGuidelines } from '../../redux/selectors/currentIdea';
+import { selectLoadingState } from '../../redux/selectors/loading';
 
 class CreateIdeaPage extends React.Component {
     componentDidMount() {
@@ -22,6 +23,7 @@ class CreateIdeaPage extends React.Component {
 
 CreateIdeaPage.propTypes = {
     initCreateIdeaPage: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool,
 };
 
 function mapStateToProps(state) {
@@ -31,10 +33,12 @@ function mapStateToProps(state) {
         authorName: `${currentUser.firstName} ${currentUser.lastName}`,
         status: 'DRAFT',
     };
+    const { isFetching } = selectLoadingState(state, 'FETCH_GUIDELINES');
     return {
         idea,
         guidelines,
         isAuthor: true,
+        isLoading: isFetching,
     };
 }
 
