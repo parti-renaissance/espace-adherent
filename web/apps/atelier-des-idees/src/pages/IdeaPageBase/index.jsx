@@ -7,6 +7,7 @@ import CreateIdeaActions from './CreateIdeaActions';
 import IdeaPageTitle from './IdeaPageTitle';
 import CreateIdeaTool from './CreateIdeaTool';
 import VotingFooterIdeaPage from './VotingFooterIdeaPage';
+import IdeaPageSkeleton from './IdeaPageSkeleton';
 import autoSaveIcn from '../../img/icn_20px_autosave.svg';
 
 function getInitialAnswers(guidelines, answers = []) {
@@ -147,24 +148,31 @@ class IdeaPageBase extends React.Component {
         return (
             <div className="create-idea-page">
                 <div className="create-idea-page__header l__wrapper">
-                    <button className="button create-idea-actions__back" onClick={() => this.props.onBackClicked()}>
-                        ← Retour
-                    </button>
-                    {idea.status !== ideaStatus.FINALIZED && this.state.name && (
-                        <Switch onChange={this.onToggleReadingMode} label="Passer en mode lecture" />
-                    )}
-                    {this.props.isAuthor && (
-                        <CreateIdeaActions
-                            onDeleteClicked={this.props.onDeleteClicked}
-                            onPublishClicked={this.onPublishIdea}
-                            onSaveClicked={this.onSaveIdea}
-                            isEditing={idea.status === ideaStatus.DRAFT}
-                            canPublish={this.hasRequiredValues()}
-                        />
+                    {!this.props.isLoading && (
+                        <React.Fragment>
+                            <button
+                                className="button create-idea-actions__back"
+                                onClick={() => this.props.onBackClicked()}
+                            >
+                                ← Retour
+                            </button>
+                            {idea.status !== ideaStatus.FINALIZED && this.state.name && (
+                                <Switch onChange={this.onToggleReadingMode} label="Passer en mode lecture" />
+                            )}
+                            {this.props.isAuthor && (
+                                <CreateIdeaActions
+                                    onDeleteClicked={this.props.onDeleteClicked}
+                                    onPublishClicked={this.onPublishIdea}
+                                    onSaveClicked={this.onSaveIdea}
+                                    isEditing={idea.status === ideaStatus.DRAFT}
+                                    canPublish={this.hasRequiredValues()}
+                                />
+                            )}
+                        </React.Fragment>
                     )}
                 </div>
                 <div className="create-idea-page__content">
-                    {idea.status === ideaStatus.DRAFT && (
+                    {!this.props.isLoading && idea.status === ideaStatus.DRAFT && (
                         <div className="create-idea-page__auto-save">
                             <p className="create-idea-page__auto-save__label">
                                 <img className="create-idea-page__auto-save__icon" src={autoSaveIcn} />
@@ -173,42 +181,48 @@ class IdeaPageBase extends React.Component {
                         </div>
                     )}
                     <div className="create-idea-page__content__main l__wrapper--medium">
-                        <IdeaPageTitle
-                            authorName={idea.authorName}
-                            publishedAt={idea.publishedAt}
-                            onTitleChange={(value, withSave) => this.onNameChange(value, withSave)}
-                            title={this.state.name}
-                            isAuthor={this.props.isAuthor}
-                            isEditing={idea.status === ideaStatus.DRAFT}
-                            isReadOnly={this.state.readingMode || !this.props.isAuthor}
-                            hasError={this.state.errors.name}
-                            showPublicationDate={idea.status === ideaStatus.FINALIZED}
-                        />
-                        {this.state.readingMode ? (
-                            <IdeaReader paragraphs={this.getParagraphs()} />
+                        {this.props.isLoading ? (
+                            <IdeaPageSkeleton />
                         ) : (
-                            <CreateIdeaTool
-                                onQuestionTextChange={this.onQuestionTextChange}
-                                guidelines={this.props.guidelines}
-                                values={this.state.answers}
-                                isAuthor={this.props.isAuthor}
-                                isDraft={idea.status === ideaStatus.DRAFT}
-                                onAutoSave={this.onSaveIdea}
-                            />
-                        )}
-                        {idea.status === ideaStatus.DRAFT && (
-                            <div className="create-idea-page__footer">
-                                {this.props.isAuthor && !this.state.readingMode && (
-                                    <CreateIdeaActions
-                                        onDeleteClicked={this.props.onDeleteClicked}
-                                        onPublishClicked={this.onPublishIdea}
-                                        onSaveClicked={this.onSaveIdea}
-                                        canPublish={this.hasRequiredValues()}
+                            <React.Fragment>
+                                <IdeaPageTitle
+                                    authorName={idea.authorName}
+                                    publishedAt={idea.publishedAt}
+                                    onTitleChange={(value, withSave) => this.onNameChange(value, withSave)}
+                                    title={this.state.name}
+                                    isAuthor={this.props.isAuthor}
+                                    isEditing={idea.status === ideaStatus.DRAFT}
+                                    isReadOnly={this.state.readingMode || !this.props.isAuthor}
+                                    hasError={this.state.errors.name}
+                                    showPublicationDate={idea.status === ideaStatus.FINALIZED}
+                                />
+                                {this.state.readingMode ? (
+                                    <IdeaReader paragraphs={this.getParagraphs()} />
+                                ) : (
+                                    <CreateIdeaTool
+                                        onQuestionTextChange={this.onQuestionTextChange}
+                                        guidelines={this.props.guidelines}
+                                        values={this.state.answers}
+                                        isAuthor={this.props.isAuthor}
+                                        isDraft={idea.status === ideaStatus.DRAFT}
+                                        onAutoSave={this.onSaveIdea}
                                     />
                                 )}
-                            </div>
+                                {idea.status === ideaStatus.DRAFT && (
+                                    <div className="create-idea-page__footer">
+                                        {this.props.isAuthor && !this.state.readingMode && (
+                                            <CreateIdeaActions
+                                                onDeleteClicked={this.props.onDeleteClicked}
+                                                onPublishClicked={this.onPublishIdea}
+                                                onSaveClicked={this.onSaveIdea}
+                                                canPublish={this.hasRequiredValues()}
+                                            />
+                                        )}
+                                    </div>
+                                )}
+                                {idea.status === ideaStatus.FINALIZED && <VotingFooterIdeaPage />}
+                            </React.Fragment>
                         )}
-                        {idea.status === ideaStatus.FINALIZED && <VotingFooterIdeaPage />}
                     </div>
                 </div>
             </div>
@@ -219,6 +233,7 @@ class IdeaPageBase extends React.Component {
 IdeaPageBase.defaultProps = {
     idea: {},
     isAuthor: false,
+    isLoading: false,
 };
 
 IdeaPageBase.propTypes = {
@@ -236,6 +251,7 @@ IdeaPageBase.propTypes = {
     }),
     guidelines: PropTypes.array.isRequired,
     isAuthor: PropTypes.bool,
+    isLoading: PropTypes.bool,
     onBackClicked: PropTypes.func.isRequired,
     onPublishIdea: PropTypes.func.isRequired,
     onDeleteClicked: PropTypes.func.isRequired,

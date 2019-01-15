@@ -1,0 +1,8 @@
+.idea-page-skeleton {
+  $skeleton-bg: linear-gradient(-90deg, #f4f5f7, #eaebee, #f3f4f6);
+
+  .idea-page-skeleton__title {
+    height: 100px;
+    background-image: $skeleton-bg;
+  }
+}
