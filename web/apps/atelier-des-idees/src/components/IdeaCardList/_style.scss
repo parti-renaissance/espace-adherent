@@ -1,7 +1,20 @@
 .idea-card-list {
   .idea-card {
-    margin: 0 auto 20px auto;
-    width: 99.5%;
+    margin: 0 auto 10px auto;
+    // width: 99.5%;
+    min-height: 328px;
+    justify-content: space-between;
+    &__main {
+            .idea-card__content {
+
+            &__title {
+                height: 56px;
+                overflow: hidden;
+                margin: 0;
+            }
+        }
+    }
+
   }
 
   &--grid {

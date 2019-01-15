@@ -16,6 +16,10 @@
     font-size: 12px;
     color: $medium-grey;
     line-height: 18px;
+
+    p {
+        margin: 0;
+    }
   }
 
   &__error {
