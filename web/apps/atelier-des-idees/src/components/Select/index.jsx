@@ -18,15 +18,38 @@ class Select extends React.Component {
         super(props);
         this.state = {
             selectedOption: this.props.defaultValue,
+            errorMaxOptions: '',
         };
         this.handleChange = this.handleChange.bind(this);
     }
 
     // @param {object, array} selectedOption object by default and array if multi-select
     handleChange(selectedOption) {
+        // check if max options selected
+        const isMaxOptionsSelected =
+			selectedOption.length > this.props.maxOptionsSelected;
+
+        if (isMaxOptionsSelected) {
+            // set the error
+            this.setState({
+                errorMaxOptions: `Vous avez atteint le nombre maximum d'options de ${
+                    this.props.maxOptionsSelected
+                }`,
+            });
+            // remove the option that is too much
+            selectedOption.pop();
+        } else {
+            // remove error
+            this.setState({
+                errorMaxOptions: '',
+            });
+        }
+
         this.setState({ selectedOption });
 
-        const formatSelectedOption = this.props.isMulti ? selectedOption : [selectedOption];
+        const formatSelectedOption = this.props.isMulti
+            ? selectedOption
+            : [selectedOption];
 
         this.props.onSelected(formatSelectedOption);
     }
@@ -39,7 +62,6 @@ class Select extends React.Component {
                     className="select__input"
                     classNamePrefix="select__input"
                     value={this.state.selectedOption}
-                    defaultValue={this.props.defaultValue}
                     components={{ DropdownIndicator, MultiValueLabel, MultiValueRemove }}
                     styles={{
                         multiValueLabel: base => ({
@@ -66,10 +88,17 @@ class Select extends React.Component {
                     defaultValue={this.props.defaultValue}
                 />
                 {this.props.subtitle && (
-                    <div className="select__subtitle">{'function' === typeof SubTitle ? <SubTitle /> : SubTitle}</div>
+                    <div className="select__subtitle">
+                        {'function' === typeof SubTitle ? <SubTitle /> : SubTitle}
+                    </div>
                 )}
 
-                {this.props.error && <p className="select__error">{this.props.error}</p>}
+                {this.props.error && (
+                    <p className="select__error">{this.props.error}</p>
+                )}
+                {this.state.errorMaxOptions && (
+                    <p className="select__error">{this.state.errorMaxOptions}</p>
+                )}
             </div>
         );
     }
@@ -83,10 +112,15 @@ Select.defaultProps = {
     isClearable: false,
     isDisabled: false,
     defaultValue: undefined,
+    maxOptionsSelected: undefined,
 };
 
 Select.propTypes = {
-    subtitle: PropTypes.oneOfType([PropTypes.node.isRequired, PropTypes.func, PropTypes.string]),
+    subtitle: PropTypes.oneOfType([
+        PropTypes.node.isRequired,
+        PropTypes.func,
+        PropTypes.string,
+    ]),
     error: PropTypes.string,
     options: PropTypes.arrayOf(
         PropTypes.shape({
@@ -111,6 +145,7 @@ Select.propTypes = {
             })
         ),
     ]),
+    maxOptionsSelected: PropTypes.number,
 };
 
 export default Select;
