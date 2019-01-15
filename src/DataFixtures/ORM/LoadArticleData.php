@@ -109,7 +109,7 @@ class LoadArticleData extends Fixture
         foreach ([$newsCategory, $videosCategory, $speechCategory, $mediasCategory, $communiquesCategory, $opinionsCategory, $noDisplayCategory] as $category) {
             for ($i = 0; $i < 25; ++$i) {
                 $manager->persist($factory->createFromArray([
-                    'title' => mb_substr($faker->sentence(), 0, 100),
+                    'title' => mb_substr($faker->sentence(), 0, 60),
                     'slug' => $faker->slug(),
                     'description' => $faker->text(),
                     'media' => $media,
