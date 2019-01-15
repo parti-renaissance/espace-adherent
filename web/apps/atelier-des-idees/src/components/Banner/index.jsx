@@ -35,7 +35,7 @@ class Banner extends React.PureComponent {
                     <div className="banner__container">
                         <a href={this.props.url} className="banner__container__link button--secondary" target="_blank">
                             {`${this.props.linkLabel}${
-                                this.props.response_time ? ` (${this.props.response_time}MIN)` : ''
+                                this.props.response_time ? ` (${this.props.response_time} MIN)` : ''
                             }`}
                         </a>
                     </div>

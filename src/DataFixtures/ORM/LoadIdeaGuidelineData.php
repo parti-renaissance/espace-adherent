@@ -11,7 +11,7 @@ class LoadIdeaGuidelineData extends AbstractFixture
     public function load(ObjectManager $manager)
     {
         $guidelineMainFeature = new Guideline(
-            'POUR COMMENCER : QUELLES SONT LES PRINCIPALES CARACTÉRISTIQUES DE VOTRE IDÉE ?',
+            'POUR COMMENCER',
             true,
             1
         );

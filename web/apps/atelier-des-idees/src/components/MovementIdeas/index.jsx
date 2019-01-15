@@ -8,28 +8,28 @@ import MovementIdeasSection from './MovementIdeasSection/.';
 // TODO: Update text
 const sectionContent = [
     {
-        keyWord: 'vote',
-        title: 'pour des idées',
+        keyWord: 'propose',
+        title: 'une idée',
         text:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla urna sed erat auctor, ac sodales mi commodo.',
-        linkLabel: 'Je vote',
-        link: '/atelier-des-idees/consulter',
+            'Soumettez une nouvelle proposition à la communauté.',
+        linkLabel: 'Je propose',
+        link: '/atelier-des-idees/proposer',
     },
     {
         keyWord: 'contribue',
-        title: 'aux idées',
+        title: 'aux propositions',
         text:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla urna sed erat auctor, ac sodales mi commodo.',
+            'Enrichissez les propositions en cours d\'écriture.',
         linkLabel: 'Je contribue',
         link: '/atelier-des-idees/contribuer',
     },
     {
-        keyWord: 'propose',
-        title: 'des idées',
+        keyWord: 'soutiens',
+        title: 'des propositions',
         text:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla urna sed erat auctor, ac sodales mi commodo.',
-        linkLabel: 'Je propose',
-        link: '/atelier-des-idees/proposer',
+            'Donnez votre avis sur les propositions finalisées.',
+        linkLabel: 'Je vote',
+        link: '/atelier-des-idees/consulter',
     },
 ];
 
@@ -49,7 +49,7 @@ class MovementIdeas extends React.PureComponent {
             <article className="movement-ideas">
                 <div className="movement-ideas__first__section">
                     <div className="l__wrapper movement-ideas__first__section__in">
-                        <h1 className="movement-ideas__first__section__in__title">Les idées du mouvement</h1>
+                        <h1 className="movement-ideas__first__section__in__title">Les idées des marcheurs</h1>
                         <p className="movement-ideas__first__section__in__content">
                             Vous avez envie de contribuer aux idées du mouvement ?
                             <br />

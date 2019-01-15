@@ -7,7 +7,7 @@ function CreateIdeaActions(props) {
         <div className="create-idea-actions">
             <div className="create-idea-actions--left">
                 <button className="button create-idea-actions__delete" onClick={() => props.onDeleteClicked()}>
-                    Supprimer la note
+                    Supprimer la proposition
                 </button>
             </div>
             {props.isEditing && (
@@ -20,7 +20,7 @@ function CreateIdeaActions(props) {
                     />
                     <Button
                         className="create-idea-actions__publish"
-                        label="Publier la note"
+                        label="Publier la proposition"
                         onClick={props.onPublishClicked}
                     />
                 </div>

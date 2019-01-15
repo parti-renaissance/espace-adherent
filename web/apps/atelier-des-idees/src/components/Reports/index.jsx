@@ -11,13 +11,13 @@ class Reports extends React.PureComponent {
 						Nous n’avons pas attendu l’Atelier des Idées pour vous consulter
                     </h3>
                     <p className="reports__first-section__text">
-						Consultez les rapports de consultations terminées
+						Dépuis sa création, La République En Marche associe les Marcheurs à sa reflexion. Les sujets de nos consultations son variées : le logement, l'égalité femmes-hommes, l'Europe, etc.
                     </p>
                     <button
                         className="reports__first-section__button button button--primary"
                         onClick={() => this.props.onReportBtnClicked(this.props.reports)}
                     >
-						Je lis les rapports
+						Je lis les restitutions
                     </button>
                 </div>
                 <div className="reports__second-section">

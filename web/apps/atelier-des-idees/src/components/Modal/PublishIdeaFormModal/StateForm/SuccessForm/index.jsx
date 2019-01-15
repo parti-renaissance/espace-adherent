@@ -9,12 +9,10 @@ class SuccessForm extends React.PureComponent {
         return (
             <div className="success-form">
                 <img src={icn_state_success} />
-                <h3 className="success-form__title">Votre note a bien été publiée</h3>
+                <h3 className="success-form__title">Merci ! Votre proposition a été publiée</h3>
                 <p className="success-form__subtitle">
-                    Votre idée va maintenant être enrichie par des adhérents pendant 3 semaines. Vous pouvez leur
-                    montrer que vous prenez en compte leurs commentaires en cliquant sur{' '}
-                    <span className="success-form__subtitle__approved">Approuver</span>. Vous devrez ensuite intégrer
-                    vous-même leurs contributions à votre partie.
+                    Votre proposition va maintenant être enrichie par des adhérents pendant 10 jours. Vous pouvez leur montrer que vous prenez en compte leurs commentaires en cliquant sur{' '}
+                    <span className="success-form__subtitle__approved">Approuver</span>. Vous devrez ensuite intégrer vous-même leurs contributions à votre partie.
                 </p>
                 <a href={`/atelier-des-idees/note/${this.props.id}`} className="success-form__button button--secondary">
                     Voir la page

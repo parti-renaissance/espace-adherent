@@ -217,7 +217,7 @@ class IdeaPageBase extends React.Component {
                                     className="create-idea-page__auto-save__icon"
                                     src={autoSaveIcn}
                                 />
-                                <span>Votre note est automatiquement sauvegardée</span>
+                                <span>Votre brouillon sera sauvegardé toutes les minutes</span>
                             </p>
                         </div>
                     )}
