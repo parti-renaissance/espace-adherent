@@ -24,7 +24,7 @@ class AdminIdeaController extends Controller
     {
         return $this->render('admin/ideas_workshop/idea_contributors.html.twig', [
             'idea' => $idea,
-            'contributors' => $contributors = $repository->getIdeaContributors($idea),
+            'contributors' => $contributors = $repository->getContributors($idea),
             'contributors_count' => \count($contributors),
         ]);
     }

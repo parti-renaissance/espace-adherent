@@ -167,7 +167,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "slug": "faire-la-paix",
                 "days_before_deadline": 18,
-                "contributors_count": 5,
+                "contributors_count": 8,
                 "comments_count": 8
             },
             {
@@ -276,7 +276,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "slug": "faire-la-paix",
                 "days_before_deadline": 18,
-                "contributors_count": 5,
+                "contributors_count": 8,
                 "comments_count": 8
             }
         ]
@@ -349,7 +349,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "slug": "faire-la-paix",
                 "days_before_deadline": 18,
-                "contributors_count": 5,
+                "contributors_count": 8,
                 "comments_count": 8
             }
         ]
@@ -663,7 +663,7 @@ Feature:
              "created_at": "@string@.isDateTime()",
              "slug":"faire-la-paix",
              "days_before_deadline":18,
-             "contributors_count":5,
+             "contributors_count":8,
              "comments_count":8
           },
           {
@@ -931,7 +931,7 @@ Feature:
         "created_at": "@string@.isDateTime()",
         "slug": "mon-idee-2",
         "days_before_deadline": 18,
-        "contributors_count": 5,
+        "contributors_count": 8,
         "comments_count": 8
     }
     """
@@ -1002,7 +1002,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "slug": "faire-la-paix",
                 "days_before_deadline": 18,
-                "contributors_count": 5,
+                "contributors_count": 8,
                 "comments_count": 8
             }
         ]
@@ -1074,7 +1074,7 @@ Feature:
              "name": "Faire la paix",
              "slug": "faire-la-paix",
              "days_before_deadline": 18,
-             "contributors_count": 5,
+             "contributors_count": 8,
              "comments_count": 8
           }
        ]
@@ -1934,7 +1934,7 @@ Feature:
              "created_at": "@string@.isDateTime()",
              "slug":"faire-la-paix",
              "days_before_deadline":18,
-             "contributors_count":5,
+             "contributors_count":8,
              "comments_count":8
           }
        ]
