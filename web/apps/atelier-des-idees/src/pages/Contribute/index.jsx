@@ -13,8 +13,8 @@ class ContributePage extends React.Component {
     render() {
         return (
             <ThreeTabsPage
-                title="Contribuer aux idées en cours"
-                subtitle="Explorez les idées en cours de vos concitoyens et enrichissez-les !"
+                title="Les propositions en cours"
+                subtitle="Contribuez aux propositions des marcheurs en cours d'élaboration"
             >
                 <div className="contribute-page">
                     <div className="l__wrapper">
