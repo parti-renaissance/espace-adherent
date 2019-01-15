@@ -5,10 +5,15 @@ import IdeaPageBase from '../IdeaPageBase';
 import { DELETE_IDEA_MODAL, PUBLISH_IDEA_MODAL } from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
 import { initCreateIdeaPage } from '../../redux/thunk/navigation';
-import { saveCurrentIdea, deleteCurrentIdea, goBackFromCurrentIdea } from '../../redux/thunk/currentIdea';
-import { publishCurrentIdea } from '../../redux/thunk/currentIdea';
+import {
+    saveCurrentIdea,
+    publishCurrentIdea,
+    deleteCurrentIdea,
+    goBackFromCurrentIdea,
+} from '../../redux/thunk/currentIdea';
 import { selectAuthUser } from '../../redux/selectors/auth';
 import { selectGuidelines } from '../../redux/selectors/currentIdea';
+import { selectLoadingState } from '../../redux/selectors/loading';
 
 class CreateIdeaPage extends React.Component {
     componentDidMount() {
@@ -16,7 +21,13 @@ class CreateIdeaPage extends React.Component {
     }
 
     render() {
-        return this.props.guidelines.length ? <IdeaPageBase {...this.props} /> : null;
+        return (
+            <IdeaPageBase
+                {...this.props}
+                isLoading={!this.props.guidelines.length}
+                key={`create-idea-page__${!!this.props.guidelines.length}`}
+            />
+        );
     }
 }
 
