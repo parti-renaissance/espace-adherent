@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\EventCategory;
 use AppBundle\Event\BaseEventCommand;
+use AppBundle\Form\DataTransformer\BaseEventCommandTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -16,6 +17,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BaseEventCommandType extends AbstractType
 {
+    private $transformer;
+
+    public function __construct(BaseEventCommandTransformer $transformer)
+    {
+        $this->transformer = $transformer;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -58,6 +66,7 @@ class BaseEventCommandType extends AbstractType
                 $command->setFinishAt((clone $beginDate)->modify('+2 hours'));
             }
         });
+        $builder->addModelTransformer($this->transformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)
