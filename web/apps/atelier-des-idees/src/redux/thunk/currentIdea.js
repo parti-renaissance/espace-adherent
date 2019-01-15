@@ -163,16 +163,19 @@ export function postCommentToCurrentIdea(content, answerId, parentId = '') {
 }
 
 export function removeCommentFromCurrentIdea(id, parentId = '') {
-    return (dispatch, getState) => {
-        const thread = selectThread(getState(), id);
-        return dispatch(deleteComment(id, parentId)).then(() => {
+    return (dispatch, getState) =>
+        dispatch(deleteComment(id, parentId)).then(() => {
             if (parentId) {
+                const thread = selectThread(getState(), parentId);
                 // update thread parent items counter
-                updateThread(parentId, {
-                    comments: { ...thread.comments, total_items: thread.comments.total_items - 1 },
-                });
+                dispatch(
+                    updateThread(parentId, {
+                        comments: { ...thread.comments, total_items: thread.comments.total_items - 1 },
+                    })
+                );
             } else {
                 // decrement answer total item
+                const thread = selectThread(getState(), id);
                 const answerId = thread.answer.id;
                 const answer = selectCurrentIdeaAnswer(getState(), answerId);
                 const updatedAnswer = {
@@ -182,7 +185,6 @@ export function removeCommentFromCurrentIdea(id, parentId = '') {
                 dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
             }
         });
-    };
 }
 
 export function fetchNextAnswerThreads(answerId) {
