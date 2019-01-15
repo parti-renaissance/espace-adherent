@@ -17,7 +17,7 @@ final class ReportType
     public const CITIZEN_PROJECT = 'citizen_project';
     public const COMMITTEE = 'committee';
     public const COMMUNITY_EVENT = 'community_event';
-    public const IDEAS_WORKSHOP_IDEA = 'ideas_workshop_ideas';
+    public const IDEAS_WORKSHOP_IDEA = 'ideas_workshop_idea';
     public const IDEAS_WORKSHOP_THREAD = 'ideas_workshop_thread';
     public const IDEAS_WORKSHOP_THREAD_COMMENT = 'ideas_workshop_thread_comment';
 
@@ -36,7 +36,7 @@ final class ReportType
     public const COMMITTEE_URI = 'comites';
     public const COMMUNITY_EVENT_URI = 'evenements';
     public const IDEAS_WORKSHOP_IDEA_URI = 'atelier-des-idees-notes';
-    public const IDEAS_WORKSHOP_THREAD_URI = 'atelier-des-idees-commentaires;';
+    public const IDEAS_WORKSHOP_THREAD_URI = 'atelier-des-idees-commentaires';
     public const IDEAS_WORKSHOP_THREAD_COMMENT_URI = 'atelier-des-idees-reponses';
 
     public const TYPES_URI_PATTERN = self::CITIZEN_ACTION_URI
