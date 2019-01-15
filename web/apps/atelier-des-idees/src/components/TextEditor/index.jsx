@@ -34,7 +34,10 @@ class TextEditor extends React.Component {
         if (content) {
             const blocksFromHtml = htmlToDraft(content);
             const { contentBlocks, entityMap } = blocksFromHtml;
-            const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+            const contentState = ContentState.createFromBlockArray(
+                contentBlocks,
+                entityMap
+            );
             return EditorState.createWithContent(contentState);
         }
         return EditorState.createEmpty();
@@ -42,15 +45,19 @@ class TextEditor extends React.Component {
 
     constructor(props) {
         super(props);
-        const initialEditorState = TextEditor.getEditorStateFromContent(props.initialContent);
-        const initialTextContent = initialEditorState.getCurrentContent().getPlainText();
+        const initialEditorState = TextEditor.getEditorStateFromContent(
+            props.initialContent
+        );
+        const initialTextContent = initialEditorState
+            .getCurrentContent()
+            .getPlainText();
         this.state = {
             editorState: initialEditorState,
             textContent: initialTextContent,
         };
         this.onEditorStateChange = this.onEditorStateChange.bind(this);
         this.handleBeforeInput = this.handleBeforeInput.bind(this);
-        // this.handlePastedText = this.handlePastedText.bind(this);
+        this.handlePastedText = this.handlePastedText.bind(this);
     }
 
     handleBeforeInput() {
@@ -67,16 +74,16 @@ class TextEditor extends React.Component {
     }
 
     // Uncomment to handle pasted text if longer than maxLength
-    // handlePastedText(pastedText) {
-    //     const { maxLength } = this.props;
-    //     const contentState = this.state.editorState.getCurrentContent();
-    //     const contentText = contentState.getPlainText();
+    handlePastedText(pastedText) {
+        const { maxLength } = this.props;
+        const contentState = this.state.editorState.getCurrentContent();
+        const contentText = contentState.getPlainText();
 
-    //     if (contentText.length + pastedText.length > maxLength) {
-    //         return 'handled';
-    //     }
-    //     return 'not-handled';
-    // }
+        if (maxLength && contentText.length + pastedText.length > maxLength) {
+            return 'handled';
+        }
+        return 'not-handled';
+    }
 
     onEditorStateChange(editorState) {
         // convert content state to html and text
@@ -86,7 +93,9 @@ class TextEditor extends React.Component {
         // update state and send data
         // don't send html if text is empty
         const contentToSend = textContent ? htmlContent : textContent;
-        this.setState({ editorState, textContent }, () => this.props.onChange(contentToSend));
+        this.setState({ editorState, textContent }, () =>
+            this.props.onChange(contentToSend)
+        );
     }
 
     render() {
@@ -99,12 +108,13 @@ class TextEditor extends React.Component {
                     editorClassName="text-editor__content"
                     toolbarClassName="text-editor__toolbar"
                     handleBeforeInput={this.handleBeforeInput}
+                    handlePastedText={this.handlePastedText}
                     onEditorStateChange={this.onEditorStateChange}
                 />
                 {this.props.maxLength && (
-                    <div className="text-editor__count">{`${this.state.textContent.length}/${
-                        this.props.maxLength
-                    }`}</div>
+                    <div className="text-editor__count">{`${
+                        this.state.textContent.length
+                    }/${this.props.maxLength}`}</div>
                 )}
             </div>
         );
