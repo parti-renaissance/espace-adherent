@@ -85,7 +85,7 @@ class IdeaFilters extends React.Component {
                                 {!!this.props.options.categories.length && (
                                     <Select
                                         options={this.props.options.categories}
-                                        placeholder="Echelle"
+                                        placeholder="National / Européen"
                                         onSelected={([selected]) =>
                                             this.onFilterChange(
                                                 'category.name',
@@ -114,7 +114,7 @@ class IdeaFilters extends React.Component {
                         )}
                         <Select
                             options={this.filterItems.authorCategory.options}
-                            placeholder="Auteur"
+                            placeholder="Type de contributeur"
                             onSelected={([selected]) =>
                                 this.onFilterChange(
                                     'authorCategory',

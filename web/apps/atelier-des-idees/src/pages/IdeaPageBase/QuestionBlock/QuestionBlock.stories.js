@@ -6,7 +6,7 @@ import QuestionBlock from '.';
 const question = {
     id: 'problem',
     label: 'Constat',
-    question: 'Quel problème souhaitez vous résoudre ?',
+    question: 'Quel problème souhaitez-vous résoudre ?',
     canCollapse: false,
     placeholder: 'Expliquez le problème que vous identifiez et espérez pouvoir remédier.',
 };

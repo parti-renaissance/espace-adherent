@@ -21,8 +21,8 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
 
         $questionProblem = new Question(
             'Constat',
-            'quel problème souhaitez vous résoudre ?',
-            'Expliquez, en maximum 1700 caractères (espaces compris) le problème que vous identifiez et espérez pouvoir remédier.',
+            'quel problème souhaitez-vous résoudre ?',
+            'Expliquer précisément le problème que vous avez identifié et auquel vous souhaitez répondre. N\'hésitez pas à étayer votre constat par des chiffres ou des exemples.',
             1,
             $isMandatory
         );
@@ -32,7 +32,7 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
         $questionAnswer = new Question(
             'Solution',
             'quelle réponse votre idée apporte-t-elle ? ',
-            'Expliquez, en maximum 1700 caractères (espaces compris), comment votre proposition répond concrètement au problème.',
+            'Expliquez comment votre proposition répond au problème en étant le plus concret possible. Chaque proposition ne doit comporter qu\'une seule solution.',
             2,
             $isMandatory
         );
@@ -42,7 +42,7 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
         $questionCompare = new Question(
             'Comparaison',
             'cette proposition a-t-elle déjà été mise en oeuvre ou étudiée ?',
-            'Expliquez, en maximum 1700 caractères (espaces compris), si et comment cette proposition a été étudiée ou mise en oeuvre en France ou à l’étranger.',
+            'Précisez si cette proposition a été mise en œuvre en France ou à l\'étranger, s\'il s\'agissait d\'une expérimentation et quels en ont été les résultats.',
             3
         );
         $this->addReference('question-compare', $questionCompare);
@@ -51,7 +51,7 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
         $questionNegativeEffect = new Question(
             'Impact',
             'Cette proposition peut elle avoir des effets négatifs pour certains publics ?',
-            'Expliquez, en maximum 1700 caractères (espaces compris), si cette proposition peut porter préjudice à certains publics (individus, entreprises, associations, ou pays) et comment il est possible d’en limiter les effets.',
+            'Expliquez si cette proposition peut porter préjudice à certains acteurs (individus, professions, territoires, institutions, entreprises, associations, etc) et comment il est possible d\'en limiter les effets.',
             4
         );
         $this->addReference('question-negative-effect', $questionNegativeEffect);
@@ -60,7 +60,7 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
         $questionLawImpact = new Question(
             'Droit',
             'votre idée suppose-t-elle de changer le droit ?',
-            'Expliquez, en maximum 1700 caractères (espaces compris), si votre idée nécessite - ou non - de changer le droit en vigueur. Si oui, idéalement, précisez ce qu’il faudrait changer.',
+            'Expliquez si votre proposition nécessite - ou non - de changer le droit en vigueur. Si oui, idéalement, précisez ce qu\'il faudrait changer.',
             5
         );
         $this->addReference('question-law-impact', $questionLawImpact);
@@ -69,7 +69,7 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
         $questionBudgetImpact = new Question(
             'Budget',
             'votre idée a-t-elle un impact financier ?',
-            'Expliquez, en maximum 1700 caractères (espaces compris), si votre idée entraîne directement des recettes ou des dépenses pour l’État ou les collectivités locales. Si oui, idéalement, donnez des éléments de chiffrage.',
+            'Expliquez si votre proposition entraîne directement des recettes ou des dépenses pour l’État ou les collectivités locales. Si oui, donnez si possible des éléments de chiffrage.',
             6
         );
         $this->addReference('question-budget-impact', $questionBudgetImpact);
@@ -78,7 +78,7 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
         $questionEcologyImpact = new Question(
             'Environnement',
             'votre idée a-t-elle un impact écologique ?',
-            'Expliquez, en maximum 1700 caractères (espaces compris), si votre idée a des effets positifs ou négatifs sur l’environnement. Idéalement, précisez des éléments de réponse pour maximiser ou minimiser (selon les cas) ces effets.',
+            'Expliquez si votre idée a des effets positifs ou négatifs sur l\'environnement. Idéalement, précisez comment maximiser ou minimiser ces effets.',
             7
         );
         $this->addReference('question-ecology-impact', $questionEcologyImpact);
@@ -87,7 +87,7 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
         $questionGenderEquality = new Question(
             'Égalité femmes-hommes',
             'votre idée a-t-elle un impact sur l’égalité entre les femmes et les hommes ?',
-            'Expliquez, en maximum 1700 caractères (espaces compris), si votre idée a des effets positifs ou négatifs sur l’égalité entre les femmes et les hommes. Idéalement, donnez des éléments pour maximiser ou minimiser (selon les cas) ces effets.',
+            'L\'égalité femmes-hommes est la grande cause du quiquennat. Expliquez si votre proposition a des effets positifs ou négatifs sur ce sujet',
             8
         );
         $this->addReference('question-gender-equality', $questionGenderEquality);

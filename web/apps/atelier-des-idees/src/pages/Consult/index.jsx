@@ -13,8 +13,8 @@ class ConsultPage extends React.Component {
     render() {
         return (
             <ThreeTabsPage
-                title="Les idées finalisées"
-                subtitle="Consultez les idées devenues de vraies propositions !"
+                title="Les propositions finalisées"
+                subtitle="Donnez votre avis sur les propositions des marcheurs"
             >
                 <div className="consult-page">
                     <div className="l__wrapper">

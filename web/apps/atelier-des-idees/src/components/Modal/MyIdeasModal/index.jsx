@@ -19,10 +19,9 @@ function MyIdeasModal(props) {
 
     return (
         <div className="my-ideas-modal">
-            <h2 className="my-ideas-modal__title">Mes idées</h2>
+            <h2 className="my-ideas-modal__title">Mes propositions</h2>
             <p className="my-ideas-modal__subtitle">
-                Retrouvez ici toutes votes idées que ce soient celles dont vous êtes l’auteur ou bien celles celles
-                auxquelles vous avez participé.
+				Retrouvez ici toutes vos propositions et celles auxquelles vous avez contribué.
             </p>
             <Tabs panes={panes} defaultActiveKey={'my_ideas' === props.tabActive ? '0' : '1'} />
         </div>

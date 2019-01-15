@@ -47,14 +47,14 @@ class IdeaCardListContainer extends React.Component {
                         />
                         {this.props.withPaging && (
                             <div className="idea-card-list__paging">
-                                <Button label="Plus d'idées" mode="tertiary" onClick={this.props.onMoreClicked} />
+                                <Button label="Plus de propositions" mode="tertiary" onClick={this.props.onMoreClicked} />
                             </div>
                         )}
                     </React.Fragment>
                 ) : (
                     <div className="idea-card-list__empty">
                         <img className="idea-card-list__empty__img" src={noIdeaImg} />
-                        <p>Il n'y a pas d'idée correspondant à votre recherche</p>
+                        <p>Il n'y a pas de propositions correspondant à votre recherche</p>
                     </div>
                 )}
             </React.Fragment>

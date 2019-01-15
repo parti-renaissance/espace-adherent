@@ -11,10 +11,10 @@ class PreProposal extends React.PureComponent {
                         <img className="pre-proposal__container__img" src={proposeIdeaImg} />
                     </div>
                     <div className="pre-proposal__container">
-                        <h2 className="pre-proposal__container__title">Une petite étape avant de vous lancer</h2>
+                        <h2 className="pre-proposal__container__title">Demandez le programme !</h2>
                         <p className="pre-proposal__container__text">
-                            Avant de publier votre idée, vérifiez qu'elle ne soit pas déjà dans le programme d'Emmanuel
-                            Macron grâce à l'outil On l'a dit, On le fait !
+                            Un doute sur ce qui est déjà fait ou prévu ?
+                            Suivez la mise en œuvre du programme présidentiel
                         </p>
                         <a
                             className="button button--primary pre-proposal__container__link"

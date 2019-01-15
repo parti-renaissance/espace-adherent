@@ -9,51 +9,44 @@ class ProposalCriteria extends React.PureComponent {
                 <div className="proposal-criteria">
                     <div className="proposal-criteria__container">
                         <h2 className="proposal-criteria__container__title">
-                            À quels critères doit répondre une bonne note ?
+                            Vous voulez vous lancer ? Voici quelques conseils avant de commencer
                         </h2>
                         <Link
                             to="/atelier-des-idees/creer-ma-note"
                             className="button button--primary proposal-criteria__container__link">
-                            Je rédige ma note
+                            Je propose mon idée
                         </Link>
                     </div>
                     <div className="proposal-criteria__container">
                         <div className="proposal-criteria__container__item">
                             <p className="proposal-criteria__container__item__text">
                                 <span className="proposal-criteria__container__item__text__main">
-                                    Être une vraie proposition :
+                                  Votre proposition apporte une réponse :
                                 </span>{' '}
-                                il ne s’agit pas uniquement d’une critique ou d’un constat quant à une situation
-                                existante.
+                                elle doit dépasser le constat.
                             </p>
                         </div>
                         <div className="proposal-criteria__container__item">
                             <p className="proposal-criteria__container__item__text">
                                 <span className="proposal-criteria__container__item__text__main">
-                                    Répondre à une politique publique :
+                                    Votre proposition est généralisable :
                                 </span>{' '}
-                                le problème visé doit être national, la réponse politique se situant au niveau de l’état
-                                (et non de la municipalité ou de la collectivité)
+                                votre idée peut s’appliquer sur tout le territoire français ou européen. Pour les idées qui concernent spécifiquement votre territoire, rapprochez vous de votre comité local ou référent !
                             </p>
                         </div>
                         <div className="proposal-criteria__container__item">
                             <p className="proposal-criteria__container__item__text">
                                 <span className="proposal-criteria__container__item__text__main">
-                                    Répondre à un problème précis :
+                                    Votre proposition est nouvelle :
                                 </span>{' '}
-                                la proposition a pour objet de répondre à un problème précis, un constat, une situation
-                                améliorable.
+                                il ne s’agit pas d’une idée déjà publiée ou mise en œuvre. Pensez à consulter les idées en cours ou déjà publiées ainsi que le programme présidentiel.
                             </p>
                         </div>
                         <div className="proposal-criteria__container__item">
                             <p className="proposal-criteria__container__item__text">
                                 <span className="proposal-criteria__container__item__text__main">
-                                    Être respectueuse et courtoise :
+                                    Votre proposition est en accord avec notre Charte des valeurs.
                                 </span>{' '}
-                                votre proposition doit être conforme à notre charte des valeurs, nos CGU et respecter la
-                                législation en vigueur notamment relative à la diffamation, la prohibition des propos,
-                                injurieux, discriminatoires, raciste ou d&apos;incitation à commettre un délit ou un
-                                crime.
                             </p>
                         </div>
                     </div>

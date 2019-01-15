@@ -32,7 +32,7 @@ function LatestIdeas(props) {
     return (
         <article className="latest-ideas">
             <div className="l__wrapper">
-                <h2 className="latest-ideas__title">Consultez les dernières propositions publiées par nos adhérents</h2>
+                <h2 className="latest-ideas__title">Les denières propositions des Marcheurs</h2>
                 <Tabs panes={panes} />
             </div>
         </article>

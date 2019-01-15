@@ -23,7 +23,7 @@ class IdeaPageTitle extends React.Component {
                         <TextArea
                             maxLength={120}
                             onChange={this.state.isEditing ? this.onTitleChange : this.props.onTitleChange}
-                            placeholder="Titre de l'idée"
+                            placeholder="Titre de votre proposition"
                             value={this.state.isEditing ? this.state.value : this.props.title}
                             error={this.props.hasError ? 'Merci de remplir un titre avant de poursuivre' : undefined}
                             name="title"

@@ -9,6 +9,7 @@ function QuestionBlockHeader({ label, question, nbQuestion }) {
         <h3 className="question-block-header">
             <span className="question-block-header__label">{`${nbQuestion}. ${label ? `${label} : ` : ''}`}</span>
             <span className="question-block-header__question">{question}</span>
+            <span className="question-block-header__mandatory">(Obligatoire)</span>
         </h3>
     );
 }

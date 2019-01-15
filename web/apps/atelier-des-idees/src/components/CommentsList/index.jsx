@@ -138,7 +138,7 @@ class CommentsList extends React.Component {
                         <Button
                             type="submit"
                             className="comments-list__form__button button--primary"
-                            label="Envoyer"
+                            label="Publier"
                             isLoading={this.props.isSendingComment}
                         />
                     </form>
@@ -155,8 +155,8 @@ CommentsList.defaultProps = {
     showForm: true,
     parentId: undefined,
     emptyLabel: '',
-    placeholder: 'Ajoutez votre contribution',
-    collapseLabel: 'commentaire',
+    placeholder: 'Contribuez en proposant une suggestion',
+    collapseLabel: 'suggestion',
     total: 0,
     hasActions: false,
 };

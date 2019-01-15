@@ -14,14 +14,14 @@ function ThreeTabs(props) {
                         {props.subtitle && <p className="tt-page__header__subtitle">{props.subtitle}</p>}
                     </div>
                     <div className="tt-page__header__nav">
-                        <NavLink className="tt-page__header__nav-link" to="/atelier-des-idees/consulter">
-                            Consulter
+                        <NavLink className="tt-page__header__nav-link" to="/atelier-des-idees/proposer">
+                            Proposer
                         </NavLink>
                         <NavLink className="tt-page__header__nav-link" to="/atelier-des-idees/contribuer">
                             Contribuer
                         </NavLink>
-                        <NavLink className="tt-page__header__nav-link" to="/atelier-des-idees/proposer">
-                            Proposer
+                        <NavLink className="tt-page__header__nav-link" to="/atelier-des-idees/consulter">
+                            Voter
                         </NavLink>
                     </div>
                 </div>
