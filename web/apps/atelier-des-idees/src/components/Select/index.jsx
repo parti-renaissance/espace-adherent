@@ -85,6 +85,7 @@ class Select extends React.Component {
                     isClearable={this.props.isClearable}
                     isDisabled={this.props.isDisabled}
                     isMulti={this.props.isMulti}
+                    isSearchable={this.props.isSearchable}
                     defaultValue={this.props.defaultValue}
                 />
                 {this.props.subtitle && (
@@ -111,6 +112,7 @@ Select.defaultProps = {
     placeholder: '',
     isClearable: false,
     isDisabled: false,
+    isSearchable: true,
     defaultValue: undefined,
     maxOptionsSelected: undefined,
 };
@@ -132,6 +134,7 @@ Select.propTypes = {
     isClearable: PropTypes.bool,
     isDisabled: PropTypes.bool,
     isMulti: PropTypes.bool,
+    isSearchable: PropTypes.bool,
     onSelected: PropTypes.func.isRequired,
     defaultValue: PropTypes.oneOf([
         PropTypes.shape({
