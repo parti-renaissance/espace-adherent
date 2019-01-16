@@ -4,6 +4,7 @@ namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
+use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -49,7 +50,7 @@ class Answer
     /**
      * @ORM\Column(type="text")
      *
-     * @Assert\Length(max=1700)
+     * @AssertWysiwygLength(max=1700)
      * @Assert\NotBlank(message="answer.content.not_blank", groups={"idea_publish"})
      *
      * @SymfonySerializer\Groups({"idea_write", "idea_publish", "idea_read"})
