@@ -6,7 +6,7 @@ use AppBundle\Event\BaseEventCommand;
 use Symfony\Component\Form\DataTransformerInterface;
 use AppBundle\Address\GeoCoder;
 
-class BaseEventCommandTransformer implements DataTransformerInterface
+class EventDateTimeZoneTransformer implements DataTransformerInterface
 {
     /**
      * @param BaseEventCommand $baseEventCommand

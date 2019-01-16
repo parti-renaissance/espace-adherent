@@ -4,10 +4,10 @@ namespace Tests\AppBundle\Form\DataTransformer;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Event\EventCommand;
-use AppBundle\Form\DataTransformer\BaseEventCommandTransformer;
+use AppBundle\Form\DataTransformer\EventDateTimeZoneTransformer;
 use PHPUnit\Framework\TestCase;
 
-class BaseEventCommandTransformerTest extends TestCase
+class EventDateTimeZoneTransformerTest extends TestCase
 {
     /**
      * @dataProvider getDatetimeForTransformer
@@ -19,7 +19,7 @@ class BaseEventCommandTransformerTest extends TestCase
         string $finishAtTransformed,
         string $timeZone
     ): void {
-        $transformer = new BaseEventCommandTransformer();
+        $transformer = new EventDateTimeZoneTransformer();
         $adherent = new Adherent();
         $baseEventCommand = new EventCommand(
             $adherent,
@@ -47,7 +47,7 @@ class BaseEventCommandTransformerTest extends TestCase
         string $finishAt,
         string $timeZone
     ): void {
-        $transformer = new BaseEventCommandTransformer();
+        $transformer = new EventDateTimeZoneTransformer();
         $adherent = new Adherent();
         $baseEventCommand = new EventCommand(
             $adherent,

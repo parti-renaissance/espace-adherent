@@ -55,9 +55,6 @@
             <argument type="service" id="app.mailer.campaign" />
         </service>
 
-        <!-- BaseEventCommand -->
-        <service id="AppBundle\Form\BaseEventCommandType"/>
-
         <!-- Committee -->
         <service id="AppBundle\Committee\CommitteeMergeCommandHandler" public="true" />
         <service id="AppBundle\Form\Admin\CommitteeIdType"/>
