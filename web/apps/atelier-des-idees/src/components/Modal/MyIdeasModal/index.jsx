@@ -9,13 +9,7 @@ function MyIdeasModal(props) {
     const panes = [
         {
             title: 'Mes idées',
-            component: () => (
-                <MyIdeas
-                    ideas={props.my_ideas}
-                    onDeleteIdea={props.onDeleteIdea}
-                    onPublishIdea={props.onPublishIdea}
-                />
-            ),
+            component: () => <MyIdeas ideas={props.my_ideas} onDeleteIdea={props.onDeleteIdea} />,
         },
         {
             title: 'Mes contributions',
@@ -27,13 +21,10 @@ function MyIdeasModal(props) {
         <div className="my-ideas-modal">
             <h2 className="my-ideas-modal__title">Mes idées</h2>
             <p className="my-ideas-modal__subtitle">
-				Retrouvez ici toutes votes idées que ce soient celles dont vous êtes
-				l’auteur ou bien celles celles auxquelles vous avez participé.
+                Retrouvez ici toutes votes idées que ce soient celles dont vous êtes l’auteur ou bien celles celles
+                auxquelles vous avez participé.
             </p>
-            <Tabs
-                panes={panes}
-                defaultActiveKey={'my_ideas' === props.tabActive ? '0' : '1'}
-            />
+            <Tabs panes={panes} defaultActiveKey={'my_ideas' === props.tabActive ? '0' : '1'} />
         </div>
     );
 }
@@ -60,7 +51,6 @@ MyIdeasModal.propTypes = {
         })
     ).isRequired,
     onDeleteIdea: PropTypes.func.isRequired,
-    onPublishIdea: PropTypes.func.isRequired,
 };
 
 export default MyIdeasModal;
