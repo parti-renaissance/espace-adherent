@@ -34,9 +34,11 @@ function QuestionBlockBody(props) {
                 <div className="question-block__editing-footer">
                     {props.isEditing ? (
                         <React.Fragment>
-                            <button className="question-block__editing-footer__btn" onClick={props.onCancelAnswer}>
-                                Annuler
-                            </button>
+                            {!!props.initialContent && (
+                                <button className="question-block__editing-footer__btn" onClick={props.onCancelAnswer}>
+                                    Annuler
+                                </button>
+                            )}
                             {props.canSaveAnswer && (
                                 <button
                                     className="question-block__editing-footer__btn editing-footer__btn--main"
@@ -64,7 +66,8 @@ class QuestionBlock extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isEditing: false,
+            // handle question block edition, can only true in contributing mode
+            isEditing: 'edit' === props.mode ? false : !props.initialContent,
             value: this.props.initialContent,
         };
         this.onTextChange = this.onTextChange.bind(this);
@@ -83,7 +86,7 @@ class QuestionBlock extends React.Component {
 
     onSaveAnswer() {
         this.props.onTextChange(this.state.value, true);
-        this.setState({ isEditing: false, value: this.props.initialContent });
+        this.setState({ isEditing: false });
     }
 
     onCancelAnswer() {
