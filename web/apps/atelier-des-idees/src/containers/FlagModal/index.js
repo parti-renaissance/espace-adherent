@@ -16,7 +16,7 @@ FlagModalContainer.propTypes = {
     reasons: PropTypes.array.isRequired,
 };
 
-function mapStateToProps(state, { commentId }) {
+function mapStateToProps(state, { id }) {
     // get static data
     const { reasons } = selectStatic(state);
     // const reasons = {
@@ -26,7 +26,7 @@ function mapStateToProps(state, { commentId }) {
     //     other: 'Autre',
     // };
     // get request status
-    const flagState = selectLoadingState(state, 'POST_FLAG', commentId);
+    const flagState = selectLoadingState(state, 'POST_FLAG', id);
     const formattedReasons = Object.entries(reasons).map(([value, label]) => ({
         value,
         label,

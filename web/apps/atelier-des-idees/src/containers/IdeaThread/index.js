@@ -111,7 +111,7 @@ function mapDispatchToProps(dispatch) {
             dispatch(
                 showModal(FLAG_MODAL, {
                     onSubmit: data => dispatch(reportComment(data, commentId, threadId)),
-                    commentId,
+                    id: commentId,
                 })
             ),
         onLoadMore: (answerId, threadId) => {

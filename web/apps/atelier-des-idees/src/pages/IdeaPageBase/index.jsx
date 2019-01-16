@@ -11,7 +11,10 @@ import IdeaPageSkeleton from './IdeaPageSkeleton';
 import autoSaveIcn from '../../img/icn_20px_autosave.svg';
 
 function getInitialAnswers(guidelines, answers = []) {
-    const questions = guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
+    const questions = guidelines.reduce(
+        (acc, guideline) => [...acc, ...guideline.questions],
+        []
+    );
     return questions.reduce((acc, question) => {
         const answer = answers.find(item => item.question.id === question.id);
         acc[question.id] = answer ? answer.content : '';
@@ -20,7 +23,10 @@ function getInitialAnswers(guidelines, answers = []) {
 }
 
 function getRequiredAnswers(guidelines) {
-    const questions = guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
+    const questions = guidelines.reduce(
+        (acc, guideline) => [...acc, ...guideline.questions],
+        []
+    );
     return questions
         .filter(question => question.required)
         .reduce((acc, question) => {
@@ -131,7 +137,10 @@ class IdeaPageBase extends React.Component {
     }
 
     getParagraphs() {
-        const questions = this.props.guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
+        const questions = this.props.guidelines.reduce(
+            (acc, guideline) => [...acc, ...guideline.questions],
+            []
+        );
         return questions.reduce((acc, { id }) => {
             if (this.state.answers[id]) {
                 acc.push(this.state.answers[id]);
@@ -173,10 +182,13 @@ class IdeaPageBase extends React.Component {
                                 className="button create-idea-actions__back"
                                 onClick={() => this.props.onBackClicked()}
                             >
-                                ← Retour
+								← Retour
                             </button>
                             {idea.status !== ideaStatus.FINALIZED && this.state.name && (
-                                <Switch onChange={this.onToggleReadingMode} label="Passer en mode lecture" />
+                                <Switch
+                                    onChange={this.onToggleReadingMode}
+                                    label="Passer en mode lecture"
+                                />
                             )}
                             {this.props.isAuthor && (
                                 <CreateIdeaActions
@@ -186,6 +198,14 @@ class IdeaPageBase extends React.Component {
                                     isEditing={idea.status === ideaStatus.DRAFT}
                                 />
                             )}
+                            {!this.props.isAuthor && (
+                                <button
+                                    className="button create-idea-actions__report"
+                                    onClick={() => this.props.onReportClicked()}
+                                >
+									Signaler la note
+                                </button>
+                            )}
                         </React.Fragment>
                     )}
                 </div>
@@ -193,7 +213,10 @@ class IdeaPageBase extends React.Component {
                     {!this.props.isLoading && idea.status === ideaStatus.DRAFT && (
                         <div className="create-idea-page__auto-save">
                             <p className="create-idea-page__auto-save__label">
-                                <img className="create-idea-page__auto-save__icon" src={autoSaveIcn} />
+                                <img
+                                    className="create-idea-page__auto-save__icon"
+                                    src={autoSaveIcn}
+                                />
                                 <span>Votre note est automatiquement sauvegardée</span>
                             </p>
                         </div>
@@ -206,7 +229,9 @@ class IdeaPageBase extends React.Component {
                                 <IdeaPageTitle
                                     authorName={idea.authorName}
                                     publishedAt={idea.publishedAt}
-                                    onTitleChange={(value, withSave) => this.onNameChange(value, withSave)}
+                                    onTitleChange={(value, withSave) =>
+                                        this.onNameChange(value, withSave)
+                                    }
                                     title={this.state.name}
                                     isAuthor={this.props.isAuthor}
                                     isEditing={idea.status === ideaStatus.DRAFT}
@@ -240,7 +265,9 @@ class IdeaPageBase extends React.Component {
                                         )}
                                     </div>
                                 )}
-                                {idea.status === ideaStatus.FINALIZED && <VotingFooterIdeaPage />}
+                                {idea.status === ideaStatus.FINALIZED && (
+                                    <VotingFooterIdeaPage />
+                                )}
                             </React.Fragment>
                         )}
                     </div>
@@ -275,6 +302,7 @@ IdeaPageBase.propTypes = {
     onBackClicked: PropTypes.func.isRequired,
     onPublishIdea: PropTypes.func.isRequired,
     onDeleteClicked: PropTypes.func.isRequired,
+    onReportClicked: PropTypes.func.isRequired,
     onSaveIdea: PropTypes.func.isRequired,
 };
 
