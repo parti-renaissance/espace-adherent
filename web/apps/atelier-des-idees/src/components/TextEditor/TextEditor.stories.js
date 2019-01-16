@@ -13,4 +13,12 @@ storiesOf('TextEditor', module)
     .add('with initial content', () => <TextEditor initialContent={content} onChange={action('editor change')} />)
     .add('with max length', () => (
         <TextEditor maxLength={10} onChange={action('editor change')} placeholder="10 characters max." />
+    ))
+    .add('with error', () => (
+        <TextEditor
+            maxLength={10}
+            onChange={action('editor change')}
+            placeholder="10 characters max."
+            error="Veuillez remplir ce champ"
+        />
     ));

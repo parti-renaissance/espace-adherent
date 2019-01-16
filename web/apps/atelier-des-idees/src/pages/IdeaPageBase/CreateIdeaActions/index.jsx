@@ -20,7 +20,6 @@ function CreateIdeaActions(props) {
                     />
                     <Button
                         className="create-idea-actions__publish"
-                        disabled={props.isEditing && !props.canPublish}
                         label="Publier la note"
                         onClick={props.onPublishClicked}
                     />
@@ -32,13 +31,11 @@ function CreateIdeaActions(props) {
 
 CreateIdeaActions.defaultProps = {
     isEditing: true,
-    canPublish: false,
     onBackClicked: undefined,
 };
 
 CreateIdeaActions.propTypes = {
     isEditing: PropTypes.bool,
-    canPublish: PropTypes.bool,
     onBackClicked: PropTypes.func,
     onDeleteClicked: PropTypes.func.isRequired,
     onPublishClicked: PropTypes.func.isRequired,
