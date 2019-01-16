@@ -112,7 +112,7 @@ class QuestionBlock extends React.Component {
                     onCancelAnswer={this.onCancelAnswer}
                     canSaveAnswer={canCollapse ? true : !!this.state.value}
                 />
-                {!!initialContent && 'edit' !== this.props.mode && (
+                {'edit' !== this.props.mode && (
                     <div className="question-block__threads">
                         <IdeaThread questionId={this.props.questionId} />
                     </div>
