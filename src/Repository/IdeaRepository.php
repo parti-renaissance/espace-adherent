@@ -3,9 +3,11 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\IdeasWorkshop\Answer;
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
-use AppBundle\Entity\IdeasWorkshop\ThreadCommentStatusEnum;
+use AppBundle\Entity\IdeasWorkshop\Thread;
+use AppBundle\Entity\IdeasWorkshop\ThreadComment;
 use AppBundle\Entity\IdeasWorkshop\VoteTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -18,7 +20,65 @@ class IdeaRepository extends ServiceEntityRepository
         parent::__construct($registry, Idea::class);
     }
 
-    public function getIdeaContributors(Idea $idea): array
+    public function getContributors(Idea $idea): array
+    {
+        return array_unique(
+            array_merge(
+                $this->getThreadContributors($idea),
+                $this->getCommentsContributors($idea)
+            ),
+            \SORT_REGULAR
+        );
+    }
+
+    public function countContributors(Idea $idea): int
+    {
+        $data = $this->createQueryBuilder('idea')
+            ->select('threadAuthor.id AS threadAuthorId, commentAuthor.id AS commentAuthorId')
+            ->innerJoin('idea.answers', 'answer')
+            ->innerJoin('answer.threads', 'thread')
+            ->innerJoin('thread.author', 'threadAuthor')
+            ->leftJoin('thread.comments', 'comment')
+            ->leftJoin('comment.author', 'commentAuthor')
+            ->where('idea = :idea AND thread.deletedAt IS NULL AND comment.deletedAt IS NULL')
+            ->setParameter('idea', $idea)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return \count($data)
+            ? \count(
+                array_filter(
+                    array_unique(
+                        array_merge(
+                            ...array_values(
+                                array_merge_recursive(...$data)
+                            )
+                        )
+                    )
+                )
+            )
+            : 0
+        ;
+    }
+
+    private function getThreadContributors(Idea $idea): array
+    {
+        return $this->getEntityManager()->createQueryBuilder()
+            ->from(Adherent::class, 'adherent')
+            ->select('adherent')
+            ->join(Thread::class, 'thread', Join::WITH, 'thread.author = adherent.id')
+            ->join(Answer::class, 'answer', Join::WITH, 'thread.answer = answer.id')
+            ->join('answer.idea', 'idea')
+            ->where('idea = :idea')
+            ->setParameter('idea', $idea)
+            ->andWhere('thread.deletedAt IS NULL')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    private function getCommentsContributors(Idea $idea): array
     {
         return $this->getEntityManager()->createQueryBuilder()
             ->from(Adherent::class, 'adherent')
@@ -30,26 +90,9 @@ class IdeaRepository extends ServiceEntityRepository
             ->where('idea = :idea')
             ->setParameter('idea', $idea)
             ->andWhere('comment.deletedAt IS NULL')
-            ->andWhere('thread.status IN (:status)')
-            ->setParameter('status', ThreadCommentStatusEnum::VISIBLE_STATUSES)
+            ->andWhere('thread.deletedAt IS NULL')
             ->getQuery()
             ->getResult()
-        ;
-    }
-
-    public function countIdeaContributors(Idea $idea): int
-    {
-        return $this->createQueryBuilder('idea')
-            ->select('COUNT(DISTINCT adherent)')
-            ->innerJoin('idea.answers', 'answers')
-            ->innerJoin('answers.threads', 'threads')
-            ->innerJoin('threads.comments', 'comments')
-            ->innerJoin('comments.author', 'adherent')
-            ->where('idea = :idea')
-            ->setParameter('idea', $idea)
-            ->andWhere('comments.deletedAt IS NULL')
-            ->getQuery()
-            ->getSingleScalarResult()
         ;
     }
 
