@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import FlagModal from '../../components/Modal/FlagModal';
+import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectStatic } from '../../redux/selectors/static';
 
 class FlagModalContainer extends React.Component {
@@ -15,7 +16,7 @@ FlagModalContainer.propTypes = {
     reasons: PropTypes.array.isRequired,
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(state, { commentId }) {
     // get static data
     const { reasons } = selectStatic(state);
     // const reasons = {
@@ -24,12 +25,16 @@ function mapStateToProps(state) {
     //     commercial_content: 'Il s\'agit de contenu commercial',
     //     other: 'Autre',
     // };
+    // get request status
+    const flagState = selectLoadingState(state, 'POST_FLAG', commentId);
     const formattedReasons = Object.entries(reasons).map(([value, label]) => ({
         value,
         label,
     }));
     return {
         reasons: formattedReasons,
+        isSubmitSuccess: flagState.isSuccess,
+        isSubmitError: flagState.isError,
     };
 }
 
