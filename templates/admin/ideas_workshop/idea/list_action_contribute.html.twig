@@ -1,0 +1,7 @@
+{% if object.isFinalized and object.enabled %}
+    <a href="{{ path('app_admin_idea_contribute', { id: object.id }) }}" class="btn btn-sm btn-default view_link"
+       title="Remettre en contribution" rel="noopener noreferrer">
+        <i class="fa fa-comments" aria-hidden="true"></i>
+        Remettre en contribution
+    </a>
+{% endif %}
