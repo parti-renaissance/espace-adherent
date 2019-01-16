@@ -1,0 +1,16 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field %}
+    {% for threadComment in object.comments %}
+        Auteur: {{ threadComment.author }}<br>
+        Date: {{ threadComment.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM Y HH:MM") }}<br>
+        Approuvé:
+        {% if threadComment.approved %}
+            <span class="label label-success">{{ 'global.yes'|trans|lower }}</span>
+        {% else %}
+            <span class="label label-danger">{{ 'global.no'|trans|lower }}</span>
+        {% endif %}<br>
+        Contenu: {{ threadComment.content }}<br>
+        <br>
+    {% endfor %}
+{% endblock %}
