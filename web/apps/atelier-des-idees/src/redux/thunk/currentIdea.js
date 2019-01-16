@@ -37,19 +37,8 @@ export function deleteCurrentIdea() {
 }
 
 export function goBackFromCurrentIdea() {
-    return (dispatch, getState) => {
-        const { status } = selectCurrentIdea(getState());
-        switch (status) {
-        case ideaStatus.FINALIZED:
-            history.push('/atelier-des-idees/consulter');
-            break;
-        case ideaStatus.PENDING:
-            history.push('/atelier-des-idees/contribuer');
-            break;
-        case ideaStatus.DRAFT:
-        default:
-            history.push('/atelier-des-idees/proposer');
-        }
+    return () => {
+        history.push('/atelier-des-idees');
     };
 }
 
