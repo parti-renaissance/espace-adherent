@@ -261,9 +261,10 @@ export function deleteIdea(id) {
         axios.delete(`/api/ideas-workshop/ideas/${id}`).then(() => {
             // remove idea entity
             dispatch(removeIdea(id));
-            dispatch(removeMyIdea(id));
-            // show modal MY IDEAS
-            dispatch(showModal(MY_IDEAS_MODAL, { tabActive: 'my_ideas' }));
+            dispatch(removeMyIdea(id)).then(() => {
+                // show modal MY IDEAS
+                dispatch(showModal(MY_IDEAS_MODAL, { tabActive: 'my_ideas' }));
+            });
         });
 }
 
