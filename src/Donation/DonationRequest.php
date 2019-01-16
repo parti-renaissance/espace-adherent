@@ -2,6 +2,7 @@
 
 namespace AppBundle\Donation;
 
+use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 use AppBundle\Form\DonationRequestType;
 use AppBundle\Validator\MaxFiscalYearDonation;
@@ -97,6 +98,12 @@ class DonationRequest
      */
     private $country;
 
+    /**
+     * @Assert\NotBlank
+     * @AssertUnitedNationsCountry(message="common.nationality.invalid")
+     */
+    private $nationality;
+
     private $clientIp;
 
     /**
@@ -123,9 +130,10 @@ class DonationRequest
         $this->uuid = $uuid;
         $this->clientIp = $clientIp;
         $this->emailAddress = '';
-        $this->country = 'FR';
+        $this->country = Address::FRANCE;
         $this->setAmount($amount);
         $this->duration = $duration;
+        $this->nationality = Address::FRANCE;
     }
 
     public static function createFromAdherent(
@@ -330,5 +338,15 @@ class DonationRequest
     public function isSubscription(): bool
     {
         return PayboxPaymentSubscription::NONE !== $this->duration;
+    }
+
+    public function getNationality(): string
+    {
+        return $this->nationality;
+    }
+
+    public function setNationality(string $nationality): void
+    {
+        $this->nationality = $nationality;
     }
 }

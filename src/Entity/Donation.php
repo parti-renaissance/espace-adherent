@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Address\Address;
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Geocoder\GeoPointInterface;
 use Cake\Chronos\Chronos;
@@ -104,6 +105,11 @@ class Donation implements GeoPointInterface
      */
     private $payboxOrderRef;
 
+    /**
+     * @ORM\Column(length=2)
+     */
+    private $nationality;
+
     public function __construct(
         UuidInterface $uuid,
         string $payboxOrderRef,
@@ -114,7 +120,8 @@ class Donation implements GeoPointInterface
         string $emailAddress,
         PostAddress $postAddress,
         string $clientIp,
-        int $duration = PayboxPaymentSubscription::NONE
+        int $duration = PayboxPaymentSubscription::NONE,
+        string $nationality = Address::FRANCE
     ) {
         $this->uuid = $uuid;
         $this->amount = $amount;
@@ -128,6 +135,7 @@ class Donation implements GeoPointInterface
         $this->duration = $duration;
         $this->status = self::STATUS_WAITING_CONFIRMATION;
         $this->payboxOrderRef = $payboxOrderRef;
+        $this->nationality = $nationality;
     }
 
     public function __toString(): string
@@ -288,5 +296,15 @@ class Donation implements GeoPointInterface
     public function getUpdatedAt(): \DateTimeInterface
     {
         return $this->updatedAt;
+    }
+
+    public function getNationality(): string
+    {
+        return $this->nationality;
+    }
+
+    public function setNationality(string $nationality): void
+    {
+        $this->nationality = $nationality;
     }
 }

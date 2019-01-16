@@ -14,6 +14,7 @@ use AppBundle\ValueObject\Genders;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -113,6 +114,9 @@ class DonationRequestType extends AbstractType
                 'filter_emojis' => true,
             ])
             ->add('emailAddress', EmailType::class)
+            ->add('nationality', CountryType::class, [
+                'label' => 'Nationalité',
+            ])
             ->add('address', TextType::class)
             ->add('postalCode', TextType::class)
             ->add('cityName', TextType::class, [
