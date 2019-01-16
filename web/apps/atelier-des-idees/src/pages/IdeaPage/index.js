@@ -12,6 +12,7 @@ import {
     deleteCurrentIdea,
     goBackFromCurrentIdea,
 } from '../../redux/thunk/currentIdea';
+import { resetLoading } from '../../redux/actions/loading';
 import { selectAuthUser } from '../../redux/selectors/auth';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectCurrentIdea, selectGuidelines } from '../../redux/selectors/currentIdea';
@@ -19,6 +20,10 @@ import { selectCurrentIdea, selectGuidelines } from '../../redux/selectors/curre
 class IdeaPage extends React.Component {
     componentDidMount() {
         this.props.initIdeaPage();
+    }
+
+    componentWillUnmount() {
+        this.props.unmountIdeaPage();
     }
 
     render() {
@@ -77,6 +82,8 @@ function mapDispatchToProps(dispatch, ownProps) {
             const { id } = ownProps.match.params;
             dispatch(initIdeaPage(id));
         },
+        // reset loading states on unmount to avoid side effect
+        unmountIdeaPage: () => dispatch(resetLoading()),
         onBackClicked: () => dispatch(goBackFromCurrentIdea()),
         onPublishIdea: (data) => {
             const { id } = ownProps.match.params;

@@ -1,7 +1,14 @@
+import { RESET_LOADING } from '../constants/actionTypes';
+
 const initialState = {};
 
 const loadingReducer = (state = initialState, action) => {
     const { type, payload } = action;
+
+    if (type === RESET_LOADING) {
+        return initialState;
+    }
+
     const matches = /(.*)_(REQUEST|SUCCESS|FAILURE)/.exec(type);
 
     // not a *_REQUEST / *_SUCCESS /  *_FAILURE actions, so we ignore them
