@@ -15,8 +15,8 @@ import {
     publishCurrentIdea,
     deleteCurrentIdea,
     goBackFromCurrentIdea,
-    reportCurrentIdea,
 } from '../../redux/thunk/currentIdea';
+import { reportIdea } from '../../redux/thunk/ideas';
 import { selectAuthUser } from '../../redux/selectors/auth';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import {
@@ -107,7 +107,7 @@ function mapDispatchToProps(dispatch, ownProps) {
             const { id } = ownProps.match.params;
             dispatch(
                 showModal(FLAG_MODAL, {
-                    onSubmit: data => dispatch(reportCurrentIdea(data, id)),
+                    onSubmit: data => dispatch(reportIdea(data, id)),
                     id,
                 })
             );

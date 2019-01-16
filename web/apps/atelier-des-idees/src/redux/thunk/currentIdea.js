@@ -1,10 +1,6 @@
 import { ideaStatus } from '../../constants/api';
 import history from '../../history';
-import {
-    SAVE_CURRENT_IDEA,
-    FETCH_GUIDELINES,
-    POST_FLAG,
-} from '../constants/actionTypes';
+import { SAVE_CURRENT_IDEA, FETCH_GUIDELINES } from '../constants/actionTypes';
 import { saveIdea, publishIdea, voteIdea } from '../thunk/ideas';
 import { postComment, fetchThreads, deleteComment } from '../thunk/threads';
 import {
@@ -253,15 +249,5 @@ export function fetchNextAnswerThreads(answerId) {
             // update paging data
             dispatch(setThreadPagingData(answerId, metadata));
         });
-    };
-}
-
-export function reportCurrentIdea(reportData, id) {
-    return (dispatch, getState, axios) => {
-        dispatch(createRequest(POST_FLAG, id));
-        return axios
-            .post(`/api/report/atelier-des-idees-notes/${id}`, reportData)
-            .then(() => dispatch(createRequestSuccess(POST_FLAG, id)))
-            .catch(() => dispatch(createRequestFailure(POST_FLAG, id)));
     };
 }

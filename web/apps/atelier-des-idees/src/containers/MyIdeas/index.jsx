@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { DELETE_IDEA_MODAL } from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
-import { deleteIdea, fetchUserIdeas, fetchUserContributions } from '../../redux/thunk/ideas';
+import {
+    deleteMyIdea,
+    fetchUserIdeas,
+    fetchUserContributions,
+} from '../../redux/thunk/ideas';
 import { selectMyIdeas } from '../../redux/selectors/myIdeas';
 import { selectMyContributions } from '../../redux/selectors/myContributions';
 import MyIdeasModal from '../../components/Modal/MyIdeasModal';
@@ -48,7 +52,7 @@ function mapDispatchToProps(dispatch) {
         onDeleteIdea: id =>
             dispatch(
                 showModal(DELETE_IDEA_MODAL, {
-                    onConfirmDelete: () => dispatch(deleteIdea(id)),
+                    onConfirmDelete: () => dispatch(deleteMyIdea(id)),
                 })
             ),
         initMyIdeas: () => {
