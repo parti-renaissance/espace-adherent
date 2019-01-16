@@ -11,17 +11,12 @@ import {
     deleteCurrentIdea,
     goBackFromCurrentIdea,
 } from '../../redux/thunk/currentIdea';
-import { resetLoading } from '../../redux/actions/loading';
 import { selectAuthUser } from '../../redux/selectors/auth';
 import { selectGuidelines } from '../../redux/selectors/currentIdea';
 
 class CreateIdeaPage extends React.Component {
     componentDidMount() {
         this.props.initCreateIdeaPage();
-    }
-
-    componentWillUnmount() {
-        this.props.unmountCreateIdeaPage();
     }
 
     render() {
@@ -58,8 +53,6 @@ function mapDispatchToProps(dispatch) {
         initCreateIdeaPage: () => {
             dispatch(initCreateIdeaPage());
         },
-        // reset loading states on unmount to avoid side effect
-        unmountCreateIdeaPage: () => dispatch(resetLoading()),
         onBackClicked: () => dispatch(goBackFromCurrentIdea()),
         onPublishIdea: data =>
             dispatch(

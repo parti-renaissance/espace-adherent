@@ -2,14 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import PublishIdeaFormModal from '../../components/Modal/PublishIdeaFormModal';
+import { fetchStaticData } from '../../redux/thunk/static';
+import { resetLoading } from '../../redux/actions/loading';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectStatic } from '../../redux/selectors/static';
-import { fetchStaticData } from '../../redux/thunk/static';
 import { selectCurrentIdea } from '../../redux/selectors/currentIdea';
 
 class PublishFormModalContainer extends React.Component {
     componentDidMount() {
         this.props.initPublishForm();
+    }
+
+    componentWillUnmount() {
+        this.props.unmountPublishForm();
     }
 
     render() {
@@ -50,6 +55,8 @@ function mapStateToProps(state, { id }) {
 function mapDispatchToProps(dispatch) {
     return {
         initPublishForm: () => dispatch(fetchStaticData()),
+        // reset loading states on unmount to avoid side effect
+        unmountPublishForm: () => dispatch(resetLoading()),
     };
 }
 
