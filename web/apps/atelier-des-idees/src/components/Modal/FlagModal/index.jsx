@@ -130,6 +130,7 @@ class FlagModal extends React.Component {
                                     error={this.state.errors.comment}
                                     placeholder="Merci d'expliquer pourquoi vous signalez ce commentaire ou cette idée à La République En Marche et merci d'indiquer toute information qui nous aiderait à l'évaluer"
                                     onChange={value => this.handleChange('comment', value)}
+                                    maxLength={500}
                                 />
                             </div>
                         )}
