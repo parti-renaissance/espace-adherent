@@ -5,7 +5,7 @@ import {
     SAVE_IDEA,
     PUBLISH_IDEA,
     FETCH_MY_IDEAS,
-    VOTE_IDEA,
+    POST_FLAG,
 } from '../constants/actionTypes';
 import {
     createRequest,
@@ -24,7 +24,7 @@ import { setMyIdeas, removeMyIdea } from '../actions/myIdeas';
 import { setMyContributions } from '../actions/myContributions';
 import { selectAuthUser, selectIsAuthenticated } from '../selectors/auth';
 import { MY_IDEAS_MODAL } from '../../constants/modalTypes';
-import { showModal } from '../actions/modal';
+import { hideModal, showModal } from '../actions/modal';
 import { setThreads, setThreadComments } from '../actions/threads';
 
 // axios cancellation
@@ -261,10 +261,17 @@ export function deleteIdea(id) {
         axios.delete(`/api/ideas-workshop/ideas/${id}`).then(() => {
             // remove idea entity
             dispatch(removeIdea(id));
-            dispatch(removeMyIdea(id)).then(() => {
-                // show modal MY IDEAS
-                dispatch(showModal(MY_IDEAS_MODAL, { tabActive: 'my_ideas' }));
-            });
+            // hide modal
+            dispatch(hideModal());
+        });
+}
+
+export function deleteMyIdea(id) {
+    return (dispatch, getState, axios) =>
+        axios.delete(`/api/ideas-workshop/ideas/${id}`).then(() => {
+            dispatch(removeMyIdea(id));
+            // show modal MY IDEAS
+            dispatch(showModal(MY_IDEAS_MODAL, { tabActive: 'my_ideas' }));
         });
 }
 
@@ -276,5 +283,15 @@ export function publishIdea(id) {
             .then(res => res.data)
             .then(() => dispatch(createRequestSuccess(PUBLISH_IDEA)))
             .catch(() => dispatch(createRequestFailure(PUBLISH_IDEA, id)));
+    };
+}
+
+export function reportIdea(reportData, id) {
+    return (dispatch, getState, axios) => {
+        dispatch(createRequest(POST_FLAG, id));
+        return axios
+            .post(`/api/report/atelier-des-idees-notes/${id}`, reportData)
+            .then(() => dispatch(createRequestSuccess(POST_FLAG, id)))
+            .catch(() => dispatch(createRequestFailure(POST_FLAG, id)));
     };
 }
