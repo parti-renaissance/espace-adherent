@@ -154,7 +154,7 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
             ])
             ->add('daysBeforeDeadline', null, [
                 'label' => 'Temps restant',
-                'template' => 'admin/ideas_workshop/list_deadline.html.twig',
+                'template' => 'admin/ideas_workshop/idea/list_deadline.html.twig',
             ])
             ->add('author', null, [
                 'label' => 'Créateur',
@@ -184,10 +184,22 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
                     'show' => [],
                     'edit' => [],
                     'preview' => [
-                        'template' => 'admin/ideas_workshop/list_show_page.html.twig',
+                        'template' => 'admin/ideas_workshop/idea/list_show_page.html.twig',
                     ],
                     'show_contributors' => [
-                        'template' => 'admin/ideas_workshop/list_show_contributors.html.twig',
+                        'template' => 'admin/ideas_workshop/idea/list_show_contributors.html.twig',
+                    ],
+                    'enabled' => [
+                        'template' => 'admin/ideas_workshop/idea/list_action_enabled.html.twig',
+                    ],
+                    'disabled' => [
+                        'template' => 'admin/ideas_workshop/idea/list_action_disabled.html.twig',
+                    ],
+                    'contribute' => [
+                        'template' => 'admin/ideas_workshop/idea/list_action_contribute.html.twig',
+                    ],
+                    'finalize' => [
+                        'template' => 'admin/ideas_workshop/idea/list_action_finalize.html.twig',
                     ],
                     'delete' => [],
                 ],

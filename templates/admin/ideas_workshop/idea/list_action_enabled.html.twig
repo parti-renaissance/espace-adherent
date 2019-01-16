@@ -1,0 +1,7 @@
+{% if not object.enabled %}
+    <a href="{{ path('app_admin_idea_enable', { id: object.id }) }}" class="btn btn-sm btn-default view_link"
+       title="Démodérer" rel="noopener noreferrer">
+        <i class="fa fa-check-circle" aria-hidden="true"></i>
+        Démodérer
+    </a>
+{% endif %}

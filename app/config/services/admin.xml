@@ -856,6 +856,7 @@
             <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_theme" />
             <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_guideline" />
             <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_question" />
+            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_idea" />
         </service>
 
         <!--
