@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ec914e48d65a0fb0ea6fba5522d5664",
+    "content-hash": "f4215f2416a87f1782292bfb9018c9b0",
     "packages": [
         {
             "name": "a2lix/i18n-doctrine-bundle",
@@ -279,16 +279,16 @@
         },
         {
             "name": "api-platform/core",
-            "version": "v2.2.9",
+            "version": "v2.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "d6b01d76bde20350f81fd5090689365376fc1f8e"
+                "reference": "c0f7bdb3bcb7c6e91fe29b745627bd08bd371f81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/d6b01d76bde20350f81fd5090689365376fc1f8e",
-                "reference": "d6b01d76bde20350f81fd5090689365376fc1f8e",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/c0f7bdb3bcb7c6e91fe29b745627bd08bd371f81",
+                "reference": "c0f7bdb3bcb7c6e91fe29b745627bd08bd371f81",
                 "shasum": ""
             },
             "require": {
@@ -346,7 +346,7 @@
                 "symfony/twig-bundle": "^3.1 || ^4.0",
                 "symfony/validator": "^3.3 || ^4.0",
                 "symfony/yaml": "^3.3 || ^4.0",
-                "webonyx/graphql-php": ">=0.12 <1.0"
+                "webonyx/graphql-php": "^0.12"
             },
             "suggest": {
                 "friendsofsymfony/user-bundle": "To use the FOSUserBundle bridge.",
@@ -393,7 +393,7 @@
                 "rest",
                 "swagger"
             ],
-            "time": "2018-07-06T13:42:37+00:00"
+            "time": "2019-01-15T16:03:45+00:00"
         },
         {
             "name": "beberlei/DoctrineExtensions",
@@ -2025,12 +2025,12 @@
             "version": "v2.6.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/doctrine/doctrine2.git",
+                "url": "https://github.com/doctrine/orm.git",
                 "reference": "87ee409783a4a322b5597ebaae558661404055a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/87ee409783a4a322b5597ebaae558661404055a7",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/87ee409783a4a322b5597ebaae558661404055a7",
                 "reference": "87ee409783a4a322b5597ebaae558661404055a7",
                 "shasum": ""
             },
@@ -9387,6 +9387,7 @@
                 "postgres",
                 "postgresql"
             ],
+            "abandoned": "scienta/doctrine-json-functions",
             "time": "2018-01-31T09:12:42+00:00"
         },
         {
