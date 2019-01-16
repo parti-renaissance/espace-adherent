@@ -32,6 +32,7 @@ export function initHomePage() {
 			// consultation pinned
 			dispatch(fetchConsultationPinned()),
 			// ideas
+			// flush ideas reducer
 			dispatch(setIdeas()),
 			dispatch(fetchIdeas(ideaStatus.FINALIZED, params)),
 			dispatch(fetchIdeas(ideaStatus.PENDING, params)),
