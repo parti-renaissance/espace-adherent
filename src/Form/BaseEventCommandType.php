@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\EventCategory;
 use AppBundle\Event\BaseEventCommand;
+use AppBundle\Form\DataTransformer\EventDateTimeZoneTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -58,6 +59,7 @@ class BaseEventCommandType extends AbstractType
                 $command->setFinishAt((clone $beginDate)->modify('+2 hours'));
             }
         });
+        $builder->addModelTransformer(new EventDateTimeZoneTransformer());
     }
 
     public function configureOptions(OptionsResolver $resolver)
