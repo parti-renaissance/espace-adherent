@@ -46,7 +46,8 @@ class MyIdeas extends React.Component {
                                     this.setState(prevState => ({
                                         [cat.showCat]: !prevState[cat.showCat],
                                     }))
-                                }>
+                                }
+                            >
                                 <span className="my-ideas__category__button__label">{cat.label.toUpperCase()}</span>
                                 <img
                                     className={classNames('my-ideas__category__button__icon', {
@@ -65,16 +66,10 @@ class MyIdeas extends React.Component {
                                                 </p>
                                                 <h4 className="my-ideas__category__idea__name">{idea.name}</h4>
                                                 <div className="my-ideas__category__idea__actions">
-                                                    {'DRAFT' === idea.status && (
-                                                        <Button
-                                                            className="my-ideas__category__idea__actions__publish button--primary"
-                                                            label="Publier"
-                                                            onClick={() => this.props.onPublishIdea(idea.uuid)}
-                                                        />
-                                                    )}
                                                     <Link
                                                         to={`/atelier-des-idees/note/${idea.uuid}`}
-                                                        className="my-ideas__category__idea__actions__edit button button--secondary">
+                                                        className="my-ideas__category__idea__actions__edit button button--secondary"
+                                                    >
                                                         {'FINALIZED' !== idea.status && 'Editer'}
                                                         {'FINALIZED' === idea.status && 'Voir la note'}
                                                     </Link>
@@ -109,7 +104,6 @@ MyIdeas.propTypes = {
         })
     ).isRequired,
     onDeleteIdea: PropTypes.func.isRequired,
-    onPublishIdea: PropTypes.func.isRequired,
 };
 
 export default MyIdeas;

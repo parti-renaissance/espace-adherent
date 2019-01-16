@@ -13,7 +13,6 @@ import {
 } from '../../redux/thunk/currentIdea';
 import { selectAuthUser } from '../../redux/selectors/auth';
 import { selectGuidelines } from '../../redux/selectors/currentIdea';
-import { selectLoadingState } from '../../redux/selectors/loading';
 
 class CreateIdeaPage extends React.Component {
     componentDidMount() {

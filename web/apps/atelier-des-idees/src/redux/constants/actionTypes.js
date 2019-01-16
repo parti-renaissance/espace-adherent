@@ -4,6 +4,9 @@ import { createRequestTypes } from '../helpers/actions';
 export const SHOW_HEADER = 'SHOW_HEADER';
 export const HIDE_HEADER = 'HIDE_HEADER';
 
+// loading
+export const RESET_LOADING = 'RESET_LOADING';
+
 // auth
 export const SET_AUTH_USER = 'SET_AUTH_USER';
 export const FETCH_AUTH_USER = createRequestTypes('FETCH_AUTH_USER');
