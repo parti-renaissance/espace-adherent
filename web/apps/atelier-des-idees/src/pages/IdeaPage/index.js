@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import IdeaPageBase from '../IdeaPageBase';
-import { DELETE_IDEA_MODAL, PUBLISH_IDEA_MODAL } from '../../constants/modalTypes';
+import {
+    DELETE_IDEA_MODAL,
+    PUBLISH_IDEA_MODAL,
+    FLAG_MODAL,
+} from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
 import { initIdeaPage } from '../../redux/thunk/navigation';
 import {
@@ -11,10 +15,14 @@ import {
     publishCurrentIdea,
     deleteCurrentIdea,
     goBackFromCurrentIdea,
+    reportCurrentIdea,
 } from '../../redux/thunk/currentIdea';
 import { selectAuthUser } from '../../redux/selectors/auth';
 import { selectLoadingState } from '../../redux/selectors/loading';
-import { selectCurrentIdea, selectGuidelines } from '../../redux/selectors/currentIdea';
+import {
+    selectCurrentIdea,
+    selectGuidelines,
+} from '../../redux/selectors/currentIdea';
 
 class IdeaPage extends React.Component {
     componentDidMount() {
@@ -30,7 +38,8 @@ class IdeaPage extends React.Component {
             <IdeaPageBase
                 {...this.props}
                 isLoading={this.props.isFetchingIdea && !this.props.guidelines.length}
-                key={`idea-page__${this.props.isFetchingIdea || !this.props.guidelines.length}`}
+                key={`idea-page__${this.props.isFetchingIdea ||
+					!this.props.guidelines.length}`}
             />
         );
     }
@@ -83,7 +92,8 @@ function mapDispatchToProps(dispatch, ownProps) {
             dispatch(
                 showModal(PUBLISH_IDEA_MODAL, {
                     id,
-                    submitForm: ideaData => dispatch(publishCurrentIdea({ ...ideaData, ...data })),
+                    submitForm: ideaData =>
+                        dispatch(publishCurrentIdea({ ...ideaData, ...data })),
                 })
             );
         },
@@ -93,6 +103,15 @@ function mapDispatchToProps(dispatch, ownProps) {
                     onConfirmDelete: () => dispatch(deleteCurrentIdea()),
                 })
             ),
+        onReportClicked: () => {
+            const { id } = ownProps.match.params;
+            dispatch(
+                showModal(FLAG_MODAL, {
+                    onSubmit: data => dispatch(reportCurrentIdea(data, id)),
+                    id,
+                })
+            );
+        },
         onSaveIdea: data => dispatch(saveCurrentIdea(data)),
     };
 }

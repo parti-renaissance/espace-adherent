@@ -1,12 +1,27 @@
 import { ideaStatus } from '../../constants/api';
 import history from '../../history';
-import { SAVE_CURRENT_IDEA, FETCH_GUIDELINES } from '../constants/actionTypes';
+import {
+    SAVE_CURRENT_IDEA,
+    FETCH_GUIDELINES,
+    POST_FLAG,
+} from '../constants/actionTypes';
 import { saveIdea, publishIdea, voteIdea } from '../thunk/ideas';
 import { postComment, fetchThreads, deleteComment } from '../thunk/threads';
-import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
+import {
+    createRequest,
+    createRequestSuccess,
+    createRequestFailure,
+} from '../actions/loading';
 import { selectIsAuthenticated } from '../selectors/auth';
-import { selectCurrentIdea, selectCurrentIdeaAnswer } from '../selectors/currentIdea';
-import { selectThread, selectAnswerThreadsPagingData } from '../selectors/threads';
+import {
+    selectCurrentIdea,
+    selectCurrentIdeaAnswer,
+} from '../selectors/currentIdea';
+import {
+    selectAnswerThreads,
+    selectThread,
+    selectAnswerThreadsPagingData,
+} from '../selectors/threads';
 import {
     setCurrentIdea,
     updateCurrentIdea,
@@ -14,7 +29,12 @@ import {
     toggleVoteCurrentIdea,
     updateCurrentIdeaAnswer,
 } from '../actions/currentIdea';
-import { addThreads, addThreadComments, updateThread, setThreadPagingData } from '../actions/threads';
+import {
+    addThreads,
+    addThreadComments,
+    updateThread,
+    setThreadPagingData,
+} from '../actions/threads';
 import { hideModal } from '../actions/modal';
 
 /**
@@ -50,7 +70,9 @@ export function saveCurrentIdea(ideaData) {
             // idea already exists (whatever its state)
             // add answer id to answers before sending
             ideaData.answers = ideaData.answers.map((answer) => {
-                const { id } = answers.find(a => a.question.id === parseInt(answer.question, 10)) || {};
+                const { id } =
+					answers.find(a => a.question.id === parseInt(answer.question, 10)) ||
+					{};
                 return id ? { ...answer, id } : answer;
             });
             return axios
@@ -69,7 +91,11 @@ export function saveCurrentIdea(ideaData) {
                 dispatch(setCurrentIdea(data));
                 dispatch(createRequestSuccess(SAVE_CURRENT_IDEA));
                 // silently replace location
-                window.history.replaceState(null, '', `/atelier-des-idees/note/${data.uuid}`);
+                window.history.replaceState(
+                    null,
+                    '',
+                    `/atelier-des-idees/note/${data.uuid}`
+                );
             })
             .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA)));
     };
@@ -112,7 +138,9 @@ export function voteCurrentIdea(voteType) {
         if (isAuthenticated) {
             const currentIdea = selectCurrentIdea(getState());
             const { votes_count } = currentIdea;
-            const hasAlreadyVoted = votes_count.my_votes && Object.keys(votes_count.my_votes).includes(voteType);
+            const hasAlreadyVoted =
+				votes_count.my_votes &&
+				Object.keys(votes_count.my_votes).includes(voteType);
             // TODO: improve all that below by storing all ideas in ideas reducer
             // simulate vote cancel if has already voted
             if (hasAlreadyVoted) {
@@ -128,7 +156,12 @@ export function voteCurrentIdea(voteType) {
                 () => {
                     if (hasAlreadyVoted) {
                         // cancel vote failure, toggle back state data
-                        dispatch(toggleVoteCurrentIdea({ voteType, voteId: votes_count.my_votes[voteType] }));
+                        dispatch(
+                            toggleVoteCurrentIdea({
+                                voteType,
+                                voteId: votes_count.my_votes[voteType],
+                            })
+                        );
                     }
                 }
             );
@@ -146,7 +179,10 @@ export function postCommentToCurrentIdea(content, answerId, parentId = '') {
                 const answer = selectCurrentIdeaAnswer(getState(), answerId);
                 const updatedAnswer = {
                     ...answer,
-                    threads: { ...answer.threads, total_items: answer.threads.total_items + 1 },
+                    threads: {
+                        ...answer.threads,
+                        total_items: answer.threads.total_items + 1,
+                    },
                 };
                 dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
             } else {
@@ -154,7 +190,10 @@ export function postCommentToCurrentIdea(content, answerId, parentId = '') {
                 const thread = selectThread(getState(), parentId);
                 dispatch(
                     updateThread(parentId, {
-                        comments: { ...thread.comments, total_items: thread.comments.total_items + 1 },
+                        comments: {
+                            ...thread.comments,
+                            total_items: thread.comments.total_items + 1,
+                        },
                     })
                 );
             }
@@ -169,7 +208,10 @@ export function removeCommentFromCurrentIdea(id, parentId = '') {
                 // update thread parent items counter
                 dispatch(
                     updateThread(parentId, {
-                        comments: { ...thread.comments, total_items: thread.comments.total_items - 1 },
+                        comments: {
+                            ...thread.comments,
+                            total_items: thread.comments.total_items - 1,
+                        },
                     })
                 );
             } else {
@@ -179,7 +221,10 @@ export function removeCommentFromCurrentIdea(id, parentId = '') {
                 const answer = selectCurrentIdeaAnswer(getState(), answerId);
                 const updatedAnswer = {
                     ...answer,
-                    threads: { ...answer.threads, total_items: answer.threads.total_items - 1 },
+                    threads: {
+                        ...answer.threads,
+                        total_items: answer.threads.total_items - 1,
+                    },
                 };
                 dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
             }
@@ -194,14 +239,29 @@ export function fetchNextAnswerThreads(answerId) {
         // pading data
         const pagingData = selectAnswerThreadsPagingData(state, answerId);
         const page = pagingData ? pagingData.current_page + 1 : 2;
-        return dispatch(fetchThreads({ 'answer.id': answerId, page, limit: 3 })).then(({ items, metadata }) => {
+        return dispatch(
+            fetchThreads({ 'answer.id': answerId, page, limit: 3 })
+        ).then(({ items, metadata }) => {
             // add threads to collection
             dispatch(addThreads(items));
             // update current answer total items
-            const updatedAnswer = { ...answer, threads: { ...answer.threads, total_items: metadata.total_items } };
+            const updatedAnswer = {
+                ...answer,
+                threads: { ...answer.threads, total_items: metadata.total_items },
+            };
             dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
             // update paging data
             dispatch(setThreadPagingData(answerId, metadata));
         });
+    };
+}
+
+export function reportCurrentIdea(reportData, id) {
+    return (dispatch, getState, axios) => {
+        dispatch(createRequest(POST_FLAG, id));
+        return axios
+            .post(`/api/report/atelier-des-idees-notes/${id}`, reportData)
+            .then(() => dispatch(createRequestSuccess(POST_FLAG, id)))
+            .catch(() => dispatch(createRequestFailure(POST_FLAG, id)));
     };
 }
