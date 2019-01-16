@@ -57,8 +57,8 @@ class CommentsList extends React.Component {
                 </button>
                 {this.state.showComments && (
                     <div>
-                        {this.props.comments.length
-                            ? this.props.comments.map(comment => (
+                        {this.props.comments.length ? (
+                            this.props.comments.map(comment => (
                                 <React.Fragment>
                                     <Comment
                                         {...comment}
@@ -72,12 +72,12 @@ class CommentsList extends React.Component {
                                         canApprove={this.props.currentUserId === this.props.ownerId}
                                     />
                                     {((comment.replies && !!comment.replies.length) ||
-                                          this.state.replyingTo === comment.uuid) && (
+                                        this.state.replyingTo === comment.uuid) && (
                                             <div className="comments-list__replies">
                                                 <CommentsList
                                                     comments={comment.replies}
                                                     onSendComment={value =>
-                                                        // send parent comment id as (optional) second parameter
+                                                    // send parent comment id as (optional) second parameter
                                                         this.props.onSendComment(value, comment.uuid)
                                                     }
                                                     onDeleteComment={commentId =>
@@ -105,7 +105,12 @@ class CommentsList extends React.Component {
                                         )}
                                 </React.Fragment>
                             ))
-                            : this.props.emptyLabel && <p className="comments-list__empty">{this.props.emptyLabel}</p>}
+                        ) : (
+                            <p className="comments-list__empty">
+                                Soyez <span className="comments-list__empty--highlight">le premier</span> à contribuer
+                                sur cette partie
+                            </p>
+                        )}
                     </div>
                 )}
                 {this.state.showComments && 0 < this.props.total - this.props.comments.length && (
@@ -149,7 +154,7 @@ CommentsList.defaultProps = {
     sendingReplies: [],
     showForm: true,
     parentId: undefined,
-    emptyLabel: 'Soyez le premier à contribuer sur cette partie',
+    emptyLabel: '',
     placeholder: 'Ajoutez votre contribution',
     collapseLabel: 'commentaire',
     total: 0,
