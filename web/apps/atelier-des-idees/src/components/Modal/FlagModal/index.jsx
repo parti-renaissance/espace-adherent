@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Select from '../../Select';
 import TextArea from '../../TextArea';
 import SuccessSignal from './SuccessSignal';
+import FailSignal from './FailSignal';
 
 class FlagModal extends React.Component {
     constructor(props) {
@@ -20,10 +21,12 @@ class FlagModal extends React.Component {
         this.handleErrors = this.handleErrors.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.checkIfOther = this.checkIfOther.bind(this);
+        this.submitForm = this.submitForm.bind(this);
     }
 
     checkIfOther() {
-        const check = this.state.inputs.reasons.filter(reason => 'other' === reason).length;
+        const check = this.state.inputs.reasons.filter(reason => 'other' === reason)
+            .length;
         if (check) {
             this.setState(prevState => ({
                 ...prevState,
@@ -59,7 +62,11 @@ class FlagModal extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        if (this.handleErrors()) this.props.onSubmit(this.state.inputs);
+        if (this.handleErrors()) this.submitForm();
+    }
+
+    submitForm() {
+        this.props.onSubmit(this.state.inputs);
     }
 
     handleErrors() {
@@ -68,7 +75,8 @@ class FlagModal extends React.Component {
             if (!this.state.inputs[curr].length) {
                 switch (curr) {
                 case 'reasons':
-                    acc[curr] = 'Afin de valider votre signalement, veuillez sélectionner au moins une raison.';
+                    acc[curr] =
+							'Afin de valider votre signalement, veuillez sélectionner au moins une raison.';
                     break;
                 case 'comment':
                     acc[curr] = 'Merci de renseigner la raison de votre signalement.';
@@ -92,20 +100,25 @@ class FlagModal extends React.Component {
     render() {
         return (
             <React.Fragment>
-                {!this.props.isSubmitSuccess && (
+                {!this.props.isSubmitSuccess && !this.props.isSubmitError && (
                     <form className="flag-modal" onSubmit={this.handleSubmit}>
                         <h2 className="flag-modal__title">Signaler un abus</h2>
                         <p className="flag-modal__subtitle">
-                            Veuillez signaler tout élément qui pourrait contrevenir aux Conditions d'utilisation ou à la
-                            Charte des bonnes pratiques de La République En Marche.
+							Veuillez signaler tout élément qui pourrait contrevenir aux
+							Conditions d'utilisation ou à la Charte des bonnes pratiques de La
+							République En Marche.
                         </p>
                         <div className="flag-modal__reasons">
-                            <label className="flag-modal__label">Raison du signalement </label>
+                            <label className="flag-modal__label">
+								Raison du signalement{' '}
+                            </label>
                             <Select
                                 options={this.props.reasons}
                                 isMulti={false}
                                 placholder="Discours incitant à la haine"
-                                onSelected={([{ value }]) => this.handleChange('reasons', [value])}
+                                onSelected={([{ value }]) =>
+                                    this.handleChange('reasons', [value])
+                                }
                                 error={this.state.errors.reasons}
                             />
                         </div>
@@ -121,18 +134,27 @@ class FlagModal extends React.Component {
                             </div>
                         )}
 
-                        <button type="submit" className="button button--primary flag-modal__button">
-                            ENVOYER
+                        <button
+                            type="submit"
+                            className="button button--primary flag-modal__button"
+                        >
+							ENVOYER
                         </button>
-                        {this.state.errors.form && <p className="flag-modal__error">{this.state.errors.form}</p>}
+                        {this.state.errors.form && (
+                            <p className="flag-modal__error">{this.state.errors.form}</p>
+                        )}
                         <p className="flag-modal__text">
-                            Les commentaies ou idées signalés sont passés en revue par les équipes de La République En
-                            Marche afin de déterminer s'ils violent nos Conditions d'utilisation ou notre Charte des
-                            bonnes pratiques
+							Les commentaies ou idées signalés sont passés en revue par les
+							équipes de La République En Marche afin de déterminer s'ils
+							violent nos Conditions d'utilisation ou notre Charte des bonnes
+							pratiques
                         </p>
                     </form>
                 )}
                 {this.props.isSubmitSuccess && <SuccessSignal />}
+                {this.props.isSubmitError && (
+                    <FailSignal submitAgain={this.submitForm} />
+                )}
             </React.Fragment>
         );
     }
@@ -140,12 +162,14 @@ class FlagModal extends React.Component {
 
 FlagModal.defaultProps = {
     isSubmitSuccess: false,
+    isSubmitError: false,
 };
 
 FlagModal.propTypes = {
     reasons: PropTypes.array.isRequired,
     onSubmit: PropTypes.func.isRequired,
     isSubmitSuccess: PropTypes.bool,
+    isSubmitError: PropTypes.bool,
 };
 
 export default FlagModal;
