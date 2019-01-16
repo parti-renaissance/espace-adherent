@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import QuestionBlock from '../QuestionBlock';
 
 class CreateIdeaTool extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { intervalId: null };
+    }
+
     componentDidMount() {
         if (this.props.isDraft && this.props.isAuthor && this.props.onAutoSave) {
             // save draft every minute

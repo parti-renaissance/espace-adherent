@@ -1,12 +1,12 @@
 import { ideaStatus } from '../../constants/api';
 import history from '../../history';
-import { SAVE_CURRENT_IDEA, FETCH_GUIDELINES, VOTE_CURRENT_IDEA } from '../constants/actionTypes';
-import { saveAndPublishIdea, voteIdea } from '../thunk/ideas';
+import { SAVE_CURRENT_IDEA, FETCH_GUIDELINES } from '../constants/actionTypes';
+import { saveIdea, publishIdea, voteIdea } from '../thunk/ideas';
 import { postComment, fetchThreads, deleteComment } from '../thunk/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { selectIsAuthenticated } from '../selectors/auth';
 import { selectCurrentIdea, selectCurrentIdeaAnswer } from '../selectors/currentIdea';
-import { selectAnswerThreads, selectThread, selectAnswerThreadsPagingData } from '../selectors/threads';
+import { selectThread, selectAnswerThreadsPagingData } from '../selectors/threads';
 import {
     setCurrentIdea,
     updateCurrentIdea,
@@ -84,6 +84,16 @@ export function saveCurrentIdea(ideaData) {
             })
             .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA)));
     };
+}
+
+export function saveAndPublishIdea(uuid, data) {
+    return dispatch =>
+        dispatch(saveIdea(uuid, data)).then((resData) => {
+            if (!uuid) {
+                dispatch(updateCurrentIdea({ uuid: resData.uuid }));
+            }
+            dispatch(publishIdea(uuid || resData.uuid));
+        });
 }
 
 export function publishCurrentIdea(ideaData) {

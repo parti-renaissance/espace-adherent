@@ -235,18 +235,11 @@ export function deleteIdea(id) {
 
 export function publishIdea(id) {
     return (dispatch, getState, axios) => {
-        dispatch(createRequest(PUBLISH_IDEA, id));
+        dispatch(createRequest(PUBLISH_IDEA));
         return axios
             .put(`/api/ideas-workshop/ideas/${id}/publish`)
             .then(res => res.data)
-            .then(() => dispatch(createRequestSuccess(PUBLISH_IDEA, id)))
+            .then(() => dispatch(createRequestSuccess(PUBLISH_IDEA)))
             .catch(() => dispatch(createRequestFailure(PUBLISH_IDEA, id)));
     };
-}
-
-export function saveAndPublishIdea(uuid, data) {
-    return dispatch =>
-        dispatch(saveIdea(uuid, data)).then((resData) => {
-            dispatch(publishIdea(uuid || resData.uuid));
-        });
 }
