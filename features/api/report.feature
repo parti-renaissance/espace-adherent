@@ -7,7 +7,8 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadAdherentData  |
+      | LoadAdherentData    |
+      | LoadIdeaThreadData  |
 
   Scenario: As a non logged-in user I can not see the report reasons
     When I send a "GET" request to "/api/report/reasons"
@@ -140,3 +141,14 @@ Feature:
       ]
     }
     """
+
+  Scenario: As a logged-in user I can post a report
+    When I am logged as "jacques.picard@en-marche.fr"
+    And I send a "POST" request to "/api/report/atelier-des-idees-commentaires/6b077cc4-1cbd-4615-b607-c23009119406" with body:
+    """
+    {
+      "reasons": ["other"],
+      "comment": "Je suis scandalisé, choqué et déçu!"
+    }
+    """
+    Then the response status code should be 201
