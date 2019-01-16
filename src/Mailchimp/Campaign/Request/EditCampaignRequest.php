@@ -13,6 +13,8 @@ class EditCampaignRequest implements RequestInterface
     private $title;
     private $listId;
     private $conditions;
+    private $fromName;
+    private $replyTo;
 
     public function __construct(string $listId = null)
     {
@@ -43,6 +45,20 @@ class EditCampaignRequest implements RequestInterface
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function setFromName(?string $fromName): self
+    {
+        $this->fromName = $fromName;
+
+        return $this;
+    }
+
+    public function setReplyTo(?string $replyTo): self
+    {
+        $this->replyTo = $replyTo;
 
         return $this;
     }
@@ -78,6 +94,14 @@ class EditCampaignRequest implements RequestInterface
 
         if ($this->title) {
             $settings['title'] = $this->title;
+        }
+
+        if ($this->replyTo) {
+            $settings['reply_to'] = $this->replyTo;
+        }
+
+        if ($this->fromName) {
+            $settings['from_name'] = $this->fromName;
         }
 
         if ($this->conditions) {

@@ -18,19 +18,25 @@ class CampaignRequestBuilder
     private $interestIds;
     private $memberGroupInterestGroupId;
     private $memberInterestInterestGroupId;
+    private $replyEmailAddress;
+    private $fromName;
 
     public function __construct(
         MailchimpObjectIdMapping $objectIdMapping,
         string $listId,
         array $interestIds,
         string $memberGroupInterestGroupId,
-        string $memberInterestInterestGroupId
+        string $memberInterestInterestGroupId,
+        string $replyEmailAddress,
+        string $fromName
     ) {
         $this->objectIdMapping = $objectIdMapping;
         $this->listId = $listId;
         $this->interestIds = $interestIds;
         $this->memberGroupInterestGroupId = $memberGroupInterestGroupId;
         $this->memberInterestInterestGroupId = $memberInterestInterestGroupId;
+        $this->replyEmailAddress = $replyEmailAddress;
+        $this->fromName = $fromName;
     }
 
     public function createEditCampaignRequestFromMessage(AdherentMessageInterface $message): EditCampaignRequest
@@ -41,6 +47,8 @@ class CampaignRequestBuilder
             ->setSubject($message->getSubject())
             ->setTitle(sprintf('%s - %s', $message->getAuthor(), (new \DateTime())->format('d/m/Y')))
             ->setConditions($this->buildFilterConditions($message->getFilter()))
+            ->setFromName($message->getFromName() ?? $this->fromName)
+            ->setReplyTo($message->getReplyTo() ?? $this->replyEmailAddress)
         ;
     }
 
@@ -170,7 +178,7 @@ class CampaignRequestBuilder
         if ($filter->getQueryCity()) {
             $conditions[] = [
                 'condition_type' => 'TextMerge',
-                'op' => 'is',
+                'op' => 'contains',
                 'field' => 'CITY',
                 'value' => $filter->getQueryCity(),
             ];

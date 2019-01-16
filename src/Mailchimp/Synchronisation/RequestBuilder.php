@@ -216,7 +216,7 @@ class RequestBuilder
         }
 
         if ($this->city) {
-            $mergeFields[MemberRequest::MERGE_FIELD_CITY] = $this->city;
+            $mergeFields[MemberRequest::MERGE_FIELD_CITY] = sprintf('%s (%s)', $this->city, $this->zipCode);
         }
 
         if ($this->zipCode) {

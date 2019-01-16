@@ -14,6 +14,8 @@ interface AdherentMessageInterface extends AuthoredInterface
 
     public function setExternalId(string $id): void;
 
+    public function setRecipientCount(?int $recipientCount): void;
+
     public function getUuid(): UuidInterface;
 
     public function isSynchronized(): bool;
@@ -27,4 +29,8 @@ interface AdherentMessageInterface extends AuthoredInterface
     public function getContent(): ?string;
 
     public function getFilter(): ?FilterDataObjectInterface;
+
+    public function getFromName(): ?string;
+
+    public function getReplyTo(): ?string;
 }

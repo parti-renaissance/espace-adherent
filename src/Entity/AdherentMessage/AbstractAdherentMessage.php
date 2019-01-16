@@ -78,11 +78,25 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     private $synchronized = false;
 
     /**
-     * @var FilterDataObjectInterface
+     * @var FilterDataObjectInterface|null
      *
      * @ORM\Column(type="object", nullable=true)
      */
     private $filter;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $recipientCount;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $sentAt;
 
     public function __construct(UuidInterface $uuid, Adherent $author)
     {
@@ -152,7 +166,13 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
 
     public function markAsSent(): void
     {
+        $this->sentAt = new \DateTime();
         $this->status = AdherentMessageStatusEnum::SENT_SUCCESSFULLY;
+    }
+
+    public function isSent(): bool
+    {
+        return AdherentMessageStatusEnum::SENT_SUCCESSFULLY === $this->status;
     }
 
     public function setSynchronized(bool $value): void
@@ -178,6 +198,31 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     public function resetFilter(): void
     {
         $this->filter = null;
+    }
+
+    public function getRecipientCount(): ?int
+    {
+        return $this->recipientCount;
+    }
+
+    public function setRecipientCount(?int $recipientCount): void
+    {
+        $this->recipientCount = $recipientCount;
+    }
+
+    public function getFromName(): ?string
+    {
+        return $this->author ? $this->author->getFullName() : null;
+    }
+
+    public function getReplyTo(): ?string
+    {
+        return null;
+    }
+
+    public function getSentAt(): ?\DateTime
+    {
+        return $this->sentAt;
     }
 
     public function updateFromDataObject(AdherentMessageDataObject $dataObject): self

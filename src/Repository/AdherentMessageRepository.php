@@ -16,8 +16,11 @@ class AdherentMessageRepository extends ServiceEntityRepository
         parent::__construct($registry, AbstractAdherentMessage::class);
     }
 
-    public function findAllByAuthor(Adherent $adherent): array
+    public function findAllByAuthor(Adherent $adherent, string $status = null): array
     {
-        return $this->findBy(['author' => $adherent]);
+        return $this->findBy(array_merge(
+            ['author' => $adherent],
+            $status ? ['status' => $status] : []
+        ));
     }
 }
