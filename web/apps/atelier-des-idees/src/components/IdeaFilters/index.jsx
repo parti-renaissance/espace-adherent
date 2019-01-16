@@ -94,7 +94,6 @@ class IdeaFilters extends React.Component {
                                         }
                                         isClearable={true}
                                         isDisabled={this.props.disabled}
-                                        isSearchable={false}
                                     />
                                 )}
                                 {!!this.props.options.themes.length && (
@@ -109,7 +108,6 @@ class IdeaFilters extends React.Component {
                                         }
                                         isClearable={true}
                                         isDisabled={this.props.disabled}
-                                        isSearchable={false}
                                     />
                                 )}
                             </React.Fragment>
@@ -125,7 +123,6 @@ class IdeaFilters extends React.Component {
                             }
                             isClearable={true}
                             isDisabled={this.props.disabled}
-                            isSearchable={false}
                         />
                         {this.props.status === ideaStatus.PENDING &&
 							!!this.props.options &&
@@ -141,7 +138,6 @@ class IdeaFilters extends React.Component {
                                     }
                                     isClearable={true}
                                     isDisabled={this.props.disabled}
-                                    isSearchable={false}
                                 />
                             )}
                     </div>
@@ -160,7 +156,6 @@ class IdeaFilters extends React.Component {
                                 this.onFilterChange('order', selected.value)
                             }
                             isDisabled={this.props.disabled}
-                            isSearchable={false}
                         />
                     </div>
                 </div>

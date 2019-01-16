@@ -112,7 +112,7 @@ Select.defaultProps = {
     placeholder: '',
     isClearable: false,
     isDisabled: false,
-    isSearchable: true,
+    isSearchable: false,
     defaultValue: undefined,
     maxOptionsSelected: undefined,
 };
