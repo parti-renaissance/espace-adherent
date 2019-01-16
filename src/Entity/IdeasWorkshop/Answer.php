@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -51,7 +50,6 @@ class Answer
      * @ORM\Column(type="text")
      *
      * @AssertWysiwygLength(max=1700)
-     * @Assert\NotBlank(message="answer.content.not_blank", groups={"idea_publish"})
      *
      * @SymfonySerializer\Groups({"idea_write", "idea_publish", "idea_read"})
      */
