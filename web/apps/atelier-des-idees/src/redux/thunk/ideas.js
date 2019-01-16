@@ -1,13 +1,30 @@
 import Axios from 'axios';
-import { FETCH_IDEAS, FETCH_IDEA, SAVE_IDEA, PUBLISH_IDEA, FETCH_MY_IDEAS, VOTE_IDEA } from '../constants/actionTypes';
-import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
-import { addIdeas, setIdeas, removeIdea, toggleVoteIdea } from '../actions/ideas';
+import {
+    FETCH_IDEAS,
+    FETCH_IDEA,
+    SAVE_IDEA,
+    PUBLISH_IDEA,
+    FETCH_MY_IDEAS,
+    VOTE_IDEA,
+} from '../constants/actionTypes';
+import {
+    createRequest,
+    createRequestSuccess,
+    createRequestFailure,
+} from '../actions/loading';
+import {
+    addIdeas,
+    setIdeas,
+    removeIdea,
+    toggleVoteIdea,
+} from '../actions/ideas';
 import { setCurrentIdea } from '../actions/currentIdea';
 import { selectIdeasMetadata, selectIdea } from '../selectors/ideas';
 import { setMyIdeas, removeMyIdea } from '../actions/myIdeas';
 import { setMyContributions } from '../actions/myContributions';
 import { selectAuthUser, selectIsAuthenticated } from '../selectors/auth';
-import { hideModal } from '../actions/modal';
+import { MY_IDEAS_MODAL } from '../../constants/modalTypes';
+import { showModal } from '../actions/modal';
 import { setThreads, setThreadComments } from '../actions/threads';
 
 // axios cancellation
@@ -19,7 +36,11 @@ let cancel;
  * @param {object} params Query params
  * @param {boolean} setMode If true, set ideas by erasing previous ones. Default: false
  */
-export function fetchIdeas(status, params = {}, options = { setMode: false, cancel: false }) {
+export function fetchIdeas(
+    status,
+    params = {},
+    options = { setMode: false, cancel: false }
+) {
     return (dispatch, getState, axios) => {
         dispatch(createRequest(FETCH_IDEAS, status));
         if (options.setMode) {
@@ -123,7 +144,9 @@ export function fetchUserIdeas(params = {}) {
             const user = selectAuthUser(getState());
             dispatch(createRequest(FETCH_MY_IDEAS));
             return axios
-                .get(`/api/ideas-workshop/ideas?author.uuid=${user.uuid}`, { params: { ...params } })
+                .get(`/api/ideas-workshop/ideas?author.uuid=${user.uuid}`, {
+                    params: { ...params },
+                })
                 .then(res => res.data)
                 .then(({ items, metadata }) => {
                     dispatch(setMyIdeas(items, metadata));
@@ -146,7 +169,9 @@ export function fetchUserContributions(params = {}) {
         if (isAuthenticated) {
             dispatch(createRequest(FETCH_MY_IDEAS));
             return axios
-                .get('/api/ideas-workshop/ideas/my-contributions', { params: { ...params } })
+                .get('/api/ideas-workshop/ideas/my-contributions', {
+                    params: { ...params },
+                })
                 .then(res => res.data)
                 .then(({ items, metadata }) => {
                     dispatch(setMyContributions(items, metadata));
@@ -195,9 +220,14 @@ export function voteIdea(uuid, voteType, baseIdea) {
         if (isAuthenticated) {
             const idea = baseIdea || selectIdea(getState(), uuid);
             const { votes_count } = idea;
-            if (votes_count.my_votes && Object.keys(votes_count.my_votes).includes(voteType)) {
+            if (
+                votes_count.my_votes &&
+				Object.keys(votes_count.my_votes).includes(voteType)
+            ) {
                 // user has already voted that, cancel vote
-                return dispatch(cancelVote(uuid, voteType, votes_count.my_votes[voteType]));
+                return dispatch(
+                    cancelVote(uuid, voteType, votes_count.my_votes[voteType])
+                );
             }
             // user has not already voted that, post vote
             return dispatch(postVote(uuid, voteType));
@@ -210,7 +240,11 @@ export function saveIdea(id, ideaData) {
     return (dispatch, getState, axios) => {
         dispatch(createRequest(SAVE_IDEA, id));
         const requestBody = id
-            ? { method: 'PUT', url: `/api/ideas-workshop/ideas/${id}`, data: ideaData }
+            ? {
+                method: 'PUT',
+                url: `/api/ideas-workshop/ideas/${id}`,
+                data: ideaData,
+			  }
             : { method: 'POST', url: '/api/ideas-workshop/ideas', data: ideaData };
         return axios(requestBody)
             .then(res => res.data)
@@ -228,8 +262,8 @@ export function deleteIdea(id) {
             // remove idea entity
             dispatch(removeIdea(id));
             dispatch(removeMyIdea(id));
-            // hide modal
-            dispatch(hideModal());
+            // show modal MY IDEAS
+            dispatch(showModal(MY_IDEAS_MODAL, { tabActive: 'my_ideas' }));
         });
 }
 
