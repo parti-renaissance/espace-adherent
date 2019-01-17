@@ -4,6 +4,8 @@ import TextEditor from '../../../components/TextEditor';
 import Collapse from '../../../components/Collapse';
 import IdeaThread from '../../../containers/IdeaThread';
 
+const TEXT_MIN_LENGTH = 15;
+
 function QuestionBlockHeader({ label, question, nbQuestion, isRequired }) {
     return (
         <h3 className="question-block-header">
@@ -22,9 +24,13 @@ function QuestionBlockBody(props) {
                     <TextEditor
                         initialContent={props.initialContent}
                         maxLength={1700}
-                        onChange={htmlContent => props.onTextChange(htmlContent)}
+                        onChange={(htmlContent, textContent) => props.onTextChange(htmlContent, textContent)}
                         placeholder={props.placeholder}
-                        error={props.hasError ? 'Merci de répondre à cette question avant de poursuivre' : ''}
+                        error={
+                            props.hasError
+                                ? `Merci de remplir ${TEXT_MIN_LENGTH} caractères minimum avant de poursuivre`
+                                : ''
+                        }
                     />
                 </React.Fragment>
             ) : (
@@ -70,7 +76,9 @@ class QuestionBlock extends React.Component {
         this.state = {
             // handle question block edition, can only true in contributing mode
             isEditing: 'edit' === props.mode ? false : !props.initialContent,
-            value: this.props.initialContent,
+            value: this.props.initialContent, // html content
+            text: '', // text content
+            hasError: false,
         };
         this.onTextChange = this.onTextChange.bind(this);
         this.onSaveAnswer = this.onSaveAnswer.bind(this);
@@ -78,21 +86,25 @@ class QuestionBlock extends React.Component {
         this.renderBody = this.renderBody.bind(this);
     }
 
-    onTextChange(content) {
+    onTextChange(htmlContent, textContent) {
         if (this.state.isEditing) {
-            this.setState({ value: content });
+            this.setState({ value: htmlContent, text: textContent, hasError: textContent.length < TEXT_MIN_LENGTH });
         } else {
-            this.props.onTextChange(content);
+            this.props.onTextChange(TEXT_MIN_LENGTH <= textContent.length ? htmlContent : '', textContent);
         }
     }
 
     onSaveAnswer() {
-        this.props.onTextChange(this.state.value, true);
-        this.setState({ isEditing: false });
+        if (TEXT_MIN_LENGTH <= this.state.text.length) {
+            this.props.onTextChange(this.state.value, true);
+            this.setState({ isEditing: false });
+        } else {
+            this.setState({ hasError: true });
+        }
     }
 
     onCancelAnswer() {
-        this.setState({ isEditing: false, value: this.props.initialContent });
+        this.setState({ isEditing: false, value: this.props.initialContent, text: '' });
     }
 
     renderBody() {
@@ -105,12 +117,12 @@ class QuestionBlock extends React.Component {
                     placeholder={placeholder}
                     onTextChange={this.onTextChange}
                     mode={mode}
-                    hasError={this.props.hasError}
+                    hasError={this.props.hasError || this.state.hasError}
                     isEditing={this.state.isEditing}
                     onEditAnswer={() => this.setState({ isEditing: true })}
                     onSaveAnswer={this.onSaveAnswer}
                     onCancelAnswer={this.onCancelAnswer}
-                    canSaveAnswer={isRequired ? !!this.state.value : true}
+                    canSaveAnswer={isRequired ? !!this.state.value && !this.state.hasError : true}
                 />
                 {'edit' !== this.props.mode && (
                     <div className="question-block__threads">
@@ -172,6 +184,7 @@ QuestionBlock.propTypes = {
     mode: PropTypes.oneOf(['edit', 'contribute']),
     nbQuestion: PropTypes.number.isRequired,
     onTextChange: PropTypes.func.isRequired,
+    onTextError: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
     question: PropTypes.string.isRequired,
     questionId: PropTypes.string,

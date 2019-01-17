@@ -77,9 +77,9 @@ class IdeaPageBase extends React.Component {
                 // check if field is required and set errors accordingly
                 const isFieldRequired = Object.keys(this.state.errors).includes(id.toString());
                 this.setState((prevState) => {
-                    const errors = { ...prevState.errors, name: !this.state.name };
-                    if (isFieldRequired) {
-                        // if is required, update error state
+                    const errors = { ...prevState.errors };
+                    if (isFieldRequired && errors[id]) {
+                        // if is required and already in error, update error state
                         errors[id] = !value;
                     }
                     return {

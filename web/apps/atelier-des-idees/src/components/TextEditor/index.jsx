@@ -87,7 +87,7 @@ class TextEditor extends React.Component {
         // update state and send data
         // don't send html if text is empty
         const contentToSend = textContent ? htmlContent : textContent;
-        this.setState({ editorState, textContent }, () => this.props.onChange(contentToSend));
+        this.setState({ editorState, textContent }, () => this.props.onChange(contentToSend, textContent));
     }
 
     render() {
