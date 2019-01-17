@@ -4,12 +4,12 @@ import TextEditor from '../../../components/TextEditor';
 import Collapse from '../../../components/Collapse';
 import IdeaThread from '../../../containers/IdeaThread';
 
-function QuestionBlockHeader({ label, question, nbQuestion }) {
+function QuestionBlockHeader({ label, question, nbQuestion, isRequired }) {
     return (
         <h3 className="question-block-header">
             <span className="question-block-header__label">{`${nbQuestion}. ${label ? `${label} : ` : ''}`}</span>
             <span className="question-block-header__question">{question}</span>
-            <span className="question-block-header__mandatory">(Obligatoire)</span>
+            {isRequired && <span className="question-block-header__mandatory">(Obligatoire)</span>}
         </h3>
     );
 }
@@ -96,7 +96,7 @@ class QuestionBlock extends React.Component {
     }
 
     renderBody() {
-        const { placeholder, initialContent, isAuthor, mode, canCollapse, hasError } = this.props;
+        const { placeholder, initialContent, isAuthor, mode, isRequired } = this.props;
         return (
             <React.Fragment>
                 <QuestionBlockBody
@@ -110,7 +110,7 @@ class QuestionBlock extends React.Component {
                     onEditAnswer={() => this.setState({ isEditing: true })}
                     onSaveAnswer={this.onSaveAnswer}
                     onCancelAnswer={this.onCancelAnswer}
-                    canSaveAnswer={canCollapse ? true : !!this.state.value}
+                    canSaveAnswer={isRequired ? !!this.state.value : true}
                 />
                 {'edit' !== this.props.mode && (
                     <div className="question-block__threads">
@@ -122,18 +122,32 @@ class QuestionBlock extends React.Component {
     }
 
     render() {
-        const { label, question, nbQuestion } = this.props;
+        const { label, question, nbQuestion, isRequired } = this.props;
         return (
             <div className="question-block">
-                {this.props.canCollapse ? (
-                    <Collapse title={<QuestionBlockHeader label={label} question={question} nbQuestion={nbQuestion} />}>
-                        {this.renderBody()}
-                    </Collapse>
-                ) : (
+                {this.props.isRequired ? (
                     <React.Fragment>
-                        <QuestionBlockHeader label={label} question={question} nbQuestion={nbQuestion} />
+                        <QuestionBlockHeader
+                            label={label}
+                            question={question}
+                            nbQuestion={nbQuestion}
+                            isRequired={isRequired}
+                        />
                         {this.renderBody()}
                     </React.Fragment>
+                ) : (
+                    <Collapse
+                        title={
+                            <QuestionBlockHeader
+                                label={label}
+                                question={question}
+                                nbQuestion={nbQuestion}
+                                isRequired={isRequired}
+                            />
+                        }
+                    >
+                        {this.renderBody()}
+                    </Collapse>
                 )}
             </div>
         );
@@ -141,8 +155,8 @@ class QuestionBlock extends React.Component {
 }
 
 QuestionBlock.defaultProps = {
-    canCollapse: false,
     hasError: false,
+    isRequired: false,
     initialContent: '',
     isAuthor: false,
     placeholder: undefined,
@@ -152,7 +166,7 @@ QuestionBlock.defaultProps = {
 QuestionBlock.propTypes = {
     hasError: PropTypes.bool,
     isAuthor: PropTypes.bool,
-    canCollapse: PropTypes.bool, // true: question not required
+    isRequired: PropTypes.bool,
     initialContent: PropTypes.string,
     label: PropTypes.string.isRequired,
     mode: PropTypes.oneOf(['edit', 'contribute']),

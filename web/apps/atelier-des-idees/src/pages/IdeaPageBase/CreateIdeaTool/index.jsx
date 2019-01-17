@@ -41,7 +41,7 @@ class CreateIdeaTool extends React.Component {
                             {guideline.questions.map(({ id, name, category, required, placeholder }, index) => (
                                 <QuestionBlock
                                     isAuthor={this.props.isAuthor}
-                                    canCollapse={!required}
+                                    isRequired={required}
                                     initialContent={this.props.values[id]}
                                     key={id}
                                     mode={this.props.isDraft ? 'edit' : 'contribute'}
