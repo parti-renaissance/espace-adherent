@@ -42,7 +42,7 @@ export function deleteCurrentIdea() {
         const { uuid } = selectCurrentIdea(getState());
         if (uuid) {
             // idea already exists (whatever its state)
-            return axios.delete(`/api/ideas-workshop/ideas/${id}`).then(() => {
+            return axios.delete(`/api/ideas-workshop/ideas/${uuid}`).then(() => {
                 dispatch(hideModal());
                 history.push('/atelier-des-idees');
             });
