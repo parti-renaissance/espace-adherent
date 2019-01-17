@@ -4,6 +4,7 @@ namespace AppBundle\Entity\Jecoute;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\AuthoredInterface;
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,12 +15,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\SurveyRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\Jecoute\SurveyRepository")
  * @ORM\Table(name="jecoute_survey")
 
  * @Algolia\Index(autoIndex=false)
  */
-class Survey
+class Survey implements AuthoredInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -47,12 +48,12 @@ class Survey
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private $creator;
+    private $author;
 
     /**
      * @var SurveyQuestion[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="survey", cascade={"persist", "remove"}, orphanRemoval=true))
+     * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="survey", cascade={"persist", "remove"}, orphanRemoval=true)
      *
      * @Assert\Valid
      */
@@ -64,7 +65,7 @@ class Survey
     private $published = false;
 
     public function __construct(
-        Adherent $creator = null,
+        Adherent $author = null,
         string $name = null,
         string $city = null,
         bool $published = false
@@ -72,19 +73,19 @@ class Survey
         $this->uuid = Uuid::uuid4();
         $this->name = $name;
         $this->city = $city;
-        $this->creator = $creator;
+        $this->author = $author;
         $this->published = $published;
         $this->questions = new ArrayCollection();
     }
 
-    public function getCreator(): ?Adherent
+    public function getAuthor(): ?Adherent
     {
-        return $this->creator;
+        return $this->author;
     }
 
-    public function setCreator(Adherent $creator = null): void
+    public function setAuthor(Adherent $author = null): void
     {
-        $this->creator = $creator;
+        $this->author = $author;
     }
 
     public function getName(): ?string
@@ -120,10 +121,10 @@ class Survey
         return $this->questions;
     }
 
-    public function removeQuestion(SurveyQuestion $question): void
+    public function removeQuestion(SurveyQuestion $surveyQuestion): void
     {
-        $question->setSurvey(null);
-        $this->questions->removeElement($question);
+        $surveyQuestion->resetSurvey();
+        $this->questions->removeElement($surveyQuestion);
     }
 
     public function isPublished(): bool

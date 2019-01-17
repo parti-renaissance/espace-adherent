@@ -1,0 +1,16 @@
+<table class="datagrid__table">
+    <thead>
+        <tr class="label__header--large form form__label">
+            <th>Réponse</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for answer in answers %}
+        <tr>
+            <td>{{ answer.textField }}</td>
+            <td>Le {{ answer.postedAt|date('d/m/Y') }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

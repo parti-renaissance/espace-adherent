@@ -3,8 +3,12 @@
 namespace AppBundle\Entity\Jecoute;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\Adherent;
+use AppBundle\Entity\AuthoredInterface;
+use AppBundle\Entity\EntityIdentityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -13,20 +17,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 
  * @Algolia\Index(autoIndex=false)
  */
-class SurveyQuestion
+class SurveyQuestion implements AuthoredInterface
 {
+    use EntityIdentityTrait;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Survey
      *
-     * @ORM\ManyToOne(targetEntity="Survey", inversedBy="questions", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Survey", inversedBy="questions", cascade={"persist"})
      * @Gedmo\SortableGroup
      */
     private $survey;
@@ -34,8 +39,7 @@ class SurveyQuestion
     /**
      * @var Question
      *
-     * @ORM\ManyToOne(targetEntity="Question", inversedBy="surveys", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="surveys", cascade={"persist"})
      *
      * @Assert\Valid
      */
@@ -56,13 +60,14 @@ class SurveyQuestion
 
     public function __construct(Survey $survey = null, Question $question = null)
     {
+        $this->uuid = Uuid::uuid4();
         $this->survey = $survey;
         $this->question = $question;
     }
 
-    public function getId(): ?int
+    public function getAuthor(): ?Adherent
     {
-        return $this->id;
+        return $this->getSurvey()->getAuthor();
     }
 
     public function getPosition(): ?int
@@ -83,6 +88,11 @@ class SurveyQuestion
     public function setSurvey(?Survey $survey): void
     {
         $this->survey = $survey;
+    }
+
+    public function resetSurvey(): void
+    {
+        $this->survey = null;
     }
 
     public function getQuestion(): ?Question

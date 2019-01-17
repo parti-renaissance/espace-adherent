@@ -1,0 +1,106 @@
+{% extends 'referent/_layout.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+    {{ parent() }}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            $('.stats-bar')
+                .each(function () {
+                    $(this)
+                        .find('.stats-bar__progress-bar')
+                        .animate({
+                            width: $(this).attr('data-percent')
+                        }, 800);
+                })
+            ;
+
+            const dataAnswersDialog = $('#data_answers_dialog');
+
+            dataAnswersDialog.dialog({
+                modal: true,
+                autoOpen: false,
+                height: 'auto',
+                width: '50%',
+                minHeight: 500,
+                resizable: false,
+                draggable: false,
+                position: { my: 'center', at: 'center' },
+                dialogClass: 'ui-dialog__middle',
+                open: function() {
+                    $(this).siblings('.ui-dialog-titlebar')
+                        .find('button').blur()
+                    ;
+                }
+            });
+
+            $('.data-answers-open-popin').click(function() {
+                let url = "{{ path('app_referent_survey_stats_answers_list', { uuid: 'questionUuid' }) }}";
+
+                $.ajax({
+                    url: url.replace('questionUuid', $(this).attr('data-question-uuid'))
+                }).then(function(results) {
+                     $("#data_answers_dialog .survey-stats-content").html(results);
+
+                     dataAnswersDialog.dialog('open');
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block referent_content %}
+
+    <a href="{{ path('app_referent_surveys') }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
+        {{ include('components/caret--left.html.twig') }}
+        Retour à la liste
+    </a>
+
+    <h3>Statistiques : {{ data.survey.name }}</h3>
+
+    <hr />
+
+    <div class="jecoute-survey-stats l__wrapper--slim b__nudge--top-40">
+        {% for question in data.questions %}
+            <div class="form__row form__new">
+                <label class="label__header--large form form__label">{{ question.content }}</label>
+                    {% if question.type != constant('AppBundle\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') %}
+                        <p class="total-answered b__nudge--top-10 text--right">{{ question.stats.totalAnswered }} réponses.</p>
+                        {% for answer in question.stats.answers %}
+                            <div class="block-stats b__nudge--bottom-small">
+                                    <div class="stats-percent text--right">
+                                        <span>{{ answer.percent|replace({'.' : ','}) }} %</span>
+                                    </div>
+                                    <div class="stats-bar" data-percent="{{ answer.percent }}%">
+                                        <div class="stats-bar__title"><span class="text--bold">{{ answer.value }}</span></div>
+                                        <div class="stats-bar__progress-bar"></div>
+                                        <div class="stats-bar__answered text--white text--bold">{{ answer.answered }}</div>
+                                    </div>
+                            </div>
+                        {% endfor %}
+                    {% elseif question.stats.totalAnswered > 0 %}
+                        <div class="b__nudge--top-10 b__nudge--bottom-small text--center">
+                            <a data-question-uuid="{{ question.uuid }}" class="data-answers-open-popin btn btn--blue--soft">
+                                Voir les {{ question.stats.totalAnswered }} réponses
+                            </a>
+                        </div>
+                    {% else %}
+                        <p class="text--center text--gray text--small">Aucune donnée n'est disponible pour le moment.</p>
+                    {% endif %}
+                <br/>
+                <hr />
+            </div>
+            <br/>
+        {% endfor %}
+    </div>
+
+    {% include ('referent/surveys/data_answers_dialog.html.twig') %}
+
+{% endblock %}

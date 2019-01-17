@@ -50,8 +50,8 @@ class JecouteSurveyAdmin extends AbstractAdmin
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
             ])
-            ->add('creator', null, [
-                'label' => 'Créateur',
+            ->add('author', null, [
+                'label' => 'Auteur',
             ])
             ->add('published', null, [
                 'label' => 'Publié',

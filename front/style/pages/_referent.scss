@@ -221,3 +221,76 @@
         margin: 20px 0 20px 0;
     }
 }
+
+.jecoute-survey-stats {
+    counter-reset: section;
+
+    .form__label {
+        margin-bottom: 0;
+
+        &:before {
+            counter-increment: section;
+            content: counter(section) ". " ;
+        }
+    }
+
+    .total-answered {
+        font-size: 14px;
+    }
+
+    .block-stats {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        display: flex;
+        align-items: center;
+
+        .stats-percent {
+            width: 15%;
+            margin-right: 5px;
+            font-weight: bold;
+        }
+
+        .stats-bar {
+            position: relative;
+            display: block;
+            height: 35px;
+            width: 100%;
+            background: $blue--soft;
+            transition: 0.4s linear;
+            transition-property: width, background-color;
+            color: $white;
+
+            &__title {
+                position: absolute;
+                top: 0;
+                left: 0;
+
+                span {
+                    display: block;
+                    padding: 0 20px;
+                    height: 35px;
+                    line-height: 35px;
+                    font-size: 13px;
+                }
+
+            }
+
+            &__progress-bar {
+                height: 35px;
+                line-height: 35px;
+                width: 0;
+                background: $blue--chart;
+            }
+
+            &__answered {
+                position: absolute;
+                right: 10px;
+                top: 0;
+                height: 35px;
+                line-height: 35px;
+                font-size: 11px;
+            }
+        }
+    }
+}

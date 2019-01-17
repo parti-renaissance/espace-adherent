@@ -32,6 +32,10 @@ class LoadJecouteQuestionData extends Fixture
                 'Réponse unique 2',
             ],
         ],
+        'question-4' => [
+            'content' => 'Question du 2ème questionnaire, avec champ libre.',
+            'type' => SurveyQuestionTypeEnum::SIMPLE_FIELD,
+        ],
     ];
 
     public function load(ObjectManager $manager)
@@ -43,8 +47,14 @@ class LoadJecouteQuestionData extends Fixture
             $question = new Question($data['content'], $data['type']);
 
             if (array_key_exists('choices', $data)) {
+                $i = 1;
+
                 foreach ($data['choices'] as $choice) {
-                    $question->addChoice(new Choice($choice));
+                    $choice = new Choice($choice);
+                    $question->addChoice($choice);
+                    $this->addReference($code.'-choice-'.$i, $choice);
+
+                    ++$i;
                 }
             }
 

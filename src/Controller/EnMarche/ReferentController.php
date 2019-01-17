@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Jecoute\Survey;
+use AppBundle\Entity\Jecoute\SurveyQuestion;
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
 use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
@@ -13,6 +14,7 @@ use AppBundle\Form\EventCommandType;
 use AppBundle\Form\ReferentMessageType;
 use AppBundle\Form\ReferentPersonLinkType;
 use AppBundle\Form\Jecoute\SurveyFormType;
+use AppBundle\Jecoute\StatisticsProvider;
 use AppBundle\Referent\ManagedCommitteesExporter;
 use AppBundle\Referent\ManagedEventsExporter;
 use AppBundle\Referent\ManagedUsersFilter;
@@ -21,12 +23,14 @@ use AppBundle\Referent\ReferentMessageNotifier;
 use AppBundle\Referent\SurveyExporter;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EventRepository;
+use AppBundle\Repository\Jecoute\DataAnswerRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use AppBundle\Repository\ReferentRepository;
 use AppBundle\Repository\SuggestedQuestionRepository;
-use AppBundle\Repository\SurveyRepository;
+use AppBundle\Repository\Jecoute\SurveyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -157,7 +161,7 @@ class ReferentController extends Controller
     }
 
     /**
-     * @Route("/questionnaires", name="app_referent_surveys")
+     * @Route("/jecoute/questionnaires", name="app_referent_surveys")
      * @Method("GET")
      */
     public function jecouteSurveysListAction(
@@ -167,13 +171,13 @@ class ReferentController extends Controller
     ): Response {
         return $this->render('referent/surveys/list.html.twig', [
             'surveysListJson' => $surveyExporter->exportAsJson(
-                $surveyRepository->findAllByCreator($user)
+                $surveyRepository->findAllByAuthor($user)
             ),
         ]);
     }
 
     /**
-     * @Route("/questionnaire/creer", name="app_referent_survey_create")
+     * @Route("/jecoute/questionnaire/creer", name="app_referent_survey_create")
      * @Method("GET|POST")
      */
     public function jecouteSurveyCreateAction(
@@ -204,7 +208,7 @@ class ReferentController extends Controller
 
     /**
      * @Route(
-     *     path="/questionnaire/{uuid}/editer",
+     *     path="/jecoute/questionnaire/{uuid}/editer",
      *     name="app_referent_survey_edit",
      *     requirements={
      *         "uuid": "%pattern_uuid%",
@@ -234,6 +238,46 @@ class ReferentController extends Controller
         return $this->render('referent/surveys/create.html.twig', [
             'form' => $form->createView(),
             'suggestedQuestions' => $suggestedQuestionRepository->findAllPublished(),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     path="/jecoute/questionnaire/{uuid}/stats",
+     *     name="app_referent_survey_stats",
+     *     requirements={
+     *         "uuid": "%pattern_uuid%",
+     *     },
+     *     methods={"GET"},
+     * )
+     *
+     * @Entity("survey", expr="repository.findOneByUuid(uuid)")
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', survey)")
+     */
+    public function jecouteSurveyStatsAction(Survey $survey, StatisticsProvider $provider): Response
+    {
+        return $this->render('referent/surveys/stats.html.twig', [
+            'data' => $provider->getStatsBySurvey($survey),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     path="/jecoute/question/{uuid}/reponses",
+     *     name="app_referent_survey_stats_answers_list",
+     *     condition="request.isXmlHttpRequest()",
+     *     methods={"GET"},
+     * )
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', surveyQuestion)")
+     */
+    public function jecouteSurveyAnswersListAction(
+        SurveyQuestion $surveyQuestion,
+        DataAnswerRepository $dataAnswerRepository
+    ): Response {
+        return $this->render('referent/surveys/data_answers_dialog_content.html.twig', [
+            'answers' => $dataAnswerRepository->findAllBySurveyQuestion($surveyQuestion),
         ]);
     }
 

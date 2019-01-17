@@ -41,7 +41,7 @@ class Question
     /**
      * @var SurveyQuestion[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="question", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="question")
      *
      * @Assert\Valid
      */
@@ -70,7 +70,7 @@ class Question
     /**
      * @var Choice[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="Choice", mappedBy="question", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Choice", mappedBy="question", cascade={"persist", "remove"})
      * @ORM\OrderBy({"position": "ASC"})
      *
      * @Assert\Valid

@@ -29,16 +29,17 @@ class SurveyExporter
                 'city' => $survey->getCity(),
                 'questionsCount' => $survey->questionsCount(),
                 'createdAt' => $survey->getCreatedAt()->format('d/m/Y'),
-                'creator' => $survey->getCreator()->getFullName(),
+                'author' => $survey->getAuthor()->getFullName(),
                 'publish' => $this->getPublishAction($survey->isPublished()),
                 'edit' => [
                     'label' => "<span id='survey-edit-$i' class='btn btn--default'><i class='fa fa-edit'></i></span>",
-                    'url' => $this->urlGenerator->generate(
-                        'app_referent_survey_edit', ['uuid' => $survey->getUuid()],
-                        UrlGeneratorInterface::ABSOLUTE_URL
-                    ),
+                    'url' => $this->urlGenerator->generate('app_referent_survey_edit', ['uuid' => $survey->getUuid()]),
                 ],
-            ];
+                'stats' => [
+                    'label' => "<span id='survey-stats-$i' class='btn btn--default'><i class='fa fa-bar-chart'></i></span>",
+                    'url' => $this->urlGenerator->generate('app_referent_survey_stats', ['uuid' => $survey->getUuid()]),
+                    ],
+                ];
             ++$i;
         }
 
