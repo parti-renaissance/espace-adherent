@@ -15,9 +15,22 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class IdeaRepository extends ServiceEntityRepository
 {
+    use UuidEntityRepositoryTrait;
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Idea::class);
+    }
+
+    public function findOneByUuid(string $uuid, bool $disabledEntity = false): Idea
+    {
+        if ($disabledEntity && $this->_em->getFilters()->isEnabled('enabled')) {
+            $this->_em->getFilters()->disable('enabled');
+        }
+
+        static::validUuid($uuid);
+
+        return $this->findOneBy(['uuid' => $uuid]);
     }
 
     public function getContributors(Idea $idea): array

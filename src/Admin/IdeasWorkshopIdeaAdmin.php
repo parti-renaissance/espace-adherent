@@ -189,11 +189,8 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
                     'show_contributors' => [
                         'template' => 'admin/ideas_workshop/idea/list_show_contributors.html.twig',
                     ],
-                    'enabled' => [
-                        'template' => 'admin/ideas_workshop/idea/list_action_enabled.html.twig',
-                    ],
-                    'disabled' => [
-                        'template' => 'admin/ideas_workshop/idea/list_action_disabled.html.twig',
+                    'moderate' => [
+                        'template' => 'admin/ideas_workshop/list_action_moderate.html.twig',
                     ],
                     'contribute' => [
                         'template' => 'admin/ideas_workshop/idea/list_action_contribute.html.twig',

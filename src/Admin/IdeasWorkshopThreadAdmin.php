@@ -112,6 +112,9 @@ class IdeasWorkshopThreadAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'actions' => [
                     'show' => [],
+                    'moderate' => [
+                        'template' => 'admin/ideas_workshop/list_action_moderate.html.twig',
+                    ],
                 ],
             ])
         ;
@@ -119,6 +122,6 @@ class IdeasWorkshopThreadAdmin extends AbstractAdmin
 
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->clearExcept('show');
+        $collection->clearExcept(['show', 'list']);
     }
 }

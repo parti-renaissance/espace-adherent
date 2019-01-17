@@ -123,7 +123,8 @@ class ThreadComment extends BaseComment implements AuthorInterface, ReportableIn
         Adherent $author,
         Thread $thread,
         \DateTime $createdAt = null,
-        bool $approved = false
+        bool $approved = false,
+        bool $enabled = true
     ): self {
         $threadComment = new static($uuid);
         $threadComment->content = $content;
@@ -131,6 +132,7 @@ class ThreadComment extends BaseComment implements AuthorInterface, ReportableIn
         $threadComment->thread = $thread;
         $threadComment->createdAt = $createdAt ?: new \DateTime();
         $threadComment->approved = $approved;
+        $threadComment->enabled = $enabled;
 
         return $threadComment;
     }

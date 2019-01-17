@@ -8,15 +8,20 @@ use Ramsey\Uuid\Uuid;
 trait UuidEntityRepositoryTrait
 {
     /**
-     * Finds an entity by its unique UUID.
+     * Finds an entity by its unique UUID even if the object has 'enabled' property set to 'true'
+     * due to deactivation of 'enabled' Doctrine filter.
      *
      * @return object|null
      *
      * @throws InvalidUuidException
      */
-    public function findOneByUuid(string $uuid)
+    public function findOneByUuid(string $uuid, bool $disabledEntity = false)
     {
-        self::validUuid($uuid);
+        if ($disabledEntity && $this->_em->getFilters()->isEnabled('enabled')) {
+            $this->_em->getFilters()->disable('enabled');
+        }
+
+        static::validUuid($uuid);
 
         return $this->findOneBy(['uuid' => $uuid]);
     }

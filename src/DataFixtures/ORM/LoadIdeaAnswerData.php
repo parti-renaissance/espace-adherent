@@ -34,14 +34,14 @@ class LoadIdeaAnswerData extends AbstractFixture implements DependentFixtureInte
         $this->addReference('answer-q-problem', $answerQuestionProblem);
 
         $answerQuestionAnswer = new Answer(
-            'Nulla metus enim, congue eu facilisis ac, consectetur ut ipsum. '
+            '<p>Nulla metus enim, congue eu facilisis ac, consectetur ut ipsum.</p>'
         );
         $answerQuestionAnswer->setQuestion($questionAnswer);
         $ideaPeace->addAnswer($answerQuestionAnswer);
         $this->addReference('answer-q-answer', $answerQuestionAnswer);
 
         $answerQuestionCompare = new Answer(
-            'Mauris gravida semper tincidunt.'
+            '<p>Mauris gravida semper tincidunt.</p>'
         );
         $answerQuestionCompare->setQuestion($questionCompare);
         $ideaPeace->addAnswer($answerQuestionCompare);

@@ -11,6 +11,7 @@
             <span class="label label-danger">{{ 'global.no'|trans|lower }}</span>
         {% endif %}<br>
         Contenu: {{ threadComment.content }}<br>
-        <br>
+        {{ include('admin/ideas_workshop/list_action_moderate.html.twig', { object: threadComment }) }}
+        <br><br>
     {% endfor %}
 {% endblock %}

@@ -20,6 +20,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
     public const THREAD_COMMENT_07_UUID = 'ecbe9136-3dc0-477d-b817-a25878dd639a';
     public const THREAD_COMMENT_08_UUID = '37116c8b-a36e-4a0d-8346-baba91cd1330';
     public const THREAD_COMMENT_09_UUID = '9e49e935-ba51-4ae5-981c-5f48e55fdf28';
+    public const THREAD_COMMENT_10_UUID = '3c660186-7c46-4607-abb1-20022d26c327';
 
     public function load(ObjectManager $manager)
     {
@@ -39,7 +40,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
 
         $commentFromAdherent7 = ThreadComment::create(
             Uuid::fromString(self::THREAD_COMMENT_02_UUID),
-            'Lorem Ipsum Commentaris',
+            '<p>Lorem Ipsum Commentaris</p>',
             $this->getReference('adherent-7'),
             $threadAQProblemAdherent2,
             new \DateTime('-30 minutes')
@@ -63,7 +64,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
 
         $commentFromAdherent9 = ThreadComment::create(
             Uuid::fromString(self::THREAD_COMMENT_05_UUID),
-            'Commentaire de Laura',
+            '<p>Commentaire de Laura</p>',
             $this->getReference('adherent-9'),
             $threadAQCompareAdherent5,
             new \DateTime('-15 minutes')
@@ -71,7 +72,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
 
         $commentNotApproved = ThreadComment::create(
             Uuid::fromString(self::THREAD_COMMENT_06_UUID),
-            'Commentaire non approuvé',
+            '<p>Commentaire non approuvé</p>',
             $this->getReference('adherent-9'),
             $threadAQCompareAdherent5,
             new \DateTime('-10 minutes')
@@ -79,11 +80,12 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
 
         $commentReported = ThreadComment::create(
             Uuid::fromString(self::THREAD_COMMENT_07_UUID),
-            'Commentaire signalé',
+            '<p>Commentaire signalé</p>',
             $this->getReference('adherent-9'),
             $threadAQCompareAdherent5,
             new \DateTime('-5 minutes')
         );
+        $this->setReference('thread-comment-reported', $commentReported);
 
         $commentOfAdherentToUnregistrate = ThreadComment::create(
             Uuid::fromString(self::THREAD_COMMENT_08_UUID),
@@ -100,6 +102,16 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
             $threadReduceWaste
         );
 
+        $commentDisabled = ThreadComment::create(
+            Uuid::fromString(self::THREAD_COMMENT_10_UUID),
+            'Commentaire modéré de l\'adhérent à desadhérer',
+            $this->getReference('adherent-13'),
+            $threadAQCompareAdherent5,
+            new \DateTime('-2 minutes'),
+            false,
+            false
+        );
+
         $manager->persist($commentFromAdherent6);
         $manager->persist($commentFromAdherent7);
         $manager->persist($commentFromAdherent8);
@@ -109,6 +121,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
         $manager->persist($commentReported);
         $manager->persist($commentOfAdherentToUnregistrate);
         $manager->persist($commentOfAdherent6OnIdeaWaste);
+        $manager->persist($commentDisabled);
 
         $manager->flush();
     }

@@ -6,6 +6,7 @@ use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Repository\IdeaRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -13,12 +14,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/ideasworkshop-idea")
+ * @Security("has_role('ROLE_APP_ADMIN_IDEAS_WORKSHOP_IDEA_ALL')")
  */
 class AdminIdeaController extends Controller
 {
     /**
      * @Route("/{id}/contribute", name="app_admin_idea_contribute", methods={"GET"})
-     * @Security("has_role('ROLE_APP_ADMIN_IDEAS_WORKSHOP_IDEA_ALL')")
      */
     public function contributeAction(Idea $idea, ObjectManager $manager): Response
     {
@@ -36,7 +37,6 @@ class AdminIdeaController extends Controller
 
     /**
      * @Route("/{id}/contributors", name="app_admin_idea_contributors", methods={"GET"})
-     * @Security("has_role('ROLE_APP_ADMIN_IDEAS_WORKSHOP_IDEA_ALL')")
      */
     public function membersAction(Idea $idea, IdeaRepository $repository): Response
     {
@@ -48,19 +48,11 @@ class AdminIdeaController extends Controller
     }
 
     /**
-     * @Route("/{id}/enable", name="app_admin_idea_enable", methods={"GET"})
-     * @Security("has_role('ROLE_APP_ADMIN_IDEAS_WORKSHOP_IDEA_ALL')")
+     * @Route("/{uuid}/enable", name="app_admin_idea_enable", methods={"GET"})
+     * @Entity("idea", expr="repository.findOneByUuid(uuid, true)")
      */
-    public function enableAction(int $id, EntityManagerInterface $manager): Response
+    public function enableAction(Idea $idea, EntityManagerInterface $manager): Response
     {
-        if ($manager->getFilters()->isEnabled('enabled')) {
-            $manager->getFilters()->disable('enabled');
-        }
-
-        if (!$idea = $manager->getRepository(Idea::class)->find($id)) {
-            throw $this->createNotFoundException('L\'idée n\'existe pas');
-        }
-
         if ($idea->isEnabled()) {
             $this->addFlash('warning', 'L\'idée a déjà été démodéré');
         } else {
@@ -74,8 +66,8 @@ class AdminIdeaController extends Controller
     }
 
     /**
-     * @Route("/{id}/disable", name="app_admin_idea_disable", methods={"GET"})
-     * @Security("has_role('ROLE_APP_ADMIN_IDEAS_WORKSHOP_IDEA_ALL')")
+     * @Route("/{uuid}/disable", name="app_admin_idea_disable", methods={"GET"})
+     * @Entity("idea", expr="repository.findOneByUuid(uuid, true)")
      */
     public function disableAction(Idea $idea, ObjectManager $manager): Response
     {
@@ -93,7 +85,6 @@ class AdminIdeaController extends Controller
 
     /**
      * @Route("/{id}/finalize", name="app_admin_idea_finalize", methods={"GET"})
-     * @Security("has_role('ROLE_APP_ADMIN_IDEAS_WORKSHOP_IDEA_ALL')")
      */
     public function finalizeAction(Idea $idea, ObjectManager $manager): Response
     {

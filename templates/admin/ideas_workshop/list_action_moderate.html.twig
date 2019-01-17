@@ -1,0 +1,20 @@
+{% if is_idea(object) or is_thread(object) or is_thread_comment(object) %}
+    {% set url_type = is_idea(object) ? 'idea' : is_thread(object) ? 'thread' : 'thread_comment' %}
+    {% if object.enabled %}
+        {% set action_url = path("app_admin_#{url_type}_disable", { uuid: object.uuid }) %}
+
+        <a href="{{ action_url }}" class="btn btn-sm btn-default view_link"
+           title="Modérer" target="_blank" rel="noopener noreferrer">
+            <i class="fa fa-minus-circle" aria-hidden="true"></i>
+            Modérer
+        </a>
+    {% else %}
+        {% set action_url = path("app_admin_#{url_type}_enable", { uuid: object.uuid }) %}
+
+        <a href="{{ action_url }}" class="btn btn-sm btn-default view_link"
+           title="Réactiver" target="_blank" rel="noopener noreferrer">
+            <i class="fa fa-check-circle" aria-hidden="true"></i>
+            Réactiver
+        </a>
+    {% endif %}
+{% endif %}
