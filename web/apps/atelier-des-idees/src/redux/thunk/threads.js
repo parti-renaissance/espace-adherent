@@ -7,9 +7,21 @@ import {
     removeThreadComment,
     toggleApproveThreadComment,
 } from '../actions/threads';
-import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
-import { POST_THREAD, POST_THREAD_COMMENT } from '../constants/actionTypes';
-import { selectThread, selectThreadPagingData, selectThreadComment } from '../selectors/threads';
+import {
+    createRequest,
+    createRequestSuccess,
+    createRequestFailure,
+} from '../actions/loading';
+import {
+    POST_THREAD,
+    POST_THREAD_COMMENT,
+    POST_FLAG,
+} from '../constants/actionTypes';
+import {
+    selectThread,
+    selectThreadPagingData,
+    selectThreadComment,
+} from '../selectors/threads';
 
 export function approveComment(id, parentId = '') {
     return (dispatch, getState, axios) => {
@@ -17,7 +29,9 @@ export function approveComment(id, parentId = '') {
         if (parentId) {
             type = 'thread_comments';
         }
-        const comment = parentId ? selectThreadComment(getState(), id) : selectThread(getState(), id);
+        const comment = parentId
+            ? selectThreadComment(getState(), id)
+            : selectThread(getState(), id);
         // simulate toggle
         if (parentId) {
             dispatch(toggleApproveThreadComment(id));
@@ -26,8 +40,10 @@ export function approveComment(id, parentId = '') {
         }
         return (
             axios
-                .put(`/api/ideas-workshop/${type}/${id}/approval-toggle`, { approved: !comment.approved })
-                // toggle back if error
+                .put(`/api/ideas-workshop/${type}/${id}/approval-toggle`, {
+                    approved: !comment.approved,
+                })
+        // toggle back if error
                 .catch(() => {
                     if (parentId) {
                         dispatch(toggleApproveThreadComment(id));
@@ -89,8 +105,14 @@ export function postComment(content, answerId, parentId = '') {
 
 export function reportComment(reportData, id, parentId = '') {
     return (dispatch, getState, axios) => {
-        const reportType = parentId ? 'atelier-des-idees-reponses' : 'atelier-des-idees-commentaires';
-        return axios.post(`/api/report/${reportType}/${id}`, reportData);
+        dispatch(createRequest(POST_FLAG, id));
+        const reportType = parentId
+            ? 'atelier-des-idees-reponses'
+            : 'atelier-des-idees-commentaires';
+        return axios
+            .post(`/api/report/${reportType}/${id}`, reportData)
+            .then(() => dispatch(createRequestSuccess(POST_FLAG, id)))
+            .catch(() => dispatch(createRequestFailure(POST_FLAG, id)));
     };
 }
 
@@ -119,18 +141,24 @@ export function fetchNextThreadComments(threadId) {
         // pading data
         const pagingData = selectThreadPagingData(getState(), threadId);
         const page = pagingData ? pagingData.current_page + 1 : 2;
-        dispatch(fetchThreadComments(threadId, { page, limit: 3 })).then(({ items, metadata }) => {
-            // add comments to collection
-            dispatch(addThreadComments(items.map(comment => ({ ...comment, thread: { uuid: threadId } }))));
-            // update parent thread total items
-            const thread = selectThread(getState(), threadId);
-            dispatch(
-                updateThread(threadId, {
-                    comments: { ...thread.comments, total_items: metadata.total_items },
-                })
-            );
-            // update paging data
-            dispatch(setThreadPagingData(threadId, metadata));
-        });
+        dispatch(fetchThreadComments(threadId, { page, limit: 3 })).then(
+            ({ items, metadata }) => {
+                // add comments to collection
+                dispatch(
+                    addThreadComments(
+                        items.map(comment => ({ ...comment, thread: { uuid: threadId } }))
+                    )
+                );
+                // update parent thread total items
+                const thread = selectThread(getState(), threadId);
+                dispatch(
+                    updateThread(threadId, {
+                        comments: { ...thread.comments, total_items: metadata.total_items },
+                    })
+                );
+                // update paging data
+                dispatch(setThreadPagingData(threadId, metadata));
+            }
+        );
     };
 }

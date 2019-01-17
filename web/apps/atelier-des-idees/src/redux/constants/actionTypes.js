@@ -49,7 +49,9 @@ export const SET_MY_IDEAS = 'SET_MY_IDEAS';
 export const REMOVE_MY_IDEA = 'REMOVE_MY_IDEA';
 
 // my contributions
-export const FETCH_MY_CONTRIBUTIONS = createRequestTypes('FETCH_MY_CONTRIBUTION');
+export const FETCH_MY_CONTRIBUTIONS = createRequestTypes(
+    'FETCH_MY_CONTRIBUTION'
+);
 export const SET_MY_CONTRIBUTIONS = 'SET_MY_CONTRIBUTIONS ';
 
 // current idea
@@ -64,7 +66,9 @@ export const SET_GUIDELINES = 'SET_GUIDELINES';
 export const TOGGLE_VOTE_CURRENT_IDEA = 'TOGGLE_VOTE_CURRENT_IDEA';
 
 // pinned
-export const FETCH_CONSULTATION_PINNED = createRequestTypes('FETCH_CONSULTATION_PINNED');
+export const FETCH_CONSULTATION_PINNED = createRequestTypes(
+    'FETCH_CONSULTATION_PINNED'
+);
 export const SHOW_CONSULTATION_PINNED = 'SHOW_CONSULTATION_PINNED';
 export const HIDE_CONSULTATION_PINNED = 'HIDE_CONSULTATION_PINNED';
 // reports
@@ -72,7 +76,7 @@ export const FETCH_REPORTS = createRequestTypes('FETCH_REPORTS');
 export const SET_REPORTS = 'SET_REPORTS';
 
 // flag
-export const ADD_FLAG = 'ADD_FLAG';
+export const POST_FLAG = createRequestTypes('POST_FLAG');
 
 // static
 export const UPDATE_STATIC = 'UPDATE_STATIC';
