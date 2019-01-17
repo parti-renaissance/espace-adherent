@@ -197,7 +197,7 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     use EntityTimestampableTrait;
     use EntityNameSlugTrait;
 
-    private const PUBLISHED_INTERVAL = 'P3W';
+    private const PUBLISHED_INTERVAL = 'P10D';
 
     /**
      * @ApiProperty(identifier=false)
