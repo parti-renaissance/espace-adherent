@@ -4,8 +4,12 @@
   text-align: center;
   margin: 0 30px;
 
+  @media #{$desktop} {
+    width: 100%;
+  }
+
   &__title {
-    font-size: 24px;
+    font-size: 22px;
     color: $dark-blue;
 
     &__main {
@@ -16,8 +20,12 @@
   }
 
   &__content {
-    margin: 15px 0 15px;
+    margin: 15px auto 15px;
     color: $dark-grey;
+
+    @media #{$desktop} {
+      width: 80%;
+    }
   }
 
   &__link {

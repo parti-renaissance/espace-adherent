@@ -2,7 +2,7 @@ riexport const FIRST_QUESTIONS = [
     {
         id: 'problem',
         label: 'Constat',
-        question: 'Quel problème souhaitez vous résoudre ?',
+        question: 'quel problème souhaitez-vous résoudre ?',
         canCollapse: false,
         placeholder: 'Expliquez le problème que vous identifiez et espérez pouvoir remédier.',
     },

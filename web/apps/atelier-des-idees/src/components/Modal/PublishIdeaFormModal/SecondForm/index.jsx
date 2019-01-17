@@ -104,7 +104,7 @@ class SecondForm extends React.Component {
         return (
             <form className="second-form" onSubmit={this.handleSubmit}>
                 <div className="second-form__section">
-                    <label className="second-form__section__label">Avec qui avez-vous rédigé cette note ?</label>
+                    <label className="second-form__section__label">Avec qui proposez vous cette idée ?</label>
                     <Select
                         options={this.props.authorOptions}
                         placeholder="Seul / Mon comité"
@@ -126,7 +126,7 @@ class SecondForm extends React.Component {
                 )}
                 <div className="second-form__section">
                     <label className="second-form__section__label">
-                        Y-a-t-il une partie qui vous a semblé difficile à remplir ?
+                        Y a-t-il des parties sur lesquelles vous souhaitez recevoir les suggestions des autres adhérents ?
                         <span className="second-form__section__label__optional"> (Optionnel)</span>
                     </label>
                     <Select
@@ -182,7 +182,7 @@ class SecondForm extends React.Component {
                 <Button
                     type="submit"
                     className="second-form__button button--primary"
-                    label="Publier la note"
+                    label="Publier la proposition"
                     isLoading={this.state.isSubmitting}
                 />
                 {this.state.errors.form && <p className="second-form__error">{this.state.errors.form}</p>}

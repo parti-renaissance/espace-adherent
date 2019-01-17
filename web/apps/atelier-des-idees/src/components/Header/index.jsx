@@ -20,7 +20,7 @@ class Header extends React.PureComponent {
                                     className="header__item header__button"
                                     onClick={() => this.props.onMyIdeasBtnClicked('my_ideas')}
                                 >
-                                    Mes notes
+                                    Mes idées
                                 </button>
                                 <button
                                     className="header__item header__button"
@@ -32,7 +32,7 @@ class Header extends React.PureComponent {
                         )}
                     </div>
                     <Link to="/atelier-des-idees/creer-ma-note" className="header__create-btn button button--primary">
-                        Je rédige mon idée
+                        J'ai une proposition
                     </Link>
                     {/* <Mobile>
                 <ScrollMenu
