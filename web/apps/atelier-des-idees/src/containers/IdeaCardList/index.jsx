@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { ideaStatus } from '../../constants/api';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectIdeasWithStatus, selectIdeasMetadata } from '../../redux/selectors/ideas';
@@ -99,13 +100,25 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch, ownProps) {
     return {
-        fetchIdeas: params => dispatch(fetchIdeas(ownProps.status, params, { setMode: true, cancel: true })),
+        fetchIdeas: (params) => {
+            dispatch(fetchIdeas(ownProps.status, params, { setMode: true, cancel: true }));
+            // update url with query params
+            const { match, history } = ownProps;
+            const { path } = match;
+            const queryString = Object.entries(params).reduce(
+                (acc, [key, value]) => `${acc}${acc.length ? '&' : ''}${key}=${value}`,
+                ''
+            );
+            history.replace(`${path}?${queryString}`);
+        },
         onMoreClicked: params => dispatch(fetchNextIdeas(ownProps.status, params)),
         onVoteIdea: (id, vote) => dispatch(voteIdea(id, vote)),
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(IdeaCardListContainer);
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(IdeaCardListContainer)
+);
