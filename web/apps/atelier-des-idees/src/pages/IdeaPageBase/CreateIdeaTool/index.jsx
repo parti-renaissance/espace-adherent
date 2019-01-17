@@ -50,9 +50,9 @@ class CreateIdeaTool extends React.Component {
                                     questionId={id}
                                     placeholder={placeholder}
                                     nbQuestion={nbQOffset + index + 1}
-                                    onTextChange={(htmlContent, save = false) =>
-                                        this.props.onQuestionTextChange(id, htmlContent, save)
-                                    }
+                                    onTextChange={(htmlContent, save = false) => {
+                                        this.props.onQuestionTextChange(id, htmlContent, save);
+                                    }}
                                     hasError={this.props.errors.includes(id.toString())}
                                 />
                             ))}
