@@ -19,12 +19,6 @@ FlagModalContainer.propTypes = {
 function mapStateToProps(state, { id }) {
     // get static data
     const { reasons } = selectStatic(state);
-    // const reasons = {
-    //     en_marche_values: 'Ce que je vois ne correspond pas aux valeurs du Mouvement',
-    //     inappropriate: 'Ce n\'est pas du contenu approprié',
-    //     commercial_content: 'Il s\'agit de contenu commercial',
-    //     other: 'Autre',
-    // };
     // get request status
     const flagState = selectLoadingState(state, 'POST_FLAG', id);
     const formattedReasons = Object.entries(reasons).map(([value, label]) => ({

@@ -1,23 +1,7 @@
 import Axios from 'axios';
-import {
-    FETCH_IDEAS,
-    FETCH_IDEA,
-    SAVE_IDEA,
-    PUBLISH_IDEA,
-    FETCH_MY_IDEAS,
-    POST_FLAG,
-} from '../constants/actionTypes';
-import {
-    createRequest,
-    createRequestSuccess,
-    createRequestFailure,
-} from '../actions/loading';
-import {
-    addIdeas,
-    setIdeas,
-    removeIdea,
-    toggleVoteIdea,
-} from '../actions/ideas';
+import { FETCH_IDEAS, FETCH_IDEA, SAVE_IDEA, PUBLISH_IDEA, FETCH_MY_IDEAS, POST_FLAG } from '../constants/actionTypes';
+import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
+import { addIdeas, setIdeas, removeIdea, toggleVoteIdea } from '../actions/ideas';
 import { setCurrentIdea } from '../actions/currentIdea';
 import { selectIdeasMetadata, selectIdea } from '../selectors/ideas';
 import { setMyIdeas, removeMyIdea } from '../actions/myIdeas';
@@ -36,11 +20,7 @@ let cancel;
  * @param {object} params Query params
  * @param {boolean} setMode If true, set ideas by erasing previous ones. Default: false
  */
-export function fetchIdeas(
-    status,
-    params = {},
-    options = { setMode: false, cancel: false }
-) {
+export function fetchIdeas(status, params = {}, options = { setMode: false, cancel: false }) {
     return (dispatch, getState, axios) => {
         dispatch(createRequest(FETCH_IDEAS, status));
         if (options.setMode) {
@@ -220,14 +200,9 @@ export function voteIdea(uuid, voteType, baseIdea) {
         if (isAuthenticated) {
             const idea = baseIdea || selectIdea(getState(), uuid);
             const { votes_count } = idea;
-            if (
-                votes_count.my_votes &&
-				Object.keys(votes_count.my_votes).includes(voteType)
-            ) {
+            if (votes_count.my_votes && Object.keys(votes_count.my_votes).includes(voteType)) {
                 // user has already voted that, cancel vote
-                return dispatch(
-                    cancelVote(uuid, voteType, votes_count.my_votes[voteType])
-                );
+                return dispatch(cancelVote(uuid, voteType, votes_count.my_votes[voteType]));
             }
             // user has not already voted that, post vote
             return dispatch(postVote(uuid, voteType));
@@ -244,11 +219,14 @@ export function saveIdea(id, ideaData) {
                 method: 'PUT',
                 url: `/api/ideas-workshop/ideas/${id}`,
                 data: ideaData,
-			  }
+            }
             : { method: 'POST', url: '/api/ideas-workshop/ideas', data: ideaData };
         return axios(requestBody)
             .then(res => res.data)
-            .then(() => dispatch(createRequestSuccess(SAVE_IDEA, id)))
+            .then((resData) => {
+                dispatch(createRequestSuccess(SAVE_IDEA, id));
+                return resData;
+            })
             .catch((error) => {
                 dispatch(createRequestFailure(SAVE_IDEA, id));
                 throw error;
@@ -282,7 +260,7 @@ export function publishIdea(id) {
             .put(`/api/ideas-workshop/ideas/${id}/publish`)
             .then(res => res.data)
             .then(() => dispatch(createRequestSuccess(PUBLISH_IDEA)))
-            .catch(() => dispatch(createRequestFailure(PUBLISH_IDEA, id)));
+            .catch(() => dispatch(createRequestFailure(PUBLISH_IDEA)));
     };
 }
 
