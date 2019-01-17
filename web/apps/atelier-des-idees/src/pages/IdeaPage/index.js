@@ -59,11 +59,10 @@ function mapStateToProps(state, ownProps) {
     const guidelines = selectGuidelines(state);
     // get and format current idea
     const idea = selectCurrentIdea(state);
-    const { author = {}, published_at, ...ideaData } = idea;
+    const { author = {}, ...ideaData } = idea;
     const formattedIdea = {
         ...ideaData,
         authorName: author ? `${author.first_name} ${author.last_name}` : '',
-        publishedAt: published_at && new Date(published_at).toLocaleDateString(),
     };
     const isAuthenticated = selectIsAuthenticated(state);
 

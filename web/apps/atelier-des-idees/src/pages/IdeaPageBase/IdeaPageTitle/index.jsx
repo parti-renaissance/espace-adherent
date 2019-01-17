@@ -84,7 +84,9 @@ class IdeaPageTitle extends React.Component {
                                 </span>
                             )}
                             {this.props.showPublicationDate && this.props.publishedAt && (
-                                <span className="idea-page-title__info__date"> le {this.props.publishedAt}</span>
+                                <span className="idea-page-title__info__date">
+                                    {new Date(this.props.publishedAt).toLocaleDateString()}
+                                </span>
                             )}
                         </div>
                     </React.Fragment>
