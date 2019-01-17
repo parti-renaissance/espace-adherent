@@ -9,6 +9,6 @@ storiesOf('IdeaFilters', module)
     .add('with default values', () => (
         <IdeaFilters
             onFilterChange={action('filter change')}
-            defaultValues={{ name: 'lol', authorCategory: 'QG', order: 'order[publishedAt]/ASC' }}
+            defaultValues={{ name: 'lol', authorCategory: 'QG', 'order[publishedAt]': 'ASC' }}
         />
     ));

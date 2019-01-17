@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import queryString from 'query-string';
 import { ideaStatus } from '../../constants/api';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectIdeasWithStatus, selectIdeasMetadata } from '../../redux/selectors/ideas';
@@ -16,13 +17,18 @@ class IdeaCardListContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            params: {},
+            params: { limit: 10, ...props.defaultFilterValues },
         };
         this.onFilterChange = this.onFilterChange.bind(this);
+        this.fetchIdeas = this.fetchIdeas.bind(this);
     }
 
-    fetchIdeas() {
-        this.props.fetchIdeas(this.state.params);
+    // componentDidMount() {
+    //     this.fetchIdeas({ cancel: false });
+    // }
+
+    fetchIdeas(options) {
+        this.props.fetchIdeas(this.state.params, options);
     }
 
     onFilterChange(filters) {
@@ -37,6 +43,7 @@ class IdeaCardListContainer extends React.Component {
                     status={this.props.status}
                     options={this.props.filters}
                     disabled={this.props.isLoading}
+                    defaultValues={this.props.defaultFilterValues}
                 />
                 {this.props.isLoading || this.props.ideas.length ? (
                     <React.Fragment>
@@ -67,6 +74,7 @@ IdeaCardListContainer.defaultProps = {
     onMoreClicked: undefined,
     withPaging: false,
     filters: undefined,
+    defaultFilterValues: undefined,
 };
 
 IdeaCardListContainer.propTypes = {
@@ -75,6 +83,7 @@ IdeaCardListContainer.propTypes = {
     status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
     withPaging: PropTypes.bool,
     filters: PropTypes.object,
+    defaultFilterValues: PropTypes.object,
 };
 
 function mapStateToProps(state, ownProps) {
@@ -95,21 +104,23 @@ function mapStateToProps(state, ownProps) {
             needs: needs.map(need => ({ value: need.name, label: need.name })),
             categories: categories.map(category => ({ value: category.name, label: category.name })),
         },
+        defaultFilterValues: queryString.parse(ownProps.location.search),
     };
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
     return {
-        fetchIdeas: (params) => {
-            dispatch(fetchIdeas(ownProps.status, params, { setMode: true, cancel: true }));
+        fetchIdeas: (params, options = {}) => {
+            dispatch(fetchIdeas(ownProps.status, params, { setMode: true, cancel: true, ...options }));
             // update url with query params
+            const { limit, ...otherParams } = params;
             const { match, history } = ownProps;
             const { path } = match;
-            const queryString = Object.entries(params).reduce(
+            const paramsString = Object.entries(otherParams).reduce(
                 (acc, [key, value]) => `${acc}${acc.length ? '&' : ''}${key}=${value}`,
                 ''
             );
-            history.replace(`${path}?${queryString}`);
+            history.replace(`${path}?${paramsString}`);
         },
         onMoreClicked: params => dispatch(fetchNextIdeas(ownProps.status, params)),
         onVoteIdea: (id, vote) => dispatch(voteIdea(id, vote)),
