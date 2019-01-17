@@ -1,14 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { ideaStatus } from '../../constants/api';
-import { initContributePage } from '../../redux/thunk/navigation';
 import ThreeTabsPage from '../ThreeTabs';
 import IdeaCardList from '../../containers/IdeaCardList';
 
-class ContributePage extends React.Component {
+class ContributePage extends React.PureComponent {
     componentDidMount() {
         window.scrollTo(0, 0);
-        this.props.initContributePage();
     }
 
     render() {
@@ -27,7 +24,4 @@ class ContributePage extends React.Component {
     }
 }
 
-export default connect(
-    null,
-    { initContributePage }
-)(ContributePage);
+export default ContributePage;
