@@ -43,6 +43,7 @@ class ModalRoot extends React.Component {
         const SpecificModal = MODAL_COMPONENTS[modalType];
         return (
             <ReactModal
+                closeTimeoutMS={200}
                 className="modal"
                 overlayClassName="modal-overlay"
                 isOpen={isOpen}
