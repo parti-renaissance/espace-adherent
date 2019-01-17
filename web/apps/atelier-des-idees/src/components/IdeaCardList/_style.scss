@@ -1,19 +1,9 @@
 .idea-card-list {
   .idea-card {
     margin: 0 auto 10px auto;
-    // width: 99.5%;
-    min-height: 328px;
+    width: 99.5%;
+    min-height: 315px;
     justify-content: space-between;
-    &__main {
-            .idea-card__content {
-
-            &__title {
-                max-height: 56px;
-                overflow: hidden;
-                margin: 0;
-            }
-        }
-    }
 
   }
 

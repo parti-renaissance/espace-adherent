@@ -95,7 +95,7 @@ class IdeaCard extends React.Component {
                                     <div className="idea-card__content__infos__ideas">
                                         <span className="idea-card__content__infos__ideas__contributors">
                                             <img
-                                                className="idea-card__content__infos__ideas__ontributors__icon"
+                                                className="idea-card__content__infos__ideas__contributors__icon"
                                                 src={icn_20px_contributors}
                                             />
                                             <span className="idea-card__content__infos__ideas__contributors__text">
@@ -104,10 +104,10 @@ class IdeaCard extends React.Component {
                                         </span>
                                         <span className="idea-card__content__infos__ideas__comments">
                                             <img
-                                                className="idea-card__content__infos__ideas__contributors__icon"
+                                                className="idea-card__content__infos__ideas__comments__icon"
                                                 src={icn_20px_comments}
                                             />
-                                            <span className="idea-card__content__infos__ideas__contributors__text">
+                                            <span className="idea-card__content__infos__ideas__comments__text">
                                                 {this.props.comments_count}
                                             </span>
                                         </span>
