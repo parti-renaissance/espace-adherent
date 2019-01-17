@@ -1,6 +1,6 @@
 This project is the En Marche ! platform.
 
-Copyright (c) 2016-2017, En Marche !
+Copyright (c) 2016-2019, En Marche !
 All rights reserved.
 
 The En Marche ! platform is free software: you can redistribute it and/or modify
