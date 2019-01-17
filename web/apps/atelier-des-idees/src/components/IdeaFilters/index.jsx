@@ -27,19 +27,27 @@ class IdeaFilters extends React.Component {
                 })),
             },
         };
+        // init state
         this.state = {
             name: props.defaultValues.name || '',
             authorCategory: props.defaultValues.authorCategory || '',
             'themes.name': props.defaultValues['themes.name'] || '',
             'category.name': props.defaultValues['category.name'] || '',
             'needs.name': props.defaultValues['needs.name'] || '',
-            order: this.filterItems.order.options[0].value,
         };
         // bindings
         this.onFilterChange = this.onFilterChange.bind(this);
         this.formatFilters = this.formatFilters.bind(this);
         this.getDefaultValue = this.getDefaultValue.bind(this);
         this.getOrderDefaultValue = this.getOrderDefaultValue.bind(this);
+        // init order default value
+        // state mutation is accepted here because done in constructor
+        const orderDefaultOption = this.getOrderDefaultValue();
+        this.state.order = orderDefaultOption.value;
+    }
+
+    componentDidMount() {
+        this.props.onFilterInit(this.formatFilters());
     }
 
     onFilterChange(filterKey, value) {
@@ -67,16 +75,15 @@ class IdeaFilters extends React.Component {
     }
 
     getOrderDefaultValue() {
-        let orderItem;
         const defaultValues = Object.entries(this.props.defaultValues);
         // order key is not static and therefore must be computed by filtering from other keys
         const option = defaultValues.find(([valueKey]) => !Object.keys(this.state).includes(valueKey));
         if (option) {
             // option has been found, get default value
             const [key, value] = option;
-            orderItem = this.filterItems.order.options.find(item => item.value === `${key}/${value}`);
+            return this.filterItems.order.options.find(item => item.value === `${key}/${value}`);
         }
-        return orderItem;
+        return this.filterItems.order.options[0];
     }
 
     render() {
@@ -161,7 +168,7 @@ class IdeaFilters extends React.Component {
                             options={this.filterItems.order.options.filter(
                                 option => !option.status || (!!option.status && option.status === this.props.status)
                             )}
-                            defaultValue={this.getOrderDefaultValue() || this.filterItems.order.options[0]}
+                            defaultValue={this.getOrderDefaultValue()}
                             onSelected={([selected]) => this.onFilterChange('order', selected.value)}
                             isDisabled={this.props.disabled}
                         />
@@ -175,12 +182,14 @@ class IdeaFilters extends React.Component {
 IdeaFilters.defaultProps = {
     defaultValues: {},
     disabled: false,
-    status: 'PENDING',
+    onFilterInit: undefined,
     options: undefined,
+    status: 'PENDING',
 };
 
 IdeaFilters.propTypes = {
     onFilterChange: PropTypes.func.isRequired,
+    onFilterInit: PropTypes.func,
     status: PropTypes.oneOf(Object.keys(ideaStatus)),
     options: PropTypes.shape({
         themes: PropTypes.array,
