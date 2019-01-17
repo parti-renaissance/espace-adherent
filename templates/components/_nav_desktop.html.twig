@@ -1,13 +1,11 @@
+{% set has_role_adherent = is_granted('ROLE_ADHERENT') %}
+
 <nav class="gtm__navigation__desktop l__wrapper l__row l__row--h-stretch l__hide--on-small-laptop {{ app.user ? '' : 'space--20-0' }}">
     <ul class="list__links list__links--row list__links--no-decor list__links--nav">
-        {% if app.user %}
-            <li>
-                <a href="{{ path('homepage') }}" class="link--no-decor text--logo">EM!</a>
-            </li>
-        {% else %}
-            <li>
-                <a href="{{ path('homepage') }}" class="link--no-decor text--logo">En Marche !</a>
-            </li>
+        <li>
+            <a href="{{ path('homepage') }}" class="link--no-decor text--logo">EM!</a>
+        </li>
+        {% if not has_role_adherent %}
             <li>
                 <a href="{{ path('page_le_mouvement') }}">Le Mouvement</a>
             </li>
