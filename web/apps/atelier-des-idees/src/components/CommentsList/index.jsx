@@ -106,10 +106,14 @@ class CommentsList extends React.Component {
                                 </React.Fragment>
                             ))
                         ) : (
-                            <p className="comments-list__empty">
-                                Soyez <span className="comments-list__empty--highlight">le premier</span> à contribuer
-                                sur cette partie
-                            </p>
+                            <React.Fragment>
+                                {!this.props.parentId && (
+                                    <p className="comments-list__empty">
+                                        Soyez <span className="comments-list__empty--highlight">le premier</span> à
+                                        contribuer sur cette partie
+                                    </p>
+                                )}
+                            </React.Fragment>
                         )}
                     </div>
                 )}
