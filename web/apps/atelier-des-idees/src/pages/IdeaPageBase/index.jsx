@@ -81,7 +81,9 @@ class IdeaPageBase extends React.Component {
             }),
             () => {
                 // check if field is required and set errors accordingly
-                const isFieldRequired = Object.keys(this.state.errors).includes(id.toString());
+                const isFieldRequired = Object.keys(this.state.errors).includes(
+                    id.toString()
+                );
                 this.setState((prevState) => {
                     const errors = { ...prevState.errors, name: !this.state.name };
                     if (isFieldRequired) {
@@ -154,12 +156,15 @@ class IdeaPageBase extends React.Component {
         // check if all the required questions are answered
         const { name, ...answersErrors } = errors;
         // compute missing values from required fields
-        const missingValues = Object.keys(answersErrors).reduce((acc, questionId) => {
-            if (!answers[questionId]) {
-                acc[questionId] = true;
-            }
-            return acc;
-        }, {});
+        const missingValues = Object.keys(answersErrors).reduce(
+            (acc, questionId) => {
+                if (!answers[questionId]) {
+                    acc[questionId] = true;
+                }
+                return acc;
+            },
+            {}
+        );
         // update name error
         if (!this.state.name) {
             missingValues.name = true;
@@ -198,7 +203,7 @@ class IdeaPageBase extends React.Component {
                                     isEditing={idea.status === ideaStatus.DRAFT}
                                 />
                             )}
-                            {!this.props.isAuthor && (
+                            {this.props.isAuthenticated && !this.props.isAuthor && (
                                 <button
                                     className="button create-idea-actions__report"
                                     onClick={() => this.props.onReportClicked()}
@@ -280,6 +285,7 @@ class IdeaPageBase extends React.Component {
 IdeaPageBase.defaultProps = {
     idea: {},
     isAuthor: false,
+    isAuthenticated: false,
     isLoading: false,
 };
 
@@ -298,6 +304,7 @@ IdeaPageBase.propTypes = {
     }),
     guidelines: PropTypes.array.isRequired,
     isAuthor: PropTypes.bool,
+    isAuthenticated: PropTypes.bool,
     isLoading: PropTypes.bool,
     onBackClicked: PropTypes.func.isRequired,
     onPublishIdea: PropTypes.func.isRequired,
