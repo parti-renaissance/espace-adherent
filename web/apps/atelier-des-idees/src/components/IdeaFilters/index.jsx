@@ -29,16 +29,17 @@ class IdeaFilters extends React.Component {
         };
         this.state = {
             name: props.defaultValues.name || '',
-            authorCategory: null,
-            'themes.name': '',
-            'category.name': '',
-            'needs.name': '',
+            authorCategory: props.defaultValues.authorCategory || '',
+            'themes.name': props.defaultValues['themes.name'] || '',
+            'category.name': props.defaultValues['category.name'] || '',
+            'needs.name': props.defaultValues['needs.name'] || '',
             order: this.filterItems.order.options[0].value,
         };
         // bindings
         this.onFilterChange = this.onFilterChange.bind(this);
         this.formatFilters = this.formatFilters.bind(this);
         this.getDefaultValue = this.getDefaultValue.bind(this);
+        this.getOrderDefaultValue = this.getOrderDefaultValue.bind(this);
     }
 
     onFilterChange(filterKey, value) {
@@ -63,6 +64,19 @@ class IdeaFilters extends React.Component {
 
     getDefaultValue(options, key) {
         return options.find(item => item.value === this.props.defaultValues[key]);
+    }
+
+    getOrderDefaultValue() {
+        let orderItem;
+        const defaultValues = Object.entries(this.props.defaultValues);
+        // order key is not static and therefore must be computed by filtering from other keys
+        const option = defaultValues.find(([valueKey]) => !Object.keys(this.state).includes(valueKey));
+        if (option) {
+            // option has been found, get default value
+            const [key, value] = option;
+            orderItem = this.filterItems.order.options.find(item => item.value === `${key}/${value}`);
+        }
+        return orderItem;
     }
 
     render() {
@@ -147,10 +161,7 @@ class IdeaFilters extends React.Component {
                             options={this.filterItems.order.options.filter(
                                 option => !option.status || (!!option.status && option.status === this.props.status)
                             )}
-                            defaultValue={
-                                this.getDefaultValue(this.filterItems.order.options, 'order') ||
-                                this.filterItems.order.options[0]
-                            }
+                            defaultValue={this.getOrderDefaultValue() || this.filterItems.order.options[0]}
                             onSelected={([selected]) => this.onFilterChange('order', selected.value)}
                             isDisabled={this.props.disabled}
                         />
@@ -181,7 +192,6 @@ IdeaFilters.propTypes = {
         'category.name': PropTypes.string,
         name: PropTypes.string,
         'needs.name': PropTypes.string,
-        order: PropTypes.string,
         'themes.name': PropTypes.string,
     }),
     disabled: PropTypes.bool,
