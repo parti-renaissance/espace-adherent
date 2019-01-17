@@ -32,23 +32,39 @@
     &__title {
       margin: 0 0 10px;
       font-family: $font-gillsans;
-      font-weight: bold;
+      font-weight: 500;
       font-size: 24px;
+      letter-spacing: -0.5px;
+      line-height: normal;
+      color: $black;
+
+      height: 56px;
+
       overflow-wrap: break-word;
+      // white-space: nowrap;
+      overflow-x: hidden;
+      -o-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+
     }
 
     &__infos {
+      margin-top: 10px;
       display: flex;
+      flex-wrap: wrap;
+
       > * {
         display: flex;
         align-items: center;
         height: 26px;
         margin-right: 10px;
+        flex-wrap: wrap;
       }
 
       &__author {
         &__name {
           margin-left: 4px;
+          color: $black;
         }
 
         &__separator {
