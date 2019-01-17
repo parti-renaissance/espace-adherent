@@ -227,7 +227,7 @@ class IdeaPageBase extends React.Component {
                             <React.Fragment>
                                 <IdeaPageTitle
                                     authorName={idea.authorName}
-                                    publishedAt={idea.publishedAt}
+                                    publishedAt={idea.published_at}
                                     onTitleChange={(value, withSave) => this.onNameChange(value, withSave)}
                                     title={this.state.name}
                                     minLength={TITLE_MIN_LENGTH}
@@ -235,7 +235,7 @@ class IdeaPageBase extends React.Component {
                                     isEditing={idea.status === ideaStatus.DRAFT}
                                     isReadOnly={this.state.readingMode || !this.props.isAuthor}
                                     hasError={this.state.errors.name}
-                                    showPublicationDate={idea.status === ideaStatus.FINALIZED}
+                                    showPublicationDate={idea.status !== ideaStatus.DRAFT}
                                 />
                                 {this.state.readingMode ? (
                                     <IdeaReader paragraphs={this.getParagraphs()} />
@@ -293,7 +293,7 @@ IdeaPageBase.propTypes = {
             })
         ),
         status: PropTypes.oneOf(Object.keys(ideaStatus)),
-        publishedAt: PropTypes.string,
+        published_at: PropTypes.string,
     }),
     guidelines: PropTypes.array.isRequired,
     isAuthor: PropTypes.bool,
