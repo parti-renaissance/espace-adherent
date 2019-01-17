@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import IdeaPageBase from '../IdeaPageBase';
-import {
-    DELETE_IDEA_MODAL,
-    PUBLISH_IDEA_MODAL,
-    FLAG_MODAL,
-} from '../../constants/modalTypes';
+import { DELETE_IDEA_MODAL, PUBLISH_IDEA_MODAL, FLAG_MODAL } from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
 import { initIdeaPage } from '../../redux/thunk/navigation';
 import {
@@ -17,18 +13,13 @@ import {
     goBackFromCurrentIdea,
 } from '../../redux/thunk/currentIdea';
 import { reportIdea } from '../../redux/thunk/ideas';
-import {
-    selectAuthUser,
-    selectIsAuthenticated,
-} from '../../redux/selectors/auth';
+import { selectAuthUser, selectIsAuthenticated } from '../../redux/selectors/auth';
 import { selectLoadingState } from '../../redux/selectors/loading';
-import {
-    selectCurrentIdea,
-    selectGuidelines,
-} from '../../redux/selectors/currentIdea';
+import { selectCurrentIdea, selectGuidelines } from '../../redux/selectors/currentIdea';
 
 class IdeaPage extends React.Component {
     componentDidMount() {
+        window.scrollTo(0, 0);
         this.props.initIdeaPage();
     }
 
@@ -41,8 +32,7 @@ class IdeaPage extends React.Component {
             <IdeaPageBase
                 {...this.props}
                 isLoading={this.props.isFetchingIdea && !this.props.guidelines.length}
-                key={`idea-page__${this.props.isFetchingIdea ||
-					!this.props.guidelines.length}`}
+                key={`idea-page__${this.props.isFetchingIdea || !this.props.guidelines.length}`}
             />
         );
     }
@@ -98,8 +88,7 @@ function mapDispatchToProps(dispatch, ownProps) {
             dispatch(
                 showModal(PUBLISH_IDEA_MODAL, {
                     id,
-                    submitForm: ideaData =>
-                        dispatch(publishCurrentIdea({ ...ideaData, ...data })),
+                    submitForm: ideaData => dispatch(publishCurrentIdea({ ...ideaData, ...data })),
                 })
             );
         },

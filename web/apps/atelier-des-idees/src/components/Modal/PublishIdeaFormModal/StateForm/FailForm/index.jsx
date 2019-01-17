@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import icn_state_fail from './../../../../../img/icn_state_fail.svg';
 
 class FailForm extends React.PureComponent {
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
     render() {
         return (
             <div className="fail-form">
@@ -10,7 +13,7 @@ class FailForm extends React.PureComponent {
                 <h3 className="fail-form__title">OUPS</h3>
                 <p className="fail-form__subtitle">Quelque chose s'est mal passé</p>
                 <button className="button--secondary" onClick={() => this.props.submitAgain()}>
-                    Réessayer
+					Réessayer
                 </button>
             </div>
         );

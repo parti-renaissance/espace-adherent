@@ -11,6 +11,7 @@ import { setIdeas } from '../redux/actions/ideas';
 
 class Home extends React.Component {
     componentDidMount() {
+        window.scrollTo(0, 0);
         this.props.initHomePage();
     }
 

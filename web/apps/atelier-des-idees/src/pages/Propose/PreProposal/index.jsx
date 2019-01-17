@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import proposeIdeaImg from './../../../img/propose-your-idea.svg';
 
 class PreProposal extends React.PureComponent {
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
+
     render() {
         return (
             <article className="l__wrapper">
@@ -13,26 +17,26 @@ class PreProposal extends React.PureComponent {
                     <div className="pre-proposal__container">
                         <h2 className="pre-proposal__container__title">Demandez le programme !</h2>
                         <p className="pre-proposal__container__text">
-                            Un doute sur ce qui est déjà fait ou prévu ?
-                            Suivez la mise en œuvre du programme présidentiel
+							Un doute sur ce qui est déjà fait ou prévu ? Suivez la mise en œuvre du programme
+							présidentiel
                         </p>
                         <a
                             className="button button--primary pre-proposal__container__link"
                             href="https://transformer.en-marche.fr/fr"
                             target="_blank"
                         >
-                            Suivre l'avancée du programme
+							Suivre l'avancée du programme
                         </a>
                     </div>
                 </div>
                 <p className="pre-proposal__footer">
-                    Vous avez des questions ? Écrivez-nous à{' '}
+					Vous avez des questions ? Écrivez-nous à{' '}
                     <a className="pre-proposal__footer__highlighted" href="mailto:atelier-des-idees@en-marche.fr">
-                        atelier-des-idees@en-marche.fr
+						atelier-des-idees@en-marche.fr
                     </a>{' '}
-                    ou consultez notre{' '}
+					ou consultez notre{' '}
                     <a className="pre-proposal__footer__highlighted" href="https://aide.en-marche.fr/" target="_blank">
-                        FAQ
+						FAQ
                     </a>
                 </p>
             </article>
