@@ -59,3 +59,27 @@
     overflow-y: auto;
   }
 }
+
+.ReactModal__Overlay {
+    opacity: 0;
+    transition: 0.15s ease;
+}
+
+.ReactModal__Overlay--after-open {
+    opacity: 1;
+    transition: 0.15s ease;
+}
+
+.ReactModal__Content {
+    right: -700px;
+    transition-duration: 200ms;
+    transition-delay: 100ms;
+    transition-timing-function: ease-in-out;
+}
+
+.ReactModal__Content--after-open {
+    right: 0;
+    transition-duration: 200ms;
+    transition-delay: 100ms;
+    transition-timing-function: ease-in-out;
+}
