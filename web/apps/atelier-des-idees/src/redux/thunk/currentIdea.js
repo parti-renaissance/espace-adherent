@@ -39,10 +39,10 @@ import { hideModal } from '../actions/modal';
  */
 export function deleteCurrentIdea() {
     return (dispatch, getState, axios) => {
-        const { id } = selectCurrentIdea(getState());
-        if (id) {
+        const { uuid } = selectCurrentIdea(getState());
+        if (uuid) {
             // idea already exists (whatever its state)
-            return axios.delete(`/api/ideas-workshop/ideas/${id}`).then(() => {
+            return axios.delete(`/api/ideas-workshop/ideas/${uuid}`).then(() => {
                 dispatch(hideModal());
                 history.push('/atelier-des-idees');
             });
