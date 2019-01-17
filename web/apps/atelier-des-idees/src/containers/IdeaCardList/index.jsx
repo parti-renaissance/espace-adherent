@@ -52,7 +52,11 @@ class IdeaCardListContainer extends React.Component {
                         />
                         {this.props.withPaging && (
                             <div className="idea-card-list__paging">
-                                <Button label="Plus de propositions" mode="tertiary" onClick={this.props.onMoreClicked} />
+                                <Button
+                                    label="Plus de propositions"
+                                    mode="tertiary"
+                                    onClick={this.props.onMoreClicked}
+                                />
                             </div>
                         )}
                     </React.Fragment>
@@ -111,13 +115,9 @@ function mapDispatchToProps(dispatch, ownProps) {
             dispatch(fetchIdeas(ownProps.status, params, { setMode: true, cancel: true, ...options }));
             // update url with query params
             if (false !== options.updateUrl) {
-                const { limit, ...otherParams } = params;
                 const { match, history } = ownProps;
                 const { path } = match;
-                const paramsString = Object.entries(otherParams).reduce(
-                    (acc, [key, value]) => `${acc}${acc.length ? '&' : ''}${key}=${value}`,
-                    ''
-                );
+                const paramsString = queryString.stringify(params);
                 history.replace(`${path}?${paramsString}`);
             }
         },
