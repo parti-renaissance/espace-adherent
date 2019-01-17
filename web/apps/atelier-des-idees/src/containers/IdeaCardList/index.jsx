@@ -17,22 +17,18 @@ class IdeaCardListContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            params: { limit: 10, ...props.defaultFilterValues },
+            params: {},
         };
         this.onFilterChange = this.onFilterChange.bind(this);
         this.fetchIdeas = this.fetchIdeas.bind(this);
     }
 
-    // componentDidMount() {
-    //     this.fetchIdeas({ cancel: false });
-    // }
-
     fetchIdeas(options) {
         this.props.fetchIdeas(this.state.params, options);
     }
 
-    onFilterChange(filters) {
-        this.setState({ params: filters }, () => this.fetchIdeas());
+    onFilterChange(filters, options) {
+        this.setState({ params: filters }, () => this.fetchIdeas(options));
     }
 
     render() {
@@ -40,6 +36,7 @@ class IdeaCardListContainer extends React.Component {
             <React.Fragment>
                 <IdeaFilters
                     onFilterChange={this.onFilterChange}
+                    onFilterInit={filters => this.onFilterChange(filters, { cancel: false, updateUrl: false })}
                     status={this.props.status}
                     options={this.props.filters}
                     disabled={this.props.isLoading}
@@ -113,14 +110,16 @@ function mapDispatchToProps(dispatch, ownProps) {
         fetchIdeas: (params, options = {}) => {
             dispatch(fetchIdeas(ownProps.status, params, { setMode: true, cancel: true, ...options }));
             // update url with query params
-            const { limit, ...otherParams } = params;
-            const { match, history } = ownProps;
-            const { path } = match;
-            const paramsString = Object.entries(otherParams).reduce(
-                (acc, [key, value]) => `${acc}${acc.length ? '&' : ''}${key}=${value}`,
-                ''
-            );
-            history.replace(`${path}?${paramsString}`);
+            if (false !== options.updateUrl) {
+                const { limit, ...otherParams } = params;
+                const { match, history } = ownProps;
+                const { path } = match;
+                const paramsString = Object.entries(otherParams).reduce(
+                    (acc, [key, value]) => `${acc}${acc.length ? '&' : ''}${key}=${value}`,
+                    ''
+                );
+                history.replace(`${path}?${paramsString}`);
+            }
         },
         onMoreClicked: params => dispatch(fetchNextIdeas(ownProps.status, params)),
         onVoteIdea: (id, vote) => dispatch(voteIdea(id, vote)),

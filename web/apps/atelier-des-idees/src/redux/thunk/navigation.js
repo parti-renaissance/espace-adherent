@@ -36,20 +36,6 @@ export function initHomePage() {
         ]);
 }
 
-export function initContributePage() {
-    const params = {
-        'order[publishedAt]': 'DESC',
-    };
-    return dispatch => dispatch(fetchIdeas(ideaStatus.PENDING, params, { setMode: true }));
-}
-
-export function initConsultPage() {
-    const params = {
-        'order[publishedAt]': 'DESC',
-    };
-    return dispatch => dispatch(fetchIdeas(ideaStatus.FINALIZED, params, { setMode: true }));
-}
-
 export function initIdeaPageBase() {
     return dispatch => dispatch(fetchGuidelines());
 }
