@@ -7,6 +7,7 @@ import IdeaCardList from '../../containers/IdeaCardList';
 
 class ConsultPage extends React.Component {
     componentDidMount() {
+        window.scrollTo(0, 0);
         this.props.initConsultPage();
     }
 

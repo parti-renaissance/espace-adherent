@@ -22,7 +22,9 @@ class SecondForm extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.checkIfComittee = this.checkIfComittee.bind(this);
     }
-
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
     handleErrors() {
         let canSubmit = true;
         const verifErrors = Object.keys(this.state.inputs).reduce((acc, curr) => {
@@ -126,8 +128,8 @@ class SecondForm extends React.Component {
                 )}
                 <div className="second-form__section">
                     <label className="second-form__section__label">
-                        Y a-t-il des parties sur lesquelles vous souhaitez recevoir les suggestions des autres adhérents ?
-                        <span className="second-form__section__label__optional"> (Optionnel)</span>
+						Y a-t-il des parties sur lesquelles vous souhaitez recevoir les suggestions des autres adhérents
+						?<span className="second-form__section__label__optional"> (Optionnel)</span>
                     </label>
                     <Select
                         options={this.props.difficultiesOptions}
@@ -153,12 +155,13 @@ class SecondForm extends React.Component {
                             </span>
                         </label>
                         <p className="second-form__section__mentions__text">
-                            J’accepte les{' '}
+							J’accepte les{' '}
                             <a
                                 className="second-form__section__mentions__text__link"
                                 href="/atelier-des-idees/cgu"
-                                target="_blank">
-                                mentions légales
+                                target="_blank"
+                            >
+								mentions légales
                             </a>
                         </p>
                     </div>
@@ -166,17 +169,17 @@ class SecondForm extends React.Component {
                         <p className="second-form__section__mentions--error">{this.state.errors.legal}</p>
                     )}
                     <p className="second-form__section__text">
-                        Les données recueillies sur ce formulaire sont traitées par La REM afin de gérer les
-                        informations relatives aux adhérents de La REM et lui permettent d’utiliser vos données pour des
-                        opérations de communications politiques. Les informations marquées d’un astérisque sont
-                        obligatoires. L’absence de réponse dans ces champs ne permettra pas à La REM de traiter votre
-                        demande. Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à
-                        la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de
-                        rectification, de portabilité et d’effacement de vos données. Vous disposez également de la
-                        faculté de donner des directives sur le sort de vos données après votre décès. Vous pouvez
-                        exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce
-                        d’identité à l’adresse postale ou électronique suivante : La République En Marche, 63 rue
-                        Sainte-Anne, 75002 Paris, France et mes-donnees@en-marche.fr.
+						Les données recueillies sur ce formulaire sont traitées par La REM afin de gérer les
+						informations relatives aux adhérents de La REM et lui permettent d’utiliser vos données pour des
+						opérations de communications politiques. Les informations marquées d’un astérisque sont
+						obligatoires. L’absence de réponse dans ces champs ne permettra pas à La REM de traiter votre
+						demande. Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à
+						la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de
+						rectification, de portabilité et d’effacement de vos données. Vous disposez également de la
+						faculté de donner des directives sur le sort de vos données après votre décès. Vous pouvez
+						exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce
+						d’identité à l’adresse postale ou électronique suivante : La République En Marche, 63 rue
+						Sainte-Anne, 75002 Paris, France et mes-donnees@en-marche.fr.
                     </p>
                 </div>
                 <Button
