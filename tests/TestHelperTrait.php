@@ -7,6 +7,9 @@ use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\Administrator;
+use AppBundle\Entity\IdeasWorkshop\Idea;
+use AppBundle\Entity\IdeasWorkshop\Thread;
+use AppBundle\Entity\IdeasWorkshop\ThreadComment;
 use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\CitizenAction;
@@ -51,6 +54,7 @@ use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\EmailSubscriptionHistoryRepository;
 use AppBundle\Repository\EventRegistrationRepository;
 use AppBundle\Repository\EventRepository;
+use AppBundle\Repository\IdeaRepository;
 use AppBundle\Repository\InvitationRepository;
 use AppBundle\Repository\JeMarcheReportRepository;
 use AppBundle\Repository\NewsletterInviteRepository;
@@ -61,6 +65,8 @@ use AppBundle\Repository\PurchasingPowerChoiceRepository;
 use AppBundle\Repository\PurchasingPowerInvitationRepository;
 use AppBundle\Repository\SubscriptionTypeRepository;
 use AppBundle\Repository\SummaryRepository;
+use AppBundle\Repository\ThreadCommentRepository;
+use AppBundle\Repository\ThreadRepository;
 use AppBundle\Repository\TonMacronChoiceRepository;
 use AppBundle\Repository\TonMacronFriendInvitationRepository;
 use AppBundle\Repository\TransactionRepository;
@@ -281,6 +287,21 @@ trait TestHelperTrait
     public function getSubscriptionTypeRepository(): SubscriptionTypeRepository
     {
         return $this->getRepository(SubscriptionType::class);
+    }
+
+    public function getIdeaRepository(): IdeaRepository
+    {
+        return $this->getRepository(Idea::class);
+    }
+
+    public function getThreadRepository(): ThreadRepository
+    {
+        return $this->getRepository(Thread::class);
+    }
+
+    public function getThreadCommentRepository(): ThreadCommentRepository
+    {
+        return $this->getRepository(ThreadComment::class);
     }
 
     public function getCommitteeFeedManager(): CommitteeFeedManager

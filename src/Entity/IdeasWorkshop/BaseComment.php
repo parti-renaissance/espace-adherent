@@ -4,6 +4,7 @@ namespace AppBundle\Entity\IdeasWorkshop;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\EnabledInterface;
 use AppBundle\Entity\EntitySoftDeletableTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +14,7 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 /**
  * @ORM\MappedSuperclass
  */
-abstract class BaseComment
+abstract class BaseComment implements EnabledInterface
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
@@ -58,6 +59,13 @@ abstract class BaseComment
      */
     protected $approved = false;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 1})
+     */
+    protected $enabled = true;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -96,5 +104,30 @@ abstract class BaseComment
     public function setApproved(bool $approved): void
     {
         $this->approved = $approved;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
+    }
+
+    public function disable(): void
+    {
+        $this->enabled = false;
+    }
+
+    public function enable(): void
+    {
+        $this->enabled = true;
+    }
+
+    public function __toString()
+    {
+        return substr($this->getContent(), 0, 300);
     }
 }

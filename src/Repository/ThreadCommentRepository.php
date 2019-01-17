@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 class ThreadCommentRepository extends ServiceEntityRepository
 {
     use AuthorTrait;
+    use UuidEntityRepositoryTrait;
 
     public function __construct(RegistryInterface $registry)
     {

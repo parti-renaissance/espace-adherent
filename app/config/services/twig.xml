@@ -66,5 +66,9 @@
         <service id="AppBundle\Twig\EventRuntime">
             <tag name="twig.runtime"/>
         </service>
+
+        <service id="AppBundle\Twig\IdeasWorkshopRuntime">
+            <tag name="twig.runtime" />
+        </service>
     </services>
 </container>

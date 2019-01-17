@@ -150,7 +150,8 @@ class Thread extends BaseComment implements AuthorInterface, ReportableInterface
         Adherent $author,
         Answer $answer,
         \DateTime $createdAt = null,
-        bool $approved = false
+        bool $approved = false,
+        bool $enabled = true
     ): self {
         $thread = new static($uuid);
         $thread->content = $content;
@@ -158,6 +159,7 @@ class Thread extends BaseComment implements AuthorInterface, ReportableInterface
         $thread->answer = $answer;
         $thread->createdAt = $createdAt ?: new \DateTime();
         $thread->approved = $approved;
+        $thread->enabled = $enabled;
 
         return $thread;
     }

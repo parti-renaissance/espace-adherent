@@ -56,7 +56,7 @@ Feature:
                         },
                         {
                             "uuid": "60123090-6cdc-4de6-9cb3-07e2ec411f2f",
-                            "content": "Lorem Ipsum Commentaris",
+                            "content": "<p>Lorem Ipsum Commentaris</p>",
                             "author": {
                                 "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
                                 "first_name": "Francis",
@@ -115,7 +115,7 @@ Feature:
                         },
                         {
                             "uuid": "ecbe9136-3dc0-477d-b817-a25878dd639a",
-                            "content": "Commentaire signalé",
+                            "content": "<p>Commentaire signalé</p>",
                             "author": {
                                 "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
                                 "first_name": "Laura",
@@ -126,7 +126,7 @@ Feature:
                         },
                         {
                             "uuid": "3fa38c45-1122-4c48-9ada-b366b3408fec",
-                            "content": "Commentaire non approuvé",
+                            "content": "<p>Commentaire non approuvé</p>",
                             "author": {
                                 "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
                                 "first_name": "Laura",
@@ -186,7 +186,7 @@ Feature:
                         },
                         {
                             "uuid": "ecbe9136-3dc0-477d-b817-a25878dd639a",
-                            "content": "Commentaire signalé",
+                            "content": "<p>Commentaire signalé</p>",
                             "author": {
                                 "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
                                 "first_name": "Laura",
@@ -197,7 +197,7 @@ Feature:
                         },
                         {
                             "uuid": "3fa38c45-1122-4c48-9ada-b366b3408fec",
-                            "content": "Commentaire non approuvé",
+                            "content": "<p>Commentaire non approuvé</p>",
                             "author": {
                                 "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
                                 "first_name": "Laura",
@@ -227,7 +227,7 @@ Feature:
                     "items": []
                 },
                 "uuid": "78d7daa1-657c-4e7e-87bc-24eb4ea26ea2",
-                "content": "Une discussion refusée.",
+                "content": "<p>Une nouvelle discussion.</p>",
                 "author": {
                     "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
                     "first_name": "Gisele",

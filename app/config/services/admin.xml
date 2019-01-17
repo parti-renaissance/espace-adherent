@@ -755,7 +755,7 @@
             <argument />
         </service>
 
-	    <service id="app.admin.ideas_workshop_thread" class="AppBundle\Admin\IdeasWorkshopThreadAdmin">
+        <service id="app.admin.ideas_workshop_thread" class="AppBundle\Admin\IdeasWorkshopThreadAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Fils de discussion" group="Atelier des idées" />
 
             <argument />
@@ -857,6 +857,8 @@
             <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_guideline" />
             <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_question" />
             <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_idea" />
+            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_thread" />
+            <tag name="sonata.admin.extension" target="app.admin.report" />
         </service>
 
         <!--
