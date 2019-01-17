@@ -17,7 +17,10 @@ import {
     goBackFromCurrentIdea,
 } from '../../redux/thunk/currentIdea';
 import { reportIdea } from '../../redux/thunk/ideas';
-import { selectAuthUser } from '../../redux/selectors/auth';
+import {
+    selectAuthUser,
+    selectIsAuthenticated,
+} from '../../redux/selectors/auth';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import {
     selectCurrentIdea,
@@ -71,10 +74,13 @@ function mapStateToProps(state, ownProps) {
         authorName: author ? `${author.first_name} ${author.last_name}` : '',
         publishedAt: published_at && new Date(published_at).toLocaleDateString(),
     };
+    const isAuthenticated = selectIsAuthenticated(state);
+
     return {
         idea: formattedIdea,
         guidelines,
         isAuthor: !!author.uuid && author.uuid === currentUser.uuid,
+        isAuthenticated,
         hasFetchError: fetchIdeaState.isError,
         isFetchingIdea: fetchIdeaState.isFetching,
     };
