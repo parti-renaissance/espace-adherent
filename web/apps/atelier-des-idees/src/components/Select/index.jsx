@@ -27,7 +27,7 @@ class Select extends React.Component {
     handleChange(selectedOption) {
         // check if max options selected
         const isMaxOptionsSelected =
-			selectedOption.length > this.props.maxOptionsSelected;
+			selectedOption && selectedOption.length > this.props.maxOptionsSelected;
 
         if (isMaxOptionsSelected) {
             // set the error
@@ -76,7 +76,10 @@ class Select extends React.Component {
                         }),
                         control: base => ({
                             ...base,
-                            borderColor: this.props.error ? '#ff4a22' : '#e5e5e5',
+                            borderColor:
+								this.props.error || this.state.errorMaxOptions
+								    ? '#ff4a22'
+								    : '#e5e5e5',
                         }),
                     }}
                     onChange={this.handleChange}
@@ -87,6 +90,7 @@ class Select extends React.Component {
                     isMulti={this.props.isMulti}
                     isSearchable={this.props.isSearchable}
                     defaultValue={this.props.defaultValue}
+                    noOptionsMessage={() => 'Pas de résultat'}
                 />
                 {this.props.subtitle && (
                     <div className="select__subtitle">
