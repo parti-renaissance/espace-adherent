@@ -98,14 +98,10 @@ class IdeaPageBase extends React.Component {
     }
 
     formatAnswers() {
-        const formattedAnswers = Object.entries(this.state.answers)
-            .filter(([, value]) => !!value)
-            .map(([id, value]) => {
-                if (value) {
-                    return { question: id, content: value };
-                }
-                return null;
-            });
+        const formattedAnswers = Object.entries(this.state.answers).map(([id, value], index) => ({
+            question: id,
+            content: value,
+        }));
         return formattedAnswers;
     }
 
@@ -174,7 +170,7 @@ class IdeaPageBase extends React.Component {
                                     className="button create-idea-actions__back"
                                     onClick={() => this.props.onBackClicked()}
                                 >
-									← Retour
+                                    ← Retour
                                 </button>
                                 {idea.status !== ideaStatus.FINALIZED && this.state.name && (
                                     <Switch onChange={this.onToggleReadingMode} label="Passer en mode lecture" />
@@ -192,7 +188,7 @@ class IdeaPageBase extends React.Component {
                                         className="button create-idea-actions__report"
                                         onClick={() => this.props.onReportClicked()}
                                     >
-										Signaler la note
+                                        Signaler la note
                                     </button>
                                 )}
                             </React.Fragment>
