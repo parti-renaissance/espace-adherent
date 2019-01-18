@@ -104,7 +104,7 @@ class FirstForm extends React.Component {
                         )}
                         error={this.state.errors.locality}
                         onSelected={value => this.handleChange('locality', value)}
-                        defaultValue={this.state.inputs.locality}
+                        defaultValue={this.state.inputs.locality.length ? this.state.inputs.locality : undefined}
                     />
                 </div>
                 <button type="submit" className="first-form__button button--secondary">
