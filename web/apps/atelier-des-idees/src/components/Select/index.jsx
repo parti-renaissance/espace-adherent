@@ -32,9 +32,8 @@ class Select extends React.Component {
         if (isMaxOptionsSelected) {
             // set the error
             this.setState({
-                errorMaxOptions: `Vous ne pouvez sélectionner que ${this.props.maxOptionsSelected} option${
-                    1 < this.props.maxOptionsSelected ? 's' : ''
-                }`,
+                errorMaxOptions: `Vous ne pouvez sélectionner que ${this.props.maxOptionsSelected} ${this.props
+                    .maxOptionsLabel || 'option'}${1 < this.props.maxOptionsSelected ? 's' : ''}`,
             });
             // remove the option that is too much
             selectedOption.pop();
@@ -108,6 +107,7 @@ Select.defaultProps = {
     isSearchable: false,
     defaultValue: undefined,
     maxOptionsSelected: undefined,
+    maxOptionsLabel: '',
 };
 
 Select.propTypes = {
@@ -138,6 +138,7 @@ Select.propTypes = {
         ),
     ]),
     maxOptionsSelected: PropTypes.number,
+    maxOptionsLabel: PropTypes.string,
 };
 
 export default Select;

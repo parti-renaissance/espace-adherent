@@ -84,6 +84,7 @@ class FirstForm extends React.Component {
                         onSelected={value => this.handleChange('theme', value)}
                         defaultValue={this.state.inputs.theme.length ? this.state.inputs.theme : undefined}
                         maxOptionsSelected={5}
+                        maxOptionsLabel="thématique"
                     />
                 </div>
                 <div className="first-form__section">
