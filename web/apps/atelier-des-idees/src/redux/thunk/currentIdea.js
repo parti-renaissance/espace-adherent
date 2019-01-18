@@ -81,7 +81,10 @@ export function saveAndPublishIdea(uuid, data) {
             if (!uuid) {
                 dispatch(updateCurrentIdea({ uuid: resData.uuid }));
             }
-            dispatch(publishIdea(uuid || resData.uuid));
+            dispatch(publishIdea(uuid || resData.uuid)).then(() => {
+                // update current idea on publish success
+                dispatch(updateCurrentIdea({ status: ideaStatus.PENDING }));
+            });
         });
 }
 

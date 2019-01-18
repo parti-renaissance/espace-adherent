@@ -12,7 +12,7 @@ import {
     goBackFromCurrentIdea,
 } from '../../redux/thunk/currentIdea';
 import { selectAuthUser } from '../../redux/selectors/auth';
-import { selectGuidelines } from '../../redux/selectors/currentIdea';
+import { selectGuidelines, selectCurrentIdea } from '../../redux/selectors/currentIdea';
 
 class CreateIdeaPage extends React.Component {
     componentDidMount() {
@@ -37,10 +37,12 @@ CreateIdeaPage.propTypes = {
 
 function mapStateToProps(state) {
     const currentUser = selectAuthUser(state);
+    const currentIdea = selectCurrentIdea(state);
     const guidelines = selectGuidelines(state);
     const idea = {
         authorName: `${currentUser.firstName} ${currentUser.lastName}`,
-        status: 'DRAFT',
+        // use current idea's status to update page when idea has been published
+        status: currentIdea.status || 'DRAFT',
     };
     return {
         idea,
