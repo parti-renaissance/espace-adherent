@@ -1458,6 +1458,7 @@ Feature:
               "important": @integer@
           }
        },
+       "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
        "created_at": "@string@.isDateTime()"
     }
     """
@@ -1496,6 +1497,7 @@ Feature:
             "innovative": 0,
             "total": 0
         },
+        "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
         "created_at": "@string@.isDateTime()"
     }
     """
