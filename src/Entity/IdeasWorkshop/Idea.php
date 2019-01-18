@@ -348,7 +348,7 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
      *
      * @Assert\NotBlank(message="idea.description.not_blank", groups={"idea_publish"})
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read"})
      */
     private $description;
 
