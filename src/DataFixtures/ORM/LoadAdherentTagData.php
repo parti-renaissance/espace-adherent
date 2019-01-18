@@ -17,7 +17,7 @@ class LoadAdherentTagData extends AbstractFixture implements FixtureInterface
         'AT004' => AdherentTagEnum::LOW_ACTIVE,
         'AT005' => AdherentTagEnum::MEDIATION,
         'AT006' => AdherentTagEnum::SUBSTITUTE,
-        'AT007' => AdherentTagEnum::IDEAS,
+        'AT007' => AdherentTagEnum::LAREM,
     ];
 
     public function load(ObjectManager $manager)
