@@ -166,7 +166,7 @@ Feature:
                 "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "faire-la-paix",
-                "days_before_deadline": 18,
+                "days_before_deadline": 13,
                 "contributors_count": 8,
                 "comments_count": 8
             },
@@ -208,7 +208,7 @@ Feature:
                 "description": "Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "reduire-le-bruit-dans-les-opens-spaces",
-                "days_before_deadline": 19,
+                "days_before_deadline": 8,
                 "contributors_count": 0,
                 "comments_count": 0
             }
@@ -275,7 +275,7 @@ Feature:
                 "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "faire-la-paix",
-                "days_before_deadline": 18,
+                "days_before_deadline": 13,
                 "contributors_count": 8,
                 "comments_count": 8
             }
@@ -348,7 +348,7 @@ Feature:
                 "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "faire-la-paix",
-                "days_before_deadline": 18,
+                "days_before_deadline": 13,
                 "contributors_count": 8,
                 "comments_count": 8
             }
@@ -662,7 +662,7 @@ Feature:
              "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
              "created_at": "@string@.isDateTime()",
              "slug":"faire-la-paix",
-             "days_before_deadline":18,
+             "days_before_deadline":13,
              "contributors_count":8,
              "comments_count":8
           },
@@ -704,7 +704,7 @@ Feature:
              "description":"Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
              "created_at": "@string@.isDateTime()",
              "slug":"reduire-le-bruit-dans-les-opens-spaces",
-             "days_before_deadline":19,
+             "days_before_deadline":8,
              "contributors_count":0,
              "comments_count":0
           }
@@ -934,7 +934,7 @@ Feature:
         "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
         "created_at": "@string@.isDateTime()",
         "slug": "mon-idee-2",
-        "days_before_deadline": 18,
+        "days_before_deadline": 13,
         "contributors_count": 8,
         "comments_count": 8
     }
@@ -1005,7 +1005,7 @@ Feature:
                 "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "faire-la-paix",
-                "days_before_deadline": 18,
+                "days_before_deadline": 13,
                 "contributors_count": 8,
                 "comments_count": 8
             }
@@ -1077,7 +1077,7 @@ Feature:
              "created_at": "@string@.isDateTime()",
              "name": "Faire la paix",
              "slug": "faire-la-paix",
-             "days_before_deadline": 18,
+             "days_before_deadline": 13,
              "contributors_count": 8,
              "comments_count": 8
           }
@@ -1937,7 +1937,7 @@ Feature:
              "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
              "created_at": "@string@.isDateTime()",
              "slug":"faire-la-paix",
-             "days_before_deadline":18,
+             "days_before_deadline":13,
              "contributors_count":8,
              "comments_count":8
           }
