@@ -8,8 +8,9 @@ import FailForm from '../StateForm/FailForm';
 class PublishIdeaForm extends React.Component {
     constructor(props) {
         super(props);
+        const { description, theme } = props.defaultValues;
         this.state = {
-            firstForm: { description: props.defaultValues.description || '', theme: [], locality: [] },
+            firstForm: { description: description || '', theme: theme || [], locality: [] },
             secondForm: {
                 author: [],
                 difficulties: [],
