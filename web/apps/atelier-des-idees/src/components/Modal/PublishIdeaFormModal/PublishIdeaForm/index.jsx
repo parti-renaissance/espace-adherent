@@ -9,14 +9,19 @@ class PublishIdeaForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            firstForm: {},
-            secondForm: {},
+            firstForm: { description: props.defaultValues.description || '', theme: [], locality: [] },
+            secondForm: {
+                author: [],
+                difficulties: [],
+                legal: false,
+            },
             currentPage: 1,
         };
 
         this.formatFormData = this.formatFormData.bind(this);
         this.submitForm = this.submitForm.bind(this);
     }
+
     componentDidMount() {
         window.scrollTo(0, 0);
     }
@@ -69,14 +74,14 @@ class PublishIdeaForm extends React.Component {
                         <div className="publish-idea-form__header">
                             {2 === this.state.currentPage && !this.props.isSubmitting && (
                                 <button className="publish-idea-form__header__previous" onClick={() => this.goBack()}>
-									← Précédent
+                                    ← Précédent
                                 </button>
                             )}
                             <p className="publish-idea-form__header__paging">
                                 <span className="publish-idea-form__header__paging--current">
                                     {this.state.currentPage}{' '}
                                 </span>
-								/ 2
+                                / 2
                             </p>
                         </div>
 
@@ -150,6 +155,14 @@ PublishIdeaForm.propTypes = {
         })
     ).isRequired,
     id: PropTypes.string,
+    defaultValues: PropTypes.shape({
+        description: PropTypes.string,
+        theme: PropTypes.array,
+        locality: PropTypes.array,
+        author: PropTypes.array,
+        difficulties: PropTypes.array,
+        legal: PropTypes.boolean,
+    }),
     submitForm: PropTypes.func.isRequired,
     isSubmitting: PropTypes.bool,
     isSubmitSuccess: PropTypes.bool,
