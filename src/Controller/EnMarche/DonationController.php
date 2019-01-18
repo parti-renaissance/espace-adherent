@@ -52,7 +52,7 @@ class DonationController extends Controller
 
         return $this->redirectToRoute('donation_informations', [
             'montant' => $amount,
-            'abonnement' => $request->query->has('abonnement') ? // Force unlimited subscription if needed
+            'abonnement' => $request->query->getInt('abonnement') ? // Force unlimited subscription if needed
                 PayboxPaymentSubscription::UNLIMITED : PayboxPaymentSubscription::NONE,
         ]);
     }
