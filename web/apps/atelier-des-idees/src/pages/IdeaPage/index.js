@@ -31,7 +31,7 @@ class IdeaPage extends React.Component {
         return (
             <IdeaPageBase
                 {...this.props}
-                isLoading={this.props.isFetchingIdea && !this.props.guidelines.length}
+                isLoading={this.props.isFetchingIdea || !this.props.guidelines.length}
                 key={`idea-page__${this.props.isFetchingIdea || !this.props.guidelines.length}`}
             />
         );
@@ -41,6 +41,7 @@ class IdeaPage extends React.Component {
 IdeaPage.defaultProps = {
     hasFetchError: false,
     isFetchingIdea: false,
+    guidelines: [],
 };
 
 IdeaPage.propTypes = {
@@ -88,7 +89,7 @@ function mapDispatchToProps(dispatch, ownProps) {
             dispatch(
                 showModal(PUBLISH_IDEA_MODAL, {
                     id,
-                    submitForm: ideaData => dispatch(publishCurrentIdea({ ...ideaData, ...data })),
+                    submitForm: ideaData => dispatch(publishCurrentIdea({ ...ideaData, ...data }, true)),
                 })
             );
         },

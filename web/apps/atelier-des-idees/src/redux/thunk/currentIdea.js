@@ -1,6 +1,6 @@
 import { ideaStatus } from '../../constants/api';
 import history from '../../history';
-import { SAVE_CURRENT_IDEA, FETCH_GUIDELINES } from '../constants/actionTypes';
+import { SAVE_CURRENT_IDEA, FETCH_GUIDELINES, PUBLISH_IDEA } from '../constants/actionTypes';
 import { saveIdea, publishIdea, voteIdea } from '../thunk/ideas';
 import { postComment, fetchThreads, deleteComment } from '../thunk/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
@@ -75,23 +75,29 @@ export function saveCurrentIdea(ideaData) {
     };
 }
 
-export function saveAndPublishIdea(uuid, data) {
+export function saveAndPublishIdea(uuid, data, saveOnly = false) {
     return dispatch =>
         dispatch(saveIdea(uuid, data)).then((resData) => {
             if (!uuid) {
                 dispatch(updateCurrentIdea({ uuid: resData.uuid }));
             }
-            dispatch(publishIdea(uuid || resData.uuid)).then(() => {
-                // update current idea on publish success
-                dispatch(updateCurrentIdea({ status: ideaStatus.PENDING }));
-            });
+            if (saveOnly) {
+                // force publish success
+                dispatch(createRequestSuccess(PUBLISH_IDEA));
+            } else {
+                // publish after save success
+                dispatch(publishIdea(uuid || resData.uuid)).then(() => {
+                    // update current idea on publish success
+                    dispatch(updateCurrentIdea({ status: ideaStatus.PENDING }));
+                });
+            }
         });
 }
 
-export function publishCurrentIdea(ideaData) {
+export function publishCurrentIdea(ideaData, saveOnly = false) {
     return (dispatch, getState, axios) => {
         const { uuid } = selectCurrentIdea(getState());
-        return dispatch(saveAndPublishIdea(uuid, ideaData));
+        return dispatch(saveAndPublishIdea(uuid, ideaData, saveOnly));
     };
 }
 
