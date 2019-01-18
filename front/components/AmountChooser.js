@@ -66,7 +66,8 @@ export default class AmountChooser extends React.Component {
                         value="0"
                         defaultChecked={!this.props.abonnement} />
 
-                    <label htmlFor="donation-one-time" id="donation-one-time_label">
+                    <label htmlFor="donation-one-time"
+                           id="donation-one-time_label">
                         Je donne une fois
                     </label>
 
@@ -77,7 +78,8 @@ export default class AmountChooser extends React.Component {
                         value="1"
                         defaultChecked={this.props.abonnement} />
 
-                    <label htmlFor="donation-monthly" id="donation-monthly_label">
+                    <label htmlFor="donation-monthly"
+                           id="donation-monthly_label">
                         Je donne chaque mois (paiement automatique)
                     </label>
                 </div>
