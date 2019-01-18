@@ -41,6 +41,7 @@
     }
 
     &__help {
+        width: 100%;
         font-family: $font-roboto;
         text-align: left;
         margin-top: 5px;
@@ -246,6 +247,7 @@
     &__video {
         position: fixed;
         right: 0;
+        bottom: 0;
         min-width: 100%;
         min-height: 100%;
 
