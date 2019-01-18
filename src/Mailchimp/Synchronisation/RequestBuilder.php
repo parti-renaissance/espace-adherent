@@ -41,54 +41,7 @@ class RequestBuilder
             ->setBirthDay($adherent->getBirthdate())
             ->setZipCode($adherent->getPostalCode())
             ->setCity($adherent->getCityName())
-            ->setInterests(
-                array_replace(
-                    // By default all interests are disabled (`false` value) for a member
-                    array_fill_keys($this->mailchimpInterestIds, false),
-
-                    // Activate adherent's interests
-                    array_fill_keys(
-                        array_intersect_key(
-                            $this->mailchimpInterestIds,
-                            array_flip($adherent->getInterests())
-                        ),
-                        true
-                    ),
-
-                    /*
-                     * Activate Notification group interests.
-                     *
-                     * This is a hack to migrate progressively the ID stored
-                     * into DB (subscription_types.external_id column), after that we will be able to use this method:
-                     * array_fill_keys(array_intersect($interestIds, $adherent->getSubscriptionExternalIds()), true)
-                     */
-                    array_fill_keys(array_filter(array_map(function (SubscriptionType $type) {
-                        switch ($type->getCode()) {
-                            case SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL: return 'af139e7383';
-                            case SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL: return '700951ee3e';
-                            case SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL: return 'd6135f452e';
-                            case SubscriptionTypeEnum::DEPUTY_EMAIL: return '3465334fa2';
-                            case SubscriptionTypeEnum::LOCAL_HOST_EMAIL: return 'f34541ec0f';
-                            case SubscriptionTypeEnum::REFERENT_EMAIL: return 'c4e1880afe';
-                        }
-                    }, $adherent->getSubscriptionTypes())), true),
-
-                    // Activate Member group interest
-                    array_fill_keys(
-                        array_intersect_key(
-                            $this->mailchimpInterestIds,
-                            array_filter([
-                                Manager::INTEREST_KEY_COMMITTEE_SUPERVISOR => !($memberships = $adherent->getMemberships())->getCommitteeSupervisorMemberships()->isEmpty(),
-                                Manager::INTEREST_KEY_COMMITTEE_HOST => !$memberships->getCommitteeHostMemberships(CommitteeMembershipCollection::EXCLUDE_SUPERVISORS)->isEmpty(),
-                                Manager::INTEREST_KEY_COMMITTEE_FOLLOWER => $isFollower = !$memberships->getCommitteeFollowerMembershipsNotWaitingForApproval()->isEmpty(),
-                                Manager::INTEREST_KEY_COMMITTEE_NO_FOLLOWER => !$isFollower,
-                                Manager::INTEREST_KEY_CP_HOST => $adherent->isCitizenProjectAdministrator(),
-                            ])
-                        ),
-                        true
-                    )
-                )
-            )
+            ->setInterests($this->buildInterestArray($adherent))
             ->setActiveTags($adherent->getReferentTagCodes())
         ;
     }
@@ -228,5 +181,55 @@ class RequestBuilder
         }
 
         return $mergeFields;
+    }
+
+    private function buildInterestArray(Adherent $adherent): array
+    {
+        return array_replace(
+            // By default all interests are disabled (`false` value) for a member
+            array_fill_keys($this->mailchimpInterestIds, false),
+
+            // Activate adherent's interests
+            array_fill_keys(
+                array_intersect_key(
+                    $this->mailchimpInterestIds,
+                    array_flip($adherent->getInterests())
+                ),
+                true
+            ),
+
+            /*
+             * Activate Notification group interests.
+             *
+             * This is a hack to migrate progressively the ID stored
+             * into DB (subscription_types.external_id column), after that we will be able to use this method:
+             * array_fill_keys(array_intersect($interestIds, $adherent->getSubscriptionExternalIds()), true)
+             */
+            array_fill_keys(array_filter(array_map(function (SubscriptionType $type) {
+                switch ($type->getCode()) {
+                    case SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL: return 'af139e7383';
+                    case SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL: return '700951ee3e';
+                    case SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL: return 'd6135f452e';
+                    case SubscriptionTypeEnum::DEPUTY_EMAIL: return '3465334fa2';
+                    case SubscriptionTypeEnum::LOCAL_HOST_EMAIL: return 'f34541ec0f';
+                    case SubscriptionTypeEnum::REFERENT_EMAIL: return 'c4e1880afe';
+                }
+            }, $adherent->getSubscriptionTypes())), true),
+
+            // Activate Member group interest
+            array_fill_keys(
+                array_intersect_key(
+                    $this->mailchimpInterestIds,
+                    array_filter([
+                        Manager::INTEREST_KEY_COMMITTEE_SUPERVISOR => !($memberships = $adherent->getMemberships())->getCommitteeSupervisorMemberships()->isEmpty(),
+                        Manager::INTEREST_KEY_COMMITTEE_HOST => !$memberships->getCommitteeHostMemberships(CommitteeMembershipCollection::EXCLUDE_SUPERVISORS)->isEmpty(),
+                        Manager::INTEREST_KEY_COMMITTEE_FOLLOWER => $isFollower = !$memberships->getCommitteeFollowerMembershipsNotWaitingForApproval()->isEmpty(),
+                        Manager::INTEREST_KEY_COMMITTEE_NO_FOLLOWER => !$isFollower,
+                        Manager::INTEREST_KEY_CP_HOST => $adherent->isCitizenProjectAdministrator(),
+                    ])
+                ),
+                true
+            )
+        );
     }
 }

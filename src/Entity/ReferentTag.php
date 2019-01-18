@@ -57,6 +57,15 @@ class ReferentTag
      */
     private $code;
 
+    /**
+     * Mailchimp Id of the tag
+     *
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $externalId;
+
     public function __construct(string $name = null, string $code = null)
     {
         $this->name = $name;
@@ -91,5 +100,15 @@ class ReferentTag
     public function setCode(string $code): void
     {
         $this->code = $code;
+    }
+
+    public function getExternalId(): ?string
+    {
+        return $this->externalId;
+    }
+
+    public function setExternalId(?string $externalId): void
+    {
+        $this->externalId = $externalId;
     }
 }
