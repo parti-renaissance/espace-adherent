@@ -193,7 +193,10 @@ class IdeaPageBase extends React.Component {
                                         onDeleteClicked={this.props.onDeleteClicked}
                                         onPublishClicked={this.onPublishIdea}
                                         onSaveClicked={this.onSaveIdea}
-                                        isEditing={idea.status === ideaStatus.DRAFT}
+                                        isDraft={idea.status === ideaStatus.DRAFT}
+                                        canPublish={
+                                            idea.status === ideaStatus.DRAFT || idea.status === ideaStatus.PENDING
+                                        }
                                     />
                                 )}
                                 {this.props.isAuthenticated && !this.props.isAuthor && (
@@ -256,6 +259,8 @@ class IdeaPageBase extends React.Component {
                                                 onDeleteClicked={this.props.onDeleteClicked}
                                                 onPublishClicked={this.onPublishIdea}
                                                 onSaveClicked={this.onSaveIdea}
+                                                isDraft={true}
+                                                canPublish={true}
                                             />
                                         )}
                                     </div>
