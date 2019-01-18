@@ -49,17 +49,19 @@ function mapStateToProps(state, { id }) {
     // get static data
     const { themes, needs, categories, committees } = selectStatic(state);
     const formattedThemes = formatStaticData(themes);
+    const formattedCategories = formatStaticData(categories);
     const formattedCommittees = committees.map(({ uuid, name }) => ({ value: uuid, label: name }));
     // get default values
     const selectedThemes = getDefaultValues(currentIdea.themes, formattedThemes);
+    const selectedCategory = formattedCategories.find(option => option.value === currentIdea.category.id);
     return {
         isSubmitting: saveIdeaState.isFetching || publishIdeaState.isFetching,
         isSubmitSuccess: saveIdeaState.isSuccess && publishIdeaState.isSuccess,
         isSubmitError: saveIdeaState.isError || publishIdeaState.isError,
         id: id || currentIdea.uuid,
-        defaultValues: { description: currentIdea.description, theme: selectedThemes },
+        defaultValues: { description: currentIdea.description, theme: selectedThemes, locality: selectedCategory },
         themeOptions: formattedThemes,
-        localityOptions: formatStaticData(categories),
+        localityOptions: formattedCategories,
         difficultiesOptions: formatStaticData(needs),
         committeeOptions: formattedCommittees,
         authorOptions: [{ value: 'alone', label: 'Seul' }, { value: 'committee', label: 'Mon comité' }],
