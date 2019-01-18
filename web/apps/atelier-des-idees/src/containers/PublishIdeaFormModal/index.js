@@ -36,7 +36,7 @@ function formatStaticData(data) {
  * @param {array} selectedItems Array of selected items
  * @param {array} options Array of formatted options (see function above)
  */
-function getDefaultValues(selectedItems, options) {
+function getDefaultValues(selectedItems = [], options = []) {
     const selectedIds = selectedItems.map(item => item.id);
     return options.filter(option => selectedIds.includes(option.value));
 }
@@ -49,20 +49,28 @@ function mapStateToProps(state, { id }) {
     // get static data
     const { themes, needs, categories, committees } = selectStatic(state);
     const formattedThemes = formatStaticData(themes);
+    const formattedNeeds = formatStaticData(needs);
     const formattedCategories = formatStaticData(categories);
     const formattedCommittees = committees.map(({ uuid, name }) => ({ value: uuid, label: name }));
     // get default values
     const selectedThemes = getDefaultValues(currentIdea.themes, formattedThemes);
-    const selectedCategory = formattedCategories.find(option => option.value === currentIdea.category.id);
+    const selectedNeeds = getDefaultValues(currentIdea.needs, formattedNeeds);
+    const selectedCategory =
+        currentIdea.category && formattedCategories.find(option => option.value === currentIdea.category.id);
     return {
         isSubmitting: saveIdeaState.isFetching || publishIdeaState.isFetching,
         isSubmitSuccess: saveIdeaState.isSuccess && publishIdeaState.isSuccess,
         isSubmitError: saveIdeaState.isError || publishIdeaState.isError,
         id: id || currentIdea.uuid,
-        defaultValues: { description: currentIdea.description, theme: selectedThemes, locality: selectedCategory },
+        defaultValues: {
+            description: currentIdea.description,
+            theme: selectedThemes,
+            locality: selectedCategory,
+            difficulties: selectedNeeds,
+        },
         themeOptions: formattedThemes,
         localityOptions: formattedCategories,
-        difficultiesOptions: formatStaticData(needs),
+        difficultiesOptions: formattedNeeds,
         committeeOptions: formattedCommittees,
         authorOptions: [{ value: 'alone', label: 'Seul' }, { value: 'committee', label: 'Mon comité' }],
     };

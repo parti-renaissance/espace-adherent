@@ -8,12 +8,12 @@ import FailForm from '../StateForm/FailForm';
 class PublishIdeaForm extends React.Component {
     constructor(props) {
         super(props);
-        const { description, theme, locality } = props.defaultValues;
+        const { description, theme, locality, difficulties } = props.defaultValues;
         this.state = {
-            firstForm: { description: description || '', theme: theme || [], locality: locality || {} },
+            firstForm: { description: description || '', theme: theme || [], locality: locality ? [locality] : [] },
             secondForm: {
                 author: [],
-                difficulties: [],
+                difficulties: difficulties || [],
                 legal: false,
             },
             currentPage: 1,
@@ -159,7 +159,7 @@ PublishIdeaForm.propTypes = {
     defaultValues: PropTypes.shape({
         description: PropTypes.string,
         theme: PropTypes.array,
-        locality: PropTypes.array,
+        locality: PropTypes.object,
         author: PropTypes.array,
         difficulties: PropTypes.array,
         legal: PropTypes.boolean,
