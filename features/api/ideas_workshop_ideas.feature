@@ -781,6 +781,10 @@ Feature:
         {
           "question":3,
           "content":"Réponse à la question 3"
+        },
+        {
+          "question":4,
+          "content":""
         }
       ]
     }
