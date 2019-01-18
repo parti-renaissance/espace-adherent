@@ -2,7 +2,6 @@
 
 namespace AppBundle\Referent;
 
-use AppBundle\AdherentMessage\Filter\FilterDataObjectInterface;
 use AppBundle\Entity\ReferentManagedUsersMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Provides a way to handle the search parameters.
  */
-class ManagedUsersFilter implements FilterDataObjectInterface
+class ManagedUsersFilter
 {
     public const PER_PAGE = 50;
 
@@ -64,7 +63,6 @@ class ManagedUsersFilter implements FilterDataObjectInterface
     protected $queryInterests = [];
 
     private $token;
-    private $changed = false;
 
     public static function createFromMessage(ReferentManagedUsersMessage $message): self
     {
@@ -91,14 +89,12 @@ class ManagedUsersFilter implements FilterDataObjectInterface
     /**
      * @return ManagedUsersFilter
      */
-    public function handleRequest(Request $request): FilterDataObjectInterface
+    public function handleRequest(Request $request): self
     {
         $query = $request->query;
         if (0 === $query->count()) {
             return $this;
         }
-
-        $this->updateChangeStatus($request);
 
         $this->includeAdherentsNoCommittee = $query->getBoolean(self::PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE);
         $this->includeAdherentsInCommittee = $query->getBoolean(self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE);
@@ -118,34 +114,6 @@ class ManagedUsersFilter implements FilterDataObjectInterface
         $this->includeCP = $query->getBoolean(self::PARAMETER_INCLUDE_CP);
 
         return $this;
-    }
-
-    public function isChanged(): bool
-    {
-        return $this->changed;
-    }
-
-    public function updateChangeStatus(Request $request): void
-    {
-        $query = $request->query;
-
-        $this->changed =
-            $this->includeAdherentsNoCommittee !== $query->getBoolean(self::PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE)
-            || $this->includeAdherentsInCommittee !== $query->getBoolean(self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE)
-            || $this->includeHosts !== $query->getBoolean(self::PARAMETER_INCLUDE_HOSTS)
-            || $this->includeSupervisors !== $query->getBoolean(self::PARAMETER_INCLUDE_SUPERVISORS)
-            || $this->queryAreaCode !== trim($query->get(self::PARAMETER_QUERY_AREA_CODE, ''))
-            || $this->queryCity !== trim($query->get(self::PARAMETER_QUERY_CITY, ''))
-            || $this->queryId !== trim($query->get(self::PARAMETER_QUERY_ID, ''))
-            || $this->offset !== $query->getInt(self::PARAMETER_OFFSET)
-            || $this->queryGender !== $query->get(self::PARAMETER_GENDER, '')
-            || $this->queryLastName !== $query->get(self::PARAMETER_LAST_NAME, '')
-            || $this->queryFirstName !== $query->get(self::PARAMETER_FIRST_NAME, '')
-            || $this->queryAgeMinimum !== $query->getInt(self::PARAMETER_AGE_MIN)
-            || $this->queryAgeMaximum !== $query->getInt(self::PARAMETER_AGE_MAX)
-            || $this->queryInterests !== (array) $query->get(self::PARAMETER_INTEREST, [])
-            || $this->includeCP !== $query->getBoolean(self::PARAMETER_INCLUDE_CP)
-        ;
     }
 
     public function __toString()
@@ -305,42 +273,5 @@ class ManagedUsersFilter implements FilterDataObjectInterface
     public function includeCitizenProject(): bool
     {
         return $this->includeCP;
-    }
-
-    public function serialize()
-    {
-        return serialize([
-            $this->includeAdherentsNoCommittee,
-            $this->includeAdherentsInCommittee,
-            $this->includeHosts,
-            $this->includeSupervisors,
-            $this->includeCP,
-            $this->queryAreaCode,
-            $this->queryCity,
-            $this->queryGender,
-            $this->queryLastName,
-            $this->queryFirstName,
-            $this->queryAgeMinimum,
-            $this->queryAgeMaximum,
-            $this->queryInterests,
-        ]);
-    }
-
-    public function unserialize($serialized)
-    {
-        list(
-            $this->includeAdherentsNoCommittee,
-            $this->includeAdherentsInCommittee,
-            $this->includeHosts,
-            $this->includeSupervisors,
-            $this->includeCP,
-            $this->queryAreaCode,
-            $this->queryCity,
-            $this->queryGender,
-            $this->queryLastName,
-            $this->queryFirstName,
-            $this->queryAgeMinimum,
-            $this->queryAgeMaximum,
-            $this->queryInterests) = unserialize($serialized);
     }
 }

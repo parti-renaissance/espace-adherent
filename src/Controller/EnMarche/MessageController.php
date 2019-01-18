@@ -6,7 +6,7 @@ use AppBundle\AdherentMessage\AdherentMessageDataObject;
 use AppBundle\AdherentMessage\AdherentMessageFactory;
 use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
 use AppBundle\AdherentMessage\Filter\FilterDataObjectInterface;
-use AppBundle\AdherentMessage\Filter\FilterFactory;
+use AppBundle\AdherentMessage\Filter\FilterFormFactory;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AbstractAdherentMessage;
@@ -200,7 +200,7 @@ class MessageController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/filtrer", name="app_message_filter", methods={"GET"})
+     * @Route("/{uuid}/filtrer", name="app_message_filter", methods={"GET", "POST"})
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
@@ -208,6 +208,7 @@ class MessageController extends Controller
         string $prefix,
         Request $request,
         AbstractAdherentMessage $message,
+        FilterFormFactory $formFactory,
         ObjectManager $manager
     ): Response {
         $this->disableInProduction();
@@ -217,7 +218,7 @@ class MessageController extends Controller
         }
 
         // Reset Filter object
-        if ($request->query->has('reset') && $message->getFilter()) {
+        if ($request->request->has('reset') && $message->getFilter()) {
             $message->resetFilter();
             $manager->flush();
 
@@ -230,33 +231,31 @@ class MessageController extends Controller
             );
         }
 
-        // Get Message filter or create a new object
-        $filter = ($message->getFilter() ?? FilterFactory::create($message->getType()))->handleRequest($request);
+        $form = $formFactory->createForm($message, $this->getUser());
 
         /** @var FilterDataObjectInterface $filter */
-        if ($filter->hasToken()) {
-            // Redirect if CSRF is invalid
-            if (!$this->isCsrfTokenValid(ReferentController::TOKEN_ID, $filter->getToken())) {
-                return $this->redirectToRoute(
-                    'app_message_filter',
-                    [
-                        'prefix' => $prefix,
-                        'uuid' => $message->getUuid()->toString(),
-                    ]
-                );
-            }
+        $filter = $form->getData();
+        $filterBefore = clone $filter;
 
-            if ($filter->isChanged()) {
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!$message->getFilter() || $filterBefore != $filter) {
                 $message->setFilter(clone $filter);
                 $manager->flush();
-
-                $this->addFlash('info', 'adherent_message.filter_updated');
             }
+
+            $this->addFlash('info', 'adherent_message.filter_updated');
+
+            return $this->redirectToRoute('app_message_filter', [
+                'prefix' => $prefix,
+                'uuid' => $message->getUuid()->toString(),
+            ]);
         }
 
         return $this->renderTemplate($prefix, 'message/filter.html.twig', [
             'message' => $message,
-            'filter' => $filter,
+            'form' => $form->createView(),
         ]);
     }
 

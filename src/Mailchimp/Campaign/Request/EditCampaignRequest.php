@@ -109,7 +109,7 @@ class EditCampaignRequest implements RequestInterface
                 'recipients' => [
                     'list_id' => $this->listId,
                     'segment_opts' => [
-                        'match' => 'all',
+                        'match' => 'any',
                         'conditions' => $this->conditions,
                     ],
                 ],
