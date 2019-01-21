@@ -11,6 +11,7 @@ import IdeaPageSkeleton from './IdeaPageSkeleton';
 import autoSaveIcn from '../../img/icn_20px_autosave.svg';
 
 const TITLE_MIN_LENGTH = 15;
+const ANSWER_MIN_LENGTH = 15;
 
 function getInitialAnswers(guidelines, answers = []) {
     const questions = guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
@@ -23,26 +24,21 @@ function getInitialAnswers(guidelines, answers = []) {
 
 function getRequiredAnswers(guidelines) {
     const questions = guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
-    return questions
-        .filter(question => question.required)
-        .reduce((acc, question) => {
-            acc[question.id] = false;
-            return acc;
-        }, {});
+    return questions.filter(question => question.required).map(question => question.id);
 }
 
 class IdeaPageBase extends React.Component {
     constructor(props) {
         super(props);
         // init state
+        // get required questions and set required errors
         const answers = getInitialAnswers(props.guidelines, props.idea.answers);
-        const requiredAnswers = getRequiredAnswers(props.guidelines);
+        this.requiredQuestions = getRequiredAnswers(props.guidelines);
         this.state = {
             name: props.idea.name || '',
             answers,
             errors: {
                 name: false,
-                ...requiredAnswers,
             },
             readingMode: props.idea.status === ideaStatus.FINALIZED,
         };
@@ -77,7 +73,7 @@ class IdeaPageBase extends React.Component {
             }),
             () => {
                 // check if field is required and set errors accordingly
-                const isFieldRequired = Object.keys(this.state.errors).includes(id.toString());
+                const isFieldRequired = this.requiredQuestions.includes(parseInt(id, 10));
                 this.setState((prevState) => {
                     const errors = { ...prevState.errors };
                     if (isFieldRequired && errors[id]) {
@@ -139,12 +135,10 @@ class IdeaPageBase extends React.Component {
     }
 
     hasRequiredValues() {
-        const { answers, errors } = this.state;
-        // check if all the required questions are answered
-        const { name, ...answersErrors } = errors;
-        // compute missing values from required fields
-        const missingValues = Object.keys(answersErrors).reduce((acc, questionId) => {
-            if (!answers[questionId]) {
+        const { answers } = this.state;
+        // check if all the required questions have an answer
+        const missingValues = Object.entries(answers).reduce((acc, [questionId, answer]) => {
+            if (this.requiredQuestions.includes(parseInt(questionId, 10)) && !answer) {
                 acc[questionId] = true;
             }
             return acc;
