@@ -70,11 +70,15 @@ function QuestionBlockBody(props) {
     );
 }
 
+/**
+ * This component handles both DRAFT and PENDING status
+ * It is controlled in the first case and uncontrolled in the second one (using state.isEditing)
+ */
 class QuestionBlock extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            // handle question block edition, can only true in contributing mode
+            // isEditing: handles question block edition, can only be true in contributing mode
             isEditing: 'edit' === props.mode ? false : !props.initialContent,
             value: this.props.initialContent, // html content
             text: '', // text content
@@ -88,14 +92,19 @@ class QuestionBlock extends React.Component {
 
     onTextChange(htmlContent, textContent) {
         if (this.state.isEditing) {
-            this.setState({ value: htmlContent, text: textContent, hasError: textContent.length < TEXT_MIN_LENGTH });
+            const hasError = this.props.isRequired
+                ? // if an answer is required, it must have at least TEXT_MIN_LENGTH characters
+                textContent.length < TEXT_MIN_LENGTH
+                : // otherwise it can be empty or have at least TEXT_MIN_LENGTH characters
+                0 < textContent.length && textContent.length < TEXT_MIN_LENGTH;
+            this.setState({ value: htmlContent, text: textContent, hasError });
         } else {
-            this.props.onTextChange(TEXT_MIN_LENGTH <= textContent.length ? htmlContent : '');
+            this.props.onTextChange(TEXT_MIN_LENGTH <= textContent.length ? htmlContent : textContent);
         }
     }
 
     onSaveAnswer() {
-        if (TEXT_MIN_LENGTH <= this.state.text.length) {
+        if (!this.state.hasError) {
             this.props.onTextChange(this.state.value, true);
             this.setState({ isEditing: false });
         } else {
@@ -104,7 +113,7 @@ class QuestionBlock extends React.Component {
     }
 
     onCancelAnswer() {
-        this.setState({ isEditing: false, value: this.props.initialContent, text: '' });
+        this.setState({ isEditing: false, hasError: false, value: this.props.initialContent, text: '' });
     }
 
     renderBody() {
@@ -122,7 +131,7 @@ class QuestionBlock extends React.Component {
                     onEditAnswer={() => this.setState({ isEditing: true })}
                     onSaveAnswer={this.onSaveAnswer}
                     onCancelAnswer={this.onCancelAnswer}
-                    canSaveAnswer={isRequired ? !!this.state.value && !this.state.hasError : true}
+                    canSaveAnswer={!this.state.hasError}
                 />
                 {'edit' !== this.props.mode && (
                     <div className="question-block__threads">
