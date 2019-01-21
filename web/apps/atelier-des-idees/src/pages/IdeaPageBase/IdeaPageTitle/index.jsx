@@ -2,11 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextArea from '../../../components/TextArea';
 
+/**
+ * This component handles both DRAFT and PENDING status
+ * It is controlled in the first case and uncontrolled in the second one (using state.isEditing)
+ */
 class IdeaPageTitle extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             value: props.title,
+            isEditing: false,
         };
         this.onTitleChange = this.onTitleChange.bind(this);
     }
@@ -44,7 +49,7 @@ class IdeaPageTitle extends React.Component {
                                 >
                                     Annuler
                                 </button>
-                                {this.state.value && (
+                                {this.state.value.length >= this.props.minLength && (
                                     <button
                                         className="idea-page-title__title__editing-footer__btn editing-footer__btn--save"
                                         onClick={() => {
@@ -97,6 +102,7 @@ IdeaPageTitle.defaultProps = {
     isEditing: false,
     isReadOnly: true,
     showPublicationDate: false,
+    minLength: 0,
 };
 
 IdeaPageTitle.propTypes = {
@@ -107,6 +113,7 @@ IdeaPageTitle.propTypes = {
     isAuthor: PropTypes.bool,
     isEditing: PropTypes.bool,
     isReadOnly: PropTypes.bool,
+    minLength: PropTypes.number,
     title: PropTypes.string.isRequired,
     showPublicationDate: PropTypes.bool,
 };
