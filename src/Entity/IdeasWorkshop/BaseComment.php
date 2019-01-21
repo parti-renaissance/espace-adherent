@@ -54,7 +54,7 @@ abstract class BaseComment
     /**
      * @ORM\Column(type="boolean")
      *
-     * @SymfonySerializer\Groups({"thread_comment_read", "thread_list_read", "thread_approval", "thread_comment_approval"})
+     * @SymfonySerializer\Groups({"thread_comment_read", "thread_list_read", "thread_approval", "thread_comment_approval", "idea_read"})
      */
     protected $approved = false;
 

@@ -625,7 +625,7 @@ Feature:
              "themes":[
                 {
                    "name":"Armées et défense",
-                   "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
+                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                 }
              ],
              "category":{
@@ -1204,9 +1204,8 @@ Feature:
           "first_name":"Jacques",
           "last_name":"Picard"
        },
-       "published_at": "@string@.isDateTime()",
-       "finalized_at": "@string@.isDateTime()",
-       "status":"PENDING",
+       "published_at":"@string@.isDateTime()",
+       "finalized_at":"@string@.isDateTime()",
        "answers":[
           {
              "id":3,
@@ -1222,33 +1221,36 @@ Feature:
                          "total_items":4,
                          "items":[
                             {
-                                "uuid": "37116c8b-a36e-4a0d-8346-baba91cd1330",
-                                "content": "Commentaire de l'adhérent à desadhérer",
-                                "author": {
-                                    "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                                    "first_name": "Michel",
-                                    "last_name": "VASSEUR"
-                                },
-                                "created_at": "@string@.isDateTime()"
-                            },
-                            {
-                                "uuid": "ecbe9136-3dc0-477d-b817-a25878dd639a",
-                                "content": "Commentaire signalé",
-                                "author": {
-                                    "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
-                                    "first_name": "Laura",
-                                    "last_name": "Deloche"
-                                },
-                                "created_at": "@string@.isDateTime()"
-                            },
-                            {
-                               "uuid": "3fa38c45-1122-4c48-9ada-b366b3408fec",
-                               "content": "Commentaire non approuvé",
-                               "author": {
-                                  "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
-                                  "first_name": "Laura",
-                                  "last_name": "Deloche"
+                               "uuid":"37116c8b-a36e-4a0d-8346-baba91cd1330",
+                               "content":"Commentaire de l'adhérent à desadhérer",
+                               "author":{
+                                  "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                                  "first_name":"Michel",
+                                  "last_name":"VASSEUR"
                                },
+                               "approved":false,
+                               "created_at": "@string@.isDateTime()"
+                            },
+                            {
+                               "uuid":"ecbe9136-3dc0-477d-b817-a25878dd639a",
+                               "content":"Commentaire signalé",
+                               "author":{
+                                  "uuid":"93de5d98-383a-4863-9f47-eb7a348873a8",
+                                  "first_name":"Laura",
+                                  "last_name":"Deloche"
+                               },
+                               "approved":false,
+                               "created_at": "@string@.isDateTime()"
+                            },
+                            {
+                               "uuid":"3fa38c45-1122-4c48-9ada-b366b3408fec",
+                               "content":"Commentaire non approuvé",
+                               "author":{
+                                  "uuid":"93de5d98-383a-4863-9f47-eb7a348873a8",
+                                  "first_name":"Laura",
+                                  "last_name":"Deloche"
+                               },
+                               "approved":false,
                                "created_at": "@string@.isDateTime()"
                             }
                          ]
@@ -1260,6 +1262,7 @@ Feature:
                          "first_name":"Gisele",
                          "last_name":"Berthoux"
                       },
+                      "approved":false,
                       "created_at": "@string@.isDateTime()"
                    },
                    {
@@ -1276,6 +1279,7 @@ Feature:
                          "first_name":"Gisele",
                          "last_name":"Berthoux"
                       },
+                      "approved":false,
                       "created_at": "@string@.isDateTime()"
                    },
                    {
@@ -1292,6 +1296,7 @@ Feature:
                          "first_name":"Gisele",
                          "last_name":"Berthoux"
                       },
+                      "approved":false,
                       "created_at": "@string@.isDateTime()"
                    }
                 ]
@@ -1311,14 +1316,15 @@ Feature:
                          "total_items":4,
                          "items":[
                             {
-                                "uuid": "02bf299f-678a-4829-a6a1-241995339d8d",
-                                "content": "Deuxième commentaire d'un référent",
-                                "author": {
-                                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
-                                    "first_name": "Referent",
-                                    "last_name": "Referent"
-                                },
-                                "created_at": "@string@.isDateTime()"
+                               "uuid":"02bf299f-678a-4829-a6a1-241995339d8d",
+                               "content":"Deuxième commentaire d'un référent",
+                               "author":{
+                                  "uuid":"29461c49-2646-4d89-9c82-50b3f9b586f4",
+                                  "first_name":"Referent",
+                                  "last_name":"Referent"
+                               },
+                               "approved":false,
+                               "created_at": "@string@.isDateTime()"
                             },
                             {
                                "uuid":"f716d3ba-004f-4958-af26-a7b010a6d458",
@@ -1328,6 +1334,7 @@ Feature:
                                   "first_name":"Referent",
                                   "last_name":"Referent"
                                },
+                               "approved":false,
                                "created_at": "@string@.isDateTime()"
                             },
                             {
@@ -1338,17 +1345,19 @@ Feature:
                                   "first_name":"Francis",
                                   "last_name":"Brioul"
                                },
+                               "approved":false,
                                "created_at": "@string@.isDateTime()"
                             }
                          ]
                       },
                       "uuid":"dfd6a2f2-5579-421f-96ac-98993d0edea1",
-                      "content":"J'ouvre une discussion sur le probl\u00e8me.",
+                      "content":"J'ouvre une discussion sur le problème.",
                       "author":{
                          "uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458",
                          "first_name":"Carl",
                          "last_name":"Mirabeau"
                       },
+                      "approved":false,
                       "created_at": "@string@.isDateTime()"
                    }
                 ]
@@ -1377,6 +1386,7 @@ Feature:
                          "first_name":"Lucie",
                          "last_name":"Olivera"
                       },
+                      "approved":false,
                       "created_at": "@string@.isDateTime()"
                    }
                 ]
@@ -1454,12 +1464,13 @@ Feature:
           "innovative":"5",
           "total":17,
           "my_votes":{
-              "feasible": @integer@,
-              "important": @integer@
+             "feasible":@integer@,
+             "important":@integer@
           }
        },
        "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
-       "created_at": "@string@.isDateTime()"
+       "created_at":"@string@.isDateTime()",
+       "status":"PENDING"
     }
     """
 
@@ -1902,7 +1913,7 @@ Feature:
              "themes":[
                 {
                    "name":"Armées et défense",
-                   "thumbnail":"http:\/\/test.enmarche.code\/assets\/images\/ideas_workshop\/themes\/default.png"
+                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                 }
              ],
              "category":{
