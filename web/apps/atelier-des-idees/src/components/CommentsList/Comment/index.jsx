@@ -17,9 +17,7 @@ function Comment(props) {
                         {props.author.first_name} {props.author.last_name}
                     </span>
                     <span className="comments-list__comment__infos__date">
-                        {`${new Date(props.created_at).toLocaleDateString()} à ${new Date(
-                            props.created_at
-                        )
+                        {`${new Date(props.created_at).toLocaleDateString()} à ${new Date(props.created_at)
                             .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                             .split(':')
                             .join('h')}`}
@@ -29,6 +27,7 @@ function Comment(props) {
                             <img
                                 className="comments-list__comment__infos__approved__icon"
                                 src={icn_checklist}
+                                alt="Commentaire approuvé"
                             />
                         </span>
                     )}
@@ -36,9 +35,7 @@ function Comment(props) {
                 {props.hasActions && !props.isAuthor && (
                     <Dropdown
                         onSelect={props.onReport}
-                        options={[
-                            { value: 'report', label: 'Signaler', isImportant: true },
-                        ]}
+                        options={[{ value: 'report', label: 'Signaler', isImportant: true }]}
                     />
                 )}
             </div>
@@ -46,11 +43,8 @@ function Comment(props) {
             {props.hasActions && (
                 <div className="comments-list__comment__actions">
                     {props.isAuthor ? (
-                        <button
-                            className="comments-list__comment__actions__button__delete"
-                            onClick={props.onDelete}
-                        >
-							Supprimer
+                        <button className="comments-list__comment__actions__button__delete" onClick={props.onDelete}>
+                            Supprimer
                         </button>
                     ) : (
                         <React.Fragment>
@@ -59,8 +53,7 @@ function Comment(props) {
                                     onClick={props.onApprove}
                                     className={classNames({
                                         'comments-list__comment__actions__button__approved': !props.approved,
-                                        'comments-list__comment__actions__button__disapproved':
-											props.approved,
+                                        'comments-list__comment__actions__button__disapproved': props.approved,
                                     })}
                                 >
                                     {props.approved ? 'Désapprouver' : 'Approuver'}
@@ -71,7 +64,7 @@ function Comment(props) {
                                     className="comments-list__comment__actions__button__answer"
                                     onClick={props.onReply}
                                 >
-									Répondre
+                                    Répondre
                                 </button>
                             )}
                         </React.Fragment>
@@ -83,6 +76,7 @@ function Comment(props) {
 }
 
 Comment.defaultProps = {
+    approved: false,
     hasActions: true,
     isAuthor: false,
     verified: false,
