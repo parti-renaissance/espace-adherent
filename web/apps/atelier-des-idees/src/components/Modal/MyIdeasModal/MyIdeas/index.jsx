@@ -17,12 +17,12 @@ class MyIdeas extends React.Component {
             },
             {
                 showCat: 'showPending',
-                label: 'idées en cours d’élaboration',
+                label: 'propostions en cours d’élaboration',
                 ideas: this.props.ideas.filter(idea => 'PENDING' === idea.status),
             },
             {
                 showCat: 'showFinalized',
-                label: 'idées finalisées',
+                label: 'propositions finalisées',
                 ideas: this.props.ideas.filter(idea => 'FINALIZED' === idea.status),
             },
         ];
@@ -62,7 +62,7 @@ class MyIdeas extends React.Component {
                                         <React.Fragment>
                                             <div className="my-ideas__category__idea">
                                                 <p className="my-ideas__category__idea__date">
-                                                    Créée le {new Date(idea.created_at).toLocaleDateString()}
+													Créée le {new Date(idea.created_at).toLocaleDateString()}
                                                 </p>
                                                 <h4 className="my-ideas__category__idea__name">{idea.name}</h4>
                                                 <div className="my-ideas__category__idea__actions">
