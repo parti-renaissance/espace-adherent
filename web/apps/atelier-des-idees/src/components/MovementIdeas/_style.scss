@@ -52,6 +52,7 @@
           line-height: 27px;
           position: relative;
           z-index: 5;
+          max-width: 540px;
 
           @media screen and (max-width: $width-lg) {
               font-size: 18px;

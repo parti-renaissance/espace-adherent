@@ -51,9 +51,7 @@ class MovementIdeas extends React.PureComponent {
                     <div className="l__wrapper movement-ideas__first__section__in">
                         <h1 className="movement-ideas__first__section__in__title">Les idées des marcheurs</h1>
                         <p className="movement-ideas__first__section__in__content">
-                            Vous avez envie de contribuer aux idées du mouvement ?
-                            <br />
-                            Avec l’Atelier des Idées c’est possible !
+                            Vous avez envie de contribuer à la réflexion du mouvement ? De proposer vos idées ? Avec l'Atelier des idées c'est possible !
                         </p>
                         <img className="movement-ideas__first__section__in__main-illustration" src={hpMainIllustration} />
                     </div>

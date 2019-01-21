@@ -6,7 +6,7 @@ function ReportsModal(props) {
     return (
         <div className="reports-modal">
             <h2 className="reports-modal__title">Je lis les {props.reports.length} restitutions</h2>
-            <p className="reports-modal__subtitle">Nous n’avons pas attendu l’Atelier des Idées pour vous consulter</p>
+            <p className="reports-modal__subtitle">Nous n’avons pas attendu l’Atelier des idées pour vous consulter</p>
             {props.reports.map((report, index) => (
                 <a className="reports-modal__report" key={index} target="_blank" href={report.url} download>
                     <img className="reports-modal__report__pdf-preview" src={pdf_preview} />

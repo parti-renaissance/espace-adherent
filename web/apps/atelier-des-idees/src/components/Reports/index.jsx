@@ -8,10 +8,10 @@ class Reports extends React.PureComponent {
             <div className="l__wrapper reports">
                 <div className="reports__first-section">
                     <h3 className="reports__first-section__title">
-						Nous n’avons pas attendu l’Atelier des Idées pour vous consulter
+						Nous n’avons pas attendu l’Atelier des idées pour vous consulter
                     </h3>
                     <p className="reports__first-section__text">
-						Dépuis sa création, La République En Marche associe les Marcheurs à sa reflexion. Les sujets de nos consultations son variées : le logement, l'égalité femmes-hommes, l'Europe, etc.
+						Vous êtes déjà 78 000  à avoir répondu à nos consultations.
                     </p>
                     <button
                         className="reports__first-section__button button button--primary"
