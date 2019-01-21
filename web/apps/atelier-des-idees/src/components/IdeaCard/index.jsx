@@ -65,13 +65,20 @@ class IdeaCard extends React.Component {
         }
     }
 
+    truncate(string, limitation) {
+        if (limitation < string.length) {
+            return string.substring(0, limitation).concat(' (...)');
+        }
+        return string;
+    }
+
     render() {
         return (
             <div className="idea-card" ref={this.cardRef}>
                 <Link to={`/atelier-des-idees/note/${this.props.uuid}`} className="idea-card__link">
                     <div className="idea-card__main">
                         <div className="idea-card__content">
-                            <p className="idea-card__content__title">{this.props.name}</p>
+                            <p className="idea-card__content__title">{this.truncate(this.props.name, 53)}</p>
                             <div className="idea-card__content__infos">
                                 <span className="idea-card__content__infos__author">
                                     <span className="idea-card__content__infos__meta">Par </span>
