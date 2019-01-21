@@ -10,19 +10,23 @@ function CreateIdeaActions(props) {
                     Supprimer la proposition
                 </button>
             </div>
-            {props.isEditing && (
+            {(props.isDraft || props.canPublish) && (
                 <div className="create-idea-actions--right">
-                    <Button
-                        className="create-idea-actions__save"
-                        label="Enregistrer le brouillon"
-                        mode="secondary"
-                        onClick={props.onSaveClicked}
-                    />
-                    <Button
-                        className="create-idea-actions__publish"
-                        label="Publier la proposition"
-                        onClick={props.onPublishClicked}
-                    />
+                    {props.isDraft && (
+                        <Button
+                            className="create-idea-actions__save"
+                            label="Enregistrer le brouillon"
+                            mode="secondary"
+                            onClick={props.onSaveClicked}
+                        />
+                    )}
+                    {props.canPublish && (
+                        <Button
+                            className="create-idea-actions__publish"
+                            label={props.isDraft ? 'Publier la proposition' : 'Modifier les informations'}
+                            onClick={props.onPublishClicked}
+                        />
+                    )}
                 </div>
             )}
         </div>
@@ -30,12 +34,14 @@ function CreateIdeaActions(props) {
 }
 
 CreateIdeaActions.defaultProps = {
-    isEditing: true,
+    isDraft: false,
+    canPublish: false,
     onBackClicked: undefined,
 };
 
 CreateIdeaActions.propTypes = {
-    isEditing: PropTypes.bool,
+    canPublish: PropTypes.bool,
+    isDraft: PropTypes.bool,
     onBackClicked: PropTypes.func,
     onDeleteClicked: PropTypes.func.isRequired,
     onPublishClicked: PropTypes.func.isRequired,

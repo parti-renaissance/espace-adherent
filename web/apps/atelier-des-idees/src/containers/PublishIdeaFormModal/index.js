@@ -31,6 +31,16 @@ function formatStaticData(data) {
     return data.map(({ id, name }) => ({ value: id, label: name }));
 }
 
+/**
+ * Get default values from options based on selectedItems
+ * @param {array} selectedItems Array of selected items
+ * @param {array} options Array of formatted options (see function above)
+ */
+function getDefaultValues(selectedItems = [], options = []) {
+    const selectedIds = selectedItems.map(item => item.id);
+    return options.filter(option => selectedIds.includes(option.value));
+}
+
 function mapStateToProps(state, { id }) {
     // get request status
     const currentIdea = selectCurrentIdea(state);
@@ -38,15 +48,29 @@ function mapStateToProps(state, { id }) {
     const publishIdeaState = selectLoadingState(state, 'PUBLISH_IDEA');
     // get static data
     const { themes, needs, categories, committees } = selectStatic(state);
+    const formattedThemes = formatStaticData(themes);
+    const formattedNeeds = formatStaticData(needs);
+    const formattedCategories = formatStaticData(categories);
     const formattedCommittees = committees.map(({ uuid, name }) => ({ value: uuid, label: name }));
+    // get default values
+    const selectedThemes = getDefaultValues(currentIdea.themes, formattedThemes);
+    const selectedNeeds = getDefaultValues(currentIdea.needs, formattedNeeds);
+    const selectedCategory =
+        currentIdea.category && formattedCategories.find(option => option.value === currentIdea.category.id);
     return {
         isSubmitting: saveIdeaState.isFetching || publishIdeaState.isFetching,
         isSubmitSuccess: saveIdeaState.isSuccess && publishIdeaState.isSuccess,
         isSubmitError: saveIdeaState.isError || publishIdeaState.isError,
         id: id || currentIdea.uuid,
-        themeOptions: formatStaticData(themes),
-        localityOptions: formatStaticData(categories),
-        difficultiesOptions: formatStaticData(needs),
+        defaultValues: {
+            description: currentIdea.description,
+            theme: selectedThemes,
+            locality: selectedCategory,
+            difficulties: selectedNeeds,
+        },
+        themeOptions: formattedThemes,
+        localityOptions: formattedCategories,
+        difficultiesOptions: formattedNeeds,
         committeeOptions: formattedCommittees,
         authorOptions: [{ value: 'alone', label: 'Seul' }, { value: 'committee', label: 'Mon comité' }],
     };

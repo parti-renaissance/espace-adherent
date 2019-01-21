@@ -260,7 +260,10 @@ export function publishIdea(id) {
             .put(`/api/ideas-workshop/ideas/${id}/publish`)
             .then(res => res.data)
             .then(() => dispatch(createRequestSuccess(PUBLISH_IDEA)))
-            .catch(() => dispatch(createRequestFailure(PUBLISH_IDEA)));
+            .catch((error) => {
+                dispatch(createRequestFailure(PUBLISH_IDEA));
+                throw error;
+            });
     };
 }
 

@@ -18,7 +18,7 @@
     line-height: 18px;
 
     p {
-        margin: 0;
+      margin: 0;
     }
   }
 
@@ -33,10 +33,20 @@
 }
 
 .select__input {
-
   &__control {
-     cursor: pointer;
-     height: 60px;
+    cursor: pointer;
+  }
+
+  &:not(.select__input--multi) {
+    .select__input__control {
+      height: 60px;
+    }
+  }
+
+  &.select__input--multi {
+    .select__input__control {
+      min-height: 60px;
+    }
   }
 
   .select__input__menu {
