@@ -71,49 +71,37 @@ class VotingFooter extends React.Component {
                             )
                         }
                     >
-                        <p className="voting-footer__container__action-vote--mobile__text">
-							Je vote
-                        </p>
+                        <p className="voting-footer__container__action-vote--mobile__text">Je vote</p>
                         <div
-                            className={classnames(
-                                'voting-footer__container__action-vote--mobile__arrow',
-                                {
-                                    rotate: this.state.toggleVotes,
-                                }
-                            )}
+                            className={classnames('voting-footer__container__action-vote--mobile__arrow', {
+                                rotate: this.state.toggleVotes,
+                            })}
                         />
                     </button>
 
-                    {!this.state.toggleVotes && (
-                        <p className="voting-footer__total-votes">
-                            {this.props.totalVotes} votes
-                        </p>
-                    )}
+                    {!this.state.toggleVotes &&
+						(0 < this.props.totalVotes.length ? (
+						    <p className="voting-footer__total-votes">{this.props.totalVotes} votes</p>
+						) : (
+						    <p />
+						))}
                     {!this.state.toggleVotes ? (
                         <div className="voting-footer__container__action-vote">
                             <button
                                 className="button--lowercase"
                                 onClick={() =>
-                                    this.setState(
-                                        { toggleVotes: true, toggleFadeout: true },
-                                        () => {
-                                            this.props.onToggleVotePanel(true);
-                                            this.resetTimeout();
-                                        }
-                                    )
+                                    this.setState({ toggleVotes: true, toggleFadeout: true }, () => {
+                                        this.props.onToggleVotePanel(true);
+                                        this.resetTimeout();
+                                    })
                                 }
                             >
-                                <img
-                                    className="voting-footer__container__action-vote__icon"
-                                    src={icn_20px_thumb}
-                                />
+                                <img className="voting-footer__container__action-vote__icon" src={icn_20px_thumb} />
 								Je vote
                             </button>
                         </div>
                     ) : (
-                        <p className="voting-footer__container__action-vote__text">
-							Je vote :
-                        </p>
+                        <p className="voting-footer__container__action-vote__text">Je vote :</p>
                     )}
                 </div>
 
@@ -122,13 +110,9 @@ class VotingFooter extends React.Component {
 					this.props.votes.map((vote, index) => (
 					    <button
 					        key={vote.id}
-					        className={classnames(
-					            'voting-footer__vote',
-					            `voting-footer__vote-${index}`,
-					            {
-					                'voting-footer__vote--selected': vote.isSelected,
-					            }
-					        )}
+					        className={classnames('voting-footer__vote', `voting-footer__vote-${index}`, {
+					            'voting-footer__vote--selected': vote.isSelected,
+					        })}
 					        onClick={() => {
 					            this.props.onSelected(vote.id);
 					            this.resetTimeout();
@@ -148,8 +132,7 @@ VotingFooter.propTypes = {
         PropTypes.shape({
             id: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
-            count: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-                .isRequired,
+            count: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
             isSelected: PropTypes.bool.isRequired,
         })
     ).isRequired,
