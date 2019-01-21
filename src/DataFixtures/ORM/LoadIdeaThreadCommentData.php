@@ -19,6 +19,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
     public const THREAD_COMMENT_06_UUID = '3fa38c45-1122-4c48-9ada-b366b3408fec';
     public const THREAD_COMMENT_07_UUID = 'ecbe9136-3dc0-477d-b817-a25878dd639a';
     public const THREAD_COMMENT_08_UUID = '37116c8b-a36e-4a0d-8346-baba91cd1330';
+    public const THREAD_COMMENT_09_UUID = '9e49e935-ba51-4ae5-981c-5f48e55fdf28';
 
     public function load(ObjectManager $manager)
     {
@@ -26,6 +27,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
 
         $threadAQProblemAdherent2 = $this->getReference('thread-aq-problem');
         $threadAQCompareAdherent5 = $this->getReference('thread-aq-compare');
+        $threadReduceWaste = $this->getReference('thread-idea-reduce-waste');
 
         $commentFromAdherent6 = ThreadComment::create(
             Uuid::fromString(self::THREAD_COMMENT_01_UUID),
@@ -91,6 +93,13 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
             new \DateTime('-1 minute')
         );
 
+        $commentOfAdherent6OnIdeaWaste = ThreadComment::create(
+            Uuid::fromString(self::THREAD_COMMENT_09_UUID),
+            'Commentaire d\'un adhérent',
+            $this->getReference('adherent-6'),
+            $threadReduceWaste
+        );
+
         $manager->persist($commentFromAdherent6);
         $manager->persist($commentFromAdherent7);
         $manager->persist($commentFromAdherent8);
@@ -99,6 +108,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
         $manager->persist($commentNotApproved);
         $manager->persist($commentReported);
         $manager->persist($commentOfAdherentToUnregistrate);
+        $manager->persist($commentOfAdherent6OnIdeaWaste);
 
         $manager->flush();
     }

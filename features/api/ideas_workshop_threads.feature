@@ -18,7 +18,7 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 7,
+            "total_items": 8,
             "items_per_page": 3,
             "count": 3,
             "current_page": 1,

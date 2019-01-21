@@ -23,11 +23,10 @@ class MyIdeaContributionExtension implements QueryCollectionExtensionInterface
             $alias = $queryBuilder->getRootAliases()[0];
 
             $queryBuilder
-                ->leftJoin("$alias.votes", 'vote')
                 ->leftJoin("$alias.answers", 'answer')
                 ->leftJoin('answer.threads', 'thread')
                 ->leftJoin('thread.comments', 'threadComment')
-                ->andWhere('vote.author = :author OR threadComment.author = :author')
+                ->andWhere('thread.author = :author OR threadComment.author = :author')
                 ->setParameter('author', $this->tokenStorage->getToken()->getUser())
             ;
         }

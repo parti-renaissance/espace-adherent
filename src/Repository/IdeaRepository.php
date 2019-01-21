@@ -33,33 +33,30 @@ class IdeaRepository extends ServiceEntityRepository
 
     public function countContributors(Idea $idea): int
     {
-        $data = $this->createQueryBuilder('idea')
-            ->select('threadAuthor.id AS threadAuthorId, commentAuthor.id AS commentAuthorId')
-            ->innerJoin('idea.answers', 'answer')
-            ->innerJoin('answer.threads', 'thread')
-            ->innerJoin('thread.author', 'threadAuthor')
-            ->leftJoin('thread.comments', 'comment')
-            ->leftJoin('comment.author', 'commentAuthor')
-            ->where('idea = :idea AND thread.deletedAt IS NULL AND comment.deletedAt IS NULL')
-            ->setParameter('idea', $idea)
-            ->getQuery()
-            ->getArrayResult()
-        ;
+        $sqlIdeaContributors = <<<'SQL'
+        (
+            SELECT threadComment.author_id
+            FROM ideas_workshop_comment threadComment
+            INNER JOIN ideas_workshop_thread thread ON thread.id = threadComment.thread_id 
+            INNER JOIN ideas_workshop_answer answer ON answer.id = thread.answer_id
+            INNER JOIN ideas_workshop_idea idea ON idea.id = answer.idea_id
+            WHERE idea.id = :idea
+        )
+        UNION 
+        (
+            SELECT thread.author_id
+            FROM ideas_workshop_thread thread 
+            INNER JOIN ideas_workshop_answer answer ON answer.id = thread.answer_id
+            INNER JOIN ideas_workshop_idea idea ON idea.id = answer.idea_id
+            WHERE idea.id = :idea
+        )
+SQL;
 
-        return \count($data)
-            ? \count(
-                array_filter(
-                    array_unique(
-                        array_merge(
-                            ...array_values(
-                                array_merge_recursive(...$data)
-                            )
-                        )
-                    )
-                )
-            )
-            : 0
-        ;
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sqlIdeaContributors);
+        $stmt->bindValue(':idea', $idea->getId());
+        $stmt->execute();
+
+        return \count($stmt->fetchAll(\PDO::FETCH_COLUMN));
     }
 
     private function getThreadContributors(Idea $idea): array

@@ -18,12 +18,14 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
     public const THREAD_05_UUID = 'b191f13a-5a05-49ed-8ec3-c335aa68f439';
     public const THREAD_06_UUID = '7857957c-2044-4469-bd9f-04a60820c8bd';
     public const THREAD_07_UUID = '2512539f-47fe-4a13-869e-78b81e6f9dd0';
+    public const THREAD_08_UUID = '1474504d-8024-4e54-85f7-59666a11cd77';
 
     public function load(ObjectManager $manager)
     {
         AutoIncrementResetter::resetAutoIncrement($manager, 'ideas_workshop_thread');
 
         $adherent2 = $this->getReference('adherent-2');
+        $adherent3 = $this->getReference('adherent-3');
         $adherent4 = $this->getReference('adherent-4');
         $adherent5 = $this->getReference('adherent-5');
         $adherent13 = $this->getReference('adherent-13');
@@ -79,6 +81,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
             $this->getReference('answer-q-problem-idea-he'),
             new \DateTime('-5 minutes')
         );
+        $this->setReference('thread-he', $threadHE);
 
         $threadHEU = Thread::create(
             Uuid::fromString(self::THREAD_07_UUID),
@@ -88,6 +91,15 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
             new \DateTime('-1 minute')
         );
 
+        $threadReduceWaste = Thread::create(
+            Uuid::fromString(self::THREAD_08_UUID),
+            '[Reduce Waste] Une discussion avec un commentaire',
+            $adherent3,
+            $this->getReference('answer-q-problem-idea-reduce-waste'),
+            new \DateTime('-7 minute')
+        );
+        $this->setReference('thread-idea-reduce-waste', $threadReduceWaste);
+
         $manager->persist($threadAQProblemAdherent2);
         $manager->persist($threadAQAnswerAdherent4);
         $manager->persist($threadAQCompareAdherent5);
@@ -95,6 +107,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
         $manager->persist($threadReported);
         $manager->persist($threadHE);
         $manager->persist($threadHEU);
+        $manager->persist($threadReduceWaste);
 
         $manager->flush();
     }
