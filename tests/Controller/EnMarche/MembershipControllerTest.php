@@ -273,8 +273,6 @@ class MembershipControllerTest extends WebTestCase
             ]
         );
 
-        file_put_contents('index.html', $this->client->getResponse()->getContent());
-
         $this->assertContains('Cette adresse e-mail est bloquée', $this->client->getCrawler()->filter('#adherent_registration_emailAddress_first_errors')->text());
     }
 
