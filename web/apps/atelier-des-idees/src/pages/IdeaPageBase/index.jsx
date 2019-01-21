@@ -111,11 +111,7 @@ class IdeaPageBase extends React.Component {
 
     onSaveIdea() {
         const { name } = this.state;
-        if (name.length < TITLE_MIN_LENGTH) {
-            this.setState(prevState => ({
-                errors: { ...prevState.errors, name: true },
-            }));
-        } else {
+        if (this.hasCorrectValues(false)) {
             // format data before sending them
             const data = { name, answers: this.formatAnswers() };
             this.props.onSaveIdea(data);
@@ -123,7 +119,7 @@ class IdeaPageBase extends React.Component {
     }
 
     onPublishIdea() {
-        if (this.hasRequiredValues()) {
+        if (this.hasCorrectValues()) {
             // format data before sending them
             const data = { name: this.state.name, answers: this.formatAnswers() };
             this.props.onPublishIdea(data);
@@ -140,11 +136,11 @@ class IdeaPageBase extends React.Component {
         }, []);
     }
 
-    hasRequiredValues() {
+    hasCorrectValues(withRequired = true) {
         const { answers } = this.state;
         // check if all the required questions have an answer
         const missingValues = Object.entries(answers).reduce((acc, [questionId, answer]) => {
-            const isRequired = this.requiredQuestions.includes(parseInt(questionId, 10));
+            const isRequired = withRequired && this.requiredQuestions.includes(parseInt(questionId, 10));
             if (
                 // if an answer is required, it must have at least ANSWER_MIN_LENGTH characters
                 (isRequired && answer.length < ANSWER_MIN_LENGTH) ||
