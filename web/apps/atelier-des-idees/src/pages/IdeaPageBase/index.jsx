@@ -10,6 +10,8 @@ import VotingFooterIdeaPage from './VotingFooterIdeaPage';
 import IdeaPageSkeleton from './IdeaPageSkeleton';
 import autoSaveIcn from '../../img/icn_20px_autosave.svg';
 
+const TITLE_MIN_LENGTH = 15;
+
 function getInitialAnswers(guidelines, answers = []) {
     const questions = guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
     return questions.reduce((acc, question) => {
@@ -98,7 +100,7 @@ class IdeaPageBase extends React.Component {
     }
 
     formatAnswers() {
-        const formattedAnswers = Object.entries(this.state.answers).map(([id, value], index) => ({
+        const formattedAnswers = Object.entries(this.state.answers).map(([id, value]) => ({
             question: id,
             content: value,
         }));
@@ -107,14 +109,14 @@ class IdeaPageBase extends React.Component {
 
     onSaveIdea() {
         const { name } = this.state;
-        if (name) {
-            // format data before sending them
-            const data = { name, answers: this.formatAnswers() };
-            this.props.onSaveIdea(data);
-        } else {
+        if (name.length < TITLE_MIN_LENGTH) {
             this.setState(prevState => ({
                 errors: { ...prevState.errors, name: true },
             }));
+        } else {
+            // format data before sending them
+            const data = { name, answers: this.formatAnswers() };
+            this.props.onSaveIdea(data);
         }
     }
 
@@ -148,7 +150,7 @@ class IdeaPageBase extends React.Component {
             return acc;
         }, {});
         // update name error
-        if (!this.state.name) {
+        if (this.state.name.length < TITLE_MIN_LENGTH) {
             missingValues.name = true;
         }
         this.setState({ errors: missingValues });
