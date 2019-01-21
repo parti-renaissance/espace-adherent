@@ -13,6 +13,11 @@ import autoSaveIcn from '../../img/icn_20px_autosave.svg';
 const TITLE_MIN_LENGTH = 15;
 const ANSWER_MIN_LENGTH = 15;
 
+/**
+ * Returns a map (object) containing the answer (possibly empty) for each question
+ * @param {array} guidelines Tools guidelines
+ * @param {array} answers Initial answers
+ */
 function getInitialAnswers(guidelines, answers = []) {
     const questions = guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
     return questions.reduce((acc, question) => {
@@ -22,6 +27,10 @@ function getInitialAnswers(guidelines, answers = []) {
     }, {});
 }
 
+/**
+ * Returns an array containing required questions ids
+ * @param {array} guidelines Tools guidelines
+ */
 function getRequiredAnswers(guidelines) {
     const questions = guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
     return questions.filter(question => question.required).map(question => question.id);
