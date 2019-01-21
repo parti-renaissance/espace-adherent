@@ -90,7 +90,7 @@ class QuestionBlock extends React.Component {
         if (this.state.isEditing) {
             this.setState({ value: htmlContent, text: textContent, hasError: textContent.length < TEXT_MIN_LENGTH });
         } else {
-            this.props.onTextChange(TEXT_MIN_LENGTH <= textContent.length ? htmlContent : '', textContent);
+            this.props.onTextChange(TEXT_MIN_LENGTH <= textContent.length ? htmlContent : '');
         }
     }
 
