@@ -7,7 +7,7 @@
       display: block;
       width: 100px;
       border-bottom: 1px solid $black-bean;
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
     .create-idea-tool__section-subtitle {
@@ -20,9 +20,14 @@
   }
 
   // responsive
-  @media #{$tablet} {
+ 
     .create-idea-tool__section-title__main {
+      font-weight: normal;
+      font-size: 14px;
+      color: $quick-silver;
+
+      @media #{$tablet} {
       font-size: 20px;
-    }
+      }
   }
 }
