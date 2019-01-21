@@ -99,6 +99,7 @@ class QuestionBlock extends React.Component {
                 0 < textContent.length && textContent.length < TEXT_MIN_LENGTH;
             this.setState({ value: htmlContent, text: textContent, hasError });
         } else {
+            // if text content does not respect min length, send it to parent to allow further checks on length (not possible with html content)
             this.props.onTextChange(TEXT_MIN_LENGTH <= textContent.length ? htmlContent : textContent);
         }
     }
