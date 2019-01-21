@@ -59,29 +59,32 @@ export default class AmountChooser extends React.Component {
             <div className="amount-chooser">
 
                 <div className="amount-chooser__monthly form__radio">
-                    <input
-                        type="radio"
-                        name="abonnement"
-                        id="donation-one-time"
-                        value="0"
-                        defaultChecked={!this.props.abonnement} />
+                    <div>
+                        <input
+                            type="radio"
+                            name="abonnement"
+                            id="donation-one-time"
+                            value="0"
+                            defaultChecked={!this.props.abonnement} />
 
-                    <label htmlFor="donation-one-time"
-                           id="donation-one-time_label">
-                        Je donne une fois
-                    </label>
+                        <label htmlFor="donation-one-time"
+                               id="donation-one-time_label">
+                            Je donne une fois
+                        </label>
+                    </div>
+                    <div>
+                        <input
+                            type="radio"
+                            name="abonnement"
+                            id="donation-monthly"
+                            value="1"
+                            defaultChecked={this.props.abonnement} />
 
-                    <input
-                        type="radio"
-                        name="abonnement"
-                        id="donation-monthly"
-                        value="1"
-                        defaultChecked={this.props.abonnement} />
-
-                    <label htmlFor="donation-monthly"
-                           id="donation-monthly_label">
-                        Je donne chaque mois (paiement automatique)
-                    </label>
+                        <label htmlFor="donation-monthly"
+                               id="donation-monthly_label">
+                            Je donne chaque mois (paiement automatique)
+                        </label>
+                    </div>
                 </div>
 
                 <input type="hidden" name={this.props.name} value={state} />
