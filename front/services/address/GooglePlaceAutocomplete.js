@@ -117,6 +117,12 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
 
         if (this._state.country && this._state.country.short_name) {
             this._address.setCountry(this._state.country.short_name);
+
+            if (this._state.country.short_name !== 'FR') {
+                this._address.setRegion(
+                    this._state.administrative_area_level_1 && this._state.administrative_area_level_1.long_name || ''
+                )
+            }
         } else if (!this._address.getCountry()) {
             this._address.setCountry('FR');
         }
@@ -132,6 +138,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
             sublocality_level_1: null,
             postal_code: null,
             country: null,
+            administrative_area_level_1: null,
         };
     }
 

@@ -7,9 +7,14 @@ use AppBundle\Entity\PostAddress;
 
 class PostAddressFactory
 {
-    public function createFlexible(?string $country, ?string $postalCode, ?string $cityName, ?string $address): PostAddress
-    {
-        return PostAddress::createForeignAddress($country, $postalCode, $cityName, $address);
+    public function createFlexible(
+        ?string $country,
+        ?string $postalCode,
+        ?string $cityName,
+        ?string $address,
+        ?string $region = null
+    ): PostAddress {
+        return PostAddress::createForeignAddress($country, $postalCode, $cityName, $address, $region);
     }
 
     public function createFromAddress(Address $address): PostAddress
@@ -17,7 +22,8 @@ class PostAddressFactory
         if ($address->isFrenchAddress()) {
             return PostAddress::createFrenchAddress(
                 $address->getAddress(),
-                $address->getCity()
+                $address->getCity(),
+                $address->getRegion()
             );
         }
 
@@ -25,7 +31,8 @@ class PostAddressFactory
             $address->getCountry(),
             $address->getPostalCode(),
             $address->getCityName(),
-            $address->getAddress()
+            $address->getAddress(),
+            $address->getRegion()
         );
     }
 
@@ -34,7 +41,8 @@ class PostAddressFactory
         if ($address->isFrenchAddress()) {
             return NullablePostAddress::createFrenchAddress(
                 $address->getAddress(),
-                $address->getCity()
+                $address->getCity(),
+                $address->getRegion()
             );
         }
 
@@ -42,7 +50,8 @@ class PostAddressFactory
             $address->getCountry(),
             $address->getPostalCode(),
             $address->getCityName(),
-            $address->getAddress()
+            $address->getAddress(),
+            $address->getRegion()
         );
     }
 }

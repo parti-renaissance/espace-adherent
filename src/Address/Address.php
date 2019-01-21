@@ -48,6 +48,11 @@ class Address implements AddressInterface, GeocodableInterface
      */
     private $country;
 
+    /**
+     * @Assert\Length(max=255)
+     */
+    private $region;
+
     public function __construct()
     {
         $this->country = self::FRANCE;
@@ -135,6 +140,7 @@ class Address implements AddressInterface, GeocodableInterface
         $address->city = $other->getCity();
         $address->cityName = $other->getCityName();
         $address->country = $other->getCountry();
+        $address->region = $other->getRegion();
 
         return $address;
     }
@@ -142,6 +148,16 @@ class Address implements AddressInterface, GeocodableInterface
     public function getGeocodableAddress(): string
     {
         return (string) GeocodableAddress::createFromAddress($this);
+    }
+
+    public function getRegion(): ?string
+    {
+        return $this->region;
+    }
+
+    public function setRegion(string $region): void
+    {
+        $this->region = $region;
     }
 
     /**

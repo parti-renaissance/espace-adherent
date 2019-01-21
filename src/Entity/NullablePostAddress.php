@@ -88,7 +88,12 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
      */
     private $longitude;
 
-    private function __construct(string $country, string $postalCode, ?string $cityName, ?string $street, float $latitude = null, $longitude = null)
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private $region;
+
+    private function __construct(string $country, string $postalCode, ?string $cityName, ?string $street, float $latitude = null, $longitude = null, ?string $region = null)
     {
         $this->country = $country;
         $this->address = $street;
@@ -96,11 +101,13 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         $this->cityName = $cityName;
         $this->latitude = $latitude;
         $this->longitude = $longitude;
+        $this->region = $region;
     }
 
     public static function createFrenchAddress(
         ?string $street,
         string $cityCode,
+        ?string $region = null,
         float $latitude = null,
         float $longitude = null
     ): self {
@@ -112,7 +119,8 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
             (string) FranceCitiesBundle::getCity($postalCode, $inseeCode),
             $street,
             $latitude,
-            $longitude
+            $longitude,
+            $region
         );
 
         $address->city = sprintf('%s-%s', $postalCode, $inseeCode);
@@ -125,33 +133,34 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         string $zipCode,
         ?string $cityName,
         ?string $street,
+        ?string $region,
         float $latitude = null,
         float $longitude = null
     ): self {
-        return new self($country, $zipCode, $cityName, $street, $latitude, $longitude);
+        return new self($country, $zipCode, $cityName, $street, $latitude, $longitude, $region);
     }
 
-    public function getCountry()
+    public function getCountry(): ?string
     {
         return $this->country;
     }
 
-    public function getCity()
+    public function getCity(): ?string
     {
         return $this->city;
     }
 
-    public function getCityName()
+    public function getCityName(): ?string
     {
         return $this->cityName;
     }
 
-    public function getAddress()
+    public function getAddress(): ?string
     {
         return $this->address;
     }
 
-    public function getPostalCode()
+    public function getPostalCode(): ?string
     {
         return $this->postalCode;
     }
@@ -178,10 +187,8 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
 
     /**
      * Returns the french national INSEE code from the city code.
-     *
-     * @return string|null
      */
-    public function getInseeCode()
+    public function getInseeCode(): ?string
     {
         $inseeCode = null;
         if ($this->city && 5 === strpos($this->city, '-')) {
@@ -226,5 +233,15 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
     private function isFrenchAddress(): bool
     {
         return 'FR' === mb_strtoupper($this->country) && $this->city;
+    }
+
+    public function getRegion(): ?string
+    {
+        return $this->region;
+    }
+
+    public function setRegion($region): void
+    {
+        $this->region = $region;
     }
 }

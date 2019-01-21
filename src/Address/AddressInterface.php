@@ -6,40 +6,32 @@ interface AddressInterface
 {
     /**
      * Returns the street name.
-     *
-     * @return string|null
      */
-    public function getAddress();
+    public function getAddress(): ?string;
 
     /**
      * Returns the zip code.
-     *
-     * @return string|null
      */
-    public function getPostalCode();
+    public function getPostalCode(): ?string;
 
     /**
      * Returns the city name.
-     *
-     * @return string|null
      */
-    public function getCityName();
+    public function getCityName(): ?string;
 
     /**
      * Returns the french city representation (zip code + insee code).
      *
      * For example: 92110-92024
-     *
-     * @return string|null
      */
-    public function getCity();
+    public function getCity(): ?string;
 
     /**
      * Returns the 2 chars country code.
      *
      * For example: FR
-     *
-     * @return string|null
      */
-    public function getCountry();
+    public function getCountry(): ?string;
+
+    public function getRegion(): ?string;
 }

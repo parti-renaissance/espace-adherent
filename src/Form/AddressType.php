@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AddressType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('address', TextType::class, [
@@ -31,6 +31,12 @@ class AddressType extends AbstractType
                 'disabled' => $options['disable_fields'],
             ])
         ;
+        if ($options['set_address_region']) {
+            $builder->add('region', TextType::class, [
+                'required' => false,
+                'disabled' => $options['disable_fields'],
+            ]);
+        }
 
         $field = $builder->create('postalCode', TextType::class, [
             'error_bubbling' => $options['child_error_bubbling'],
@@ -49,7 +55,7 @@ class AddressType extends AbstractType
         $builder->add($field);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -57,6 +63,7 @@ class AddressType extends AbstractType
                 'error_bubbling' => false,
                 'child_error_bubbling' => true,
                 'disable_fields' => false,
+                'set_address_region' => false,
             ])
             ->setAllowedTypes('disable_fields', 'bool')
             ->setAllowedTypes('child_error_bubbling', 'bool')

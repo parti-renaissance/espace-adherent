@@ -76,7 +76,7 @@ class BindAdherentDistrictSubscriberTest extends TestCase
             'Smith',
             new \DateTime('1990-12-12'),
             ActivityPositions::EMPLOYED,
-            PostAddress::createFrenchAddress('26 rue de la Paix', '75008-75108', 48.869878, 2.332197)
+            PostAddress::createFrenchAddress('26 rue de la Paix', '75008-75108', null, 48.869878, 2.332197)
         );
     }
 

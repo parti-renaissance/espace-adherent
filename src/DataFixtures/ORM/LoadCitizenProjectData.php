@@ -14,19 +14,19 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, DependentFixtureInterface
 {
-    const CITIZEN_PROJECT_1_UUID = 'aa364092-3999-4102-930c-f711ef971195';
-    const CITIZEN_PROJECT_2_UUID = '552934ed-2ac6-4a3a-a490-ddc8bf959444';
-    const CITIZEN_PROJECT_3_UUID = '942201fe-bffa-4fed-a551-71c3e49cea43';
-    const CITIZEN_PROJECT_4_UUID = '31fe9de2-5ba2-4305-be82-8e9a329e2579';
-    const CITIZEN_PROJECT_5_UUID = '0ac45a9f-8495-4b32-bd2d-e43a27f5e4b6';
-    const CITIZEN_PROJECT_6_UUID = 'cff414ca-3ee7-43db-8201-0852b0c05334';
-    const CITIZEN_PROJECT_7_UUID = 'fc83efde-17e5-4e87-b9e9-71b165aecd10';
-    const CITIZEN_PROJECT_8_UUID = '55bc9c81-612b-4108-b5ae-d065a69456d1';
-    const CITIZEN_PROJECT_9_UUID = 'eacefe0b-ace6-4ed5-a747-61f874f165f6';
-    const CITIZEN_PROJECT_10_UUID = 'ac98b08c-4e2d-4894-aa61-140b5be89645';
-    const CITIZEN_PROJECT_11_UUID = '695af719-ccfb-4754-813b-6685c757a855';
-    const CITIZEN_PROJECT_12_UUID = '3251ff14-cb9e-4f50-aab4-c332e50e9ff1';
-    const CITIZEN_PROJECT_13_UUID = '9f78a464-ddce-45cf-9cc1-3303c50842f2';
+    public const CITIZEN_PROJECT_1_UUID = 'aa364092-3999-4102-930c-f711ef971195';
+    public const CITIZEN_PROJECT_2_UUID = '552934ed-2ac6-4a3a-a490-ddc8bf959444';
+    public const CITIZEN_PROJECT_3_UUID = '942201fe-bffa-4fed-a551-71c3e49cea43';
+    public const CITIZEN_PROJECT_4_UUID = '31fe9de2-5ba2-4305-be82-8e9a329e2579';
+    public const CITIZEN_PROJECT_5_UUID = '0ac45a9f-8495-4b32-bd2d-e43a27f5e4b6';
+    public const CITIZEN_PROJECT_6_UUID = 'cff414ca-3ee7-43db-8201-0852b0c05334';
+    public const CITIZEN_PROJECT_7_UUID = 'fc83efde-17e5-4e87-b9e9-71b165aecd10';
+    public const CITIZEN_PROJECT_8_UUID = '55bc9c81-612b-4108-b5ae-d065a69456d1';
+    public const CITIZEN_PROJECT_9_UUID = 'eacefe0b-ace6-4ed5-a747-61f874f165f6';
+    public const CITIZEN_PROJECT_10_UUID = 'ac98b08c-4e2d-4894-aa61-140b5be89645';
+    public const CITIZEN_PROJECT_11_UUID = '695af719-ccfb-4754-813b-6685c757a855';
+    public const CITIZEN_PROJECT_12_UUID = '3251ff14-cb9e-4f50-aab4-c332e50e9ff1';
+    public const CITIZEN_PROJECT_13_UUID = '9f78a464-ddce-45cf-9cc1-3303c50842f2';
 
     use ContainerAwareTrait;
 
@@ -51,7 +51,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'required_means' => 'Les moyens 1',
             'created_by' => LoadAdherentData::ADHERENT_3_UUID,
             'created_at' => '2017-10-12 12:25:54',
-            'address' => NullablePostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.8705073, 2.3032432),
+            'address' => NullablePostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.8705073, 2.3032432),
             'district' => 'Paris 8e',
         ]);
 
@@ -75,7 +75,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'required_means' => 'Les moyens 2',
             'created_by' => LoadAdherentData::ADHERENT_6_UUID,
             'created_at' => '2017-10-12 18:34:12',
-            'address' => NullablePostAddress::createFrenchAddress('26 Boulevard Louis Guichoux', '13003-13203', 43.325543, 5.376076),
+            'address' => NullablePostAddress::createFrenchAddress('26 Boulevard Louis Guichoux', '13003-13203', null, 43.325543, 5.376076),
             'phone' => '33 673643424',
         ]);
         $citizenProject2->setImageName('default.png');
@@ -92,7 +92,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'required_means' => 'Les moyens 3',
             'created_by' => LoadAdherentData::ADHERENT_7_UUID,
             'created_at' => '2017-10-26 16:08:24',
-            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
+            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', null, 43.3256095, 5.374416),
         ]);
         $citizenProject3->addSkill($this->getReference('cps007'));
         $citizenProject3->addSkill($this->getReference('cps008'));
@@ -111,7 +111,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'created_by' => LoadAdherentData::ADHERENT_7_UUID,
             'created_at' => '2017-09-19 07:36:55',
             'name' => 'Massive Open Online Course',
-            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
+            'address' => NullablePostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', null, 43.3256095, 5.374416),
         ]);
         $citizenProject4->setImageName('default.png');
         $citizenProject4->approved();
@@ -127,7 +127,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'required_means' => 'Les moyens 5',
             'created_by' => LoadAdherentData::ADHERENT_7_UUID,
             'created_at' => '2017-10-19 11:54:28',
-            'address' => NullablePostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', 48.6241569, 2.4265995),
+            'address' => NullablePostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', null, 48.6241569, 2.4265995),
             'phone' => '33 673654349',
         ]);
         $citizenProject5->setImageName('default.png');
@@ -144,7 +144,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'required_means' => 'Les moyens 6',
             'created_by' => LoadAdherentData::ADHERENT_9_UUID,
             'created_at' => '2017-09-18 20:12:33',
-            'address' => NullablePostAddress::createFrenchAddress('28 Boulevard Louis Guichoux', '13003-13203', 43.32560, 5.376207),
+            'address' => NullablePostAddress::createFrenchAddress('28 Boulevard Louis Guichoux', '13003-13203', null, 43.32560, 5.376207),
             'phone' => '33 234823644',
         ]);
         $citizenProject6->setImageName('default.png');
@@ -161,7 +161,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'required_means' => 'Les moyens 7',
             'created_by' => LoadAdherentData::ADHERENT_10_UUID,
             'created_at' => '2017-09-18 09:14:45',
-            'address' => NullablePostAddress::createFrenchAddress('34 Boulevard Louis Guichoux', '13003-13203', 43.325524, 5.376792),
+            'address' => NullablePostAddress::createFrenchAddress('34 Boulevard Louis Guichoux', '13003-13203', null, 43.325524, 5.376792),
         ]);
         $citizenProject7->setImageName('default.png');
         $this->addReference('citizen-project-7', $citizenProject7);
@@ -176,7 +176,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'required_means' => 'Les moyens 8',
             'created_by' => LoadAdherentData::ADHERENT_11_UUID,
             'created_at' => '2017-10-10 17:34:18',
-            'address' => NullablePostAddress::createFrenchAddress('32 Boulevard Louis Guichoux', '13003-13203', 43.325534, 5.376733),
+            'address' => NullablePostAddress::createFrenchAddress('32 Boulevard Louis Guichoux', '13003-13203', null, 43.325534, 5.376733),
         ]);
         $citizenProject8->setImageName('default.png');
         $citizenProject8->approved('2017-10-10 18:23:18');
@@ -192,7 +192,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'required_means' => 'Les moyens 3',
             'created_by' => LoadAdherentData::ADHERENT_12_UUID,
             'created_at' => '2017-10-09 12:16:22',
-            'address' => NullablePostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
+            'address' => NullablePostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
             'district' => 'Brooklyn',
             'phone' => '1 2123150100',
         ]);
@@ -210,7 +210,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'required_means' => 'Les moyens refusés',
             'created_by' => LoadAdherentData::ADHERENT_3_UUID,
             'created_at' => '2018-09-01 10:22:13',
-            'address' => NullablePostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.8705073, 2.3032432),
+            'address' => NullablePostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.8705073, 2.3032432),
         ]);
         $citizenProject10->refused('2018-09-09 10:10:10');
         $citizenProject10->setImageName('default.png');
@@ -226,7 +226,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'required_means' => 'Les moyens en attente',
             'created_by' => LoadAdherentData::ADHERENT_12_UUID,
             'created_at' => '2018-09-09 12:12:12',
-            'address' => NullablePostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
+            'address' => NullablePostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
             'phone' => '1 2123150100',
         ]);
         $citizenProject11->setImageName('default.png');
@@ -242,7 +242,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'required_means' => 'Les moyens en attente',
             'created_by' => LoadAdherentData::ADHERENT_11_UUID,
             'created_at' => '2018-09-19 18:34:18',
-            'address' => NullablePostAddress::createFrenchAddress('32 Boulevard Louis Guichoux', '13003-13203', 43.325534, 5.376733),
+            'address' => NullablePostAddress::createFrenchAddress('32 Boulevard Louis Guichoux', '13003-13203', null, 43.325534, 5.376733),
             'turnkey_project' => $this->getReference('turnkey-project-education'),
         ]);
         $citizenProject12->setImageName('default.png');
@@ -259,7 +259,7 @@ class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface
             'required_means' => 'Les moyens en attente',
             'created_by' => LoadAdherentData::ADHERENT_9_UUID,
             'created_at' => '2018-09-19 18:34:18',
-            'address' => NullablePostAddress::createFrenchAddress('32 Boulevard Louis Guichoux', '13003-13203', 43.325534, 5.376733),
+            'address' => NullablePostAddress::createFrenchAddress('32 Boulevard Louis Guichoux', '13003-13203', null, 43.325534, 5.376733),
             'turnkey_project' => $this->getReference('turnkey-project-education'),
         ]);
         $citizenProject13->setImageName('default.png');

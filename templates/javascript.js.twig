@@ -5,6 +5,7 @@ App.createAddressSelector(
     '{{ address.city.vars.id }}',
     '{{ address.cityName.vars.id }}',
     '{{ address.cityName.vars.required }}',
+    '{{ address.region is defined ? address.region.vars.id : null }}',
     {{ options|json_encode|raw }}
 );
 {% endmacro %}

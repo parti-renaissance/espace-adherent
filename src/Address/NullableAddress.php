@@ -44,6 +44,11 @@ class NullableAddress implements AddressInterface, GeocodableInterface
      */
     private $country;
 
+    /**
+     * @Assert\Length(max=255)
+     */
+    private $region;
+
     public function __construct()
     {
         $this->country = self::FRANCE;
@@ -131,6 +136,7 @@ class NullableAddress implements AddressInterface, GeocodableInterface
         $address->city = $other->getCity();
         $address->cityName = $other->getCityName();
         $address->country = $other->getCountry();
+        $address->region = $other->getRegion();
 
         return $address;
     }
@@ -148,5 +154,15 @@ class NullableAddress implements AddressInterface, GeocodableInterface
         list(, $inseeCode) = explode('-', $cityCode);
 
         return $inseeCode;
+    }
+
+    public function getRegion(): ?string
+    {
+        return $this->region;
+    }
+
+    public function setRegion(?string $region): void
+    {
+        $this->region = $region;
     }
 }
