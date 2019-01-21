@@ -28,6 +28,7 @@ function Comment(props) {
                                 className="comments-list__comment__infos__approved__icon"
                                 src={icn_checklist}
                                 alt="Commentaire approuvé"
+                                title="Commentaire approuvé"
                             />
                         </span>
                     )}
