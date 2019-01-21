@@ -44,7 +44,7 @@ export function goBackFromCurrentIdea() {
 
 export function saveCurrentIdea(ideaData) {
     return (dispatch, getState, axios) => {
-        const { uuid, answers } = selectCurrentIdea(getState());
+        const { uuid, answers = [] } = selectCurrentIdea(getState());
         dispatch(createRequest(SAVE_CURRENT_IDEA, uuid));
         if (uuid) {
             // idea already exists (whatever its state)
