@@ -69,7 +69,7 @@ class FirstForm extends React.Component {
                     </label>
                     <TextArea
                         maxLength={180}
-                        placeholder="Décrivez en quelques mots le cœur de votre proposition (180 caractères max)"
+                        placeholder="Décrivez en quelques mots le cœur de votre proposition"
                         error={this.state.errors.description}
                         onChange={value => this.handleChange('description', value)}
                         value={this.state.inputs.description}

@@ -106,7 +106,7 @@ class SecondForm extends React.Component {
         return (
             <form className="second-form" onSubmit={this.handleSubmit}>
                 <div className="second-form__section">
-                    <label className="second-form__section__label">Avec qui proposez vous cette idée ?</label>
+                    <label className="second-form__section__label">Avec qui proposez-vous cette idée ?</label>
                     <Select
                         options={this.props.authorOptions}
                         placeholder="Seul / Mon comité"

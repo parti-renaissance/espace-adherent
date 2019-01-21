@@ -8,7 +8,7 @@ import MyContributions from './MyContributions';
 function MyIdeasModal(props) {
     const panes = [
         {
-            title: 'Mes idées',
+            title: 'Mes propositions',
             component: () => <MyIdeas ideas={props.my_ideas} onDeleteIdea={props.onDeleteIdea} />,
         },
         {
