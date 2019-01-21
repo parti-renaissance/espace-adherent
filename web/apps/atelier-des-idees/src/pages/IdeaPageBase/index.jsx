@@ -10,6 +10,14 @@ import VotingFooterIdeaPage from './VotingFooterIdeaPage';
 import IdeaPageSkeleton from './IdeaPageSkeleton';
 import autoSaveIcn from '../../img/icn_20px_autosave.svg';
 
+const TITLE_MIN_LENGTH = 15;
+const ANSWER_MIN_LENGTH = 15;
+
+/**
+ * Returns a map (object) containing the answer (possibly empty) for each question
+ * @param {array} guidelines Tools guidelines
+ * @param {array} answers Initial answers
+ */
 function getInitialAnswers(guidelines, answers = []) {
     const questions = guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
     return questions.reduce((acc, question) => {
@@ -19,28 +27,27 @@ function getInitialAnswers(guidelines, answers = []) {
     }, {});
 }
 
+/**
+ * Returns an array containing required questions ids
+ * @param {array} guidelines Tools guidelines
+ */
 function getRequiredAnswers(guidelines) {
     const questions = guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
-    return questions
-        .filter(question => question.required)
-        .reduce((acc, question) => {
-            acc[question.id] = false;
-            return acc;
-        }, {});
+    return questions.filter(question => question.required).map(question => question.id);
 }
 
 class IdeaPageBase extends React.Component {
     constructor(props) {
         super(props);
         // init state
+        // get required questions and set required errors
         const answers = getInitialAnswers(props.guidelines, props.idea.answers);
-        const requiredAnswers = getRequiredAnswers(props.guidelines);
+        this.requiredQuestions = getRequiredAnswers(props.guidelines);
         this.state = {
             name: props.idea.name || '',
             answers,
             errors: {
                 name: false,
-                ...requiredAnswers,
             },
             readingMode: props.idea.status === ideaStatus.FINALIZED,
         };
@@ -58,10 +65,14 @@ class IdeaPageBase extends React.Component {
         this.setState(
             prevState => ({
                 name: value,
-                errors: { ...prevState.errors, name: !value },
+                errors: {
+                    ...prevState.errors,
+                    // if in error, remove it when text respects min length
+                    name: !value || (prevState.errors.name ? value.length < TITLE_MIN_LENGTH : prevState.errors.name),
+                },
             }),
             () => {
-                if (value && withSave) {
+                if (!this.state.errors.name && withSave) {
                     this.onSaveIdea();
                 }
             }
@@ -75,12 +86,14 @@ class IdeaPageBase extends React.Component {
             }),
             () => {
                 // check if field is required and set errors accordingly
-                const isFieldRequired = Object.keys(this.state.errors).includes(id.toString());
+                const isRequired = this.requiredQuestions.includes(parseInt(id, 10));
                 this.setState((prevState) => {
                     const errors = { ...prevState.errors };
-                    if (isFieldRequired && errors[id]) {
-                        // if is required and already in error, update error state
-                        errors[id] = !value;
+                    if (errors[id]) {
+                        // if is already in error, update error state
+                        errors[id] = isRequired
+                            ? value.length < ANSWER_MIN_LENGTH
+                            : 0 < value.length && value.length < ANSWER_MIN_LENGTH;
                     }
                     return {
                         errors,
@@ -98,7 +111,7 @@ class IdeaPageBase extends React.Component {
     }
 
     formatAnswers() {
-        const formattedAnswers = Object.entries(this.state.answers).map(([id, value], index) => ({
+        const formattedAnswers = Object.entries(this.state.answers).map(([id, value]) => ({
             question: id,
             content: value,
         }));
@@ -107,19 +120,15 @@ class IdeaPageBase extends React.Component {
 
     onSaveIdea() {
         const { name } = this.state;
-        if (name) {
+        if (this.hasCorrectValues(false)) {
             // format data before sending them
             const data = { name, answers: this.formatAnswers() };
             this.props.onSaveIdea(data);
-        } else {
-            this.setState(prevState => ({
-                errors: { ...prevState.errors, name: true },
-            }));
         }
     }
 
     onPublishIdea() {
-        if (this.hasRequiredValues()) {
+        if (this.hasCorrectValues()) {
             // format data before sending them
             const data = { name: this.state.name, answers: this.formatAnswers() };
             this.props.onPublishIdea(data);
@@ -136,19 +145,23 @@ class IdeaPageBase extends React.Component {
         }, []);
     }
 
-    hasRequiredValues() {
-        const { answers, errors } = this.state;
-        // check if all the required questions are answered
-        const { name, ...answersErrors } = errors;
-        // compute missing values from required fields
-        const missingValues = Object.keys(answersErrors).reduce((acc, questionId) => {
-            if (!answers[questionId]) {
+    hasCorrectValues(withRequired = true) {
+        const { answers } = this.state;
+        // check if all the required questions have an answer
+        const missingValues = Object.entries(answers).reduce((acc, [questionId, answer]) => {
+            const isRequired = withRequired && this.requiredQuestions.includes(parseInt(questionId, 10));
+            if (
+                // if an answer is required, it must have at least ANSWER_MIN_LENGTH characters
+                (isRequired && answer.length < ANSWER_MIN_LENGTH) ||
+                // otherwise it can be empty or have at least ANSWER_MIN_LENGTH characters
+                (!isRequired && 0 < answer.length && answer.length < ANSWER_MIN_LENGTH)
+            ) {
                 acc[questionId] = true;
             }
             return acc;
         }, {});
         // update name error
-        if (!this.state.name) {
+        if (this.state.name.length < TITLE_MIN_LENGTH) {
             missingValues.name = true;
         }
         this.setState({ errors: missingValues });
@@ -214,6 +227,7 @@ class IdeaPageBase extends React.Component {
                                     publishedAt={idea.publishedAt}
                                     onTitleChange={(value, withSave) => this.onNameChange(value, withSave)}
                                     title={this.state.name}
+                                    minLength={TITLE_MIN_LENGTH}
                                     isAuthor={this.props.isAuthor}
                                     isEditing={idea.status === ideaStatus.DRAFT}
                                     isReadOnly={this.state.readingMode || !this.props.isAuthor}
