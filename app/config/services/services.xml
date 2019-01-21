@@ -422,6 +422,9 @@
         <service id="AppBundle\Doctrine\IdeaExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
+        <service id="AppBundle\Doctrine\ConsultationExtension">
+            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
+        </service>
 
         <!-- Mailchimp -->
         <service id="AppBundle\Mailchimp\Synchronisation\EventListener\AdherentEventSubscriber" />

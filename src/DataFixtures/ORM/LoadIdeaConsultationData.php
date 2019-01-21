@@ -14,7 +14,7 @@ class LoadIdeaConsultationData extends AbstractFixture
             'Consultation sur les retraites',
             'https://fr.lipsum.com/',
             new \DateTime('-4 days'),
-            new \DateTime('yesterday'),
+            new \DateTime('tomorrow'),
             2,
             true
         );
