@@ -26,7 +26,7 @@ class MyContributions extends React.Component {
                         }
                     >
                         <span className="my-contributions__category__button__label">
-                            {'vous avez voté ou contribué'.toUpperCase()}
+                            {'vous avez contribué'.toUpperCase()}
                         </span>
                         <img
                             className={classNames('my-contributions__category__button__icon', {
@@ -53,7 +53,7 @@ class MyContributions extends React.Component {
                                                 to={`/atelier-des-idees/note/${idea.uuid}`}
                                                 className="my-ideas__category__idea__actions__see-note button--secondary"
                                             >
-												VOIR LA NOTE
+												VOIR LA PROPOSITION
                                             </Link>
                                         </div>
                                     </div>
