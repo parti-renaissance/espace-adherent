@@ -16,6 +16,7 @@ class LoadIdeaAnswerData extends AbstractFixture implements DependentFixtureInte
 
         $ideaPeace = $this->getReference('idea-peace');
         $ideaHelpEcology = $this->getReference('idea-help-ecology');
+        $ideaReduceWaste = $this->getReference('idea-reduce-waste');
         $questionProblem = $this->getReference('question-problem');
         $questionAnswer = $this->getReference('question-answer');
         $questionCompare = $this->getReference('question-compare');
@@ -88,6 +89,13 @@ class LoadIdeaAnswerData extends AbstractFixture implements DependentFixtureInte
         $ideaHelpEcology->addAnswer($answerQuestionProblemIdeaHelpEcology);
         $this->addReference('answer-q-problem-idea-he', $answerQuestionProblemIdeaHelpEcology);
 
+        $answerQuestionProblemIdeaReduceWaste = new Answer(
+            'Vestibulum ante ipsum primis.'
+        );
+        $answerQuestionProblemIdeaReduceWaste->setQuestion($questionProblem);
+        $ideaReduceWaste->addAnswer($answerQuestionProblemIdeaReduceWaste);
+        $this->addReference('answer-q-problem-idea-reduce-waste', $answerQuestionProblemIdeaReduceWaste);
+
         $manager->persist($answerQuestionProblem);
         $manager->persist($answerQuestionAnswer);
         $manager->persist($answerQuestionCompare);
@@ -97,6 +105,7 @@ class LoadIdeaAnswerData extends AbstractFixture implements DependentFixtureInte
         $manager->persist($answerQuestionEcologyImpact);
         $manager->persist($answerQuestionGenderEquality);
         $manager->persist($answerQuestionProblemIdeaHelpEcology);
+        $manager->persist($answerQuestionProblemIdeaReduceWaste);
 
         $manager->flush();
     }
