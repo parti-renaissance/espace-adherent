@@ -18,7 +18,6 @@ abstract class AbstractEventControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('1 inscrit', trim($crawler->filter('.event-attendees')->text()));
 
         $registrationLink = $crawler->filter('.register-event');
 
@@ -50,7 +49,6 @@ abstract class AbstractEventControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('1 inscrit', trim($crawler->filter('.event-attendees')->text()));
 
         $registrationLink = $crawler->filter('.register-event');
 

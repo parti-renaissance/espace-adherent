@@ -30,7 +30,6 @@ class CitizenActionControllerTest extends AbstractEventControllerTest
         $crawler = $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('1 inscrit', trim($crawler->filter('#members h3')->text()));
         $this->assertSame(1, $crawler->filter('.citizen_action header a:contains("S\'inscrire")')->count());
 
         $crawler = $this->client->click($crawler->selectLink('S\'inscrire')->link());
