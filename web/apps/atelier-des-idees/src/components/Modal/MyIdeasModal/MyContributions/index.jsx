@@ -16,25 +16,28 @@ class MyContributions extends React.Component {
     render() {
         return (
             <div className="my-contributions">
-                <button
-                    className="my-contributions__category__button"
-                    onClick={() =>
-                        this.setState(prevState => ({
-                            showList: !prevState.showList,
-                        }))
-                    }
-                >
-                    <span className="my-contributions__category__button__label">
-                        {'vous avez voté ou contribué'.toUpperCase()}
-                    </span>
-                    <img
-                        className={classNames('my-contributions__category__button__icon', {
-                            'my-contributions__category__button__icon--rotate': !this.state
-                                .showList,
-                        })}
-                        src={icn_toggle_content}
-                    />
-                </button>
+                {0 < this.props.ideas.length ? (
+                    <button
+                        className="my-contributions__category__button"
+                        onClick={() =>
+                            this.setState(prevState => ({
+                                showList: !prevState.showList,
+                            }))
+                        }
+                    >
+                        <span className="my-contributions__category__button__label">
+                            {'vous avez voté ou contribué'.toUpperCase()}
+                        </span>
+                        <img
+                            className={classNames('my-contributions__category__button__icon', {
+                                'my-contributions__category__button__icon--rotate': !this.state.showList,
+                            })}
+                            src={icn_toggle_content}
+                        />
+                    </button>
+                ) : (
+                    ''
+                )}
                 {0 < this.props.ideas.length ? (
                     this.props.ideas.map(
                         idea =>
@@ -44,9 +47,7 @@ class MyContributions extends React.Component {
                                         <p className="my-ideas__category__idea__date">
 											Créée le {new Date(idea.created_at).toLocaleDateString()}
                                         </p>
-                                        <h4 className="my-ideas__category__idea__name">
-                                            {idea.name}
-                                        </h4>
+                                        <h4 className="my-ideas__category__idea__name">{idea.name}</h4>
                                         <div className="my-ideas__category__idea__actions">
                                             <Link
                                                 to={`/atelier-des-idees/note/${idea.uuid}`}
