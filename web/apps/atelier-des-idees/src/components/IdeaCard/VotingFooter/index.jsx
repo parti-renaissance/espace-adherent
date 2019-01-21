@@ -80,7 +80,7 @@ class VotingFooter extends React.Component {
                     </button>
 
                     {!this.state.toggleVotes &&
-						(0 < this.props.totalVotes.length ? (
+						(0 < this.props.totalVotes ? (
 						    <p className="voting-footer__total-votes">{this.props.totalVotes} votes</p>
 						) : (
 						    <p />
