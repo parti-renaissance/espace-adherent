@@ -31,9 +31,9 @@ class Header extends React.PureComponent {
                             </React.Fragment>
                         )}
                     </div>
-                    <Link to="/atelier-des-idees/creer-ma-note" className="header__create-btn button button--primary">
+                    <a href="/atelier-des-idees/creer-ma-note?anonymous_authentication_intention=/connexion" className="header__create-btn button button--primary">
                         J'ai une proposition
-                    </Link>
+                    </a>
                     {/* <Mobile>
                 <ScrollMenu
                     alignCenter={false}
