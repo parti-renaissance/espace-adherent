@@ -55,16 +55,16 @@
                 {{ form_errors(form.firstName) }}
                 {{ form_widget(form.firstName, { attr: { class: 'form--full', placeholder: 'Prénom' } }) }}
             </div>
-
+            <div class="form__row--stretch b__nudge--bottom-medium">
+                {{ form_errors(form.nationality) }}
+                {{ form_label(form.nationality, 'Nationalité :', { label_attr: { class: '' } }) }}
+                {{ form_widget(form.nationality) }}
+            </div>
             <div class="form__row">
                 {{ form_errors(form.emailAddress) }}
                 {{ form_widget(form.emailAddress, { attr: { class: 'form--full', placeholder: 'Adresse email' } }) }}
             </div>
 
-            <div class="form__row">
-                {{ form_errors(form.nationality) }}
-                {{ form_widget(form.nationality, { attr: { class: 'form--full', placeholder: 'Nationalité' } }) }}
-            </div>
         </div>
 
         <div>

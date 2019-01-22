@@ -389,6 +389,17 @@
         &__city {
             width: 208px;
         }
+        .form__row--stretch {
+            label.form__label {
+                padding: 20px 0;
+                font-size: 16px;
+                font-family: $font-roboto;
+            }
+            #app_donation_nationality {
+                margin-right: 0;
+            }
+        }
+
     }
 
     &__form-steps {
