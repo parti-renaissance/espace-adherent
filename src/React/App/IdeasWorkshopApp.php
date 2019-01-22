@@ -16,8 +16,7 @@ class IdeasWorkshopApp implements ReactAppInterface
 
     public function enableInProduction(): bool
     {
-        // ;)
-        return false;
+        return true;
     }
 
     public function getRoutes(): array
