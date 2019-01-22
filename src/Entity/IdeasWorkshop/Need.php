@@ -42,7 +42,7 @@ class Need implements EnabledInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      *
-     * @SymfonySerializer\Groups({"need_read", "idea_read"})
+     * @SymfonySerializer\Groups({"need_read", "idea_read", "idea_list_read"})
      */
     private $id;
 
