@@ -18,48 +18,48 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "metadata": {
-            "total_items": 8,
-            "items_per_page": 3,
-            "count": 3,
-            "current_page": 1,
-            "last_page": 3
-        },
-        "items": [
-            {
-                "uuid": "37116c8b-a36e-4a0d-8346-baba91cd1330",
-                "content": "Commentaire de l'adhérent à desadhérer",
-                "author": {
-                    "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                    "first_name": "Michel",
-                    "last_name": "VASSEUR"
-                },
-                "approved": false,
-                "created_at": "@string@.isDateTime()"
-            },
-            {
-                "uuid": "ecbe9136-3dc0-477d-b817-a25878dd639a",
-                "content": "Commentaire signalé",
-                "author": {
-                    "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
-                    "first_name": "Laura",
-                    "last_name": "Deloche"
-                },
-                "approved": false,
-                "created_at": "@string@.isDateTime()"
-            },
-            {
-                "uuid": "3fa38c45-1122-4c48-9ada-b366b3408fec",
-                "content": "Commentaire non approuvé",
-                "author": {
-                    "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
-                    "first_name": "Laura",
-                    "last_name": "Deloche"
-                },
-                "approved": false,
-                "created_at": "@string@.isDateTime()"
-            }
-        ]
+       "metadata":{
+          "total_items":9,
+          "items_per_page":3,
+          "count":3,
+          "current_page":1,
+          "last_page":3
+       },
+       "items":[
+          {
+             "uuid":"9e49e935-ba51-4ae5-981c-5f48e55fdf28",
+             "content":"Commentaire d'un adhérent",
+             "author":{
+                "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
+                "first_name":"Benjamin",
+                "last_name":"Duroc"
+             },
+             "approved":false,
+             "created_at":"@string@.isDateTime()"
+          },
+          {
+             "uuid":"37116c8b-a36e-4a0d-8346-baba91cd1330",
+             "content":"Commentaire de l'adhérent à desadhérer",
+             "author":{
+                "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                "first_name":"Michel",
+                "last_name":"VASSEUR"
+             },
+             "approved":false,
+             "created_at":"@string@.isDateTime()"
+          },
+          {
+             "uuid":"ecbe9136-3dc0-477d-b817-a25878dd639a",
+             "content":"Commentaire signalé",
+             "author":{
+                "uuid":"93de5d98-383a-4863-9f47-eb7a348873a8",
+                "first_name":"Laura",
+                "last_name":"Deloche"
+             },
+             "approved":false,
+             "created_at":"@string@.isDateTime()"
+          }
+       ]
     }
     """
 

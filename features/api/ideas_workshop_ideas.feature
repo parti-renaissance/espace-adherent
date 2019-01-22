@@ -63,8 +63,8 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "slug": "reduire-le-gaspillage",
                 "days_before_deadline": 0,
-                "contributors_count": 0,
-                "comments_count": 0
+                "contributors_count": 2,
+                "comments_count": 1
             },
             {
                 "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -406,8 +406,8 @@ Feature:
               "slug": "reduire-le-gaspillage",
               "status": "FINALIZED",
               "days_before_deadline": 0,
-              "contributors_count": 0,
-              "comments_count": 0
+              "contributors_count": 2,
+              "comments_count": 1
           },
           {
               "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -500,8 +500,8 @@ Feature:
               "created_at": "@string@.isDateTime()",
               "slug": "reduire-le-gaspillage",
               "days_before_deadline": 0,
-              "contributors_count": 0,
-              "comments_count": 0
+              "contributors_count": 2,
+              "comments_count": 1
           },
           {
              "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -964,7 +964,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can get ideas where I voted
-    Given I am logged as "jacques.picard@en-marche.fr"
+    Given I am logged as "benjyd@aol.com"
     And I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/ideas-workshop/ideas/my-contributions"
     Then the response status code should be 200
@@ -972,67 +972,108 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "metadata": {
-            "total_items": 1,
-            "items_per_page": 2,
-            "count": 1,
-            "current_page": 1,
-            "last_page": 1
-        },
-        "items": [
-            {
-                "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
-                "name": "Faire la paix",
-                "themes": [
-                    {
-                        "name": "Armées et défense",
-                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-                    }
-                ],
-                "category": {
-                    "name": "Echelle Européenne",
-                    "enabled": true
-                },
-                "needs": [
-                    {
-                        "name": "Juridique",
-                        "enabled": true
-                    }
-                ],
-                "author": {
-                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                    "first_name": "Jacques",
-                    "last_name": "Picard"
-                },
-                "published_at": "@string@.isDateTime()",
-                "finalized_at": "@string@.isDateTime()",
-                "committee": {
-                    "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
-                    "created_at": "@string@.isDateTime()",
-                    "name": "En Marche Paris 8",
-                    "slug": "en-marche-paris-8"
-                },
-                "status": "PENDING",
-                "votes_count": {
-                    "important": "7",
-                    "feasible": "5",
-                    "innovative": "5",
-                    "total": 17,
-                    "my_votes": {
-                    "feasible": @integer@,
-                    "important": @integer@,
-                    "innovative": @integer@
+       "metadata":{
+          "total_items":2,
+          "items_per_page":2,
+          "count":2,
+          "current_page":1,
+          "last_page":1
+       },
+       "items":[
+          {
+             "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
+             "name":"Réduire le gaspillage",
+             "themes":[
+                {
+                   "name":"Écologie",
+                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                 }
-                },
-                "author_category": "COMMITTEE",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
-                "created_at": "@string@.isDateTime()",
-                "slug": "faire-la-paix",
-                "days_before_deadline": 13,
-                "contributors_count": 8,
-                "comments_count": 8
-            }
-        ]
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+
+             ],
+             "author":{
+                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name":"Jacques",
+                "last_name":"Picard"
+             },
+             "published_at":"@string@.isDateTime()",
+             "finalized_at":"@string@.isDateTime()",
+             "committee":null,
+             "votes_count":{
+                "important":0,
+                "feasible":0,
+                "innovative":0,
+                "total":0,
+                "my_votes":[
+
+                ]
+             },
+             "author_category":"ADHERENT",
+             "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
+             "created_at":"@string@.isDateTime()",
+             "slug":"reduire-le-gaspillage",
+             "status":"FINALIZED",
+             "days_before_deadline":0,
+             "contributors_count":2,
+             "comments_count":1
+          },
+          {
+             "uuid":"e4ac3efc-b539-40ac-9417-b60df432bdc5",
+             "name":"Faire la paix",
+             "themes":[
+                {
+                   "name":"Armées et défense",
+                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+                {
+                   "name":"Juridique",
+                   "enabled":true
+                }
+             ],
+             "author":{
+                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name":"Jacques",
+                "last_name":"Picard"
+             },
+             "published_at":"@string@.isDateTime()",
+             "finalized_at":"@string@.isDateTime()",
+             "committee":{
+                "uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818",
+                "created_at":"2017-01-12T13:25:54+01:00",
+                "name":"En Marche Paris 8",
+                "slug":"en-marche-paris-8"
+             },
+             "votes_count":{
+                "important":"7",
+                "feasible":"5",
+                "innovative":"5",
+                "total":17,
+                "my_votes":{
+                   "feasible":32,
+                   "important":29
+                }
+             },
+             "author_category":"COMMITTEE",
+             "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
+             "created_at":"@string@.isDateTime()",
+             "slug":"faire-la-paix",
+             "status":"PENDING",
+             "days_before_deadline":13,
+             "contributors_count":8,
+             "comments_count":8
+          }
+       ]
     }
     """
 
@@ -1045,64 +1086,106 @@ Feature:
     And the JSON should be equal to:
     """
     {
-       "metadata": {
-          "total_items": 1,
-          "items_per_page": 2,
-          "count": 1,
-          "current_page": 1,
-          "last_page": 1
+       "metadata":{
+          "total_items":2,
+          "items_per_page":2,
+          "count":2,
+          "current_page":1,
+          "last_page":1
        },
-       "items": [
+       "items":[
           {
-             "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
-             "themes": [
-                 {
-                     "name": "Armées et défense",
-                     "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-                 }
-             ],
-             "category": {
-                "name": "Echelle Européenne",
-                "enabled": true
-             },
-             "needs": [
+             "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
+             "name":"Réduire le gaspillage",
+             "themes":[
                 {
-                   "name": "Juridique",
-                   "enabled": true
+                   "name":"Écologie",
+                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+
+             ],
+             "author":{
+                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name":"Jacques",
+                "last_name":"Picard"
+             },
+             "published_at":"@string@.isDateTime()",
+             "finalized_at":"@string@.isDateTime()",
+             "committee":null,
+             "votes_count":{
+                "important":0,
+                "feasible":0,
+                "innovative":0,
+                "total":0,
+                "my_votes":[
+
+                ]
+             },
+             "author_category":"ADHERENT",
+             "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
+             "created_at":"@string@.isDateTime()",
+             "slug":"reduire-le-gaspillage",
+             "status":"FINALIZED",
+             "days_before_deadline":0,
+             "contributors_count":2,
+             "comments_count":1
+          },
+          {
+             "uuid":"e4ac3efc-b539-40ac-9417-b60df432bdc5",
+             "name":"Faire la paix",
+             "themes":[
+                {
+                   "name":"Armées et défense",
+                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+                {
+                   "name":"Juridique",
+                   "enabled":true
                 }
              ],
              "author":{
-                "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name": "Jacques",
-                "last_name": "Picard"
+                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name":"Jacques",
+                "last_name":"Picard"
              },
-             "published_at": "@string@.isDateTime()",
-             "finalized_at": "@string@.isDateTime()",
-             "committee": {
-                "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
-                "created_at": "2017-01-12T13:25:54+01:00",
-                "name": "En Marche Paris 8",
-                "slug": "en-marche-paris-8"
+             "published_at":"@string@.isDateTime()",
+             "finalized_at":"@string@.isDateTime()",
+             "committee":{
+                "uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818",
+                "created_at":"@string@.isDateTime()",
+                "name":"En Marche Paris 8",
+                "slug":"en-marche-paris-8"
              },
-             "status": "PENDING",
              "votes_count":{
-                "important": "7",
-                "feasible": "5",
-                "innovative": "5",
-                "total": 17,
-                "my_votes": {
-                    "feasible": @integer@,
-                    "important": @integer@
+                "important":"7",
+                "feasible":"5",
+                "innovative":"5",
+                "total":17,
+                "my_votes":{
+                   "feasible":32,
+                   "important":29
                 }
              },
-             "author_category": "COMMITTEE",
-             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
-             "created_at": "@string@.isDateTime()",
-             "name": "Faire la paix",
-             "slug": "faire-la-paix",
-             "days_before_deadline": 13,
-             "contributors_count": 8,
-             "comments_count": 8
+             "author_category":"COMMITTEE",
+             "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
+             "created_at":"@string@.isDateTime()",
+             "slug":"faire-la-paix",
+             "status":"PENDING",
+             "days_before_deadline":13,
+             "contributors_count":8,
+             "comments_count":8
           }
        ]
     }
@@ -1505,34 +1588,76 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "name": "Réduire le gaspillage",
-        "themes": [
-            {
-                "id": 3,
-                "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-            }
-        ],
-        "category": {
-            "id": 1
-        },
-        "needs": [],
-        "author": {
-            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-            "first_name": "Jacques",
-            "last_name": "Picard"
-        },
-        "published_at": "@string@.isDateTime()",
-        "finalized_at": "@string@.isDateTime()",
-        "status": "FINALIZED",
-        "answers": [],
-        "votes_count": {
-            "important": 0,
-            "feasible": 0,
-            "innovative": 0,
-            "total": 0
-        },
-        "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
-        "created_at": "@string@.isDateTime()"
+       "name":"Réduire le gaspillage",
+       "themes":[
+          {
+             "id":3,
+             "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
+          }
+       ],
+       "category":{
+          "id":1
+       },
+       "needs":[
+
+       ],
+       "author":{
+          "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+          "first_name":"Jacques",
+          "last_name":"Picard"
+       },
+       "published_at":"@string@.isDateTime()",
+       "finalized_at":"@string@.isDateTime()",
+       "answers":[
+          {
+             "id":10,
+             "content":"Vestibulum ante ipsum primis.",
+             "question":{
+                "id":1
+             },
+             "threads":{
+                "total_items":1,
+                "items":[
+                   {
+                      "comments":{
+                         "total_items":1,
+                         "items":[
+                            {
+                               "uuid":"9e49e935-ba51-4ae5-981c-5f48e55fdf28",
+                               "content":"Commentaire d'un adhérent",
+                               "author":{
+                                  "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
+                                  "first_name":"Benjamin",
+                                  "last_name":"Duroc"
+                               },
+                               "approved":false,
+                               "created_at":"@string@.isDateTime()"
+                            }
+                         ]
+                      },
+                      "uuid":"1474504d-8024-4e54-85f7-59666a11cd77",
+                      "content":"[Reduce Waste] Une discussion avec un commentaire",
+                      "author":{
+                         "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                         "first_name":"Jacques",
+                         "last_name":"Picard"
+                      },
+                      "approved":false,
+                      "created_at":"@string@.isDateTime()"
+                   }
+                ]
+             }
+          }
+       ],
+       "votes_count":{
+          "important":0,
+          "feasible":0,
+          "innovative":0,
+          "total":0
+       },
+       "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
+       "created_at":"@string@.isDateTime()",
+       "status":"FINALIZED"
     }
     """
 
@@ -1544,89 +1669,93 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "metadata": {
-            "total_items": 4,
-            "items_per_page": 2,
-            "count": 2,
-            "current_page": 1,
-            "last_page": 2
-        },
-        "items": [
-            {
-                "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
-                "name": "Réduire le gaspillage",
-                "themes": [
-                    {
-                        "name": "Écologie",
-                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                    }
-                ],
-                "category": {
-                    "name": "Echelle Européenne",
-                    "enabled": true
-                },
-                "needs": [],
-                "author": {
-                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                    "first_name": "Jacques",
-                    "last_name": "Picard"
-                },
-                "published_at": "@string@.isDateTime()",
-                "finalized_at": "@string@.isDateTime()",
-                "committee": null,
-                "status": "FINALIZED",
-                "votes_count": {
-                    "important": 0,
-                    "feasible": 0,
-                    "innovative": 0,
-                    "total": 0
-                },
-                "author_category": "ADHERENT",
-                "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
-                "created_at": "@string@.isDateTime()",
-                "slug": "reduire-le-gaspillage",
-                "days_before_deadline": 0,
-                "contributors_count": 0,
-                "comments_count": 0
-            },
-            {
-                "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
-                "name": "Reduire le gaspillage alimentaire",
-                "themes": [
-                    {
-                        "name": "Écologie",
-                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                    }
-                ],
-                "category": {
-                    "name": "Echelle Européenne",
-                    "enabled": true
-                },
-                "needs": [],
-                "author": {
-                    "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                    "first_name": "Michel",
-                    "last_name": "VASSEUR"
-                },
-                "published_at": "@string@.isDateTime()",
-                "finalized_at": "@string@.isDateTime()",
-                "committee": null,
-                "status": "FINALIZED",
-                "votes_count": {
-                    "important": 0,
-                    "feasible": 0,
-                    "innovative": 0,
-                    "total": 0
-                },
-                "author_category": "ADHERENT",
-                "description": "Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
-                "created_at": "@string@.isDateTime()",
-                "slug": "reduire-le-gaspillage-alimentaire",
-                "days_before_deadline": 0,
-                "contributors_count": 0,
-                "comments_count": 0
-            }
-        ]
+       "metadata":{
+          "total_items":4,
+          "items_per_page":2,
+          "count":2,
+          "current_page":1,
+          "last_page":2
+       },
+       "items":[
+          {
+             "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
+             "name":"Réduire le gaspillage",
+             "themes":[
+                {
+                   "name":"Écologie",
+                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+
+             ],
+             "author":{
+                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "first_name":"Jacques",
+                "last_name":"Picard"
+             },
+             "published_at":"@string@.isDateTime()",
+             "finalized_at":"@string@.isDateTime()",
+             "committee":null,
+             "votes_count":{
+                "important":0,
+                "feasible":0,
+                "innovative":0,
+                "total":0
+             },
+             "author_category":"ADHERENT",
+             "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
+             "created_at":"@string@.isDateTime()",
+             "slug":"reduire-le-gaspillage",
+             "status":"FINALIZED",
+             "days_before_deadline":0,
+             "contributors_count":2,
+             "comments_count":1
+          },
+          {
+             "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
+             "name":"Reduire le gaspillage alimentaire",
+             "themes":[
+                {
+                   "name":"Écologie",
+                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+
+             ],
+             "author":{
+                "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                "first_name":"Michel",
+                "last_name":"VASSEUR"
+             },
+             "published_at":"@string@.isDateTime()",
+             "finalized_at":"@string@.isDateTime()",
+             "committee":null,
+             "votes_count":{
+                "important":0,
+                "feasible":0,
+                "innovative":0,
+                "total":0
+             },
+             "author_category":"ADHERENT",
+             "description":"Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
+             "created_at":"@string@.isDateTime()",
+             "slug":"reduire-le-gaspillage-alimentaire",
+             "status":"FINALIZED",
+             "days_before_deadline":0,
+             "contributors_count":0,
+             "comments_count":0
+          }
+       ]
     }
     """
 
@@ -1638,89 +1767,96 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "metadata": {
-            "total_items": 4,
-            "items_per_page": 2,
-            "count": 2,
-            "current_page": 1,
-            "last_page": 2
-        },
-        "items": [
-            {
-                "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
-                "name": "Réduire le gaspillage",
-                "themes": [
-                    {
-                        "name": "Écologie",
-                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                    }
-                ],
-                "category": {
-                    "name": "Echelle Européenne",
-                    "enabled": true
-                },
-                "needs": [],
-                "author": {
-                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                    "first_name": "Jacques",
-                    "last_name": "Picard"
-                },
-                "published_at": "@string@.isDateTime()",
-                "finalized_at": "@string@.isDateTime()",
-                "committee": null,
-                "status": "FINALIZED",
-                "votes_count": {
-                    "important": 0,
-                    "feasible": 0,
-                    "innovative": 0,
-                    "total": 0
-                },
-                "author_category": "ADHERENT",
-                "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
-                "created_at": "@string@.isDateTime()",
-                "slug": "reduire-le-gaspillage",
-                "days_before_deadline": 0,
-                "contributors_count": 0,
-                "comments_count": 0
-            },
-            {
-                "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
-                "name": "Reduire le gaspillage alimentaire",
-                "themes": [
-                    {
-                        "name": "Écologie",
-                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                    }
-                ],
-                "category": {
-                    "name": "Echelle Européenne",
-                    "enabled": true
-                },
-                "needs": [],
-                "author": {
-                    "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                    "first_name": "Michel",
-                    "last_name": "VASSEUR"
-                },
-                "published_at": "@string@.isDateTime()",
-                "finalized_at": "@string@.isDateTime()",
-                "committee": null,
-                "status": "FINALIZED",
-                "votes_count": {
-                    "important": 0,
-                    "feasible": 0,
-                    "innovative": 0,
-                    "total": 0
-                },
-                "author_category": "ADHERENT",
-                "description": "Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
-                "created_at": "@string@.isDateTime()",
-                "slug": "reduire-le-gaspillage-alimentaire",
-                "days_before_deadline": 0,
-                "contributors_count": 0,
-                "comments_count": 0
-            }
-        ]
+       "metadata":{
+          "total_items":4,
+          "items_per_page":2,
+          "count":2,
+          "current_page":1,
+          "last_page":2
+       },
+       "items":[
+          {
+             "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
+             "name":"Reduire le gaspillage alimentaire",
+             "themes":[
+                {
+                   "name":"Écologie",
+                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+
+             ],
+             "author":{
+                "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                "first_name":"Michel",
+                "last_name":"VASSEUR"
+             },
+             "published_at":"@string@.isDateTime()",
+             "finalized_at":"@string@.isDateTime()",
+             "committee":null,
+             "votes_count":{
+                "important":0,
+                "feasible":0,
+                "innovative":0,
+                "total":0
+             },
+             "author_category":"ADHERENT",
+             "description":"Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
+             "created_at":"@string@.isDateTime()",
+             "slug":"reduire-le-gaspillage-alimentaire",
+             "status":"FINALIZED",
+             "days_before_deadline":0,
+             "contributors_count":0,
+             "comments_count":0
+          },
+          {
+             "uuid":"bbf35ba6-52ba-4913-aae8-5948449d0c1d",
+             "name":"Reduire le bruit dans les opens spaces",
+             "themes":[
+                {
+                   "name":"Écologie",
+                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
+                }
+             ],
+             "category":{
+                "name":"Echelle Européenne",
+                "enabled":true
+             },
+             "needs":[
+                {
+                   "name":"Juridique",
+                   "enabled":true
+                }
+             ],
+             "author":{
+                "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                "first_name":"Michel",
+                "last_name":"VASSEUR"
+             },
+             "published_at":"@string@.isDateTime()",
+             "finalized_at":"@string@.isDateTime()",
+             "committee":null,
+             "votes_count":{
+                "important":0,
+                "feasible":0,
+                "innovative":0,
+                "total":0
+             },
+             "author_category":"ADHERENT",
+             "description":"Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
+             "created_at":"@string@.isDateTime()",
+             "slug":"reduire-le-bruit-dans-les-opens-spaces",
+             "status":"PENDING",
+             "days_before_deadline":8,
+             "contributors_count":0,
+             "comments_count":0
+          }
+       ]
     }
     """
 
@@ -1741,78 +1877,82 @@ Feature:
         },
         "items": [
             {
-                "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
-                "name": "Réduire le gaspillage",
-                "themes": [
-                    {
-                        "name": "Écologie",
-                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                    }
-                ],
-                "category": {
-                    "name": "Echelle Européenne",
-                    "enabled": true
-                },
-                "needs": [],
-                "author": {
-                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                    "first_name": "Jacques",
-                    "last_name": "Picard"
-                },
-                "published_at": "@string@.isDateTime()",
-                "finalized_at": "@string@.isDateTime()",
-                "committee": null,
-                "status": "FINALIZED",
-                "votes_count": {
-                    "important": 0,
-                    "feasible": 0,
-                    "innovative": 0,
-                    "total": 0
-                },
-                "author_category": "ADHERENT",
-                "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
-                "created_at": "@string@.isDateTime()",
-                "slug": "reduire-le-gaspillage",
-                "days_before_deadline": 0,
-                "contributors_count": 0,
-                "comments_count": 0
+               "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
+               "name":"Réduire le gaspillage",
+               "themes":[
+                  {
+                     "name":"Écologie",
+                     "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
+                  }
+               ],
+               "category":{
+                  "name":"Echelle Européenne",
+                  "enabled":true
+               },
+               "needs":[
+
+               ],
+               "author":{
+                  "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
+                  "first_name":"Jacques",
+                  "last_name":"Picard"
+               },
+               "published_at":"@string@.isDateTime()",
+               "finalized_at":"@string@.isDateTime()",
+               "committee":null,
+               "votes_count":{
+                  "important":0,
+                  "feasible":0,
+                  "innovative":0,
+                  "total":0
+               },
+               "author_category":"ADHERENT",
+               "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
+               "created_at":"@string@.isDateTime()",
+               "slug":"reduire-le-gaspillage",
+               "status":"FINALIZED",
+               "days_before_deadline":0,
+               "contributors_count":2,
+               "comments_count":1
             },
             {
-                "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
-                "name": "Reduire le gaspillage alimentaire",
-                "themes": [
-                    {
-                        "name": "Écologie",
-                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                    }
-                ],
-                "category": {
-                    "name": "Echelle Européenne",
-                    "enabled": true
-                },
-                "needs": [],
-                "author": {
-                    "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                    "first_name": "Michel",
-                    "last_name": "VASSEUR"
-                },
-                "published_at": "@string@.isDateTime()",
-                "finalized_at": "@string@.isDateTime()",
-                "committee": null,
-                "status": "FINALIZED",
-                "votes_count": {
-                    "important": 0,
-                    "feasible": 0,
-                    "innovative": 0,
-                    "total": 0
-                },
-                "author_category": "ADHERENT",
-                "description": "Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
-                "created_at": "@string@.isDateTime()",
-                "slug": "reduire-le-gaspillage-alimentaire",
-                "days_before_deadline": 0,
-                "contributors_count": 0,
-                "comments_count": 0
+               "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
+               "name":"Reduire le gaspillage alimentaire",
+               "themes":[
+                  {
+                     "name":"Écologie",
+                     "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
+                  }
+               ],
+               "category":{
+                  "name":"Echelle Européenne",
+                  "enabled":true
+               },
+               "needs":[
+
+               ],
+               "author":{
+                  "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                  "first_name":"Michel",
+                  "last_name":"VASSEUR"
+               },
+               "published_at":"@string@.isDateTime()",
+               "finalized_at":"@string@.isDateTime()",
+               "committee":null,
+               "votes_count":{
+                  "important":0,
+                  "feasible":0,
+                  "innovative":0,
+                  "total":0
+               },
+               "author_category":"ADHERENT",
+               "description":"Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
+               "created_at":"@string@.isDateTime()",
+               "slug":"reduire-le-gaspillage-alimentaire",
+               "status":"FINALIZED",
+               "days_before_deadline":0,
+               "contributors_count":0,
+               "comments_count":0
             }
         ]
     }
@@ -1870,8 +2010,8 @@ Feature:
              "created_at":"@string@.isDateTime()",
              "slug":"reduire-le-gaspillage",
              "days_before_deadline":0,
-             "contributors_count":0,
-             "comments_count":0
+             "contributors_count":2,
+             "comments_count":1
           },
           {
               "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
