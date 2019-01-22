@@ -52,8 +52,13 @@ class ProposalCriteria extends React.PureComponent {
                         <div className="proposal-criteria__container__item">
                             <p className="proposal-criteria__container__item__text">
                                 <span className="proposal-criteria__container__item__text__main">
-									Votre proposition est en accord avec notre Charte des valeurs.
-                                </span>{' '}
+									Votre proposition est en accord avec notre Charte des valeurs</span> et respecte nos&nbsp;
+                  <a
+                      href="/atelier-des-idees/conditions-generales-utilisation"
+                      target="_blank"
+                  >
+                    conditions générales d'utilisation
+                  </a>.{' '}
                             </p>
                         </div>
                     </div>
