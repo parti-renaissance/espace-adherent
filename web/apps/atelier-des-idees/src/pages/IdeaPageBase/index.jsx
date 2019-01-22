@@ -204,7 +204,7 @@ class IdeaPageBase extends React.Component {
                                         className="button create-idea-actions__report"
                                         onClick={() => this.props.onReportClicked()}
                                     >
-                                        Signaler la note
+                                        Signaler la proposition
                                     </button>
                                 )}
                             </React.Fragment>

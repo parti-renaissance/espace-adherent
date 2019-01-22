@@ -1,0 +1,36 @@
+.conditions-page {
+  margin: 50px auto;
+
+  h1 {
+    font-size: 48px;
+    line-height: 55px;
+  }
+
+  h3 {
+    margin-top: 20px;
+  }
+
+  section {
+    margin: 40px auto;
+  }
+
+  ul {
+    list-style-type: disc;
+    padding-left: 40px;
+    margin-top: 7px;
+  }
+
+  ul > li > ul {
+    list-style-type: circle;
+    margin-top: 0;
+  }
+
+  a {
+    color: $blue;
+    border-color: $blue;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
