@@ -1,0 +1,60 @@
+<div class="referent__filters__subtitle">
+    Envoyer un message aux ...
+</div>
+<div class="l__row l__row--top l__mobile--col">
+    <div class="l__col--grow-1 b__nudge--right">
+        {{ form_row(form.includeAdherentsNoCommittee, {label: 'Adhérents ne faisant partie d\'aucun comité'}) }}
+        {{ form_row(form.includeAdherentsInCommittee, {label: 'Adhérents faisant partie d\'au moins un comité (hors animateurs)'}) }}
+    </div>
+
+    <div class="l__col--grow-1 b__nudge--right">
+        {{ form_row(form.includeCommitteeSupervisors, {label: 'Animateurs de comités locaux'}) }}
+        {{ form_row(form.includeCommitteeHosts, {label: 'Co-animateurs de comités locaux'}) }}
+        {{ form_row(form.includeCitizenProjectHosts, {label: 'Porteurs de projets citoyens'}) }}
+    </div>
+</div>
+
+<div class="referent__filters__subtitle">
+    Et filtrer par ...
+</div>
+
+<div class="referent__filters__search l__row l__row--v-stretch l__tablet--col">
+    <div class="referent__filters__search__col">
+        <legend class="label__header">Sexe</legend>
+        {{ form_widget(form.gender, {attr: {class: 'l__row'}}) }}
+
+        <legend class="label__header">Age</legend>
+        <div class="l__row l__row--h-stretch">
+            <label style="width: 45%">
+                {{ form_widget(form.ageMin, {label: false, attr: {class: 'form--full', placeholder: 18}}) }}
+            </label>
+            à
+            <label style="width: 45%">
+                {{ form_widget(form.ageMax, {label: false, attr: {placeholder: 99}}) }}
+            </label>
+        </div>
+
+        <legend class="label__header">Nom</legend>
+        <div class="l__row">
+            {{ form_widget(form.lastName, {attr: {class: 'form--full', placeholder: 'Saisissez un nom'}}) }}
+        </div>
+
+        <legend class="label__header">Prénom</legend>
+        <div class="l__row">
+            {{ form_widget(form.firstName, {attr: {class: 'form--full', placeholder: 'Saisissez un prénom'}}) }}
+        </div>
+    </div>
+
+    <div class="referent__filters__search__col message_referent__filter__search__col">
+        <legend class="label__header">Ville ou code postal</legend>
+        <div class="l__row">
+            {{ form_widget(form.city, {attr: {class: 'form--full', placeholder: 'Saisissez une ville'}}) }}
+        </div>
+
+        <legend class="label__header label__header__interest">Centres d'intérêt</legend>
+        {{ form_widget(form.interests, {attr: {class: 'l__row l__row--wrap'}}) }}
+        <legend class="text--gray text--small">
+            Exemple : Si vous cochez 2 intérêts, vous filtrerez les adhérents qui suivent au moins ces 2 intérêts
+        </legend>
+    </div>
+</div>

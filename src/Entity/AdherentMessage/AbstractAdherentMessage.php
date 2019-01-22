@@ -5,7 +5,7 @@ namespace AppBundle\Entity\AdherentMessage;
 use AppBundle\AdherentMessage\AdherentMessageDataObject;
 use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
-use AppBundle\AdherentMessage\Filter\FilterDataObjectInterface;
+use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\EntityIdentityTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -78,9 +78,15 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     private $synchronized = false;
 
     /**
-     * @var FilterDataObjectInterface|null
+     * @var AdherentMessageFilterInterface|null
      *
-     * @ORM\Column(type="object", nullable=true)
+     * @ORM\OneToOne(
+     *     targetEntity="AppBundle\Entity\AdherentMessage\Filter\AbstractAdherentMessageFilter",
+     *     inversedBy="message",
+     *     cascade={"all"},
+     *     fetch="EAGER",
+     *     orphanRemoval=true
+     * )
      */
     private $filter;
 
@@ -182,15 +188,15 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
 
     public function isSynchronized(): bool
     {
-        return $this->synchronized;
+        return $this->synchronized && (null === $this->filter || $this->filter->isSynchronized());
     }
 
-    public function getFilter(): ?FilterDataObjectInterface
+    public function getFilter(): ?AdherentMessageFilterInterface
     {
         return $this->filter;
     }
 
-    public function setFilter(FilterDataObjectInterface $filter): void
+    public function setFilter(AdherentMessageFilterInterface $filter): void
     {
         $this->filter = $filter;
     }

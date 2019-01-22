@@ -4,8 +4,8 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ReferentTag;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -22,6 +22,8 @@ class ReferentTagChoiceType extends AbstractType
     {
         $resolver->setDefaults([
             'choices' => $this->getChoices(),
+            'class' => ReferentTag::class,
+            'choice_label' => 'name',
             'expanded' => true,
             'multiple' => true,
         ]);
@@ -29,20 +31,17 @@ class ReferentTagChoiceType extends AbstractType
 
     public function getParent()
     {
-        return ChoiceType::class;
+        return EntityType::class;
     }
 
     private function getChoices(): array
     {
         $token = $this->tokenStorage->getToken();
 
-        if (!$token || !($user = $token->getUser()) instanceof Adherent) {
+        if (!$token || !($user = $token->getUser()) instanceof Adherent || !$user->getManagedArea()) {
             return [];
         }
 
-        /** @var Adherent $user */
-        return array_merge(...array_map(function (ReferentTag $tag) {
-            return [$tag->getName() => $tag->getCode()];
-        }, $user->getManagedArea()->getTags()->toArray()));
+        return $user->getManagedArea()->getTags()->toArray();
     }
 }

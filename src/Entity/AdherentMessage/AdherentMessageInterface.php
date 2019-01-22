@@ -2,15 +2,14 @@
 
 namespace AppBundle\Entity\AdherentMessage;
 
-use AppBundle\AdherentMessage\Filter\FilterDataObjectInterface;
+use AppBundle\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
+use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use AppBundle\Entity\AuthoredInterface;
 use Ramsey\Uuid\UuidInterface;
 
-interface AdherentMessageInterface extends AuthoredInterface
+interface AdherentMessageInterface extends AuthoredInterface, AdherentMessageSynchronizedObjectInterface
 {
     public function getLabel(): ?string;
-
-    public function getExternalId(): ?string;
 
     public function setExternalId(string $id): void;
 
@@ -18,17 +17,13 @@ interface AdherentMessageInterface extends AuthoredInterface
 
     public function getUuid(): UuidInterface;
 
-    public function isSynchronized(): bool;
-
-    public function setSynchronized(bool $value): void;
-
     public function getType(): string;
 
     public function getSubject(): ?string;
 
     public function getContent(): ?string;
 
-    public function getFilter(): ?FilterDataObjectInterface;
+    public function getFilter(): ?AdherentMessageFilterInterface;
 
     public function getFromName(): ?string;
 

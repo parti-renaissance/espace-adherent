@@ -63,6 +63,9 @@ class ReferentManagedArea
         return $this->id;
     }
 
+    /**
+     * @return ReferentTag[]|Collection
+     */
     public function getTags(): Collection
     {
         return $this->tags;

@@ -12,7 +12,7 @@ class EditCampaignRequest implements RequestInterface
     private $subject;
     private $title;
     private $listId;
-    private $conditions;
+    private $segmentOptions;
     private $fromName;
     private $replyTo;
 
@@ -63,15 +63,15 @@ class EditCampaignRequest implements RequestInterface
         return $this;
     }
 
-    public function setConditions(array $conditions): self
+    public function setSegmentOptions(array $segmentOptions): self
     {
-        if (!empty($conditions) && empty($this->listId)) {
+        if (!empty($segmentOptions) && empty($this->listId)) {
             throw new \InvalidArgumentException(
                 'You must instantiate a request object with Mailchimp List id for using the filters'
             );
         }
 
-        $this->conditions = $conditions;
+        $this->segmentOptions = $segmentOptions;
 
         return $this;
     }
@@ -104,14 +104,11 @@ class EditCampaignRequest implements RequestInterface
             $settings['from_name'] = $this->fromName;
         }
 
-        if ($this->conditions) {
+        if ($this->segmentOptions) {
             $recipients = [
                 'recipients' => [
                     'list_id' => $this->listId,
-                    'segment_opts' => [
-                        'match' => 'any',
-                        'conditions' => $this->conditions,
-                    ],
+                    'segment_opts' => $this->segmentOptions,
                 ],
             ];
         }
