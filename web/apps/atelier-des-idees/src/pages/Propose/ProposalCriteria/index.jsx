@@ -45,7 +45,7 @@ class ProposalCriteria extends React.PureComponent {
                                 <span className="proposal-criteria__container__item__text__main">
 									Votre proposition est nouvelle :
                                 </span>{' '}
-								il ne s’agit pas d’une idée déjà publiée ou mise en œuvre. Pensez à consulter les idées
+								il ne s’agit pas d’une idée déjà publiée ou mise en œuvre. Pensez à consulter les propositions
 								en cours ou déjà publiées ainsi que le programme présidentiel.
                             </p>
                         </div>
