@@ -6,6 +6,7 @@ import withAuth from './hocs/withAuth';
 
 // pages
 import Home from './pages/Home';
+import ConditionsPage from './pages/ConditionsPage';
 import ConsultPage from './pages/Consult';
 import ContributePage from './pages/Contribute';
 import ProposePage from './pages/Propose';
@@ -26,6 +27,7 @@ class App extends Component {
                 {/* <Header /> */}
                 <Switch>
                     <Route exact path="/atelier-des-idees" component={Home} />
+                    <Route exact path="/atelier-des-idees/conditions-generales-utilisation" component={ConditionsPage} />
                     <Route exact path="/atelier-des-idees/consulter" component={ConsultPage} />
                     <Route exact path="/atelier-des-idees/contribuer" component={ContributePage} />
                     <Route exact path="/atelier-des-idees/proposer" component={ProposePage} />
