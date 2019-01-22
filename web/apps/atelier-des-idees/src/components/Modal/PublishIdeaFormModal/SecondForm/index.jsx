@@ -159,10 +159,10 @@ class SecondForm extends React.Component {
                             J’accepte les{' '}
                             <a
                                 className="second-form__section__mentions__text__link"
-                                href="/atelier-des-idees/cgu"
+                                href="/atelier-des-idees/conditions-generales-utilisation"
                                 target="_blank"
                             >
-                                mentions légales
+                                conditions génerales d'utilisation
                             </a>
                         </p>
                     </div>
