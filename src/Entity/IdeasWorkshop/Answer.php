@@ -42,7 +42,7 @@ class Answer
      * @ORM\Id
      * @ORM\GeneratedValue
      *
-     * @SymfonySerializer\Groups({"thread_comment_read", "idea_read", "thread_list_read"})
+     * @SymfonySerializer\Groups({"thread_comment_read", "idea_read", "with_answers", "thread_list_read"})
      */
     private $id;
 
@@ -51,7 +51,7 @@ class Answer
      *
      * @AssertWysiwygLength(max=1700)
      *
-     * @SymfonySerializer\Groups({"idea_write", "idea_publish", "idea_read"})
+     * @SymfonySerializer\Groups({"idea_write", "idea_publish", "idea_read", "with_answers"})
      */
     private $content;
 
@@ -59,7 +59,7 @@ class Answer
      * @ORM\ManyToOne(targetEntity="Question")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @SymfonySerializer\Groups({"idea_write", "idea_publish", "idea_read"})
+     * @SymfonySerializer\Groups({"idea_write", "idea_publish", "idea_read", "with_answers"})
      */
     private $question;
 
