@@ -75,7 +75,7 @@ class IdeaCard extends React.Component {
     render() {
         return (
             <div className="idea-card" ref={this.cardRef}>
-                <Link to={`/atelier-des-idees/note/${this.props.uuid}`} className="idea-card__link">
+                <Link to={`/atelier-des-idees/proposition/${this.props.uuid}`} className="idea-card__link">
                     <div className="idea-card__main">
                         <div className="idea-card__content">
                             <p className="idea-card__content__title">{this.truncate(this.props.name, 53)}</p>
@@ -151,7 +151,7 @@ class IdeaCard extends React.Component {
                 ) : (
                     <ContributingFooter
                         remainingDays={this.props.days_before_deadline}
-                        link={`/atelier-des-idees/note/${this.props.uuid}`}
+                        link={`/atelier-des-idees/proposition/${this.props.uuid}`}
                     />
                 )}
             </div>
