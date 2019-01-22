@@ -40,6 +40,7 @@ function mapStateToProps(state) {
     const currentIdea = selectCurrentIdea(state);
     const guidelines = selectGuidelines(state);
     const idea = {
+        ...currentIdea,
         authorName: `${currentUser.firstName} ${currentUser.lastName}`,
         // use current idea's status to update page when idea has been published
         status: currentIdea.status || 'DRAFT',
