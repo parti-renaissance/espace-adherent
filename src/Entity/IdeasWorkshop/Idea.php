@@ -87,6 +87,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *         "post": {
  *             "path": "/ideas-workshop/ideas",
  *             "access_control": "is_granted('ROLE_ADHERENT')",
+ *             "normalization_context": {"groups": {"idea_list_read", "with_answers"}}
  *         }
  *     },
  *     itemOperations={
@@ -306,7 +307,7 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
      * @Assert\Count(min=1, minMessage="idea.answers.min_count", groups={"idea_publish"})
      * @Assert\Valid
      *
-     * @SymfonySerializer\Groups({"idea_write", "idea_read"})
+     * @SymfonySerializer\Groups({"idea_write", "idea_read", "with_answers"})
      */
     private $answers;
 
