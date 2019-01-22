@@ -14,6 +14,16 @@ Feature:
       | LoadIdeaThreadCommentData |
       | LoadIdeaVoteData          |
 
+  @javascript
+  Scenario: As a non logged-in user I am redirect to login then back to previous page
+    Given I am on "/atelier-des-idees/proposer"
+    And I wait 2 seconds until I see "J'ai une proposition"
+    And I follow "J'ai une proposition"
+    Then I should be on "/connexion"
+    Then I move backward one page
+    Then I should be on "/atelier-des-idees/proposer"
+    And I should see "J'ai une proposition"
+
   Scenario: As a non logged-in user I can see published ideas
     Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/ideas-workshop/ideas?status=FINALIZED"
