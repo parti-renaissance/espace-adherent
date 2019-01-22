@@ -8,7 +8,7 @@ class Collapse extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isCollapsed: false,
+            isCollapsed: props.isOpen,
         };
     }
 
@@ -19,7 +19,8 @@ class Collapse extends React.Component {
                 className={classNames('collapse', {
                     'collapse--close': !this.state.isCollapsed,
                     'collapse--open': this.state.isCollapsed,
-                })}>
+                })}
+            >
                 <div className="collapse__container">
                     <a onClick={() => this.setState({ isCollapsed: !this.state.isCollapsed })}>
                         {'function' === typeof Component ? <Component /> : Component}
@@ -28,13 +29,15 @@ class Collapse extends React.Component {
                     {this.state.isCollapsed ? (
                         <button
                             className="button collapse__container__btn--open"
-                            onClick={() => this.setState(prevState => ({ isCollapsed: !prevState.isCollapsed }))}>
+                            onClick={() => this.setState(prevState => ({ isCollapsed: !prevState.isCollapsed }))}
+                        >
                             <img src={hideIcn} />
                         </button>
                     ) : (
                         <button
                             className="button collapse__container__btn--close"
-                            onClick={() => this.setState({ isCollapsed: !this.state.isCollapsed })}>
+                            onClick={() => this.setState({ isCollapsed: !this.state.isCollapsed })}
+                        >
                             <img src={revealIcn} />
                         </button>
                     )}
@@ -45,8 +48,13 @@ class Collapse extends React.Component {
     }
 }
 
+Collapse.defaultProps = {
+    isOpen: false,
+};
+
 Collapse.propTypes = {
     title: PropTypes.oneOfType([PropTypes.node.isRequired, PropTypes.func, PropTypes.string]).isRequired,
+    isOpen: PropTypes.bool,
 };
 
 export default Collapse;
