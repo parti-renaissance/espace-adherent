@@ -28,7 +28,7 @@ class IdeasWorkshopThreadAdmin extends AbstractAdmin
                     'format_title_case' => true,
                 ])
                 ->add('answer.idea', null, [
-                    'label' => 'Idée concernée',
+                    'label' => 'Proposition concernée',
                 ])
                 ->add('author', null, [
                     'label' => 'Créé par',
@@ -58,7 +58,7 @@ class IdeasWorkshopThreadAdmin extends AbstractAdmin
                 'show_filter' => true,
             ])
             ->add('answer.idea', null, [
-                'label' => 'Idée concernée',
+                'label' => 'Proposition concernée',
             ])
             ->add('author.lastName', null, [
                 'label' => 'Nom du créateur',
@@ -89,7 +89,7 @@ class IdeasWorkshopThreadAdmin extends AbstractAdmin
                 'label' => 'Contenu du commentaire',
             ])
             ->add('answer.idea', null, [
-                'label' => 'Idée concernée',
+                'label' => 'Proposition concernée',
             ])
             ->add('author', null, [
                 'label' => 'Créé par',
