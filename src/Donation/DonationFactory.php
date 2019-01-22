@@ -36,7 +36,8 @@ class DonationFactory
                 $request->getAddress()
             ),
             $request->getClientIp(),
-            $request->getDuration()
+            $request->getDuration(),
+            $request->getNationality()
         );
     }
 }
