@@ -52,11 +52,14 @@ function mapStateToProps(state, { id }) {
     const formattedNeeds = formatStaticData(needs);
     const formattedCategories = formatStaticData(categories);
     const formattedCommittees = committees.map(({ uuid, name }) => ({ value: uuid, label: name }));
+    const authorOptions = [{ value: 'alone', label: 'Seul' }, { value: 'committee', label: 'Mon comité' }];
     // get default values
     const selectedThemes = getDefaultValues(currentIdea.themes, formattedThemes);
     const selectedNeeds = getDefaultValues(currentIdea.needs, formattedNeeds);
     const selectedCategory =
         currentIdea.category && formattedCategories.find(option => option.value === currentIdea.category.id);
+    const committeeId = currentIdea.committee && currentIdea.committee.uuid;
+    const authorType = committeeId ? 'committee' : 'alone';
     return {
         isSubmitting: saveIdeaState.isFetching || publishIdeaState.isFetching,
         isSubmitSuccess: saveIdeaState.isSuccess && publishIdeaState.isSuccess,
@@ -67,12 +70,17 @@ function mapStateToProps(state, { id }) {
             theme: selectedThemes,
             locality: selectedCategory,
             difficulties: selectedNeeds,
+            author:
+                currentIdea.author && currentIdea.author.uuid
+                    ? authorOptions.filter(option => option.value === authorType)
+                    : [],
+            committee: committeeId,
         },
         themeOptions: formattedThemes,
         localityOptions: formattedCategories,
         difficultiesOptions: formattedNeeds,
         committeeOptions: formattedCommittees,
-        authorOptions: [{ value: 'alone', label: 'Seul' }, { value: 'committee', label: 'Mon comité' }],
+        authorOptions,
     };
 }
 
