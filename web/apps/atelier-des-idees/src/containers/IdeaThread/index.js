@@ -47,11 +47,11 @@ class IdeaThread extends React.Component {
                     <div className="idea-thread__contribute">
                         <p className="idea-thread__contribute__main">
 							Pour ajouter votre contribution,{' '}
-                            <a className="idea-thread__contribute__link" href="/connexion">
+                            <a className="idea-thread__contribute__link" href="?anonymous_authentication_intention=/connexion">
 								connectez-vous
                             </a>{' '}
 							ou{' '}
-                            <a className="idea-thread__contribute__link" href="/adhesion">
+                            <a className="idea-thread__contribute__link" href="?anonymous_authentication_intention=/adhesion">
 								créez un compte
                             </a>
                         </p>

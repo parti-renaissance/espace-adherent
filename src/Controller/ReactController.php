@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\React\ReactAppRegistry;
+use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +26,12 @@ class ReactController extends Controller
 
         if (!$manifest) {
             throw $this->createNotFoundException('Manifest not found, does the app exist and has been built?');
+        }
+
+        if ($this->isGranted('IS_ANONYMOUS')
+            && $authenticate = $this->get(AnonymousFollowerSession::class)->start($request)
+        ) {
+            return $authenticate;
         }
 
         return $this->render('react.html.twig', ['reactApp' => $app, 'manifest' => $manifest]);
