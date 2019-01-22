@@ -18,6 +18,13 @@ class CreateIdeaTool extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps) {
+        // stop autosave when idea is not a draft anymore
+        if (this.props.isDraft !== prevProps.isDraft && false === this.props.isDraft) {
+            clearInterval(this.state.intervalId);
+        }
+    }
+
     componentWillUnmount() {
         if (this.props.isDraft && this.state.intervalId) {
             clearInterval(this.state.intervalId);
