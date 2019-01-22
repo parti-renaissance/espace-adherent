@@ -26,13 +26,11 @@ class Question implements EnabledInterface
     /**
      * @var int
      *
-     * @SymfonySerializer\Groups("idea_read")
-     *
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
      *
-     * @SymfonySerializer\Groups("guideline_read")
+     * @SymfonySerializer\Groups({"guideline_read", "idea_read", "with_answers"})
      */
     private $id;
 

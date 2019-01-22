@@ -737,6 +737,7 @@ Feature:
         "published_at": null,
         "finalized_at": null,
         "committee": null,
+        "answers":[],
         "status": "DRAFT",
         "votes_count": {
             "important": 0,
@@ -828,6 +829,28 @@ Feature:
             "name": "En Marche Paris 8",
             "slug": "en-marche-paris-8"
         },
+        "answers":[
+          {
+            "id": "@integer@",
+            "question": { "id": 1 },
+            "content":"@string@"
+          },
+          {
+            "id": "@integer@",
+            "question": { "id": 2 },
+            "content":"Réponse à la question 2"
+          },
+          {
+            "id": "@integer@",
+            "question": { "id": 3 },
+            "content":"Réponse à la question 3"
+          },
+          {
+            "id": "@integer@",
+            "question": { "id": 4 },
+            "content":""
+          }
+        ],
         "status": "DRAFT",
         "votes_count": {
             "important": 0,
