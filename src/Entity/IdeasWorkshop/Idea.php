@@ -111,7 +111,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *         },
  *         "put": {
  *             "path": "/ideas-workshop/ideas/{id}",
- *             "access_control": "object.getAuthor() == user"
+ *             "access_control": "object.getAuthor() == user",
+ *             "normalization_context": {"groups": {"idea_list_read", "with_answers"}},
  *         },
  *         "publish": {
  *             "method": "PUT",

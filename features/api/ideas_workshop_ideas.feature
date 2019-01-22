@@ -34,11 +34,13 @@ Feature:
                 "name": "Réduire le gaspillage",
                 "themes": [
                     {
+                        "id": 3,
                         "name": "Écologie",
                         "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                     }
                 ],
                 "category": {
+                    "id": 1,
                     "name": "Echelle Européenne",
                     "enabled": true
                 },
@@ -71,11 +73,14 @@ Feature:
                 "name": "Reduire le gaspillage alimentaire",
                 "themes": [
                     {
+                        "id": 3,
+                        "id": 3,
                         "name": "Écologie",
                         "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                     }
                 ],
                 "category": {
+                    "id": 1,
                     "name": "Echelle Européenne",
                     "enabled": true
                 },
@@ -128,16 +133,19 @@ Feature:
                 "name": "Faire la paix",
                 "themes": [
                     {
+                        "id": 1,
                         "name": "Armées et défense",
                         "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                     }
                 ],
                 "category": {
+                    "id": 1,
                     "name": "Echelle Européenne",
                     "enabled": true
                 },
                 "needs": [
                     {
+                        "id": 1,
                         "name": "Juridique",
                         "enabled": true
                     }
@@ -175,16 +183,19 @@ Feature:
                 "name": "Reduire le bruit dans les opens spaces",
                 "themes": [
                     {
+                        "id": 3,
                         "name": "Écologie",
                         "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                     }
                 ],
                 "category": {
+                    "id": 1,
                     "name": "Echelle Européenne",
                     "enabled": true
                 },
                 "needs": [
                     {
+                        "id": 1,
                         "name": "Juridique",
                         "enabled": true
                     }
@@ -237,16 +248,19 @@ Feature:
                 "name": "Faire la paix",
                 "themes": [
                     {
+                        "id": 1,
                         "name": "Armées et défense",
                         "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                     }
                 ],
                 "category": {
+                    "id": 1,
                     "name": "Echelle Européenne",
                     "enabled": true
                 },
                 "needs": [
                     {
+                        "id": 1,
                         "name": "Juridique",
                         "enabled": true
                     }
@@ -305,16 +319,19 @@ Feature:
                 "name": "Faire la paix",
                 "themes": [
                     {
+                        "id": 1,
                         "name": "Armées et défense",
                         "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                     }
                 ],
                 "category": {
+                    "id": 1,
                     "name": "Echelle Européenne",
                     "enabled": true
                 },
                 "needs": [
                     {
+                        "id": 1,
                         "name": "Juridique",
                         "enabled": true
                     }
@@ -377,11 +394,13 @@ Feature:
               "name": "Réduire le gaspillage",
               "themes": [
                   {
+                      "id": 3,
                       "name": "Écologie",
                       "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                   }
               ],
               "category": {
+                  "id": 1,
                   "name": "Echelle Européenne",
                   "enabled": true
               },
@@ -414,11 +433,13 @@ Feature:
               "name": "Reduire le gaspillage alimentaire",
               "themes": [
                   {
+                      "id": 3,
                       "name": "Écologie",
                       "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                   }
               ],
               "category": {
+                  "id": 1,
                   "name": "Echelle Européenne",
                   "enabled": true
               },
@@ -471,11 +492,13 @@ Feature:
               "name": "Réduire le gaspillage",
               "themes": [
                   {
+                      "id": 3,
                       "name": "Écologie",
                       "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                   }
               ],
               "category": {
+                  "id": 1,
                   "name": "Echelle Européenne",
                   "enabled": true
               },
@@ -508,11 +531,13 @@ Feature:
              "name":"Reduire le gaspillage alimentaire",
              "themes":[
                 {
+                   "id": 3,
                    "name":"Écologie",
                    "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                 }
              ],
              "category":{
+                "id": 1,
                 "name":"Echelle Européenne",
                 "enabled":true
              },
@@ -567,11 +592,13 @@ Feature:
                 "name": "Aider les gens",
                 "themes": [
                     {
+                        "id": 1,
                         "name": "Armées et défense",
                         "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                     }
                 ],
                 "category": {
+                    "id": 1,
                     "name": "Echelle Européenne",
                     "enabled": true
                 },
@@ -624,16 +651,19 @@ Feature:
              "name":"Faire la paix",
              "themes":[
                 {
+                   "id": 1,
                    "name":"Armées et défense",
                    "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                 }
              ],
              "category":{
+                "id": 1,
                 "name":"Echelle Européenne",
                 "enabled":true
              },
              "needs":[
                 {
+                   "id": 1,
                    "name":"Juridique",
                    "enabled":true
                 }
@@ -671,16 +701,19 @@ Feature:
              "name":"Reduire le bruit dans les opens spaces",
              "themes":[
                 {
+                    "id": 3,
                     "name": "Écologie",
                     "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                 }
              ],
              "category":{
+                "id": 1,
                 "name":"Echelle Européenne",
                 "enabled":true
              },
              "needs":[
                 {
+                   "id": 1,
                    "name":"Juridique",
                    "enabled":true
                 }
@@ -825,20 +858,24 @@ Feature:
         "name": "Mon idée",
         "themes": [
             {
+                "id": 2,
                 "name": "Trésorerie",
                 "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/tresory.png"
             }
         ],
         "category": {
+            "id": 2,
             "name": "Echelle Nationale",
             "enabled": true
         },
         "needs": [
             {
+                "id": 1,
                 "name": "Juridique",
                 "enabled": true
             },
             {
+                "id": 2,
                 "name": "Rédactionnel",
                 "enabled": true
             }
@@ -933,23 +970,28 @@ Feature:
     And the JSON should be equal to:
     """
     {
+        "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
         "name": "Mon idée 2",
         "themes": [
             {
+                "id": 2,
                 "name": "Trésorerie",
                 "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/tresory.png"
             }
         ],
         "category": {
+            "id": 2,
             "name": "Echelle Nationale",
             "enabled": true
         },
         "needs": [
             {
+                "id": 1,
                 "name": "Juridique",
                 "enabled": true
             },
             {
+                "id": 2,
                 "name": "Rédactionnel",
                 "enabled": true
             }
@@ -967,23 +1009,45 @@ Feature:
             "name": "En Marche Paris 8",
             "slug": "en-marche-paris-8"
         },
-        "status": "PENDING",
+        "answers": [
+            {
+                "id": 1,
+                "content": "Réponse à la question 1",
+                "question": {
+                    "id": 1
+                }
+            },
+            {
+                "id": 2,
+                "content": "Réponse à la question 2",
+                "question": {
+                    "id": 2
+                }
+            },
+            {
+                "id": 3,
+                "content": "Réponse à la question 3",
+                "question": {
+                    "id": 3
+                }
+            }
+        ],
         "votes_count": {
             "important": "7",
             "feasible": "5",
             "innovative": "5",
             "total": 17,
             "my_votes": {
-                "feasible": @integer@,
-                "important": @integer@,
-                "innovative": @integer@
+                "feasible": 14,
+                "important": 11,
+                "innovative": 17
             }
         },
         "author_category": "QG",
         "description": "Mon idée 2",
-        "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
         "created_at": "@string@.isDateTime()",
         "slug": "mon-idee-2",
+        "status": "PENDING",
         "days_before_deadline": 13,
         "contributors_count": 8,
         "comments_count": 8
@@ -1012,11 +1076,13 @@ Feature:
              "name":"Réduire le gaspillage",
              "themes":[
                 {
+                   "id": 3,
                    "name":"Écologie",
                    "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                 }
              ],
              "category":{
+                "id": 1,
                 "name":"Echelle Européenne",
                 "enabled":true
              },
@@ -1054,16 +1120,19 @@ Feature:
              "name":"Faire la paix",
              "themes":[
                 {
+                   "id": 1,
                    "name":"Armées et défense",
                    "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                 }
              ],
              "category":{
+                "id": 1,
                 "name":"Echelle Européenne",
                 "enabled":true
              },
              "needs":[
                 {
+                   "id": 1,
                    "name":"Juridique",
                    "enabled":true
                 }
@@ -1126,11 +1195,13 @@ Feature:
              "name":"Réduire le gaspillage",
              "themes":[
                 {
+                   "id": 3,
                    "name":"Écologie",
                    "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                 }
              ],
              "category":{
+                "id": 1,
                 "name":"Echelle Européenne",
                 "enabled":true
              },
@@ -1168,16 +1239,19 @@ Feature:
              "name":"Faire la paix",
              "themes":[
                 {
+                   "id": 1,
                    "name":"Armées et défense",
                    "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                 }
              ],
              "category":{
+                "id": 1,
                 "name":"Echelle Européenne",
                 "enabled":true
              },
              "needs":[
                 {
+                   "id": 1,
                    "name":"Juridique",
                    "enabled":true
                 }
@@ -1709,11 +1783,13 @@ Feature:
              "name":"Réduire le gaspillage",
              "themes":[
                 {
+                   "id": 3,
                    "name":"Écologie",
                    "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                 }
              ],
              "category":{
+                "id": 1,
                 "name":"Echelle Européenne",
                 "enabled":true
              },
@@ -1748,11 +1824,13 @@ Feature:
              "name":"Reduire le gaspillage alimentaire",
              "themes":[
                 {
+                   "id": 3,
                    "name":"Écologie",
                    "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                 }
              ],
              "category":{
+                "id": 1,
                 "name":"Echelle Européenne",
                 "enabled":true
              },
@@ -1807,17 +1885,17 @@ Feature:
              "name":"Reduire le gaspillage alimentaire",
              "themes":[
                 {
+                   "id": 3,
                    "name":"Écologie",
                    "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                 }
              ],
              "category":{
+                "id": 1,
                 "name":"Echelle Européenne",
                 "enabled":true
              },
-             "needs":[
-
-             ],
+             "needs":[],
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                 "first_name":"Michel",
@@ -1846,16 +1924,19 @@ Feature:
              "name":"Reduire le bruit dans les opens spaces",
              "themes":[
                 {
+                   "id": 3,
                    "name":"Écologie",
                    "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                 }
              ],
              "category":{
+                "id": 1,
                 "name":"Echelle Européenne",
                 "enabled":true
              },
              "needs":[
                 {
+                   "id": 1,
                    "name":"Juridique",
                    "enabled":true
                 }
@@ -1908,11 +1989,13 @@ Feature:
                "name":"Réduire le gaspillage",
                "themes":[
                   {
+                     "id": 3,
                      "name":"Écologie",
                      "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                   }
                ],
                "category":{
+                  "id": 1,
                   "name":"Echelle Européenne",
                   "enabled":true
                },
@@ -1947,11 +2030,13 @@ Feature:
                "name":"Reduire le gaspillage alimentaire",
                "themes":[
                   {
+                     "id": 3,
                      "name":"Écologie",
                      "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                   }
                ],
                "category":{
+                  "id": 1,
                   "name":"Echelle Européenne",
                   "enabled":true
                },
@@ -2006,11 +2091,13 @@ Feature:
              "name":"Réduire le gaspillage",
              "themes":[
                 {
+                    "id": 3,
                     "name": "Écologie",
                     "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                 }
              ],
              "category":{
+                "id": 1,
                 "name":"Echelle Européenne",
                 "enabled":true
              },
@@ -2045,11 +2132,13 @@ Feature:
               "name": "Reduire le gaspillage alimentaire",
               "themes": [
                   {
+                      "id": 3,
                       "name": "Écologie",
                       "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
                   }
               ],
               "category": {
+                  "id": 1,
                   "name": "Echelle Européenne",
                   "enabled": true
               },
@@ -2102,16 +2191,19 @@ Feature:
              "name":"Faire la paix",
              "themes":[
                 {
+                   "id": 1,
                    "name":"Armées et défense",
                    "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
                 }
              ],
              "category":{
+                "id": 1,
                 "name":"Echelle Européenne",
                 "enabled":true
              },
              "needs":[
                 {
+                   "id": 1,
                    "name":"Juridique",
                    "enabled":true
                 }

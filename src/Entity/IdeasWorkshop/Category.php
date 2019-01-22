@@ -42,7 +42,7 @@ class Category implements EnabledInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      *
-     * @SymfonySerializer\Groups({"idea_category_read", "idea_read"})
+     * @SymfonySerializer\Groups({"idea_category_read", "idea_read", "idea_list_read"})
      */
     private $id;
 
