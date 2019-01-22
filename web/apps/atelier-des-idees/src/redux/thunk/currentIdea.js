@@ -78,10 +78,17 @@ export function saveCurrentIdea(ideaData) {
 export function saveAndPublishIdea(uuid, data, saveOnly = false) {
     return dispatch =>
         dispatch(saveIdea(uuid, data)).then((resData) => {
+            // update current idea
+            dispatch(updateCurrentIdea(resData));
+
             if (!uuid) {
-                dispatch(updateCurrentIdea({ uuid: resData.uuid }));
+                // no uuid passed => initial save
+                // silently replace location
+                window.history.replaceState(null, '', `/atelier-des-idees/note/${resData.uuid}`);
             }
+
             if (saveOnly) {
+                // save without publishing (edit publish information)
                 // force publish success
                 dispatch(createRequestSuccess(PUBLISH_IDEA));
             } else {
