@@ -32,7 +32,7 @@ Feature:
              "author":{
                 "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
                 "first_name":"Benjamin",
-                "last_name":"Duroc"
+                "last_name":"D."
              },
              "approved":false,
              "created_at":"@string@.isDateTime()"
@@ -43,7 +43,7 @@ Feature:
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                 "first_name":"Michel",
-                "last_name":"VASSEUR"
+                "last_name":"V."
              },
              "approved":false,
              "created_at":"@string@.isDateTime()"
@@ -54,7 +54,7 @@ Feature:
              "author":{
                 "uuid":"93de5d98-383a-4863-9f47-eb7a348873a8",
                 "first_name":"Laura",
-                "last_name":"Deloche"
+                "last_name":"D."
              },
              "approved":false,
              "created_at":"@string@.isDateTime()"
@@ -84,7 +84,7 @@ Feature:
                 "author": {
                     "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                     "first_name": "Referent",
-                    "last_name": "Referent"
+                    "last_name": "R."
                 },
                 "approved": false,
                 "created_at": "@string@.isDateTime()"
@@ -95,7 +95,7 @@ Feature:
                 "author": {
                     "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                     "first_name": "Referent",
-                    "last_name": "Referent"
+                    "last_name": "R."
                 },
                 "approved": false,
                 "created_at": "@string@.isDateTime()"
@@ -106,7 +106,7 @@ Feature:
                 "author": {
                     "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
                     "first_name": "Francis",
-                    "last_name": "Brioul"
+                    "last_name": "B."
                 },
                 "approved": false,
                 "created_at": "@string@.isDateTime()"
