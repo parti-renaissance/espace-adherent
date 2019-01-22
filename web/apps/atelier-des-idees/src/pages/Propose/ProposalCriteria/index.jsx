@@ -45,15 +45,20 @@ class ProposalCriteria extends React.PureComponent {
                                 <span className="proposal-criteria__container__item__text__main">
 									Votre proposition est nouvelle :
                                 </span>{' '}
-								il ne s’agit pas d’une idée déjà publiée ou mise en œuvre. Pensez à consulter les idées
+								il ne s’agit pas d’une idée déjà publiée ou mise en œuvre. Pensez à consulter les propositions
 								en cours ou déjà publiées ainsi que le programme présidentiel.
                             </p>
                         </div>
                         <div className="proposal-criteria__container__item">
                             <p className="proposal-criteria__container__item__text">
                                 <span className="proposal-criteria__container__item__text__main">
-									Votre proposition est en accord avec notre Charte des valeurs.
-                                </span>{' '}
+									Votre proposition est en accord avec notre Charte des valeurs</span> et respecte nos&nbsp;
+                  <a
+                      href="/atelier-des-idees/conditions-generales-utilisation"
+                      target="_blank"
+                  >
+                    conditions générales d'utilisation
+                  </a>.{' '}
                             </p>
                         </div>
                     </div>
