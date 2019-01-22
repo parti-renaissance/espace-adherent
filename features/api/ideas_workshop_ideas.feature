@@ -758,6 +758,33 @@ Feature:
     }
     """
 
+  Scenario: As a logged-in user I can't link an idea with a committee i don't belong to
+    Given I am logged as "martine.lindt@gmail.com"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/ideas-workshop/ideas" with body:
+    """
+    {
+      "name": "Mon idée",
+      "committee": "62ea97e7-6662-427b-b90a-23429136d0dd"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "@string@",
+      "title": "An error occurred",
+      "detail": "@string@",
+      "violations": [
+        {
+          "propertyPath": "committee",
+          "message": "Vous ne pouvez sélectionner de comité dont vous n'êtes pas membre."
+        }
+      ]
+    }
+    """
+
   Scenario: As a logged-in user I can add my idea with all datas
     Given I am logged as "jacques.picard@en-marche.fr"
     When I add "Content-Type" header equal to "application/json"

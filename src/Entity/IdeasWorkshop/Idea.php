@@ -18,6 +18,7 @@ use AppBundle\Filter\CommentsCountFilter;
 use AppBundle\Filter\IdeaStatusFilter;
 use AppBundle\Filter\ContributorsCountFilter;
 use AppBundle\Report\ReportType;
+use AppBundle\Validator\CommitteeMember;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -296,6 +297,8 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
      * @var Committee
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
+     *
+     * @CommitteeMember
      *
      * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
      */
