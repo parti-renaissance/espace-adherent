@@ -133,7 +133,7 @@ class SecondForm extends React.Component {
                     </label>
                     <Select
                         options={this.props.difficultiesOptions}
-                        placeholder="Juridique / Finance / etc."
+                        placeholder="Droit / Budget / etc."
                         isMulti={true}
                         onSelected={value => this.handleChange('difficulties', value)}
                         defaultValue={
