@@ -404,6 +404,7 @@
 
         <!-- Ideas Workshop -->
         <service id="AppBundle\IdeasWorkshop\ThemeManager" />
+        <service id="AppBundle\Validator\CommitteeMemberValidator" />
 
         <!-- ParamConverter -->
         <service id="AppBundle\ParamConverter\DoctrineQueryStringParamConverter">

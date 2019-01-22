@@ -454,4 +454,9 @@ SQL
             ->getResult()
         ;
     }
+
+    public function isAdherentInCommittee(Adherent $adherent, Committee $committee): bool
+    {
+        return 0 !== $this->count(['adherent' => $adherent, 'committee' => $committee]);
+    }
 }
