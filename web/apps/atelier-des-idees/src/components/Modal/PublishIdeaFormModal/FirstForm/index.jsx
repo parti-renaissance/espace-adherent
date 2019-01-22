@@ -77,8 +77,8 @@ class FirstForm extends React.Component {
                     <label className="first-form__section__label">Thématique</label>
                     <Select
                         options={this.props.themeOptions}
-                        placeholder="Choisissez la(es) thémathique(s) de votre note"
-                        subtitle="Ajoutez plusieurs thémathiques si besoin, dans l'ordre de leur importance"
+                        placeholder="Choisissez la(es) thématique(s) de votre note"
+                        subtitle="Ajoutez plusieurs thématiques si besoin, dans l'ordre de leur importance"
                         isMulti={true}
                         error={this.state.errors.theme}
                         onSelected={value => this.handleChange('theme', value)}
