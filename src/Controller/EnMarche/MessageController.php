@@ -5,7 +5,7 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\AdherentMessage\AdherentMessageDataObject;
 use AppBundle\AdherentMessage\AdherentMessageFactory;
 use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
-use AppBundle\AdherentMessage\Filter\FilterDataObjectInterface;
+use AppBundle\AdherentMessage\Filter\FilterFactory;
 use AppBundle\AdherentMessage\Filter\FilterFormFactory;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
@@ -231,19 +231,16 @@ class MessageController extends Controller
             );
         }
 
-        $form = $formFactory->createForm($message, $this->getUser());
+        $data = $message->getFilter() ?? FilterFactory::create($this->getUser(), $message->getType());
 
-        /** @var FilterDataObjectInterface $filter */
-        $filter = $form->getData();
-        $filterBefore = clone $filter;
-
-        $form->handleRequest($request);
+        $form = $formFactory
+            ->createForm($message->getType(), $data)
+            ->handleRequest($request)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$message->getFilter() || $filterBefore != $filter) {
-                $message->setFilter(clone $filter);
-                $manager->flush();
-            }
+            $message->setFilter($form->getData());
+            $manager->flush();
 
             $this->addFlash('info', 'adherent_message.filter_updated');
 

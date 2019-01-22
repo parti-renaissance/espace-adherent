@@ -2,11 +2,14 @@
 
 namespace AppBundle\AdherentMessage\Listener;
 
+use AppBundle\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
+use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use AppBundle\AdherentMessage\Handler\AdherentMessageChangeCommand;
 use AppBundle\AdherentMessage\Handler\AdherentMessageDeleteCommand;
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -33,11 +36,9 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
     {
         $object = $args->getObject();
 
-        if (!($object instanceof AdherentMessageInterface) || !$object->getExternalId()) {
-            return;
+        if ($object instanceof AdherentMessageSynchronizedObjectInterface && $object->getExternalId()) {
+            $this->bus->dispatch(new AdherentMessageDeleteCommand($object->getExternalId()));
         }
-
-        $this->bus->dispatch(new AdherentMessageDeleteCommand($object->getExternalId()));
     }
 
     public function postPersist(LifecycleEventArgs $args): void
@@ -49,17 +50,21 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
         }
     }
 
-    public function preUpdate(LifecycleEventArgs $args): void
+    public function preUpdate(PreUpdateEventArgs $event): void
     {
-        $object = $args->getObject();
+        $object = $event->getObject();
 
-        if (!$object instanceof AdherentMessageInterface) {
-            return;
-        }
-
-        $changes = $args->getEntityManager()->getUnitOfWork()->getEntityChangeSet($object);
-
-        if (isset($changes['content']) || isset($changes['subject']) || isset($changes['filter'])) {
+        if (
+            (
+                $object instanceof AdherentMessageFilterInterface
+                && array_keys($event->getEntityChangeSet()) !== ['synchronized']
+            )
+            ||
+            (
+                $object instanceof AdherentMessageInterface
+                && array_intersect(array_keys($event->getEntityChangeSet()), ['content', 'subject', 'filter'])
+            )
+        ) {
             $object->setSynchronized(false);
         }
     }
@@ -70,6 +75,8 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
 
         if ($object instanceof AdherentMessageInterface && false === $object->isSynchronized()) {
             $this->dispatchMessage($object);
+        } elseif ($object instanceof AdherentMessageFilterInterface && false === $object->isSynchronized()) {
+            $this->dispatchMessage($object->getMessage());
         }
     }
 

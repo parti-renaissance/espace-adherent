@@ -144,7 +144,6 @@
         <service id="AppBundle\Form\CitizenProjectCommentCommandType"/>
         <service id="AppBundle\Form\AdherentMessageTypeType"/>
         <service id="AppBundle\Form\ReferentTagChoiceType"/>
-        <service id="AppBundle\Form\AdherentMessageReferentFilterType"/>
         <service id="AppBundle\Form\CitizenProjectCommandType"/>
         <service id="AppBundle\Form\EventListener\AmpSynchronisedListener"/>
         <service id="AppBundle\Form\EventRegistrationType"/>
@@ -235,6 +234,10 @@
         <service id="AppBundle\Command\MigrateSubscriptionTypeCommand"/>
         <service id="AppBundle\Command\MailchimpSyncAllAdherentsCommand"/>
         <service id="AppBundle\Command\MailchimpCreateTagFromReferentTagCommand">
+            <argument type="service" key="$client" id="csa_guzzle.client.mailchimp_api" />
+            <argument type="string" key="$mailchimpListId">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
+        </service>
+        <service id="AppBundle\Command\MailchimpUpdateReferentTagExternalIdFromMailchimpCommand">
             <argument type="service" key="$client" id="csa_guzzle.client.mailchimp_api" />
             <argument type="string" key="$mailchimpListId">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
         </service>
@@ -442,6 +445,9 @@
         </service>
         <service id="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder">
             <argument key="$listId" type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
+            <argument key="$interestIds" type="string">%env(json:MAILCHIMP_INTEREST_IDS)%</argument>
+            <argument key="$memberGroupInterestGroupId" type="string">%env(MAILCHIMP_MEMBER_GROUP_INTEREST_GROUP_ID)%</argument>
+            <argument key="$memberInterestInterestGroupId" type="string">%env(MAILCHIMP_MEMBER_INTEREST_INTEREST_GROUP_ID)%</argument>
             <argument key="$replyEmailAddress" type="string">%campaign_sender_email%</argument>
             <argument key="$fromName" type="string">%campaign_sender_name%</argument>
         </service>

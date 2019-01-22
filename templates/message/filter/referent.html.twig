@@ -1,15 +1,11 @@
 <div class="referent__filters__form">
     {{ form_start(form) }}
-        <div class="referent__filters__subtitle text--center">
-            Filtrer par zones gérées
-        </div>
 
-        <div class="l__wrapper--slim b__nudge--bottom-huge l__col l__col--center">
-            {{ form_errors(form.zones) }}
-            <div class="l__row">
-                {{ form_widget(form.zones, {attr: {class: 'form--full'}}) }}
-            </div>
-        </div>
+        {% if form.referentTags is defined %}
+            {{ include('message/filter/_referent_zone_filter_form.html.twig') }}
+        {% else %}
+            {{ include('message/filter/_referent_full_filter_form.html.twig') }}
+        {% endif %}
 
         <div class="referent__filters__buttons text--center space--45-5 l__wrapper--500 b__nudge--top-40 background--lighter">
             {% if message.filter %}

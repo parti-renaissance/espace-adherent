@@ -3,10 +3,11 @@
 namespace AppBundle\AdherentMessage\Filter;
 
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
+use AppBundle\Entity\AdherentMessage\Filter\ReferentZoneFilter;
 use AppBundle\Exception\InvalidAdherentMessageType;
 use AppBundle\Form\AdherentMessageReferentFilterType;
+use AppBundle\Form\AdherentMessageReferentZoneFilterType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
@@ -19,16 +20,18 @@ class FilterFormFactory
         $this->formFactory = $formFactory;
     }
 
-    public function createForm(AdherentMessageInterface $message, Adherent $user): FormInterface
+    public function createForm(string $messageType, $data): FormInterface
     {
-        switch ($message->getType()) {
+        switch ($messageType) {
             case AdherentMessageTypeEnum::REFERENT:
-                return $this->formFactory->create(
-                    AdherentMessageReferentFilterType::class,
-                    $message->getFilter() ?? new ReferentFilterDataObject($user->getManagedAreaTagCodes())
-                );
+                if ($data instanceof ReferentUserFilter) {
+                    return $this->formFactory->create(AdherentMessageReferentFilterType::class, $data);
+                }
+                if ($data instanceof ReferentZoneFilter) {
+                    return $this->formFactory->create(AdherentMessageReferentZoneFilterType::class, $data);
+                }
         }
 
-        throw new InvalidAdherentMessageType($message->getType());
+        throw new InvalidAdherentMessageType(sprintf('Invalid message ("%s") type or data', $messageType));
     }
 }
