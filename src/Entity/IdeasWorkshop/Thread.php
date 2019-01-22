@@ -162,6 +162,11 @@ class Thread extends BaseComment implements AuthorInterface, ReportableInterface
         return $thread;
     }
 
+    public function __toString()
+    {
+        return (string) $this->content;
+    }
+
     public function getAnswer(): Answer
     {
         return $this->answer;
