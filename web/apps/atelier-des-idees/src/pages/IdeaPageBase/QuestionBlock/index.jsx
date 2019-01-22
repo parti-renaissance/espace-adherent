@@ -118,7 +118,7 @@ class QuestionBlock extends React.Component {
     }
 
     renderBody() {
-        const { placeholder, initialContent, isAuthor, mode, isRequired } = this.props;
+        const { placeholder, initialContent, isAuthor, mode } = this.props;
         return (
             <React.Fragment>
                 <QuestionBlockBody
@@ -144,7 +144,7 @@ class QuestionBlock extends React.Component {
     }
 
     render() {
-        const { label, question, nbQuestion, isRequired } = this.props;
+        const { label, question, nbQuestion, isRequired, initialContent } = this.props;
         return (
             <div className="question-block">
                 {this.props.isRequired ? (
@@ -167,6 +167,7 @@ class QuestionBlock extends React.Component {
                                 isRequired={isRequired}
                             />
                         }
+                        isOpen={!!initialContent}
                     >
                         {this.renderBody()}
                     </Collapse>
