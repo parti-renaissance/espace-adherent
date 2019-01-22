@@ -69,7 +69,7 @@ export function saveCurrentIdea(ideaData) {
                 dispatch(setCurrentIdea(data));
                 dispatch(createRequestSuccess(SAVE_CURRENT_IDEA));
                 // silently replace location
-                window.history.replaceState(null, '', `/atelier-des-idees/note/${data.uuid}`);
+                window.history.replaceState(null, '', `/atelier-des-idees/proposition/${data.uuid}`);
             })
             .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA)));
     };
@@ -84,7 +84,7 @@ export function saveAndPublishIdea(uuid, data, saveOnly = false) {
             if (!uuid) {
                 // no uuid passed => initial save
                 // silently replace location
-                window.history.replaceState(null, '', `/atelier-des-idees/note/${resData.uuid}`);
+                window.history.replaceState(null, '', `/atelier-des-idees/proposition/${resData.uuid}`);
             }
 
             if (saveOnly) {

@@ -45,15 +45,15 @@ class MyContributions extends React.Component {
                                 <React.Fragment>
                                     <div className="my-ideas__category__idea">
                                         <p className="my-ideas__category__idea__date">
-											Créée le {new Date(idea.created_at).toLocaleDateString()}
+                                            Créée le {new Date(idea.created_at).toLocaleDateString()}
                                         </p>
                                         <h4 className="my-ideas__category__idea__name">{idea.name}</h4>
                                         <div className="my-ideas__category__idea__actions">
                                             <Link
-                                                to={`/atelier-des-idees/note/${idea.uuid}`}
+                                                to={`/atelier-des-idees/proposition/${idea.uuid}`}
                                                 className="my-ideas__category__idea__actions__see-note button--secondary"
                                             >
-												VOIR LA PROPOSITION
+                                                VOIR LA PROPOSITION
                                             </Link>
                                         </div>
                                     </div>

@@ -31,7 +31,10 @@ class Header extends React.PureComponent {
                             </React.Fragment>
                         )}
                     </div>
-                    <a href="/atelier-des-idees/creer-ma-note?anonymous_authentication_intention=/connexion" className="header__create-btn button button--primary">
+                    <a
+                        href="/atelier-des-idees/creer-ma-note?anonymous_authentication_intention=/connexion"
+                        className="header__create-btn button button--primary"
+                    >
                         J'ai une proposition
                     </a>
                     {/* <Mobile>
