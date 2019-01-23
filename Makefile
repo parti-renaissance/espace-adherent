@@ -71,7 +71,7 @@ wait-for-db:
 db: vendor wait-for-db                                                                                 ## Reset the database and load fixtures
 	$(EXEC) $(CONSOLE) doctrine:database:drop --force --if-exists
 	$(EXEC) $(CONSOLE) doctrine:database:create --if-not-exists
-	$(EXEC) $(CONSOLE) doctrine:database:import -n -- dump/dump-2017.sql
+	$(EXEC) $(CONSOLE) doctrine:database:import -n -- dump/dump-2018.sql
 	$(EXEC) $(CONSOLE) doctrine:migrations:migrate -n
 	$(EXEC) $(CONSOLE) doctrine:fixtures:load -n
 
@@ -145,7 +145,7 @@ tfp-db: wait-for-db                                                             
 	$(EXEC) rm -rf /tmp/data.db app/data/dumped_referents_users || true
 	$(EXEC) $(CONSOLE) doctrine:database:drop --force --if-exists --env=test
 	$(EXEC) $(CONSOLE) doctrine:database:create --env=test
-	$(EXEC) $(CONSOLE) doctrine:database:import --env=test -n -- dump/dump-2017.sql
+	$(EXEC) $(CONSOLE) doctrine:database:import --env=test -n -- dump/dump-2018.sql
 	$(EXEC) $(CONSOLE) doctrine:migration:migrate -n --env=test
 	$(EXEC) $(CONSOLE) doctrine:schema:validate --env=test
 
