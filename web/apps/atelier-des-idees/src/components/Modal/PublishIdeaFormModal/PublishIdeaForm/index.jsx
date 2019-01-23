@@ -49,7 +49,7 @@ class PublishIdeaForm extends React.Component {
         const { difficulties, committee } = secondForm;
         const needs = difficulties.map(diff => diff.value);
         const secondFormData = { needs };
-        if (committee) {
+        if (committee && committee.length) {
             secondFormData.committee = committee[0].value;
         }
         return { ...firstFormData, ...secondFormData };
