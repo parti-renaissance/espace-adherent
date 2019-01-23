@@ -5,6 +5,11 @@ App.createAddressSelector(
     '{{ address.city.vars.id }}',
     '{{ address.cityName.vars.id }}',
     '{{ address.cityName.vars.required }}',
+    {% if address.region is defined  -%}
+        '{{ address.region.vars.id}}'
+    {%- else -%}
+        null
+    {%- endif %},
     {{ options|json_encode|raw }}
 );
 {% endmacro %}

@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AdherentRegistrationType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->remove('position')
@@ -35,6 +35,7 @@ class AdherentRegistrationType extends AbstractType
                 ])]],
             ])
             ->add('address', AddressType::class, [
+                'set_address_region' => true,
                 'label' => false,
                 'child_error_bubbling' => false,
             ])
@@ -47,7 +48,7 @@ class AdherentRegistrationType extends AbstractType
         ]));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => MembershipRequest::class,
@@ -55,7 +56,7 @@ class AdherentRegistrationType extends AbstractType
         ]);
     }
 
-    public function getParent()
+    public function getParent(): string
     {
         return AdherentType::class;
     }

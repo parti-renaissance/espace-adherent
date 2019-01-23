@@ -74,7 +74,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'female',
             'first_name' => 'Michelle',
             'last_name' => 'Dufour',
-            'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', 47.3950786, 8.5361402),
+            'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', null, 47.3950786, 8.5361402),
             'birthdate' => '1972-11-23',
         ]);
         $adherent1->addReferentTag($this->getReference('referent_tag_ch'));
@@ -88,7 +88,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'male',
             'first_name' => 'Carl',
             'last_name' => 'Mirabeau',
-            'address' => PostAddress::createFrenchAddress('122 rue de Mouxy', '73100-73182', 45.570898, 5.927206),
+            'address' => PostAddress::createFrenchAddress('122 rue de Mouxy', '73100-73182', null, 45.570898, 5.927206),
             'birthdate' => '1950-07-08',
             'position' => 'retired',
             'phone' => '33 0111223344',
@@ -110,7 +110,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'male',
             'first_name' => 'Jacques',
             'last_name' => 'Picard',
-            'address' => PostAddress::createFrenchAddress('36 rue de la Paix', '75008-75108', 48.8699464, 2.3297187),
+            'address' => PostAddress::createFrenchAddress('36 rue de la Paix', '75008-75108', null, 48.8699464, 2.3297187),
             'birthdate' => '1953-04-03',
             'position' => 'retired',
             'phone' => '33 187264236',
@@ -129,7 +129,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'female',
             'first_name' => 'Lucie',
             'last_name' => 'Olivera',
-            'address' => PostAddress::createFrenchAddress('13 boulevard des Italiens', '75009-75109', 48.8713224, 2.3353755),
+            'address' => PostAddress::createFrenchAddress('13 boulevard des Italiens', '75009-75109', null, 48.8713224, 2.3353755),
             'birthdate' => '1989-09-17',
             'position' => 'student',
             'phone' => '33 727363643',
@@ -151,7 +151,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'female',
             'first_name' => 'Gisele',
             'last_name' => 'Berthoux',
-            'address' => PostAddress::createFrenchAddress('47 rue Martre', '92110-92024', 48.9015986, 2.3052684),
+            'address' => PostAddress::createFrenchAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684),
             'birthdate' => '1983-12-24',
             'position' => 'unemployed',
             'phone' => '33 138764334',
@@ -168,7 +168,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'male',
             'first_name' => 'Benjamin',
             'last_name' => 'Duroc',
-            'address' => PostAddress::createFrenchAddress('39 rue de Crimée', '13003-13203', 43.3062866, 5.3791498),
+            'address' => PostAddress::createFrenchAddress('39 rue de Crimée', '13003-13203', null, 43.3062866, 5.3791498),
             'birthdate' => '1987-02-08',
             'position' => 'employed',
             'phone' => '33 673643424',
@@ -189,7 +189,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'male',
             'first_name' => 'Francis',
             'last_name' => 'Brioul',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', 48.5278939, 2.6484923),
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1962-01-07',
             'position' => 'employed',
             'phone' => '33 673654349',
@@ -206,7 +206,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'female',
             'first_name' => 'Laura',
             'last_name' => 'Deloche',
-            'address' => PostAddress::createFrenchAddress('2 Place du Général de Gaulle', '76000-76540', 49.443232, 1.099971),
+            'address' => PostAddress::createFrenchAddress('2 Place du Général de Gaulle', '76000-76540', null, 49.443232, 1.099971),
             'birthdate' => '1973-04-11',
             'position' => 'employed',
             'phone' => '33 234823644',
@@ -227,7 +227,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'female',
             'first_name' => 'Martine',
             'last_name' => 'Lindt',
-            'address' => PostAddress::createForeignAddress('DE', '10369', 'Berlin', '7 Hohenschönhauser Str.', 52.5330939, 13.4662418),
+            'address' => PostAddress::createForeignAddress('DE', '10369', 'Berlin', '7 Hohenschönhauser Str.', null, 52.5330939, 13.4662418),
             'birthdate' => '2000-11-14',
             'position' => 'student',
             'phone' => '49 2211653540',
@@ -247,7 +247,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'female',
             'first_name' => 'Élodie',
             'last_name' => 'Dutemps',
-            'address' => PostAddress::createForeignAddress('SG', '368645', 'Singapour', '47 Jln Mulia', 1.3329126, 103.8795163),
+            'address' => PostAddress::createForeignAddress('SG', '368645', 'Singapour', '47 Jln Mulia', null, 1.3329126, 103.8795163),
             'birthdate' => '2002-07-13',
             'position' => 'employed',
             'phone' => '65 66888868',
@@ -267,7 +267,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'male',
             'first_name' => 'Pierre',
             'last_name' => 'Kiroule',
-            'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
+            'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', null, 40.7625289, -73.9859927),
             'birthdate' => '1964-10-02',
             'position' => 'employed',
             'phone' => '1 2123150100',
@@ -292,7 +292,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'male',
             'first_name' => 'Michel',
             'last_name' => 'VASSEUR',
-            'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', 47.321569, 8.549968799999988),
+            'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', '12 Pilgerweg', null, 47.321569, 8.549968799999988),
             'birthdate' => '1987-05-13',
         ]);
         $adherent13->setSubscriptionTypes($this->getStandardSubscriptionTypes());
@@ -306,7 +306,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'male',
             'first_name' => 'Damien',
             'last_name' => 'SCHMIDT',
-            'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', 'Seestrasse 204', 47.3180696, 8.552615),
+            'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', 'Seestrasse 204', null, 47.3180696, 8.552615),
             'birthdate' => '1988-04-13',
         ]);
         $adherent14->setSubscriptionTypes($this->getStandardSubscriptionTypes());
@@ -321,7 +321,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'male',
             'first_name' => 'Thomas',
             'last_name' => 'Leclerc',
-            'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', 47.3950786, 8.5361402),
+            'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', null, 47.3950786, 8.5361402),
             'birthdate' => '1982-05-12',
             'registered_at' => '2017-04-09 06:20:38',
         ]);
@@ -337,7 +337,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'male',
             'first_name' => 'Referent',
             'last_name' => 'Referent',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', 48.5278939, 2.6484923),
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1962-01-07',
             'position' => 'employed',
             'phone' => '33 673654349',
@@ -370,7 +370,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'female',
             'first_name' => 'Referent75and77',
             'last_name' => 'Referent75and77',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '75001-75101', 48.5278939, 2.6484923),
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '75001-75101', null, 48.5278939, 2.6484923),
             'birthdate' => '1970-01-08',
             'position' => 'employed',
             'phone' => '33 6765204050',
@@ -397,7 +397,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'male',
             'first_name' => 'Referent child',
             'last_name' => 'Referent child',
-            'address' => PostAddress::createFrenchAddress('3 avenue Jean Jaurès', '77000-77288', 48.5278939, 2.6484923),
+            'address' => PostAddress::createFrenchAddress('3 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1962-02-07',
             'position' => 'employed',
             'phone' => '33 673654348',
@@ -421,7 +421,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'male',
             'first_name' => 'Coordinateur',
             'last_name' => 'Coordinateur',
-            'address' => PostAddress::createFrenchAddress('75 Avenue Aristide Briand', '94110-94003', 48.805347, 2.325805),
+            'address' => PostAddress::createFrenchAddress('75 Avenue Aristide Briand', '94110-94003', null, 48.805347, 2.325805),
             'birthdate' => '1969-04-10',
             'position' => 'employed',
             'phone' => '33 665859053',
@@ -438,7 +438,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'female',
             'first_name' => 'Coordinatrice',
             'last_name' => 'CITIZEN PROJECT',
-            'address' => PostAddress::createFrenchAddress('Place de la Madeleine', '75008-75108', 48.8704135, 2.324256),
+            'address' => PostAddress::createFrenchAddress('Place de la Madeleine', '75008-75108', null, 48.8704135, 2.324256),
             'birthdate' => '1989-03-13',
             'position' => 'employed',
             'phone' => '33 665859053',
@@ -457,7 +457,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'male',
             'first_name' => 'Député',
             'last_name' => 'PARIS I',
-            'address' => PostAddress::createFrenchAddress('3 Avenue du Général Eisenhower', '75008-75108', 48.8665777, 2.311635),
+            'address' => PostAddress::createFrenchAddress('3 Avenue du Général Eisenhower', '75008-75108', null, 48.8665777, 2.311635),
             'birthdate' => '1982-06-02',
             'registered_at' => '2017-06-01 09:26:31',
         ]);
@@ -476,7 +476,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'gender' => 'male',
             'first_name' => 'Député',
             'last_name' => 'CHLI FDESIX',
-            'address' => PostAddress::createFrenchAddress('1 Place Colette', '75001-75101', 48.863571, 2.335938),
+            'address' => PostAddress::createFrenchAddress('1 Place Colette', '75001-75101', null, 48.863571, 2.335938),
             'birthdate' => '1979-07-02',
             'registered_at' => '2017-06-26 10:15:17',
         ]);
@@ -542,7 +542,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'name' => 'En Marche Paris 8',
             'slug' => 'en-marche-paris-8',
             'description' => 'Le comité « En Marche ! » des habitants du 8ème arrondissement de Paris.',
-            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', 48.8705073, 2.3132432),
+            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.8705073, 2.3132432),
             'phone' => '33 187264236',
             'facebook_page_url' => 'https://facebook.com/enmarche-paris-8',
             'twitter_nickname' => 'enmarche75008',
@@ -556,7 +556,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'created_at' => '2017-01-12 19:34:12',
             'name' => 'En Marche Marseille 3',
             'description' => "En Marche ! C'est aussi à Marseille !",
-            'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
+            'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', null, 43.3256095, 5.374416),
             'phone' => '33 673643424',
         ]);
         $this->addReference('committee-2', $committee2);
@@ -568,7 +568,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'name' => 'En Marche Dammarie-les-Lys',
             'slug' => 'en-marche-dammarie-les-lys',
             'description' => 'Les jeunes avec En Marche !',
-            'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', 48.5182194, 2.6220158),
+            'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', null, 48.5182194, 2.6220158),
             'phone' => '33 673654349',
             'name_locked' => true,
         ]);
@@ -581,7 +581,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'created_at' => '2017-01-19 08:36:55',
             'name' => 'Antenne En Marche de Fontainebleau',
             'description' => 'Vous êtes Bellifontain ? Nous aussi ! Rejoignez-nous !',
-            'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', 48.4047652, 2.6987591),
+            'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', null, 48.4047652, 2.6987591),
             'phone' => '33 673654349',
         ]);
         $committee4->approved();
@@ -593,7 +593,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'created_at' => '2017-01-19 10:54:28',
             'name' => 'En Marche - Comité de Évry',
             'description' => 'En Marche pour une nouvelle vision, du renouveau pour la France.',
-            'address' => PostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', 48.6241569, 2.4265995),
+            'address' => PostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', null, 48.6241569, 2.4265995),
             'phone' => '33 673654349',
         ]);
         $committee5->approved();
@@ -605,7 +605,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'created_at' => '2017-03-18 20:12:33',
             'name' => 'En Marche - Comité de Rouen',
             'description' => 'En Marche pour la France et la ville de Rouen.',
-            'address' => PostAddress::createFrenchAddress('2 Place du Général de Gaulle', '76000-76540', 49.443232, 1.099971),
+            'address' => PostAddress::createFrenchAddress('2 Place du Général de Gaulle', '76000-76540', null, 49.443232, 1.099971),
             'phone' => '33 234823644',
         ]);
         $committee6->approved('2017-03-19 09:17:24');
@@ -617,7 +617,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'created_at' => '2017-03-19 08:14:45',
             'name' => 'En Marche - Comité de Berlin',
             'description' => 'En Marche pour la France et nos partenaires Allemands.',
-            'address' => PostAddress::createForeignAddress('DE', '10369', 'Berlin', '7 Hohenschönhauser Str.', 52.5330939, 13.4662418),
+            'address' => PostAddress::createForeignAddress('DE', '10369', 'Berlin', '7 Hohenschönhauser Str.', null, 52.5330939, 13.4662418),
             'phone' => '49 2211653540',
         ]);
         $committee7->approved('2017-03-19 13:43:26');
@@ -629,7 +629,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'created_at' => '2017-04-10 17:34:18',
             'name' => 'En Marche - Comité de Singapour',
             'description' => 'En Marche pour la France mais depuis Singapour.',
-            'address' => PostAddress::createForeignAddress('SG', '368645', 'Singapour', '47 Jln Mulia', 1.3329126, 103.8795163),
+            'address' => PostAddress::createForeignAddress('SG', '368645', 'Singapour', '47 Jln Mulia', null, 1.3329126, 103.8795163),
             'phone' => '65 66888868',
         ]);
         $committee8->approved('2017-04-10 20:23:18');
@@ -641,7 +641,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'created_at' => '2017-04-09 12:16:22',
             'name' => 'En Marche - Comité de New York City',
             'description' => 'Les expats sont en En Marche.',
-            'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 40.7625289, -73.9859927),
+            'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', null, 40.7625289, -73.9859927),
             'phone' => '1 2123150100',
         ]);
         $committee9->approved('2017-04-09 13:27:42');
@@ -653,7 +653,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'created_at' => '2017-05-09 12:18:22',
             'name' => 'En Marche - Suisse',
             'description' => 'En Marche pour la France et nos partenaires en Suisse.',
-            'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', 47.3950786, 8.5361402),
+            'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', null, 47.3950786, 8.5361402),
             'phone' => '33 673654349',
         ]);
         $committee10->approved('2017-05-09 13:17:42');

@@ -9,7 +9,7 @@ class PostAddressTest extends TestCase
 {
     public function testCreateFullFrenchAddress()
     {
-        $address = PostAddress::createFrenchAddress('92 bld Victor Hugo', '92110-92024', 48.123456, 5.987654);
+        $address = PostAddress::createFrenchAddress('92 bld Victor Hugo', '92110-92024', null, 48.123456, 5.987654);
 
         $this->assertSame('FR', $address->getCountry());
         $this->assertSame('92 bld Victor Hugo', $address->getAddress());
@@ -24,7 +24,15 @@ class PostAddressTest extends TestCase
 
     public function testCreateFullForeignAddress()
     {
-        $address = PostAddress::createForeignAddress('US', '20500', 'Washington, DC', '1600 Pennsylvania Ave NW', 48.123456, 5.987654);
+        $address = PostAddress::createForeignAddress(
+            'US',
+            '20500',
+            'Washington, DC',
+            '1600 Pennsylvania Ave NW',
+            null,
+            48.123456,
+            5.987654
+        );
 
         $this->assertSame('US', $address->getCountry());
         $this->assertSame('1600 Pennsylvania Ave NW', $address->getAddress());

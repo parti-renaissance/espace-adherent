@@ -1,59 +1,19 @@
 import formValidator from '../validator/formValidator';
-import GooglePlaceAutocomplete from '../services/address/GooglePlaceAutocomplete';
+import AutocompletedAddressForm from '../services/address/AutocompletedAddressForm';
 import AddressObject from '../services/address/AddressObject';
-
-function hideAddress(address, addressBlock) {
-    address.setRequired(false);
-    hide(addressBlock);
-}
-
-function showAddress(address, addressBlock) {
-    address.resetRequired();
-    show(addressBlock);
-}
 
 export default (formType) => {
     formValidator(formType, dom('form[name="app_donation"]'));
 
-    if ('undefined' === typeof google) {
-        return;
-    }
-
-    const autocompeleteWrapper = dom('.address-autocomplete');
-    const addressBlock = dom('.address-block');
-
-    const address = new AddressObject(
-        dom('#app_donation_address'),
-        dom('#app_donation_postalCode'),
-        dom('#app_donation_cityName'),
-        dom('#app_donation_country')
-    );
-
-    // show the autocomplete when the address fields are not filled
-    if (!address.isFilled()) {
-        const autocomplete = new GooglePlaceAutocomplete(autocompeleteWrapper, address, 'form form--full form__field');
-        autocomplete.build();
-
-        hideAddress(address, addressBlock);
-
-        autocomplete.once('changed', () => {
-            showAddress(address, addressBlock);
-            hide(autocompeleteWrapper);
-        });
-
-        const autocompleteHelpMessage = find(document, '#address-autocomplete-help-message');
-
-        autocomplete.once('no_result', () => show(autocompleteHelpMessage));
-
-        const removeAutocompleteLink = autocompleteHelpMessage.getElementsByTagName('a')[0];
-
-        on(removeAutocompleteLink, 'click', (event) => {
-            event.preventDefault();
-
-            hide(autocompleteHelpMessage);
-            off(removeAutocompleteLink, 'click');
-
-            autocomplete.placeChangeHandle();
-        });
-    }
+    (new AutocompletedAddressForm(
+        dom('.address-autocomplete'),
+        dom('.address-block'),
+        new AddressObject(
+            dom('#app_donation_address'),
+            dom('#app_donation_postalCode'),
+            dom('#app_donation_cityName'),
+            null,
+            dom('#app_donation_country')
+        )
+    )).buildWidget();
 };
