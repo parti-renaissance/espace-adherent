@@ -57,7 +57,12 @@ export function saveCurrentIdea(ideaData) {
                 .put(`/api/ideas-workshop/ideas/${uuid}`, ideaData)
                 .then(res => res.data)
                 .then((data) => {
-                    dispatch(updateCurrentIdea(data));
+                    // response does not contain answers' threads info, add them to updated answers
+                    const updatedAnswers = data.answers.map((answer) => {
+                        const previousAnswer = selectCurrentIdeaAnswer(getState(), answer.id);
+                        return { ...answer, threads: previousAnswer.threads };
+                    });
+                    dispatch(updateCurrentIdea({ ...data, answers: updatedAnswers }));
                     dispatch(createRequestSuccess(SAVE_CURRENT_IDEA, uuid));
                 })
                 .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA, uuid)));
