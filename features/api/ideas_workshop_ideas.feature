@@ -1381,6 +1381,26 @@ Feature:
     And the JSON nodes should contain:
       | name   | Aider les gens |
       | status | PENDING        |
+    And I should have 1 email "IdeaPublishMessage" for "benjyd@aol.com" with payload:
+    """
+    {
+      "FromEmail": "atelier-des-idees@en-marche.fr",
+      "FromName": "En Marche !",
+      "Subject": "Votre proposition a bien été publiée !",
+      "MJ-TemplateID": "645027",
+      "MJ-TemplateLanguage": true,
+      "Recipients": [
+          {
+              "Email": "benjyd@aol.com",
+              "Name": "Benjamin Duroc",
+              "Vars": {
+                  "first_name": "Benjamin",
+                  "idea_link": "http://test.enmarche.code/atelier-des-idees/proposition/aa093ce6-8b20-4d86-bfbc-91a73fe47285"
+              }
+          }
+      ]
+    }
+    """
 
   Scenario: As a logged-in user I can get full information about one idea
     Given I am logged as "benjyd@aol.com"

@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MailerService
 {
-    const PAYLOAD_MAXSIZE = 50;
+    public const PAYLOAD_MAXSIZE = 50;
 
     private $dispatcher;
     private $transport;
