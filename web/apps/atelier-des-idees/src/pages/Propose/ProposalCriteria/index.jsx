@@ -14,12 +14,12 @@ class ProposalCriteria extends React.PureComponent {
                         <h2 className="proposal-criteria__container__title">
                             Vous voulez vous lancer ? Voici quelques conseils avant de commencer
                         </h2>
-                        <Link
-                            to="/atelier-des-idees/creer-ma-proposition"
+                        <a
+                            href="/atelier-des-idees/creer-ma-proposition?anonymous_authentication_intention=/connexion"
                             className="button button--primary proposal-criteria__container__link"
                         >
                             Je propose mon idée
-                        </Link>
+                        </a>
                     </div>
                     <div className="proposal-criteria__container">
                         <div className="proposal-criteria__container__item">

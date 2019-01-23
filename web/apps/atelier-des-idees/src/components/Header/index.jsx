@@ -31,12 +31,21 @@ class Header extends React.PureComponent {
                             </React.Fragment>
                         )}
                     </div>
-                    <a
-                        href="/atelier-des-idees/creer-ma-proposition?anonymous_authentication_intention=/connexion"
-                        className="header__create-btn button button--primary"
-                    >
-                        J'ai une proposition
-                    </a>
+                    {this.props.isAuthenticated ? (
+                        <Link
+                            to="/atelier-des-idees/creer-ma-proposition"
+                            className="header__create-btn button button--primary"
+                        >
+                            J'ai une proposition
+                        </Link>
+                    ) : (
+                        <a
+                            href="/atelier-des-idees/creer-ma-proposition?anonymous_authentication_intention=/connexion"
+                            className="header__create-btn button button--primary"
+                        >
+                            J'ai une proposition
+                        </a>
+                    )}
                     {/* <Mobile>
                 <ScrollMenu
                     alignCenter={false}
