@@ -8,6 +8,7 @@ use AppBundle\Entity\EnabledInterface;
 use AppBundle\Entity\ImageTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -69,9 +70,18 @@ class Theme implements EnabledInterface
     private $enabled;
 
     /**
-     * @ORM\Column
+     * @var UploadedFile|null
      *
-     * @Assert\NotBlank
+     * @Assert\Image(
+     *     maxSize="10M",
+     *     binaryFormat=false,
+     *     mimeTypes={"image/png", "image/svg+xml"}
+     * )
+     */
+    protected $image;
+
+    /**
+     * @ORM\Column
      */
     protected $imageName;
 
