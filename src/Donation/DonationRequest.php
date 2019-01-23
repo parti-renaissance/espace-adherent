@@ -133,7 +133,6 @@ class DonationRequest
         $this->country = Address::FRANCE;
         $this->setAmount($amount);
         $this->duration = $duration;
-        $this->nationality = Address::FRANCE;
     }
 
     public static function createFromAdherent(
@@ -300,6 +299,10 @@ class DonationRequest
             $retry->country = (string) $payload['co'];
         }
 
+        if ($payload['na']) {
+            $retry->nationality = (string) $payload['na'];
+        }
+
         if (isset($payload['pc'])) {
             $retry->postalCode = (string) $payload['pc'];
         }
@@ -340,7 +343,7 @@ class DonationRequest
         return PayboxPaymentSubscription::NONE !== $this->duration;
     }
 
-    public function getNationality(): string
+    public function getNationality(): ?string
     {
         return $this->nationality;
     }

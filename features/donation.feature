@@ -44,12 +44,14 @@ Feature: The goal is to donate one time or multiple time with a subscription
     Then I should be on "/don/coordonnees?montant=50&abonnement=0"
 
     When I fill in the following:
-      | Nom             | Jean                     |
-      | Prénom          | Dupont                   |
-      | Adresse email   | jean.dupont@en-marche.fr |
-      | Code postal     | 75001                    |
-      | Ville           | Paris                    |
-      | Adresse postale | 1 allée vivaldie         |
+      | Nom                      | Jean                     |
+      | Prénom                   | Dupont                   |
+      | app_donation_nationality | FR                       |
+      | Adresse email            | jean.dupont@en-marche.fr |
+      | Code postal              | 75001                    |
+      | Ville                    | Paris                    |
+      | Adresse postale          | 1 allée vivaldie         |
+
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
@@ -79,12 +81,13 @@ Feature: The goal is to donate one time or multiple time with a subscription
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 
     When I fill in the following:
-      | Nom             | Jean                     |
-      | Prénom          | Dupont                   |
-      | Adresse email   | jean.dupont@en-marche.fr |
-      | Code postal     | 75001                    |
-      | Ville           | Paris                    |
-      | Adresse postale | 1 allée vivaldie         |
+      | Nom                      | Jean                     |
+      | Prénom                   | Dupont                   |
+      | app_donation_nationality | FR                       |
+      | Adresse email            | jean.dupont@en-marche.fr |
+      | Code postal              | 75001                    |
+      | Ville                    | Paris                    |
+      | Adresse postale          | 1 allée vivaldie         |
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
@@ -112,12 +115,14 @@ Feature: The goal is to donate one time or multiple time with a subscription
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 
     When I fill in the following:
-      | Nom             | Jean                     |
-      | Prénom          | Dupont                   |
-      | Adresse email   | jean.dupont@en-marche.fr |
-      | Code postal     | 75001                    |
-      | Ville           | Paris                    |
-      | Adresse postale | 1 allée vivaldie         |
+      | Nom                      | Jean                     |
+      | Prénom                   | Dupont                   |
+      | app_donation_nationality | FR                       |
+      | Adresse email            | jean.dupont@en-marche.fr |
+      | Code postal              | 75001                    |
+      | Ville                    | Paris                    |
+      | Adresse postale          | 1 allée vivaldie         |
+
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
@@ -144,7 +149,9 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 
-    When I click the "donation_check_label" element
+    When I fill in the following:
+      | app_donation_nationality | FR |
+    And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
     And I press "Continuer"
@@ -171,7 +178,9 @@ Feature: The goal is to donate one time or multiple time with a subscription
     When I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 
-    When I click the "donation_check_label" element
+    When I fill in the following:
+      | app_donation_nationality | FR |
+    And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
     And I press "Continuer"
@@ -223,7 +232,9 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 
-    When I click the "donation_check_label" element
+    When I fill in the following:
+      | app_donation_nationality | FR |
+    And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
     And I press "Continuer"

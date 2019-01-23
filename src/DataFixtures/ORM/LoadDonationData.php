@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Address\Address;
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Donation;
@@ -83,7 +84,8 @@ class LoadDonationData extends Fixture
             $adherent->getEmailAddress(),
             $adherent->getPostAddress(),
             '127.0.0.1',
-            $duration
+            $duration,
+            Address::FRANCE
         );
 
         return $donation;
