@@ -1,0 +1,79 @@
+.reports {
+  display: flex;
+  align-items: center;
+  padding: 75px 0;
+
+  > * {
+    width: 50%;
+  }
+
+  &__first-section {
+    padding-right: 50px;
+
+    @media screen and (min-width: $width-lg) {
+        margin-left: 100px;
+        max-width: 500px;
+    }
+
+    &__title {
+      font-size: 25px;
+      line-height: 29px;
+    }
+
+    &__text {
+      margin: 25px 0;
+    }
+
+    &__button {
+      background-color: $saphir;
+      letter-spacing: 2px;
+    }
+  }
+
+  &__second-section {
+
+    img.hp-illustration-rapports {
+        max-width: 100%;
+
+        @media screen and (max-width: $width-md) {
+            max-width: 460px;
+            width: 100%;
+        }
+    }
+  }
+
+  // responsive
+  @media #{$tablet} {
+    &__first-section {
+      // padding: 0 50px;
+    }
+  }
+
+  @media screen and (max-width: $width-md) {
+    flex-direction: column;
+    height: auto;
+    padding: 41px 0;
+    > * {
+      width: 100%;
+    }
+    &__first-section {
+      order: 1;
+      padding-right: 0;
+      margin: 20px 0;
+
+      &__title {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      &__text {
+        font-size: 18px;
+        margin: 20px 0;
+      }
+    }
+
+    &__second-section {
+      margin-bottom: 20px;
+    }
+  }
+}

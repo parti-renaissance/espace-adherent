@@ -1,0 +1,85 @@
+.ReactModal__Body--open {
+  z-index: 2;
+  overflow: hidden;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  z-index: 50;
+  background-color: rgba($dark-jungle-green, 0.84);
+}
+
+.modal {
+  width: 700px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+  outline: none;
+  padding: 5vh 85px 0 100px;
+  background-color: $snow;
+
+  @media screen and (max-width: $width-sm) {
+    width: 100%;
+    padding: 0 20px;
+    padding-top: 80px;
+  }
+
+  .modal-closeBtn {
+    @extend %reset-button;
+    position: absolute;
+    top: 22px;
+    left: 22px;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    cursor: pointer;
+    transition: 0.1s ease-in;
+    -webkit-transition: 0.1s ease-in;
+    outline: 0;
+
+    @media screen and (max-width: $width-sm) {
+      left: 20px;
+    }
+
+    &:hover {
+        opacity: 0.5;
+    }
+  }
+
+  .modal-content-wrapper {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    overflow-y: auto;
+  }
+}
+
+.ReactModal__Overlay {
+    opacity: 0;
+    transition: 0.15s ease;
+}
+
+.ReactModal__Overlay--after-open {
+    opacity: 1;
+    transition: 0.15s ease;
+}
+
+.ReactModal__Content {
+    right: -700px;
+    transition-duration: 200ms;
+    transition-delay: 100ms;
+    transition-timing-function: ease-in-out;
+}
+
+.ReactModal__Content--after-open {
+    right: 0;
+    transition-duration: 200ms;
+    transition-delay: 100ms;
+    transition-timing-function: ease-in-out;
+}

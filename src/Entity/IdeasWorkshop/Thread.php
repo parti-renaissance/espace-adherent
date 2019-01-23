@@ -3,78 +3,170 @@
 namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\EntitySoftDeletableTrait;
-use AppBundle\Entity\EntityTimestampableTrait;
+use AppBundle\Entity\AuthorInterface;
+use AppBundle\Entity\Report\ReportableInterface;
+use AppBundle\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
-use JMS\Serializer\Annotation as JMS;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table(name="ideas_workshop_thread")
- * @ORM\Entity
+ * @ApiResource(
+ *     attributes={
+ *         "pagination_items_per_page": 3,
+ *         "normalization_context": {
+ *             "groups": {"thread_comment_read"}
+ *         },
+ *         "order": {"createdAt": "ASC"},
+ *         "filters": {"thread.answer"}
+ *     },
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/ideas-workshop/threads",
+ *             "normalization_context": {
+ *                 "groups": {"thread_list_read"}
+ *             }
+ *         },
+ *         "post": {
+ *             "path": "/ideas-workshop/threads",
+ *             "access_control": "is_granted('ROLE_ADHERENT')",
+ *         }
+ *     },
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/ideas-workshop/threads/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Thread resource.",
+ *                         "example": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
+ *                     }
+ *                 }
+ *             }
+ *         },
+ *         "put_approval_toggle": {
+ *             "method": "PUT",
+ *             "path": "/ideas-workshop/threads/{id}/approval-toggle",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "denormalization_context": {
+ *                 "groups": {"thread_approval"}
+ *             },
+ *             "access_control": "object.getIdeaAuthor() == user",
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Thread resource.",
+ *                         "example": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
+ *                     }
+ *                 }
+ *             }
+ *         },
+ *         "delete": {
+ *             "path": "/ideas-workshop/threads/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "object.getAuthor() == user",
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Thread resource.",
+ *                         "example": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
+ *                     }
+ *                 }
+ *             }
+ *         }
+ *     },
+ *     subresourceOperations={
+ *         "comments_get_subresource": {
+ *             "method": "GET",
+ *             "path": "/ideas-workshop/threads/{id}/comments"
+ *         },
+ *     }
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"answer.id": "exact"})
+ *
+ * @ORM\Table(name="ideas_workshop_thread",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="threads_uuid_unique", columns="uuid")
+ *     }
+ * )
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ThreadRepository")
+ *
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Thread
+class Thread extends BaseComment implements AuthorInterface, ReportableInterface
 {
-    use EntityTimestampableTrait;
-    use EntitySoftDeletableTrait;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $content;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
-     */
-    private $author;
-
     /**
      * @ORM\ManyToOne(targetEntity="Answer", inversedBy="threads")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
+     *
+     * @Assert\NotNull
+     *
+     * @SymfonySerializer\Groups({"thread_comment_read", "thread_list_read"})
      */
     private $answer;
 
     /**
-     * @JMS\SkipWhenEmpty
-     * @JMS\Groups({"idea_list"})
-     * @ORM\OneToMany(targetEntity="ThreadComment", mappedBy="thread")
+     * @ApiSubresource
+     *
+     * @ORM\OneToMany(targetEntity="ThreadComment", mappedBy="thread", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"createdAt": "DESC"})
+     *
+     * @SymfonySerializer\Groups({"thread_list_read", "idea_read"})
      */
     private $comments;
 
-    /**
-     * @Assert\Choice(
-     *     callback={"AppBundle\Entity\IdeasWorkshop\ThreadStatusEnum", "toArray"},
-     *     strict=true,
-     * )
-     *
-     * @ORM\Column(length=9, options={"default": ThreadStatusEnum::SUBMITTED})
-     */
-    private $status = ThreadStatusEnum::SUBMITTED;
-
-    public function __construct(string $content, Adherent $author, Answer $answer)
+    public function __construct(UuidInterface $uuid = null)
     {
-        $this->content = $content;
-        $this->author = $author;
-        $this->answer = $answer;
+        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->createdAt = new \DateTime();
         $this->comments = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public static function create(
+        UuidInterface $uuid,
+        string $content,
+        Adherent $author,
+        Answer $answer,
+        \DateTime $createdAt = null,
+        bool $approved = false,
+        bool $enabled = true
+    ): self {
+        $thread = new static($uuid);
+        $thread->content = $content;
+        $thread->author = $author;
+        $thread->answer = $answer;
+        $thread->createdAt = $createdAt ?: new \DateTime();
+        $thread->approved = $approved;
+        $thread->enabled = $enabled;
+
+        return $thread;
+    }
+
+    public function __toString()
     {
-        return $this->id;
+        return (string) $this->content;
     }
 
     public function getAnswer(): Answer
@@ -105,28 +197,26 @@ class Thread
         return $this->comments;
     }
 
-    public function getStatus(): string
+    public function getReportType(): string
     {
-        return $this->status;
+        return ReportType::IDEAS_WORKSHOP_THREAD;
     }
 
-    public function setStatus(string $status): void
+    public function getIdeaAuthor(): Adherent
     {
-        $this->status = $status;
+        return $this->getAnswer()->getIdea()->getAuthor();
     }
 
-    public function isSubmitted(): bool
+    public function getContributors(): ArrayCollection
     {
-        return ThreadStatusEnum::SUBMITTED === $this->status;
-    }
+        $contributors = new ArrayCollection();
 
-    public function isDeleted(): bool
-    {
-        return ThreadStatusEnum::DELETED === $this->status;
-    }
+        foreach ($this->comments as $comment) {
+            if (!$contributors->contains($comment->getAuthor())) {
+                $contributors->add($comment->getAuthor());
+            }
+        }
 
-    public function isApproved(): bool
-    {
-        return ThreadStatusEnum::APPROVED === $this->status;
+        return $contributors;
     }
 }

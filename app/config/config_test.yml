@@ -125,3 +125,9 @@ doctrine:
             default:
                 logging: false
                 profiling: false
+
+api_platform:
+    enable_entrypoint: false
+    collection:
+        pagination:
+            items_per_page: 2

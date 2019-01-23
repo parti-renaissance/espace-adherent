@@ -1,0 +1,90 @@
+.proposal-criteria {
+  display: flex;
+  // padding: 77px 80px 60px;
+  padding: 80px 70px;
+
+  &__container {
+    width: 100%;
+
+    &:first-child {
+        max-width: 380px;
+        margin-right: 70px;
+    }
+
+    &:nth-child(2) {
+        padding-right: 40px;
+    }
+
+    &__title {
+      margin-bottom: 20px;
+      font-size: 32px;
+      letter-spacing: -0.5px;
+      line-height: normal;
+    }
+
+    &__item {
+      display: flex;
+      &__icon {
+        width: 17px;
+        height: 15px;
+      }
+      &__text {
+        margin: 0 0 24px 0;
+        line-height: 24px;
+        background-image: url('./img/icn_checklist.svg');
+        background-repeat: no-repeat;
+        background-position: top left;
+        padding-left: 35px;
+
+        &__main {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  // responsive
+  @media #{$tablet} {
+    flex-direction: column;
+    &__container:first-child {
+      max-width: 80%;
+      margin: 0;
+    }
+
+    &__container {
+        &:nth-child(2) {
+            padding-right: 0px;
+        }
+
+      &__link {
+        margin-bottom: 50px;
+      }
+    }
+  }
+  @media #{$mobile} {
+    flex-direction: column;
+    padding: 50px 0;
+
+    &__container:first-child {
+      max-width: 90%;
+      margin: 0;
+    }
+
+    &__container {
+
+        &:nth-child(2) {
+            padding-right: 0px;
+        }
+
+      &__title {
+          font-size: 24px;
+
+
+      }
+
+      &__link {
+        margin-bottom: 50px;
+      }
+    }
+  }
+}

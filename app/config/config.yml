@@ -29,6 +29,7 @@ parameters:
     amp_host:                             "%env(AMP_HOST)%"
     legislatives_host:                    "%env(LEGISLATIVES_HOST)%"
     mooc_base_url:                        "%env(MOOC_BASE_URL)%"
+    api_path_prefix:                      "%env(API_PATH_PREFIX)%"
     router.request_context.scheme:        "%env(APP_SCHEME)%"
     router.request_context.host:          "%app_host%"
     image_max_length:                     450px
@@ -132,6 +133,9 @@ doctrine:
                 enabled: true
             oneLocale:
                 class: A2lix\I18nDoctrineBundle\Doctrine\ORM\Filter\OneLocaleFilter
+                enabled: true
+            enabled:
+                class:   AppBundle\Doctrine\Filter\EnabledFilter
                 enabled: true
 
         dql:
@@ -384,6 +388,22 @@ nelmio_cors:
             max_age: 3600
 
 api_platform:
-    mapping:
-        paths: ['%kernel.project_dir%/src/Entity']
-    enable_docs: '%kernel.debug%'
+    name_converter: serializer.name_converter.camel_case_to_snake_case
+    resource_class_directories:
+        - '%kernel.project_dir%/src/Entity'
+    enable_docs: true
+    enable_swagger_ui: true
+    enable_entrypoint: false
+    allow_plain_identifiers: true
+    formats:
+        json:
+            mime_types: ['application/json']
+    error_formats:
+        jsonproblem:
+            mime_types: ['application/problem+json']
+    collection:
+        pagination:
+            items_per_page: 10
+            maximum_items_per_page: 30
+            client_items_per_page: true
+            items_per_page_parameter_name: page_size

@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Banner renders correctly 1`] = `
+<div
+  className="banner"
+>
+  <div
+    className="banner__container__close"
+  >
+    <button
+      className="banner__container__close button--transparent"
+      onClick={[Function]}
+    >
+      <img
+        src="/assets/img/icn_close-white.svg"
+      />
+    </button>
+  </div>
+  <div
+    className="banner__container__titles"
+  >
+    <h3
+      className="banner__container__titles__title"
+    >
+      Répondez à notre consultation sur les retraites !
+    </h3>
+    <h4
+      className="banner__container__titles__subtitle"
+    >
+      Du 5 aout 2018 au 29 septembre 2018
+    </h4>
+  </div>
+  <div
+    className="banner__container"
+  >
+    <a
+      className="banner__container__link button--secondary"
+      href="http://google.fr"
+      target="_blank"
+    >
+      Je participe (2 min)
+    </a>
+  </div>
+</div>
+`;

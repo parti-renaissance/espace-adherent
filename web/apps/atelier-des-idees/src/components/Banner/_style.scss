@@ -1,0 +1,135 @@
+.banner {
+  position: relative;
+  color: white;
+  background-color: $dark-blue;
+
+  .banner__main {
+    display: flex;
+    align-items: center;
+    height: 170px;
+
+    > * {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .banner__container__titles {
+      z-index: 0;
+      position: relative;
+      justify-content: center;
+      width: 60%;
+      height: 100%;
+      background-color: $dark-blue;
+      padding-left: 200px;
+
+      > * {
+        font-weight: normal;
+        z-index: 2;
+      }
+      &__title {
+        font-size: 24px;
+        margin-bottom: 7px;
+      }
+      &__subtitle {
+        font-size: 16px;
+      }
+    }
+
+    .banner__container__titles:before {
+      content: ' ';
+      background: $dark-blue;
+      position: absolute;
+      top: 0;
+      left: 20px;
+      right: -40px;
+      bottom: 0;
+      z-index: 1;
+      transform: skew(-10deg, 0deg);
+    }
+
+    .banner__container {
+      width: 40%;
+      height: 100%;
+      background: linear-gradient(287deg, $dark-blue, $light-dark-blue);
+      justify-content: center;
+      align-items: start;
+      padding-left: 100px;
+
+      &__link {
+        background-color: transparent;
+        border-color: $white;
+        color: $white;
+        font-size: 14px;
+        text-decoration-line: none;
+      }
+
+      &__close {
+        position: absolute;
+        top: 6px;
+        right: 4px;
+      }
+    }
+  }
+
+  /* responsive */
+  @media #{$tablet} {
+    .banner__main {
+      .banner__container,
+      .banner__container__titles {
+        width: 50%;
+      }
+
+      .banner__container__titles {
+        padding-left: 100px;
+      }
+    }
+  }
+
+  @media #{$mobile} {
+    .banner__main {
+      flex-direction: column;
+      align-items: initial;
+      height: initial;
+      padding: 20px 0;
+
+      .banner__container__titles {
+        padding-left: 0;
+        width: 100%;
+
+        &__title {
+          margin-bottom: 10px;
+          font-size: 22px;
+        }
+
+        &__subtitle {
+          font-size: 14px;
+        }
+      }
+
+      .banner__container__titles:before {
+        content: none;
+      }
+
+      .banner__container {
+        width: 100%;
+        margin-top: 15px;
+        padding-left: 0;
+        background: none;
+        background-color: $dark-blue;
+
+        &__link {
+          align-self: flex-start;
+          margin: 0;
+        }
+
+        &__close {
+          top: 0;
+          display: flex;
+          padding: 0 4px 0 0;
+          align-self: flex-end;
+          z-index: 2;
+        }
+      }
+    }
+  }
+}

@@ -3,27 +3,34 @@
 namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntityPublishableTrait;
+use ApiPlatform\Core\Annotation\ApiResource;
+use AppBundle\Entity\EnabledInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={"get": {"path": "/ideas-workshop/questions/{id}"}},
+ *     itemOperations={"get": {"path": "/ideas-workshop/questions/{id}"}},
+ * )
+ *
  * @ORM\Table(name="ideas_workshop_question")
  * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Question
+class Question implements EnabledInterface
 {
-    use EntityPublishableTrait;
-
     /**
      * @var int
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
+     *
+     * @SymfonySerializer\Groups({"guideline_read", "idea_read", "with_answers"})
      */
     private $id;
 
@@ -31,11 +38,14 @@ class Question
      * @var Guideline
      *
      * @ORM\ManyToOne(targetEntity="Guideline", inversedBy="questions")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $guideline;
 
     /**
      * @ORM\Column
+     *
+     * @SymfonySerializer\Groups("guideline_read")
      */
     private $placeholder;
 
@@ -45,30 +55,52 @@ class Question
      * @Gedmo\SortablePosition
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
+     *
+     * @SymfonySerializer\Groups("guideline_read")
      */
     private $position;
 
     /**
      * @ORM\Column
+     *
+     * @SymfonySerializer\Groups("guideline_read")
+     */
+    private $category;
+
+    /**
+     * @ORM\Column
+     *
+     * @SymfonySerializer\Groups("guideline_read")
      */
     private $name;
 
     /**
      * @ORM\Column(type="boolean")
+     *
+     * @SymfonySerializer\Groups("guideline_read")
      */
     private $required;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $enabled;
+
     public function __construct(
-        string $name,
-        string $placeholder,
+        string $category = '',
+        string $name = '',
+        string $placeholder = '',
         int $position = 0,
         bool $required = false,
-        bool $published = true
+        bool $enabled = true
     ) {
+        $this->category = $category;
         $this->name = $name;
         $this->position = $position;
         $this->placeholder = $placeholder;
-        $this->published = $published;
+        $this->enabled = $enabled;
         $this->required = $required;
     }
 
@@ -77,7 +109,7 @@ class Question
         return $this->id;
     }
 
-    public function getGuideline(): Guideline
+    public function getGuideline(): ?Guideline
     {
         return $this->guideline;
     }
@@ -107,6 +139,16 @@ class Question
         $this->position = $position;
     }
 
+    public function getCategory(): string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(string $category): void
+    {
+        $this->category = $category;
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -125,5 +167,20 @@ class Question
     public function setRequired(bool $required): void
     {
         $this->required = $required;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?: '';
     }
 }

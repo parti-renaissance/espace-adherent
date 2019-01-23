@@ -1,0 +1,45 @@
+.idea-page-title {
+  .idea-page-title__title {
+    margin: 0;
+    margin-bottom: 20px;
+    line-height: 1.29;
+    font-size: 34px;
+    font-family: $font-roboto;
+  }
+
+  .idea-page-title__info {
+    margin-bottom: 40px;
+    color: $sonic-silver;
+
+    &__author-name {
+      color: $black;
+    }
+  }
+
+  .text-area__input {
+    font-size: 26px;
+    font-weight: bold;
+    padding: 15px 20px;
+
+    &::placeholder {
+      font-size: 26px;
+    }
+  }
+
+  .idea-page-title__title__editing-footer {
+    text-align: right;
+  }
+  .idea-page-title__title__editing-footer__btn {
+    @extend %reset-button;
+    margin-left: 15px;
+    cursor: pointer;
+    font-size: 15px;
+    color: $light-black;
+
+    &.editing-footer__btn--save,
+    &.editing-footer__btn--edit {
+      color: $saphir;
+      font-weight: 400;
+    }
+  }
+}

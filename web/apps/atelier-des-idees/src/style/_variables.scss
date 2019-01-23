@@ -1,0 +1,71 @@
+// colors
+$white: #fff;
+$black: #000;
+$dark-jungle-green: #1b1f27;
+$light-black: #444444;
+$france: #4887f7;
+$saphir: #1d5fd1;
+$dark-blue: #353edd;
+$light-dark-blue: #355fdd;
+$marine-blue: #0045c8;
+$blue-sky: #0496ff;
+$blue: #045bff;
+$spiro-disco-ball: #2abaff;
+$light-cobalt-blue: #95b0e0;
+$glitter: #e8f2fc;
+$light-blue: #d2ecff;
+$alice-blue: #f2f5fe;
+$alice-blue-alt: #eef5ff;
+$azureish-white: #e0e7f5;
+$platinum: #e5e5e5;
+$columbia-blue: #c5d1e6;
+$wild-blue-yonder: #9eafc4;
+$sky: #94acd5;
+$pale-sky: #b3d7ff;
+$light-sky: #d2ecff;
+$gainsboro: #d8dce0;
+$grey-sky: #cdd7ea;
+$ash-grey: #b4b4b4;
+$quick-silver: #a0a0a0;
+$sonic-silver: #757575;
+$grey: #939393;
+$x11-grey: #bababa;
+$dark-medium-grey: #a3a8ae;
+$medium-grey: #7f7f7f;
+$dark-grey: #636476;
+$cadet-grey: #8b9db1;
+$aurometalsaurus: #6a7981;
+$dark-aurometalsaurus: #667484;
+$slate-grey: #778491;
+$black-bean: #e5e5e5;
+$silver-chalice: #acacac;
+$snow: #fafbfc;
+$white-smoke: #f6f8f9;
+$light-grey: #b7c8db;
+$pastel-red: #ff6955;
+$ogre-odor: #f35540;
+$giants-orange: #ff4a22;
+$rose-madder: #e33636;
+$orange: #f8b402;
+$caribbean-green: #0cd283;
+$ufo-green: #1dd16e;
+$taupe-grey: #8e8e8e;
+
+// fonts
+$font-gillsans: 'Gillsans', 'Roboto', Helvetica, sans-serif;
+$font-roboto: 'Roboto', Helvetica, sans-serif;
+
+// Breakpoints
+// Small devices (landscape phones, 576px and up)
+$width-sm: 576px;
+// Medium devices (tablets, 768px and up)
+$width-md: 768px;
+// Large devices (desktops, 992px and up)
+$width-lg: 992px;
+// Extra large devices (large desktops, 1200px and up)
+$width-xl: 1200px;
+
+// responsive mixins
+$mobile: '(max-width: #{$width-md - 1px})';
+$tablet: '(min-width: #{$width-md}) and (max-width: #{$width-lg - 1px})';
+$desktop: '(min-width: #{$width-lg})';

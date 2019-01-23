@@ -1,0 +1,36 @@
+.movement-ideas__section__item {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: 0 30px;
+
+  @media #{$desktop} {
+    width: 100%;
+  }
+
+  &__title {
+    font-size: 22px;
+    color: $dark-blue;
+
+    &__main {
+      border-bottom: 7px solid $pale-sky;
+      display: inline-block;
+      height: 24px;
+    }
+  }
+
+  &__content {
+    margin: 15px auto 15px;
+    color: $dark-grey;
+
+    @media #{$desktop} {
+      width: 80%;
+    }
+  }
+
+  &__link {
+    width: 160px;
+    align-self: center;
+    padding: 7px;
+  }
+}

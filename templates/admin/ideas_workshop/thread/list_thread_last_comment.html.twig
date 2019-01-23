@@ -1,0 +1,8 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% set lastComment = object.comments|last %}
+    {% if lastComment %}
+        {{ lastComment.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM Y HH:MM") }}
+    {% endif %}
+{% endblock %}

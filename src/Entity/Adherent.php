@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use ApiPlatform\Core\Annotation\ApiResource;
 use AppBundle\OAuth\Model\User as InMemoryOAuthUser;
 use AppBundle\Collection\CitizenProjectMembershipCollection;
 use AppBundle\Collection\CommitteeMembershipCollection;
@@ -29,6 +30,30 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use JMS\Serializer\Annotation as JMS;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={},
+ *     itemOperations={
+ *         "get": {
+ *             "normalization_context": {"groups": {"vote_read"}},
+ *             "method": "GET",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "swagger_context": {
+ *                 "summary": "Retrieves an Adherent resource by UUID.",
+ *                 "description": "Retrieves an Adherent resource by UUID.",
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Adherent resource.",
+ *                         "example": "b4219d47-3138-5efd-9762-2ef9f9495084",
+ *                     }
+ *                 }
+ *             }
+ *         }
+ *     },
+ * )
+ *
  * @ORM\Table(name="adherents", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="adherents_uuid_unique", columns="uuid"),
  *     @ORM\UniqueConstraint(name="adherents_email_address_unique", columns="email_address")
@@ -266,11 +291,17 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $mandates;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\IdeasWorkshop\Idea", mappedBy="author", fetch="EXTRA_LAZY")
+     */
+    private $ideas;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
         $this->citizenProjectMemberships = new ArrayCollection();
         $this->subscriptionTypes = new ArrayCollection();
+        $this->ideas = new ArrayCollection();
     }
 
     public static function create(

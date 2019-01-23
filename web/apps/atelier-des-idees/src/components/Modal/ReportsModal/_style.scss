@@ -1,0 +1,41 @@
+.reports-modal {
+	&__subtitle {
+		color: $light-black;
+		margin-bottom: 52px;
+	}
+
+	&__report {
+		display: flex;
+		width: 500px;
+		padding: 12px 0 12px 12px;
+		margin-bottom: 5px;
+		text-decoration: none;
+		border: none;
+
+		&__content {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			margin-left: 15px;
+
+			&__file {
+				color: $saphir;
+			}
+
+			&__size {
+				color: $wild-blue-yonder;
+				font-size: 14px;
+			}
+		}
+	}
+
+	&__report:hover {
+		background: $white;
+		border-radius: 5px;
+	}
+
+	/* Responsive */
+	@media #{$mobile} {
+		overflow-x: hidden;
+	}
+}

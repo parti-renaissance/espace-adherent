@@ -3,16 +3,36 @@
 namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use ApiPlatform\Core\Annotation\ApiResource;
+use AppBundle\Entity\EnabledInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
- * @ORM\Table(name="ideas_workshop_consultation")
+ * @ApiResource(
+ *     collectionOperations={"get": {"method": "GET", "path": "/ideas-workshop/consultations"}},
+ *     itemOperations={},
+ *     attributes={
+ *         "normalization_context": {"groups": {"consultation_list_read"}},
+ *         "order": {"startedAt": "ASC"}
+ *     }
+ * )
+ *
+ * @ORM\Table(
+ *     name="ideas_workshop_consultation",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="consultation_enabled_unique", columns="enabled")
+ *     },
+ * )
  * @ORM\Entity
+ *
+ * @UniqueEntity("enabled")
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Consultation
+class Consultation implements EnabledInterface
 {
     /**
      * @ORM\Column(type="integer")
@@ -22,22 +42,25 @@ class Consultation
     private $id;
 
     /**
-     * Response time in seconds
+     * Response time in minutes
      *
      * @var int
      *
      * @Assert\GreaterThanOrEqual(0)
      *
+     * @SymfonySerializer\Groups("consultation_list_read")
      * @ORM\Column(type="smallint", options={"unsigned": true})
      */
     private $responseTime;
 
     /**
+     * @SymfonySerializer\Groups("consultation_list_read")
      * @ORM\Column(type="datetime")
      */
     private $startedAt;
 
     /**
+     * @SymfonySerializer\Groups("consultation_list_read")
      * @ORM\Column(type="datetime")
      */
     private $endedAt;
@@ -45,27 +68,38 @@ class Consultation
     /**
      * @Assert\Url
      *
+     * @SymfonySerializer\Groups("consultation_list_read")
      * @ORM\Column
      */
     private $url;
 
     /**
+     * @SymfonySerializer\Groups("consultation_list_read")
      * @ORM\Column
      */
     private $name;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $enabled;
 
     public function __construct(
         string $name = null,
         string $url = null,
         \DateTime $startedAt = null,
         \DateTime $endedAt = null,
-        int $responseTime = 0
+        int $responseTime = 0,
+        bool $enabled = null
     ) {
         $this->name = $name;
         $this->url = $url;
         $this->startedAt = $startedAt;
         $this->endedAt = $endedAt;
         $this->responseTime = $responseTime;
+        $this->enabled = $enabled;
     }
 
     public function getId(): ?int
@@ -121,6 +155,16 @@ class Consultation
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function isEnabled(): bool
+    {
+        return true === $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled ?: null;
     }
 
     public function __toString(): string

@@ -4,8 +4,10 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeMembership;
 use AppBundle\History\CommitteeMembershipHistoryHandler;
 use AppBundle\Repository\AdherentRepository;
+use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Statistics\StatisticsParametersFilter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -16,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class CommitteesController extends Controller
 {
@@ -79,5 +82,14 @@ class CommitteesController extends Controller
             'most_active' => $committeeRepository->retrieveMostActiveCommitteesInReferentManagedArea($referent),
             'least_active' => $committeeRepository->retrieveLeastActiveCommitteesInReferentManagedArea($referent),
         ]);
+    }
+
+    public function myCommitteesAction(
+        CommitteeMembershipRepository $committeeMembershipRepository,
+        UserInterface $user
+    ): array {
+        return array_map(function (CommitteeMembership $committeeMembership) {
+            return $committeeMembership->getCommittee();
+        }, $committeeMembershipRepository->findMembershipsForActiveCommittees($user)->toArray());
     }
 }

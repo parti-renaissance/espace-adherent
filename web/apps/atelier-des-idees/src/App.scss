@@ -1,0 +1,58 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// shared
+@import '../src/style/fonts';
+@import '../src/style/variables';
+@import '../src/style/placeholders';
+@import '../src/style/typographie';
+@import '../src/style/button';
+
+// component
+@import '../src/components/Button/style';
+@import '../src/components/Tabs/style';
+@import '../src/components/IdeaCard/style';
+@import '../src/components/IdeaCard/ContributingFooter/style';
+@import '../src/components/IdeaCard/VotingFooter/style';
+@import '../src/components/IdeaCardList/style';
+@import '../src/components/MovementIdeas/style';
+@import '../src/components/MovementIdeas/MovementIdeasSection/style';
+@import '../src/components/LatestIdeas/style';
+@import '../src/components/LatestIdeas/LatestIdeasPane/style';
+@import '../src/components/Reports/style';
+@import '../src/components/Skeletons/IdeaCardSkeleton/style';
+@import '../src/components/Skeletons/IdeaCardSkeletonList/style';
+@import '../src/components/Banner/style';
+@import '../src/components/TextEditor/style';
+@import '../src/components/Collapse/style';
+@import '../src/components/TextArea/style';
+@import '../src/components/Select/style';
+@import '../src/components/Switch/style';
+@import '../src/components/IdeaReader/style';
+@import '../src/components/Header/style';
+@import '../src/components/CommentsList/style';
+@import '../src/components/Dropdown/style';
+@import '../src/components/IdeaFilters/style';
+
+// containers
+@import '../src/containers/ModalRoot/style';
+@import '../src/containers/IdeaCardList/style';
+@import '../src/containers/IdeaThread/style';
+
+// modal
+@import '../src/components/Modal/ReportsModal/style';
+@import '../src/components/Modal/PublishIdeaFormModal/style';
+@import '../src/components/Modal/DeleteIdeaModal/style';
+@import '../src/components/Modal/MyIdeasModal/style';
+@import '../src/components/Modal/FlagModal/style';
+
+// pages
+@import '../src/pages/ThreeTabs/style';
+@import '../src/pages/Contribute/style';
+@import '../src/pages/Consult/style';
+@import '../src/pages/Propose/style';
+@import '../src/pages/IdeaPageBase/style';
+@import '../src/pages/ConditionsPage/style';

@@ -1,0 +1,47 @@
+.first-form {
+  overflow-x: hidden;
+
+  &__section {
+    margin-bottom: 35px;
+
+    &__title {
+        font-size: 26px;
+        letter-spacing: -0.5px;
+        line-height: normal;
+    }
+
+    &__subtitle {
+        font-size: 14px;
+        line-height: 20px;
+        color: $light-black;
+    }
+
+    &__label {
+      display: inline-block;
+      margin-bottom: 15px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
+
+  &__button {
+    width: 100%;
+    height: 60px;
+    margin-bottom: 10px;
+    outline: 0;
+  }
+
+  .link {
+    border: 0;
+    text-decoration: none;
+    color: $saphir;
+  }
+
+  &__error {
+    text-align: center;
+    margin: 0;
+    font-size: 12px;
+    line-height: normal;
+    color: $giants-orange;
+  }
+}

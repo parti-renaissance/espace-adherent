@@ -5,6 +5,9 @@ namespace AppBundle\Entity\Report;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AuthoredTrait;
 use AppBundle\Entity\EntityIdentityTrait;
+use AppBundle\Entity\Report\IdeasWorkshop\IdeaReport;
+use AppBundle\Entity\Report\IdeasWorkshop\ThreadReport;
+use AppBundle\Entity\Report\IdeasWorkshop\ThreadCommentReport;
 use Doctrine\ORM\Mapping as ORM;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Ramsey\Uuid\Uuid;
@@ -18,6 +21,9 @@ use Ramsey\Uuid\Uuid;
  *     "citizen_action": "CitizenActionReport",
  *     "committee": "CommitteeReport",
  *     "community_event": "CommunityEventReport",
+ *     "ideas_workshop_idea": IdeaReport::class,
+ *     "ideas_workshop_thread": ThreadReport::class,
+ *     "ideas_workshop_thread_comment": ThreadCommentReport::class
  * })
  *
  * @ORM\Table(

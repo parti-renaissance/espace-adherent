@@ -3,11 +3,22 @@
 namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={"get": {"method": "GET", "path": "/ideas-workshop/consultation_reports"}},
+ *     itemOperations={"get": {"method": "GET", "path": "/ideas-workshop/consultation_reports/{id}"}},
+ *     attributes={
+ *         "normalization_context": {"groups": {"consultation_report_read"}},
+ *         "order": {"position": "ASC"}
+ *     }
+ * )
+ *
  * @ORM\Table(name="ideas_workshop_consultation_report")
  * @ORM\Entity
  *
@@ -25,6 +36,7 @@ class ConsultationReport
     /**
      * @Assert\Url
      *
+     * @SymfonySerializer\Groups("consultation_report_read")
      * @ORM\Column
      */
     private $url;
@@ -34,11 +46,13 @@ class ConsultationReport
      *
      * @Gedmo\SortablePosition
      *
+     * @SymfonySerializer\Groups("consultation_report_read")
      * @ORM\Column(type="smallint", options={"unsigned": true})
      */
     private $position = 0;
 
     /**
+     * @SymfonySerializer\Groups("consultation_report_read")
      * @ORM\Column
      */
     private $name;

@@ -2,7 +2,7 @@
 
 namespace Migrations;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentTagData;
+use AppBundle\Entity\AdherentTagEnum;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
@@ -15,7 +15,7 @@ class Version20171003164518 extends AbstractMigration
 
     public function postUp(Schema $schema)
     {
-        foreach (LoadAdherentTagData::ADHERENT_TAG as $tag) {
+        foreach (AdherentTagEnum::values() as $tag) {
             $this->connection->insert('adherent_tags', ['name' => $tag]);
         }
     }

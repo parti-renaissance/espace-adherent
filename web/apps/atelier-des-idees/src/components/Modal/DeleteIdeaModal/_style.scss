@@ -1,0 +1,28 @@
+.delete-idea-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+
+  .delete-idea-modal__title {
+    margin-top: 50px;
+    font-size: 26px;
+  }
+
+  .delete-idea-modal__subtitle {
+    color: $light-black;
+    font-size: 14px;
+  }
+
+  .delete-ideal-modal__actions {
+    .button:first-child {
+      margin-right: 15px;
+    }
+  }
+
+  @media #{$mobile} {
+    .delete-idea-modal__title {
+      font-size: 18px;
+    }
+  }
+}

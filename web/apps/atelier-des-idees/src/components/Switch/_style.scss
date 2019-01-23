@@ -1,0 +1,24 @@
+.switch-wrapper {
+  display: flex;
+  align-items: center;
+
+  .switch.rc-switch {
+    border-color: $platinum;
+    background-color: $platinum;
+
+    &:after {
+      background-color: $dark-medium-grey;
+    }
+    &.rc-switch-checked {
+      background-color: $azureish-white;
+    }
+    &.rc-switch-checked:after {
+      background-color: $saphir;
+    }
+  }
+
+  .switch__label {
+    margin-left: 10px;
+    color: $light-black;
+  }
+}

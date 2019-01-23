@@ -2,13 +2,32 @@
 
 namespace AppBundle\Entity\IdeasWorkshop;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use ApiPlatform\Core\Annotation\ApiResource;
+use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get": {"path": "/ideas-workshop/answers"},
+ *         "post": {
+ *             "path": "/ideas-workshop/answers",
+ *             "access_control": "is_granted('ROLE_ADHERENT')"
+ *         }
+ *     },
+ *     itemOperations={
+ *         "get": {"path": "/ideas-workshop/answers/{id}"},
+ *         "put": {
+ *             "path": "/ideas-workshop/answers/{id}",
+ *             "access_control": "object.getAuthor() == user"
+ *         }
+ *     }
+ * )
+ *
  * @ORM\Table(name="ideas_workshop_answer")
  * @ORM\Entity
  *
@@ -22,37 +41,44 @@ class Answer
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
+     *
+     * @SymfonySerializer\Groups({"thread_comment_read", "idea_read", "with_answers", "thread_list_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")
+     *
+     * @AssertWysiwygLength(max=1700)
+     *
+     * @SymfonySerializer\Groups({"idea_write", "idea_publish", "idea_read", "with_answers"})
      */
     private $content;
 
     /**
      * @ORM\ManyToOne(targetEntity="Question")
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @SymfonySerializer\Groups({"idea_write", "idea_publish", "idea_read", "with_answers"})
      */
     private $question;
 
     /**
-     * @JMS\SkipWhenEmpty
-     * @JMS\Groups({"idea_list"})
-     * @ORM\OneToMany(targetEntity="Thread", mappedBy="answer")
+     * @ORM\OneToMany(targetEntity="Thread", mappedBy="answer", cascade={"remove"}, orphanRemoval=true)
+     *
+     * @SymfonySerializer\Groups({"idea_read"})
      */
     private $threads;
 
     /**
      * @ORM\ManyToOne(targetEntity="Idea", inversedBy="answers")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $idea;
 
-    public function __construct(
-        string $content,
-        Question $question
-    ) {
+    public function __construct(string $content)
+    {
         $this->content = $content;
-        $this->question = $question;
         $this->threads = new ArrayCollection();
     }
 

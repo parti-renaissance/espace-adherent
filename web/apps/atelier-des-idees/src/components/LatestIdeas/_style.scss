@@ -1,0 +1,44 @@
+.latest-ideas {
+  padding: 50px 100px;
+  background-color: $white-smoke;
+
+  &__title {
+    margin-bottom: 50px;
+    width: 60%;
+    font-size: 34px;
+    line-height: normal;
+  }
+
+  .latest-ideas__pane {
+    padding-top: 35px;
+  }
+
+  // responsive
+  @media #{$desktop} {
+    .rc-tabs-tab {
+      font-size: 18px;
+    }
+  }
+
+  @media #{$tablet} {
+    padding: 50px;
+
+    &__title {
+      width: 100%;
+      font-size: 28px;
+    }
+  }
+
+  @media #{$mobile} {
+    padding: 50px 0;
+
+    &__title {
+      width: 100%;
+      font-size: 24px;
+    }
+
+    .latest-ideas__pane {
+      padding-top: 20px;
+    }
+  }
+}

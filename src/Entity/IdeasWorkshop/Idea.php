@@ -3,32 +3,191 @@
 namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\AuthorInterface;
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\EntityIdentityTrait;
+use AppBundle\Entity\EnabledInterface;
 use AppBundle\Entity\EntityNameSlugTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
+use AppBundle\Entity\Report\ReportableInterface;
+use AppBundle\Filter\CommentsCountFilter;
+use AppBundle\Filter\IdeaStatusFilter;
+use AppBundle\Filter\ContributorsCountFilter;
+use AppBundle\Report\ReportType;
+use AppBundle\Validator\CommitteeMember;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
-use JMS\Serializer\Annotation as JMS;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * @ApiResource(
- *     collectionOperations={"get"},
- *     itemOperations={"get"},
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/ideas-workshop/ideas",
+ *             "method": "GET",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "status",
+ *                         "in": "query",
+ *                         "type": "string",
+ *                         "description": "The status of the Idea resource.",
+ *                         "enum": IdeaStatusEnum::ALL_STATUSES,
+ *                         "example": IdeaStatusEnum::PENDING,
+ *                     },
+ *                     {
+ *                         "name": "name",
+ *                         "in": "query",
+ *                         "type": "string",
+ *                         "description": "The name of the Idea resource.",
+ *                         "example": "écologie",
+ *                     },
+ *                     {
+ *                         "name": "theme.name",
+ *                         "in": "query",
+ *                         "type": "string",
+ *                         "description": "The theme name of the Idea resource.",
+ *                         "example": "armée",
+ *                     },
+ *                     {
+ *                         "name": "author_category",
+ *                         "in": "query",
+ *                         "type": "uuid",
+ *                         "description": "The author category of the Idea resource.",
+ *                         "enum": AuthorCategoryEnum::ALL_CATEGORIES,
+ *                         "example": AuthorCategoryEnum::ADHERENT,
+ *                     },
+ *                     {
+ *                         "name": "author.uuid",
+ *                         "in": "query",
+ *                         "type": "string",
+ *                         "description": "The author uuid of the Idea resource.",
+ *                         "example": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+ *                     },
+ *                 }
+ *             }
+ *         },
+ *         "get_my_contributions": {
+ *             "method": "GET",
+ *             "path": "/ideas-workshop/ideas/my-contributions",
+ *             "access_control": "is_granted('ROLE_ADHERENT')",
+ *             "normalization_context": {"groups": {"idea_list_read"}}
+ *         },
+ *         "post": {
+ *             "path": "/ideas-workshop/ideas",
+ *             "access_control": "is_granted('ROLE_ADHERENT')",
+ *             "normalization_context": {"groups": {"idea_list_read", "with_answers"}}
+ *         }
+ *     },
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/ideas-workshop/ideas/{id}",
+ *             "method": "GET",
+ *             "normalization_context": {"groups": {"idea_read"}},
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Idea resource.",
+ *                         "example": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
+ *                     }
+ *                 }
+ *             }
+ *         },
+ *         "put": {
+ *             "path": "/ideas-workshop/ideas/{id}",
+ *             "access_control": "object.getAuthor() == user",
+ *             "normalization_context": {"groups": {"idea_list_read", "with_answers"}},
+ *         },
+ *         "publish": {
+ *             "method": "PUT",
+ *             "denormalization_context": {"api_allow_update": false},
+ *             "access_control": "object.getAuthor() == user",
+ *             "path": "/ideas-workshop/ideas/{id}/publish",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "controller": "AppBundle\Controller\Api\IdeaPublishController",
+ *             "normalization_context": {"groups": {"idea_list_read"}},
+ *             "validation_groups": {"idea_publish"},
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Idea resource.",
+ *                         "example": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
+ *                     }
+ *                 }
+ *             }
+ *         },
+ *         "delete": {
+ *             "path": "/ideas-workshop/ideas/{id}",
+ *             "access_control": "object.getAuthor() == user",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Idea resource.",
+ *                         "example": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
+ *                     }
+ *                 }
+ *             }
+ *         }
+ *     },
+ *     attributes={
+ *         "normalization_context": {"groups": {"idea_list_read"}},
+ *         "denormalization_context": {
+ *             "groups": {"idea_write"}
+ *         },
+ *         "order": {"createdAt": "ASC"},
+ *         "filters": {CommentsCountFilter::class, ContributorsCountFilter::class, IdeaStatusFilter::class}
+ *     },
+ *     subresourceOperations={
+ *         "votes_get_subresource": {
+ *             "method": "GET",
+ *             "path": "/ideas-workshop/ideas/{id}/votes"
+ *         },
+ *     }
  * )
  *
- * @ORM\Entity
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "name": "partial",
+ *     "themes.name": "exact",
+ *     "authorCategory": "exact",
+ *     "author.uuid": "exact",
+ *     "category.name": "exact",
+ *     "needs.name": "exact"
+ * })
+ * @ApiFilter(OrderFilter::class, properties={"publishedAt", "votesCount"})
+ *
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\IdeaRepository")
  *
  * @ORM\Table(
  *     name="ideas_workshop_idea",
  *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="idea_uuid_unique", columns="uuid"),
  *         @ORM\UniqueConstraint(name="idea_slug_unique", columns="slug")
+ *     },
+ *     indexes={
+ *         @ORM\Index(name="idea_workshop_author_category_idx", columns={"author_category"})
  *     }
  * )
  *
@@ -36,117 +195,205 @@ use JMS\Serializer\Annotation as JMS;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Idea
+class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
 {
-    use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityNameSlugTrait;
 
-    private const PUBLISHED_INTERVAL = 'P3W';
+    private const PUBLISHED_INTERVAL = 'P10D';
 
     /**
-     * @ORM\ManyToOne(targetEntity="Theme")
+     * @ApiProperty(identifier=false)
+     *
+     * @ORM\Id
+     * @ORM\Column(type="integer", options={"unsigned": true})
+     * @ORM\GeneratedValue
      */
-    private $theme;
+    protected $id;
+
+    /**
+     * @ApiProperty(identifier=true)
+     *
+     * @ORM\Column(type="uuid")
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "my_committees", "thread_comment_read"})
+     */
+    protected $uuid;
+
+    /**
+     * @ORM\Column
+     *
+     * @Assert\Length(max=120)
+     * @Assert\NotBlank(message="idea.name.not_blank")
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read", "vote_read"})
+     */
+    protected $name;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Theme")
+     * @ORM\JoinTable(name="ideas_workshop_ideas_themes")
+     *
+     * @Assert\Count(min=1, minMessage="idea.theme.min_count", groups={"idea_publish"})
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read"})
+     */
+    private $themes;
 
     /**
      * @ORM\ManyToOne(targetEntity="Category")
+     *
+     * @Assert\NotBlank(message="idea.category.not_blank", groups={"idea_publish"})
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read"})
      */
     private $category;
 
     /**
      * @ORM\ManyToMany(targetEntity="Need")
      * @ORM\JoinTable(name="ideas_workshop_ideas_needs")
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read"})
      */
     private $needs;
 
     /**
-     * @JMS\Groups({"idea_list"})
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent", inversedBy="ideas")
      * @ORM\JoinColumn(onDelete="SET NULL")
+     *
+     * @Assert\NotNull(message="idea.author.not_null", groups={"idea_publish"})
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read"})
      */
     private $author;
 
     /**
      * @var \DateTime
      *
-     * @JMS\Groups({"idea_list"})
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Assert\NotNull(message="idea.published_at.not_null", groups={"idea_publish"})
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read"})
      */
     private $publishedAt;
 
     /**
-     * @var Committee
+     * @var \DateTime
      *
-     * @JMS\Groups({"idea_list"})
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
-     */
-    private $committee;
-
-    /**
-     * @Assert\Choice(
-     *     callback={"AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum", "toArray"},
-     *     strict=true,
-     * )
+     * @ORM\Column(type="datetime", nullable=true)
      *
-     * @ORM\Column(length=11, options={"default": IdeaStatusEnum::DRAFT})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_read"})
      */
-    private $status;
+    private $finalizedAt;
 
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default": 0})
+     * @ORM\Column(type="boolean", options={"default": 1})
      */
-    private $withCommittee;
+    private $enabled;
 
     /**
-     * @ORM\OneToMany(targetEntity="Answer", mappedBy="idea")
+     * @var Committee
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
+     *
+     * @CommitteeMember
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
+     */
+    private $committee;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Answer", mappedBy="idea", cascade={"all"}, orphanRemoval=true)
+     *
+     * @Assert\Count(min=1, minMessage="idea.answers.min_count", groups={"idea_publish"})
+     * @Assert\Valid
+     *
+     * @SymfonySerializer\Groups({"idea_write", "idea_read", "with_answers"})
      */
     private $answers;
 
     /**
-     * @ORM\OneToMany(targetEntity="Vote", mappedBy="idea")
+     * @ORM\OneToMany(targetEntity="Vote", mappedBy="idea", cascade={"remove"}, orphanRemoval=true)
+     *
+     * @ApiSubresource
      */
     private $votes;
 
+    /**
+     * @ORM\Column(type="integer", options={"unsigned": true})
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_read"})
+     */
+    private $votesCount = 0;
+
+    /**
+     * @ORM\Column(length=9)
+     *
+     * @Assert\Choice(choices=AuthorCategoryEnum::ALL_CATEGORIES, strict=true)
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write"})
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "swagger_context": {
+     *             "type": "string",
+     *             "enum": AuthorCategoryEnum::ALL_CATEGORIES,
+     *             "example": AuthorCategoryEnum::ADHERENT
+     *         }
+     *     }
+     * )
+     */
+    private $authorCategory;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\NotBlank(message="idea.description.not_blank", groups={"idea_publish"})
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read"})
+     */
+    private $description;
+
     public function __construct(
-        UuidInterface $uuid,
         string $name,
-        Adherent $author,
-        Category $category,
-        Theme $theme,
-        bool $withCommittee = false,
-        Committee $committee = null,
+        string $description = null,
+        string $authorCategory = AuthorCategoryEnum::ADHERENT,
         \DateTime $publishedAt = null,
-        string $status = IdeaStatusEnum::DRAFT
+        \DateTime $finalizedAt = null,
+        bool $enabled = true,
+        Adherent $author = null,
+        UuidInterface $uuid = null,
+        \DateTime $createdAt = null
     ) {
-        $this->uuid = $uuid;
-        $this->setName($name);
+        $this->uuid = $uuid ?: Uuid::uuid4();
         $this->author = $author;
-        $this->category = $category;
-        $this->theme = $theme;
-        $this->committee = $committee;
+        $this->setName($name);
+        $this->description = $description;
+        $this->authorCategory = $authorCategory;
         $this->publishedAt = $publishedAt;
-        $this->status = $status;
-        $this->withCommittee = $withCommittee;
+        $this->finalizedAt = $finalizedAt;
+        $this->enabled = $enabled;
         $this->needs = new ArrayCollection();
+        $this->themes = new ArrayCollection();
         $this->answers = new ArrayCollection();
         $this->votes = new ArrayCollection();
-        $this->createdAt = new \DateTime();
+        $this->createdAt = $createdAt ?: new \DateTime();
     }
 
-    public function getTheme(): Theme
+    public function getId(): ?int
     {
-        return $this->theme;
+        return $this->id;
     }
 
-    public function setTheme(Theme $theme): void
+    public function getUuid(): UuidInterface
     {
-        $this->theme = $theme;
+        return $this->uuid;
     }
 
-    public function getCategory(): Category
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
@@ -156,7 +403,24 @@ class Idea
         $this->category = $category;
     }
 
-    public function getNeeds(): ArrayCollection
+    public function getThemes(): Collection
+    {
+        return $this->themes;
+    }
+
+    public function addTheme(Theme $theme): void
+    {
+        if (!$this->themes->contains($theme)) {
+            $this->themes->add($theme);
+        }
+    }
+
+    public function removeTheme(Theme $theme): void
+    {
+        $this->themes->removeElement($theme);
+    }
+
+    public function getNeeds(): Collection
     {
         return $this->needs;
     }
@@ -173,7 +437,7 @@ class Idea
         $this->needs->removeElement($need);
     }
 
-    public function getAuthor(): Adherent
+    public function getAuthor(): ?Adherent
     {
         return $this->author;
     }
@@ -193,6 +457,26 @@ class Idea
         $this->publishedAt = $publishedAt;
     }
 
+    public function getFinalizedAt(): ?\DateTime
+    {
+        return $this->finalizedAt;
+    }
+
+    public function setFinalizedAt(\DateTime $finalizedAt): void
+    {
+        $this->finalizedAt = $finalizedAt;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
+    }
+
     public function getCommittee(): ?Committee
     {
         return $this->committee;
@@ -203,24 +487,36 @@ class Idea
         $this->committee = $committee;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_read"})
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "swagger_context": {
+     *             "type": "string",
+     *             "enum": IdeaStatusEnum::ALL_STATUSES,
+     *             "example": IdeaStatusEnum::DRAFT
+     *         }
+     *     }
+     * )
+     */
     public function getStatus(): string
     {
-        return $this->status;
-    }
+        if (!$this->isEnabled()) {
+            return IdeaStatusEnum::UNPUBLISHED;
+        }
 
-    public function setStatus(string $status): void
-    {
-        $this->status = $status;
-    }
+        if ($this->isDraft()) {
+            return IdeaStatusEnum::DRAFT;
+        }
 
-    public function isWithCommittee(): bool
-    {
-        return $this->withCommittee;
-    }
+        if ($this->isPending()) {
+            return IdeaStatusEnum::PENDING;
+        }
 
-    public function setWithCommittee(bool $withCommittee): void
-    {
-        $this->withCommittee = $withCommittee;
+        if ($this->isFinalized()) {
+            return IdeaStatusEnum::FINALIZED;
+        }
     }
 
     public function addAnswer(Answer $answer): void
@@ -245,73 +541,111 @@ class Idea
     {
         if (!$this->votes->contains($vote)) {
             $this->votes->add($vote);
+            $vote->setIdea($this);
         }
     }
 
     public function removeVote(Vote $vote): void
     {
         $this->votes->removeElement($vote);
+        $this->decrementVotesCount();
     }
 
-    public function getVotes(): ArrayCollection
+    public function getVotes(): Collection
     {
         return $this->votes;
     }
 
     /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("days_before_deadline"),
-     * @JMS\Groups({"idea_list"})
+     * @SymfonySerializer\Groups("idea_list_read")
      */
     public function getDaysBeforeDeadline(): int
     {
-        $deadline = $this->createdAt->add(new \DateInterval(self::PUBLISHED_INTERVAL));
-        $now = new \DateTime();
+        if (!$this->isPending()) {
+            return 0;
+        }
 
-        return $deadline <= $now ? 0 : $deadline->diff($now)->d;
+        return $this->finalizedAt->diff(new \DateTime('now'))->d;
     }
 
     public function isDraft(): bool
     {
-        return IdeaStatusEnum::DRAFT === $this->status;
+        return null === $this->publishedAt;
     }
 
     public function isPending(): bool
     {
-        return IdeaStatusEnum::PENDING === $this->status;
+        return !$this->isDraft() && new \DateTime('now') < $this->finalizedAt;
     }
 
     public function isFinalized(): bool
     {
-        return IdeaStatusEnum::FINALIZED === $this->status;
+        return !$this->isDraft() && new \DateTime('now') >= $this->finalizedAt;
     }
 
     public function isUnpublished(): bool
     {
-        return IdeaStatusEnum::UNPUBLISHED === $this->status;
+        return !$this->enabled;
     }
 
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("uuid"),
-     * @JMS\Groups({"idea_list"})
-     */
+    public function publish(): void
+    {
+        $this->publishedAt = $now = new \DateTimeImmutable();
+        $this->finalizedAt = $now->add(new \DateInterval(self::PUBLISHED_INTERVAL));
+    }
+
+    public function finalize(): void
+    {
+        $this->finalizedAt = new \DateTime();
+    }
+
     public function getUuidAsString(): string
     {
         return $this->getUuid()->toString();
     }
 
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("answers"),
-     * @JMS\Groups({"idea_list"})
-     */
-    public function getAnswerSerialized(): Collection
+    public function getAuthorCategory(): string
     {
-        return $this->answers
-            ->filter(function (Answer $answer) {
-                return !$answer->getThreads()->isEmpty();
-            })
-        ;
+        return $this->authorCategory;
+    }
+
+    public function setAuthorCategory(string $authorCategory): void
+    {
+        $this->authorCategory = $authorCategory;
+    }
+
+    public function getVotesCount(): int
+    {
+        return $this->votesCount;
+    }
+
+    public function incrementVotesCount(int $increment = 1): void
+    {
+        $this->votesCount += $increment;
+    }
+
+    public function decrementVotesCount(int $increment = 1): void
+    {
+        $this->votesCount -= $increment;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function getReportType(): string
+    {
+        return ReportType::IDEAS_WORKSHOP_IDEA;
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->name;
     }
 }

@@ -34,6 +34,9 @@ class IdeasWorkshopConsultationAdmin extends AbstractAdmin
             ->add('endedAt', null, [
                 'label' => 'Au',
             ])
+            ->add('enabled', null, [
+                'label' => 'Visible',
+            ])
             ->add('responseTime', null, [
                 'label' => 'Temps de réponse',
             ])
@@ -53,6 +56,9 @@ class IdeasWorkshopConsultationAdmin extends AbstractAdmin
                 ])
                 ->add('responseTime', null, [
                     'label' => 'Temps de réponse',
+                ])
+                ->add('enabled', null, [
+                    'label' => 'Visible',
                 ])
             ->end()
             ->with('Période')
@@ -77,6 +83,10 @@ class IdeasWorkshopConsultationAdmin extends AbstractAdmin
                 'label' => 'URL',
                 'show_filter' => true,
             ])
+            ->add('enabled', null, [
+                'label' => 'Visible',
+                'show_filter' => true,
+            ])
         ;
     }
 
@@ -96,6 +106,9 @@ class IdeasWorkshopConsultationAdmin extends AbstractAdmin
             ->add('responseTime', null, [
                 'label' => 'Temps de réponse',
                 'template' => 'admin/consultation/list_response_time.html.twig',
+            ])
+            ->add('enabled', null, [
+                'label' => 'Visible',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

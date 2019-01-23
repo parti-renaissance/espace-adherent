@@ -1,0 +1,76 @@
+.button {
+  cursor: pointer;
+  padding: 7px 15px;
+  height: 40px;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.2s;
+
+  &[disabled] {
+    cursor: not-allowed;
+  }
+
+  &:hover {
+      opacity: 0.7;
+  }
+}
+
+.button--primary {
+  font-family: $font-gillsans;
+  background-color: $blue;
+  color: $white;
+  text-transform: uppercase;
+  border: 1px solid $blue;
+  letter-spacing: 1.5px;
+}
+
+.button--primary:not([disabled]):hover {
+  background-color: $marine-blue;
+  color: $white;
+  opacity: 1;
+}
+
+.button--secondary {
+  @extend .button;
+  font-family: $font-gillsans;
+  background-color: $white;
+  color: $blue;
+  text-transform: uppercase;
+  border: 1px solid $blue;
+  letter-spacing: 1.5px;
+}
+
+.button--secondary:not([disabled]):hover {
+  background-color: $marine-blue;
+  border-color: $marine-blue;
+  color: $white;
+  opacity: 1;
+}
+
+.button--tertiary {
+  @extend .button;
+  font-family: $font-gillsans;
+  background-color: $white;
+  color: $black;
+  text-transform: uppercase;
+  border: 1px solid $black;
+  letter-spacing: 1.5px;
+}
+
+.button--tertiary:not([disabled]):hover {
+  background-color: $black;
+  color: $white;
+  opacity: 1;
+}
+
+.button--transparent {
+  @extend .button;
+  background: transparent;
+  border: none;
+}
+
+.button--lowercase {
+  @extend .button--secondary;
+  font-size: 16px;
+  letter-spacing: 0;
+}

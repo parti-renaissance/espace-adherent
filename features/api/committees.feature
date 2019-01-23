@@ -273,3 +273,54 @@ Feature:
       ]
     }
     """
+
+  Scenario: As a logged-in user I can see the list of my committees
+    Given I am logged as "jacques.picard@en-marche.fr"
+    And I send a "GET" request to "/api/committees/me"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+      {
+        "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
+        "name": "En Marche Paris 8",
+        "slug": "en-marche-paris-8"
+      },
+      {
+        "uuid": "b0cd0e52-a5a4-410b-bba3-37afdd326a0a",
+        "name": "En Marche Dammarie-les-Lys",
+        "slug": "en-marche-dammarie-les-lys"
+      },
+      {
+        "uuid": "d648d486-fbb3-4394-b4b3-016fac3658af",
+        "name": "Antenne En Marche de Fontainebleau",
+        "slug": "antenne-en-marche-de-fontainebleau"
+      },
+      {
+        "uuid": "464d4c23-cf4c-4d3a-8674-a43910da6419",
+        "name": "En Marche - Comité de Évry",
+        "slug": "en-marche-comite-de-evry"
+      },
+      {
+        "uuid": "508d4ac0-27d6-4635-8953-4cc8600018f9",
+        "name": "En Marche - Comité de Rouen",
+        "slug": "en-marche-comite-de-rouen"
+      },
+      {
+        "uuid": "40b6e2e5-2499-438b-93ab-ef08860a1845",
+        "name": "En Marche - Comité de Berlin",
+        "slug": "en-marche-comite-de-berlin"
+      },
+      {
+        "uuid": "93b72179-7d27-40c4-948c-5188aaf264b6",
+        "name": "En Marche - Comité de Singapour",
+        "slug": "en-marche-comite-de-singapour"
+      },
+      {
+        "uuid": "62ea97e7-6662-427b-b90a-23429136d0dd",
+        "name": "En Marche - Comité de New York City",
+        "slug": "en-marche-comite-de-new-york-city"
+      }
+    ]
+    """

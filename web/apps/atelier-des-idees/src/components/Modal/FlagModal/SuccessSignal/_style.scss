@@ -1,0 +1,18 @@
+.success-signal {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+	&__title {
+		text-align: center;
+		margin: 73px 0 14px;
+		font-size: 26px;
+	}
+
+	&__text {
+		text-align: center;
+		margin: 0;
+		color: $light-black;
+		font-size: 15px;
+	}
+}

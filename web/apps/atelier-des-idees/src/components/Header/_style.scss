@@ -1,0 +1,80 @@
+.header {
+  height: 80px;
+  border-top: 1px solid $gainsboro;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 10;
+  background-color: $white;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.09);
+
+  .header__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+  }
+
+  .header__nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .horizontal-menu {
+    width: 100%;
+  }
+
+  .menu-item-wrapper,
+  .header__item {
+    margin-right: 15px;
+  }
+
+  .header__item {
+    color: $black;
+    font-size: 16px;
+    text-decoration: none;
+    border: none;
+
+    &:hover,
+    &.active {
+      color: $blue;
+    }
+
+    &.active {
+      font-weight: bold;
+    }
+  }
+
+  .header__button {
+    @extend %reset-button;
+    cursor: pointer;
+  }
+
+  @media #{$mobile} {
+    height: 60px;
+    background-color: $snow;
+
+    .header__inner {
+      justify-content: initial;
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      margin: 0;
+      padding: 0 20px;
+    }
+
+    .header__item {
+      white-space: nowrap;
+    }
+
+    .header__create-btn {
+        display: none;
+    }
+
+    .menu-item-wrapper,
+    .header__item {
+      margin-right: 25px;
+    }
+  }
+}

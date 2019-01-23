@@ -14,7 +14,14 @@ class ReportCommand
     private $author;
 
     /**
-     * @Assert\NotBlank(message="report.invalid_reasons")
+     * @Assert\Choice(
+     *     choices=Report::REASONS_LIST,
+     *     strict=true,
+     *     multiple=true,
+     *     multipleMessage="report.invalid_reasons",
+     *     min=1,
+     *     minMessage="report.invalid_reasons"
+     * )
      */
     private $reasons = [];
 
@@ -65,13 +72,21 @@ class ReportCommand
     public function validateComment(ExecutionContextInterface $context): void
     {
         if ($this->comment && !\in_array(Report::REASON_OTHER, $this->reasons, true)) {
-            $context->addViolation('Vous devez cocher la case "Autre" afin de renseigner un commentaire');
+            $context
+                ->buildViolation('Vous devez cocher la case "Autre" afin de renseigner un commentaire.')
+                ->atPath('comment')
+                ->addViolation()
+            ;
 
             return;
         }
 
         if (!$this->comment && \in_array(Report::REASON_OTHER, $this->reasons, true)) {
-            $context->addViolation('Merci de renseigner la raison de votre signalement.');
+            $context
+                ->buildViolation('Merci de renseigner la raison de votre signalement.')
+                ->atPath('comment')
+                ->addViolation()
+            ;
         }
     }
 }

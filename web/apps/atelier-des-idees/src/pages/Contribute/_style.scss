@@ -1,0 +1,17 @@
+.contribute-page {
+  padding: 40px 0;
+  background-color: $snow;
+
+  .idea-filters {
+    margin-bottom: 40px;
+
+    .select__input__control {
+        height: 43px;
+    }
+  }
+
+  /* Responsive */
+  @media #{$mobile} {
+    padding: 40px 0;
+  }
+}

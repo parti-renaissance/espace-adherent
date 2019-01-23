@@ -3,27 +3,40 @@
 namespace AppBundle\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntityNameSlugTrait;
+use ApiPlatform\Core\Annotation\ApiResource;
+use AppBundle\Entity\EnabledInterface;
 use AppBundle\Entity\ImageTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"theme_read"}
+ *         },
+ *         "order": {"name": "ASC"},
+ *     },
+ *     collectionOperations={"get": {"path": "/ideas-workshop/themes"}},
+ *     itemOperations={"get": {"path": "/ideas-workshop/theme/{id}"}},
+ * )
+ *
  * @ORM\Entity
  * @ORM\Table(
  *     name="ideas_workshop_theme",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="theme_slug_unique", columns="slug")
+ *         @ORM\UniqueConstraint(name="theme_name_unique", columns="name")
  *     }
  * )
  *
- * @UniqueEntity("slug")
+ * @UniqueEntity("name")
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Theme
+class Theme implements EnabledInterface
 {
-    use EntityNameSlugTrait;
     use ImageTrait;
 
     /**
@@ -32,8 +45,21 @@ class Theme
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
+     *
+     * @SymfonySerializer\Groups({"theme_read", "idea_read", "idea_list_read"})
      */
     private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     *
+     * @SymfonySerializer\Groups({"theme_read", "idea_list_read"})
+     */
+    protected $name;
 
     /**
      * @var bool
@@ -42,15 +68,33 @@ class Theme
      */
     private $enabled;
 
-    public function __construct(string $name, bool $enabled = false)
+    /**
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     */
+    protected $imageName;
+
+    public function __construct(string $name = '', string $imageName = null, bool $enabled = false)
     {
-        $this->setName($name);
+        $this->name = $name;
+        $this->imageName = $imageName;
         $this->enabled = $enabled;
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
     }
 
     public function isEnabled(): bool
@@ -61,5 +105,15 @@ class Theme
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function getImagePath(): string
+    {
+        return sprintf('images/ideas_workshop/themes/%s', $this->getImageName());
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?: '';
     }
 }

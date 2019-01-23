@@ -1,0 +1,38 @@
+.collapse {
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px 20px 20px;
+
+    a {
+      text-decoration: none;
+      border-bottom: 0;
+      cursor: pointer;
+    }
+
+    .button {
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      color: $blue;
+      font-size: 24px;
+      outline: none;
+      border-color: transparent;
+    }
+
+    &__btn--close {
+      background: transparent;
+    }
+
+    &__btn--open {
+      border-radius: 50%;
+      text-align: center;
+      background: $white-smoke;
+    }
+  }
+}
+
+.collapse--close {
+  background: $white-smoke;
+}

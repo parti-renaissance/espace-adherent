@@ -1,0 +1,33 @@
+.create-idea-tool {
+  .create-idea-tool__section-title {
+    margin: 50px 0;
+
+    .create-idea-tool__section-title__main::after {
+      content: '';
+      display: block;
+      width: 100px;
+      border-bottom: 1px solid $black-bean;
+      margin-top: 10px;
+    }
+
+    .create-idea-tool__section-subtitle {
+      margin: 0;
+      font-size: 14px;
+      font-family: $font-gillsans;
+      text-transform: uppercase;
+      color: $dark-aurometalsaurus;
+    }
+  }
+
+  // responsive
+ 
+    .create-idea-tool__section-title__main {
+      font-weight: normal;
+      font-size: 14px;
+      color: $quick-silver;
+
+      @media #{$tablet} {
+      font-size: 20px;
+      }
+  }
+}

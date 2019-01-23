@@ -44,3 +44,6 @@ monolog:
         console:
             type:   console
             channels: ["!event", "!doctrine"]
+
+api_platform:
+    enable_entrypoint: true

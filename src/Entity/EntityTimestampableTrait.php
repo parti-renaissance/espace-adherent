@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 trait EntityTimestampableTrait
 {
@@ -13,6 +14,7 @@ trait EntityTimestampableTrait
      *
      * @ORM\Column(type="datetime")
      *
+     * @SymfonySerializer\Groups({"idea_list_read", "thread_list_read", "thread_comment_read", "idea_read"})
      * @Gedmo\Timestampable(on="create")
      */
     protected $createdAt;

@@ -1,0 +1,19 @@
+.idea-card-list__paging {
+  text-align: center;
+}
+
+.idea-card-list__empty {
+  width: 33%;
+  margin: 0 auto;
+  text-align: center;
+  font-family: $font-gillsans;
+  color: $dark-aurometalsaurus;
+
+  &__img {
+    max-width: 100%;
+  }
+
+  @media #{$mobile} {
+    width: 50%;
+  }
+}

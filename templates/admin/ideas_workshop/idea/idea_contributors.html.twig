@@ -1,0 +1,63 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <div class="sticky-wrapper">
+        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        Liste des contributeurs de l'idée "{{ idea.name }}"
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    {% block notice %}
+        {{ parent() }}
+    {% endblock %}
+
+    <p>
+        <a href="{{ path('admin_app_ideasworkshop_idea_list') }}" class="btn btn-default">
+            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            Retour à la liste
+        </a>
+        <a href="{{ path('admin_app_ideasworkshop_idea_edit', { id: idea.id }) }}" class="btn btn-default">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            Editer l'idée
+        </a>
+    </p>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-6">
+            <div class="box box-primary">
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-bordered table-striped sonata-ba-list">
+                        <thead>
+                        <tr>
+                            <th>
+                                Contributeur
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for contributor in contributors %}
+                            <tr>
+                                <td>
+                                    <a href="{{ path('admin_app_adherent_show', { id: contributor.id }) }}">
+                                        {{ contributor.fullName }}
+                                    </a>
+                                    <br />
+                                    {{ contributor.emailAddress }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

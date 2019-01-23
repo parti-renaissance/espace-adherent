@@ -1,0 +1,7 @@
+{% if not object.isFinalized and object.enabled %}
+    <a href="{{ path('app_admin_idea_finalize', { id: object.id }) }}" class="btn btn-sm btn-default view_link"
+       title="Passer en finalisé" rel="noopener noreferrer">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        Passer en finalisé
+    </a>
+{% endif %}
