@@ -265,7 +265,7 @@ Feature:
     """
     {
         "answer": "1",
-        "content": "LOREM IPSUM"
+        "content": "LOREM IPSUM🤘"
     }
     """
     Then the response status code should be 201

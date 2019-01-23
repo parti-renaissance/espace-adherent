@@ -824,8 +824,8 @@ Feature:
     And I send a "POST" request to "/api/ideas-workshop/ideas" with body:
     """
     {
-      "name": "Mon idée",
-      "description": "Mon idée",
+      "name": "Mon idée🤘",
+      "description": "Mon idée🤘",
       "themes": [2],
       "category": 2,
       "committee": "515a56c0-bde8-56ef-b90c-4745b1c93818",
@@ -833,11 +833,11 @@ Feature:
       "answers":[
         {
           "question":1,
-          "content":"<p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p>"
+          "content":"<p>Lorem Ipsum🤘</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p>"
         },
         {
           "question":2,
-          "content":"Réponse à la question 2"
+          "content":"Réponse à la question 2🤘"
         },
         {
           "question":3,
@@ -940,8 +940,8 @@ Feature:
     And I send a "PUT" request to "/api/ideas-workshop/ideas/e4ac3efc-b539-40ac-9417-b60df432bdc5" with body:
     """
     {
-      "name": "Mon idée 2",
-      "description": "Mon idée 2",
+      "name": "Mon idée 2🤘",
+      "description": "Mon idée 2🤘",
       "themes": [2],
       "category": 2,
       "committee": "515a56c0-bde8-56ef-b90c-4745b1c93818",
@@ -950,7 +950,7 @@ Feature:
         {
           "id": 1,
           "question":1,
-          "content":"Réponse à la question 1"
+          "content":"Réponse à la question 1🤘"
         },
         {
           "id": 2,

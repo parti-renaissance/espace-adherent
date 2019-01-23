@@ -122,7 +122,7 @@ Feature:
     """
     {
       "thread": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
-      "content": "Phasellus vitae enim faucibus"
+      "content": "Phasellus vitae enim faucibus🤘"
     }
     """
     Then the response status code should be 201
