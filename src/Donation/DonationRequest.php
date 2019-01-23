@@ -100,7 +100,7 @@ class DonationRequest
 
     /**
      * @Assert\NotBlank
-     * @AssertUnitedNationsCountry(message="common.nationality.invalid")
+     * @Assert\Country(message="common.nationality.invalid")
      */
     private $nationality;
 
