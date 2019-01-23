@@ -8,7 +8,7 @@ const props = {
     votes: [
         {
             id: 'important',
-            name: 'Important',
+            name: 'Essentiel',
             count: 86,
             isSelected: false,
         },
@@ -20,7 +20,7 @@ const props = {
         },
         {
             id: 'innovative',
-            name: 'Novateur',
+            name: 'Innovant',
             count: 1536,
             isSelected: false,
         },

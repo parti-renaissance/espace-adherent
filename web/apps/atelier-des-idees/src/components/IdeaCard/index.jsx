@@ -17,9 +17,9 @@ const AUTHOR_CATEGORY_NAMES = {
 };
 
 const VOTES_NAMES = {
-    important: 'Important',
+    important: 'Essentiel',
     feasible: 'Réalisable',
-    innovative: 'Novateur',
+    innovative: 'Innovant',
 };
 
 function formatVotes(votesCount) {
