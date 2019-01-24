@@ -128,13 +128,13 @@ PublishIdeaForm.defaultProps = {
 PublishIdeaForm.propTypes = {
     themeOptions: PropTypes.arrayOf(
         PropTypes.shape({
-            value: PropTypes.string.isRequired,
+            value: PropTypes.number.isRequired,
             label: PropTypes.string.isRequired,
         })
     ).isRequired,
     localityOptions: PropTypes.arrayOf(
         PropTypes.shape({
-            value: PropTypes.string.isRequired,
+            value: PropTypes.number.isRequired,
             label: PropTypes.string.isRequired,
         })
     ).isRequired,
@@ -152,7 +152,7 @@ PublishIdeaForm.propTypes = {
     ).isRequired,
     difficultiesOptions: PropTypes.arrayOf(
         PropTypes.shape({
-            value: PropTypes.string.isRequired,
+            value: PropTypes.number.isRequired,
             label: PropTypes.string.isRequired,
         })
     ).isRequired,
