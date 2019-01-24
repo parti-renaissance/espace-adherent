@@ -704,6 +704,42 @@
 
         <!--
         ######################################################
+        # Espace formation
+        ######################################################
+         -->
+
+        <service id="app.admin.formation_axe" class="AppBundle\Admin\FormationAxeAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Axes de formation" group="Espace formation"/>
+
+            <argument />
+            <argument>AppBundle\Entity\Formation\Axe</argument>
+            <argument />
+
+            <call method="setStorage">
+                <argument type="service" id="app.storage" />
+            </call>
+            <call method="setGlide">
+                <argument type="service" id="app.glide" />
+            </call>
+        </service>
+
+        <service id="app.admin.formation_article" class="AppBundle\Admin\FormationArticleAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Articles" group="Espace formation"/>
+
+            <argument />
+            <argument>AppBundle\Entity\Formation\Article</argument>
+            <argument />
+
+            <call method="setStorage">
+                <argument type="service" id="app.storage" />
+            </call>
+            <call method="setGlide">
+                <argument type="service" id="app.glide" />
+            </call>
+        </service>
+
+        <!--
+        ######################################################
         # Data Transformer
         ######################################################
          -->

@@ -1,0 +1,319 @@
+@mixin axis-bullet {
+    font-size: $text--size-default;
+    background-color: $blue--ice;
+    border-radius: 2px;
+    padding: 8px 10px 5px;
+    color: $blue--azure;
+    text-transform: uppercase;
+    font-family: $font-roboto;
+    position: absolute;
+}
+
+@mixin module-header {
+    color: $blue--gray;
+    text-transform: uppercase;
+    font-family: $font-roboto;
+    font-size: $text--size-medium--small;
+}
+
+@mixin module-button {
+    cursor: pointer;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: $blue--ice;
+    stroke: $blue--azure;
+    border: 0;
+    transition: all 0.45s;
+}
+
+.espace-formation {
+    .axis-header {
+        @include axis-bullet;
+        position: relative;
+        display: inline-block;
+    }
+
+    .module-header {
+        @include module-header;
+    }
+
+    a {
+        color: $blue--azure;
+        border-color: rgba($blue--azure, .4);
+
+        &:hover {
+            border-color: rgba($blue--azure, .8)
+        }
+    }
+
+    nav {
+        margin-bottom: 40px;
+        background: $blue--ice;
+
+        > div {
+            display: flex;
+            polyline { stroke: rgba(black, .2); }
+
+            > div { @media (max-width: $mobile) { display: none; } }
+
+            span { text-transform: lowercase; }
+
+            @media (max-width: $mobile) {
+                flex-direction: column;
+                polyline { display: none; }
+            }
+
+            a {
+                color: $blue--azure;
+                polyline { stroke: $blue--azure; }
+                border: 0;
+
+                &:hover {
+                    color: $blue--adi;
+                }
+            }
+        }
+    }
+
+    p, li {
+        color: $gray--dark;
+    }
+
+    &__header {
+        nav .active {
+            color: $blue--adi;
+            font-weight: bold;
+        }
+    }
+
+    &__checklist {
+        list-style: none;
+        padding: 0 0 30px 30px;
+
+        li {
+            background: url('/images/icons/espace-formation/icn_tick.svg') no-repeat 0 20%;
+            padding-left: 35px;
+            margin-bottom: 10px;
+        }
+    }
+
+    &__intro {
+        section {
+            padding: 20px 0;
+        }
+
+        h2 {
+            font-family: $font-gillsans;
+        }
+
+        h3 {
+            font-family: $font-gillsans;
+            font-size: 22px;
+            letter-spacing: -0.5px;
+            font-weight: normal;
+        }
+
+        p {
+            margin-top: 5px;
+        }
+
+        &__objectives {
+            list-style: none;
+            counter-reset: objectives;
+            margin: 40px 0;
+            padding: 0;
+
+            li {
+                counter-increment: objectives;
+                display: flex;
+                align-items: center;
+                font-size: 22px;
+                line-height: 26px;
+                font-weight: 300;
+                font-family: $font-gillsans;
+                padding-left: 80px;
+                margin-bottom: 20px;
+
+                a {
+                    border: 0;
+                    color: $gray--dark;
+
+                    &:hover {
+                        color: $blue--azure;
+                    }
+                }
+
+                &:before {
+                    content: "Axe " counter(objectives);
+                    @include axis-bullet;
+                    margin-left: -80px;
+                }
+            }
+        }
+
+        &__path {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+
+            li {
+                width: 47%;
+                margin-top: 20px;
+                color: black;
+
+                @media (max-width: $mobile) {
+                    width: 100%;
+                }
+            }
+        }
+
+        &__icon {
+            height: 50px;
+            width: 50px;
+            margin-bottom: 15px;
+            background: url('/images/icons/espace-formation/icn_journey_01.svg') no-repeat 100% 100%;
+
+            &--two {
+                background-image: url('/images/icons/espace-formation/icn_journey_02.svg');
+            }
+            &--three {
+                background-image: url('/images/icons/espace-formation/icn_journey_03.svg');
+            }
+            &--four {
+                background-image: url('/images/icons/espace-formation/icn_journey_04.svg');
+            }
+        }
+    }
+
+    &__cases {
+        ol {
+            list-style: none;
+            counter-reset: formation-axis;
+            display: flex;
+            flex-direction: column;
+            margin: 40px 0;
+            padding: 0;
+        }
+
+        ol li {
+            counter-increment: formation-axis;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+
+            > a {
+                display: flex;
+                flex: 1;
+                align-items: center;
+                justify-content: space-between;
+                padding: 30px 30px 30px 110px;
+                border-radius: 5px;
+                transition: all .2s;
+                border: 1px solid $blue--ice;
+
+                .button {
+                    @include module-button;
+                }
+
+                h1 {
+                    color: black;
+                }
+
+                &:hover {
+                    background: rgba($blue--ice, .3);
+                    border-color: rgba($blue--azure, .5);
+
+                    h1 {
+                        color: black;
+                    }
+
+                    .button {
+                        background: rgba($blue--azure, .3);
+                        polyline { stroke: $blue--azure; }
+                    }
+                }
+            }
+        }
+
+        ol li:before {
+            content: "Axe " counter(formation-axis);
+            @include axis-bullet;
+            margin-left: 30px;
+        }
+    }
+
+    &__axis {
+        margin-bottom: 100px;
+
+        article h1 {
+            margin-top: 15px;
+        }
+
+        &__cases {
+            ol {
+                list-style: none;
+                counter-reset: formation-axis;
+                display: flex;
+                flex-direction: column;
+                margin: 40px 0 0;
+                padding: 0;
+            }
+
+            ol li {
+                counter-increment: formation-axis;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                margin-bottom: 20px;
+
+                .button {
+                    @include module-button;
+                }
+
+                > a {
+                    display: flex;
+                    flex: 1;
+                    padding: 40px 30px 30px;
+                    align-items: center;
+                    justify-content: space-between;
+                    border: 1px solid $blue--ice;
+                    color: black;
+                    border-radius: 5px;
+
+                    &:hover {
+                        background: rgba($blue--ice, .3);
+                        border-color: rgba($blue--azure, .5);
+
+                        .button {
+                            background-color: $blue--ice;
+                            polyline { stroke: $blue--azure; }
+                        }
+                    }
+                }
+            }
+
+            ol li:before {
+                content: "Module " counter(formation-axis);
+                @include module-header;
+                font-size: $text--size-small;
+                position: absolute;
+                margin-top: 25px;
+                margin-left: 30px;
+            }
+        }
+    }
+
+    &__article {
+        margin-bottom: 100px;
+
+        article h1 {
+            margin-top: 10px;
+        }
+    }
+}

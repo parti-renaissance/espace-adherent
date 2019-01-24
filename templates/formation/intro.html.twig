@@ -1,0 +1,33 @@
+{% extends 'formation/layout.html.twig' %}
+
+{% block page_title page.title %}
+{% block meta_description page.description %}
+{% block meta_twitter_description page.twitterDescription ?: page.description %}
+{% block canonical_url url('app_formation_intro') %}
+
+{% block content__inner %}
+<section>
+    <header class="space--40-0">
+        <div class="l__wrapper--slim text--center">
+            <h1 class="text--large text--inline text--on-white">
+                👋 Bienvenue {{ app.user.firstname }}<br>sur votre parcours de formation !
+            </h1>
+        </div>
+    </header>
+
+    <div class="l__wrapper--slim">
+        <div class="espace-formation__intro text--body">
+
+            <div class="text--center space--30-0">
+                <a class="btn btn--blue--adi" href="{{ path('app_formation_home') }}">Accéder à la formation</a>
+            </div>
+
+            {{ page.content|raw }}
+
+            <div class="text--center space--30-0">
+                <a class="btn btn--blue--adi" href="{{ path('app_formation_home') }}">Accéder à la formation</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'formation/layout.html.twig' %}
+
+{% block page_title page.title %}
+{% block meta_description page.description %}
+{% block meta_twitter_description page.twitterDescription ?: page.description %}
+{% block canonical_url url('app_formation_home') %}
+
+{% block content__inner %}
+<section class="espace-formation">
+
+    <header class="space--40-0">
+        <div class="l__wrapper--slim text--center">
+            <h1 class="text--large text--inline text--on-white">
+                {{ page.title }}
+            </h1>
+        </div>
+    </header>
+
+    <div class="l__wrapper--slim">
+        <div class="espace-formation__intro text--body">
+            {{ page.content|raw }}
+        </div>
+    </div>
+
+    <div class="l__wrapper--slim espace-formation__cases">
+        <ol>
+            {% for axe in axes %}
+            <li>
+                <a href="{{ path('app_formation_axe', { 'slug': axe.slug }) }}"
+                   class="link--no-decor">
+                    <h1 class="text--medium">{{ axe.title }}</h1>
+                    <div class="button">
+                           {{ include('components/chevron--right.html.twig') }}
+                    </div>
+                </a>
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
+</section>
+{% endblock %}
