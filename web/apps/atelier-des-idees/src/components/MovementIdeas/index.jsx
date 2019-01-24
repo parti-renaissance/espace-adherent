@@ -5,29 +5,25 @@ import hpMainIllustration from './../../img/hp-main-illustration.svg';
 
 import MovementIdeasSection from './MovementIdeasSection/.';
 
-// TODO: Update text
 const sectionContent = [
     {
         keyWord: 'propose',
         title: 'une idée',
-        text:
-            'Soumettez une nouvelle proposition à la communauté.',
+        text: 'Soumettez une nouvelle proposition à la communauté.',
         linkLabel: 'Je propose',
         link: '/atelier-des-idees/proposer',
     },
     {
         keyWord: 'contribue',
         title: 'aux propositions',
-        text:
-            'Enrichissez les propositions en cours d\'écriture.',
+        text: 'Enrichissez les propositions en cours d\'écriture.',
         linkLabel: 'Je contribue',
         link: '/atelier-des-idees/contribuer',
     },
     {
         keyWord: 'soutiens',
         title: 'des propositions',
-        text:
-            'Donnez votre avis sur les propositions finalisées.',
+        text: 'Donnez votre avis sur les propositions finalisées.',
         linkLabel: 'Je vote',
         link: '/atelier-des-idees/consulter',
     },
@@ -51,9 +47,13 @@ class MovementIdeas extends React.PureComponent {
                     <div className="l__wrapper movement-ideas__first__section__in">
                         <h1 className="movement-ideas__first__section__in__title">Les idées des marcheurs</h1>
                         <p className="movement-ideas__first__section__in__content">
-                            Vous avez envie de contribuer à la réflexion du mouvement ? De proposer vos idées ? Avec l'Atelier des idées c'est possible !
+                            Vous avez envie de contribuer à la réflexion du mouvement ? De proposer vos idées ? Avec
+                            l'Atelier des idées c'est possible !
                         </p>
-                        <img className="movement-ideas__first__section__in__main-illustration" src={hpMainIllustration} />
+                        <img
+                            className="movement-ideas__first__section__in__main-illustration"
+                            src={hpMainIllustration}
+                        />
                     </div>
                 </div>
                 <div className="l__wrapper">
