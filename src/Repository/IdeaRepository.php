@@ -106,7 +106,27 @@ SQL;
         ;
     }
 
-    public function countThreadComments(Idea $idea): int
+    public function countAllComments(Idea $idea): int
+    {
+        return $this->countThreads($idea) + $this->countThreadComments($idea);
+    }
+
+    private function countThreads(Idea $idea): int
+    {
+        return $this
+            ->createQueryBuilder('idea')
+            ->select('COUNT(thread)')
+            ->innerJoin('idea.answers', 'answer')
+            ->innerJoin('answer.threads', 'thread')
+            ->where('idea = :idea')
+            ->setParameter('idea', $idea)
+            ->andWhere('thread.deletedAt IS NULL')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    private function countThreadComments(Idea $idea): int
     {
         return $this
             ->createQueryBuilder('idea')

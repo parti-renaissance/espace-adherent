@@ -30,7 +30,7 @@ class IdeaNormalizer implements NormalizerInterface
         if (\in_array('idea_list_read', $context['groups']) || \in_array('idea_read', $context['groups'])) {
             if (\in_array('idea_list_read', $context['groups'])) {
                 $data['contributors_count'] = $this->ideaRepository->countContributors($object);
-                $data['comments_count'] = $this->ideaRepository->countThreadComments($object);
+                $data['comments_count'] = $this->ideaRepository->countAllComments($object);
             }
 
             $data['votes_count'] = array_merge(

@@ -66,7 +66,7 @@ Feature:
                 "slug": "reduire-le-gaspillage",
                 "days_before_deadline": 0,
                 "contributors_count": 2,
-                "comments_count": 1
+                "comments_count":2
             },
             {
                 "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -176,7 +176,7 @@ Feature:
                 "slug": "faire-la-paix",
                 "days_before_deadline": 13,
                 "contributors_count": 8,
-                "comments_count": 8
+                "comments_count":13
             },
             {
                 "uuid": "bbf35ba6-52ba-4913-aae8-5948449d0c1d",
@@ -291,7 +291,7 @@ Feature:
                 "slug": "faire-la-paix",
                 "days_before_deadline": 13,
                 "contributors_count": 8,
-                "comments_count": 8
+                "comments_count":13
             }
         ]
     }
@@ -367,7 +367,7 @@ Feature:
                 "slug": "faire-la-paix",
                 "days_before_deadline": 13,
                 "contributors_count": 8,
-                "comments_count": 8
+                "comments_count":13
             }
         ]
     }
@@ -426,7 +426,7 @@ Feature:
               "status": "FINALIZED",
               "days_before_deadline": 0,
               "contributors_count": 2,
-              "comments_count": 1
+              "comments_count":2
           },
           {
               "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -524,7 +524,7 @@ Feature:
               "slug": "reduire-le-gaspillage",
               "days_before_deadline": 0,
               "contributors_count": 2,
-              "comments_count": 1
+              "comments_count":2
           },
           {
              "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -694,7 +694,7 @@ Feature:
              "slug":"faire-la-paix",
              "days_before_deadline":13,
              "contributors_count":8,
-             "comments_count":8
+             "comments_count":13
           },
           {
              "uuid":"bbf35ba6-52ba-4913-aae8-5948449d0c1d",
@@ -1050,7 +1050,7 @@ Feature:
         "status": "PENDING",
         "days_before_deadline": 13,
         "contributors_count": 8,
-        "comments_count": 9
+        "comments_count":14
     }
     """
 
@@ -1113,7 +1113,7 @@ Feature:
              "status":"FINALIZED",
              "days_before_deadline":0,
              "contributors_count":2,
-             "comments_count":1
+             "comments_count":2
           },
           {
              "uuid":"e4ac3efc-b539-40ac-9417-b60df432bdc5",
@@ -1167,7 +1167,7 @@ Feature:
              "status":"PENDING",
              "days_before_deadline":13,
              "contributors_count":8,
-             "comments_count":8
+             "comments_count":13
           }
        ]
     }
@@ -1232,7 +1232,7 @@ Feature:
              "status":"FINALIZED",
              "days_before_deadline":0,
              "contributors_count":2,
-             "comments_count":1
+             "comments_count":2
           },
           {
              "uuid":"e4ac3efc-b539-40ac-9417-b60df432bdc5",
@@ -1286,7 +1286,7 @@ Feature:
              "status":"PENDING",
              "days_before_deadline":13,
              "contributors_count":8,
-             "comments_count":8
+             "comments_count":13
           }
        ]
     }
@@ -1817,7 +1817,7 @@ Feature:
              "status":"FINALIZED",
              "days_before_deadline":0,
              "contributors_count":2,
-             "comments_count":1
+             "comments_count":2
           },
           {
              "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -2023,7 +2023,7 @@ Feature:
                "status":"FINALIZED",
                "days_before_deadline":0,
                "contributors_count":2,
-               "comments_count":1
+               "comments_count":2
             },
             {
                "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -2125,7 +2125,7 @@ Feature:
              "slug":"reduire-le-gaspillage",
              "days_before_deadline":0,
              "contributors_count":2,
-             "comments_count":1
+             "comments_count":2
           },
           {
               "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -2234,7 +2234,7 @@ Feature:
              "slug":"faire-la-paix",
              "days_before_deadline":13,
              "contributors_count":8,
-             "comments_count":8
+             "comments_count":13
           }
        ]
     }
