@@ -5,7 +5,7 @@ class IdeaPageSkeleton extends React.PureComponent {
         const skeletonItems = [];
         for (let i = 0; 3 > i; i += 1) {
             skeletonItems.push(
-                <div className="idea-page-skeleton__item">
+                <div key={`skeleton__${i}`} className="idea-page-skeleton__item">
                     <div className="idea-page-skeleton__item__title" />
                     <div className="idea-page-skeleton__item__body" />
                 </div>

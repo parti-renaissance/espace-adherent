@@ -42,8 +42,7 @@ export function initIdeaPageBase() {
 
 export function initIdeaPage(id) {
     return async dispatch => {
-        await dispatch(fetchIdea(id));
-        dispatch(initIdeaPageBase());
+        return dispatch(fetchIdea(id)).then(() => dispatch(initIdeaPageBase()));
     };
 }
 

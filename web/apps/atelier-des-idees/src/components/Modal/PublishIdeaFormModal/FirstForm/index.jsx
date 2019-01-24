@@ -25,7 +25,6 @@ class FirstForm extends React.Component {
         let canSubmit = true;
         const verifErrors = Object.keys(this.state.inputs).reduce((acc, curr) => {
             if (!this.state.inputs[curr].length) {
-                // TODO: modify error msg
                 acc[curr] = 'Information manquante';
                 if (!acc.form) {
                     acc.form = 'Certaines informations sont manquantes ou erronées';
@@ -129,13 +128,13 @@ FirstForm.propTypes = {
     }),
     themeOptions: PropTypes.arrayOf(
         PropTypes.shape({
-            value: PropTypes.string.isRequired,
+            value: PropTypes.number.isRequired,
             label: PropTypes.string.isRequired,
         })
     ).isRequired,
     localityOptions: PropTypes.arrayOf(
         PropTypes.shape({
-            value: PropTypes.string.isRequired,
+            value: PropTypes.number.isRequired,
             label: PropTypes.string.isRequired,
         })
     ).isRequired,

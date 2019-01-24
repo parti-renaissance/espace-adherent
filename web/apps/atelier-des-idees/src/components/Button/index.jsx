@@ -46,7 +46,6 @@ Button.defaultProps = {
     disabled: false,
     className: undefined,
     classIcon: undefined,
-    isLoading: false,
 };
 
 Button.propTypes = {
@@ -55,11 +54,17 @@ Button.propTypes = {
     icon: PropTypes.string,
     isLoading: PropTypes.bool,
     type: PropTypes.string,
-    onClick: PropTypes.func.isRequired,
+    onClick: (props, propName, componentName) => {
+        // onReportClicked required if idea is not a draft (can't report a draft)
+        if (!props.onClick && 'submit' !== props.type) {
+            return new Error(
+                `The prop \`${propName}\` is marked as required in ${componentName}\`. Validation failed.`
+            );
+        }
+    },
     disabled: PropTypes.bool,
     className: PropTypes.string,
     classIcon: PropTypes.oneOf(['start', 'end']),
-    isLoading: PropTypes.bool,
 };
 
 export default Button;

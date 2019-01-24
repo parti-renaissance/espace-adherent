@@ -115,7 +115,7 @@ Select.propTypes = {
     error: PropTypes.string,
     options: PropTypes.arrayOf(
         PropTypes.shape({
-            value: PropTypes.string.isRequired,
+            value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
             label: PropTypes.string.isRequired,
         })
     ).isRequired,
@@ -125,14 +125,14 @@ Select.propTypes = {
     isMulti: PropTypes.bool,
     isSearchable: PropTypes.bool,
     onSelected: PropTypes.func.isRequired,
-    defaultValue: PropTypes.oneOf([
+    defaultValue: PropTypes.oneOfType([
         PropTypes.shape({
-            value: PropTypes.string.isRequired,
+            value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
             label: PropTypes.string.isRequired,
         }),
         PropTypes.arrayOf(
             PropTypes.shape({
-                value: PropTypes.string.isRequired,
+                value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
                 label: PropTypes.string.isRequired,
             })
         ),

@@ -195,10 +195,9 @@ QuestionBlock.propTypes = {
     mode: PropTypes.oneOf(['edit', 'contribute']),
     nbQuestion: PropTypes.number.isRequired,
     onTextChange: PropTypes.func.isRequired,
-    onTextError: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
     question: PropTypes.string.isRequired,
-    questionId: PropTypes.string,
+    questionId: PropTypes.number,
 };
 
 export default QuestionBlock;
