@@ -159,8 +159,8 @@ CommentsList.defaultProps = {
     showForm: true,
     parentId: undefined,
     emptyLabel: '',
-    placeholder: 'Contribuez en proposant une suggestion',
-    collapseLabel: 'suggestion',
+    placeholder: 'Écrivez votre contribution',
+    collapseLabel: 'contribution',
     total: 0,
     hasActions: false,
 };
