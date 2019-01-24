@@ -12,5 +12,5 @@ final class AdherentTagEnum extends Enum
     public const LOW_ACTIVE = 'Peu actif';
     public const MEDIATION = 'Médiation';
     public const SUBSTITUTE = 'Suppléant';
-    public const IDEAS = 'Idées';
+    public const LAREM = 'LaREM';
 }

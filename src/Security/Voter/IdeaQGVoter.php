@@ -17,7 +17,7 @@ class IdeaQGVoter extends AbstractAdherentVoter
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
         return $adherent->getTags()->filter(function (AdherentTag $tag) {
-            return AdherentTagEnum::IDEAS === $tag->getName();
+            return AdherentTagEnum::LAREM === $tag->getName();
         })->count() > 0;
     }
 }
