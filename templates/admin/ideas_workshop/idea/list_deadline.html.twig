@@ -1,5 +1,9 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {{ object.daysBeforeDeadline }} jour{{ 1 != object.daysBeforeDeadline ? 's' : '' }}
+    {% if object.isDraft %}
+        -
+    {% else %}
+        {{ object.daysBeforeDeadline }} jour{{ 1 != object.daysBeforeDeadline ? 's' : '' }}
+    {% endif %}
 {% endblock %}

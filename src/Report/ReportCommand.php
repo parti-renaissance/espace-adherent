@@ -3,8 +3,8 @@
 namespace AppBundle\Report;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Report\Report;
 use AppBundle\Entity\Report\ReportableInterface;
+use AppBundle\Entity\Report\ReportReasonEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -15,7 +15,7 @@ class ReportCommand
 
     /**
      * @Assert\Choice(
-     *     choices=Report::REASONS_LIST,
+     *     choices=ReportReasonEnum::REASONS_LIST,
      *     strict=true,
      *     multiple=true,
      *     multipleMessage="report.invalid_reasons",
@@ -26,7 +26,7 @@ class ReportCommand
     private $reasons = [];
 
     /**
-     * @Assert\Length(min=10, max=1000)
+     * @Assert\Length(max=1000)
      */
     private $comment;
 
@@ -71,7 +71,7 @@ class ReportCommand
      */
     public function validateComment(ExecutionContextInterface $context): void
     {
-        if ($this->comment && !\in_array(Report::REASON_OTHER, $this->reasons, true)) {
+        if ($this->comment && !\in_array(ReportReasonEnum::REASON_OTHER, $this->reasons, true)) {
             $context
                 ->buildViolation('Vous devez cocher la case "Autre" afin de renseigner un commentaire.')
                 ->atPath('comment')
@@ -79,14 +79,6 @@ class ReportCommand
             ;
 
             return;
-        }
-
-        if (!$this->comment && \in_array(Report::REASON_OTHER, $this->reasons, true)) {
-            $context
-                ->buildViolation('Merci de renseigner la raison de votre signalement.')
-                ->atPath('comment')
-                ->addViolation()
-            ;
         }
     }
 }
