@@ -11,5 +11,5 @@ Feature: Manage idea from admin panel
     When I am on "/admin/app/ideasworkshop-idea/list"
     Then the response status code should be 200
     And I should see 8 "tbody tr" elements
-    And I should see 13 "thead tr th" elements
+    And I should see 12 "thead tr th" elements
     And I should see 5 "ul.navbar-right li.sonata-actions ul.dropdown-menu li" elements

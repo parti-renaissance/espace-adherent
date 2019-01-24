@@ -145,9 +145,7 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
         $listMapper
             ->add('name', null, [
                 'label' => 'Nom',
-            ])
-            ->add('slug', null, [
-                'label' => 'Slug',
+                'header_style' => 'width: 250px',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
@@ -177,6 +175,7 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
             ])
             ->add('status', null, [
                 'label' => 'Statut',
+                'template' => 'admin/ideas_workshop/idea/list_status.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
