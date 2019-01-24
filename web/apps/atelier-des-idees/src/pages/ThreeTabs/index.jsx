@@ -21,7 +21,7 @@ function ThreeTabs(props) {
                             Contribuer
                         </NavLink>
                         <NavLink className="tt-page__header__nav-link" to="/atelier-des-idees/consulter">
-                            Voter
+                            Soutenir
                         </NavLink>
                     </div>
                 </div>

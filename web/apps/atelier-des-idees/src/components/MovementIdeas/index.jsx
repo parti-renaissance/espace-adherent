@@ -24,7 +24,7 @@ const sectionContent = [
         keyWord: 'soutiens',
         title: 'des propositions',
         text: 'Donnez votre avis sur les propositions finalisées.',
-        linkLabel: 'Je vote',
+        linkLabel: 'Je soutiens',
         link: '/atelier-des-idees/consulter',
     },
 ];

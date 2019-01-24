@@ -106,7 +106,7 @@ class IdeaFilters extends React.Component {
                                 {!!this.props.options.categories.length && (
                                     <Select
                                         options={this.props.options.categories}
-                                        placeholder="National / Européen"
+                                        placeholder="Nationale / Européenne"
                                         defaultValue={this.getDefaultValue(
                                             this.props.options.categories,
                                             'category.name'
