@@ -7,6 +7,9 @@ use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\IdeasWorkshop\Idea;
+use AppBundle\Entity\IdeasWorkshop\Thread;
+use AppBundle\Entity\IdeasWorkshop\ThreadComment;
 use AppBundle\Entity\Report\Report;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
@@ -19,6 +22,9 @@ class ReportTest extends TestCase
         yield [CitizenProject::class];
         yield [Committee::class];
         yield [Event::class];
+        yield [Idea::class];
+        yield [Thread::class];
+        yield [ThreadComment::class];
     }
 
     /**
@@ -26,9 +32,9 @@ class ReportTest extends TestCase
      */
     public function testConstructor(string $subjectClass): void
     {
-        $report = $this->createReport($subjectClass, ['other', 'en_marche_values', 'commercial_content', 'inappropriate'], 'One comment');
+        $report = $this->createReport($subjectClass, ['other', 'illicit_content', 'commercial_content', 'intellectual_property'], 'One comment');
 
-        $this->assertSame(['other', 'en_marche_values', 'commercial_content', 'inappropriate'], $report->getReasons());
+        $this->assertSame(['other', 'illicit_content', 'commercial_content', 'intellectual_property'], $report->getReasons());
         $this->assertSame('One comment', $report->getComment());
         $this->assertSame('unresolved', $report->getStatus());
         $this->assertNull($report->getId());
@@ -50,7 +56,7 @@ class ReportTest extends TestCase
     /**
      * @dataProvider provideSubjectClass
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Some reasons are not valid "toto", they are defined in AppBundle\Entity\Report\Report::REASONS_LIST
+     * @expectedExceptionMessage Some reasons are not valid "toto", they are defined in AppBundle\Entity\Report\ReportReasonEnum::REASONS_LIST
      */
     public function testItShouldValidateReasons(string $subjectClass): void
     {
@@ -60,21 +66,11 @@ class ReportTest extends TestCase
     /**
      * @dataProvider provideSubjectClass
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $comment is not filed while AppBundle\Entity\Report\Report::REASON_OTHER is provided
-     */
-    public function testItShouldRequireACommentWhenOtherReasonIsProvided(string $subjectClass): void
-    {
-        $this->createReport($subjectClass, ['other']);
-    }
-
-    /**
-     * @dataProvider provideSubjectClass
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $comment is filed but AppBundle\Entity\Report\Report::REASON_OTHER is not provided in $reasons
+     * @expectedExceptionMessage $comment is filed but AppBundle\Entity\Report\ReportReasonEnum::REASON_OTHER is not provided in $reasons
      */
     public function testItShouldRequireOtherReasonWhenCommentIsProvided(string $subjectClass): void
     {
-        $this->createReport($subjectClass, ['inappropriate'], 'comment');
+        $this->createReport($subjectClass, ['illicit_content'], 'comment');
     }
 
     /**
@@ -84,7 +80,7 @@ class ReportTest extends TestCase
      */
     public function testItShouldNotBeResolvedTwice(string $subjectClass): void
     {
-        $report = $this->createReport($subjectClass, ['inappropriate']);
+        $report = $this->createReport($subjectClass, ['illicit_content']);
 
         $report->resolve();
         $report->resolve();
@@ -95,7 +91,7 @@ class ReportTest extends TestCase
      */
     public function testStatusCanBeSetToResolved(string $subjectClass): void
     {
-        $report = $this->createReport($subjectClass, ['inappropriate']);
+        $report = $this->createReport($subjectClass, ['illicit_content']);
 
         $this->assertFalse($report->isResolved(), 'Report should not be resolved.');
         $this->assertNull($report->getResolvedAt());

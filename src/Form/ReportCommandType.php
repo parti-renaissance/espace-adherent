@@ -2,7 +2,7 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\Report\Report;
+use AppBundle\Entity\Report\ReportReasonEnum;
 use AppBundle\Report\ReportCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -16,7 +16,7 @@ class ReportCommandType extends AbstractType
     {
         $builder
             ->add('reasons', ChoiceType::class, [
-                'choices' => array_combine(Report::REASONS_LIST, Report::REASONS_LIST),
+                'choices' => array_combine(ReportReasonEnum::REASONS_LIST, ReportReasonEnum::REASONS_LIST),
                 'choice_translation_domain' => 'reports',
                 'choice_name' => function ($choice) {
                     return $choice;

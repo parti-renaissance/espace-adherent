@@ -183,9 +183,6 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
                 'actions' => [
                     'show' => [],
                     'edit' => [],
-                    'preview' => [
-                        'template' => 'admin/ideas_workshop/idea/list_show_page.html.twig',
-                    ],
                     'show_contributors' => [
                         'template' => 'admin/ideas_workshop/idea/list_show_contributors.html.twig',
                     ],

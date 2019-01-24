@@ -6,7 +6,7 @@ use AppBundle\Entity\Report\CitizenProjectReport;
 use AppBundle\Entity\Report\IdeasWorkshop\IdeaReport;
 use AppBundle\Entity\Report\IdeasWorkshop\ThreadCommentReport;
 use AppBundle\Entity\Report\IdeasWorkshop\ThreadReport;
-use AppBundle\Entity\Report\Report;
+use AppBundle\Entity\Report\ReportReasonEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -21,14 +21,14 @@ class LoadReportData extends AbstractFixture implements DependentFixtureInterfac
         $report1 = new CitizenProjectReport(
             $this->getReference('citizen-project-1'),
             $this->getReference('adherent-1'),
-            [Report::REASON_INAPPROPRIATE],
+            [ReportReasonEnum::REASON_ILLICIT_CONTENT],
             null
         );
 
         $report2 = new CitizenProjectReport(
             $this->getReference('citizen-project-1'),
             $this->getReference('adherent-2'),
-            [Report::REASON_OTHER, Report::REASON_COMMERCIAL_CONTENT],
+            [ReportReasonEnum::REASON_OTHER, ReportReasonEnum::REASON_COMMERCIAL_CONTENT],
             'Ce projet n\'est pas intéressant.'
         );
         $report2->resolve();
@@ -36,7 +36,7 @@ class LoadReportData extends AbstractFixture implements DependentFixtureInterfac
         $report3 = new CitizenProjectReport(
             $this->getReference('citizen-project-1'),
             $this->getReference('adherent-3'),
-            [Report::REASON_INAPPROPRIATE],
+            [ReportReasonEnum::REASON_ILLICIT_CONTENT],
             null
         );
         $report3->resolve();
@@ -44,42 +44,42 @@ class LoadReportData extends AbstractFixture implements DependentFixtureInterfac
         $report4 = new CitizenProjectReport(
             $this->getReference('citizen-project-2'),
             $this->getReference('adherent-4'),
-            [Report::REASON_INAPPROPRIATE],
+            [ReportReasonEnum::REASON_ILLICIT_CONTENT],
             null
         );
 
         $report5 = new CitizenProjectReport(
             $this->getReference('citizen-project-2'),
             $this->getReference('adherent-4'),
-            [Report::REASON_INAPPROPRIATE],
+            [ReportReasonEnum::REASON_ILLICIT_CONTENT],
             null
         );
 
         $report6 = new CitizenProjectReport(
             $this->getReference('citizen-project-3'),
             $this->getReference('adherent-4'),
-            [Report::REASON_INAPPROPRIATE],
+            [ReportReasonEnum::REASON_ILLICIT_CONTENT],
             null
         );
 
         $report7 = new IdeaReport(
             $this->getReference('idea-disabled'),
             $this->getReference('adherent-4'),
-            [Report::REASON_OTHER],
+            [ReportReasonEnum::REASON_OTHER],
             'Je suis scandalisé!'
         );
 
         $report8 = new ThreadReport(
             $this->getReference('thread-comment-reported'),
             $this->getReference('adherent-4'),
-            [Report::REASON_OTHER],
+            [ReportReasonEnum::REASON_OTHER],
             'Je suis choqué!'
         );
 
         $report9 = new ThreadCommentReport(
             $this->getReference('thread-comment-reported'),
             $this->getReference('adherent-4'),
-            [Report::REASON_OTHER],
+            [ReportReasonEnum::REASON_OTHER],
             'Je suis décu...'
         );
 
