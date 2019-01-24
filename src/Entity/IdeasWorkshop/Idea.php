@@ -646,6 +646,6 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
 
     public function __toString(): string
     {
-        return (string) $this->name;
+        return substr($this->getName(), 0, 300);
     }
 }
