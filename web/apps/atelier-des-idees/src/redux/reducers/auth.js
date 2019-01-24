@@ -5,12 +5,6 @@ const initialState = {
     user: {},
 };
 
-// TODO: uncomment below and comment above to mock auth
-// const initialState = {
-//     isAuthenticated: true,
-//     user: { uuid: '0000', firstName: 'Jean-Pierre', lastName: 'Français' },
-// };
-
 function authReducer(state = initialState, action) {
     const { type, payload } = action;
     switch (type) {
