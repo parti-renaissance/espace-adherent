@@ -105,7 +105,7 @@ class Donation implements GeoPointInterface
     private $payboxOrderRef;
 
     /**
-     * @ORM\Column(length=2)
+     * @ORM\Column(length=2, nullable=true)
      */
     private $nationality;
 
