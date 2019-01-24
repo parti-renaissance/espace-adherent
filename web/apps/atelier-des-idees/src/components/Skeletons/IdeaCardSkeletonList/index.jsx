@@ -8,7 +8,7 @@ class IdeaCardSkeletonList extends React.PureComponent {
         const skeletons = [];
         for (let i = 0; i < this.props.nbItems; i += 1) {
             skeletons.push(
-                <div className="idea-card-skeleton-list__item-wrapper">
+                <div key={`skeleton__${i}`} className="idea-card-skeleton-list__item-wrapper">
                     <IdeaCardSkeleton />
                 </div>
             );

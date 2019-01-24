@@ -87,13 +87,15 @@ CreateIdeaTool.propTypes = {
     values: PropTypes.object,
     guidelines: PropTypes.arrayOf(
         PropTypes.shape({
-            questions: PropTypes.arrayOf({
-                id: PropTypes.string,
-                name: PropTypes.string,
-                placeholder: PropTypes.string,
-                position: PropTypes.number,
-                required: PropTypes.bool,
-            }),
+            questions: PropTypes.arrayOf(
+                PropTypes.shape({
+                    id: PropTypes.number,
+                    name: PropTypes.string,
+                    placeholder: PropTypes.string,
+                    position: PropTypes.number,
+                    required: PropTypes.bool,
+                })
+            ),
             name: PropTypes.string,
             position: PropTypes.number,
         })

@@ -40,7 +40,7 @@ const settingsSlider = {
 
 class MovementIdeas extends React.PureComponent {
     render() {
-        const items = sectionContent.map(content => <MovementIdeasSection {...content} />);
+        const items = sectionContent.map(content => <MovementIdeasSection key={content.keyWord} {...content} />);
         return (
             <article className="movement-ideas">
                 <div className="movement-ideas__first__section">

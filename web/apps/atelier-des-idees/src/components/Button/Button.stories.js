@@ -6,7 +6,7 @@ import icn_close from '../../img/icn_20px_comments.svg';
 
 const props = {
     label: 'Je propose',
-    icon: { icn_close },
+    icon: icn_close,
     classIcon: 'start', // start or end
 };
 
