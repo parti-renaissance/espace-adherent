@@ -9,6 +9,7 @@ use AppBundle\Entity\EntityIdentityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -113,5 +114,15 @@ class SurveyQuestion implements AuthoredInterface
     public function isFromSuggestedQuestion(): bool
     {
         return $this->fromSuggestedQuestion;
+    }
+
+    public function setUuid(UuidInterface $uuid): void
+    {
+        $this->uuid = $uuid;
+    }
+
+    public function hasUuid(): bool
+    {
+        return $this->uuid instanceof UuidInterface;
     }
 }

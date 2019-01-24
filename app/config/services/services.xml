@@ -182,6 +182,7 @@
         <service id="AppBundle\Form\Jecoute\DataSurveyFormType" />
         <service id="AppBundle\Validator\SurveyQuestionTypeChoiceValidator" />
         <service id="AppBundle\Validator\DataSurveyAnswerTypeChoiceValidator" />
+        <service id="AppBundle\Command\SurveyQuestionUpdateCommand" />
 
         <!-- Report -->
         <service id="AppBundle\Report\ReportManager" />
