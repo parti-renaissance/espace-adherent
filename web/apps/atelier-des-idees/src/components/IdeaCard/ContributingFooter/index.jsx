@@ -24,7 +24,7 @@ function ContributingFooter(props) {
 }
 
 ContributingFooter.propTypes = {
-    remainingDays: PropTypes.string.isRequired,
+    remainingDays: PropTypes.number.isRequired,
     link: PropTypes.string.isRequired,
 };
 

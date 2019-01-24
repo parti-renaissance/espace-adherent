@@ -23,11 +23,14 @@ class App extends Component {
         return (
             <div className="App">
                 <ModalRoot />
-                {/* TODO: improve Header handling using withoutHeader HoC (bug with connected-react-router for now) */}
-                {/* <Header /> */}
+                {/* TODO: improve Header handling wrapping pages with withoutHeader HoC (bug with react-router for now) */}
                 <Switch>
                     <Route exact path="/atelier-des-idees" component={Home} />
-                    <Route exact path="/atelier-des-idees/conditions-generales-utilisation" component={ConditionsPage} />
+                    <Route
+                        exact
+                        path="/atelier-des-idees/conditions-generales-utilisation"
+                        component={ConditionsPage}
+                    />
                     <Route exact path="/atelier-des-idees/consulter" component={ConsultPage} />
                     <Route exact path="/atelier-des-idees/contribuer" component={ContributePage} />
                     <Route exact path="/atelier-des-idees/proposer" component={ProposePage} />

@@ -287,7 +287,7 @@ IdeaPageBase.propTypes = {
         name: PropTypes.string,
         answers: PropTypes.arrayOf(
             PropTypes.shape({
-                id: PropTypes.string,
+                id: PropTypes.number,
                 content: PropTypes.string,
                 question: PropTypes.shape({ id: PropTypes.number }),
             })
@@ -302,7 +302,12 @@ IdeaPageBase.propTypes = {
     onBackClicked: PropTypes.func.isRequired,
     onPublishIdea: PropTypes.func.isRequired,
     onDeleteClicked: PropTypes.func.isRequired,
-    onReportClicked: PropTypes.func.isRequired,
+    onReportClicked: (props, propName, componentName) => {
+        // onReportClicked required if idea is not a draft (can't report a draft)
+        if (!props.onReportClicked && props.idea.status !== ideaStatus.DRAFT) {
+            return new Error(`Invalid prop \`${propName}\` supplied to ${componentName}\`. Validation failed.`);
+        }
+    },
     onSaveIdea: PropTypes.func.isRequired,
 };
 
