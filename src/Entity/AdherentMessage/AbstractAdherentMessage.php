@@ -115,7 +115,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         return new static(Uuid::uuid4(), $adherent);
     }
 
-    public function getAuthor(): Adherent
+    public function getAuthor(): ?Adherent
     {
         return $this->author;
     }

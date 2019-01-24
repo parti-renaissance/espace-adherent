@@ -7,7 +7,7 @@ use AppBundle\Entity\Jecoute\Survey;
 use AppBundle\Jecoute\AgeRangeEnum;
 use AppBundle\Jecoute\GenderEnum;
 use AppBundle\Jecoute\ProfessionEnum;
-use AppBundle\Repository\SurveyRepository;
+use AppBundle\Repository\Jecoute\SurveyRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

@@ -1,10 +1,11 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace AppBundle\Repository\Jecoute;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Jecoute\Survey;
 use AppBundle\Entity\ReferentTag;
+use AppBundle\Repository\ReferentTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -22,7 +23,7 @@ class SurveyRepository extends ServiceEntityRepository
     /**
      * @return Survey[]
      */
-    public function findAllFor(Adherent $adherent): array
+    public function findAllByAdherent(UserInterface $adherent): array
     {
         return $this
             ->createSurveysForAdherentQueryBuilder($adherent)
@@ -40,8 +41,8 @@ class SurveyRepository extends ServiceEntityRepository
             ->createQueryBuilder('survey')
             ->addSelect('questions')
             ->innerJoin('survey.questions', 'questions')
-            ->innerJoin('survey.creator', 'creator')
-            ->innerJoin('creator.managedArea', 'managedArea')
+            ->innerJoin('survey.author', 'author')
+            ->innerJoin('author.managedArea', 'managedArea')
             ->innerJoin('managedArea.tags', 'tags')
             ->andWhere('tags.code IN (:codes)')
             ->setParameter('codes', array_map(function (ReferentTag $tag) {
@@ -52,22 +53,38 @@ class SurveyRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Adherent|UserInterface $creator
-     *
      * @return Survey[]
      */
-    public function findAllByCreator(Adherent $creator): array
+    public function findAllByAuthor(Adherent $author): array
     {
-        $this->checkReferent($creator);
+        $this->checkReferent($author);
 
         return $this
             ->createQueryBuilder('survey')
             ->addSelect('questions')
             ->innerJoin('survey.questions', 'questions')
-            ->andWhere('survey.creator = :creator')
-            ->setParameter('creator', $creator)
+            ->andWhere('survey.author = :author')
+            ->setParameter('author', $author)
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function findOneByUuid(string $uuid): ?Survey
+    {
+        return $this
+            ->createQueryBuilder('survey')
+            ->addSelect('surveyQuestion', 'question', 'choices')
+            ->innerJoin('survey.questions', 'surveyQuestion')
+            ->innerJoin('surveyQuestion.question', 'question')
+            ->leftJoin('question.choices', 'choices')
+            ->innerJoin('survey.author', 'author')
+            ->andWhere('survey.uuid = :uuid')
+            ->andWhere('survey.published = true')
+            ->setParameter('uuid', $uuid)
+            ->addOrderBy('surveyQuestion.position', 'ASC')
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 }

@@ -28,7 +28,7 @@ class DataAnswer
 
     /**
      * @ORM\ManyToOne(targetEntity="SurveyQuestion")
-     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $surveyQuestion;
 
@@ -46,10 +46,10 @@ class DataAnswer
      * @ORM\JoinTable(
      *     name="jecoute_data_answer_selected_choices",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="data_answer_id", referencedColumnName="id")
+     *         @ORM\JoinColumn(name="data_answer_id", referencedColumnName="id", onDelete="CASCADE")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="choice_id", referencedColumnName="id")
+     *         @ORM\JoinColumn(name="choice_id", referencedColumnName="id", onDelete="CASCADE")
      *     }
      * )
      */

@@ -19,6 +19,7 @@ class LoadJecouteSurveyData extends Fixture
 
         /** @var Adherent $referent1 */
         $referent1 = $this->getReference('adherent-8');
+
         /** @var Adherent $referent2 */
         $referent2 = $this->getReference('adherent-19');
 
@@ -34,13 +35,13 @@ class LoadJecouteSurveyData extends Fixture
         /** @var Question $question3 */
         $question3 = $this->getReference('question-3');
 
-        /** @var Question $question4 */
-        $question4 = $this->getReference(('suggested-question-1'));
+        /** @var Question $suggestedQuestion1 */
+        $suggestedQuestion1 = $this->getReference(('suggested-question-1'));
 
         $surveyQuestion1 = new SurveyQuestion($survey1, $question1);
         $surveyQuestion2 = new SurveyQuestion($survey1, $question2);
         $surveyQuestion3 = new SurveyQuestion($survey1, $question3);
-        $surveyQuestion4 = new SurveyQuestion($survey1, $question4);
+        $surveyQuestion4 = new SurveyQuestion($survey1, $suggestedQuestion1);
         $surveyQuestion4->setFromSuggestedQuestion(true);
 
         $survey1->addQuestion($surveyQuestion1);
@@ -48,12 +49,22 @@ class LoadJecouteSurveyData extends Fixture
         $survey1->addQuestion($surveyQuestion3);
         $survey1->addQuestion($surveyQuestion4);
 
-        $survey2Question1 = new SurveyQuestion($survey2, $question1);
+        /** @var Question $question4 */
+        $question4 = $this->getReference('question-4');
+
+        $survey2Question1 = new SurveyQuestion($survey2, $question4);
 
         $survey2->addQuestion($survey2Question1);
 
         $manager->persist($survey1);
         $manager->persist($survey2);
+
+        $this->addReference('survey-1', $survey1);
+
+        $this->addReference('survey-1-question-1', $surveyQuestion1);
+        $this->addReference('survey-1-question-2', $surveyQuestion2);
+        $this->addReference('survey-1-question-3', $surveyQuestion3);
+        $this->addReference('survey-1-question-4', $surveyQuestion4);
 
         $manager->flush();
     }

@@ -29,7 +29,6 @@ class Choice
      * @var Question
      *
      * @ORM\ManyToOne(targetEntity="Question", inversedBy="choices")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      * @Gedmo\SortableGroup
      */
     private $question;
