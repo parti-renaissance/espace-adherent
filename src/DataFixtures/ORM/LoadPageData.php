@@ -186,6 +186,24 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
+        $manager->persist($factory->createFromArray([
+            'keywords' => 'espace formation',
+            'title' => 'Mon parcours de formation',
+            'slug' => 'espace-formation',
+            'description' => 'Formations pour les animateurs locaux.',
+            'content' => file_get_contents(__DIR__.'/../espace-formation/main.html'),
+            'media' => $media,
+        ]));
+
+        $manager->persist($factory->createFromArray([
+            'keywords' => 'espace formation',
+            'title' => 'Introduction au parcours de formation',
+            'slug' => 'espace-formation-intro',
+            'description' => 'Formations pour les animateurs locaux.',
+            'content' => file_get_contents(__DIR__.'/../espace-formation/intro.html'),
+            'media' => $media,
+        ]));
+
         $manager->flush();
     }
 

@@ -82,6 +82,11 @@
                                                 <a href="{{ path('app_documents_index') }}">Mes documents</a>
                                             </li>
                                         {% endif %}
+                                        {% if app.user.isHost %}
+                                            <li>
+                                                <a href="{{ path('app_formation_intro') }}">Je me forme <span>Nouveau</span></a>
+                                            </li>
+                                        {% endif %}
                                     </ul>
 
                                     <div class="nav-dropdown__separator"></div>

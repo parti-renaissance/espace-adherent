@@ -44,6 +44,11 @@
                         <li>
                             <a href="{{ path('app_user_profile_donation') }}">Mes dons</a>
                         </li>
+                        {% if app.user.isHost %}
+                            <li>
+                                <a href="{{ path('app_formation_intro') }}">Je me forme</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 {% endif %}
                 <ul>
