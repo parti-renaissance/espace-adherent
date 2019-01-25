@@ -16,11 +16,16 @@ import { reportIdea } from '../../redux/thunk/ideas';
 import { selectAuthUser, selectIsAuthenticated } from '../../redux/selectors/auth';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectCurrentIdea, selectGuidelines } from '../../redux/selectors/currentIdea';
+import { setCurrentIdea } from '../../redux/actions/currentIdea';
 
 class IdeaPage extends React.Component {
     componentDidMount() {
         window.scrollTo(0, 0);
         this.props.initIdeaPage();
+    }
+
+    componentWillUnmount() {
+        this.props.unmountIdeaPage();
     }
 
     render() {
@@ -46,6 +51,7 @@ IdeaPage.defaultProps = {
 
 IdeaPage.propTypes = {
     initIdeaPage: PropTypes.func.isRequired,
+    unmountIdeaPage: PropTypes.func.isRequired,
     isFetchingIdea: PropTypes.bool,
     hasFetchError: PropTypes.bool,
 };
@@ -82,6 +88,7 @@ function mapDispatchToProps(dispatch, ownProps) {
             const { id } = ownProps.match.params;
             dispatch(initIdeaPage(id));
         },
+        unmountIdeaPage: () => dispatch(setCurrentIdea()),
         onBackClicked: () => dispatch(goBackFromCurrentIdea()),
         onPublishIdea: (data) => {
             const { id } = ownProps.match.params;
