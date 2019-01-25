@@ -42,6 +42,8 @@ export function initIdeaPageBase() {
 
 export function initIdeaPage(id) {
     return async dispatch => {
+        // reset current idea
+        dispatch(setCurrentIdea());
         return dispatch(fetchIdea(id)).then(() => dispatch(initIdeaPageBase()));
     };
 }
@@ -49,7 +51,5 @@ export function initIdeaPage(id) {
 export function initCreateIdeaPage() {
     return dispatch => {
         dispatch(initIdeaPageBase());
-        // reset current idea
-        dispatch(setCurrentIdea());
     };
 }
