@@ -25,7 +25,9 @@
     <script type="text/javascript" src={{ asset('bundles/sonatacore/vendor/select2/select2.min.js') }}></script>
     {% import 'javascript.js.twig' as js %}
     {% include 'membership/_mandates_script.html.twig' %}
-
+    {% if google_maps_api_key %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
+    {% endif %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
             App.runJoin('{{ form.vars.form_type_class|e('js') }}');
@@ -44,64 +46,71 @@
 {% block content %}
     <main class="content join">
         <section class="join__desc progressive-background"
-            data-sd="{{ static_asset('adhesion/adhesion__cover.jpg', {'w': 100, 'q': 50}) }}"
-            data-hd="{{ static_asset('adhesion/adhesion__cover.jpg', {'h': 450, 'q': 90}) }}">
-                 <h1><a href="{{ path('homepage') }}" class="link--no-decor text--logo text--white text--center">EM !</a></h1>
-                    <div class="desc__texts space--60-0 l__wrapper--slim l__col l__col--center text--center b__nudge--bottom-60">
-                      <div class="b__nudge--bottom-small text--black text--larger">
-                        <span>Adhérer</span><br><span>à La République En Marche</span>
-                        </div>
-                    <p class="text--black text--body">
-                        Vous voulez contribuer à la transformation En Marche ?
-                        Rejoignez les {{ nb_adherent|number_format(0, ',', ' ') }} adhérents de La République En Marche !<br/>
-                        C'est facile, gratuit et 3 minutes suffiront.
-                    </p>
+                 data-sd="{{ static_asset('adhesion/adhesion__cover.jpg', {'w': 100, 'q': 50}) }}"
+                 data-hd="{{ static_asset('adhesion/adhesion__cover.jpg', {'h': 450, 'q': 90}) }}">
+            <h1><a href="{{ path('homepage') }}" class="link--no-decor text--logo text--white text--center">EM !</a></h1>
+            <div class="desc__texts space--60-0 l__wrapper--slim l__col l__col--center text--center b__nudge--bottom-60">
+                <div class="b__nudge--bottom-small text--black text--larger">
+                    <span>Adhérer</span><br><span>à La République En Marche</span>
                 </div>
-                <div class="join__cta">
-                    <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/charte_des_valeurs.pdf"><p class="btn">Notre charte des valeurs</p></a>
-                </div>
+                <p class="text--black text--body">
+                    Vous voulez contribuer à la transformation En Marche ?
+                    Rejoignez les {{ nb_adherent|number_format(0, ',', ' ') }} adhérents de La République En Marche !<br/>
+                    C'est facile, gratuit et 3 minutes suffiront.
+                </p>
+            </div>
+            <div class="join__cta">
+                <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/charte_des_valeurs.pdf"><p class="btn">Notre charte des valeurs</p></a>
+            </div>
         </section>
 
         <section class="join__form">
             <article class="l__wrapper--500 l__col l__col--center">
                 <div class="register__form">
                     {{ form_start(form) }}
-                        {{ form_errors(form) }}
-                        <div id="membership-address">
+                    {{ form_errors(form) }}
+                    <div id="membership-address">
 
-                            {% if not has_role_user %}
-                                <p class="b__nudge--bottom-tiny text--bold">Informations personnelles</p>
-                                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                                    <div class="register__form__zip_code register__form--mid">
-                                        {{ form_widget(form.firstName, { attr: { placeholder: 'Prénom' } }) }}
-                                        {{ form_errors(form.firstName) }}
-                                    </div>
-                                    <div class="register__form__city register__form--mid">
-                                        {{ form_widget(form.lastName, { attr: { placeholder: 'Nom' } }) }}
-                                        {{ form_errors(form.lastName) }}
-                                    </div>
+                        {% if not has_role_user %}
+                            <p class="b__nudge--bottom-tiny text--bold">Informations personnelles</p>
+                            <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                                <div class="register__form__first_name register__form--mid">
+                                    {{ form_widget(form.firstName, { attr: { placeholder: 'Prénom' } }) }}
+                                    {{ form_errors(form.firstName) }}
                                 </div>
-                                 <div class="l__row--h-stretch register__form--full">
-                                     {{ form_widget(form.emailAddress.first, { attr: { placeholder: 'E-mail' } }) }}
-                                     {{ form_errors(form.emailAddress.first) }}
+                                <div class="register__form__last_name register__form--mid">
+                                    {{ form_widget(form.lastName, { attr: { placeholder: 'Nom' } }) }}
+                                    {{ form_errors(form.lastName) }}
                                 </div>
-                                 <div class="l__row--h-stretch register__form--full visually-hidden">
-                                     {{ form_widget(form.emailAddress.second, { attr: { placeholder: 'Re-saisir l\'e-mail', 'data-validated-with': form.emailAddress.first.vars.id } }) }}
-                                     {{ form_errors(form.emailAddress.second) }}
-                                     {{ form_errors(form.emailAddress) }}
-                                </div>
+                            </div>
+                            <div class="l__row--h-stretch register__form--full">
+                                {{ form_widget(form.emailAddress.first, { attr: { placeholder: 'E-mail' } }) }}
+                                {{ form_errors(form.emailAddress.first) }}
+                            </div>
+                            <div class="l__row--h-stretch register__form--full visually-hidden">
+                                {{ form_widget(form.emailAddress.second, { attr: { placeholder: 'Re-saisir l\'e-mail', 'data-validated-with': form.emailAddress.first.vars.id } }) }}
+                                {{ form_errors(form.emailAddress.second) }}
+                                {{ form_errors(form.emailAddress) }}
+                            </div>
 
-                                <div class="l__row l__row--h-stretch register__form--full">
-                                    {{ form_widget(form.password, { attr: { placeholder: 'Mot de passe' } }) }}
-                                    {{ form_errors(form.password) }}
-                                </div>
-                            {% endif %}
-                            <p class="b__nudge--bottom-tiny text--bold">Adresse</p>
+                            <div class="l__row l__row--h-stretch register__form--full">
+                                {{ form_widget(form.password, { attr: { placeholder: 'Mot de passe' } }) }}
+                                {{ form_errors(form.password) }}
+                            </div>
+                        {% endif %}
+                        <p class="b__nudge--bottom-tiny text--bold">Adresse</p>
+                        <div class="form__row">
+                            <div class="address-autocomplete"></div>
+                            <p class="text--smallest text--muted text--left visually-hidden" id="address-autocomplete-help-message">
+                                Nous n'avons pas reconnu votre adresse, veuillez cliquer <a href="#">ici</a> pour pouvoir la renseigner librement.
+                            </p>
+                        </div>
+                        <div class="address-block">
                             <div class="l__row--h-stretch register__form--full">
                                 {{ form_widget(form.address.address, { attr: { placeholder: 'Adresse postale' } }) }}
                                 {{ form_errors(form.address.address) }}
                             </div>
-                             <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                            <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
                                 <div class="register__form__zip_code register__form--mid">
                                     {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Code postal' } }) }}
                                     {{ form_errors(form.address.postalCode) }}
@@ -113,103 +122,109 @@
                                     {{ form_errors(form.address.cityName) }}
                                 </div>
                             </div>
-
-                            <div class="l__row l__row--h-stretch register__form--full">
-                                 {{ form_widget(form.address.country, { attr: { placeholder: 'Pays' } }) }}
-                                 {{ form_errors(form.address.country) }}
-                            </div>
                             <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                                <div class="register__form__zip_code register__form--mid">
-                                    <p class="text--bold">Date de naissance</p>
-                                    {{ form_widget(form.birthdate, { attr: { placeholder: 'Date de naissance', class: 'l__row l__row--h-stretch' } }) }}
-                                    {{ form_errors(form.birthdate) }}
+                                <div class="register__form__region register__form--mid">
+                                    {{ form_widget(form.address.region, { attr: { placeholder: 'Région' } }) }}
+                                    {{ form_errors(form.address.region) }}
                                 </div>
-                                 <div class="form__radio-button register__form--mid">
-                                    <p class="text--bold">Sexe</p>
-                                     {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
-                                     {{ form_errors(form.gender) }}
-                                 </div>
-                            </div>
-                            <div id="{{ form.phone.vars.id }}">
-                                <p class="b__nudge--bottom-tiny text--bold">Téléphone</p>
-                                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                                    <div class=" register__form--mid">
-                                        {{ form_widget(form.phone.country, { placeholder: 'Indicatif Pays', attr: { 'data-validated-with': form.phone.number.vars.id } }) }}
-                                    </div>
-                                    <div class="register__form--mid">
-                                        {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
-                                        {{ form_errors(form.phone.country) }}
-                                        {{ form_errors(form.phone.number) }}
-                                    </div>
+                                <div class="l__row l__row--h-stretch register__form--mid">
+                                    {{ form_widget(form.address.country, { attr: { placeholder: 'Pays' } }) }}
+                                    {{ form_errors(form.address.country) }}
                                 </div>
-                                {{ form_errors(form.phone) }}
                             </div>
                         </div>
-
-                        <div class="space--10-0"></div>
-
-                        <div class="register__form--line">
-                            <span class="b__nudge--bottom-tiny text--gray text--italic">{{ 'common.optional'|trans|capitalize }}</span>
-                            <hr id="hr_join" />
+                        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                            <div class="register__form__zip_code register__form--mid">
+                                <p class="text--bold">Date de naissance</p>
+                                {{ form_widget(form.birthdate, { attr: { placeholder: 'Date de naissance', class: 'l__row l__row--h-stretch' } }) }}
+                                {{ form_errors(form.birthdate) }}
+                            </div>
+                            <div class="form__radio-button register__form--mid">
+                                <p class="text--bold">Sexe</p>
+                                {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
+                                {{ form_errors(form.gender) }}
+                            </div>
                         </div>
-                        <div class="l__row l__row--top l__row--h-stretch b__nudge--top-10 l__mobile--col register__form--flex">
-                            <div class="register__form--elected form__checkbox form__checkbox--large">
-                                {{ form_widget(form.elected) }}
-                                <label class="form form__label" for="{{ form.elected.vars.id }}">
+                        <div id="{{ form.phone.vars.id }}">
+                            <p class="b__nudge--bottom-tiny text--bold">Téléphone</p>
+                            <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                                <div class=" register__form--mid">
+                                    {{ form_widget(form.phone.country, { placeholder: 'Indicatif Pays', attr: { 'data-validated-with': form.phone.number.vars.id } }) }}
+                                </div>
+                                <div class="register__form--mid">
+                                    {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
+                                    {{ form_errors(form.phone.country) }}
+                                    {{ form_errors(form.phone.number) }}
+                                </div>
+                            </div>
+                            {{ form_errors(form.phone) }}
+                        </div>
+                    </div>
+
+                    <div class="space--10-0"></div>
+
+                    <div class="register__form--line">
+                        <span class="b__nudge--bottom-tiny text--gray text--italic">{{ 'common.optional'|trans|capitalize }}</span>
+                        <hr id="hr_join" />
+                    </div>
+                    <div class="l__row l__row--top l__row--h-stretch b__nudge--top-10 l__mobile--col register__form--flex">
+                        <div class="register__form--elected form__checkbox form__checkbox--large">
+                            {{ form_widget(form.elected) }}
+                            <label class="form form__label" for="{{ form.elected.vars.id }}">
                                     <span class="text__checkbox">
                                         {{ 'adherent.form.elected'|trans }}
                                     </span>
-                                </label>
-                                {{ form_errors(form.elected) }}
-                            </div>
-                            <div class="register__form--elected--box register__form--mid hidden" id="form__mandates">
-                                {{ form_widget(form.mandates, { attr: { class: 'l__row l__row--h-stretch multi_mandate' } }) }}
-                                {{ form_errors(form.mandates) }}
-                            </div>
+                            </label>
+                            {{ form_errors(form.elected) }}
                         </div>
+                        <div class="register__form--elected--box register__form--mid hidden" id="form__mandates">
+                            {{ form_widget(form.mandates, { attr: { class: 'l__row l__row--h-stretch multi_mandate' } }) }}
+                            {{ form_errors(form.mandates) }}
+                        </div>
+                    </div>
 
-                        <hr>
+                    <hr>
 
-                        <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-conditions">
-                            {{ form_widget(form.conditions) }}
-                                <label class="form form__label" for="{{ form.conditions.vars.id }}">
+                    <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-conditions">
+                        {{ form_widget(form.conditions) }}
+                        <label class="form form__label" for="{{ form.conditions.vars.id }}">
                                     <span class="text__checkbox">
                                             Oui, j'adhère à la <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/regles_de_fonctionnement_LaREM.pdf" target="_blank">charte des valeurs, aux statuts et aux règles de fonctionnement</a> de La République En Marche, ainsi qu'aux <a href="{{ path('page_mentions_legales') }}" target="_blank">conditions générales d'utilisation</a> du site et à la <a href="https://en-marche.fr/politique-protection-donnees" target="_blank">politique de protection des données à caractère personnel</a> du site
                                     </span>
-                                </label>
-                            {{ form_errors(form.conditions) }}
-                        </div>
+                        </label>
+                        {{ form_errors(form.conditions) }}
+                    </div>
 
-                        <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-email">
-                            {{ form_widget(form.allowNotifications) }}
-                            <label class="form form__label" for="{{ form.allowNotifications.vars.id }}">
+                    <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-email">
+                        {{ form_widget(form.allowNotifications) }}
+                        <label class="form form__label" for="{{ form.allowNotifications.vars.id }}">
                                 <span class="text__checkbox">
                                     Je souhaite être informé(e) de l'actualité de La République En Marche
                                     <span class="text--gray text--italic">({{ 'common.optional'|trans }})</span>
                                 </span>
-                            </label>
-                        </div>
+                        </label>
+                    </div>
 
-                        {% if not has_role_user %}
-                            <div class="visually-hidden form__captcha">
-                                <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
-                                {% if recaptcha_public_key is not empty %}
-                                    {% for flashMessage in app.flashes("error_recaptcha") %}
-                                        <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
-                                    {% endfor %}
+                    {% if not has_role_user %}
+                        <div class="visually-hidden form__captcha">
+                            <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+                            {% if recaptcha_public_key is not empty %}
+                                {% for flashMessage in app.flashes("error_recaptcha") %}
+                                    <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
+                                {% endfor %}
                                 <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 30px auto 10px auto;"></div>
-                                {% elseif app.debug %}
-                                    <input type="hidden" name="g-recaptcha-response" value="fake" />
-                                {% endif %}
-                            </div>
-                        {% endif %}
-
-                        <div class="register__form--full">
-                            {% if not form.vars.valid %}
-                                <p class="text--error text--small">L'un des champs du formulaire est mal renseigné.</p>
+                            {% elseif app.debug %}
+                                <input type="hidden" name="g-recaptcha-response" value="fake" />
                             {% endif %}
-                            {{ form_widget(form.submit, { attr: { class: 'btn btn--green--apple btn--large-and-medium b__nudge--top' }}) }}
                         </div>
+                    {% endif %}
+
+                    <div class="register__form--full">
+                        {% if not form.vars.valid %}
+                            <p class="text--error text--small">L'un des champs du formulaire est mal renseigné.</p>
+                        {% endif %}
+                        {{ form_widget(form.submit, { attr: { class: 'btn btn--green--apple btn--large-and-medium b__nudge--top' }}) }}
+                    </div>
                     {{ form_end(form) }}
                 </div>
                 <p class="text--summary text--gray join__form__legal">

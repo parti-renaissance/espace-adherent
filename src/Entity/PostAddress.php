@@ -19,7 +19,7 @@ use Symfony\Component\Intl\Intl;
  */
 class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInterface
 {
-    const FRANCE = 'FR';
+    public const FRANCE = 'FR';
 
     /**
      * The address street.
@@ -75,6 +75,11 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     private $country;
 
     /**
+     * @ORM\Column(nullable=true)
+     */
+    private $region;
+
+    /**
      * @ORM\Column(type="geo_point", nullable=true)
      *
      * @Algolia\Attribute
@@ -88,19 +93,28 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      */
     private $longitude;
 
-    private function __construct(?string $country, string $postalCode, ?string $cityName, string $street, float $latitude = null, float $longitude = null)
-    {
+    private function __construct(
+        ?string $country,
+        string $postalCode,
+        ?string $cityName,
+        string $street,
+        float $latitude = null,
+        float $longitude = null,
+        ?string $region = null
+    ) {
         $this->country = $country;
         $this->address = $street;
         $this->postalCode = $postalCode;
         $this->cityName = $cityName;
         $this->latitude = $latitude;
         $this->longitude = $longitude;
+        $this->region = $region;
     }
 
     public static function createFrenchAddress(
         string $street,
         string $cityCode,
+        ?string $region = null,
         float $latitude = null,
         float $longitude = null
     ): self {
@@ -112,7 +126,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
             (string) FranceCitiesBundle::getCity($postalCode, $inseeCode),
             $street,
             $latitude,
-            $longitude
+            $longitude,
+            $region
         );
 
         $address->city = sprintf('%s-%s', $postalCode, $inseeCode);
@@ -125,33 +140,34 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         string $zipCode,
         ?string $cityName,
         string $street,
+        ?string $region = null,
         float $latitude = null,
         float $longitude = null
     ): self {
-        return new self($country, $zipCode, $cityName, $street, $latitude, $longitude);
+        return new self($country, $zipCode, $cityName, $street, $latitude, $longitude, $region);
     }
 
-    public function getCountry()
+    public function getCountry(): ?string
     {
         return $this->country;
     }
 
-    public function getCity()
+    public function getCity(): ?string
     {
         return $this->city;
     }
 
-    public function getCityName()
+    public function getCityName(): ?string
     {
         return $this->cityName;
     }
 
-    public function getAddress()
+    public function getAddress(): ?string
     {
         return $this->address;
     }
 
-    public function getPostalCode()
+    public function getPostalCode(): ?string
     {
         return $this->postalCode;
     }
@@ -203,10 +219,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
 
     /**
      * Returns the french national INSEE code from the city code.
-     *
-     * @return string|null
      */
-    public function getInseeCode()
+    public function getInseeCode(): ?string
     {
         $inseeCode = null;
         if ($this->city && 5 === strpos($this->city, '-')) {
@@ -230,10 +244,9 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     public function equals(self $other): bool
     {
         return mb_strtolower($this->address) === mb_strtolower($other->getAddress())
-               && mb_strtolower($this->cityName) === mb_strtolower($other->getCityName())
-               && mb_strtolower($this->postalCode) === mb_strtolower($other->getPostalCode())
-               && mb_strtolower($this->country) === mb_strtolower($other->getCountry())
-        ;
+            && mb_strtolower($this->cityName) === mb_strtolower($other->getCityName())
+            && mb_strtolower($this->postalCode) === mb_strtolower($other->getPostalCode())
+            && mb_strtolower($this->country) === mb_strtolower($other->getCountry());
     }
 
     public function getInlineFormattedAddress($locale = 'fr_FR'): string
@@ -256,5 +269,15 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     public function hasCoordinates(): bool
     {
         return null !== $this->latitude && null !== $this->longitude;
+    }
+
+    public function getRegion(): ?string
+    {
+        return $this->region;
+    }
+
+    public function setRegion(?string $region): void
+    {
+        $this->region = $region;
     }
 }

@@ -1,10 +1,11 @@
 export default class AddressForm {
-    constructor(api, country, postalCode, city, cityName, cityNameRequired) {
+    constructor(api, country, postalCode, city, cityName, cityNameRequired, region = null) {
         this._api = api;
         this._country = country;
         this._postalCode = postalCode;
         this._city = city;
         this._cityName = cityName;
+        this._region = region;
 
         this._initialCity = this._city.value;
         this._initialCityName = this._cityName.value;
@@ -34,6 +35,17 @@ export default class AddressForm {
 
         on(this._country, 'change', (event) => {
             this._state.country = event.target.value;
+
+            if (event.detail) {
+                if (event.detail.zipCode) {
+                    this._state.postalCode = event.detail.zipCode.replace(' ', '');
+                }
+
+                if (event.detail.cityName) {
+                    this._initialCityName = event.detail.cityName;
+                }
+            }
+
             resetCityAndRefresh();
         });
 
@@ -50,9 +62,16 @@ export default class AddressForm {
         // Display City name field if the country is not FR or the zip code is unknown
         if ('FR' !== this._state.country || Array.isArray(this._state.cities) && 0 === this._state.cities.length) {
             show(this._cityName);
+            if (this._region !== null) {
+                show(this._region);
+            }
             this._cityName.required = this._cityNameRequired;
             this._cityName.value = this._initialCityName;
             return;
+        }
+
+        if (this._region !== null) {
+            hide(this._region);
         }
 
         show(this._city);

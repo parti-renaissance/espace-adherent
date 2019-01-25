@@ -29,7 +29,7 @@ class UserSubscriberTest extends KernelTestCase
             'Picard',
             new \DateTime(),
             'foo',
-            PostAddress::createFrenchAddress('36 rue de la Paix', '75008-75108', 48.8699464, 2.3297187)
+            PostAddress::createFrenchAddress('36 rue de la Paix', '75008-75108', null, 48.8699464, 2.3297187)
         );
 
         $this->assertSame(

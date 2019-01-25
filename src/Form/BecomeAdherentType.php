@@ -22,6 +22,7 @@ class BecomeAdherentType extends AbstractType
             ->add('address', AddressType::class, [
                 'label' => false,
                 'child_error_bubbling' => false,
+                'set_address_region' => true,
             ])
             ->add('allowNotifications', CheckboxType::class, [
                 'required' => false,
