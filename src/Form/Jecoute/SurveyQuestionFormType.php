@@ -17,7 +17,7 @@ class SurveyQuestionFormType extends AbstractType
             ->add('fromSuggestedQuestion', HiddenType::class)
             ->add('position', HiddenType::class, [
                 'attr' => [
-                    'class' => 'my-position',
+                    'class' => 'questions-position',
                 ],
             ])
         ;

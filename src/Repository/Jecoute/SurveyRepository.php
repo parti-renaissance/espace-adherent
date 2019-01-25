@@ -80,7 +80,6 @@ class SurveyRepository extends ServiceEntityRepository
             ->leftJoin('question.choices', 'choices')
             ->innerJoin('survey.author', 'author')
             ->andWhere('survey.uuid = :uuid')
-            ->andWhere('survey.published = true')
             ->setParameter('uuid', $uuid)
             ->addOrderBy('surveyQuestion.position', 'ASC')
             ->getQuery()

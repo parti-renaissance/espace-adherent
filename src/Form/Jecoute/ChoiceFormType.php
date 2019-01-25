@@ -4,6 +4,7 @@ namespace AppBundle\Form\Jecoute;
 
 use AppBundle\Entity\Jecoute\Choice;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,6 +17,11 @@ class ChoiceFormType extends AbstractType
             ->add('content', TextType::class, [
                 'filter_emojis' => true,
                 'label' => false,
+            ])
+            ->add('position', HiddenType::class, [
+                'attr' => [
+                    'class' => 'choices-position',
+                ],
             ])
         ;
     }
