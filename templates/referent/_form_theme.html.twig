@@ -39,6 +39,7 @@
     <div class="form__row survey-question__choice_widget">
         <div class="survey-question-type l__row--h-stretch form__radio-button choice-item">
             {{ form_widget(form.content,  { attr: { class: 'form--full', placeholder: 'Saisissez un choix' } }) }}
+            {{ form_row(form.position) }}
         </div>
 
         <div class="choice-management">

@@ -71,26 +71,28 @@
         {% for question in data.questions %}
             <div class="form__row form__new">
                 <label class="label__header--large form form__label">{{ question.content }}</label>
-                    {% if question.type != constant('AppBundle\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') %}
-                        <p class="total-answered b__nudge--top-10 text--right">{{ question.stats.totalAnswered }} réponses.</p>
-                        {% for answer in question.stats.answers %}
-                            <div class="block-stats b__nudge--bottom-small">
-                                    <div class="stats-percent text--right">
-                                        <span>{{ answer.percent|replace({'.' : ','}) }} %</span>
-                                    </div>
-                                    <div class="stats-bar" data-percent="{{ answer.percent }}%">
-                                        <div class="stats-bar__title"><span class="text--bold">{{ answer.value }}</span></div>
-                                        <div class="stats-bar__progress-bar"></div>
-                                        <div class="stats-bar__answered text--white text--bold">{{ answer.answered }}</div>
-                                    </div>
+                    {% if question.stats.totalAnswered > 0 %}
+                        {% if question.type != constant('AppBundle\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') %}
+                            <p class="total-answered b__nudge--top-10 text--right">{{ question.stats.totalAnswered }} réponses.</p>
+                            {% for answer in question.stats.answers %}
+                                <div class="block-stats b__nudge--bottom-small">
+                                        <div class="stats-percent text--right">
+                                            <span>{{ answer.percent|replace({'.' : ','}) }} %</span>
+                                        </div>
+                                        <div class="stats-bar" data-percent="{{ answer.percent }}%">
+                                            <div class="stats-bar__title"><span class="text--bold">{{ answer.value }}</span></div>
+                                            <div class="stats-bar__progress-bar"></div>
+                                            <div class="stats-bar__answered text--white text--bold">{{ answer.answered }}</div>
+                                        </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="b__nudge--top-10 b__nudge--bottom-small text--center">
+                                <a data-question-uuid="{{ question.uuid }}" class="data-answers-open-popin btn btn--blue--soft">
+                                    Voir les {{ question.stats.totalAnswered }} réponses
+                                </a>
                             </div>
-                        {% endfor %}
-                    {% elseif question.stats.totalAnswered > 0 %}
-                        <div class="b__nudge--top-10 b__nudge--bottom-small text--center">
-                            <a data-question-uuid="{{ question.uuid }}" class="data-answers-open-popin btn btn--blue--soft">
-                                Voir les {{ question.stats.totalAnswered }} réponses
-                            </a>
-                        </div>
+                        {% endif %}
                     {% else %}
                         <p class="text--center text--gray text--small">Aucune donnée n'est disponible pour le moment.</p>
                     {% endif %}
