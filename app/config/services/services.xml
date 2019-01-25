@@ -405,6 +405,11 @@
         <!-- Ideas Workshop -->
         <service id="AppBundle\IdeasWorkshop\ThemeManager" />
         <service id="AppBundle\Validator\CommitteeMemberValidator" />
+        <service id="AppBundle\IdeasWorkshop\Listener\IdeaPublishListener" />
+        <service id="AppBundle\IdeasWorkshop\Handler\SendMailForPublishedIdeaHandler">
+            <argument key="$mailer" type="service" id="app.mailer.transactional"/>
+            <tag name="messenger.message_handler"/>
+        </service>
 
         <!-- ParamConverter -->
         <service id="AppBundle\ParamConverter\DoctrineQueryStringParamConverter">
