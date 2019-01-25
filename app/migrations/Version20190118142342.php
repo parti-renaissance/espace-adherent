@@ -11,7 +11,7 @@ final class Version20190118142342 extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->addSql(
-            "INSERT INTO adherent_tags (`name`) VALUES('?')",
+            'INSERT INTO adherent_tags (`name`) VALUES(?)',
             [AdherentTagEnum::LAREM],
             [\PDO::PARAM_STR]
         );
@@ -20,7 +20,7 @@ final class Version20190118142342 extends AbstractMigration
     public function down(Schema $schema): void
     {
         $this->addSql(
-            "DELETE FROM adherent_tags WHERE label = '?'",
+            'DELETE FROM adherent_tags WHERE `name` = ?',
             [AdherentTagEnum::LAREM],
             [\PDO::PARAM_STR]
         );
