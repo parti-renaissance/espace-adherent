@@ -4,6 +4,7 @@ namespace AppBundle\Admin;
 
 use AppBundle\Form\Admin\JecouteAdminSurveyQuestionFormType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
@@ -44,6 +45,21 @@ class JecouteSurveyAdmin extends AbstractAdmin
         ;
     }
 
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('name')
+            ->add('author', null, [
+                'label' => 'Auteurs',
+                'show_filter' => true,
+            ])
+            ->add('author.referentTags', null, [
+                'label' => 'Zones',
+                'show_filter' => true,
+            ])
+        ;
+    }
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -52,6 +68,9 @@ class JecouteSurveyAdmin extends AbstractAdmin
             ])
             ->add('author', null, [
                 'label' => 'Auteur',
+            ])
+            ->add('author.referentTags', null, [
+                'label' => 'Zone',
             ])
             ->add('published', null, [
                 'label' => 'Publié',
