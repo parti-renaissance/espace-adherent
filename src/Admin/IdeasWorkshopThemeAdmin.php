@@ -27,6 +27,9 @@ class IdeasWorkshopThemeAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $theme = $this->getSubject();
+        $isCreation = null === $theme->getId();
+
         $formMapper
             ->add('name', null, [
                 'label' => 'Nom',
@@ -37,6 +40,7 @@ class IdeasWorkshopThemeAdmin extends AbstractAdmin
             ])
             ->add('image', FileType::class, [
                 'label' => 'Ajoutez une image',
+                'required' => $isCreation,
             ])
         ;
     }
