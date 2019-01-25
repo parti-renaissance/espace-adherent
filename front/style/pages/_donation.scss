@@ -318,6 +318,10 @@
             margin: 0;
         }
 
+        &.donate-adhesion{
+            margin: auto;
+        }
+
         form {
             font-family: $font-roboto;
             @include text--small;
