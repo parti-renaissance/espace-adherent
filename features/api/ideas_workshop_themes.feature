@@ -14,25 +14,21 @@ Feature:
     And the response should be in JSON
     And the JSON should be equal to:
     """
-    {
-        "metadata": {
-            "total_items": 3,
-            "items_per_page": 2,
-            "count": 2,
-            "current_page": 1,
-            "last_page": 2
-        },
-        "items": [
-            {
-                "id": @integer@,
-                "name": "Armées et défense",
-                "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-            },
-            {
-                "id": @integer@,
-                "name": "Écologie",
-                "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-            }
-        ]
-    }
+    [
+      {
+          "id": @integer@,
+          "name": "Armées et défense",
+          "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
+      },
+      {
+          "id": @integer@,
+          "name": "Écologie",
+          "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
+      },
+      {
+          "id": @integer@,
+          "name": "Trésorerie",
+          "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/tresory.png"
+      }
+    ]
     """

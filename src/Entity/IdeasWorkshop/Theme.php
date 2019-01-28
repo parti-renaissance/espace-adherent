@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "groups": {"theme_read"}
  *         },
  *         "order": {"name": "ASC"},
+ *         "pagination_enabled": false,
  *     },
  *     collectionOperations={"get": {"path": "/ideas-workshop/themes"}},
  *     itemOperations={"get": {"path": "/ideas-workshop/theme/{id}"}},
