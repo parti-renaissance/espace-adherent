@@ -1,4 +1,5 @@
 {% for event in results %}
+    {% set timeZone = event.timeZone == 'Europe/Paris' ? 'Europe/Paris' : 'GMT'  %}
     {% if date is not defined or date != event.beginAt|date('Ymd') %}
         {% set date = event.beginAt|date('Ymd') %}
 
@@ -9,8 +10,8 @@
     {% endif %}
     <div class="search__results__row search__results__item l__row l__row--h-stretch l__row--top">
         <div class="search__results__date text--body text--bold text--smallest text--uppercase">
-            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'ccc d') }}<br/>
-            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "HH'h'mm") }}<br/>
+            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', timeZone, 'ccc d') }}<br/>
+            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', timeZone, "HH'h'mm") }}<br/>
             {{ event.timeZone|utc_offset }}
         </div>
         <div class="search__results__info l__col l__col--v-stretch l__col--left">

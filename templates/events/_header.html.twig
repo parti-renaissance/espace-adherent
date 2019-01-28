@@ -1,7 +1,7 @@
 <div class="committee__event__header">
     <div class="committee__event__header__titles">
         <h1 class="committee-event-name text--large text--white b__nudge--bottom-small text--breakword">
-            {{- event.name }} - {{ event.cityName }}, {{ event.beginAt|date('d/m/Y') -}}
+            {{- event.name }} - {{ event.cityName }}, {{ event.beginAt|date('d/m/Y', timeZone) -}}
         </h1>
         <div class="l__row">
             {% if event.organizer %}

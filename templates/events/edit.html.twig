@@ -18,6 +18,7 @@
 
 {% block content %}
     {% set event_url = url('app_event_show', {slug: event.slug}) %}
+    {% set timeZone = event.timeZone == 'Europe/Paris' ? 'Europe/Paris' : 'GMT'  %}
     <main class="committee__event__create">
         <section class="committee__event l__wrapper">
 

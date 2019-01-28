@@ -86,6 +86,7 @@
 
 {% block content %}
     {% set event_url = url("app_#{event.type}_show", {slug: event.slug}) %}
+    {% set timeZone = event.timeZone == 'Europe/Paris' ? 'Europe/Paris' : 'GMT'  %}
     <main>
         <section class="committee__event l__wrapper">
             <a href="{{ path('app_search_events') }}" class="back-to-list icon--with-text text--summary">
@@ -119,7 +120,7 @@
                 <ul>
                     <li class="b__nudge--bottom-tiny">
                         <i class="fa fa-clock-o" aria-hidden="true"></i>
-                        <span class="committee-event-date">{{- event.beginAt|localizeddate('full', 'none')|capitalize }}, {{ event.beginAt|date('G\\hi') -}}{{ event.timeZone|utc_offset }}</span>
+                        <span class="committee-event-date">{{- event.beginAt|localizeddate('full', 'none', null, timeZone )|capitalize }}, {{ event.beginAt|date('G\\hi', timeZone) -}}{{ event.timeZone|utc_offset }}</span>
                     </li>
                     <li>
                         <i class="fa fa-map-marker" aria-hidden="true"></i>
