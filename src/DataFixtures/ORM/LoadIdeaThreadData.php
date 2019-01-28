@@ -60,7 +60,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
 
         $threadRefused = Thread::create(
             Uuid::fromString(self::THREAD_04_UUID),
-            '<p>Une nouvelle discussion.</p>',
+            'Une nouvelle discussion.',
             $adherent5,
             $this->getReference('answer-q-compare'),
             new \DateTime('-15 minutes')

@@ -40,7 +40,7 @@ class LoadIdeaThreadCommentData extends AbstractFixture implements DependentFixt
 
         $commentFromAdherent7 = ThreadComment::create(
             Uuid::fromString(self::THREAD_COMMENT_02_UUID),
-            '<p>Lorem Ipsum Commentaris</p>',
+            'Lorem Ipsum Commentaris',
             $this->getReference('adherent-7'),
             $threadAQProblemAdherent2,
             new \DateTime('-30 minutes')

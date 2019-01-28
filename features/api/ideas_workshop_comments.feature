@@ -102,7 +102,7 @@ Feature:
             },
             {
                 "uuid": "60123090-6cdc-4de6-9cb3-07e2ec411f2f",
-                "content": "<p>Lorem Ipsum Commentaris</p>",
+                "content": "Lorem Ipsum Commentaris",
                 "author": {
                     "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
                     "first_name": "Francis",
