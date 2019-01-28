@@ -16,6 +16,7 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *             "groups": {"idea_category_read"}
  *         },
  *         "order": {"name": "ASC"},
+ *         "pagination_enabled": false,
  *     },
  *     collectionOperations={"get": {"path": "/ideas-workshop/categories"}},
  *     itemOperations={"get": {"path": "/ideas-workshop/categories/{id}"}},
