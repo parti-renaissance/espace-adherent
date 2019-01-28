@@ -38,7 +38,7 @@ Feature:
                             "author": {
                                 "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                                 "first_name": "Referent",
-                                "last_name": "Referent"
+                                "last_name": "R."
                             },
                             "approved": false,
                             "created_at": "@string@.isDateTime()"
@@ -49,7 +49,7 @@ Feature:
                             "author": {
                                 "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                                 "first_name": "Referent",
-                                "last_name": "Referent"
+                                "last_name": "R."
                             },
                             "approved": false,
                             "created_at": "@string@.isDateTime()"
@@ -60,7 +60,7 @@ Feature:
                             "author": {
                                 "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
                                 "first_name": "Francis",
-                                "last_name": "Brioul"
+                                "last_name": "B."
                             },
                             "approved": false,
                             "created_at": "@string@.isDateTime()"
@@ -72,7 +72,7 @@ Feature:
                 "author": {
                     "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
                     "first_name": "Carl",
-                    "last_name": "Mirabeau"
+                    "last_name": "M."
                 },
                 "approved": false,
                 "created_at": "@string@.isDateTime()"
@@ -90,7 +90,7 @@ Feature:
                 "author": {
                     "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
                     "first_name": "Lucie",
-                    "last_name": "Olivera"
+                    "last_name": "O."
                 },
                 "approved": false,
                 "created_at": "@string@.isDateTime()"
@@ -108,7 +108,7 @@ Feature:
                             "author": {
                                 "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                                 "first_name": "Michel",
-                                "last_name": "VASSEUR"
+                                "last_name": "V."
                             },
                             "approved": false,
                             "created_at": "@string@.isDateTime()"
@@ -119,7 +119,7 @@ Feature:
                             "author": {
                                 "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
                                 "first_name": "Laura",
-                                "last_name": "Deloche"
+                                "last_name": "D."
                             },
                             "approved": false,
                             "created_at": "@string@.isDateTime()"
@@ -130,7 +130,7 @@ Feature:
                             "author": {
                                 "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
                                 "first_name": "Laura",
-                                "last_name": "Deloche"
+                                "last_name": "D."
                             },
                             "approved": false,
                             "created_at": "@string@.isDateTime()"
@@ -142,7 +142,7 @@ Feature:
                 "author": {
                     "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
                     "first_name": "Gisele",
-                    "last_name": "Berthoux"
+                    "last_name": "B."
                 },
                 "approved": false,
                 "created_at": "@string@.isDateTime()"
@@ -179,7 +179,7 @@ Feature:
                             "author": {
                                 "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                                 "first_name": "Michel",
-                                "last_name": "VASSEUR"
+                                "last_name": "V."
                             },
                             "approved": false,
                             "created_at": "@string@.isDateTime()"
@@ -190,7 +190,7 @@ Feature:
                             "author": {
                                 "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
                                 "first_name": "Laura",
-                                "last_name": "Deloche"
+                                "last_name": "D."
                             },
                             "approved": false,
                             "created_at": "@string@.isDateTime()"
@@ -201,7 +201,7 @@ Feature:
                             "author": {
                                 "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
                                 "first_name": "Laura",
-                                "last_name": "Deloche"
+                                "last_name": "D."
                             },
                             "approved": false,
                             "created_at": "@string@.isDateTime()"
@@ -213,7 +213,7 @@ Feature:
                 "author": {
                     "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
                     "first_name": "Gisele",
-                    "last_name": "Berthoux"
+                    "last_name": "B."
                 },
                 "approved": false,
                 "created_at": "@string@.isDateTime()"
@@ -231,7 +231,7 @@ Feature:
                 "author": {
                     "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
                     "first_name": "Gisele",
-                    "last_name": "Berthoux"
+                    "last_name": "B."
                 },
                 "approved": false,
                 "created_at": "@string@.isDateTime()"
@@ -249,7 +249,7 @@ Feature:
                 "author": {
                     "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
                     "first_name": "Gisele",
-                    "last_name": "Berthoux"
+                    "last_name": "B."
                 },
                 "approved": false,
                 "created_at": "@string@.isDateTime()"

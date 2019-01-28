@@ -48,7 +48,7 @@ Feature:
                 "author": {
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
-                    "last_name": "Picard"
+                    "last_name": "P."
                 },
                 "published_at": "@string@.isDateTime()",
                 "finalized_at": "@string@.isDateTime()",
@@ -88,7 +88,7 @@ Feature:
                 "author": {
                     "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                     "first_name": "Michel",
-                    "last_name": "VASSEUR"
+                    "last_name": "V."
                 },
                 "published_at": "@string@.isDateTime()",
                 "finalized_at": "@string@.isDateTime()",
@@ -153,7 +153,7 @@ Feature:
                 "author": {
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
-                    "last_name": "Picard"
+                    "last_name": "P."
                 },
                 "published_at": "@string@.isDateTime()",
                 "finalized_at": "@string@.isDateTime()",
@@ -203,7 +203,7 @@ Feature:
                 "author": {
                     "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                     "first_name": "Michel",
-                    "last_name": "VASSEUR"
+                    "last_name": "V."
                 },
                 "published_at": "@string@.isDateTime()",
                 "finalized_at": "@string@.isDateTime()",
@@ -268,7 +268,7 @@ Feature:
                 "author": {
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
-                    "last_name": "Picard"
+                    "last_name": "P."
                 },
                 "published_at": "@string@.isDateTime()",
                 "finalized_at": "@string@.isDateTime()",
@@ -408,7 +408,7 @@ Feature:
               "author": {
                   "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                   "first_name": "Jacques",
-                  "last_name": "Picard"
+                  "last_name": "P."
               },
               "published_at": "@string@.isDateTime()",
               "finalized_at": "@string@.isDateTime()",
@@ -447,7 +447,7 @@ Feature:
               "author": {
                   "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                   "first_name": "Michel",
-                  "last_name": "VASSEUR"
+                  "last_name": "V."
               },
               "published_at": "@string@.isDateTime()",
               "finalized_at": "@string@.isDateTime()",
@@ -506,7 +506,7 @@ Feature:
               "author": {
                   "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                   "first_name": "Jacques",
-                  "last_name": "Picard"
+                  "last_name": "P."
               },
               "published_at": "@string@.isDateTime()",
               "finalized_at": "@string@.isDateTime()",
@@ -547,7 +547,7 @@ Feature:
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                 "first_name":"Michel",
-                "last_name":"VASSEUR"
+                "last_name":"V."
              },
              "published_at":"@string@.isDateTime()",
               "finalized_at": "@string@.isDateTime()",
@@ -606,7 +606,7 @@ Feature:
                 "author": {
                     "uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67",
                     "first_name": "Benjamin",
-                    "last_name": "Duroc"
+                    "last_name": "D."
                 },
                 "published_at": null,
                 "finalized_at": null,
@@ -671,7 +671,7 @@ Feature:
              "author":{
                 "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
                 "first_name":"Jacques",
-                "last_name":"Picard"
+                "last_name":"P."
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -721,7 +721,7 @@ Feature:
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                 "first_name":"Michel",
-                "last_name":"VASSEUR"
+                "last_name":"V."
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -1705,7 +1705,7 @@ Feature:
        "author":{
           "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
           "first_name":"Jacques",
-          "last_name":"Picard"
+          "last_name":"P."
        },
        "published_at":"@string@.isDateTime()",
        "finalized_at":"@string@.isDateTime()",
@@ -1729,7 +1729,7 @@ Feature:
                                "author":{
                                   "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
                                   "first_name":"Benjamin",
-                                  "last_name":"Duroc"
+                                  "last_name":"D."
                                },
                                "approved":false,
                                "created_at":"@string@.isDateTime()"
@@ -1741,7 +1741,7 @@ Feature:
                       "author":{
                          "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
                          "first_name":"Jacques",
-                         "last_name":"Picard"
+                         "last_name":"P."
                       },
                       "approved":false,
                       "created_at":"@string@.isDateTime()"
@@ -1799,7 +1799,7 @@ Feature:
              "author":{
                 "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
                 "first_name":"Jacques",
-                "last_name":"Picard"
+                "last_name":"P."
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -1840,7 +1840,7 @@ Feature:
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                 "first_name":"Michel",
-                "last_name":"VASSEUR"
+                "last_name":"V."
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -1899,7 +1899,7 @@ Feature:
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                 "first_name":"Michel",
-                "last_name":"VASSEUR"
+                "last_name":"V."
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -1944,7 +1944,7 @@ Feature:
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                 "first_name":"Michel",
-                "last_name":"VASSEUR"
+                "last_name":"V."
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -2005,7 +2005,7 @@ Feature:
                "author":{
                   "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
                   "first_name":"Jacques",
-                  "last_name":"Picard"
+                  "last_name":"P."
                },
                "published_at":"@string@.isDateTime()",
                "finalized_at":"@string@.isDateTime()",
@@ -2046,7 +2046,7 @@ Feature:
                "author":{
                   "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                   "first_name":"Michel",
-                  "last_name":"VASSEUR"
+                  "last_name":"V."
                },
                "published_at":"@string@.isDateTime()",
                "finalized_at":"@string@.isDateTime()",
@@ -2107,7 +2107,7 @@ Feature:
              "author":{
                 "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
                 "first_name":"Jacques",
-                "last_name":"Picard"
+                "last_name":"P."
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -2146,7 +2146,7 @@ Feature:
               "author": {
                   "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                   "first_name": "Michel",
-                  "last_name": "VASSEUR"
+                  "last_name": "V."
               },
               "published_at": "@string@.isDateTime()",
               "finalized_at": "@string@.isDateTime()",
@@ -2211,7 +2211,7 @@ Feature:
              "author":{
                 "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
                 "first_name":"Jacques",
-                "last_name":"Picard"
+                "last_name":"P."
              },
              "published_at": "@string@.isDateTime()",
              "finalized_at": "@string@.isDateTime()",

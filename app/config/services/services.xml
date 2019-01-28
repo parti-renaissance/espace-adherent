@@ -221,6 +221,9 @@
         </service>
         <service id="AppBundle\Normalizer\IdeaDenormalizer" />
         <service id="AppBundle\Normalizer\AuthorDenormalizer" />
+        <service id="AppBundle\Normalizer\AuthorNormalizer">
+            <argument type="service" id="api_platform.serializer.normalizer.item"/>
+        </service>
         <service id="AppBundle\Normalizer\ThemeNormalizer">
             <argument type="service" id="api_platform.serializer.normalizer.item"/>
         </service>
