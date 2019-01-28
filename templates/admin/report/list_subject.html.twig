@@ -11,5 +11,17 @@
         {% else %}
             {{ value|render_relation_element(field_description) }}
         {% endif %}
+
+        <br>
+        {% if is_thread(object.subject) %}
+            (<a href="{{ path('admin_app_ideasworkshop_idea_show', { id: object.subject.answer.idea.id }) }}">
+                {{ object.subject.answer.idea.name }}
+            </a>)
+        {% endif %}
+        {% if is_thread_comment(object.subject) %}
+            (<a href="{{ path('admin_app_ideasworkshop_idea_show', { id: object.subject.thread.answer.idea.id }) }}">
+                {{ object.subject.thread.answer.idea.name }}
+            </a>)
+        {% endif %}
     {% endif %}
 {% endblock %}

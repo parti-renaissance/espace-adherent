@@ -76,6 +76,7 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
             ])
             ->add('status', null, [
                 'label' => 'Statut',
+                'template' => 'admin/ideas_workshop/idea/show_status.html.twig',
             ])
         ;
     }
