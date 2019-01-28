@@ -5,7 +5,7 @@ export function fetchThemes() {
         axios
             .get('/api/ideas-workshop/themes')
             .then(res => res.data)
-            .then(data => dispatch(updateStatic({ themes: data.items })));
+            .then(data => dispatch(updateStatic({ themes: data })));
 }
 
 export function fetchCategories() {
@@ -13,7 +13,7 @@ export function fetchCategories() {
         axios
             .get('/api/ideas-workshop/categories')
             .then(res => res.data)
-            .then(data => dispatch(updateStatic({ categories: data.items })));
+            .then(data => dispatch(updateStatic({ categories: data })));
 }
 
 export function fetchCommittees() {
@@ -29,7 +29,7 @@ export function fetchNeeds() {
         axios
             .get('/api/ideas-workshop/needs')
             .then(res => res.data)
-            .then(data => dispatch(updateStatic({ needs: data.items })));
+            .then(data => dispatch(updateStatic({ needs: data })));
 }
 
 export function fetchFlagReasons() {

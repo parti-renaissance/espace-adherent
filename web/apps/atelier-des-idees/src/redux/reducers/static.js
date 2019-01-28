@@ -5,7 +5,7 @@ const initialState = {
     categories: [],
     needs: [],
     themes: [],
-    reasons: [],
+    reasons: {},
 };
 
 function staticReducer(state = initialState, action) {
