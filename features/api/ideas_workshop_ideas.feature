@@ -1385,7 +1385,7 @@ Feature:
     """
     {
       "FromEmail": "atelier-des-idees@en-marche.fr",
-      "FromName": "En Marche !",
+      "FromName": "La République En Marche !",
       "Subject": "Votre proposition a bien été publiée !",
       "MJ-TemplateID": "645027",
       "MJ-TemplateLanguage": true,
