@@ -21,13 +21,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -60,6 +63,8 @@ use JMS\Serializer\Annotation as JMS;
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AdherentRepository")
  *
+ * @UniqueEntity(fields={"nickname"}, groups={"anonymize"})
+ *
  * @Algolia\Index(autoIndex=false)
  */
 class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, \Serializable
@@ -74,6 +79,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     use EntityPersonNameTrait;
     use EntityPostAddressTrait;
     use LazyCollectionTrait;
+
+    /**
+     * @ORM\Column(length=25, unique=true, nullable=true)
+     *
+     * @Assert\Length(min=3, max=25, groups={"anonymize"})
+     * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="adherent.nickname.invalid_syntax", groups={"anonymize"})
+     *
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_read", "thread_list_read", "thread_comment_read", "vote_read"})
+     */
+    private $nickname;
 
     /**
      * @ORM\Column(nullable=true)
@@ -315,6 +330,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         ?string $position,
         PostAddress $postAddress,
         PhoneNumber $phone = null,
+        string $nickname = null,
         string $status = self::DISABLED,
         string $registeredAt = 'now',
         ?array $tags = [],
@@ -328,6 +344,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->gender = $gender;
         $adherent->firstName = $firstName;
         $adherent->lastName = $lastName;
+        $adherent->nickname = $nickname;
         $adherent->emailAddress = $emailAddress;
         $adherent->birthdate = $birthDate;
         $adherent->position = $position;
@@ -545,6 +562,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
 
         $this->position = $position;
+    }
+
+    public function setNickname(?string $nickname): void
+    {
+        $this->nickname = $nickname;
+    }
+
+    public function getNickname(): ?string
+    {
+        return $this->nickname;
     }
 
     public function isEnabled(): bool

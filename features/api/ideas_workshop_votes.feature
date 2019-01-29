@@ -30,6 +30,7 @@ Feature:
             "name": "Faire la paix"
         },
         "author": {
+            "nickname": null,
             "first_name": "Martine",
             "last_name": "Lindt"
         },

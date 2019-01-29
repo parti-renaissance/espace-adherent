@@ -31,6 +31,7 @@ Feature:
              "content":"Commentaire d'un adhérent",
              "author":{
                 "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
+                "nickname":null,
                 "first_name":"Benjamin",
                 "last_name":"D."
              },
@@ -42,6 +43,7 @@ Feature:
              "content":"Commentaire de l'adhérent à desadhérer",
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                "nickname":null,
                 "first_name":"Michel",
                 "last_name":"V."
              },
@@ -53,6 +55,7 @@ Feature:
              "content":"<p>Commentaire signalé</p>",
              "author":{
                 "uuid":"93de5d98-383a-4863-9f47-eb7a348873a8",
+                "nickname":null,
                 "first_name":"Laura",
                 "last_name":"D."
              },
@@ -83,6 +86,7 @@ Feature:
                 "content": "Deuxième commentaire d'un référent",
                 "author": {
                     "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "nickname":null,
                     "first_name": "Referent",
                     "last_name": "R."
                 },
@@ -94,6 +98,7 @@ Feature:
                 "content": "Commentaire d'un référent",
                 "author": {
                     "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "nickname":null,
                     "first_name": "Referent",
                     "last_name": "R."
                 },
@@ -105,6 +110,7 @@ Feature:
                 "content": "Lorem Ipsum Commentaris",
                 "author": {
                     "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
+                    "nickname":null,
                     "first_name": "Francis",
                     "last_name": "B."
                 },
@@ -137,8 +143,9 @@ Feature:
           "content":"J'ouvre une discussion sur le probl\u00e8me.",
           "author":{
              "uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458",
-             "first_name":"Carl",
-             "last_name":"Mirabeau"
+             "nickname":"pont",
+             "first_name":null,
+             "last_name":null
           },
           "created_at": "@string@.isDateTime()",
           "uuid":"dfd6a2f2-5579-421f-96ac-98993d0edea1",
@@ -147,6 +154,7 @@ Feature:
        "content":"Phasellus vitae enim faucibus",
        "author":{
           "uuid":"d4b1e7e1-ba18-42a9-ace9-316440b30fa7",
+          "nickname":null,
           "first_name":"Martine",
           "last_name":"Lindt"
        },
@@ -177,6 +185,7 @@ Feature:
        "content":"Aenean viverra efficitur lorem",
        "author":{
           "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
+          "nickname":null,
           "first_name":"Benjamin",
           "last_name":"Duroc"
        },
