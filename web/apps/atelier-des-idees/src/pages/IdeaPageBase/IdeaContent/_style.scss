@@ -2,20 +2,16 @@
   .idea-content__section-title {
     margin: 50px 0;
 
-    .idea-content__section-title__main::after {
-      content: '';
-      display: block;
-      width: 100px;
-      border-bottom: 1px solid $black-bean;
-      margin-top: 10px;
-    }
-
-    .idea-content__section-subtitle {
-      margin: 0;
-      font-size: 14px;
-      font-family: $font-gillsans;
-      text-transform: uppercase;
+    .idea-content__section-title__main {
       color: $dark-aurometalsaurus;
+
+      &::after {
+        content: '';
+        display: block;
+        width: 50px;
+        border-bottom: 1px solid $black-bean;
+        margin-top: 15px;
+      }
     }
   }
 

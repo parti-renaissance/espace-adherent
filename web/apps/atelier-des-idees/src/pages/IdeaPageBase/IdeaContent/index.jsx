@@ -41,7 +41,6 @@ class IdeaContent extends React.Component {
                         <section key={`guideline_${idx}`} className="idea-content__start-section">
                             {!this.props.isReading && (
                                 <div className="idea-content__section-title">
-                                    <p className="idea-content__section-subtitle">{guideline.category_name}</p>
                                     <h2 className="idea-content__section-title__main">{guideline.name}</h2>
                                 </div>
                             )}
