@@ -4,7 +4,7 @@ import { ideaStatus } from '../../constants/api';
 import Switch from '../../components/Switch';
 import CreateIdeaActions from './CreateIdeaActions';
 import IdeaPageTitle from './IdeaPageTitle';
-import CreateIdeaTool from './CreateIdeaTool';
+import IdeaContent from './IdeaContent';
 import VotingFooterIdeaPage from './VotingFooterIdeaPage';
 import IdeaPageSkeleton from './IdeaPageSkeleton';
 import autoSaveIcn from '../../img/icn_20px_autosave.svg';
@@ -225,7 +225,7 @@ class IdeaPageBase extends React.Component {
                                     hasError={this.state.errors.name}
                                     showPublicationDate={idea.status !== ideaStatus.DRAFT}
                                 />
-                                <CreateIdeaTool
+                                <IdeaContent
                                     onQuestionTextChange={this.onQuestionTextChange}
                                     guidelines={this.props.guidelines}
                                     values={this.state.answers}
