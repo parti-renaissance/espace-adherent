@@ -60,7 +60,7 @@ class AdherentControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/mes-evenements');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
     public function testAuthenticatedAdherentCanSeeHisUpcomingAndPastEvents(): void
@@ -105,7 +105,7 @@ class AdherentControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, $profilePage);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/connexion', $this->client, true);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
     public function provideProfilePage()
@@ -156,7 +156,7 @@ class AdherentControllerTest extends WebTestCase
             '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -609,7 +609,7 @@ class AdherentControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
     /**
@@ -939,7 +939,7 @@ class AdherentControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/connexion', $this->client, true);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
     public function testDocumentsActionIsAccessibleAsAdherent(): void
@@ -956,7 +956,7 @@ class AdherentControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/contacter/'.LoadAdherentData::ADHERENT_1_UUID);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/connexion', $this->client, true);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
     public function testContactActionForAdherent(): void
@@ -1047,7 +1047,6 @@ class AdherentControllerTest extends WebTestCase
         $this->assertCount(1, $crawler->filter('.settings__delete_account'));
 
         $crawler = $this->client->click($crawler->selectLink('Supprimer définitivement ce compte')->link());
-
         $this->assertEquals('http://'.$this->hosts['app'].'/parametres/mon-compte/desadherer', $this->client->getRequest()->getUri());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 

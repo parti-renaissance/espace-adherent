@@ -33,7 +33,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
     {
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/13003-le-projet-citoyen-a-marseille');
 
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
     public function testAdherentCannotSeeUnapprovedCitizenProject(): void
@@ -199,7 +199,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ]);
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/connexion', $this->client, true);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
 
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/comite/autocompletion?term=pa', [], [], [

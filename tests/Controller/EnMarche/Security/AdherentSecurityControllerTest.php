@@ -43,7 +43,7 @@ class AdherentSecurityControllerTest extends WebTestCase
         $adherent = $this->adherentRepository->findOneByEmail('carl999@example.fr');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/evenements', $this->client, true);
+        $this->assertClientIsRedirectedTo('/evenements', $this->client);
         $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
 
         $crawler = $this->client->followRedirect();
@@ -74,7 +74,7 @@ class AdherentSecurityControllerTest extends WebTestCase
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/connexion', $this->client, true);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
 
         $crawler = $this->client->followRedirect();
 

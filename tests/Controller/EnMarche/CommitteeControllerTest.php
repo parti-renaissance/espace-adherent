@@ -369,13 +369,13 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $messages = $this->manager->getRepository(CommitteeFeedItem::class)->findMostRecentFeedEvent($committee->getUuid());
 
         $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/modifier');
-        $this->assertClientIsRedirectedTo($this->hosts['scheme'].'://'.$this->hosts['app'].'/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
 
         $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/supprimer');
         $this->assertClientIsRedirectedTo('/comites', $this->client, false, true);
 
         $this->client->request(Request::METHOD_DELETE, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/supprimer');
-        $this->assertClientIsRedirectedTo($this->hosts['scheme'].'://'.$this->hosts['app'].'/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
     public function testGetTimeLineConnected()

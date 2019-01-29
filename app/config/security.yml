@@ -290,12 +290,6 @@ security:
                 authenticators:
                     - 'AppBundle\OAuth\OAuthAuthenticator'
 
-        api:
-            context: main_context
-            pattern: ^/api
-            anonymous: true
-            entry_point: AppBundle\Security\ApiAuthenticationEntryPoint
-
         admin:
             context: main_context
             pattern: ^/admin
@@ -320,35 +314,38 @@ security:
                 path: logout
                 target: homepage
 
-        main:
+        api_login:
+            pattern:  ^/api/login
+            stateless: true
+            anonymous: true
+            provider: users_db
             user_checker: AppBundle\Security\UserChecker
+            json_login:
+                check_path: api_login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        main:
             context: main_context
+            stateless: false
             # No pattern means every path is behind this firewall
             provider: users_db
             switch_user:
                 provider: users_db
             anonymous:
                 secret: '%env(SECRET)%'
-            form_login:
-                login_path: app_user_login
-                check_path: app_user_login_check
-
-                default_target_path: app_search_events
-                use_referer: true
-
-                username_parameter: _login_email
-                password_parameter: _login_password
-                csrf_parameter: _login_csrf
-                csrf_token_id: authenticate
-                csrf_token_generator: security.csrf.token_manager
-
-                success_handler: AppBundle\Security\Http\AnonymousFollowerAuthenticationSuccessHandler
-                failure_handler: AppBundle\Security\Http\AuthenticationFailureHandler
             logout:
                 path: logout
                 target: homepage
+            user_checker: AppBundle\Security\UserChecker
+            guard:
+                authenticators:
+                    - AppBundle\Security\LoginFormAuthenticator
+                    - lexik_jwt_authentication.jwt_token_authenticator
+                entry_point: AppBundle\Security\LoginFormAuthenticator
 
     access_control:
+        - { path: '^/api/login', roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: '^/parametres', roles: [ROLE_USER] }
         - { path: '^/espace-adherent/creer-mon-projet-citoyen$', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: '^/espace-adherent', roles: [ROLE_ADHERENT] }

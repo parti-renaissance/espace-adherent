@@ -4,6 +4,7 @@ namespace AppBundle\Security;
 
 use AppBundle\Entity\Adherent;
 use Doctrine\Common\Persistence\ObjectManager;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\Authentication\Token\JWTUserToken;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
@@ -28,8 +29,16 @@ class AdherentLoginTimestampRecorder implements EventSubscriberInterface
             return;
         }
 
-        if (!$token instanceof UsernamePasswordToken) {
-            throw new \RuntimeException(sprintf('Authentication token must be a %s instance.', UsernamePasswordToken::class));
+        if (!$token instanceof PostAuthenticationGuardToken
+            && !$token instanceof UsernamePasswordToken
+            && !$token instanceof JWTUserToken
+        ) {
+            throw new \RuntimeException(sprintf(
+                'Authentication token must be a %s or %s or %s instance.',
+                PostAuthenticationGuardToken::class,
+                UsernamePasswordToken::class,
+                JWTUserToken::class
+            ));
         }
 
         $user = $token->getUser();

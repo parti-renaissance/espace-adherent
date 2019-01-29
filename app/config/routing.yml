@@ -13,6 +13,10 @@ app_assets:
     resource: "@AppBundle/Controller/AssetsController.php"
     type:     "annotation"
 
+
+api_login_check:
+    path: /api/login_check
+
 #
 # Mooc
 #
