@@ -108,7 +108,7 @@ class ReportControllerTest extends WebTestCase
 
         $this->client->submit($crawler->selectButton('Envoyer mon signalement')->form([
             'report_command' => [
-                'reasons' => [0 => 'en_marche_values', 1 => 'inappropriate'],
+                'reasons' => [0 => 'intellectual_property', 1 => 'illicit_content'],
             ],
         ]));
         $this->assertClientIsRedirectedTo('/', $this->client);
@@ -124,7 +124,7 @@ class ReportControllerTest extends WebTestCase
 
         $this->client->submit($crawler->selectButton('Envoyer mon signalement')->form([
             'report_command' => [
-                'reasons' => [0 => 'en_marche_values'],
+                'reasons' => [0 => 'intellectual_property'],
             ],
         ]));
         $this->assertClientIsRedirectedTo('/', $this->client);

@@ -44,26 +44,6 @@ abstract class Report
     use EntityIdentityTrait;
     use AuthoredTrait;
 
-    public const STATUS_RESOLVED = 'resolved';
-    public const STATUS_UNRESOLVED = 'unresolved';
-
-    public const STATUS_LIST = [
-        self::STATUS_RESOLVED,
-        self::STATUS_UNRESOLVED,
-    ];
-
-    public const REASON_EN_MARCHE_VALUES = 'en_marche_values';
-    public const REASON_INAPPROPRIATE = 'inappropriate';
-    public const REASON_COMMERCIAL_CONTENT = 'commercial_content';
-    public const REASON_OTHER = 'other';
-
-    public const REASONS_LIST = [
-        self::REASON_EN_MARCHE_VALUES,
-        self::REASON_INAPPROPRIATE,
-        self::REASON_COMMERCIAL_CONTENT,
-        self::REASON_OTHER,
-    ];
-
     /*
      * Mapping to be defined in concrete classes.
      */
@@ -86,9 +66,9 @@ abstract class Report
     /**
      * @var string
      *
-     * @ORM\Column(length=16, options={"default": AppBundle\Entity\Report\Report::STATUS_UNRESOLVED})
+     * @ORM\Column(length=16, options={"default": AppBundle\Entity\Report\ReportStatusEnum::STATUS_UNRESOLVED})
      */
-    private $status = self::STATUS_UNRESOLVED;
+    private $status = ReportStatusEnum::STATUS_UNRESOLVED;
 
     /**
      * @var \DateTimeImmutable
@@ -113,23 +93,17 @@ abstract class Report
             throw new \InvalidArgumentException('At least one reason must be provided');
         }
 
-        if ($invalid = array_diff($reasons, self::REASONS_LIST)) {
+        if ($invalid = array_diff($reasons, ReportReasonEnum::REASONS_LIST)) {
             throw new \InvalidArgumentException(
-                sprintf('Some reasons are not valid "%s", they are defined in %s::REASONS_LIST', implode(', ', $invalid), __CLASS__)
+                sprintf('Some reasons are not valid "%s", they are defined in %s::REASONS_LIST', implode(', ', $invalid), ReportReasonEnum::class)
             );
         }
 
-        $isOtherReasonChecked = \in_array(self::REASON_OTHER, $reasons, true);
+        $isOtherReasonChecked = \in_array(ReportReasonEnum::REASON_OTHER, $reasons, true);
 
         if ($comment && !$isOtherReasonChecked) {
             throw new \InvalidArgumentException(
-                sprintf('$comment is filed but %s::REASON_OTHER is not provided in $reasons', self::class)
-            );
-        }
-
-        if (!$comment && $isOtherReasonChecked) {
-            throw new \InvalidArgumentException(
-                sprintf('$comment is not filed while %s::REASON_OTHER is provided', self::class)
+                sprintf('$comment is filed but %s::REASON_OTHER is not provided in $reasons', ReportReasonEnum::class)
             );
         }
 
@@ -175,13 +149,13 @@ abstract class Report
             throw new \LogicException('Report already resolved');
         }
 
-        $this->status = self::STATUS_RESOLVED;
+        $this->status = ReportStatusEnum::STATUS_RESOLVED;
         $this->resolvedAt = new \DateTimeImmutable();
     }
 
     final public function isResolved(): bool
     {
-        return self::STATUS_RESOLVED === $this->status;
+        return ReportStatusEnum::STATUS_RESOLVED === $this->status;
     }
 
     final public function getCreatedAt(): \DateTimeImmutable
