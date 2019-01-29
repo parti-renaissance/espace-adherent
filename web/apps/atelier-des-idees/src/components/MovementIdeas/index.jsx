@@ -25,7 +25,7 @@ const sectionContent = [
         title: 'des propositions',
         text: 'Donnez votre avis sur les propositions finalisées.',
         linkLabel: 'Je soutiens',
-        link: '/atelier-des-idees/consulter',
+        link: '/atelier-des-idees/soutenir',
     },
 ];
 

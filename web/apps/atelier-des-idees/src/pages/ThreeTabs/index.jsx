@@ -20,7 +20,7 @@ function ThreeTabs(props) {
                         <NavLink className="tt-page__header__nav-link" to="/atelier-des-idees/contribuer">
                             Contribuer
                         </NavLink>
-                        <NavLink className="tt-page__header__nav-link" to="/atelier-des-idees/consulter">
+                        <NavLink className="tt-page__header__nav-link" to="/atelier-des-idees/soutenir">
                             Soutenir
                         </NavLink>
                     </div>
