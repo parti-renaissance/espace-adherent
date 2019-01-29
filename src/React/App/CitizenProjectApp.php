@@ -33,8 +33,9 @@ class CitizenProjectApp implements ReactAppInterface
         return new PageMetaData(
             'Les projets citoyens',
             'Les projets citoyens initiés par La République En Marche ! sont des actions locales qui permettent d\'améliorer concrètement le quotidien des habitants d\'un quartier, d\'un village, en réunissant la force et les compétences de tous ceux qui veulent agir.',
-            1698,
-            550
+            2501,
+            1313,
+            'https://storage.googleapis.com/en-marche-prod/images/cp_sharing.png'
         );
     }
 }
