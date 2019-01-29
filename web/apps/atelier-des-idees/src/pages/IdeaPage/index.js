@@ -16,11 +16,16 @@ import { reportIdea } from '../../redux/thunk/ideas';
 import { selectAuthUser, selectIsAuthenticated } from '../../redux/selectors/auth';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectCurrentIdea, selectGuidelines } from '../../redux/selectors/currentIdea';
+import { setCurrentIdea } from '../../redux/actions/currentIdea';
 
 class IdeaPage extends React.Component {
     componentDidMount() {
         window.scrollTo(0, 0);
         this.props.initIdeaPage();
+    }
+
+    componentWillUnmount() {
+        this.props.unmountIdeaPage();
     }
 
     render() {
@@ -46,6 +51,7 @@ IdeaPage.defaultProps = {
 
 IdeaPage.propTypes = {
     initIdeaPage: PropTypes.func.isRequired,
+    unmountIdeaPage: PropTypes.func.isRequired,
     isFetchingIdea: PropTypes.bool,
     hasFetchError: PropTypes.bool,
 };
@@ -59,11 +65,10 @@ function mapStateToProps(state, ownProps) {
     const guidelines = selectGuidelines(state);
     // get and format current idea
     const idea = selectCurrentIdea(state);
-    const { author = {}, published_at, ...ideaData } = idea;
+    const { author = {}, ...ideaData } = idea;
     const formattedIdea = {
         ...ideaData,
         authorName: author ? `${author.first_name} ${author.last_name}` : '',
-        publishedAt: published_at && new Date(published_at).toLocaleDateString(),
     };
     const isAuthenticated = selectIsAuthenticated(state);
 
@@ -83,6 +88,7 @@ function mapDispatchToProps(dispatch, ownProps) {
             const { id } = ownProps.match.params;
             dispatch(initIdeaPage(id));
         },
+        unmountIdeaPage: () => dispatch(setCurrentIdea()),
         onBackClicked: () => dispatch(goBackFromCurrentIdea()),
         onPublishIdea: (data) => {
             const { id } = ownProps.match.params;

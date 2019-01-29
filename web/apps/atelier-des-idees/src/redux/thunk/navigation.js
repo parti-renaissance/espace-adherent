@@ -19,8 +19,8 @@ export function initApp() {
 
 export function initHomePage() {
     const params = {
-        limit: 5,
-        "order['publishedAt']": 'DESC',
+        page_size: 5,
+        'order[publishedAt]': 'DESC',
     };
     return dispatch =>
         Promise.all([
@@ -36,37 +36,20 @@ export function initHomePage() {
         ]);
 }
 
-export function initContributePage() {
-    const params = {
-        limit: 10,
-        "order['publishedAt']": 'DESC',
-    };
-    return dispatch => dispatch(fetchIdeas(ideaStatus.PENDING, params, { setMode: true }));
-}
-
-export function initConsultPage() {
-    const params = {
-        limit: 10,
-        "order['publishedAt']": 'DESC',
-    };
-    return dispatch => dispatch(fetchIdeas(ideaStatus.FINALIZED, params, { setMode: true }));
-}
-
 export function initIdeaPageBase() {
     return dispatch => dispatch(fetchGuidelines());
 }
 
 export function initIdeaPage(id) {
     return async dispatch => {
-        await dispatch(fetchIdea(id));
-        dispatch(initIdeaPageBase());
+        // reset current idea
+        dispatch(setCurrentIdea());
+        return dispatch(fetchIdea(id)).then(() => dispatch(initIdeaPageBase()));
     };
 }
 
 export function initCreateIdeaPage() {
     return dispatch => {
         dispatch(initIdeaPageBase());
-        // reset current idea
-        dispatch(setCurrentIdea());
     };
 }

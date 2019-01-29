@@ -556,6 +556,16 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
         return $this->votes;
     }
 
+    public function setCanonicalName(string $name): void
+    {
+        $this->canonicalName = static::canonicalize($name);
+    }
+
+    public function getCanonicalName(): string
+    {
+        return $this->canonicalName;
+    }
+
     /**
      * @SymfonySerializer\Groups("idea_list_read")
      */
@@ -646,6 +656,6 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
 
     public function __toString(): string
     {
-        return (string) $this->name;
+        return substr($this->getName(), 0, 300);
     }
 }

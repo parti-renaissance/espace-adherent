@@ -35,17 +35,19 @@ function TextArea(props) {
 }
 
 TextArea.defaultProps = {
+    id: '',
     disabled: false,
     maxLength: undefined,
     placeholder: '',
     value: '',
+    name: '',
     error: '',
 };
 
 TextArea.propTypes = {
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     maxLength: PropTypes.number,
-    name: PropTypes.string.isRequired,
+    name: PropTypes.string,
     onChange: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
     value: PropTypes.string,

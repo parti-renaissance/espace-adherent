@@ -48,7 +48,7 @@ Feature:
                 "author": {
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
-                    "last_name": "Picard"
+                    "last_name": "P."
                 },
                 "published_at": "@string@.isDateTime()",
                 "finalized_at": "@string@.isDateTime()",
@@ -88,7 +88,7 @@ Feature:
                 "author": {
                     "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                     "first_name": "Michel",
-                    "last_name": "VASSEUR"
+                    "last_name": "V."
                 },
                 "published_at": "@string@.isDateTime()",
                 "finalized_at": "@string@.isDateTime()",
@@ -153,7 +153,7 @@ Feature:
                 "author": {
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
-                    "last_name": "Picard"
+                    "last_name": "P."
                 },
                 "published_at": "@string@.isDateTime()",
                 "finalized_at": "@string@.isDateTime()",
@@ -203,7 +203,7 @@ Feature:
                 "author": {
                     "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                     "first_name": "Michel",
-                    "last_name": "VASSEUR"
+                    "last_name": "V."
                 },
                 "published_at": "@string@.isDateTime()",
                 "finalized_at": "@string@.isDateTime()",
@@ -268,7 +268,7 @@ Feature:
                 "author": {
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
-                    "last_name": "Picard"
+                    "last_name": "P."
                 },
                 "published_at": "@string@.isDateTime()",
                 "finalized_at": "@string@.isDateTime()",
@@ -408,7 +408,7 @@ Feature:
               "author": {
                   "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                   "first_name": "Jacques",
-                  "last_name": "Picard"
+                  "last_name": "P."
               },
               "published_at": "@string@.isDateTime()",
               "finalized_at": "@string@.isDateTime()",
@@ -447,7 +447,7 @@ Feature:
               "author": {
                   "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                   "first_name": "Michel",
-                  "last_name": "VASSEUR"
+                  "last_name": "V."
               },
               "published_at": "@string@.isDateTime()",
               "finalized_at": "@string@.isDateTime()",
@@ -506,7 +506,7 @@ Feature:
               "author": {
                   "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                   "first_name": "Jacques",
-                  "last_name": "Picard"
+                  "last_name": "P."
               },
               "published_at": "@string@.isDateTime()",
               "finalized_at": "@string@.isDateTime()",
@@ -547,7 +547,7 @@ Feature:
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                 "first_name":"Michel",
-                "last_name":"VASSEUR"
+                "last_name":"V."
              },
              "published_at":"@string@.isDateTime()",
               "finalized_at": "@string@.isDateTime()",
@@ -606,7 +606,7 @@ Feature:
                 "author": {
                     "uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67",
                     "first_name": "Benjamin",
-                    "last_name": "Duroc"
+                    "last_name": "D."
                 },
                 "published_at": null,
                 "finalized_at": null,
@@ -671,7 +671,7 @@ Feature:
              "author":{
                 "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
                 "first_name":"Jacques",
-                "last_name":"Picard"
+                "last_name":"P."
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -721,7 +721,7 @@ Feature:
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                 "first_name":"Michel",
-                "last_name":"VASSEUR"
+                "last_name":"V."
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -824,8 +824,8 @@ Feature:
     And I send a "POST" request to "/api/ideas-workshop/ideas" with body:
     """
     {
-      "name": "Mon idée",
-      "description": "Mon idée",
+      "name": "Mon idée🤘",
+      "description": "Mon idée🤘",
       "themes": [2],
       "category": 2,
       "committee": "515a56c0-bde8-56ef-b90c-4745b1c93818",
@@ -833,11 +833,11 @@ Feature:
       "answers":[
         {
           "question":1,
-          "content":"<p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p>"
+          "content":"<p>Lorem Ipsum🤘</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p><p>Lorem Ipsum</p><p>Cras tincidunt erat at justo tristique.</p><p>Lorem Ipsum</p>"
         },
         {
           "question":2,
-          "content":"Réponse à la question 2"
+          "content":"Réponse à la question 2🤘"
         },
         {
           "question":3,
@@ -940,8 +940,8 @@ Feature:
     And I send a "PUT" request to "/api/ideas-workshop/ideas/e4ac3efc-b539-40ac-9417-b60df432bdc5" with body:
     """
     {
-      "name": "Mon idée 2",
-      "description": "Mon idée 2",
+      "name": "Mon idée 2🤘",
+      "description": "Mon idée 2🤘",
       "themes": [2],
       "category": 2,
       "committee": "515a56c0-bde8-56ef-b90c-4745b1c93818",
@@ -950,7 +950,7 @@ Feature:
         {
           "id": 1,
           "question":1,
-          "content":"Réponse à la question 1"
+          "content":"Réponse à la question 1🤘"
         },
         {
           "id": 2,
@@ -1500,7 +1500,7 @@ Feature:
                          ]
                       },
                       "uuid":"78d7daa1-657c-4e7e-87bc-24eb4ea26ea2",
-                      "content":"<p>Une nouvelle discussion.</p>",
+                      "content":"Une nouvelle discussion.",
                       "author":{
                          "uuid":"b4219d47-3138-5efd-9762-2ef9f9495084",
                          "first_name":"Gisele",
@@ -1566,7 +1566,7 @@ Feature:
                             },
                             {
                                "uuid":"60123090-6cdc-4de6-9cb3-07e2ec411f2f",
-                               "content":"<p>Lorem Ipsum Commentaris</p>",
+                               "content":"Lorem Ipsum Commentaris",
                                "author":{
                                   "uuid":"a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
                                   "first_name":"Francis",
@@ -1725,7 +1725,7 @@ Feature:
        "author":{
           "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
           "first_name":"Jacques",
-          "last_name":"Picard"
+          "last_name":"P."
        },
        "published_at":"@string@.isDateTime()",
        "finalized_at":"@string@.isDateTime()",
@@ -1749,7 +1749,7 @@ Feature:
                                "author":{
                                   "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
                                   "first_name":"Benjamin",
-                                  "last_name":"Duroc"
+                                  "last_name":"D."
                                },
                                "approved":false,
                                "created_at":"@string@.isDateTime()"
@@ -1761,7 +1761,7 @@ Feature:
                       "author":{
                          "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
                          "first_name":"Jacques",
-                         "last_name":"Picard"
+                         "last_name":"P."
                       },
                       "approved":false,
                       "created_at":"@string@.isDateTime()"
@@ -1819,7 +1819,7 @@ Feature:
              "author":{
                 "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
                 "first_name":"Jacques",
-                "last_name":"Picard"
+                "last_name":"P."
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -1860,7 +1860,7 @@ Feature:
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                 "first_name":"Michel",
-                "last_name":"VASSEUR"
+                "last_name":"V."
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -1919,7 +1919,7 @@ Feature:
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                 "first_name":"Michel",
-                "last_name":"VASSEUR"
+                "last_name":"V."
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -1964,7 +1964,7 @@ Feature:
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                 "first_name":"Michel",
-                "last_name":"VASSEUR"
+                "last_name":"V."
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -2025,7 +2025,7 @@ Feature:
                "author":{
                   "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
                   "first_name":"Jacques",
-                  "last_name":"Picard"
+                  "last_name":"P."
                },
                "published_at":"@string@.isDateTime()",
                "finalized_at":"@string@.isDateTime()",
@@ -2066,7 +2066,7 @@ Feature:
                "author":{
                   "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                   "first_name":"Michel",
-                  "last_name":"VASSEUR"
+                  "last_name":"V."
                },
                "published_at":"@string@.isDateTime()",
                "finalized_at":"@string@.isDateTime()",
@@ -2127,7 +2127,7 @@ Feature:
              "author":{
                 "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
                 "first_name":"Jacques",
-                "last_name":"Picard"
+                "last_name":"P."
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -2166,7 +2166,7 @@ Feature:
               "author": {
                   "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                   "first_name": "Michel",
-                  "last_name": "VASSEUR"
+                  "last_name": "V."
               },
               "published_at": "@string@.isDateTime()",
               "finalized_at": "@string@.isDateTime()",
@@ -2231,7 +2231,7 @@ Feature:
              "author":{
                 "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
                 "first_name":"Jacques",
-                "last_name":"Picard"
+                "last_name":"P."
              },
              "published_at": "@string@.isDateTime()",
              "finalized_at": "@string@.isDateTime()",

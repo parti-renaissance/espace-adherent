@@ -44,7 +44,7 @@ function getDefaultValues(selectedItems = [], options = []) {
 function mapStateToProps(state, { id }) {
     // get request status
     const currentIdea = selectCurrentIdea(state);
-    const saveIdeaState = selectLoadingState(state, 'SAVE_IDEA', id);
+    const saveIdeaState = selectLoadingState(state, 'SAVE_CURRENT_IDEA', id);
     const publishIdeaState = selectLoadingState(state, 'PUBLISH_IDEA');
     // get static data
     const { themes, needs, categories, committees } = selectStatic(state);

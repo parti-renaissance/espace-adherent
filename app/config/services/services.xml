@@ -136,6 +136,9 @@
         <prototype namespace="AppBundle\EntityListener\" resource="../../../src/EntityListener/">
             <tag name="doctrine.orm.entity_listener" />
         </prototype>
+        <service id="AppBundle\EventListener\RemoveEmojisListener">
+            <tag name="doctrine.event_listener" event="onFlush" />
+        </service>
 
         <!-- Exporter -->
         <prototype namespace="AppBundle\Exporter\" resource="../../../src/Exporter/" />
@@ -218,6 +221,9 @@
         </service>
         <service id="AppBundle\Normalizer\IdeaDenormalizer" />
         <service id="AppBundle\Normalizer\AuthorDenormalizer" />
+        <service id="AppBundle\Normalizer\AuthorNormalizer">
+            <argument type="service" id="api_platform.serializer.normalizer.item"/>
+        </service>
         <service id="AppBundle\Normalizer\ThemeNormalizer">
             <argument type="service" id="api_platform.serializer.normalizer.item"/>
         </service>

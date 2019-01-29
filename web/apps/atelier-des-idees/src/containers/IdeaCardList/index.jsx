@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import queryString from 'query-string';
 import { ideaStatus } from '../../constants/api';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectIdeasWithStatus, selectIdeasMetadata } from '../../redux/selectors/ideas';
@@ -18,14 +20,15 @@ class IdeaCardListContainer extends React.Component {
             params: {},
         };
         this.onFilterChange = this.onFilterChange.bind(this);
+        this.fetchIdeas = this.fetchIdeas.bind(this);
     }
 
-    fetchIdeas() {
-        this.props.fetchIdeas(this.state.params);
+    fetchIdeas(options) {
+        this.props.fetchIdeas(this.state.params, options);
     }
 
-    onFilterChange(filters) {
-        this.setState({ params: filters }, () => this.fetchIdeas());
+    onFilterChange(filters, options) {
+        this.setState({ params: filters }, () => this.fetchIdeas(options));
     }
 
     render() {
@@ -33,9 +36,11 @@ class IdeaCardListContainer extends React.Component {
             <React.Fragment>
                 <IdeaFilters
                     onFilterChange={this.onFilterChange}
+                    onFilterInit={filters => this.onFilterChange(filters, { cancel: false, updateUrl: false })}
                     status={this.props.status}
                     options={this.props.filters}
                     disabled={this.props.isLoading}
+                    defaultValues={this.props.defaultFilterValues}
                 />
                 {this.props.isLoading || this.props.ideas.length ? (
                     <React.Fragment>
@@ -47,7 +52,11 @@ class IdeaCardListContainer extends React.Component {
                         />
                         {this.props.withPaging && (
                             <div className="idea-card-list__paging">
-                                <Button label="Plus de propositions" mode="tertiary" onClick={this.props.onMoreClicked} />
+                                <Button
+                                    label="Plus de propositions"
+                                    mode="tertiary"
+                                    onClick={this.props.onMoreClicked}
+                                />
                             </div>
                         )}
                     </React.Fragment>
@@ -66,6 +75,7 @@ IdeaCardListContainer.defaultProps = {
     onMoreClicked: undefined,
     withPaging: false,
     filters: undefined,
+    defaultFilterValues: undefined,
 };
 
 IdeaCardListContainer.propTypes = {
@@ -74,6 +84,7 @@ IdeaCardListContainer.propTypes = {
     status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
     withPaging: PropTypes.bool,
     filters: PropTypes.object,
+    defaultFilterValues: PropTypes.object,
 };
 
 function mapStateToProps(state, ownProps) {
@@ -94,18 +105,30 @@ function mapStateToProps(state, ownProps) {
             needs: needs.map(need => ({ value: need.name, label: need.name })),
             categories: categories.map(category => ({ value: category.name, label: category.name })),
         },
+        defaultFilterValues: queryString.parse(ownProps.location.search),
     };
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
     return {
-        fetchIdeas: params => dispatch(fetchIdeas(ownProps.status, params, { setMode: true, cancel: true })),
+        fetchIdeas: (params, options = {}) => {
+            dispatch(fetchIdeas(ownProps.status, params, { setMode: true, cancel: true, ...options }));
+            // update url with query params
+            if (false !== options.updateUrl) {
+                const { match, history } = ownProps;
+                const { path } = match;
+                const paramsString = queryString.stringify(params);
+                history.replace(`${path}?${paramsString}`);
+            }
+        },
         onMoreClicked: params => dispatch(fetchNextIdeas(ownProps.status, params)),
         onVoteIdea: (id, vote) => dispatch(voteIdea(id, vote)),
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(IdeaCardListContainer);
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(IdeaCardListContainer)
+);

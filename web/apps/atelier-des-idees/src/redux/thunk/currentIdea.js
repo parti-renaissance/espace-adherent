@@ -62,36 +62,42 @@ export function saveCurrentIdea(ideaData) {
                         const previousAnswer = selectCurrentIdeaAnswer(getState(), answer.id);
                         return { ...answer, threads: previousAnswer.threads };
                     });
-                    dispatch(updateCurrentIdea({ ...data, answers: updatedAnswers }));
+                    const updatedIdea = { ...data, answers: updatedAnswers };
+                    dispatch(updateCurrentIdea(updatedIdea));
                     dispatch(createRequestSuccess(SAVE_CURRENT_IDEA, uuid));
+                    return updatedIdea;
                 })
-                .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA, uuid)));
+                .catch((error) => {
+                    dispatch(createRequestFailure(SAVE_CURRENT_IDEA, uuid));
+                    throw error;
+                });
         }
         return axios
             .post('/api/ideas-workshop/ideas', ideaData)
             .then(res => res.data)
             .then((data) => {
-                dispatch(setCurrentIdea(data));
+                // response does not contain answers' threads info on initial save, populate with base data
+                const answersWithThreads = data.answers.map(answer => ({
+                    ...answer,
+                    threads: { items: [], total_items: 0 },
+                }));
+                dispatch(setCurrentIdea({ ...data, answers: answersWithThreads }));
+
                 dispatch(createRequestSuccess(SAVE_CURRENT_IDEA));
                 // silently replace location
                 window.history.replaceState(null, '', `/atelier-des-idees/proposition/${data.uuid}`);
+                return data;
             })
-            .catch(() => dispatch(createRequestFailure(SAVE_CURRENT_IDEA)));
+            .catch((error) => {
+                dispatch(createRequestFailure(SAVE_CURRENT_IDEA));
+                throw error;
+            });
     };
 }
 
 export function saveAndPublishIdea(uuid, data, saveOnly = false) {
     return dispatch =>
-        dispatch(saveIdea(uuid, data)).then((resData) => {
-            // update current idea
-            dispatch(updateCurrentIdea(resData));
-
-            if (!uuid) {
-                // no uuid passed => initial save
-                // silently replace location
-                window.history.replaceState(null, '', `/atelier-des-idees/proposition/${resData.uuid}`);
-            }
-
+        dispatch(saveCurrentIdea(data)).then((resData) => {
             if (saveOnly) {
                 // save without publishing (edit publish information)
                 // force publish success

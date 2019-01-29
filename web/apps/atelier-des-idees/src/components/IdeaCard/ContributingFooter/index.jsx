@@ -6,8 +6,6 @@ import icn_hourglass from './../../../img/icn_hourglass.svg';
 function ContributingFooter(props) {
     return (
         <div className="contributing-footer">
-            {/* TODO: implement report */}
-            {/* <button className="contributing-footer__report">Signaler</button> */}
             <div className="contributing-footer__remaining-days">
                 <img className="contributing-footer__remaining-days__icon" src={icn_hourglass} />
                 <span className="contributing-footer__remaining-days__text">
@@ -26,7 +24,7 @@ function ContributingFooter(props) {
 }
 
 ContributingFooter.propTypes = {
-    remainingDays: PropTypes.string.isRequired,
+    remainingDays: PropTypes.number.isRequired,
     link: PropTypes.string.isRequired,
 };
 

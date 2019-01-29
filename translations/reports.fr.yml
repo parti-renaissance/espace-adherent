@@ -9,9 +9,9 @@ citizen_action: Action citoyenne
 citizen_project: Projet citoyen
 committee: Comité
 community_event: Événement
-ideas_workshop_idea: Idée
-ideas_workshop_thread: Commentaire de l'idée
-ideas_workshop_thread_comment: Commentaire du commentaire
+ideas_workshop_idea: Proposition
+ideas_workshop_thread: Contribution
+ideas_workshop_thread_comment: Réponse
 
 # Statuses
 resolved: 'Résolu'

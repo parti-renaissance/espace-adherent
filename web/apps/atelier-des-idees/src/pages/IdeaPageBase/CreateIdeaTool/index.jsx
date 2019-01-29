@@ -41,7 +41,6 @@ class CreateIdeaTool extends React.Component {
                     return (
                         <section key={`guideline_${idx}`} className="create-idea-tool__start-section">
                             <div className="create-idea-tool__section-title">
-                                {/* TODO: adapt to actual attribute name (category_name) */}
                                 <p className="create-idea-tool__section-subtitle">{guideline.category_name}</p>
                                 <h2 className="create-idea-tool__section-title__main">{guideline.name}</h2>
                             </div>
@@ -88,13 +87,15 @@ CreateIdeaTool.propTypes = {
     values: PropTypes.object,
     guidelines: PropTypes.arrayOf(
         PropTypes.shape({
-            questions: PropTypes.arrayOf({
-                id: PropTypes.string,
-                name: PropTypes.string,
-                placeholder: PropTypes.string,
-                position: PropTypes.number,
-                required: PropTypes.bool,
-            }),
+            questions: PropTypes.arrayOf(
+                PropTypes.shape({
+                    id: PropTypes.number,
+                    name: PropTypes.string,
+                    placeholder: PropTypes.string,
+                    position: PropTypes.number,
+                    required: PropTypes.bool,
+                })
+            ),
             name: PropTypes.string,
             position: PropTypes.number,
         })
