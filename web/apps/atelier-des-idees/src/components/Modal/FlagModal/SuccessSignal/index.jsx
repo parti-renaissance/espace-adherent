@@ -7,10 +7,13 @@ class SuccessSignal extends React.PureComponent {
             <div className="success-signal">
                 <img className="success-signal__img" src={icn_state_success} />
                 <h3 className="success-signal__title">Merci</h3>
-                <p className="success-signal__text">Votre signalement a bien été pris en compte.</p>
                 <p className="success-signal__text">
-                    L'entité signalée va disparaître temporairement du site en attendant d'être analysée par les équipes
-                    de LaREM.
+					Votre signalement a bien été pris en compte et va être analysé par les
+					équipes de LaREM dans les plus brefs délais.
+                </p>
+                <p className="success-signal__text">
+					L'entité signalée va disparaître temporairement du site en attendant
+					d'être analysée par les équipes de LaREM.
                 </p>
             </div>
         );
