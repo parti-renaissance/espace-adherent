@@ -11,10 +11,6 @@ class SuccessSignal extends React.PureComponent {
 					Votre signalement a bien été pris en compte et va être analysé par les
 					équipes de LaREM dans les plus brefs délais.
                 </p>
-                <p className="success-signal__text">
-					L'entité signalée va disparaître temporairement du site en attendant
-					d'être analysée par les équipes de LaREM.
-                </p>
             </div>
         );
     }

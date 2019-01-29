@@ -16,7 +16,7 @@ class SecondForm extends React.Component {
                 form: '',
                 author: '',
                 legal: '',
-                charter: '',
+                policy: '',
             },
             isSubmitting: false,
         };
@@ -95,13 +95,13 @@ class SecondForm extends React.Component {
                 errors: {
                     author: prevState.errors.author,
                     legal: prevState.errors.legal,
-                    charter: prevState.errors.charter,
+                    policy: prevState.errors.policy,
                 },
                 inputs: {
                     author: prevState.inputs.author,
                     difficulties: prevState.inputs.difficulties,
                     legal: prevState.inputs.legal,
-                    charter: prevState.inputs.charter,
+                    policy: prevState.inputs.policy,
                 },
             }));
         }
@@ -191,7 +191,7 @@ class SecondForm extends React.Component {
 							J’accepte les{' '}
                             <a
                                 className="second-form__section__mentions__text__link"
-                                href="https://en-marche.fr/atelier-des-idees/conditions-generales-utilisation"
+                                href="/atelier-des-idees/conditions-generales-utilisation"
                                 target="_blank"
                             >
 								CGU{' '}
@@ -207,16 +207,16 @@ class SecondForm extends React.Component {
                     <div
                         className={classNames('second-form__section__mentions', {
                             'second-form__section__mentions--no-error': !this.state.errors
-                                .charter,
+                                .policy,
                         })}
                     >
                         <label className="second-form__section__mentions__checkbox">
                             <input
                                 className="second-form__section__mentions__checkbox__input"
                                 type="checkbox"
-                                checked={this.state.inputs.charter}
+                                checked={this.state.inputs.policy}
                                 onChange={event =>
-                                    this.handleChange('charter', event.target.checked)
+                                    this.handleChange('policy', event.target.checked)
                                 }
                             />
                             <span className="second-form__section__mentions__checkbox__checkmark">
@@ -227,7 +227,7 @@ class SecondForm extends React.Component {
 							J’ai pris connaissance de la{' '}
                             <a
                                 className="second-form__section__mentions__text__link"
-                                href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/charte_des_valeurs.pdf"
+                                href="/en-marche-prod/documents/adherents/1-charte-et-manifeste/charte_des_valeurs.pdf"
                                 target="_blank"
                             >
 								Charte des valeurs de LaREM
@@ -237,9 +237,9 @@ class SecondForm extends React.Component {
 							aux bonnes mœurs.
                         </p>
                     </div>
-                    {this.state.errors.charter && (
+                    {this.state.errors.policy && (
                         <p className="second-form__section__mentions--error">
-                            {this.state.errors.charter}
+                            {this.state.errors.policy}
                         </p>
                     )}
                     <p className="second-form__section__text">
@@ -279,7 +279,7 @@ SecondForm.defaultProps = {
         author: [],
         difficulties: [],
         legal: false,
-        charter: false,
+        policy: false,
     },
 };
 
@@ -288,7 +288,7 @@ SecondForm.propTypes = {
         author: PropTypes.array,
         difficulties: PropTypes.array,
         legal: PropTypes.boolean,
-        charter: PropTypes.boolean,
+        policy: PropTypes.boolean,
     }),
     authorOptions: PropTypes.arrayOf(
         PropTypes.shape({
