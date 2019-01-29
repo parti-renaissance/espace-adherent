@@ -25,10 +25,14 @@
 
 		&__mentions {
 			display: flex;
-			align-items: center;
 
 			&--no-error {
-				margin-bottom: 35px;
+				.legal {
+					margin-bottom: 48px;
+				}
+				.policy {
+					margin-bottom: 35px;
+				}
 			}
 
 			&__checkbox {
@@ -74,9 +78,18 @@
 				}
 			}
 
+			.legal {
+				margin-top: 6px;
+			}
+
+			.policy {
+				margin-top: 7px;
+			}
+
 			&__text {
 				margin-left: 10px;
 				font-size: 14px;
+				line-height: 19px;
 
 				&__link {
 					border: 0;
@@ -87,7 +100,7 @@
 		}
 
 		&__mentions--error {
-			margin-top: 5px;
+			margin-top: 15px;
 			margin-bottom: 35px;
 			font-size: 12px;
 			color: $giants-orange;
@@ -96,6 +109,7 @@
 		&__text {
 			text-align: justify;
 			font-size: 12px;
+			line-height: 18px;
 			color: $medium-grey;
 		}
 	}
