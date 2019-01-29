@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
+use AppBundle\Address\GeoCoder;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
@@ -118,7 +119,7 @@ class ReferentControllerTest extends WebTestCase
         $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertSame($this->formatEventDate($event->getBeginAt()).' UTC +01:00', $this->client->getCrawler()->filter('span.committee-event-date')->text());
+        $this->assertSame($this->formatEventDate($event->getBeginAt(), $event->getTimeZone()).' UTC +01:00', $this->client->getCrawler()->filter('span.committee-event-date')->text());
         $this->assertSame('Pilgerweg 58, 8802 Kilchberg, Suisse', $this->client->getCrawler()->filter('span.committee-event-address')->text());
         $this->assertSame('Premier événement en Suisse', $this->client->getCrawler()->filter('div.committee-event-description')->text());
         $this->assertContains('1 inscrit', $this->client->getCrawler()->filter('div.committee-event-attendees')->html());
@@ -446,13 +447,13 @@ class ReferentControllerTest extends WebTestCase
     /**
      * @return string Date in the format "Jeudi 14 juin 2018, 9h00"
      */
-    private function formatEventDate(\DateTime $date): string
+    private function formatEventDate(\DateTime $date, $timeZone = GeoCoder::DEFAULT_TIME_ZONE): string
     {
         $formatter = new \IntlDateFormatter(
             'fr_FR',
             \IntlDateFormatter::NONE,
             \IntlDateFormatter::NONE,
-            null,
+            $timeZone,
             \IntlDateFormatter::GREGORIAN,
             'EEEE d LLLL Y, H');
 
