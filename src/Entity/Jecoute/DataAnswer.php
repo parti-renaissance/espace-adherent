@@ -27,7 +27,7 @@ class DataAnswer
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SurveyQuestion")
+     * @ORM\ManyToOne(targetEntity="SurveyQuestion", inversedBy="dataAnswers")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $surveyQuestion;
@@ -42,7 +42,7 @@ class DataAnswer
     /**
      * @var Choice[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="Choice", fetch="EAGER")
+     * @ORM\ManyToMany(targetEntity="Choice", fetch="EAGER", inversedBy="dataAnswers")
      * @ORM\JoinTable(
      *     name="jecoute_data_answer_selected_choices",
      *     joinColumns={

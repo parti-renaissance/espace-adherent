@@ -6,6 +6,8 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AuthoredInterface;
 use AppBundle\Entity\EntityIdentityTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
@@ -54,6 +56,11 @@ class SurveyQuestion implements AuthoredInterface
     private $position;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Jecoute\DataAnswer", mappedBy="surveyQuestion")
+     */
+    private $dataAnswers;
+
+    /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $fromSuggestedQuestion = false;
@@ -63,6 +70,7 @@ class SurveyQuestion implements AuthoredInterface
         $this->uuid = Uuid::uuid4();
         $this->survey = $survey;
         $this->question = $question;
+        $this->dataAnswers = new ArrayCollection();
     }
 
     public function getAuthor(): ?Adherent
@@ -113,5 +121,25 @@ class SurveyQuestion implements AuthoredInterface
     public function isFromSuggestedQuestion(): bool
     {
         return $this->fromSuggestedQuestion;
+    }
+
+    /**
+     * @return DataAnswer[]|Collection
+     */
+    public function getDataAnswers(): Collection
+    {
+        return $this->dataAnswers;
+    }
+
+    public function addDataAnswer(DataAnswer $dataAnswer): void
+    {
+        if (!$this->dataAnswers->contains($dataAnswer)) {
+            $this->dataAnswers->add($dataAnswer);
+        }
+    }
+
+    public function removeDataAnswer(DataAnswer $dataAnswer): void
+    {
+        $this->dataAnswers->removeElement($dataAnswer);
     }
 }

@@ -4,16 +4,16 @@ namespace AppBundle\Jecoute;
 
 use AppBundle\Entity\Jecoute\Survey;
 use AppBundle\Entity\Jecoute\SurveyQuestion;
-use AppBundle\Repository\Jecoute\DataAnswerRepository;
+use AppBundle\Repository\Jecoute\QuestionRepository;
 use Doctrine\Common\Collections\Collection;
 
 class StatisticsProvider
 {
-    private $dataAnswerRepository;
+    private $questionRepository;
 
-    public function __construct(DataAnswerRepository $dataAnswerRepository)
+    public function __construct(QuestionRepository $questionRepository)
     {
-        $this->dataAnswerRepository = $dataAnswerRepository;
+        $this->questionRepository = $questionRepository;
     }
 
     public function getStatsBySurvey(Survey $survey): array
@@ -36,14 +36,14 @@ class StatisticsProvider
         /** @var SurveyQuestion $surveyQuestion */
         foreach ($questions as $surveyQuestion) {
             $question = $surveyQuestion->getQuestion();
-            $dataBySurveyQuestion = $this->dataAnswerRepository->findDataBySurveyQuestion($surveyQuestion);
-            $totalAnswered = $this->calculateTotal($dataBySurveyQuestion, $question->getType());
+            $dataByQuestion = $this->questionRepository->findDataByQuestion($question);
+            $totalAnswered = $this->calculateTotal($dataByQuestion, $question->getType());
 
             $data[] = [
                 'uuid' => $surveyQuestion->getUuid(),
                 'content' => $question->getContent(),
                 'type' => $question->getType(),
-                'stats' => $this->createDataAnswers($dataBySurveyQuestion, $totalAnswered, $question->getType()),
+                'stats' => $this->createDataAnswers($dataByQuestion, $totalAnswered, $question->getType()),
             ];
         }
 
