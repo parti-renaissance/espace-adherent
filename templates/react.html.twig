@@ -5,9 +5,9 @@
 
 {% block canonical_url url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
 
-{% block open_graph_image 'https://storage.googleapis.com/en-marche-prod/images/cp_sharing.png' %}
-{% block open_graph_image_width reactApp.pageMetaData.imageWidth ?? 2501 %}
-{% block open_graph_image_height reactApp.pageMetaData.imageHeight ?? 1313 %}
+{% block open_graph_image reactApp.pageMetaData.imageUrl ?? parent() %}
+{% block open_graph_image_width reactApp.pageMetaData.imageWidth ?? parent() %}
+{% block open_graph_image_height reactApp.pageMetaData.imageHeight ?? parent() %}
 
 {% block stylesheets %}
     <style>
