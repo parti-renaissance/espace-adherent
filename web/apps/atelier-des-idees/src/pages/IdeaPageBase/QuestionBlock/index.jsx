@@ -6,12 +6,12 @@ import IdeaThread from '../../../containers/IdeaThread';
 
 const TEXT_MIN_LENGTH = 15;
 
-function QuestionBlockHeader({ label, question, nbQuestion, isRequired }) {
+function QuestionBlockHeader({ label, question, nbQuestion, isRequired, mode }) {
     return (
         <h3 className="question-block-header">
             <span className="question-block-header__label">{`${nbQuestion}. ${label ? `${label} : ` : ''}`}</span>
             <span className="question-block-header__question">{question}</span>
-            {isRequired && <span className="question-block-header__mandatory">(Obligatoire)</span>}
+            {isRequired && 'read' !== mode && <span className="question-block-header__mandatory">(Obligatoire)</span>}
         </h3>
     );
 }
@@ -19,7 +19,7 @@ function QuestionBlockHeader({ label, question, nbQuestion, isRequired }) {
 function QuestionBlockBody(props) {
     return (
         <React.Fragment>
-            {props.isAuthor && ('edit' === props.mode || props.isEditing) ? (
+            {props.isAuthor && ('draft' === props.mode || props.isEditing) && (
                 <React.Fragment>
                     <TextEditor
                         initialContent={props.initialContent}
@@ -33,12 +33,11 @@ function QuestionBlockBody(props) {
                         }
                     />
                 </React.Fragment>
-            ) : (
-                <React.Fragment>
-                    <div dangerouslySetInnerHTML={{ __html: props.initialContent }} />
-                </React.Fragment>
             )}
-            {'edit' !== props.mode && props.isAuthor && (
+            {('read' === props.mode || ('contribute' === props.mode && !props.isEditing)) && (
+                <div dangerouslySetInnerHTML={{ __html: props.initialContent }} />
+            )}
+            {'contribute' === props.mode && props.isAuthor && (
                 <div className="question-block__editing-footer">
                     {props.isEditing ? (
                         <React.Fragment>
@@ -79,7 +78,7 @@ class QuestionBlock extends React.Component {
         super(props);
         this.state = {
             // isEditing: handles question block edition, can only be true in contributing mode
-            isEditing: 'edit' === props.mode ? false : !props.initialContent,
+            isEditing: 'draft' === props.mode ? false : !props.initialContent,
             value: this.props.initialContent, // html content
             text: '', // text content
             hasError: false,
@@ -134,7 +133,7 @@ class QuestionBlock extends React.Component {
                     onCancelAnswer={this.onCancelAnswer}
                     canSaveAnswer={!this.state.hasError}
                 />
-                {'edit' !== this.props.mode && (
+                {'contribute' === this.props.mode && (
                     <div className="question-block__threads">
                         <IdeaThread questionId={this.props.questionId} />
                     </div>
@@ -144,16 +143,17 @@ class QuestionBlock extends React.Component {
     }
 
     render() {
-        const { label, question, nbQuestion, isRequired, initialContent } = this.props;
+        const { label, question, nbQuestion, isRequired, initialContent, mode } = this.props;
         return (
             <div className="question-block">
-                {this.props.isRequired ? (
+                {'read' === mode || this.props.isRequired ? (
                     <React.Fragment>
                         <QuestionBlockHeader
                             label={label}
                             question={question}
                             nbQuestion={nbQuestion}
                             isRequired={isRequired}
+                            mode={mode}
                         />
                         {this.renderBody()}
                     </React.Fragment>
@@ -165,6 +165,7 @@ class QuestionBlock extends React.Component {
                                 question={question}
                                 nbQuestion={nbQuestion}
                                 isRequired={isRequired}
+                                mode={mode}
                             />
                         }
                         isOpen={!!initialContent}
@@ -192,7 +193,7 @@ QuestionBlock.propTypes = {
     isRequired: PropTypes.bool,
     initialContent: PropTypes.string,
     label: PropTypes.string.isRequired,
-    mode: PropTypes.oneOf(['edit', 'contribute']),
+    mode: PropTypes.oneOf(['draft', 'contribute', 'read']),
     nbQuestion: PropTypes.number.isRequired,
     onTextChange: PropTypes.func.isRequired,
     placeholder: PropTypes.string,

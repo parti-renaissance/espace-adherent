@@ -35,33 +35,43 @@ class CreateIdeaTool extends React.Component {
         return (
             <article className="create-idea-tool">
                 {this.props.guidelines.map((guideline, idx) => {
-                    const nbQOffset = this.props.guidelines[idx - 1]
-                        ? this.props.guidelines[idx - 1].questions.length
-                        : 0;
+                    // choose between edit and contribute mode
+                    const editMode = this.props.isDraft ? 'edit' : 'contribute';
                     return (
                         <section key={`guideline_${idx}`} className="create-idea-tool__start-section">
-                            <div className="create-idea-tool__section-title">
-                                <p className="create-idea-tool__section-subtitle">{guideline.category_name}</p>
-                                <h2 className="create-idea-tool__section-title__main">{guideline.name}</h2>
-                            </div>
-                            {guideline.questions.map(({ id, name, category, required, placeholder }, index) => (
-                                <QuestionBlock
-                                    isAuthor={this.props.isAuthor}
-                                    isRequired={required}
-                                    initialContent={this.props.values[id]}
-                                    key={id}
-                                    mode={this.props.isDraft ? 'edit' : 'contribute'}
-                                    label={category}
-                                    question={name}
-                                    questionId={id}
-                                    placeholder={placeholder}
-                                    nbQuestion={nbQOffset + index + 1}
-                                    onTextChange={(htmlContent, save = false) => {
-                                        this.props.onQuestionTextChange(id, htmlContent, save);
-                                    }}
-                                    hasError={this.props.errors.includes(id.toString())}
-                                />
-                            ))}
+                            {!this.props.isReading && (
+                                <div className="create-idea-tool__section-title">
+                                    <p className="create-idea-tool__section-subtitle">{guideline.category_name}</p>
+                                    <h2 className="create-idea-tool__section-title__main">{guideline.name}</h2>
+                                </div>
+                            )}
+                            {guideline.questions.map(
+                                ({ id, name, category, required, placeholder, position }, index) => {
+                                    const content = this.props.values[id];
+                                    // only show question with answer in reading mode
+                                    if (this.props.isReading && !content) {
+                                        return null;
+                                    }
+                                    return (
+                                        <QuestionBlock
+                                            isAuthor={this.props.isAuthor}
+                                            isRequired={required}
+                                            initialContent={content}
+                                            key={id}
+                                            mode={this.props.isReading ? 'read' : editMode}
+                                            label={category}
+                                            question={name}
+                                            questionId={id}
+                                            placeholder={placeholder}
+                                            nbQuestion={position}
+                                            onTextChange={(htmlContent, save = false) => {
+                                                this.props.onQuestionTextChange(id, htmlContent, save);
+                                            }}
+                                            hasError={this.props.errors.includes(id.toString())}
+                                        />
+                                    );
+                                }
+                            )}
                         </section>
                     );
                 })}
@@ -75,6 +85,7 @@ CreateIdeaTool.defaultProps = {
     isAuthor: false,
     values: {},
     isDraft: false,
+    isReading: false,
     onAutoSave: undefined,
 };
 
@@ -82,6 +93,7 @@ CreateIdeaTool.propTypes = {
     errors: PropTypes.arrayOf(PropTypes.string),
     isAuthor: PropTypes.bool,
     isDraft: PropTypes.bool,
+    isReading: PropTypes.bool,
     onQuestionTextChange: PropTypes.func.isRequired,
     onAutoSave: PropTypes.func,
     values: PropTypes.object,
