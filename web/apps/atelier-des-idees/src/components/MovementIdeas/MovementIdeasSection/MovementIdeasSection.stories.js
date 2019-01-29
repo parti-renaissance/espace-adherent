@@ -5,11 +5,12 @@ import MovementIdeasSection from '.';
 const props = {
     keyWord: 'vote',
     title: 'pour des idéees',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla urna sed erat auctor, ac sodales mi commodo.',
+    text:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla urna sed erat auctor, ac sodales mi commodo.',
     linkLabel: 'Je vote',
-    link: '/consulter',
+    link: '/soutenir',
 };
 
 storiesOf('MovementIdeasSection', module)
     .addParameters({ jest: ['MovementIdeasSection'] })
-    .add('default', () => <MovementIdeasSection { ...props }/>);
+    .add('default', () => <MovementIdeasSection {...props} />);
