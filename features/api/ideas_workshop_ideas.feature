@@ -47,8 +47,9 @@ Feature:
                 "needs": [],
                 "author": {
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                    "first_name": "Jacques",
-                    "last_name": "P."
+                    "nickname":"kikouslove",
+                    "first_name": null,
+                    "last_name": null
                 },
                 "published_at": "@string@.isDateTime()",
                 "finalized_at": "@string@.isDateTime()",
@@ -87,6 +88,7 @@ Feature:
                 "needs": [],
                 "author": {
                     "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                    "nickname":null,
                     "first_name": "Michel",
                     "last_name": "V."
                 },
@@ -152,8 +154,9 @@ Feature:
                 ],
                 "author": {
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                    "first_name": "Jacques",
-                    "last_name": "P."
+                    "nickname":"kikouslove",
+                    "first_name": null,
+                    "last_name": null
                 },
                 "published_at": "@string@.isDateTime()",
                 "finalized_at": "@string@.isDateTime()",
@@ -202,6 +205,7 @@ Feature:
                 ],
                 "author": {
                     "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                    "nickname":null,
                     "first_name": "Michel",
                     "last_name": "V."
                 },
@@ -267,8 +271,9 @@ Feature:
                 ],
                 "author": {
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                    "first_name": "Jacques",
-                    "last_name": "P."
+                    "nickname":"kikouslove",
+                    "first_name": null,
+                    "last_name": null
                 },
                 "published_at": "@string@.isDateTime()",
                 "finalized_at": "@string@.isDateTime()",
@@ -338,8 +343,9 @@ Feature:
                 ],
                 "author": {
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                    "first_name": "Jacques",
-                    "last_name": "Picard"
+                    "nickname":"kikouslove",
+                    "first_name": null,
+                    "last_name": null
                 },
                 "published_at": "@string@.isDateTime()",
                 "finalized_at": "@string@.isDateTime()",
@@ -407,8 +413,9 @@ Feature:
               "needs": [],
               "author": {
                   "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                  "first_name": "Jacques",
-                  "last_name": "P."
+                  "nickname":"kikouslove",
+                  "first_name": null,
+                  "last_name": null
               },
               "published_at": "@string@.isDateTime()",
               "finalized_at": "@string@.isDateTime()",
@@ -446,6 +453,7 @@ Feature:
               "needs": [],
               "author": {
                   "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                  "nickname":null,
                   "first_name": "Michel",
                   "last_name": "V."
               },
@@ -505,8 +513,9 @@ Feature:
               "needs": [],
               "author": {
                   "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                  "first_name": "Jacques",
-                  "last_name": "P."
+                  "nickname":"kikouslove",
+                  "first_name": null,
+                  "last_name": null
               },
               "published_at": "@string@.isDateTime()",
               "finalized_at": "@string@.isDateTime()",
@@ -546,6 +555,7 @@ Feature:
 
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                "nickname":null,
                 "first_name":"Michel",
                 "last_name":"V."
              },
@@ -605,6 +615,7 @@ Feature:
                 "needs": [],
                 "author": {
                     "uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67",
+                    "nickname":null,
                     "first_name": "Benjamin",
                     "last_name": "D."
                 },
@@ -670,8 +681,9 @@ Feature:
              ],
              "author":{
                 "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"P."
+                "nickname":"kikouslove",
+                "first_name":null,
+                "last_name":null
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -720,6 +732,7 @@ Feature:
              ],
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                "nickname":null,
                 "first_name":"Michel",
                 "last_name":"V."
              },
@@ -764,6 +777,7 @@ Feature:
         "needs": [],
         "author": {
             "uuid": "d4b1e7e1-ba18-42a9-ace9-316440b30fa7",
+            "nickname":null,
             "first_name": "Martine",
             "last_name": "Lindt"
         },
@@ -882,8 +896,9 @@ Feature:
         ],
         "author": {
             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-            "first_name": "Jacques",
-            "last_name": "Picard"
+            "nickname":"kikouslove",
+            "first_name": null,
+            "last_name": null
         },
         "published_at": null,
         "finalized_at": null,
@@ -998,8 +1013,9 @@ Feature:
         ],
         "author": {
             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-            "first_name": "Jacques",
-            "last_name": "Picard"
+            "nickname":"kikouslove",
+            "first_name": null,
+            "last_name": null
         },
         "published_at": "@string@.isDateTime()",
         "finalized_at": "@string@.isDateTime()",
@@ -1091,8 +1107,9 @@ Feature:
              ],
              "author":{
                 "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"Picard"
+                "nickname":"kikouslove",
+                "first_name":null,
+                "last_name":null
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -1139,8 +1156,9 @@ Feature:
              ],
              "author":{
                 "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"Picard"
+                "nickname":"kikouslove",
+                "first_name":null,
+                "last_name":null
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -1210,8 +1228,9 @@ Feature:
              ],
              "author":{
                 "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"Picard"
+                "nickname":"kikouslove",
+                "first_name":null,
+                "last_name":null
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -1258,8 +1277,9 @@ Feature:
              ],
              "author":{
                 "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"Picard"
+                "nickname":"kikouslove",
+                "first_name":null,
+                "last_name":null
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -1428,8 +1448,9 @@ Feature:
        ],
        "author":{
           "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-          "first_name":"Jacques",
-          "last_name":"Picard"
+          "nickname":"kikouslove",
+          "first_name":null,
+          "last_name":null
        },
        "published_at":"@string@.isDateTime()",
        "finalized_at":"@string@.isDateTime()",
@@ -1452,6 +1473,7 @@ Feature:
                                "content":"Commentaire de l'adhérent à desadhérer",
                                "author":{
                                   "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                                  "nickname":null,
                                   "first_name":"Michel",
                                   "last_name":"VASSEUR"
                                },
@@ -1463,6 +1485,7 @@ Feature:
                                 "content": "<p>Commentaire signalé</p>",
                                 "author": {
                                     "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
+                                    "nickname":null,
                                     "first_name": "Laura",
                                     "last_name": "Deloche"
                                 },
@@ -1474,6 +1497,7 @@ Feature:
                                "content": "<p>Commentaire non approuvé</p>",
                                "author": {
                                   "uuid": "93de5d98-383a-4863-9f47-eb7a348873a8",
+                                  "nickname":null,
                                   "first_name": "Laura",
                                   "last_name": "Deloche"
                                },
@@ -1486,6 +1510,7 @@ Feature:
                       "content":"J'ouvre une discussion sur la comparaison.",
                       "author":{
                          "uuid":"b4219d47-3138-5efd-9762-2ef9f9495084",
+                         "nickname":null,
                          "first_name":"Gisele",
                          "last_name":"Berthoux"
                       },
@@ -1503,6 +1528,7 @@ Feature:
                       "content":"Une nouvelle discussion.",
                       "author":{
                          "uuid":"b4219d47-3138-5efd-9762-2ef9f9495084",
+                         "nickname":null,
                          "first_name":"Gisele",
                          "last_name":"Berthoux"
                       },
@@ -1520,6 +1546,7 @@ Feature:
                       "content":"Une discussion signalée.",
                       "author":{
                          "uuid":"b4219d47-3138-5efd-9762-2ef9f9495084",
+                         "nickname":null,
                          "first_name":"Gisele",
                          "last_name":"Berthoux"
                       },
@@ -1547,6 +1574,7 @@ Feature:
                                "content":"Deuxième commentaire d'un référent",
                                "author":{
                                   "uuid":"29461c49-2646-4d89-9c82-50b3f9b586f4",
+                                  "nickname":null,
                                   "first_name":"Referent",
                                   "last_name":"Referent"
                                },
@@ -1558,6 +1586,7 @@ Feature:
                                "content":"Commentaire d'un référent",
                                "author":{
                                   "uuid":"29461c49-2646-4d89-9c82-50b3f9b586f4",
+                                  "nickname":null,
                                   "first_name":"Referent",
                                   "last_name":"Referent"
                                },
@@ -1569,6 +1598,7 @@ Feature:
                                "content":"Lorem Ipsum Commentaris",
                                "author":{
                                   "uuid":"a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
+                                  "nickname":null,
                                   "first_name":"Francis",
                                   "last_name":"Brioul"
                                },
@@ -1581,8 +1611,9 @@ Feature:
                       "content":"J'ouvre une discussion sur le problème.",
                       "author":{
                          "uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458",
-                         "first_name":"Carl",
-                         "last_name":"Mirabeau"
+                         "nickname":"pont",
+                         "first_name":null,
+                         "last_name":null
                       },
                       "approved":false,
                       "created_at": "@string@.isDateTime()"
@@ -1610,6 +1641,7 @@ Feature:
                       "content":"J'ouvre une discussion sur la solution.",
                       "author":{
                          "uuid":"29461c49-6316-5be1-9ac3-17816bf2d819",
+                         "nickname":null,
                          "first_name":"Lucie",
                          "last_name":"Olivera"
                       },
@@ -1724,8 +1756,9 @@ Feature:
        ],
        "author":{
           "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-          "first_name":"Jacques",
-          "last_name":"P."
+          "nickname":"kikouslove",
+          "first_name":null,
+          "last_name":null
        },
        "published_at":"@string@.isDateTime()",
        "finalized_at":"@string@.isDateTime()",
@@ -1748,6 +1781,7 @@ Feature:
                                "content":"Commentaire d'un adhérent",
                                "author":{
                                   "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
+                                  "nickname":null,
                                   "first_name":"Benjamin",
                                   "last_name":"D."
                                },
@@ -1760,8 +1794,9 @@ Feature:
                       "content":"[Reduce Waste] Une discussion avec un commentaire",
                       "author":{
                          "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                         "first_name":"Jacques",
-                         "last_name":"P."
+                         "nickname":"kikouslove",
+                         "first_name":null,
+                         "last_name":null
                       },
                       "approved":false,
                       "created_at":"@string@.isDateTime()"
@@ -1818,8 +1853,9 @@ Feature:
              ],
              "author":{
                 "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"P."
+                "nickname":"kikouslove",
+                "first_name":null,
+                "last_name":null
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -1859,6 +1895,7 @@ Feature:
              ],
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                "nickname":null,
                 "first_name":"Michel",
                 "last_name":"V."
              },
@@ -1918,6 +1955,7 @@ Feature:
              "needs":[],
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                "nickname":null,
                 "first_name":"Michel",
                 "last_name":"V."
              },
@@ -1963,6 +2001,7 @@ Feature:
              ],
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                "nickname":null,
                 "first_name":"Michel",
                 "last_name":"V."
              },
@@ -2024,8 +2063,9 @@ Feature:
                ],
                "author":{
                   "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                  "first_name":"Jacques",
-                  "last_name":"P."
+                  "nickname":"kikouslove",
+                  "first_name":null,
+                  "last_name":null
                },
                "published_at":"@string@.isDateTime()",
                "finalized_at":"@string@.isDateTime()",
@@ -2065,6 +2105,7 @@ Feature:
                ],
                "author":{
                   "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                  "nickname":null,
                   "first_name":"Michel",
                   "last_name":"V."
                },
@@ -2126,8 +2167,9 @@ Feature:
              ],
              "author":{
                 "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"P."
+                "nickname":"kikouslove",
+                "first_name":null,
+                "last_name":null
              },
              "published_at":"@string@.isDateTime()",
              "finalized_at":"@string@.isDateTime()",
@@ -2165,6 +2207,7 @@ Feature:
               "needs": [],
               "author": {
                   "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                  "nickname":null,
                   "first_name": "Michel",
                   "last_name": "V."
               },
@@ -2230,8 +2273,9 @@ Feature:
              ],
              "author":{
                 "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "first_name":"Jacques",
-                "last_name":"P."
+                "nickname":"kikouslove",
+                "first_name":null,
+                "last_name":null
              },
              "published_at": "@string@.isDateTime()",
              "finalized_at": "@string@.isDateTime()",
