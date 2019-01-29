@@ -10,7 +10,7 @@ function LatestIdeas(props) {
             title: 'Propositions finalisées',
             component: (
                 <LatestIdeasPane
-                    link="/atelier-des-idees/consulter"
+                    link="/atelier-des-idees/soutenir"
                     ideas={finalized.items}
                     isLoading={finalized.isLoading}
                     onVoteIdea={props.onVoteIdea}
