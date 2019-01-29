@@ -119,7 +119,7 @@ class ReferentControllerTest extends WebTestCase
         $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertSame($this->formatEventDate($event->getBeginAt(), 'GMT').' UTC +01:00', $this->client->getCrawler()->filter('span.committee-event-date')->text());
+        $this->assertSame($this->formatEventDate($event->getBeginAt(), $event->getTimeZone()).' UTC +01:00', $this->client->getCrawler()->filter('span.committee-event-date')->text());
         $this->assertSame('Pilgerweg 58, 8802 Kilchberg, Suisse', $this->client->getCrawler()->filter('span.committee-event-address')->text());
         $this->assertSame('Premier événement en Suisse', $this->client->getCrawler()->filter('div.committee-event-description')->text());
         $this->assertContains('1 inscrit', $this->client->getCrawler()->filter('div.committee-event-attendees')->html());

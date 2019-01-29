@@ -411,7 +411,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertSame('Débat sur l\'agriculture écologique à Singapore - Lyon 1er, 02/03/2022 | La République En Marche !', $crawler->filter('title')->text());
         $this->assertSame('Débat sur l\'agriculture écologique à Singapore - Lyon 1er, 02/03/2022', $crawler->filter('.committee-event-name')->text());
         $this->assertSame('Organisé par Gisele Berthoux du comité En Marche Paris 8', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
-        $this->assertSame('Mercredi 2 mars 2022, 1h30 UTC +08:00', $crawler->filter('.committee-event-date')->text());
+        $this->assertSame('Mercredi 2 mars 2022, 9h30 UTC +08:00', $crawler->filter('.committee-event-date')->text());
         $this->assertSame('6 rue Neyret, 69001 Lyon 1er', $crawler->filter('.committee-event-address')->text());
         $this->assertSame('Cette journée sera consacrée à un grand débat sur la question de l\'agriculture écologique.', $crawler->filter('.committee-event-description')->text());
 

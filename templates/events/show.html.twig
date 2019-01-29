@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title %}{{ event.name }} - {{ event.cityName }}, {{ event.beginAt|date('d/m/Y') }}{% endblock %}
+{% block page_title %}{{ event.name }} - {{ event.cityName }}, {{ event.localBeginAt|date('d/m/Y', false) }}{% endblock %}
 {% block canonical_url url('app_event_show', {'slug': event.slug}) %}
 
 {%- block meta_description -%}
-    {{ event.name }} est un événement local du mouvement La République En Marche ! organisé par {{ event.organizer ? event.organizer.partialName : 'un ancien adhérent' }} le {{ event.beginAt|localizeddate('full', 'none') }} à {{ event.beginAt|date('G\\hi') -}}, dans la ville de {{ event.postAddress.cityName }}. Visitez la page dédiée pour vous inscrire et obtenir toutes les informations concernant cet événement.
+    {{ event.name }} est un événement local du mouvement La République En Marche ! organisé par {{ event.organizer ? event.organizer.partialName : 'un ancien adhérent' }} le {{ event.localBeginAt|localizeddate('full', 'none', null, false) }} à {{ event.localBeginAt|date('G\\hi', false) -}}, dans la ville de {{ event.postAddress.cityName }}. Visitez la page dédiée pour vous inscrire et obtenir toutes les informations concernant cet événement.
 {%- endblock -%}
 
 {% block json_ld %}
@@ -22,7 +22,7 @@
             "height": {{ block('open_graph_image_height') }}
         },
         "description": "{{ event.description }}",
-        "startDate": "{{ event.beginAt|date(constant('DATE_ATOM')) }}",
+        "startDate": "{{ event.localBeginAt|date(constant('DATE_ATOM'), false) }}",
         "endDate": "{{ event.finishAt|date(constant('DATE_ATOM')) }}",
         "eventStatus": "{{ event.active ? 'http://schema.org/EventScheduled' : 'http://schema.org/EventCancelled' }}",
         {% if event.organizer %}
@@ -86,7 +86,6 @@
 
 {% block content %}
     {% set event_url = url("app_#{event.type}_show", {slug: event.slug}) %}
-    {% set timeZone = event.timeZone == 'Europe/Paris' ? 'Europe/Paris' : 'GMT'  %}
     <main>
         <section class="committee__event l__wrapper">
             <a href="{{ path('app_search_events') }}" class="back-to-list icon--with-text text--summary">
@@ -120,7 +119,7 @@
                 <ul>
                     <li class="b__nudge--bottom-tiny">
                         <i class="fa fa-clock-o" aria-hidden="true"></i>
-                        <span class="committee-event-date">{{- event.beginAt|localizeddate('full', 'none', null, timeZone )|capitalize }}, {{ event.beginAt|date('G\\hi', timeZone) -}}{{ event.timeZone|utc_offset }}</span>
+                        <span class="committee-event-date">{{- event.localBeginAt|localizeddate('full', 'none', null, false)|capitalize }}, {{ event.localBeginAt|date('G\\hi', false) -}}{{ event.timeZone|utc_offset }}</span>
                     </li>
                     <li>
                         <i class="fa fa-map-marker" aria-hidden="true"></i>
@@ -177,7 +176,7 @@
                             <div class="box-header">
                                 <a href="{{ path('app_event_show', { slug: eventNearby.slug }) }}" class="headline link--no-decor">
                                     <h2 class="text--normal">{{ eventNearby.name }}</h2>
-                                    <h4 class="text--summary text--gray b__nudge--bottom-medium"><i class="fa fa-clock-o" aria-hidden="true"></i> Le {{ eventNearby.beginAt|localizeddate('medium', 'none')|capitalize }}, {{ event.beginAt|date('G\\hi') }}</h4>
+                                    <h4 class="text--summary text--gray b__nudge--bottom-medium"><i class="fa fa-clock-o" aria-hidden="true"></i> Le {{ eventNearby.localBeginAt|localizeddate('medium', 'none', null, false)|capitalize }}, {{ event.localBeginAt|date('G\\hi', false) }}</h4>
                                     <img class="search-map"
                                          src="{{ path('map_url', { latitude: eventNearby.latitude, longitude: eventNearby.longitude }) }}"
                                          title="Carte d'accès à l'événement {{ eventNearby.name }}"

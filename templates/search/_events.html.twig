@@ -1,17 +1,16 @@
 {% for event in results %}
-    {% set timeZone = event.timeZone == 'Europe/Paris' ? 'Europe/Paris' : 'GMT'  %}
-    {% if date is not defined or date != event.beginAt|date('Ymd') %}
-        {% set date = event.beginAt|date('Ymd') %}
+    {% if date is not defined or date != event.localBeginAt|date('Ymd', false) %}
+        {% set date = event.localBeginAt|date('Ymd', false) %}
 
         <div class="text--body text--bold text--smallest text--uppercase b__nudge--bottom-medium b__nudge--top-large text--gray">
-            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'cccc d MMMM') }}
+            {{ event.localBeginAt|localizeddate('none', 'none', 'fr_FR', false, 'cccc d MMMM') }}
         </div>
 
     {% endif %}
     <div class="search__results__row search__results__item l__row l__row--h-stretch l__row--top">
         <div class="search__results__date text--body text--bold text--smallest text--uppercase">
-            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', timeZone, 'ccc d') }}<br/>
-            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', timeZone, "HH'h'mm") }}<br/>
+            {{ event.localBeginAt|localizeddate('none', 'none', 'fr_FR', false, 'ccc d') }}<br/>
+            {{ event.localBeginAt|localizeddate('none', 'none', 'fr_FR', false, "HH'h'mm") }}<br/>
             {{ event.timeZone|utc_offset }}
         </div>
         <div class="search__results__info l__col l__col--v-stretch l__col--left">
