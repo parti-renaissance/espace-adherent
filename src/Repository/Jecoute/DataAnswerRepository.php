@@ -27,25 +27,4 @@ class DataAnswerRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
-    public function findDataBySurveyQuestion(SurveyQuestion $surveyQuestion): array
-    {
-        return $this
-            ->createQueryBuilder('dataAnswer')
-            ->select(
-                'question.type',
-                'selectedChoices.content',
-                'COUNT(selectedChoices) AS choicesCount',
-                'COUNT(dataAnswer.textField) AS textFieldsCount'
-            )
-            ->innerJoin('dataAnswer.surveyQuestion', 'surveyQuestion')
-            ->leftJoin('surveyQuestion.question', 'question')
-            ->leftJoin('dataAnswer.selectedChoices', 'selectedChoices')
-            ->andWhere('dataAnswer.surveyQuestion = :surveyQuestion')
-            ->setParameter('surveyQuestion', $surveyQuestion)
-            ->groupBy('selectedChoices.id')
-            ->getQuery()
-            ->getArrayResult()
-        ;
-    }
 }

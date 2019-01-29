@@ -3,6 +3,8 @@
 namespace AppBundle\Entity\Jecoute;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -51,9 +53,17 @@ class Choice
      */
     private $position;
 
+    /**
+     * @var DataAnswer[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Jecoute\DataAnswer", fetch="EAGER", mappedBy="selectedChoices")
+     */
+    private $dataAnswers;
+
     public function __construct(string $content = null)
     {
         $this->content = $content;
+        $this->dataAnswers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -94,5 +104,25 @@ class Choice
     public function __toString()
     {
         return $this->content;
+    }
+
+    /**
+     * @return DataAnswer[]|Collection
+     */
+    public function getDataAnswers(): Collection
+    {
+        return $this->dataAnswers;
+    }
+
+    public function addDataAnswer(DataAnswer $dataAnswer): void
+    {
+        if (!$this->dataAnswers->contains($dataAnswer)) {
+            $this->dataAnswers->add($dataAnswer);
+        }
+    }
+
+    public function removeDataAnswer(DataAnswer $dataAnswer): void
+    {
+        $this->dataAnswers->removeElement($dataAnswer);
     }
 }
