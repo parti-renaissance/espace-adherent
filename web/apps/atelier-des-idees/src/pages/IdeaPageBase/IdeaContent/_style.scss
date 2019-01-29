@@ -1,8 +1,8 @@
-.create-idea-tool {
-  .create-idea-tool__section-title {
+.idea-content {
+  .idea-content__section-title {
     margin: 50px 0;
 
-    .create-idea-tool__section-title__main::after {
+    .idea-content__section-title__main::after {
       content: '';
       display: block;
       width: 100px;
@@ -10,7 +10,7 @@
       margin-top: 10px;
     }
 
-    .create-idea-tool__section-subtitle {
+    .idea-content__section-subtitle {
       margin: 0;
       font-size: 14px;
       font-family: $font-gillsans;
@@ -20,14 +20,14 @@
   }
 
   // responsive
- 
-    .create-idea-tool__section-title__main {
-      font-weight: normal;
-      font-size: 14px;
-      color: $quick-silver;
 
-      @media #{$tablet} {
+  .idea-content__section-title__main {
+    font-weight: normal;
+    font-size: 14px;
+    color: $quick-silver;
+
+    @media #{$tablet} {
       font-size: 20px;
-      }
+    }
   }
 }

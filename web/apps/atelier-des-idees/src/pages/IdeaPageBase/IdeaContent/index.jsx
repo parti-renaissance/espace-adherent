@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import QuestionBlock from '../QuestionBlock';
 
-class CreateIdeaTool extends React.Component {
+class IdeaContent extends React.Component {
     constructor(props) {
         super(props);
         this.state = { intervalId: null };
@@ -33,16 +33,16 @@ class CreateIdeaTool extends React.Component {
 
     render() {
         return (
-            <article className="create-idea-tool">
+            <article className="idea-content">
                 {this.props.guidelines.map((guideline, idx) => {
                     // choose between edit and contribute mode
                     const editMode = this.props.isDraft ? 'edit' : 'contribute';
                     return (
-                        <section key={`guideline_${idx}`} className="create-idea-tool__start-section">
+                        <section key={`guideline_${idx}`} className="idea-content__start-section">
                             {!this.props.isReading && (
-                                <div className="create-idea-tool__section-title">
-                                    <p className="create-idea-tool__section-subtitle">{guideline.category_name}</p>
-                                    <h2 className="create-idea-tool__section-title__main">{guideline.name}</h2>
+                                <div className="idea-content__section-title">
+                                    <p className="idea-content__section-subtitle">{guideline.category_name}</p>
+                                    <h2 className="idea-content__section-title__main">{guideline.name}</h2>
                                 </div>
                             )}
                             {guideline.questions.map(
@@ -80,7 +80,7 @@ class CreateIdeaTool extends React.Component {
     }
 }
 
-CreateIdeaTool.defaultProps = {
+IdeaContent.defaultProps = {
     errors: [],
     isAuthor: false,
     values: {},
@@ -89,7 +89,7 @@ CreateIdeaTool.defaultProps = {
     onAutoSave: undefined,
 };
 
-CreateIdeaTool.propTypes = {
+IdeaContent.propTypes = {
     errors: PropTypes.arrayOf(PropTypes.string),
     isAuthor: PropTypes.bool,
     isDraft: PropTypes.bool,
@@ -114,4 +114,4 @@ CreateIdeaTool.propTypes = {
     ).isRequired,
 };
 
-export default CreateIdeaTool;
+export default IdeaContent;
