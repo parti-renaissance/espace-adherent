@@ -35,7 +35,7 @@ storiesOf('CommentsList', module)
     .addParameters({ jest: ['CommentsList'] })
     .add('default', () => (
         <CommentsList
-            hasActions={true}
+            isAuthenticated={true}
             comments={comments}
             onSendComment={action('send comment')}
             onDeleteComment={action('delete comment')}
@@ -48,7 +48,7 @@ storiesOf('CommentsList', module)
     ))
     .add('sending comment', () => (
         <CommentsList
-            hasActions={true}
+            isAuthenticated={true}
             comments={comments}
             onSendComment={action('send comment')}
             onDeleteComment={action('delete comment')}
@@ -62,7 +62,7 @@ storiesOf('CommentsList', module)
     ))
     .add('hide form', () => (
         <CommentsList
-            hasActions={true}
+            isAuthenticated={true}
             comments={comments}
             onSendComment={action('send comment')}
             onDeleteComment={action('delete comment')}
@@ -76,7 +76,7 @@ storiesOf('CommentsList', module)
     ))
     .add('load more', () => (
         <CommentsList
-            hasActions={true}
+            isAuthenticated={true}
             comments={comments}
             onSendComment={action('send comment')}
             onDeleteComment={action('delete comment')}
@@ -90,7 +90,20 @@ storiesOf('CommentsList', module)
     ))
     .add('is owner', () => (
         <CommentsList
-            hasActions={true}
+            isAuthenticated={true}
+            comments={comments}
+            onSendComment={action('send comment')}
+            onDeleteComment={action('delete comment')}
+            onEditComment={action('edit comment')}
+            onApprovedComment={action('edit comment')}
+            ownerId="u1"
+            onLoadMore={action('Load more comments')}
+            currentUserId="u1"
+            total={comments.length * 2}
+        />
+    ))
+    .add('is not authenticated', () => (
+        <CommentsList
             comments={comments}
             onSendComment={action('send comment')}
             onDeleteComment={action('delete comment')}
@@ -104,7 +117,20 @@ storiesOf('CommentsList', module)
     ))
     .add('without comments', () => (
         <CommentsList
-            hasActions={true}
+            isAuthenticated={true}
+            comments={[]}
+            onSendComment={action('send comment')}
+            onDeleteComment={action('delete comment')}
+            onEditComment={action('edit comment')}
+            onApprovedComment={action('edit comment')}
+            ownerId="u1"
+            onLoadMore={action('Load more comments')}
+            currentUserId="u100"
+            total={comments.length * 2}
+        />
+    ))
+    .add('without comments / not authenticated', () => (
+        <CommentsList
             comments={[]}
             onSendComment={action('send comment')}
             onDeleteComment={action('delete comment')}

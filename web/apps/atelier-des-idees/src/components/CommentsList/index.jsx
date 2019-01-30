@@ -47,6 +47,7 @@ class CommentsList extends React.Component {
                         onClick={() =>
                             this.setState(prevState => ({
                                 showComments: !prevState.showComments,
+                                replyingTo: '',
                             }))
                         }
                     >
@@ -69,7 +70,7 @@ class CommentsList extends React.Component {
                           <React.Fragment>
                               <Comment
                                   {...comment}
-                                  hasActions={this.props.hasActions}
+                                  hasActions={this.props.isAuthenticated}
                                   isAuthor={this.props.currentUserId === comment.author.uuid}
                                   onReply={() => this.setState({ replyingTo: comment.uuid })}
                                   onDelete={() => this.props.onDeleteComment(comment.uuid)}
@@ -106,7 +107,7 @@ class CommentsList extends React.Component {
                                               emptyLabel={null}
                                               total={comment.nbReplies}
                                               isSendingComment={this.props.sendingReplies.includes(comment.uuid)}
-                                              hasActions={this.props.hasActions}
+                                              isAuthenticated={this.props.isAuthenticated}
                                               showForm={true}
                                               ownerId={this.props.ownerId}
                                               currentUserId={this.props.currentUserId}
@@ -135,28 +136,50 @@ class CommentsList extends React.Component {
                         >{`Afficher plus de réponses (${this.props.total - this.props.comments.length})`}</button>
                     </div>
                 )}
-                {this.state.showForm && (
-                    <form
-                        className="comments-list__form"
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            this.handleSendComment();
-                        }}
-                    >
-                        <TextArea
-                            value={this.state.comment}
-                            onChange={value => this.handleCommentChange(value)}
-                            placeholder={this.props.placeholder}
-                            error={this.state.errorComment}
-                        />
-                        <Button
-                            type="submit"
-                            className="comments-list__form__button button--primary"
-                            label="Envoyer"
-                            isLoading={this.props.isSendingComment}
-                        />
-                    </form>
-                )}
+                {this.state.showForm &&
+                    (this.props.isAuthenticated ? (
+                        <form
+                            className="comments-list__form"
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                this.handleSendComment();
+                            }}
+                        >
+                            <TextArea
+                                value={this.state.comment}
+                                onChange={value => this.handleCommentChange(value)}
+                                placeholder={this.props.placeholder}
+                                error={this.state.errorComment}
+                            />
+                            <Button
+                                type="submit"
+                                className="comments-list__form__button button--primary"
+                                label="Envoyer"
+                                isLoading={this.props.isSendingComment}
+                            />
+                        </form>
+                    ) : (
+                        !this.props.parentId && (
+                            <div className="comments-list__contribute">
+                                <p className="comments-list__contribute__main">
+                                    Pour ajouter votre contribution,{' '}
+                                    <a
+                                        className="comments-list__contribute__link"
+                                        href="?anonymous_authentication_intention=/connexion"
+                                    >
+                                        connectez-vous
+                                    </a>{' '}
+                                    ou{' '}
+                                    <a
+                                        className="comments-list__contribute__link"
+                                        href="?anonymous_authentication_intention=/adhesion"
+                                    >
+                                        créez un compte
+                                    </a>
+                                </p>
+                            </div>
+                        )
+                    ))}
             </div>
         );
     }
@@ -171,7 +194,7 @@ CommentsList.defaultProps = {
     placeholder: 'Ajoutez votre contribution',
     collapseLabel: 'contribution',
     total: 0,
-    hasActions: false,
+    isAuthenticated: false,
     showForm: false,
 };
 
@@ -201,7 +224,7 @@ CommentsList.propTypes = {
     emptyLabel: PropTypes.string,
     placeholder: PropTypes.string,
     total: PropTypes.number,
-    hasActions: PropTypes.bool,
+    isAuthenticated: PropTypes.bool,
 };
 
 export default CommentsList;
