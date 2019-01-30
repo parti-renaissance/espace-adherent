@@ -62,9 +62,10 @@
         {{ include('components/caret--left.html.twig') }}
         Retour à la liste
     </a>
-
-    <h3>Statistiques : {{ data.survey.name }}</h3>
-
+    <div class="b__nudge--top-10 b__nudge--bottom-small">
+        <a href="{{ path('app_referent_survey_stats_download', {'uuid': data.survey.uuid}) }}" class="btn btn--blue--soft" style="float: right;">télécharger au format csv</a>
+        <h3>Statistiques : {{ data.survey.name }}</h3>
+    </div>
     <hr />
 
     <div class="jecoute-survey-stats l__wrapper--slim b__nudge--top-40">

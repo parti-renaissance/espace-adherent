@@ -44,6 +44,7 @@ class StatisticsProvider
                 'content' => $question->getContent(),
                 'type' => $question->getType(),
                 'stats' => $this->createDataAnswers($dataByQuestion, $totalAnswered, $question->getType()),
+                'surveyQuestion' => $surveyQuestion,
             ];
         }
 
