@@ -92,6 +92,11 @@ class Question
         return $this->id;
     }
 
+    public function resetId(): void
+    {
+        $this->id = null;
+    }
+
     /**
      * @return Collection|Survey[]
      */
@@ -163,10 +168,31 @@ class Question
         return $this->choices;
     }
 
+    public function setChoices(ArrayCollection $choices): void
+    {
+        $this->choices = $choices;
+    }
+
     public function isChoiceType(): bool
     {
         return SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE == $this->type
             || SurveyQuestionTypeEnum::MULTIPLE_CHOICE_TYPE == $this->type
         ;
+    }
+
+    public function __clone()
+    {
+        $this->resetId();
+
+        $choices = new ArrayCollection();
+        foreach ($this->getChoices() as $choice) {
+            /** @var Choice $choice */
+            $clonedChoice = clone $choice;
+            $clonedChoice->setQuestion($this);
+
+            $choices->add($clonedChoice);
+        }
+
+        $this->setChoices($choices);
     }
 }

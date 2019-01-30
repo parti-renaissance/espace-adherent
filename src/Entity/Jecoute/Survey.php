@@ -78,6 +78,16 @@ class Survey implements AuthoredInterface
         $this->questions = new ArrayCollection();
     }
 
+    public function resetId(): void
+    {
+        $this->id = null;
+    }
+
+    public function refreshUuid(): void
+    {
+        $this->uuid = Uuid::uuid4();
+    }
+
     public function getAuthor(): ?Adherent
     {
         return $this->author;
@@ -119,6 +129,11 @@ class Survey implements AuthoredInterface
     public function getQuestions(): Collection
     {
         return $this->questions;
+    }
+
+    public function setQuestions(ArrayCollection $surveyQuestions): void
+    {
+        $this->questions = $surveyQuestions;
     }
 
     public function removeQuestion(SurveyQuestion $surveyQuestion): void
@@ -169,5 +184,30 @@ class Survey implements AuthoredInterface
                 'choices' => $question->getChoices(),
             ];
         }, $this->questions->toArray());
+    }
+
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->resetId();
+            $this->refreshUuid();
+            $this->setPublished(false);
+            $this->setName($this->name.' (Copie)');
+
+            $questions = new ArrayCollection();
+            foreach ($this->getQuestions() as $surveyQuestion) {
+                $clonedSurveyQuestion = clone $surveyQuestion;
+                $clonedSurveyQuestion->setSurvey($this);
+
+                if (!$surveyQuestion->isFromSuggestedQuestion()) {
+                    $clonedQuestion = clone $surveyQuestion->getQuestion();
+                    $clonedSurveyQuestion->setQuestion($clonedQuestion);
+                }
+
+                $questions->add($clonedSurveyQuestion);
+            }
+
+            $this->setQuestions($questions);
+        }
     }
 }

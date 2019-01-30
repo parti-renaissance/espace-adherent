@@ -264,6 +264,32 @@ class ReferentController extends Controller
 
     /**
      * @Route(
+     *     path="/jecoute/questionnaire/{uuid}/dupliquer",
+     *     name="app_referent_survey_duplicate",
+     *     requirements={
+     *         "uuid": "%pattern_uuid%",
+     *     },
+     *     methods={"GET"},
+     * )
+     *
+     * @Entity("survey", expr="repository.findOneByUuid(uuid)")
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', survey)")
+     */
+    public function jecouteSurveyDuplicateAction(Survey $survey, ObjectManager $manager): Response
+    {
+        $clonedSurvey = clone $survey;
+
+        $manager->persist($clonedSurvey);
+        $manager->flush();
+
+        $this->addFlash('info', 'survey.duplicate.success');
+
+        return $this->redirectToRoute('app_referent_surveys');
+    }
+
+    /**
+     * @Route(
      *     path="/jecoute/question/{uuid}/reponses",
      *     name="app_referent_survey_stats_answers_list",
      *     condition="request.isXmlHttpRequest()",

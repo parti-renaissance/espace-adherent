@@ -73,6 +73,16 @@ class SurveyQuestion implements AuthoredInterface
         $this->dataAnswers = new ArrayCollection();
     }
 
+    public function resetId(): void
+    {
+        $this->id = null;
+    }
+
+    public function refreshUuid(): void
+    {
+        $this->uuid = Uuid::uuid4();
+    }
+
     public function getAuthor(): ?Adherent
     {
         return $this->getSurvey()->getAuthor();
@@ -141,5 +151,11 @@ class SurveyQuestion implements AuthoredInterface
     public function removeDataAnswer(DataAnswer $dataAnswer): void
     {
         $this->dataAnswers->removeElement($dataAnswer);
+    }
+
+    public function __clone()
+    {
+        $this->resetId();
+        $this->refreshUuid();
     }
 }
