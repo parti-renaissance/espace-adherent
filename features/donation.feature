@@ -197,6 +197,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     # Check if I can create a new subscription after cancel subscription
     Given I am on "/don"
+    And wait 1 second until I see "Continuer"
     When I click the "donation-monthly_label" element
     And I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
