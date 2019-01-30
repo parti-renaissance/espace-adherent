@@ -9,7 +9,7 @@
   }
 
   &__replies > .comments-list {
-    padding: 0 0 30px 70px;
+    padding: 0 0 20px 70px;
   }
 
   &__collapse-button {
@@ -35,6 +35,10 @@
     &__label {
       font-size: 16px;
       color: $light-black;
+    }
+
+    &:nth-last-child(2) {
+      margin-bottom: 20px;
     }
   }
 
@@ -95,6 +99,27 @@
     .comments-list__empty__toggle {
       position: absolute;
       right: 15px;
+    }
+  }
+
+  .comments-list__contribute {
+    margin-top: 10px;
+    text-align: center;
+    background-color: $snow;
+    font-size: 18px;
+    font-family: $font-gillsans;
+
+    .comments-list__contribute__main {
+      padding: 25px 60px;
+      margin: 0;
+      background-color: $white;
+      color: $light-black;
+    }
+
+    .comments-list__contribute__link {
+      color: $saphir;
+      text-decoration: none;
+      border: 0;
     }
   }
 
