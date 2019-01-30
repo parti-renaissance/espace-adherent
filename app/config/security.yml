@@ -314,17 +314,6 @@ security:
                 path: logout
                 target: homepage
 
-        api_login:
-            pattern:  ^/api/login
-            stateless: true
-            anonymous: true
-            provider: users_db
-            user_checker: AppBundle\Security\UserChecker
-            json_login:
-                check_path: api_login_check
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
         main:
             context: main_context
             stateless: false
@@ -338,6 +327,10 @@ security:
                 path: logout
                 target: homepage
             user_checker: AppBundle\Security\UserChecker
+            json_login:
+                check_path: /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
             guard:
                 authenticators:
                     - AppBundle\Security\LoginFormAuthenticator
@@ -345,7 +338,6 @@ security:
                 entry_point: AppBundle\Security\LoginFormAuthenticator
 
     access_control:
-        - { path: '^/api/login', roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: '^/parametres', roles: [ROLE_USER] }
         - { path: '^/espace-adherent/creer-mon-projet-citoyen$', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: '^/espace-adherent', roles: [ROLE_ADHERENT] }
