@@ -41,7 +41,7 @@ function Comment(props) {
                 )}
             </div>
             <div className="comments-list__comment__content">{props.content}</div>
-            {props.hasActions && (
+            {props.hasActions && (props.isAuthor || props.canApprove || props.canAnswer) && (
                 <div className="comments-list__comment__actions">
                     {props.isAuthor ? (
                         <button className="comments-list__comment__actions__button__delete" onClick={props.onDelete}>

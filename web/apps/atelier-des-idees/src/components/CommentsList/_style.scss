@@ -77,15 +77,38 @@
   }
 
   .comments-list__empty {
-    margin-top: 15px;
-    margin-bottom: 30px;
+    @extend %reset-button;
+    position: relative;
+    width: 100%;
+    padding: 15px 15px 30px;
     text-align: center;
     font-size: 20px;
     font-family: $font-gillsans;
     color: $france;
+    cursor: pointer;
+    outline: none;
 
     &--highlight {
       border-bottom: 3px solid $pale-cerulean;
+    }
+
+    .comments-list__empty__toggle {
+      position: absolute;
+      right: 15px;
+    }
+  }
+
+  &--closed {
+    padding: 0;
+    border: 1px solid $pale-sky;
+
+    .comments-list__empty {
+      padding: 30px;
+
+      .comments-list__empty__toggle {
+        right: 30px;
+        transform: rotate(-90deg);
+      }
     }
   }
 }

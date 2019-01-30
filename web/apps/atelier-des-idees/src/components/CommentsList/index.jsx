@@ -6,6 +6,7 @@ import TextArea from '../TextArea';
 import Button from '../Button';
 import icn_20px_replies from './../../img/icn_20px_replies.svg';
 import icn_toggle_content from './../../img/icn_toggle_content.svg';
+import icn_toggle_content_big from './../../img/icn_toggle_content_big.svg';
 
 class CommentsList extends React.Component {
     constructor(props) {
@@ -13,8 +14,9 @@ class CommentsList extends React.Component {
         this.state = {
             comment: '',
             errorComment: '',
-            replyingTo: undefined,
+            replyingTo: '',
             showComments: false,
+            showForm: !!props.comments.length || props.showForm,
         };
     }
 
@@ -34,7 +36,11 @@ class CommentsList extends React.Component {
 
     render() {
         return (
-            <div className="comments-list">
+            <div
+                className={classNames('comments-list', {
+                    'comments-list--closed': !this.state.showForm,
+                })}
+            >
                 {!!this.props.comments.length && (
                     <button
                         className="comments-list__collapse-button"
@@ -57,65 +63,70 @@ class CommentsList extends React.Component {
                         />
                     </button>
                 )}
-                {this.props.comments.length ? (
-                    this.state.showComments &&
-                    this.props.comments.map(comment => (
-                        <React.Fragment>
-                            <Comment
-                                {...comment}
-                                hasActions={this.props.hasActions}
-                                isAuthor={this.props.currentUserId === comment.author.uuid}
-                                onReply={() => this.setState({ replyingTo: comment.uuid })}
-                                onDelete={() => this.props.onDeleteComment(comment.uuid)}
-                                onApprove={() => this.props.onApproveComment(comment.uuid)}
-                                onReport={() => this.props.onReportComment(comment.uuid)}
-                                canAnswer={!this.props.parentId}
-                                canApprove={this.props.currentUserId === this.props.ownerId}
-                            />
-                            {((comment.replies && !!comment.replies.length) ||
-                                this.state.replyingTo === comment.uuid) && (
-                                    <div className="comments-list__replies">
-                                        <CommentsList
-                                            comments={comment.replies}
-                                            onSendComment={value =>
-                                            // send parent comment id as (optional) second parameter
-                                                this.props.onSendComment(value, comment.uuid)
-                                            }
-                                            onDeleteComment={commentId =>
-                                                this.props.onDeleteComment(commentId, comment.uuid)
-                                            }
-                                            onApproveComment={commentId =>
-                                                this.props.onApproveComment(commentId, comment.uuid)
-                                            }
-                                            onReportComment={commentId =>
-                                                this.props.onReportComment(commentId, comment.uuid)
-                                            }
-                                            onLoadMore={() => this.props.onLoadMore(comment.uuid)}
-                                            parentId={comment.uuid}
-                                            showForm={this.props.showForm}
-                                            collapseLabel="réponse"
-                                            placeholder="Écrivez votre réponse"
-                                            emptyLabel={null}
-                                            total={comment.nbReplies}
-                                            isSendingComment={this.props.sendingReplies.includes(comment.uuid)}
-                                            hasActions={this.props.hasActions}
-                                            ownerId={this.props.ownerId}
-                                            currentUserId={this.props.currentUserId}
-                                        />
-                                    </div>
-                                )}
-                        </React.Fragment>
-                    ))
-                ) : (
-                    <React.Fragment>
-                        {!this.props.parentId && (
-                            <p className="comments-list__empty">
-                                Soyez <span className="comments-list__empty--highlight">le premier</span> à contribuer
-                                sur cette partie
-                            </p>
-                        )}
-                    </React.Fragment>
-                )}
+                {this.props.comments.length
+                    ? this.state.showComments &&
+                      this.props.comments.map(comment => (
+                          <React.Fragment>
+                              <Comment
+                                  {...comment}
+                                  hasActions={this.props.hasActions}
+                                  isAuthor={this.props.currentUserId === comment.author.uuid}
+                                  onReply={() => this.setState({ replyingTo: comment.uuid })}
+                                  onDelete={() => this.props.onDeleteComment(comment.uuid)}
+                                  onApprove={() => this.props.onApproveComment(comment.uuid)}
+                                  onReport={() => this.props.onReportComment(comment.uuid)}
+                                  canAnswer={
+                                      !this.props.parentId &&
+                                      (!comment.replies.length && this.state.replyingTo !== comment.uuid)
+                                  }
+                                  canApprove={this.props.currentUserId === this.props.ownerId}
+                              />
+                              {((comment.replies && !!comment.replies.length) ||
+                                  this.state.replyingTo === comment.uuid) && (
+                                      <div className="comments-list__replies">
+                                          <CommentsList
+                                              comments={comment.replies}
+                                              onSendComment={value =>
+                                              // send parent comment id as (optional) second parameter
+                                                  this.props.onSendComment(value, comment.uuid)
+                                              }
+                                              onDeleteComment={commentId =>
+                                                  this.props.onDeleteComment(commentId, comment.uuid)
+                                              }
+                                              onApproveComment={commentId =>
+                                                  this.props.onApproveComment(commentId, comment.uuid)
+                                              }
+                                              onReportComment={commentId =>
+                                                  this.props.onReportComment(commentId, comment.uuid)
+                                              }
+                                              onLoadMore={() => this.props.onLoadMore(comment.uuid)}
+                                              parentId={comment.uuid}
+                                              collapseLabel="réponse"
+                                              placeholder="Écrivez votre réponse"
+                                              emptyLabel={null}
+                                              total={comment.nbReplies}
+                                              isSendingComment={this.props.sendingReplies.includes(comment.uuid)}
+                                              hasActions={this.props.hasActions}
+                                              showForm={true}
+                                              ownerId={this.props.ownerId}
+                                              currentUserId={this.props.currentUserId}
+                                          />
+                                      </div>
+                                  )}
+                          </React.Fragment>
+                      ))
+                    : !this.props.parentId && (
+                        <button
+                            className="comments-list__empty"
+                            onClick={() => this.setState(prevState => ({ showForm: !prevState.showForm }))}
+                        >
+                            <span>
+                                  Soyez <span className="comments-list__empty--highlight">le premier</span> à contribuer
+                                  sur cette partie
+                            </span>
+                            <img className="comments-list__empty__toggle" src={icn_toggle_content_big} />
+                        </button>
+                    )}
                 {this.state.showComments && 0 < this.props.total - this.props.comments.length && (
                     <div className="comments-list__more">
                         <button
@@ -124,7 +135,7 @@ class CommentsList extends React.Component {
                         >{`Afficher plus de réponses (${this.props.total - this.props.comments.length})`}</button>
                     </div>
                 )}
-                {this.props.showForm && (
+                {this.state.showForm && (
                     <form
                         className="comments-list__form"
                         onSubmit={(e) => {
@@ -155,13 +166,13 @@ CommentsList.defaultProps = {
     comments: [],
     isSendingComment: false,
     sendingReplies: [],
-    showForm: true,
     parentId: undefined,
     emptyLabel: '',
     placeholder: 'Ajoutez votre contribution',
     collapseLabel: 'contribution',
     total: 0,
     hasActions: false,
+    showForm: false,
 };
 
 CommentsList.propTypes = {
@@ -177,6 +188,7 @@ CommentsList.propTypes = {
         })
     ),
     isSendingComment: PropTypes.bool,
+    showForm: PropTypes.bool,
     sendingReplies: PropTypes.array,
     onSendComment: PropTypes.func.isRequired,
     onDeleteComment: PropTypes.func.isRequired,
@@ -185,7 +197,6 @@ CommentsList.propTypes = {
     onLoadMore: PropTypes.func.isRequired,
     currentUserId: PropTypes.string.isRequired,
     ownerId: PropTypes.string.isRequired,
-    showForm: PropTypes.bool,
     parentId: PropTypes.string,
     emptyLabel: PropTypes.string,
     placeholder: PropTypes.string,
