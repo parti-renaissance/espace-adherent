@@ -63,7 +63,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *             "path": "/ideas-workshop/threads/{id}/approve",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "object.getIdeaAuthor() == user",
- *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\ApproveThreadController",
+ *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\ApproveThreadController:approve",
  *             "swagger_context": {
  *                 "parameters": {
  *                     {
@@ -81,7 +81,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *             "path": "/ideas-workshop/threads/{id}/disapprove",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "object.getIdeaAuthor() == user",
- *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\DisapproveThreadController",
+ *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\ApproveThreadController:disapprove",
  *             "swagger_context": {
  *                 "parameters": {
  *                     {
@@ -241,6 +241,11 @@ class Thread extends BaseComment implements AuthorInterface, ReportableInterface
     public function getIdeaAuthor(): Adherent
     {
         return $this->getAnswer()->getIdea()->getAuthor();
+    }
+
+    public function getIdea(): ?Idea
+    {
+        return $this->getAnswer()->getIdea();
     }
 
     public function getContributors(): ArrayCollection
