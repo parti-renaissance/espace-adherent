@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 
-class DoctrineFilterConfigurationAdminExtension extends AbstractAdminExtension
+class DoctrineSoftdeleteableFilterConfigurationAdminExtension extends AbstractAdminExtension
 {
     /**
      * @var EntityManager
@@ -16,6 +16,6 @@ class DoctrineFilterConfigurationAdminExtension extends AbstractAdminExtension
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->em->getFilters()->disable('enabled');
+        $this->em->getFilters()->disable('softdeleteable');
     }
 }

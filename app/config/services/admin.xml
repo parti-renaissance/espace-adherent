@@ -849,13 +849,19 @@
             <tag name="sonata.admin.extension" target="app.admin.adherent" />
         </service>
 
-        <service id="app.admin.filter_configuration_extension" class="AppBundle\Admin\Extension\DoctrineFilterConfigurationAdminExtension">
+        <service id="app.admin.enabled_filter_configuration_extension" class="AppBundle\Admin\Extension\DoctrineEnabledFilterConfigurationAdminExtension">
             <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_consultation" />
             <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_category" />
             <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_need" />
             <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_theme" />
             <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_guideline" />
             <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_question" />
+            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_idea" />
+            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_thread" />
+            <tag name="sonata.admin.extension" target="app.admin.report" />
+        </service>
+
+        <service id="app.admin.softdeleteable_filter_configuration_extension" class="AppBundle\Admin\Extension\DoctrineSoftdeleteableFilterConfigurationAdminExtension">
             <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_idea" />
             <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_thread" />
             <tag name="sonata.admin.extension" target="app.admin.report" />

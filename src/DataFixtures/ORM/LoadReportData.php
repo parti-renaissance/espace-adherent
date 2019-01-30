@@ -70,7 +70,7 @@ class LoadReportData extends AbstractFixture implements DependentFixtureInterfac
         );
 
         $report8 = new ThreadReport(
-            $this->getReference('thread-comment-reported'),
+            $this->getReference('thread-reported'),
             $this->getReference('adherent-4'),
             [ReportReasonEnum::REASON_OTHER],
             'Je suis choqué!'
