@@ -36,7 +36,7 @@ class IdeaContent extends React.Component {
             <article className="idea-content">
                 {this.props.guidelines.map((guideline, idx) => {
                     // choose between edit and contribute mode
-                    const editMode = this.props.isDraft ? 'edit' : 'contribute';
+                    const editMode = this.props.isDraft ? 'draft' : 'contribute';
                     return (
                         <section key={`guideline_${idx}`} className="idea-content__start-section">
                             {!this.props.isReading && (
