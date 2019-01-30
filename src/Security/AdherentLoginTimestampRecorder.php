@@ -24,28 +24,32 @@ class AdherentLoginTimestampRecorder implements EventSubscriberInterface
     {
         $token = $event->getAuthenticationToken();
 
+        $user = $token->getUser();
+        // Only record adherent logins
+        if (!$user instanceof Adherent) {
+            return;
+        }
+
         // OAuth calls are not login attempts
         if ($token instanceof PostAuthenticationGuardToken && 'api_oauth' === $token->getProviderKey()) {
             return;
         }
 
         if (!$token instanceof PostAuthenticationGuardToken
-            && !$token instanceof UsernamePasswordToken
             && !$token instanceof JWTUserToken
+            && !$token instanceof UsernamePasswordToken
         ) {
             throw new \RuntimeException(sprintf(
-                'Authentication token must be a %s or %s or %s instance.',
+                'Authentication token must be a %s or %s or %s instance. (%s given)',
                 PostAuthenticationGuardToken::class,
+                JWTUserToken::class,
                 UsernamePasswordToken::class,
-                JWTUserToken::class
+                \get_class($token)
             ));
         }
 
-        $user = $token->getUser();
-        if ($user instanceof Adherent) {
-            $user->recordLastLoginTime();
-            $this->manager->flush();
-        }
+        $user->recordLastLoginTime();
+        $this->manager->flush();
     }
 
     public static function getSubscribedEvents()

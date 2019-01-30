@@ -28,7 +28,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
-    private $entityManager;
     private $urlGenerator;
     private $csrfTokenManager;
     private $passwordEncoder;

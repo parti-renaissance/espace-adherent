@@ -13,8 +13,8 @@ use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 use Tests\AppBundle\TestHelperTrait;
 
 /**
@@ -67,7 +67,7 @@ trait ControllerTestTrait
             throw new \Exception(sprintf('Adherent %s not found', $emailAddress));
         }
 
-        $this->authenticate($client, $user);
+        $this->authenticate($client, $user, 'main');
     }
 
     public function authenticateAsAdmin(Client $client, string $email = 'admin@en-marche-dev.fr'): void
@@ -76,7 +76,7 @@ trait ControllerTestTrait
             throw new \Exception(sprintf('Admin %s not found', $email));
         }
 
-        $this->authenticate($client, $user);
+        $this->authenticate($client, $user, 'admin');
     }
 
     protected function seeDefaultCitizenProjectImage(): bool
@@ -157,11 +157,11 @@ trait ControllerTestTrait
         return $messages;
     }
 
-    private function authenticate(Client $client, UserInterface $user): void
+    private function authenticate(Client $client, UserInterface $user, string $firewallName): void
     {
         $session = $client->getContainer()->get('session');
 
-        $token = new UsernamePasswordToken($user, null, 'main_context', $user->getRoles());
+        $token = new PostAuthenticationGuardToken($user, $firewallName, $user->getRoles());
         $session->set('_security_main_context', serialize($token));
         $session->save();
 
