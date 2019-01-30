@@ -17,4 +17,5 @@ storiesOf('Comment', module)
     .add('default', () => <Comment {...props} />)
     .add('can approve', () => <Comment {...props} canApprove={true} />)
     .add('approved', () => <Comment {...props} canApprove={true} approved={true} />)
-    .add('is author', () => <Comment {...props} verified={true} isAuthor={true} />);
+    .add('is author', () => <Comment {...props} verified={true} isAuthor={true} />)
+    .add('without actions', () => <Comment {...props} hasActions={false} />);
