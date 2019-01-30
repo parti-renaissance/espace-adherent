@@ -51,7 +51,7 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('name', null, [
-                'label' => 'Nom',
+                'label' => 'Titre',
             ])
             ->add('slug', null, [
                 'label' => 'Slug',
@@ -85,7 +85,7 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('name', null, [
-                'label' => 'Nom',
+                'label' => 'Titre',
             ])
             ->add('description', null, [
                 'label' => 'Description',
@@ -145,8 +145,9 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('name', null, [
-                'label' => 'Nom',
+                'label' => 'Titre',
                 'header_style' => 'width: 250px',
+                'row_align' => 'none;word-break: break-all;',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
