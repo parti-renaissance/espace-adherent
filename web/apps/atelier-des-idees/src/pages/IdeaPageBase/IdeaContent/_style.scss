@@ -1,0 +1,29 @@
+.idea-content {
+  .idea-content__section-title {
+    margin: 50px 0;
+
+    .idea-content__section-title__main {
+      color: $dark-aurometalsaurus;
+
+      &::after {
+        content: '';
+        display: block;
+        width: 50px;
+        border-bottom: 1px solid $black-bean;
+        margin-top: 15px;
+      }
+    }
+  }
+
+  // responsive
+
+  .idea-content__section-title__main {
+    font-weight: normal;
+    font-size: 14px;
+    color: $quick-silver;
+
+    @media #{$tablet} {
+      font-size: 20px;
+    }
+  }
+}

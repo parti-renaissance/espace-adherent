@@ -1,33 +1,36 @@
 .voting-footer-idea-page {
-	&__title {
-		margin: 143px 0 43px;
-		text-align: center;
-		font-size: 28px;
-	}
-	&__vote {
-		display: flex;
-		justify-content: center;
+  margin-bottom: 20px;
 
-		&__button {
-			outline: none;
-			display: flex;
-			justify-content: space-between;
-			width: 130px;
-			height: 32px;
-			margin-right: 46px;
-			border: 1px solid $grey-sky;
-			border-radius: 2px;
-			font-size: 15px;
-			color: $sky;
+  &__title {
+    margin: 75px 0 34px;
+    text-align: center;
+    font-size: 28px;
+  }
 
-			&--selected {
-				border: 1px solid $france;
-				color: $france;
-			}
-		}
-		&__button:hover {
-			border: 1px solid $france;
-			color: $france;
-		}
-	}
+  &__vote {
+    display: flex;
+    justify-content: center;
+
+    &__button {
+      outline: none;
+      display: flex;
+      justify-content: space-between;
+      width: 130px;
+      height: 32px;
+      margin-right: 46px;
+      border: 1px solid $grey-sky;
+      border-radius: 2px;
+      font-size: 15px;
+      color: $sky;
+
+      &--selected {
+        border: 1px solid $france;
+        color: $france;
+      }
+    }
+    &__button:hover {
+      border: 1px solid $france;
+      color: $france;
+    }
+  }
 }

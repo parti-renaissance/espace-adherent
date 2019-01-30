@@ -2,10 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ideaStatus } from '../../constants/api';
 import Switch from '../../components/Switch';
-import IdeaReader from '../../components/IdeaReader';
 import CreateIdeaActions from './CreateIdeaActions';
 import IdeaPageTitle from './IdeaPageTitle';
-import CreateIdeaTool from './CreateIdeaTool';
+import IdeaContent from './IdeaContent';
 import VotingFooterIdeaPage from './VotingFooterIdeaPage';
 import IdeaPageSkeleton from './IdeaPageSkeleton';
 import autoSaveIcn from '../../img/icn_20px_autosave.svg';
@@ -57,7 +56,6 @@ class IdeaPageBase extends React.Component {
         this.onSaveIdea = this.onSaveIdea.bind(this);
         this.onPublishIdea = this.onPublishIdea.bind(this);
         this.onToggleReadingMode = this.onToggleReadingMode.bind(this);
-        this.getParagraphs = this.getParagraphs.bind(this);
         this.formatAnswers = this.formatAnswers.bind(this);
     }
 
@@ -133,16 +131,6 @@ class IdeaPageBase extends React.Component {
             const data = { name: this.state.name, answers: this.formatAnswers() };
             this.props.onPublishIdea(data);
         }
-    }
-
-    getParagraphs() {
-        const questions = this.props.guidelines.reduce((acc, guideline) => [...acc, ...guideline.questions], []);
-        return questions.reduce((acc, { id }) => {
-            if (this.state.answers[id]) {
-                acc.push(this.state.answers[id]);
-            }
-            return acc;
-        }, []);
     }
 
     hasCorrectValues(withRequired = true) {
@@ -237,21 +225,18 @@ class IdeaPageBase extends React.Component {
                                     hasError={this.state.errors.name}
                                     showPublicationDate={idea.status !== ideaStatus.DRAFT}
                                 />
-                                {this.state.readingMode ? (
-                                    <IdeaReader paragraphs={this.getParagraphs()} />
-                                ) : (
-                                    <CreateIdeaTool
-                                        onQuestionTextChange={this.onQuestionTextChange}
-                                        guidelines={this.props.guidelines}
-                                        values={this.state.answers}
-                                        isAuthor={this.props.isAuthor}
-                                        isDraft={idea.status === ideaStatus.DRAFT}
-                                        onAutoSave={this.onSaveIdea}
-                                        errors={Object.entries(this.state.errors)
-                                            .filter(([, hasError]) => hasError)
-                                            .map(([key]) => key)}
-                                    />
-                                )}
+                                <IdeaContent
+                                    onQuestionTextChange={this.onQuestionTextChange}
+                                    guidelines={this.props.guidelines}
+                                    values={this.state.answers}
+                                    isAuthor={this.props.isAuthor}
+                                    isDraft={idea.status === ideaStatus.DRAFT}
+                                    isReading={this.state.readingMode}
+                                    onAutoSave={this.onSaveIdea}
+                                    errors={Object.entries(this.state.errors)
+                                        .filter(([, hasError]) => hasError)
+                                        .map(([key]) => key)}
+                                />
                                 {idea.status === ideaStatus.DRAFT && (
                                     <div className="create-idea-page__footer">
                                         {this.props.isAuthor && !this.state.readingMode && (
