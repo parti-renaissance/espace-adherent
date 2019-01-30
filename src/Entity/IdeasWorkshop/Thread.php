@@ -58,6 +58,42 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *                 }
  *             }
  *         },
+ *         "approve": {
+ *             "method": "PUT",
+ *             "path": "/ideas-workshop/threads/{id}/approve",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "object.getIdeaAuthor() == user",
+ *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\ApproveThreadController",
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Thread resource.",
+ *                         "example": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
+ *                     }
+ *                 }
+ *             }
+ *         },
+ *         "disapprove": {
+ *             "method": "PUT",
+ *             "path": "/ideas-workshop/threads/{id}/disapprove",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "object.getIdeaAuthor() == user",
+ *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\DisapproveThreadController",
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Thread resource.",
+ *                         "example": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
+ *                     }
+ *                 }
+ *             }
+ *         },
  *         "put_approval_toggle": {
  *             "method": "PUT",
  *             "path": "/ideas-workshop/threads/{id}/approval-toggle",

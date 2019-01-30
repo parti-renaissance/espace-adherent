@@ -288,20 +288,19 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user I can not approved a thread
+  Scenario Outline: As a logged-in user I can not approve/disapprove other threads
     Given I am logged as "carl999@example.fr"
-    When I send a "PUT" request to "/api/ideas-workshop/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/approval-toggle"
+    When I send a "PUT" request to "<url>"
     Then the response status code should be 403
+    Examples:
+      | url                                                                                 |
+      | /api/ideas-workshop/threads/6b077cc4-1cbd-4615-b607-c23009119406/approve            |
+      | /api/ideas-workshop/threads/6b077cc4-1cbd-4615-b607-c23009119406/disapprove         |
 
   Scenario: As an idea author, I can update thread status to approved
     Given I am logged as "jacques.picard@en-marche.fr"
     And I add "Content-Type" header equal to "application/json"
-    When I send a "PUT" request to "/api/ideas-workshop/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/approval-toggle" with body:
-    """
-    {
-        "approved": true
-    }
-    """
+    When I send a "PUT" request to "/api/ideas-workshop/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/approve"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -319,6 +318,26 @@ Feature:
        },
        "created_at":"@string@.isDateTime()",
        "approved": true
+    }
+    """
+    When I send a "PUT" request to "/api/ideas-workshop/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/disapprove"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+       "answer":{
+          "id":1
+       },
+       "uuid":"dfd6a2f2-5579-421f-96ac-98993d0edea1",
+       "content":"J'ouvre une discussion sur le probl\u00e8me.",
+       "author":{
+          "uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458",
+          "first_name":"Carl",
+          "last_name":"Mirabeau"
+       },
+       "created_at":"@string@.isDateTime()",
+       "approved": false
     }
     """
 

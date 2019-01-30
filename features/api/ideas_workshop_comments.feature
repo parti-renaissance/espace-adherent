@@ -156,20 +156,19 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user I can not approve a comment
+  Scenario Outline: As a logged-in user I can not approve/disapprove other comments
     Given I am logged as "carl999@example.fr"
-    When I send a "PUT" request to "/api/ideas-workshop/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/approval-toggle"
+    When I send a "PUT" request to "<url>"
     Then the response status code should be 403
+    Examples:
+      | url                                                                                 |
+      | /api/ideas-workshop/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/approve    |
+      | /api/ideas-workshop/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/disapprove |
 
-  Scenario: As an idea author, I can approve my comment
+  Scenario: As an idea author, I can approve/disapprove a comment
     Given I am logged as "jacques.picard@en-marche.fr"
     And I add "Content-Type" header equal to "application/json"
-    When I send a "PUT" request to "/api/ideas-workshop/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/approval-toggle" with body:
-    """
-    {
-        "approved": true
-    }
-    """
+    When I send a "PUT" request to "/api/ideas-workshop/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/approve"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -184,6 +183,23 @@ Feature:
        "created_at": "@string@.isDateTime()",
        "uuid":"b99933f3-180c-4248-82f8-1b0eb950740d",
        "approved": true
+    }
+    """
+    When I send a "PUT" request to "/api/ideas-workshop/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/disapprove"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+       "content":"Aenean viverra efficitur lorem",
+       "author":{
+          "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
+          "first_name":"Benjamin",
+          "last_name":"Duroc"
+       },
+       "created_at": "@string@.isDateTime()",
+       "uuid":"b99933f3-180c-4248-82f8-1b0eb950740d",
+       "approved": false
     }
     """
 
