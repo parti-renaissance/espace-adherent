@@ -309,9 +309,9 @@ Feature:
     When I send a "PUT" request to "<url>"
     Then the response status code should be 403
     Examples:
-      | url                                                                                 |
-      | /api/ideas-workshop/threads/6b077cc4-1cbd-4615-b607-c23009119406/approve            |
-      | /api/ideas-workshop/threads/6b077cc4-1cbd-4615-b607-c23009119406/disapprove         |
+      | url                                                                         |
+      | /api/ideas-workshop/threads/6b077cc4-1cbd-4615-b607-c23009119406/approve    |
+      | /api/ideas-workshop/threads/6b077cc4-1cbd-4615-b607-c23009119406/disapprove |
 
   Scenario: As an idea author, I can update thread status to approved
     Given I am logged as "jacques.picard@en-marche.fr"
@@ -329,8 +329,9 @@ Feature:
        "content":"J'ouvre une discussion sur le probl\u00e8me.",
        "author":{
           "uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458",
-          "first_name":"Carl",
-          "last_name":"Mirabeau"
+          "nickname":"pont",
+          "first_name":null,
+          "last_name":null
        },
        "created_at":"@string@.isDateTime()",
        "approved": true
