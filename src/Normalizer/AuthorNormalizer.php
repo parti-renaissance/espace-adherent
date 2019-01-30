@@ -24,13 +24,18 @@ class AuthorNormalizer implements NormalizerInterface
     {
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        $data['last_name'] = $object->getLastNameInitial();
+        if ($object->getNickname()) {
+            $data['first_name'] = null;
+            $data['last_name'] = null;
+        } elseif (!$this->security->getUser()) {
+            $data['last_name'] = $object->getLastNameInitial();
+        }
 
         return $data;
     }
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Adherent && !$this->security->getUser();
+        return $data instanceof Adherent;
     }
 }
