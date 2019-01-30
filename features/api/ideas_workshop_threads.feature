@@ -313,7 +313,7 @@ Feature:
       | /api/ideas-workshop/threads/6b077cc4-1cbd-4615-b607-c23009119406/approve    |
       | /api/ideas-workshop/threads/6b077cc4-1cbd-4615-b607-c23009119406/disapprove |
 
-  Scenario: As an idea author, I can update thread status to approved
+  Scenario: As an idea author, I can approve/disapprove a thread
     Given I am logged as "jacques.picard@en-marche.fr"
     And I add "Content-Type" header equal to "application/json"
     When I send a "PUT" request to "/api/ideas-workshop/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/approve"
@@ -335,6 +335,26 @@ Feature:
        },
        "created_at":"@string@.isDateTime()",
        "approved": true
+    }
+    """
+    And I should have 1 email "ApprovedIdeaCommentMessage" for "carl999@example.fr" with payload:
+    """
+    {
+      "FromEmail": "atelier-des-idees@en-marche.fr",
+      "FromName": "La République En Marche !",
+      "Subject": "Votre contribution à une proposition a été approuvée par son auteur !",
+      "MJ-TemplateID": "645030",
+      "MJ-TemplateLanguage": true,
+      "Recipients": [
+          {
+              "Email": "carl999@example.fr",
+              "Name": "Carl Mirabeau",
+              "Vars": {
+                  "first_name": "Carl",
+                  "idea_name": "Faire la paix"
+              }
+          }
+      ]
     }
     """
     When I send a "PUT" request to "/api/ideas-workshop/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/disapprove"

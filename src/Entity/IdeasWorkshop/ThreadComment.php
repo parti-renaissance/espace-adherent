@@ -56,7 +56,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *             "path": "/ideas-workshop/thread_comments/{id}/approve",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "object.getIdeaAuthor() == user",
- *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\ApproveThreadCommentController",
+ *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\ApproveThreadCommentController:approve",
  *             "swagger_context": {
  *                 "parameters": {
  *                     {
@@ -74,7 +74,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *             "path": "/ideas-workshop/thread_comments/{id}/disapprove",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "object.getIdeaAuthor() == user",
- *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\DisapproveThreadCommentController",
+ *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\ApproveThreadCommentController:disapprove",
  *             "swagger_context": {
  *                 "parameters": {
  *                     {
