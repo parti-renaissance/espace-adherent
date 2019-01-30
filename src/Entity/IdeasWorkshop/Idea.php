@@ -268,7 +268,7 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     private $author;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime", nullable=true)
      *
@@ -279,7 +279,7 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     private $publishedAt;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime", nullable=true)
      *
@@ -361,12 +361,12 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
         string $name,
         string $description = null,
         string $authorCategory = AuthorCategoryEnum::ADHERENT,
-        \DateTime $publishedAt = null,
-        \DateTime $finalizedAt = null,
+        \DateTimeInterface $publishedAt = null,
+        \DateTimeInterface $finalizedAt = null,
         bool $enabled = true,
         Adherent $author = null,
         UuidInterface $uuid = null,
-        \DateTime $createdAt = null
+        \DateTimeInterface $createdAt = null
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->author = $author;
@@ -447,22 +447,22 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
         $this->author = $author;
     }
 
-    public function getPublishedAt(): ?\DateTime
+    public function getPublishedAt(): ?\DateTimeInterface
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(\DateTime $publishedAt): void
+    public function setPublishedAt(\DateTimeInterface $publishedAt): void
     {
         $this->publishedAt = $publishedAt;
     }
 
-    public function getFinalizedAt(): ?\DateTime
+    public function getFinalizedAt(): ?\DateTimeInterface
     {
         return $this->finalizedAt;
     }
 
-    public function setFinalizedAt(\DateTime $finalizedAt): void
+    public function setFinalizedAt(\DateTimeInterface $finalizedAt): void
     {
         $this->finalizedAt = $finalizedAt;
     }
