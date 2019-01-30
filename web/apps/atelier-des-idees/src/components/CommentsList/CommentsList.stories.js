@@ -67,4 +67,16 @@ storiesOf('CommentsList', module)
             onLoadMore={action('Load more comments')}
             total={comments.length * 2}
         />
+    ))
+    .add('without comments', () => (
+        <CommentsList
+            comments={[]}
+            onSendComment={action('send comment')}
+            onDeleteComment={action('delete comment')}
+            onEditComment={action('edit comment')}
+            onApprovedComment={action('edit comment')}
+            ownerId="u1"
+            onLoadMore={action('Load more comments')}
+            total={0}
+        />
     ));
