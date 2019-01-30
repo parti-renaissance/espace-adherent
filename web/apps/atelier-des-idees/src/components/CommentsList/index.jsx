@@ -107,6 +107,7 @@ class CommentsList extends React.Component {
                                               emptyLabel={null}
                                               total={comment.nbReplies}
                                               isSendingComment={this.props.sendingReplies.includes(comment.uuid)}
+                                              isFormActive={this.state.replyingTo === comment.uuid}
                                               isAuthenticated={this.props.isAuthenticated}
                                               showForm={true}
                                               ownerId={this.props.ownerId}
@@ -150,6 +151,7 @@ class CommentsList extends React.Component {
                                 onChange={value => this.handleCommentChange(value)}
                                 placeholder={this.props.placeholder}
                                 error={this.state.errorComment}
+                                autofocus={this.props.isFormActive}
                             />
                             <Button
                                 type="submit"
@@ -186,19 +188,21 @@ class CommentsList extends React.Component {
 }
 
 CommentsList.defaultProps = {
-    comments: [],
-    isSendingComment: false,
-    sendingReplies: [],
-    parentId: undefined,
-    emptyLabel: '',
-    placeholder: 'Ajoutez votre contribution',
     collapseLabel: 'contribution',
-    total: 0,
+    comments: [],
+    emptyLabel: '',
     isAuthenticated: false,
+    isFormActive: false,
+    isSendingComment: false,
+    parentId: undefined,
+    placeholder: 'Ajoutez votre contribution',
+    sendingReplies: [],
     showForm: false,
+    total: 0,
 };
 
 CommentsList.propTypes = {
+    collapseLabel: PropTypes.string,
     comments: PropTypes.arrayOf(
         PropTypes.shape({
             uuid: PropTypes.string.isRequired,
@@ -210,21 +214,22 @@ CommentsList.propTypes = {
             nbReplies: PropTypes.number,
         })
     ),
-    isSendingComment: PropTypes.bool,
-    showForm: PropTypes.bool,
-    sendingReplies: PropTypes.array,
-    onSendComment: PropTypes.func.isRequired,
-    onDeleteComment: PropTypes.func.isRequired,
-    onReportComment: PropTypes.func.isRequired,
-    onApproveComment: PropTypes.func.isRequired,
-    onLoadMore: PropTypes.func.isRequired,
     currentUserId: PropTypes.string.isRequired,
+    emptyLabel: PropTypes.string,
+    isAuthenticated: PropTypes.bool,
+    isFormActive: PropTypes.bool,
+    isSendingComment: PropTypes.bool,
+    onApproveComment: PropTypes.func.isRequired,
+    onDeleteComment: PropTypes.func.isRequired,
+    onLoadMore: PropTypes.func.isRequired,
+    onReportComment: PropTypes.func.isRequired,
+    onSendComment: PropTypes.func.isRequired,
     ownerId: PropTypes.string.isRequired,
     parentId: PropTypes.string,
-    emptyLabel: PropTypes.string,
     placeholder: PropTypes.string,
+    sendingReplies: PropTypes.array,
+    showForm: PropTypes.bool,
     total: PropTypes.number,
-    isAuthenticated: PropTypes.bool,
 };
 
 export default CommentsList;
