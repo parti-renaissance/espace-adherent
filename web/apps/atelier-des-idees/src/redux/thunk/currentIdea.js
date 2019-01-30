@@ -38,7 +38,7 @@ export function deleteCurrentIdea() {
 
 export function goBackFromCurrentIdea() {
     return () => {
-        history.push('/atelier-des-idees');
+        history.goBack();
     };
 }
 
