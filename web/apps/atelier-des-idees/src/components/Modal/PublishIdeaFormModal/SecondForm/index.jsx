@@ -44,10 +44,6 @@ class SecondForm extends React.Component {
                     acc.form = 'Certaines informations sont manquantes ou erronées';
                 }
                 canSubmit = false;
-            } else {
-                acc[curr] = '';
-                acc.form = '';
-                canSubmit = true;
             }
             return acc;
         }, {});
