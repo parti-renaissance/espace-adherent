@@ -18,11 +18,11 @@ export function fetchAuthUser() {
     };
 }
 
-export function setNickname(nickname) {
+export function setNickname(nickname, useNickname) {
     return (dispatch, getState, axios) => {
         dispatch(createRequest(SET_NICKNAME));
         return axios
-            .put('/api/adherents/me/anonymize', { nickname })
+            .put('/api/adherents/me/anonymize', { nickname, use_nickname: useNickname })
             .then(() => {
                 dispatch(createRequestSuccess(SET_NICKNAME));
             })

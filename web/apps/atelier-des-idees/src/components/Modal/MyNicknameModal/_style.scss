@@ -25,6 +25,17 @@
     }
   }
 
+  .my-nickname-modal__form__use-nickname {
+    display: flex;
+    align-items: center;
+    margin-top: 40px;
+
+    .my-nickname-modal__form__label {
+      margin-bottom: 0;
+      margin-right: 10px;
+    }
+  }
+
   .my-nickname-modal__form__button {
     width: 100%;
     height: 60px;

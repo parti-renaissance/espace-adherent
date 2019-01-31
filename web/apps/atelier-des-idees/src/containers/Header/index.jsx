@@ -28,7 +28,11 @@ function mapDispatchToProps(dispatch) {
         unmountHeader: () => dispatch(hideModal()),
         onMyIdeasBtnClicked: tabActive => dispatch(showModal(MY_IDEAS_MODAL, { tabActive })),
         onMyNicknameClicked: () =>
-            dispatch(showModal(MY_NICKNAME_MODAL, { onSubmit: nickname => dispatch(setNickname(nickname)) })),
+            dispatch(
+                showModal(MY_NICKNAME_MODAL, {
+                    onSubmit: (nickname, useNickname) => dispatch(setNickname(nickname, useNickname)),
+                })
+            ),
     };
 }
 

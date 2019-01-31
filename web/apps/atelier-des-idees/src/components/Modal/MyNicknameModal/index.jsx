@@ -1,18 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../../Button';
+import Switch from '../../Switch';
 
 class MyNicknameModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             nickname: '',
+            useNickname: false,
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit() {
-        this.props.onSubmit(this.state.nickname);
+        this.props.onSubmit(this.state.nickname, this.state.useNickname);
     }
 
     render() {
@@ -40,6 +42,12 @@ class MyNicknameModal extends React.Component {
                         onChange={e => this.setState({ nickname: e.target.value })}
                         placeholder="Entrez votre pseudo"
                     />
+                    <div className="my-nickname-modal__form__use-nickname">
+                        <span className="my-nickname-modal__form__label">Utiliser le pseudo</span>
+                        <Switch
+                            onChange={() => this.setState(prevState => ({ useNickname: !prevState.useNickname }))}
+                        />
+                    </div>
                     <Button className="my-nickname-modal__form__button" type="submit" label="Enregistrer" />
                 </form>
             </div>
