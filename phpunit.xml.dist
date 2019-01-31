@@ -21,7 +21,6 @@
 
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-        <listener class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener" />
     </listeners>
 
     <filter>
