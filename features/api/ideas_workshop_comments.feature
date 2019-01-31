@@ -143,9 +143,9 @@ Feature:
           "content":"J'ouvre une discussion sur le probl\u00e8me.",
           "author":{
              "uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458",
-             "nickname":"pont",
-             "first_name":null,
-             "last_name":null
+             "nickname":null,
+             "first_name":"Carl",
+             "last_name":"Mirabeau"
           },
           "created_at": "@string@.isDateTime()",
           "uuid":"dfd6a2f2-5579-421f-96ac-98993d0edea1",

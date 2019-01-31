@@ -1611,9 +1611,9 @@ Feature:
                       "content":"J'ouvre une discussion sur le problème.",
                       "author":{
                          "uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458",
-                         "nickname":"pont",
-                         "first_name":null,
-                         "last_name":null
+                         "nickname":null,
+                         "first_name":"Carl",
+                         "last_name":"Mirabeau"
                       },
                       "approved":false,
                       "created_at": "@string@.isDateTime()"
