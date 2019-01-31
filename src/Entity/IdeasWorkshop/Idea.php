@@ -223,8 +223,8 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     /**
      * @ORM\Column
      *
-     * @Assert\Length(max=120)
-     * @Assert\NotBlank(message="idea.name.not_blank")
+     * @Assert\Length(max=120, groups={"Admin"})
+     * @Assert\NotBlank(message="idea.name.not_blank", groups={"Admin"})
      *
      * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read", "vote_read"})
      */
@@ -234,7 +234,7 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
      * @ORM\ManyToMany(targetEntity="Theme")
      * @ORM\JoinTable(name="ideas_workshop_ideas_themes")
      *
-     * @Assert\Count(min=1, minMessage="idea.theme.min_count", groups={"idea_publish"})
+     * @Assert\Count(min=1, minMessage="idea.theme.min_count", groups={"idea_publish", "Admin"})
      *
      * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read"})
      */
@@ -243,7 +243,7 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     /**
      * @ORM\ManyToOne(targetEntity="Category")
      *
-     * @Assert\NotBlank(message="idea.category.not_blank", groups={"idea_publish"})
+     * @Assert\NotBlank(message="idea.category.not_blank", groups={"idea_publish", "Admin"})
      *
      * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read"})
      */
@@ -351,7 +351,7 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     /**
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Assert\NotBlank(message="idea.description.not_blank", groups={"idea_publish"})
+     * @Assert\NotBlank(message="idea.description.not_blank", groups={"idea_publish", "Admin"})
      *
      * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read"})
      */
