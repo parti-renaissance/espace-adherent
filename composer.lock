@@ -10699,16 +10699,16 @@
         },
         {
             "name": "dama/doctrine-test-bundle",
-            "version": "v5.0.1",
+            "version": "v5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dmaicher/doctrine-test-bundle.git",
-                "reference": "c02ff7a3e8502c3ed93b3f40354685e36b9a500a"
+                "reference": "f166fed1c902807db361c125798741e4a78a06ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dmaicher/doctrine-test-bundle/zipball/c02ff7a3e8502c3ed93b3f40354685e36b9a500a",
-                "reference": "c02ff7a3e8502c3ed93b3f40354685e36b9a500a",
+                "url": "https://api.github.com/repos/dmaicher/doctrine-test-bundle/zipball/f166fed1c902807db361c125798741e4a78a06ce",
+                "reference": "f166fed1c902807db361c125798741e4a78a06ce",
                 "shasum": ""
             },
             "require": {
@@ -10718,8 +10718,10 @@
                 "symfony/framework-bundle": "~2.7|~3.0|~4.0"
             },
             "require-dev": {
+                "doctrine/common": "~2.10",
                 "phpunit/phpunit": "~6.0|~7.0",
-                "symfony/yaml": "~2.7|~3.0"
+                "symfony/phpunit-bridge": "~2.8|~3.0|~4.0",
+                "symfony/yaml": "~2.8|~3.0|~4.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -10742,9 +10744,10 @@
                     "email": "mail@dmaicher.de"
                 }
             ],
-            "description": "Symfony 2/3 bundle to isolate doctrine database tests and improve test performance",
+            "description": "Symfony bundle to isolate doctrine database tests and improve test performance",
             "keywords": [
                 "Symfony 3",
+                "Symfony 4",
                 "doctrine",
                 "isolation",
                 "performance",
@@ -10752,7 +10755,7 @@
                 "symfony 2",
                 "tests"
             ],
-            "time": "2018-02-25T14:57:01+00:00"
+            "time": "2018-12-09T10:45:39+00:00"
         },
         {
             "name": "fabpot/goutte",
