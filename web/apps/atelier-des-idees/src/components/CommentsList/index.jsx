@@ -24,10 +24,10 @@ class CommentsList extends React.Component {
         // Check if empty
         if (!this.state.comment) {
             this.setState({ errorComment: 'Veuillez remplir ce champ' });
-            return;
+        } else {
+            this.props.onSendComment(this.state.comment);
+            this.setState({ comment: '', showComments: true });
         }
-        this.props.onSendComment(this.state.comment);
-        this.setState({ comment: '' });
     }
 
     handleCommentChange(value) {
