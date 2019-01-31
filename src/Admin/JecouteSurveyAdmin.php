@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -49,13 +50,20 @@ class JecouteSurveyAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('name')
-            ->add('author', null, [
+            ->add('author', ModelAutocompleteFilter::class, [
                 'label' => 'Auteurs',
+                'field_options' => [
+                    'property' => 'lastName',
+                ],
                 'show_filter' => true,
             ])
-            ->add('author.referentTags', null, [
+            ->add('author.referentTags', ModelAutocompleteFilter::class, [
                 'label' => 'Zones',
                 'show_filter' => true,
+                'field_options' => [
+                    'property' => 'name',
+                    'minimum_input_length' => 2,
+                ],
             ])
         ;
     }
