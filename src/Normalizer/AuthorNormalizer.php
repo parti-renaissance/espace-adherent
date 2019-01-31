@@ -25,8 +25,12 @@ class AuthorNormalizer implements NormalizerInterface
         $data = $this->normalizer->normalize($object, $format, $context);
 
         if ($object->getNickname()) {
-            $data['first_name'] = null;
-            $data['last_name'] = null;
+            if ($object->isNicknameUsed()) {
+                $data['first_name'] = null;
+                $data['last_name'] = null;
+            } else {
+                $data['nickname'] = null;
+            }
         } elseif (!$this->security->getUser()) {
             $data['last_name'] = $object->getLastNameInitial();
         }

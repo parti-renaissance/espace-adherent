@@ -38,6 +38,7 @@ class AdherentController extends AbstractController
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
         $adherent->setNickname($nickname);
+        $adherent->setNicknameUsed($data['use_nickname'] ?? false);
 
         $violations = $validator->validate($adherent, null, ['anonymize']);
 

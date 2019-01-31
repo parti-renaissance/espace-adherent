@@ -91,6 +91,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $nickname;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $nicknameUsed;
+
+    /**
      * @ORM\Column(nullable=true)
      */
     private $password;
@@ -331,6 +336,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         PostAddress $postAddress,
         PhoneNumber $phone = null,
         string $nickname = null,
+        bool $nicknameUsed = false,
         string $status = self::DISABLED,
         string $registeredAt = 'now',
         ?array $tags = [],
@@ -345,6 +351,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->firstName = $firstName;
         $adherent->lastName = $lastName;
         $adherent->nickname = $nickname;
+        $adherent->nicknameUsed = $nicknameUsed;
         $adherent->emailAddress = $emailAddress;
         $adherent->birthdate = $birthDate;
         $adherent->position = $position;
@@ -1068,6 +1075,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setLegislativeCandidate(bool $candidate): void
     {
         $this->legislativeCandidate = $candidate;
+    }
+
+    public function isNicknameUsed(): bool
+    {
+        return $this->nicknameUsed;
+    }
+
+    public function setNicknameUsed(bool $nicknameUsed): void
+    {
+        $this->nicknameUsed = $nicknameUsed;
     }
 
     public function addSubscriptionType(SubscriptionType $type): void

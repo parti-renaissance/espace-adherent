@@ -210,7 +210,7 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user I can set my nickname
+  Scenario: As a logged-in user I can set my nickname but not use it
     Given I add "Accept" header equal to "application/json"
     And I am logged as "jacques.picard@en-marche.fr"
     And I add "Content-Type" header equal to "application/json"
@@ -218,6 +218,29 @@ Feature:
     """
     {
         "nickname": "new_nickname"
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "nickname": null,
+        "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+        "first_name": "Jacques",
+        "last_name": "Picard"
+    }
+    """
+
+  Scenario: As a logged-in user I can set my nickname and use it
+    Given I add "Accept" header equal to "application/json"
+    And I am logged as "jacques.picard@en-marche.fr"
+    And I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/adherents/me/anonymize" with body:
+    """
+    {
+        "nickname": "new_nickname",
+        "use_nickname": true
     }
     """
     Then the response status code should be 200

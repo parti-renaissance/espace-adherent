@@ -110,6 +110,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'email' => 'jacques.picard@en-marche.fr',
             'gender' => 'male',
             'nickname' => 'kikouslove',
+            'nickname_used' => true,
             'first_name' => 'Jacques',
             'last_name' => 'Picard',
             'address' => PostAddress::createFrenchAddress('36 rue de la Paix', '75008-75108', null, 48.8699464, 2.3297187),
