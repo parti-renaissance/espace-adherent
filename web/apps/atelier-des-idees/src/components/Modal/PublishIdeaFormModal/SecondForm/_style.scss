@@ -27,19 +27,14 @@
 			display: flex;
 
 			&--no-error {
-				.legal {
-					margin-bottom: 48px;
-				}
-				.policy {
-					margin-bottom: 35px;
-				}
+				margin-bottom: 35px;
 			}
 
 			&__checkbox {
 				display: block;
 				position: relative;
-				padding-left: 30px;
-				margin-bottom: 30px;
+				height: 30px;
+				margin-right: 30px;
 				cursor: pointer;
 				&__input {
 					position: absolute;
@@ -88,6 +83,7 @@
 
 			&__text {
 				margin-left: 10px;
+				margin-bottom: 0;
 				font-size: 14px;
 				line-height: 19px;
 
@@ -100,7 +96,6 @@
 		}
 
 		&__mentions--error {
-			margin-top: 15px;
 			margin-bottom: 35px;
 			font-size: 12px;
 			color: $giants-orange;
