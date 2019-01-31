@@ -23,6 +23,10 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
         '_sort_by' => 'name',
     ];
 
+    protected $formOptions = [
+        'validation_groups' => ['Admin'],
+    ];
+
     private $cachedDatagrid;
     private $ideaRepository;
 
