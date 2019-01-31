@@ -1,8 +1,8 @@
 DOCKER_COMPOSE?=docker-compose
 RUN=$(DOCKER_COMPOSE) run --rm app
-EXEC?=$(DOCKER_COMPOSE) exec app
+EXEC?=$(DOCKER_COMPOSE) exec app entrypoint.sh
 COMPOSER=$(EXEC) composer
-CONSOLE=bin/console
+CONSOLE=$(EXEC) bin/console
 PHPCSFIXER?=$(EXEC) php -d memory_limit=1024m vendor/bin/php-cs-fixer
 BEHAT=$(EXEC) vendor/bin/behat
 BEHAT_ARGS?=-vvv
@@ -34,7 +34,7 @@ clear: perm rm-docker-dev.lock                                                  
 	-$(EXEC) rm -rf var/cache/*
 	-$(EXEC) rm -rf var/sessions/*
 	-$(EXEC) rm -rf supervisord.log supervisord.pid npm-debug.log .tmp
-	-$(EXEC) $(CONSOLE) redis:flushall -n
+	-$(CONSOLE) redis:flushall -n
 	rm -rf var/logs/*
 	rm -rf web/built
 	rm var/.php_cs.cache
@@ -43,8 +43,8 @@ clean: clear                                                                    
 	rm -rf vendor node_modules
 
 cc:                                                                                                    ## Clear the cache in dev env
-	$(EXEC) $(CONSOLE) cache:clear --no-warmup
-	$(EXEC) $(CONSOLE) cache:warmup
+	$(CONSOLE) cache:clear --no-warmup
+	$(CONSOLE) cache:warmup
 
 tty:                                                                                                   ## Run app container in interactive mode
 	$(RUN) /bin/bash
@@ -59,7 +59,7 @@ wait-for-rabbitmq:
 	$(EXEC) php -r "set_time_limit(60);for(;;){if(@fsockopen('rabbitmq',5672)){break;}echo \"Waiting for RabbitMQ\n\";sleep(1);}"
 
 rabbitmq-fabric: wait-for-rabbitmq
-	$(EXEC) $(CONSOLE) rabbitmq:setup-fabric
+	$(CONSOLE) rabbitmq:setup-fabric
 
 ##
 ## Database
@@ -69,29 +69,29 @@ wait-for-db:
 	$(EXEC) php -r "set_time_limit(60);for(;;){if(@fsockopen('db',3306)){break;}echo \"Waiting for MySQL\n\";sleep(1);}"
 
 db: vendor wait-for-db                                                                                 ## Reset the database and load fixtures
-	$(EXEC) $(CONSOLE) doctrine:database:drop --force --if-exists
-	$(EXEC) $(CONSOLE) doctrine:database:create --if-not-exists
-	$(EXEC) $(CONSOLE) doctrine:database:import -n -- dump/dump-2018.sql
-	$(EXEC) $(CONSOLE) doctrine:migrations:migrate -n
-	$(EXEC) $(CONSOLE) doctrine:fixtures:load -n
+	$(CONSOLE) doctrine:database:drop --force --if-exists
+	$(CONSOLE) doctrine:database:create --if-not-exists
+	$(CONSOLE) doctrine:database:import -n -- dump/dump-2018.sql
+	$(CONSOLE) doctrine:migrations:migrate -n
+	$(CONSOLE) doctrine:fixtures:load -n
 
 db-diff: vendor wait-for-db                                                                            ## Generate a migration by comparing your current database to your mapping information
-	$(EXEC) $(CONSOLE) doctrine:migration:diff
+	$(CONSOLE) doctrine:migration:diff
 
 db-diff-dump: vendor wait-for-db                                                                       ## Generate a migration by comparing your current database to your mapping information and display it in console
-	$(EXEC) $(CONSOLE) doctrine:schema:update --dump-sql
+	$(CONSOLE) doctrine:schema:update --dump-sql
 
 db-migrate: vendor wait-for-db                                                                         ## Migrate database schema to the latest available version
-	$(EXEC) $(CONSOLE) doctrine:migration:migrate -n
+	$(CONSOLE) doctrine:migration:migrate -n
 
 db-rollback: vendor wait-for-db                                                                        ## Rollback the latest executed migration
-	$(EXEC) $(CONSOLE) doctrine:migration:migrate prev -n
+	$(CONSOLE) doctrine:migration:migrate prev -n
 
 db-load: vendor wait-for-db                                                                            ## Reset the database fixtures
-	$(EXEC) $(CONSOLE) doctrine:fixtures:load -n
+	$(CONSOLE) doctrine:fixtures:load -n
 
 db-validate: vendor wait-for-db                                                                        ## Check the ORM mapping
-	$(EXEC) $(CONSOLE) doctrine:schema:validate
+	$(CONSOLE) doctrine:schema:validate
 
 
 ##
@@ -139,15 +139,15 @@ tfp: assets-amp assets-prod assets-apps vendor perm tfp-rabbitmq tfp-db         
 tfp-rabbitmq: wait-for-rabbitmq                                                                        ## Init RabbitMQ setup for tests
 	$(DOCKER_COMPOSE) exec rabbitmq rabbitmqctl add_vhost /test || true
 	$(DOCKER_COMPOSE) exec rabbitmq rabbitmqctl set_permissions -p /test guest ".*" ".*" ".*"
-	$(EXEC) $(CONSOLE) --env=test rabbitmq:setup-fabric
+	$(CONSOLE) --env=test rabbitmq:setup-fabric
 
 tfp-db: wait-for-db                                                                                    ## Init databases for tests
 	$(EXEC) rm -rf /tmp/data.db app/data/dumped_referents_users || true
-	$(EXEC) $(CONSOLE) doctrine:database:drop --force --if-exists --env=test
-	$(EXEC) $(CONSOLE) doctrine:database:create --env=test
-	$(EXEC) $(CONSOLE) doctrine:database:import --env=test -n -- dump/dump-2018.sql
-	$(EXEC) $(CONSOLE) doctrine:migration:migrate -n --env=test
-	$(EXEC) $(CONSOLE) doctrine:schema:validate --env=test
+	$(CONSOLE) doctrine:database:drop --force --if-exists --env=test
+	$(CONSOLE) doctrine:database:create --env=test
+	$(CONSOLE) doctrine:database:import --env=test -n -- dump/dump-2018.sql
+	$(CONSOLE) doctrine:migration:migrate -n --env=test
+	$(CONSOLE) doctrine:schema:validate --env=test
 
 tj: node_modules                                                                                       ## Run the Javascript tests
 	$(EXEC) yarn test
@@ -157,10 +157,10 @@ lint: ls ly lt lj phpcs                                                         
 ls: ly lt                                                                                              ## Lint Symfony (Twig and YAML) files
 
 ly:
-	$(EXEC) $(CONSOLE) lint:yaml app/config --parse-tags
+	$(CONSOLE) lint:yaml app/config --parse-tags
 
 lt:
-	$(EXEC) $(CONSOLE) lint:twig templates
+	$(CONSOLE) lint:twig templates
 
 lj: node_modules                                                                                       ## Lint the Javascript to follow the convention
 	$(EXEC) yarn lint
@@ -204,7 +204,6 @@ up:
 
 perm:
 	$(EXEC) chmod -R 777 var app/data/images app/data/files
-	$(EXEC) chown -R www-data:root var
 	$(EXEC) chmod 660 var/public.key var/private.key
 
 # Rules from files

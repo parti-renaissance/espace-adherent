@@ -7,6 +7,7 @@ ENV LANG="en_US.UTF-8" \
     DEBIAN_FRONTEND="noninteractive" \
     SYMFONY_ALLOW_APPDEV=1 \
     NODE_VERSION=8.14.0 \
+    GOSU_VERSION=1.11 \
     COMPOSER_ALLOW_SUPERUSER=1
 
 EXPOSE 80
@@ -70,6 +71,11 @@ RUN apt-get update -q && \
 
     mkdir /run/php
 
+RUN curl -L https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture) --output /usr/local/bin/gosu && \
+    chmod +x /usr/local/bin/gosu && \
+    addgroup enmarche && \
+    adduser --home=/home/enmarche --shell=/bin/bash --ingroup=enmarche --disabled-password --quiet enmarche
+
 # Blackfire
 RUN wget -O - https://packages.blackfire.io/gpg.key | apt-key add - \
     && echo "deb http://packages.blackfire.io/debian any main" | tee /etc/apt/sources.list.d/blackfire.list \
@@ -88,5 +94,6 @@ COPY pool.conf /etc/php/7.1/fpm/pool.d/www.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY symfony.conf /etc/nginx/symfony.conf
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY entrypoint.sh /usr/local/bin/
 
-CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+ENTRYPOINT ["entrypoint.sh"]
