@@ -24,10 +24,10 @@ class CommentsList extends React.Component {
         // Check if empty
         if (!this.state.comment) {
             this.setState({ errorComment: 'Veuillez remplir ce champ' });
-            return;
+        } else {
+            this.props.onSendComment(this.state.comment);
+            this.setState({ comment: '', showComments: true });
         }
-        this.props.onSendComment(this.state.comment);
-        this.setState({ comment: '' });
     }
 
     handleCommentChange(value) {
@@ -122,11 +122,11 @@ class CommentsList extends React.Component {
                             className="comments-list__empty"
                             onClick={() => this.setState(prevState => ({ showForm: !prevState.showForm }))}
                         >
-                            <span>
+                            <span className="comments-list__empty__label">
                                   Soyez <span className="comments-list__empty--highlight">le premier</span> à contribuer
                                   sur cette partie
+                                <img className="comments-list__empty__toggle" src={icn_toggle_content_big} />
                             </span>
-                            <img className="comments-list__empty__toggle" src={icn_toggle_content_big} />
                         </button>
                     )}
                 {this.state.showComments && 0 < this.props.total - this.props.comments.length && (
