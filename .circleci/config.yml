@@ -109,8 +109,10 @@ jobs:
                 mkdir -p ./phpunit
                 make tfp-rabbitmq tfp-db
 
-                GROUP1='adherent,amp,article,boardMember,citizenProject'
-                GROUP2='api,admin,address,citizenAction,command,committee,committeeManager,coordinator,documents,donation,invitation,jeMarche,legislatives,map,membership,security,eventManager,procuration'
+                GROUP1='adherent,amp,article,boardMember'
+                GROUP2='api,admin,address,citizenAction,citizenProject,committee,security'
+                GROUP3='committeeManager,coordinator,documents,donation,eventManager'
+                GROUP4='invitation,jeMarche,legislatives,map,membership,procuration,command'
 
                 case $CIRCLE_NODE_INDEX in
                     0)
@@ -120,7 +122,13 @@ jobs:
                         $DOCKER_COMPOSE exec app ./vendor/bin/phpunit --group $GROUP2 --log-junit ./phpunit/junit.xml
                         ;;
                     2)
-                        $DOCKER_COMPOSE exec app ./vendor/bin/phpunit --exclude-group $GROUP1,$GROUP2 --log-junit ./phpunit/junit.xml
+                        $DOCKER_COMPOSE exec app ./vendor/bin/phpunit --group $GROUP3 --log-junit ./phpunit/junit.xml
+                        ;;
+                    3)
+                        $DOCKER_COMPOSE exec app ./vendor/bin/phpunit --group $GROUP4 --log-junit ./phpunit/junit.xml
+                        ;;
+                    4)
+                        $DOCKER_COMPOSE exec app ./vendor/bin/phpunit --exclude-group $GROUP1,$GROUP2,$GROUP3,$GROUP4 --log-junit ./phpunit/junit.xml
                         ;;
                     *)
                         echo "Too many parallelism instances configured\n"
