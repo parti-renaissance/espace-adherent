@@ -71,6 +71,11 @@ class Choice
         return $this->id;
     }
 
+    public function resetId(): void
+    {
+        $this->id = null;
+    }
+
     public function getQuestion(): ?Question
     {
         return $this->question;
@@ -124,5 +129,10 @@ class Choice
     public function removeDataAnswer(DataAnswer $dataAnswer): void
     {
         $this->dataAnswers->removeElement($dataAnswer);
+    }
+
+    public function __clone()
+    {
+        $this->resetId();
     }
 }

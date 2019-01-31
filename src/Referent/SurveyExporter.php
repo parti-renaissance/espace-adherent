@@ -38,8 +38,12 @@ class SurveyExporter
                 'stats' => [
                     'label' => "<span id='survey-stats-$i' class='btn btn--default'><i class='fa fa-bar-chart'></i></span>",
                     'url' => $this->urlGenerator->generate('app_referent_survey_stats', ['uuid' => $survey->getUuid()]),
-                    ],
-                ];
+                ],
+                'duplicate' => [
+                    'label' => "<span class='btn btn--default'><i class='fa fa-copy'></i></span>",
+                    'url' => $this->urlGenerator->generate('app_referent_survey_duplicate', ['uuid' => $survey->getUuid()]),
+                ],
+            ];
             ++$i;
         }
 
