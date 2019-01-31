@@ -96,9 +96,17 @@
       border-bottom: 3px solid $pale-cerulean;
     }
 
+    .comments-list__empty__label {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
     .comments-list__empty__toggle {
       position: absolute;
-      right: 15px;
+      right: 0;
+      top: 50%;
+      margin-top: -10px;
     }
   }
 
@@ -131,7 +139,6 @@
       padding: 30px;
 
       .comments-list__empty__toggle {
-        right: 30px;
         transform: rotate(-90deg);
       }
     }
