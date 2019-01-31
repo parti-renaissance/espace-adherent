@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class ApproveThreadCommentController
 {
-    public function __invoke(Request $request): ThreadComment
+    public function approve(Request $request): ThreadComment
     {
         /** @var ThreadComment $object */
         $object = $request->attributes->get('data');
@@ -18,6 +18,20 @@ class ApproveThreadCommentController
         }
 
         $object->setApproved(true);
+
+        return $object;
+    }
+
+    public function disapprove(Request $request): ThreadComment
+    {
+        /** @var ThreadComment $object */
+        $object = $request->attributes->get('data');
+
+        if (!$object->isApproved()) {
+            throw new BadRequestHttpException('The comment is already disapproved');
+        }
+
+        $object->setApproved(false);
 
         return $object;
     }

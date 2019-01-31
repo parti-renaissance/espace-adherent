@@ -194,6 +194,26 @@ Feature:
        "approved": true
     }
     """
+    And I should have 1 email "ApprovedIdeaCommentMessage" for "benjyd@aol.com" with payload:
+    """
+    {
+      "FromEmail": "atelier-des-idees@en-marche.fr",
+      "FromName": "La République En Marche !",
+      "Subject": "Votre contribution à une proposition a été approuvée par son auteur !",
+      "MJ-TemplateID": "645030",
+      "MJ-TemplateLanguage": true,
+      "Recipients": [
+          {
+              "Email": "benjyd@aol.com",
+              "Name": "Benjamin Duroc",
+              "Vars": {
+                  "first_name": "Benjamin",
+                  "idea_name": "Faire la paix"
+              }
+          }
+      ]
+    }
+    """
     When I send a "PUT" request to "/api/ideas-workshop/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/disapprove"
     Then the response status code should be 200
     And the response should be in JSON

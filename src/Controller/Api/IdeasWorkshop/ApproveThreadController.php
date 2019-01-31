@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class ApproveThreadController
 {
-    public function __invoke(Request $request): Thread
+    public function approve(Request $request): Thread
     {
         /** @var Thread $object */
         $object = $request->attributes->get('data');
@@ -18,6 +18,20 @@ class ApproveThreadController
         }
 
         $object->setApproved(true);
+
+        return $object;
+    }
+
+    public function disapprove(Request $request): Thread
+    {
+        /** @var Thread $object */
+        $object = $request->attributes->get('data');
+
+        if (!$object->isApproved()) {
+            throw new BadRequestHttpException('The thread is already disapproved');
+        }
+
+        $object->setApproved(false);
 
         return $object;
     }
