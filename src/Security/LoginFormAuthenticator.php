@@ -3,7 +3,6 @@
 namespace AppBundle\Security;
 
 use AppBundle\Entity\FailedLoginAttempt;
-use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\FailedLoginAttemptRepository;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,7 +30,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $urlGenerator;
     private $csrfTokenManager;
     private $passwordEncoder;
-    private $adherentRepository;
     private $anonymousFollowerSession;
     private $failedLoginAttemptRepository;
 
@@ -39,14 +37,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         UrlGeneratorInterface $urlGenerator,
         CsrfTokenManagerInterface $csrfTokenManager,
         UserPasswordEncoderInterface $passwordEncoder,
-        AdherentRepository $adherentRepository,
         AnonymousFollowerSession $anonymousFollowerSession,
         FailedLoginAttemptRepository $failedLoginAttemptRepository
     ) {
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
-        $this->adherentRepository = $adherentRepository;
         $this->anonymousFollowerSession = $anonymousFollowerSession;
         $this->failedLoginAttemptRepository = $failedLoginAttemptRepository;
     }
@@ -117,7 +113,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     public function start(Request $request, AuthenticationException $authException = null)
     {
         if (
-            ($request->headers->has('Accept') && 'application/json' === $request->headers->get('Accept'))
+            \in_array('application/json', $request->getAcceptableContentTypes())
             || preg_match('#^/api/#', $request->getPathInfo())
         ) {
             return new JsonResponse('Unauthorized', 401);
