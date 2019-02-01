@@ -4,6 +4,7 @@ import Button from '../../Button';
 import Input from '../../Input';
 import Switch from '../../Switch';
 import SuccessModal from '../SuccessModal';
+import ErrorModal from '../ErrorModal';
 
 class MyNicknameModal extends React.Component {
     constructor(props) {
@@ -78,7 +79,7 @@ class MyNicknameModal extends React.Component {
                     (this.props.isSubmitSuccess ? (
                         <SuccessModal text="Vos informations ont bien été enregistrées" />
                     ) : (
-                        <p>ERROR</p>
+                        <ErrorModal submitAgain={this.handleSubmit} />
                     ))}
             </div>
         );
