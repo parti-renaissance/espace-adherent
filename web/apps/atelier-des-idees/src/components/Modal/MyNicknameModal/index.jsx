@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '../../Button';
 import Input from '../../Input';
 import Switch from '../../Switch';
+import SuccessModal from '../SuccessModal';
 
 class MyNicknameModal extends React.Component {
     constructor(props) {
@@ -73,7 +74,12 @@ class MyNicknameModal extends React.Component {
                         </form>
                     </React.Fragment>
                 )}
-                {hasSubmit && this.props.isSubmitSuccess ? <p>SUCCESS</p> : <p>ERROR</p>}
+                {hasSubmit &&
+                    (this.props.isSubmitSuccess ? (
+                        <SuccessModal text="Vos informations ont bien été enregistrées" />
+                    ) : (
+                        <p>ERROR</p>
+                    ))}
             </div>
         );
     }
