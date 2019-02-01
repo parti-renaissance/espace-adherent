@@ -121,7 +121,8 @@ Feature:
       "lastName": "Referent75and77",
       "use_nickname": false,
       "elected": false,
-      "larem": false
+      "larem": false,
+      "comments_cgu_accepted": false
     }
     """
 
@@ -142,7 +143,8 @@ Feature:
       "nickname":"kikouslove",
       "use_nickname":true,
       "elected": false,
-      "larem": true
+      "larem": true,
+      "comments_cgu_accepted": false
     }
     """
 

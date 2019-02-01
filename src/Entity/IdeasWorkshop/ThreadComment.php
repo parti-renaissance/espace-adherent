@@ -30,6 +30,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *         "post": {
  *             "path": "/ideas-workshop/thread_comments",
  *             "access_control": "is_granted('ROLE_ADHERENT')",
+ *             "validation_groups": {"Default", "write"},
  *             "normalization_context": {
  *                 "groups": {"thread_comment_write", "thread_comment_read"}
  *             },
