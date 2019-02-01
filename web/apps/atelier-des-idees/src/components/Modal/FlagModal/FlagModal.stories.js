@@ -17,4 +17,6 @@ const props = {
 
 storiesOf('FlagModal', module)
     .addParameters({ jest: ['FlagModal'] })
-    .add('default', () => <FlagModal {...props} onSubmit={action('Flag')} />);
+    .add('default', () => <FlagModal {...props} onSubmit={action('Flag')} />)
+    .add('success', () => <FlagModal {...props} onSubmit={action('Flag')} isSubmitSuccess={true} />)
+    .add('error', () => <FlagModal {...props} onSubmit={action('Flag')} isSubmitError={true} />);

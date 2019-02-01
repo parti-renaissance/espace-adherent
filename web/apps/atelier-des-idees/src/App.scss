@@ -29,6 +29,7 @@
 @import '../src/components/TextEditor/style';
 @import '../src/components/Collapse/style';
 @import '../src/components/TextArea/style';
+@import '../src/components/Input/style';
 @import '../src/components/Select/style';
 @import '../src/components/Switch/style';
 @import '../src/components/IdeaReader/style';
@@ -47,6 +48,9 @@
 @import '../src/components/Modal/DeleteIdeaModal/style';
 @import '../src/components/Modal/MyIdeasModal/style';
 @import '../src/components/Modal/FlagModal/style';
+@import '../src/components/Modal/MyNicknameModal/style';
+@import '../src/components/Modal/SuccessModal/style';
+@import '../src/components/Modal/ErrorModal/style';
 
 // pages
 @import '../src/pages/ThreeTabs/style';

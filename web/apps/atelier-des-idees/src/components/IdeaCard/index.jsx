@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 import VotingFooter from './VotingFooter';
 import ContributingFooter from './ContributingFooter';
+import { getUserDisplayName } from '../../helpers/entities';
 
 import icn_20px_contributors from './../../img/icn_20px_contributors.svg';
 import icn_20px_comments from './../../img/icn_20px_comments.svg';
@@ -83,7 +84,7 @@ class IdeaCard extends React.Component {
                                 <span className="idea-card__content__infos__author">
                                     <span className="idea-card__content__infos__meta">Par </span>
                                     <span className="idea-card__content__infos__author__name">
-                                        {this.props.author.first_name} {this.props.author.last_name}
+                                        {getUserDisplayName(this.props.author)}
                                     </span>
                                     <span className="idea-card__content__infos__author__separator" />
                                     <span
@@ -167,8 +168,9 @@ IdeaCard.defaultProps = {
 
 IdeaCard.propTypes = {
     author: PropTypes.shape({
-        first_name: PropTypes.string.isRequired,
-        last_name: PropTypes.string.isRequired,
+        first_name: PropTypes.string,
+        last_name: PropTypes.string,
+        nickname: PropTypes.string,
     }).isRequired,
     author_category: PropTypes.string.isRequired,
     thumbnail: PropTypes.string,

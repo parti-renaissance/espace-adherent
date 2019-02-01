@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ReactModal from 'react-modal';
+import * as modalTypes from '../../constants/modalTypes';
 import { hideModal } from '../../redux/actions/modal';
 import { selectModalData } from '../../redux/selectors/modal';
 
@@ -8,7 +9,7 @@ import { selectModalData } from '../../redux/selectors/modal';
 import ReportsModal from '../../components/Modal/ReportsModal';
 import PublishIdeaFormModal from '../../containers/PublishIdeaFormModal';
 import DeleteIdeaModal from '../../components/Modal/DeleteIdeaModal';
-// import MyIdeasModal from '../../components/Modal/MyIdeasModal';
+import MyNicknameModal from '../../containers/MyNicknameModal';
 import MyIdeasContainer from '../../containers/MyIdeas';
 import FlagModal from '../../containers/FlagModal';
 import icn_close from './../../img/icn_close.svg';
@@ -16,12 +17,13 @@ import icn_close from './../../img/icn_close.svg';
 const MODAL_COMPONENTS = {
     // to use a modal, just add it below with its corresponding type
     // ex:
-    // modalTypes.TEST_MODAL: TestModal,
-    REPORTS_MODAL: ReportsModal,
-    PUBLISH_IDEA_MODAL: PublishIdeaFormModal,
-    DELETE_IDEA_MODAL: DeleteIdeaModal,
-    MY_IDEAS_MODAL: MyIdeasContainer,
-    FLAG_MODAL: FlagModal,
+    // [modalTypes.TEST_MODAL]: TestModal,
+    [modalTypes.REPORTS_MODAL]: ReportsModal,
+    [modalTypes.PUBLISH_IDEA_MODAL]: PublishIdeaFormModal,
+    [modalTypes.DELETE_IDEA_MODAL]: DeleteIdeaModal,
+    [modalTypes.MY_IDEAS_MODAL]: MyIdeasContainer,
+    [modalTypes.FLAG_MODAL]: FlagModal,
+    [modalTypes.MY_NICKNAME_MODAL]: MyNicknameModal,
 };
 
 class ModalRoot extends React.Component {
@@ -48,7 +50,8 @@ class ModalRoot extends React.Component {
                 overlayClassName="modal-overlay"
                 isOpen={isOpen}
                 onRequestClose={this.closeModal}
-                ariaHideApp={false}>
+                ariaHideApp={false}
+            >
                 <button className="modal-closeBtn" onClick={this.closeModal}>
                     <img src={icn_close} />
                 </button>

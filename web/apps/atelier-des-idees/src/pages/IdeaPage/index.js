@@ -17,6 +17,7 @@ import { selectAuthUser, selectIsAuthenticated } from '../../redux/selectors/aut
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectCurrentIdea, selectGuidelines } from '../../redux/selectors/currentIdea';
 import { setCurrentIdea } from '../../redux/actions/currentIdea';
+import { getUserDisplayName } from '../../helpers/entities';
 
 class IdeaPage extends React.Component {
     componentDidMount() {
@@ -68,7 +69,7 @@ function mapStateToProps(state, ownProps) {
     const { author = {}, ...ideaData } = idea;
     const formattedIdea = {
         ...ideaData,
-        authorName: author ? `${author.first_name} ${author.last_name}` : '',
+        authorName: author ? getUserDisplayName(author) : '',
     };
     const isAuthenticated = selectIsAuthenticated(state);
 

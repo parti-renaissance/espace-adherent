@@ -1,4 +1,4 @@
-import { FETCH_AUTH_USER } from '../constants/actionTypes';
+import { FETCH_AUTH_USER, SET_NICKNAME } from '../constants/actionTypes';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { setAuthUser } from '../actions/auth';
 
@@ -14,6 +14,20 @@ export function fetchAuthUser() {
             })
             .catch((error) => {
                 dispatch(createRequestFailure(FETCH_AUTH_USER));
+            });
+    };
+}
+
+export function setNickname(nickname, useNickname) {
+    return (dispatch, getState, axios) => {
+        dispatch(createRequest(SET_NICKNAME));
+        return axios
+            .put('/api/adherents/me/anonymize', { nickname, use_nickname: useNickname })
+            .then(() => {
+                dispatch(createRequestSuccess(SET_NICKNAME));
+            })
+            .catch(() => {
+                dispatch(createRequestFailure(SET_NICKNAME));
             });
     };
 }
