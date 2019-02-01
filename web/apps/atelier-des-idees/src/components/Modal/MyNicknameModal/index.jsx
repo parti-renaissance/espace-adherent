@@ -52,7 +52,12 @@ class MyNicknameModal extends React.Component {
                             onChange={() => this.setState(prevState => ({ useNickname: !prevState.useNickname }))}
                         />
                     </div>
-                    <Button className="my-nickname-modal__form__button" type="submit" label="Enregistrer" />
+                    <Button
+                        className="my-nickname-modal__form__button"
+                        type="submit"
+                        label="Enregistrer"
+                        isLoading={this.props.isSubmitting}
+                    />
                 </form>
             </div>
         );
@@ -61,6 +66,7 @@ class MyNicknameModal extends React.Component {
 
 MyNicknameModal.defaultProps = {
     defaultValues: {},
+    isSubmitting: false,
 };
 
 MyNicknameModal.propTypes = {
@@ -68,6 +74,7 @@ MyNicknameModal.propTypes = {
         nickname: PropTypes.string,
         useNickname: PropTypes.bool,
     }),
+    isSubmitting: PropTypes.bool,
     onSubmit: PropTypes.func.isRequired,
 };
 

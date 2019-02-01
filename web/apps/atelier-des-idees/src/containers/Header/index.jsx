@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { showModal, hideModal } from '../../redux/actions/modal';
-import { setNickname } from '../../redux/thunk/auth';
 import { selectIsAuthenticated } from '../../redux/selectors/auth';
 import Header from '../../components/Header';
 
@@ -27,12 +26,7 @@ function mapDispatchToProps(dispatch) {
     return {
         unmountHeader: () => dispatch(hideModal()),
         onMyIdeasBtnClicked: tabActive => dispatch(showModal(MY_IDEAS_MODAL, { tabActive })),
-        onMyNicknameClicked: () =>
-            dispatch(
-                showModal(MY_NICKNAME_MODAL, {
-                    onSubmit: (nickname, useNickname) => dispatch(setNickname(nickname, useNickname)),
-                })
-            ),
+        onMyNicknameClicked: () => dispatch(showModal(MY_NICKNAME_MODAL)),
     };
 }
 
