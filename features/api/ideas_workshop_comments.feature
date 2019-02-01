@@ -185,7 +185,6 @@ Feature:
        "content":"Aenean viverra efficitur lorem",
        "author":{
           "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
-          "nickname":null,
           "first_name":"Benjamin",
           "last_name":"Duroc"
        },
