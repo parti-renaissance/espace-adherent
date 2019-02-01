@@ -10,3 +10,7 @@ export function sortEntitiesByDate(entities = [], direction = 'DESC') {
         return 0;
     });
 }
+
+export function getUserDisplayName(user) {
+    return user.nickname || `${user.first_name} ${user.last_name}`;
+}
