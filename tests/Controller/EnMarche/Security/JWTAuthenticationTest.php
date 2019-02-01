@@ -26,8 +26,6 @@ class JWTAuthenticationTest extends WebTestCase
             'password' => 'secret!12345',
         ]));
         $response = $this->client->getResponse();
-        dump($response->getContent());
-        die;
         $this->isSuccessful($response);
         $this->assertJson($content = $response->getContent());
 
