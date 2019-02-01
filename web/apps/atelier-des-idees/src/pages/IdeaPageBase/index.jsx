@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ideaStatus } from '../../constants/api';
-import Switch from '../../components/Switch';
 import CreateIdeaActions from './CreateIdeaActions';
+import IdeaPageHeader from './IdeaPageHeader';
 import IdeaPageTitle from './IdeaPageTitle';
 import IdeaContent from './IdeaContent';
 import VotingFooterIdeaPage from './VotingFooterIdeaPage';
 import IdeaPageSkeleton from './IdeaPageSkeleton';
 import autoSaveIcn from '../../img/icn_20px_autosave.svg';
-import icn_close from '../../img/icn_close.svg';
 
 const TITLE_MIN_LENGTH = 15;
 const ANSWER_MIN_LENGTH = 15;
@@ -184,61 +183,25 @@ class IdeaPageBase extends React.Component {
         const { idea } = this.props;
         return (
             <div className="create-idea-page">
-                <section className="create-idea-page__header">
-                    <div className="create-idea-page__header__inner l__wrapper">
-                        {!this.props.isLoading && (
-                            <React.Fragment>
-                                <button
-                                    className="button create-idea-actions__back"
-                                    onClick={() => this.props.onBackClicked()}
-                                >
-                                    ← Retour
-                                </button>
-                                {idea.status !== ideaStatus.FINALIZED && this.state.name && (
-                                    <Switch onChange={this.onToggleReadingMode} label="Passer en mode lecture" />
-                                )}
-                                {this.props.isAuthor && (
-                                    <CreateIdeaActions
-                                        onDeleteClicked={this.props.onDeleteClicked}
-                                        onPublishClicked={this.onPublishIdea}
-                                        onSaveClicked={this.onSaveIdea}
-                                        isDraft={idea.status === ideaStatus.DRAFT}
-                                        canPublish={
-                                            idea.status === ideaStatus.DRAFT || idea.status === ideaStatus.PENDING
-                                        }
-                                    />
-                                )}
-                                {this.props.isAuthenticated && !this.props.isAuthor && (
-                                    <button
-                                        className="button create-idea-actions__report"
-                                        onClick={() => this.props.onReportClicked()}
-                                    >
-                                        Signaler la proposition
-                                    </button>
-                                )}
-                            </React.Fragment>
-                        )}
-                    </div>
-                    {this.state.showSaveBanner && (
-                        <div className="create-idea-page__success-banner">
-                            <span>
-                                {'DRAFT' === idea.status
-                                    ? 'Votre brouillon a bien été enregistré'
-                                    : 'Vos modifications ont bien été enregistrées'}
-                            </span>
-                            <button
-                                className="create-idea-page__success-banner__close"
-                                onClick={() => {
-                                    this.setState({ showSaveBanner: false }, () => {
-                                        clearTimeout(this.saveBannerTimer);
-                                    });
-                                }}
-                            >
-                                <img src={icn_close} />
-                            </button>
-                        </div>
-                    )}
-                </section>
+                <IdeaPageHeader
+                    canToggleReadingMode={idea.status !== ideaStatus.FINALIZED && this.state.name}
+                    closeSaveBanner={() => {
+                        this.setState({ showSaveBanner: false }, () => {
+                            clearTimeout(this.saveBannerTimer);
+                        });
+                    }}
+                    isAuthenticated={this.props.isAuthenticated}
+                    isAuthor={this.props.isAuthor}
+                    onBackClicked={this.props.onBackClicked}
+                    onDeleteClicked={this.props.onDeleteClicked}
+                    onPublishClicked={this.onPublishIdea}
+                    onReportClicked={this.props.onReportClicked}
+                    onSaveClicked={this.onSaveIdea}
+                    showContent={!this.props.isLoading}
+                    showSaveBanner={this.state.showSaveBanner}
+                    status={idea.status}
+                    toggleReadingMode={this.onToggleReadingMode}
+                />
                 <div className="create-idea-page__content">
                     {!this.props.isLoading && idea.status === ideaStatus.DRAFT && (
                         <div className="create-idea-page__auto-save">
