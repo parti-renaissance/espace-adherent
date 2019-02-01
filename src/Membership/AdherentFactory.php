@@ -34,6 +34,8 @@ class AdherentFactory
             $request->position,
             $this->addressFactory->createFromAddress($request->getAddress()),
             $request->getPhone(),
+            null,
+            false,
             Adherent::DISABLED,
             'now',
             [],
@@ -60,6 +62,8 @@ class AdherentFactory
             isset($data['position']) ? $data['position'] : ActivityPositions::EMPLOYED,
             $data['address'],
             $phone,
+            $data['nickname'] ?? null,
+            $data['nickname_used'] ?? false,
             Adherent::DISABLED,
             isset($data['registered_at']) ? $data['registered_at'] : 'now'
         );

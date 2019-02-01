@@ -138,3 +138,119 @@ Feature:
       "lastName":"Picard"
     }
     """
+
+  Scenario: As a non logged-in user I can not set a nickname
+    Given I add "Accept" header equal to "application/json"
+    And I send a "PUT" request to "/api/adherents/me/anonymize"
+    Then the response status code should be 401
+
+  Scenario: As a logged-in user I can not set a nickname of another person
+    Given I add "Accept" header equal to "application/json"
+    And I am logged as "jacques.picard@en-marche.fr"
+    When I send a "PUT" request to "/api/adherents/me/anonymize" with body:
+    """
+    {
+    }
+    """
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+      "Property \"nickname\" is required."
+    """
+
+  Scenario: As a logged-in user I can not set a nickname that used by another person
+    Given I add "Accept" header equal to "application/json"
+    And I am logged as "jacques.picard@en-marche.fr"
+    When I send a "PUT" request to "/api/adherents/me/anonymize" with body:
+    """
+    {
+        "nickname": "pont"
+    }
+    """
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "nickname: Cette valeur est déjà utilisée.",
+        "violations": [
+            {
+                "propertyPath": "nickname",
+                "message": "Cette valeur est déjà utilisée."
+            }
+        ]
+    }
+    """
+
+  Scenario: As a logged-in user I cannot set my nickname if it's too long
+    Given I add "Accept" header equal to "application/json"
+    And I am logged as "jacques.picard@en-marche.fr"
+    And I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/adherents/me/anonymize" with body:
+    """
+    {
+        "nickname": "ilesttroplongmonnouveaunickname"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "nickname: Vous devez saisir au maximum 25 caractères.",
+        "violations": [
+            {
+                "propertyPath": "nickname",
+                "message": "Vous devez saisir au maximum 25 caractères."
+            }
+        ]
+    }
+    """
+
+  Scenario: As a logged-in user I can set my nickname but not use it
+    Given I add "Accept" header equal to "application/json"
+    And I am logged as "jacques.picard@en-marche.fr"
+    And I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/adherents/me/anonymize" with body:
+    """
+    {
+        "nickname": "new_nickname"
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "nickname": null,
+        "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+        "first_name": "Jacques",
+        "last_name": "Picard"
+    }
+    """
+
+  Scenario: As a logged-in user I can set my nickname and use it
+    Given I add "Accept" header equal to "application/json"
+    And I am logged as "jacques.picard@en-marche.fr"
+    And I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/adherents/me/anonymize" with body:
+    """
+    {
+        "nickname": "new_nickname",
+        "use_nickname": true
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "nickname": "new_nickname",
+        "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+        "first_name": null,
+        "last_name": null
+    }
+    """

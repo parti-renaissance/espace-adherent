@@ -14,4 +14,6 @@ interface PageMetaDataInterface
     public function getImageWidth(): ?int;
 
     public function getImageHeight(): ?int;
+
+    public function getImageUrl(): ?string;
 }

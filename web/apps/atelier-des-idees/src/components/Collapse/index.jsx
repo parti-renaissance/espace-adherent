@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import hideIcn from '../../img/icn_48px_tool_hide.svg';
-import revealIcn from '../../img/icn_48px_tool_reveal.svg';
+import revealIcn from '../../img/icn_48px_tool_reveal_white.svg';
 
 class Collapse extends React.Component {
     constructor(props) {
@@ -21,27 +21,20 @@ class Collapse extends React.Component {
                     'collapse--open': this.state.isCollapsed,
                 })}
             >
-                <div className="collapse__container">
-                    <a onClick={() => this.setState({ isCollapsed: !this.state.isCollapsed })}>
-                        {'function' === typeof Component ? <Component /> : Component}
-                    </a>
-
-                    {this.state.isCollapsed ? (
-                        <button
-                            className="button collapse__container__btn--open"
-                            onClick={() => this.setState(prevState => ({ isCollapsed: !prevState.isCollapsed }))}
-                        >
-                            <img src={hideIcn} />
-                        </button>
-                    ) : (
-                        <button
-                            className="button collapse__container__btn--close"
-                            onClick={() => this.setState({ isCollapsed: !this.state.isCollapsed })}
-                        >
-                            <img src={revealIcn} />
-                        </button>
-                    )}
-                </div>
+                <button
+                    className="collapse__container"
+                    onClick={() => this.setState(prevState => ({ isCollapsed: !prevState.isCollapsed }))}
+                >
+                    {'function' === typeof Component ? <Component /> : Component}
+                    <div
+                        className={classNames('collapse__container__btn', {
+                            'collapse__container__btn--open': this.state.isCollapsed,
+                            'collapse__container__btn--close': !this.state.isCollapsed,
+                        })}
+                    >
+                        {this.state.isCollapsed ? <img src={hideIcn} /> : <img src={revealIcn} />}
+                    </div>
+                </button>
                 {this.props.children && this.state.isCollapsed && <div>{this.props.children}</div>}
             </div>
         );

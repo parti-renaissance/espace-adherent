@@ -31,6 +31,7 @@ Feature:
              "content":"Commentaire d'un adhérent",
              "author":{
                 "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
+                "nickname":null,
                 "first_name":"Benjamin",
                 "last_name":"D."
              },
@@ -42,6 +43,7 @@ Feature:
              "content":"Commentaire de l'adhérent à desadhérer",
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+                "nickname":null,
                 "first_name":"Michel",
                 "last_name":"V."
              },
@@ -53,6 +55,7 @@ Feature:
              "content":"<p>Commentaire signalé</p>",
              "author":{
                 "uuid":"93de5d98-383a-4863-9f47-eb7a348873a8",
+                "nickname":null,
                 "first_name":"Laura",
                 "last_name":"D."
              },
@@ -83,6 +86,7 @@ Feature:
                 "content": "Deuxième commentaire d'un référent",
                 "author": {
                     "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "nickname":null,
                     "first_name": "Referent",
                     "last_name": "R."
                 },
@@ -94,6 +98,7 @@ Feature:
                 "content": "Commentaire d'un référent",
                 "author": {
                     "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "nickname":null,
                     "first_name": "Referent",
                     "last_name": "R."
                 },
@@ -105,6 +110,7 @@ Feature:
                 "content": "Lorem Ipsum Commentaris",
                 "author": {
                     "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
+                    "nickname":null,
                     "first_name": "Francis",
                     "last_name": "B."
                 },
@@ -137,6 +143,7 @@ Feature:
           "content":"J'ouvre une discussion sur le probl\u00e8me.",
           "author":{
              "uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458",
+             "nickname":null,
              "first_name":"Carl",
              "last_name":"Mirabeau"
           },
@@ -147,6 +154,7 @@ Feature:
        "content":"Phasellus vitae enim faucibus",
        "author":{
           "uuid":"d4b1e7e1-ba18-42a9-ace9-316440b30fa7",
+          "nickname":null,
           "first_name":"Martine",
           "last_name":"Lindt"
        },
@@ -156,20 +164,19 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user I can not approve a comment
+  Scenario Outline: As a logged-in user I can not approve/disapprove other comments
     Given I am logged as "carl999@example.fr"
-    When I send a "PUT" request to "/api/ideas-workshop/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/approval-toggle"
+    When I send a "PUT" request to "<url>"
     Then the response status code should be 403
+    Examples:
+      | url                                                                                 |
+      | /api/ideas-workshop/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/approve    |
+      | /api/ideas-workshop/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/disapprove |
 
-  Scenario: As an idea author, I can approve my comment
+  Scenario: As an idea author, I can approve/disapprove a comment
     Given I am logged as "jacques.picard@en-marche.fr"
     And I add "Content-Type" header equal to "application/json"
-    When I send a "PUT" request to "/api/ideas-workshop/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/approval-toggle" with body:
-    """
-    {
-        "approved": true
-    }
-    """
+    When I send a "PUT" request to "/api/ideas-workshop/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/approve"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -177,6 +184,7 @@ Feature:
     {
        "content":"Aenean viverra efficitur lorem",
        "author":{
+          "nickname":null,
           "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
           "first_name":"Benjamin",
           "last_name":"Duroc"
@@ -184,6 +192,44 @@ Feature:
        "created_at": "@string@.isDateTime()",
        "uuid":"b99933f3-180c-4248-82f8-1b0eb950740d",
        "approved": true
+    }
+    """
+    And I should have 1 email "ApprovedIdeaCommentMessage" for "benjyd@aol.com" with payload:
+    """
+    {
+      "FromEmail": "atelier-des-idees@en-marche.fr",
+      "FromName": "La République En Marche !",
+      "Subject": "Votre contribution à une proposition a été approuvée par son auteur !",
+      "MJ-TemplateID": "645030",
+      "MJ-TemplateLanguage": true,
+      "Recipients": [
+          {
+              "Email": "benjyd@aol.com",
+              "Name": "Benjamin Duroc",
+              "Vars": {
+                  "first_name": "Benjamin",
+                  "idea_name": "Faire la paix"
+              }
+          }
+      ]
+    }
+    """
+    When I send a "PUT" request to "/api/ideas-workshop/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/disapprove"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+       "content":"Aenean viverra efficitur lorem",
+       "author":{
+          "nickname":null,
+          "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
+          "first_name":"Benjamin",
+          "last_name":"Duroc"
+       },
+       "created_at": "@string@.isDateTime()",
+       "uuid":"b99933f3-180c-4248-82f8-1b0eb950740d",
+       "approved": false
     }
     """
 

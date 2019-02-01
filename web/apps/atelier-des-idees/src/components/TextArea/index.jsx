@@ -22,6 +22,7 @@ function TextArea(props) {
                     }}
                     placeholder={props.placeholder}
                     value={props.value}
+                    autoFocus={props.autofocus}
                 >
                     {props.value}
                 </textarea>
@@ -39,6 +40,7 @@ TextArea.defaultProps = {
     disabled: false,
     maxLength: undefined,
     placeholder: '',
+    autofocus: false,
     value: '',
     name: '',
     error: '',
@@ -50,6 +52,7 @@ TextArea.propTypes = {
     name: PropTypes.string,
     onChange: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
+    autofocus: PropTypes.bool,
     value: PropTypes.string,
     error: PropTypes.string,
 };

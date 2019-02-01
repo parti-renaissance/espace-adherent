@@ -2,7 +2,8 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Entity\Report\Report;
+use AppBundle\Entity\Report\ReportReasonEnum;
+use AppBundle\Entity\Report\ReportStatusEnum;
 use AppBundle\Report\ReportType;
 use AppBundle\Repository\ReportRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -25,7 +26,7 @@ class ReportAdmin extends AbstractAdmin
     private const DATE_FORMAT = 'Y-m-d H:i:s';
 
     protected $datagridValues = [
-        'status' => ['type' => FilterChoiceType::TYPE_EQUAL, 'value' => Report::STATUS_UNRESOLVED],
+        'status' => ['type' => FilterChoiceType::TYPE_EQUAL, 'value' => ReportStatusEnum::STATUS_UNRESOLVED],
         '_page' => 1,
         '_per_page' => 32,
         '_sort_order' => 'DESC',
@@ -171,7 +172,7 @@ class ReportAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => array_combine(Report::REASONS_LIST, Report::REASONS_LIST),
+                    'choices' => array_combine(ReportReasonEnum::REASONS_LIST, ReportReasonEnum::REASONS_LIST),
                     'choice_translation_domain' => 'reports',
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
@@ -194,7 +195,7 @@ class ReportAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => array_combine(Report::STATUS_LIST, Report::STATUS_LIST),
+                    'choices' => array_combine(ReportStatusEnum::toArray(), ReportStatusEnum::toArray()),
                     'choice_translation_domain' => 'reports',
                 ],
             ])

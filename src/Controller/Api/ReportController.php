@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\Report\Report;
+use AppBundle\Entity\Report\ReportReasonEnum;
 use AppBundle\Report\ReportCommand;
 use AppBundle\Report\ReportCreationCommandHandler;
 use AppBundle\Report\ReportManager;
@@ -77,7 +78,7 @@ class ReportController extends AbstractController
     public function reasonsAction(TranslatorInterface $translator): Response
     {
         $reasons = [];
-        foreach (Report::REASONS_LIST as $reason) {
+        foreach (ReportReasonEnum::REASONS_LIST as $reason) {
             $reasons[$reason] = $translator->trans($reason, [], 'reports');
         }
 

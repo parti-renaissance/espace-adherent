@@ -35,6 +35,7 @@ storiesOf('CommentsList', module)
     .addParameters({ jest: ['CommentsList'] })
     .add('default', () => (
         <CommentsList
+            isAuthenticated={true}
             comments={comments}
             onSendComment={action('send comment')}
             onDeleteComment={action('delete comment')}
@@ -42,10 +43,12 @@ storiesOf('CommentsList', module)
             onApprovedComment={action('edit comment')}
             ownerId="u1"
             onLoadMore={action('Load more comments')}
+            currentUserId="u100"
         />
     ))
     .add('sending comment', () => (
         <CommentsList
+            isAuthenticated={true}
             comments={comments}
             onSendComment={action('send comment')}
             onDeleteComment={action('delete comment')}
@@ -53,10 +56,53 @@ storiesOf('CommentsList', module)
             onApprovedComment={action('edit comment')}
             ownerId="u1"
             onLoadMore={action('Load more comments')}
+            currentUserId="u100"
             isSendingComment={true}
         />
     ))
+    .add('hide form', () => (
+        <CommentsList
+            isAuthenticated={true}
+            comments={comments}
+            onSendComment={action('send comment')}
+            onDeleteComment={action('delete comment')}
+            onEditComment={action('edit comment')}
+            onApprovedComment={action('edit comment')}
+            ownerId="u1"
+            onLoadMore={action('Load more comments')}
+            currentUserId="u100"
+            showForm={false}
+        />
+    ))
     .add('load more', () => (
+        <CommentsList
+            isAuthenticated={true}
+            comments={comments}
+            onSendComment={action('send comment')}
+            onDeleteComment={action('delete comment')}
+            onEditComment={action('edit comment')}
+            onApprovedComment={action('edit comment')}
+            ownerId="u1"
+            onLoadMore={action('Load more comments')}
+            currentUserId="u100"
+            total={comments.length * 2}
+        />
+    ))
+    .add('is owner', () => (
+        <CommentsList
+            isAuthenticated={true}
+            comments={comments}
+            onSendComment={action('send comment')}
+            onDeleteComment={action('delete comment')}
+            onEditComment={action('edit comment')}
+            onApprovedComment={action('edit comment')}
+            ownerId="u1"
+            onLoadMore={action('Load more comments')}
+            currentUserId="u1"
+            total={comments.length * 2}
+        />
+    ))
+    .add('is not authenticated', () => (
         <CommentsList
             comments={comments}
             onSendComment={action('send comment')}
@@ -65,6 +111,34 @@ storiesOf('CommentsList', module)
             onApprovedComment={action('edit comment')}
             ownerId="u1"
             onLoadMore={action('Load more comments')}
+            currentUserId="u1"
+            total={comments.length * 2}
+        />
+    ))
+    .add('without comments', () => (
+        <CommentsList
+            isAuthenticated={true}
+            comments={[]}
+            onSendComment={action('send comment')}
+            onDeleteComment={action('delete comment')}
+            onEditComment={action('edit comment')}
+            onApprovedComment={action('edit comment')}
+            ownerId="u1"
+            onLoadMore={action('Load more comments')}
+            currentUserId="u100"
+            total={comments.length * 2}
+        />
+    ))
+    .add('without comments / not authenticated', () => (
+        <CommentsList
+            comments={[]}
+            onSendComment={action('send comment')}
+            onDeleteComment={action('delete comment')}
+            onEditComment={action('edit comment')}
+            onApprovedComment={action('edit comment')}
+            ownerId="u1"
+            onLoadMore={action('Load more comments')}
+            currentUserId="u100"
             total={comments.length * 2}
         />
     ));

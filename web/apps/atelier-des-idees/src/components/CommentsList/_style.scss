@@ -2,16 +2,14 @@
 
 .comments-list {
   background-color: $snow;
-  padding: 30px 25px;
+  padding: 15px;
 
   .comments-list__comment {
     margin-bottom: 15px;
   }
 
-  &__replies {
-    > * {
-      padding: 30px 0 30px 91px;
-    }
+  &__replies > .comments-list {
+    padding: 0 0 20px 70px;
   }
 
   &__collapse-button {
@@ -20,52 +18,60 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 21px;
-    margin-bottom: 24px;
+    margin-bottom: 10px;
 
     &__icon-replies {
       margin-right: 9px;
     }
 
     &__icon-toggle {
-      margin: 3px 0 0 7px;
+      margin-left: 7px;
     }
 
     &__icon-toggle--rotate {
-      transform: rotate(180deg);
+      transform: rotate(90deg);
     }
 
     &__label {
-      font-size: 18px;
+      font-size: 16px;
       color: $light-black;
+    }
+
+    &:nth-last-child(2) {
+      margin-bottom: 20px;
     }
   }
 
   &__more {
     text-align: center;
-    padding: 20px 0;
+    padding-bottom: 20px;
 
     &-btn {
       @extend %reset-button;
-      color: $light-black;
-      font-size: 15px;
+      color: $dark-aurometalsaurus;
+      font-size: 14px;
       cursor: pointer;
     }
   }
 
   &__form {
     position: relative;
-    margin: 15px 0 40px;
+    text-align: right;
+
     .text-area__input {
       resize: none;
       overflow: auto;
-      min-height: 76px;
+      min-height: 74px;
+      padding: 15px;
+
+      &,
+      &::placeholder {
+        font-size: 14px;
+      }
     }
 
     &__button {
       cursor: pointer;
-      position: absolute;
-      right: 0;
       width: 140px;
       height: 40px;
       margin-top: 10px;
@@ -75,14 +81,66 @@
   }
 
   .comments-list__empty {
-    margin: 40px 0;
+    @extend %reset-button;
+    position: relative;
+    width: 100%;
+    padding: 15px 15px 30px;
     text-align: center;
-    font-size: 22px;
+    font-size: 20px;
     font-family: $font-gillsans;
-    color: $light-black;
+    color: $france;
+    cursor: pointer;
+    outline: none;
 
     &--highlight {
-      border-bottom: 3px solid $pale-sky;
+      border-bottom: 3px solid $pale-cerulean;
+    }
+
+    .comments-list__empty__label {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .comments-list__empty__toggle {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      margin-top: -10px;
+    }
+  }
+
+  .comments-list__contribute {
+    margin-top: 10px;
+    text-align: center;
+    background-color: $snow;
+    font-size: 18px;
+    font-family: $font-gillsans;
+
+    .comments-list__contribute__main {
+      padding: 25px 60px;
+      margin: 0;
+      background-color: $white;
+      color: $light-black;
+    }
+
+    .comments-list__contribute__link {
+      color: $saphir;
+      text-decoration: none;
+      border: 0;
+    }
+  }
+
+  &--closed {
+    padding: 0;
+    border: 1px solid $pale-sky;
+
+    .comments-list__empty {
+      padding: 30px;
+
+      .comments-list__empty__toggle {
+        transform: rotate(-90deg);
+      }
     }
   }
 }

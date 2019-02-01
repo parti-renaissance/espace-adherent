@@ -255,6 +255,9 @@
         <service id="AppBundle\Command\DonationCancelCommand" />
         <service id="AppBundle\Command\InitializeEmailSubscriptionHistoryCommand"/>
         <service id="AppBundle\Command\ImportDistrictsCommand"/>
+        <service id="AppBundle\Command\NotifyIdeaAuthorCommand">
+            <argument key="$mailer" type="service" id="app.mailer.transactional"/>
+        </service>
         <service id="AppBundle\Command\BindDeputiesToDistrictsCommand"/>
         <service id="AppBundle\Command\MigrateSubscriptionTypeCommand"/>
         <service id="AppBundle\Command\MailchimpSyncAllAdherentsCommand"/>
@@ -412,6 +415,11 @@
         <service id="AppBundle\IdeasWorkshop\ThemeManager" />
         <service id="AppBundle\Validator\CommitteeMemberValidator" />
         <service id="AppBundle\IdeasWorkshop\Listener\IdeaPublishListener" />
+        <service id="AppBundle\IdeasWorkshop\Listener\ApproveThreadCommentListener" />
+        <service id="AppBundle\IdeasWorkshop\Handler\SendMailForApprovedThreadCommentHandler">
+            <argument key="$mailer" type="service" id="app.mailer.transactional"/>
+            <tag name="messenger.message_handler"/>
+        </service>
         <service id="AppBundle\IdeasWorkshop\Handler\SendMailForPublishedIdeaHandler">
             <argument key="$mailer" type="service" id="app.mailer.transactional"/>
             <tag name="messenger.message_handler"/>

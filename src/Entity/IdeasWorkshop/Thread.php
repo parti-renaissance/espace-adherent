@@ -58,6 +58,42 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *                 }
  *             }
  *         },
+ *         "approve": {
+ *             "method": "PUT",
+ *             "path": "/ideas-workshop/threads/{id}/approve",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "object.getIdeaAuthor() == user",
+ *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\ApproveThreadController:approve",
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Thread resource.",
+ *                         "example": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
+ *                     }
+ *                 }
+ *             }
+ *         },
+ *         "disapprove": {
+ *             "method": "PUT",
+ *             "path": "/ideas-workshop/threads/{id}/disapprove",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "object.getIdeaAuthor() == user",
+ *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\ApproveThreadController:disapprove",
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Thread resource.",
+ *                         "example": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
+ *                     }
+ *                 }
+ *             }
+ *         },
  *         "put_approval_toggle": {
  *             "method": "PUT",
  *             "path": "/ideas-workshop/threads/{id}/approval-toggle",
@@ -205,6 +241,11 @@ class Thread extends BaseComment implements AuthorInterface, ReportableInterface
     public function getIdeaAuthor(): Adherent
     {
         return $this->getAnswer()->getIdea()->getAuthor();
+    }
+
+    public function getIdea(): ?Idea
+    {
+        return $this->getAnswer()->getIdea();
     }
 
     public function getContributors(): ArrayCollection

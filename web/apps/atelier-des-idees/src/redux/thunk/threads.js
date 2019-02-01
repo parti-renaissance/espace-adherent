@@ -18,6 +18,7 @@ export function approveComment(id, parentId = '') {
             type = 'thread_comments';
         }
         const comment = parentId ? selectThreadComment(getState(), id) : selectThread(getState(), id);
+        const approvalAction = comment.approved ? 'disapprove' : 'approve';
         // simulate toggle
         if (parentId) {
             dispatch(toggleApproveThreadComment(id));
@@ -26,9 +27,7 @@ export function approveComment(id, parentId = '') {
         }
         return (
             axios
-                .put(`/api/ideas-workshop/${type}/${id}/approval-toggle`, {
-                    approved: !comment.approved,
-                })
+                .put(`/api/ideas-workshop/${type}/${id}/${approvalAction}`)
                 // toggle back if error
                 .catch(() => {
                     if (parentId) {

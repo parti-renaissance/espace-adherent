@@ -23,6 +23,10 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
         '_sort_by' => 'name',
     ];
 
+    protected $formOptions = [
+        'validation_groups' => ['Admin'],
+    ];
+
     private $cachedDatagrid;
     private $ideaRepository;
 
@@ -51,7 +55,7 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('name', null, [
-                'label' => 'Nom',
+                'label' => 'Titre',
             ])
             ->add('slug', null, [
                 'label' => 'Slug',
@@ -85,7 +89,7 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('name', null, [
-                'label' => 'Nom',
+                'label' => 'Titre',
             ])
             ->add('description', null, [
                 'label' => 'Description',
@@ -145,8 +149,9 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('name', null, [
-                'label' => 'Nom',
+                'label' => 'Titre',
                 'header_style' => 'width: 250px',
+                'row_align' => 'none;word-break: break-all;',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',
@@ -183,9 +188,6 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
                 'actions' => [
                     'show' => [],
                     'edit' => [],
-                    'preview' => [
-                        'template' => 'admin/ideas_workshop/idea/list_show_page.html.twig',
-                    ],
                     'show_contributors' => [
                         'template' => 'admin/ideas_workshop/idea/list_show_contributors.html.twig',
                     ],

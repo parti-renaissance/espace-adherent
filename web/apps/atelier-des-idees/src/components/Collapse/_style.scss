@@ -1,9 +1,16 @@
 .collapse {
+  border-radius: 4px;
+
   &__container {
+    @extend %reset-button;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 30px 20px 20px;
+    width: 100%;
+    padding: 25px 30px 25px 25px;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
 
     a {
       text-decoration: none;
@@ -11,13 +18,11 @@
       cursor: pointer;
     }
 
-    .button {
+    .collapse__container__btn {
       width: 48px;
       height: 48px;
+      margin-left: 50px;
       padding: 0;
-      color: $blue;
-      font-size: 24px;
-      outline: none;
       border-color: transparent;
     }
 
@@ -34,5 +39,13 @@
 }
 
 .collapse--close {
-  background: $white-smoke;
+  background: $blue-sky;
+
+  .question-block-header__label {
+    color: $white;
+  }
+}
+
+.collapse--open > .collapse__container {
+  padding-left: 0;
 }
