@@ -312,6 +312,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $chartAccepted = false;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @JMS\Groups({"user_profile"})
+     */
+    private $commentsCguAccepted = false;
+
+    /**
      * @ORM\Column(type="simple_array", nullable=true)
      */
     private $mandates;
@@ -1334,5 +1341,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function hasMandate(): bool
     {
         return !empty($this->mandates);
+    }
+
+    public function isCommentsCguAccepted(): bool
+    {
+        return $this->commentsCguAccepted;
+    }
+
+    public function setCommentsCguAccepted(bool $commentsCguAccepted): void
+    {
+        $this->commentsCguAccepted = $commentsCguAccepted;
     }
 }

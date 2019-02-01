@@ -121,6 +121,31 @@ Feature:
     }
     """
 
+  Scenario: As a logged-in user I can't add my comment to a thread if I didn't send the terms of use checkbox status
+    Given I add "Content-Type" header equal to "application/json"
+    And I am logged as "martine.lindt@gmail.com"
+    When I send a "POST" request to "/api/ideas-workshop/thread_comments" with body:
+    """
+    {
+      "thread": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
+      "content": "Phasellus vitae enim faucibus🤘"
+    }
+    """
+    Then the response status code should be 400
+
+  Scenario: As a logged-in user I can't add my comment to a thread if I didn't accept the terms of use
+    Given I add "Content-Type" header equal to "application/json"
+    And I am logged as "martine.lindt@gmail.com"
+    When I send a "POST" request to "/api/ideas-workshop/thread_comments" with body:
+    """
+    {
+      "thread": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
+      "content": "Phasellus vitae enim faucibus🤘",
+      "comments_cgu_accepted": false
+    }
+    """
+    Then the response status code should be 400
+
   Scenario: As a logged-in user I can add my comment to a thread
     Given I am logged as "martine.lindt@gmail.com"
     And I add "Content-Type" header equal to "application/json"
@@ -128,7 +153,8 @@ Feature:
     """
     {
       "thread": "dfd6a2f2-5579-421f-96ac-98993d0edea1",
-      "content": "Phasellus vitae enim faucibus🤘"
+      "content": "Phasellus vitae enim faucibus🤘",
+      "comments_cgu_accepted": true
     }
     """
     Then the response status code should be 201
