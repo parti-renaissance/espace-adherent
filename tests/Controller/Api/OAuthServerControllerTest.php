@@ -261,7 +261,7 @@ class OAuthServerControllerTest extends WebTestCase
         static::assertSame(
             '{"uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458","elected":false,"larem":false,'
             .'"country":"FR","zipCode":"73100","nickname":"pont","use_nickname":false,'
-            .'"emailAddress":"carl999@example.fr","firstName":"Carl","lastName":"Mirabeau"}',
+            .'"emailAddress":"carl999@example.fr","comments_cgu_accepted":false,"firstName":"Carl","lastName":"Mirabeau"}',
             $response->getContent()
         );
 
