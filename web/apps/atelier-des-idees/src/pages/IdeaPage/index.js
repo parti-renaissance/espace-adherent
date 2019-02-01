@@ -60,6 +60,7 @@ IdeaPage.propTypes = {
 function mapStateToProps(state, ownProps) {
     const { id } = ownProps.match.params;
     const fetchIdeaState = selectLoadingState(state, 'FETCH_IDEA', id);
+    const saveState = selectLoadingState(state, 'SAVE_CURRENT_IDEA', id);
     // data
     const currentUser = selectAuthUser(state);
     // guidelines
@@ -80,6 +81,7 @@ function mapStateToProps(state, ownProps) {
         isAuthenticated,
         hasFetchError: fetchIdeaState.isError,
         isFetchingIdea: fetchIdeaState.isFetching,
+        isSaveSuccess: saveState.isSuccess,
     };
 }
 

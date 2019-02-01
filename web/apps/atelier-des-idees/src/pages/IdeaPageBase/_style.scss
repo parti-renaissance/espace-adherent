@@ -11,6 +11,10 @@
   word-wrap: break-word;
 
   .create-idea-page__header {
+    @extend %sticky-header;
+  }
+
+  .create-idea-page__header__inner {
     display: flex;
     height: 80px;
     align-items: center;
@@ -39,6 +43,23 @@
 
     .create-idea-actions {
       margin-left: 25px;
+    }
+  }
+
+  .create-idea-page__success-banner {
+    position: relative;
+    width: 100%;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 15px;
+    background-color: $glitter;
+    color: $light-black;
+
+    &__close {
+      @extend %reset-button;
+      position: absolute;
+      right: 18px;
+      cursor: pointer;
     }
   }
 
