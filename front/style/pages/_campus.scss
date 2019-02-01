@@ -36,24 +36,6 @@
             }
         }
 
-        &__inspiration {
-            padding: 0;
-            background: $gray--lighter;
-            border-bottom: 1px solid $gray--light;
-
-            &__graphic {
-                background-size: cover;
-                background-position: center;
-                height: 630px;
-                max-height: 57vw;
-                min-height: 300px;
-
-                @media (max-width: $mobile) {
-                    width: 100%;
-                }
-            }
-        }
-
         &__learn {
             @media (max-width: $mobile) {
                 padding: 0 0 120px;

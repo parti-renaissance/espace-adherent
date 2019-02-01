@@ -12,6 +12,8 @@
     margin-top: 100px;
     font-family: $font-roboto;
     line-height: 1.4;
+    background: $white;
+    border-radius: 5px;
 
     a {
         @include transition;
@@ -203,4 +205,3 @@
     }
 
 }
-
