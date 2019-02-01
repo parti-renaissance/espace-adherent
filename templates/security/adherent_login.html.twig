@@ -2,9 +2,22 @@
 
 {% block page_title 'Connectez-vous avec vos identifiants En Marche.' %}
 
+{% block stylesheets %}
+    <style type="text/css">
+        body {
+            background-color: #fafafa;
+        }
+        @media (max-width: 650px) {
+            body {
+                background: white;
+            }
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
     <section class="l__inner">
-        <h1>Connexion</h1>
+        <h1>Connectez-vous avec votre compte<br>adhérent(e) <em>La République En Marche</em></h1>
 
         {% if error %}
             <div id="auth-error" class="form__error">
