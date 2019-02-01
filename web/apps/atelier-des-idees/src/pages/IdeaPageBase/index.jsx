@@ -162,8 +162,12 @@ class IdeaPageBase extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.isSaveSuccess !== this.props.isSaveSuccess && this.props.isSaveSuccess) {
-            // idea save is successful, notify user
+        if (
+            this.props.idea.status === ideaStatus.DRAFT &&
+            prevProps.isSaveSuccess !== this.props.isSaveSuccess &&
+            this.props.isSaveSuccess
+        ) {
+            // idea save is successful, notify user (only in draft mode)
             clearTimeout(this.saveBannerTimer);
             this.setState({ showSaveBanner: true });
             // remove the banner after 5 secs
