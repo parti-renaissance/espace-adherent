@@ -19,6 +19,8 @@ function mapStateToProps(state) {
     const submitState = selectLoadingState(state, 'SET_NICKNAME');
     return {
         isSubmitting: submitState.isFetching,
+        isSubmitError: submitState.isError,
+        isSubmitSuccess: submitState.isSuccess,
     };
 }
 
