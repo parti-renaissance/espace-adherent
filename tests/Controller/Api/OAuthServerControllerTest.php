@@ -259,7 +259,7 @@ class OAuthServerControllerTest extends WebTestCase
         $this->isSuccessful($response = $this->client->getResponse());
         static::assertSame('application/json', $response->headers->get('Content-Type'));
         static::assertSame(
-            '{"uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458","country":"FR","zipCode":"73100","emailAddress":"carl999@example.fr","firstName":"Carl","lastName":"Mirabeau"}',
+            '{"uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458","country":"FR","zipCode":"73100","nickname":"pont","use_nickname":false,"emailAddress":"carl999@example.fr","firstName":"Carl","lastName":"Mirabeau"}',
             $response->getContent()
         );
 
