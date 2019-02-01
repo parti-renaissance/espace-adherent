@@ -86,7 +86,10 @@ function mapStateToProps(state, { id }) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        initPublishForm: () => dispatch(fetchStaticData()),
+        initPublishForm: () => {
+            dispatch(resetLoading());
+            dispatch(fetchStaticData());
+        },
         // reset loading states on unmount to avoid side effect
         unmountPublishForm: () => dispatch(resetLoading()),
     };
