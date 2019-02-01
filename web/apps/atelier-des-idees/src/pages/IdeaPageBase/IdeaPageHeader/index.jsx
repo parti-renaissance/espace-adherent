@@ -43,11 +43,7 @@ class IdeaPageHeader extends React.Component {
                 </div>
                 {this.props.showSaveBanner && (
                     <div className="create-idea-page__success-banner">
-                        <span>
-                            {'DRAFT' === this.props.status
-                                ? 'Votre brouillon a bien été enregistré'
-                                : 'Vos modifications ont bien été enregistrées'}
-                        </span>
+                        <span>Votre brouillon a bien été enregistré</span>
                         <button
                             className="create-idea-page__success-banner__close"
                             onClick={() => {
