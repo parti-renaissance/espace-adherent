@@ -7,8 +7,8 @@ class MyNicknameModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            nickname: '',
-            useNickname: false,
+            nickname: props.defaultValues.nickname || '',
+            useNickname: props.defaultValues.useNickname || false,
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -45,6 +45,7 @@ class MyNicknameModal extends React.Component {
                     <div className="my-nickname-modal__form__use-nickname">
                         <span className="my-nickname-modal__form__label">Utiliser le pseudo</span>
                         <Switch
+                            defaultChecked={this.state.useNickname}
                             onChange={() => this.setState(prevState => ({ useNickname: !prevState.useNickname }))}
                         />
                     </div>
@@ -55,7 +56,15 @@ class MyNicknameModal extends React.Component {
     }
 }
 
+MyNicknameModal.defaultProps = {
+    defaultValues: {},
+};
+
 MyNicknameModal.propTypes = {
+    defaultValues: PropTypes.shape({
+        nickname: PropTypes.string,
+        useNickname: PropTypes.bool,
+    }),
     onSubmit: PropTypes.func.isRequired,
 };
 
