@@ -86,11 +86,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @Assert\Length(min=3, max=25, groups={"anonymize"})
      * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="adherent.nickname.invalid_syntax", groups={"anonymize"})
      *
+     * @JMS\Groups({"user_profile"})
+     *
      * @SymfonySerializer\Groups({"idea_list_read", "idea_read", "thread_list_read", "thread_comment_read", "vote_read"})
      */
     private $nickname;
 
     /**
+     * @JMS\Groups({"user_profile"})
+     * @JMS\SerializedName("use_nickname")
+     *
      * @ORM\Column(type="boolean", options={"default": 0})
      */
     private $nicknameUsed;
