@@ -1,12 +1,18 @@
-import { RESET_LOADING } from '../constants/actionTypes';
+import { RESET_LOADING, RESET_LOADING_STATE } from '../constants/actionTypes';
 
 const initialState = {};
 
 const loadingReducer = (state = initialState, action) => {
     const { type, payload } = action;
 
+    // reset entire state
     if (type === RESET_LOADING) {
         return initialState;
+    }
+    // remove one request from state
+    if (type === RESET_LOADING_STATE) {
+        const { [payload.requestName]: omit, ...rest } = state;
+        return rest;
     }
 
     const matches = /(.*)_(REQUEST|SUCCESS|FAILURE)/.exec(type);

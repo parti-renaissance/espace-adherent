@@ -6,6 +6,7 @@ export const HIDE_HEADER = 'HIDE_HEADER';
 
 // loading
 export const RESET_LOADING = 'RESET_LOADING';
+export const RESET_LOADING_STATE = 'RESET_LOADING_STATE';
 
 // auth
 export const SET_AUTH_USER = 'SET_AUTH_USER';
