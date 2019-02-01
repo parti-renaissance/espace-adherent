@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import MyNicknameModal from '../../components/Modal/MyNicknameModal';
 import { setNickname } from '../../redux/thunk/auth';
 import { selectLoadingState } from '../../redux/selectors/loading';
+import { selectAuthUser } from '../../redux/selectors/auth';
 import { resetLoadingState } from '../../redux/actions/loading';
 
 const SET_NICKNAME_REQ = 'SET_NICKNAME';
@@ -24,11 +25,19 @@ MyNicknameModalContainer.propTypes = {
 };
 
 function mapStateToProps(state) {
+    // loading state
     const submitState = selectLoadingState(state, SET_NICKNAME_REQ);
+    // current user data
+    const currentUser = selectAuthUser(state);
+
     return {
         isSubmitting: submitState.isFetching,
         isSubmitError: submitState.isError,
         isSubmitSuccess: submitState.isSuccess,
+        defaultValues: {
+            nickname: currentUser.nickname,
+            useNickname: currentUser.use_nickname,
+        },
     };
 }
 
