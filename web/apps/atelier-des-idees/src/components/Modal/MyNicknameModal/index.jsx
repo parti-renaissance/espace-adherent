@@ -10,12 +10,18 @@ class MyNicknameModal extends React.Component {
         this.state = {
             nickname: props.defaultValues.nickname || '',
             useNickname: props.defaultValues.useNickname || false,
+            hasError: false,
         };
+        // bindings
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit() {
-        this.props.onSubmit(this.state.nickname, this.state.useNickname);
+        if (this.state.nickname.length) {
+            this.props.onSubmit(this.state.nickname, this.state.useNickname);
+        } else {
+            this.setState({ hasError: true });
+        }
     }
 
     render() {
@@ -39,9 +45,10 @@ class MyNicknameModal extends React.Component {
                     <Input
                         id="nickname"
                         className="my-nickname-modal__form__input"
+                        error={this.state.hasError ? 'Veuillez renseigner un pseudonyme' : null}
                         inputClassName="my-nickname-modal__form__field"
                         value={this.state.nickname}
-                        onChange={value => this.setState({ nickname: value })}
+                        onChange={value => this.setState({ nickname: value, hasError: !value.length })}
                         placeholder="Entrez votre pseudo"
                         maxLength={25}
                     />
