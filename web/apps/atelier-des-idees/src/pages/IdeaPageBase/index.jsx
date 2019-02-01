@@ -8,6 +8,7 @@ import IdeaContent from './IdeaContent';
 import VotingFooterIdeaPage from './VotingFooterIdeaPage';
 import IdeaPageSkeleton from './IdeaPageSkeleton';
 import autoSaveIcn from '../../img/icn_20px_autosave.svg';
+import icn_close from '../../img/icn_close.svg';
 
 const TITLE_MIN_LENGTH = 15;
 const ANSWER_MIN_LENGTH = 15;
@@ -49,7 +50,9 @@ class IdeaPageBase extends React.Component {
                 name: false,
             },
             readingMode: props.idea.status === ideaStatus.FINALIZED,
+            showSaveBanner: false,
         };
+        this.saveBannerTimer = null;
         // bindings
         this.onNameChange = this.onNameChange.bind(this);
         this.onQuestionTextChange = this.onQuestionTextChange.bind(this);
@@ -159,12 +162,30 @@ class IdeaPageBase extends React.Component {
         return hasRequiredAnswers;
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.isSaveSuccess !== this.props.isSaveSuccess && this.props.isSaveSuccess) {
+            // idea save is successful, notify user
+            clearTimeout(this.saveBannerTimer);
+            this.setState({ showSaveBanner: true });
+            // remove the banner after 5 secs
+            this.saveBannerTimer = setTimeout(() => {
+                this.setState({
+                    showSaveBanner: false,
+                });
+            }, 5000);
+        }
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.saveBannerTimer);
+    }
+
     render() {
         const { idea } = this.props;
         return (
             <div className="create-idea-page">
-                <section className="header">
-                    <div className="create-idea-page__header l__wrapper">
+                <section className="create-idea-page__header">
+                    <div className="create-idea-page__header__inner l__wrapper">
                         {!this.props.isLoading && (
                             <React.Fragment>
                                 <button
@@ -198,6 +219,25 @@ class IdeaPageBase extends React.Component {
                             </React.Fragment>
                         )}
                     </div>
+                    {this.state.showSaveBanner && (
+                        <div className="create-idea-page__success-banner">
+                            <span>
+                                {'DRAFT' === idea.status
+                                    ? 'Votre brouillon a bien été enregistré'
+                                    : 'Vos modifications ont bien été enregistrées'}
+                            </span>
+                            <button
+                                className="create-idea-page__success-banner__close"
+                                onClick={() => {
+                                    this.setState({ showSaveBanner: false }, () => {
+                                        clearTimeout(this.saveBannerTimer);
+                                    });
+                                }}
+                            >
+                                <img src={icn_close} />
+                            </button>
+                        </div>
+                    )}
                 </section>
                 <div className="create-idea-page__content">
                     {!this.props.isLoading && idea.status === ideaStatus.DRAFT && (
@@ -265,6 +305,7 @@ IdeaPageBase.defaultProps = {
     isAuthor: false,
     isAuthenticated: false,
     isLoading: false,
+    isSaveSuccess: false,
 };
 
 IdeaPageBase.propTypes = {
@@ -294,6 +335,7 @@ IdeaPageBase.propTypes = {
         }
     },
     onSaveIdea: PropTypes.func.isRequired,
+    isSaveSuccess: PropTypes.bool,
 };
 
 export default IdeaPageBase;

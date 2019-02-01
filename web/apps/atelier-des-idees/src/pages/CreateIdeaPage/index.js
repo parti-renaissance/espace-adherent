@@ -13,6 +13,7 @@ import {
 } from '../../redux/thunk/currentIdea';
 import { selectAuthUser } from '../../redux/selectors/auth';
 import { selectGuidelines, selectCurrentIdea } from '../../redux/selectors/currentIdea';
+import { selectLoadingState } from '../../redux/selectors/loading';
 
 class CreateIdeaPage extends React.Component {
     componentDidMount() {
@@ -38,6 +39,7 @@ CreateIdeaPage.propTypes = {
 function mapStateToProps(state) {
     const currentUser = selectAuthUser(state);
     const currentIdea = selectCurrentIdea(state);
+    const saveState = selectLoadingState(state, 'SAVE_CURRENT_IDEA', currentIdea.uuid);
     const guidelines = selectGuidelines(state);
     const idea = {
         ...currentIdea,
@@ -49,6 +51,7 @@ function mapStateToProps(state) {
         idea,
         guidelines,
         isAuthor: true,
+        isSaveSuccess: saveState.isSuccess,
     };
 }
 
