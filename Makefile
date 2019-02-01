@@ -212,7 +212,7 @@ vendor: composer.lock
 	$(COMPOSER) install -n
 
 composer.lock: composer.json
-	@echo compose.lock is not up to date.
+	@echo composer.lock is not up to date.
 
 app/config/parameters.yml: app/config/parameters.yml.dist vendor
 	$(EXEC) composer -n run-script post-install-cmd
