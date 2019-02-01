@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../../Button';
+import Input from '../../Input';
 import Switch from '../../Switch';
 
 class MyNicknameModal extends React.Component {
@@ -35,12 +36,14 @@ class MyNicknameModal extends React.Component {
                     <label className="my-nickname-modal__form__label" htmlFor="nickname">
                         Choix du pseudo
                     </label>
-                    <input
+                    <Input
                         id="nickname"
                         className="my-nickname-modal__form__input"
+                        inputClassName="my-nickname-modal__form__field"
                         value={this.state.nickname}
-                        onChange={e => this.setState({ nickname: e.target.value })}
+                        onChange={value => this.setState({ nickname: value })}
                         placeholder="Entrez votre pseudo"
+                        maxLength={25}
                     />
                     <div className="my-nickname-modal__form__use-nickname">
                         <span className="my-nickname-modal__form__label">Utiliser le pseudo</span>

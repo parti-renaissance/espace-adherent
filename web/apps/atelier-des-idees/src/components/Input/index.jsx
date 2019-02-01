@@ -4,7 +4,9 @@ import classNames from 'classnames';
 
 class Input extends React.Component {
     handleChange(value) {
-        this.props.onChange(value);
+        if (!this.props.maxLength || (this.props.maxLength && value.length <= this.props.maxLength)) {
+            this.props.onChange(value);
+        }
     }
 
     render() {
@@ -17,7 +19,7 @@ class Input extends React.Component {
             >
                 <div className="text-input__input-wrapper">
                     <input
-                        className="text-input__input"
+                        className={classNames('text-input__input', this.props.inputClassName)}
                         disabled={this.props.disabled}
                         id={this.props.id}
                         maxLength={this.props.maxLength}
@@ -43,6 +45,7 @@ Input.defaultProps = {
     className: '',
     error: '',
     id: '',
+    inputClassName: '',
     maxLength: undefined,
     name: '',
     placeholder: '',
@@ -53,6 +56,7 @@ Input.propTypes = {
     disabled: PropTypes.bool,
     error: PropTypes.string,
     id: PropTypes.string,
+    inputClassName: PropTypes.string,
     maxLength: PropTypes.number,
     name: PropTypes.string,
     onChange: PropTypes.func.isRequired,
