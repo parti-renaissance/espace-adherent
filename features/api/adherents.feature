@@ -119,7 +119,9 @@ Feature:
       "emailAddress": "referent-75-77@en-marche-dev.fr",
       "firstName": "Referent75and77",
       "lastName": "Referent75and77",
-      "use_nickname": false
+      "use_nickname": false,
+      "elected": false,
+      "larem": false
     }
     """
 
@@ -138,7 +140,9 @@ Feature:
       "firstName":"Jacques",
       "lastName":"Picard",
       "nickname":"kikouslove",
-      "use_nickname":true
+      "use_nickname":true,
+      "elected": false,
+      "larem": true
     }
     """
 
