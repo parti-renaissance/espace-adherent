@@ -51,6 +51,7 @@ function mapStateToProps(state) {
         idea,
         guidelines,
         isAuthor: true,
+        isAuthenticated: true,
         isSaveSuccess: saveState.isSuccess,
     };
 }
