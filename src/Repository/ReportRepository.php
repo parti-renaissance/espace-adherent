@@ -44,7 +44,7 @@ class ReportRepository extends ServiceEntityRepository
     {
         $ids = [];
 
-        foreach (ReportType::LIST as $class) {
+        foreach (ReportType::SEARCHABLE_BY_NAME as $class) {
             $ids = array_merge($ids, $this->findIdsByNameForClass($class, $name));
         }
 
