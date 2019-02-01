@@ -85,6 +85,7 @@ class ReportAdmin extends AbstractAdmin
             ])
             ->add('subjectName', CallbackFilter::class, [
                 'label' => 'Nom de l\'objet',
+                'help' => 'Non applicable aux threads & commentaires de l\'Atelier des idées.',
                 'show_filter' => true,
                 'field_type' => TextType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {

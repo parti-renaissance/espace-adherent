@@ -31,6 +31,14 @@ final class ReportType
         self::IDEAS_WORKSHOP_THREAD_COMMENT => ThreadCommentReport::class,
     ];
 
+    public const SEARCHABLE_BY_NAME = [
+        self::CITIZEN_PROJECT => CitizenProjectReport::class,
+        self::CITIZEN_ACTION => CitizenActionReport::class,
+        self::COMMITTEE => CommitteeReport::class,
+        self::COMMUNITY_EVENT => CommunityEventReport::class,
+        self::IDEAS_WORKSHOP_IDEA => IdeaReport::class,
+    ];
+
     public const CITIZEN_ACTION_URI = 'actions-citoyennes';
     public const CITIZEN_PROJECT_URI = 'projets-citoyens';
     public const COMMITTEE_URI = 'comites';
