@@ -1,55 +1,54 @@
-@import './SuccessSignal/style';
 @import './FailSignal/style';
 
 .flag-modal {
-	overflow-x: hidden;
+  overflow-x: hidden;
 
-	&__title {
-		font-size: 26px;
-		line-height: normal;
-		letter-spacing: -0.5px;
-	}
+  &__title {
+    font-size: 26px;
+    line-height: normal;
+    letter-spacing: -0.5px;
+  }
 
-	&__subtitle {
-		margin: 15px 0 0;
-		font-size: 14px;
-		color: $light-black;
-	}
+  &__subtitle {
+    margin: 15px 0 0;
+    font-size: 14px;
+    color: $light-black;
+  }
 
-	&__text {
-		margin: 25px 0 30px;
-		font-size: 12px;
-		color: $medium-grey;
-		line-height: 18px;
-	}
+  &__text {
+    margin: 25px 0 30px;
+    font-size: 12px;
+    color: $medium-grey;
+    line-height: 18px;
+  }
 
-	&__comment {
-		margin-top: 35px;
-	}
+  &__comment {
+    margin-top: 35px;
+  }
 
-	&__label {
-		display: inline-block;
-		margin-bottom: 15px;
-		font-size: 16px;
-		font-weight: bold;
-	}
+  &__label {
+    display: inline-block;
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: bold;
+  }
 
-	&__button {
-		width: 100%;
-		height: 60px;
-	}
+  &__button {
+    width: 100%;
+    height: 60px;
+  }
 
-	&__subtext {
-		margin-top: 30px;
-		color: $medium-grey;
-		font-size: 10px;
-		line-height: 13px;
-	}
+  &__subtext {
+    margin-top: 30px;
+    color: $medium-grey;
+    font-size: 10px;
+    line-height: 13px;
+  }
 
-	&__error {
-		text-align: center;
-		margin: 5px 0 0;
-		font-size: 12px;
-		color: $giants-orange;
-	}
+  &__error {
+    text-align: center;
+    margin: 5px 0 0;
+    font-size: 12px;
+    color: $giants-orange;
+  }
 }
