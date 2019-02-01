@@ -9,7 +9,7 @@ import { selectModalData } from '../../redux/selectors/modal';
 import ReportsModal from '../../components/Modal/ReportsModal';
 import PublishIdeaFormModal from '../../containers/PublishIdeaFormModal';
 import DeleteIdeaModal from '../../components/Modal/DeleteIdeaModal';
-import MyNicknameModal from '../../components/Modal/MyNicknameModal';
+import MyNicknameModal from '../../containers/MyNicknameModal';
 import MyIdeasContainer from '../../containers/MyIdeas';
 import FlagModal from '../../containers/FlagModal';
 import icn_close from './../../img/icn_close.svg';
