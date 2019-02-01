@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MyNicknameModal from '../../components/Modal/MyNicknameModal';
+import { setNickname } from '../../redux/thunk/auth';
 import { selectLoadingState } from '../../redux/selectors/loading';
 
 class MyNicknameModalContainer extends React.Component {
@@ -15,10 +16,15 @@ MyNicknameModalContainer.propTypes = {
 };
 
 function mapStateToProps(state) {
-    return {};
+    const submitState = selectLoadingState(state, 'SET_NICKNAME');
+    return {
+        isSubmitting: submitState.isFetching,
+    };
 }
 
 export default connect(
     mapStateToProps,
-    null
+    {
+        onSubmit: setNickname,
+    }
 )(MyNicknameModal);
