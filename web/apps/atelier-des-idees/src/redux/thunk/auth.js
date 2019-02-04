@@ -26,8 +26,15 @@ export function setNickname(nickname, useNickname) {
             .then(() => {
                 dispatch(createRequestSuccess(SET_NICKNAME));
             })
-            .catch(() => {
-                dispatch(createRequestFailure(SET_NICKNAME));
+            .catch((error) => {
+                const { response } = error;
+                if (400 === response.status) {
+                    // get error message from response format and add it to the failure payload
+                    const violation = response.data.violations.find(v => 'nickname' === v.propertyPath);
+                    dispatch(createRequestFailure(SET_NICKNAME, null, violation && violation.message));
+                } else {
+                    dispatch(createRequestFailure(SET_NICKNAME));
+                }
             });
     };
 }
