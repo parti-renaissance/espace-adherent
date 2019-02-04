@@ -40,4 +40,5 @@ const props = {
 
 storiesOf('MyIdeas', module)
     .addParameters({ jest: ['MyIdeas'] })
-    .add('default', () => <MyIdeas {...props} onDeleteIdea={action('delete idea')} />);
+    .add('default', () => <MyIdeas {...props} onDeleteIdea={action('delete idea')} />)
+    .add('empty', () => <MyIdeas ideas={[]} onDeleteIdea={action('delete idea')} />);
