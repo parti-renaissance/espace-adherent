@@ -9,7 +9,9 @@ const TEXT_MIN_LENGTH = 15;
 function QuestionBlockHeader({ label, question, nbQuestion, isRequired, mode }) {
     return (
         <h3 className="question-block-header">
-            <span className="question-block-header__label">{`${nbQuestion}. ${label ? `${label} : ` : ''}`}</span>
+            <span className="question-block-header__label">{`${'read' !== mode ? `${nbQuestion}. ` : ''}${
+                label ? `${label} : ` : ''
+            }`}</span>
             <span className="question-block-header__question">{question}</span>
             {isRequired && 'read' !== mode && <span className="question-block-header__mandatory">(Obligatoire)</span>}
         </h3>
