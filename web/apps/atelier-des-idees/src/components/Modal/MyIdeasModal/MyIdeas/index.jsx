@@ -81,11 +81,9 @@ class MyIdeas extends React.Component {
                                                         {'FINALIZED' !== idea.status && 'Editer'}
                                                         {'FINALIZED' === idea.status && 'Voir la note'}
                                                     </Link>
-                                                    <Button
-                                                        className="my-ideas__category__idea__actions__delete"
-                                                        label="Supprimer"
-                                                        onClick={() => this.props.onDeleteIdea(idea.uuid)}
-                                                    />
+                                                    <button className="button my-ideas__category__idea__actions__delete" onClick={() => this.props.onDeleteIdea(idea.uuid)}>
+                                                        Supprimer
+                                                    </button>
                                                 </div>
                                             </div>
                                         )

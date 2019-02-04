@@ -1,51 +1,52 @@
 .my-contributions {
-  margin-top: 38px;
+	margin-top: 38px;
 
-  &__category__button {
-    @extend %reset-button;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    margin-top: 15px;
+	&__category__button {
+		@extend %reset-button;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		margin-bottom: 25px;
 
-    &__label {
-      margin-right: 6px;
-      font-size: 14px;
-      font-weight: bold;
-      color: $wild-blue-yonder;
-      text-transform: uppercase;
-    }
+		&__label {
+			margin-right: 6px;
+			font-size: 14px;
+			font-weight: bold;
+			color: $wild-blue-yonder;
+		}
 
-    &__icon {
-      &--rotate {
-        transform: rotate(180deg);
-      }
-    }
-  }
+		&__icon {
+			&--rotate {
+				transform: rotate(180deg);
+			}
+		}
+	}
 
-  &__category__idea {
-    padding: 20px 0;
-    border-bottom: 1px solid $platinum;
+	&__category__idea {
+		&__date {
+			margin: 0 0 7px;
+			color: $light-black;
+			font-size: 14px;
+		}
 
-    &__date {
-      margin: 0 0 7px;
-      color: $light-black;
-      font-size: 14px;
-    }
+		&__name {
+			margin: 0 0 15px;
+			font-size: 20px;
+		}
 
-    &__name {
-      margin: 0 0 15px;
-      font-size: 20px;
-    }
+		&__actions {
+			&__see-note {
+				cursor: pointer;
+				font-size: 16px;
+				color: $saphir;
 
-    &__actions {
-      &__see-note {
-        cursor: pointer;
-        font-size: 16px;
-        color: $saphir;
-      }
-    }
-  }
+				&:hover {
+	          color: $saphir;
+	          opacity: 0.75;
+	      }
+			}
+		}
+	}
 
   .my-contributions__category__empty-label {
     padding-bottom: 20px;
@@ -53,4 +54,5 @@
     font-size: 14px;
     color: $light-black;
   }
+
 }
