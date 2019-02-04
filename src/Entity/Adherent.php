@@ -404,6 +404,28 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }, $this->getSubscriptionTypes())));
     }
 
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("elected"),
+     * @JMS\Groups({"user_profile"})
+     */
+    public function isElected(): bool
+    {
+        return $this->getMandates() && \count($this->getMandates()) > 0;
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("larem"),
+     * @JMS\Groups({"user_profile"})
+     */
+    public function isLaREM(): bool
+    {
+        return $this->getTags()->filter(function (AdherentTag $tag) {
+            return AdherentTagEnum::LAREM === $tag->getName();
+        })->count() > 0;
+    }
+
     public function getRoles()
     {
         $roles = ['ROLE_USER'];
