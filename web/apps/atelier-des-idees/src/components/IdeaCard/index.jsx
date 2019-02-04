@@ -77,7 +77,9 @@ class IdeaCard extends React.Component {
                 >
                     <div className="idea-card__main">
                         <div className="idea-card__content">
-                            <p className="idea-card__content__title">{this.props.name}</p>
+                            <p className="idea-card__content__title" title={this.props.name}>
+                                {this.props.name}
+                            </p>
                             <div className="idea-card__content__infos">
                                 <span className="idea-card__content__infos__author">
                                     <span className="idea-card__content__infos__meta">Par </span>
