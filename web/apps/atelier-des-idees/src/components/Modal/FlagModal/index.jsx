@@ -101,10 +101,6 @@ class FlagModal extends React.Component {
                 {!this.props.isSubmitSuccess && !this.props.isSubmitError && (
                     <form className="flag-modal" onSubmit={this.handleSubmit}>
                         <h2 className="flag-modal__title">Signaler un abus</h2>
-                        <p className="flag-modal__subtitle">
-                            Veuillez signaler tout élément qui pourrait contrevenir aux Conditions d'utilisation ou à la
-                            Charte des bonnes pratiques de La République En Marche.
-                        </p>
                         <p className="flag-modal__text">
                             Conformément aux dispositions de l’article 6 la loi n°2004-575 du 21 juin 2004 pour la
                             confiance dans l’économie numérique, toute personne peut signaler tout message à caractère

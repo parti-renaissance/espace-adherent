@@ -17,7 +17,7 @@ class MyIdeas extends React.Component {
             },
             {
                 showCat: 'showPending',
-                label: 'propostions en cours d’élaboration',
+                label: 'propositions en cours d’élaboration',
                 ideas: this.props.ideas.filter(idea => 'PENDING' === idea.status),
             },
             {
@@ -68,13 +68,13 @@ class MyIdeas extends React.Component {
                                                 <div className="my-ideas__category__idea__actions">
                                                     <Link
                                                         to={`/atelier-des-idees/proposition/${idea.uuid}`}
-                                                        className="my-ideas__category__idea__actions__edit button button--secondary"
+                                                        className="my-ideas__category__idea__actions__edit"
                                                     >
                                                         {'FINALIZED' !== idea.status && 'Editer'}
                                                         {'FINALIZED' === idea.status && 'Voir la note'}
                                                     </Link>
                                                     <Button
-                                                        className="my-ideas__category__idea__actions__delete button--tertiary"
+                                                        className="my-ideas__category__idea__actions__delete"
                                                         label="Supprimer"
                                                         onClick={() => this.props.onDeleteIdea(idea.uuid)}
                                                     />

@@ -10,22 +10,28 @@
   &__vote {
     display: flex;
     justify-content: center;
+    flex-direction: row;
 
     &__button {
       outline: none;
       display: flex;
       justify-content: space-between;
-      width: 130px;
-      height: 32px;
-      margin-right: 46px;
+      width: 180px;
+      height: 50px;
       border: 1px solid $grey-sky;
       border-radius: 2px;
-      font-size: 15px;
+      font-size: 17px;
+      font-weight: 500;
       color: $sky;
+      background-color: $white;
 
       &--selected {
         border: 1px solid $france;
         color: $france;
+      }
+
+      &:nth-child(2) {
+          margin: 0 15px;
       }
     }
     &__button:hover {
@@ -33,4 +39,26 @@
       color: $france;
     }
   }
+}
+
+@media #{$mobile} {
+
+    .voting-footer-idea-page {
+
+      &__vote {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+
+        &__button {
+            width: 100%;
+            margin-bottom: 12px;
+
+          &:nth-child(2) {
+              margin: 0 0 12px 0;
+          }
+        }
+      }
+    }
+
 }
