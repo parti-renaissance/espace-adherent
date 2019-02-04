@@ -7,31 +7,45 @@ import Button from '../Button';
 import icn_20px_replies from './../../img/icn_20px_replies.svg';
 import icn_toggle_content from './../../img/icn_toggle_content.svg';
 import icn_toggle_content_big from './../../img/icn_toggle_content_big.svg';
+import icn_checklist from './../../img/icn_checklist-white.svg';
 
 class CommentsList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             comment: '',
-            errorComment: '',
+            errors: {
+                comment: false,
+                legal: false,
+            },
             replyingTo: '',
             showComments: false,
             showForm: !!props.comments.length || props.showForm,
+            isLegalAccepted: false,
         };
     }
 
     handleSendComment() {
         // Check if empty
-        if (!this.state.comment) {
-            this.setState({ errorComment: 'Veuillez remplir ce champ' });
-        } else {
+        const isEmpty = !this.state.comment;
+        const mustCheckLegal = this.props.withCGU ? !this.state.isLegalAccepted : false;
+        const canSubmit = !isEmpty && !mustCheckLegal;
+        if (canSubmit) {
+            // no errors
             this.props.onSendComment(this.state.comment);
             this.setState({ comment: '', showComments: true });
+        } else {
+            // has errors
+            this.setState({ errors: { comment: isEmpty, legal: mustCheckLegal } });
         }
     }
 
     handleCommentChange(value) {
-        this.setState({ comment: value, errorComment: '' });
+        this.setState(prevState => ({ comment: value, errors: { ...prevState.errors, comment: false } }));
+    }
+
+    handleLegalChange(checked) {
+        this.setState(prevState => ({ isLegalAccepted: checked, errors: { ...prevState.errors, legal: false } }));
     }
 
     render() {
@@ -112,6 +126,7 @@ class CommentsList extends React.Component {
                                               showForm={true}
                                               ownerId={this.props.ownerId}
                                               currentUserId={this.props.currentUserId}
+                                              withCGU={this.props.withCGU}
                                           />
                                       </div>
                                   )}
@@ -150,15 +165,51 @@ class CommentsList extends React.Component {
                                 value={this.state.comment}
                                 onChange={value => this.handleCommentChange(value)}
                                 placeholder={this.props.placeholder}
-                                error={this.state.errorComment}
+                                error={this.state.errors.comment ? 'Veuillez remplir ce champ' : null}
                                 autofocus={this.props.isFormActive}
                             />
-                            <Button
-                                type="submit"
-                                className="comments-list__form__button button--primary"
-                                label="Envoyer"
-                                isLoading={this.props.isSendingComment}
-                            />
+                            <div className="comments-list__form__actions">
+                                {this.props.withCGU && (
+                                    <div className="comments-list__form__legal-wrapper">
+                                        <label className="comments-list__form__legal">
+                                            <span className="comments-list__form__legal__checkbox">
+                                                <input
+                                                    className="comments-list__form__legal__input"
+                                                    id="legal"
+                                                    type="checkbox"
+                                                    checked={this.state.isLegalAccepted}
+                                                    onChange={(event) => {
+                                                        this.handleLegalChange(event.target.checked);
+                                                    }}
+                                                />
+                                                <span className="comments-list__form__legal__checkmark">
+                                                    <img src={icn_checklist} />
+                                                </span>
+                                            </span>
+                                            <span className="comments-list__form__legal__label">
+                                                J’accepte les{' '}
+                                                <a
+                                                    className="comments-list__form__legal__label__link"
+                                                    href="/atelier-des-idees/conditions-generales-utilisation"
+                                                    target="_blank"
+                                                >
+                                                    CGU{' '}
+                                                </a>
+                                                de l'Atelier des idées
+                                            </span>
+                                        </label>
+                                        {this.state.errors.legal && (
+                                            <p className="comments-list__form__legal__error">Information manquante</p>
+                                        )}
+                                    </div>
+                                )}
+                                <Button
+                                    type="submit"
+                                    className="comments-list__form__button button--primary"
+                                    label="Envoyer"
+                                    isLoading={this.props.isSendingComment}
+                                />
+                            </div>
                         </form>
                     ) : (
                         !this.props.parentId && (
@@ -199,6 +250,7 @@ CommentsList.defaultProps = {
     sendingReplies: [],
     showForm: false,
     total: 0,
+    withCGU: false,
 };
 
 CommentsList.propTypes = {
@@ -230,6 +282,7 @@ CommentsList.propTypes = {
     sendingReplies: PropTypes.array,
     showForm: PropTypes.bool,
     total: PropTypes.number,
+    withCGU: PropTypes.bool,
 };
 
 export default CommentsList;

@@ -69,7 +69,7 @@ export function postComment(content, answerId, parentId = '') {
         let type = 'threads';
         const fetchType = parentId ? POST_THREAD_COMMENT : POST_THREAD;
         const fetchId = `${answerId}${parentId ? `_${parentId}` : ''}`;
-        const body = { content };
+        const body = { content, comments_cgu_accepted: true };
         if (parentId) {
             type = 'thread_comments';
             body.thread = parentId;
