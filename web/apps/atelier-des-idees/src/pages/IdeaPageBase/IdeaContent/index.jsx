@@ -62,7 +62,7 @@ class IdeaContent extends React.Component {
                                             question={name}
                                             questionId={id}
                                             placeholder={placeholder}
-                                            nbQuestion={position + 1}
+                                            nbQuestion={position}
                                             onTextChange={(htmlContent, save = false) => {
                                                 this.props.onQuestionTextChange(id, htmlContent, save);
                                             }}

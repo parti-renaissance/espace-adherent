@@ -37,7 +37,7 @@ function QuestionBlockBody(props) {
                 </React.Fragment>
             )}
             {('read' === props.mode || ('contribute' === props.mode && !props.isEditing)) && (
-                <div dangerouslySetInnerHTML={{ __html: props.initialContent }} />
+                <div className="question-block__content" dangerouslySetInnerHTML={{ __html: props.initialContent }} />
             )}
             {'contribute' === props.mode && props.isAuthor && (
                 <div className="question-block__editing-footer">
