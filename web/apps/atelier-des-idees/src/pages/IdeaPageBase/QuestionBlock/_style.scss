@@ -36,6 +36,14 @@
     }
   }
 
+  .question-block__content {
+    // reset main css override
+    ul {
+      padding-left: 40px;
+      list-style-type: initial;
+    }
+  }
+
   .question-block__editing-footer {
     margin-top: 20px;
     text-align: right;
