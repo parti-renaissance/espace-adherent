@@ -34,6 +34,7 @@ class Input extends React.Component {
                         }`}</div>
                     )}
                 </div>
+                {this.props.subtitle && <p className="text-input__subtitle">{this.props.subtitle}</p>}
                 {this.props.error && <p className="text-input__error">{this.props.error}</p>}
             </div>
         );
@@ -49,6 +50,7 @@ Input.defaultProps = {
     maxLength: undefined,
     name: '',
     placeholder: '',
+    subtitle: '',
 };
 
 Input.propTypes = {
@@ -61,6 +63,7 @@ Input.propTypes = {
     name: PropTypes.string,
     onChange: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
+    subtitle: PropTypes.string,
     value: PropTypes.string.isRequired,
 };
 
