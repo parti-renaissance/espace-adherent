@@ -6,7 +6,6 @@ use AppBundle\Entity\ReferentManagedArea;
 use AppBundle\Entity\ReferentTag;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,14 +19,6 @@ class ReferentManagedAreaType extends AbstractType
                 'class' => ReferentTag::class,
                 'required' => false,
                 'multiple' => true,
-            ])
-            ->add('markerLatitude', TextType::class, [
-                'label' => 'Latitude du point sur la carte des référents',
-                'required' => false,
-            ])
-            ->add('markerLongitude', TextType::class, [
-                'label' => 'Longitude du point sur la carte des référents',
-                'required' => false,
             ])
         ;
     }
