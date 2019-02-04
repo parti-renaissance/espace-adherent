@@ -62,6 +62,7 @@ function mapStateToProps(state, { questionId }) {
         currentUserId: currentUser.uuid,
         ownerId: currentIdea.author && currentIdea.author.uuid,
         total: currentAnswer && currentAnswer.threads.total_items,
+        withCGU: !currentUser.comments_cgu_accepted,
     };
 }
 
