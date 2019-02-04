@@ -11,18 +11,22 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 // see https://jpuri.github.io/react-draft-wysiwyg/#/docs for more about this
 const initialToolbar = {
-    options: ['inline', 'list'],
+    options: ['inline', 'list', 'link'],
     inline: {
-        className: 'text-editor__toolbal__group',
+        className: 'text-editor__toolbar__group',
         options: ['bold', 'italic', 'underline'],
     },
     list: {
-        className: 'text-editor__toolbal__group',
+        className: 'text-editor__toolbar__group',
         options: ['unordered', 'ordered'],
     },
     textAlign: {
-        className: 'text-editor__toolbal__group',
+        className: 'text-editor__toolbar__group',
         options: ['left', 'center', 'right'],
+    },
+    link: {
+        className: 'text-editor__toolbar__group',
+        options: ['link'],
     },
 };
 
