@@ -23,18 +23,18 @@
       padding: 0;
     }
 
-    .text-editor__toolbal__group:not(:last-child) {
+    .text-editor__toolbar__group:not(:last-child) {
       border-right: 1px solid $quick-silver;
       margin-right: 12px;
       padding-right: 10px;
     }
 
-    .text-editor__toolbal__group > .rdw-option-wrapper {
+    .text-editor__toolbar__group > .rdw-option-wrapper {
       border: 0;
       height: auto;
     }
-    .text-editor__toolbal__group > .rdw-option-wrapper:hover,
-    .text-editor__toolbal__group > .rdw-option-active {
+    .text-editor__toolbar__group > .rdw-option-wrapper:hover,
+    .text-editor__toolbar__group > .rdw-option-active {
       box-shadow: none;
       background-color: $platinum;
     }
