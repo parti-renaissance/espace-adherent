@@ -4,7 +4,7 @@ import { SAVE_CURRENT_IDEA, FETCH_GUIDELINES, PUBLISH_IDEA } from '../constants/
 import { saveIdea, publishIdea, voteIdea } from '../thunk/ideas';
 import { postComment, fetchThreads, deleteComment } from '../thunk/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
-import { selectIsAuthenticated } from '../selectors/auth';
+import { selectIsAuthenticated, selectAuthUser } from '../selectors/auth';
 import { selectCurrentIdea, selectCurrentIdeaAnswer } from '../selectors/currentIdea';
 import { selectAnswerThreads, selectThread, selectAnswerThreadsPagingData } from '../selectors/threads';
 import {
@@ -16,6 +16,7 @@ import {
 } from '../actions/currentIdea';
 import { addThreads, addThreadComments, updateThread, setThreadPagingData } from '../actions/threads';
 import { hideModal } from '../actions/modal';
+import { updateAuthUser } from '../actions/auth';
 
 /**
  * Delete an idea
@@ -174,6 +175,13 @@ export function voteCurrentIdea(voteType) {
 export function postCommentToCurrentIdea(content, answerId, parentId = '') {
     return (dispatch, getState) =>
         dispatch(postComment(content, answerId, parentId)).then((newComment) => {
+            // update auth user legal acceptance
+            const currentUser = selectAuthUser(getState());
+            if (!currentUser.comments_cgu_accepted) {
+                dispatch(updateAuthUser({ comments_cgu_accepted: true }));
+            }
+
+            // update threads and comments
             if (!parentId) {
                 dispatch(addThreads([{ ...newComment, comments: { total_items: 0 } }]));
                 // increment answer total item
