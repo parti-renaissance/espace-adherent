@@ -39,6 +39,11 @@
 				cursor: pointer;
 				font-size: 16px;
 				color: $saphir;
+
+				&:hover {
+	                color: $saphir;
+	                opacity: 0.75;
+	            }
 			}
 		}
 	}

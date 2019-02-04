@@ -39,11 +39,17 @@
         margin-right: 14px;
         font-size: 16px;
         color: $light-black;
+        border: none;
       }
 
       &__see-note,
       &__edit {
           color: $saphir;
+
+          &:hover {
+              color: $saphir;
+              opacity: 0.75;
+          }
       }
 
       &__delete {
