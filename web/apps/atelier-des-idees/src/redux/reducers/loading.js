@@ -21,16 +21,22 @@ const loadingReducer = (state = initialState, action) => {
     if (!matches) return state;
 
     const [, requestName, requestState] = matches;
+    const loadingState = {
+        isFetching: 'REQUEST' === requestState,
+        isSuccess: 'SUCCESS' === requestState,
+        isError: 'FAILURE' === requestState,
+    };
+    // if error, set it
+    if (payload.error) {
+        loadingState.error = payload.error;
+    }
+
     return {
         ...state,
         // Store whether a request is happening at the moment or not
         // e.g. will be true when receiving GET_TODOS_REQUEST
         //      and false when receiving GET_TODOS_SUCCESS / GET_TODOS_FAILURE
-        [`${requestName}${payload.id ? `_${payload.id}` : ''}`]: {
-            isFetching: 'REQUEST' === requestState,
-            isSuccess: 'SUCCESS' === requestState,
-            isError: 'FAILURE' === requestState,
-        },
+        [`${requestName}${payload.id ? `_${payload.id}` : ''}`]: loadingState,
     };
 };
 
