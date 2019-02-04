@@ -93,7 +93,6 @@ class MyIdeas extends React.Component {
                             ) : (
                                 <p className="my-ideas__category__empty-label">{`Vous n'avez pas de ${cat.empty}`}</p>
                             )}
-                            <div className="separator" />
                         </div>
                     );
                 })}

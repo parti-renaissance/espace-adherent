@@ -6,7 +6,7 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    margin-bottom: 25px;
+    margin-top: 15px;
 
     &__label {
       margin-right: 6px;
@@ -23,6 +23,9 @@
   }
 
   &__category__idea {
+    padding: 20px 0;
+    border-bottom: 1px solid $platinum;
+
     &__date {
       margin: 0 0 7px;
       color: $light-black;
@@ -64,14 +67,9 @@
   }
 
   .my-ideas__category__empty-label {
+    padding-bottom: 20px;
+    border-bottom: 1px solid $platinum;
     font-size: 14px;
     color: $light-black;
-  }
-
-  .separator {
-    width: 100%;
-    height: 1px;
-    margin: 21px 0 20px;
-    background-color: $platinum;
   }
 }

@@ -11,12 +11,15 @@ class MyContributions extends React.Component {
         this.state = {
             showList: true,
         };
+        this.categoryData = {
+            label: 'vous avez contribué',
+        };
     }
 
     render() {
         return (
             <div className="my-contributions">
-                {0 < this.props.ideas.length ? (
+                {this.props.ideas.length ? (
                     <button
                         className="my-contributions__category__button"
                         onClick={() =>
@@ -25,9 +28,7 @@ class MyContributions extends React.Component {
                             }))
                         }
                     >
-                        <span className="my-contributions__category__button__label">
-                            {'vous avez contribué'.toUpperCase()}
-                        </span>
+                        <span className="my-contributions__category__button__label">{this.categoryData.label}</span>
                         <img
                             className={classNames('my-contributions__category__button__icon', {
                                 'my-contributions__category__button__icon--rotate': !this.state.showList,
@@ -36,33 +37,30 @@ class MyContributions extends React.Component {
                         />
                     </button>
                 ) : (
-                    ''
+                    <p className="my-contributions__category__button__label">{this.categoryData.label}</p>
                 )}
-                {0 < this.props.ideas.length ? (
+                {this.props.ideas.length ? (
                     this.props.ideas.map(
                         idea =>
                             this.state.showList && (
-                                <React.Fragment>
-                                    <div className="my-ideas__category__idea">
-                                        <p className="my-ideas__category__idea__date">
-                                            Créée le {new Date(idea.created_at).toLocaleDateString()}
-                                        </p>
-                                        <h4 className="my-ideas__category__idea__name">{idea.name}</h4>
-                                        <div className="my-ideas__category__idea__actions">
-                                            <Link
-                                                to={`/atelier-des-idees/proposition/${idea.uuid}`}
-                                                className="my-ideas__category__idea__actions__see-note"
-                                            >
-                                                Voir la proposition
-                                            </Link>
-                                        </div>
+                                <div className="my-contributions__category__idea">
+                                    <p className="my-contributions__category__idea__date">
+                                        Créée le {new Date(idea.created_at).toLocaleDateString()}
+                                    </p>
+                                    <h4 className="my-contributions__category__idea__name">{idea.name}</h4>
+                                    <div className="my-contributions__category__idea__actions">
+                                        <Link
+                                            to={`/atelier-des-idees/proposition/${idea.uuid}`}
+                                            className="my-contributions__category__idea__actions__see-note button--secondary"
+                                        >
+                                            Voir la proposition
+                                        </Link>
                                     </div>
-                                    <div className="separator" />
-                                </React.Fragment>
+                                </div>
                             )
                     )
                 ) : (
-                    <small>Vous n'avez pas encore de contribution</small>
+                    <p className="my-contributions__category__empty-label">Vous n’avez pas encore de contribution</p>
                 )}
             </div>
         );

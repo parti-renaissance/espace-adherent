@@ -7,8 +7,7 @@ const props = {
         {
             uuid: 'krjfsd',
             created_at: new Date().toISOString(),
-            name:
-				'Réduire le nombre d’élèves dans les classes dans les quartiers défavorisés',
+            name: 'Réduire le nombre d’élèves dans les classes dans les quartiers défavorisés',
         },
         {
             uuid: 'sdlfnlksdlfk',
@@ -30,4 +29,5 @@ const props = {
 
 storiesOf('MyContributions', module)
     .addParameters({ jest: ['MyContributions'] })
-    .add('default', () => <MyContributions {...props} />);
+    .add('default', () => <MyContributions {...props} />)
+    .add('empty', () => <MyContributions ideas={[]} />);
