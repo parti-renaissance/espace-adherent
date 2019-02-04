@@ -9,7 +9,9 @@ const TEXT_MIN_LENGTH = 15;
 function QuestionBlockHeader({ label, question, nbQuestion, isRequired, mode }) {
     return (
         <h3 className="question-block-header">
-            <span className="question-block-header__label">{`${nbQuestion}. ${label ? `${label} : ` : ''}`}</span>
+            <span className="question-block-header__label">{`${'read' !== mode ? `${nbQuestion}. ` : ''}${
+                label ? `${label} : ` : ''
+            }`}</span>
             <span className="question-block-header__question">{question}</span>
             {isRequired && 'read' !== mode && <span className="question-block-header__mandatory">(Obligatoire)</span>}
         </h3>
@@ -35,7 +37,7 @@ function QuestionBlockBody(props) {
                 </React.Fragment>
             )}
             {('read' === props.mode || ('contribute' === props.mode && !props.isEditing)) && (
-                <div dangerouslySetInnerHTML={{ __html: props.initialContent }} />
+                <div className="question-block__content" dangerouslySetInnerHTML={{ __html: props.initialContent }} />
             )}
             {'contribute' === props.mode && props.isAuthor && (
                 <div className="question-block__editing-footer">

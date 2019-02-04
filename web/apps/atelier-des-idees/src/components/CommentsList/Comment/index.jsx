@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Dropdown from '../../Dropdown';
+import { getUserDisplayName } from '../../../helpers/entities';
 import icn_checklist from './../../../img/icn_checklist-white.svg';
 
 function Comment(props) {
@@ -13,9 +14,7 @@ function Comment(props) {
         >
             <div className="comments-list__comment__infos">
                 <div className="comments-list__comment__infos--main">
-                    <span className="comments-list__comment__infos__author">
-                        {props.author.first_name} {props.author.last_name}
-                    </span>
+                    <span className="comments-list__comment__infos__author">{getUserDisplayName(props.author)}</span>
                     <span className="comments-list__comment__infos__date">
                         {`${new Date(props.created_at).toLocaleDateString()} à ${new Date(props.created_at)
                             .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -90,6 +89,7 @@ Comment.propTypes = {
         id: PropTypes.string,
         first_name: PropTypes.string,
         last_name: PropTypes.string,
+        nickname: PropTypes.string,
     }).isRequired,
     content: PropTypes.string.isRequired,
     created_at: PropTypes.string.isRequired, // iso date

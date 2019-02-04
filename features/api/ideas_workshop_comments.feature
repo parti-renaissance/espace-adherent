@@ -209,7 +209,8 @@ Feature:
               "Name": "Benjamin Duroc",
               "Vars": {
                   "first_name": "Benjamin",
-                  "idea_name": "Faire la paix"
+                  "idea_name": "Faire la paix",
+                  "idea_link": "http://test.enmarche.code/atelier-des-idees/proposition/e4ac3efc-b539-40ac-9417-b60df432bdc5"
               }
           }
       ]

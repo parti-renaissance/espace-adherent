@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 final class ApprovedIdeaCommentMessage extends Message
 {
-    public static function create(Adherent $adherent, string $ideaName): self
+    public static function create(Adherent $adherent, string $ideaName, string $ideaLink): self
     {
         $message = new self(
             Uuid::uuid4(),
@@ -18,6 +18,7 @@ final class ApprovedIdeaCommentMessage extends Message
             [
                 'first_name' => $adherent->getFirstName(),
                 'idea_name' => $ideaName,
+                'idea_link' => $ideaLink,
             ]
         );
 

@@ -50,7 +50,7 @@ class Question implements EnabledInterface
     private $placeholder;
 
     /**
-     * @Assert\GreaterThanOrEqual(0)
+     * @Assert\GreaterThanOrEqual(1)
      *
      * @Gedmo\SortablePosition
      *
@@ -92,7 +92,7 @@ class Question implements EnabledInterface
         string $category = '',
         string $name = '',
         string $placeholder = '',
-        int $position = 0,
+        int $position = 1,
         bool $required = false,
         bool $enabled = true
     ) {

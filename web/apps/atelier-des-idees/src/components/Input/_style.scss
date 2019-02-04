@@ -1,0 +1,47 @@
+.text-input {
+  position: relative;
+  display: inline-block;
+
+  .text-input__input-wrapper {
+    position: relative;
+  }
+
+  .text-input__input {
+    width: 100%;
+    border: 1px solid $platinum;
+    border-radius: 3px;
+    padding: 12px;
+    font-size: 16px;
+
+    &::placeholder {
+      color: $sonic-silver;
+    }
+  }
+
+  .text-input__counter {
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $ash-grey;
+    font-size: 14px;
+  }
+
+  .text-input__error {
+    margin-top: 5px;
+    font-size: 12px;
+    color: $giants-orange;
+  }
+
+  &--error {
+    .text-input__input {
+      border-color: $giants-orange;
+    }
+  }
+
+  &--count {
+    .text-input__input {
+      padding-right: 70px;
+    }
+  }
+}

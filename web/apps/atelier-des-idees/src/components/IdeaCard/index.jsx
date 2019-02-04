@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 import VotingFooter from './VotingFooter';
 import ContributingFooter from './ContributingFooter';
+import { getUserDisplayName } from '../../helpers/entities';
 
 import icn_20px_contributors from './../../img/icn_20px_contributors.svg';
 import icn_20px_comments from './../../img/icn_20px_comments.svg';
@@ -29,7 +30,9 @@ function formatVotes(votesCount) {
             id: key,
             name: VOTES_NAMES[key],
             count: votesCount[key],
-            isSelected: !votesCount.my_votes ? false : Object.keys(votesCount.my_votes).includes(key),
+            isSelected: !votesCount.my_votes
+                ? false
+                : Object.keys(votesCount.my_votes).includes(key),
         }));
 }
 
@@ -65,31 +68,31 @@ class IdeaCard extends React.Component {
         }
     }
 
-    truncate(string, limitation) {
-        if (limitation < string.length) {
-            return string.substring(0, limitation).concat(' (...)');
-        }
-        return string;
-    }
-
     render() {
         return (
             <div className="idea-card" ref={this.cardRef}>
-                <Link to={`/atelier-des-idees/proposition/${this.props.uuid}`} className="idea-card__link">
+                <Link
+                    to={`/atelier-des-idees/proposition/${this.props.uuid}`}
+                    className="idea-card__link"
+                >
                     <div className="idea-card__main">
                         <div className="idea-card__content">
-                            <p className="idea-card__content__title">{this.truncate(this.props.name, 53)}</p>
+                            <p className="idea-card__content__title" title={this.props.name}>
+                                {this.props.name}
+                            </p>
                             <div className="idea-card__content__infos">
                                 <span className="idea-card__content__infos__author">
                                     <span className="idea-card__content__infos__meta">Par </span>
                                     <span className="idea-card__content__infos__author__name">
-                                        {this.props.author.first_name} {this.props.author.last_name}
+                                        {getUserDisplayName(this.props.author)}
                                     </span>
                                     <span className="idea-card__content__infos__author__separator" />
                                     <span
                                         className={classnames(
                                             'idea-card__content__infos__author__type',
-                                            `idea-card__content__infos__author__type--${this.props.author_category}`
+                                            `idea-card__content__infos__author__type--${
+                                                this.props.author_category
+                                            }`
                                         )}
                                     >
                                         {AUTHOR_CATEGORY_NAMES[this.props.author_category]}
@@ -121,11 +124,16 @@ class IdeaCard extends React.Component {
                                     </div>
                                 )}
                             </div>
-                            <p className="idea-card__content__description">{this.props.description}</p>
+                            <p className="idea-card__content__description">
+                                {this.props.description}
+                            </p>
                             {!!this.props.themes.length && (
                                 <ul className="idea-card__content__tags">
                                     {this.props.themes.map((theme, index) => (
-                                        <li key={`theme__${index}`} className="idea-card__content__tags__item">
+                                        <li
+                                            key={`theme__${index}`}
+                                            className="idea-card__content__tags__item"
+                                        >
                                             {theme.name}
                                         </li>
                                     ))}
@@ -134,7 +142,10 @@ class IdeaCard extends React.Component {
                         </div>
                         {!!this.props.themes.length && this.props.themes[0].thumbnail && (
                             <div className="idea-card__theme">
-                                <img className="idea-card__theme__icon" src={this.props.themes[0].thumbnail} />
+                                <img
+                                    className="idea-card__theme__icon"
+                                    src={this.props.themes[0].thumbnail}
+                                />
                             </div>
                         )}
                     </div>
@@ -167,8 +178,9 @@ IdeaCard.defaultProps = {
 
 IdeaCard.propTypes = {
     author: PropTypes.shape({
-        first_name: PropTypes.string.isRequired,
-        last_name: PropTypes.string.isRequired,
+        first_name: PropTypes.string,
+        last_name: PropTypes.string,
+        nickname: PropTypes.string,
     }).isRequired,
     author_category: PropTypes.string.isRequired,
     thumbnail: PropTypes.string,
@@ -177,15 +189,20 @@ IdeaCard.propTypes = {
     uuid: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     votes_count: PropTypes.shape({
-        important: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-        feasible: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-        innovative: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        important: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+            .isRequired,
+        feasible: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+            .isRequired,
+        innovative: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+            .isRequired,
         total: PropTypes.number.isRequired,
         my_votes: PropTypes.object,
     }).isRequired,
     comments_count: PropTypes.number,
     contributors_count: PropTypes.number,
-    themes: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string, thumbnail: PropTypes.string })),
+    themes: PropTypes.arrayOf(
+        PropTypes.shape({ name: PropTypes.string, thumbnail: PropTypes.string })
+    ),
     days_before_deadline: PropTypes.number.isRequired,
     status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
     onVote: PropTypes.func,

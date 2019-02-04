@@ -1,0 +1,22 @@
+.error-modal {
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  &__title {
+    margin-top: 76px;
+  }
+
+  &__subtitle {
+    margin: 0 0 35px;
+  }
+
+  &__button {
+    width: 125px;
+    height: 40px;
+    margin: 25px 0 44px;
+  }
+}

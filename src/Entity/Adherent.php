@@ -86,11 +86,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @Assert\Length(min=3, max=25, groups={"anonymize"})
      * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="adherent.nickname.invalid_syntax", groups={"anonymize"})
      *
+     * @JMS\Groups({"user_profile"})
+     *
      * @SymfonySerializer\Groups({"idea_list_read", "idea_read", "thread_list_read", "thread_comment_read", "vote_read"})
      */
     private $nickname;
 
     /**
+     * @JMS\Groups({"user_profile"})
+     * @JMS\SerializedName("use_nickname")
+     *
      * @ORM\Column(type="boolean", options={"default": 0})
      */
     private $nicknameUsed;
@@ -397,6 +402,28 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return array_values(array_filter(array_map(function (SubscriptionType $subscription) {
             return $subscription->getExternalId();
         }, $this->getSubscriptionTypes())));
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("elected"),
+     * @JMS\Groups({"user_profile"})
+     */
+    public function isElected(): bool
+    {
+        return $this->getMandates() && \count($this->getMandates()) > 0;
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("larem"),
+     * @JMS\Groups({"user_profile"})
+     */
+    public function isLaREM(): bool
+    {
+        return $this->getTags()->filter(function (AdherentTag $tag) {
+            return AdherentTagEnum::LAREM === $tag->getName();
+        })->count() > 0;
     }
 
     public function getRoles()

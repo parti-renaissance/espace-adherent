@@ -114,8 +114,10 @@ export function saveAndPublishIdea(uuid, data, saveOnly = false) {
 
 export function publishCurrentIdea(ideaData, saveOnly = false) {
     return (dispatch, getState, axios) => {
-        const { uuid } = selectCurrentIdea(getState());
-        return dispatch(saveAndPublishIdea(uuid, ideaData, saveOnly));
+        const { uuid, status } = selectCurrentIdea(getState());
+        // force publish if current idea is in draft mode
+        const saveWithoutPublish = saveOnly && 'DRAFT' !== status;
+        return dispatch(saveAndPublishIdea(uuid, ideaData, saveWithoutPublish));
     };
 }
 

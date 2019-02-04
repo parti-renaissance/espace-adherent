@@ -42,6 +42,10 @@
       border-color: $columbia-blue;
       cursor: pointer;
       color: $light-black;
+
+      .select__input__placeholder {
+          white-space: nowrap;
+      }
     }
 
     .select__input__menu {

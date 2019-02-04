@@ -118,7 +118,10 @@ Feature:
       "zipCode": "75001",
       "emailAddress": "referent-75-77@en-marche-dev.fr",
       "firstName": "Referent75and77",
-      "lastName": "Referent75and77"
+      "lastName": "Referent75and77",
+      "use_nickname": false,
+      "elected": false,
+      "larem": false
     }
     """
 
@@ -135,7 +138,11 @@ Feature:
       "zipCode":"75008",
       "emailAddress":"jacques.picard@en-marche.fr",
       "firstName":"Jacques",
-      "lastName":"Picard"
+      "lastName":"Picard",
+      "nickname":"kikouslove",
+      "use_nickname":true,
+      "elected": false,
+      "larem": true
     }
     """
 

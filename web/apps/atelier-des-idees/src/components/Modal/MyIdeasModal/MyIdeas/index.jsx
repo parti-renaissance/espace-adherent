@@ -12,17 +12,20 @@ class MyIdeas extends React.Component {
         this.CAT_IDEAS_FILTER = [
             {
                 showCat: 'showDraft',
-                label: 'Brouillons',
+                label: 'brouillons',
+                empty: 'brouillon',
                 ideas: this.props.ideas.filter(idea => 'DRAFT' === idea.status),
             },
             {
                 showCat: 'showPending',
-                label: 'propostions en cours d’élaboration',
+                label: 'propositions en cours d’élaboration',
+                empty: 'proposition en cours d’élaboration',
                 ideas: this.props.ideas.filter(idea => 'PENDING' === idea.status),
             },
             {
                 showCat: 'showFinalized',
                 label: 'propositions finalisées',
+                empty: 'proposition finalisée',
                 ideas: this.props.ideas.filter(idea => 'FINALIZED' === idea.status),
             },
         ];
@@ -37,29 +40,34 @@ class MyIdeas extends React.Component {
     render() {
         return (
             <div className="my-ideas">
-                {0 < this.props.ideas.length ? (
-                    this.CAT_IDEAS_FILTER.map(cat => (
-                        <React.Fragment>
-                            <button
-                                className="my-ideas__category__button"
-                                onClick={() =>
-                                    this.setState(prevState => ({
-                                        [cat.showCat]: !prevState[cat.showCat],
-                                    }))
-                                }
-                            >
-                                <span className="my-ideas__category__button__label">{cat.label.toUpperCase()}</span>
-                                <img
-                                    className={classNames('my-ideas__category__button__icon', {
-                                        'my-ideas__category__button__icon--rotate': !this.state[cat.showCat],
-                                    })}
-                                    src={icn_toggle_content}
-                                />
-                            </button>
-                            {cat.ideas.map(
-                                idea =>
-                                    this.state[cat.showCat] && (
-                                        <React.Fragment>
+                {this.CAT_IDEAS_FILTER.map((cat) => {
+                    const categoryHeader = cat.ideas.length ? (
+                        <button
+                            className="my-ideas__category__button"
+                            onClick={() =>
+                                this.setState(prevState => ({
+                                    [cat.showCat]: !prevState[cat.showCat],
+                                }))
+                            }
+                        >
+                            <span className="my-ideas__category__button__label">{cat.label.toUpperCase()}</span>
+                            <img
+                                className={classNames('my-ideas__category__button__icon', {
+                                    'my-ideas__category__button__icon--rotate': !this.state[cat.showCat],
+                                })}
+                                src={icn_toggle_content}
+                            />
+                        </button>
+                    ) : (
+                        <p className="my-ideas__category__button__label">{cat.label.toUpperCase()}</p>
+                    );
+                    return (
+                        <div className="my-ideas__category">
+                            {categoryHeader}
+                            {cat.ideas.length ? (
+                                cat.ideas.map(
+                                    idea =>
+                                        this.state[cat.showCat] && (
                                             <div className="my-ideas__category__idea">
                                                 <p className="my-ideas__category__idea__date">
                                                     Créée le {new Date(idea.created_at).toLocaleDateString()}
@@ -68,27 +76,24 @@ class MyIdeas extends React.Component {
                                                 <div className="my-ideas__category__idea__actions">
                                                     <Link
                                                         to={`/atelier-des-idees/proposition/${idea.uuid}`}
-                                                        className="my-ideas__category__idea__actions__edit button button--secondary"
+                                                        className="my-ideas__category__idea__actions__edit"
                                                     >
                                                         {'FINALIZED' !== idea.status && 'Editer'}
                                                         {'FINALIZED' === idea.status && 'Voir la note'}
                                                     </Link>
-                                                    <Button
-                                                        className="my-ideas__category__idea__actions__delete button--tertiary"
-                                                        label="Supprimer"
-                                                        onClick={() => this.props.onDeleteIdea(idea.uuid)}
-                                                    />
+                                                    <button className="button my-ideas__category__idea__actions__delete" onClick={() => this.props.onDeleteIdea(idea.uuid)}>
+                                                        Supprimer
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <div className="separator" />
-                                        </React.Fragment>
-                                    )
+                                        )
+                                )
+                            ) : (
+                                <p className="my-ideas__category__empty-label">{`Vous n'avez pas de ${cat.empty}`}</p>
                             )}
-                        </React.Fragment>
-                    ))
-                ) : (
-                    <small>Vous n'avez pas encore fait de proposition</small>
-                )}
+                        </div>
+                    );
+                })}
             </div>
         );
     }

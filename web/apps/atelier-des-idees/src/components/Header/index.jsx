@@ -28,6 +28,12 @@ class Header extends React.PureComponent {
                                 >
                                     Mes contributions
                                 </button>
+                                <button
+                                    className="header__item header__button"
+                                    onClick={() => this.props.onMyNicknameClicked()}
+                                >
+                                    Mon pseudo
+                                </button>
                             </React.Fragment>
                         )}
                     </div>
@@ -68,6 +74,7 @@ Header.defaultProps = {
 Header.propTypes = {
     isAuthenticated: PropTypes.bool,
     onMyIdeasBtnClicked: PropTypes.func.isRequired,
+    onMyNicknameClicked: PropTypes.func.isRequired,
 };
 
 export default Header;

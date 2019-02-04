@@ -30,8 +30,10 @@ class IdeaDenormalizer implements DenormalizerInterface, DenormalizerAwareInterf
         /** @var Idea $data */
         $data = $this->denormalizer->denormalize($data, $class, $format, $context);
 
-        if ($this->authorizationChecker->isGranted(AdherentRoleEnum::QG_IDEAS)) {
+        if ($this->authorizationChecker->isGranted(AdherentRoleEnum::LAREM)) {
             $data->setAuthorCategory(AuthorCategoryEnum::QG);
+        } elseif ($this->authorizationChecker->isGranted(AdherentRoleEnum::ELECTED)) {
+            $data->setAuthorCategory(AuthorCategoryEnum::ELECTED);
         } elseif ($data->getCommittee()) {
             $data->setAuthorCategory(AuthorCategoryEnum::COMMITTEE);
         } else {

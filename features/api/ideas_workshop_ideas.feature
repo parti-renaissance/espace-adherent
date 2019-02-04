@@ -102,7 +102,7 @@ Feature:
                     "innovative": 0,
                     "total": 0
                 },
-                "author_category": "ADHERENT",
+                "author_category": "ELECTED",
                 "description": "Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "reduire-le-gaspillage-alimentaire",
@@ -219,7 +219,7 @@ Feature:
                     "innovative": 0,
                     "total": 0
                 },
-                "author_category": "ADHERENT",
+                "author_category": "ELECTED",
                 "description": "Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
                 "created_at": "@string@.isDateTime()",
                 "slug": "reduire-le-bruit-dans-les-opens-spaces",
@@ -466,7 +466,7 @@ Feature:
                   "innovative": 0,
                   "total": 0
               },
-              "author_category": "ADHERENT",
+              "author_category": "ELECTED",
               "description": "Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
               "created_at": "@string@.isDateTime()",
               "slug": "reduire-le-gaspillage-alimentaire",
@@ -551,8 +551,6 @@ Feature:
                 "enabled":true
              },
              "needs":[],
-
-
              "author":{
                 "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
                 "nickname":null,
@@ -560,7 +558,7 @@ Feature:
                 "last_name":"V."
              },
              "published_at":"@string@.isDateTime()",
-              "finalized_at": "@string@.isDateTime()",
+             "finalized_at": "@string@.isDateTime()",
              "committee":null,
              "status":"FINALIZED",
              "votes_count":{
@@ -569,7 +567,7 @@ Feature:
                 "innovative":0,
                 "total":0
              },
-             "author_category":"ADHERENT",
+             "author_category":"ELECTED",
              "description":"Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
              "created_at": "@string@.isDateTime()",
              "slug":"reduire-le-gaspillage-alimentaire",
@@ -746,7 +744,7 @@ Feature:
                 "innovative":0,
                 "total":0
              },
-             "author_category":"ADHERENT",
+             "author_category":"ELECTED",
              "description":"Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
              "created_at": "@string@.isDateTime()",
              "slug":"reduire-le-bruit-dans-les-opens-spaces",
@@ -799,6 +797,53 @@ Feature:
         "created_at": "@string@.isDateTime()",
         "name": "Mon idée",
         "slug": "mon-idee",
+        "days_before_deadline": @integer@,
+        "contributors_count": 0,
+        "comments_count": 0
+    }
+    """
+
+  Scenario: As a logged-in user with mandats (elected adherent) I can add my idea
+    Given I am logged as "michel.vasseur@example.ch"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/ideas-workshop/ideas" with body:
+    """
+    {
+      "name": "Ma proposition"
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "@uuid@",
+        "name": "Ma proposition",
+        "themes": [],
+        "category": null,
+        "needs": [],
+        "author": {
+            "nickname": null,
+            "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
+            "first_name": "Michel",
+            "last_name": "VASSEUR"
+        },
+        "published_at": null,
+        "finalized_at": null,
+        "committee": null,
+        "answers": [],
+        "votes_count": {
+            "important": 0,
+            "feasible": 0,
+            "innovative": 0,
+            "total": 0,
+            "my_votes": []
+        },
+        "author_category": "ELECTED",
+        "description": null,
+        "created_at": "@string@.isDateTime()",
+        "slug": "ma-proposition",
+        "status": "DRAFT",
         "days_before_deadline": @integer@,
         "contributors_count": 0,
         "comments_count": 0
@@ -1908,7 +1953,7 @@ Feature:
                 "innovative":0,
                 "total":0
              },
-             "author_category":"ADHERENT",
+             "author_category":"ELECTED",
              "description":"Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
              "created_at":"@string@.isDateTime()",
              "slug":"reduire-le-gaspillage-alimentaire",
@@ -1968,7 +2013,7 @@ Feature:
                 "innovative":0,
                 "total":0
              },
-             "author_category":"ADHERENT",
+             "author_category":"ELECTED",
              "description":"Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
              "created_at":"@string@.isDateTime()",
              "slug":"reduire-le-gaspillage-alimentaire",
@@ -2014,7 +2059,7 @@ Feature:
                 "innovative":0,
                 "total":0
              },
-             "author_category":"ADHERENT",
+             "author_category":"ELECTED",
              "description":"Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
              "created_at":"@string@.isDateTime()",
              "slug":"reduire-le-bruit-dans-les-opens-spaces",
@@ -2118,7 +2163,7 @@ Feature:
                   "innovative":0,
                   "total":0
                },
-               "author_category":"ADHERENT",
+               "author_category":"ELECTED",
                "description":"Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
                "created_at":"@string@.isDateTime()",
                "slug":"reduire-le-gaspillage-alimentaire",
@@ -2221,7 +2266,7 @@ Feature:
                   "innovative": 0,
                   "total": 0
               },
-              "author_category": "ADHERENT",
+              "author_category": "ELECTED",
               "description": "Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
               "created_at": "@string@.isDateTime()",
               "slug": "reduire-le-gaspillage-alimentaire",

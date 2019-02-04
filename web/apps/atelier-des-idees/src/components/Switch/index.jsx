@@ -16,11 +16,13 @@ function Switch(props) {
 }
 
 Switch.defaultProps = {
+    defaultChecked: false,
     disabled: false,
     label: '',
 };
 
 Switch.propTypes = {
+    defaultChecked: PropTypes.bool,
     disabled: PropTypes.bool,
     label: PropTypes.string,
     onChange: PropTypes.func.isRequired,

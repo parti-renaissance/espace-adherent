@@ -1,5 +1,6 @@
 @import './QuestionBlock/style';
 @import './CreateIdeaActions/style';
+@import './IdeaPageHeader/style';
 @import './IdeaContent/style';
 @import './IdeaPageTitle/style';
 @import './VotingFooterIdeaPage/style';
@@ -9,38 +10,6 @@
   position: relative;
   border-top: 1px solid $gainsboro;
   word-wrap: break-word;
-
-  .create-idea-page__header {
-    display: flex;
-    height: 80px;
-    align-items: center;
-
-    .create-idea-actions {
-      flex: 1;
-
-      &:nth-child(2) {
-        margin-left: 0;
-      }
-    }
-
-    .create-idea-actions__back,
-    .create-idea-actions__report {
-      @extend %reset-button;
-      cursor: pointer;
-      color: $saphir;
-    }
-    .create-idea-actions__back {
-      margin-right: 40px;
-    }
-
-    .create-idea-actions__report {
-      margin-left: auto;
-    }
-
-    .create-idea-actions {
-      margin-left: 25px;
-    }
-  }
 
   .create-idea-page__content {
     padding: 70px 0;
@@ -89,16 +58,6 @@
       width: 100%;
       margin: 0;
       padding: 40px 20px;
-    }
-
-    .create-idea-page__header {
-      flex-direction: column;
-      height: initial;
-      padding: 30px 0;
-
-      .create-idea-actions__back {
-        margin: 0;
-      }
     }
 
     .create-idea-actions__back {

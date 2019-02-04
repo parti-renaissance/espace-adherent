@@ -34,4 +34,7 @@ storiesOf('IdeaCard', module)
     .addParameters({ jest: ['IdeaCard'] })
     .add('default', () => <IdeaCard {...props} onVote={action('Vote')} />)
     .add('PENDING', () => <IdeaCard {...props} status="PENDING" onVote={action('Vote')} />)
-    .add('FINALIZED', () => <IdeaCard {...props} status="FINALIZED" onVote={action('Vote')} />);
+    .add('FINALIZED', () => <IdeaCard {...props} status="FINALIZED" onVote={action('Vote')} />)
+    .add('with nickname', () => (
+        <IdeaCard {...props} onVote={action('Vote')} author={{ ...props.author, nickname: 'bgdu06' }} />
+    ));
