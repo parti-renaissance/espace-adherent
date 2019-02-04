@@ -17,7 +17,7 @@ class MyIdeas extends React.Component {
             },
             {
                 showCat: 'showPending',
-                label: 'propostions en cours d’élaboration',
+                label: 'propositions en cours d’élaboration',
                 ideas: this.props.ideas.filter(idea => 'PENDING' === idea.status),
             },
             {
