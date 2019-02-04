@@ -37,14 +37,28 @@
     &__actions {
       > * {
         margin-right: 14px;
+        font-size: 16px;
+        color: $light-black;
       }
 
-      &__publish {
-        font-size: 14px;
+      &__see-note,
+      &__edit {
+          color: $saphir;
       }
 
-      &__see-note {
-        width: 145px;
+      &__delete {
+            border: 0;
+            margin: 0;
+            padding: 0;
+            width: auto;
+            overflow: visible;
+            background: transparent;
+            color: inherit;
+            font: inherit;
+            line-height: normal;
+            -webkit-font-smoothing: inherit;
+            -moz-osx-font-smoothing: inherit;
+            -webkit-appearance: none;
       }
     }
   }
