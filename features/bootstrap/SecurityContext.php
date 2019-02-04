@@ -25,7 +25,7 @@ class SecurityContext extends RawMinkContext
             throw new \Exception(sprintf('Adherent %s not found', $email));
         }
 
-        $this->logAs($user, 'main');
+        $this->loginAs($user, 'main');
     }
 
     /**
@@ -37,10 +37,10 @@ class SecurityContext extends RawMinkContext
             throw new \Exception(sprintf('Admin %s not found', $email));
         }
 
-        $this->logAs($user, 'admin');
+        $this->loginAs($user, 'admin');
     }
 
-    private function logAs(UserInterface $user, string $firewallName): void
+    private function loginAs(UserInterface $user, string $firewallName): void
     {
         $driver = $this->getSession()->getDriver();
         $session = $this->getContainer()->get('session');
