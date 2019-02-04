@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Donation;
 
-use AppBundle\DataFixtures\ORM\LoadDonationData;
 use AppBundle\Repository\DonationRepository;
 use AppBundle\Repository\TransactionRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -94,9 +93,7 @@ class TransactionSubscriberTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadDonationData::class,
-        ]);
+        $this->init();
 
         $this->donationRepository = $this->getDonationRepository();
         $this->transactionRepository = $this->getTransactionRepository();

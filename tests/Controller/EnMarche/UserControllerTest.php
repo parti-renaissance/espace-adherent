@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentChangeEmailToken;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -72,9 +71,7 @@ class UserControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

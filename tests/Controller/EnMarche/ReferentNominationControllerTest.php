@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadReferentData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -53,9 +52,7 @@ class ReferentNominationControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadReferentData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

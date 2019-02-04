@@ -2,9 +2,7 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
-use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Mailer\Message\EventCancellationMessage;
 use AppBundle\Mailer\Message\EventContactMembersMessage;
 use Ramsey\Uuid\Uuid;
@@ -376,11 +374,7 @@ class EventManagerControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-            LoadEventCategoryData::class,
-            LoadEventData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

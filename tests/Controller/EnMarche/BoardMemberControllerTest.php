@@ -2,8 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadBoardMemberRoleData;
 use AppBundle\Mailer\Message\BoardMemberMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -311,10 +309,7 @@ class BoardMemberControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-            LoadBoardMemberRoleData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

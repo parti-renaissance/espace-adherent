@@ -3,9 +3,6 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadMissionTypeData;
-use AppBundle\DataFixtures\ORM\LoadSkillData;
-use AppBundle\DataFixtures\ORM\LoadSummaryData;
 use AppBundle\Entity\MemberSummary\Language;
 use AppBundle\Form\SummaryType;
 use AppBundle\Membership\ActivityPositions;
@@ -880,10 +877,15 @@ class SummaryManagerControllerTest extends WebTestCase
 
         $missions = $this->getSummarySection($crawler, self::SECTION_MISSIONS);
 
-        $this->assertCount(3, $missions->filter('.summary-wish'));
-        $this->assertSame('Me former à l\'action politique et citoyenne', trim($missions->filter('.summary-wish')->eq(0)->text()));
-        $this->assertSame('Faire remonter les opinions du terrain', trim($missions->filter('.summary-wish')->eq(1)->text()));
-        $this->assertSame('Expérimenter des projets concrets', trim($missions->filter('.summary-wish')->eq(2)->text()));
+        $this->assertCount(3, $wishes = $missions->filter('.summary-wish'));
+
+        for ($i = 0; $i < $wishes->count(); ++$i) {
+            $this->assertContains(trim($wishes->eq($i)->text()), [
+                'Me former à l\'action politique et citoyenne',
+                'Faire remonter les opinions du terrain',
+                'Expérimenter des projets concrets',
+            ]);
+        }
     }
 
     /**
@@ -1281,12 +1283,7 @@ class SummaryManagerControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-            LoadMissionTypeData::class,
-            LoadSkillData::class,
-            LoadSummaryData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

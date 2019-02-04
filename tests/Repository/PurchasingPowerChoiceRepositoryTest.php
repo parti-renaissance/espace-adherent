@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Repository;
 
-use AppBundle\DataFixtures\ORM\LoadPurchasingPowerData;
 use AppBundle\Entity\PurchasingPowerChoice;
 use AppBundle\Repository\PurchasingPowerChoiceRepository;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -41,10 +40,6 @@ class PurchasingPowerChoiceRepositoryTest extends WebTestCase
     protected function setUp()
     {
         parent::setUp();
-
-        $this->loadFixtures([
-            LoadPurchasingPowerData::class,
-        ]);
 
         $this->container = $this->getContainer();
         $this->repository = $this->getPurchasingPowerChoiceRepository();

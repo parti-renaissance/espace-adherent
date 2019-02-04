@@ -2,10 +2,7 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadCitizenActionCategoryData;
 use AppBundle\DataFixtures\ORM\LoadCitizenActionData;
-use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Mailer\Message\CitizenActionCancellationMessage;
 use AppBundle\Mailer\Message\CitizenActionContactParticipantsMessage;
@@ -363,12 +360,7 @@ class CitizenActionManagerControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-            LoadCitizenProjectData::class,
-            LoadCitizenActionCategoryData::class,
-            LoadCitizenActionData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

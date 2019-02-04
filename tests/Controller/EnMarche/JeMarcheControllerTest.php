@@ -99,7 +99,7 @@ class JeMarcheControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([]);
+        $this->init();
 
         $this->jeMarcheReportRepostitory = $this->getJeMarcheReportRepository();
     }

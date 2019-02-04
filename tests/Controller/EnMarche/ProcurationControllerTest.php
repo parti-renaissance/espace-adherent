@@ -3,8 +3,6 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadElectionData;
-use AppBundle\DataFixtures\ORM\LoadProcurationData;
 use AppBundle\Entity\ElectionRound;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
@@ -100,7 +98,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertCount(1, $error = $crawler->filter('.form__error'));
         $this->assertSame('Vous devez choisir au moins une élection.', $error->text());
 
-        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[elections]' => [3]]));
+        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[elections]' => [5]]));
 
         $this->assertClientIsRedirectedTo('/procuration/je-demande/'.ProcurationRequest::STEP_URI_VOTE, $this->client);
         $this->assertTrue(
@@ -139,7 +137,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertCount(1, $error = $crawler->filter('.form__error'));
         $this->assertSame('Vous devez choisir au moins une élection.', $error->text());
 
-        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[elections]' => [3]]));
+        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[elections]' => [5]]));
 
         $this->assertClientIsRedirectedTo('/procuration/je-propose', $this->client);
         $this->assertTrue(
@@ -298,7 +296,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',
             'app_procuration_request' => [
-                'electionRounds' => ['5'],
+                'electionRounds' => ['9'],
                 'reason' => ProcurationRequest::REASON_HEALTH,
                 'authorization' => true,
             ],
@@ -328,7 +326,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertSame('69001', $request->getPostalCode());
         $this->assertSame('Lyon 1er', $request->getCityName());
         $this->assertSame('6 rue Neyret', $request->getAddress());
-        $this->assertEquals([$this->getRepository(ElectionRound::class)->find(5)], $request->getElectionRounds()->toArray());
+        $this->assertEquals([$this->getRepository(ElectionRound::class)->find(9)], $request->getElectionRounds()->toArray());
         $this->assertSame(ProcurationRequest::REASON_HEALTH, $request->getReason());
     }
 
@@ -469,7 +467,7 @@ class ProcurationControllerTest extends WebTestCase
                 'voteCity' => '92110-92024',
                 'voteCityName' => '',
                 'voteOffice' => 'TestOfficeName',
-                'electionRounds' => ['5'],
+                'electionRounds' => ['9'],
                 'conditions' => true,
             ],
         ]));
@@ -496,7 +494,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertSame('69001', $proposal->getPostalCode());
         $this->assertSame('Lyon 1er', $proposal->getCityName());
         $this->assertSame('6 rue Neyret', $proposal->getAddress());
-        $this->assertEquals([$this->getRepository(ElectionRound::class)->find(5)], $proposal->getElectionRounds()->toArray());
+        $this->assertEquals([$this->getRepository(ElectionRound::class)->find(9)], $proposal->getElectionRounds()->toArray());
     }
 
     public function testProcurationRequestNotUniqueEmailBirthDate()
@@ -562,7 +560,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',
             'app_procuration_request' => [
-                'electionRounds' => ['5'],
+                'electionRounds' => ['9'],
                 'reason' => ProcurationRequest::REASON_HEALTH,
                 'authorization' => true,
             ],
@@ -616,7 +614,7 @@ class ProcurationControllerTest extends WebTestCase
                 'voteCity' => '75018-75120',
                 'voteCityName' => '',
                 'voteOffice' => 'Mairie',
-                'electionRounds' => ['5'],
+                'electionRounds' => ['9'],
                 'conditions' => true,
                 'authorization' => true,
             ],
@@ -673,11 +671,7 @@ class ProcurationControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-            LoadElectionData::class,
-            LoadProcurationData::class,
-        ]);
+        $this->init();
 
         $this->procurationRequestRepostitory = $this->getProcurationRequestRepository();
         $this->procurationProxyRepostitory = $this->getProcurationProxyRepository();
@@ -701,7 +695,7 @@ class ProcurationControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, "/procuration/choisir/$action");
 
-        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[elections]' => [3]]));
+        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[elections]' => [5]]));
 
         $path = ElectionContext::ACTION_REQUEST === $action ? 'je-demande/'.ProcurationRequest::STEP_URI_VOTE : 'je-propose';
 

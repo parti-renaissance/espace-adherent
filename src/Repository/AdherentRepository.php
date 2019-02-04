@@ -178,6 +178,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->createQueryBuilder('a')
             ->select('COUNT(a.uuid)')
             ->where('a.status = :status')
+            ->andWhere('a.adherent = 1')
             ->setParameter('status', Adherent::ENABLED)
             ->getQuery()
         ;

@@ -5,7 +5,6 @@ namespace Tests\AppBundle\Controller;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\EventCategory;
 use AppBundle\Entity\ReferentTag;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -187,14 +186,13 @@ trait ControllerTestTrait
         self::assertSame($referentTag->getCode(), $code);
     }
 
-    protected function init(array $fixtures = [], string $host = 'app')
+    protected function init(string $host = 'app')
     {
         $this->container = $this->getContainer();
         $this->manager = $this->container->get('doctrine.orm.entity_manager');
 
-        $this->manager->getConnection()->executeUpdate('SET foreign_key_checks = 0;');
-        $this->loadFixtures($fixtures, null, 'doctrine', ORMPurger::PURGE_MODE_TRUNCATE);
-        $this->manager->getConnection()->executeUpdate('SET foreign_key_checks = 1;');
+        // delete all scheduled emails
+        $this->getEmailRepository()->createQueryBuilder('e')->delete()->getQuery()->execute();
 
         $this->hosts = [
             'scheme' => $this->container->getParameter('router.request_context.scheme'),

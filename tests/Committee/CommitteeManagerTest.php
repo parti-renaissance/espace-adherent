@@ -5,7 +5,6 @@ namespace Tests\AppBundle\Committee;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadCommitteeMembershipHistoryData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
@@ -345,11 +344,6 @@ class CommitteeManagerTest extends WebTestCase
     protected function setUp()
     {
         parent::setUp();
-
-        $this->loadFixtures([
-            LoadAdherentData::class,
-            LoadCommitteeMembershipHistoryData::class,
-        ]);
 
         $this->container = $this->getContainer();
         $this->committeeManager = new CommitteeManager(

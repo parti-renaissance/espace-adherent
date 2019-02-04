@@ -406,7 +406,10 @@ class DonationControllerTest extends WebTestCase
         parent::setUp();
 
         $this->init();
-        $this->loadFixtures([]);
+
+        // Delete all donations for tests
+        $this->getRepository(Transaction::class)->createQueryBuilder('t')->delete()->getQuery()->execute();
+        $this->getDonationRepository()->createQueryBuilder('d')->delete()->getQuery()->execute();
 
         $this->payboxClient = new PayboxClient();
         $this->donationRepository = $this->getDonationRepository();

@@ -118,10 +118,6 @@ class GroupUtilsTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->loadFixtures([
-            LoadAdherentData::class,
-        ]);
-
         $this->container = $this->getContainer();
     }
 

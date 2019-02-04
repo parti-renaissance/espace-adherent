@@ -37,7 +37,7 @@ class ReferentsControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([]);
+        $this->init();
     }
 
     public function tearDown()

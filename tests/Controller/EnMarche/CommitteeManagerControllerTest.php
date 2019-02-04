@@ -5,7 +5,6 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
-use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Event;
@@ -790,11 +789,7 @@ class CommitteeManagerControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-            LoadEventCategoryData::class,
-            LoadEventData::class,
-        ]);
+        $this->init();
 
         $this->committeeEventRepository = $this->getEventRepository();
         $this->committeeFeedItemRepository = $this->getCommitteeFeedItemRepository();

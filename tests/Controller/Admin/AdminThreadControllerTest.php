@@ -3,7 +3,6 @@
 namespace Tests\AppBundle\Controller\Admin;
 
 use AppBundle\DataFixtures\ORM\LoadIdeaThreadData;
-use AppBundle\DataFixtures\ORM\LoadAdminData;
 use AppBundle\Entity\IdeasWorkshop\Thread;
 use AppBundle\Repository\ThreadRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,10 +63,7 @@ class AdminThreadControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdminData::class,
-            LoadIdeaThreadData::class,
-        ]);
+        $this->init();
 
         $this->threadRepository = $this->getThreadRepository();
     }

@@ -2,10 +2,7 @@
 
 namespace Tests\AppBundle\Repository;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadCitizenActionData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
-use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Search\SearchParametersFilter;
 use Symfony\Component\HttpFoundation\Request;
@@ -83,12 +80,7 @@ class EventRepositoryTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-            LoadCitizenActionData::class,
-            LoadEventCategoryData::class,
-            LoadEventData::class,
-        ]);
+        $this->init();
 
         $this->repository = $this->getEventRepository();
     }

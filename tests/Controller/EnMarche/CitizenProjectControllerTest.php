@@ -2,8 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadCitizenActionData;
-use AppBundle\DataFixtures\ORM\LoadCitizenProjectCommentData;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\Entity\CitizenProject;
@@ -308,6 +306,8 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
 
     public function testCitizenProjectContactActors()
     {
+        $this->disableRepublicanSilence();
+
         // Authenticate as the administrator (host)
         $this->authenticateAsAdherent($this->client, 'lolodie.dutemps@hotnix.tld');
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
@@ -536,12 +536,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-            LoadCitizenProjectData::class,
-            LoadCitizenProjectCommentData::class,
-            LoadCitizenActionData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

@@ -126,6 +126,9 @@ test-behat:                                                                     
 test-phpunit:                                                                                          ## Run phpunit tests
 	$(PHPUNIT) $(PHPUNIT_ARGS)
 
+test-debug:                                                                                            ## Run tests with debug group/tags
+	$(PHPUNIT) -vvv --group debug
+
 test-phpunit-functional:                                                                               ## Run phpunit fonctional tests
 	$(PHPUNIT) --group functional
 
@@ -148,6 +151,7 @@ tfp-db: wait-for-db                                                             
 	$(CONSOLE) doctrine:database:import --env=test -n -- dump/dump-2018.sql
 	$(CONSOLE) doctrine:migration:migrate -n --env=test
 	$(CONSOLE) doctrine:schema:validate --env=test
+	$(CONSOLE) doctrine:fixtures:load --env=test -n
 
 tj: node_modules                                                                                       ## Run the Javascript tests
 	$(EXEC) yarn test

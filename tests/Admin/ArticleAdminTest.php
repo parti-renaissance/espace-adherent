@@ -2,8 +2,6 @@
 
 namespace Tests\AppBundle\Admin;
 
-use AppBundle\DataFixtures\ORM\LoadAdminData;
-use AppBundle\DataFixtures\ORM\LoadArticleData;
 use AppBundle\Entity\Article;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -120,10 +118,7 @@ class ArticleAdminTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdminData::class,
-            LoadArticleData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

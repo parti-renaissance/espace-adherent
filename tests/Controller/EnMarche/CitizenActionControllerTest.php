@@ -3,13 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadCitizenActionCategoryData;
 use AppBundle\DataFixtures\ORM\LoadCitizenActionData;
-use AppBundle\DataFixtures\ORM\LoadCitizenProjectCategoryData;
-use AppBundle\DataFixtures\ORM\LoadCitizenProjectCategorySkillData;
-use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
-use AppBundle\DataFixtures\ORM\LoadCitizenProjectSkillData;
-use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\EventRegistration;
 use Symfony\Component\HttpFoundation\Request;
@@ -229,16 +223,7 @@ CONTENT;
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-            LoadEventCategoryData::class,
-            LoadCitizenProjectCategoryData::class,
-            LoadCitizenProjectCategorySkillData::class,
-            LoadCitizenProjectSkillData::class,
-            LoadCitizenProjectData::class,
-            LoadCitizenActionCategoryData::class,
-            LoadCitizenActionData::class,
-        ]);
+        $this->init();
 
         $this->repository = $this->getEventRegistrationRepository();
     }

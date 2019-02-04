@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Repository;
 
-use AppBundle\DataFixtures\ORM\LoadTonMacronData;
 use AppBundle\Entity\TonMacronChoice;
 use AppBundle\Repository\TonMacronChoiceRepository;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -36,10 +35,6 @@ class TonMacronChoiceRepositoryTest extends WebTestCase
     protected function setUp()
     {
         parent::setUp();
-
-        $this->loadFixtures([
-            LoadTonMacronData::class,
-        ]);
 
         $this->container = $this->getContainer();
         $this->repository = $this->getTonMacronChoiceRepository();

@@ -67,7 +67,6 @@ class RedirectionManagerTest extends WebTestCase
 
     protected function setUp()
     {
-        $this->loadFixtures([]);
         $this->getContainer()->get('app.cache.redirection')->clear();
     }
 

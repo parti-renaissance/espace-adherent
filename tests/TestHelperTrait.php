@@ -32,6 +32,7 @@ use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Entity\PurchasingPowerChoice;
 use AppBundle\Entity\PurchasingPowerInvitation;
 use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
+use AppBundle\Entity\RepublicanSilence;
 use AppBundle\Entity\SubscriptionType;
 use AppBundle\Entity\Summary;
 use AppBundle\Entity\TonMacronChoice;
@@ -397,5 +398,16 @@ trait TestHelperTrait
         }
 
         $property->setValue($container, null);
+    }
+
+    protected function disableRepublicanSilence(): void
+    {
+        $this
+            ->getRepository(RepublicanSilence::class)
+            ->createQueryBuilder('r')
+            ->delete()
+            ->getQuery()
+            ->execute()
+        ;
     }
 }

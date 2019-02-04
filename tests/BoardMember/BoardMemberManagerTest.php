@@ -6,7 +6,6 @@ use AppBundle\BoardMember\BoardMemberFilter;
 use AppBundle\BoardMember\BoardMemberManager;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadBoardMemberRoleData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BoardMember\Role;
 use AppBundle\Repository\AdherentRepository;
@@ -35,7 +34,7 @@ class BoardMemberManagerTest extends WebTestCase
     public function testSearchMembers()
     {
         $filter = BoardMemberFilter::createFromArray([]);
-        $excludedMember = $this->getAdherentRepository()->findOneByEmail('kiroule.p@blabla.tld');
+        $excludedMember = $this->adherentRepository->findOneByEmail('kiroule.p@blabla.tld');
 
         $members = $this->boardMemberManager->paginateMembers($filter, $excludedMember);
 
@@ -47,7 +46,7 @@ class BoardMemberManagerTest extends WebTestCase
     public function testPaginateMembers()
     {
         $filter = BoardMemberFilter::createFromArray([]);
-        $excludedMember = $this->getAdherentRepository()->findOneByEmail('kiroule.p@blabla.tld');
+        $excludedMember = $this->adherentRepository->findOneByEmail('kiroule.p@blabla.tld');
 
         $paginator = $this->boardMemberManager->paginateMembers($filter, $excludedMember);
 
@@ -91,12 +90,8 @@ class BoardMemberManagerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->loadFixtures([
-            LoadAdherentData::class,
-            LoadBoardMemberRoleData::class,
-        ]);
+        $this->init();
 
-        $this->container = $this->getContainer();
         $this->adherentRepository = $this->getAdherentRepository();
         $this->boardMemberManager = $this->container->get('app.board_member.manager');
     }
@@ -107,7 +102,6 @@ class BoardMemberManagerTest extends WebTestCase
 
         $this->boardMemberManager = null;
         $this->adherentRepository = null;
-        $this->container = null;
 
         parent::tearDown();
     }

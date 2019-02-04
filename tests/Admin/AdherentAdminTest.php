@@ -3,7 +3,6 @@
 namespace Tests\AppBundle\Controller\Admin;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadAdminData;
 use AppBundle\Entity\Adherent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -170,10 +169,7 @@ class AdherentAdminTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdminData::class,
-            LoadAdherentData::class,
-        ]);
+        $this->init();
 
         $this->adherentRepository = $this->getAdherentRepository();
     }

@@ -68,11 +68,8 @@ class CommitteeFeedManagerTest extends WebTestCase
 
     public function setUp()
     {
-        $this->loadFixtures([
-            LoadAdherentData::class,
-        ]);
+        $this->init();
 
-        $this->container = $this->getContainer();
         $this->committeeFeedManager = $this->get('app.committee.feed_manager');
         $this->committeeRepository = $this->getCommitteeRepository();
         $this->committeeMembershipRepository = $this->getCommitteeMembershipRepository();

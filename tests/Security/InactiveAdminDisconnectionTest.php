@@ -2,9 +2,6 @@
 
 namespace Tests\AppBundle\Security;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadAdminData;
-use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -55,11 +52,7 @@ class InactiveAdminDisconnectionTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdminData::class,
-            LoadAdherentData::class,
-            LoadHomeBlockData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

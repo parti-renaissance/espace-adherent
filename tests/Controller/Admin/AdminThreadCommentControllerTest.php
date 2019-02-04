@@ -3,7 +3,6 @@
 namespace Tests\AppBundle\Controller\Admin;
 
 use AppBundle\DataFixtures\ORM\LoadIdeaThreadCommentData;
-use AppBundle\DataFixtures\ORM\LoadAdminData;
 use AppBundle\Entity\IdeasWorkshop\ThreadComment;
 use AppBundle\Repository\ThreadCommentRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,10 +63,7 @@ class AdminThreadCommentControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdminData::class,
-            LoadIdeaThreadCommentData::class,
-        ]);
+        $this->init();
 
         $this->threadCommentRepository = $this->getThreadCommentRepository();
     }
