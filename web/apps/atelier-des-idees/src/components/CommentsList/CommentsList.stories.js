@@ -102,6 +102,21 @@ storiesOf('CommentsList', module)
             total={comments.length * 2}
         />
     ))
+    .add('with CGU', () => (
+        <CommentsList
+            isAuthenticated={true}
+            comments={comments}
+            onSendComment={action('send comment')}
+            onDeleteComment={action('delete comment')}
+            onEditComment={action('edit comment')}
+            onApprovedComment={action('edit comment')}
+            ownerId="u1"
+            onLoadMore={action('Load more comments')}
+            currentUserId="u100"
+            total={comments.length * 2}
+            withCGU={true}
+        />
+    ))
     .add('is not authenticated', () => (
         <CommentsList
             comments={comments}
