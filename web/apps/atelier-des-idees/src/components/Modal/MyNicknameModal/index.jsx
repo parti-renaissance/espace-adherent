@@ -48,14 +48,15 @@ class MyNicknameModal extends React.Component {
                                 Choix du pseudo
                             </label>
                             <Input
-                                id="nickname"
                                 className="my-nickname-modal__form__input"
                                 error={this.state.hasError ? 'Veuillez renseigner un pseudonyme' : null}
+                                id="nickname"
                                 inputClassName="my-nickname-modal__form__field"
-                                value={this.state.nickname}
+                                maxLength={25}
                                 onChange={value => this.setState({ nickname: value, hasError: !value.length })}
                                 placeholder="Entrez votre pseudo"
-                                maxLength={25}
+                                subtitle="N’utilisez que des lettres, chiffres et les caractères _ ou -"
+                                value={this.state.nickname}
                             />
                             <div className="my-nickname-modal__form__use-nickname">
                                 <span className="my-nickname-modal__form__label">Utiliser le pseudo</span>
