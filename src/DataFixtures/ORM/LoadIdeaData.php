@@ -101,7 +101,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         $ideaReducePupils = new Idea(
             'Réduire le nombre d’élèves dans les classes dans les quartiers défavorisés',
             null,
-            AuthorCategoryEnum::QG,
+            AuthorCategoryEnum::ELECTED,
             null,
             null,
             true,
@@ -114,7 +114,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         $ideaReduceNoise = new Idea(
             'Reduire le bruit dans les opens spaces',
             'Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.',
-            AuthorCategoryEnum::ADHERENT,
+            AuthorCategoryEnum::ELECTED,
             new \DateTime('-2 days 1 minute'),
             new Chronos('+8 days 1 minute'),
             true,
@@ -130,7 +130,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         $ideaReduceFoodWaste = new Idea(
             'Reduire le gaspillage alimentaire',
             'Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.',
-            AuthorCategoryEnum::ADHERENT,
+            AuthorCategoryEnum::ELECTED,
             new \DateTime('-23 days 1 minute'),
             new Chronos('-13 days 1 minute'),
             true,
@@ -145,7 +145,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         $ideaDisabled = new Idea(
             'Idée modérée',
             'Ideas moderatis',
-            AuthorCategoryEnum::ADHERENT,
+            AuthorCategoryEnum::ELECTED,
             new \DateTime('-26 days 1 minute'),
             new Chronos('-16 days 1 minute'),
             false,

@@ -107,7 +107,9 @@ class IdeaPageBase extends React.Component {
     }
 
     onToggleReadingMode(toggleValue) {
-        this.setState({ readingMode: toggleValue });
+        this.setState({ readingMode: toggleValue }, () => {
+            window.scrollTo(0, 0);
+        });
     }
 
     formatAnswers() {
