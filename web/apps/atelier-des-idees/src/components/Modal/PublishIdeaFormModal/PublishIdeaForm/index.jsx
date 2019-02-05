@@ -103,6 +103,7 @@ class PublishIdeaForm extends React.Component {
                                     0 === Object.keys(this.state.secondForm).length ? undefined : this.state.secondForm
                                 }
                                 authorOptions={this.props.authorOptions}
+                                canSelectAuthor={this.props.canSelectAuthor}
                                 committeeOptions={this.props.committeeOptions}
                                 difficultiesOptions={this.props.difficultiesOptions}
                                 isSubmitting={this.props.isSubmitting}
@@ -120,12 +121,15 @@ class PublishIdeaForm extends React.Component {
 }
 
 PublishIdeaForm.defaultProps = {
+    canSelectAuthor: true,
+    defaultValues: {},
     isSubmitting: false,
     isSubmitSuccess: false,
     isSubmitError: false,
 };
 
 PublishIdeaForm.propTypes = {
+    canSelectAuthor: PropTypes.bool,
     themeOptions: PropTypes.arrayOf(
         PropTypes.shape({
             value: PropTypes.number.isRequired,
