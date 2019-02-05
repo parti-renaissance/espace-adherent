@@ -139,6 +139,9 @@
         <service id="AppBundle\EventListener\RemoveEmojisListener">
             <tag name="doctrine.event_listener" event="onFlush" />
         </service>
+        <service id="AppBundle\Security\EventListener\LastVisitedPageOnGetListener">
+            <argument key="$apiPathPrefix">%env(API_PATH_PREFIX)%</argument>
+        </service>
 
         <!-- Exporter -->
         <prototype namespace="AppBundle\Exporter\" resource="../../../src/Exporter/" />
