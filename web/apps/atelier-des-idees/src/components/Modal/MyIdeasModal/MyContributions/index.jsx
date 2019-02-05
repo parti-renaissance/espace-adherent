@@ -51,7 +51,7 @@ class MyContributions extends React.Component {
                                     <div className="my-contributions__category__idea__actions">
                                         <Link
                                             to={`/atelier-des-idees/proposition/${idea.uuid}`}
-                                            className="my-contributions__category__idea__actions__see-note button--secondary"
+                                            className="my-contributions__category__idea__actions__see-note"
                                         >
                                             Voir la proposition
                                         </Link>
