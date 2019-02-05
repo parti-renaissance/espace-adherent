@@ -114,10 +114,10 @@ class SecondForm extends React.Component {
                 {this.props.canSelectAuthor && (
                     <React.Fragment>
                         <div className="second-form__section">
-                            <label className="second-form__section__label">Avec qui proposez-vous cette idée ?</label>
+                            <label className="second-form__section__label">Avez-vous écrit cette note avec votre comité local ?</label>
                             <Select
                                 options={this.props.authorOptions}
-                                placeholder="Seul / Mon comité"
+                                placeholder="Oui / Non"
                                 error={this.state.errors.author}
                                 onSelected={value => this.handleChange('author', value)}
                                 defaultValue={this.state.inputs.author.length ? this.state.inputs.author : undefined}

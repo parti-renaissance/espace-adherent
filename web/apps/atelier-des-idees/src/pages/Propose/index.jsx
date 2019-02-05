@@ -8,7 +8,8 @@ function Propose(props) {
     return (
         <ThreeTabsPage
             title="Soumettre une nouvelle proposition"
-            subtitle="Vous avez une proposition que vous aimeriez voir émerger dans le débat public ? Écrivez une note sur votre thème de prédilection !"
+            subtitle="Vous avez une proposition que vous aimeriez voir émerger dans le débat public ?"
+            subtitleSub="Écrivez une note sur votre thème de prédilection !"
         >
             <div className="propose-page">
                 <ProposalSteps />

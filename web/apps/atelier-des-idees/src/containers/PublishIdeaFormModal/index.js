@@ -55,7 +55,7 @@ function mapStateToProps(state, { id }) {
     const formattedNeeds = formatStaticData(needs);
     const formattedCategories = formatStaticData(categories);
     const formattedCommittees = committees.map(({ uuid, name }) => ({ value: uuid, label: name }));
-    const authorOptions = [{ value: 'alone', label: 'Seul' }, { value: 'committee', label: 'Mon comité' }];
+    const authorOptions = [{ value: 'alone', label: 'Non' }, { value: 'committee', label: 'Oui' }];
     // get default values
     const selectedThemes = getDefaultValues(currentIdea.themes, formattedThemes);
     const selectedNeeds = getDefaultValues(currentIdea.needs, formattedNeeds);
