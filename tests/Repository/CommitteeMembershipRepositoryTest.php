@@ -74,10 +74,6 @@ class CommitteeMembershipRepositoryTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->loadFixtures([
-            LoadAdherentData::class,
-        ]);
-
         $this->container = $this->getContainer();
         $this->repository = $this->getCommitteeMembershipRepository();
     }

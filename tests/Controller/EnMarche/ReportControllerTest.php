@@ -29,12 +29,7 @@ class ReportControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-            LoadCitizenActionData::class,
-            LoadCitizenProjectData::class,
-            LoadEventData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

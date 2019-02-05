@@ -180,7 +180,7 @@ class FormControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([]);
+        $this->init();
     }
 
     public function tearDown()

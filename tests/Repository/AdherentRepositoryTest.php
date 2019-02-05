@@ -3,11 +3,6 @@
 namespace Tests\AppBundle\Repository;
 
 use AppBundle\BoardMember\BoardMemberFilter;
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadBoardMemberRoleData;
-use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
-use AppBundle\DataFixtures\ORM\LoadEventData;
-use AppBundle\DataFixtures\ORM\LoadReferentTagData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
@@ -264,15 +259,8 @@ class AdherentRepositoryTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->loadFixtures([
-            LoadAdherentData::class,
-            LoadBoardMemberRoleData::class,
-            LoadEventCategoryData::class,
-            LoadEventData::class,
-            LoadReferentTagData::class,
-        ]);
+        $this->init();
 
-        $this->container = $this->getContainer();
         $this->adherentRepository = $this->getAdherentRepository();
         $this->referentTagRepository = $this->getRepository(ReferentTag::class);
     }

@@ -3,10 +3,6 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Address\GeoCoder;
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
-use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
-use AppBundle\DataFixtures\ORM\LoadReferentManagedUserData;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\ReferentManagedUsersMessage;
 use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
@@ -464,14 +460,11 @@ class ReferentControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-            LoadEventCategoryData::class,
-            LoadNewsletterSubscriptionData::class,
-            LoadReferentManagedUserData::class,
-        ]);
+        $this->init();
 
         $this->referentMessageRepository = $this->manager->getRepository(ReferentManagedUsersMessage::class);
+
+        $this->disableRepublicanSilence();
     }
 
     protected function tearDown()

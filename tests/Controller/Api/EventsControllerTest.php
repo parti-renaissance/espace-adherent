@@ -2,9 +2,7 @@
 
 namespace Tests\AppBundle\Controller\Api;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
-use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\EventCategory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -80,11 +78,7 @@ class EventsControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-            LoadEventCategoryData::class,
-            LoadEventData::class,
-        ]);
+        $this->init();
     }
 
     public function tearDown()

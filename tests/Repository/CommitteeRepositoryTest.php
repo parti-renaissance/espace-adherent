@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Repository;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Repository\CommitteeRepository;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -32,10 +31,6 @@ class CommitteeRepositoryTest extends WebTestCase
     protected function setUp()
     {
         parent::setUp();
-
-        $this->loadFixtures([
-            LoadAdherentData::class,
-        ]);
 
         $this->container = $this->getContainer();
         $this->repository = $this->getCommitteeRepository();

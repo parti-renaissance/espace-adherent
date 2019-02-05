@@ -9,6 +9,10 @@ parameters:
     timeline_max_messages: 10
 
 services:
+    app.geocoder:
+        class: 'Tests\AppBundle\Test\Geocoder\DummyGeocoder'
+        public: false
+
     app.mailer.transactional_client:
         class: 'Tests\AppBundle\Test\Mailer\NullEmailClient'
         public: false

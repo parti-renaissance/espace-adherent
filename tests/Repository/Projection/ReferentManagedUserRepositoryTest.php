@@ -2,9 +2,6 @@
 
 namespace Tests\AppBundle\Repository;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
-use AppBundle\DataFixtures\ORM\LoadReferentManagedUserData;
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Entity\ReferentTag;
 use AppBundle\Referent\ManagedUsersFilter;
@@ -115,12 +112,6 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
     protected function setUp()
     {
         parent::setUp();
-
-        $this->loadFixtures([
-            LoadAdherentData::class,
-            LoadNewsletterSubscriptionData::class,
-            LoadReferentManagedUserData::class,
-        ]);
 
         $this->container = $this->getContainer();
         $this->referentManagedUserRepository = $this->getRepository(ReferentManagedUser::class);

@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\Admin;
 
-use AppBundle\DataFixtures\ORM\LoadAdminData;
 use AppBundle\DataFixtures\ORM\LoadClientData;
 use AppBundle\Entity\OAuth\AccessToken;
 use AppBundle\Entity\OAuth\Client;
@@ -86,10 +85,7 @@ class ClientAdminControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdminData::class,
-            LoadClientData::class,
-        ]);
+        $this->init();
 
         $this->authenticateAsAdmin($this->client);
     }

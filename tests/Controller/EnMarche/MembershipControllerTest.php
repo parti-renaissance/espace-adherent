@@ -3,8 +3,6 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadBannedAdherentData;
-use AppBundle\DataFixtures\ORM\LoadUserData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
@@ -301,11 +299,7 @@ class MembershipControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-            LoadUserData::class,
-            LoadBannedAdherentData::class,
-        ]);
+        $this->init();
 
         $this->adherentRepository = $this->getAdherentRepository();
         $this->activationTokenRepository = $this->getActivationTokenRepository();

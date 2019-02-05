@@ -2,8 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadOrderSectionData;
-use AppBundle\DataFixtures\ORM\LoadPageData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -25,7 +23,7 @@ class ExplainerControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $path);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(4, $crawler->filter('.explainer__articles li')->count());
+        $this->assertSame(4, $crawler->filter('.explainer__articles > ul > li')->count());
     }
 
     public function provideActions()
@@ -37,10 +35,7 @@ class ExplainerControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadPageData::class,
-            LoadOrderSectionData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

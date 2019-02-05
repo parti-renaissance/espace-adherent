@@ -2,8 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadPageData;
-use AppBundle\DataFixtures\ORM\LoadProposalData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -60,10 +58,7 @@ class ProgramControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadPageData::class,
-            LoadProposalData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

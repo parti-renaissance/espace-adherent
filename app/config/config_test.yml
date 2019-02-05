@@ -3,10 +3,6 @@ imports:
     - { resource: assets_version.yml }
 
 services:
-    app.geocoder:
-        class: 'Tests\AppBundle\Test\Geocoder\DummyGeocoder'
-        public: false
-
     app.map.google_maps_static_provider:
         class: 'Tests\AppBundle\Test\Map\DummyStaticMapProvider'
 

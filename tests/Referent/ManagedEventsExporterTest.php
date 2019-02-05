@@ -2,8 +2,6 @@
 
 namespace Tests\AppBundle\Referent;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Referent\ManagedEventsExporter;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -51,11 +49,7 @@ class ManagedEventsExporterTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-            LoadEventCategoryData::class,
-            LoadEventData::class,
-        ]);
+        $this->init();
 
         $this->exporter = $this->container->get(ManagedEventsExporter::class);
     }

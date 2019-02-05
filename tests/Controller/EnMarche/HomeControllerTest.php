@@ -2,12 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadArticleData;
-use AppBundle\DataFixtures\ORM\LoadEventData;
-use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
-use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
-use AppBundle\DataFixtures\ORM\LoadPageData;
-use AppBundle\DataFixtures\ORM\LoadRedirectionData;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -128,14 +122,7 @@ class HomeControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadHomeBlockData::class,
-            LoadLiveLinkData::class,
-            LoadRedirectionData::class,
-            LoadEventData::class,
-            LoadPageData::class,
-            LoadArticleData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

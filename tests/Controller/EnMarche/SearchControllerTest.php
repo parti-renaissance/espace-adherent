@@ -2,9 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadCitizenActionData;
-use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Search\SearchParametersFilter;
@@ -116,11 +113,7 @@ class SearchControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadEventData::class,
-            LoadCitizenActionData::class,
-            LoadAdherentData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

@@ -2,10 +2,6 @@
 
 namespace Tests\AppBundle\Controller\Amp;
 
-use AppBundle\DataFixtures\ORM\LoadArticleData;
-use AppBundle\DataFixtures\ORM\LoadOrderArticleData;
-use AppBundle\DataFixtures\ORM\LoadOrderSectionData;
-use AppBundle\DataFixtures\ORM\LoadProposalData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -117,12 +113,7 @@ class AmpControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadOrderSectionData::class,
-            LoadOrderArticleData::class,
-            LoadArticleData::class,
-            LoadProposalData::class,
-        ], 'amp');
+        $this->init('amp');
     }
 
     protected function tearDown()

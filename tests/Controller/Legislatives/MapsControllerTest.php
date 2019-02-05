@@ -2,10 +2,6 @@
 
 namespace Tests\AppBundle\Controller\Legislatives;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
-use AppBundle\DataFixtures\ORM\LoadEventData;
-use AppBundle\DataFixtures\ORM\LoadLegislativesData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -37,12 +33,7 @@ class MapsControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadLegislativesData::class,
-            LoadAdherentData::class,
-            LoadEventCategoryData::class,
-            LoadEventData::class,
-        ], 'legislatives');
+        $this->init('legislatives');
     }
 
     protected function tearDown()

@@ -2,14 +2,12 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
 use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Mailer\Message\NewsletterInvitationMessage;
 use AppBundle\Mailer\Message\NewsletterSubscriptionMessage;
 use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\NewsletterInviteRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
-use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -211,10 +209,7 @@ class NewsletterControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadHomeBlockData::class,
-            LoadNewsletterSubscriptionData::class,
-        ]);
+        $this->init();
 
         $this->subscriptionsRepository = $this->getNewsletterSubscriptionRepository();
         $this->newsletterInviteRepository = $this->getNewsletterInvitationRepository();

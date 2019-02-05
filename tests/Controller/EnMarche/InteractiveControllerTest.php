@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadPurchasingPowerData;
 use AppBundle\Entity\PurchasingPowerChoice;
 use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\PurchasingPowerChoiceRepository;
@@ -50,11 +49,11 @@ class InteractiveControllerTest extends WebTestCase
             'purchasing_power[friendFirstName]' => $purchasingPower->friendFirstName = 'Mylène',
             'purchasing_power[friendAge]' => '26',
             'purchasing_power[friendGender]' => $purchasingPower->friendGender = 'female',
-            'purchasing_power[friendPosition]' => '5',
+            'purchasing_power[friendPosition]' => '31',
         ]));
 
         $purchasingPower->friendAge = 26;
-        $purchasingPower->friendPosition = $this->getChoice(5);
+        $purchasingPower->friendPosition = $this->getChoice(31);
         $purchasingPower->marking = PurchasingPowerProcessor::STATE_NEEDS_FRIEND_CASES;
 
         $this->assertEquals($purchasingPower, $this->getCurrentPurchasingPower());
@@ -72,7 +71,7 @@ class InteractiveControllerTest extends WebTestCase
             'purchasing_power[friendFirstName]' => 'Mylène',
             'purchasing_power[friendAge]' => '26',
             'purchasing_power[friendGender]' => 'female',
-            'purchasing_power[friendPosition]' => '5',
+            'purchasing_power[friendPosition]' => '31',
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
@@ -88,9 +87,7 @@ class InteractiveControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadPurchasingPowerData::class,
-        ]);
+        $this->init();
 
         $this->PurchasingPowerChoiceRepository = $this->getPurchasingPowerChoiceRepository();
         $this->PurchasingPowerInvitationRepository = $this->getPurchasingPowerInvitationRepository();

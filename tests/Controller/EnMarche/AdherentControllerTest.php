@@ -3,19 +3,9 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadDistrictData;
-use AppBundle\DataFixtures\ORM\LoadEmailSubscriptionHistoryData;
-use AppBundle\DataFixtures\ORM\LoadCitizenProjectCommentData;
-use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
-use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
-use AppBundle\DataFixtures\ORM\LoadEventData;
-use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\DataFixtures\ORM\LoadIdeaData;
 use AppBundle\DataFixtures\ORM\LoadIdeaThreadCommentData;
 use AppBundle\DataFixtures\ORM\LoadIdeaThreadData;
-use AppBundle\DataFixtures\ORM\LoadIdeaVoteData;
-use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
-use AppBundle\DataFixtures\ORM\LoadTurnkeyProjectData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CitizenProject;
@@ -73,12 +63,14 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertSame(4, $crawler->filter('.event-registration')->count());
+        $this->assertSame(6, $crawler->filter('.event-registration')->count());
 
         $titles = $crawler->filter('.event-registration h2 a');
         $this->assertSame('Meeting de New York City', trim($titles->first()->text()));
-        $this->assertSame('Réunion de réflexion parisienne', trim($titles->eq(1)->text()));
-        $this->assertSame('Réunion de réflexion dammarienne', trim($titles->eq(2)->text()));
+        $this->assertSame('Projet citoyen #3', trim($titles->eq(1)->text()));
+        $this->assertSame('Réunion de réflexion parisienne', trim($titles->eq(2)->text()));
+        $this->assertSame('Réunion de réflexion dammarienne', trim($titles->eq(3)->text()));
+        $this->assertSame('Projet citoyen Paris-18', trim($titles->eq(4)->text()));
         $this->assertSame('Réunion de réflexion parisienne annulé', trim($titles->last()->text()));
 
         $crawler = $this->client->click($crawler->selectLink('Événements passés')->link());
@@ -1170,21 +1162,7 @@ class AdherentControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadHomeBlockData::class,
-            LoadLiveLinkData::class,
-            LoadAdherentData::class,
-            LoadDistrictData::class,
-            LoadEventCategoryData::class,
-            LoadEventData::class,
-            LoadCitizenProjectData::class,
-            LoadCitizenProjectCommentData::class,
-            LoadEmailSubscriptionHistoryData::class,
-            LoadTurnkeyProjectData::class,
-            LoadIdeaData::class,
-            LoadIdeaThreadCommentData::class,
-            LoadIdeaVoteData::class,
-        ]);
+        $this->init();
 
         $this->committeeRepository = $this->getCommitteeRepository();
         $this->emailRepository = $this->getEmailRepository();

@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche\Security;
 
-use AppBundle\DataFixtures\ORM\LoadAdminData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -102,9 +101,7 @@ class AdminSecurityControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdminData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

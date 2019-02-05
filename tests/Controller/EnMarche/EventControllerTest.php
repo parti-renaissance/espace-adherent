@@ -5,7 +5,6 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
-use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
 use AppBundle\Entity\EventInvite;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Mailer\Message\EventInvitationMessage;
@@ -430,12 +429,7 @@ class EventControllerTest extends AbstractEventControllerTest
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-            LoadEventCategoryData::class,
-            LoadEventData::class,
-            LoadHomeBlockData::class,
-        ]);
+        $this->init();
 
         $this->repository = $this->getEventRegistrationRepository();
     }

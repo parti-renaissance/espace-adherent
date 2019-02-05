@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Command;
 
-use AppBundle\DataFixtures\ORM\LoadTimelineData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 
@@ -25,21 +24,5 @@ Timeline has been successfully synchronized with Algolia.
 EOL;
 
         $this->assertContains($expectedOutput, $output);
-    }
-
-    public function setUp()
-    {
-        $this->loadFixtures([
-            LoadTimelineData::class,
-        ]);
-
-        parent::setUp();
-    }
-
-    public function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

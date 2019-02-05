@@ -2,8 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadFacebookVideoData;
-use AppBundle\DataFixtures\ORM\LoadPageData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -74,10 +72,7 @@ class PageControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadFacebookVideoData::class,
-            LoadPageData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

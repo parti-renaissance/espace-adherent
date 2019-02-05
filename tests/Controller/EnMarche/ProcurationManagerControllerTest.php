@@ -2,9 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadElectionData;
-use AppBundle\DataFixtures\ORM\LoadProcurationData;
 use AppBundle\Procuration\Filter\ProcurationProxyProposalFilters;
 use AppBundle\Procuration\Filter\ProcurationRequestFilters;
 use Symfony\Component\DomCrawler\Crawler;
@@ -245,7 +242,7 @@ class ProcurationManagerControllerTest extends WebTestCase
 
         $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
 
-        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationRequestFilters::PARAMETER_ELECTION_ROUND => 5]));
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationRequestFilters::PARAMETER_ELECTION_ROUND => 9]));
 
         $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
 
@@ -307,7 +304,7 @@ class ProcurationManagerControllerTest extends WebTestCase
 
         $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
 
-        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_ELECTION_ROUND => 6]));
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_ELECTION_ROUND => 10]));
 
         $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
 
@@ -320,11 +317,7 @@ class ProcurationManagerControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-            LoadElectionData::class,
-            LoadProcurationData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

@@ -3,7 +3,6 @@
 namespace Tests\AppBundle\Controller\EnMarche\Security;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadUserData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Mailer\Message\AdherentResetPasswordMessage;
 use AppBundle\Mailer\Message\AdherentResetPasswordConfirmationMessage;
@@ -224,10 +223,7 @@ class AdherentSecurityControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadUserData::class,
-            LoadAdherentData::class,
-        ]);
+        $this->init();
 
         $this->adherentRepository = $this->getAdherentRepository();
         $this->emailRepository = $this->getEmailRepository();

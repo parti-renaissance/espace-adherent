@@ -6,7 +6,6 @@ use AppBundle\CitizenProject\CitizenProjectAuthority;
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
 use AppBundle\Collection\AdherentCollection;
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\Membership\CitizenProjectNotificationDistance;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -85,12 +84,8 @@ class CitizenProjectManagerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->loadFixtures([
-            LoadAdherentData::class,
-            LoadCitizenProjectData::class,
-        ]);
+        $this->init();
 
-        $this->container = $this->getContainer();
         $this->citizenProjectManager = new CitizenProjectManager(
             $this->getManagerRegistry(),
             $this->getStorage(),
@@ -100,9 +95,9 @@ class CitizenProjectManagerTest extends WebTestCase
 
     protected function tearDown()
     {
-        $this->kill();
-
         $this->citizenProjectManager = null;
+
+        $this->kill();
 
         parent::tearDown();
     }

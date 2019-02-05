@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche\Security;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 
@@ -55,9 +54,7 @@ class JWTAuthenticationTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

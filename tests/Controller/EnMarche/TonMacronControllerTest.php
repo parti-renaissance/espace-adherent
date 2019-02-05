@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadTonMacronData;
 use AppBundle\Entity\Email;
 use AppBundle\Entity\TonMacronChoice;
 use AppBundle\Entity\TonMacronFriendInvitation;
@@ -187,9 +186,7 @@ class TonMacronControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadTonMacronData::class,
-        ]);
+        $this->init();
 
         $this->tonMacronChoiceRepository = $this->getTonMacronChoiceRepository();
         $this->tonMacronInvitationRepository = $this->getTonMacronInvitationRepository();

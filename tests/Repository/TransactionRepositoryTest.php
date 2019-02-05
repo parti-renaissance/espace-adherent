@@ -2,9 +2,8 @@
 
 namespace Tests\AppBundle\Repository;
 
-use AppBundle\DataFixtures\ORM\LoadDonationData;
+use AppBundle\Entity\Transaction;
 use AppBundle\Repository\TransactionRepository;
-use Cake\Chronos\Chronos;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 
@@ -19,6 +18,18 @@ class TransactionRepositoryTest extends WebTestCase
 
     public function testGetTotalAmountCurrentYearByEmail(): void
     {
+        // Update all transactions to start of this year
+        // so we can test by counting the amount of all transactions
+        $this
+            ->manager
+            ->createQueryBuilder()
+            ->update(Transaction::class, 't')
+            ->set('t.payboxDateTime', ':donatedAt')
+            ->setParameter('donatedAt', new \DateTime('first day of january this year'), 'datetime')
+            ->getQuery()
+            ->execute()
+        ;
+
         static::assertSame(25000, $this->transactionRepository->getTotalAmountInCentsByEmail('jacques.picard@en-marche.fr'));
     }
 
@@ -26,13 +37,8 @@ class TransactionRepositoryTest extends WebTestCase
     {
         parent::setUp();
 
-        Chronos::setTestNow(Chronos::createFromFormat('Y/m/d H:i:s', '2018/06/15 15:16:17'));
+        $this->init();
 
-        $this->loadFixtures([
-            LoadDonationData::class,
-        ]);
-
-        $this->container = $this->getContainer();
         $this->transactionRepository = $this->getTransactionRepository();
     }
 

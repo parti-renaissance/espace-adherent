@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadSocialShareData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -34,9 +33,7 @@ class SocialShareControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadSocialShareData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

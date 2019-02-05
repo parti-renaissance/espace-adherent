@@ -3,7 +3,6 @@
 namespace AppBundle\Tests\Controller\Front;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadOAuthTokenData;
 use AppBundle\Entity\OAuth\AccessToken;
 use AppBundle\Entity\OAuth\AuthorizationCode;
 use AppBundle\OAuth\Model\Client;
@@ -427,9 +426,7 @@ class OAuthServerControllerTest extends WebTestCase
         $this->encryptionKey = $this->getContainer()->getParameter('env(SSL_ENCRYPTION_KEY)');
         $this->privateCryptKey = new CryptKey($this->getContainer()->getParameter('env(SSL_PRIVATE_KEY)'));
 
-        $this->init([
-            LoadOAuthTokenData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

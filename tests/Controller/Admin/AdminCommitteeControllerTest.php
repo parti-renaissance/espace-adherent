@@ -3,7 +3,6 @@
 namespace Tests\AppBundle\Controller\Admin;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadAdminData;
 use AppBundle\Mailer\Message\CommitteeApprovalConfirmationMessage;
 use AppBundle\Mailer\Message\CommitteeApprovalReferentMessage;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,10 +44,7 @@ class AdminCommitteeControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdminData::class,
-            LoadAdherentData::class,
-        ]);
+        $this->init();
 
         $this->committeeRepository = $this->getCommitteeRepository();
     }

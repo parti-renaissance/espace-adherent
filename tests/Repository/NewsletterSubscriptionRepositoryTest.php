@@ -2,8 +2,6 @@
 
 namespace Tests\AppBundle\Repository;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadNewsletterSubscriptionData;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -33,11 +31,6 @@ class NewsletterSubscriptionRepositoryTest extends WebTestCase
     protected function setUp()
     {
         parent::setUp();
-
-        $this->loadFixtures([
-            LoadAdherentData::class,
-            LoadNewsletterSubscriptionData::class,
-        ]);
 
         $this->container = $this->getContainer();
         $this->repository = $this->getNewsletterSubscriptionRepository();

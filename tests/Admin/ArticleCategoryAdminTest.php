@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Admin;
 
-use AppBundle\DataFixtures\ORM\LoadAdminData;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -94,7 +93,7 @@ class ArticleCategoryAdminTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([LoadAdminData::class]);
+        $this->init();
     }
 
     protected function tearDown()

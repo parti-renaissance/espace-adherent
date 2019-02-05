@@ -3,7 +3,6 @@
 namespace Tests\AppBundle\Command;
 
 use AppBundle\Command\ImportReferentBioPictureCommand;
-use AppBundle\DataFixtures\ORM\LoadReferentData;
 use AppBundle\Entity\Media;
 use AppBundle\Entity\Referent;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -164,10 +163,6 @@ class ImportReferentBioPictureCommandTest extends WebTestCase
 
     public function setUp()
     {
-        $this->loadFixtures([
-            LoadReferentData::class,
-        ]);
-
         $this->container = $this->getContainer();
 
         parent::setUp();

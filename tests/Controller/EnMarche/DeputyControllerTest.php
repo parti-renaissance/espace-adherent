@@ -2,8 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadDistrictData;
 use AppBundle\Entity\DeputyManagedUsersMessage;
 use AppBundle\Repository\DeputyManagedUsersMessageRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,10 +67,7 @@ class DeputyControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdherentData::class,
-            LoadDistrictData::class,
-        ]);
+        $this->init();
 
         $this->deputyMessageRepository = $this->manager->getRepository(DeputyManagedUsersMessage::class);
     }

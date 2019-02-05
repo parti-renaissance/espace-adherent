@@ -3,7 +3,6 @@
 namespace Tests\AppBundle\Controller\Admin;
 
 use AppBundle\DataFixtures\ORM\LoadIdeaData;
-use AppBundle\DataFixtures\ORM\LoadAdminData;
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Repository\IdeaRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,10 +63,7 @@ class AdminIdeaControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdminData::class,
-            LoadIdeaData::class,
-        ]);
+        $this->init();
 
         $this->ideaRepository = $this->getIdeaRepository();
     }

@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\Admin;
 
-use AppBundle\DataFixtures\ORM\LoadAdminData;
 use AppBundle\DataFixtures\ORM\LoadTimelineData;
 use AppBundle\Entity\Timeline\Measure;
 use AppBundle\Entity\Timeline\Profile;
@@ -209,10 +208,7 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadAdminData::class,
-            LoadTimelineData::class,
-        ]);
+        $this->init();
 
         $this->get('doctrine.orm.entity_manager')->getFilters()->disable('oneLocale');
 

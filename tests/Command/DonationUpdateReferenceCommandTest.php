@@ -2,8 +2,6 @@
 
 namespace Tests\AppBundle\Command;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadDonationData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 
@@ -21,22 +19,5 @@ class DonationUpdateReferenceCommandTest extends WebTestCase
         $this->assertContains('Starting Donations reference update.', $output);
         $this->assertContains('Updated 7 Donations reference.', $output);
         $this->assertContains('Donations reference updated successfully!', $output);
-    }
-
-    public function setUp()
-    {
-        $this->loadFixtures([
-            LoadAdherentData::class,
-            LoadDonationData::class,
-        ]);
-
-        parent::setUp();
-    }
-
-    public function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

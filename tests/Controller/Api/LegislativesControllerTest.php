@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\Api;
 
-use AppBundle\DataFixtures\ORM\LoadLegislativesData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ApiControllerTestTrait;
@@ -41,9 +40,7 @@ class LegislativesControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadLegislativesData::class,
-        ]);
+        $this->init();
     }
 
     public function tearDown()

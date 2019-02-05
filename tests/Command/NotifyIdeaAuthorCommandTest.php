@@ -3,8 +3,8 @@
 namespace Tests\AppBundle\Command;
 
 use AppBundle\DataFixtures\ORM\LoadIdeaData;
+use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Mailer\Message\IdeaFinalizeMessage;
-use Cake\Chronos\Chronos;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 
@@ -17,11 +17,7 @@ class NotifyIdeaAuthorCommandTest extends WebTestCase
 
     public function testSendMailWhenNoteIsFinished(): void
     {
-        Chronos::setTestNow('-13 days -10 minutes');
-
-        $this->loadFixtures([
-            LoadIdeaData::class,
-        ]);
+        $this->updateIdeaFinalizedAt(LoadIdeaData::IDEA_04_UUID, '-10 minutes');
 
         $this->runCommand('idea-workshop:notification:idea-author');
 
@@ -30,11 +26,7 @@ class NotifyIdeaAuthorCommandTest extends WebTestCase
 
     public function testSendMailWhenNoteWillBeFinishedIn3Days(): void
     {
-        Chronos::setTestNow('-10 days -10 minutes');
-
-        $this->loadFixtures([
-            LoadIdeaData::class,
-        ]);
+        $this->updateIdeaFinalizedAt(LoadIdeaData::IDEA_04_UUID, '+3 days -10 minutes');
 
         $this->runCommand('idea-workshop:notification:idea-author', ['--caution' => null]);
 
@@ -43,7 +35,7 @@ class NotifyIdeaAuthorCommandTest extends WebTestCase
 
     public function setUp()
     {
-        $this->container = $this->getContainer();
+        $this->init();
 
         parent::setUp();
     }
@@ -52,8 +44,21 @@ class NotifyIdeaAuthorCommandTest extends WebTestCase
     {
         $this->kill();
 
-        Chronos::setTestNow();
-
         parent::tearDown();
+    }
+
+    private function updateIdeaFinalizedAt(string $uuid, string $time): void
+    {
+        $this
+            ->manager
+            ->createQueryBuilder()
+            ->update(Idea::class, 'i')
+            ->set('i.finalizedAt', ':finalizedAt')
+            ->where('i.uuid = :uuid')
+            ->setParameter('finalizedAt', new \DateTime($time), 'datetime')
+            ->setParameter('uuid', $uuid)
+            ->getQuery()
+            ->execute()
+        ;
     }
 }

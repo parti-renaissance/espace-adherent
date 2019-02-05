@@ -3,8 +3,6 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Controller\EnMarche\ArticleController;
-use AppBundle\DataFixtures\ORM\LoadArticleData;
-use AppBundle\DataFixtures\ORM\LoadLiveLinkData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -122,10 +120,7 @@ class ArticleControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadArticleData::class,
-            LoadLiveLinkData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

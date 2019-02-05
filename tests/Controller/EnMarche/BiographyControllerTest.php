@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadExecutiveOfficeMemberData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -74,9 +73,7 @@ class BiographyControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init([
-            LoadExecutiveOfficeMemberData::class,
-        ]);
+        $this->init();
     }
 
     protected function tearDown()

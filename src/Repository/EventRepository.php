@@ -402,14 +402,22 @@ adherents.address_longitude AS adherent_address_longitude, adherents.position AS
 FROM events 
 LEFT JOIN adherents ON adherents.id = events.organizer_id
 LEFT JOIN committees ON committees.id = events.committee_id
-LEFT JOIN events_categories AS event_category ON event_category.id = events.category_id
+LEFT JOIN events_categories AS event_category
+    ON event_category.id = events.category_id
+    AND events.type = :event_type
+    AND event_category.status = :enabled
+LEFT JOIN citizen_action_categories AS citizen_action_category
+    ON citizen_action_category.id = events.category_id
+    AND events.type = :citizen_action_type
+    AND citizen_action_category.status = :enabled
 WHERE (events.address_latitude IS NOT NULL 
     AND events.address_longitude IS NOT NULL 
     AND (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) < :distance_max 
     AND events.begin_at > :today 
     AND events.published = :published
     AND events.status = :scheduled
-    AND event_category.status = :enabled)
+    AND (event_category.id IS NOT NULL OR citizen_action_category.id IS NOT NULL)
+    )
     __filter_query__ 
     __filter_category__
     __filter_type__ 
@@ -467,6 +475,8 @@ SQL;
         $query->setParameter('published', 1, \PDO::PARAM_INT);
         $query->setParameter('scheduled', BaseEvent::STATUS_SCHEDULED);
         $query->setParameter('enabled', BaseEventCategory::ENABLED);
+        $query->setParameter('event_type', BaseEvent::EVENT_TYPE);
+        $query->setParameter('citizen_action_type', BaseEvent::CITIZEN_ACTION_TYPE);
         $query->setParameter('first_result', $search->getOffset(), \PDO::PARAM_INT);
         $query->setParameter('max_results', $search->getMaxResults(), \PDO::PARAM_INT);
 
