@@ -85,7 +85,7 @@ function mapStateToProps(state, { id }) {
         difficultiesOptions: formattedNeeds,
         committeeOptions: formattedCommittees,
         authorOptions,
-        canSelectAuthor: !currentUser.elected,
+        canSelectAuthor: !(currentUser.elected || currentUser.larem),
     };
 }
 
