@@ -50,11 +50,11 @@ class Question implements EnabledInterface
     private $placeholder;
 
     /**
+     * @ORM\Column(type="smallint", options={"unsigned": true})
+     *
      * @Assert\GreaterThanOrEqual(1)
      *
      * @Gedmo\SortablePosition
-     *
-     * @ORM\Column(type="smallint", options={"unsigned": true})
      *
      * @SymfonySerializer\Groups("guideline_read")
      */
