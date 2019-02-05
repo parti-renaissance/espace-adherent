@@ -9,7 +9,7 @@ const props = {
     difficultiesOptions: [{ value: 'juridique', label: 'Juridique' }, { value: 'finance', label: 'Finance' }],
 };
 
-storiesOf('SecondForm', module)
+storiesOf('PublishIdeaFormModal/SecondForm', module)
     .addParameters({ jest: ['SecondForm'] })
     .add('default', () => (
         <SecondForm {...props} onSubmit={action('second form')} saveStateFormOnChange={action('save second form')} />
