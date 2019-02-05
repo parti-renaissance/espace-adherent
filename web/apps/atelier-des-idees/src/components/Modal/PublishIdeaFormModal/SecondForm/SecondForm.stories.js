@@ -13,4 +13,12 @@ storiesOf('PublishIdeaFormModal/SecondForm', module)
     .addParameters({ jest: ['SecondForm'] })
     .add('default', () => (
         <SecondForm {...props} onSubmit={action('second form')} saveStateFormOnChange={action('save second form')} />
+    ))
+    .add('without author', () => (
+        <SecondForm
+            {...props}
+            onSubmit={action('second form')}
+            saveStateFormOnChange={action('save second form')}
+            canSelectAuthor={false}
+        />
     ));
