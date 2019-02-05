@@ -208,7 +208,7 @@ class OAuthServerControllerTest extends WebTestCase
         $response = $this->client->getResponse();
 
         // 2. But the user must authenticate 1st
-        static::assertTrue($response->isRedirect('http://'.$this->hosts['app'].'/connexion'));
+        static::assertTrue($response->isRedirect('/connexion'));
         $crawler = $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
         $this->client->submit($crawler->selectButton('Connexion')->form([
@@ -303,7 +303,7 @@ class OAuthServerControllerTest extends WebTestCase
         $authorizeUrl = $this->createAuthorizeUrl([], '661cc3b7-322d-4441-a510-ab04eda71737', null);
         $this->client->request(Request::METHOD_GET, $authorizeUrl);
         $response = $this->client->getResponse();
-        static::assertTrue($response->isRedirect('http://'.$this->hosts['app'].'/connexion'));
+        static::assertTrue($response->isRedirect('/connexion'));
 
         $crawler = $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());

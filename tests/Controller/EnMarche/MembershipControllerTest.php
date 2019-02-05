@@ -140,7 +140,7 @@ class MembershipControllerTest extends WebTestCase
             '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/evenements', $this->client);
+        $this->assertClientIsRedirectedTo('/evenements', $this->client);
 
         $this->client->followRedirect();
     }

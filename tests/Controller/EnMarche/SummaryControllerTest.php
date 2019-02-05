@@ -41,7 +41,7 @@ class SummaryControllerTest extends WebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/membre/lucie-olivera');
 
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
     public function testAccessAndDisplaySummaryPage()

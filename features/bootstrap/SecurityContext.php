@@ -9,8 +9,8 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 
 class SecurityContext extends RawMinkContext
 {
@@ -25,7 +25,7 @@ class SecurityContext extends RawMinkContext
             throw new \Exception(sprintf('Adherent %s not found', $email));
         }
 
-        $this->logAs($user);
+        $this->loginAs($user, 'main');
     }
 
     /**
@@ -37,10 +37,10 @@ class SecurityContext extends RawMinkContext
             throw new \Exception(sprintf('Admin %s not found', $email));
         }
 
-        $this->logAs($user);
+        $this->loginAs($user, 'admin');
     }
 
-    private function logAs(UserInterface $user): void
+    private function loginAs(UserInterface $user, string $firewallName): void
     {
         $driver = $this->getSession()->getDriver();
         $session = $this->getContainer()->get('session');
@@ -56,7 +56,7 @@ class SecurityContext extends RawMinkContext
             return;
         }
 
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new PostAuthenticationGuardToken($user, $firewallName, $user->getRoles());
         $session->set('_security_main_context', serialize($token));
         $session->save();
 

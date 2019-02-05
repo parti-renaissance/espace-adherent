@@ -50,6 +50,9 @@ app_api:
     defaults:
         _format: 'json'
 
+api_login_check:
+    path: /api/login_check
+
 #
 # API Legislatives
 #

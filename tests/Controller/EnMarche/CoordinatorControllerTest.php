@@ -22,7 +22,7 @@ class CoordinatorControllerTest extends WebTestCase
     public function testCoordinatorBackendIsForbiddenForAnonymous($path)
     {
         $this->client->request(Request::METHOD_GET, $path);
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
     /**

@@ -19,7 +19,7 @@ class DocumentsControllerTest extends WebTestCase
     public function testDocumentsIndexAsAnonymous()
     {
         $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
-        $this->assertClientIsRedirectedTo('http://'.$this->hosts['app'].'/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
     public function testDocumentsIndexAsAdherent()
