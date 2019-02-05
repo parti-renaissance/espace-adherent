@@ -77,14 +77,14 @@ export function saveCurrentIdea(ideaData) {
             .post('/api/ideas-workshop/ideas', ideaData)
             .then(res => res.data)
             .then((data) => {
+                // set request success
+                dispatch(createRequestSuccess(SAVE_CURRENT_IDEA));
                 // response does not contain answers' threads info on initial save, populate with base data
                 const answersWithThreads = data.answers.map(answer => ({
                     ...answer,
                     threads: { items: [], total_items: 0 },
                 }));
                 dispatch(setCurrentIdea({ ...data, answers: answersWithThreads }));
-
-                dispatch(createRequestSuccess(SAVE_CURRENT_IDEA));
                 // silently replace location
                 window.history.replaceState(null, '', `/atelier-des-idees/proposition/${data.uuid}`);
                 return data;
