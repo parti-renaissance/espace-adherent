@@ -15,7 +15,7 @@ class IdeasWorkshopThemeAdmin extends AbstractAdmin
         '_page' => 1,
         '_per_page' => 32,
         '_sort_order' => 'ASC',
-        '_sort_by' => 'name',
+        '_sort_by' => 'position',
     ];
 
     private $themeManager;
@@ -37,6 +37,9 @@ class IdeasWorkshopThemeAdmin extends AbstractAdmin
             ])
             ->add('enabled', null, [
                 'label' => 'Visibilité',
+            ])
+            ->add('position', null, [
+                'label' => 'Position',
             ])
             ->add('image', FileType::class, [
                 'label' => 'Ajoutez une image',
@@ -67,6 +70,9 @@ class IdeasWorkshopThemeAdmin extends AbstractAdmin
             ->add('_image', 'thumbnail', [
                 'label' => 'Image',
                 'virtual_field' => true,
+            ])
+            ->add('position', null, [
+                'label' => 'Position',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
