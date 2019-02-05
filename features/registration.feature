@@ -4,10 +4,7 @@ Feature:
   I can register
 
   Scenario: I can register as an adherent
-    Given the following fixtures are loaded:
-      | LoadReferentTagData |
-      | LoadAdherentData    |
-    When I am on "/adhesion"
+    Given I am on "/adhesion"
     And I fill in the following:
       | adherent_registration[firstName]            | Jean-Pierre         |
       | adherent_registration[lastName]             | DURAND              |
@@ -92,10 +89,7 @@ Feature:
     And the response status code should be 200
 
   Scenario: I can register as a user
-    Given the following fixtures are loaded:
-      | LoadReferentTagData      |
-      | LoadSubscriptionTypeData |
-    When I am on "/inscription-utilisateur"
+    Given I am on "/inscription-utilisateur"
     And I fill in the following:
       | Prénom             | Jean-Pierre |
       | Nom                | DURAND      |
@@ -205,8 +199,8 @@ Feature:
                 "Email":"jp@test.com",
                 "Name":"Jean-Pierre Durand",
                 "Vars":{
-                    "adherents_count":1,
-                    "committees_count":0,
+                    "adherents_count":21,
+                    "committees_count":9,
                     "target_firstname":"Jean-Pierre",
                     "target_lastname":"Durand"
                 }
@@ -252,12 +246,9 @@ Feature:
       | user.update_subscriptions | {"uuid":"@string@","subscriptions":["123abc","456def"],"unsubscriptions":[]} |
     And I clean the "api_sync" queue
 
-  @javascript
+  @javascript @debug
   Scenario: I can become adherent with a foreign country
-    Given the following fixtures are loaded:
-      | LoadUserData        |
-      | LoadReferentTagData |
-    And I am logged as "simple-user@example.ch"
+    Given I am logged as "simple-user@example.ch"
     And I am on "/adhesion"
     And I fill in the following:
       | become_adherent[address][country]    | CH                 |
@@ -285,12 +276,9 @@ Feature:
       | user.updated | {"uuid":"@string@","subscriptionExternalIds":["123abc","456def"],"country":"CH","zipCode":"8057","emailAddress":"simple-user@example.ch","firstName":"Simple","lastName":"User"} |
     And I clean the "api_sync" queue
 
-  @javascript
+  @javascript @debug
   Scenario: I can become adherent with a french address
-    Given the following fixtures are loaded:
-      | LoadUserData        |
-      | LoadReferentTagData |
-    And I am logged as "simple-user@example.ch"
+    Given I am logged as "simple-user@example.ch"
     And I am on "/adhesion"
     And I fill in the following:
       | become_adherent[address][country] | FR                  |
@@ -335,9 +323,7 @@ Feature:
     And I should see "Cette valeur ne doit pas être vide."
 
   Scenario: A new user should see personal message to help him to validate his account
-    Given the following fixtures are loaded:
-      | LoadUserData |
-    And I am on "/connexion"
+    Given I am on "/connexion"
     When I fill in the following:
       | E-mail       | simple-user-not-activated@example.ch |
       | Mot de passe | secret!12345                         |

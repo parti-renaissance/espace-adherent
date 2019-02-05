@@ -3,12 +3,6 @@ Feature:
   In order to see the CP information
   I should be able to acces CP page
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData        |
-      | LoadTurnkeyProjectData  |
-      | LoadCitizenProjectData  |
-
   @javascript
   Scenario: I can show and hide skills if there are more than 3
     Given I am logged as "jacques.picard@en-marche.fr"

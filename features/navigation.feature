@@ -3,12 +3,7 @@ Feature:
   I should be able to navigate through the nav
 
   Scenario: Simple user have simple nav
-    Given the following fixtures are loaded:
-      | LoadHomeBlockData |
-      | LoadUserData      |
-      | LoadAdherentData  |
-
-    When I am logged as "simple-user@example.ch"
+    Given I am logged as "simple-user@example.ch"
     And I am on "/"
     Then the ".nav-dropdown" element should not contain "Profil"
     And the ".nav-dropdown" element should not contain "Mes activités"

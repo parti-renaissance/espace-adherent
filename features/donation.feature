@@ -5,11 +5,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
   I should be able to donate punctually or subscribe foreach month
 
   Scenario Outline: The user have to be able to go to donation page every where
-    Given the following fixtures are loaded:
-      | LoadHomeBlockData |
-      | LoadArticleData   |
-      | LoadPageData      |
-    And I am on "<url>"
+    Given I am on "<url>"
     And the response status code should be 200
     Then I should see "Donner"
 
@@ -26,14 +22,10 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | /articles     |
 
   Scenario: A user can't donate more than 7500€ per year
-    Given I freeze the clock to "2018-12-01"
-    And the following fixtures are loaded:
-      | LoadDonationData |
-    And I am logged as "jacques.picard@en-marche.fr"
+    And I am logged as "gisele-berthoux@caramail.com"
     And I am on "/don/coordonnees?montant=7490&abonnement=0"
     And I press "Continuer"
-    Then I should see "Vous avez déjà donné 250 euros cette année."
-    And I should see "Le don que vous vous apprêtez à faire est trop élevé, car vous avez déjà donné 250 euros cette année. Les dons étant limités à 7500 euros par an et par personne, vous pouvez encore donner 7250 euros."
+    And I should see "Le don que vous vous apprêtez à faire est trop élevé, car vous avez déjà donné 50 euros cette année. Les dons étant limités à 7500 euros par an et par personne, vous pouvez encore donner 7450 euros."
 
   @javascript
   Scenario: An anonymous user can donate successfully
@@ -139,9 +131,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
   @javascript
   Scenario: The logged user can subscribe to donate each month successfully but can't have a second subscription without unsubscribe before
-    Given the following fixtures are loaded:
-      | LoadAdherentData |
-    And I am logged as "jacques.picard@en-marche.fr"
+    Given I am logged as "gisele-berthoux@caramail.com"
     And I am on "/don"
     And I press "OK"
     And wait 2 seconds until I see "Je donne chaque mois (paiement automatique)"
@@ -155,6 +145,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
     And I press "Continuer"
+    Then print last response
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
 
@@ -168,7 +159,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should see "Paiement accepté"
 
     When I click on the "1" "img" element
-    And I simulate IPN call with "00000" code for the last donation of "jacques.picard@en-marche.fr"
+    And I simulate IPN call with "00000" code for the last donation of "gisele-berthoux@caramail.com"
     Then I should see "Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie politique et au rayonnement des idées progressistes."
 
     # Check if I can't continue create a new subscription and then can cancel a subscription
@@ -223,9 +214,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
   @javascript
   Scenario: The logged user can continue to donate punctually with a subscription currently running
-    Given the following fixtures are loaded:
-      | LoadDonationData |
-    And I am logged as "jacques.picard@en-marche.fr"
+    Given I am logged as "jacques.picard@en-marche.fr"
     And I am on "/don"
     And I press "OK"
     And wait 1 second until I see "Continuer"

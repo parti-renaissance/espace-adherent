@@ -30,8 +30,11 @@ class LoadDonationData extends Fixture
         $adherent1 = $this->getReference('adherent-4');
         /** @var Adherent $adherent2 */
         $adherent2 = $this->getReference('adherent-3');
+        /** @var Adherent $adherent3 */
+        $adherent3 = $this->getReference('adherent-5');
 
         $donationNormal = $this->createDonation($adherent0);
+        $donationNormal2 = $this->createDonation($adherent3);
         $donationMonthly = $this->createDonation($adherent0, 42., PayboxPaymentSubscription::UNLIMITED);
         $donation0 = $this->createDonation($adherent1, 50.);
         $donation1 = $this->createDonation($adherent2, 50.);
@@ -40,6 +43,7 @@ class LoadDonationData extends Fixture
         $donation4 = $this->createDonation($adherent2, 100., PayboxPaymentSubscription::UNLIMITED);
 
         $transactionNormal = $this->createTransaction($donationNormal);
+        $transactionNormal2 = $this->createTransaction($donationNormal2);
         $transactionMonthly = $this->createTransaction($donationMonthly);
         $transaction0 = $this->createTransaction($donation0);
         $transaction1 = $this->createTransaction($donation1);
@@ -49,11 +53,13 @@ class LoadDonationData extends Fixture
 
         $donation3->stopSubscription();
 
+        $this->setDonateAt($transactionNormal2, 'now');
         $this->setDonateAt($transaction2, '-1 day');
         $this->setDonateAt($transaction3, '-100 day');
         $this->setDonateAt($transaction4, '-50 day');
 
         $manager->persist($donationNormal);
+        $manager->persist($donationNormal2);
         $manager->persist($donationMonthly);
         $manager->persist($donation0);
         $manager->persist($donation1);
@@ -62,6 +68,7 @@ class LoadDonationData extends Fixture
         $manager->persist($donation4);
 
         $manager->persist($transactionNormal);
+        $manager->persist($transactionNormal2);
         $manager->persist($transactionMonthly);
         $manager->persist($transaction0);
         $manager->persist($transaction1);

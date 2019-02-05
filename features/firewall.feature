@@ -4,11 +4,6 @@ Feature:
   In order to see all my informations
   I should be able to acces my dashboard
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadHomeBlockData |
-      | LoadAdherentData  |
-
   Scenario Outline: As an anonymous I can view non-secured pages
     Given I am on "<uri>"
     Then the response status code should be 200

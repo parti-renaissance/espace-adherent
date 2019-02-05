@@ -30,9 +30,7 @@ Feature:
     And I should be on "/inscription/centre-interets"
 
   Scenario: As an adherent, I should have a select with mandate options in my profile edition page
-    Given the following fixtures are loaded:
-      | LoadAdherentData    |
-    And I am logged as "jacques.picard@en-marche.fr"
+    Given I am logged as "jacques.picard@en-marche.fr"
     When I am on "parametres/mon-compte/modifier"
     Then I should see "Conseiller régional" in the "#adherent_mandates" element
     And I should see "Conseiller départemental" in the "#adherent_mandates" element
@@ -43,9 +41,7 @@ Feature:
     And I should see "Conseiller consulaire" in the "#adherent_mandates" element
 
   Scenario: As an adherent, I should be able to update my mandate information
-    Given the following fixtures are loaded:
-      | LoadAdherentData    |
-    And I am logged as "jacques.picard@en-marche.fr"
+    Given I am logged as "jacques.picard@en-marche.fr"
     And I am on "parametres/mon-compte/modifier"
     And I fill in the following:
       | adherent[mandates][] | regional_councilor |

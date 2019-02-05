@@ -1,52 +1,69 @@
 <?php
 
-use Behat\Gherkin\Node\TableNode;
+use AppBundle\Entity\RepublicanSilence;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\ORM\EntityManager;
-use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
+use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
+use Doctrine\ORM\EntityManagerInterface;
 
 class FixtureContext extends RawMinkContext
 {
     use KernelDictionary;
 
-    private $executor;
-    private $purger;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
 
-    public function __construct(EntityManager $manager)
+    /**
+     * @BeforeSuite
+     */
+    public static function beforeSuite()
     {
-        $this->executor = new ORMExecutor($manager, $this->purger = new ORMPurger($manager));
+        StaticDriver::setKeepStaticConnections(true);
     }
 
     /**
      * @BeforeScenario
      */
-    public function clearDatabase()
+    public function beforeScenario()
     {
-        $this->purger->purge();
+        StaticDriver::beginTransaction();
     }
 
     /**
-     * @Given the following fixtures are loaded:
+     * @AfterScenario
      */
-    public function theFollowingFixturesAreLoaded(TableNode $classnames): void
+    public function afterScenario()
     {
-        $path = __DIR__.'/../../src/DataFixtures/ORM';
-        $loader = new ContainerAwareLoader($this->getContainer());
+        StaticDriver::rollBack();
+    }
 
-        foreach ($classnames->getRows() as $classname) {
-            $loader->loadFromFile(sprintf('%s/%s.php', $path, $classname[0]));
-        }
+    /**
+     * @AfterSuite
+     */
+    public static function afterSuite()
+    {
+        StaticDriver::setKeepStaticConnections(false);
+    }
 
-        $fixtures = $loader->getFixtures();
-        if (!$fixtures) {
-            throw new InvalidArgumentException(
-                sprintf('Could not find any fixtures to load in: %s', "\n\n- ".implode("\n- ", $fixtures))
-            );
-        }
+    /**
+     * @Given the republican silence is disabled
+     */
+    public function theRpublicanSilenceIsDisabled(): void
+    {
+        $this
+            ->getEntityManager()
+            ->getRepository(RepublicanSilence::class)
+            ->createQueryBuilder('r')
+            ->delete()
+            ->getQuery()
+            ->execute()
+        ;
+    }
 
-        $this->executor->execute($fixtures);
+    private function getEntityManager(): EntityManagerInterface
+    {
+        return $this->getContainer()->get('doctrine')->getManager();
     }
 }

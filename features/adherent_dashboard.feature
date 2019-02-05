@@ -3,13 +3,6 @@ Feature:
   In order to see all my informations
   I should be able to acces my dashboard
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData        |
-      | LoadTurnkeyProjectData  |
-      | LoadCitizenProjectData  |
-      | LoadEventData           |
-
   # Adherent
   Scenario: As an adherent, I can see information about me
     Given I am logged as "damien.schmidt@example.ch"

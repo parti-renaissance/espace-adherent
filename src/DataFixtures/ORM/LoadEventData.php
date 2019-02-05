@@ -470,7 +470,7 @@ class LoadEventData implements FixtureInterface, ContainerAwareInterface, Depend
     private function publishCommitteeMessage(Committee $committee, Adherent $author, string $subject, string $text, string $createdAt = 'now')
     {
         return $this->getCommitteeFeedManager()->createMessage(
-            new CommitteeMessage($author, $committee, $subject, $text, true, $createdAt)
+            new CommitteeMessage($author, $committee, $subject, $text, true, $createdAt, false)
         );
     }
 

@@ -4,12 +4,6 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
   As an API or an En-Marche! user
   I need to be able to access API data
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadClientData |
-      | LoadAdminData  |
-      | LoadUserData  |
-
   Scenario: OAuth is not allowed for admin
     Given I am logged as "superadmin@en-marche-dev.fr" admin
     When I am on "/oauth/v2/auth?response_type=code&client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19&redirect_uri=http%3A%2F%2Fclient-oauth.docker%3A8000%2Fclient%2Freceive_authcode&state=m94bmt522o81gtch7pj0kd7hdf"
@@ -126,17 +120,18 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     When I fill in the following:
       | Prénom               | Jean-pierre |
       | Nom                  | D'ARTAGNAN  |
-      | E-mail               | jp@test.com |
-      | Re-saisir l'e-mail   | jp@test.com |
+      | E-mail               | jp2@test.com |
+      | Re-saisir l'e-mail   | jp2@test.com |
       | Mot de passe         | testtest    |
       | Code postal          | 38000       |
       | Pays                 | FR          |
     And I resolved the captcha
     And I press "Créer mon compte"
+    Then print last response
     Then I should be on "/presque-fini"
     And the response status code should be 200
 
-    Given I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
+    Given I should have 1 email "AdherentAccountActivationMessage" for "jp2@test.com" with payload:
     """
     {
       "FromEmail": "contact@en-marche.fr",
@@ -146,7 +141,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
       "MJ-TemplateLanguage": true,
       "Recipients": [
         {
-          "Email": "jp@test.com",
+          "Email": "jp2@test.com",
           "Name": "Jean-Pierre d'Artagnan",
           "Vars": {
             "first_name": "Jean-Pierre",
@@ -160,6 +155,6 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     Then I should be on "https://enmarche.fr/callback"
 
     # Already logged in user returning to register are redirected to the redirect_uri
-    Given I am logged as "jp@test.com"
+    Given I am logged as "jp2@test.com"
     When I am on "/inscription-utilisateur?client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19&redirect_uri=https%3A%2F%2Fen-marche.fr%2Fcallback"
     Then I should be on "https://en-marche.fr/callback"

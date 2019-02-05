@@ -6,8 +6,7 @@ default:
                 - Behatch\Context\BrowserContext:
                     timeout: 3
                 - Behatch\Context\XmlContext
-                - FixtureContext:
-                    manager: "@doctrine.orm.default_entity_manager"
+                - FixtureContext
                 - RestContext:
                     sslPrivateKey: "%%env(SSL_PRIVATE_KEY)%%"
                     entityManager: "@doctrine.orm.default_entity_manager"
@@ -18,8 +17,7 @@ default:
                     doctrine: "@doctrine"
                     dispatcher: "@event_dispatcher"
                 - EmailContext
-                - ReferentTagContext:
-                    adherentRepository: "@AppBundle\\Repository\\AdherentRepository"
+                - ReferentTagContext
                 - SecurityContext
                 - FeatureContext
                 - DonationContext

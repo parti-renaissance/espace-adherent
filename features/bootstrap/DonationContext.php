@@ -5,10 +5,11 @@ use AppBundle\Repository\DonationRepository;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
+use Behat\MinkExtension\Context\RawMinkContext;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Tests\AppBundle\Test\Payment\PayboxProvider;
 
-class DonationContext extends \Behat\MinkExtension\Context\RawMinkContext
+class DonationContext extends RawMinkContext
 {
     private const DEFAULT_SESSION_NAME = 'default';
 

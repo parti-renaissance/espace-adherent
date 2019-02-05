@@ -191,9 +191,6 @@ trait ControllerTestTrait
         $this->container = $this->getContainer();
         $this->manager = $this->container->get('doctrine.orm.entity_manager');
 
-        // delete all scheduled emails
-        $this->getEmailRepository()->createQueryBuilder('e')->delete()->getQuery()->execute();
-
         $this->hosts = [
             'scheme' => $this->container->getParameter('router.request_context.scheme'),
             'app' => $this->container->getParameter('app_host'),

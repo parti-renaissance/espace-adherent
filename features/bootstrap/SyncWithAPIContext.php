@@ -14,11 +14,14 @@ use AppBundle\CitizenProject\CitizenProjectWasUpdatedEvent;
 use AppBundle\Committee\CommitteeEvent;
 use AppBundle\Membership\UserEvent;
 use Behat\Behat\Context\Context;
+use Behat\Symfony2Extension\Context\KernelDictionary;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class SyncWithAPIContext implements Context
 {
+    use KernelDictionary;
+
     private $doctrine;
     private $dispatcher;
 
@@ -33,7 +36,7 @@ class SyncWithAPIContext implements Context
      */
     public function iDispatchUserEvent(string $event, string $email)
     {
-        $adherent = $this->doctrine->getRepository(Adherent::class)->findOneBy(['emailAddress' => $email]);
+        $adherent = $this->getRepository(Adherent::class)->findOneBy(['emailAddress' => $email]);
 
         $this->dispatcher->dispatch($event, new UserEvent($adherent, true, true));
     }
@@ -43,7 +46,7 @@ class SyncWithAPIContext implements Context
      */
     public function iDispatchUserEventWithEmailSubscriptions(string $event, string $email)
     {
-        $adherent = $this->doctrine->getRepository(Adherent::class)->findOneBy(['emailAddress' => $email]);
+        $adherent = $this->getRepository(Adherent::class)->findOneBy(['emailAddress' => $email]);
 
         $subscriptions = $adherent->getSubscriptionTypes();
         if (!isset($subscriptions[0])) {
@@ -60,7 +63,7 @@ class SyncWithAPIContext implements Context
     public function iDispatchCommitteeEvent(string $event, string $committeeName): void
     {
         /** @var Committee $committee */
-        $committee = $this->doctrine->getRepository(Committee::class)->findOneBy(['name' => $committeeName]);
+        $committee = $this->getRepository(Committee::class)->findOneBy(['name' => $committeeName]);
 
         $this->dispatcher->dispatch($event, new CommitteeEvent($committee));
     }
@@ -71,7 +74,7 @@ class SyncWithAPIContext implements Context
     public function iDispatchEventEvent(string $event, string $eventName): void
     {
         /** @var Event $committeeEvent */
-        $committeeEvent = $this->doctrine->getRepository(Event::class)->findOneBy(['name' => $eventName]);
+        $committeeEvent = $this->getRepository(Event::class)->findOneBy(['name' => $eventName]);
 
         $this->dispatcher->dispatch($event, new EventEvent(null, $committeeEvent));
     }
@@ -82,11 +85,11 @@ class SyncWithAPIContext implements Context
     public function iDispatchCitizenProjectEvent(string $event, string $citizenProjectName): void
     {
         /** @var CitizenProject $citizenProject */
-        $citizenProject = $this->doctrine->getRepository(CitizenProject::class)->findOneBy(['name' => $citizenProjectName]);
+        $citizenProject = $this->getRepository(CitizenProject::class)->findOneBy(['name' => $citizenProjectName]);
 
         switch ($event) {
             case Events::CITIZEN_PROJECT_CREATED:
-                $creator = $this->doctrine->getRepository(Adherent::class)->findOneByUuid($citizenProject->getCreatedBy());
+                $creator = $this->getRepository(Adherent::class)->findOneByUuid($citizenProject->getCreatedBy());
 
                 $citizenProjectEvent = new CitizenProjectWasCreatedEvent($citizenProject, $creator);
 
@@ -112,8 +115,13 @@ class SyncWithAPIContext implements Context
     public function iDispatchCitizenActionEvent(string $event, string $citizenActionName): void
     {
         /** @var CitizenAction $citizenAction */
-        $citizenAction = $this->doctrine->getRepository(CitizenAction::class)->findOneBy(['name' => $citizenActionName]);
+        $citizenAction = $this->getRepository(CitizenAction::class)->findOneBy(['name' => $citizenActionName]);
 
         $this->dispatcher->dispatch($event, new CitizenActionEvent($citizenAction));
+    }
+
+    private function getRepository(string $class): \Doctrine\ORM\EntityRepository
+    {
+        return $this->getContainer()->get('doctrine')->getRepository($class);
     }
 }

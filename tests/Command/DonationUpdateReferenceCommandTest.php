@@ -17,7 +17,7 @@ class DonationUpdateReferenceCommandTest extends WebTestCase
         $output = $this->runCommand('app:donations:update-reference');
 
         $this->assertContains('Starting Donations reference update.', $output);
-        $this->assertContains('Updated 7 Donations reference.', $output);
+        $this->assertContains('Updated 8 Donations reference.', $output);
         $this->assertContains('Donations reference updated successfully!', $output);
     }
 }

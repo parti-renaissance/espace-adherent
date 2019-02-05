@@ -2,13 +2,6 @@ Feature:
   As deputy
   I can send messages to the adherents, see committees and events of my district
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData      |
-      | LoadDistrictData      |
-      | LoadEventCategoryData |
-      | LoadEventData         |
-
   Scenario Outline: As anonymous I can not access deputy space pages.
     Given I go to "<uri>"
     Then the response status code should be 200
@@ -72,10 +65,12 @@ Feature:
     Given I am logged as "deputy@en-marche-dev.fr"
     When I am on "/espace-depute/evenements"
     And wait 1 second until I see "Réunion de réflexion parisienne"
-    Then I should see 9 "table.managed__list__table tbody tr" elements
+    Then I should see 11 "table.managed__list__table tbody tr" elements
     And I should see "Événement de la catégorie masquée"
+    And I should see "Projet citoyen Paris-18"
     And I should see "Réunion de réflexion parisienne annulé"
     And I should see "Réunion de réflexion parisienne"
+    And I should see "Projet citoyen #3"
     And I should see "Référent event"
     And I should see "Grand débat parisien"
     And I should see "Événement à Paris 1"

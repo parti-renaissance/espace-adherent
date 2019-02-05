@@ -3,11 +3,6 @@ Feature:
   As deputy or a referent
   I must have a popup when I am on my space only if I didn't accept it before
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData      |
-      | LoadDistrictData      |
-
   Scenario: As deputy, I should see a popup when I'm in the deputy space
     Given I am logged as "deputy@en-marche-dev.fr"
     And I am on "parametres/mon-compte"
