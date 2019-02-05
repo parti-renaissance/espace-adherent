@@ -120,6 +120,7 @@ class PublishIdeaForm extends React.Component {
 }
 
 PublishIdeaForm.defaultProps = {
+    defaultValues: {},
     isSubmitting: false,
     isSubmitSuccess: false,
     isSubmitError: false,

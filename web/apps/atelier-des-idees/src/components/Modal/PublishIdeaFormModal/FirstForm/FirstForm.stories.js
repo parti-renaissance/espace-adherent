@@ -11,14 +11,9 @@ const props = {
         { value: 'defense', label: 'Défense' },
         { value: 'parity', label: 'Parité' },
     ],
-    localityOptions: [
-        { value: 'national', label: 'National' },
-        { value: 'european', label: 'Européen' },
-    ],
+    localityOptions: [{ value: 'national', label: 'National' }, { value: 'european', label: 'Européen' }],
 };
 
-storiesOf('FirstForm', module)
+storiesOf('PublishIdeaFormModal/FirstForm', module)
     .addParameters({ jest: ['FirstForm'] })
-    .add('default', () => (
-        <FirstForm {...props} onSubmit={action('first form')} />
-    ));
+    .add('default', () => <FirstForm {...props} onSubmit={action('first form')} />);
