@@ -25,6 +25,7 @@ class IdeaPageHeader extends React.Component {
                                         onPublishClicked={this.props.onPublishClicked}
                                         onSaveClicked={this.props.onSaveClicked}
                                         isDraft={this.props.status === ideaStatus.DRAFT}
+                                        isSaving={this.props.isSaving}
                                         canPublish={
                                             this.props.status === ideaStatus.DRAFT ||
                                             this.props.status === ideaStatus.PENDING
@@ -64,6 +65,7 @@ IdeaPageHeader.defaultProps = {
     canToggleReadingMode: false,
     isAuthenticated: false,
     isAuthor: false,
+    isSaving: false,
     showContent: true,
     showSaveBanner: false,
 };
@@ -73,6 +75,7 @@ IdeaPageHeader.propTypes = {
     closeSaveBanner: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool,
     isAuthor: PropTypes.bool,
+    isSaving: PropTypes.bool,
     onBackClicked: PropTypes.func.isRequired,
     onDeleteClicked: PropTypes.func.isRequired,
     onPublishClicked: PropTypes.func.isRequired,
