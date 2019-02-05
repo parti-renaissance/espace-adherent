@@ -39,7 +39,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
   Scenario: An anonymous user can donate successfully
     Given I am on "/don"
     And I press "OK"
-    And wait 1 second until I see "Continuer"
+    And wait 2 second until I see "Je donne chaque mois (paiement automatique)"
     When I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=0"
 
@@ -75,7 +75,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
   Scenario: The user can subscribe to donate each month successfully but can't have a second subscription
     Given I am on "/don"
     And I press "OK"
-    And wait 1 second until I see "Continuer"
+    And wait 2 seconds until I see "Je donne chaque mois (paiement automatique)"
     When I click the "donation-monthly_label" element
     And I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
@@ -109,7 +109,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     Then I should see "Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie politique et au rayonnement des idées progressistes."
 
     Given I am on "/don"
-    And wait 1 second until I see "Continuer"
+    And wait 2 seconds until I see "Je donne chaque mois (paiement automatique)"
     And I click the "donation-monthly_label" element
     When I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
@@ -144,7 +144,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I am logged as "jacques.picard@en-marche.fr"
     And I am on "/don"
     And I press "OK"
-    And wait 1 second until I see "Continuer"
+    And wait 2 seconds until I see "Je donne chaque mois (paiement automatique)"
     When I click the "donation-monthly_label" element
     And I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
@@ -173,7 +173,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     # Check if I can't continue create a new subscription and then can cancel a subscription
     Given I am on "/don"
-    And wait 1 second until I see "Continuer"
+    And wait 2 seconds until I see "Je donne chaque mois (paiement automatique)"
     And I click the "donation-monthly_label" element
     When I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
@@ -197,7 +197,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     # Check if I can create a new subscription after cancel subscription
     Given I am on "/don"
-    And wait 1 second until I see "Continuer"
+    And wait 2 seconds until I see "Je donne chaque mois (paiement automatique)"
     When I click the "donation-monthly_label" element
     And I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
