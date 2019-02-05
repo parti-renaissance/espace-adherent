@@ -21,6 +21,7 @@
 
   &__main {
     display: flex;
+    flex-direction: column;
     padding: 30px;
     padding-bottom: 20px;
   }
@@ -120,9 +121,10 @@
       padding: 0;
       list-style: none;
 
-      > * {
+      &__item {
         display: inline-block;
         margin-right: 6px;
+        margin-bottom: 6px;
         padding: 0 7px;
         border: 1px solid $alice-blue;
         border-radius: 1px;
