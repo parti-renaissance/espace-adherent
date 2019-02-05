@@ -10,9 +10,16 @@ use AppBundle\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\MappedSuperclass
+ *
+ * @Assert\Expression(
+ *     expression="this.getAuthor().isCommentsCguAccepted()",
+ *     message="Vous devez cocher la case CGU afin de poster un commentaire.",
+ *     groups={"write"}
+ * )
  */
 abstract class BaseComment implements EnabledInterface
 {
@@ -41,6 +48,8 @@ abstract class BaseComment implements EnabledInterface
      * @ORM\Column(type="text")
      *
      * @SymfonySerializer\Groups({"thread_comment_read", "thread_list_read", "idea_read"})
+     *
+     * @Assert\NotBlank
      */
     protected $content;
 

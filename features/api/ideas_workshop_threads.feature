@@ -273,7 +273,7 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user I can add my thread to an answer
+  Scenario: As a logged-in user I can't add my thread to an answer if I didn't send the terms of use checkbox status
     Given I add "Content-Type" header equal to "application/json"
     And I am logged as "martine.lindt@gmail.com"
     When I send a "POST" request to "/api/ideas-workshop/threads" with body:
@@ -281,6 +281,32 @@ Feature:
     {
         "answer": "1",
         "content": "LOREM IPSUM🤘"
+    }
+    """
+    Then the response status code should be 400
+
+  Scenario: As a logged-in user I can't add my thread to an answer if I didn't accept the terms of use
+    Given I add "Content-Type" header equal to "application/json"
+    And I am logged as "martine.lindt@gmail.com"
+    When I send a "POST" request to "/api/ideas-workshop/threads" with body:
+    """
+    {
+        "answer": "1",
+        "content": "LOREM IPSUM🤘",
+        "comments_cgu_accepted": false
+    }
+    """
+    Then the response status code should be 400
+
+  Scenario: As a logged-in user I can add my thread to an answer
+    Given I add "Content-Type" header equal to "application/json"
+    And I am logged as "martine.lindt@gmail.com"
+    When I send a "POST" request to "/api/ideas-workshop/threads" with body:
+    """
+    {
+        "answer": "1",
+        "content": "LOREM IPSUM🤘",
+        "comments_cgu_accepted": true
     }
     """
     Then the response status code should be 201
