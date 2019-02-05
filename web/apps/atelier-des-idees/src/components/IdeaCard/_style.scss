@@ -31,14 +31,16 @@
     max-width: calc(100% - 120px);
 
     &__title {
+      $title-height: 56px;
+
       margin: 0 0 10px;
       font-family: $font-gillsans;
       font-weight: 500;
       font-size: 24px;
       letter-spacing: -0.5px;
-      line-height: normal;
       color: $black;
 
+      line-height: #{$title-height / 2};
       height: 56px;
 
       overflow: hidden;
