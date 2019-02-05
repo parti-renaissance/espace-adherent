@@ -53,6 +53,7 @@ function mapStateToProps(state) {
         isAuthor: true,
         isAuthenticated: true,
         isSaveSuccess: saveState.isSuccess,
+        isSaving: saveState.isFetching,
     };
 }
 

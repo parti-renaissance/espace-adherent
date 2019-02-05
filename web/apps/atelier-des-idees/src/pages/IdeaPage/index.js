@@ -73,7 +73,6 @@ function mapStateToProps(state, ownProps) {
         authorName: author ? getUserDisplayName(author) : '',
     };
     const isAuthenticated = selectIsAuthenticated(state);
-
     return {
         idea: formattedIdea,
         guidelines,
@@ -82,6 +81,7 @@ function mapStateToProps(state, ownProps) {
         hasFetchError: fetchIdeaState.isError,
         isFetchingIdea: fetchIdeaState.isFetching,
         isSaveSuccess: saveState.isSuccess,
+        isSaving: saveState.isFetching,
     };
 }
 
