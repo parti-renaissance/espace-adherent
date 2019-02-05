@@ -22,7 +22,7 @@ Aller sur [http://localhost:9009](http://localhost:9009)
 
 ## Simuler une connexion utilisateur
 
-Dans `/src/redux/reducers/auth.js` :
+Dans `/src/redux/reducers/auth.js` (voir les [specs](https://github.com/EnMarche/en-marche.fr/blob/adi-react/features/api/adherents.feature#L128) pour plus de détails sur la structure de l'objet `user`) :
 
 ```
 // Comment initial state to override
