@@ -39,6 +39,76 @@
       background-color: $platinum;
     }
 
+    .text-editor__toolbar__link-modal {
+      height: initial;
+      box-shadow: none;
+      border-color: $columbia-blue;
+
+      .rdw-link-modal-label,
+      .rdw-link-modal-target-option {
+        color: $light-black;
+      }
+
+      .rdw-link-modal-target-option {
+        cursor: pointer;
+        position: relative;
+
+        input {
+          margin-right: 5px;
+        }
+
+        input::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 20px;
+          height: 20px;
+          background-color: $platinum;
+        }
+
+        input:hover::after {
+          background-color: #ccc;
+        }
+
+        input:checked::after {
+          background-color: $caribbean-green;
+          background-image: url('./img/icn_checklist-white.svg');
+          background-position: center;
+          background-size: 15px;
+          background-repeat: no-repeat;
+        }
+      }
+
+      .rdw-link-modal-input {
+        border: 1px solid $platinum;
+        border-radius: 3px;
+        padding: 17px 8px;
+        font-size: 14px;
+      }
+
+      .rdw-link-modal-buttonsection {
+        display: flex;
+        justify-content: space-between;
+        margin: 0;
+      }
+
+      .rdw-link-modal-btn {
+        @extend .button;
+        width: 50%;
+        margin: 0;
+
+        &:first-child {
+          @extend .button--primary;
+          margin-right: 5px;
+        }
+        &:nth-child(2) {
+          @extend .button--secondary;
+          margin-left: 5px;
+        }
+      }
+    }
+
     .text-editor__count {
       position: absolute;
       right: 25px;
