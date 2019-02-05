@@ -10,12 +10,13 @@
 
 	&__header {
 		display: flex;
-		margin-bottom: 35px;
+		margin-bottom: 15px;
 		&__paging {
 			width: 100%;
 			text-align: end;
 			font-size: 18px;
 			color: $taupe-grey;
+			margin: 0;
 			&--current {
 				font-size: 20px;
 				color: $black;
