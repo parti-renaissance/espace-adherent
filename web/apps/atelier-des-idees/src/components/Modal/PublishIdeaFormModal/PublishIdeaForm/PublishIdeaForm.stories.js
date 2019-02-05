@@ -19,7 +19,7 @@ const props = {
     isSubmitError: false,
 };
 
-storiesOf('PublishIdeaForm', module)
+storiesOf('PublishIdeaFormModal/PublishIdeaForm', module)
     .addParameters({ jest: ['PublishIdeaForm'] })
     .add('default', () => <PublishIdeaForm {...props} submitForm={action('Send form')} />)
     .add('submitting', () => <PublishIdeaForm {...props} submitForm={action('Send form')} isSubmitting={true} />);
