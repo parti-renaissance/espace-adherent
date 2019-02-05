@@ -40,11 +40,12 @@
 
       height: 56px;
 
+      overflow: hidden;
       overflow-wrap: break-word;
-      white-space: nowrap;
-      overflow-x: hidden;
-      -o-text-overflow: ellipsis;
-      text-overflow: ellipsis;
+      // webkit specifics
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
 
     &__infos {
