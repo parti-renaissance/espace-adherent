@@ -21,6 +21,7 @@
 
   &__main {
     display: flex;
+    flex-direction: column;
     padding: 30px;
     padding-bottom: 20px;
   }
@@ -40,11 +41,12 @@
 
       height: 56px;
 
+      overflow: hidden;
       overflow-wrap: break-word;
-      white-space: nowrap;
-      overflow-x: hidden;
-      -o-text-overflow: ellipsis;
-      text-overflow: ellipsis;
+      // webkit specifics
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
 
     &__infos {
@@ -119,9 +121,10 @@
       padding: 0;
       list-style: none;
 
-      > * {
+      &__item {
         display: inline-block;
         margin-right: 6px;
+        margin-bottom: 6px;
         padding: 0 7px;
         border: 1px solid $alice-blue;
         border-radius: 1px;
