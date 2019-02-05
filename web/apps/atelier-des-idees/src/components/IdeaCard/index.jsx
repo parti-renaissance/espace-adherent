@@ -113,16 +113,16 @@ class IdeaCard extends React.Component {
                                 )}
                             </div>
                             <p className="idea-card__content__description">{this.props.description}</p>
-                            {!!this.props.themes.length && (
-                                <ul className="idea-card__content__tags">
-                                    {this.props.themes.map((theme, index) => (
-                                        <li key={`theme__${index}`} className="idea-card__content__tags__item">
-                                            {theme.name}
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
                         </div>
+                        {!!this.props.themes.length && (
+                            <ul className="idea-card__content__tags">
+                                {this.props.themes.map((theme, index) => (
+                                    <li key={`theme__${index}`} className="idea-card__content__tags__item">
+                                        {theme.name}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                         {!!this.props.themes.length && this.props.themes[0].thumbnail && (
                             <div className="idea-card__theme">
                                 <img className="idea-card__theme__icon" src={this.props.themes[0].thumbnail} />
