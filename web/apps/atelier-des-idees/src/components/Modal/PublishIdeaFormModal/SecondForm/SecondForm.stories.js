@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 import SecondForm from '.';
 
 const props = {
-    authorOptions: [{ value: 'alone', label: 'Seul' }, { value: 'committee', label: 'Mon comité' }],
+    authorOptions: [{ value: 'alone', label: 'Non' }, { value: 'committee', label: 'Oui' }],
     committeeOptions: [{ value: 'comittee_1', label: 'Comité 1' }, { value: 'comittee_2', label: 'Comité 2' }],
     difficultiesOptions: [{ value: 'juridique', label: 'Juridique' }, { value: 'finance', label: 'Finance' }],
 };

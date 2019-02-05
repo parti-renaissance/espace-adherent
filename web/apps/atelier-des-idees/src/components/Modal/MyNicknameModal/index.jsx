@@ -42,7 +42,7 @@ class MyNicknameModal extends React.Component {
                         <h2 className="my-nickname-modal__title">Mon pseudo</h2>
                         <p className="my-nickname-modal__description">
                             Vous pouvez choisir un pseudonyme si vous souhaitez rester anonyme lors de la publication
-                            d'idée ou de commentaire.
+                            de propositions ou de commentaires sur l'Atelier des idées.
                         </p>
                         <form
                             className="my-nickname-modal__form"
