@@ -12,7 +12,7 @@ const props = {
         { value: 'parity', label: 'Parité' },
     ],
     localityOptions: [{ value: 'national', label: 'National' }, { value: 'european', label: 'Européen' }],
-    authorOptions: [{ value: 'alone', label: 'Seul' }, { value: 'committee', label: 'Mon comité' }],
+    authorOptions: [{ value: 'alone', label: 'Non' }, { value: 'committee', label: 'Oui' }],
     committeeOptions: [{ value: 'comittee_1', label: 'Comité 1' }, { value: 'comittee_2', label: 'Comité 2' }],
     difficultiesOptions: [{ value: 'juridique', label: 'Juridique' }, { value: 'finance', label: 'Finance' }],
     isSubmitSuccess: false,

@@ -97,11 +97,11 @@ class VotingFooter extends React.Component {
                                 }
                             >
                                 <img className="voting-footer__container__action-vote__icon" src={icn_20px_thumb} />
-								Je vote
+								Cette proposition est
                             </button>
                         </div>
                     ) : (
-                        <p className="voting-footer__container__action-vote__text">Je vote :</p>
+                        <p className="voting-footer__container__action-vote__text">Cette proposition est :</p>
                     )}
                 </div>
 

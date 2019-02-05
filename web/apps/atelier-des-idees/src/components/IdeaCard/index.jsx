@@ -13,9 +13,9 @@ import icn_20px_contributors from './../../img/icn_20px_contributors.svg';
 import icn_20px_comments from './../../img/icn_20px_comments.svg';
 
 const VOTES_NAMES = {
-    important: 'Essentiel',
+    important: 'Essentielle',
     feasible: 'Réalisable',
-    innovative: 'Innovant',
+    innovative: 'Innovante',
 };
 
 function formatVotes(votesCount) {
