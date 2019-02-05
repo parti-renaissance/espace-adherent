@@ -121,7 +121,8 @@ Feature:
       "lastName": "Referent75and77",
       "use_nickname": false,
       "elected": false,
-      "larem": false
+      "larem": false,
+      "comments_cgu_accepted": false
     }
     """
 
@@ -142,7 +143,8 @@ Feature:
       "nickname":"kikouslove",
       "use_nickname":true,
       "elected": false,
-      "larem": true
+      "larem": true,
+      "comments_cgu_accepted": false
     }
     """
 
@@ -224,7 +226,7 @@ Feature:
     When I send a "PUT" request to "/api/adherents/me/anonymize" with body:
     """
     {
-        "nickname": "new_nickname"
+        "nickname": "new nickname"
     }
     """
     Then the response status code should be 200
@@ -246,7 +248,7 @@ Feature:
     When I send a "PUT" request to "/api/adherents/me/anonymize" with body:
     """
     {
-        "nickname": "new_nickname",
+        "nickname": "ne-w nick_name",
         "use_nickname": true
     }
     """
@@ -255,7 +257,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "nickname": "new_nickname",
+        "nickname": "ne-w nick_name",
         "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
         "first_name": null,
         "last_name": null

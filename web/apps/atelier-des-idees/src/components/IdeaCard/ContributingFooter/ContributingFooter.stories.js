@@ -3,8 +3,8 @@ import { storiesOf } from '@storybook/react';
 import ContributingFooter from '.';
 
 const props = {
-    remainingDays: '6 jours restants',
-    link: 'google.fr',
+    remainingDays: '6 jours restants pour contribuer',
+    link: 'en-marche.fr',
 };
 
 storiesOf('ContributingFooter', module)

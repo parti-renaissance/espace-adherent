@@ -10,6 +10,7 @@ export const RESET_LOADING_STATE = 'RESET_LOADING_STATE';
 
 // auth
 export const SET_AUTH_USER = 'SET_AUTH_USER';
+export const UPDATE_AUTH_USER = 'UPDATE_AUTH_USER';
 export const FETCH_AUTH_USER = createRequestTypes('FETCH_AUTH_USER');
 export const SET_NICKNAME = createRequestTypes('SET_NICKNAME');
 

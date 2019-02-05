@@ -140,6 +140,9 @@
             <tag name="doctrine.event_listener" event="onFlush" />
         </service>
 
+        <!-- EventSubscriber -->
+        <service id="AppBundle\EventSubscriber\CommentsCguSubscriber"/>
+
         <!-- Exporter -->
         <prototype namespace="AppBundle\Exporter\" resource="../../../src/Exporter/" />
 

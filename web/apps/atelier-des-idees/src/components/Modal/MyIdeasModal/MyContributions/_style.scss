@@ -6,13 +6,13 @@
 		cursor: pointer;
 		display: flex;
 		align-items: center;
-		margin-bottom: 25px;
 
 		&__label {
 			margin-right: 6px;
 			font-size: 14px;
 			font-weight: bold;
 			color: $wild-blue-yonder;
+			text-transform: uppercase;
 		}
 
 		&__icon {
@@ -23,6 +23,9 @@
 	}
 
 	&__category__idea {
+		padding: 20px 0;
+		border-bottom: 1px solid $platinum;
+
 		&__date {
 			margin: 0 0 7px;
 			color: $light-black;
@@ -38,11 +41,13 @@
 			&__see-note {
 				cursor: pointer;
 				font-size: 16px;
+				height: 24px;
 				color: $saphir;
+				border: none;
 
 				&:hover {
-	          color: $saphir;
-	          opacity: 0.75;
+	                color: $saphir;
+	                opacity: 0.75;
 	      }
 			}
 		}

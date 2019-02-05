@@ -84,7 +84,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\Column(length=25, unique=true, nullable=true)
      *
      * @Assert\Length(min=3, max=25, groups={"anonymize"})
-     * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="adherent.nickname.invalid_syntax", groups={"anonymize"})
+     * @Assert\Regex(pattern="/^[A-Za-z0-9 _-]+$/", message="adherent.nickname.invalid_syntax", groups={"anonymize"})
      *
      * @JMS\Groups({"user_profile"})
      *
@@ -310,6 +310,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $chartAccepted = false;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @JMS\Groups({"user_profile"})
+     */
+    private $commentsCguAccepted = false;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
@@ -1334,5 +1341,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function hasMandate(): bool
     {
         return !empty($this->mandates);
+    }
+
+    public function isCommentsCguAccepted(): bool
+    {
+        return $this->commentsCguAccepted;
+    }
+
+    public function setCommentsCguAccepted(bool $commentsCguAccepted): void
+    {
+        $this->commentsCguAccepted = $commentsCguAccepted;
     }
 }

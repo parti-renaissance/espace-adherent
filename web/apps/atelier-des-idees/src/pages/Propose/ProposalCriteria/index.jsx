@@ -12,7 +12,7 @@ class ProposalCriteria extends React.PureComponent {
                 <div className="proposal-criteria">
                     <div className="proposal-criteria__container">
                         <h2 className="proposal-criteria__container__title">
-                            Vous voulez vous lancer ? Voici quelques conseils avant de commencer
+                            Vous voulez vous lancer&nbsp;? Voici quelques conseils avant de commencer
                         </h2>
                         <a
                             href="/atelier-des-idees/creer-ma-proposition?anonymous_authentication_intention=/connexion"
@@ -52,7 +52,7 @@ class ProposalCriteria extends React.PureComponent {
                         <div className="proposal-criteria__container__item">
                             <p className="proposal-criteria__container__item__text">
                                 <span className="proposal-criteria__container__item__text__main">
-									Votre proposition est en accord avec notre Charte des valeurs</span> et respecte nos&nbsp;
+									Votre proposition est en accord avec notre <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/charte_des_valeurs.pdf" target="_blank">Charte des valeurs</a></span> et respecte nos&nbsp;
                                     <a
                                         href="/atelier-des-idees/conditions-generales-utilisation"
                                         target="_blank"

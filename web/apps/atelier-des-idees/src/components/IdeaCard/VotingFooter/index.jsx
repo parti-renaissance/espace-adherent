@@ -80,11 +80,11 @@ class VotingFooter extends React.Component {
                     </button>
 
                     {!this.state.toggleVotes &&
-						(0 < this.props.totalVotes ? (
-						    <p className="voting-footer__total-votes">{this.props.totalVotes} votes</p>
-						) : (
-						    <p />
-						))}
+                        (0 < this.props.totalVotes ? (
+                            <p className="voting-footer__total-votes">{this.props.totalVotes} votes</p>
+                        ) : (
+                            <p />
+                        ))}
                     {!this.state.toggleVotes ? (
                         <div className="voting-footer__container__action-vote">
                             <button
@@ -97,31 +97,31 @@ class VotingFooter extends React.Component {
                                 }
                             >
                                 <img className="voting-footer__container__action-vote__icon" src={icn_20px_thumb} />
-								Je vote
+                                Je vote
                             </button>
                         </div>
                     ) : (
-                        <p className="voting-footer__container__action-vote__text">Je vote :</p>
+                        <p className="voting-footer__container__action-vote__text">Cette proposition est :</p>
                     )}
                 </div>
 
                 {/* VOTES BUTTONS */}
                 {this.state.toggleVotes &&
-					this.props.votes.map((vote, index) => (
-					    <button
-					        key={vote.id}
-					        className={classnames('voting-footer__vote', `voting-footer__vote-${index}`, {
-					            'voting-footer__vote--selected': vote.isSelected,
-					        })}
-					        onClick={() => {
-					            this.props.onSelected(vote.id);
-					            this.resetTimeout();
-					        }}
-					    >
-					        <span className="voting-footer__vote__name">{vote.name}</span>
-					        <span className="voting-footer__vote__count">{vote.count}</span>
-					    </button>
-					))}
+                    this.props.votes.map((vote, index) => (
+                        <button
+                            key={vote.id}
+                            className={classnames('voting-footer__vote', `voting-footer__vote-${index}`, {
+                                'voting-footer__vote--selected': vote.isSelected,
+                            })}
+                            onClick={() => {
+                                this.props.onSelected(vote.id);
+                                this.resetTimeout();
+                            }}
+                        >
+                            <span className="voting-footer__vote__name">{vote.name}</span>
+                            <span className="voting-footer__vote__count">{vote.count}</span>
+                        </button>
+                    ))}
             </div>
         );
     }

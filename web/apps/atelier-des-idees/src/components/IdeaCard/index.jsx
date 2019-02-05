@@ -7,20 +7,15 @@ import { Link } from 'react-router-dom';
 import VotingFooter from './VotingFooter';
 import ContributingFooter from './ContributingFooter';
 import { getUserDisplayName } from '../../helpers/entities';
+import { AUTHOR_CATEGORIES } from '../../constants/api';
 
 import icn_20px_contributors from './../../img/icn_20px_contributors.svg';
 import icn_20px_comments from './../../img/icn_20px_comments.svg';
 
-const AUTHOR_CATEGORY_NAMES = {
-    ADHERENT: 'Adhérent',
-    COMMITTEE: 'Comité',
-    QG: 'LaREM',
-};
-
 const VOTES_NAMES = {
-    important: 'Essentiel',
+    important: 'Essentielle',
     feasible: 'Réalisable',
-    innovative: 'Innovant',
+    innovative: 'Innovante',
 };
 
 function formatVotes(votesCount) {
@@ -30,9 +25,7 @@ function formatVotes(votesCount) {
             id: key,
             name: VOTES_NAMES[key],
             count: votesCount[key],
-            isSelected: !votesCount.my_votes
-                ? false
-                : Object.keys(votesCount.my_votes).includes(key),
+            isSelected: !votesCount.my_votes ? false : Object.keys(votesCount.my_votes).includes(key),
         }));
 }
 
@@ -71,10 +64,7 @@ class IdeaCard extends React.Component {
     render() {
         return (
             <div className="idea-card" ref={this.cardRef}>
-                <Link
-                    to={`/atelier-des-idees/proposition/${this.props.uuid}`}
-                    className="idea-card__link"
-                >
+                <Link to={`/atelier-des-idees/proposition/${this.props.uuid}`} className="idea-card__link">
                     <div className="idea-card__main">
                         <div className="idea-card__content">
                             <p className="idea-card__content__title" title={this.props.name}>
@@ -90,12 +80,10 @@ class IdeaCard extends React.Component {
                                     <span
                                         className={classnames(
                                             'idea-card__content__infos__author__type',
-                                            `idea-card__content__infos__author__type--${
-                                                this.props.author_category
-                                            }`
+                                            `idea-card__content__infos__author__type--${this.props.author_category}`
                                         )}
                                     >
-                                        {AUTHOR_CATEGORY_NAMES[this.props.author_category]}
+                                        {AUTHOR_CATEGORIES[this.props.author_category]}
                                     </span>
                                 </span>
                                 {/* <span className="idea-card__content__infos__date">
@@ -124,28 +112,20 @@ class IdeaCard extends React.Component {
                                     </div>
                                 )}
                             </div>
-                            <p className="idea-card__content__description">
-                                {this.props.description}
-                            </p>
-                            {!!this.props.themes.length && (
-                                <ul className="idea-card__content__tags">
-                                    {this.props.themes.map((theme, index) => (
-                                        <li
-                                            key={`theme__${index}`}
-                                            className="idea-card__content__tags__item"
-                                        >
-                                            {theme.name}
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
+                            <p className="idea-card__content__description">{this.props.description}</p>
                         </div>
+                        {!!this.props.themes.length && (
+                            <ul className="idea-card__content__tags">
+                                {this.props.themes.map((theme, index) => (
+                                    <li key={`theme__${index}`} className="idea-card__content__tags__item">
+                                        {theme.name}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                         {!!this.props.themes.length && this.props.themes[0].thumbnail && (
                             <div className="idea-card__theme">
-                                <img
-                                    className="idea-card__theme__icon"
-                                    src={this.props.themes[0].thumbnail}
-                                />
+                                <img className="idea-card__theme__icon" src={this.props.themes[0].thumbnail} />
                             </div>
                         )}
                     </div>
@@ -189,20 +169,15 @@ IdeaCard.propTypes = {
     uuid: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     votes_count: PropTypes.shape({
-        important: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-            .isRequired,
-        feasible: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-            .isRequired,
-        innovative: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-            .isRequired,
+        important: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        feasible: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        innovative: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
         total: PropTypes.number.isRequired,
         my_votes: PropTypes.object,
     }).isRequired,
     comments_count: PropTypes.number,
     contributors_count: PropTypes.number,
-    themes: PropTypes.arrayOf(
-        PropTypes.shape({ name: PropTypes.string, thumbnail: PropTypes.string })
-    ),
+    themes: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string, thumbnail: PropTypes.string })),
     days_before_deadline: PropTypes.number.isRequired,
     status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
     onVote: PropTypes.func,

@@ -40,6 +40,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *         "post": {
  *             "path": "/ideas-workshop/threads",
  *             "access_control": "is_granted('ROLE_ADHERENT')",
+ *             "validation_groups": {"Default", "write"}
  *         }
  *     },
  *     itemOperations={

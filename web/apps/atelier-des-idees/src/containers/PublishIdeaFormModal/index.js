@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PublishIdeaFormModal from '../../components/Modal/PublishIdeaFormModal';
 import { fetchStaticData } from '../../redux/thunk/static';
 import { resetLoading } from '../../redux/actions/loading';
+import { selectAuthUser } from '../../redux/selectors/auth';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectStatic } from '../../redux/selectors/static';
 import { selectCurrentIdea } from '../../redux/selectors/currentIdea';
@@ -42,6 +43,8 @@ function getDefaultValues(selectedItems = [], options = []) {
 }
 
 function mapStateToProps(state, { id }) {
+    // user info
+    const currentUser = selectAuthUser(state);
     // get request status
     const currentIdea = selectCurrentIdea(state);
     const saveIdeaState = selectLoadingState(state, 'SAVE_CURRENT_IDEA', id);
@@ -52,7 +55,7 @@ function mapStateToProps(state, { id }) {
     const formattedNeeds = formatStaticData(needs);
     const formattedCategories = formatStaticData(categories);
     const formattedCommittees = committees.map(({ uuid, name }) => ({ value: uuid, label: name }));
-    const authorOptions = [{ value: 'alone', label: 'Seul' }, { value: 'committee', label: 'Mon comité' }];
+    const authorOptions = [{ value: 'alone', label: 'Non' }, { value: 'committee', label: 'Oui' }];
     // get default values
     const selectedThemes = getDefaultValues(currentIdea.themes, formattedThemes);
     const selectedNeeds = getDefaultValues(currentIdea.needs, formattedNeeds);
@@ -81,6 +84,7 @@ function mapStateToProps(state, { id }) {
         difficultiesOptions: formattedNeeds,
         committeeOptions: formattedCommittees,
         authorOptions,
+        canSelectAuthor: !(currentUser.elected || currentUser.larem),
     };
 }
 

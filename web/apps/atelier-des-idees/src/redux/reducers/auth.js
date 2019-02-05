@@ -1,4 +1,4 @@
-import { SET_AUTH_USER } from '../constants/actionTypes';
+import { SET_AUTH_USER, UPDATE_AUTH_USER } from '../constants/actionTypes';
 
 const initialState = {
     isAuthenticated: false,
@@ -13,6 +13,8 @@ function authReducer(state = initialState, action) {
             isAuthenticated: true,
             user: payload.user,
         };
+    case UPDATE_AUTH_USER:
+        return { ...state, user: { ...state.user, ...payload.data } };
     default:
         return state;
     }

@@ -63,7 +63,7 @@ class FirstForm extends React.Component {
                 </div>
                 <div className="first-form__section">
                     <label className="first-form__section__label">
-						Donnez aux Marcheurs l'envie de lire votre proposition !
+						Donnez aux marcheurs l'envie de lire votre proposition !
                     </label>
                     <TextArea
                         maxLength={130}
@@ -77,7 +77,7 @@ class FirstForm extends React.Component {
                     <label className="first-form__section__label">Thématique</label>
                     <Select
                         options={this.props.themeOptions}
-                        placeholder="Choisissez la(es) thématique(s) de votre note"
+                        placeholder="Choisissez la(es) thématique(s) de votre proposition"
                         subtitle="Ajoutez plusieurs thématiques si besoin, dans l'ordre de leur importance"
                         isMulti={true}
                         error={this.state.errors.theme}
@@ -93,7 +93,7 @@ class FirstForm extends React.Component {
                 </div>
                 <div className="first-form__section">
                     <label className="first-form__section__label">
-						Est-ce une proposition nationale ou européeene ?
+						Est-ce une proposition nationale ou européenne ?
                     </label>
                     <Select
                         options={this.props.localityOptions}
