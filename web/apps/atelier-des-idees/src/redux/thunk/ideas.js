@@ -10,6 +10,7 @@ import { selectAuthUser, selectIsAuthenticated } from '../selectors/auth';
 import { MY_IDEAS_MODAL } from '../../constants/modalTypes';
 import { hideModal, showModal } from '../actions/modal';
 import { setThreads, setThreadComments } from '../actions/threads';
+import { redirectToSignin } from '../../helpers/navigation';
 
 // axios cancellation
 const CancelToken = Axios.CancelToken;
@@ -207,7 +208,7 @@ export function voteIdea(uuid, voteType, baseIdea) {
             // user has not already voted that, post vote
             return dispatch(postVote(uuid, voteType));
         }
-        window.location = '/connexion';
+        redirectToSignin();
     };
 }
 

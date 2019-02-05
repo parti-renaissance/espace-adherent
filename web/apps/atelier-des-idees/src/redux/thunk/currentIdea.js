@@ -1,12 +1,13 @@
 import { ideaStatus } from '../../constants/api';
 import history from '../../history';
+import { redirectToSignin } from '../../helpers/navigation';
 import { SAVE_CURRENT_IDEA, FETCH_GUIDELINES, PUBLISH_IDEA } from '../constants/actionTypes';
-import { saveIdea, publishIdea, voteIdea } from '../thunk/ideas';
+import { publishIdea, voteIdea } from '../thunk/ideas';
 import { postComment, fetchThreads, deleteComment } from '../thunk/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { selectIsAuthenticated, selectAuthUser } from '../selectors/auth';
 import { selectCurrentIdea, selectCurrentIdeaAnswer } from '../selectors/currentIdea';
-import { selectAnswerThreads, selectThread, selectAnswerThreadsPagingData } from '../selectors/threads';
+import { selectThread, selectAnswerThreadsPagingData } from '../selectors/threads';
 import {
     setCurrentIdea,
     updateCurrentIdea,
@@ -168,7 +169,7 @@ export function voteCurrentIdea(voteType) {
                 }
             );
         }
-        window.location = '/connexion';
+        redirectToSignin();
     };
 }
 
