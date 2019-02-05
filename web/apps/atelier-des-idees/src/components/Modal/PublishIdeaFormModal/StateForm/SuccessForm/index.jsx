@@ -16,12 +16,8 @@ class SuccessForm extends React.PureComponent {
 					Merci ! Votre proposition a été publiée
                 </h3>
                 <p className="success-form__subtitle">
-					Votre idée va maintenant être enrichie par des adhérents pendant 3
-					semaines. Vous pouvez leur montrer que vous prenez en compte leurs
-					commentaires en cliquant sur{' '}
-                    <span className="success-form__subtitle__approved">Approuver</span>.
-					Vous devrez ensuite intégrer vous-même leurs contributions à votre
-					partie.
+                  Pendant 10 jours, les adhérents pourront faire des commentaires afin de vous aider à enrichir et compléter votre proposition ! Vous pourrez {' '}
+                  <span className="success-form__subtitle__approved">Approuver</span> leurs commentaires et intégrer leurs contributions !
                 </p>
                 <a
                     href={`/atelier-des-idees/proposition/${this.props.id}`}
