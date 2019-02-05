@@ -26,7 +26,9 @@ const initialToolbar = {
     },
     link: {
         className: 'text-editor__toolbar__group',
+        popupClassName: 'text-editor__toolbar__link-modal',
         options: ['link'],
+        defaultTargetOption: '_blank',
     },
 };
 
@@ -107,6 +109,9 @@ class TextEditor extends React.Component {
                         handleBeforeInput={this.handleBeforeInput}
                         handlePastedText={this.handlePastedText}
                         onEditorStateChange={this.onEditorStateChange}
+                        localization={{
+                            locale: 'fr',
+                        }}
                     />
                     {this.props.maxLength && (
                         <div className="text-editor__count">{`${this.state.textContent.length}/${
