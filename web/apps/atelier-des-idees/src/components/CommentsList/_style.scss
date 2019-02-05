@@ -78,6 +78,78 @@
       font-size: 14px;
       letter-spacing: 1.5px;
     }
+
+    &__legal-wrapper {
+      display: inline-block;
+      margin-right: 15px;
+      vertical-align: middle;
+    }
+    &__legal {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      height: 30px;
+      cursor: pointer;
+
+      &__checkbox {
+        width: 18px;
+        height: 18px;
+        margin-right: 5px;
+      }
+
+      &__input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+      }
+
+      &__checkmark {
+        position: relative;
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        background-color: $platinum;
+        > img {
+          display: none;
+        }
+      }
+
+      &__checkbox:hover &__input ~ &__checkmark {
+        background-color: #ccc;
+      }
+
+      &__checkbox &__input:checked ~ &__checkmark {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $caribbean-green;
+
+        > img {
+          display: inline-block;
+          width: 50%;
+        }
+      }
+
+      &__label {
+        font-size: 12px;
+        color: $ucla-blue;
+      }
+
+      &__label__link {
+        color: $brandeis-blue;
+        text-decoration: none;
+        border: none;
+      }
+
+      &__error {
+        margin: 0;
+        font-size: 12px;
+        text-align: left;
+        color: $giants-orange;
+      }
+    }
   }
 
   .comments-list__empty {
