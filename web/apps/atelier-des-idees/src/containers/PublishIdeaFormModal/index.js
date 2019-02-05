@@ -45,7 +45,6 @@ function getDefaultValues(selectedItems = [], options = []) {
 function mapStateToProps(state, { id }) {
     // user info
     const currentUser = selectAuthUser(state);
-    // console.warn()
     // get request status
     const currentIdea = selectCurrentIdea(state);
     const saveIdeaState = selectLoadingState(state, 'SAVE_CURRENT_IDEA', id);
