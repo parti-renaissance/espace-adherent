@@ -165,7 +165,7 @@ IdeaCard.propTypes = {
     author_category: PropTypes.string.isRequired,
     thumbnail: PropTypes.string,
     created_at: PropTypes.string.isRequired, // ISO UTC
-    description: PropTypes.string.isRequired,
+    description: PropTypes.string, // this is null sometimes
     uuid: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     votes_count: PropTypes.shape({
