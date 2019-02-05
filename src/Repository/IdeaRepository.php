@@ -50,10 +50,10 @@ class IdeaRepository extends ServiceEntityRepository
         (
             SELECT threadComment.author_id
             FROM ideas_workshop_comment threadComment
-            INNER JOIN ideas_workshop_thread thread ON thread.id = threadComment.thread_id 
+            INNER JOIN ideas_workshop_thread thread ON thread.id = threadComment.thread_id
             INNER JOIN ideas_workshop_answer answer ON answer.id = thread.answer_id
             INNER JOIN ideas_workshop_idea idea ON idea.id = answer.idea_id
-            WHERE idea.id = :idea
+            WHERE idea.id = :idea AND threadComment.enabled = 1 AND thread.enabled = 1
         )
         UNION 
         (
@@ -61,7 +61,7 @@ class IdeaRepository extends ServiceEntityRepository
             FROM ideas_workshop_thread thread 
             INNER JOIN ideas_workshop_answer answer ON answer.id = thread.answer_id
             INNER JOIN ideas_workshop_idea idea ON idea.id = answer.idea_id
-            WHERE idea.id = :idea
+            WHERE idea.id = :idea AND thread.enabled = 1
         )
 SQL;
 
