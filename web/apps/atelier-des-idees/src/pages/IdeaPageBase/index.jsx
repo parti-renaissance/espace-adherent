@@ -198,6 +198,7 @@ class IdeaPageBase extends React.Component {
                     }}
                     isAuthenticated={this.props.isAuthenticated}
                     isAuthor={this.props.isAuthor}
+                    isSaving={this.props.isSaving}
                     onBackClicked={this.props.onBackClicked}
                     onDeleteClicked={this.props.onDeleteClicked}
                     onPublishClicked={this.onPublishIdea}
@@ -254,6 +255,7 @@ class IdeaPageBase extends React.Component {
                                                 onPublishClicked={this.onPublishIdea}
                                                 onSaveClicked={this.onSaveIdea}
                                                 isDraft={true}
+                                                isSaving={this.props.isSaving}
                                                 canPublish={true}
                                             />
                                         )}
@@ -274,6 +276,7 @@ IdeaPageBase.defaultProps = {
     isAuthor: false,
     isAuthenticated: false,
     isLoading: false,
+    isSaving: false,
     isSaveSuccess: false,
 };
 
@@ -294,6 +297,7 @@ IdeaPageBase.propTypes = {
     isAuthor: PropTypes.bool,
     isAuthenticated: PropTypes.bool,
     isLoading: PropTypes.bool,
+    isSaving: PropTypes.bool,
     onBackClicked: PropTypes.func.isRequired,
     onPublishIdea: PropTypes.func.isRequired,
     onDeleteClicked: PropTypes.func.isRequired,

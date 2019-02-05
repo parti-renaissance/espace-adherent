@@ -18,6 +18,7 @@ function CreateIdeaActions(props) {
                             label="Enregistrer le brouillon"
                             mode="secondary"
                             onClick={props.onSaveClicked}
+                            isLoading={props.isSaving}
                         />
                     )}
                     {props.canPublish && (
@@ -35,6 +36,7 @@ function CreateIdeaActions(props) {
 
 CreateIdeaActions.defaultProps = {
     isDraft: false,
+    isSaving: false,
     canPublish: false,
     onBackClicked: undefined,
 };
@@ -42,6 +44,7 @@ CreateIdeaActions.defaultProps = {
 CreateIdeaActions.propTypes = {
     canPublish: PropTypes.bool,
     isDraft: PropTypes.bool,
+    isSaving: PropTypes.bool,
     onBackClicked: PropTypes.func,
     onDeleteClicked: PropTypes.func.isRequired,
     onPublishClicked: PropTypes.func.isRequired,
