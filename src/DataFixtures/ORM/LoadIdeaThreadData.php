@@ -20,6 +20,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
     public const THREAD_07_UUID = '2512539f-47fe-4a13-869e-78b81e6f9dd0';
     public const THREAD_08_UUID = '1474504d-8024-4e54-85f7-59666a11cd77';
     public const THREAD_09_UUID = 'f5cfb1c0-e6a4-4775-a595-ebd2625c4831';
+    public const THREAD_10_UUID = 'c8b67e90-18b2-42d7-9e62-3fa612a2efb8';
 
     public function load(ObjectManager $manager)
     {
@@ -29,6 +30,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
         $adherent3 = $this->getReference('adherent-3');
         $adherent4 = $this->getReference('adherent-4');
         $adherent5 = $this->getReference('adherent-5');
+        $adherent12 = $this->getReference('adherent-12');
         $adherent13 = $this->getReference('adherent-13');
 
         $threadAQProblemAdherent2 = Thread::create(
@@ -112,6 +114,16 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
             false
         );
 
+        $threadDisabledOnPublishedIdea = Thread::create(
+            Uuid::fromString(self::THREAD_10_UUID),
+            '[Reduce Waste] Une discussion modérée',
+            $adherent12,
+            $this->getReference('answer-q-problem-idea-reduce-noise'),
+            new \DateTime('-2 minutes'),
+            false,
+            false
+        );
+
         $manager->persist($threadAQProblemAdherent2);
         $manager->persist($threadAQAnswerAdherent4);
         $manager->persist($threadAQCompareAdherent5);
@@ -121,6 +133,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
         $manager->persist($threadHEU);
         $manager->persist($threadReduceWaste);
         $manager->persist($threadDisabled);
+        $manager->persist($threadDisabledOnPublishedIdea);
 
         $manager->flush();
     }
