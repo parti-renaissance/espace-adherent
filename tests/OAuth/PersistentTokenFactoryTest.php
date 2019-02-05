@@ -41,7 +41,7 @@ class PersistentTokenFactoryTest extends TestCase
         $token = $this->createAuthorizationCode();
         $token->setClient($this->createClient());
         $token->setUserIdentifier(self::USER_UUID);
-        $token->setExpiryDateTime(new \DateTime('+5 hours'));
+        $token->setExpiryDateTime($expectedDate = new \DateTime('+5 hours'));
         $token->addScope($this->createScope('read:users'));
         $token->addScope($this->createScope('write:users'));
         $token->setRedirectUri('https://app.foo-bar.com/oauth');
@@ -69,7 +69,7 @@ class PersistentTokenFactoryTest extends TestCase
             $authCode->getUuid()
         );
         $this->assertSame(self::AUTHORIZATION_CODE_IDENTIFIER, $authCode->getIdentifier());
-        $this->assertSame((new \DateTime('+5 hours'))->format('U'), $authCode->getExpiryDateTime()->format('U'));
+        $this->assertSame($expectedDate->format('U'), $authCode->getExpiryDateTime()->format('U'));
         $this->assertSame($user, $authCode->getUser());
         $this->assertSame($client, $authCode->getClient());
         $this->assertSame('https://app.foo-bar.com/oauth', $authCode->getRedirectUri());
