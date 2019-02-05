@@ -13,6 +13,7 @@
       font-size: 14px;
       font-weight: bold;
       color: $wild-blue-yonder;
+      text-transform: uppercase;
     }
 
     &__icon {
@@ -56,6 +57,7 @@
       }
 
       &__delete {
+            height: 24px;
             border: 0;
             margin: 0;
             padding: 0;
