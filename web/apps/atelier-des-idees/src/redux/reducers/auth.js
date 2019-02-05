@@ -1,7 +1,7 @@
 import { SET_AUTH_USER, UPDATE_AUTH_USER } from '../constants/actionTypes';
 
 const initialState = {
-    isAuthenticated: true,
+    isAuthenticated: false,
     user: {},
 };
 
