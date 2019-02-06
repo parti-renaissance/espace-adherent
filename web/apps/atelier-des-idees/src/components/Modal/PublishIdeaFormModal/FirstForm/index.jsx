@@ -93,11 +93,11 @@ class FirstForm extends React.Component {
                 </div>
                 <div className="first-form__section">
                     <label className="first-form__section__label">
-						Est-ce une proposition nationale ou européenne ?
+						              À quel échelon se situe votre proposition ?
                     </label>
                     <Select
                         options={this.props.localityOptions}
-                        placeholder="Nationale / Européenne"
+                        placeholder="National / Européen"
                         subtitle={() => (
                             <p>
 								Pour un projet local non généralisable, rapprochez-vous de votre

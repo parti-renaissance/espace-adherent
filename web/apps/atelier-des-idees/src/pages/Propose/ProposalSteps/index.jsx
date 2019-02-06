@@ -26,7 +26,7 @@ class ProposalSteps extends React.PureComponent {
                             <img className="proposal-steps__container__step__img" src={step2} />
                             <span className="proposal-steps__container__step__number">2</span>
                             <p className="proposal-steps__container__step__text">
-								Quand vous êtes prêt(e), publiez votre proposition. Pendant 10 jours, les Marcheurs
+								Quand vous êtes prêt(e), publiez votre proposition. Pendant 10 jours, les marcheurs
 								pourront vous suggérer des améliorations que vous serez libre d'accepter (ou non).
                             </p>
                         </div>
@@ -35,7 +35,7 @@ class ProposalSteps extends React.PureComponent {
                             <img className="proposal-steps__container__step__img" src={step3} />
                             <span className="proposal-steps__container__step__number">3</span>
                             <p className="proposal-steps__container__step__text">
-								Une fois finalisée, les Marcheurs pourront voter pour votre proposition.
+								Une fois finalisée, les marcheurs pourront voter pour votre proposition.
                             </p>
                         </div>
                     </div>
