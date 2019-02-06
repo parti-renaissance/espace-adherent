@@ -41,8 +41,6 @@ class StatisticsExporter
 
             switch ($question['type']) {
                 case SurveyQuestionTypeEnum::MULTIPLE_CHOICE_TYPE:
-                    $this->buildRowsChoicesAnswers($question['stats']);
-                    break;
                 case SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE:
                     $this->buildRowsChoicesAnswers($question['stats']);
                     break;
@@ -61,7 +59,7 @@ class StatisticsExporter
 
     private function buildHeader(Survey $survey): void
     {
-        $this->content = $survey->getName().' '.date('Y-m-d H:i').\PHP_EOL.\PHP_EOL;
+        $this->content = $survey->getName().' '.date('d/m/Y H:i').\PHP_EOL.\PHP_EOL;
     }
 
     private function buildRowsChoicesAnswers(array $stats): void
@@ -81,7 +79,7 @@ class StatisticsExporter
                 $postAt = $response['postedAt'];
 
                 if ($postAt instanceof \DateTimeInterface) {
-                    $response['postedAt'] = $postAt->format('Y-m-d H:i:s');
+                    $response['postedAt'] = $postAt->format('d/m/Y H:i');
                 }
 
                 $this->content .= implode(';', $response).\PHP_EOL;

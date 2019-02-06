@@ -375,12 +375,9 @@ class ReferentController extends Controller
     ): Response {
         $dataFile = $statisticsExporter->export($survey);
 
-        $response = new Response($dataFile['content'], 200, [
-            'Content-Type' => 'text/plain',
+        return new Response($dataFile['content'], Response::HTTP_OK, [
+            'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment;filename="'.$dataFile['filename'].'"',
         ]);
-        $response->send();
-
-        return $response;
     }
 }
