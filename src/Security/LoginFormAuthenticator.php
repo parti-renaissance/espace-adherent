@@ -32,19 +32,22 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $passwordEncoder;
     private $anonymousFollowerSession;
     private $failedLoginAttemptRepository;
+    private $apiPathPrefix;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
         CsrfTokenManagerInterface $csrfTokenManager,
         UserPasswordEncoderInterface $passwordEncoder,
         AnonymousFollowerSession $anonymousFollowerSession,
-        FailedLoginAttemptRepository $failedLoginAttemptRepository
+        FailedLoginAttemptRepository $failedLoginAttemptRepository,
+        string $apiPathPrefix
     ) {
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
         $this->anonymousFollowerSession = $anonymousFollowerSession;
         $this->failedLoginAttemptRepository = $failedLoginAttemptRepository;
+        $this->apiPathPrefix = $apiPathPrefix;
     }
 
     public function supports(Request $request)
@@ -114,7 +117,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     {
         if (
             \in_array('application/json', $request->getAcceptableContentTypes())
-            || preg_match('#^/api/#', $request->getPathInfo())
+            || 0 === mb_strpos($request->getPathInfo(), $this->apiPathPrefix)
         ) {
             return new JsonResponse('Unauthorized', 401);
         }

@@ -46,12 +46,12 @@ app_api:
     host:     "%app_host%"
     resource: "@AppBundle/Controller/Api"
     type:     "annotation"
-    prefix:   "/api"
+    prefix:   "%api_path_prefix%"
     defaults:
         _format: 'json'
 
 api_login_check:
-    path: /api/login_check
+    path: "%api_path_prefix%/login_check"
 
 #
 # API Legislatives
@@ -60,7 +60,7 @@ app_legislatives_api:
     host:     "{app_domaines}"
     resource: "@AppBundle/Controller/Api/LegislativesController.php"
     type:     "annotation"
-    prefix:   "/api"
+    prefix:   "%api_path_prefix%"
     defaults:
         _format: 'json'
     requirements:
