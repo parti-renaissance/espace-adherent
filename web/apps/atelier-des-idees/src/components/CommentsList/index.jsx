@@ -67,7 +67,7 @@ class CommentsList extends React.Component {
                     >
                         <img className="comments-list__collapse-button__icon-replies" src={icn_20px_replies} />
                         <span className="comments-list__collapse-button__label">
-                            {this.props.comments.length} {this.props.collapseLabel}
+                            {this.props.total} {this.props.collapseLabel}
                             {1 < this.props.comments.length && 's'}
                         </span>
                         <img

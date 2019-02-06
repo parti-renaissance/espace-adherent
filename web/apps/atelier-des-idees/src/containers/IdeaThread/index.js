@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { sortEntitiesByDate } from '../../helpers/entities';
-import { FLAG_MODAL } from '../../constants/modalTypes';
+import { FLAG_MODAL, DELETE_COMMENT_MODAL } from '../../constants/modalTypes';
 import CommentsList from '../../components/CommentsList';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectCurrentIdea } from '../../redux/selectors/currentIdea';
@@ -69,7 +69,12 @@ function mapStateToProps(state, { questionId }) {
 function mapDispatchToProps(dispatch) {
     return {
         onSendComment: (content, answerId, threadId) => dispatch(postCommentToCurrentIdea(content, answerId, threadId)),
-        onDeleteComment: (commentId, threadId) => dispatch(removeCommentFromCurrentIdea(commentId, threadId)),
+        onDeleteComment: (commentId, threadId) =>
+            dispatch(
+                showModal(DELETE_COMMENT_MODAL, {
+                    onConfirmDelete: () => dispatch(removeCommentFromCurrentIdea(commentId, threadId)),
+                })
+            ),
         onApproveComment: (commentId, threadId) => dispatch(approveComment(commentId, threadId)),
         onReportComment: (commentId, threadId) =>
             dispatch(

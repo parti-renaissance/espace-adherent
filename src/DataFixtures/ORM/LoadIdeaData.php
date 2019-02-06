@@ -5,7 +5,6 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\DataFixtures\AutoIncrementResetter;
 use AppBundle\Entity\IdeasWorkshop\AuthorCategoryEnum;
 use AppBundle\Entity\IdeasWorkshop\Idea;
-use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -40,7 +39,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.',
             AuthorCategoryEnum::COMMITTEE,
             new \DateTime('-3 days 1 minute'),
-            new Chronos('+13 days 1 minute'),
+            new \DateTime('+13 days 1 minute'),
             true,
             $adherent3,
             Uuid::fromString(self::IDEA_01_UUID),
@@ -88,11 +87,11 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             'In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.',
             AuthorCategoryEnum::ADHERENT,
             new \DateTime('-26 days 1 minute'),
-            new Chronos('-16 days 1 minute'),
+            new \DateTime('-16 days 1 minute'),
             true,
             $adherent3,
             Uuid::fromString(self::IDEA_04_UUID),
-             new \DateTime('-27 days 1 minute')
+            new \DateTime('-27 days 1 minute')
         );
         $ideaReduceWaste->setCategory($category);
         $ideaReduceWaste->addTheme($themeEcology);
@@ -116,7 +115,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             'Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.',
             AuthorCategoryEnum::ELECTED,
             new \DateTime('-2 days 1 minute'),
-            new Chronos('+8 days 1 minute'),
+            new \DateTime('+8 days 1 minute'),
             true,
             $adherent13,
             Uuid::fromString(self::IDEA_06_UUID),
@@ -132,7 +131,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             'Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.',
             AuthorCategoryEnum::ELECTED,
             new \DateTime('-23 days 1 minute'),
-            new Chronos('-13 days 1 minute'),
+            new \DateTime('-13 days 1 minute'),
             true,
             $adherent13,
             Uuid::fromString(self::IDEA_07_UUID),
@@ -147,7 +146,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             'Ideas moderatis',
             AuthorCategoryEnum::ELECTED,
             new \DateTime('-26 days 1 minute'),
-            new Chronos('-16 days 1 minute'),
+            new \DateTime('-16 days 1 minute'),
             false,
             $adherent13,
             Uuid::fromString(self::IDEA_08_UUID),

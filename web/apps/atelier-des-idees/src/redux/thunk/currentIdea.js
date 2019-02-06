@@ -1,12 +1,13 @@
 import { ideaStatus } from '../../constants/api';
 import history from '../../history';
+import { redirectToSignin } from '../../helpers/navigation';
 import { SAVE_CURRENT_IDEA, FETCH_GUIDELINES, PUBLISH_IDEA } from '../constants/actionTypes';
-import { saveIdea, publishIdea, voteIdea } from '../thunk/ideas';
+import { publishIdea, voteIdea } from '../thunk/ideas';
 import { postComment, fetchThreads, deleteComment } from '../thunk/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { selectIsAuthenticated, selectAuthUser } from '../selectors/auth';
 import { selectCurrentIdea, selectCurrentIdeaAnswer } from '../selectors/currentIdea';
-import { selectAnswerThreads, selectThread, selectAnswerThreadsPagingData } from '../selectors/threads';
+import { selectThread, selectAnswerThreadsPagingData } from '../selectors/threads';
 import {
     setCurrentIdea,
     updateCurrentIdea,
@@ -77,14 +78,14 @@ export function saveCurrentIdea(ideaData) {
             .post('/api/ideas-workshop/ideas', ideaData)
             .then(res => res.data)
             .then((data) => {
+                // set request success
+                dispatch(createRequestSuccess(SAVE_CURRENT_IDEA));
                 // response does not contain answers' threads info on initial save, populate with base data
                 const answersWithThreads = data.answers.map(answer => ({
                     ...answer,
                     threads: { items: [], total_items: 0 },
                 }));
                 dispatch(setCurrentIdea({ ...data, answers: answersWithThreads }));
-
-                dispatch(createRequestSuccess(SAVE_CURRENT_IDEA));
                 // silently replace location
                 window.history.replaceState(null, '', `/atelier-des-idees/proposition/${data.uuid}`);
                 return data;
@@ -168,7 +169,7 @@ export function voteCurrentIdea(voteType) {
                 }
             );
         }
-        window.location = '/connexion';
+        redirectToSignin();
     };
 }
 

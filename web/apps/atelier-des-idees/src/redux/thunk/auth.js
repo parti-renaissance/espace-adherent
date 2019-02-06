@@ -1,6 +1,6 @@
 import { FETCH_AUTH_USER, SET_NICKNAME } from '../constants/actionTypes';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
-import { setAuthUser } from '../actions/auth';
+import { setAuthUser, updateAuthUser } from '../actions/auth';
 
 export function fetchAuthUser() {
     return (dispatch, getState, axios) => {
@@ -24,6 +24,9 @@ export function setNickname(nickname, useNickname) {
         return axios
             .put('/api/adherents/me/anonymize', { nickname, use_nickname: useNickname })
             .then(() => {
+                // update current user
+                dispatch(updateAuthUser({ nickname, use_nickname: useNickname }));
+                // set request success
                 dispatch(createRequestSuccess(SET_NICKNAME));
             })
             .catch((error) => {

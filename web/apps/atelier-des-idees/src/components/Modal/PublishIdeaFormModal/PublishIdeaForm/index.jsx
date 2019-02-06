@@ -22,6 +22,7 @@ class PublishIdeaForm extends React.Component {
 
         this.formatFormData = this.formatFormData.bind(this);
         this.submitForm = this.submitForm.bind(this);
+        this.formContainer = React.createRef();
     }
 
     componentDidMount() {
@@ -29,6 +30,7 @@ class PublishIdeaForm extends React.Component {
     }
 
     handleFirstForm(res) {
+        this.formContainer.current.scrollTo(0, 0);
         this.setState({ firstForm: res, currentPage: 2 });
     }
 
@@ -70,7 +72,7 @@ class PublishIdeaForm extends React.Component {
 
     render() {
         return (
-            <div className="publish-idea-form">
+            <div className="publish-idea-form" ref={this.formContainer}>
                 {!this.props.isSubmitSuccess && !this.props.isSubmitError && (
                     <React.Fragment>
                         <div className="publish-idea-form__header">

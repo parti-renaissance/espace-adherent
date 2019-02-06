@@ -86,11 +86,9 @@ class IdeaCard extends React.Component {
                                         {AUTHOR_CATEGORIES[this.props.author_category]}
                                     </span>
                                 </span>
-                                {/* <span className="idea-card__content__infos__date">
-                            {new Date(this.props.created_at).toLocaleDateString()}
-                                </span>*/}
                                 {'QG' !== this.props.author_category && (
                                     <div className="idea-card__content__infos__ideas">
+                                        {0 < this.props.contributors_count &&
                                         <span className="idea-card__content__infos__ideas__contributors">
                                             <img
                                                 className="idea-card__content__infos__ideas__contributors__icon"
@@ -100,6 +98,8 @@ class IdeaCard extends React.Component {
                                                 {this.props.contributors_count}
                                             </span>
                                         </span>
+                                        }
+                                        {0 < this.props.comments_count &&
                                         <span className="idea-card__content__infos__ideas__comments">
                                             <img
                                                 className="idea-card__content__infos__ideas__comments__icon"
@@ -109,6 +109,7 @@ class IdeaCard extends React.Component {
                                                 {this.props.comments_count}
                                             </span>
                                         </span>
+                                        }
                                     </div>
                                 )}
                             </div>
@@ -165,7 +166,7 @@ IdeaCard.propTypes = {
     author_category: PropTypes.string.isRequired,
     thumbnail: PropTypes.string,
     created_at: PropTypes.string.isRequired, // ISO UTC
-    description: PropTypes.string.isRequired,
+    description: PropTypes.string, // this is null sometimes
     uuid: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     votes_count: PropTypes.shape({

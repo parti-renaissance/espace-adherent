@@ -190,7 +190,7 @@ class IdeaPageBase extends React.Component {
         return (
             <div className="create-idea-page">
                 <IdeaPageHeader
-                    canToggleReadingMode={idea.status !== ideaStatus.FINALIZED && this.state.name}
+                    canToggleReadingMode={idea.status !== ideaStatus.FINALIZED && !!this.state.name}
                     closeSaveBanner={() => {
                         this.setState({ showSaveBanner: false }, () => {
                             clearTimeout(this.saveBannerTimer);
@@ -208,6 +208,7 @@ class IdeaPageBase extends React.Component {
                     showSaveBanner={this.state.showSaveBanner}
                     status={idea.status}
                     toggleReadingMode={this.onToggleReadingMode}
+                    isReading={this.state.readingMode}
                 />
                 <div className="create-idea-page__content">
                     {!this.props.isLoading && idea.status === ideaStatus.DRAFT && (
