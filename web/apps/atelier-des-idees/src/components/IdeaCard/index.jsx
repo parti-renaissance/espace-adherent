@@ -86,9 +86,6 @@ class IdeaCard extends React.Component {
                                         {AUTHOR_CATEGORIES[this.props.author_category]}
                                     </span>
                                 </span>
-                                {/* <span className="idea-card__content__infos__date">
-                            {new Date(this.props.created_at).toLocaleDateString()}
-                                </span>*/}
                                 {'QG' !== this.props.author_category && (
                                     <div className="idea-card__content__infos__ideas">
                                         {0 < this.props.contributors_count &&
