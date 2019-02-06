@@ -190,7 +190,7 @@ class IdeaPageBase extends React.Component {
         return (
             <div className="create-idea-page">
                 <IdeaPageHeader
-                    canToggleReadingMode={idea.status !== ideaStatus.FINALIZED && this.state.name}
+                    canToggleReadingMode={idea.status !== ideaStatus.FINALIZED && !!this.state.name}
                     closeSaveBanner={() => {
                         this.setState({ showSaveBanner: false }, () => {
                             clearTimeout(this.saveBannerTimer);
