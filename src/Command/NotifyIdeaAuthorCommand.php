@@ -6,6 +6,7 @@ use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\IdeaFinalizeMessage;
 use AppBundle\Repository\IdeaRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -16,12 +17,18 @@ class NotifyIdeaAuthorCommand extends Command
 {
     protected static $defaultName = 'idea-workshop:notification:idea-author';
 
+    private $entityManager;
     private $ideaRepository;
     private $urlGenerator;
     private $mailer;
 
-    public function __construct(IdeaRepository $ideaRepository, UrlGeneratorInterface $urlGenerator, MailerService $mailer)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        IdeaRepository $ideaRepository,
+        UrlGeneratorInterface $urlGenerator,
+        MailerService $mailer
+    ) {
+        $this->entityManager = $entityManager;
         $this->ideaRepository = $ideaRepository;
         $this->urlGenerator = $urlGenerator;
         $this->mailer = $mailer;
@@ -31,22 +38,18 @@ class NotifyIdeaAuthorCommand extends Command
 
     protected function configure()
     {
-        $this
-            ->addOption('caution', null, InputOption::VALUE_NONE, 'Send an email 3 days before the note finished date')
-            ->addOption('delay', null, InputOption::VALUE_REQUIRED, 'Delay in minute (30min default)', 30)
-        ;
+        $this->addOption('caution', null, InputOption::VALUE_NONE, 'Send an email 3 days before the note finished date');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $ideas = $this->getIdeas(...$this->prepareDates(
-            (int) $input->getOption('delay'),
-            $isCautionMode = $input->getOption('caution')
-        ));
+        [$startDate, $endDate] = $this->prepareDates($isCautionMode = $input->getOption('caution'));
 
-        foreach ($ideas as $idea) {
+        foreach ($this->getIdeas($startDate, $endDate) as $idea) {
             $this->sendMail($idea, $isCautionMode);
         }
+
+        $this->saveLastDate($endDate, $isCautionMode);
     }
 
     /**
@@ -64,13 +67,24 @@ class NotifyIdeaAuthorCommand extends Command
         ;
     }
 
-    private function prepareDates(int $delay, bool $isCautionMode): array
+    private function prepareDates(bool $isCautionMode): array
     {
-        $limitDate = new \DateTimeImmutable($isCautionMode ? '+3 days' : 'now');
+        $endDate = new \DateTimeImmutable($isCautionMode ? '+3 days' : 'now');
+
+        $startDates = $this->entityManager->getConnection()
+            ->executeQuery('SELECT last_date, caution_last_date FROM ideas_workshop_idea_notification_dates')
+            ->fetch()
+        ;
+
+        if ($startDate = $startDates[$isCautionMode ? 'caution_last_date' : 'last_date'] ?? null) {
+            $startDate = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $startDate);
+        } else {
+            $startDate = $endDate->modify('-1 hours');
+        }
 
         return [
-            $limitDate->modify(sprintf('-%d minutes', $delay)),
-            $limitDate,
+            $startDate,
+            $endDate,
         ];
     }
 
@@ -97,5 +111,13 @@ class NotifyIdeaAuthorCommand extends Command
         }
 
         $this->mailer->sendMessage($message);
+    }
+
+    private function saveLastDate(\DateTimeInterface $lastDate, bool $isCautionMode): void
+    {
+        $this->entityManager->getConnection()->executeUpdate(
+            'UPDATE ideas_workshop_idea_notification_dates SET '.($isCautionMode ? 'caution_last_date' : 'last_date').' = ?',
+            [$lastDate->format('Y-m-d H:i:s')]
+        );
     }
 }
