@@ -10,7 +10,12 @@ function Switch(props) {
     return (
         <div className="switch-wrapper">
             <RcSwitch {...props} className="switch" />
-            {props.label && <span className="switch__label">{props.label}</span>}
+            {props.label &&
+              <span
+                  onClick={() => props.onChange(!props.checked)}
+                  className="switch__label">
+                  {props.label}
+              </span>}
         </div>
     );
 }
