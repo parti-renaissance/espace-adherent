@@ -91,6 +91,7 @@ class IdeaCard extends React.Component {
                                 </span>*/}
                                 {'QG' !== this.props.author_category && (
                                     <div className="idea-card__content__infos__ideas">
+                                        {0 < this.props.contributors_count &&
                                         <span className="idea-card__content__infos__ideas__contributors">
                                             <img
                                                 className="idea-card__content__infos__ideas__contributors__icon"
@@ -100,6 +101,8 @@ class IdeaCard extends React.Component {
                                                 {this.props.contributors_count}
                                             </span>
                                         </span>
+                                        }
+                                        {0 < this.props.comments_count &&
                                         <span className="idea-card__content__infos__ideas__comments">
                                             <img
                                                 className="idea-card__content__infos__ideas__comments__icon"
@@ -109,6 +112,7 @@ class IdeaCard extends React.Component {
                                                 {this.props.comments_count}
                                             </span>
                                         </span>
+                                        }
                                     </div>
                                 )}
                             </div>
