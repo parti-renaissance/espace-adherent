@@ -1,0 +1,11 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% if is_idea(object.subject) or is_thread(object.subject) or is_thread_comment(object.subject) %}
+        {% if object.subject.enabled %}
+            <span class="label label-success">Actif</span>
+        {% else %}
+            <span class="label label-danger">Inactif</span>
+        {% endif %}
+    {% endif %}
+{% endblock %}
