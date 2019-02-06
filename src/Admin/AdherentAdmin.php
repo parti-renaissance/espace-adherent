@@ -9,13 +9,10 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentTag;
 use AppBundle\Entity\CitizenProjectMembership;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
-use AppBundle\Entity\BoardMember\BoardMember;
-use AppBundle\Entity\BoardMember\Role;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Form\ActivityPositionType;
 use AppBundle\Form\Admin\CoordinatorManagedAreaType;
 use AppBundle\Form\Admin\ReferentManagedAreaType;
-use AppBundle\Form\EventListener\BoardMemberListener;
 use AppBundle\Form\EventListener\ReferentManagedAreaListener;
 use AppBundle\Form\GenderType;
 use AppBundle\Intl\UnitedNationsBundle;
@@ -40,7 +37,9 @@ use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class AdherentAdmin extends AbstractAdmin
 {
@@ -112,6 +111,12 @@ class AdherentAdmin extends AbstractAdmin
     {
         $showMapper
             ->with('Informations personnelles', ['class' => 'col-md-6'])
+                ->add('status', null, [
+                    'label' => 'Etat du compte',
+                ])
+                ->add('tags', null, [
+                    'label' => 'Tags admin',
+                ])
                 ->add('gender', null, [
                     'label' => 'Genre',
                 ])
@@ -136,76 +141,44 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('position', null, [
                     'label' => 'Statut',
                 ])
-                ->add('mandates', null, [
-                    'label' => 'adherent.mandate.admin.label',
-                    'template' => 'admin/adherent/show_mandates.html.twig',
+                ->add('subscriptionTypes', null, [
+                    'label' => 'Abonné aux notifications via e-mail et mobile',
+                    'associated_property' => 'label',
                 ])
             ->end()
-            ->with('Référent', ['class' => 'col-md-3'])
+            ->with('Responsabilités locales', ['class' => 'col-md-3'])
                 ->add('isReferent', 'boolean', [
                     'label' => 'Est référent ?',
+                ])
+                ->add('coordinatorCommitteeArea', null, [
+                    'label' => 'Coordinateur régional',
                 ])
                 ->add('managedArea.tags', null, [
                     'label' => 'referent.label.tags',
                 ])
-                ->add('managedAreaMarkerLatitude', null, [
-                    'label' => 'Latitude du point sur la carte',
+                ->add('procurationManagedAreaCodesAsString', null, [
+                    'label' => 'Responsable procurations',
                 ])
-                ->add('managedAreaMarkerLongitude', null, [
-                    'label' => 'Longitude du point sur la carte',
+                ->add('coordinatorCitizenProjectArea', null, [
+                    'label' => 'coordinator.label.codes.cp',
+                ])
+            ->end()
+            ->with('Mandat électif', ['class' => 'col-md-3'])
+                ->add('isDeputy', 'boolean', [
+                    'label' => 'Est un(e) député(e) ?',
+                ])
+                ->add('managedDistrict.name', null, [
+                    'label' => 'Circonscription député',
                 ])
             ->end()
             ->with('Coordinateur', ['class' => 'col-md-3'])
                 ->add('isCoordinator', 'boolean', [
                     'label' => 'Est coordinateur ?',
                 ])
-                ->add('coordinatorCitizenProjectArea', null, [
-                    'label' => 'coordinator.label.codes.cp',
-                ])
-                ->add('coordinatorCommitteeArea', null, [
-                    'label' => 'coordinator.label.codes.committee',
-                ])
             ->end()
             ->with('Responsable procuration', ['class' => 'col-md-3'])
                 ->add('isProcurationManager', 'boolean', [
                     'label' => 'Est responsable procuration ?',
-                ])
-                ->add('procurationManagedAreaCodesAsString', null, [
-                    'label' => 'coordinator.label.codes',
-                ])
-            ->end()
-            ->with('Compte', ['class' => 'col-md-6'])
-                ->add('status', null, [
-                    'label' => 'Etat du compte',
-                ])
-                ->add('subscriptionTypes', null, [
-                    'label' => 'Abonné aux notifications via e-mail et mobile',
-                    'associated_property' => 'label',
-                ])
-            ->end()
-            ->with('Membre du Conseil', ['class' => 'col-md-6'])
-                ->add('isBoardMember', 'boolean', [
-                    'label' => 'Est membre du Conseil ?',
-                ])
-                ->add('boardMember.area', null, [
-                    'label' => 'Région',
-                ])
-                ->add('boardMember.roles', null, [
-                    'label' => 'Rôles',
-                    'template' => 'admin/adherent/list_board_member_roles.html.twig',
-                ])
-            ->end()
-            ->with('Député(e)', ['class' => 'col-md-6'])
-                ->add('isDeputy', 'boolean', [
-                    'label' => 'Est un(e) député(e) ?',
-                ])
-                ->add('managedDistrict.name', null, [
-                    'label' => 'Nom de la circonscription du député',
-                ])
-            ->end()
-            ->with('Tags', ['class' => 'col-md-6'])
-                ->add('tags', null, [
-                    'label' => 'Tags admin',
                 ])
             ->end()
         ;
@@ -215,6 +188,19 @@ class AdherentAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('Informations personnelles', ['class' => 'col-md-6'])
+                ->add('status', ChoiceType::class, [
+                    'label' => 'Etat du compte',
+                    'choices' => [
+                        'Activé' => Adherent::ENABLED,
+                        'Désactivé' => Adherent::DISABLED,
+                    ],
+                ])
+                ->add('tags', 'sonata_type_model', [
+                    'label' => 'Tags admin',
+                    'multiple' => true,
+                    'by_reference' => false,
+                    'btn_add' => false,
+                ])
                 ->add('gender', GenderType::class, [
                     'label' => 'Genre',
                 ])
@@ -241,92 +227,65 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('position', ActivityPositionType::class, [
                     'label' => 'Statut',
                 ])
-                ->add('mandates', ChoiceType::class, [
-                    'label' => 'adherent.mandate.admin.label',
-                    'choices' => Mandates::CHOICES,
-                    'required' => false,
-                    'multiple' => true,
-                ])
-            ->end()
-            ->with('Compte', ['class' => 'col-md-6'])
-                ->add('status', ChoiceType::class, [
-                    'label' => 'Etat du compte',
-                    'choices' => [
-                        'Activé' => Adherent::ENABLED,
-                        'Désactivé' => Adherent::DISABLED,
-                    ],
-                ])
                 ->add('subscriptionTypes', null, [
                     'label' => 'Abonné aux mails :',
                     'choice_label' => 'label',
                     'required' => false,
                     'multiple' => true,
                 ])
-            ->end()
-            ->with('Référent', ['class' => 'col-md-6'])
-                ->add('managedArea', ReferentManagedAreaType::class, [
-                    'label' => false,
+                ->add('media', null, [
+                    'label' => 'Photo',
+                ])
+                ->add('description', TextareaType::class, [
+                    'label' => 'Biographie',
                     'required' => false,
+                    'attr' => ['class' => 'content-editor', 'rows' => 20],
                 ])
-            ->end()
-            ->with('Tags', ['class' => 'col-md-6'])
-                ->add('tags', 'sonata_type_model', [
-                    'label' => 'Tags admin',
-                    'multiple' => true,
-                    'by_reference' => false,
-                    'btn_add' => false,
-                ])
-            ->end()
-            ->with('Membre du Conseil', ['class' => 'col-md-6'])
-                ->add('boardMemberArea', ChoiceType::class, [
-                    'label' => 'Région',
-                    'choices' => BoardMember::AREAS_CHOICES,
+                ->add('twitterPageUrl', UrlType::class, [
+                    'label' => 'Page Twitter',
                     'required' => false,
-                    'mapped' => false,
-                    'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
+                    'attr' => [
+                        'placeholder' => 'https://twitter.com/alexandredumoulin',
+                    ],
                 ])
-                ->add('boardMemberRoles', 'sonata_type_model', [
-                    'expanded' => true,
-                    'multiple' => true,
-                    'btn_add' => false,
-                    'class' => Role::class,
-                    'mapped' => false,
-                    'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
-                ])
-            ->end()
-            ->with('Circonscription du député', ['class' => 'col-md-6'])
-                ->add('managedDistrict', 'sonata_type_model', [
-                    'label' => 'Nom de la circonscription du député',
-                    'by_reference' => false,
-                    'btn_add' => false,
+                ->add('facebookPageUrl', UrlType::class, [
+                    'label' => 'Page Facebook',
                     'required' => false,
+                    'attr' => [
+                        'placeholder' => 'https://facebook.com/alexandre-dumoulin',
+                    ],
                 ])
             ->end()
-            ->with('Coordinateur', [
-                'class' => 'col-md-6',
-                'description' => 'Laisser vide si l\'adhérent n\'est pas coordinateur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
-            ])
-                ->add('coordinatorCitizenProjectArea', CoordinatorManagedAreaType::class, [
-                    'label' => 'coordinator.label.codes.cp',
-                    'sector' => CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR,
-                ])
+            ->with('Responsabilités locales', ['class' => 'col-md-6'])
                 ->add('coordinatorCommitteeArea', CoordinatorManagedAreaType::class, [
                     'label' => 'coordinator.label.codes.committee',
                     'sector' => CoordinatorAreaSectors::COMMITTEE_SECTOR,
                 ])
-            ->end()
-            ->with('Responsable procuration', ['class' => 'col-md-6'])
+                ->add('managedArea', ReferentManagedAreaType::class, [
+                    'label' => false,
+                    'required' => false,
+                ])
                 ->add('procurationManagedAreaCodesAsString', TextType::class, [
                     'label' => 'coordinator.label.codes',
                     'required' => false,
-                    'help' => 'Laisser vide si l\'adhérent n\'est pas responsable procuration. '.
-                        'Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.',
+                    'help' => "Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
+                ])
+                ->add('coordinatorCitizenProjectArea', CoordinatorManagedAreaType::class, [
+                    'label' => 'coordinator.label.codes.cp',
+                    'sector' => CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR,
+                ])
+            ->end()
+            ->with('Mandat électif', ['class' => 'col-md-6'])
+                ->add('managedDistrict', 'sonata_type_model', [
+                    'label' => 'Circonscription député',
+                    'by_reference' => false,
+                    'btn_add' => false,
+                    'required' => false,
                 ])
             ->end()
         ;
 
         $formMapper->getFormBuilder()
-            ->addEventSubscriber(new BoardMemberListener())
             ->addEventSubscriber(new ReferentManagedAreaListener())
         ;
     }

@@ -252,7 +252,7 @@ search.geocoding.exception: Nous ne sommes pas parvenus à reconnaître la ville
 #
 referent.message.success: Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer.
 referent.event.creation.success: Le nouvel événement a bien été créé.
-referent.label.tags: Tags référent
+referent.label.tags: Référent
 referent.button.accept: J'ai lu et j'accepte
 referent.popup.title: Charte de bonne utilisation des outils numériques
 referent.popup.subtitle: à l’usage des référents
@@ -421,8 +421,8 @@ recaptcha.error: Une erreur s'est produite, pouvez-vous réessayer ?
 #
 coordinator.sector.committee: Secteur - Comités
 coordinator.sector.citizen_project: Secteur - Projets citoyens
-coordinator.label.codes: Codes des zones gérées
-coordinator.label.codes.cp: Codes des zones gérées dans le secteur "Projet Citoyen"
+coordinator.label.codes: Responsable procurations
+coordinator.label.codes.cp: REC
 coordinator.label.codes.committee: Codes des zones gérées dans le secteur "Comité"
 coordinator.placeholder.sector: Veuillez choisir un secteur
 

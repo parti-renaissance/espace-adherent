@@ -67,7 +67,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, \Serializable
+class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, \Serializable, EntityMediaInterface
 {
     public const ENABLED = 'ENABLED';
     public const DISABLED = 'DISABLED';
@@ -327,6 +327,44 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\IdeasWorkshop\Idea", mappedBy="author", fetch="EXTRA_LAZY")
      */
     private $ideas;
+
+    /**
+     * @var Media|null
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media", cascade={"persist"})
+     * @ORM\JoinColumn(name="media_id", referencedColumnName="id", nullable=true)
+     */
+    private $media;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $displayMedia = true;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Url(groups="Admin")
+     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="legislative_candidate.facebook_page_url.invalid", groups="Admin")
+     * @Assert\Length(max=255, groups="Admin")
+     */
+    private $facebookPageUrl;
+
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Url(groups="Admin")
+     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="legislative_candidate.twitter_page_url.invalid", groups="Admin")
+     * @Assert\Length(max=255, groups="Admin")
+     */
+    private $twitterPageUrl;
 
     public function __construct()
     {
@@ -1351,5 +1389,25 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setCommentsCguAccepted(bool $commentsCguAccepted): void
     {
         $this->commentsCguAccepted = $commentsCguAccepted;
+    }
+
+    public function getMedia(): ?Media
+    {
+        return $this->media;
+    }
+
+    public function setMedia(Media $media = null): void
+    {
+        $this->media = $media;
+    }
+
+    public function displayMedia(): bool
+    {
+        return $this->displayMedia;
+    }
+
+    public function setDisplayMedia(bool $displayMedia): void
+    {
+        $this->displayMedia = $displayMedia;
     }
 }
