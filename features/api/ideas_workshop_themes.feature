@@ -22,13 +22,13 @@ Feature:
       },
       {
           "id": @integer@,
-          "name": "Écologie",
-          "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
+          "name": "Trésorerie",
+          "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/tresory.png"
       },
       {
           "id": @integer@,
-          "name": "Trésorerie",
-          "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/tresory.png"
+          "name": "Écologie",
+          "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
       }
     ]
     """

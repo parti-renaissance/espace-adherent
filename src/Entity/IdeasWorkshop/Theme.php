@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ApiResource(
@@ -18,11 +19,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "normalization_context": {
  *             "groups": {"theme_read"}
  *         },
- *         "order": {"name": "ASC"},
+ *         "order": {"position": "ASC"},
  *         "pagination_enabled": false,
  *     },
  *     collectionOperations={"get": {"path": "/ideas-workshop/themes"}},
- *     itemOperations={"get": {"path": "/ideas-workshop/theme/{id}"}},
  * )
  *
  * @ORM\Entity
@@ -86,11 +86,21 @@ class Theme implements EnabledInterface
      */
     protected $imageName;
 
-    public function __construct(string $name = '', string $imageName = null, bool $enabled = false)
+    /**
+     * @ORM\Column(type="smallint", options={"unsigned": true})
+     *
+     * @Assert\GreaterThanOrEqual(1)
+     *
+     * @Gedmo\SortablePosition
+     */
+    private $position;
+
+    public function __construct(string $name = '', string $imageName = null, bool $enabled = false, int $position = 1)
     {
         $this->name = $name;
         $this->imageName = $imageName;
         $this->enabled = $enabled;
+        $this->position = $position;
     }
 
     public function getId(): ?int
@@ -121,6 +131,16 @@ class Theme implements EnabledInterface
     public function getImagePath(): string
     {
         return sprintf('images/ideas_workshop/themes/%s', $this->getImageName());
+    }
+
+    public function getPosition(): int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): void
+    {
+        $this->position = $position;
     }
 
     public function __toString(): string
