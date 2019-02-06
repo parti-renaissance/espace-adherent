@@ -12,6 +12,7 @@ import DeleteIdeaModal from '../../components/Modal/DeleteIdeaModal';
 import MyNicknameModal from '../../containers/MyNicknameModal';
 import MyIdeasContainer from '../../containers/MyIdeas';
 import FlagModal from '../../containers/FlagModal';
+import DeleteCommentModal from '../../components/Modal/DeleteCommentModal';
 import icn_close from './../../img/icn_close.svg';
 
 const MODAL_COMPONENTS = {
@@ -24,6 +25,7 @@ const MODAL_COMPONENTS = {
     [modalTypes.MY_IDEAS_MODAL]: MyIdeasContainer,
     [modalTypes.FLAG_MODAL]: FlagModal,
     [modalTypes.MY_NICKNAME_MODAL]: MyNicknameModal,
+    [modalTypes.DELETE_COMMENT_MODAL]: DeleteCommentModal
 };
 
 class ModalRoot extends React.Component {
