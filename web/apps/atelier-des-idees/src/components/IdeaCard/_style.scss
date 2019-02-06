@@ -82,6 +82,17 @@
         &__type {
           &--QG {
             color: $pink;
+
+            &::after {
+              content: '';
+              display: inline-block;
+              width: 18px;
+              height: 18px;
+              margin-left: 5px;
+              background-image: url('./img/icn_certified-larem.svg');
+              background-repeat: no-repeat;
+              vertical-align: middle;
+            }
           }
 
           &--COMMITTEE,
