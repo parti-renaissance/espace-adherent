@@ -40,7 +40,7 @@ class VotingFooter extends React.Component {
                     () => this.props.onToggleVotePanel(false)
                 );
             }, 300);
-        }, 5000);
+        }, 20000);
     }
 
     render() {
