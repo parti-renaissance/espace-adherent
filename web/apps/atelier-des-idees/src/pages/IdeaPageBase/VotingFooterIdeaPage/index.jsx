@@ -22,6 +22,11 @@ function formatVotes(votesCount) {
 }
 
 class VoteButton extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
     render() {
         const { vote, onVote } = this.props;
         return (
@@ -31,11 +36,17 @@ class VoteButton extends Component {
                     'voting-footer-idea-page__vote__button--selected': vote.isSelected,
                 }, this.state.animate)}
                 onClick={() => {
+                    this.setState({
+                        animate: vote.isSelected ? 'down' : 'up',
+                    });
                     onVote(vote.id);
                 }}
             >
                 <span className="voting-footer-idea-page__vote__button__name">{vote.name}</span>
                 <span className="voting-footer-idea-page__vote__button__count">{vote.count}</span>
+                <span className="voting-footer-idea-page__flag">
+                    {'down' === this.state.animate ? '-' : '+'}1
+                </span>
             </button>
         );
     }
