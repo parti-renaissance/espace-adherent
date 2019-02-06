@@ -29,8 +29,8 @@ export function initHomePage() {
             // ideas
             // flush ideas reducer
             dispatch(setIdeas()),
-            dispatch(fetchIdeas(ideaStatus.FINALIZED, params)),
             dispatch(fetchIdeas(ideaStatus.PENDING, params)),
+            dispatch(fetchIdeas(ideaStatus.FINALIZED, params)),
             // reports
             dispatch(fetchReports()),
         ]);

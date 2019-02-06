@@ -7,6 +7,16 @@ function LatestIdeas(props) {
     const { finalized = {}, pending = {} } = props.ideas;
     const panes = [
         {
+            title: 'Propositions en cours d\'élaboration',
+            component: (
+                <LatestIdeasPane
+                    link="/atelier-des-idees/contribuer"
+                    ideas={pending.items}
+                    isLoading={pending.isLoading}
+                />
+            ),
+        },
+        {
             title: 'Propositions finalisées',
             component: (
                 <LatestIdeasPane
@@ -14,16 +24,6 @@ function LatestIdeas(props) {
                     ideas={finalized.items}
                     isLoading={finalized.isLoading}
                     onVoteIdea={props.onVoteIdea}
-                />
-            ),
-        },
-        {
-            title: 'Propositions en cours d\'élaboration',
-            component: (
-                <LatestIdeasPane
-                    link="/atelier-des-idees/contribuer"
-                    ideas={pending.items}
-                    isLoading={pending.isLoading}
                 />
             ),
         },
