@@ -2349,7 +2349,8 @@ Feature:
     }
     """
 
-  Scenario: As a non logged-in user I can count contributors based on enabled thread and threadComment author's
+  Scenario: As a non logged-in user I can count contributors based on enabled (and not deleted)
+    thread and threadComment author's
     Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/ideas-workshop/ideas?name=Reduire le bruit dans les opens spaces"
     Then the response status code should be 200
