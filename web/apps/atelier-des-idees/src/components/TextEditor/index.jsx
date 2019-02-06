@@ -11,18 +11,24 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 // see https://jpuri.github.io/react-draft-wysiwyg/#/docs for more about this
 const initialToolbar = {
-    options: ['inline', 'list'],
+    options: ['inline', 'list', 'link'],
     inline: {
-        className: 'text-editor__toolbal__group',
+        className: 'text-editor__toolbar__group',
         options: ['bold', 'italic', 'underline'],
     },
     list: {
-        className: 'text-editor__toolbal__group',
+        className: 'text-editor__toolbar__group',
         options: ['unordered', 'ordered'],
     },
     textAlign: {
-        className: 'text-editor__toolbal__group',
+        className: 'text-editor__toolbar__group',
         options: ['left', 'center', 'right'],
+    },
+    link: {
+        className: 'text-editor__toolbar__group',
+        popupClassName: 'text-editor__toolbar__link-modal',
+        options: ['link'],
+        defaultTargetOption: '_blank',
     },
 };
 
@@ -103,6 +109,9 @@ class TextEditor extends React.Component {
                         handleBeforeInput={this.handleBeforeInput}
                         handlePastedText={this.handlePastedText}
                         onEditorStateChange={this.onEditorStateChange}
+                        localization={{
+                            locale: 'fr',
+                        }}
                     />
                     {this.props.maxLength && (
                         <div className="text-editor__count">{`${this.state.textContent.length}/${
