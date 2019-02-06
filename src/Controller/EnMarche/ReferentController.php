@@ -14,6 +14,7 @@ use AppBundle\Form\EventCommandType;
 use AppBundle\Form\ReferentMessageType;
 use AppBundle\Form\ReferentPersonLinkType;
 use AppBundle\Form\Jecoute\SurveyFormType;
+use AppBundle\Jecoute\StatisticsExporter;
 use AppBundle\Jecoute\StatisticsProvider;
 use AppBundle\Referent\ManagedCommitteesExporter;
 use AppBundle\Referent\ManagedEventsExporter;
@@ -352,5 +353,34 @@ class ReferentController extends Controller
             'form_referent_person_link' => $form->createView(),
             'person_organizational_chart_item' => $personOrganizationalChartItem,
         ]);
+    }
+
+    /**
+     * @Route(
+     *     path="/jecoute/questionnaire/{uuid}/stats/download",
+     *     name="app_referent_survey_stats_download",
+     *     requirements={
+     *         "uuid": "%pattern_uuid%",
+     *     },
+     *     methods={"GET"},
+     * )
+     *
+     * @Entity("survey", expr="repository.findOneByUuid(uuid)")
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', survey)")
+     */
+    public function jecouteSurveyStatsDownloadAction(
+        Survey $survey,
+        StatisticsExporter $statisticsExporter
+    ): Response {
+        $dataFile = $statisticsExporter->export($survey);
+
+        $response = new Response($dataFile['content'], 200, [
+            'Content-Type' => 'text/plain',
+            'Content-Disposition' => 'attachment;filename="'.$dataFile['filename'].'"',
+        ]);
+        $response->send();
+
+        return $response;
     }
 }
