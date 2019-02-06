@@ -16,7 +16,11 @@ class IdeaPageHeader extends React.Component {
                                 ← Retour
                             </button>
                             {this.props.status !== ideaStatus.FINALIZED && this.props.canToggleReadingMode && (
-                                <Switch onChange={this.props.toggleReadingMode} label="Passer en mode lecture" />
+                                <Switch
+                                    onChange={this.props.toggleReadingMode}
+                                    checked={this.props.isReading}
+                                    label="Passer en mode lecture"
+                                />
                             )}
                             {this.props.isAuthenticated &&
                                 (this.props.isAuthor ? (
