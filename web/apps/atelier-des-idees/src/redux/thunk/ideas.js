@@ -125,8 +125,11 @@ export function fetchUserIdeas(params = {}) {
             const user = selectAuthUser(getState());
             dispatch(createRequest(FETCH_MY_IDEAS));
             return axios
-                .get(`/api/ideas-workshop/ideas?author.uuid=${user.uuid}`, {
-                    params: { ...params },
+                .get('/api/ideas-workshop/ideas', {
+                    params: {
+                        ...params,
+                        'author.uuid': user.uuid,
+                    },
                 })
                 .then(res => res.data)
                 .then(({ items, metadata }) => {
