@@ -237,6 +237,7 @@ export function removeCommentFromCurrentIdea(id, parentId = '') {
                 };
                 dispatch(updateCurrentIdeaAnswer(answerId, updatedAnswer));
             }
+            dispatch(hideModal());
         });
 }
 
