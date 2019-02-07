@@ -1,0 +1,5 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {{ ('ideas_workshop.author_category.'~object.authorCategory|lower)|trans }}
+{% endblock %}
