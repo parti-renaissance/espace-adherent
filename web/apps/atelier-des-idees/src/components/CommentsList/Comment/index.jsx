@@ -29,12 +29,10 @@ function Comment(props) {
                                 className="comments-list__comment__infos__approved__icon"
                                 src={icn_checklist}
                                 alt="Commentaire approuvé"
-                                title="Commentaire approuvé"
                                 data-tip="Commentaire approuvé"
                                 data-effect="solid"
                                 data-type="light"
                                 data-class="comments-list__comment__tip"
-                                data-place="bottom"
                             />
                         </span>
                     )}
