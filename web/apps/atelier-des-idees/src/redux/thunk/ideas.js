@@ -141,7 +141,7 @@ export function fetchUserIdeas(params = {}) {
                 })
                 .then(res => res.data)
                 .then(({ items, metadata }) => {
-                    dispatch(setMyIdeas(items, metadata));
+                    dispatch(setMyIdeas(items, metadata, params.status));
                     dispatch(createRequestSuccess(FETCH_MY_IDEAS));
                 })
                 .catch((error) => {
