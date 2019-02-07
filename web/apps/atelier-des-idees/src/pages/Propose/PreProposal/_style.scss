@@ -20,16 +20,6 @@
       color: $light-black;
       max-width: 630px;
     }
-
-    &__link {
-      background: $pastel-red;
-      border-color: $pastel-red;
-    }
-
-    &__link:hover {
-      background: $ogre-odor;
-      border-color: $pastel-red;
-    }
   }
 
   &__container:first-child {

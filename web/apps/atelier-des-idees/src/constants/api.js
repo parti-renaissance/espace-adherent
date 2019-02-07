@@ -7,7 +7,7 @@ export const ideaStatus = {
 
 export const AUTHOR_CATEGORIES = {
     ADHERENT: 'Adhérent',
-    COMMITTEE: 'Comité',
+    COMMITTEE: 'Comité local',
     QG: 'LaREM',
     ELECTED: 'Élu',
 };

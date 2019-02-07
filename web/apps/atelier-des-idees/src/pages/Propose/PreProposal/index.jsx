@@ -21,7 +21,7 @@ class PreProposal extends React.PureComponent {
 							présidentiel.
                         </p>
                         <a
-                            className="button button--primary pre-proposal__container__link"
+                            className="button button--quaternary"
                             href="https://transformer.en-marche.fr/fr"
                             target="_blank"
                         >
