@@ -84,6 +84,7 @@ class QuestionBlock extends React.Component {
             value: this.props.initialContent, // html content
             text: '', // text content
             hasError: false,
+            hasComments: this.props.hasComments,
         };
         this.onTextChange = this.onTextChange.bind(this);
         this.onSaveAnswer = this.onSaveAnswer.bind(this);
@@ -170,7 +171,7 @@ class QuestionBlock extends React.Component {
                                 mode={mode}
                             />
                         }
-                        isOpen={!!initialContent}
+                        isOpen={!!initialContent || this.state.hasComments}
                     >
                         {this.renderBody()}
                     </Collapse>
@@ -181,6 +182,7 @@ class QuestionBlock extends React.Component {
 }
 
 QuestionBlock.defaultProps = {
+    hasComments: false,
     hasError: false,
     isRequired: false,
     initialContent: '',
@@ -190,6 +192,7 @@ QuestionBlock.defaultProps = {
 };
 
 QuestionBlock.propTypes = {
+    hasComments: PropTypes.bool,
     hasError: PropTypes.bool,
     isAuthor: PropTypes.bool,
     isRequired: PropTypes.bool,

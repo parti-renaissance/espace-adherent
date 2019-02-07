@@ -264,6 +264,7 @@ class IdeaPageBase extends React.Component {
                                     errors={Object.entries(this.state.errors)
                                         .filter(([, hasError]) => hasError)
                                         .map(([key]) => key)}
+                                    fullAnswers={idea.answers}
                                 />
                                 {idea.status === ideaStatus.DRAFT && (
                                     <div className="create-idea-page__footer">
