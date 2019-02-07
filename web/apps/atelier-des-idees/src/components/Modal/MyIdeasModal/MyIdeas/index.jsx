@@ -112,15 +112,29 @@ class MyIdeas extends React.Component {
     }
 }
 
+const IDEA_TYPE = PropTypes.shape({
+    uuid: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    created_at: PropTypes.string.isRequired, // ISO UTC
+    status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
+});
+
+
 MyIdeas.propTypes = {
-    ideas: PropTypes.arrayOf(
-        PropTypes.shape({
-            uuid: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
-            created_at: PropTypes.string.isRequired, // ISO UTC
-            status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
-        })
-    ).isRequired,
+    ideas: PropTypes.shape({
+        [DRAFT]: PropTypes.shape({
+            items: PropTypes.arrayOf(IDEA_TYPE),
+            metadata: PropTypes.object,
+        }),
+        [PENDING]: PropTypes.shape({
+            items: PropTypes.arrayOf(IDEA_TYPE),
+            metadata: PropTypes.object,
+        }),
+        [FINALIZED]: PropTypes.shape({
+            items: PropTypes.arrayOf(IDEA_TYPE),
+            metadata: PropTypes.object,
+        }),
+    }).isRequired,
     onDeleteIdea: PropTypes.func.isRequired,
 };
 

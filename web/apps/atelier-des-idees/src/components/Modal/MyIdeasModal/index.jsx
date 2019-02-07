@@ -41,14 +41,11 @@ MyIdeasModal.propTypes = {
             created_at: PropTypes.string.isRequired, // ISO UTC
         })
     ).isRequired,
-    my_ideas: PropTypes.arrayOf(
-        PropTypes.shape({
-            uuid: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
-            created_at: PropTypes.string.isRequired, // ISO UTC
-            status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
-        })
-    ).isRequired,
+    my_ideas: PropTypes.shape({
+        [ideaStatus.DRAFT]: PropTypes.object,
+        [ideaStatus.PENDING]: PropTypes.object,
+        [ideaStatus.FINALIZED]: PropTypes.object,
+    }).isRequired,
     onDeleteIdea: PropTypes.func.isRequired,
 };
 
