@@ -5,9 +5,9 @@ import { selectCurrentIdea } from '../../../redux/selectors/currentIdea';
 import { voteCurrentIdea } from '../../../redux/thunk/currentIdea';
 
 const VOTES_NAMES = {
-    important: 'Essentiel',
+    important: 'Essentielle',
     feasible: 'Réalisable',
-    innovative: 'Innovant',
+    innovative: 'Innovante',
 };
 
 function formatVotes(votesCount) {
@@ -56,7 +56,7 @@ function VotingFooterIdeaPage(props) {
     const votes = formatVotes(props.votesCount);
     return (
         <div className="voting-footer-idea-page">
-            <h2 className="voting-footer-idea-page__title">Je soutiens cette proposition car elle est : </h2>
+            <h2 className="voting-footer-idea-page__title">Je soutiens cette proposition car elle est&nbsp;: </h2>
             <div className="voting-footer-idea-page__vote">
                 {votes.map(vote => <VoteButton vote={vote} onVote={props.onVote} />)}
             </div>

@@ -11,7 +11,7 @@ class Reports extends React.PureComponent {
 						Nous n’avons pas attendu l’Atelier des idées pour vous consulter
                     </h3>
                     <p className="reports__first-section__text">
-						Vous êtes déjà 160 000 à avoir répondu à nos consultations.
+						Vous êtes déjà plus de 100 000 à avoir répondu à nos consultations.
                     </p>
                     <button
                         className="reports__first-section__button button button--primary"

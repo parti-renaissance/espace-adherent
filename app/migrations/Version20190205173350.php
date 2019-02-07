@@ -15,12 +15,11 @@ final class Version20190205173350 extends AbstractMigration
     public function postUp(Schema $schema)
     {
         $position = 1;
+
         foreach ($this->connection->fetchAll('SELECT id FROM ideas_workshop_theme ORDER BY name ASC') as $themeId) {
             $this->connection->executeUpdate(
-                sprintf('UPDATE ideas_workshop_theme SET position = %d WHERE id = %d', $position, $themeId)
+                sprintf('UPDATE ideas_workshop_theme SET position = %d WHERE id = %s', $position++, $themeId['id'])
             );
-
-            ++$position;
         }
     }
 

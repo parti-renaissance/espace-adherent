@@ -19,7 +19,7 @@ function MyIdeasModal(props) {
 
     return (
         <div className="my-ideas-modal">
-            <h2 className="my-ideas-modal__title">Mes propositions</h2>
+            <h2 className="my-ideas-modal__title">Mes propositions et contributions</h2>
             <p className="my-ideas-modal__subtitle">
 				Retrouvez ici toutes vos propositions et celles auxquelles vous avez contribué.
             </p>

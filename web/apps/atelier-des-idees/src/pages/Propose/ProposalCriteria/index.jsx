@@ -18,7 +18,7 @@ class ProposalCriteria extends React.PureComponent {
                             href="/atelier-des-idees/creer-ma-proposition?anonymous_authentication_intention=/connexion"
                             className="button button--primary proposal-criteria__container__link"
                         >
-                            Je propose mon idée
+                            J'ai une proposition
                         </a>
                     </div>
                     <div className="proposal-criteria__container">
