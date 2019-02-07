@@ -5,16 +5,16 @@
     {% if object.enabled %}
         {% set action_url = path("app_admin_#{url_type}_disable", { uuid: object.uuid }) %}
 
-        <a href="{{ is_deleted ? '#' : action_url }}" class="btn btn-sm btn-default view_link {{ is_deleted ? 'disabled' : '' }}"
-           title="{{ is_deleted ? 'Action impossible, l\'objet a été supprimé' : 'Modérer' }}" rel="noopener noreferrer">
+        <a href="{{ is_deleted ? '#' : action_url }}{{ targetName is defined ? '?target_name='~targetName : ''}}" class="btn btn-sm btn-default view_link {{ is_deleted ? 'disabled' : '' }}"
+           title="{{ is_deleted ? 'Action impossible, l\'objet a été supprimé' : 'Modérer' }}" rel="noopener">
             <i class="fa fa-minus-circle" aria-hidden="true" style="color: red;"></i>
             Modérer
         </a>
     {% else %}
         {% set action_url = path("app_admin_#{url_type}_enable", { uuid: object.uuid }) %}
 
-        <a href="{{ is_deleted ? '#' : action_url }}" class="btn btn-sm btn-default view_link {{ is_deleted ? 'disabled' : '' }}"
-           title="{{ is_deleted ? 'Action impossible, l\'objet a été supprimé' : 'Réactiver' }}" rel="noopener noreferrer">
+        <a href="{{ is_deleted ? '#' : action_url }}{{ targetName is defined ? '?target_name='~targetName : ''}}" class="btn btn-sm btn-default view_link {{ is_deleted ? 'disabled' : '' }}"
+           title="{{ is_deleted ? 'Action impossible, l\'objet a été supprimé' : 'Réactiver' }}" rel="noopener">
             <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i>
             Réactiver
         </a>

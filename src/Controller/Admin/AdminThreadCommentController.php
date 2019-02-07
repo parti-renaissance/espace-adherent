@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Entity\IdeasWorkshop\RedirectToReportListRouteTrait;
 use AppBundle\Entity\IdeasWorkshop\ThreadComment;
 use AppBundle\IdeasWorkshop\Events;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -20,6 +21,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AdminThreadCommentController extends Controller
 {
+    use RedirectToReportListRouteTrait;
+
     /**
      * Moderates a thread comment.
      *
