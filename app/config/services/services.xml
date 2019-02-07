@@ -84,6 +84,7 @@
         <service id="AppBundle\Validator\PayboxSubscriptionValidator" />
         <service id="AppBundle\Validator\UniqueDonationSubscriptionValidator" />
         <service id="AppBundle\Validator\MaxFiscalYearDonationValidator" />
+        <service id="AppBundle\Validator\MaxMonthDonationValidator" />
         <service id="AppBundle\Donation\DonationFactory" />
         <service id="AppBundle\Donation\PayboxPaymentUnsubscription">
             <argument type="service" key="$mailer" id="app.mailer.transactional" />
