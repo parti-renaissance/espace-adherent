@@ -28,6 +28,7 @@
   background-color: $marine-blue;
   color: $white;
   opacity: 1;
+  border-color: $marine-blue;
 }
 
 .button--secondary {
@@ -60,6 +61,23 @@
 .button--tertiary:not([disabled]):hover {
   background-color: $black;
   color: $white;
+  opacity: 1;
+}
+
+.button--quaternary {
+  @extend .button;
+  font-family: $font-gillsans;
+  background-color: $pastel-red;
+  color: $white;
+  text-transform: uppercase;
+  border: 1px solid $pastel-red;
+  letter-spacing: 1.5px;
+}
+
+.button--quaternary:not([disabled]):hover {
+  background-color: $marine-blue;
+  color: $white;
+  border-color: $marine-blue;
   opacity: 1;
 }
 

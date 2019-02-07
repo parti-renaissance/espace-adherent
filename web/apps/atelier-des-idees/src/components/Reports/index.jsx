@@ -14,7 +14,7 @@ class Reports extends React.PureComponent {
 						Vous êtes déjà plus de 100 000 à avoir répondu à nos consultations.
                     </p>
                     <button
-                        className="reports__first-section__button button button--primary"
+                        className="button button--quaternary"
                         onClick={() => this.props.onReportBtnClicked(this.props.reports)}
                     >
 						Je lis les restitutions
