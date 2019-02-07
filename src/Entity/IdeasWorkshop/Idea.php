@@ -120,7 +120,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *             "access_control": "object.getAuthor() == user",
  *             "path": "/ideas-workshop/ideas/{id}/publish",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "controller": "AppBundle\Controller\Api\IdeaPublishController",
+ *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\IdeaPublishController",
  *             "normalization_context": {"groups": {"idea_list_read"}},
  *             "validation_groups": {"idea_publish"},
  *             "swagger_context": {

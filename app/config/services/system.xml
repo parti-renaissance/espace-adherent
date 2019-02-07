@@ -225,6 +225,7 @@
                 <argument type="constant">Symfony\Component\HttpFoundation\Response::HTTP_NOT_FOUND</argument>
                 <argument type="constant">Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN</argument>
                 <argument type="constant">Symfony\Component\HttpFoundation\Response::HTTP_METHOD_NOT_ALLOWED</argument>
+                <argument type="constant">Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST</argument>
             </argument>
         </service>
 
