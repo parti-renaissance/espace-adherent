@@ -27,8 +27,16 @@ const props = {
     ],
 };
 
-storiesOf('VotingFooter', module)
+storiesOf('IdeaCard/VotingFooter', module)
     .addParameters({ jest: ['VotingFooter'] })
     .add('default', () => (
         <VotingFooter {...props} onSelected={action('selected vote')} onToggleVotePanel={action('toggle vote panel')} />
+    ))
+    .add('user has voted', () => (
+        <VotingFooter
+            {...props}
+            onSelected={action('selected vote')}
+            onToggleVotePanel={action('toggle vote panel')}
+            hasUserVoted={true}
+        />
     ));
