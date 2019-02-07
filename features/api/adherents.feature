@@ -219,6 +219,20 @@ Feature:
     }
     """
 
+  Scenario: As a logged-in user I cannot set my nickname if it contains not authorised caracters
+    Given I add "Accept" header equal to "application/json"
+    And I am logged as "jacques.picard@en-marche.fr"
+    And I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/adherents/me/anonymize" with body:
+    """
+    {
+        "nickname": "La République En Marche !"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON node "detail" should be equal to "nickname: La syntaxe est incorrecte, le pseudo ne peut contenir que des chiffres, lettres, et les caractères _ et -"
+
   Scenario: As a logged-in user I can set my nickname but not use it
     Given I add "Accept" header equal to "application/json"
     And I am logged as "jacques.picard@en-marche.fr"
