@@ -1,6 +1,5 @@
 .proposal-criteria {
   display: flex;
-  // padding: 77px 80px 60px;
   padding: 80px 70px;
 
   &__container {
@@ -71,15 +70,12 @@
     }
 
     &__container {
-
-        &:nth-child(2) {
-            padding-right: 0px;
-        }
+      &:nth-child(2) {
+          padding-right: 0px;
+      }
 
       &__title {
           font-size: 24px;
-
-
       }
 
       &__link {

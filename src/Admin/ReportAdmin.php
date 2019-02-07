@@ -253,9 +253,9 @@ class ReportAdmin extends AbstractAdmin
                 'label' => 'Date du signalement',
                 'format' => self::DATE_FORMAT,
             ])
-            ->add('enabled', 'boolean', [
-                'label' => 'Actif',
-                'template' => 'admin/report/list_enabled.html.twig',
+            ->add('details', null, [
+                'label' => 'Détails',
+                'template' => 'admin/report/details_column.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

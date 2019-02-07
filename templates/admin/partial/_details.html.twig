@@ -1,0 +1,7 @@
+{% if object is instanceof('AppBundle\\Entity\\EntitySoftDeletedInterface') and object.getDeletedAt() is not null %}
+    <span class="badge bg-yellow">supprimé</span>
+{% endif %}
+
+{% if object.isApproved is defined %}
+    <span class="badge bg-{{ object.isApproved() ? 'green' : 'red' }}">{{ object.isApproved() ? '' : 'dés' }}approuvé</span>
+{% endif %}

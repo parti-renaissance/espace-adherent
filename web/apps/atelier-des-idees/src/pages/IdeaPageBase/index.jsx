@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import queryString from 'query-string';
 import { ideaStatus } from '../../constants/api';
 import CreateIdeaActions from './CreateIdeaActions';
 import IdeaPageHeader from './IdeaPageHeader';
@@ -41,6 +42,7 @@ class IdeaPageBase extends React.Component {
         // init state
         // get required questions and set required errors
         const answers = getInitialAnswers(props.guidelines, props.idea.answers);
+        const { mode } = queryString.parse(props.location.search);
         this.requiredQuestions = getRequiredAnswers(props.guidelines);
         this.state = {
             name: props.idea.name || '',
@@ -48,7 +50,7 @@ class IdeaPageBase extends React.Component {
             errors: {
                 name: false,
             },
-            readingMode: props.idea.status === ideaStatus.FINALIZED,
+            readingMode: props.idea.status === ideaStatus.FINALIZED || 'lecture' === mode,
             showSaveBanner: false,
         };
         this.saveBannerTimer = null;

@@ -36,6 +36,10 @@
     &__name {
       margin: 0 0 15px;
       font-size: 20px;
+
+      > a {
+        border-bottom: none;
+      }
     }
 
     &__actions {
