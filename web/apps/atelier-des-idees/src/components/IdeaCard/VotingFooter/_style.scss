@@ -65,6 +65,8 @@
 		font-size: 15px;
 		text-transform: initial;
 
+		position: relative;
+
 		&--selected {
 			border: 1px solid $france;
 			color: $france;
@@ -75,6 +77,28 @@
 		border: 1px solid $france;
 		color: $france;
 	}
+
+	&__flag {
+    font-family: $font-roboto;
+    font-size: 15px;
+    font-weight: bold;
+    color: $pale-cerulean;
+
+    position: absolute;
+    right: -18px;
+    top: 5px;
+
+    z-index: 5;
+
+    opacity: 0;
+	}
+
+  &__vote.up &__flag {
+    animation: slide-up 500ms ease-out;
+  }
+  &__vote.down &__flag {
+    animation: slide-down 500ms ease-out;
+  }
 
 	/* Responsive */
 	@media #{$desktop} {
@@ -184,6 +208,13 @@
 			}
 		}
 
+    &__flag {
+      font-size: 18px;
+      right: 0;
+      left: 0;
+      margin: auto;
+    }
+
 		&__container {
 			width: 100%;
 			align-items: center;
@@ -227,4 +258,44 @@
 			transform: rotate(90deg);
 		}
 	}
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(0);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(0px);
+  }
 }

@@ -1,7 +1,39 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import icn_20px_thumb from './../../../img/icn_20px_thumb.svg';
+
+class VoteButton extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
+    render() {
+        const { vote, onSelected, resetTimeout, index } = this.props;
+        return (
+            <button
+                key={vote.id}
+                className={classnames('button', 'voting-footer__vote', `voting-footer__vote-${index}`, {
+                    'voting-footer__vote--selected': vote.isSelected,
+                }, this.state.animate)}
+                onClick={() => {
+                    this.setState({
+                        animate: vote.isSelected ? 'down' : 'up',
+                    });
+                    onSelected(vote.id);
+                    resetTimeout();
+                }}
+            >
+                <span className="voting-footer__vote__name">{vote.name}</span>
+                <span className="voting-footer__vote__count">{vote.count}</span>
+                <span className="voting-footer__flag">
+                    {'down' === this.state.animate ? '-' : '+'}1
+                </span>
+            </button>
+        );
+    }
+}
 
 class VotingFooter extends React.Component {
     constructor(props) {
@@ -108,19 +140,12 @@ class VotingFooter extends React.Component {
                 {/* VOTES BUTTONS */}
                 {this.state.toggleVotes &&
                     this.props.votes.map((vote, index) => (
-                        <button
-                            key={vote.id}
-                            className={classnames('voting-footer__vote', `voting-footer__vote-${index}`, {
-                                'voting-footer__vote--selected': vote.isSelected,
-                            })}
-                            onClick={() => {
-                                this.props.onSelected(vote.id);
-                                this.resetTimeout();
-                            }}
-                        >
-                            <span className="voting-footer__vote__name">{vote.name}</span>
-                            <span className="voting-footer__vote__count">{vote.count}</span>
-                        </button>
+                        <VoteButton
+                            vote={vote}
+                            index={index}
+                            onSelected={this.props.onSelected}
+                            resetTimeout={this.resetTimeout}
+                        />
                     ))}
             </div>
         );
