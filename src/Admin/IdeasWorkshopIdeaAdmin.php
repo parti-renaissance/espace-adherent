@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Entity\IdeasWorkshop\AuthorCategoryEnum;
 use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
 use AppBundle\Repository\IdeaRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -12,6 +13,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class IdeasWorkshopIdeaAdmin extends AbstractAdmin
@@ -125,12 +127,38 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
             ->add('author.emailAddress', null, [
                 'label' => 'Mail du créateur',
             ])
+            ->add('authorCategory',
+                ChoiceFilter::class,
+                [
+                    'label' => 'Type',
+                ],
+                'choice',
+                [
+                    'choices' => array_combine(
+                        array_map(
+                            function ($category) {
+                                return 'ideas_workshop.author_category.'.strtolower($category);
+                            },
+                            AuthorCategoryEnum::ALL_CATEGORIES
+                        ),
+                        AuthorCategoryEnum::ALL_CATEGORIES
+                    ),
+                ]
+            )
             ->add('status', CallbackFilter::class, [
                 'label' => 'Statut',
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => array_combine(IdeaStatusEnum::ALL_STATUSES, IdeaStatusEnum::ALL_STATUSES),
+                    'choices' => array_combine(
+                        array_map(
+                            function ($status) {
+                                return 'ideas_workshop.status.'.strtolower($status);
+                            },
+                            IdeaStatusEnum::ALL_STATUSES
+                        ),
+                        IdeaStatusEnum::ALL_STATUSES
+                    ),
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$status = $value['value']) {
@@ -164,17 +192,15 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
                 'label' => 'Créateur',
                 'template' => 'admin/list/list_author.html.twig',
             ])
-            ->add('committee', null, [
-                'label' => 'Comité associé',
-            ])
             ->add('themes', null, [
                 'label' => 'Thème',
             ])
             ->add('category', null, [
                 'label' => 'Echelle du projet',
             ])
-            ->add('contributorsCount', null, [
-                'label' => 'Nombre de contributeurs',
+            ->add('authorCategory', null, [
+                'label' => 'Type',
+                'template' => 'admin/ideas_workshop/idea/list_author_category.html.twig',
             ])
             ->add('needs', null, [
                 'label' => 'Besoins',
