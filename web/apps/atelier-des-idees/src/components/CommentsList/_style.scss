@@ -216,3 +216,15 @@
     }
   }
 }
+
+@media #{$mobile} {
+  .comments-list {
+    .comments-list__contribute .comments-list__contribute__main {
+      padding: 15px;
+    }
+
+    .comments-list__empty__label {
+      padding-right: 20px;
+    }
+  }
+}
