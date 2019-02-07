@@ -35,7 +35,9 @@ class LegacyMigrationListener
             $user->clearOldPassword();
 
             $encoder = $this->encoderFactory->getEncoder($user);
-            $user->migratePassword($encoder->encodePassword($token->getCredentials(), null));
+            $user->migratePassword(
+                $encoder->encodePassword($event->getRequest()->request->get('_login_password'), null)
+            );
 
             $this->manager->persist($user);
             $this->manager->flush();
