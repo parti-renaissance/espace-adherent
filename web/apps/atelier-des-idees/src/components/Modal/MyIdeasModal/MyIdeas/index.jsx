@@ -49,7 +49,7 @@ class MyIdeas extends React.Component {
     render() {
         return (
             <div className="my-ideas">
-                {this.CAT_IDEAS_FILTER.map((cat) => {
+                {this.CAT_IDEAS_FILTER.map((cat, i) => {
                     const categoryHeader = cat.ideas.length ? (
                         <button
                             className="my-ideas__category__button"
@@ -71,7 +71,7 @@ class MyIdeas extends React.Component {
                         <p className="my-ideas__category__button__label">{cat.label.toUpperCase()}</p>
                     );
                     return (
-                        <div className="my-ideas__category">
+                        <div className="my-ideas__category" key={i}>
                             {categoryHeader}
                             {cat.ideas.length ? (
                                 cat.ideas.map(
