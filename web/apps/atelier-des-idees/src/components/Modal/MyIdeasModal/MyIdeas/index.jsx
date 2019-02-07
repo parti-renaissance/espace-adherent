@@ -73,7 +73,7 @@ class MyIdeas extends React.Component {
                                                     Créée le {new Date(idea.created_at).toLocaleDateString()}
                                                 </p>
                                                 <h4 className="my-ideas__category__idea__name">
-                                                    <Link to={`/atelier-des-idees/proposition/${idea.uuid}`}>
+                                                    <Link to={`/atelier-des-idees/proposition/${idea.uuid}?mode=lecture`}>
                                                         {idea.name}
                                                     </Link>
                                                 </h4>
