@@ -15,7 +15,10 @@ function ContributingFooter(props) {
                 </span>
             </div>
             <div className="contributing-footer__container">
-                <Link className="contributing-footer__container__link button--lowercase" to={props.link}>
+                <Link
+                    className="contributing-footer__container__link button button--primary button--lowercase"
+                    to={props.link}
+                >
                     + Je contribue
                 </Link>
             </div>
