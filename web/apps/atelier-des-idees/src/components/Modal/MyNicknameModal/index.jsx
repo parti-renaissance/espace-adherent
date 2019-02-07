@@ -41,7 +41,10 @@ class MyNicknameModal extends React.Component {
                     <React.Fragment>
                         <h2 className="my-nickname-modal__title">Mon pseudo</h2>
                         <p className="my-nickname-modal__description">
-                            Si vous souhaitez rester anonyme lors de la publication de propositions ou de commentaires sur l'Atelier des idées, vous pouvez choisir librement un pseudonyme, à condition qu’il ne porte pas atteinte à l'ordre public ou aux bonnes mœurs et qu’il soit conforme aux conditions générales d'utilisation de l’Atelier des idées.
+                            Si vous souhaitez rester anonyme lors de la publication de propositions ou de commentaires sur l'Atelier des idées, vous pouvez choisir librement un pseudonyme, à condition qu’il ne porte pas atteinte à l'ordre public ou aux bonnes mœurs et qu’il soit conforme aux <a
+                                href="/atelier-des-idees/conditions-generales-utilisation"
+                                target="_blank"
+                            >conditions générales d'utilisation</a> de l’Atelier des idées.
                         </p>
                         <form
                             className="my-nickname-modal__form"
