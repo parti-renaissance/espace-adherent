@@ -30,6 +30,11 @@
     &__text {
       font-size: 14px;
       color: $cadet-grey;
+
+      &--pending {
+        font-weight: 500;
+        color: $ufo-green;
+      }
     }
   }
 
