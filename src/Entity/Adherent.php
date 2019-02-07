@@ -83,8 +83,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(length=25, unique=true, nullable=true)
      *
-     * @Assert\Length(min=3, max=25, groups={"anonymize"})
-     * @Assert\Regex(pattern="/^[A-Za-z0-9 _-]+$/", message="adherent.nickname.invalid_syntax", groups={"anonymize"})
+     * @Assert\Length(min=3, max=25, groups={"Default", "anonymize"})
+     * @Assert\Regex(pattern="/^[a-z0-9 _-]+$/i", message="adherent.nickname.invalid_syntax", groups={"anonymize"})
+     * @Assert\Regex(pattern="/^[a-zÀ-ÿ0-9 .!_-]+$/i", message="adherent.nickname.invalid_extended_syntax")
      *
      * @JMS\Groups({"user_profile"})
      *

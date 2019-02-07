@@ -120,13 +120,17 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('gender', null, [
                     'label' => 'Genre',
                 ])
-                ->add('lastName', TextType::class, [
+                ->add('lastName', null, [
                     'label' => 'Nom',
-                    'filter_emojis' => true,
                 ])
-                ->add('firstName', TextType::class, [
+                ->add('firstName', null, [
                     'label' => 'Prénom',
-                    'filter_emojis' => true,
+                ])
+                ->add('nickname', null, [
+                    'label' => 'Pseudo',
+                ])
+                ->add('nicknameUsed', null, [
+                    'label' => 'Pseudo utilisé ?',
                 ])
                 ->add('emailAddress', null, [
                     'label' => 'Adresse e-mail',
@@ -204,13 +208,23 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('gender', GenderType::class, [
                     'label' => 'Genre',
                 ])
-                ->add('lastName', null, [
+                ->add('lastName', TextType::class, [
                     'label' => 'Nom',
+                    'filter_emojis' => true,
                     'format_identity_case' => true,
                 ])
-                ->add('firstName', null, [
+                ->add('firstName', TextType::class, [
                     'label' => 'Prénom',
+                    'filter_emojis' => true,
                     'format_identity_case' => true,
+                ])
+                ->add('nickname', TextType::class, [
+                    'label' => 'Pseudo',
+                    'filter_emojis' => true,
+                    'required' => false,
+                ])
+                ->add('nicknameUsed', null, [
+                    'label' => 'Pseudo utilisé ?',
                 ])
                 ->add('emailAddress', null, [
                     'label' => 'Adresse e-mail',
@@ -303,6 +317,10 @@ class AdherentAdmin extends AbstractAdmin
             ->add('firstName', null, [
                 'label' => 'Prénom',
                 'show_filter' => true,
+            ])
+            ->add('nickname', null, [
+                'label' => 'Pseudo',
+                'show_filter' => false,
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
@@ -534,6 +552,12 @@ class AdherentAdmin extends AbstractAdmin
             ])
             ->add('firstName', null, [
                 'label' => 'Prénom',
+            ])
+            ->add('nickname', null, [
+                'label' => 'Pseudo',
+            ])
+            ->add('nicknameUsed', null, [
+                'label' => 'Pseudo utilisé ?',
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
