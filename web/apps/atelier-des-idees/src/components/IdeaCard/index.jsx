@@ -3,6 +3,8 @@ import { ideaStatus } from '../../constants/api';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
+import ReactTooltip from 'react-tooltip'
+
 
 import VotingFooter from './VotingFooter';
 import ContributingFooter from './ContributingFooter';
@@ -64,6 +66,8 @@ class IdeaCard extends React.Component {
     render() {
         return (
             <div className="idea-card" ref={this.cardRef}>
+                <ReactTooltip />
+
                 <Link to={`/atelier-des-idees/proposition/${this.props.uuid}`} className="idea-card__link">
                     <div className="idea-card__main">
                         <div className="idea-card__content">
@@ -89,18 +93,32 @@ class IdeaCard extends React.Component {
                                 {'QG' !== this.props.author_category && (
                                     <div className="idea-card__content__infos__ideas">
                                         {0 < this.props.contributors_count &&
-                                        <span className="idea-card__content__infos__ideas__contributors">
-                                            <img
-                                                className="idea-card__content__infos__ideas__contributors__icon"
-                                                src={icn_20px_contributors}
-                                            />
-                                            <span className="idea-card__content__infos__ideas__contributors__text">
-                                                {this.props.contributors_count}
-                                            </span>
-                                        </span>
+                                          <span
+                                              className="idea-card__content__infos__ideas__contributors"
+                                              data-tip={`${this.props.contributors_count} contributeurs`}
+                                              data-effect="solid"
+                                              data-type="light"
+                                              data-class="idea-card__tip"
+                                              data-place="bottom"
+                                          >
+                                              <img
+                                                  className="idea-card__content__infos__ideas__contributors__icon"
+                                                  src={icn_20px_contributors}
+                                              />
+                                              <span className="idea-card__content__infos__ideas__contributors__text">
+                                                  {this.props.contributors_count}
+                                              </span>
+                                          </span>
                                         }
                                         {0 < this.props.comments_count &&
-                                        <span className="idea-card__content__infos__ideas__comments">
+                                        <span
+                                            className="idea-card__content__infos__ideas__comments"
+                                            data-tip={`${this.props.comments_count} commentaires`}
+                                            data-effect="solid"
+                                            data-type="light"
+                                            data-class="idea-card__tip"
+                                            data-place="bottom"
+                                        >
                                             <img
                                                 className="idea-card__content__infos__ideas__comments__icon"
                                                 src={icn_20px_comments}
@@ -126,7 +144,14 @@ class IdeaCard extends React.Component {
                         )}
                         {!!this.props.themes.length && this.props.themes[0].thumbnail && (
                             <div className="idea-card__theme">
-                                <img className="idea-card__theme__icon" src={this.props.themes[0].thumbnail} />
+                                <img
+                                    className="idea-card__theme__icon"
+                                    src={this.props.themes[0].thumbnail}
+                                    data-tip={this.props.themes[0].name}
+                                    data-effect="solid"
+                                    data-type="light"
+                                    data-class="idea-card__theme-tip"
+                                />
                             </div>
                         )}
                     </div>
