@@ -38,6 +38,10 @@
 
   .question-block__content {
     // reset main css override
+    p {
+      margin: 0;
+    }
+
     ul {
       padding-left: 40px;
       list-style-type: initial;
@@ -62,6 +66,6 @@
   }
 
   .question-block__threads {
-    margin-top: 40px;
+    margin-top: 30px;
   }
 }
