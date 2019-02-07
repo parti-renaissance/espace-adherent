@@ -17,8 +17,8 @@ class PreProposal extends React.PureComponent {
                     <div className="pre-proposal__container">
                         <h2 className="pre-proposal__container__title">Demandez le programme !</h2>
                         <p className="pre-proposal__container__text">
-							Un doute sur ce qui est déjà fait ou prévu ? Suivez la mise en œuvre du programme
-							présidentiel
+							Un doute sur ce qui est déjà fait ou prévu ?<br/>Suivez la mise en œuvre du programme
+							présidentiel.
                         </p>
                         <a
                             className="button button--primary pre-proposal__container__link"
@@ -27,6 +27,9 @@ class PreProposal extends React.PureComponent {
                         >
 							Suivre l'avancée du programme
                         </a>
+                        <p className="pre-proposal__container__text">
+              Ou <a href="{{ path('react_app_ideas_workshop_contribute') }}">contribuez aux propositions en cours d'élaboration</a> par les autres marcheurs.
+                        </p>
                     </div>
                 </div>
                 <p className="pre-proposal__footer">
