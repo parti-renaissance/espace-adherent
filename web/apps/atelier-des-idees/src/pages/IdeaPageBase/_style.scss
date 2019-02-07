@@ -24,6 +24,24 @@
     background-color: $white;
   }
 
+  .create-idea-page__status-label {
+    display: inline-flex;
+    align-items: center;
+    height: 23px;
+    margin: 0 0 15px;
+    padding: 0 8px;
+    background-color: $honeydew;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: $ufo-green;
+
+    &__icn {
+      height: 13px;
+      margin-right: 4px;
+    }
+  }
+
   .create-idea-page__footer {
     margin-top: 80px;
   }
