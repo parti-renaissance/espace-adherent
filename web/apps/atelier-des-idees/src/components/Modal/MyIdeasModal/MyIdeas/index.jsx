@@ -6,6 +6,12 @@ import { ideaStatus } from '../../../../constants/api';
 import Button from '../../../Button';
 import icn_toggle_content from './../../../../img/icn_toggle_content-blue-yonder.svg';
 
+const {
+    DRAFT,
+    PENDING,
+    FINALIZED,
+} = ideaStatus;
+
 class MyIdeas extends React.Component {
     constructor(props) {
         super(props);
@@ -14,19 +20,22 @@ class MyIdeas extends React.Component {
                 showCat: 'showDraft',
                 label: 'brouillons',
                 empty: 'brouillon',
-                ideas: this.props.ideas.filter(idea => 'DRAFT' === idea.status),
+                ideas: props.ideas[DRAFT].items,
+                metadata: props.ideas[DRAFT].metadata,
             },
             {
                 showCat: 'showPending',
                 label: 'propositions en cours d’élaboration',
                 empty: 'proposition en cours d’élaboration',
-                ideas: this.props.ideas.filter(idea => 'PENDING' === idea.status),
+                ideas: props.ideas[PENDING].items,
+                metadata: props.ideas[PENDING].metadata,
             },
             {
                 showCat: 'showFinalized',
                 label: 'propositions finalisées',
                 empty: 'proposition finalisée',
-                ideas: this.props.ideas.filter(idea => 'FINALIZED' === idea.status),
+                ideas: props.ideas[FINALIZED].items,
+                metadata: props.ideas[FINALIZED].metadata,
             },
         ];
 
