@@ -2,7 +2,7 @@ import { SET_IDEAS, ADD_IDEAS, REMOVE_IDEA, TOGGLE_VOTE_IDEA } from '../constant
 
 export const initialState = { items: [], metadata: {} };
 
-function toggleVote(idea, voteType, voteId) {
+export function toggleVote(idea, voteType, voteId) {
     let voteCount = parseInt(idea.votes_count[voteType], 10);
     let total = idea.votes_count.total;
     let myVotes = idea.votes_count.my_votes;
@@ -14,12 +14,15 @@ function toggleVote(idea, voteType, voteId) {
         // vote exists, remove it
         voteCount -= 1;
         total -= 1;
-        myVotes = Object.entries(myVotes)
-            .filter(([type]) => type !== voteType)
-            .reduce((acc, [type, id]) => {
+        const otherVotes = Object.entries(myVotes).filter(([type]) => type !== voteType);
+        if (otherVotes.length) {
+            myVotes = otherVotes.reduce((acc, [type, id]) => {
                 acc[type] = id;
                 return acc;
             }, {});
+        } else {
+            myVotes = null;
+        }
     } else {
         // vote
         voteCount += 1;

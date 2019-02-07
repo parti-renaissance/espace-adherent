@@ -11,7 +11,7 @@
   }
 
   &:hover {
-      opacity: 0.7;
+    opacity: 0.7;
   }
 }
 
@@ -88,7 +88,6 @@
 }
 
 .button--lowercase {
-  @extend .button--secondary;
   font-size: 16px;
   letter-spacing: 0;
 }
