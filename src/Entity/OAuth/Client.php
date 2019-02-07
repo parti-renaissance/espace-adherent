@@ -5,6 +5,7 @@ namespace AppBundle\Entity\OAuth;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntitySoftDeletableTrait;
+use AppBundle\Entity\EntitySoftDeletedInterface;
 use AppBundle\Entity\EntityTimestampableTrait;
 use AppBundle\Entity\WebHook\WebHook;
 use AppBundle\OAuth\Model\GrantTypeEnum;
@@ -28,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Client
+class Client implements EntitySoftDeletedInterface
 {
     use EntityIdentityTrait;
     use EntitySoftDeletableTrait;

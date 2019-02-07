@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\EnabledInterface;
 use AppBundle\Entity\EntitySoftDeletableTrait;
+use AppBundle\Entity\EntitySoftDeletedInterface;
 use AppBundle\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     groups={"write"}
  * )
  */
-abstract class BaseComment implements EnabledInterface
+abstract class BaseComment implements EnabledInterface, EntitySoftDeletedInterface
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;

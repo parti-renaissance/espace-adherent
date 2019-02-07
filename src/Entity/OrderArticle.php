@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="order_articles")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OrderArticleRepository")
  */
-class OrderArticle implements EntityContentInterface
+class OrderArticle implements EntityContentInterface, EntitySoftDeletedInterface
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
