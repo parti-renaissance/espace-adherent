@@ -55,7 +55,7 @@ class IdeaCardListContainer extends React.Component {
                                 <Button
                                     label="Plus de propositions"
                                     mode="tertiary"
-                                    onClick={this.props.onMoreClicked}
+                                    onClick={() => this.props.onMoreClicked(this.state.params)}
                                 />
                             </div>
                         )}
