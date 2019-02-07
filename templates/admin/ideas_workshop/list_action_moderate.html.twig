@@ -1,18 +1,20 @@
 {% if is_idea(object) or is_thread(object) or is_thread_comment(object) %}
     {% set url_type = is_idea(object) ? 'idea' : is_thread(object) ? 'thread' : 'thread_comment' %}
+    {% set is_deleted = object.deletedAt is defined and object.deletedAt %}
+
     {% if object.enabled %}
         {% set action_url = path("app_admin_#{url_type}_disable", { uuid: object.uuid }) %}
 
-        <a href="{{ action_url }}" class="btn btn-sm btn-default view_link"
-           title="Modérer" rel="noopener noreferrer">
+        <a href="{{ is_deleted ? '#' : action_url }}" class="btn btn-sm btn-default view_link {{ is_deleted ? 'disabled' : '' }}"
+           title="{{ is_deleted ? 'Action impossible, l\'objet a été supprimé' : 'Modérer' }}" rel="noopener noreferrer">
             <i class="fa fa-minus-circle" aria-hidden="true" style="color: red;"></i>
             Modérer
         </a>
     {% else %}
         {% set action_url = path("app_admin_#{url_type}_enable", { uuid: object.uuid }) %}
 
-        <a href="{{ action_url }}" class="btn btn-sm btn-default view_link"
-           title="Réactiver" rel="noopener noreferrer">
+        <a href="{{ is_deleted ? '#' : action_url }}" class="btn btn-sm btn-default view_link {{ is_deleted ? 'disabled' : '' }}"
+           title="{{ is_deleted ? 'Action impossible, l\'objet a été supprimé' : 'Réactiver' }}" rel="noopener noreferrer">
             <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i>
             Réactiver
         </a>

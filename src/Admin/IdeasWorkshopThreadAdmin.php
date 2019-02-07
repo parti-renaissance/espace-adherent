@@ -105,8 +105,9 @@ class IdeasWorkshopThreadAdmin extends AbstractAdmin
                 'label' => 'Répondu/commenté le',
                 'template' => 'admin/ideas_workshop/thread/list_thread_last_comment.html.twig',
             ])
-            ->add('approved', null, [
-                'label' => 'Approuvé',
+            ->add('details', null, [
+                'label' => 'Détails',
+                'template' => 'admin/ideas_workshop/details_column.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

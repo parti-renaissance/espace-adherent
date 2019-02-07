@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(fields={"slug"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Page implements EntityMediaInterface, EntityContentInterface
+class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;

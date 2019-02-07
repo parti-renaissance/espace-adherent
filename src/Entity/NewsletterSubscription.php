@@ -18,7 +18,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEn
  *
  * @Algolia\Index(autoIndex=false)
  */
-class NewsletterSubscription
+class NewsletterSubscription implements EntitySoftDeletedInterface
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
