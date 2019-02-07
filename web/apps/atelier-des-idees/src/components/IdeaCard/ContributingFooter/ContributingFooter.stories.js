@@ -7,6 +7,6 @@ const props = {
     link: 'en-marche.fr',
 };
 
-storiesOf('ContributingFooter', module)
+storiesOf('IdeaCard/ContributingFooter', module)
     .addParameters({ jest: ['ContributingFooter'] })
     .add('default', () => <ContributingFooter {...props} />);
