@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { ideaStatus } from '../../../../constants/api';
 import Button from '../../../Button';
 import icn_toggle_content from './../../../../img/icn_toggle_content-blue-yonder.svg';
+import Pagination from '../../../Pagination';
 
 const {
     DRAFT,
@@ -104,6 +105,15 @@ class MyIdeas extends React.Component {
                             ) : (
                                 <p className="my-ideas__category__empty-label">{`Vous n'avez pas de ${cat.empty}`}</p>
                             )}
+                            <Pagination
+                                nextPage={}
+                                prevpage={}
+                                goTo={}
+                                total={}
+                                currentPage={}
+                                pageSize={5}
+                                pagesToShow={5}
+                            />
                         </div>
                     );
                 })}
