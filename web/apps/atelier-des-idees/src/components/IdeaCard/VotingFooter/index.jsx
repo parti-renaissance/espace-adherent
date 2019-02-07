@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import icn_20px_thumb from './../../../img/icn_20px_thumb.svg';
+import icnThumbWhite from './../../../img/icn_20px_thumb.svg';
+import icnThumbGreen from './../../../img/icn_20px_thumb_green.svg';
 
 class VoteButton extends Component {
     constructor(props) {
@@ -120,7 +121,13 @@ class VotingFooter extends React.Component {
                     {!this.state.toggleVotes ? (
                         <div className="voting-footer__container__action-vote">
                             <button
-                                className="button--lowercase"
+                                className={classnames(
+                                    'voting-footer__action-vote__btn',
+                                    'button button--primary button--lowercase',
+                                    {
+                                        'voting-footer__action-vote__btn--active': this.props.hasUserVoted,
+                                    }
+                                )}
                                 onClick={() =>
                                     this.setState({ toggleVotes: true, toggleFadeout: true }, () => {
                                         this.props.onToggleVotePanel(true);
@@ -128,8 +135,11 @@ class VotingFooter extends React.Component {
                                     })
                                 }
                             >
-                                <img className="voting-footer__container__action-vote__icon" src={icn_20px_thumb} />
-                                Je vote
+                                <img
+                                    className="voting-footer__container__action-vote__icon"
+                                    src={this.props.hasUserVoted ? icnThumbGreen : icnThumbWhite}
+                                />
+                                {this.props.hasUserVoted ? 'J\'ai voté' : 'Je vote'}
                             </button>
                         </div>
                     ) : (
@@ -152,7 +162,12 @@ class VotingFooter extends React.Component {
     }
 }
 
+VotingFooter.defaultProps = {
+    hasUserVoted: false,
+};
+
 VotingFooter.propTypes = {
+    hasUserVoted: PropTypes.bool,
     votes: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.string.isRequired,

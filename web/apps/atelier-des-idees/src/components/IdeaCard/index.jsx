@@ -3,8 +3,7 @@ import { ideaStatus } from '../../constants/api';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import ReactTooltip from 'react-tooltip'
-
+import ReactTooltip from 'react-tooltip';
 
 import VotingFooter from './VotingFooter';
 import ContributingFooter from './ContributingFooter';
@@ -92,42 +91,42 @@ class IdeaCard extends React.Component {
                                 </span>
                                 {'QG' !== this.props.author_category && (
                                     <div className="idea-card__content__infos__ideas">
-                                        {0 < this.props.contributors_count &&
-                                          <span
-                                              className="idea-card__content__infos__ideas__contributors"
-                                              data-tip={`${this.props.contributors_count} contributeurs`}
-                                              data-effect="solid"
-                                              data-type="light"
-                                              data-class="idea-card__tip"
-                                              data-place="bottom"
-                                          >
-                                              <img
-                                                  className="idea-card__content__infos__ideas__contributors__icon"
-                                                  src={icn_20px_contributors}
-                                              />
-                                              <span className="idea-card__content__infos__ideas__contributors__text">
-                                                  {this.props.contributors_count}
-                                              </span>
-                                          </span>
-                                        }
-                                        {0 < this.props.comments_count &&
-                                        <span
-                                            className="idea-card__content__infos__ideas__comments"
-                                            data-tip={`${this.props.comments_count} commentaires`}
-                                            data-effect="solid"
-                                            data-type="light"
-                                            data-class="idea-card__tip"
-                                            data-place="bottom"
-                                        >
-                                            <img
-                                                className="idea-card__content__infos__ideas__comments__icon"
-                                                src={icn_20px_comments}
-                                            />
-                                            <span className="idea-card__content__infos__ideas__comments__text">
-                                                {this.props.comments_count}
+                                        {0 < this.props.contributors_count && (
+                                            <span
+                                                className="idea-card__content__infos__ideas__contributors"
+                                                data-tip={`${this.props.contributors_count} contributeurs`}
+                                                data-effect="solid"
+                                                data-type="light"
+                                                data-class="idea-card__tip"
+                                                data-place="bottom"
+                                            >
+                                                <img
+                                                    className="idea-card__content__infos__ideas__contributors__icon"
+                                                    src={icn_20px_contributors}
+                                                />
+                                                <span className="idea-card__content__infos__ideas__contributors__text">
+                                                    {this.props.contributors_count}
+                                                </span>
                                             </span>
-                                        </span>
-                                        }
+                                        )}
+                                        {0 < this.props.comments_count && (
+                                            <span
+                                                className="idea-card__content__infos__ideas__comments"
+                                                data-tip={`${this.props.comments_count} commentaires`}
+                                                data-effect="solid"
+                                                data-type="light"
+                                                data-class="idea-card__tip"
+                                                data-place="bottom"
+                                            >
+                                                <img
+                                                    className="idea-card__content__infos__ideas__comments__icon"
+                                                    src={icn_20px_comments}
+                                                />
+                                                <span className="idea-card__content__infos__ideas__comments__text">
+                                                    {this.props.comments_count}
+                                                </span>
+                                            </span>
+                                        )}
                                     </div>
                                 )}
                             </div>
@@ -164,6 +163,7 @@ class IdeaCard extends React.Component {
                         votes={formatVotes(this.props.votes_count)}
                         onSelected={vote => this.props.onVote(this.props.uuid, vote)}
                         onToggleVotePanel={this.toggleOutsideHover}
+                        hasUserVoted={!!this.props.votes_count.my_votes}
                     />
                 ) : (
                     <ContributingFooter

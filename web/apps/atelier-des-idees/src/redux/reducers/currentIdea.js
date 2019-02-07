@@ -6,45 +6,11 @@ import {
     TOGGLE_VOTE_CURRENT_IDEA,
     UPDATE_CURRENT_IDEA_ANSWER,
 } from '../constants/actionTypes';
+import { toggleVote } from './ideas';
 
 const initialState = { idea: {}, guidelines: [], threads: [] };
 
 // TODO: refactor reducers to store current idea data in ideas reducer (normalizr style)
-
-function toggleVote(state, voteType, voteId) {
-    let voteCount = parseInt(state.votes_count[voteType], 10);
-    let total = state.votes_count.total;
-    let myVotes = state.votes_count.my_votes;
-    if (!myVotes) {
-        // my_votes does not exist
-        myVotes = {};
-    }
-    if (Object.keys(myVotes).includes(voteType)) {
-        // vote exists, remove it
-        voteCount -= 1;
-        total -= 1;
-        myVotes = Object.entries(myVotes)
-            .filter(([type]) => type !== voteType)
-            .reduce((acc, [type, id]) => {
-                acc[type] = id;
-                return acc;
-            }, {});
-    } else {
-        // vote
-        voteCount += 1;
-        total += 1;
-        myVotes = { ...myVotes, [voteType]: voteId };
-    }
-    return {
-        ...state,
-        votes_count: {
-            ...state.votes_count,
-            [voteType]: voteCount,
-            total,
-            my_votes: myVotes,
-        },
-    };
-}
 
 function ideaReducer(state = initialState.idea, action) {
     const { type, payload } = action;
