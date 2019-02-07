@@ -9,7 +9,6 @@ import {
     fetchUserIdeas,
     fetchUserContributions,
 } from '../../redux/thunk/ideas';
-import { selectMyIdeas } from '../../redux/selectors/myIdeas';
 import { selectMyContributions } from '../../redux/selectors/myContributions';
 import MyIdeasModal from '../../components/Modal/MyIdeasModal';
 
@@ -44,7 +43,7 @@ MyIdeasContainer.propTypes = {
 };
 
 function mapStateToProps(state) {
-    const myIdeasData = selectMyIdeas(state);
+    const myIdeasData = state.myIdeas;
     const myContributionsData = selectMyContributions(state);
     return {
         data: {

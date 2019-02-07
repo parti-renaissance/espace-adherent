@@ -41,6 +41,3 @@ const ideasReducer = (state = initialState, action) => {
 };
 
 export default ideasReducer;
-
-export const getMyIdeas = state => state.items;
-export const getMyIdeasMetadata = state => state.metadata;
