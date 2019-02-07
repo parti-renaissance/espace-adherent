@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace AppBundle\Controller\Api\IdeasWorkshop;
 
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use Symfony\Component\HttpFoundation\Request;
