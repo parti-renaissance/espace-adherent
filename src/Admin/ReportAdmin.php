@@ -72,13 +72,20 @@ class ReportAdmin extends AbstractAdmin
                 'field_options' => [
                     'choices' => ReportType::LIST,
                     'choice_translation_domain' => 'reports',
+                    'multiple' => true,
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return false;
                     }
 
-                    $qb->andWhere(sprintf('%s INSTANCE OF %s', $alias, $value['value']));
+                    $instancesExpression = $qb->expr()->orX();
+
+                    foreach ($value['value'] as $value) {
+                        $instancesExpression->add(sprintf('%s INSTANCE OF %s', $alias, $value));
+                    }
+
+                    $qb->andWhere($instancesExpression);
 
                     return true;
                 },
@@ -205,11 +212,6 @@ class ReportAdmin extends AbstractAdmin
                 'label' => 'Date de signalement',
                 'field_type' => DateRangePickerType::class,
             ])
-            ->add('resolvedAt', DateRangeFilter::class, [
-                'show_filter' => true,
-                'label' => 'Date de résolution',
-                'field_type' => DateRangePickerType::class,
-            ])
         ;
     }
 
@@ -230,6 +232,7 @@ class ReportAdmin extends AbstractAdmin
             ->add('subject', null, [
                 'label' => 'Nom de l\'objet',
                 'template' => 'admin/report/list_subject.html.twig', // This is needed because the concrette class type of objects is not detected for list
+                'row_align' => 'none;word-break: break-all;',
             ])
             ->add('author', null, [
                 'label' => 'Requêteur',
@@ -250,9 +253,9 @@ class ReportAdmin extends AbstractAdmin
                 'label' => 'Date du signalement',
                 'format' => self::DATE_FORMAT,
             ])
-            ->add('resolvedAt', null, [
-                'label' => 'Date de résolution',
-                'format' => self::DATE_FORMAT,
+            ->add('enabled', 'boolean', [
+                'label' => 'Actif',
+                'template' => 'admin/report/list_enabled.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
