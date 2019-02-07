@@ -9,6 +9,8 @@ import IdeaContent from './IdeaContent';
 import VotingFooterIdeaPage from './VotingFooterIdeaPage';
 import IdeaPageSkeleton from './IdeaPageSkeleton';
 import autoSaveIcn from '../../img/icn_20px_autosave.svg';
+import greenCheckIcn from '../../img/icn_checklist.svg';
+import greenHourglassIcn from '../../img/icn_hourglass_green.svg';
 
 const TITLE_MIN_LENGTH = 15;
 const ANSWER_MIN_LENGTH = 15;
@@ -226,6 +228,19 @@ class IdeaPageBase extends React.Component {
                             <IdeaPageSkeleton />
                         ) : (
                             <React.Fragment>
+                                {idea.status !== ideaStatus.DRAFT && (
+                                    <p className="create-idea-page__status-label">
+                                        <img
+                                            className="create-idea-page__status-label__icn"
+                                            src={idea.status === ideaStatus.PENDING ? greenHourglassIcn : greenCheckIcn}
+                                        />
+                                        <span>
+                                            {idea.status === ideaStatus.PENDING
+                                                ? 'Proposition en cours'
+                                                : 'Proposition finalisée'}
+                                        </span>
+                                    </p>
+                                )}
                                 <IdeaPageTitle
                                     authorName={idea.authorName}
                                     publishedAt={idea.published_at}
@@ -249,6 +264,7 @@ class IdeaPageBase extends React.Component {
                                     errors={Object.entries(this.state.errors)
                                         .filter(([, hasError]) => hasError)
                                         .map(([key]) => key)}
+                                    fullAnswers={idea.answers}
                                 />
                                 {idea.status === ideaStatus.DRAFT && (
                                     <div className="create-idea-page__footer">
