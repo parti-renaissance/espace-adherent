@@ -8,6 +8,7 @@ import { setMyIdeas, removeMyIdea } from '../actions/myIdeas';
 import { setMyContributions } from '../actions/myContributions';
 import { selectAuthUser, selectIsAuthenticated } from '../selectors/auth';
 import { MY_IDEAS_MODAL } from '../../constants/modalTypes';
+import { ideaStatus } from '../../constants/api';
 import { hideModal, showModal } from '../actions/modal';
 import { setThreads, setThreadComments } from '../actions/threads';
 import { redirectToSignin } from '../../helpers/navigation';
@@ -115,10 +116,17 @@ export function fetchIdea(id) {
 }
 
 /**
- * Fetch ideas of current auth user
+ * Fetch ideas of current auth user. Results are namespaced by reducer
+ * according to the `status` key in the params argument.
  * @param {object} params Query params
  */
+const DEFAULT_PARAMS = {
+    page_size: 5,
+    page: 1,
+    status: ideaStatus.FINALIZED,
+};
 export function fetchUserIdeas(params = {}) {
+    params = { ...DEFAULT_PARAMS, ...params };
     return (dispatch, getState, axios) => {
         const isAuthenticated = selectIsAuthenticated(getState());
         if (isAuthenticated) {
