@@ -1,8 +1,7 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
-{% import 'referent/organizational_chart_macros.html.twig' as oc %}
+{% import 'admin/organizational_chart/chart_macros.html.twig' as oc %}
 
 {% block field %}
-    <link rel="stylesheet" href="{{ asset('css/organizational_chart.css') }}">
     {{ oc.orga_chart_row(admin.OCItems, object) }}
 {% endblock %}

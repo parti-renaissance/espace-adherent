@@ -1,11 +1,6 @@
 {% extends '@SonataAdmin/CRUD/base_list.html.twig' %}
 
-{% import 'referent/organizational_chart_macros.html.twig' as oc %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/organizational_chart.css') }}">
-{% endblock %}
+{% import 'admin/organizational_chart/chart_macros.html.twig' as oc %}
 
 {% block table_body %}
     <tbody>
