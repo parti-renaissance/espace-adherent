@@ -45,7 +45,7 @@ class IdeaRepository extends ServiceEntityRepository
         );
     }
 
-    public function countContributors(Idea $idea): int
+    public function countContributors(Idea $idea, Adherent $adherent = null): array
     {
         $sqlIdeaContributors = <<<'SQL'
         (
@@ -71,7 +71,12 @@ SQL;
         $stmt->bindValue(':idea', $idea->getId());
         $stmt->execute();
 
-        return \count($stmt->fetchAll(\PDO::FETCH_COLUMN));
+        $result = ['count' => \count($ids = $stmt->fetchAll(\PDO::FETCH_COLUMN))];
+        if ($adherent) {
+            $result['contributed_by_me'] = \in_array($adherent->getId(), array_values($ids));
+        }
+
+        return $result;
     }
 
     private function getThreadContributors(Idea $idea): array
