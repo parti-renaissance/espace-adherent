@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 // TODO: uncomment when actually using it
 // import ui from './ui';
 import auth from './auth';
+import session from './session';
 import loading from './loading';
 import modal from './modal';
 import ideas from './ideas';
@@ -16,6 +17,7 @@ import staticData from './static';
 const rootReducer = combineReducers({
     // ui,
     auth,
+    session,
     loading,
     modal,
     ideas,

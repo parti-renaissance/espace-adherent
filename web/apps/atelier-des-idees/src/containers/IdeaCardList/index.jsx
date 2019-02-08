@@ -12,6 +12,7 @@ import Button from '../../components/Button';
 import IdeaCardList from '../../components/IdeaCardList';
 import IdeaFilters from '../../components/IdeaFilters';
 import noIdeaImg from '../../img/no-idea-result.svg';
+import { selectVisitedIdeas } from '../../redux/selectors/session';
 
 class IdeaCardListContainer extends React.Component {
     constructor(props) {
@@ -49,6 +50,7 @@ class IdeaCardListContainer extends React.Component {
                             isLoading={this.props.isLoading}
                             mode={this.props.mode}
                             onVoteIdea={this.props.onVoteIdea}
+                            readIdeas={this.props.visitedIdeas}
                         />
                         {this.props.withPaging && (
                             <div className="idea-card-list__paging">
@@ -90,6 +92,7 @@ IdeaCardListContainer.propTypes = {
 function mapStateToProps(state, ownProps) {
     const { isFetching } = selectLoadingState(state, 'FETCH_IDEAS', ownProps.status);
     const ideas = selectIdeasWithStatus(state, ownProps.status);
+    const visitedIdeas = selectVisitedIdeas(state);
     /* paging data */
     const { current_page, last_page } = selectIdeasMetadata(state);
     // show paging if props says so and is not loading and is not at the end of the list
@@ -106,6 +109,7 @@ function mapStateToProps(state, ownProps) {
             categories: categories.map(category => ({ value: category.name, label: category.name })),
         },
         defaultFilterValues: queryString.parse(ownProps.location.search),
+        visitedIdeas,
     };
 }
 

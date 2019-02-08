@@ -4,7 +4,7 @@ import Tabs from '../Tabs/index';
 import LatestIdeasPane from './LatestIdeasPane';
 
 function LatestIdeas(props) {
-    const { finalized = {}, pending = {} } = props.ideas;
+    const { finalized = {}, pending = {}, read = [] } = props.ideas;
     const panes = [
         {
             title: 'Propositions en cours d\'élaboration',
@@ -13,6 +13,7 @@ function LatestIdeas(props) {
                     link="/atelier-des-idees/contribuer"
                     ideas={pending.items}
                     isLoading={pending.isLoading}
+                    readIdeas={read}
                 />
             ),
         },
@@ -24,6 +25,7 @@ function LatestIdeas(props) {
                     ideas={finalized.items}
                     isLoading={finalized.isLoading}
                     onVoteIdea={props.onVoteIdea}
+                    readIdeas={read}
                 />
             ),
         },
@@ -53,6 +55,7 @@ LatestIdeas.propTypes = {
             isLoading: PropTypes.bool,
             items: PropTypes.array,
         }),
+        read: PropTypes.arrayOf(PropTypes.string), // array of uuids
     }),
     onVoteIdea: PropTypes.func,
 };

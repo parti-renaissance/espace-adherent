@@ -9,13 +9,11 @@ const LatestIdeasPane = props => (
             ideas={props.ideas}
             isLoading={props.isLoading}
             onVoteIdea={props.onVoteIdea}
+            readIdeas={props.readIdeas}
         />
         <div className="latest-ideas__pane__footer">
-            <Link
-                to={props.link}
-                className="button button--tertiary latest-ideas__pane__footer__btn"
-            >
-				Voir toutes les propositions
+            <Link to={props.link} className="button button--tertiary latest-ideas__pane__footer__btn">
+                Voir toutes les propositions
             </Link>
         </div>
     </div>
@@ -23,6 +21,7 @@ const LatestIdeasPane = props => (
 
 LatestIdeasPane.defaultProps = {
     ideas: [],
+    readIdeas: [],
     isLoading: false,
 };
 
@@ -31,6 +30,7 @@ LatestIdeasPane.propTypes = {
     isLoading: PropTypes.bool,
     link: PropTypes.string.isRequired,
     onVoteIdea: PropTypes.func,
+    readIdeas: PropTypes.arrayOf(PropTypes.string), // array of uuids
 };
 
 export default LatestIdeasPane;
