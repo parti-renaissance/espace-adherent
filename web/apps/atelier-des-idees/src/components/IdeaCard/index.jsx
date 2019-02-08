@@ -163,7 +163,7 @@ class IdeaCard extends React.Component {
                         votes={formatVotes(this.props.votes_count)}
                         onSelected={vote => this.props.onVote(this.props.uuid, vote)}
                         onToggleVotePanel={this.toggleOutsideHover}
-                        hasUserVoted={!!this.props.votes_count.my_votes}
+                        hasUserVoted={this.props.votes_count.my_votes && !!this.props.votes_count.my_votes.length}
                     />
                 ) : (
                     <ContributingFooter
