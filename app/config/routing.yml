@@ -51,7 +51,7 @@ app_api:
         _format: 'json'
 
 api_login_check:
-    path: "%api_path_prefix%/login_check"
+    path: "/login_check"
 
 #
 # API Legislatives

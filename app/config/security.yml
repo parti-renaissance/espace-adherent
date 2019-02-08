@@ -314,28 +314,43 @@ security:
                 path: logout
                 target: homepage
 
-        main:
+        api:
             context: main_context
-            stateless: false
+            pattern: ^/api
+            anonymous: true
+            provider: users_db
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
+        main:
+            user_checker: AppBundle\Security\UserChecker
+            context: main_context
             # No pattern means every path is behind this firewall
             provider: users_db
             switch_user:
                 provider: users_db
             anonymous:
                 secret: '%env(SECRET)%'
+            json_login:
+                check_path: /login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            form_login:
+                login_path: app_user_login
+                check_path: app_user_login_check
+                default_target_path: app_search_events
+                use_referer: true
+                username_parameter: _login_email
+                password_parameter: _login_password
+                csrf_parameter: _login_csrf
+                csrf_token_id: authenticate
+                csrf_token_generator: security.csrf.token_manager
+                success_handler: AppBundle\Security\Http\AnonymousFollowerAuthenticationSuccessHandler
+                failure_handler: AppBundle\Security\Http\AuthenticationFailureHandler
             logout:
                 path: logout
                 target: homepage
-            user_checker: AppBundle\Security\UserChecker
-            json_login:
-                check_path: /api/login_check
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
-            guard:
-                authenticators:
-                    - AppBundle\Security\LoginFormAuthenticator
-                    - lexik_jwt_authentication.jwt_token_authenticator
-                entry_point: AppBundle\Security\LoginFormAuthenticator
 
     access_control:
         - { path: '^/parametres', roles: [ROLE_USER] }

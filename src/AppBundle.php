@@ -2,7 +2,6 @@
 
 namespace AppBundle;
 
-use AppBundle\DependencyInjection\Compiler\SecurityPass;
 use AppBundle\DependencyInjection\Compiler\StatisticsCalculatorPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -15,7 +14,6 @@ class AppBundle extends Bundle
         $container
             ->addCompilerPass(new StatisticsCalculatorPass())
             ->addCompilerPass(new MessengerPass())
-            ->addCompilerPass(new SecurityPass())
         ;
     }
 }

@@ -203,9 +203,8 @@
         <prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter"/>
         <service id="AppBundle\Security\Http\AuthenticationFailureHandler"/>
         <service id="AppBundle\Security\Http\Session\AnonymousFollowerSession" public="true" />
-        <service id="AppBundle\Security\LoginFormAuthenticator">
-            <argument key="$apiPathPrefix" type="string">%api_path_prefix%</argument>
-        </service>
+        <service id="AppBundle\Security\Http\AnonymousFollowerAuthenticationSuccessHandler"/>
+        <service id="AppBundle\Security\UserCookieAuthenticator"/>
         <service id="AppBundle\Security\UserChecker"/>
         <service id="app.security.user_provider" class="AppBundle\Security\UserProvider">
             <argument key="$classOrAlias" type="string">AppBundle\Entity\Adherent</argument>
