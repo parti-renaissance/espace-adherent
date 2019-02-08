@@ -5,7 +5,7 @@
   color: $pale-cerulean;
 
   position: absolute;
-  right: 12px;
+  right: 8px;
 
   z-index: 5;
 
@@ -22,7 +22,7 @@
 @media #{$mobile} {
   .vote-button-flag {
     font-size: 18px;
-    right: 9px;
+    right: 8px;
   }
 }
 
