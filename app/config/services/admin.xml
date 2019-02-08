@@ -31,14 +31,6 @@
             </call>
         </service>
 
-        <service id="app.admin.article_category" class="AppBundle\Admin\ArticleCategoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Contenu » Catégories" group="Contenu" />
-
-            <argument />
-            <argument>AppBundle\Entity\ArticleCategory</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.article" class="AppBundle\Admin\ArticleAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Contenu » Actualités" group="Contenu" />
 
@@ -52,22 +44,6 @@
 
             <argument />
             <argument>AppBundle\Entity\Page</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.facebook_video" class="AppBundle\Admin\FacebookVideoAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Contenu » Vidéos Facebook" group="Contenu" />
-
-            <argument />
-            <argument>AppBundle\Entity\FacebookVideo</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.custom_search_result" class="AppBundle\Admin\CustomSearchResultAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Contenu » Résultats Algolia" group="Contenu" />
-
-            <argument />
-            <argument>AppBundle\Entity\CustomSearchResult</argument>
             <argument />
         </service>
 
@@ -87,34 +63,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.social_share_category" class="AppBundle\Admin\SocialShareCategoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Je Partage » Catégories" group="Contenu" />
-
-            <argument />
-            <argument>AppBundle\Entity\SocialShareCategory</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.social_share" class="AppBundle\Admin\SocialShareAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Je Partage » Contenus" group="Contenu" />
-
-            <argument />
-            <argument>AppBundle\Entity\SocialShare</argument>
-            <argument />
-
-            <call method="setStorage">
-                <argument type="service" id="app.storage" />
-            </call>
-
-            <call method="setGlide">
-                <argument type="service" id="app.glide" />
-            </call>
-
-            <call method="setAssetRuntime">
-                <argument type="service" id="AppBundle\Twig\AssetRuntime" />
-            </call>
-        </service>
-
         <service id="app.admin.proposal_theme" class="AppBundle\Admin\ProposalThemeAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Programme » Thèmes" group="Contenu" />
 
@@ -128,22 +76,6 @@
 
             <argument />
             <argument>AppBundle\Entity\Proposal</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.order_section" class="AppBundle\Admin\OrderSectionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Explications » Sections" group="Contenu" />
-
-            <argument />
-            <argument>AppBundle\Entity\OrderSection</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.order_article" class="AppBundle\Admin\OrderArticleAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Explications » Articles" group="Contenu" />
-
-            <argument />
-            <argument>AppBundle\Entity\OrderArticle</argument>
             <argument />
         </service>
 
@@ -163,14 +95,6 @@
             <call method="setGlide">
                 <argument type="service" id="app.glide" />
             </call>
-        </service>
-
-        <service id="app.admin.facebook_profile" class="AppBundle\Admin\FacebookProfileAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Profils Facebook" group="Contenu" />
-
-            <argument />
-            <argument>AppBundle\Entity\FacebookProfile</argument>
-            <argument />
         </service>
 
         <service id="app.admin.redirection" class="AppBundle\Admin\RedirectionAdmin">
@@ -537,44 +461,6 @@
 
         <!--
         ######################################################
-        # Interactives
-        ######################################################
-         -->
-
-        <service id="app.admin.ton_macron_choice" class="AppBundle\Admin\TonMacronChoiceAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Ton Macron » Choix" group="Interactifs" />
-
-            <argument />
-            <argument>AppBundle\Entity\TonMacronChoice</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.ton_macron_friend_invitation" class="AppBundle\Admin\TonMacronFriendInvitationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Ton Macron » Invitations" group="Interactifs" />
-
-            <argument />
-            <argument>AppBundle\Entity\TonMacronFriendInvitation</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.purchasing_power_choice" class="AppBundle\Admin\PurchasingPowerChoiceAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Ton pouvoir d'achat » Choix" group="Interactifs" />
-
-            <argument />
-            <argument>AppBundle\Entity\PurchasingPowerChoice</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.purchasing_power_invitation" class="AppBundle\Admin\PurchasingPowerInvitationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Ton pouvoir d'achat » Invitations" group="Interactifs" />
-
-            <argument />
-            <argument>AppBundle\Entity\PurchasingPowerInvitation</argument>
-            <argument />
-        </service>
-
-        <!--
-        ######################################################
         # Timeline
         ######################################################
          -->
@@ -865,6 +751,121 @@
             <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_idea" />
             <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_thread" />
             <tag name="sonata.admin.extension" target="app.admin.report" />
+        </service>
+
+        <!--
+       ######################################################
+       # Archives
+       ######################################################
+        -->
+
+        <service id="app.admin.ton_macron_choice" class="AppBundle\Admin\TonMacronChoiceAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Ton Macron » Choix" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\TonMacronChoice</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.ton_macron_friend_invitation" class="AppBundle\Admin\TonMacronFriendInvitationAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Ton Macron » Invitations" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\TonMacronFriendInvitation</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.purchasing_power_choice" class="AppBundle\Admin\PurchasingPowerChoiceAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Ton pouvoir d'achat » Choix" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\PurchasingPowerChoice</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.purchasing_power_invitation" class="AppBundle\Admin\PurchasingPowerInvitationAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Ton pouvoir d'achat » Invitations" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\PurchasingPowerInvitation</argument>
+            <argument />
+        </service>
+
+
+        <service id="app.admin.article_category" class="AppBundle\Admin\ArticleCategoryAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Contenu » Catégories" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\ArticleCategory</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.custom_search_result" class="AppBundle\Admin\CustomSearchResultAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Contenu » Résultats Algolia" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\CustomSearchResult</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.facebook_video" class="AppBundle\Admin\FacebookVideoAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Contenu » Vidéos Facebook" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\FacebookVideo</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.social_share_category" class="AppBundle\Admin\SocialShareCategoryAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Je Partage » Catégories" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\SocialShareCategory</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.social_share" class="AppBundle\Admin\SocialShareAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Je Partage » Contenus" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\SocialShare</argument>
+            <argument />
+
+            <call method="setStorage">
+                <argument type="service" id="app.storage" />
+            </call>
+
+            <call method="setGlide">
+                <argument type="service" id="app.glide" />
+            </call>
+
+            <call method="setAssetRuntime">
+                <argument type="service" id="AppBundle\Twig\AssetRuntime" />
+            </call>
+        </service>
+
+        <service id="app.admin.order_section" class="AppBundle\Admin\OrderSectionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Explications » Sections" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\OrderSection</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.order_article" class="AppBundle\Admin\OrderArticleAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Explications » Articles" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\OrderArticle</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.facebook_profile" class="AppBundle\Admin\FacebookProfileAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Profils Facebook" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\FacebookProfile</argument>
+            <argument />
         </service>
 
         <!--
