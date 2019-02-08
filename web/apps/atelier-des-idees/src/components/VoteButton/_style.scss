@@ -1,0 +1,69 @@
+.vote-button-flag {
+  font-family: $font-roboto;
+  font-size: 15px;
+  font-weight: bold;
+  color: $pale-cerulean;
+
+  position: absolute;
+  right: 12px;
+
+  z-index: 5;
+
+  opacity: 0;
+
+  .up > & {
+    animation: slide-up 500ms ease-out;
+  }
+  .down > & {
+    animation: slide-down 500ms ease-out;
+  }
+}
+
+@media #{$mobile} {
+  .vote-button-flag {
+    font-size: 18px;
+    right: 9px;
+  }
+}
+
+
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+}

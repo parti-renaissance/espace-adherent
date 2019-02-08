@@ -74,6 +74,7 @@ adherent.contact.max_length: Le message doit contenir moins de {{ limit }} carac
 adherent.unregistration.reasons: Afin de confirmer la suppression de votre compte, veuillez sélectionner la raison pour laquelle vous quittez le mouvement.
 
 adherent.nickname.invalid_syntax: La syntaxe est incorrecte, le pseudo ne peut contenir que des chiffres, lettres, et les caractères _ et -
+adherent.nickname.invalid_extended_syntax: La syntaxe est incorrecte, le pseudo ne peut contenir que des chiffres, lettres (contenant des accents aussi), et les caractères _, -, ! et .
 
 #
 # Committee

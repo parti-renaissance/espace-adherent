@@ -4,6 +4,7 @@ import LatestIdeas from '../../components/LatestIdeas';
 import { voteIdea } from '../../redux/thunk/ideas';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectIdeasWithStatus } from '../../redux/selectors/ideas';
+import { selectVisitedIdeas } from '../../redux/selectors/session';
 
 /**
  * Sort ideas by creation date DESC
@@ -27,6 +28,7 @@ const mapStateToProps = (state) => {
     // get ideas
     const finalizedIdeas = selectIdeasWithStatus(state, ideaStatus.FINALIZED);
     const pendingIdeas = selectIdeasWithStatus(state, ideaStatus.PENDING);
+    const visitedIdeas = selectVisitedIdeas(state);
     return {
         ideas: {
             finalized: {
@@ -37,6 +39,7 @@ const mapStateToProps = (state) => {
                 isLoading: isLoadingPendingIdeas,
                 items: sortIdeasByDate(pendingIdeas),
             },
+            read: visitedIdeas,
         },
     };
 };

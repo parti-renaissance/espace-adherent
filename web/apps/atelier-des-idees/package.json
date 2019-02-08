@@ -25,6 +25,7 @@
     "react-select": "^2.1.2",
     "react-slick": "^0.23.2",
     "react-test-renderer": "^16.6.3",
+    "react-tooltip": "^3.9.2",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "slick-carousel": "^1.8.1"

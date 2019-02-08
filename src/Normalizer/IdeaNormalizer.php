@@ -28,11 +28,6 @@ class IdeaNormalizer implements NormalizerInterface
         $data = $this->normalizer->normalize($object, $format, $context);
 
         if (\in_array('idea_list_read', $context['groups']) || \in_array('idea_read', $context['groups'])) {
-            if (\in_array('idea_list_read', $context['groups'])) {
-                $data['contributors_count'] = $this->ideaRepository->countContributors($object);
-                $data['comments_count'] = $this->ideaRepository->countAllComments($object);
-            }
-
             $data['votes_count'] = array_merge(
                 $this->ideaRepository->countVotesByType($object),
                 ['total' => $data['votes_count']]
@@ -40,6 +35,17 @@ class IdeaNormalizer implements NormalizerInterface
 
             if (\is_object($loggedUser = $this->tokenStorage->getToken()->getUser())) {
                 $data['votes_count']['my_votes'] = $this->ideaRepository->getAdherentVotesForIdea($object, $loggedUser);
+            } else {
+                $loggedUser = null;
+            }
+
+            if (\in_array('idea_list_read', $context['groups'])) {
+                $countContributors = $this->ideaRepository->countContributors($object, $loggedUser);
+                $data['contributors_count'] = $countContributors['count'];
+                if ($loggedUser) {
+                    $data['contributed_by_me'] = $countContributors['contributed_by_me'];
+                }
+                $data['comments_count'] = $this->ideaRepository->countAllComments($object);
             }
         }
 

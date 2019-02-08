@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import ReactTooltip from 'react-tooltip'
 import Dropdown from '../../Dropdown';
 import { getUserDisplayName } from '../../../helpers/entities';
 import icn_checklist from './../../../img/icn_checklist-white.svg';
@@ -12,6 +13,7 @@ function Comment(props) {
                 'comments-list__comment--approved': props.approved,
             })}
         >
+            <ReactTooltip />
             <div className="comments-list__comment__infos">
                 <div className="comments-list__comment__infos--main">
                     <span className="comments-list__comment__infos__author">{getUserDisplayName(props.author)}</span>
@@ -27,7 +29,10 @@ function Comment(props) {
                                 className="comments-list__comment__infos__approved__icon"
                                 src={icn_checklist}
                                 alt="Commentaire approuvé"
-                                title="Commentaire approuvé"
+                                data-tip="Commentaire approuvé"
+                                data-effect="solid"
+                                data-type="light"
+                                data-class="comments-list__comment__tip"
                             />
                         </span>
                     )}

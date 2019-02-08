@@ -40,28 +40,6 @@
       color: $france;
     }
   }
-
-  &__flag {
-    font-family: $font-roboto;
-    font-size: 15px;
-    font-weight: bold;
-    color: $pale-cerulean;
-
-    position: absolute;
-    right: -18px;
-    top: 5px;
-
-    z-index: 5;
-
-    opacity: 0;
-  }
-
-  &__vote__button.up &__flag {
-    animation: slide-up 500ms ease-out;
-  }
-  &__vote__button.down &__flag {
-    animation: slide-down 500ms ease-out;
-  }
 }
 
 @media #{$mobile} {
@@ -83,52 +61,6 @@
         }
       }
 
-      &__flag {
-        font-size: 18px;
-        right: 0;
-        left: 0;
-        margin: auto;
-      }
     }
 
-}
-
-@keyframes slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(0);
-  }
-
-  25% {
-    opacity: 1;
-  }
-
-  70% {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes slide-down {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-
-  25% {
-    opacity: 1;
-  }
-
-  70% {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-    transform: translateY(0px);
-  }
 }

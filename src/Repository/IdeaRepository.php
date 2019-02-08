@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\IdeasWorkshop\Answer;
+use AppBundle\Entity\IdeasWorkshop\AuthorCategoryEnum;
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
 use AppBundle\Entity\IdeasWorkshop\Thread;
@@ -44,7 +45,7 @@ class IdeaRepository extends ServiceEntityRepository
         );
     }
 
-    public function countContributors(Idea $idea): int
+    public function countContributors(Idea $idea, Adherent $adherent = null): array
     {
         $sqlIdeaContributors = <<<'SQL'
         (
@@ -70,7 +71,12 @@ SQL;
         $stmt->bindValue(':idea', $idea->getId());
         $stmt->execute();
 
-        return \count($stmt->fetchAll(\PDO::FETCH_COLUMN));
+        $result = ['count' => \count($ids = $stmt->fetchAll(\PDO::FETCH_COLUMN))];
+        if ($adherent) {
+            $result['contributed_by_me'] = \in_array($adherent->getId(), array_values($ids));
+        }
+
+        return $result;
     }
 
     private function getThreadContributors(Idea $idea): array
@@ -233,6 +239,44 @@ SQL;
                     ->setParameter('now', new \DateTime())
                 ;
                 break;
+        }
+    }
+
+    public function updateAuthorCategoryForIdeasOf(Adherent $adherent): void
+    {
+        $qb = $this->createQueryBuilder('idea');
+        $categoryType = null;
+
+        if ($adherent->isLaREM()) {
+            $categoryType = AuthorCategoryEnum::QG;
+        } elseif ($adherent->isElected()) {
+            $categoryType = AuthorCategoryEnum::ELECTED;
+        }
+
+        if ($categoryType) {
+            $qb->update()
+                ->set('idea.authorCategory', $qb->expr()->literal($categoryType))
+                ->where('idea.author = :adherent')
+                ->setParameter('adherent', $adherent)
+                ->getQuery()
+                ->execute()
+            ;
+        } else {
+            $qb->update()
+                ->set('idea.authorCategory', $qb->expr()->literal(AuthorCategoryEnum::COMMITTEE))
+                ->where('idea.author = :adherent AND idea.committee IS NOT NULL')
+                ->setParameter('adherent', $adherent)
+                ->getQuery()
+                ->execute()
+            ;
+
+            $qb->update()
+                ->set('idea.authorCategory', $qb->expr()->literal(AuthorCategoryEnum::ADHERENT))
+                ->where('idea.author = :adherent AND idea.committee IS NULL')
+                ->setParameter('adherent', $adherent)
+                ->getQuery()
+                ->execute()
+            ;
         }
     }
 }

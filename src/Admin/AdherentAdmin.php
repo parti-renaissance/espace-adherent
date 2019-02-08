@@ -19,6 +19,7 @@ use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\Mandates;
 use AppBundle\Membership\UserEvent;
 use AppBundle\Membership\UserEvents;
+use AppBundle\Repository\IdeaRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
@@ -55,6 +56,7 @@ class AdherentAdmin extends AbstractAdmin
     ];
 
     private $dispatcher;
+    private $ideaRepository;
     private $emailSubscriptionHistoryManager;
 
     /**
@@ -63,17 +65,20 @@ class AdherentAdmin extends AbstractAdmin
      * @var Adherent
      */
     private $beforeUpdate;
+    private $isLaREMBeforeUpdate;
 
     public function __construct(
         $code,
         $class,
         $baseControllerName,
         EventDispatcherInterface $dispatcher,
+        IdeaRepository $ideaRepository,
         EmailSubscriptionHistoryHandler $emailSubscriptionHistoryManager
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->dispatcher = $dispatcher;
+        $this->ideaRepository = $ideaRepository;
         $this->emailSubscriptionHistoryManager = $emailSubscriptionHistoryManager;
     }
 
@@ -120,13 +125,17 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('gender', null, [
                     'label' => 'Genre',
                 ])
-                ->add('lastName', TextType::class, [
+                ->add('lastName', null, [
                     'label' => 'Nom',
-                    'filter_emojis' => true,
                 ])
-                ->add('firstName', TextType::class, [
+                ->add('firstName', null, [
                     'label' => 'Prénom',
-                    'filter_emojis' => true,
+                ])
+                ->add('nickname', null, [
+                    'label' => 'Pseudo',
+                ])
+                ->add('nicknameUsed', null, [
+                    'label' => 'Pseudo utilisé ?',
                 ])
                 ->add('emailAddress', null, [
                     'label' => 'Adresse e-mail',
@@ -204,13 +213,23 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('gender', GenderType::class, [
                     'label' => 'Genre',
                 ])
-                ->add('lastName', null, [
+                ->add('lastName', TextType::class, [
                     'label' => 'Nom',
+                    'filter_emojis' => true,
                     'format_identity_case' => true,
                 ])
-                ->add('firstName', null, [
+                ->add('firstName', TextType::class, [
                     'label' => 'Prénom',
+                    'filter_emojis' => true,
                     'format_identity_case' => true,
+                ])
+                ->add('nickname', TextType::class, [
+                    'label' => 'Pseudo',
+                    'filter_emojis' => true,
+                    'required' => false,
+                ])
+                ->add('nicknameUsed', null, [
+                    'label' => 'Pseudo utilisé ?',
                 ])
                 ->add('emailAddress', null, [
                     'label' => 'Adresse e-mail',
@@ -303,6 +322,10 @@ class AdherentAdmin extends AbstractAdmin
             ->add('firstName', null, [
                 'label' => 'Prénom',
                 'show_filter' => true,
+            ])
+            ->add('nickname', null, [
+                'label' => 'Pseudo',
+                'show_filter' => false,
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
@@ -503,6 +526,11 @@ class AdherentAdmin extends AbstractAdmin
         if (null === $this->beforeUpdate) {
             $this->beforeUpdate = clone $subject;
         }
+
+        if (null === $this->isLaREMBeforeUpdate) {
+            $this->isLaREMBeforeUpdate = $subject->isLaREM();
+        }
+
         parent::setSubject($subject);
     }
 
@@ -519,6 +547,12 @@ class AdherentAdmin extends AbstractAdmin
         // No need to handle referent tags update as they are not update-able from admin
         $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object, $subscriptionTypes = $this->beforeUpdate->getSubscriptionTypes());
 
+        // Update author category for adherent's ideas
+        if ($object->isElected() != $this->beforeUpdate->isElected()
+            || $object->isLaREM() != $this->isLaREMBeforeUpdate) {
+            $this->ideaRepository->updateAuthorCategoryForIdeasOf($object);
+        }
+
         $this->dispatcher->dispatch(UserEvents::USER_UPDATE_SUBSCRIPTIONS, new UserEvent($object, null, null, $subscriptionTypes));
         $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($object));
     }
@@ -534,6 +568,12 @@ class AdherentAdmin extends AbstractAdmin
             ])
             ->add('firstName', null, [
                 'label' => 'Prénom',
+            ])
+            ->add('nickname', null, [
+                'label' => 'Pseudo',
+            ])
+            ->add('nicknameUsed', null, [
+                'label' => 'Pseudo utilisé ?',
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',

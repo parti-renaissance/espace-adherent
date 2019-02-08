@@ -16,7 +16,11 @@ const IdeaCardList = (props) => {
         >
             {props.ideas.map(idea => (
                 <div className="idea-card-list__wrapper" key={idea.uuid}>
-                    <IdeaCard {...idea} onVote={(id, vote) => props.onVoteIdea(id, vote)} />
+                    <IdeaCard
+                        {...idea}
+                        onVote={(id, vote) => props.onVoteIdea(id, vote)}
+                        hasBeenRead={props.readIdeas.includes(idea.uuid)}
+                    />
                 </div>
             ))}
         </div>
@@ -27,6 +31,7 @@ IdeaCardList.defaultProps = {
     isLoading: false,
     mode: 'list',
     nbSkeletons: 6,
+    readIdeas: [],
 };
 
 IdeaCardList.propTypes = {
@@ -35,6 +40,7 @@ IdeaCardList.propTypes = {
     mode: PropTypes.oneOf(['list', 'grid']),
     nbSkeletons: PropTypes.number,
     onVoteIdea: PropTypes.func,
+    readIdeas: PropTypes.arrayOf(PropTypes.string), // array of uuids
 };
 
 export default IdeaCardList;

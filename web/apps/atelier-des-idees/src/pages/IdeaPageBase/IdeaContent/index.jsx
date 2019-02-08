@@ -47,6 +47,7 @@ class IdeaContent extends React.Component {
                             {guideline.questions.map(
                                 ({ id, name, category, required, placeholder, position }, index) => {
                                     const content = this.props.values[id];
+                                    const fullAnswer = this.props.fullAnswers.find(a => a.question.id === id);
                                     // only show question with answer in reading mode
                                     if (this.props.isReading && !content) {
                                         return null;
@@ -67,6 +68,7 @@ class IdeaContent extends React.Component {
                                                 this.props.onQuestionTextChange(id, htmlContent, save);
                                             }}
                                             hasError={this.props.errors.includes(id.toString())}
+                                            hasComments={fullAnswer && !!fullAnswer.threads.total_items}
                                         />
                                     );
                                 }
@@ -81,6 +83,7 @@ class IdeaContent extends React.Component {
 
 IdeaContent.defaultProps = {
     errors: [],
+    fullAnswers: [],
     isAuthor: false,
     values: {},
     isDraft: false,
@@ -90,6 +93,7 @@ IdeaContent.defaultProps = {
 
 IdeaContent.propTypes = {
     errors: PropTypes.arrayOf(PropTypes.string),
+    fullAnswers: PropTypes.array,
     isAuthor: PropTypes.bool,
     isDraft: PropTypes.bool,
     isReading: PropTypes.bool,

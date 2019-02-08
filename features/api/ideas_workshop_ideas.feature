@@ -373,6 +373,7 @@ Feature:
                 "slug": "faire-la-paix",
                 "days_before_deadline": 13,
                 "contributors_count": 8,
+                "contributed_by_me": false,
                 "comments_count":13
             }
         ]
@@ -799,6 +800,7 @@ Feature:
         "slug": "mon-idee",
         "days_before_deadline": @integer@,
         "contributors_count": 0,
+        "contributed_by_me": false,
         "comments_count": 0
     }
     """
@@ -846,6 +848,7 @@ Feature:
         "status": "DRAFT",
         "days_before_deadline": @integer@,
         "contributors_count": 0,
+        "contributed_by_me": false,
         "comments_count": 0
     }
     """
@@ -990,6 +993,7 @@ Feature:
         "slug": "mon-idee",
         "days_before_deadline": @integer@,
         "contributors_count": 0,
+        "contributed_by_me": false,
         "comments_count": 0
     }
     """
@@ -1111,6 +1115,7 @@ Feature:
         "status": "PENDING",
         "days_before_deadline": 13,
         "contributors_count": 8,
+        "contributed_by_me": false,
         "comments_count":14
     }
     """
@@ -1164,9 +1169,7 @@ Feature:
                 "feasible":0,
                 "innovative":0,
                 "total":0,
-                "my_votes":[
-
-                ]
+                "my_votes":[]
              },
              "author_category":"ADHERENT",
              "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
@@ -1175,6 +1178,7 @@ Feature:
              "status":"FINALIZED",
              "days_before_deadline":0,
              "contributors_count":2,
+             "contributed_by_me": true,
              "comments_count":2
           },
           {
@@ -1230,6 +1234,7 @@ Feature:
              "status":"PENDING",
              "days_before_deadline":13,
              "contributors_count":8,
+             "contributed_by_me": true,
              "comments_count":13
           }
        ]
@@ -1285,9 +1290,7 @@ Feature:
                 "feasible":0,
                 "innovative":0,
                 "total":0,
-                "my_votes":[
-
-                ]
+                "my_votes":[]
              },
              "author_category":"ADHERENT",
              "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
@@ -1296,6 +1299,7 @@ Feature:
              "status":"FINALIZED",
              "days_before_deadline":0,
              "contributors_count":2,
+             "contributed_by_me": true,
              "comments_count":2
           },
           {
@@ -1351,6 +1355,7 @@ Feature:
              "status":"PENDING",
              "days_before_deadline":13,
              "contributors_count":8,
+             "contributed_by_me": true,
              "comments_count":13
           }
        ]
