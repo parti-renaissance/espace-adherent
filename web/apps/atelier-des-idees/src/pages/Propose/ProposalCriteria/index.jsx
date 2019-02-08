@@ -45,8 +45,17 @@ class ProposalCriteria extends React.PureComponent {
                                 <span className="proposal-criteria__container__item__text__main">
                                     Votre proposition est nouvelle :
                                 </span>{' '}
-                                il ne s’agit pas d’une idée déjà publiée ou mise en œuvre. Pensez à consulter les idées
-                                en cours ou déjà publiées ainsi que le programme présidentiel.
+                                il ne s’agit pas d’une idée déjà publiée ou mise en œuvre. Pensez à consulter les&nbsp;
+                                <a
+                                    href="/atelier-des-idees/contribuer"
+                                    target="_blank"
+                                >
+                                idées en cours</a>&nbsp;ou déjà&nbsp;
+                                <a
+                                    href="/atelier-des-idees/soutenir"
+                                    target="_blank"
+                                >finalisées</a>&nbsp;
+                                ainsi que le programme présidentiel.
                             </p>
                         </div>
                         <div className="proposal-criteria__container__item">
@@ -57,7 +66,7 @@ class ProposalCriteria extends React.PureComponent {
                                         href="/atelier-des-idees/conditions-generales-utilisation"
                                         target="_blank"
                                     >
-                                    conditions générales d'utilisation
+                                    Conditions Générales d'Utilisation
                                     </a>.{' '}
                             </p>
                         </div>
