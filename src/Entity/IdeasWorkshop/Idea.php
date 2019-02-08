@@ -578,6 +578,18 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
         return $this->finalizedAt->diff(new \DateTime('now'))->d;
     }
 
+    /**
+     * @SymfonySerializer\Groups("idea_list_read")
+     */
+    public function getHoursBeforeDeadline(): int
+    {
+        if (!$this->isPending()) {
+            return 0;
+        }
+
+        return $this->finalizedAt->diff(new \DateTime('now'))->h;
+    }
+
     public function isDraft(): bool
     {
         return null === $this->publishedAt;
