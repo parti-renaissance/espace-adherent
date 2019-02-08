@@ -26,6 +26,7 @@ global.yes: Oui
 global.no: Non
 Choices: Choix possibles
 Survey List: Liste des questionnaires locaux
+number_of_days: '%days% jour|%days% jours'
 
 #
 # Adherent

@@ -3,7 +3,7 @@
 {% elseif object.isDraft %}
     <span class="label label-warning">{{ 'ideas_workshop.status.draft'|trans }}</span>
 {% elseif object.isPending %}
-    <span class="label label-primary">{{ 'ideas_workshop.status.pending'|trans }}</span>
+    <span class="label label-primary">{{ 'ideas_workshop.status.pending'|trans }}</span> {{ 'number_of_days'|transchoice(object.daysBeforeDeadline, {'%days%': object.daysBeforeDeadline}) }}
 {% elseif object.isFinalized %}
     <span class="label label-success">{{ 'ideas_workshop.status.finalized'|trans }}</span>
 {% endif %}
