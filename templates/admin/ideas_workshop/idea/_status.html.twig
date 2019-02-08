@@ -1,9 +1,9 @@
 {% if not object.isEnabled %}
-    <span class="label label-danger">Dépublié</span>
+    <span class="label label-danger">{{ 'ideas_workshop.status.unpublished'|trans }}</span>
 {% elseif object.isDraft %}
-    <span class="label label-warning">Brouillon</span>
+    <span class="label label-warning">{{ 'ideas_workshop.status.draft'|trans }}</span>
 {% elseif object.isPending %}
-    <span class="label label-primary">En cours</span>
+    <span class="label label-primary">{{ 'ideas_workshop.status.pending'|trans }}</span>
 {% elseif object.isFinalized %}
-    <span class="label label-success">Finalisé</span>
+    <span class="label label-success">{{ 'ideas_workshop.status.finalized'|trans }}</span>
 {% endif %}
