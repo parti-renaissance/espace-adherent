@@ -7,12 +7,12 @@ use Ramsey\Uuid\Uuid;
 
 final class AdherentChangeEmailMessage extends Message
 {
-    public static function createFromAdherent(Adherent $adherent, string $confirmationLink): self
+    public static function createFromAdherent(Adherent $adherent, string $newEmail, string $confirmationLink): self
     {
         return new self(
             Uuid::uuid4(),
             '465792',
-            $adherent->getEmailAddress(),
+            $newEmail,
             $adherent->getFullName(),
             'Validez votre nouvelle adresse e-mail',
             [],
