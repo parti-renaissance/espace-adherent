@@ -1,3 +1,4 @@
+@surveys
 Feature:
   As referent
   I can see the surveys list, create a survey and edit it.
