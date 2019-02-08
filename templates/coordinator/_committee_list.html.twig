@@ -26,22 +26,6 @@
         </td>
         {% if committee.isPending %}
             <td>
-                {% for messages in app.flashes(["error_#{committee.id}"]) %}
-                    <ul class="form form__errors">
-                        {% for message in messages %}
-                            <li class="form__error">
-                                {{ message }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endfor %}
-                {{ form_widget(form.coordinatorComment, { attr: { class: 'form__field--textarea-120'} }) }}
-            </td>
-        {% else %}
-            <td>{{ committee.coordinatorComment|escape }}</td>
-        {% endif %}
-        {% if committee.isPending %}
-            <td>
                 <span>
                     {{ form_widget(form.accept, {'label': 'Pré-accepter', 'attr': { 'class': 'btn--success btn--success__icon' } }) }}
                 </span>

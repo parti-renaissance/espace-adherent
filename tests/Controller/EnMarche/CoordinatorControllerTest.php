@@ -51,42 +51,6 @@ class CoordinatorControllerTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
-    public function testValidationCommitteeFailed()
-    {
-        $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr');
-
-        $this->client->request(Request::METHOD_GET, '/evenements');
-        $this->client->click($this->client->getCrawler()->selectLink('Espace coordinateur régional')->link());
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-
-        $this->assertContains('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list')->text());
-
-        $data = [];
-
-        $this->client->submit($this->client->getCrawler()->selectButton('Pré-accepter')->form(), $data);
-
-        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-
-        $this->client->followRedirect();
-
-        $this->assertSame(1, $this->client->getCrawler()->filter('#committee-list .coordinator__item .form__error')->count());
-        $this->assertSame('Cette valeur ne doit pas être vide.',
-            trim($this->client->getCrawler()->filter('#committee-list .coordinator__item .form__error')->text()));
-
-        $data = [];
-        $data['coordinator_area']['coordinatorComment'] = 'test';
-        $data['coordinator_area']['accept'] = null;
-        $this->client->submit($this->client->getCrawler()->selectButton('Pré-accepter')->form(), $data);
-
-        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-
-        $this->client->followRedirect();
-
-        $this->assertSame(1, $this->client->getCrawler()->filter('#committee-list .coordinator__item .form__error')->count());
-        $this->assertSame('Vous devez saisir au moins 10 caractères.',
-            trim($this->client->getCrawler()->filter('#committee-list .coordinator__item .form__error')->text()));
-    }
-
     public function testPreAcceptCommitteeWithSuccess()
     {
         $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr');
@@ -98,7 +62,6 @@ class CoordinatorControllerTest extends WebTestCase
         $this->assertContains('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list')->text());
 
         $data = [];
-        $data['coordinator_area']['coordinatorComment'] = 'Mon commentaire sur l\'AL';
         $data['coordinator_area']['accept'] = null;
         $this->client->submit($this->client->getCrawler()->selectButton('Pré-accepter')->form(), $data);
 
@@ -114,7 +77,6 @@ class CoordinatorControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-coordinateur/comites/list?s=PRE_APPROVED');
 
         $this->assertContains('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list')->text());
-        $this->assertContains('Mon commentaire sur', $this->client->getCrawler()->filter('#committee-list')->text());
         $this->assertCount(1, $this->client->getCrawler()->filter('.fa-check-circle'));
     }
 
@@ -129,7 +91,6 @@ class CoordinatorControllerTest extends WebTestCase
         $this->assertContains('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list')->text());
 
         $data = [];
-        $data['coordinator_area']['coordinatorComment'] = 'Mon commentaire sur l\'AL';
         $data['coordinator_area']['refuse'] = null;
         $this->client->submit($this->client->getCrawler()->selectButton('Pré-refuser')->form(), $data);
 
@@ -145,7 +106,6 @@ class CoordinatorControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-coordinateur/comites/list?s=PRE_REFUSED');
 
         $this->assertContains('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list')->text());
-        $this->assertContains('Mon commentaire sur', $this->client->getCrawler()->filter('#committee-list')->text());
         $this->assertCount(1, $this->client->getCrawler()->filter('.fa-times'));
     }
 

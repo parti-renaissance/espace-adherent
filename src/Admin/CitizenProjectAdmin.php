@@ -28,7 +28,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CitizenProjectAdmin extends AbstractAdmin
@@ -214,19 +213,6 @@ class CitizenProjectAdmin extends AbstractAdmin
                 ->add('postAddress.longitude', null, [
                     'label' => 'Longitude',
                     'help' => 'Pour modifier l\'adresse, impersonnifiez un organisateur de ce projet citoyen.',
-                ])
-            ->end()
-            ->with('Commentaire', ['class' => 'col-md-5'])
-                ->add('adminComment', TextareaType::class, [
-                    'label' => 'Commentaire sur le créateur',
-                    'attr' => ['rows' => 5],
-                    'required' => false,
-                ])
-                ->add('coordinatorComment', TextareaType::class, [
-                    'label' => 'Commentaire du REC sur le créateur',
-                    'attr' => ['rows' => 5],
-                    'disabled' => true,
-                    'required' => false,
                 ])
             ->end()
         ;
