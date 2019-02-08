@@ -70,7 +70,12 @@ class IdeaCard extends React.Component {
                 <Link to={`/atelier-des-idees/proposition/${this.props.uuid}`} className="idea-card__link">
                     <div className="idea-card__main">
                         <div className="idea-card__content">
-                            <p className="idea-card__content__title" title={this.props.name}>
+                            <p
+                                className={classnames('idea-card__content__title', {
+                                    'idea-card__content__title--read': this.props.hasBeenRead,
+                                })}
+                                title={this.props.name}
+                            >
                                 {this.props.name}
                             </p>
                             <div className="idea-card__content__infos">
@@ -180,6 +185,7 @@ IdeaCard.defaultProps = {
     comments_count: 0,
     contributors_count: 0,
     thumbnail: undefined,
+    hasBeenRead: false,
 };
 
 IdeaCard.propTypes = {
@@ -207,6 +213,7 @@ IdeaCard.propTypes = {
     days_before_deadline: PropTypes.number.isRequired,
     status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
     onVote: PropTypes.func,
+    hasBeenRead: PropTypes.bool,
 };
 
 export default IdeaCard;

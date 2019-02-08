@@ -7,6 +7,7 @@ import { fetchAuthUser } from './auth';
 import { fetchGuidelines } from './currentIdea';
 import { fetchStaticData } from './static';
 import { setCurrentIdea } from '../actions/currentIdea';
+import { addVisitedIdea } from '../actions/session';
 
 export function initApp() {
     return dispatch =>
@@ -44,7 +45,10 @@ export function initIdeaPage(id) {
     return async dispatch => {
         // reset current idea
         dispatch(setCurrentIdea());
-        return dispatch(fetchIdea(id)).then(() => dispatch(initIdeaPageBase()));
+        return dispatch(fetchIdea(id)).then(() => {
+            dispatch(initIdeaPageBase());
+            dispatch(addVisitedIdea(id));
+        });
     };
 }
 

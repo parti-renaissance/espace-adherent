@@ -14,6 +14,9 @@ export const UPDATE_AUTH_USER = 'UPDATE_AUTH_USER';
 export const FETCH_AUTH_USER = createRequestTypes('FETCH_AUTH_USER');
 export const SET_NICKNAME = createRequestTypes('SET_NICKNAME');
 
+// session
+export const ADD_VISITED_IDEA = 'ADD_VISITED_IDEA';
+
 // modal
 export const SHOW_MODAL = 'SHOW_MODAL';
 export const HIDE_MODAL = 'HIDE_MODAL';
