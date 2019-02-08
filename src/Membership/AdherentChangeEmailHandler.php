@@ -60,6 +60,7 @@ class AdherentChangeEmailHandler
     {
         $this->mailer->sendMessage(AdherentChangeEmailMessage::createFromAdherent(
             $adherent,
+            $token->getEmail(),
             $this->urlGenerator->generate(
                 'user_validate_new_email',
                 [
