@@ -52,7 +52,7 @@ class Pagination extends Component {
         const minCenterPage = Math.ceil(pagesToShow / 2);
         const centerPage = currentPage >= minCenterPage ? currentPage : minCenterPage;
 
-        if (1 <= totalPages) {
+        if (1 >= totalPages) {
             return null;
         }
 
