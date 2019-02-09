@@ -216,6 +216,12 @@ class App {
             module.default();
         });
     }
+
+    runMessageFilters(messageId, synchronized, recipientCount) {
+        System.import('pages/message_filters').catch((error) => { throw error; }).then((module) => {
+            module.default(this.get('api'), messageId, synchronized, recipientCount);
+        });
+    }
 }
 
 window.App = new App();

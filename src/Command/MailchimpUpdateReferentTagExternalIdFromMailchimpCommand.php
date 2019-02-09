@@ -36,6 +36,11 @@ class MailchimpUpdateReferentTagExternalIdFromMailchimpCommand extends Command
         parent::__construct();
     }
 
+    protected function configure()
+    {
+        $this->setDescription('Update Referent tags with Mailchimp external ids');
+    }
+
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->io = new SymfonyStyle($input, $output);

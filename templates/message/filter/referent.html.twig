@@ -7,22 +7,9 @@
             {{ include('message/filter/_referent_full_filter_form.html.twig') }}
         {% endif %}
 
-        <div class="referent__filters__buttons text--center space--45-5 l__wrapper--500 b__nudge--top-40 background--lighter">
-            {% if message.filter %}
-                {% if not message.synchronized %}
-                    <p>Nous recherchons les adhérents correspondant à vos critères</p>
-                {% elseif message.recipientCount is not null %}
-                    {%  if message.recipientCount == 0 %}
-                        <p>Votre filtre ne correspond à aucun adhérent :(</p>
-                    {% else %}
-                        <p>Votre filtre correspond à {{ message.recipientCount }} adhérent(s) !</p>
-                    {% endif %}
-                {% endif %}
-
-                <button type="submit" name="reset" class="btn btn--no-border">Réinitialiser le filtre</button>
-            {% endif %}
-
-            <button type="submit" class="btn btn--blue">Sauvegarder le filtre</button>
+        <div class="text--center l__wrapper--500 b__nudge--top-40">
+            <button type="submit" class="btn btn--dual">Filtrer</button>
+            <button type="submit" name="reset" class="btn--as-link b__nudge--left-large text--body text--blue--new">Réinitialiser le filtre</button>
         </div>
     {{ form_end(form) }}
 </div>

@@ -2,7 +2,6 @@
 
 namespace AppBundle\AdherentMessage\Listener;
 
-use AppBundle\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
 use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use AppBundle\AdherentMessage\Handler\AdherentMessageChangeCommand;
 use AppBundle\AdherentMessage\Handler\AdherentMessageDeleteCommand;
@@ -36,7 +35,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
     {
         $object = $args->getObject();
 
-        if ($object instanceof AdherentMessageSynchronizedObjectInterface && $object->getExternalId()) {
+        if ($object instanceof AdherentMessageInterface && $object->getExternalId()) {
             $this->bus->dispatch(new AdherentMessageDeleteCommand($object->getExternalId()));
         }
     }

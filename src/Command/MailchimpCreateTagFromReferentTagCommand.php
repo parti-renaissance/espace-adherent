@@ -36,6 +36,11 @@ class MailchimpCreateTagFromReferentTagCommand extends Command
         parent::__construct();
     }
 
+    protected function configure()
+    {
+        $this->setDescription('Sync Referent tag with Mailchimp (create Mailchimp tag)');
+    }
+
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->io = new SymfonyStyle($input, $output);
