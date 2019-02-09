@@ -71,6 +71,7 @@ function mapDispatchToProps(dispatch) {
             // user contributions
             dispatch(fetchUserContributions());
         },
+        getMyIdeas: params => dispatch(fetchUserIdeas(params)),
     };
 }
 
