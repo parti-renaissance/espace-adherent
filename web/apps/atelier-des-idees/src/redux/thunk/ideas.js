@@ -115,18 +115,19 @@ export function fetchIdea(id) {
     };
 }
 
+// used for both fetchUserIdeas and fetchUserContributions
+const DEFAULT_PARAMS = {
+    page_size: 5,
+    page: 1,
+};
 /**
  * Fetch ideas of current auth user. Results are namespaced by reducer
  * according to the `status` key in the params argument.
  * @param {object} params Query params
  */
-const DEFAULT_PARAMS = {
-    page_size: 5,
-    page: 1,
-    status: ideaStatus.FINALIZED,
-};
 export function fetchUserIdeas(params = {}) {
     params = { ...DEFAULT_PARAMS, ...params };
+    params.status = params.status || ideaStatus.FINALIZED;
     return (dispatch, getState, axios) => {
         const isAuthenticated = selectIsAuthenticated(getState());
         if (isAuthenticated) {
