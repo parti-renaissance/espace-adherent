@@ -9,7 +9,12 @@ function MyIdeasModal(props) {
     const panes = [
         {
             title: 'Mes propositions',
-            component: () => <MyIdeas ideas={props.my_ideas} onDeleteIdea={props.onDeleteIdea} />,
+            component: () =>
+                <MyIdeas
+                    ideas={props.my_ideas}
+                    onDeleteIdea={props.onDeleteIdea}
+                    getMyIdeas={props.getMyIdeas}
+                />,
         },
         {
             title: 'Mes contributions',

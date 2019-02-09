@@ -23,6 +23,7 @@ class MyIdeas extends React.Component {
                 empty: 'brouillon',
                 ideas: props.ideas[DRAFT].items,
                 metadata: props.ideas[DRAFT].metadata,
+                status: DRAFT,
             },
             {
                 showCat: 'showPending',
@@ -30,6 +31,7 @@ class MyIdeas extends React.Component {
                 empty: 'proposition en cours d’élaboration',
                 ideas: props.ideas[PENDING].items,
                 metadata: props.ideas[PENDING].metadata,
+                status: PENDING,
             },
             {
                 showCat: 'showFinalized',
@@ -37,6 +39,7 @@ class MyIdeas extends React.Component {
                 empty: 'proposition finalisée',
                 ideas: props.ideas[FINALIZED].items,
                 metadata: props.ideas[FINALIZED].metadata,
+                status: FINALIZED,
             },
         ];
 
@@ -51,6 +54,13 @@ class MyIdeas extends React.Component {
         return (
             <div className="my-ideas">
                 {this.CAT_IDEAS_FILTER.map((cat, i) => {
+                    const {
+                        metadata: {
+                            current_page: page,
+                            total_items: total,
+                        },
+                        status,
+                    } = cat;
                     const categoryHeader = cat.ideas.length ? (
                         <button
                             className="my-ideas__category__button"
@@ -76,9 +86,9 @@ class MyIdeas extends React.Component {
                             {categoryHeader}
                             {cat.ideas.length ? (
                                 cat.ideas.map(
-                                    idea =>
+                                    (idea, j) =>
                                         this.state[cat.showCat] && (
-                                            <div className="my-ideas__category__idea">
+                                            <div className="my-ideas__category__idea" key={j}>
                                                 <p className="my-ideas__category__idea__date">
                                                     Créée le {new Date(idea.created_at).toLocaleDateString()}
                                                 </p>
@@ -105,15 +115,17 @@ class MyIdeas extends React.Component {
                             ) : (
                                 <p className="my-ideas__category__empty-label">{`Vous n'avez pas de ${cat.empty}`}</p>
                             )}
-                            <Pagination
-                                nextPage={}
-                                prevpage={}
-                                goTo={}
-                                total={}
-                                currentPage={}
-                                pageSize={5}
-                                pagesToShow={5}
-                            />
+                            {!!cat.ideas.length &&
+                                <Pagination
+                                    nextPage={() => this.props.getMyIdeas({ page: page + 1, status })}
+                                    prevPage={() => this.props.getMyIdeas({ page: page - 1, status })}
+                                    goTo={p => this.props.getMyIdeas({ page: p, status })}
+                                    total={total}
+                                    currentPage={page}
+                                    pageSize={5}
+                                    pagesToShow={5}
+                                />
+                            }
                         </div>
                     );
                 })}
