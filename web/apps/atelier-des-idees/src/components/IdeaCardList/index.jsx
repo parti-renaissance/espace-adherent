@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import ReactTooltip from 'react-tooltip';
+
 import IdeaCardSkeletonList from '../Skeletons/IdeaCardSkeletonList';
 import IdeaCard from '../IdeaCard';
 
@@ -14,6 +16,7 @@ const IdeaCardList = (props) => {
                 'idea-card-list--grid': 'grid' === props.mode,
             })}
         >
+            <ReactTooltip />
             {props.ideas.map(idea => (
                 <div className="idea-card-list__wrapper" key={idea.uuid}>
                     <IdeaCard
