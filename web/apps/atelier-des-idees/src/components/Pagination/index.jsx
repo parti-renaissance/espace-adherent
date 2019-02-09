@@ -13,7 +13,7 @@ const PageNumber = ({ page, goTo }) => {
 
     if (page.current) {
         return dots.concat(
-            <span key={`current-${page.page}`} className="pagination__current">
+            <span key={`current-${page.page}`} className="pagination__current button button--transparent">
                 {page.page}
             </span>
         );
@@ -21,7 +21,7 @@ const PageNumber = ({ page, goTo }) => {
     return dots.concat(
         <button
             key={page.page}
-            className="pagination__number"
+            className="pagination__number button button--secondary"
             onClick={() => goTo(page.page)}>{page.page}</button>
     );
 };
@@ -90,7 +90,7 @@ class Pagination extends Component {
         return (
             <div className="pagination">
                 {1 !== currentPage &&
-                  <button className="pagination__prev" onClick={prevPage}>&lsaquo; Précédent</button>
+                  <button className="pagination__prev button button--transparent" onClick={prevPage}>&lsaquo; Précédent</button>
                 }
 
                 {pages.map((page, i) => <PageNumber key={i} goTo={goTo} page={page} />)}
