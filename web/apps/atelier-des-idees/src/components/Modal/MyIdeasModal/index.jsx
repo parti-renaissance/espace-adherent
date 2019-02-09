@@ -43,13 +43,12 @@ MyIdeasModal.defaultProps = {
 
 MyIdeasModal.propTypes = {
     tabActive: PropTypes.oneOf(['my_ideas', 'my_contributions']),
-    my_contribs: PropTypes.arrayOf(
-        PropTypes.shape({
-            uuid: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
-            created_at: PropTypes.string.isRequired, // ISO UTC
-        })
-    ).isRequired,
+    my_contribs: PropTypes.shape({
+        ideas: PropTypes.shape({
+            items: PropTypes.array,
+            metadata: PropTypes.object,
+        }),
+    }).isRequired,
     my_ideas: PropTypes.shape({
         [ideaStatus.DRAFT]: PropTypes.object,
         [ideaStatus.PENDING]: PropTypes.object,

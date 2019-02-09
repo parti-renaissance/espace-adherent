@@ -86,14 +86,17 @@ class MyContributions extends React.Component {
     }
 }
 
+const IDEA_TYPE = PropTypes.shape({
+    uuid: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    created_at: PropTypes.string.isRequired, // ISO UTC
+});
+
 MyContributions.propTypes = {
-    ideas: PropTypes.arrayOf(
-        PropTypes.shape({
-            uuid: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
-            created_at: PropTypes.string.isRequired, // ISO UTC
-        })
-    ).isRequired,
+    ideas: PropTypes.shape({
+        items: PropTypes.arrayOf(IDEA_TYPE),
+        metadata: PropTypes.object,
+    }).isRequired,
 };
 
 export default MyContributions;
