@@ -26,6 +26,10 @@
 		padding: 20px 0;
 		border-bottom: 1px solid $platinum;
 
+    &:nth-last-child(2) {
+      margin-bottom: 20px;
+    }
+
 		&__date {
 			margin: 0 0 7px;
 			color: $light-black;
