@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
+import Pagination from '../../../Pagination';
 
 import icn_toggle_content from './../../../../img/icn_toggle_content-blue-yonder.svg';
 
@@ -17,9 +18,16 @@ class MyContributions extends React.Component {
     }
 
     render() {
+        const {
+            items: ideas,
+            metadata: {
+                current_page: page,
+                total_items: total,
+            },
+        } = this.props.ideas;
         return (
             <div className="my-contributions">
-                {this.props.ideas.length ? (
+                {ideas.length ? (
                     <button
                         className="my-contributions__category__button"
                         onClick={() =>
@@ -39,11 +47,11 @@ class MyContributions extends React.Component {
                 ) : (
                     <p className="my-contributions__category__button__label">{this.categoryData.label}</p>
                 )}
-                {this.props.ideas.length ? (
-                    this.props.ideas.map(
-                        idea =>
+                {ideas.length ? (
+                    ideas.map(
+                        (idea, i) =>
                             this.state.showList && (
-                                <div className="my-contributions__category__idea">
+                                <div className="my-contributions__category__idea" key={i}>
                                     <p className="my-contributions__category__idea__date">
                                         Créée le {new Date(idea.created_at).toLocaleDateString()}
                                     </p>
@@ -62,6 +70,17 @@ class MyContributions extends React.Component {
                 ) : (
                     <p className="my-contributions__category__empty-label">Vous n’avez pas encore de contribution</p>
                 )}
+                {!!ideas.length &&
+                    <Pagination
+                        nextPage={() => this.props.getMyContribs({ page: page + 1 })}
+                        prevPage={() => this.props.getMyContribs({ page: page - 1 })}
+                        goTo={p => this.props.getMyContribs({ page: p })}
+                        total={total}
+                        currentPage={page}
+                        pageSize={5}
+                        pagesToShow={5}
+                    />
+                }
             </div>
         );
     }
