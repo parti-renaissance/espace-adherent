@@ -95,8 +95,12 @@ class Pagination extends Component {
 
                 {pages.map((page, i) => <PageNumber key={i} goTo={goTo} page={page} />)}
 
-                {currentPage !== totalPages.length &&
-                  <button className="pagination__next" onClick={nextPage}>Suivant &rsaquo;</button>
+                {currentPage !== totalPages &&
+                  <button
+                      className="pagination__next button button--transparent"
+                      onClick={nextPage}>
+                          Suivant &rsaquo;
+                  </button>
                 }
             </div>
         );
