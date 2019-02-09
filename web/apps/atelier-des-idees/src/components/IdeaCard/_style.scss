@@ -153,6 +153,7 @@
 
   &__tip,
   &__theme-tip {
+    white-space: nowrap;
     font-family: $font-roboto;
     border-radius: 3px;
     box-shadow: 0 3px 10px 0px rgba($light-grey, 0.25);
