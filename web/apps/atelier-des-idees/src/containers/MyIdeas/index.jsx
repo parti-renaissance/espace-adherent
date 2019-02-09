@@ -44,7 +44,7 @@ MyIdeasContainer.propTypes = {
 
 function mapStateToProps(state) {
     const myIdeasData = state.myIdeas;
-    const myContributionsData = selectMyContributions(state);
+    const myContributionsData = state.myContributions;
     return {
         data: {
             myIdeasData,
@@ -72,6 +72,7 @@ function mapDispatchToProps(dispatch) {
             dispatch(fetchUserContributions());
         },
         getMyIdeas: params => dispatch(fetchUserIdeas(params)),
+        getMyContribs: params => dispatch(fetchUserContributions(params)),
     };
 }
 

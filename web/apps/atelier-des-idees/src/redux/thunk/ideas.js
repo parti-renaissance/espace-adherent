@@ -157,6 +157,7 @@ export function fetchUserIdeas(params = {}) {
  * @param {object} params Query params
  */
 export function fetchUserContributions(params = {}) {
+    params = { ...DEFAULT_PARAMS, ...params };
     return (dispatch, getState, axios) => {
         const isAuthenticated = selectIsAuthenticated(getState());
         if (isAuthenticated) {

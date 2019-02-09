@@ -18,7 +18,11 @@ function MyIdeasModal(props) {
         },
         {
             title: 'Mes contributions',
-            component: () => <MyContributions ideas={props.my_contribs} />,
+            component: () =>
+                <MyContributions
+                    ideas={props.my_contribs}
+                    getMyContribs={props.getMyContribs}
+                />,
         },
     ];
 
