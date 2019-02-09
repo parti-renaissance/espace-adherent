@@ -7,6 +7,7 @@ import IdeaCardSkeletonList from '../Skeletons/IdeaCardSkeletonList';
 import IdeaCard from '../IdeaCard';
 
 const IdeaCardList = (props) => {
+    ReactTooltip.rebuild();
     if (props.isLoading) {
         return <IdeaCardSkeletonList nbItems={props.nbSkeletons} mode={props.mode} />;
     }
