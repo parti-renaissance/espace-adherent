@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 const PageNumber = ({ page, goTo }) => {
@@ -25,7 +26,7 @@ const PageNumber = ({ page, goTo }) => {
     );
 };
 
-export default class Pagination extends Component {
+class Pagination extends Component {
     getBounds(totalPages, pagesToShow, centerPage) {
         const range = Math.floor(pagesToShow / 2);
 
