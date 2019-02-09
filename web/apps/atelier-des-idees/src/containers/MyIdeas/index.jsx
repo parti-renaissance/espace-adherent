@@ -9,7 +9,6 @@ import {
     fetchUserIdeas,
     fetchUserContributions,
 } from '../../redux/thunk/ideas';
-import { selectMyContributions } from '../../redux/selectors/myContributions';
 import MyIdeasModal from '../../components/Modal/MyIdeasModal';
 
 const {
