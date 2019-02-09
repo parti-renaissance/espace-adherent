@@ -106,3 +106,15 @@ class Pagination extends Component {
         );
     }
 }
+
+Pagination.propTypes = {
+    nextPage: PropTypes.func,
+    prevPage: PropTypes.func,
+    goTo: PropTypes.func,
+    total: PropTypes.number,
+    currentPage: PropTypes.number,
+    pageSize: PropTypes.number,
+    pagesToShow: PropTypes.number,
+};
+
+export default Pagination;
