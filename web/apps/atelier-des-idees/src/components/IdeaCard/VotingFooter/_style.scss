@@ -95,6 +95,16 @@
     color: $france;
   }
 
+  &--condensed {
+    height: 45px;
+    padding: 0 0 25px 25px;
+    background-color: $white;
+
+    .voting-footer__total-votes {
+      margin: 0;
+    }
+  }
+
   /* Responsive */
   @media #{$desktop} {
     &--open {
